@@ -52,13 +52,22 @@ import jakarta.faces.event.PhaseId;
 /**
  * Enhanced version of the Faces UIData.
  */
-public abstract class PrimeUIData extends UIDataPatch {
+public abstract class PrimeUIData extends UIDataPatch implements IterationCleanupAware {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeUIData.class.getName());
 
     public enum PropertyKeys {
         rowIndexVar,
         lazy,
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        // the row index ends up in the client id of every descendant and puts the row in the request map under var,
+        // so we must not be left standing on a row once the phase which put us there is done
+        if (getRowIndex() != -1) {
+            setRowIndex(-1);
+        }
     }
 
     @Override

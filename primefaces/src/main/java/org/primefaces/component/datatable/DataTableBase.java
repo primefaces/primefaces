@@ -47,6 +47,7 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -90,6 +91,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        super.cleanupIterationState(context);
+
+        resetDynamicColumns();
     }
 
     @Facet(description = "Empty message content of the datatable.")

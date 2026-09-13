@@ -8,6 +8,7 @@
     <factory>
         <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
         <faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
+        <render-kit-factory>org.primefaces.renderkit.PrimeRenderKitFactory</render-kit-factory>
     </factory>
 
     <lifecycle>

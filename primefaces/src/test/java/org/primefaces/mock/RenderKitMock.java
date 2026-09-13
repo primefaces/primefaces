@@ -25,6 +25,8 @@ package org.primefaces.mock;
 
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.faces.context.ResponseStream;
 import jakarta.faces.context.ResponseWriter;
@@ -34,9 +36,15 @@ import jakarta.faces.render.ResponseStateManager;
 
 public class RenderKitMock extends RenderKit {
 
-    @Override
-    public void addRenderer(String arg0, String arg1, Renderer arg2) {
+    /**
+     * Renderers registered by a test, for the cases where a real one is needed. Anything not registered still gets a
+     * {@link RendererMock}.
+     */
+    private final Map<String, Renderer> renderers = new HashMap<>();
 
+    @Override
+    public void addRenderer(String family, String rendererType, Renderer renderer) {
+        renderers.put(family + '|' + rendererType, renderer);
     }
 
     @Override
@@ -51,8 +59,9 @@ public class RenderKitMock extends RenderKit {
     }
 
     @Override
-    public Renderer getRenderer(String arg0, String arg1) {
-        return new RendererMock();
+    public Renderer getRenderer(String family, String rendererType) {
+        Renderer renderer = renderers.get(family + '|' + rendererType);
+        return renderer != null ? renderer : new RendererMock();
     }
 
     @Override

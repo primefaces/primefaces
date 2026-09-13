@@ -46,6 +46,7 @@ import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.TreeNode;
 
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -87,6 +88,13 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        super.cleanupIterationState(context);
+
+        resetDynamicColumns();
     }
 
     @Facet(description = "Header content of the treetable.")

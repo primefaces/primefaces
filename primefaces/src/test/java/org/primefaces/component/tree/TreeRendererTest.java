@@ -23,11 +23,17 @@
  */
 package org.primefaces.component.tree;
 
+import org.primefaces.component.api.UITree;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.renderkit.PrimeRendererWrapper;
 
+import java.util.List;
+import java.util.Map;
+
+import jakarta.el.ValueExpression;
 import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
@@ -35,6 +41,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class TreeRendererTest {
 
@@ -61,7 +69,44 @@ class TreeRendererTest {
         tree.setValue(root);
         tree.getChildren().add(treeNode);
 
-        new TreeRenderer().encodeEnd(context, tree);
+        new PrimeRendererWrapper(new TreeRenderer()).encodeEnd(context, tree);
+
+        assertNull(tree.getRowKey());
+        assertEquals(tree.getClientId(context), tree.getContainerClientId(context));
+        assertFalse(context.getExternalContext().getRequestMap().containsKey("node"));
+    }
+
+    /**
+     * The instant selection branch of decodeSelection stands the tree on the node which was checked, to collect the
+     * row keys below it, and does not reset it, unlike the branch above it. So the decode leaves the tree standing on
+     * no node either.
+     */
+    @Test
+    void decodeLeavesTheTreeStandingOnNoRow() {
+        FacesContext context = new FacesContextMock();
+
+        TreeNode<String> root = new DefaultTreeNode<>();
+        TreeNode<String> one = new DefaultTreeNode<>("one", root);
+        new DefaultTreeNode<>("one-one", one);
+        new DefaultTreeNode<>("two", root);
+
+        ValueExpression selectionVE = mock(ValueExpression.class);
+        when(selectionVE.getType(context.getELContext())).thenReturn((Class) List.class);
+
+        Tree tree = new Tree();
+        tree.setId("tree");
+        tree.setVar("node");
+        tree.setValue(root);
+        tree.setSelectionMode("checkbox");
+        tree.setDynamic(true);
+        tree.setPropagateSelectionDown(true);
+        tree.setValueExpression(UITree.PropertyKeys.selection.toString(), selectionVE);
+        tree.buildRowKeys(root);
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        params.put(tree.getClientId(context) + "_instantSelection", "0");
+
+        new PrimeRendererWrapper(new TreeRenderer()).decode(context, tree);
 
         assertNull(tree.getRowKey());
         assertEquals(tree.getClientId(context), tree.getContainerClientId(context));
