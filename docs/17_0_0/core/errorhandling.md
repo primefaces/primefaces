@@ -40,10 +40,18 @@ For server-reported errors, the response contains:
 </partial-response>
 ```
 
+Connection errors have no server-reported error name, so they are reported with the dedicated error name
+`Ajax.ConnectionError` (available as `PrimeFaces.ajax.CONNECTION_ERROR`). A `p:ajaxExceptionHandler` can therefore be
+registered for exactly this kind of error:
+
+```xhtml
+<p:ajaxExceptionHandler type="Ajax.ConnectionError" onexception="alert('The server is not reachable: ' + errorMessage);" />
+```
+
 In both cases, PrimeFaces processes the error through the following chain:
 
 1. **Callbacks & Events** — `onerror` callbacks on `p:ajax` are triggered, as well as global listeners like `p:ajaxStatus` and the jQuery `pfAjaxError` event.
-2. **`p:ajaxExceptionHandler`** — If a specific or global `p:ajaxExceptionHandler` is defined, it is invoked with the error details.
+2. **`p:ajaxExceptionHandler`** — If a `p:ajaxExceptionHandler` for the error name is defined, it is invoked with the error details. Otherwise a global `p:ajaxExceptionHandler` (one without a `type`) is invoked.
 3. **Error Page Redirect** — If no `p:ajaxExceptionHandler` is found, PrimeFaces attempts to redirect to the matching `error-page` configured in `web.xml` / `web-fragment.xml`.
 4. **Console Log** — If neither a handler nor an error page is configured, the error is logged to the browser console.
 
