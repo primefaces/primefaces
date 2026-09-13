@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <style>
+                td, th { white-space: nowrap; font-size: .75rem; }
+            </style>
+
+            <!-- filterValueType="none" on the table itself: the single switch that turns the end user's
+                 match-mode picker off for every one of its columns at once, instead of repeating
+                 filterValueType="none" on each of them. -->
+            <p:dataTable id="datatableNone" widgetVar="wgtTableNone" value="#{dataTable052.employees}" var="employee"
+                         filteredValue="#{dataTable052.filteredEmployeesNone}" filterEvent="enter"
+                         filterValueType="none">
+
+                <!-- Integer field WITH a converter, so it would otherwise auto-derive the "numeric" preset -
+                     the table-level "none" must suppress that -->
+                <p:column headerText="ID" field="id" filterMatchMode="gt" converter="jakarta.faces.Integer"/>
+
+                <!-- explicitly configured filterMatchMode, no picker: filtering still works, fixed to "contains" -->
+                <p:column headerText="last name" field="lastName" filterMatchMode="contains"/>
+
+                <!-- neither filterMatchMode nor filterValueType - the "text" preset it would otherwise
+                     auto-derive from its Java type (String) must be suppressed too -->
+                <p:column headerText="first name" field="firstName"/>
+
+                <!-- the column's own filterValueType is the more specific statement and wins over the
+                     table-level "none", so this single column keeps its picker -->
+                <p:column headerText="salary" field="salary" filterMatchMode="gt" filterValueType="numeric"
+                          converter="jakarta.faces.Integer"/>
+
+            </p:dataTable>
+
+            <!-- a typed (rather than disabled) table-level default, applied to every column that doesn't
+                 declare its own -->
+            <p:dataTable id="datatableText" widgetVar="wgtTableText" value="#{dataTable052.employees}" var="employee"
+                         filteredValue="#{dataTable052.filteredEmployeesText}" filterEvent="enter"
+                         filterValueType="text">
+
+                <!-- Integer field WITH a converter: auto-derivation would give "numeric", so offering the
+                     "text" preset here can only come from the table-level attribute -->
+                <p:column headerText="ID" field="id" filterMatchMode="contains" converter="jakarta.faces.Integer"/>
+
+                <!-- a column may opt out of an otherwise typed table -->
+                <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterValueType="none"/>
+
+                <!-- a bespoke filter facet opts the column out ahead of the table-level default, which must
+                     not be able to layer a second, competing picker on top of it -->
+                <p:column headerText="birth date" field="birthDate">
+                    <f:facet name="filter">
+                        <h:selectOneMenu onchange="PF('wgtTableText').filter()">
+                            <f:selectItem itemLabel="All" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Custom" itemValue="custom"/>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

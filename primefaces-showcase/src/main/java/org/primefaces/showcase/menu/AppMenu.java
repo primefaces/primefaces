@@ -221,6 +221,7 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("Gridlines", "/ui/data/datatable/gridlines"));
         dataTableMenuItems.add(new MenuItem("Group", "/ui/data/datatable/group"));
         dataTableMenuItems.add(new MenuItem("Lazy", "/ui/data/datatable/lazy"));
+        dataTableMenuItems.add(new MenuItem("Lazy JPA", "/ui/data/datatable/lazyJpa"));
         dataTableMenuItems.add(new MenuItem("MultiViewState", "/ui/data/datatable/multiViewState"));
         dataTableMenuItems.add(new MenuItem("Paginator", "/ui/data/datatable/paginator"));
         dataTableMenuItems.add(new MenuItem("Reorder", "/ui/data/datatable/reorder"));

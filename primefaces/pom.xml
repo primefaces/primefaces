@@ -20,6 +20,10 @@
         <cyclonedx.skip>true</cyclonedx.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.23.0</mockito.version>
+        <!-- JPALazyDataModelTest runs its criteria queries against a real JPA provider and database.
+             Hibernate ORM 6.6 is the last line with a Java 11 baseline, as required by the Java 11 CI job. -->
+        <hibernate.version>6.6.55.Final</hibernate.version>
+        <h2.version>2.3.232</h2.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
         <node.version>v22.21.1</node.version>
         <yarn.version>v1.22.22</yarn.version>
@@ -191,6 +195,19 @@
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
             <version>${tomcat.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- JPA provider and in-memory database for JPALazyDataModelTest -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->

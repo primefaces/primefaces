@@ -757,6 +757,9 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
             const tableWidget = this.getTableWidget();
             if (tableWidget) {
                 tableWidget.setupNavigableCells();
+                // the remaining columns just got wider or narrower, so which header titles still fit on one
+                // line - and with them the header's stacked layout - has to be worked out again
+                tableWidget.alignColumnHeaders();
             }
         }
     }

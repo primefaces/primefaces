@@ -52,7 +52,9 @@ public class InFilterConstraint extends EqualsFilterConstraint {
             collection = Collections.singletonList(filter);
         }
 
-        for (Object filterValue : collection) {
+        // typed as free text next to the match-mode dropdown, e.g., "Acme, Globex, Initech" - split on
+        // comma, unlike a bean-bound facet (already a Collection)
+        for (Object filterValue : CollectionFilterUtils.toFilterTokens(filter)) {
             // Return true on the first matching value
             if (super.isMatching(ctxt, value, filterValue, locale)) {
                 return true;

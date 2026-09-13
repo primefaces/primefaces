@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+
+            <!-- clearFiltersButton="true" renders the built-in "Clear Filters" button into the header area
+                 even without a header facet of its own (see DataTableRenderer#encodeClearFiltersButton) -->
+            <p:dataTable id="datatableClear" widgetVar="wgtClear" value="#{dataTable054.employees}" var="employee"
+                         filteredValue="#{dataTable054.filteredEmployees}" filterEvent="enter" clearFiltersButton="true">
+
+                <p:column headerText="ID" field="id" filterMatchMode="gt" filterValueType="numeric"
+                          converter="jakarta.faces.Integer"/>
+
+                <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterValueType="text"/>
+
+                <!-- filterMatchMode="lt" is deliberately NOT the numeric preset's first entry: clearing the
+                     column has to restore this configured default, not whichever mode happens to be listed
+                     first (see datatable.widget.js#resetColumnFilter() and its [data-default] lookup) -->
+                <p:column headerText="salary" field="salary" filterMatchMode="lt" filterValueType="numeric"
+                          converter="jakarta.faces.Integer"/>
+
+                <!-- no picker at all - the table-wide "Clear Filters" button must also reset a plain filter
+                     input, not just the columns that carry a match-mode picker -->
+                <p:column headerText="first name" field="firstName" filterMatchMode="contains" filterValueType="none"/>
+
+                <!-- a "date" column: its value is entered through a shadow DatePicker widget rather than the
+                     plain input (see DataTableRenderer#encodeDateFilterWidgets), so clearing it has to reset
+                     that widget's own state too, not just the input that gets submitted -->
+                <p:column headerText="review date" field="reviewDate" filterMatchMode="equals" filterValueType="date"
+                          converter="#{dataTable054.reviewDateConverter}"/>
+
+            </p:dataTable>
+
+            <!-- p:columns: filterValueType/filterMatchMode come from the dynamic column model rather than
+                 from a literal attribute value -->
+            <p:dataTable id="datatableColumns" widgetVar="wgtColumns" value="#{dataTable054.employees}" var="employee"
+                         filteredValue="#{dataTable054.filteredDynamicEmployees}" filterEvent="enter">
+
+                <p:columns value="#{dataTable054.columns}" var="column" headerText="#{column.header}"
+                           field="#{column.property}" filterMatchMode="#{column.filterMatchMode}"
+                           filterValueType="#{column.filterValueType}">
+                    <h:outputText value="#{employee[column.property]}"/>
+                </p:columns>
+
+            </p:dataTable>
+
+            <p:commandButton id="buttonUpdate" value="Update" update="datatableClear"/>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
