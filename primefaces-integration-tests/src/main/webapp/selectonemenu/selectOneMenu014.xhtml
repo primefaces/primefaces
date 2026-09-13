@@ -23,6 +23,27 @@
                     <f:selectItem itemLabel="Ja" itemValue="true"/>
                     <f:selectItem itemLabel="Nein" itemValue="false"/>
                 </p:selectOneMenu>
+
+                <!-- a label which only looks blank once it is escaped, e.g. a single space rendered as &amp;nbsp; -->
+                <p:selectOneMenu id="blankLabel" value="#{selectOneMenu014.optionWithBlankLabel}">
+                    <f:selectItem itemLabel=" " itemValue=""/>
+                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                </p:selectOneMenu>
+
+                <!-- empty label on a noSelectionOption item -->
+                <p:selectOneMenu id="noSelection" value="#{selectOneMenu014.optionNoSelection}">
+                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                </p:selectOneMenu>
+
+                <!-- same, but hideNoSelectionOption drops the item server-side, so it is never rendered -->
+                <p:selectOneMenu id="hideNoSelection" value="#{selectOneMenu014.optionHideNoSelection}" hideNoSelectionOption="true">
+                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                </p:selectOneMenu>
             </h:form>
         </h:body>
     </f:view>
