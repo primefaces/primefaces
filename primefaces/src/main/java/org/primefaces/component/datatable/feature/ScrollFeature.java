@@ -63,12 +63,17 @@ public class ScrollFeature implements DataTableFeature {
         int firstIndex = (isLazy && isVirtualScroll) ? 0 : scrollOffset;
         int lastIndex = (firstIndex + scrollRows);
 
+        // the columns must be resolved before the table is positioned on a row: a column key is the client id of the
+        // column, so it would contain the row index (e.g. form:table:5:colId) and would no longer match the ColumnMeta,
+        // which is keyed by the row-less client id - the reordered column display order would be lost, see #14991
+        int columnsCount = table.getColumns().size();
+
         for (int i = firstIndex; i < lastIndex; i++) {
             table.setRowIndex(i);
 
             if (table.isRowAvailable()) {
                 int rowIndex = (isLazy && isVirtualScroll) ? scrollOffset + i : i;
-                renderer.encodeRow(context, table, rowIndex);
+                renderer.encodeRow(context, table, rowIndex, 0, columnsCount);
             }
         }
     }
