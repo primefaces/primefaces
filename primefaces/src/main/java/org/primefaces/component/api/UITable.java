@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -376,6 +377,39 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .filter(SortMeta::isActive)
                 .min(Comparator.comparingInt(SortMeta::getPriority))
                 .orElse(null);
+    }
+
+    /**
+     * Returns the {@link SortMeta} defining the row group boundaries used by header and summary rows.
+     * Grouping is defined explicitly by a header row or by a column with <code>groupRow</code>; only when
+     * neither is present it falls back to the active sort, so the group does not depend on sort priority.
+     *
+     * @return the grouping {@link SortMeta} or <code>null</code> if rows are not grouped
+     */
+    default SortMeta getGroupByMeta() {
+        Map<String, SortMeta> sortBy = getSortByAsMap();
+
+        for (SortMeta meta : sortBy.values()) {
+            if (meta.isHeaderRow() && meta.isActive()) {
+                return meta;
+            }
+        }
+
+        AtomicReference<SortMeta> groupRowMeta = new AtomicReference<>();
+        forEachColumn(column -> {
+            if (column.isGroupRow()) {
+                SortMeta meta = sortBy.get(column.getColumnKey());
+                if (meta != null && meta.isActive()) {
+                    groupRowMeta.set(meta);
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        SortMeta meta = groupRowMeta.get();
+        return meta != null ? meta : getHighestPriorityActiveSortMeta();
     }
 
     /**
