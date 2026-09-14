@@ -38,6 +38,15 @@
                     <f:selectItem itemLabel="Nein" itemValue="false"/>
                 </p:selectOneMenu>
 
+                <!-- an outputLabel labels the menu via aria-labelledby, which overrides aria-label, so the
+                     selection has to be announced through the content of the combobox -->
+                <p:outputLabel id="outputLabelLabel" for="@next" value="Labelled"/>
+                <p:selectOneMenu id="outputLabel" value="#{selectOneMenu014.optionWithOutputLabel}">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                </p:selectOneMenu>
+
                 <!-- same, but hideNoSelectionOption drops the item server-side, so it is never rendered -->
                 <p:selectOneMenu id="hideNoSelection" value="#{selectOneMenu014.optionHideNoSelection}" hideNoSelectionOption="true">
                     <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>

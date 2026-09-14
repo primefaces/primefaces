@@ -41,6 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SelectOneMenu014Test extends AbstractPrimePageTest {
 
+    /** An empty itemLabel is rendered as a non-breaking space. */
+    private static final char NBSP = '\u00a0';
+
     /** The localized default of the {@code nullLabel} ARIA label. */
     private static final String NULL_LABEL = "Not Selected";
 
@@ -79,6 +82,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
         // Assert - the stale "Ja" must be gone
         assertEquals(NULL_LABEL, label.getDomAttribute("aria-label"));
+        assertAnnouncedValue(label, NULL_LABEL);
         assertNoJavascriptErrors();
     }
 
@@ -119,6 +123,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(NULL_LABEL, page.blankLabel.getLabel().getDomAttribute("aria-label"));
+        assertAnnouncedValue(page.blankLabel.getLabel(), NULL_LABEL);
         assertNoJavascriptErrors();
     }
 
@@ -140,6 +145,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(NULL_LABEL, page.noSelection.getLabel().getDomAttribute("aria-label"));
+        assertAnnouncedValue(page.noSelection.getLabel(), NULL_LABEL);
         assertNoJavascriptErrors();
     }
 
@@ -159,6 +165,41 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(7)
+    @DisplayName("SelectOneMenu: GitHub #15222 an outputLabel overrides aria-label, so the empty item must be announced from the content")
+    void emptySelectionIsAnnouncedNextToAnOutputLabel(Page page) {
+        // Arrange - an outputLabel gives the combobox its accessible name via aria-labelledby
+        WebElement label = page.outputLabel.getLabel();
+        assertEquals("form:outputLabelLabel", label.getDomAttribute("aria-labelledby"));
+
+        // Act - the empty item is the initial selection, so nothing has been selected by hand yet
+        // Assert - aria-label loses against aria-labelledby, the value has to come from the content
+        assertAnnouncedValue(label, NULL_LABEL);
+
+        // Act - the same has to hold after switching away and back again
+        page.outputLabel.select("Ja");
+        assertAnnouncedValue(label, "Ja");
+        page.outputLabel.show();
+        page.outputLabel.getItems().findElement(By.id("form:outputLabel_0")).click();
+
+        // Assert
+        assertAnnouncedValue(label, NULL_LABEL);
+        assertNoJavascriptErrors();
+    }
+
+    /**
+     * Asserts what a screen reader announces as the value of the closed menu. A combobox which is not an input
+     * takes its value from its content, so the text has to be in the DOM even when nothing is visible.
+     *
+     * @param label the label element of the menu, which carries {@code role="combobox"}
+     * @param expected the text which must be announced
+     */
+    private static void assertAnnouncedValue(WebElement label, String expected) {
+        assertEquals("combobox", label.getDomAttribute("role"));
+        assertEquals(expected, label.getDomProperty("textContent").replace(NBSP, ' ').trim());
+    }
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:selectonemenu")
         SelectOneMenu menu;
@@ -174,6 +215,9 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:hideNoSelection")
         SelectOneMenu hideNoSelection;
+
+        @FindBy(id = "form:outputLabel")
+        SelectOneMenu outputLabel;
 
         @Override
         public String getLocation() {
