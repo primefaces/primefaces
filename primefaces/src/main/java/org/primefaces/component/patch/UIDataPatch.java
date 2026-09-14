@@ -77,6 +77,8 @@ import jakarta.faces.render.Renderer;
  *   <li>Few methods are either copied or become abstract as they are tightly coupled with Mojarra.</li>
  *   <li>{@link UIDataPatch#getClientId(FacesContext)} and {@link UIDataPatch#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
  *   <li>Support of MyFaces view pooling in {@link UIDataPatch#saveState(FacesContext)}</li>
+ *   <li>{@link UIDataPatch#visitTree(VisitContext, VisitCallback)} restores the row var as well as the
+ *       row index, so that a tree visit cannot drop the var of another UIData sharing the var name (#13967)</li>
  * </ul>
  *
  * <p><strong class="changed_modified_2_0_rev_a
@@ -862,9 +864,23 @@ public abstract class UIDataPatch extends UIData {
 
         // Clear out the row index is one is set so that
         // we start from a clean slate.
+        // #13967 also remember the row var, because setRowIndex(-1) removes it from the request map
+        // unconditionally, even when it belongs to another UIData that shares the var name and is
+        // still rendering. A tree visit must leave the var exactly as it found it.
         int oldRowIndex = -1;
+        String var = null;
+        Object oldVarValue = null;
+        boolean hadVarValue = false;
         if (visitRows) {
             oldRowIndex = getRowIndex();
+
+            var = getVar();
+            if (var != null) {
+                Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
+                hadVarValue = requestMap.containsKey(var);
+                oldVarValue = requestMap.get(var);
+            }
+
             setRowIndex(-1);
         }
 
@@ -910,6 +926,18 @@ public abstract class UIDataPatch extends UIData {
             popComponentFromEL(facesContext);
             if (visitRows) {
                 setRowIndex(oldRowIndex);
+
+                // #13967 restore the var we found, which setRowIndex(oldRowIndex) only does when we
+                // were standing on a row of our own
+                if (var != null) {
+                    Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
+                    if (hadVarValue) {
+                        requestMap.put(var, oldVarValue);
+                    }
+                    else {
+                        requestMap.remove(var);
+                    }
+                }
             }
         }
 
