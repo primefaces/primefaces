@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.selectonemenu;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.SelectOneMenu;
 
 import java.util.List;
@@ -41,8 +42,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SelectOneMenu014Test extends AbstractPrimePageTest {
 
-    /** An empty itemLabel is rendered as a non-breaking space. */
-    private static final char NBSP = '\u00a0';
+    /**
+     * Collects the text an assistive technology computes from the content of an element, which is every child
+     * that is not hidden from the accessibility tree.
+     */
+    private static final String ACCESSIBLE_TEXT = "var text = '';"
+                + "arguments[0].childNodes.forEach(function(node) {"
+                + "    if (node.nodeType !== 1 || node.getAttribute('aria-hidden') !== 'true') {"
+                + "        text += node.textContent;"
+                + "    }"
+                + "});"
+                + "return text;";
 
     /** The localized default of the {@code nullLabel} ARIA label. */
     private static final String NULL_LABEL = "Not Selected";
@@ -190,14 +200,16 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
     /**
      * Asserts what a screen reader announces as the value of the closed menu. A combobox which is not an input
-     * takes its value from its content, so the text has to be in the DOM even when nothing is visible.
+     * takes its value from its content, so the text has to be in the DOM even when nothing is visible. The
+     * comparison is exact: the filler which keeps an empty label from collapsing has to stay out of the
+     * accessibility tree, otherwise it is announced as stray whitespace around the value.
      *
      * @param label the label element of the menu, which carries {@code role="combobox"}
      * @param expected the text which must be announced
      */
     private static void assertAnnouncedValue(WebElement label, String expected) {
         assertEquals("combobox", label.getDomAttribute("role"));
-        assertEquals(expected, label.getDomProperty("textContent").replace(NBSP, ' ').trim());
+        assertEquals(expected, PrimeSelenium.executeScript(ACCESSIBLE_TEXT, label));
     }
 
     public static class Page extends AbstractPrimePage {

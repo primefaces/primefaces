@@ -1185,7 +1185,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                     this.label.attr('aria-label', labelText);
                 } else {
                     // nothing is visible, so fall back to the localized "nothing selected" text
-                    this.label.html(labelText + this.renderEmptyItemLabel());
+                    this.label.html(this.renderEmptyItemLabel());
                     this.label.attr('aria-label', this.getEmptyItemLabel());
                 }
             }
@@ -1713,15 +1713,17 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     }
 
     /**
-     * Builds the screen reader only text that gives the closed menu something to announce when the selected item
-     * has no label. A screen reader takes the value of a combobox from its content, so an `aria-label` alone is
-     * not enough: that is the accessible name, and it is ignored altogether once the menu is labelled by an
-     * `outputLabel`, because `aria-labelledby` wins over `aria-label`.
+     * Builds the content of the closed menu for a selected item without a label. A screen reader takes the value
+     * of a combobox from its content, so an `aria-label` alone is not enough: that is the accessible name, and it
+     * is ignored altogether once the menu is labelled by an `outputLabel`, because `aria-labelledby` wins over
+     * `aria-label`. The `&nbsp;` that keeps the empty label from collapsing is hidden from assistive technologies,
+     * otherwise it is announced as stray whitespace in front of the value.
      * @private
-     * @return {string} The markup for the screen reader only text of an item without a label.
+     * @return {string} The markup of the closed menu for an item without a label.
      */
     renderEmptyItemLabel() {
-        return '<span class="ui-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
+        return '<span aria-hidden="true">&nbsp;</span>'
+                + '<span class="ui-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
     }
 
     /**
