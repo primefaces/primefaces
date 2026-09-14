@@ -43,5 +43,6 @@ public class SelectOneMenu014 implements Serializable {
     private String optionWithBlankLabel;
     private String optionNoSelection;
     private String optionHideNoSelection;
+    private String optionWithOutputLabel;
 
 }
