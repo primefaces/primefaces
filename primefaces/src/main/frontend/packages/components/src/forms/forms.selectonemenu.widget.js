@@ -1184,8 +1184,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                     // the placeholder is the visible text, so that is what should be announced
                     this.label.attr('aria-label', labelText);
                 } else {
-                    this.label.html(labelText);
                     // nothing is visible, so fall back to the localized "nothing selected" text
+                    this.label.html(labelText + this.renderEmptyItemLabel());
                     this.label.attr('aria-label', this.getEmptyItemLabel());
                 }
             }
@@ -1710,6 +1710,18 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      */
     getEmptyItemLabel() {
         return this.getAriaLabel('nullLabel');
+    }
+
+    /**
+     * Builds the screen reader only text that gives the closed menu something to announce when the selected item
+     * has no label. A screen reader takes the value of a combobox from its content, so an `aria-label` alone is
+     * not enough: that is the accessible name, and it is ignored altogether once the menu is labelled by an
+     * `outputLabel`, because `aria-labelledby` wins over `aria-label`.
+     * @private
+     * @return {string} The markup for the screen reader only text of an item without a label.
+     */
+    renderEmptyItemLabel() {
+        return '<span class="ui-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
     }
 
     /**
