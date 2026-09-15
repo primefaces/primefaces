@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:menu id="menu" widgetVar="menu" toggleable="true">
+                <p:submenu id="expandedSubmenu" label="Expanded" expanded="true">
+                    <p:menuitem id="first" value="First" url="#first" />
+                </p:submenu>
+                <p:submenu id="collapsedSubmenu" label="Collapsed" expanded="false">
+                    <p:menuitem id="second" value="Second" url="#second" />
+                </p:submenu>
+            </p:menu>
+
+            <p:menu id="model" widgetVar="model" toggleable="true" model="#{menu002.model}" />
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>
