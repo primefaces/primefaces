@@ -290,14 +290,15 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
 
     /**
      * Restores that state as stored by `saveState`. Usually called after an AJAX update and on page load.
+     * When no state was stored yet, the expanded / collapsed state rendered by the server is kept.
      */
     private restoreState(): void {
         var collapsedIdsAsString = localStorage.getItem(this.stateKey);
 
-        if (collapsedIdsAsString) {
-            this.collapsedIds = collapsedIdsAsString.split(',');
-        } else {
-            this.collapsedIds = [];
+        // only override the state rendered by the server when a state was stored before,
+        // an empty stored value is a valid state and means "nothing is collapsed"
+        if (collapsedIdsAsString !== null) {
+            this.collapsedIds = collapsedIdsAsString ? collapsedIdsAsString.split(',') : [];
         }
 
         // Iterate through headers once: collapse items in collapsedIds, expand others
