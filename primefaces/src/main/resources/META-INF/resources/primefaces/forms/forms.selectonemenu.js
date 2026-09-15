@@ -1699,9 +1699,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @return {string} The markup for the screen reader only text of an item without a label.
      */
-    renderEmptyItemLabel() {
+    renderEmptyItemLabel: function() {
         return '<span class="ui-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
-    }
+    },
 
     /**
      * Updates the style class of the label that indicates the currently selected item.
