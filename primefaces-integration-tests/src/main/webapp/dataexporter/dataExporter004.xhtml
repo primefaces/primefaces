@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:treeTable id="treeTable" value="#{dataExporter004.root}" var="document" widgetVar="ttWidget"
+                         paginator="true" rows="2" selectionMode="checkbox"
+                         selection="#{dataExporter004.selectedNodes}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Type">
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+            </p:treeTable>
+
+            <p:commandButton id="exportPageOnly" value="Export Page Only" update="output"
+                             action="#{dataExporter004.exportPageOnly}"/>
+            <p:commandButton id="exportSelectionOnly" value="Export Selection Only" update="output"
+                             action="#{dataExporter004.exportSelectionOnly}"/>
+            <p:commandButton id="exportAll" value="Export All" update="output"
+                             action="#{dataExporter004.exportAll}"/>
+
+            <h:panelGroup id="output" layout="block">
+                <pre><h:outputText id="csv" value="#{dataExporter004.output}"/></pre>
+            </h:panelGroup>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
