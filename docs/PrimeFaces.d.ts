@@ -19793,7 +19793,7 @@ declare namespace PrimeFaces.widget.GMap {
      * An overlay shape that extends the shapes and markers as defined by the maps API. Adds an ID property for identifying
      * the shape or marker.
      */
-    export type Overlay = (google.maps.Marker | google.maps.Circle | google.maps.Polyline | google.maps.Polygon | google.maps.Rectangle) & PrimeFaces.widget.GMap.IdProviding;
+    export type Overlay = (google.maps.marker.AdvancedMarkerElement | google.maps.Circle | google.maps.Polyline | google.maps.Polygon | google.maps.Rectangle) & PrimeFaces.widget.GMap.IdProviding;
 }
 declare namespace PrimeFaces.widget {
     /**
@@ -19881,7 +19881,7 @@ declare namespace PrimeFaces.widget {
          * @param event Event that occurred.
          * @param marker The marker that was dragged.
          */
-        private fireMarkerDragEvent(event: google.maps.MapMouseEvent | google.maps.IconMouseEvent, marker: google.maps.MarkerOptions): void;
+        private fireMarkerDragEvent(event: google.maps.MapMouseEvent | google.maps.IconMouseEvent, marker: google.maps.marker.AdvancedMarkerElement & PrimeFaces.widget.GMap.IdProviding): void;
         /**
          * Triggers the behavior for when an overlay shape was selected.
          * @param event The event that occurred.
@@ -19998,7 +19998,11 @@ declare namespace PrimeFaces.widget {
          * A list of markers to display on the
          * map.
          */
-        markers: (google.maps.Marker & PrimeFaces.widget.GMap.IdProviding)[];
+        markers: (google.maps.marker.AdvancedMarkerElement & PrimeFaces.widget.GMap.IdProviding)[];
+        /**
+         * Google Maps map ID. Required by `AdvancedMarkerElement`, defaults to `DEMO_MAP_ID`.
+         */
+        mapId: string;
         /**
          * Javascript callback to execute when a point on
          * map is clicked.
