@@ -26,6 +26,7 @@ package org.primefaces.component.badge;
 import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
+import org.primefaces.util.ComponentUtils;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
@@ -54,7 +55,7 @@ public class Badge extends BadgeBaseImpl {
     public static final String ICON_CLASS = "ui-badge-icon";
 
     public BadgeRenderer getRenderer() {
-        return (BadgeRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
+        return ComponentUtils.getUnwrappedRenderer(getFacesContext(), getFamily(), getRendererType());
     }
 
     public static Badge create(FacesContext context) {
