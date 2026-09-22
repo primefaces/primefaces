@@ -93,10 +93,14 @@ public class Marker<T> extends Overlay<T> {
         this.clickable = clickable;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getCursor() {
         return cursor;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public void setCursor(String cursor) {
         this.cursor = cursor;
     }
@@ -117,10 +121,14 @@ public class Marker<T> extends Overlay<T> {
         this.latlng = latlng;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public boolean isFlat() {
         return flat;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public void setFlat(boolean flat) {
         this.flat = flat;
     }
@@ -133,10 +141,14 @@ public class Marker<T> extends Overlay<T> {
         this.icon = icon;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getShadow() {
         return shadow;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public void setShadow(String shadow) {
         this.shadow = shadow;
     }
@@ -157,10 +169,14 @@ public class Marker<T> extends Overlay<T> {
         this.visible = visible;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public Animation getAnimation() {
         return animation;
     }
 
+    /** @deprecated not supported by google.maps.marker.AdvancedMarkerElement, ignored by GMap */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public void setAnimation(Animation animation) {
         this.animation = animation;
     }

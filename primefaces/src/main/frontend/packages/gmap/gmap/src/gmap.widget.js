@@ -3,7 +3,7 @@
  * 
  * GMap is a map component integrated with Google Maps API V3.
  * 
- * @typedef {(google.maps.Marker | google.maps.Circle | google.maps.Polyline | google.maps.Polygon | google.maps.Rectangle) & PrimeFaces.widget.GMap.IdProviding} PrimeFaces.widget.GMap.Overlay
+ * @typedef {(google.maps.marker.AdvancedMarkerElement | google.maps.Circle | google.maps.Polyline | google.maps.Polygon | google.maps.Rectangle) & PrimeFaces.widget.GMap.IdProviding} PrimeFaces.widget.GMap.Overlay
  * An overlay shape that extends the shapes and markers as defined by the maps API. Adds an ID property for identifying
  * the shape or marker.
  * 
@@ -33,7 +33,7 @@
  * the map.
  * @prop {google.maps.InfoWindow} cfg.infoWindow The current info window instance, if any info window was created yet.
  * @prop {string} cfg.infoWindowContent HTML string with the contents of the info window, as fetched from the server.
- * @prop {(google.maps.Marker & PrimeFaces.widget.GMap.IdProviding)[]} cfg.markers A list of markers to display on the
+ * @prop {(google.maps.marker.AdvancedMarkerElement & PrimeFaces.widget.GMap.IdProviding)[]} cfg.markers A list of markers to display on the
  * map.
  * @prop {PrimeFaces.widget.GMap.OnPointClickCallback} cfg.onPointClick Javascript callback to execute when a point on
  * map is clicked.
@@ -45,6 +45,7 @@
  * shapes added to this map.
  * @prop {string} [cfg.apiKey] Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded.
  * @prop {string} [cfg.apiVersion] Google Maps API version. Defaults to 'weekly'. Only used for asynchronous loading.
+ * @prop {string} [cfg.mapId] Google Maps map ID. Required by `AdvancedMarkerElement`, defaults to `DEMO_MAP_ID`.
  * @prop {string[]} [cfg.libraries] Additional Google Maps libraries to load (e.g., ['places', 'geometry']). Only used for asynchronous loading.
  */
 PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
@@ -199,6 +200,7 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
 
         //conf markers
         if(this.cfg.markers) {
+            await this.createMarkers();
             this.configureMarkers();
         }
 
@@ -288,6 +290,78 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
     }
 
     /**
+     * Replaces the rendered marker options with `google.maps.marker.AdvancedMarkerElement` instances.
+     * @private
+     * @returns {Promise<void>} Promise that resolves when all markers were created.
+     */
+    async createMarkers() {
+        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary('marker');
+
+        this.cfg.markers = this.cfg.markers.map((cfg) => {
+            const options = { position: cfg.position, map: cfg.visible === false ? null : this.map };
+            if (cfg.title) {
+                options.title = cfg.title;
+            }
+            if (cfg.gmpDraggable) {
+                options.gmpDraggable = true;
+            }
+            if (cfg.zIndex !== undefined) {
+                options.zIndex = cfg.zIndex;
+            }
+            if (typeof cfg.icon === 'string') {
+                options.content = document.createElement('img');
+                options.content.src = cfg.icon;
+            }
+            else if (cfg.icon) {
+                options.content = this.createSymbolContent(cfg.icon);
+            }
+            else if (cfg.label) {
+                const pin = { glyph: cfg.label.text };
+                if (cfg.label.color) {
+                    pin.glyphColor = cfg.label.color;
+                }
+                options.content = new PinElement(pin).element;
+            }
+
+            const marker = new AdvancedMarkerElement(options);
+            marker.id = cfg.id;
+            return marker;
+        });
+    }
+
+    /**
+     * Renders a symbol icon (SVG path) as marker content, with the symbol anchor placed at the marker position.
+     * @private
+     * @param {{path: string, anchor?: {x: number, y: number}, fillColor?: string, fillOpacity?: number,
+     * rotation?: number, scale?: number, strokeColor?: string, strokeOpacity?: number, strokeWeight?: number}} symbol
+     * The symbol to render.
+     * @return {SVGSVGElement} The SVG element to use as marker content.
+     */
+    createSymbolContent(symbol) {
+        const ns = 'http://www.w3.org/2000/svg',
+            svg = document.createElementNS(ns, 'svg'),
+            path = document.createElementNS(ns, 'path'),
+            anchor = symbol.anchor || { x: 0, y: 0 };
+
+        // zero-sized SVG: AdvancedMarkerElement puts the content's bottom center, i.e. the origin, at the position
+        svg.setAttribute('width', '0');
+        svg.setAttribute('height', '0');
+        svg.style.overflow = 'visible';
+
+        path.setAttribute('d', symbol.path);
+        path.setAttribute('transform', 'rotate(' + (symbol.rotation || 0) + ') scale(' + (symbol.scale || 1) + ') translate(' + (-anchor.x) + ',' + (-anchor.y) + ')');
+        path.setAttribute('fill', symbol.fillColor || 'black');
+        path.setAttribute('fill-opacity', symbol.fillOpacity !== undefined ? symbol.fillOpacity : 0);
+        path.setAttribute('stroke', symbol.strokeColor || 'black');
+        path.setAttribute('stroke-opacity', symbol.strokeOpacity !== undefined ? symbol.strokeOpacity : 1);
+        path.setAttribute('stroke-width', symbol.strokeWeight !== undefined ? symbol.strokeWeight : 1);
+        path.setAttribute('vector-effect', 'non-scaling-stroke');
+
+        svg.appendChild(path);
+        return svg;
+    }
+
+    /**
      * Adds and sets up all configured markers for the gmap.
      * @private
      */
@@ -296,7 +370,6 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
 
         for(var i=0; i < this.cfg.markers.length; i++) {
             var marker = this.cfg.markers[i];
-            marker.setMap(this.map);
 
             //extend viewport
             if(this.cfg.fitBounds)
@@ -306,7 +379,8 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
             google.maps.event.addListener(marker, 'click', function(event) {
                 _self.fireOverlaySelectEvent(event, this, 1);
             });
-            google.maps.event.addListener(marker, 'dblclick', function(event) {
+            //AdvancedMarkerElement has no dblclick map event, listen on its DOM element instead
+            marker.addEventListener('dblclick', function(event) {
                 _self.fireOverlaySelectEvent(event, this, 2);
             });
 
@@ -321,7 +395,7 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
      * Calls the behavior for when a marker was dragged.
      * @private
      * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} event Event that occurred.
-     * @param {google.maps.MarkerOptions} marker The marker that was dragged.
+     * @param {google.maps.marker.AdvancedMarkerElement & PrimeFaces.widget.GMap.IdProviding} marker The marker that was dragged.
      */
     fireMarkerDragEvent(event, marker) {
         if(this.hasBehavior('markerDrag')) {
@@ -585,7 +659,12 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
      * @param {PrimeFaces.widget.GMap.Overlay} overlay Overlay shape to add to this map.
      */
     addOverlay(overlay) {
-        overlay.setMap(this.map);
+        if(overlay.setMap) {
+            overlay.setMap(this.map);
+        }
+        else {
+            overlay.map = this.map; // AdvancedMarkerElement
+        }
     }
 
     /**
@@ -620,8 +699,8 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
         if( this.cfg.fitBounds && overlay){
             var _self = this;
             this.viewport = this.viewport || new google.maps.LatLngBounds();
-            if(overlay instanceof google.maps.Marker)
-                this.viewport.extend(overlay.getPosition());
+            if(google.maps.marker && overlay instanceof google.maps.marker.AdvancedMarkerElement)
+                this.viewport.extend(overlay.position);
 
             else if(overlay instanceof google.maps.Circle || overlay instanceof google.maps.Rectangle)
                 this.viewport.union(overlay.getBounds());
