@@ -120,10 +120,12 @@ body {
         color: $datatableBodyRowTextColor;
         transition: $transition;
 
-        > td {
+        > td, > th {
           padding: $datatableBodyCellPadding;
           border: $datatableBodyRowBorder;
           border-width: $datatableBodyCellBorderWidth;
+          font-weight: normal;
+          text-align: left;
 
           &.ui-datatable-subtable-header {
             background: $panelHeaderBg;
@@ -308,7 +310,7 @@ body {
 
       .ui-datatable-data {
         > tr {
-          > td {
+          > td, > th {
             padding: list.nth($datatableBodyCellPadding,1) * $datatableScaleSm list.nth($datatableBodyCellPadding,2) * $datatableScaleSm;
           }
         }
@@ -343,7 +345,7 @@ body {
 
       .ui-datatable-data {
         > tr {
-          > td {
+          > td, > th {
             padding: list.nth($datatableBodyCellPadding,1) * $datatableScaleLg list.nth($datatableBodyCellPadding,2) * $datatableScaleLg;
           }
         }
@@ -373,7 +375,7 @@ body {
 
       .ui-datatable-data {
         > tr {
-          > td {
+          > td, > th {
             border-width: 1px;
           }
         }

@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="primefaces"
+    xmlns:f="jakarta.faces.core"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">RowHeader</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A column can be marked as a row header, rendering its body cells as &lt;th scope="row"&gt; instead of
+        &lt;td&gt; so assistive technologies can associate each row with its header, per the
+        <a href="https://www.w3.org/WAI/tutorials/tables/two-headers/" target="_blank" rel="noopener">WAI tables with two headers tutorial</a>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="widgetLink" value="DataTable-1"/>
+    <ui:param name="tagName" value="dataTable" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Table with header cells in the top row and first column</h5>
+            <h:form>
+                <p:dataTable var="slot" value="#{dtRowHeaderView.slots}">
+                    <f:facet name="header">
+                        Delivery slots:
+                    </f:facet>
+
+                    <p:column headerText="" rowHeader="true">
+                        <h:outputText value="#{slot.time}" />
+                    </p:column>
+
+                    <p:column headerText="Monday">
+                        <h:outputText value="#{slot.monday}" />
+                    </p:column>
+
+                    <p:column headerText="Tuesday">
+                        <h:outputText value="#{slot.tuesday}" />
+                    </p:column>
+
+                    <p:column headerText="Wednesday">
+                        <h:outputText value="#{slot.wednesday}" />
+                    </p:column>
+
+                    <p:column headerText="Thursday">
+                        <h:outputText value="#{slot.thursday}" />
+                    </p:column>
+
+                    <p:column headerText="Friday">
+                        <h:outputText value="#{slot.friday}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Table with an offset column of header cells</h5>
+            <h:form>
+                <p:dataTable var="holiday" value="#{dtRowHeaderView.holidays}" reflow="true">
+                    <f:facet name="header">
+                        Holidays taken in the last six months
+                    </f:facet>
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{holiday.id}" />
+                    </p:column>
+
+                    <p:column headerText="Name" rowHeader="true">
+                        <h:outputText value="#{holiday.name}" />
+                    </p:column>
+
+                    <p:column headerText="July">
+                        <h:outputText value="#{holiday.july}" />
+                    </p:column>
+
+                    <p:column headerText="August">
+                        <h:outputText value="#{holiday.august}" />
+                    </p:column>
+
+                    <p:column headerText="September">
+                        <h:outputText value="#{holiday.september}" />
+                    </p:column>
+
+                    <p:column headerText="October">
+                        <h:outputText value="#{holiday.october}" />
+                    </p:column>
+
+                    <p:column headerText="November">
+                        <h:outputText value="#{holiday.november}" />
+                    </p:column>
+
+                    <p:column headerText="December">
+                        <h:outputText value="#{holiday.december}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
