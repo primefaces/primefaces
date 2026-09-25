@@ -40,3 +40,13 @@ the list of structural style classes;
 | --- | --- | 
 .ui-selectonelistbox | Main container element.
 .ui-selectlistbox-item | Each item in list.
+
+When columns are used, the items are rendered as a table and the _advancedStyleClass_ attribute applies
+to that table element. Themes provide the following generic modifier classes for it;
+
+| Class | Applies |
+| --- | --- |
+| .ui-table-gridlines | Displays cell borders. |
+| .ui-table-striped | Displays striped rows to visually separate content. |
+| .ui-table-sm | Renders the cells with reduced padding. |
+| .ui-table-lg | Renders the cells with increased padding. |
