@@ -73,8 +73,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         super.init(cfg);
 
         this.panelContainer = this.jq.children('.ui-tabs-panels');
-        this.stateHolder = $(this.jqId + '_activeIndex');
-        this.cfg.selected = parseInt(this.stateHolder.val());
+        this.stateHolder = $(this.jqId + '_active');
         this.focusedTabHeader = null;
         this.tabindex = this.cfg.tabindex||0;
         this.cfg.focusOnError = this.cfg.focusOnError || false;
@@ -94,6 +93,8 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         }
 
         this.headerContainer = this.navContainer.children('li.ui-tabs-header');
+
+        this.cfg.selected = this.resolveIndex(this.stateHolder.val());
 
         this.bindEvents();
 
@@ -506,6 +507,28 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
     }
 
     /**
+     * Resolves the 0-based index of the tab identified by the given key or index.
+     * @param {string | number | undefined} value Key or 0-based index of a tab.
+     * @return {number} The 0-based index of the tab, or `-1` when no tab matches.
+     */
+    resolveIndex(value) {
+        if (value === undefined || value === null || value === '') {
+            return -1;
+        }
+
+        var header = this.headerContainer.filter(function() {
+            return $(this).attr('data-key') === String(value);
+        });
+
+        if (header.length) {
+            return this.headerContainer.index(header.first());
+        }
+
+        var index = parseInt(value);
+        return isNaN(index) ? -1 : index;
+    }
+
+    /**
      * Selects the given tab, if it is not selected already.
      * @param {number} index 0-based index of the tab to select.
      * @param {boolean} [silent] Controls whether events are triggered.
@@ -523,7 +546,8 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
 
         //update state
-        this.stateHolder.val(newPanel.data('index'));
+        var key = newPanel.data('key');
+        this.stateHolder.val(key !== undefined && key !== null ? key : newPanel.data('index'));
         this.cfg.selected = index;
 
         if(shouldLoad) {
@@ -540,7 +564,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
                     var options = {
                         source: this.id,
                         partialSubmit: true,
-                        partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_activeIndex'),
+                        partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_active'),
                         process: this.id,
                         ignoreAutoUpdate: true,
                         global: false,
