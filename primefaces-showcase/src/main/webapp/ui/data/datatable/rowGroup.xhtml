@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Rows can be grouped in two ways, using rowGroup component or with groupRow attribute on a column.
+        Rows can be grouped using the headerRow and summaryRow components or with the groupRow attribute on a column.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>
@@ -22,7 +22,7 @@
         <div class="card">
             <h5 class="first">Header Row</h5>
             <h:form>
-                <p:dataTable var="customer" value="#{dtRowGroupView.customers}" sortBy="#{customer.representative.name}">
+                <p:dataTable var="customer" value="#{dtRowGroupView.customers}">
                     <p:headerRow field="representative.name"
                                  expandable="true" 
                                  expanded="#{customer.representative.name != 'Stephen Shaw'}">
@@ -64,6 +64,40 @@
 
                     <p:summaryRow>
                         <p:column colspan="5" style="text-align:right">
+                            <h:outputText value="Total Customers:"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{dtRowGroupView.getTotalCount(customer.representative.name)}"/>
+                        </p:column>
+                    </p:summaryRow>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Summary Row</h5>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtRowGroupView.customers}">
+                    <p:column headerText="Representative" sortBy="#{customer.representative.name}" sortOrder="asc">
+                        <h:outputText value="#{customer.representative.name}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country}"/>
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <!-- no headerRow, the summaryRow defines the group itself -->
+                    <p:summaryRow field="representative.name">
+                        <p:column colspan="3" style="text-align:right">
                             <h:outputText value="Total Customers:"/>
                         </p:column>
                         <p:column>

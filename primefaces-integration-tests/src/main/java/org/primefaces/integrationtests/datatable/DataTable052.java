@@ -21,36 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.summaryrow;
+package org.primefaces.integrationtests.datatable;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.List;
 
-import jakarta.faces.component.UIComponentBase;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
-@FacesComponentBase
-public abstract class SummaryRowBase extends UIComponentBase {
+import lombok.Data;
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+@Named
+@ViewScoped
+@Data
+public class DataTable052 implements Serializable {
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.SummaryRowRenderer";
+    @Serial private static final long serialVersionUID = -3117401598325091316L;
 
-    public SummaryRowBase() {
-        setRendererType(DEFAULT_RENDERER);
+    private List<ProgrammingLanguage> progLanguages;
+
+    @Inject
+    private ProgrammingLanguageService service;
+
+    @PostConstruct
+    public void init() {
+        progLanguages = service.getLangs();
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public long getTotalCount(ProgrammingLanguage.ProgrammingLanguageType type) {
+        return progLanguages.stream().filter(lang -> lang.getType() == type).count();
     }
-
-    @Property(description = "Name of the field associated to bean \"var\".")
-    public abstract String getField();
-
-    @Property(description = "Property to be used for grouping.")
-    public abstract String getGroupBy();
-
-    @Property(description = "Method expression to execute before rendering summary row. (e.g. to calculate totals)")
-    public abstract jakarta.el.MethodExpression getListener();
-
 }

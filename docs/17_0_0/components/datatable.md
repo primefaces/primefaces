@@ -636,6 +636,27 @@ group. To enable this method, set groupRow to true on the grouping column.
     <p:column field="id" headerText="Id" />
 </p:dataTable>
 ```
+A `summaryRow` closes the group defined by the table, so on its own it needs to know what that group is. It picks
+up the group from a `headerRow`, a `groupRow="true"` column or the active sort; when there is none of those, define
+the group on the summary row itself with `field` (or `groupBy`). Note that the summary row only groups, it does not
+sort, so make sure the rows arrive grouped - via `headerRow`, a sorted column or a pre-sorted list.
+
+```xhtml
+<p:dataTable var="car" value="#{dtRowGroupView.cars}">
+    <p:column field="brand" headerText="Brand" sortBy="#{car.brand}" sortOrder="asc" />
+
+    <p:column field="year" headerText="Year" />
+
+    <p:summaryRow field="brand">
+        <p:column style="text-align:right">
+            <h:outputText value="Total:" />
+        </p:column>
+        <p:column>
+            <h:outputText value="#{dtRowGroupView.getTotal(car.brand)}" />
+        </p:column>
+    </p:summaryRow>
+</p:dataTable>
+```
 
 ## Scrolling
 Scrolling makes the header-footer of the table fixed and the body part scrollable. Scrolling is
