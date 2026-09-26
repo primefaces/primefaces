@@ -2346,14 +2346,14 @@ $.widget("prime.datePicker", {
                 this.hideOverlay();
             }
         } 
-        else if (this.options.showOnFocus) {
+        else if (this.options.showOnFocus && !this.options.showIcon) {
             // #12361 allow the input to be clicked again to open the panel if showOnFocus is true
             this.showOverlay();
         }
     },
 
     onInputFocus: function(event) {
-        if (this.options.showOnFocus && !this.isPanelVisible() && !this.datepickerFocus) {
+        if (this.options.showOnFocus && !this.isPanelVisible() && !this.datepickerFocus && !this.options.showIcon) {
             this.datepickerFocus = true;
             this.showOverlay()
         }

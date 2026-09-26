@@ -219,6 +219,11 @@
                         <p:outputLabel for="timeonly" value="Time Only (HH:mm)" />
                         <p:datePicker id="timeonly" value="#{calendarJava8View.time1}" pattern="HH:mm" showButtonBar="true" timeZone="UTC" />
                     </div>
+                    
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="timeonlyWithIcon" value="Time Only With Icon (HH:mm)" />
+                        <p:datePicker id="timeonlyWithIcon" value="#{calendarJava8View.time10}" showIcon="true" pattern="HH:mm" showButtonBar="true" timeZone="UTC" />
+                    </div>
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeonlyMinMax" value="Time Only (Min-Max)" />
