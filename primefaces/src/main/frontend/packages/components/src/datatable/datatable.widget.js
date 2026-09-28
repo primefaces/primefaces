@@ -1601,7 +1601,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             colTitleEl = headerColumn.children('.ui-column-title'),
             title = (reflowHeaderText && reflowHeaderText.length) ? reflowHeaderText : colTitleEl.text();
 
-            var column = this.tbody.find('> tr:not(.ui-datatable-empty-message,.ui-datatable-summaryrow) > td:nth-child(' + (i + 1) + ')')
+            var column = this.tbody.find('> tr:not(.ui-datatable-empty-message,.ui-datatable-summaryrow) > *:nth-child(' + (i + 1) + ')')
             column.find(".ui-column-title").remove(); // #11078
             column.prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
         }
