@@ -77,6 +77,10 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
     @Property(description = "Name of iterator to be used in custom content display.")
     public abstract String getVar();
 
+    @Property(description = "Style class of the table element rendered in advanced layout, when columns are used."
+            + " Themes provide \"ui-table-gridlines\", \"ui-table-striped\", \"ui-table-sm\" and \"ui-table-lg\".")
+    public abstract String getAdvancedStyleClass();
+
     @Property(description = "When true, a checkbox is displayed next to each item.",
             defaultValue = "false")
     public abstract boolean isShowCheckbox();
