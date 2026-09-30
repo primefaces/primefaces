@@ -1011,7 +1011,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                 });
                 if (suggestions.moreAvailable && $this.cfg.moreText) {
                     var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + $this.cfg.moreText + '">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '" data-item-label="' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
                 }
                 html += '</ul>';
 
