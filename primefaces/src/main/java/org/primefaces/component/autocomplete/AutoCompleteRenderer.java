@@ -885,7 +885,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (colSize > 0) {
             writer.startElement("tr", null);
-            writer.writeAttribute("id", component.getClientId(context) + "_moretext", null);
+            writer.writeAttribute("id", ac.getClientId(context) + "_moretext", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_TABLE_CLASS, null);
             writer.writeAttribute(HTML.ARIA_LABEL, moreText, null);
             writer.writeAttribute("data-item-label", moreText, null);
