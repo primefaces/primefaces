@@ -74,6 +74,32 @@
                     </p:commandLink>
                 </f:facet>
             </p:panel>
+
+            <h5>Custom Icons</h5>
+            <p:panel header="Custom Icons" toggleable="true" closable="true"
+                     closeIcon="pi pi-trash"
+                     collapsedIcon="pi pi-chevron-down"
+                     expandedIcon="pi pi-chevron-up"
+                     menuIcon="pi pi-bars">
+
+                <p:ajax event="close" listener="#{panelView.onClose}" update="msgs"/>
+                <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs"/>
+
+                <p class="m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Settings">
+                            <p:menuitem value="Action 1" url="#" icon="pi pi-check"/>
+                            <p:menuitem value="Action 2" url="#" icon="pi pi-refresh"/>
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>
+            </p:panel>
         </h:form>
     </ui:define>
 

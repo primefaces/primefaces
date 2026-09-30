@@ -51,6 +51,19 @@ If you’d like to add custom actions to panel titlebar, use actions facet with 
     //content
 </p:panel>
 ```
+
+## Customizable Icons
+Header icons for closing, toggling, and the popup menu can be customized using `closeIcon`, `collapsedIcon`, `expandedIcon`, and `menuIcon` attributes:
+
+```xhtml
+<p:panel header="Custom Icons" toggleable="true" closable="true"
+         closeIcon="pi pi-times"
+         collapsedIcon="pi pi-chevron-down"
+         expandedIcon="pi pi-chevron-up">
+    //content
+</p:panel>
+```
+
 ## Skinning Panel
 Panel resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list of
 structural style classes;
