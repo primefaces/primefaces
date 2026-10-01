@@ -25,8 +25,12 @@ package org.primefaces.component.summaryrow;
 
 import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.util.LangUtils;
 
+import jakarta.el.ValueExpression;
 import jakarta.faces.component.FacesComponent;
+import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = SummaryRow.COMPONENT_TYPE, namespace = SummaryRow.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "SummaryRow is a helper component for data grouping.")
@@ -34,4 +38,22 @@ import jakarta.faces.component.FacesComponent;
 public class SummaryRow extends SummaryRowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SummaryRow";
+
+    /**
+     * Returns the expression this summary row groups by. When neither <code>groupBy</code> nor <code>field</code>
+     * is set, the group is defined by the table itself (header row, <code>groupRow</code> column or active sort).
+     *
+     * @param context the {@link FacesContext}
+     * @param var the name of the request-scoped variable of the enclosing table
+     * @return the group by {@link ValueExpression} or <code>null</code> if this summary row defines no group
+     */
+    public ValueExpression getGroupByValueExpression(FacesContext context, String var) {
+        ValueExpression groupByVE = getValueExpression(PropertyKeys.groupBy);
+        if (groupByVE != null) {
+            return groupByVE;
+        }
+
+        String field = getField();
+        return LangUtils.isBlank(field) ? null : UIColumn.createValueExpressionFromField(context, var, field);
+    }
 }
