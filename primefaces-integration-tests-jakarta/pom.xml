@@ -31,7 +31,7 @@
         <sonar.skip>true</sonar.skip>
 
         <!-- dependency versions -->
-        <lombok.version>1.18.46</lombok.version>
+        <lombok.version>1.18.48</lombok.version>
         <tomcat.version>10.1.55</tomcat.version>
         <jetty.version>9.4.56.v20240826</jetty.version>
     </properties>
