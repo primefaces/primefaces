@@ -333,10 +333,11 @@ export class AjaxUtils {
      * @param errorMessage The error message.
      */
     handleError(errorName: string, errorMessage: string): void {
-        let exceptionHandlers: AjaxExceptionHandler[] = [];
+        // always resolve the handlers, otherwise the global AjaxExceptionHandler below can never be found
+        const exceptionHandlers = core.getWidgetsByType(AjaxExceptionHandler);
+
         if (errorName) {
             // try to invoke specific AjaxExceptionHandler
-            exceptionHandlers = core.getWidgetsByType(AjaxExceptionHandler);
             for (var exceptionHandler of exceptionHandlers) {
                 if (exceptionHandler.handles(errorName)) {
                     exceptionHandler.handle(errorName, errorMessage);
@@ -1677,6 +1678,15 @@ export class Ajax {
     RESOURCE = "jakarta.faces.Resource";
 
     /**
+     * Error name that is used when an AJAX response cannot be received at all, e.g. because of an HTTP error
+     * status, a timeout or a network failure. Register a `p:ajaxExceptionHandler` with this type to handle
+     * exactly these kind of errors.
+     * @type {string}
+     * @readonly
+     */
+    CONNECTION_ERROR = "Ajax.ConnectionError";
+
+    /**
      * Parameter shortcut mapping for the method {@link ab}.
      */
     CFG_SHORTCUTS: PrimeType.ajax.ShorthandToArticulateConfigurationMap = {
@@ -1800,7 +1810,15 @@ export function globalAjaxSetup(): void {
     });
 
     $(document).on('pfAjaxError', function(e, xhr, settings, error){
-        // this is very likely a connection error
-        ajax.Utils.handleError("", "AJAX failure");
+        // the response could not be received at all, e.g. HTTP error status, timeout or network failure;
+        // report a dedicated error name, so that a p:ajaxExceptionHandler can be registered for it
+        var errorMessage = 'AJAX failure';
+        if (xhr && xhr.status) {
+            errorMessage += ' with HTTP status ' + xhr.status;
+        }
+        if (error) {
+            errorMessage += ': ' + error;
+        }
+        ajax.Utils.handleError(ajax.CONNECTION_ERROR, errorMessage);
     });
 }
