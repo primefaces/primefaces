@@ -1265,9 +1265,26 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
 
         //propagate down
         if (this.cfg.propagateSelectionDown) {
-            var descendants = this.getDescendants(node);
+            var descendants = this.getDescendants(node),
+            skippedKey = null;
+
             for (var i = 0; i < descendants.length; i++) {
-                var descendant = descendants[i];
+                var descendant = descendants[i],
+                descendantKey = descendant.attr('data-rk');
+
+                // descendants are in depth-first order, so everything below a skipped node is still skipped
+                if (skippedKey && descendantKey.indexOf(skippedKey + '_') === 0) {
+                    continue;
+                }
+                skippedKey = null;
+
+                // a non-selectable node and its subtree must never be selected, just like
+                // CheckboxTreeNode#propagateSelectionDown does on the server side
+                if (!descendant.hasClass('ui-treetable-selectable-node')) {
+                    skippedKey = descendantKey;
+                    continue;
+                }
+
                 if (selected)
                     this.unselectNode(descendant, true);
                 else
