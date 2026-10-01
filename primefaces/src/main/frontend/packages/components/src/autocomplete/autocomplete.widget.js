@@ -1010,8 +1010,8 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                     html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item" data-item-value="' + PrimeFaces.escapeHTML(itemValue, true) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded, true) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded, true) + '</li>';
                 });
                 if (suggestions.moreAvailable && $this.cfg.moreText) {
-                    var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + $this.cfg.moreText + '">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
+                    var moreTextEncoded = PrimeFaces.escapeHTML($("<div>").text($this.cfg.moreText).html(), true);
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + moreTextEncoded + '" data-item-label="' + moreTextEncoded + '">' + moreTextEncoded + '</li>';
                 }
                 html += '</ul>';
 
