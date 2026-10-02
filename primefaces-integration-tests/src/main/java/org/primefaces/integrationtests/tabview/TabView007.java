@@ -21,22 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.tabview;
+package org.primefaces.integrationtests.tabview;
 
-import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TabViewState implements Serializable {
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
-    @Serial private static final long serialVersionUID = 1L;
+import lombok.Data;
 
-    private String active;
+@Data
+@Named
+@ViewScoped
+public class TabView007 implements Serializable {
+    private boolean isFirstTabRendered;
 
-    public String getActive() {
-        return active;
-    }
+    public List<String> getTabs() {
+        List<String> tabs = new ArrayList<>(3);
 
-    public void setActive(String active) {
-        this.active = active;
+        if (isFirstTabRendered) {
+            tabs.add("tab1");
+        }
+
+        tabs.add("tab2");
+        tabs.add("tab3");
+
+        return tabs;
     }
 }

@@ -66,7 +66,10 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     @Facet(description = "Allows to add custom action to the tab header.")
     public abstract UIComponent getActionsFacet();
 
-    @Property(defaultValue = "0", description = "Index of the active tab.")
+    @Property(description = "Index or key of the active tab.")
+    public abstract String getActive();
+
+    @Property(defaultValue = "0", description = "(Deprecated, use active instead!) Index of the active tab.")
     public abstract int getActiveIndex();
 
     @Property(description = "Animation effect to use when changing tabs.")

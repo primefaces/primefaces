@@ -63,6 +63,24 @@ When the tabs to display are not static, use the built-in iteration feature simi
 </p:tabView>
 ```
 
+## Active Tab
+The active tab is defined with the _active_ attribute, which accepts either the 0-based index of the tab or the
+_key_ of a tab. Using keys is recommended whenever tabs are rendered conditionally or created dynamically, since
+indexes shift as soon as tabs are added or removed, whereas a key always refers to the same tab.
+
+```xhtml
+<p:tabView active="second">
+    <p:tab key="first" title="Tab One" rendered="#{bean.showFirstTab}">
+        <h:outputText value="Lorem" />
+    </p:tab>
+    <p:tab key="second" title="Tab Two">
+        <h:outputText value="Ipsum" />
+    </p:tab>
+</p:tabView>
+```
+
+The _activeIndex_ attribute is deprecated in favor of _active_ and will be removed in a future version.
+
 ## Orientations
 Four different orientations are available; _top(default)_ , _left_ , _right_ and _bottom_.
 
