@@ -506,7 +506,7 @@
                 <dependency>
                     <groupId>jakarta.enterprise</groupId>
                     <artifactId>jakarta.enterprise.cdi-el-api</artifactId>
-                    <version>4.1.0</version>
+                    <version>5.0.0</version>
                 </dependency>
             </dependencies>
             <build>
