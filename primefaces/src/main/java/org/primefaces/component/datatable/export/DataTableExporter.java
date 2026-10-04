@@ -30,14 +30,19 @@ import org.primefaces.model.LazyDataModel;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 
 public abstract class DataTableExporter<P, O extends ExporterOptions> extends TableExporter<DataTable, P, O> {
+
+    private static final Logger LOGGER = Logger.getLogger(DataTableExporter.class.getName());
 
     private static final int NO_ROW_INDEX_REQUIRED = Integer.MIN_VALUE;
 
@@ -110,15 +115,30 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
                 lazyDataModel.setPageSize(batchSize);
                 int offset = 0;
                 List<Object> items;
+                boolean hasMore;
 
                 do {
                     items = lazyDataModel.load(offset, batchSize, table.getActiveSortMeta(), table.getActiveFilterMeta());
+                    if (items == null) {
+                        items = Collections.emptyList();
+                    }
                     lazyDataModel.setWrappedData(items);
                     for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
                         exportRow(context, table, rowIndex);
                     }
                     offset += items.size();
-                } while ((bufferized && !items.isEmpty()) || (!bufferized && offset < batchSize));
+
+                    // An empty portion always ends the export: no further data can be fetched from this offset.
+                    // Without this guard, a non-bufferized export whose rowCount exceeds the real data size
+                    // (stale or over-estimated LazyDataModel#count) would call load() with the same offset forever.
+                    hasMore = !items.isEmpty() && (bufferized || offset < batchSize);
+                    if (!bufferized && items.isEmpty() && offset < batchSize && LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning(String.format(
+                                "LazyDataModel returned no data at offset %1$d although rowCount is %2$d; stopping export. "
+                                        + "Check LazyDataModel#count for table %3$s.",
+                                offset, batchSize, table.getClientId(context)));
+                    }
+                } while (hasMore);
 
                 //restore
                 table.setRowIndex(-1);
