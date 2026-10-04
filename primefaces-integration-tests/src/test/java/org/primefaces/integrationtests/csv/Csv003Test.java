@@ -38,6 +38,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,12 @@ public class Csv003Test extends AbstractPrimePageTest {
     public void datePastInvalid(Page page) {
         // Arrange
         assertMessage(page.msgDatePast, "");
-        page.datePast.setValue(LocalTime.now().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        // The field only holds a time of day (HH:mm:ss), so the value must be later than "now" on the same day.
+        // now + 1h would wrap past midnight between 23:00 and 24:00 and then count as a past time.
+        LocalTime futureTime = LocalTime.of(23, 59, 59);
+        Assumptions.assumeTrue(LocalTime.now().isBefore(futureTime.minusMinutes(1)),
+                "Too close to midnight to enter a time of day that is still in the future");
+        page.datePast.setValue(futureTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         // Act
         page.btnSave.click();
