@@ -8,6 +8,7 @@ body {
     font-weight: $badgeFontWeight;
     padding: $tagPadding;
     border-radius: $borderRadius;
+    border: 1px solid transparent;
 
     &:not(.ui-widget) {
       display: inline-block;
@@ -47,6 +48,42 @@ body {
 
     &.ui-tag-rounded {
       border-radius: 10rem;
+    }
+
+    &.ui-tag-outlined {
+      background-color: transparent;
+      color: $badgeBg;
+      border-color: currentColor;
+
+      &.ui-tag-success {
+        background-color: transparent;
+        color: $successButtonBg;
+      }
+
+      &.ui-tag-info {
+        background-color: transparent;
+        color: $infoButtonBg;
+      }
+
+      &.ui-tag-warning {
+        background-color: transparent;
+        color: $warningButtonBg;
+      }
+
+      &.ui-tag-danger {
+        background-color: transparent;
+        color: $dangerButtonBg;
+      }
+
+      &.ui-tag-secondary {
+        background-color: transparent;
+        color: $secondaryButtonBg;
+      }
+
+      &.ui-tag-help {
+        background-color: transparent;
+        color: $helpButtonBg;
+      }
     }
 
     .ui-tag-icon {

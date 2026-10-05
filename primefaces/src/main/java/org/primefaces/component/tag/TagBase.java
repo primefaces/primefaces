@@ -54,4 +54,7 @@ public abstract class TagBase extends UIOutput implements StyleAware {
     @Property(defaultValue = "false", description = "Whether to display the tag with rounded corners.")
     public abstract boolean isRounded();
 
+    @Property(defaultValue = "false", description = "Whether to display the tag with an outlined style.")
+    public abstract boolean isOutlined();
+
 }
