@@ -2908,6 +2908,11 @@ $.widget("prime.datePicker", {
     },
 
     bindScrollListener: function() {
+        // Focusing a navigator control on iOS can scroll the viewport while the touch UI panel is open.
+        if (this.options.touchUI) {
+            return;
+        }
+
         var $this = this;
 
         this.scrollableParents = PrimeFaces.utils.getScrollableParents(this.element.get(0));
@@ -3609,7 +3614,13 @@ $.widget("prime.datePicker", {
         if (el && el.getAttribute("aria-label")) {
             var refocus = this.panel.find("[aria-label='" + PrimeFaces.escapeHTML(el.getAttribute("aria-label")) + "']");
             if (refocus.length) {
-                PrimeFaces.queueTask(function() { refocus.first().trigger('focus') });
+                if (PrimeFaces.env.ios && el.tagName === 'SELECT') {
+                    // Focus the calendar instead of reopening the native iOS picker after replacing its select.
+                    this.focusOverlay();
+                }
+                else {
+                    PrimeFaces.queueTask(function() { refocus.first().trigger('focus') });
+                }
             }
         }
 
