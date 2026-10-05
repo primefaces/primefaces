@@ -211,22 +211,32 @@ public class FileUploadRenderer extends CoreRenderer {
         String label = fileUpload.getLabel();
 
         if (fileUpload.isSkinSimple()) {
-            styleClass = (styleClass == null) ? FileUpload.CONTAINER_CLASS_SIMPLE : FileUpload.CONTAINER_CLASS_SIMPLE + " " + styleClass;
-            styleClass = isValueBlank(label) ? FileUpload.BUTTON_ICON_ONLY + " " + styleClass : styleClass;
-            String buttonClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
-            if (fileUpload.isDisabled()) {
-                buttonClass += " ui-state-disabled";
-            }
+            String containerClass = getStyleClassBuilder(context)
+                    .add(FileUpload.CONTAINER_CLASS_SIMPLE)
+                    .add(styleClass)
+                    .add(isValueBlank(label), FileUpload.BUTTON_ICON_ONLY)
+                    .build();
+
+            String buttonClass = getStyleClassBuilder(context)
+                    .add(HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
+                    .add(fileUpload.getChooseButtonStyleClass())
+                    .add(fileUpload.isDisabled(), "ui-state-disabled")
+                    .build();
 
             writer.startElement("span", fileUpload);
             writer.writeAttribute("id", clientId, "id");
-            writer.writeAttribute("class", styleClass, "styleClass");
+            writer.writeAttribute("class", containerClass, "styleClass");
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
 
             writer.startElement("span", null);
             writer.writeAttribute("class", buttonClass, null);
+
+            String chooseButtonTitle = fileUpload.getChooseButtonTitle();
+            if (chooseButtonTitle != null) {
+                writer.writeAttribute("title", chooseButtonTitle, null);
+            }
 
             //button icon
             writer.startElement("span", null);
