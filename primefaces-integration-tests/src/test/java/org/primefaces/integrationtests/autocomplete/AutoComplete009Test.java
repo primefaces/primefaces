@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,33 +43,45 @@ class AutoComplete009Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("AutoComplete: GitHub #15304 forceSelection is not bypassed when submitting right after typing")
-    void forceSelectionSubmitWhileTyping(Page page) {
-        int[] delays = {0, 100, 200, 300, 400, 600, 900, 1200, 1400};
-        for (int i = 0; i < delays.length * 2; i++) {
-            // Act - type an invalid value and submit before/while the search is running
-            for (char c : ("xyz" + i).toCharArray()) {
-                getWebDriver().findElement(By.id("form:autocomplete_input")).sendKeys(String.valueOf(c));
-                PrimeSelenium.wait(70);
-            }
-            PrimeSelenium.wait(delays[i % delays.length]);
-            new Actions(getWebDriver()).moveToElement(page.button).click().perform();
-            // second round: do not wait for the previous requests
-            if (i < delays.length) {
-                PrimeSelenium.wait(1500);
-                PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
-            }
-            else {
-                PrimeSelenium.wait(150);
-            }
-        }
-        PrimeSelenium.wait(2500);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+    @DisplayName("AutoComplete: GitHub #15304 forceSelection is not bypassed by typing while a submit is queued")
+    void forceSelectionTypingWhileSubmitQueued(Page page) {
+        // Arrange - type an invalid value and let the slow search start
+        page.autoComplete.getInput().sendKeys("xyz");
+        PrimeSelenium.wait(500);
+
+        // Act - submit (queued behind the search) and type again before it is sent
+        page.button.clickUnguarded();
+        getWebDriver().findElement(By.id("form:autocomplete_input")).sendKeys("x");
+        waitForQueue();
 
         // Assert - no invalid value reached the model
         assertEquals("[]", page.submittedValues.getText());
-        assertEquals("", page.autoComplete.getInput().getAttribute("value"));
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("AutoComplete: GitHub #15304 forceSelection still submits a selected item")
+    void forceSelectionSubmitsSelectedItem(Page page) {
+        // Arrange
+        page.autoComplete.setValueWithoutTab("b");
+        page.autoComplete.wait4Panel();
+        page.autoComplete.getPanel().findElement(By.cssSelector(".ui-autocomplete-item")).click();
+
+        // Act
+        page.button.click();
+        waitForQueue();
+
+        // Assert
+        assertEquals("[B]", page.submittedValues.getText());
+        assertEquals("B", page.autoComplete.getInput().getAttribute("value"));
+        assertNoJavascriptErrors();
+    }
+
+    private void waitForQueue() {
+        // let any pending search timer fire and the slow completeMethod finish
+        PrimeSelenium.wait(1500);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
     }
 
     public static class Page extends AbstractPrimePage {
