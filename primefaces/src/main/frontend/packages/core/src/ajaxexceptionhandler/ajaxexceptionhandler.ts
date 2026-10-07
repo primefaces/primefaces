@@ -60,6 +60,8 @@ export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExce
                 update: this.cfg.update,
                 ignoreAutoUpdate: true,
                 global: false,
+                // errors of this request must not invoke this handler again, otherwise e.g. a connection error ends up in an endless loop
+                skipErrorHandling: true,
                 oncomplete: () => {
                     if (this.cfg.onexception) {
                         this.cfg.onexception.call(this, errorName, errorMessage);
