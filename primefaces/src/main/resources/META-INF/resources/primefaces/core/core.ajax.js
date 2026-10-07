@@ -1733,11 +1733,17 @@ if (!PrimeFaces.ajax) {
                 // httpError, malformedXML, emptyResponse, clientError, timeout
                 // p:ajax reports the same error names, so a p:ajaxExceptionHandler can be registered for them
                 else {
+                    var errorName = data.status;
                     var errorMessage = 'AJAX failure';
                     if (data.responseCode && data.responseCode > 0) {
                         errorMessage += ' with HTTP status ' + data.responseCode;
+
+                        // MyFaces 2.3 does not check the HTTP status and reports e.g. malformedXML instead of httpError
+                        if (data.responseCode < 200 || data.responseCode >= 300) {
+                            errorName = PrimeFaces.ajax.ERROR_HTTP;
+                        }
                     }
-                    PrimeFaces.ajax.Utils.handleError(data.status, errorMessage);
+                    PrimeFaces.ajax.Utils.handleError(errorName, errorMessage);
                 }
             });
         }

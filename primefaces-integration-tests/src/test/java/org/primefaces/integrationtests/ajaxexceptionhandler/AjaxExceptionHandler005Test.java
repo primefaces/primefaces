@@ -58,8 +58,10 @@ class AjaxExceptionHandler005Test extends AbstractPrimePageTest {
         // Act
         page.emptyResponse.click();
 
-        // Assert
-        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(page.exceptionName, "emptyResponse"));
+        // Assert - MyFaces 2.3 does not detect empty responses and reports malformedXML instead
+        PrimeSelenium.waitGui().until(ExpectedConditions.or(
+                    ExpectedConditions.textToBePresentInElement(page.exceptionName, "emptyResponse"),
+                    ExpectedConditions.textToBePresentInElement(page.exceptionName, "malformedXML")));
     }
 
     public static class Page extends AbstractPrimePage {
