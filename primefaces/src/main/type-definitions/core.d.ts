@@ -941,6 +941,12 @@ declare namespace PrimeFaces.ajax {
         skipChildren: boolean;
 
         /**
+         * `true` if errors of this request should not be passed to a `p:ajaxExceptionHandler` or `error-page`, e.g.
+         * for the request of a `p:ajaxExceptionHandler` itself; `false` otherwise. Defaults to `false`.
+         */
+        skipErrorHandling: boolean;
+
+        /**
          * The source that triggered the AJAX request.
          */
         source: string | JQuery | HTMLElement;

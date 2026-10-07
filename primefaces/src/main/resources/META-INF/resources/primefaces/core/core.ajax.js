@@ -57,6 +57,28 @@ if (!PrimeFaces.ajax) {
          * @readonly
          */
         RESOURCE: "javax.faces.Resource",
+        /**
+         * Error name that is used when an AJAX response cannot be received at all, e.g. because of an HTTP error
+         * status, a timeout or a network failure. Register a `p:ajaxExceptionHandler` with this type to handle
+         * exactly these kind of errors. Same as the `httpError` status of `jsf.ajax`.
+         * @type {string}
+         * @readonly
+         */
+        ERROR_HTTP: "httpError",
+        /**
+         * Error name that is used when an AJAX response was received but cannot be parsed or does not contain a
+         * `partial-response`, e.g. a login page after a session timeout. Same as the `malformedXML` status of `jsf.ajax`.
+         * @type {string}
+         * @readonly
+         */
+        ERROR_MALFORMED_XML: "malformedXML",
+        /**
+         * Error name that is used when an AJAX response was received but did not contain any data.
+         * Same as the `emptyResponse` status of `jsf.ajax`.
+         * @type {string}
+         * @readonly
+         */
+        ERROR_EMPTY_RESPONSE: "emptyResponse",
 
         /**
          * Parameter shortcut mapping for the method `PrimeFaces.ab`.
@@ -380,10 +402,11 @@ if (!PrimeFaces.ajax) {
              * @param {string} errorMessage The error message.
              */
             handleError: function(errorName, errorMessage) {
-                var exceptionHandlers = [];
+                // always resolve the handlers, otherwise the global AjaxExceptionHandler below can never be found
+                var exceptionHandlers = PrimeFaces.getWidgetsByType(PrimeFaces.widget.AjaxExceptionHandler);
+
                 if (errorName) {
                     // try to invoke specific AjaxExceptionHandler
-                    exceptionHandlers = PrimeFaces.getWidgetsByType(PrimeFaces.widget.AjaxExceptionHandler);
                     for (var exceptionHandler of exceptionHandlers) {
                         if (exceptionHandler.handles(errorName)) {
                             exceptionHandler.handle(errorName, errorMessage);
@@ -943,6 +966,7 @@ if (!PrimeFaces.ajax) {
                     dataType: "xml",
                     portletForms: PrimeFaces.ajax.Utils.getPorletForms(form, parameterPrefix),
                     source: cfg.source,
+                    skipErrorHandling: cfg.skipErrorHandling,
                     global: false,
                     beforeSend: function(xhr, settings) {
                         xhr.setRequestHeader('Faces-Request', 'partial/ajax');
@@ -1342,11 +1366,19 @@ if (!PrimeFaces.ajax) {
              * @param {PrimeFaces.ajax.UpdateHandler<TWidget>} [updateHandler] Optional handler for `update` actions.
              */
             handle: function(xml, status, xhr, updateHandler) {
+                // JSF spec: emptyResponse if there is no response XML
                 if (xml === undefined || xml === null) {
+                    PrimeFaces.ajax.Response.handleResponseError(PrimeFaces.ajax.ERROR_EMPTY_RESPONSE, "The response has provided no data.", xhr);
                     return;
                 }
 
                 var partialResponseNode = xml.getElementsByTagName("partial-response")[0];
+
+                // JSF spec: malformedXML if the response is not a partial response, e.g. a login page after a session timeout
+                if (!partialResponseNode) {
+                    PrimeFaces.ajax.Response.handleResponseError(PrimeFaces.ajax.ERROR_MALFORMED_XML, "No partial-response found.", xhr);
+                    return;
+                }
 
                 for (const currentNode of partialResponseNode.childNodes) {
 
@@ -1411,6 +1443,22 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
                     break;
                 }
+            },
+
+            /**
+             * Handles an error of a response (invalid response or server error) via `PrimeFaces.ajax.Utils.handleError`,
+             * if not skipped via `PrimeFaces.ajax.Configuration.skipErrorHandling`.
+             * @param {string} errorName The error name.
+             * @param {string} errorMessage The error message.
+             * @param {PrimeFaces.ajax.pfXHR | null | undefined} xhr The XHR request to which the response was received.
+             */
+            handleResponseError: function(errorName, errorMessage, xhr) {
+                // e.g. the request of a p:ajaxExceptionHandler itself, see Configuration.skipErrorHandling
+                if (xhr && xhr.pfSettings && xhr.pfSettings.skipErrorHandling) {
+                    PrimeFaces.error(errorName + ": " + errorMessage);
+                    return;
+                }
+                PrimeFaces.ajax.Utils.handleError(errorName, errorMessage);
             },
 
             /**
@@ -1564,7 +1612,7 @@ if (!PrimeFaces.ajax) {
                 var errorName = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-name")[0]);
                 var errorMessage = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-message")[0]);
 
-                PrimeFaces.ajax.Utils.handleError(errorName, errorMessage);
+                PrimeFaces.ajax.Response.handleResponseError(errorName, errorMessage, xhr);
             },
 
             /**
@@ -1682,18 +1730,42 @@ if (!PrimeFaces.ajax) {
                 if (data.status === "serverError") {
                     PrimeFaces.ajax.Utils.handleError(data.errorName, data.errorMessage);
                 }
-                // malformedXML, emptyResponse, httpError, clientError, timeout
+                // httpError, malformedXML, emptyResponse, clientError, timeout
+                // p:ajax reports the same error names, so a p:ajaxExceptionHandler can be registered for them
                 else {
-                    // this are very likely very strange errors or client connection errors
-                    // just invoke the same logic, this will likely result in a global p:ajaxExceptionHandler or global error-page
-                    PrimeFaces.ajax.Utils.handleError(data.errorName, data.errorMessage);
+                    var errorMessage = 'AJAX failure';
+                    if (data.responseCode && data.responseCode > 0) {
+                        errorMessage += ' with HTTP status ' + data.responseCode;
+                    }
+                    PrimeFaces.ajax.Utils.handleError(data.status, errorMessage);
                 }
             });
         }
     });
 
     $(document).on('pfAjaxError', function(e, xhr, settings, error){
-        // this is very likely a connection error
-        PrimeFaces.ajax.Utils.handleError("", "AJAX failure");
+        // e.g. the request of a p:ajaxExceptionHandler itself, see Configuration.skipErrorHandling
+        if (settings && settings.skipErrorHandling) {
+            return;
+        }
+
+        var errorMessage = 'AJAX failure';
+        if (xhr && xhr.status) {
+            errorMessage += ' with HTTP status ' + xhr.status;
+        }
+        if (error) {
+            errorMessage += ': ' + error;
+        }
+
+        // a successful HTTP status means that the response was received but could not be parsed,
+        // e.g. a proxy returned a HTML login page
+        if (xhr && xhr.status >= 200 && xhr.status < 300) {
+            PrimeFaces.ajax.Utils.handleError(PrimeFaces.ajax.ERROR_MALFORMED_XML, errorMessage);
+            return;
+        }
+
+        // the response could not be received at all, e.g. HTTP error status, timeout or network failure;
+        // report it like jsf.ajax does, so that a p:ajaxExceptionHandler can be registered for it
+        PrimeFaces.ajax.Utils.handleError(PrimeFaces.ajax.ERROR_HTTP, errorMessage);
     });
 }
