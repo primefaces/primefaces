@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.ajaxexceptionhandler;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -37,7 +36,7 @@ import lombok.Data;
 @Data
 public class AjaxExceptionHandler001 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 6874262516024855417L;
+    private static final long serialVersionUID = 6874262516024855417L;
 
     /**
      * Simulates a connection error: the AJAX response cannot be received at all, the client only sees the HTTP

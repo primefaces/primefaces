@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.ajaxexceptionhandler;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -39,7 +38,7 @@ import lombok.Data;
 @Data
 public class AjaxExceptionHandler003 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 4271620417938617452L;
+    private static final long serialVersionUID = 4271620417938617452L;
 
     /**
      * Simulates a successful response without any content.
