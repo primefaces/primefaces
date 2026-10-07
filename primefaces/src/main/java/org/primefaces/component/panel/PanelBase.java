@@ -98,11 +98,23 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Property(description = "Title label for closer element of closable panel.")
     public abstract String getCloseTitle();
 
+    @Property(defaultValue = "ui-icon-closethick", description = "Icon for closer element of closable panel.")
+    public abstract String getCloseIcon();
+
     @Property(description = "Title attribute for toggler element of toggleable panel.")
     public abstract String getToggleTitle();
 
+    @Property(defaultValue = "ui-icon-plusthick", description = "Icon displayed when panel is collapsed.")
+    public abstract String getCollapsedIcon();
+
+    @Property(defaultValue = "ui-icon-minusthick", description = "Icon displayed when panel is expanded.")
+    public abstract String getExpandedIcon();
+
     @Property(description = "Title attribute for menu element on panel header.")
     public abstract String getMenuTitle();
+
+    @Property(defaultValue = "ui-icon-gear", description = "Icon for menu element on panel header.")
+    public abstract String getMenuIcon();
 
     @Property(defaultValue = "vertical", description = "Defines the orientation of the toggle animation, valid values are \"vertical\" and \"horizontal\".")
     public abstract String getToggleOrientation();

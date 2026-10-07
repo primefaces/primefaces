@@ -65,6 +65,11 @@ public class Panel extends PanelBaseImpl {
     public static final String PANEL_COLLAPSED_CLASS = "ui-hidden-container";
     public static final String PANEL_COLLAPSED_HORIZONTAL_CLASS = "ui-panel-collapsed-h";
 
+    public static final String DEFAULT_CLOSE_ICON = "ui-icon-closethick";
+    public static final String DEFAULT_COLLAPSED_ICON = "ui-icon-plusthick";
+    public static final String DEFAULT_EXPANDED_ICON = "ui-icon-minusthick";
+    public static final String DEFAULT_MENU_ICON = "ui-icon-gear";
+
     public Menu getOptionsMenu() {
         UIComponent optionsFacet = getOptionsFacet();
         if (FacetUtils.shouldRenderFacet(optionsFacet)) {

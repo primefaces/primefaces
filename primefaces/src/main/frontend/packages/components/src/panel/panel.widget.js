@@ -26,6 +26,8 @@
  * @prop {boolean} cfg.closable Whether panel is closable.
  * @prop {number} cfg.closeSpeed Speed of closing effect in milliseconds
  * @prop {boolean} cfg.collapsed Whether the panel is initially collapsed.
+ * @prop {string} [cfg.collapsedIcon] Icon displayed when panel is collapsed.
+ * @prop {string} [cfg.expandedIcon] Icon displayed when panel is expanded.
  * @prop {boolean} cfg.hasMenu Whether this panel has a toggleable menu in the panel header. 
  * @prop {boolean} cfg.toggleable Whether the panel can be toggled (expanded and collapsed).
  * @prop {boolean} cfg.toggleableHeader Defines if the panel is toggleable by clicking on the whole panel header.
@@ -115,7 +117,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      */
     expand() {
         this.header.attr('aria-expanded', true);
-        this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
+        this.toggleState(false, this.cfg.collapsedIcon || 'ui-icon-plusthick', this.cfg.expandedIcon || 'ui-icon-minusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
             this.slideDown();
@@ -128,7 +130,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      */
     collapse() {
         this.header.attr('aria-expanded', false);
-        this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+        this.toggleState(true, this.cfg.expandedIcon || 'ui-icon-minusthick', this.cfg.collapsedIcon || 'ui-icon-plusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
             this.slideUp();
@@ -206,11 +208,11 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      * Toggles the expansion state of this panel.
      * @private
      * @param {boolean} collapsed Whether the panel is now to be collapsed.
-     * @param {JQuery} removeIcon Icon for closing this panel. 
-     * @param {JQuery} addIcon Icon for opening this panel.
+     * @param {string} removeIcon Icon for closing this panel. 
+     * @param {string} addIcon Icon for opening this panel.
      */
     toggleState(collapsed, removeIcon, addIcon) {
-        this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
+        this.toggler.children('span').removeClass(removeIcon).addClass(addIcon).toggleClass('ui-icon', /(^|\s)ui-icon-/.test(addIcon));
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
         this.toggler.attr('aria-label', collapsed ? this.getAriaLabel('collapseRow') : this.getAriaLabel('expandRow'));
