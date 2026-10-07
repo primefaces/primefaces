@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<f:event type="preRenderView" listener="#{ajaxExceptionHandler004.preRenderView}" />
+
+	<h:head>
+		<script>
+			// count all failed AJAX requests, the request of the p:ajaxExceptionHandler itself fails too
+			$(document).on('pfAjaxError', function() {
+				var count = parseInt($('#ajaxErrors').text(), 10) + 1;
+				$('#ajaxErrors').text(count);
+			});
+		</script>
+	</h:head>
+
+	<h:body>
+
+		<!-- the update of the handler must not end up in an endless loop if its own request fails -->
+		<p:ajaxExceptionHandler id="handler" update="exceptionPanel"
+			onexception="$('#handlerCalls').text(parseInt($('#handlerCalls').text(), 10) + 1);" />
+
+		<h:panelGroup id="exceptionPanel" layout="block">Exception</h:panelGroup>
+
+		<div>Handler calls: <span id="handlerCalls">0</span></div>
+		<div>AJAX errors: <span id="ajaxErrors">0</span></div>
+
+		<h:form id="form">
+			<p:commandButton id="button" value="Simulate Connection Error"
+				action="#{ajaxExceptionHandler004.connectionError}" />
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>
