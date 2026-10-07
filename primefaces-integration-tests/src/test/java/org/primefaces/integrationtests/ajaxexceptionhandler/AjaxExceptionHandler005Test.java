@@ -27,6 +27,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled // f:ajax is not CSP compatible with MyFaces 2.3 (jsf.util.chain evaluates strings via new Function)
 class AjaxExceptionHandler005Test extends AbstractPrimePageTest {
 
     @Test
