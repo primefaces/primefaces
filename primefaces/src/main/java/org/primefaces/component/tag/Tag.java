@@ -42,6 +42,7 @@ public class Tag extends TagBaseImpl {
     public static final String SEVERITY_SECONDARY_CLASS = "ui-tag-secondary";
     public static final String SEVERITY_HELP_CLASS = "ui-tag-help";
     public static final String ROUNDED_CLASS = "ui-tag-rounded";
+    public static final String OUTLINED_CLASS = "ui-tag-outlined";
     public static final String ICON_CLASS = "ui-tag-icon";
     public static final String VALUE_CLASS = "ui-tag-value";
 }
