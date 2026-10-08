@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:commandButton id="buttonRefresh" value="Refresh" action="#{dataTable056.refresh}" update="datatable"/>
+
+            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable056.langs}" var="lang"
+                         filteredValue="#{dataTable056.filteredLangs}" rowKey="#{lang.id}">
+                <p:column field="id" headerText="ID"/>
+
+                <p:column field="name" headerText="Name" filterMatchMode="contains"/>
+
+                <p:column headerText="Edit">
+                    <p:commandButton id="buttonEdit" value="Edit" action="#{dataTable056.edit(lang)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
