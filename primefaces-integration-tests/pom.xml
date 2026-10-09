@@ -30,7 +30,7 @@
         <sonar.skip>true</sonar.skip>
 
         <!-- dependency versions -->
-        <h2.version>2.5.250</h2.version>
+        <h2.version>2.5.252</h2.version>
         <hibernate-core.version>7.4.8.Final</hibernate-core.version>
         <hibernate-validator.version>9.1.4.Final</hibernate-validator.version>
         <resteasy.version>7.0.5.Final</resteasy.version>
