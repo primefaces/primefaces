@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:selectBooleanCheckbox id="toggle" value="#{tabView007.firstTabRendered}">
+                <p:ajax process="@this" update="tabview"/>
+            </p:selectBooleanCheckbox>
+
+            <p:tabView id="tabview" multiViewState="true" active="tab2"
+                       value="#{tabView007.tabs}" var="tab">
+                <p:tab key="#{tab}" title="#{tab}">
+                    Dummy-Content #{tab}
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
