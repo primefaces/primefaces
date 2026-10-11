@@ -83,12 +83,20 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
     protected void decodeSingle(FacesContext context, AutoComplete ac) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = ac.getClientId(context);
-        String valueParam = (ac.getVar() != null) ? clientId + "_hinput" : clientId + "_input";
+        String valueParam = isHiddenInputSubmitted(ac) ? clientId + "_hinput" : clientId + "_input";
         String submittedValue = params.get(valueParam);
 
         if (submittedValue != null) {
             ac.setSubmittedValue(submittedValue);
         }
+    }
+
+    /**
+     * Single mode submits the hidden input instead of the visible one for POJOs, and with forceSelection,
+     * where the hidden input only ever holds validated values (#15304).
+     */
+    protected boolean isHiddenInputSubmitted(AutoComplete ac) {
+        return ac.getVar() != null || ac.isForceSelection();
     }
 
     protected void decodeMultiple(FacesContext context, AutoComplete ac) {
@@ -181,7 +189,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         encodeInput(context, component, clientId);
 
-        if (component.getVar() != null) {
+        if (isHiddenInputSubmitted(component)) {
             encodeHiddenInput(context, component, clientId);
         }
 
