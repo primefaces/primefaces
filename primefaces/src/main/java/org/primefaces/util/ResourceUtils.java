@@ -30,8 +30,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.HexFormat;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -58,6 +60,8 @@ public class ResourceUtils {
      * Used to extract resource name (e.g. "#{resource['picture.png'}")
      */
     private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
+    private static final String UNENCODED_COOKIE_NAME_CHARS = "!#$&'*+-.^_`|~";
+    private static final HexFormat UPPERCASE_HEX = HexFormat.of().withUpperCase();
 
     private ResourceUtils() {
         // prevent instantiation
@@ -210,7 +214,35 @@ public class ResourceUtils {
         }
         properties.put("SameSite", sameSite);
 
-        context.getExternalContext().addResponseCookie(name, value, properties);
+        context.getExternalContext().addResponseCookie(encodeCookieName(name), value, properties);
+    }
+
+    /**
+     * Encodes the given cookie name exactly the way js-cookie encodes it on the client side: every character outside
+     * the ASCII letters and digits and {@code !#$&'*+-.^_`|~} is percent-encoded as UTF-8. The result is a valid
+     * RFC 6265 cookie name, also when it is derived from a view id holding characters a cookie name cannot hold, such
+     * as the square brackets of a dynamic route folder, and the client finds and removes the cookie under its raw name.
+     *
+     * @param name The cookie name.
+     * @return The encoded cookie name.
+     */
+    static String encodeCookieName(String name) {
+        StringBuilder encoded = new StringBuilder(name.length());
+
+        for (byte b : name.getBytes(StandardCharsets.UTF_8)) {
+            if (isUnencodedCookieNameChar(b)) {
+                encoded.append((char) b);
+            }
+            else {
+                encoded.append('%').append(UPPERCASE_HEX.toHexDigits(b));
+            }
+        }
+
+        return encoded.toString();
+    }
+
+    private static boolean isUnencodedCookieNameChar(byte c) {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || UNENCODED_COOKIE_NAME_CHARS.indexOf(c) >= 0;
     }
 
     public static String appendCacheBuster(String url, boolean cache) {
