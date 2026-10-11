@@ -46,7 +46,7 @@ class ResourceUtilsTest {
     }
 
     /**
-     * The expected values are what js-cookie 3.0.8, which sets, reads and removes the cookies on the client side,
+     * The expected values are what js-cookie 3.0.7, which sets, reads and removes the cookies on the client side,
      * makes of the same names: a cookie the server sets under another encoding of its name is never found nor removed
      * by the client.
      */
