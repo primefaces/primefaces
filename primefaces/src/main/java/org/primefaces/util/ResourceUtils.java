@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.HexFormat;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -61,7 +60,7 @@ public class ResourceUtils {
      */
     private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
     private static final String UNENCODED_COOKIE_NAME_CHARS = "!#$&'*+-.^_`|~";
-    private static final HexFormat UPPERCASE_HEX = HexFormat.of().withUpperCase();
+    private static final char[] UPPERCASE_HEX_DIGITS = "0123456789ABCDEF".toCharArray();
 
     private ResourceUtils() {
         // prevent instantiation
@@ -234,7 +233,7 @@ public class ResourceUtils {
                 encoded.append((char) b);
             }
             else {
-                encoded.append('%').append(UPPERCASE_HEX.toHexDigits(b));
+                encoded.append('%').append(UPPERCASE_HEX_DIGITS[(b >> 4) & 0xF]).append(UPPERCASE_HEX_DIGITS[b & 0xF]);
             }
         }
 
