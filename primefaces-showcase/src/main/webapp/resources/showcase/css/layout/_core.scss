@@ -29,10 +29,10 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     background-color: var(--ground-background);
-    background-image: url("\#{resource['showcase:images/layout/pattern.png']}"), radial-gradient(720px circle at 50% -10%, rgba(33, 150, 243, 0.06), transparent 62%);
+    background-image: url("\#{resource['showcase:images/layout/pattern.png']}"), radial-gradient(720px circle at 50% -10%, rgba(33, 150, 243, 0.07), transparent 62%);
     background-repeat: no-repeat, no-repeat;
     background-position: top center, top center;
-    background-size: min(1400px, 100%) auto, cover;
+    background-size: min(1900px, 135%) auto, cover;
     background-attachment: scroll, fixed;
     font-family: var(--font-family);
     font-weight: normal;
@@ -45,7 +45,7 @@ body {
     body {
         background-image: url("\#{resource['showcase:images/layout/pattern.png']}"), radial-gradient(
             720px circle at 50% -10%,
-            color-mix(in srgb, var(--primary-color) 10%, transparent),
+            color-mix(in srgb, var(--primary-color) 11%, transparent),
             transparent 62%
         );
     }
