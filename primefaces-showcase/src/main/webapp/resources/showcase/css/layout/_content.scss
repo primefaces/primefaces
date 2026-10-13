@@ -17,6 +17,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--layout-right-rail-width);
     column-gap: var(--layout-shell-gap);
+    align-content: start;
     background-color: transparent;
     min-height: calc(100vh - var(--layout-topbar-height));
 
@@ -128,7 +129,7 @@
                   font-size: 1.25rem;
                 }
 
-                a {
+                a:not(.ui-button):not(.ui-button a):not(.ui-linkbutton a) {
                     @include mixins.navlink();
                 }
             }
@@ -167,7 +168,7 @@
                 line-height: 1.5;
             }
 
-            a {
+            a:not(.ui-button):not(.ui-button a):not(.ui-linkbutton a) {
                 @include mixins.navlink();
             }
 
