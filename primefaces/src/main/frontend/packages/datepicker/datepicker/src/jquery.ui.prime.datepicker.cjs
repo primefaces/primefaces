@@ -2280,13 +2280,15 @@ $.widget("prime.datePicker", {
     onTimeInputKeyUp: function (event) {
         const input = event.currentTarget;
         let newValue = input.value;
+        const maxLengthAttribute = input.getAttribute('maxlength');
+        const maxLength = maxLengthAttribute ? parseInt(maxLengthAttribute, 10) : input.maxLength;
 
         // Validate the input value after the key is released
         // Remove non-numeric characters
         newValue = newValue.replace(/[^0-9]/g, "");
 
         // For year input, only evaluate if the input is 4 digits long
-        if (input.maxLength === 4 && newValue.length < 4) {
+        if (maxLength === 4 && newValue.length < 4) {
             return;
         }
 
@@ -2294,9 +2296,9 @@ $.widget("prime.datePicker", {
         const inputMin = parseInt(input.min, 10);
         const inputMax = parseInt(input.max, 10);
 
-        if (newValue.length > input.maxLength) {
+        if (maxLength > 0 && newValue.length > maxLength) {
             // Truncate to maxLength
-            newValue = newValue.substring(0, input.maxLength);
+            newValue = newValue.substring(0, maxLength);
         }
 
         if (newValue && (parseInt(newValue, 10) < inputMin || parseInt(newValue, 10) > inputMax)) {
@@ -2310,6 +2312,21 @@ $.widget("prime.datePicker", {
 
         // Update the input field value
         input.value = newValue;
+
+        // Commit typed time values immediately so the selected date and AJAX behaviors stay in sync.
+        var picker = input.parentElement;
+        if (picker.classList.contains('ui-hour-picker')) {
+            this.handleHoursInput(input, event);
+        }
+        else if (picker.classList.contains('ui-minute-picker')) {
+            this.handleMinutesInput(input, event);
+        }
+        else if (picker.classList.contains('ui-second-picker')) {
+            this.handleSecondsInput(input, event);
+        }
+        else if (picker.classList.contains('ui-millisecond-picker')) {
+            this.handleMillisecondsInput(input, event);
+        }
     },
 
     focusDate: function(jq, selector) {
@@ -3310,6 +3327,8 @@ $.widget("prime.datePicker", {
             return;
         }
 
+        this.oldHours = input.value;
+
         var newDateTime = this.getCurrentTime();
         newDateTime.setHours(newHours);
 
@@ -3335,6 +3354,8 @@ $.widget("prime.datePicker", {
             input.value = this.oldMinutes;
             return;
         }
+
+        this.oldMinutes = input.value;
 
         var newDateTime = this.getCurrentTime();
         newDateTime.setMinutes(newMinutes);
@@ -3362,6 +3383,8 @@ $.widget("prime.datePicker", {
             return;
         }
 
+        this.oldSeconds = input.value;
+
         var newDateTime = this.getCurrentTime();
         newDateTime.setSeconds(newSeconds);
 
@@ -3387,6 +3410,8 @@ $.widget("prime.datePicker", {
             input.value = this.oldMilliseconds;
             return;
         }
+
+        this.oldMilliseconds = input.value;
 
         var newDateTime = this.getCurrentTime();
         newDateTime.setMilliseconds(newMilliseconds);
@@ -3441,6 +3466,10 @@ $.widget("prime.datePicker", {
     },
 
     updateTimeAfterInput: function(event, newDateTime) {
+        if (this.isDate(this.value) && this.value.getTime() === newDateTime.getTime()) {
+            return;
+        }
+
         this.value = newDateTime;
         this.inputfield.val(this.getValueToRender());
 
