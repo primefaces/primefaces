@@ -524,6 +524,10 @@ public class TreeTable extends TreeTableBaseImpl {
         return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
     }
 
+    public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
+    }
+
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
         getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), filterBy);
