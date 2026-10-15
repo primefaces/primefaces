@@ -75,6 +75,25 @@ public class TreeTable010 implements Serializable {
         legacyApp.setSelected(true, false);
 
         new CheckboxTreeNode<>("app", new Document("modern.app", "5kb", "Application"), legacy);
+
+        // all children are non-selectable, so its state must never be derived from its descendants
+        TreeNode<Document> archive = new CheckboxTreeNode<>(new Document("Archive", "10kb", "Folder"), root);
+        archive.setExpanded(true);
+
+        TreeNode<Document> locked = new CheckboxTreeNode<>(new Document("Locked", "10kb", "Folder"), archive);
+        locked.setExpanded(true);
+        locked.setSelectable(false);
+
+        new CheckboxTreeNode<>("app", new Document("old.app", "10kb", "Application"), locked);
+
+        // collapsed, so its preselected non-selectable child is not rendered when it is toggled
+        TreeNode<Document> backup = new CheckboxTreeNode<>(new Document("Backup", "20kb", "Folder"), root);
+
+        CheckboxTreeNode<Document> snapshotApp = new CheckboxTreeNode<>("app", new Document("snapshot.app", "10kb", "Application"), backup);
+        snapshotApp.setSelectable(false);
+        snapshotApp.setSelected(true, false);
+
+        new CheckboxTreeNode<>("app", new Document("daily.app", "10kb", "Application"), backup);
     }
 
     public void showSelectedNodes() {

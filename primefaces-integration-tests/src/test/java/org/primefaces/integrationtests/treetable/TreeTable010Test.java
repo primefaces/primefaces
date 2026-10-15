@@ -24,14 +24,20 @@
 package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,6 +60,14 @@ class TreeTable010Test extends AbstractTreeTableTest {
     private static final String PRESELECTED_UNSELECTABLE_CHILD = "0_1_0";
     /** rowKey of "modern.app". */
     private static final String LEGACY_SELECTABLE_CHILD = "0_1_1";
+    /** rowKey of "Archive", whose only child is non-selectable. */
+    private static final String ARCHIVE = "1";
+    /** rowKey of "Locked", which is {@code setSelectable(false)}. */
+    private static final String ARCHIVE_UNSELECTABLE_CHILD = "1_0";
+    /** rowKey of "old.app", a selectable child of "Locked". */
+    private static final String ARCHIVE_GRANDCHILD = "1_0_0";
+    /** rowKey of the collapsed "Backup", whose non-rendered "snapshot.app" is non-selectable but selected. */
+    private static final String BACKUP = "2";
 
     @Test
     @Order(1)
@@ -136,8 +150,8 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertFalse(isSelected(treeTable, UNSELECTABLE_CHILD));
 
         page.showSelected.click();
-        // only the preselected legacy.app of the other folder is left
-        assertEquals("legacy.app", page.messages.getMessage(0).getDetail());
+        // only the preselected non-selectable nodes of the other folders are left
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -161,8 +175,72 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertTrue(isChecked(treeTable, PRESELECTED_UNSELECTABLE_CHILD));
 
         page.showSelected.click();
-        assertEquals("legacy.app", page.messages.getMessage(0).getDetail());
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("TreeTable: GitHub #14798 a parent without selectable children must not be selected by a grandchild")
+    void parentWithoutSelectableChildrenKeepsState(Page page) {
+        // Arrange
+        TreeTable treeTable = page.treeTable;
+
+        // Act & Assert - "Archive" only has the non-selectable "Locked", so toggling "old.app" must not change it
+        selectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
+        assertTrue(isSelected(treeTable, ARCHIVE_GRANDCHILD));
+        assertFalse(isSelected(treeTable, ARCHIVE));
+        assertFalse(isPartialSelected(treeTable, ARCHIVE));
+        assertFalse(isSelected(treeTable, ARCHIVE_UNSELECTABLE_CHILD));
+
+        unselectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
+        assertFalse(isSelected(treeTable, ARCHIVE_GRANDCHILD));
+        assertFalse(isSelected(treeTable, ARCHIVE));
+        assertFalse(isPartialSelected(treeTable, ARCHIVE));
+
+        selectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
+        page.showSelected.click();
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "old.app");
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("TreeTable: GitHub #14798 unchecking a collapsed parent must keep its preselected non-selectable child")
+    void collapsedPreselectedUnselectableNodeKeepsSelection(Page page) {
+        // Arrange - the children of "Backup" are not rendered
+        TreeTable treeTable = page.treeTable;
+        assertTrue(treeTable.findElements(By.id(treeTable.getId() + "_node_" + BACKUP + "_0")).isEmpty());
+
+        // Act
+        selectCheckbox(treeTable, BACKUP);
+        unselectCheckbox(treeTable, BACKUP);
+
+        // Assert
+        page.showSelected.click();
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("TreeTable: GitHub #14798 the server must reject a submitted non-selectable node")
+    void serverRejectsUnselectableNode(Page page) {
+        // Arrange - bypass the widget's propagation rules
+        PrimeSelenium.executeScript("var tt = PF('ttWidget'); tt.selections.push('" + UNSELECTABLE_CHILD + "'); tt.writeSelections();");
+
+        // Act
+        page.showSelected.click();
+
+        // Assert
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    private void assertSubmittedSelection(Page page, String... expected) {
+        String detail = page.messages.getMessage(0).getDetail();
+        Set<String> selected = detail.isEmpty() ? Set.of() : new HashSet<>(Arrays.asList(detail.split(",")));
+        assertEquals(Set.of(expected), selected);
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.tree;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
@@ -113,6 +114,47 @@ class Tree009Test extends AbstractTreeTest {
         assertTrue(legacyDoc.isSelected());
 
         page.showSelected.click();
+        assertEquals("legacy.doc", page.messages.getMessage(0).getDetail());
+        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Tree: GitHub #14798 a parent without selectable children must not be selected by a grandchild")
+    void parentWithoutSelectableChildrenKeepsState(Page page) {
+        // Arrange - "Archive" only has the non-selectable "Locked"
+        TreeNode archive = page.tree.getChildren().get(2);
+        TreeNode locked = archive.getChildren().get(0);
+        TreeNode oldDoc = locked.getChildren().get(0);
+
+        // Act & Assert
+        oldDoc.select();
+        assertTrue(oldDoc.isSelected());
+        assertFalse(locked.isSelected());
+        assertFalse(archive.isSelected());
+        assertFalse(archive.isPartialSelected());
+
+        oldDoc.select();
+        assertFalse(oldDoc.isSelected());
+        assertFalse(archive.isSelected());
+        assertFalse(archive.isPartialSelected());
+
+        page.showSelected.click();
+        assertEquals("legacy.doc", page.messages.getMessage(0).getDetail());
+        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Tree: GitHub #14798 the server must reject a submitted non-selectable node")
+    void serverRejectsUnselectableNode(Page page) {
+        // Arrange - bypass the widget's propagation rules and select "private.doc"
+        PrimeSelenium.executeScript("var tree = PF('treeWidget'); tree.addToSelection('0_1'); tree.writeSelections();");
+
+        // Act
+        page.showSelected.click();
+
+        // Assert
         assertEquals("legacy.doc", page.messages.getMessage(0).getDetail());
         assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
     }

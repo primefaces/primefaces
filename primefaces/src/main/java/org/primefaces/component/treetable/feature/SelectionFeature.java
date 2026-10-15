@@ -32,7 +32,6 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -59,35 +58,17 @@ public class SelectionFeature implements TreeTableFeature {
 
         //decode selection
         String selectionValue = params.get(table.getClientId(context) + "_selection");
-        if (LangUtils.isBlank(selectionValue)) {
-            if (multiple) {
-                table.setSelection(isArray ? new TreeNode[0] : Collections.emptyList());
-            }
-            else {
-                table.setSelection(null);
-            }
+        String[] selectedRowKeys = LangUtils.isBlank(selectionValue) ? new String[0] : selectionValue.split(",");
+        if (!multiple && selectedRowKeys.length > 1) {
+            selectedRowKeys = new String[] {selectedRowKeys[0]};
+        }
+
+        List<TreeNode<?>> selectedNodes = table.decodeSelectedNodes(root, selectedRowKeys, table.getSelection());
+        if (multiple) {
+            table.setSelection(isArray ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
         }
         else {
-            String[] selectedRowKeys = selectionValue.split(",");
-            if (multiple) {
-                List<TreeNode> selectedNodes = new ArrayList<>();
-
-                for (int i = 0; i < selectedRowKeys.length; i++) {
-                    table.setRowKey(root, selectedRowKeys[i]);
-                    TreeNode rowNode = table.getRowNode();
-                    if (rowNode != null) {
-                        selectedNodes.add(rowNode);
-                    }
-                }
-
-                table.setSelection(isArray ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
-            }
-            else {
-                table.setRowKey(root, selectedRowKeys[0]);
-                table.setSelection(table.getRowNode());
-            }
-
-            table.setRowKey(root, null); //cleanup
+            table.setSelection(selectedNodes.isEmpty() ? null : selectedNodes.get(0));
         }
 
         // the descendants are sent back to the client to be added to the selection, so they must only be collected
