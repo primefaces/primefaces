@@ -31,6 +31,7 @@ import org.primefaces.selenium.component.TreeTable;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -65,7 +66,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
                 "\"editor.app\",\"Application\"",
                 "\"Cloud\",\"Folder\"",
                 "\"backup-1.zip\",\"Zip\""), csv(page));
-        assertNoJavascriptErrors();
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -81,7 +82,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(List.of(HEADER, "\"Desktop\",\"Folder\""), csv(page));
-        assertNoJavascriptErrors();
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -98,7 +99,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
         assertEquals(List.of(HEADER,
                 "\"Cloud\",\"Folder\"",
                 "\"backup-1.zip\",\"Zip\""), csv(page));
-        assertNoJavascriptErrors();
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -118,11 +119,65 @@ class DataExporter004Test extends AbstractPrimePageTest {
                 "\"backup-1.zip\",\"Zip\"",
                 "\"Desktop\",\"Folder\"",
                 "\"note-todo.txt\",\"Text\""), csv(page));
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("TreeTable Exporter: GitHub #13590 pageOnly without a paginator must export every displayed row despite rows")
+    void exportPageOnlyWithoutPaginator(Page page) {
+        // Arrange - rows="2" but no paginator, so every root child is displayed
+        List<String> displayed = List.of("Applications", "Primefaces", "editor.app", "Cloud", "backup-1.zip", "Desktop");
+        assertEquals(displayed, displayedNames(page.treeTableNoPaginator));
+
+        // Act
+        page.exportPageOnlyNoPaginator.click();
+
+        // Assert
+        assertEquals(List.of(HEADER,
+                "\"Applications\",\"Folder\"",
+                "\"Primefaces\",\"Folder\"",
+                "\"editor.app\",\"Application\"",
+                "\"Cloud\",\"Folder\"",
+                "\"backup-1.zip\",\"Zip\"",
+                "\"Desktop\",\"Folder\""), csv(page));
+        assertConfiguration(page.treeTableNoPaginator.getWidgetConfiguration(), "ttNoPaginatorWidget");
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("TreeTable Exporter: GitHub #13590 pageOnly must export the filtered rows displayed on the current page")
+    void exportPageOnlyFiltered(Page page) {
+        // Arrange - only "backup-1.zip" matches, displayed together with its parent "Cloud"
+        page.treeTable.filter("Name", "zip");
+        assertEquals(List.of("Cloud", "backup-1.zip"), displayedNames(page));
+
+        // Act
+        page.exportPageOnly.click();
+
+        // Assert
+        assertEquals(List.of(HEADER,
+                "\"Cloud\",\"Folder\"",
+                "\"backup-1.zip\",\"Zip\""), csv(page));
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    private void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "ttWidget");
+    }
+
+    private void assertConfiguration(JSONObject cfg, String widgetVar) {
         assertNoJavascriptErrors();
+        System.out.println("TreeTable Config = " + cfg);
+        assertEquals(widgetVar, cfg.getString("widgetVar"));
     }
 
     private List<String> displayedNames(Page page) {
-        return page.treeTable.getRows().stream().map(r -> r.getCell(0).getText()).toList();
+        return displayedNames(page.treeTable);
+    }
+
+    private List<String> displayedNames(TreeTable treeTable) {
+        return treeTable.getRows().stream().map(r -> r.getCell(0).getText()).toList();
     }
 
     private List<String> csv(Page page) {
@@ -138,6 +193,9 @@ class DataExporter004Test extends AbstractPrimePageTest {
         @FindBy(id = "form:treeTable")
         TreeTable treeTable;
 
+        @FindBy(id = "form:treeTableNoPaginator")
+        TreeTable treeTableNoPaginator;
+
         @FindBy(id = "form:exportPageOnly")
         CommandButton exportPageOnly;
 
@@ -146,6 +204,9 @@ class DataExporter004Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:exportAll")
         CommandButton exportAll;
+
+        @FindBy(id = "form:exportPageOnlyNoPaginator")
+        CommandButton exportPageOnlyNoPaginator;
 
         @FindBy(id = "form:csv")
         WebElement csv;

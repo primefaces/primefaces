@@ -96,9 +96,17 @@ public class DataExporter004 implements Serializable {
         export(ExportConfiguration.builder());
     }
 
+    public void exportPageOnlyNoPaginator() {
+        export(ExportConfiguration.builder().pageOnly(true), "form:treeTableNoPaginator");
+    }
+
     private void export(ExportConfiguration.Builder builder) {
+        export(builder, "form:treeTable");
+    }
+
+    private void export(ExportConfiguration.Builder builder, String tableId) {
         FacesContext context = FacesContext.getCurrentInstance();
-        TreeTable table = (TreeTable) context.getViewRoot().findComponent("form:treeTable");
+        TreeTable table = (TreeTable) context.getViewRoot().findComponent(tableId);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         ExportConfiguration configuration = builder

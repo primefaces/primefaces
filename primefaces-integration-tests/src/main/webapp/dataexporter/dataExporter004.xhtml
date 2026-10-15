@@ -19,6 +19,17 @@
             <p:treeTable id="treeTable" value="#{dataExporter004.root}" var="document" widgetVar="ttWidget"
                          paginator="true" rows="2" selectionMode="checkbox"
                          selection="#{dataExporter004.selectedNodes}">
+                <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Type">
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+            </p:treeTable>
+
+            <!-- rows without a paginator: every row is displayed -->
+            <p:treeTable id="treeTableNoPaginator" value="#{dataExporter004.root}" var="document"
+                         widgetVar="ttNoPaginatorWidget" rows="2">
                 <p:column headerText="Name">
                     <h:outputText value="#{document.name}"/>
                 </p:column>
@@ -33,6 +44,8 @@
                              action="#{dataExporter004.exportSelectionOnly}"/>
             <p:commandButton id="exportAll" value="Export All" update="output"
                              action="#{dataExporter004.exportAll}"/>
+            <p:commandButton id="exportPageOnlyNoPaginator" value="Export Page Only (no paginator)" update="output"
+                             action="#{dataExporter004.exportPageOnlyNoPaginator}"/>
 
             <h:panelGroup id="output" layout="block">
                 <pre><h:outputText id="csv" value="#{dataExporter004.output}"/></pre>

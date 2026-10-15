@@ -54,9 +54,14 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
         }
 
         // a page of a TreeTable is a slice of the direct children of the root, each one rendered together with the
-        // descendants which are currently displayed - see TreeTableRenderer#encodeNodeChildren
-        int first = table.getFirst();
-        int last = Math.min(first + table.getRowsToRender(), root.getChildCount());
+        // descendants which are currently displayed - see TreeTableRenderer#encodeTbody;
+        // without a paginator all children of the root are displayed
+        int first = 0;
+        int last = root.getChildCount();
+        if (table.isPaginator()) {
+            first = table.getFirst();
+            last = Math.min(first + table.getRowsToRender(), last);
+        }
 
         for (int i = first; i < last; i++) {
             exportNode(context, table, root.getChildren().get(i), true);
@@ -72,7 +77,7 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
      * @param displayedOnly whether to descend into collapsed nodes, which are not displayed
      */
     protected void exportNode(FacesContext context, TreeTable table, TreeNode<?> node, boolean displayedOnly) {
-        exportRow(context, table, node.getData());
+        exportRowData(context, table, node.getData());
 
         if (displayedOnly && !node.isExpanded()) {
             return;
@@ -85,32 +90,37 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
 
     @Override
     protected void exportAll(FacesContext context, TreeTable table) {
-        int first = table.getFirst();
-        TreeNode root = table.getValue();
-        root.setExpanded(true);
-        int rowCount = getTreeRowCount(root) - 1;
-
-        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-            exportRow(context, table, rowIndex);
+        TreeNode<?> root = table.getValue();
+        if (root == null) {
+            return;
         }
 
-        // restore
-        table.setFirst(first);
-    }
-
-    protected void exportRow(FacesContext context, TreeTable table, int rowIndex) {
-        // rowIndex +1 because we are not interested in rootNode
-        exportRow(context, table, traverseTree(table.getValue(), rowIndex + 1));
+        // every node, regardless of the paginator and whether it is expanded; the root itself is not a row
+        for (int i = 0; i < root.getChildCount(); i++) {
+            exportNode(context, table, root.getChildren().get(i), false);
+        }
     }
 
     /**
-     * Exports a single row for the given row data.
+     * Exports the row at the given index of the depth-first flattened tree, the root excluded.
+     *
+     * @deprecated no longer called by the exporter, override {@link #exportRowData(FacesContext, TreeTable, Object)}
+     * instead, which is called for every exported row
+     */
+    @Deprecated
+    protected void exportRow(FacesContext context, TreeTable table, int rowIndex) {
+        // rowIndex +1 because we are not interested in rootNode
+        exportRowData(context, table, traverseTree(table.getValue(), rowIndex + 1));
+    }
+
+    /**
+     * Exports a single row for the given row data, called for every exported row.
      *
      * @param context the {@link FacesContext}
      * @param table the {@link TreeTable} being exported
      * @param data the data of the node to export, which the columns are resolved against
      */
-    protected void exportRow(FacesContext context, TreeTable table, Object data) {
+    protected void exportRowData(FacesContext context, TreeTable table, Object data) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         Object origVar = requestMap.get(table.getVar());
@@ -152,7 +162,7 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
     }
 
     protected void exportSelectedRow(FacesContext context, TreeTable table, Object selected) {
-        exportRow(context, table, selected instanceof TreeNode<?> node ? node.getData() : selected);
+        exportRowData(context, table, selected instanceof TreeNode<?> node ? node.getData() : selected);
     }
 
     protected static int getTreeRowCount(TreeNode<?> node) {
