@@ -99,15 +99,13 @@ public class FilterFeature implements DataTableFeature {
 
                 // update filtered value accordingly to take account sorting
                 if (table.isSortingCurrentlyActive()) {
-                    DataTableFeatures.sortFeature().sort(context, table);
-
                     // #15268 filter was cleared, so the next request works on the unfiltered value (not on filteredValue)
-                    // -> sort the unfiltered value too, otherwise row indexes do not match the rendered rows
+                    // -> sort and render the unfiltered value instead of the filtered copy, otherwise row indexes do not match
                     if (!table.isFilteringCurrentlyActive()) {
                         table.setValue(null);
-                        DataTableFeatures.sortFeature().sort(context, table);
-                        table.setRowIndex(-1);
                     }
+
+                    DataTableFeatures.sortFeature().sort(context, table);
                 }
             }
 
