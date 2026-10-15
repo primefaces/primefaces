@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<!-- errors of f:ajax must be reported with the same error names as p:ajax -->
+		<p:ajaxExceptionHandler
+			onexception="$('#exceptionName').text(errorName); $('#exceptionMessage').text(errorMessage);" />
+
+		<div>Name: <span id="exceptionName"></span></div>
+		<div>Message: <span id="exceptionMessage"></span></div>
+
+		<h:form id="form">
+			<h:commandButton id="httpError" value="HTTP Error" action="#{ajaxExceptionHandler001.connectionError}">
+				<f:ajax />
+			</h:commandButton>
+			<h:commandButton id="emptyResponse" value="Empty Response" action="#{ajaxExceptionHandler003.emptyResponse}">
+				<f:ajax />
+			</h:commandButton>
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

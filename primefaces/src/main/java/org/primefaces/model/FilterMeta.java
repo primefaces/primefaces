@@ -53,7 +53,7 @@ public class FilterMeta implements Serializable {
     private String field;
     private String columnKey;
     private ValueExpression filterBy;
-    private Object filterValue; // should be null if empty string/collection/array/object
+    private Object filterValue; // null if blank string; an empty collection/array is kept, see #isActive()
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
     private boolean normalize = false;
@@ -141,13 +141,36 @@ public class FilterMeta implements Serializable {
                               false);
     }
 
+    /**
+     * Whether the given filter value means "no filter at all", which is the case for <code>null</code>, a blank
+     * String and an empty collection, {@link Iterable} or array.
+     *
+     * @param filterValue the filter value to check
+     * @return <code>true</code> if the value does not filter anything
+     */
+    public static boolean isEmpty(Object filterValue) {
+        return filterValue == null
+                || (filterValue instanceof String string && LangUtils.isBlank(string))
+                || (filterValue instanceof Collection<?> collection && collection.isEmpty())
+                || (filterValue instanceof Iterable<?> iterable && !iterable.iterator().hasNext())
+                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0);
+    }
+
+    /**
+     * Normalizes a blank String filter value to <code>null</code>.
+     * <p>
+     * An empty collection, {@link Iterable} or array is deliberately kept as it is: the filter value is written back
+     * into the filter facet, and a {@link jakarta.faces.component.UISelectMany} reset to <code>null</code> renders an
+     * item with a <code>null</code> value as selected, which would both preselect that item and write it back into the
+     * backing bean, see #12885. Use {@link #isEmpty(Object)} to test whether a value filters anything - that is what
+     * {@link #isActive()} does.
+     *
+     * @param filterValue the filter value to normalize
+     * @return the normalized filter value
+     */
     public static <T> T resetToNullIfEmpty(T filterValue) {
-        if (filterValue != null
-                && ((filterValue instanceof String string && LangUtils.isBlank(string))
-                || (filterValue instanceof Collection collection && collection.isEmpty())
-                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
-                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
-            filterValue = null;
+        if (filterValue instanceof String string && LangUtils.isBlank(string)) {
+            return null;
         }
         return filterValue;
     }
@@ -186,7 +209,7 @@ public class FilterMeta implements Serializable {
     }
 
     public boolean isActive() {
-        return filterValue != null;
+        return !isEmpty(filterValue);
     }
 
     public MatchMode getMatchMode() {

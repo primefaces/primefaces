@@ -40,14 +40,20 @@ class TextEditor005Test extends AbstractPrimePageTest {
     /**
      * Fires a real `copy` event at the editor and returns what the widget put onto the clipboard, so the
      * whole Quill copy path (onCaptureCopy -> onCopy -> setData) is exercised without OS clipboard access.
+     * <p>
+     * GitHub #15240: Firefox ignores the `clipboardData` member of the ClipboardEvent constructor - its
+     * ClipboardEventInit only declares `data`/`dataType` - and hands the listener a DataTransfer of its own,
+     * so the one passed in would stay empty. Attaching our DataTransfer as an own property shadows the
+     * `clipboardData` getter and works in every browser.
      */
     private String copyToClipboard(String mimeType) {
         return PrimeSelenium.executeScript(
                     "var widget = PF('wgtEditor');"
                                 + "widget.editor.setSelection(0, widget.editor.getLength());"
                                 + "var data = new DataTransfer();"
-                                + "widget.editor.root.dispatchEvent("
-                                + "  new ClipboardEvent('copy', {clipboardData: data, bubbles: true, cancelable: true}));"
+                                + "var event = new ClipboardEvent('copy', {bubbles: true, cancelable: true});"
+                                + "Object.defineProperty(event, 'clipboardData', {value: data});"
+                                + "widget.editor.root.dispatchEvent(event);"
                                 + "return data.getData('" + mimeType + "');");
     }
 

@@ -40,10 +40,28 @@ For server-reported errors, the response contains:
 </partial-response>
 ```
 
+Errors without a server-reported error name are reported with the error statuses defined by the Faces specification,
+both for `p:ajax` and `f:ajax`:
+
+| Error name | Constant | Description |
+|---|---|---|
+| `httpError` | `PrimeFaces.ajax.ERROR_HTTP` | The response could not be received at all, e.g. HTTP error status, timeout or network failure. |
+| `malformedXML` | `PrimeFaces.ajax.ERROR_MALFORMED_XML` | The response was received but cannot be parsed or does not contain a `partial-response`, e.g. a login page after a session timeout. |
+| `emptyResponse` | `PrimeFaces.ajax.ERROR_EMPTY_RESPONSE` | The response was received but did not contain any data. |
+
+A `p:ajaxExceptionHandler` can therefore be registered for exactly this kind of error:
+
+```xhtml
+<p:ajaxExceptionHandler type="httpError" onexception="alert('The server is not reachable: ' + errorMessage);" />
+```
+
+A failed request of a `p:ajaxExceptionHandler` itself (e.g. its `update` while the server is still not reachable) is not
+handled again, to avoid an endless loop.
+
 In both cases, PrimeFaces processes the error through the following chain:
 
 1. **Callbacks & Events** — `onerror` callbacks on `p:ajax` are triggered, as well as global listeners like `p:ajaxStatus` and the jQuery `pfAjaxError` event.
-2. **`p:ajaxExceptionHandler`** — If a specific or global `p:ajaxExceptionHandler` is defined, it is invoked with the error details.
+2. **`p:ajaxExceptionHandler`** — If a `p:ajaxExceptionHandler` for the error name is defined, it is invoked with the error details. Otherwise a global `p:ajaxExceptionHandler` (one without a `type`) is invoked.
 3. **Error Page Redirect** — If no `p:ajaxExceptionHandler` is found, PrimeFaces attempts to redirect to the matching `error-page` configured in `web.xml` / `web-fragment.xml`.
 4. **Console Log** — If neither a handler nor an error page is configured, the error is logged to the browser console.
 
