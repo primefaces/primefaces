@@ -24,16 +24,14 @@
 package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,12 +50,12 @@ class TreeTable011Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: GitHub #9925 propagateSelectionDown=false must not select the child nodes")
     void childIsNotSelectedVisually(Page page) {
         // Act
-        selectCheckbox(page, PARENT);
+        selectCheckbox(page.treeTable, PARENT);
 
         // Assert
-        assertTrue(isSelected(page, PARENT));
-        assertFalse(isSelected(page, CHILD));
-        assertNoJavascriptErrors();
+        assertTrue(isSelected(page.treeTable, PARENT));
+        assertFalse(isSelected(page.treeTable, CHILD));
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
     @Test
@@ -65,27 +63,22 @@ class TreeTable011Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: GitHub #9925 propagateSelectionDown=false must not submit the child nodes either")
     void childIsNotSubmitted(Page page) {
         // Arrange
-        selectCheckbox(page, PARENT);
+        selectCheckbox(page.treeTable, PARENT);
 
         // Act
         page.showSelected.click();
 
         // Assert - only the clicked node, the children must not be propagated behind the scenes
         assertEquals("Primefaces", page.messages.getMessage(0).getDetail());
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-    }
-
-    private void selectCheckbox(Page page, String rowKey) {
-        // checkbox selection always fires an AJAX request to resolve the descendants of the clicked node
-        PrimeSelenium.guardAjax(row(page, rowKey).findElement(By.cssSelector("div.ui-chkbox-box"))).click();
-    }
-
-    private boolean isSelected(Page page, String rowKey) {
-        return PrimeSelenium.hasCssClass(row(page, rowKey), "ui-state-highlight");
-    }
-
-    private WebElement row(Page page, String rowKey) {
-        return page.getWebDriver().findElement(By.id("form:treeTable_node_" + rowKey));
+        System.out.println("TreeTable Config = " + cfg);
+        assertEquals("ttWidget", cfg.getString("widgetVar"));
+        assertEquals("checkbox", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("propagateSelectionDown"));
     }
 
     public static class Page extends AbstractPrimePage {

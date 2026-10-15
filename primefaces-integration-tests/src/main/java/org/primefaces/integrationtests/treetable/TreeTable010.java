@@ -65,6 +65,16 @@ public class TreeTable010 implements Serializable {
         nativeApp.setSelectable(false);
 
         new CheckboxTreeNode<>("app", new Document("mobile.app", "5kb", "Application"), primefaces);
+
+        TreeNode<Document> legacy = new CheckboxTreeNode<>(new Document("Legacy", "15kb", "Folder"), applications);
+        legacy.setExpanded(true);
+
+        // selected by the model, must keep its selection when its parent is toggled
+        CheckboxTreeNode<Document> legacyApp = new CheckboxTreeNode<>("app", new Document("legacy.app", "10kb", "Application"), legacy);
+        legacyApp.setSelectable(false);
+        legacyApp.setSelected(true, false);
+
+        new CheckboxTreeNode<>("app", new Document("modern.app", "5kb", "Application"), legacy);
     }
 
     public void showSelectedNodes() {
