@@ -537,10 +537,14 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
         if(this.cfg.propagateDown) {
-            node.children('.ui-treenode-children').find('.ui-treenode:not(.ui-treenode-hidden)').find('.ui-chkbox').each(function() {
-                $this.toggleCheckboxState($(this), checked);
+            var skippedRowKeys = [];
+            this.propagateCheckboxDown(this.getChildNodes(node), checked, skippedRowKeys);
+
+            // a non-selectable child can never be selected via its checkbox, so it must not keep its parent from
+            // being fully selected, see #14798
+            var children = node.find('> .ui-treenode-children > .ui-treenode').filter(function() {
+                return $this.isSelectableNode($(this));
             });
-            var children = node.find('> .ui-treenode-children > .ui-treenode');
             if(checked) {
                 if(children.filter('.ui-treenode-unselected').length === children.length)
                     $this.uncheck(checkbox);
@@ -555,7 +559,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             }
 
             if(this.cfg.dynamic) {
-                this.removeDescendantsFromSelection(node.data('rowkey'));
+                this.removeDescendantsFromSelection(node.data('rowkey'), skippedRowKeys);
             }
         } else {
             this.toggleCheckboxState(checkbox, checked);
@@ -565,7 +569,14 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             node.parents('li.ui-treenode-parent').each(function() {
                 var parentNode = $(this),
                 parentsCheckbox = parentNode.find('> .ui-treenode-content > .ui-chkbox'),
-                children = parentNode.find('> .ui-treenode-children > .ui-treenode');
+                children = parentNode.find('> .ui-treenode-children > .ui-treenode').filter(function() {
+                    return $this.isSelectableNode($(this));
+                });
+
+                // a non-selectable node must never be selected by the propagation either, see #14798
+                if(!$this.isSelectableNode(parentNode)) {
+                    return;
+                }
 
                 if(checked) {
                     if(children.filter('.ui-treenode-unselected').length === children.length)
@@ -588,6 +599,17 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             this.fireNodeUnselectEvent(node);
         else
             this.fireNodeSelectEvent(node);
+    }
+
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} node
+     * @return {JQuery}
+     */
+    getChildNodes(node) {
+        return node.find('> .ui-treenode-children > .ui-treenode:not(.ui-treenode-hidden)');
     }
 
     /**

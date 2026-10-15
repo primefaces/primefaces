@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.treetable;
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 import org.primefaces.selenium.component.model.Msg;
@@ -35,6 +36,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -114,5 +118,39 @@ public class AbstractTreeTableTest extends AbstractTableTest {
         Msg message = messages.getMessage(index);
         assertEquals(summary, message.getSummary());
         assertEquals(detail, message.getDetail());
+    }
+
+    /**
+     * Checks the checkbox of the given row, which always fires an AJAX request to resolve the descendants of the node.
+     */
+    protected void selectCheckbox(TreeTable treeTable, String rowKey) {
+        PrimeSelenium.guardAjax(checkboxBox(treeTable, rowKey)).click();
+    }
+
+    /**
+     * Unchecks the checkbox of the given row, which does not fire an AJAX request without an unselect behavior.
+     */
+    protected void unselectCheckbox(TreeTable treeTable, String rowKey) {
+        checkboxBox(treeTable, rowKey).click();
+    }
+
+    protected boolean isSelected(TreeTable treeTable, String rowKey) {
+        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "ui-state-highlight");
+    }
+
+    protected boolean isPartialSelected(TreeTable treeTable, String rowKey) {
+        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "ui-treetable-partialselected");
+    }
+
+    protected boolean isChecked(TreeTable treeTable, String rowKey) {
+        return !row(treeTable, rowKey).findElements(By.cssSelector("span.ui-chkbox-icon.ui-icon-check")).isEmpty();
+    }
+
+    protected WebElement row(TreeTable treeTable, String rowKey) {
+        return treeTable.findElement(By.id(treeTable.getId() + "_node_" + rowKey));
+    }
+
+    private WebElement checkboxBox(TreeTable treeTable, String rowKey) {
+        return row(treeTable, rowKey).findElement(By.cssSelector("div.ui-chkbox-box"));
     }
 }
