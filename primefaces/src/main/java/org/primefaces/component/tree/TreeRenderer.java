@@ -41,7 +41,6 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -95,38 +94,19 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         String clientId = component.getClientId(context);
         String selection = params.get(clientId + "_selection");
 
-        if (isValueBlank(selection)) {
-            if (multiple) {
-                component.setSelection(selectionType.isArray() ? new TreeNode[0] : Collections.emptyList());
-            }
-            else {
-                component.setSelection(null);
-            }
+        String[] selectedRowKeys = isValueBlank(selection) ? new String[0] : selection.split(",");
+        if (!multiple && selectedRowKeys.length > 1) {
+            selectedRowKeys = new String[] {selectedRowKeys[0]};
+        }
+
+        List<TreeNode<?>> selectedNodes = component.decodeSelectedNodes(root, selectedRowKeys, component.getSelection());
+        if (multiple) {
+            component.setSelection(selectionType.isArray()
+                    ? selectedNodes.toArray(new TreeNode[selectedNodes.size()])
+                    : selectedNodes);
         }
         else {
-            String[] selectedRowKeys = selection.split(",");
-
-            if (multiple) {
-                List<TreeNode<?>> selectedNodes = new ArrayList<>();
-
-                for (int i = 0; i < selectedRowKeys.length; i++) {
-                    component.setRowKey(root, selectedRowKeys[i]);
-                    TreeNode<?> rowNode = component.getRowNode();
-                    if (rowNode != null) {
-                        selectedNodes.add(rowNode);
-                    }
-                }
-
-                component.setSelection(selectionType.isArray()
-                        ? selectedNodes.toArray(new TreeNode[selectedNodes.size()])
-                        : selectedNodes);
-            }
-            else {
-                component.setRowKey(root, selectedRowKeys[0]);
-                component.setSelection(component.getRowNode());
-            }
-
-            component.setRowKey(root, null);
+            component.setSelection(selectedNodes.isEmpty() ? null : selectedNodes.get(0));
         }
 
         if (component.isCheckboxSelectionMode() && component.isDynamic() && component.isSelectionRequest(context) && component.isPropagateSelectionDown()) {

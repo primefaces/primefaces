@@ -71,6 +71,16 @@ public class Tree009 implements Serializable {
         legacyDoc.setSelected(true, false);
 
         new CheckboxTreeNode<>("modern.doc", legacy);
+
+        // all children are non-selectable, so its state must never be derived from its descendants
+        TreeNode<String> archive = new CheckboxTreeNode<>("Archive", root);
+        archive.setExpanded(true);
+
+        TreeNode<String> locked = new CheckboxTreeNode<>("Locked", archive);
+        locked.setExpanded(true);
+        locked.setSelectable(false);
+
+        new CheckboxTreeNode<>("old.doc", locked);
     }
 
     public void showSelectedNodes() {

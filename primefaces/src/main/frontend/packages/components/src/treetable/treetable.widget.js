@@ -1377,6 +1377,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         var children = this.getChildren(node),
         allSelected = true,
         partialSelected = false,
+        hasSelectableChild = false,
         checkbox = this.cfg.nativeElements ? node.find('> td:first-child > :checkbox') :
                             node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
 
@@ -1390,11 +1391,15 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 continue;
             }
 
+            hasSelectableChild = true;
             allSelected = allSelected&&childSelected;
             partialSelected = partialSelected||childSelected||child.hasClass('ui-treetable-partialselected');
         }
 
-        if(allSelected) {
+        if(!hasSelectableChild) {
+            // without any selectable child there is nothing to derive the state of the node from, so it is kept
+        }
+        else if(allSelected) {
             node.removeClass('ui-treetable-partialselected');
             this.selectNode(node, true);
         }

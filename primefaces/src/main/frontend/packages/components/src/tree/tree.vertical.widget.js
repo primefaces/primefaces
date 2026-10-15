@@ -573,8 +573,9 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                     return $this.isSelectableNode($(this));
                 });
 
-                // a non-selectable node must never be selected by the propagation either, see #14798
-                if(!$this.isSelectableNode(parentNode)) {
+                // a non-selectable node must never be selected by the propagation either, and without any selectable
+                // child there is nothing to derive the state of the node from, see #14798
+                if(!$this.isSelectableNode(parentNode) || !children.length) {
                     return;
                 }
 

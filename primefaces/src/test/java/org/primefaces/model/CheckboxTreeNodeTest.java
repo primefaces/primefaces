@@ -109,6 +109,42 @@ class CheckboxTreeNodeTest {
     }
 
     @Test
+    void shouldPropagateUpIgnoringNonSelectableChildren() {
+        // #14798: a non-selectable child must not keep its parent from being fully selected
+        TreeNode<?> work = root.getChildren().get(0).getChildren().get(0);
+        TreeNode<?> expenses = work.getChildren().get(0);
+        TreeNode resume = work.getChildren().get(1);
+        expenses.setSelectable(false);
+
+        resume.setSelected(true);
+
+        assertTrue(work.isSelected());
+        assertFalse(work.isPartialSelected());
+        assertFalse(expenses.isSelected());
+    }
+
+    @Test
+    void shouldKeepStateWithoutSelectableChildren() {
+        // #14798: a node without any selectable child has nothing to derive its state from
+        TreeNode<?> movies = root.getChildren().get(2);
+        TreeNode<?> pacino = movies.getChildren().get(0);
+        TreeNode<?> deniro = movies.getChildren().get(1);
+        pacino.setSelectable(false);
+        deniro.setSelectable(false);
+
+        // selected by the model, but as all children of Movies are non-selectable, Movies must stay unselected
+        ((CheckboxTreeNode<?>) pacino).setSelected(true, false, true);
+        assertFalse(movies.isSelected());
+        assertFalse(movies.isPartialSelected());
+
+        // the same for unselecting
+        movies.setSelected(true);
+        ((CheckboxTreeNode<?>) pacino).setSelected(false, false, true);
+        assertTrue(movies.isSelected());
+        assertFalse(movies.isPartialSelected());
+    }
+
+    @Test
     void shouldDeleteNode() {
         TreeNode work = root.getChildren().get(0).getChildren().get(0);
         TreeNode expenses = root.getChildren().get(0).getChildren().get(0).getChildren().get(0);
