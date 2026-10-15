@@ -134,7 +134,10 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
                     const command = id ? $(id) : $();
 
                     // Test if the function matches the pattern
-                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
+                    if (typeof js === 'function') {
+                        js.call(id);
+                    }
+                    else if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
                         var originalOnClick;
 

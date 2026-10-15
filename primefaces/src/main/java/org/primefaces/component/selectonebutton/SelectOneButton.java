@@ -24,6 +24,7 @@
 package org.primefaces.component.selectonebutton;
 
 import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.component.api.Confirmable;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
@@ -36,11 +37,13 @@ import jakarta.faces.component.UINamingContainer;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectOneButton extends SelectOneButtonBaseImpl {
+public class SelectOneButton extends SelectOneButtonBaseImpl implements Confirmable {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneButton";
 
     public static final String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget";
+
+    private String confirmationScript;
 
     @Override
     public String getInputClientId() {
@@ -50,6 +53,21 @@ public class SelectOneButton extends SelectOneButtonBaseImpl {
     @Override
     public String getValidatableInputClientId() {
         return getInputClientId();
+    }
+
+    @Override
+    public String getConfirmationScript() {
+        return confirmationScript;
+    }
+
+    @Override
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
+
+    @Override
+    public boolean requiresConfirmation() {
+        return confirmationScript != null;
     }
 
 }

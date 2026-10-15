@@ -1158,7 +1158,10 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
                     const js = source.data('pfconfirmcommand');
                     const command = id ? $(id) : $();
 
-                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
+                    if (typeof js === 'function') {
+                        js.call(id);
+                    }
+                    else if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
                         var originalOnClick;
 
