@@ -32,7 +32,6 @@ import jakarta.faces.view.facelets.Metadata;
 import jakarta.faces.view.facelets.MetadataTarget;
 import jakarta.faces.view.facelets.TagAttribute;
 
-
 public class PrimeConverterMetaRule extends MetaRule {
     public static final PrimeConverterMetaRule INSTANCE = new PrimeConverterMetaRule();
 

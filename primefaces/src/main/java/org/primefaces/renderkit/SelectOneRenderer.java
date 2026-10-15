@@ -47,7 +47,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
         String clientId = getSubmitParam(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
+        String submittedValue = params.getOrDefault(clientId, "");
         List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
         component.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
                 ? submittedValue

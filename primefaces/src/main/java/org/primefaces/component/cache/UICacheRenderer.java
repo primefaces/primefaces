@@ -47,7 +47,7 @@ public class UICacheRenderer extends CoreRenderer<UICache> {
         if (!component.isDisabled()) {
             // print exception in development stage
             if (LOGGER.isLoggable(Level.WARNING)) {
-                boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+                boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isMoveScriptsToBottom();
                 if (moveScriptsToBottom) {
                     logDevelopmentWarning(context, this,
                             "Using p:cache in combination with PrimeFaces.MOVE_SCRIPTS_TO_BOTTOM may cause Javascript code to stop working.");

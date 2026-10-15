@@ -101,7 +101,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             process = "@this";
         }
 
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(behaviorContext.getFacesContext()).getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(source)
