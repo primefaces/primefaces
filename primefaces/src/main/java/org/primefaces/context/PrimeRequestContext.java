@@ -80,7 +80,7 @@ public class PrimeRequestContext {
 
     public static PrimeRequestContext getCurrentInstance(FacesContext facesContext) {
         if (facesContext == null) {
-            return null;
+            throw new IllegalArgumentException("FacesContext must not be null.");
         }
 
         PrimeRequestContext context = (PrimeRequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
