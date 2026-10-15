@@ -25,13 +25,13 @@ package org.primefaces.integrationtests.dialog;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Dialog;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,57 +40,68 @@ class Dialog005Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("Dialog: #15384 boxStyle/boxStyleClass and contentStyle/contentStyleClass")
-    void boxAndContentStyle(Page page) {
+    @DisplayName("Dialog: #14287 remove relocated dialog with its original container")
+    void remove(Page page) {
         // Arrange
-        Dialog dialog = page.dialog;
+        assertEquals("@(body)", page.dialog.getWidgetConfiguration().getString("appendTo"));
+        page.dialog.show();
+        assertTrue(page.dialog.isVisible());
+        page.dialog.hide();
 
         // Act
-        dialog.show();
+        page.remove.click();
 
         // Assert
-        assertTrue(dialog.isDisplayed());
-        assertCss(dialog, "p-dialog", "container-class");
-        assertTrue(dialog.getAttribute("style").contains("opacity"));
-
-        WebElement box = getBox(dialog);
-        assertCss(box, "p-dialog-box", "box-wide");
-        assertTrue(box.getAttribute("style").contains("min-height"));
-        assertEquals("600px", box.getCssValue("width")); // CSS width is not overridden by an inline width
-
-        WebElement content = dialog.getContent();
-        assertCss(content, "p-dialog-content", "content-class");
-        assertEquals("7px", content.getCssValue("padding-top"));
+        assertNotPresent(page.dialog);
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(2)
-    @DisplayName("Dialog: #15384 boxStyleClass width is kept after maximize restore")
-    void boxStyleClassAfterMaximize(Page page) {
+    @DisplayName("Dialog: #14287 refresh container and then remove relocated dialog")
+    void refreshContainer(Page page) {
         // Arrange
-        Dialog dialog = page.dialog;
-        dialog.show();
-        dialog.toggleMaximize();
-        assertCss(dialog, "p-dialog-maximized");
+        page.refresh.click();
+        page.dialog.show();
+        assertTrue(page.dialog.isVisible());
+        page.dialog.hide();
 
         // Act
-        dialog.toggleMaximize();
+        page.remove.click();
 
         // Assert
-        assertFalse(dialog.getAttribute("class").contains("p-dialog-maximized"));
-        assertEquals("600px", getBox(dialog).getCssValue("width"));
+        assertNotPresent(page.dialog);
         assertNoJavascriptErrors();
     }
 
-    private WebElement getBox(Dialog dialog) {
-        return dialog.findElement(By.className("p-dialog-box"));
+    @Test
+    @Order(3)
+    @DisplayName("Dialog: #14287 direct update preserves original container tracking")
+    void refreshDialog(Page page) {
+        // Arrange
+        page.refreshDialog.click();
+        page.dialog.show();
+        assertTrue(page.dialog.isVisible());
+        page.dialog.hide();
+
+        // Act
+        page.remove.click();
+
+        // Assert
+        assertNotPresent(page.dialog);
+        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
-
         @FindBy(id = "form:dlg")
         Dialog dialog;
+        @FindBy(id = "form:remove")
+        CommandButton remove;
+        @FindBy(id = "form:refresh")
+        CommandButton refresh;
+        @FindBy(id = "form:refreshDialog")
+        CommandButton refreshDialog;
 
         @Override
         public String getLocation() {
