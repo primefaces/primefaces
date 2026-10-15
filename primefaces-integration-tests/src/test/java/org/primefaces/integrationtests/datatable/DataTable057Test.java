@@ -55,8 +55,8 @@ class DataTable057Test extends AbstractPrimePageTest {
         assertEquals(List.of("1", "Language 1", "1991"), rowValues(dataTable, 0));
 
         // Act - drag the "ID" column onto the "Name" column, then live scroll the next chunk in
-        dragColumnOnto(page, 0, 1);
-        assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(page));
+        dragColumnOnto(page, dataTable, 0, 1);
+        assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(dataTable));
         assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
 
         PrimeSelenium.executeScript(true, "PF('dtWidget').loadLiveRows()");
@@ -84,8 +84,30 @@ class DataTable057Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
-    private List<String> headerTexts(Page page) {
-        return page.dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th")).stream().map(WebElement::getText).toList();
+    @Test
+    @Order(3)
+    @DisplayName("DataTable: GitHub #14991 dynamic column order must be retained by live scroll after a column was dragged")
+    void dynamicColumnOrderRetainedAfterLiveScroll(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTableDynamic;
+        assertEquals(List.of("1", "Language 1", "1991"), rowValues(dataTable, 0));
+
+        // Act - drag the "ID" column onto the "Name" column, then live scroll the next chunk in
+        dragColumnOnto(page, dataTable, 0, 1);
+        assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(dataTable));
+        assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
+
+        PrimeSelenium.executeScript(true, "PF('dtDynamicWidget').loadLiveRows()");
+
+        // Assert - the rows loaded by the scroll must follow the dragged column order, like the already visible ones
+        assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
+        assertEquals(List.of("Language 6", "6", "1996"), rowValues(dataTable, 5));
+        assertEquals(List.of("Language 10", "10", "1990"), rowValues(dataTable, 9));
+        assertNoJavascriptErrors();
+    }
+
+    private List<String> headerTexts(DataTable dataTable) {
+        return dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th")).stream().map(WebElement::getText).toList();
     }
 
     private List<String> rowValues(DataTable dataTable, int rowIndex) {
@@ -100,11 +122,12 @@ class DataTable057Test extends AbstractPrimePageTest {
      * events, so the drag has to be performed step by step: press, exceed the drag threshold, move over the target header and release there.
      *
      * @param page the page under test
+     * @param dataTable the table to reorder the columns of
      * @param fromIndex index of the column to drag
      * @param toIndex index of the column to drop it on
      */
-    private void dragColumnOnto(Page page, int fromIndex, int toIndex) {
-        List<WebElement> headers = page.dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th"));
+    private void dragColumnOnto(Page page, DataTable dataTable, int fromIndex, int toIndex) {
+        List<WebElement> headers = dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th"));
         WebElement source = headers.get(fromIndex);
         WebElement target = headers.get(toIndex);
 
@@ -123,6 +146,9 @@ class DataTable057Test extends AbstractPrimePageTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
+
+        @FindBy(id = "form:datatableDynamic")
+        DataTable dataTableDynamic;
 
         @Override
         public String getLocation() {

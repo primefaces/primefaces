@@ -27,6 +27,14 @@
                 <p:column id="colFirstAppeared" field="firstAppeared" headerText="First Appeared"/>
 
             </p:dataTable>
+
+            <p:dataTable id="datatableDynamic" widgetVar="dtDynamicWidget" value="#{dataTable057.dynamicLazyDataModel}" var="lang"
+                         lazy="true" scrollable="true" liveScroll="true" scrollRows="5" scrollHeight="150"
+                         draggableColumns="true">
+
+                <p:columns id="cols" value="#{dataTable057.columns}" var="column" field="#{column.property}" headerText="#{column.header}"/>
+
+            </p:dataTable>
         </h:form>
 
     </h:body>

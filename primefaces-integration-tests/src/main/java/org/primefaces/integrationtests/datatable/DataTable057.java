@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -40,10 +41,17 @@ public class DataTable057 implements Serializable {
     @Serial private static final long serialVersionUID = -7518459955779385835L;
 
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
+    protected ProgrammingLanguageLazyDataModel dynamicLazyDataModel;
+    protected List<DataTable001Dynamic.ColumnModel> columns;
 
     @PostConstruct
     public void init() {
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
+        dynamicLazyDataModel = new ProgrammingLanguageLazyDataModel();
+        columns = List.of(
+                new DataTable001Dynamic.ColumnModel("ID", "id", null, true),
+                new DataTable001Dynamic.ColumnModel("Name", "name", null, true),
+                new DataTable001Dynamic.ColumnModel("First Appeared", "firstAppeared", null, true));
     }
 
 }
