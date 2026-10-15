@@ -188,6 +188,9 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
      * @return data of found treenode
      */
     protected static Object traverseTree(TreeNode<?> node, AtomicInteger rowIndex) {
+        if (node == null) {
+            return null;
+        }
 
         int index = rowIndex.get();
         rowIndex.decrementAndGet();
