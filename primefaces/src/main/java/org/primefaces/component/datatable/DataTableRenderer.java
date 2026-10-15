@@ -1159,6 +1159,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     /**
      * Resolves the group defined by the summary rows themselves, the first one declaring a group wins.
+     * All summary rows share this one group, distinct groups per summary row are not supported.
      *
      * @return the group by {@link ValueExpression} or <code>null</code> when no summary row defines a group
      */
@@ -1192,6 +1193,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.endElement("tbody");
     }
 
+    /**
+     * No longer called by this renderer, only kept so subclassed renderers calling or overriding it still compile.
+     *
+     * @deprecated use {@link #encodeSummaryRow(FacesContext, List, ValueExpression)} instead
+     */
+    @Deprecated
     protected void encodeSummaryRow(FacesContext context, List<SummaryRow> summaryRows, SortMeta sort) throws IOException {
         encodeSummaryRow(context, summaryRows, sort == null ? null : sort.getSortBy());
     }

@@ -640,6 +640,9 @@ A `summaryRow` closes the group defined by the table, so on its own it needs to 
 up the group from a `headerRow`, a `groupRow="true"` column or the active sort; when there is none of those, define
 the group on the summary row itself with `field` (or `groupBy`). Note that the summary row only groups, it does not
 sort, so make sure the rows arrive grouped - via `headerRow`, a sorted column or a pre-sorted list.
+A disabled `headerRow` (e.g. `rendered="false"`) does not define the group. When there are multiple summary rows they
+all share one group: the first summary row defining `field` (or `groupBy`) wins, different groups per summary row are
+not supported.
 
 ```xhtml
 <p:dataTable var="car" value="#{dtRowGroupView.cars}">
