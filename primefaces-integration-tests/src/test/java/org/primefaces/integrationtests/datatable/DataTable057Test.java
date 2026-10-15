@@ -29,6 +29,7 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -107,14 +108,14 @@ class DataTable057Test extends AbstractPrimePageTest {
     }
 
     private List<String> headerTexts(DataTable dataTable) {
-        return dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th")).stream().map(WebElement::getText).toList();
+        return dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th")).stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     private List<String> rowValues(DataTable dataTable, int rowIndex) {
         return dataTable.getRow(rowIndex).getWebElement().findElements(By.tagName("td"))
                 .stream()
                 .map(WebElement::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

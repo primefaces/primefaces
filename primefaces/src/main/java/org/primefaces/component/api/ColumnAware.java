@@ -379,11 +379,13 @@ public interface ColumnAware {
      * on, or <code>null</code> if it is not positioned on a row
      */
     private String getCurrentRowKey() {
-        if (this instanceof UIData uiData) {
+        if (this instanceof UIData) {
+            UIData uiData = (UIData) this;
             int rowIndex = uiData.getRowIndex();
             return rowIndex == -1 ? null : String.valueOf(rowIndex);
         }
-        if (this instanceof UITree uiTree) {
+        if (this instanceof UITree) {
+            UITree uiTree = (UITree) this;
             return uiTree.getRowKey();
         }
         return null;
