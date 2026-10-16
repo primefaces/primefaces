@@ -47,7 +47,7 @@ public class DatePicker018 implements Serializable {
 
     @PostConstruct
     public void init() {
-        value = LocalDateTime.of(2026, 6, 5, 8, 0, 0);
+        value = LocalDateTime.of(2026, 6, 5, 15, 0, 0);
     }
 
     public String getFormattedValue() {

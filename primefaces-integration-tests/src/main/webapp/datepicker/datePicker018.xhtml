@@ -14,7 +14,7 @@
         <h:form id="form">
             <p:datePicker id="datepicker" value="#{datePicker018.value}"
                           pattern="dd/MM/yyyy HH:mm:ss" showTime="true" showSeconds="true"
-                          readonlyInput="true" timeInput="true">
+                          hourFormat="12" readonlyInput="true" timeInput="true">
                 <p:ajax event="dateSelect" process="@this" update="selectedValue"/>
             </p:datePicker>
 

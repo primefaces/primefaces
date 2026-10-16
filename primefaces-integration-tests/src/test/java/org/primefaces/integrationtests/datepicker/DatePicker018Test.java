@@ -44,20 +44,33 @@ class DatePicker018Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
-    @DisplayName("DatePicker: time input updates on keyup and survives closing")
+    @DisplayName("DatePicker: completed time input updates once and survives closing")
     void timeInputKeyUp(Page page) {
         // Arrange
         DatePicker datePicker = page.datepicker;
-        assertEquals("2026-06-05 08:00:00", page.selectedValue.getText());
+        assertEquals("2026-06-05 15:00:00", page.selectedValue.getText());
         WebElement panel = datePicker.showPanel();
+        WebElement hourInput = panel.findElement(By.cssSelector(".ui-hour-picker input"));
         WebElement minuteInput = panel.findElement(By.cssSelector(".ui-minute-picker input"));
+        assertEquals("03", hourInput.getAttribute("value"));
         assertEquals("00", minuteInput.getAttribute("value"));
 
-        // Act
-        PrimeSelenium.guardAjax(minuteInput).sendKeys(Keys.END, Keys.BACK_SPACE, "5");
+        // Clearing a field must leave it editable until the replacement is complete.
+        hourInput.sendKeys(Keys.CONTROL, "a", Keys.BACK_SPACE);
+        assertEquals("", hourInput.getAttribute("value"));
+        assertEquals("2026-06-05 15:00:00", page.selectedValue.getText());
+
+        // Act: typing 04 in a 12-hour field must preserve the current PM half-day.
+        PrimeSelenium.guardAjax(hourInput).sendKeys("04");
 
         // Assert the AJAX behavior has received the typed value before the panel closes.
-        assertEquals("2026-06-05 08:05:00", page.selectedValue.getText());
+        assertEquals("2026-06-05 16:00:00", page.selectedValue.getText());
+
+        minuteInput.sendKeys(Keys.CONTROL, "a", Keys.BACK_SPACE);
+        assertEquals("", minuteInput.getAttribute("value"));
+        assertEquals("2026-06-05 16:00:00", page.selectedValue.getText());
+        PrimeSelenium.guardAjax(minuteInput).sendKeys("05");
+        assertEquals("2026-06-05 16:05:00", page.selectedValue.getText());
 
         // Act
         page.outside.click();
@@ -65,6 +78,7 @@ class DatePicker018Test extends AbstractDatePickerTest {
 
         // Assert
         WebElement reopenedMinuteInput = datePicker.getPanel().findElement(By.cssSelector(".ui-minute-picker input"));
+        assertEquals("04", datePicker.getPanel().findElement(By.cssSelector(".ui-hour-picker input")).getAttribute("value"));
         assertEquals("05", reopenedMinuteInput.getAttribute("value"));
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
