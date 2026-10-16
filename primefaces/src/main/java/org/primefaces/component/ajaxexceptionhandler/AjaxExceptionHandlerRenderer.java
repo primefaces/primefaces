@@ -48,7 +48,7 @@ public class AjaxExceptionHandlerRenderer extends CoreRenderer {
         wb.init("AjaxExceptionHandler", ajaxExceptionHandler);
         wb.attr("exceptionType", ajaxExceptionHandler.getType())
                 .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, ajaxExceptionHandler, ajaxExceptionHandler.getUpdate()))
-                .callback("onexception", "function(errorName, errorMessage)", ajaxExceptionHandler.getOnexception());
+                .callback("onexception", "function(type, message, timestamp)", ajaxExceptionHandler.getOnexception());
 
         wb.finish();
     }

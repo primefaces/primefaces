@@ -8,7 +8,8 @@
  *
  * @prop {string} cfg.exceptionType The exception type.
  * @prop {string} cfg.update The components to update.
- * @prop {string} cfg.onexception The JS callback.
+ * @prop {(this: PrimeFaces.widget.AjaxExceptionHandler, type: string, message: string, timestamp: string) => void} cfg.onexception
+ * The JS callback, invoked with the same arguments as on the server side.
  */
 PrimeFaces.widget.AjaxExceptionHandler = PrimeFaces.widget.BaseWidget.extend({
 
@@ -42,6 +43,7 @@ PrimeFaces.widget.AjaxExceptionHandler = PrimeFaces.widget.BaseWidget.extend({
      */
     handle: function(errorName, errorMessage) {
         var $this = this;
+        var timestamp = this.formatTimestamp(new Date());
 
         if (this.cfg.update) {
             var options = {
@@ -54,15 +56,29 @@ PrimeFaces.widget.AjaxExceptionHandler = PrimeFaces.widget.BaseWidget.extend({
                 skipErrorHandling: true,
                 oncomplete: function(xhr, status, args, data) {
                     if ($this.cfg.onexception) {
-                        $this.cfg.onexception.call($this, errorName, errorMessage);
+                        $this.cfg.onexception.call($this, errorName, errorMessage, timestamp);
                     }
                 }
             };
             PrimeFaces.ajax.Request.handle(options);
         }
         else if (this.cfg.onexception) {
-            this.cfg.onexception.call($this, errorName, errorMessage);
+            this.cfg.onexception.call($this, errorName, errorMessage, timestamp);
         }
+    },
+
+    /**
+     * Formats the passed date like the server side `p:ajaxExceptionHandler` (`yyyy-MM-dd HH:mm:ss`).
+     * @param {Date} date The date to format.
+     * @return {string} The formatted date.
+     */
+    formatTimestamp: function(date) {
+        var pad = function(value) {
+            return (value < 10 ? '0' : '') + value;
+        };
+
+        return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate())
+            + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
     },
 
     /**
