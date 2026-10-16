@@ -225,7 +225,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
             if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("var hf=function(type,message,timestampp){");
+                sb.append("var hf=function(type,message,timestamp){");
                 sb.append(handlerComponent.getOnexception());
                 sb.append("};hf.call(this,\"");
                 sb.append(info.getType());

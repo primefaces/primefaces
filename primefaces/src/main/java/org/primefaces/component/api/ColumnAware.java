@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
@@ -307,6 +308,10 @@ public interface ColumnAware {
         List<UIColumn> columns = new ArrayList<>();
         FacesContext context = FacesContext.getCurrentInstance();
 
+        // features like live scroll, row editing or expanding a TreeTable node encode single rows, so the table might
+        // still be positioned on a row when the columns are collected - the row must not leak into the keys, see #14991
+        String rowKey = getCurrentRowKey();
+
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
             if (child instanceof Column) {
@@ -315,8 +320,12 @@ public interface ColumnAware {
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
                 uiColumns.setRowIndex(-1);
+                // a DynamicColumn keeps its key for its whole lifetime (the column list is cached for the request)
+                String baseColumnKey = rowKey == null
+                        ? uiColumns.getColumnKey()
+                        : uiColumns.getColumnKey((UIComponent) this, rowKey);
                 for (int j = 0; j < uiColumns.getRowCount(); j++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
+                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, baseColumnKey, context);
                     columns.add(dynaColumn);
                 }
             }
@@ -331,7 +340,7 @@ public interface ColumnAware {
             }
 
             Integer dp1 = c1.getDisplayPriority();
-            ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
+            ColumnMeta cm1 = columnMeta.get(getColumnMetaKey(c1, rowKey));
             if (cm1 != null && cm1.getDisplayPriority() != null) {
                 dp1 = cm1.getDisplayPriority();
             }
@@ -341,7 +350,7 @@ public interface ColumnAware {
             }
 
             Integer dp2 = c2.getDisplayPriority();
-            ColumnMeta cm2 = columnMeta.get(c2.getColumnKey());
+            ColumnMeta cm2 = columnMeta.get(getColumnMetaKey(c2, rowKey));
             if (cm2 != null && cm2.getDisplayPriority() != null) {
                 dp2 = cm2.getDisplayPriority();
             }
@@ -350,6 +359,36 @@ public interface ColumnAware {
         });
 
         return columns;
+    }
+
+    /**
+     * The {@link ColumnMeta} is keyed by the row-less client id of the column, while {@link UIColumn#getColumnKey()} is
+     * the plain client id, which contains the row index (or the row key of a tree) as soon as the table is positioned
+     * on a row.
+     *
+     * @param column the column to resolve the key for
+     * @param rowKey the row the table is currently positioned on, or <code>null</code>
+     * @return the key to look up the {@link ColumnMeta} of the given column
+     */
+    private String getColumnMetaKey(UIColumn column, String rowKey) {
+        return rowKey == null ? column.getColumnKey() : column.getColumnKey((UIComponent) this, rowKey);
+    }
+
+    /**
+     * @return the row index (for a {@link UIData}) or row key (for a {@link UITree}) the table is currently positioned
+     * on, or <code>null</code> if it is not positioned on a row
+     */
+    private String getCurrentRowKey() {
+        if (this instanceof UIData) {
+            UIData uiData = (UIData) this;
+            int rowIndex = uiData.getRowIndex();
+            return rowIndex == -1 ? null : String.valueOf(rowIndex);
+        }
+        if (this instanceof UITree) {
+            UITree uiTree = (UITree) this;
+            return uiTree.getRowKey();
+        }
+        return null;
     }
 
     default int getColumnsCount() {

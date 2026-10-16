@@ -44,9 +44,19 @@ public class DynamicColumn implements UIColumn {
     private final String columnKey;
 
     public DynamicColumn(int index, Columns columns, FacesContext context) {
+        this(index, columns, columns.getColumnKey(), context);
+    }
+
+    /**
+     * @param index the index of the column inside the {@link Columns}
+     * @param columns the {@link Columns} this column was created from
+     * @param baseColumnKey the key of the {@link Columns}, which must not contain a row index of the enclosing table
+     * @param context the {@link FacesContext}
+     */
+    public DynamicColumn(int index, Columns columns, String baseColumnKey, FacesContext context) {
         this.index = index;
         this.columns = columns;
-        this.baseColumnKey = columns.getColumnKey();
+        this.baseColumnKey = baseColumnKey;
         this.separatorChar = UINamingContainer.getSeparatorChar(context);
         this.columnKey = baseColumnKey + separatorChar + index;
     }

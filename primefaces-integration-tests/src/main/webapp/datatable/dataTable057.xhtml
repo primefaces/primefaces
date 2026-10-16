@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable" widgetVar="dtWidget" value="#{dataTable057.lazyDataModel}" var="lang"
+                         lazy="true" scrollable="true" liveScroll="true" scrollRows="5" scrollHeight="150"
+                         draggableColumns="true">
+
+                <p:column id="colId" field="id" headerText="ID"/>
+
+                <p:column id="colName" field="name" headerText="Name"/>
+
+                <p:column id="colFirstAppeared" field="firstAppeared" headerText="First Appeared"/>
+
+            </p:dataTable>
+
+            <p:dataTable id="datatableDynamic" widgetVar="dtDynamicWidget" value="#{dataTable057.dynamicLazyDataModel}" var="lang"
+                         lazy="true" scrollable="true" liveScroll="true" scrollRows="5" scrollHeight="150"
+                         draggableColumns="true">
+
+                <p:columns id="cols" value="#{dataTable057.columns}" var="column" field="#{column.property}" headerText="#{column.header}"/>
+
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
