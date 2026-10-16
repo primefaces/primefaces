@@ -24,6 +24,7 @@
 package org.primefaces.component.toggleswitch;
 
 import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.component.api.Confirmable;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
@@ -34,7 +35,7 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class ToggleSwitch extends ToggleSwitchBaseImpl {
+public class ToggleSwitch extends ToggleSwitchBaseImpl implements Confirmable {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToggleSwitch";
 
@@ -42,5 +43,22 @@ public class ToggleSwitch extends ToggleSwitchBaseImpl {
     public static final String SLIDER_CLASS = "ui-toggleswitch-slider";
     public static final String HANDLER_CLASS = "ui-toggleswitch-handler";
     public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
+
+    private String confirmationScript;
+
+    @Override
+    public String getConfirmationScript() {
+        return confirmationScript;
+    }
+
+    @Override
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
+
+    @Override
+    public boolean requiresConfirmation() {
+        return confirmationScript != null;
+    }
 
 }

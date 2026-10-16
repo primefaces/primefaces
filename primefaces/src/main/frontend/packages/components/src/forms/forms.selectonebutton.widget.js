@@ -15,6 +15,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @prop {function(): void} cfg.confirmation Callback that requests confirmation before changing the value.
  * 
  * @prop {boolean} cfg.custom Whether a custom layout is enabled.
  * @prop {boolean} cfg.unselectable Whether selection can be cleared.
@@ -102,7 +103,13 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
         .on('change.selectOneButton', (e) => {
             if (e.currentTarget.checked) {
                 const index = this.inputs.index(e.currentTarget);
-                this.select(this.buttons.eq(index));
+                const button = this.buttons.eq(index);
+                if (this.cfg.confirmation) {
+                    this.inputs.each((i, input) => {
+                        input.checked = this.buttons.eq(i).hasClass('ui-state-active');
+                    });
+                }
+                this.confirmChange(() => this.select(button));
             }
         });
     }
@@ -119,11 +126,32 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
 
         button.find(':radio').trigger('focus');
 
-        if(isActive) {
-            this.unselect(button);
+        if (isActive && !this.cfg.unselectable) {
+            return;
+        }
+
+        this.confirmChange(() => {
+            if (isActive) {
+                this.unselect(button);
+            }
+            else {
+                this.select(button);
+            }
+        });
+    }
+
+    /**
+     * Runs a user selection after confirmation, when configured.
+     * @private
+     * @param {function(): void} action The selection change to perform.
+     */
+    confirmChange(action) {
+        if (this.cfg.confirmation) {
+            this.jq.data('pfconfirmcommand', action);
+            this.cfg.confirmation.call(this.jq[0]);
         }
         else {
-            this.select(button);
+            action();
         }
     }
 

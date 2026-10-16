@@ -13,6 +13,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @prop {function(): void} cfg.confirmation Callback that requests confirmation before changing the value.
  */
 PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.BaseWidget {
 
@@ -51,7 +52,20 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
         var $this = this;
 
         this.slider.off('click.toggleSwitch').on('click.toggleSwitch', function(e) {
-            $this.input.trigger('click').trigger('focus.toggleSwitch');
+            if ($this.cfg.confirmation) {
+                $this.input.trigger('focus.toggleSwitch');
+                $this.requestToggle();
+            }
+            else {
+                $this.input.trigger('click').trigger('focus.toggleSwitch');
+            }
+        });
+
+        this.input.off('click.toggleSwitch').on('click.toggleSwitch', function(e) {
+            if ($this.cfg.confirmation) {
+                e.preventDefault();
+                $this.requestToggle();
+            }
         });
 
         this.input.off('focus.toggleSwitch').on('focus.toggleSwitch', function(e) {
@@ -67,7 +81,7 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
         })
         .off('keyup.toggleSwitch').on('keyup.toggleSwitch', function(e) {
             if(e.key === ' ') {
-                $this.toggle();
+                $this.requestToggle();
 
                 e.preventDefault();
             }
@@ -80,6 +94,24 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
                 $this.uncheck(true);
             }
         });
+    }
+
+    /**
+     * Requests confirmation before a user changes the switch value.
+     * @private
+     */
+    requestToggle() {
+        if (this.input.is(':disabled')) {
+            return;
+        }
+
+        if (this.cfg.confirmation) {
+            this.jq.data('pfconfirmcommand', () => this.toggle());
+            this.cfg.confirmation.call(this.jq[0]);
+        }
+        else {
+            this.toggle();
+        }
     }
 
     /**
