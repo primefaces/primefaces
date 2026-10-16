@@ -26,6 +26,7 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -251,6 +252,26 @@ public class HeadRenderer extends Renderer {
 
         if (projectStage != ProjectStage.Production) {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+        }
+
+        Map<String, String> errorPages = applicationContext.getConfig().getErrorPages();
+        if (!errorPages.isEmpty()) {
+            int i = 0;
+            writer.write("PrimeFaces.settings.errorPages={");
+            for (Map.Entry<String, String> entry : errorPages.entrySet()) {
+                if (i > 0) {
+                    writer.write(',');
+                }
+
+                String errorPageUrl = context.getExternalContext().getRequestContextPath() + entry.getValue();
+                errorPageUrl = context.getApplication().evaluateExpressionGet(context, errorPageUrl, String.class);
+                errorPageUrl = context.getExternalContext().encodeActionURL(errorPageUrl);
+
+                writer.write("'" + (entry.getKey() == null ? "" : entry.getKey()) + "':'" + errorPageUrl + "'");
+
+                i++;
+            }
+            writer.write("};");
         }
 
         if (context.getExternalContext().getClientWindow() != null) {

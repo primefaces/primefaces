@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<!-- without a p:ajaxExceptionHandler, the PrimeExceptionHandler redirects to the error-page of the web.xml -->
+		<h:form id="form">
+			<p:commandButton id="button" value="IllegalStateException"
+				action="#{ajaxExceptionHandler006.illegalState}" />
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

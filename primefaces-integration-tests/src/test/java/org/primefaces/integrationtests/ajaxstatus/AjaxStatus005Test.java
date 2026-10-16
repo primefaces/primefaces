@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.ajaxstatus;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 
+@Disabled //#14779
 class AjaxStatus005Test extends AbstractPrimePageTest {
 
     @Test

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<!-- real server-side exceptions are handled by the PrimeExceptionHandler, which renders update and onexception -->
+		<p:ajaxExceptionHandler type="java.lang.IllegalStateException" update="specificPanel"
+			onexception="$('#specificType').text(type); $('#specificMessage').text(message); $('#specificTimestamp').text(timestamp);" />
+		<p:ajaxExceptionHandler update="globalPanel"
+			onexception="$('#globalType').text(type); $('#globalMessage').text(message);" />
+
+		<h:panelGroup id="specificPanel" layout="block">
+			<h:outputText id="specificUpdate" value="Updated: #{pfExceptionHandler.message}" rendered="#{facesContext.partialViewContext.ajaxRequest}" />
+		</h:panelGroup>
+		<h:panelGroup id="globalPanel" layout="block">
+			<h:outputText id="globalUpdate" value="Updated: #{pfExceptionHandler.message}" rendered="#{facesContext.partialViewContext.ajaxRequest}" />
+		</h:panelGroup>
+
+		<div>Specific type: <span id="specificType"></span></div>
+		<div>Specific message: <span id="specificMessage"></span></div>
+		<div>Specific timestamp: <span id="specificTimestamp"></span></div>
+		<div>Global type: <span id="globalType"></span></div>
+		<div>Global message: <span id="globalMessage"></span></div>
+
+		<h:form id="form">
+			<p:commandButton id="illegalState" value="IllegalStateException"
+				action="#{ajaxExceptionHandler006.illegalState}" />
+			<p:commandButton id="unsupportedOperation" value="UnsupportedOperationException"
+				action="#{ajaxExceptionHandler006.unsupportedOperation}" />
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

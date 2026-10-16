@@ -23,12 +23,16 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
+import org.primefaces.component.api.Widget;
+
 import javax.faces.component.UIComponentBase;
 
 
-public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
+public abstract class AjaxExceptionHandlerBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
+
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.AjaxExceptionHandlerRenderer";
 
     public enum PropertyKeys {
 
@@ -38,7 +42,7 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
     }
 
     public AjaxExceptionHandlerBase() {
-        setRendererType(null);
+        setRendererType(DEFAULT_RENDERER);
     }
 
     @Override
