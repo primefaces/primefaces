@@ -13,7 +13,7 @@
 
 		<!-- invalid responses must be reported with the error names of the Faces specification -->
 		<p:ajaxExceptionHandler
-			onexception="$('#exceptionName').text(errorName); $('#exceptionMessage').text(errorMessage);" />
+			onexception="$('#exceptionName').text(type); $('#exceptionMessage').text(message);" />
 
 		<div>Name: <span id="exceptionName"></span></div>
 		<div>Message: <span id="exceptionMessage"></span></div>
