@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<!-- the default Faces AJAX error response (without PrimeExceptionHandler) is handled on the client -->
+		<p:ajaxExceptionHandler type="java.lang.IllegalStateException" update="specificPanel"
+			onexception="$('#specificName').text(type); $('#specificMessage').text(message); $('#specificTimestamp').text(timestamp);" />
+		<p:ajaxExceptionHandler
+			onexception="$('#globalName').text(type); $('#globalMessage').text(message);" />
+
+		<h:panelGroup id="specificPanel" layout="block">
+			<h:outputText id="specificUpdate" value="Updated" rendered="#{facesContext.partialViewContext.ajaxRequest}" />
+		</h:panelGroup>
+
+		<div>Specific name: <span id="specificName"></span></div>
+		<div>Specific message: <span id="specificMessage"></span></div>
+		<div>Specific timestamp: <span id="specificTimestamp"></span></div>
+		<div>Global name: <span id="globalName"></span></div>
+		<div>Global message: <span id="globalMessage"></span></div>
+
+		<h:form id="form">
+			<p:commandButton id="mojarraError" value="Error with class prefix"
+				action="#{ajaxExceptionHandler008.mojarraError}" />
+			<p:commandButton id="plainError" value="Error without class prefix"
+				action="#{ajaxExceptionHandler008.plainError}" />
+			<p:commandButton id="otherError" value="Other error"
+				action="#{ajaxExceptionHandler008.otherError}" />
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

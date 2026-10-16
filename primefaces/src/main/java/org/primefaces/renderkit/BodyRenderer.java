@@ -69,7 +69,7 @@ public class BodyRenderer extends CoreRenderer<UIComponent> {
     }
 
     protected void encodeOnloadScripts(FacesContext context, ResponseWriter writer) throws IOException {
-        List<String> scripts = PrimeRequestContext.getCurrentInstance().getScriptsToExecute();
+        List<String> scripts = PrimeRequestContext.getCurrentInstance(context).getScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);

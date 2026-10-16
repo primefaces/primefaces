@@ -22,6 +22,12 @@ body {
     .ui-panel-titlebar {
       border-bottom: none;
     }
+    &.ui-panel-collapsed,
+    &.ui-panel-collapsed-h {
+      .ui-panel-titlebar {
+        border-bottom: $panelHeaderBorder;
+      }
+    }
     .ui-panel-titlebar + .ui-panel-content {
       padding-top: 0;
     }

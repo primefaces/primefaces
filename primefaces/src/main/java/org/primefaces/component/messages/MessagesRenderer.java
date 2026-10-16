@@ -159,7 +159,8 @@ public class MessagesRenderer extends UINotificationRenderer<Messages> {
 
         writer.startElement("li", null);
 
-        writer.writeAttribute("role", "alert", null);
+        // role="alert" is not an allowed role for <li> (#14864), the enclosing ui-messages
+        // container is already an aria-live="polite" region which announces the message
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 
         String summary = message.getSummary() != null ? message.getSummary() : "";

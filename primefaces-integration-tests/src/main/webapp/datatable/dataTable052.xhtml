@@ -12,38 +12,24 @@
     <h:body>
 
         <h:form id="form">
+            <p:dataTable id="datatable" value="#{dataTable052.progLanguages}" var="lang">
+                <p:column field="id" headerText="ID"/>
+                <p:column field="name" headerText="Name"/>
+                <p:column field="firstAppeared" headerText="First appeared"/>
+                <p:column field="type" headerText="Type"/>
 
-            <p:dataTable id="dynamic" var="lang" value="#{dataTable052.progLanguages}">
-                <p:columns id="cols" var="col" value="#{dataTable052.columns}" headerText="#{col}">
-                    <h:outputText value="#{lang[col]}"/>
-                </p:columns>
-            </p:dataTable>
-
-            <!-- p:columns must not leak its var, so this renders empty and not the last column -->
-            <h:outputText id="afterCols" value="afterCols=[#{col}]"/>
-
-            <p:dataTable id="grouped" var="team" value="#{dataTable052.teams}">
-                <p:columnGroup type="header">
-                    <p:row>
-                        <p:column headerText="Stats"/>
-                    </p:row>
-                </p:columnGroup>
-
-                <p:subTable id="stats" var="stat" value="#{team.stats}">
-                    <f:facet name="header">
-                        <h:outputText value="#{team.name}"/>
-                    </f:facet>
-                    <p:column>
-                        <h:outputText value="#{stat}"/>
+                <!-- no headerRow, the summaryRow defines the group itself -->
+                <p:summaryRow field="type">
+                    <p:column colspan="3" style="text-align:right">
+                        <h:outputText value="Total programming languages:"/>
                     </p:column>
-                </p:subTable>
+                    <p:column>
+                        <h:outputText value="#{dataTable052.getTotalCount(lang.type)}"/>
+                    </p:column>
+                </p:summaryRow>
             </p:dataTable>
 
-            <!-- p:subTable must not leak its var, so this renders empty and not the last row -->
-            <h:outputText id="afterSub" value="afterSub=[#{stat}]"/>
-
-            <p:commandButton id="buttonUpdate" value="Update" update="@form"/>
-
+            <p:commandButton id="button" value="Submit" update="@form"/>
         </h:form>
 
     </h:body>

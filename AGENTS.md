@@ -131,7 +131,6 @@ mvn validate
 - Max line length: 160 characters; indentation: 4 spaces (no tabs)
 - MIT license header required in all source files (`conf/header.txt`), enforced by `license-maven-plugin`
 - No compilation warnings allowed (`showWarnings`/`showDeprecation` are on); all sources must be in English
-- `biome.json` configures Biome for the JS/TS sources
 
 ## Frontend (TypeScript/JavaScript)
 

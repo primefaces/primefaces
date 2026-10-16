@@ -24,78 +24,79 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
+
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-/**
- * GitHub #15165 and #15166: a component which iterates must not leave its iteration variable in the request map, so
- * that whatever renders after it resolves the variable of its own scope instead of the last row it rendered.
- */
+@Tag("DataTable-rowgroup")
 class DataTable052Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: GitHub #15166 p:columns does not leak its var into what renders after the table")
-    void dynamicColumnsVarDoesNotLeakAfterRender(Page page) {
+    @DisplayName("DataTable: RowGroup - summary row grouping by its own field, without a header row; see GitHub #14295")
+    void summaryRowWithoutHeaderRow(Page page) {
         // Arrange
-        assertTrue(page.dynamic.isDisplayed());
+        DataTable dataTable = page.dataTable;
+        assertNotNull(dataTable);
 
         // Assert
-        assertEquals("afterCols=[]", page.afterCols.getText());
-
-        // Act
-        PrimeSelenium.guardAjax(page.buttonUpdate).click();
-
-        // Assert
-        assertEquals("afterCols=[]", page.afterCols.getText());
-
-        assertNoJavascriptErrors();
+        assertSummaryRows(dataTable);
     }
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: GitHub #15165 p:subTable does not leak its var into what renders after the table")
-    void subTableVarDoesNotLeakAfterRender(Page page) {
+    @DisplayName("DataTable: RowGroup - summary row survives an update, without a header row; see GitHub #14295")
+    void summaryRowWithoutHeaderRowAfterUpdate(Page page) {
         // Arrange
-        assertTrue(page.grouped.isDisplayed());
-
-        // Assert
-        assertEquals("afterSub=[]", page.afterSub.getText());
+        DataTable dataTable = page.dataTable;
+        assertNotNull(dataTable);
 
         // Act
-        PrimeSelenium.guardAjax(page.buttonUpdate).click();
+        page.button.click();
 
         // Assert
-        assertEquals("afterSub=[]", page.afterSub.getText());
+        assertSummaryRows(dataTable);
+    }
+
+    private void assertSummaryRows(DataTable dataTable) {
+        List<Row> rows = dataTable.getRows();
+        assertNotNull(rows);
+        assertEquals(languages.size() + 2, rows.size()); //plus 2 summary-rows
+
+        //check summary-rows, one after each of the 2 groups (2 COMPILED, 3 INTERPRETED)
+        assertEquals("3", dataTable.getCell(2, 0).getWebElement().getAttribute("colspan"));
+        assertEquals("Total programming languages:", dataTable.getCell(2, 0).getText());
+        assertEquals("2", dataTable.getCell(2, 1).getText());
+        assertEquals("3", dataTable.getCell(6, 0).getWebElement().getAttribute("colspan"));
+        assertEquals("Total programming languages:", dataTable.getCell(6, 0).getText());
+        assertEquals("3", dataTable.getCell(6, 1).getText());
+
+        //remove summary-rows
+        rows.remove(6); //second summary-row
+        rows.remove(2); //first summary-row
+
+        assertRows(rows, languages);
 
         assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(id = "form:dynamic")
-        DataTable dynamic;
+        @FindBy(id = "form:datatable")
+        DataTable dataTable;
 
-        @FindBy(id = "form:afterCols")
-        WebElement afterCols;
-
-        @FindBy(id = "form:grouped")
-        DataTable grouped;
-
-        @FindBy(id = "form:afterSub")
-        WebElement afterSub;
-
-        @FindBy(id = "form:buttonUpdate")
-        CommandButton buttonUpdate;
+        @FindBy(id = "form:button")
+        CommandButton button;
 
         @Override
         public String getLocation() {

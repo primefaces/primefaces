@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.datatable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
@@ -33,7 +32,6 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Named
@@ -41,10 +39,9 @@ import lombok.Data;
 @Data
 public class DataTable052 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = -3117401598325091316L;
 
     private List<ProgrammingLanguage> progLanguages;
-    private List<Team> teams;
 
     @Inject
     private ProgrammingLanguageService service;
@@ -52,22 +49,9 @@ public class DataTable052 implements Serializable {
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
-        teams = Arrays.asList(
-                new Team("alpha", Arrays.asList("alpha-1", "alpha-2")),
-                new Team("beta", Arrays.asList("beta-1", "beta-2")));
     }
 
-    public List<String> getColumns() {
-        return Arrays.asList("id", "name");
-    }
-
-    @Data
-    @AllArgsConstructor
-    public static class Team implements Serializable {
-
-        @Serial private static final long serialVersionUID = 1L;
-
-        private String name;
-        private List<String> stats;
+    public long getTotalCount(ProgrammingLanguage.ProgrammingLanguageType type) {
+        return progLanguages.stream().filter(lang -> lang.getType() == type).count();
     }
 }

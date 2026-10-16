@@ -244,7 +244,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                     builder.append(eventValue);
                 }
 
-                if (builder.length() > 0) {
+                if (!builder.isEmpty()) {
                     renderAttribute(context, component, domEvent, builder.toString());
                     builder.setLength(0);
                 }
@@ -755,7 +755,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             }
         }
 
-        return sb.length() == 0 ? null : sb.toString();
+        return sb.isEmpty() ? null : sb.toString();
     }
 
     protected boolean shouldWriteId(UIComponent component) {

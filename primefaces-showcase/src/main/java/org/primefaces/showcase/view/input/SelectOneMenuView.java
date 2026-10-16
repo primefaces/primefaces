@@ -63,6 +63,11 @@ public class SelectOneMenuView {
 
     private String icon = "flag";
 
+    private String emptyItem;
+    private String blankItem;
+    private String emptyItemWithPlaceholder;
+    private String emptyNoSelectionItem;
+
     @Inject
     private CountryService service;
 
@@ -216,6 +221,38 @@ public class SelectOneMenuView {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getEmptyItem() {
+        return emptyItem;
+    }
+
+    public void setEmptyItem(String emptyItem) {
+        this.emptyItem = emptyItem;
+    }
+
+    public String getBlankItem() {
+        return blankItem;
+    }
+
+    public void setBlankItem(String blankItem) {
+        this.blankItem = blankItem;
+    }
+
+    public String getEmptyItemWithPlaceholder() {
+        return emptyItemWithPlaceholder;
+    }
+
+    public void setEmptyItemWithPlaceholder(String emptyItemWithPlaceholder) {
+        this.emptyItemWithPlaceholder = emptyItemWithPlaceholder;
+    }
+
+    public String getEmptyNoSelectionItem() {
+        return emptyNoSelectionItem;
+    }
+
+    public void setEmptyNoSelectionItem(String emptyNoSelectionItem) {
+        this.emptyNoSelectionItem = emptyNoSelectionItem;
     }
 
     public void setService(CountryService service) {

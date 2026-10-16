@@ -9,17 +9,18 @@
             <h:form id="search">
                 <p:autoComplete id="input" placeholder="Search by name..." minQueryLength="1" effect="fade"
                                 panelStyleClass="layout-sidebar-filter-panel" completeMethod="#{appMenu.completeMenuItem}"
-                                var="menuItem" scrollHeight="300" emptyMessage="No results found!" queryDelay="100">
+                                var="menuItem" scrollHeight="300" emptyMessage="No results found!" queryDelay="100"
+                                highlightSelector=".menu-item-value">
                     <p:column>
                         <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and empty menuItem.badge and not menuItem.url.startsWith('/') and empty menuItem.menuItems}">
-                            #{menuItem.label}
+                            <span class="menu-item-value">#{menuItem.label}</span>
                         </h:outputLink>
                         <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}" onclick="App.onSearchClick(event, 'sl_#{menuItem.parent.label.toLowerCase()}')">
-                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
+                            <span class="menu-item-value">#{menuItem.label}</span><p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                         </h:link>
                         <h:link outcome="#{menuItem.menuItems[0].url}" styleClass="submenu-link"
                                 rendered="#{not empty menuItem.menuItems}">
-                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
+                            <span class="menu-item-value">#{menuItem.label}</span><p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                         </h:link>
                     </p:column>
                 </p:autoComplete>

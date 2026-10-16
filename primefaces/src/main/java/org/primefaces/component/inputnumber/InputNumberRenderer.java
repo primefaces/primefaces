@@ -259,7 +259,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
             .attr("maximumValue", getMaximum(context, isIntegral, component))
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", component.getLeadingZero(), "deny")
-            .attr("allowDecimalPadding", component.getPadControl(), "true")
+            .attr("allowDecimalPadding", getPadControl(component), "true")
             .attr("modifyValueOnWheel", component.isModifyValueOnWheel(), true)
             .attr("modifyValueOnUpDownArrow", component.isModifyValueOnUpDownArrow(), true)
             .attr("roundingMethod", component.getRoundMethod(), "S")
@@ -392,6 +392,35 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
             return "0";
         }
         return "2";
+    }
+
+    /**
+     * Validates the "padControl" property which maps to the AutoNumeric "allowDecimalPadding" option.
+     * AutoNumeric only accepts "true", "false", "floats" or an integer greater than 0, and throws a
+     * client side error for anything else, so fail early with a meaningful message instead.
+     * @param component the component
+     * @return the padControl value to use
+     */
+    protected String getPadControl(InputNumber component) {
+        String padControl = component.getPadControl();
+        if (LangUtils.isBlank(padControl)
+                || "true".equals(padControl)
+                || "false".equals(padControl)
+                || "floats".equals(padControl)) {
+            return padControl;
+        }
+
+        try {
+            if (Integer.parseInt(padControl) > 0) {
+                return padControl;
+            }
+        }
+        catch (NumberFormatException e) {
+            // handled below, along with any non positive integer
+        }
+
+        throw new FacesException("The padControl option of InputNumber is invalid; it should either be "
+                + "\"true\", \"false\", \"floats\" or an integer greater than 0, [" + padControl + "] given.");
     }
 
     private String determineMinimumFromType(FacesContext context, InputNumber component) {

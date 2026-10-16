@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>Support</h1>
+                <p>Commercial support and consulting for PrimeFaces &#8211; the alternative to PrimeFaces PRO.</p>
+            </div>
+        </div>
+
+        <div class="content-section documentation">
+            <p class="line-height-3 text-lg">
+                PrimeFaces is entering a new chapter: it stays fully open source and is now developed and maintained
+                independently, while PrimeTek remains its financial sponsor. You can read the official announcement at
+                <a href="https://primeui.dev/nextchapter" target="_blank" rel="noopener noreferrer">primeui.dev/nextchapter</a>.
+            </p>
+
+            <h2>Open Source &amp; Releases</h2>
+            <p class="line-height-3">
+                The previously commercial PrimeFaces LTS releases are now simply continued as open source,
+                so everyone gets the ongoing bugfix and maintenance releases free of charge. All existing versions stay
+                MIT licensed, and PrimeTek honors existing PrimeFaces PRO support contracts until they expire.
+            </p>
+
+            <h2>Commercial Support</h2>
+            <p class="line-height-3">
+                PrimeTek no longer offers PrimeFaces PRO to new customers. Commercial support is now provided by the
+                PrimeFaces project lead through
+                <a href="https://neroe.org" target="_blank" rel="noopener noreferrer">neroe.org</a> &#8211; the
+                alternative to PrimeFaces PRO.
+            </p>
+            <ul class="line-height-3">
+                <li>Independent, ticket-based PrimeFaces support straight from the project lead.</li>
+                <li>Consulting on Jakarta EE, runtimes and operations.</li>
+                <li>Backports of fixes to older PrimeFaces versions.</li>
+                <li>Fixes for PrimeFaces bugs go upstream, so the whole community benefits.</li>
+            </ul>
+
+            <div class="mt-4">
+                <p:linkButton href="https://neroe.org" value="Visit neroe.org" icon="pi pi-external-link" iconPos="right"
+                              target="_blank" rel="noopener noreferrer"/>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
