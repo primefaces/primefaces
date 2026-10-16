@@ -33,12 +33,17 @@ import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
 import java.util.Map;
+import java.util.function.IntPredicate;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = Diagram.COMPONENT_TYPE, namespace = Diagram.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Diagram is a component to create visual elements and connect them on a web page.")
@@ -137,5 +142,92 @@ public class Diagram extends DiagramBaseImpl {
         else {
             super.queueEvent(event);
         }
+    }
+
+    /**
+     * The <code>element</code> facet is rendered once per element, therefore it must not be processed a single time
+     * with a rowIndex of <code>-1</code>. Otherwise the client ids of its children would not match the ones generated
+     * while rendering and e.g. a nested <code>p:commandLink</code> would never be decoded.
+     */
+    @Override
+    protected void processFacets(FacesContext context, PhaseId phaseId) {
+        UIComponent elementFacet = getElementFacet();
+
+        if (getFacetCount() > 0) {
+            for (UIComponent facet : getFacets().values()) {
+                if (facet != elementFacet) {
+                    process(context, facet, phaseId);
+                }
+            }
+        }
+
+        if (elementFacet != null) {
+            forEachElement(i -> {
+                process(context, elementFacet, phaseId);
+                return false;
+            });
+        }
+    }
+
+    /**
+     * @see #processFacets(FacesContext, PhaseId)
+     */
+    @Override
+    protected boolean visitFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if (visitRows) {
+            setRowIndex(-1);
+        }
+
+        UIComponent elementFacet = getElementFacet();
+
+        if (getFacetCount() > 0) {
+            for (UIComponent facet : getFacets().values()) {
+                if (facet != elementFacet && facet.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }
+
+        if (elementFacet == null) {
+            return false;
+        }
+
+        if (!visitRows) {
+            return elementFacet.visitTree(context, callback);
+        }
+
+        return forEachElement(i -> elementFacet.visitTree(context, callback));
+    }
+
+    /**
+     * Iterates over all elements of the model, exactly like the renderer does, and invokes the callback for each of
+     * them. The iteration stops as soon as the callback returns <code>true</code>.
+     *
+     * @param callback the callback to invoke for each element
+     * @return <code>true</code> if the callback returned <code>true</code> for one of the elements
+     */
+    private boolean forEachElement(IntPredicate callback) {
+        boolean result = false;
+
+        try {
+            int rowCount = getRowCount();
+            for (int i = 0; i < rowCount; i++) {
+                setRowIndex(i);
+
+                if (!isRowAvailable()) {
+                    break;
+                }
+
+                if (callback.test(i)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        finally {
+            setRowIndex(-1);
+        }
+
+        return result;
     }
 }

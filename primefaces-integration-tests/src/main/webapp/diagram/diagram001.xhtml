@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head>
+            <style>
+                .ui-diagram-element {
+                    width: 8em;
+                    height: 4em;
+                    text-align: center;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <h:form id="form">
+                <p:messages id="messages" showDetail="true"/>
+
+                <p:commandLink id="linkOutside" value="Outside"
+                               update="messages"
+                               action="#{diagram001.select('Outside')}"/>
+
+                <p:diagram id="diagram" value="#{diagram001.model}" var="el" style="height:400px">
+                    <f:facet name="element">
+                        <p:commandLink id="link" value="#{el.data}"
+                                       update=":form:messages"
+                                       action="#{diagram001.select(el.data)}"/>
+                    </f:facet>
+                </p:diagram>
+            </h:form>
+        </h:body>
+    </f:view>
+
+</html>

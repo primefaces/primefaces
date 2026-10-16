@@ -795,6 +795,11 @@ declare global {
              * The source that triggered the AJAX request.
              */
             source?: string | HTMLElement | JQuery<HTMLElement> | undefined;
+            /**
+             * `true` if errors of the request should not be passed to a `p:ajaxExceptionHandler` or `error-page`.
+             * See {@link Configuration.skipErrorHandling}.
+             */
+            skipErrorHandling?: boolean;
             beforeSend?(this: PrimeFacesSettings, jqXHR: pfXHR, settings: PrimeFacesSettings): false | void;
             nonce?: string;
         }
@@ -1129,6 +1134,11 @@ declare global {
              * specific components.
              */
             skipChildren?: boolean;
+            /**
+             * `true` if errors of this request should not be passed to a `p:ajaxExceptionHandler` or `error-page`, e.g.
+             * for the request of a `p:ajaxExceptionHandler` itself; `false` otherwise. Defaults to `false`.
+             */
+            skipErrorHandling?: boolean;
             /**
              * The source that triggered the AJAX request. Either a client ID or
              * an (HTML) element.
@@ -2059,10 +2069,11 @@ declare global {
          */
         export type OnExceptionCallback =
             /**
-             * @param errorName Name of the AJAX error.
-             * @param errorMessage Message with details regarding the AJAX error.
+             * @param type Name of the AJAX error, e.g. the exception type or `httpError`.
+             * @param message Message with details regarding the AJAX error.
+             * @param timestamp Timestamp of the AJAX error, formatted as `yyyy-MM-dd HH:mm:ss`.
              */
-            (this: AjaxExceptionHandler, errorName: string, errorMessage: string) => void;
+            (this: AjaxExceptionHandler, type: string, message: string, timestamp: string) => void;
     }
 }
 

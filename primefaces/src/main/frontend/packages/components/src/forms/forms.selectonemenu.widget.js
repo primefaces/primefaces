@@ -1181,8 +1181,12 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             if (valueEmpty) {
                 if (labelText != '&nbsp;') {
                     this.label.text(labelText);
+                    // the placeholder is the visible text, so that is what should be announced
+                    this.label.attr('aria-label', labelText);
                 } else {
-                    this.label.html(labelText);
+                    // nothing is visible, so fall back to the localized "nothing selected" text
+                    this.label.html(labelText + this.renderEmptyItemLabel());
+                    this.label.attr('aria-label', this.getEmptyItemLabel());
                 }
             }
             else {
@@ -1670,6 +1674,10 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         
         var dataLabel = escape ? label.replaceAll('"', '&quot;') : PrimeFaces.escapeHTML(label, true);
         label = label === "&amp;nbsp;" ? "&nbsp;" : label;
+        if (!isOptgroup && this.isBlankItemLabel(label)) {
+            // an item without a label has no accessible name, so give screen readers something to announce
+            content += ' aria-label="' + PrimeFaces.escapeHTML(this.getEmptyItemLabel(), true) + '"';
+        }
         content += ' data-label="' + dataLabel + '" data-value="' + PrimeFaces.escapeHTML($item.val(), true) + '">' + label + '</li>';
 
         if (isOptgroup) {
@@ -1677,6 +1685,43 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         }
 
         return content;
+    }
+
+    /**
+     * Checks whether the given item label carries no text a screen reader could announce. An empty
+     * `itemLabel` is rendered as `&nbsp;` by the server, so a blank label is not necessarily an empty string.
+     * @private
+     * @param {string} label The label of a select item.
+     * @return {boolean} `true` if the label has no announceable text, or `false` otherwise.
+     */
+    isBlankItemLabel(label) {
+        if (label === null || label === undefined) {
+            return true;
+        }
+        return String(label).replaceAll('&amp;nbsp;', ' ').replaceAll('&nbsp;', ' ').replaceAll('\xa0', ' ').trim() === '';
+    }
+
+    /**
+     * Returns the text a screen reader should announce for an item without a label. Defaults to the localized
+     * `nullLabel` ARIA label ("Not Selected"), which can be overridden application-wide via the locale settings
+     * or per component via `cfg.labels.aria.nullLabel`.
+     * @private
+     * @return {string} The accessible text for an item without a label.
+     */
+    getEmptyItemLabel() {
+        return this.getAriaLabel('nullLabel');
+    }
+
+    /**
+     * Builds the screen reader only text that gives the closed menu something to announce when the selected item
+     * has no label. A screen reader takes the value of a combobox from its content, so an `aria-label` alone is
+     * not enough: that is the accessible name, and it is ignored altogether once the menu is labelled by an
+     * `outputLabel`, because `aria-labelledby` wins over `aria-label`.
+     * @private
+     * @return {string} The markup for the screen reader only text of an item without a label.
+     */
+    renderEmptyItemLabel() {
+        return '<span class="ui-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
     }
 
     /**

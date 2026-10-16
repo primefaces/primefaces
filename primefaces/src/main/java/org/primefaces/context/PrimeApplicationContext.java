@@ -281,7 +281,7 @@ public class PrimeApplicationContext {
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext, boolean create) {
         if (facesContext == null || facesContext.getExternalContext() == null) {
-            return null;
+            throw new IllegalArgumentException("FacesContext and ExternalContext must not be null.");
         }
 
         PrimeApplicationContext applicationContext =

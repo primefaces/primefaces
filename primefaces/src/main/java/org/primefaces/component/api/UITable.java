@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -374,6 +375,50 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default SortMeta getHighestPriorityActiveSortMeta() {
         return getSortByAsMap().values().stream()
                 .filter(SortMeta::isActive)
+                .min(Comparator.comparingInt(SortMeta::getPriority))
+                .orElse(null);
+    }
+
+    /**
+     * Returns the {@link SortMeta} defining the row group boundaries used by header and summary rows.
+     * Grouping is defined explicitly by an enabled header row or by a column with <code>groupRow</code>; only when
+     * neither is present it falls back to the active sort, so the group does not depend on sort priority.
+     * A disabled header row never defines the group.
+     *
+     * @return the grouping {@link SortMeta} or <code>null</code> if rows are not grouped
+     */
+    default SortMeta getGroupByMeta() {
+        Map<String, SortMeta> sortBy = getSortByAsMap();
+        HeaderRow headerRow = getHeaderRow();
+        boolean headerRowEnabled = headerRow != null && headerRow.isEnabled();
+
+        for (SortMeta meta : sortBy.values()) {
+            if (headerRowEnabled && meta.isHeaderRow() && meta.isActive()) {
+                return meta;
+            }
+        }
+
+        AtomicReference<SortMeta> groupRowMeta = new AtomicReference<>();
+        forEachColumn(column -> {
+            if (column.isGroupRow()) {
+                SortMeta meta = sortBy.get(column.getColumnKey());
+                if (meta != null && meta.isActive()) {
+                    groupRowMeta.set(meta);
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        SortMeta meta = groupRowMeta.get();
+        if (meta != null) {
+            return meta;
+        }
+
+        return sortBy.values().stream()
+                .filter(SortMeta::isActive)
+                .filter(m -> headerRowEnabled || !m.isHeaderRow())
                 .min(Comparator.comparingInt(SortMeta::getPriority))
                 .orElse(null);
     }

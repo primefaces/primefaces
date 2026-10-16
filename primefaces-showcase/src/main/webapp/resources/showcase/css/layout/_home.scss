@@ -274,6 +274,12 @@
     }
 }
 
+/* Logos are forced to solid black for a uniform strip; invert them to white
+   on dark themes so they stay visible. */
+html[data-dark="true"] .landing-logos-inner img {
+    filter: brightness(0) invert(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .landing-logos-inner { animation: none; }
 }

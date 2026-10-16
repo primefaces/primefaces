@@ -79,6 +79,19 @@ selectValue(value) | value: itemValue | void | Selects given value.
 getSelectedValue() | - | Object | Returns value of selected item.
 getSelectedLabel() | - | String | Returns label of selected item.
 
+## Accessibility
+An item with an empty `itemLabel` has no text for a screen reader to announce. Such an item is therefore
+rendered with the localized `nullLabel` ARIA label ("Not Selected"), both in the options list and on the
+closed menu once it is selected. If a `placeholder` is set, the placeholder is the visible text and is
+announced instead.
+
+The text can be changed application-wide via the locale settings (see the
+[Localization](../core/localization.md) section):
+
+```javascript
+PrimeFaces.locales['en_US'].aria.nullLabel = 'Empty';
+```
+
 ## Skinning
 SelectOneMenu resides in a container element that _style_ and _styleClass_ attributes apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of

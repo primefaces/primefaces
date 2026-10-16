@@ -90,7 +90,8 @@ public class GMapRenderer extends CoreRenderer<GMap> {
                 .attr("zoom", component.getZoom())
                 .attr("apiKey", component.getApiKey())
                 .attr("apiVersion", component.getApiVersion())
-                .attr("libraries", component.getLibraries());
+                .attr("libraries", component.getLibraries())
+                .attr("mapId", component.getMapId());
 
 
         if (!component.isFitBounds()) {
@@ -206,12 +207,14 @@ public class GMapRenderer extends CoreRenderer<GMap> {
         writer.write("]");
     }
 
+    /**
+     * Encodes plain marker options; the widget builds the google.maps.marker.AdvancedMarkerElement once the marker
+     * library is loaded. shadow, flat, cursor and animation have no AdvancedMarkerElement equivalent and are ignored.
+     */
     protected void encodeMarker(FacesContext context, Marker marker) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("new google.maps.Marker({");
-        writer.write("position:new google.maps.LatLng(" + marker.getLatlng().getLat() + ", " + marker.getLatlng().getLng() + ")");
-
+        writer.write("{position:{lat:" + marker.getLatlng().getLat() + ",lng:" + marker.getLatlng().getLng() + "}");
         writer.write(",id:'" + marker.getId() + "'");
         if (marker.getTitle() != null) {
             writer.write(",title:\"" + EscapeUtils.forJavaScript(marker.getTitle()) + "\"");
@@ -220,33 +223,20 @@ public class GMapRenderer extends CoreRenderer<GMap> {
             writer.write(",icon:");
             encodeIcon(context, marker.getIcon());
         }
-        if (marker.getShadow() != null) {
-            writer.write(",shadow:'" + marker.getShadow() + "'");
-        }
-        if (marker.getCursor() != null) {
-            writer.write(",cursor:'" + marker.getCursor() + "'");
-        }
         if (marker.isDraggable()) {
-            writer.write(",draggable: true");
+            writer.write(",gmpDraggable:true");
         }
         if (!marker.isVisible()) {
-            writer.write(",visible: false");
-        }
-        if (marker.isFlat()) {
-            writer.write(",flat: true");
+            writer.write(",visible:false");
         }
         if (marker.getZindex() > Integer.MIN_VALUE) {
             writer.write(",zIndex:" + marker.getZindex());
-        }
-        if (marker.getAnimation() != null) {
-            writer.write(",animation: google.maps.Animation." + marker.getAnimation().name());
         }
         if (marker.getLabel() != null && marker.getLabel().getText() != null) {
             writer.write(",label:");
             encodeMarkerLabel(context, marker.getLabel());
         }
-
-        writer.write("})");
+        writer.write("}");
     }
 
     protected void encodeMarkerLabel(FacesContext context, MarkerLabel label) throws IOException {
@@ -273,8 +263,8 @@ public class GMapRenderer extends CoreRenderer<GMap> {
 
     protected void encodeIcon(FacesContext context, Object icon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        if (icon instanceof String) {
-            writer.write("'" + icon + "'");
+        if (icon instanceof String url) {
+            writer.write("\"" + EscapeUtils.forJavaScript(url) + "\"");
         }
         else if (icon instanceof Symbol symbol) {
             encodeIcon(context, symbol);
@@ -288,8 +278,7 @@ public class GMapRenderer extends CoreRenderer<GMap> {
         ResponseWriter writer = context.getResponseWriter();
         writer.write("{path:'" + symbol.getPath() + "'");
         if (symbol.getAnchor() != null) {
-            writer.write(",anchor:new google.maps.Point(" + symbol.getAnchor().getX()
-                    + "," + symbol.getAnchor().getY() + ")");
+            writer.write(",anchor:{x:" + symbol.getAnchor().getX() + ",y:" + symbol.getAnchor().getY() + "}");
         }
         if (symbol.getFillColor() != null) {
             writer.write(",fillColor:'" + symbol.getFillColor() + "'");
