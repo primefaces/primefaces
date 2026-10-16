@@ -1161,37 +1161,39 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
                     if (typeof js === 'function') {
                         js.call(id);
                     }
-                    else if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
-                        // command is ajax=true
-                        var originalOnClick;
+                    else if (typeof js === 'string') {
+                        if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
+                            // command is ajax=true
+                            var originalOnClick;
 
-                        if (source[0]) {
-                            // @ts-expect-error Internal JQuery method
-                            const events = $._data(source[0], "events");
-                            originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
-                        }
-
-                        // Temporarily remove the click handler and execute the new one
-                        source.prop('onclick', null).off("click").on("click", function(event) {
-                            PrimeFaces.csp.executeEvent(id, js, event);
-                        }).trigger("click");
-
-                        // Restore the original click handler if it exists
-                        if (originalOnClick) {
-                            source.off("click").on("click", originalOnClick);
-                        }
-                    } else {
-                        // #13736: regular button just execute its javascript
-                        if (source.attr('type') === "button") {
-                            PrimeFaces.csp.executeEvent(id, js, e);
-                        } else {
-                            // command is ajax=false
-                            if (command.prop('onclick')) {
-                                command.removeAttr("onclick");
-                            } else {
-                                command.off("click");
+                            if (source[0]) {
+                                // @ts-expect-error Internal JQuery method
+                                const events = $._data(source[0], "events");
+                                originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
                             }
-                            command.removeAttr("data-pfconfirmcommand").trigger("click");
+
+                            // Temporarily remove the click handler and execute the new one
+                            source.prop('onclick', null).off("click").on("click", function(event) {
+                                PrimeFaces.csp.executeEvent(id, js, event);
+                            }).trigger("click");
+
+                            // Restore the original click handler if it exists
+                            if (originalOnClick) {
+                                source.off("click").on("click", originalOnClick);
+                            }
+                        } else {
+                            // #13736: regular button just execute its javascript
+                            if (source.attr('type') === "button") {
+                                PrimeFaces.csp.executeEvent(id, js, e);
+                            } else {
+                                // command is ajax=false
+                                if (command.prop('onclick')) {
+                                    command.removeAttr("onclick");
+                                } else {
+                                    command.off("click");
+                                }
+                                command.removeAttr("data-pfconfirmcommand").trigger("click");
+                            }
                         }
                     }
 

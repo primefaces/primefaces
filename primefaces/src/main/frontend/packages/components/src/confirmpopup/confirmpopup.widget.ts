@@ -133,40 +133,41 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
                     const js = source.data('pfconfirmcommand');
                     const command = id ? $(id) : $();
 
-                    // Test if the function matches the pattern
                     if (typeof js === 'function') {
                         js.call(id);
                     }
-                    else if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
-                        // command is ajax=true
-                        var originalOnClick;
+                    else if (typeof js === 'string') {
+                        if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
+                            // command is ajax=true
+                            var originalOnClick;
 
-                        if (source[0]) {
-                            // @ts-expect-error Internal JQuery method
-                            // TODO Do we really need to use JQuery internals?
-                            const events = $._data(source[0], "events");
-                            originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
-                        }
+                            if (source[0]) {
+                                // @ts-expect-error Internal JQuery method
+                                // TODO Do we really need to use JQuery internals?
+                                const events = $._data(source[0], "events");
+                                originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
+                            }
 
-                        // Temporarily remove the click handler and execute the new one
-                        source.prop('onclick', null).off("click").on("click", function (event) {
-                            PrimeFaces.csp.executeEvent(id ?? document.createElement("div"), js, event);
-                        }).trigger("click");
+                            // Temporarily remove the click handler and execute the new one
+                            source.prop('onclick', null).off("click").on("click", function (event) {
+                                PrimeFaces.csp.executeEvent(id ?? document.createElement("div"), js, event);
+                            }).trigger("click");
 
-                        // Restore the original click handler if it exists
-                        if (originalOnClick) {
-                            source.off("click").on("click", originalOnClick);
-                        }
-                    }
-                    else {
-                        // command is ajax=false
-                        if (command.prop('onclick')) {
-                            command.removeAttr("onclick");
+                            // Restore the original click handler if it exists
+                            if (originalOnClick) {
+                                source.off("click").on("click", originalOnClick);
+                            }
                         }
                         else {
-                            command.off("click");
+                            // command is ajax=false
+                            if (command.prop('onclick')) {
+                                command.removeAttr("onclick");
+                            }
+                            else {
+                                command.off("click");
+                            }
+                            command.removeAttr("data-pfconfirmcommand").trigger("click");
                         }
-                        command.removeAttr("data-pfconfirmcommand").trigger("click");
                     }
 
                     PrimeFaces.confirmPopup?.hide();
