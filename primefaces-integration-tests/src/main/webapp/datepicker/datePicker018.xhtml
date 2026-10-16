@@ -14,11 +14,17 @@
         <h:form id="form">
             <p:datePicker id="datepicker" value="#{datePicker018.value}"
                           pattern="dd/MM/yyyy HH:mm:ss" showTime="true" showSeconds="true"
-                          hourFormat="12" readonlyInput="true" timeInput="true">
-                <p:ajax event="dateSelect" process="@this" update="selectedValue"/>
+                          hourFormat="12" readonlyInput="true" timeInput="true" focusOnSelect="true">
+                <p:ajax event="dateSelect" process="@this" update="@form"
+                        listener="#{datePicker018.onDateSelect}"/>
             </p:datePicker>
 
             <h:outputText id="selectedValue" value="#{datePicker018.formattedValue}"/>
+            <h:outputText id="dateSelectCount" value="#{datePicker018.dateSelectCount}"/>
+
+            <p:datePicker id="rangeDatepicker" value="#{datePicker018.rangeValue}"
+                          pattern="dd/MM/yyyy HH:mm:ss" showTime="true" showSeconds="true"
+                          selectionMode="range" timeInput="true"/>
             <button id="outside" type="button">Outside picker</button>
         </h:form>
 
