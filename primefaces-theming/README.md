@@ -5,7 +5,31 @@ Token naming follows the PrimeUIX convention (`--p-primary-color`, `--p-form-fie
 
 The theme is self-contained: it holds the complete styling of all PrimeFaces components (structure AND look). The CSS that
 still lives in the `primefaces` core module (`src/main/frontend/packages/**/*.css`) has been merged into this module and
-can be deleted there later (see "Removing the core CSS").
+can be deleted there later (see "Planned (PrimeFaces core)").
+
+## Compatibility: intentionally breaking
+
+The new theming is a clean cut, not a drop-in replacement. There is no compatibility layer and no migration tooling;
+applications switch to it deliberately. The legacy themes (`primefaces-themes`, `saga`, `arya`, ...) keep working
+unchanged until they are removed.
+
+What breaks for applications that use a token theme:
+- **No core CSS:** application CSS that overrides PrimeFaces styles by selector and specificity (e.g. against
+  `components.css` of the core or a legacy `theme.css`) may need adjustments; customization is done with tokens.
+- **No SASS / theme designer of the legacy themes:** colors, radius, density, icons etc. are CSS variables.
+- **Icons:** the icons a component draws itself come from icon tokens (`--p-icon-*`, `--p-<component>-...-icon`), not
+  from PrimeIcons / Font Awesome classes. Planned in the core (see below), also breaking for the legacy themes:
+  - the JSF attributes for these icons are removed without replacement (e.g. `p:panel closeIcon / collapsedIcon /
+    expandedIcon / menuIcon`, `p:rowToggler expandIcon / collapseIcon`, `p:spinner upIcon / downIcon`,
+    `p:chip removeIcon`, `p:breadCrumb homeIcon`, ...; full list below). Configure them in CSS. p:tabView has no
+    such attributes, its close icon is `--p-tabs-close-icon` already.
+  - renderers emit neutral markup instead of the legacy jQuery UI icon classes (`ui-icon-triangle-1-e`, ...), widgets
+    switch states (`aria-expanded`) instead of icon classes.
+- **Later, also breaking:** `ui-*` → `p-*` style classes, removal of jQuery UI (the options of `p:draggable` /
+  `p:droppable` / `p:resizable` mirror jQuery UI, effect attributes are reduced to a few CSS effects, `p:calendar` is
+  deprecated in favor of `p:datePicker`).
+
+Each breaking core change gets its entry in the migration guide (`docs/migrationguide`) when it is implemented.
 
 ## Usage
 
@@ -229,7 +253,8 @@ The theming is done without changing the markup of the components. These steps f
   `-1-s`, `ui-icon-closethick`, ...). Renderers will emit neutral markup without icon library classes, and the widgets
   will only switch the state (`aria-expanded`, `ui-state-active`) instead of swapping icon classes; the CSS selects
   the icon token by state.
-- JSF attributes for icons the component draws itself are removed, they are configured with the icon tokens only:
+- JSF attributes for icons the component draws itself are removed (breaking, no deprecation phase), they are
+  configured with the icon tokens only:
   - remove: `breadCrumb homeIcon`, `chip removeIcon`, `datePicker triggerButtonIcon`, `galleria closeIcon`,
     `menuButton buttonIcon`, `panel closeIcon / collapsedIcon / expandedIcon / menuIcon`,
     `rowToggler expandIcon / collapseIcon`, `spinner upIcon / downIcon`, `dataView gridIcon / listIcon`,
