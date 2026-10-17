@@ -26,6 +26,13 @@ Different color options are available as severity levels.
 * secondary
 * help
 
+## Outlined
+A tag can be displayed in an outlined style using the ```outlined``` property.
+
+```xhtml
+<p:tag value="Success" severity="success" outlined="true"></p:tag>
+```
+
 ## Templating
 Content can easily be customized with the default slot instead of using the built-in display.
 
@@ -44,5 +51,6 @@ structural style classes;
 | --- | --- |
 |.ui-tag | Tag element
 |.ui-tag-rounded | Rounded element
+|.ui-tag-outlined | Outlined element
 |.ui-tag-icon | Icon of the tag
 |.ui-tag-value	| Value of the tag
