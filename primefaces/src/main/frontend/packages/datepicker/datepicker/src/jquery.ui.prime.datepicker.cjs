@@ -2,6 +2,8 @@
 // NOTE: All the documentation and TypeScript declarations are in 0-datepicker.d.ts
 // ================================================================================
 
+const TIME_INPUT_SELECTOR = '.ui-hour-picker input, .ui-minute-picker input, .ui-second-picker input, .ui-millisecond-picker input';
+
 /**
  * Prime DatePicker Widget
  */
@@ -1140,7 +1142,8 @@ $.widget("prime.datePicker", {
     },
 
     _destroy: function() {
-        this.hideOverlay();
+        this.hideOverlay(null, {commitTimeInput: false, flushPendingTimeInput: false, returnFocus: false});
+        this.pendingTimeInput = false;
         this.unbindResponsiveResizeListener();
         PrimeFaces.utils.cleanseDomElement(this.panel);
     },
@@ -1208,6 +1211,7 @@ $.widget("prime.datePicker", {
 
         this._bindEvents();
         this._bindPanelEvents();
+        this.setOldTimeInputValues();
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
     },
@@ -1978,12 +1982,13 @@ $.widget("prime.datePicker", {
             });
 
         if (this.options.timeInput) {
-            var timeInputSelector = '.ui-hour-picker input, .ui-minute-picker input, .ui-second-picker input, .ui-millisecond-picker input';
-            this.panel.off('focus.datePicker-timeInput', timeInputSelector).on('focus.datePicker-timeInput', timeInputSelector, null, function() {
+            this.panel.off('focus.datePicker-timeInput', TIME_INPUT_SELECTOR).on('focus.datePicker-timeInput', TIME_INPUT_SELECTOR, null, function() {
                 $this.setOldTimeInputValue(this);
-            }).off('change.datePicker-timeInput', timeInputSelector).on('change.datePicker-timeInput', timeInputSelector, null, function(event) {
+            }).off('input.datePicker-timeInput', TIME_INPUT_SELECTOR).on('input.datePicker-timeInput', TIME_INPUT_SELECTOR, null, function(event) {
+                $this.onTimeInputInput(event);
+            }).off('change.datePicker-timeInput', TIME_INPUT_SELECTOR).on('change.datePicker-timeInput', TIME_INPUT_SELECTOR, null, function(event) {
                 $this.handleTimeInput(this, event);
-            }).off('keydown.datePicker-timeInput', timeInputSelector).on('keydown.datePicker-timeInput', timeInputSelector, null, function(event) {
+            }).off('keydown.datePicker-timeInput', TIME_INPUT_SELECTOR).on('keydown.datePicker-timeInput', TIME_INPUT_SELECTOR, null, function(event) {
                 $this.onTimeInputKeyDown(event);
             }).off('focusout.datePicker-timeInput').on('focusout.datePicker-timeInput', function(event) {
                 if (event.relatedTarget && $this.panel[0].contains(event.relatedTarget)) {
@@ -1992,7 +1997,8 @@ $.widget("prime.datePicker", {
 
                 // Let focus settle before deciding whether the user left the panel.
                 PrimeFaces.queueTask(function() {
-                    if ($this.panel[0].contains(document.activeElement)) {
+                    var activeElement = document.activeElement;
+                    if ($this.panel[0].contains(activeElement) || ($this.isPanelVisible() && activeElement === document.body)) {
                         return;
                     }
 
@@ -2221,9 +2227,13 @@ $.widget("prime.datePicker", {
         var timeInputField = this.getTimeInputField(input);
 
         if (timeInputField && event.key === 'Enter') {
-            this.handleTimeInput(input, event);
-            this.flushPendingTimeInput(event);
-            this.hideOverlay();
+            if (this.options.inline) {
+                this.handleTimeInput(input, event);
+                this.flushPendingTimeInput(event);
+            }
+            else {
+                this.hideOverlay();
+            }
             event.preventDefault();
             return false;
         }
@@ -2275,10 +2285,6 @@ $.widget("prime.datePicker", {
     
     onTimeInputKeyUp: function (event) {
         const input = event.currentTarget;
-        if (this.getTimeInputField(input)) {
-            return;
-        }
-
         let newValue = input.value;
         const maxLength = input.maxLength;
 
@@ -2796,20 +2802,26 @@ $.widget("prime.datePicker", {
         });
     },
 
-    hideOverlay: function(event) {
+    hideOverlay: function(event, options) {
         // Return immediately if no document click listener is set, or if the datepicker is inline, not visible, or lacks a transition
         if (!this.documentClickListener || this.options.inline || !this.isPanelVisible() || !this.transition) {
             return;
         }
 
-        // A click on a non-focusable target may hide the panel without blurring its input.
-        this.commitTimeInputFields();
-        this.flushPendingTimeInput(event);
+        options = options || {};
+
+        if (options.commitTimeInput !== false) {
+            // A click on a non-focusable target may hide the panel without blurring its input.
+            this.commitTimeInputFields();
+        }
+        if (options.flushPendingTimeInput !== false) {
+            this.flushPendingTimeInput(event);
+        }
 
         var $this = this;
 
         //put the focus back to the inputfield
-        if (!event) {
+        if (!event && options.returnFocus !== false) {
             $this.inputfield.trigger('focus'); 
         }
         
@@ -2856,12 +2868,6 @@ $.widget("prime.datePicker", {
         var $this = this;
         if (!this.documentClickListener) {
             this.documentClickListener = function(event) {
-                if (!$this.panel[0].contains(event.target)) {
-                    // Commit before the outside click hides the panel or re-renders the form.
-                    $this.commitTimeInputFields();
-                    $this.flushPendingTimeInput(event);
-                }
-
                 if (!$this.datepickerClick) {
                     $this.hideOverlay(event);
                     $this.onInputBlur();
@@ -3296,16 +3302,30 @@ $.widget("prime.datePicker", {
     getTimeInputField: function(input) {
         var picker = input.parentElement;
         if (picker.classList.contains('ui-hour-picker')) {
-            return {oldValue: 'oldHours', digits: 2, handler: this.handleHoursInput};
+            var is12HourFormat = this.options.hourFormat === '12';
+            return {
+                oldValue: 'oldHours', digits: 2,
+                min: is12HourFormat ? 1 : 0, max: is12HourFormat ? 12 : 23,
+                componentIndex: 0, setter: 'setHours', isHour: true
+            };
         }
         if (picker.classList.contains('ui-minute-picker')) {
-            return {oldValue: 'oldMinutes', digits: 2, handler: this.handleMinutesInput};
+            return {
+                oldValue: 'oldMinutes', digits: 2, min: 0, max: 59,
+                componentIndex: 1, setter: 'setMinutes'
+            };
         }
         if (picker.classList.contains('ui-second-picker')) {
-            return {oldValue: 'oldSeconds', digits: 2, handler: this.handleSecondsInput};
+            return {
+                oldValue: 'oldSeconds', digits: 2, min: 0, max: 59,
+                componentIndex: 2, setter: 'setSeconds'
+            };
         }
         if (picker.classList.contains('ui-millisecond-picker')) {
-            return {oldValue: 'oldMilliseconds', digits: 3, handler: this.handleMillisecondsInput};
+            return {
+                oldValue: 'oldMilliseconds', digits: 3, min: 0, max: 999,
+                componentIndex: 3, setter: 'setMilliseconds'
+            };
         }
 
         return null;
@@ -3315,6 +3335,26 @@ $.widget("prime.datePicker", {
         var field = this.getTimeInputField(input);
         if (field) {
             this[field.oldValue] = input.value;
+        }
+    },
+
+    setOldTimeInputValues: function() {
+        if (!this.options.timeInput || !this.panel) {
+            return;
+        }
+
+        var $this = this;
+        this.panel.find(TIME_INPUT_SELECTOR).each(function() {
+            $this.setOldTimeInputValue(this);
+        });
+    },
+
+    onTimeInputInput: function(event) {
+        var input = event.currentTarget,
+            field = this.getTimeInputField(input);
+
+        if (field && input.value.length > field.digits) {
+            input.value = input.value.substring(0, field.digits);
         }
     },
 
@@ -3334,8 +3374,13 @@ $.widget("prime.datePicker", {
             return;
         }
 
+        if (this[field.oldValue] === undefined) {
+            this.setOldTimeInputValue(input);
+            return;
+        }
+
         if (input.value !== this[field.oldValue]) {
-            field.handler.call(this, input, event, field);
+            this.handleTimeInputValue(input, event, field);
         }
     },
 
@@ -3345,8 +3390,7 @@ $.widget("prime.datePicker", {
         }
 
         var $this = this;
-        var selector = '.ui-hour-picker input, .ui-minute-picker input, .ui-second-picker input, .ui-millisecond-picker input';
-        this.panel.find(selector).each(function() {
+        this.panel.find(TIME_INPUT_SELECTOR).each(function() {
             $this.handleTimeInput(this);
         });
     },
@@ -3364,119 +3408,33 @@ $.widget("prime.datePicker", {
         }
     },
 
-    handleHoursInput: function(input, event, field) {
+    handleTimeInputValue: function(input, event, field) {
         var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
             value = input.value,
-            valid = false,
-            newHours,
-            hourToSet;
-
-        var reg = new RegExp('^([0-9]){1,2}$');
-        if (reg.test(value)) {
-            newHours = parseInt(value);
-            if (this.options.hourFormat === '12') {
-                if (newHours >= 1 && newHours <= 12) {
-                    hourToSet = (newHours % 12) + (currentTime.getHours() >= 12 ? 12 : 0);
-                    valid = this.validateTime(hourToSet, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
-                }
-            } else {
-                if (newHours >= 0 && newHours <= 23) {
-                    hourToSet = newHours;
-                    valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
-                }
-            }
-        }
+            numericValue = parseInt(value, 10),
+            valid = new RegExp('^[0-9]{1,' + field.digits + '}$').test(value) && numericValue >= field.min && numericValue <= field.max,
+            componentValue = numericValue,
+            components = [currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds()];
 
         if (!valid) {
-            input.value = this.oldHours;
+            input.value = this[field.oldValue];
             return;
         }
 
-        this.setTimeInputValue(input, newHours, field);
-
-        var newDateTime = this.getCurrentTime();
-        newDateTime.setHours(hourToSet);
-
-        this.updateTimeAfterInput(event, newDateTime);
-    },
-
-    handleMinutesInput: function(input, event, field) {
-        var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
-            value = input.value,
-            valid = false,
-            newMinutes;
-
-        var reg = new RegExp('^([0-9]){1,2}$');
-        if (reg.test(value)) {
-            newMinutes = parseInt(value);
-            if (newMinutes >= 0 && newMinutes <= 59) {
-                valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
-            }
+        if (field.isHour && this.options.hourFormat === '12') {
+            componentValue = (numericValue % 12) + (currentTime.getHours() >= 12 ? 12 : 0);
         }
 
-        if (!valid) {
-            input.value = this.oldMinutes;
+        components[field.componentIndex] = componentValue;
+        if (!this.validateTime(components[0], components[1], components[2], components[3], currentTime)) {
+            input.value = this[field.oldValue];
             return;
         }
 
-        this.setTimeInputValue(input, newMinutes, field);
+        this.setTimeInputValue(input, numericValue, field);
 
         var newDateTime = this.getCurrentTime();
-        newDateTime.setMinutes(newMinutes);
-
-        this.updateTimeAfterInput(event, newDateTime);
-    },
-
-    handleSecondsInput: function(input, event, field) {
-        var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
-            value = input.value,
-            valid = false,
-            newSeconds;
-
-        var reg = new RegExp('^([0-9]){1,2}$');
-        if (reg.test(value)) {
-            newSeconds = parseInt(value);
-            if (newSeconds >= 0 && newSeconds <= 59) {
-                valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime.getMilliseconds(), currentTime);
-            }
-        }
-
-        if (!valid) {
-            input.value = this.oldSeconds;
-            return;
-        }
-
-        this.setTimeInputValue(input, newSeconds, field);
-
-        var newDateTime = this.getCurrentTime();
-        newDateTime.setSeconds(newSeconds);
-
-        this.updateTimeAfterInput(event, newDateTime);
-    },
-
-    handleMillisecondsInput: function(input, event, field) {
-        var currentTime = this.isDate(this.value) ? this.value : this.viewDate,
-            value = input.value,
-            valid = false,
-            newMilliseconds;
-
-        var reg = new RegExp('^([0-9]){1,3}$');
-        if (reg.test(value)) {
-            newMilliseconds = parseInt(value);
-            if (newMilliseconds >= 0 && newMilliseconds <= 999) {
-                valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMilliseconds, currentTime);
-            }
-        }
-
-        if (!valid) {
-            input.value = this.oldMilliseconds;
-            return;
-        }
-
-        this.setTimeInputValue(input, newMilliseconds, field);
-
-        var newDateTime = this.getCurrentTime();
-        newDateTime.setMilliseconds(newMilliseconds);
+        newDateTime[field.setter](componentValue);
 
         this.updateTimeAfterInput(event, newDateTime);
     },
@@ -3619,7 +3577,7 @@ $.widget("prime.datePicker", {
         if (this.options.onClearButtonClick) {
             this.options.onClearButtonClick.call(this, event);
         }
-        this.hideOverlay();
+        this.hideOverlay(null, {commitTimeInput: false});
     },
 
     escapeHTML: function(value) {
@@ -3693,6 +3651,7 @@ $.widget("prime.datePicker", {
 
         // re-render the panels contents
         this.panel.get(0).innerHTML = this.renderPanelElements();
+        this.setOldTimeInputValues();
 
         // attempt to refocus the newly created version of the same element
         if (el && el.getAttribute("aria-label")) {
