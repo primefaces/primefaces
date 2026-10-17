@@ -1,0 +1,36 @@
+/*
+ * BlockUI: p:blockUI
+ * Markup: mask div.ui-blockui.ui-widget-overlay (appended to body, sized/positioned to the target by the widget)
+ *         containing div.ui-blockui-content.ui-widget.ui-widget-content.ui-shadow (optional content).
+ * PrimeUIX: blockui (border radius) + mask tokens; PrimeFaces only tokens: the blockui block of presets/*.css.
+ */
+
+.ui-blockui {
+    position: absolute;
+    text-align: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    user-select: none;
+
+    &.ui-widget-overlay {
+        background: var(--p-blockui-mask-background);
+        color: var(--p-blockui-mask-color);
+        border-radius: var(--p-blockui-border-radius);
+    }
+}
+
+.ui-blockui-content {
+    position: absolute;
+    text-align: center;
+
+    &.ui-widget {
+        padding: var(--p-blockui-content-padding);
+        background: var(--p-blockui-content-background);
+        color: var(--p-blockui-content-color);
+        border: 1px solid var(--p-blockui-content-border-color);
+        border-radius: var(--p-blockui-content-border-radius);
+        box-shadow: var(--p-blockui-content-shadow);
+    }
+}

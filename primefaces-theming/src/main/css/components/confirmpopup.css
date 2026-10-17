@@ -1,0 +1,110 @@
+/*
+ * ConfirmPopup: p:confirmPopup
+ *
+ * Markup: .ui-confirm-popup > .ui-confirm-popup-content (> .ui-confirm-popup-icon, .ui-confirm-popup-message), .ui-confirm-popup-footer
+ * The arrow is drawn with ::before (border) and ::after (background); --overlayArrowLeft is set by the PF JavaScript.
+ * States: ui-confirm-popup-flipped (shown above the target)
+ */
+
+.ui-confirm-popup {
+    position: absolute;
+    display: none;
+    margin-top: var(--p-confirmpopup-gutter);
+    background: var(--p-confirmpopup-background);
+    color: var(--p-confirmpopup-color);
+    border: 1px solid var(--p-confirmpopup-border-color);
+    border-radius: var(--p-confirmpopup-border-radius);
+    box-shadow: var(--p-confirmpopup-shadow);
+
+    &.ui-confirm-popup-flipped {
+        margin-top: 0;
+        margin-bottom: var(--p-confirmpopup-gutter);
+    }
+
+    .ui-confirm-popup-content {
+        display: flex;
+        align-items: center;
+        background: transparent;
+        color: inherit;
+        border: 0 none;
+        gap: var(--p-confirmpopup-content-gap);
+        padding: var(--p-confirmpopup-content-padding);
+    }
+
+    .ui-confirm-popup-icon {
+        flex-shrink: 0;
+        font-size: var(--p-confirmpopup-icon-size);
+        color: var(--p-confirmpopup-icon-color);
+    }
+
+    .ui-confirm-popup-message {
+        margin: 0;
+        color: var(--p-confirmpopup-message-color);
+        font-size: var(--p-confirmpopup-message-font-size);
+        font-weight: var(--p-confirmpopup-message-font-weight);
+    }
+
+    .ui-confirm-popup-footer {
+        background: transparent;
+        color: inherit;
+        border: 0 none;
+        text-align: end;
+        padding: var(--p-confirmpopup-footer-padding);
+
+        button {
+            margin: 0;
+            margin-inline-end: var(--p-confirmpopup-footer-gap);
+            width: auto;
+
+            &:last-child {
+                margin: 0;
+            }
+        }
+    }
+
+    /* arrow (geometry like PrimeUIX: the inner triangle is 2px smaller than the gutter) */
+    &::after,
+    &::before {
+        content: " ";
+        position: absolute;
+        bottom: 100%;
+        left: calc(var(--overlayArrowLeft, 0px) + var(--p-confirmpopup-arrow-offset));
+        width: 0;
+        height: 0;
+        pointer-events: none;
+    }
+
+    &::after {
+        border-width: calc(var(--p-confirmpopup-gutter) - 2px);
+        margin-left: calc(-1 * (var(--p-confirmpopup-gutter) - 2px));
+        border-style: solid;
+        border-color: transparent;
+        border-bottom-color: var(--p-confirmpopup-background);
+    }
+
+    &::before {
+        border-width: var(--p-confirmpopup-gutter);
+        margin-left: calc(-1 * var(--p-confirmpopup-gutter));
+        border-style: solid;
+        border-color: transparent;
+        border-bottom-color: var(--p-confirmpopup-border-color);
+    }
+
+    &.ui-confirm-popup-flipped {
+        &::after,
+        &::before {
+            bottom: auto;
+            top: 100%;
+        }
+
+        &::after {
+            border-bottom-color: transparent;
+            border-top-color: var(--p-confirmpopup-background);
+        }
+
+        &::before {
+            border-bottom-color: transparent;
+            border-top-color: var(--p-confirmpopup-border-color);
+        }
+    }
+}

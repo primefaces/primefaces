@@ -26,6 +26,7 @@ package org.primefaces.application.resource;
 import org.primefaces.component.barcode.BarcodeHandler;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.ThemeUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -65,6 +66,18 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         Resource resource = super.createResource(resourceName, libraryName, contentType);
         return wrapResource(resource, libraryName);
+    }
+
+    /**
+     * A token based theme (primefaces-theming) contains the complete component CSS, so the CSS of the core is reported as
+     * already rendered: neither the head nor the resource updates of ajax responses render it.
+     */
+    @Override
+    public boolean isResourceRendered(FacesContext context, String resourceName, String libraryName) {
+        if (ThemeUtils.isCoreStyleSheet(resourceName, libraryName) && ThemeUtils.isTokenThemeActive(context)) {
+            return true;
+        }
+        return super.isResourceRendered(context, resourceName, libraryName);
     }
 
     @Override

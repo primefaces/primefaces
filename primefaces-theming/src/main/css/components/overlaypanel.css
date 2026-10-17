@@ -1,0 +1,71 @@
+/*
+ * OverlayPanel: p:overlayPanel (PrimeUIX popover)
+ *
+ * Markup: .ui-overlaypanel > .ui-overlaypanel-content, optional a.ui-overlaypanel-close (showCloseIcon)
+ * Close icon tokens: the overlaypanel block of presets/*.css
+ */
+
+.ui-overlaypanel {
+    position: absolute;
+    display: none;
+    margin: 0;
+    background: var(--p-popover-background);
+    color: var(--p-popover-color);
+    border: 1px solid var(--p-popover-border-color);
+    border-radius: var(--p-popover-border-radius);
+    box-shadow: var(--p-popover-shadow);
+
+    .ui-overlaypanel-content {
+        padding: var(--p-popover-content-padding);
+    }
+
+    .ui-overlaypanel-close {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--p-overlaypanel-close-button-size);
+        height: var(--p-overlaypanel-close-button-size);
+        inset-inline-end: calc(-1 * var(--p-overlaypanel-close-button-size) / 2);
+        top: calc(-1 * var(--p-overlaypanel-close-button-size) / 2);
+        background: var(--p-overlaypanel-close-button-background);
+        color: var(--p-overlaypanel-close-button-color);
+        border: 0 none;
+        border-radius: 50%;
+        padding: 0;
+        text-decoration: none;
+        outline-color: transparent;
+        transition: background var(--p-overlaypanel-close-button-transition-duration),
+            color var(--p-overlaypanel-close-button-transition-duration),
+            outline-color var(--p-overlaypanel-close-button-transition-duration),
+            box-shadow var(--p-overlaypanel-close-button-transition-duration);
+
+        &:hover,
+        &.ui-state-hover {
+            background: var(--p-overlaypanel-close-button-hover-background);
+            color: var(--p-overlaypanel-close-button-hover-color);
+        }
+
+        &:focus-visible {
+            outline: var(--p-overlaypanel-close-button-focus-ring-width) var(--p-overlaypanel-close-button-focus-ring-style)
+                var(--p-overlaypanel-close-button-focus-ring-color);
+            outline-offset: var(--p-overlaypanel-close-button-focus-ring-offset);
+            box-shadow: var(--p-overlaypanel-close-button-focus-ring-shadow);
+        }
+
+        .ui-icon {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+            color: inherit;
+
+            &::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-overlaypanel-close-icon) center / contain no-repeat;
+            }
+        }
+    }
+}

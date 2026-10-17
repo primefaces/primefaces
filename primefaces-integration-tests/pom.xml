@@ -53,6 +53,11 @@
             <artifactId>primefaces-themes</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces-theming</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Jakarta EE API -->
         <dependency>

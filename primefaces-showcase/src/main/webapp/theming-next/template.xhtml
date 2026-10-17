@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces"
+      xmlns:pt="jakarta.faces.passthrough">
+<h:head>
+    <title>Theming Next</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script>
+        //<![CDATA[
+        // applied before first paint, so a reload (e.g. theme switch) keeps color scheme, density, primary color
+        // and the tokens edited in the theme designer (theming-next/designer.xhtml)
+        (function () {
+            try {
+                var root = document.documentElement;
+                var scheme = localStorage.getItem('pf-demo-scheme');
+                var primary = localStorage.getItem('pf-demo-primary');
+                var density = localStorage.getItem('pf-demo-density');
+                var tokens = JSON.parse(localStorage.getItem('pf-demo-tokens') || '{}');
+                if (scheme) { root.style.colorScheme = scheme; }
+                if (primary) { root.style.setProperty('--p-primary-base', primary); }
+                if (density) { root.setAttribute('data-p-density', density); }
+                Object.keys(tokens).forEach(function (name) { root.style.setProperty(name, tokens[name]); });
+            } catch (e) { }
+        })();
+
+        var demo = {
+            scheme: function (value) {
+                var apply = function () {
+                    document.documentElement.style.colorScheme = value === 'system' ? '' : value;
+                    demo.mark();
+                };
+                try { localStorage.setItem('pf-demo-scheme', value === 'system' ? '' : value); } catch (e) { }
+                var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                if (document.startViewTransition && !reduced) {
+                    document.startViewTransition(apply);
+                }
+                else {
+                    apply();
+                }
+            },
+            density: function (value) {
+                var root = document.documentElement;
+                if (!value || value === 'normal') {
+                    root.removeAttribute('data-p-density');
+                }
+                else {
+                    root.setAttribute('data-p-density', value);
+                }
+                try { localStorage.setItem('pf-demo-density', value === 'normal' ? '' : value); } catch (e) { }
+                demo.mark();
+            },
+            primary: function (value) {
+                document.documentElement.style.setProperty('--p-primary-base', value);
+                try { localStorage.setItem('pf-demo-primary', value); } catch (e) { }
+                demo.changed();
+            },
+            reset: function () {
+                document.documentElement.style.removeProperty('--p-primary-base');
+                try { localStorage.removeItem('pf-demo-primary'); } catch (e) { }
+                demo.changed();
+            },
+            // lets pages (designer, tokens) react to changes made in the settings card
+            changed: function () {
+                document.dispatchEvent(new CustomEvent('pf-demo-change'));
+            },
+            mark: function () {
+                var root = document.documentElement;
+                var current = root.style.colorScheme || 'system';
+                document.querySelectorAll('[data-scheme]').forEach(function (b) {
+                    b.classList.toggle('ui-button-outlined', b.getAttribute('data-scheme') !== current);
+                });
+                var density = root.getAttribute('data-p-density') || 'normal';
+                document.querySelectorAll('[data-density]').forEach(function (b) {
+                    b.classList.toggle('ui-button-outlined', b.getAttribute('data-density') !== density);
+                });
+                demo.changed();
+            }
+        };
+        document.addEventListener('DOMContentLoaded', demo.mark);
+        //]]>
+    </script>
+    <style>
+        html {
+            background: light-dark(var(--p-surface-50), var(--p-surface-950));
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: "Inter var", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+            color: var(--p-text-color);
+        }
+
+        h1 {
+            margin: 0 0 .25rem;
+            font-size: 1.75rem;
+        }
+
+        h2 {
+            margin: 0 0 1rem;
+            font-size: 1.125rem;
+        }
+
+        h3 {
+            margin: 1rem 0 .5rem;
+            font-size: .875rem;
+            font-weight: 600;
+            color: var(--p-text-muted-color);
+        }
+
+        .muted {
+            color: var(--p-text-muted-color);
+        }
+
+        .demo-card {
+            background: var(--p-content-background);
+            color: var(--p-content-color);
+            border: 1px solid var(--p-content-border-color);
+            border-radius: var(--p-content-border-radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem;
+            align-items: center;
+        }
+
+        .demo-severities .ui-button-text {
+            text-transform: capitalize;
+        }
+
+        .demo-swatch {
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            border: 2px solid var(--p-content-background);
+            outline: 1px solid var(--p-content-border-color);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+            gap: 1.5rem;
+        }
+
+        code {
+            font-size: .85em;
+            padding: .1rem .3rem;
+            border-radius: var(--p-border-radius-sm);
+            background: var(--p-content-hover-background);
+        }
+
+        .demo-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .25rem .75rem;
+            margin-top: 1rem;
+        }
+
+        .demo-nav a {
+            color: var(--p-primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .demo-nav a.active {
+            text-decoration: underline;
+        }
+    </style>
+    <ui:insert name="head"/>
+</h:head>
+<h:body>
+    <ui:param name="theme" value="#{param.theme eq 'lara' or param.theme eq 'nora' ? param.theme : 'aura'}"/>
+    <ui:param name="severities" value="#{['primary', 'secondary', 'info', 'success', 'warning', 'help', 'danger', 'contrast']}"/>
+    <ui:param name="pageId" value="#{view.viewId}"/>
+
+    <h1>Theming Next</h1>
+    <div class="muted">Prototype of the CSS variable based themes (<code>primefaces-theming</code>). Switch theme, color scheme and primary color below.</div>
+
+    <nav class="demo-nav">
+        <ui:repeat value="#{[
+                ['/theming-next.xhtml', 'Overview'],
+                ['/theming-next/forms-text.xhtml', 'Form: text'],
+                ['/theming-next/forms-select.xhtml', 'Form: selection'],
+                ['/theming-next/datatable.xhtml', 'DataTable / TreeTable'],
+                ['/theming-next/data.xhtml', 'Data'],
+                ['/theming-next/panels.xhtml', 'Panels'],
+                ['/theming-next/overlays.xhtml', 'Overlays / Messages'],
+                ['/theming-next/menus.xhtml', 'Menus / Buttons'],
+                ['/theming-next/misc.xhtml', 'Misc / Media'],
+                ['/theming-next/layout.xhtml', 'Layout / Utilities'],
+                ['/theming-next/designer.xhtml', 'Theme Designer'],
+                ['/theming-next/tokens.xhtml', 'Tokens']]}" var="nav">
+            <a href="#{request.contextPath}#{nav[0]}?theme=#{theme}" class="#{pageId eq nav[0] ? 'active' : ''}">#{nav[1]}</a>
+        </ui:repeat>
+    </nav>
+
+    <h:form id="settings">
+        <div class="demo-card">
+            <h2>Settings</h2>
+
+            <h3>Theme <span class="muted">(primefaces.THEME, server side)</span></h3>
+            <div class="demo-row">
+                <p:linkButton value="Aura" href="?theme=aura" styleClass="#{theme eq 'aura' ? '' : 'ui-button-outlined'}"/>
+                <p:linkButton value="Lara" href="?theme=lara" styleClass="#{theme eq 'lara' ? '' : 'ui-button-outlined'}"/>
+                <p:linkButton value="Nora" href="?theme=nora" styleClass="#{theme eq 'nora' ? '' : 'ui-button-outlined'}"/>
+            </div>
+
+            <h3>Color scheme <span class="muted">(:root { color-scheme: ... })</span></h3>
+            <div class="demo-row">
+                <p:commandButton type="button" value="Light" icon="pi pi-sun" onclick="demo.scheme('light')" pt:data-scheme="light"/>
+                <p:commandButton type="button" value="Dark" icon="pi pi-moon" onclick="demo.scheme('dark')" pt:data-scheme="dark"/>
+                <p:commandButton type="button" value="System" icon="pi pi-desktop" onclick="demo.scheme('system')" pt:data-scheme="system"/>
+            </div>
+
+            <h3>Density <span class="muted">(&lt;html data-p-density="compact|comfortable"&gt;)</span></h3>
+            <div class="demo-row">
+                <p:commandButton type="button" value="Normal" onclick="demo.density('normal')" pt:data-density="normal"/>
+                <p:commandButton type="button" value="Compact" onclick="demo.density('compact')" pt:data-density="compact"/>
+                <p:commandButton type="button" value="Comfortable" onclick="demo.density('comfortable')" pt:data-density="comfortable"/>
+            </div>
+
+            <h3>Primary color <span class="muted">(:root { --p-primary-base: ... })</span></h3>
+            <div class="demo-row">
+                <ui:repeat value="#{['emerald', 'green', 'teal', 'sky', 'blue', 'indigo', 'violet', 'purple', 'pink', 'rose', 'orange', 'amber', 'slate']}" var="c">
+                    <button type="button" class="demo-swatch" title="#{c}" style="background: var(--p-#{c}-500)"
+                            onclick="demo.primary('var(--p-#{c}-500)')"></button>
+                </ui:repeat>
+                <input type="color" title="Custom brand color" onchange="demo.primary(this.value)"/>
+                <p:commandButton type="button" value="Reset" styleClass="ui-button-flat ui-button-plain ui-button-sm" onclick="demo.reset()"/>
+            </div>
+        </div>
+    </h:form>
+
+    <ui:insert name="content"/>
+</h:body>
+</html>

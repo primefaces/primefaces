@@ -1,0 +1,84 @@
+/*
+ * Tooltip: p:tooltip (also the global tooltip .ui-tooltip-global and p:message display="tooltip")
+ *
+ * Markup: .ui-tooltip.ui-tooltip-{top|right|bottom|left} > .ui-tooltip-arrow, .ui-tooltip-text
+ */
+
+.ui-tooltip {
+    position: absolute;
+    display: none;
+    max-width: var(--p-tooltip-max-width);
+
+    &.ui-tooltip-right,
+    &.ui-tooltip-left {
+        padding: 0 var(--p-tooltip-gutter);
+    }
+
+    &.ui-tooltip-top,
+    &.ui-tooltip-bottom {
+        padding: var(--p-tooltip-gutter) 0;
+    }
+
+    .ui-tooltip-text {
+        word-break: break-word;
+        background: var(--p-tooltip-background);
+        color: var(--p-tooltip-color);
+        padding: var(--p-tooltip-padding);
+        box-shadow: var(--p-tooltip-shadow);
+        border-radius: var(--p-tooltip-border-radius);
+        font-size: var(--p-tooltip-font-size);
+        font-weight: var(--p-tooltip-font-weight);
+    }
+
+    &.ui-tooltip-right .ui-tooltip-arrow {
+        margin-top: calc(-1 * var(--p-tooltip-gutter));
+        border-width: var(--p-tooltip-gutter) var(--p-tooltip-gutter) var(--p-tooltip-gutter) 0;
+        border-right-color: var(--p-tooltip-background);
+    }
+
+    &.ui-tooltip-left .ui-tooltip-arrow {
+        margin-top: calc(-1 * var(--p-tooltip-gutter));
+        border-width: var(--p-tooltip-gutter) 0 var(--p-tooltip-gutter) var(--p-tooltip-gutter);
+        border-left-color: var(--p-tooltip-background);
+    }
+
+    &.ui-tooltip-top .ui-tooltip-arrow {
+        margin-left: calc(-1 * var(--p-tooltip-gutter));
+        border-width: var(--p-tooltip-gutter) var(--p-tooltip-gutter) 0 var(--p-tooltip-gutter);
+        border-top-color: var(--p-tooltip-background);
+    }
+
+    &.ui-tooltip-bottom .ui-tooltip-arrow {
+        margin-left: calc(-1 * var(--p-tooltip-gutter));
+        border-width: 0 var(--p-tooltip-gutter) var(--p-tooltip-gutter) var(--p-tooltip-gutter);
+        border-bottom-color: var(--p-tooltip-background);
+    }
+}
+
+.ui-tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.ui-tooltip-right .ui-tooltip-arrow {
+    top: 50%;
+    left: 0;
+}
+
+.ui-tooltip-left .ui-tooltip-arrow {
+    top: 50%;
+    right: 0;
+}
+
+.ui-tooltip-top .ui-tooltip-arrow {
+    bottom: 0;
+    left: 50%;
+}
+
+.ui-tooltip-bottom .ui-tooltip-arrow {
+    top: 0;
+    left: 50%;
+}

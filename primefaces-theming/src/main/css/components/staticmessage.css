@@ -1,0 +1,90 @@
+/*
+ * StaticMessage: p:staticMessage
+ *
+ * Markup: .ui-message.ui-staticmessage.ui-message-<severity>(.ui-message-icon-only)
+ *         > a.ui-messages-close (closable) + span.ui-message-<severity>-icon (or the custom icon classes)
+ *         + span.ui-message-<severity>-summary + span.ui-message-<severity>-detail
+ * Colors, icons and texts come from message.css (it shares the ui-message-* classes); this file adds the block layout
+ * and the close button. Tokens: PrimeUIX message + the message block of presets/*.css
+ */
+
+.ui-staticmessage {
+    position: relative;
+
+    .ui-messages-close {
+        position: absolute;
+        cursor: pointer;
+        top: -.75rem;
+        inset-inline-end: -.75rem;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        user-select: none;
+        text-align: center;
+    }
+}
+
+.ui-message.ui-staticmessage {
+    display: flex;
+    align-items: center;
+    gap: var(--p-message-content-gap);
+
+    &.ui-message-icon-only {
+        display: inline-flex;
+
+        /* the ui-helper-clearfix pseudos would be flex items with a gap each */
+        &::before,
+        &::after {
+            content: none;
+        }
+    }
+
+    /* custom icon (icon attribute, e.g. "pi pi-star") */
+    > .pi {
+        flex-shrink: 0;
+        color: var(--_color);
+        font-size: var(--p-message-icon-size);
+    }
+
+    /* close button: a round badge on the top end corner, carrying the message colors */
+    .ui-messages-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: var(--p-message-border-width) solid var(--_border-color);
+        border-radius: 50%;
+        background: var(--_bg);
+        color: var(--_color);
+        box-shadow: var(--_shadow);
+        text-decoration: none;
+        outline-color: transparent;
+        transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
+            outline-color var(--p-message-transition-duration), box-shadow var(--p-message-transition-duration);
+
+        &:hover {
+            background-image: linear-gradient(var(--_close-hover-bg), var(--_close-hover-bg));
+        }
+
+        &:focus-visible {
+            outline: var(--p-message-close-button-focus-ring-width) var(--p-message-close-button-focus-ring-style) var(--_close-focus-ring-color);
+            outline-offset: var(--p-message-close-button-focus-ring-offset);
+            box-shadow: var(--_close-focus-ring-shadow);
+        }
+
+        .ui-icon-close {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+            color: inherit;
+            font-size: var(--p-message-close-icon-size);
+        }
+
+        .ui-icon-close::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-message-close-icon) center / contain no-repeat;
+        }
+    }
+}

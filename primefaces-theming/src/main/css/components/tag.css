@@ -1,0 +1,75 @@
+/*
+ * Tag: p:tag
+ *
+ * Markup: span.ui-tag > span.ui-tag-icon?, span.ui-tag-value
+ * Supported classes: ui-tag-success | -info | -warning | -danger | -secondary | -help, ui-tag-rounded
+ */
+
+.ui-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p-tag-gap);
+    background: var(--p-tag-primary-background);
+    color: var(--p-tag-primary-color);
+    font-size: var(--p-tag-font-size);
+    font-weight: var(--p-tag-font-weight);
+    padding: var(--p-tag-padding);
+    border-radius: var(--p-tag-border-radius);
+
+    .ui-tag-icon,
+    .ui-tag-value {
+        line-height: var(--p-typography-line-height);
+    }
+
+    /* tag used as plain styleClass (e.g. <span class="ui-tag">) */
+    &:not(.ui-widget) {
+        display: inline-block;
+        text-align: center;
+        line-height: 1;
+    }
+
+    &.ui-tag-success {
+        background: var(--p-tag-success-background);
+        color: var(--p-tag-success-color);
+    }
+
+    &.ui-tag-info {
+        background: var(--p-tag-info-background);
+        color: var(--p-tag-info-color);
+    }
+
+    &.ui-tag-warning {
+        background: var(--p-tag-warn-background);
+        color: var(--p-tag-warn-color);
+    }
+
+    &.ui-tag-danger {
+        background: var(--p-tag-danger-background);
+        color: var(--p-tag-danger-color);
+    }
+
+    &.ui-tag-secondary {
+        background: var(--p-tag-secondary-background);
+        color: var(--p-tag-secondary-color);
+    }
+
+    &.ui-tag-help {
+        background: var(--p-tag-help-background);
+        color: var(--p-tag-help-color);
+    }
+
+    &.ui-tag-rounded {
+        border-radius: var(--p-tag-rounded-border-radius);
+    }
+
+    .ui-tag-icon {
+        margin: 0;
+        font-size: var(--p-tag-icon-size);
+    }
+
+    /* inline-block variant has no flex gap */
+    &:not(.ui-widget) .ui-tag-icon {
+        margin-inline-end: var(--p-tag-gap);
+    }
+}

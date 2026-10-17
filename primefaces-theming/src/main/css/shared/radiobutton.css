@@ -1,0 +1,132 @@
+/*
+ * RadioButton (shared): the radio box .ui-radiobutton of p:selectOneRadio and p:radioButton
+ * (layouts and the readonly state of p:selectOneRadio: components/selectoneradio.css)
+ *
+ * States on .ui-radiobutton-box: ui-state-hover, ui-state-focus, ui-state-active (checked), ui-state-error,
+ *                                ui-state-disabled, ui-input-filled (on a parent), ui-state-readonly (on .ui-selectoneradio)
+ */
+.ui-radiobutton {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    width: var(--p-radiobutton-width);
+    height: var(--p-radiobutton-height);
+    line-height: normal;
+
+    .ui-radiobutton-box {
+        cursor: pointer;
+        border: 1px solid var(--p-radiobutton-border-color);
+        background: var(--p-radiobutton-background);
+        width: var(--p-radiobutton-width);
+        height: var(--p-radiobutton-height);
+        text-align: center;
+        position: relative;
+        border-radius: 50%;
+        box-shadow: var(--p-radiobutton-shadow);
+        outline-color: transparent;
+        transition: background var(--p-radiobutton-transition-duration), color var(--p-radiobutton-transition-duration),
+            border-color var(--p-radiobutton-transition-duration), box-shadow var(--p-radiobutton-transition-duration),
+            outline-color var(--p-radiobutton-transition-duration);
+
+        &.ui-state-hover,
+        &:not(.ui-state-disabled):hover {
+            border-color: var(--p-radiobutton-hover-border-color);
+        }
+
+        &.ui-state-focus {
+            border-color: var(--p-radiobutton-focus-border-color);
+            outline: var(--p-radiobutton-focus-ring-width) var(--p-radiobutton-focus-ring-style) var(--p-radiobutton-focus-ring-color);
+            outline-offset: var(--p-radiobutton-focus-ring-offset);
+            box-shadow: var(--p-radiobutton-focus-ring-shadow);
+        }
+
+        &.ui-state-active {
+            border-color: var(--p-radiobutton-checked-border-color);
+            background: var(--p-radiobutton-checked-background);
+            color: var(--p-radiobutton-icon-checked-color);
+
+            &.ui-state-hover,
+            &:not(.ui-state-disabled):hover {
+                border-color: var(--p-radiobutton-checked-hover-border-color);
+                background: var(--p-radiobutton-checked-hover-background);
+            }
+
+            &.ui-state-focus {
+                border-color: var(--p-radiobutton-checked-focus-border-color);
+            }
+
+            .ui-icon-bullet {
+                background: var(--p-radiobutton-icon-checked-color);
+            }
+
+            &.ui-state-hover .ui-icon-bullet,
+            &:not(.ui-state-disabled):hover .ui-icon-bullet {
+                background: var(--p-radiobutton-icon-checked-hover-color);
+            }
+        }
+
+        /* readonly (no hover feedback): components/selectoneradio.css, it wins by specificity */
+
+        &.ui-state-error {
+            border-color: var(--p-radiobutton-invalid-border-color);
+        }
+
+        &.ui-state-disabled {
+            opacity: 1;
+            background: var(--p-radiobutton-disabled-background);
+            border-color: var(--p-radiobutton-checked-disabled-border-color);
+
+            .ui-icon-bullet {
+                background: var(--p-radiobutton-icon-disabled-color);
+            }
+        }
+
+        .ui-radiobutton-icon {
+            width: var(--p-radiobutton-icon-size);
+            height: var(--p-radiobutton-icon-size);
+            vertical-align: middle;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: calc(-1 * var(--p-radiobutton-icon-size) / 2);
+            margin-left: calc(-1 * var(--p-radiobutton-icon-size) / 2);
+            border-radius: 50%;
+            background: transparent;
+            transition-duration: var(--p-radiobutton-transition-duration);
+
+            &::before {
+                display: none;
+            }
+        }
+    }
+}
+
+/* readonly (the disabled cursor comes from jquery-ui core.css) */
+.ui-selectoneradio.ui-state-readonly .ui-radiobutton-box {
+    cursor: default;
+}
+
+/* filled variant */
+.ui-input-filled .ui-radiobutton .ui-radiobutton-box {
+    background: var(--p-radiobutton-filled-background);
+
+    /* no radiobutton token for the filled hover state */
+    &.ui-state-hover,
+    &:not(.ui-state-disabled):hover {
+        background: var(--p-form-field-filled-hover-background);
+    }
+
+    &.ui-state-active {
+        background: var(--p-radiobutton-checked-background);
+
+        &.ui-state-hover,
+        &:not(.ui-state-disabled):hover {
+            background: var(--p-radiobutton-checked-hover-background);
+        }
+    }
+
+    &.ui-state-disabled {
+        background: var(--p-radiobutton-disabled-background);
+    }
+}

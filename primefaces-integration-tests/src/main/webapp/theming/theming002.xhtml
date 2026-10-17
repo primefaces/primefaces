@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <f:event type="preRenderView" listener="#{theming002.addMessages}" />
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="buttonPrimary" value="Primary" type="button" />
+            <p:commandButton id="buttonSecondary" value="Secondary" type="button" styleClass="ui-button-secondary" />
+
+            <p:inputText id="inputText" value="#{theming002.text}" />
+
+            <p:selectOneMenu id="selectOneMenu" value="#{theming002.text}">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectOneMenu>
+
+            <p:selectBooleanCheckbox id="checkbox" value="#{theming002.checked}" />
+
+            <p:dataTable id="dataTable" value="#{theming002.rows}" var="row">
+                <p:column headerText="Name">#{row}</p:column>
+            </p:dataTable>
+
+            <p:panel id="panel" header="Panel">Content</p:panel>
+
+            <p:inputText id="messageInput" />
+            <p:message id="message" for="messageInput" />
+
+            <p:tabView id="tabView">
+                <p:tab title="Tab 1">Content 1</p:tab>
+                <p:tab title="Tab 2">Content 2</p:tab>
+            </p:tabView>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

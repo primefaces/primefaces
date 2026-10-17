@@ -1,0 +1,122 @@
+/*
+ * Core helpers of PrimeFaces: overlay visibility, reset, responsive column priorities, connected overlay animations.
+ */
+.ui-overlay-visible {
+    visibility: visible;
+}
+
+.ui-overlay-hidden {
+    visibility: hidden;
+
+    * {
+        visibility: hidden !important;
+    }
+}
+
+.ui-overflow-hidden {
+    overflow: hidden;
+}
+
+.ui-reset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    text-decoration: none;
+    font-size: 100%;
+    list-style: none;
+}
+
+.ui-datepicker .ui-datepicker-current.ui-priority-secondary {
+    opacity: 1;
+}
+
+.ui-transparent-pixel {
+    content: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+}
+
+/* column priorities (p:column priority="1-6"): hidden, shown from 20em (1) up to 70em (6) */
+@media only all {
+    th.ui-column-p-6,
+    td.ui-column-p-6,
+    th.ui-column-p-5,
+    td.ui-column-p-5,
+    th.ui-column-p-4,
+    td.ui-column-p-4,
+    th.ui-column-p-3,
+    td.ui-column-p-3,
+    th.ui-column-p-2,
+    td.ui-column-p-2,
+    th.ui-column-p-1,
+    td.ui-column-p-1 {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 20em) {
+    th.ui-column-p-1,
+    td.ui-column-p-1 {
+        display: table-cell;
+    }
+}
+
+@media screen and (min-width: 30em) {
+    th.ui-column-p-2,
+    td.ui-column-p-2 {
+        display: table-cell;
+    }
+}
+
+@media screen and (min-width: 40em) {
+    th.ui-column-p-3,
+    td.ui-column-p-3 {
+        display: table-cell;
+    }
+}
+
+@media screen and (min-width: 50em) {
+    th.ui-column-p-4,
+    td.ui-column-p-4 {
+        display: table-cell;
+    }
+}
+
+@media screen and (min-width: 60em) {
+    th.ui-column-p-5,
+    td.ui-column-p-5 {
+        display: table-cell;
+    }
+}
+
+@media screen and (min-width: 70em) {
+    th.ui-column-p-6,
+    td.ui-column-p-6 {
+        display: table-cell;
+    }
+}
+
+/* connected overlay animations (the overlay JS relies on these transitions) */
+.ui-connected-overlay-enter {
+    opacity: 0;
+    transform: scaleY(0.8);
+}
+
+.ui-connected-overlay-enter-active {
+    opacity: 1;
+    transform: scaleY(1);
+    transition: transform var(--p-overlay-enter-duration) var(--p-transition-easing-enter),
+        opacity var(--p-overlay-enter-duration) var(--p-transition-easing-enter);
+}
+
+.ui-connected-overlay-enter-done {
+    transform: none;
+}
+
+.ui-connected-overlay-exit {
+    opacity: 1;
+}
+
+.ui-connected-overlay-exit-active {
+    opacity: 0;
+    transition: opacity var(--p-overlay-leave-duration) var(--p-transition-easing-exit);
+}

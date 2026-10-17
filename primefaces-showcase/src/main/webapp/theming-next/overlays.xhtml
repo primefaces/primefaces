@@ -1,0 +1,431 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough"
+                xmlns:c="jakarta.tags.core"
+                template="/theming-next/template.xhtml">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" for="growl-key" showDetail="true"/>
+            <p:growl id="growlSticky" for="growl-sticky-key" showDetail="true" sticky="true"/>
+
+            <!-- ============================== Dialog ============================== -->
+            <div class="demo-card">
+                <h2>Dialog</h2>
+
+                <h3>Basic, modal, maximizable / minimizable, footer, actions</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Basic" icon="pi pi-external-link" onclick="PF('dlgBasic').show()"/>
+                    <p:commandButton type="button" value="Modal" icon="pi pi-clone" onclick="PF('dlgModal').show()"/>
+                    <p:commandButton type="button" value="Maximizable / Minimizable" icon="pi pi-window-maximize" onclick="PF('dlgMax').show()"/>
+                    <p:commandButton type="button" value="Footer" icon="pi pi-check-square" onclick="PF('dlgFooter').show()"/>
+                    <p:commandButton type="button" value="Header actions" icon="pi pi-cog" onclick="PF('dlgActions').show()"/>
+                    <p:commandButton type="button" value="No header" styleClass="ui-button-secondary" onclick="PF('dlgNoHeader').show()"/>
+                </div>
+
+                <h3>Positions</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Top" icon="pi pi-arrow-up" styleClass="ui-button-outlined" onclick="PF('dlgTop').show()"/>
+                    <p:commandButton type="button" value="Bottom" icon="pi pi-arrow-down" styleClass="ui-button-outlined" onclick="PF('dlgBottom').show()"/>
+                    <p:commandButton type="button" value="Left" icon="pi pi-arrow-left" styleClass="ui-button-outlined" onclick="PF('dlgLeft').show()"/>
+                    <p:commandButton type="button" value="Right" icon="pi pi-arrow-right" styleClass="ui-button-outlined" onclick="PF('dlgRight').show()"/>
+                    <p:commandButton type="button" value="Top left" icon="pi pi-arrow-up-left" styleClass="ui-button-outlined" onclick="PF('dlgTopLeft').show()"/>
+                    <p:commandButton type="button" value="Bottom right" icon="pi pi-arrow-down-right" styleClass="ui-button-outlined" onclick="PF('dlgBottomRight').show()"/>
+                </div>
+
+                <h3>Responsive, fit viewport, absolute, RTL</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Responsive (50vw)" icon="pi pi-mobile" styleClass="ui-button-help" onclick="PF('dlgResponsive').show()"/>
+                    <p:commandButton type="button" value="Fit viewport (long content)" icon="pi pi-arrows-v" styleClass="ui-button-help" onclick="PF('dlgFit').show()"/>
+                    <p:commandButton type="button" value="Absolute" icon="pi pi-map-marker" styleClass="ui-button-help" onclick="PF('dlgAbsolute').show()"/>
+                    <p:commandButton type="button" value="RTL" icon="pi pi-align-right" styleClass="ui-button-help" onclick="PF('dlgRtl').show()"/>
+                </div>
+
+                <h3>Message dialog (PrimeFaces.showMessageInDialog)</h3>
+                <div class="demo-row demo-severities">
+                    <c:forEach items="#{['info', 'warn', 'error', 'fatal']}" var="sev">
+                        <p:commandButton type="button" value="#{sev}"
+                                         styleClass="#{sev eq 'info' ? 'ui-button-info' : sev eq 'warn' ? 'ui-button-warning' : sev eq 'error' ? 'ui-button-danger' : 'ui-button-contrast'}"
+                                         onclick="PrimeFaces.showMessageInDialog({severity: '#{sev}', summary: '#{sev} message', detail: 'Message shown with PrimeFaces.showMessageInDialog.'})"/>
+                    </c:forEach>
+                </div>
+
+                <p:dialog header="Basic dialog" widgetVar="dlgBasic" width="400">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </p:dialog>
+
+                <p:dialog header="Modal dialog" widgetVar="dlgModal" modal="true" width="400" dismissibleMask="true">
+                    <p>Modal with dismissible mask: click on the mask to close.</p>
+                    <div class="demo-row">
+                        <p:inputText placeholder="Focus me"/>
+                    </div>
+                </p:dialog>
+
+                <p:dialog header="Maximizable and minimizable" widgetVar="dlgMax" width="450" maximizable="true" minimizable="true">
+                    <p>Use the header icons to maximize the dialog or to dock it at the bottom of the page.</p>
+                </p:dialog>
+
+                <p:dialog header="Edit profile" widgetVar="dlgFooter" modal="true" width="420" resizable="false">
+                    <div style="display: flex; flex-direction: column; gap: .75rem">
+                        <p:outputLabel for="@next" value="Name"/>
+                        <p:inputText id="dlgName" value="#{themingNextOverlaysView.name}"/>
+                        <p:outputLabel for="@next" value="Email"/>
+                        <p:inputText id="dlgEmail" value="#{themingNextOverlaysView.email}"/>
+                    </div>
+                    <f:facet name="footer">
+                        <p:commandButton type="button" value="Cancel" styleClass="ui-button-secondary" onclick="PF('dlgFooter').hide()"/>
+                        <p:commandButton type="button" value="Save" icon="pi pi-check" onclick="PF('dlgFooter').hide()"/>
+                    </f:facet>
+                </p:dialog>
+
+                <p:dialog header="Header actions" widgetVar="dlgActions" width="400" maximizable="true">
+                    <f:facet name="actions">
+                        <a href="#" class="ui-dialog-titlebar-icon" onclick="return false;" title="Settings"><span class="pi pi-cog"></span></a>
+                    </f:facet>
+                    <p>Custom icons in the <code>actions</code> facet, next to the built-in ones.</p>
+                </p:dialog>
+
+                <p:dialog widgetVar="dlgNoHeader" showHeader="false" modal="true" width="320" dismissibleMask="true">
+                    <p>Dialog without a header. Click on the mask to close.</p>
+                </p:dialog>
+
+                <p:dialog header="Top" widgetVar="dlgTop" position="top" width="350"><p>Positioned at the top.</p></p:dialog>
+                <p:dialog header="Bottom" widgetVar="dlgBottom" position="bottom" width="350"><p>Positioned at the bottom.</p></p:dialog>
+                <p:dialog header="Left" widgetVar="dlgLeft" position="left" width="350"><p>Positioned on the left.</p></p:dialog>
+                <p:dialog header="Right" widgetVar="dlgRight" position="right" width="350"><p>Positioned on the right.</p></p:dialog>
+                <p:dialog header="Top left" widgetVar="dlgTopLeft" position="left,top" width="350"><p>Positioned top left.</p></p:dialog>
+                <p:dialog header="Bottom right" widgetVar="dlgBottomRight" position="right,bottom" width="350"><p>Positioned bottom right.</p></p:dialog>
+
+                <p:dialog header="Responsive" widgetVar="dlgResponsive" responsive="true" width="50vw" modal="true">
+                    <p>The width is 50vw; resize the window to see the dialog adapt.</p>
+                </p:dialog>
+
+                <p:dialog header="Fit viewport" widgetVar="dlgFit" fitViewport="true" modal="true" width="500">
+                    <c:forEach begin="1" end="30" var="i">
+                        <p>Paragraph #{i}: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                    </c:forEach>
+                </p:dialog>
+
+                <p:dialog header="Absolute" widgetVar="dlgAbsolute" positionType="absolute" width="350">
+                    <p>Scrolls together with the page.</p>
+                </p:dialog>
+
+                <p:dialog header="RTL dialog" widgetVar="dlgRtl" dir="rtl" width="400" maximizable="true">
+                    <p>Right to left dialog, header icons and footer mirrored.</p>
+                    <f:facet name="footer">
+                        <p:commandButton type="button" value="Ok" onclick="PF('dlgRtl').hide()"/>
+                    </f:facet>
+                </p:dialog>
+            </div>
+
+            <!-- ============================== ConfirmDialog ============================== -->
+            <div class="demo-card">
+                <h2>ConfirmDialog</h2>
+
+                <h3>Global (p:confirm with icons)</h3>
+                <div class="demo-row">
+                    <p:commandButton value="Confirm" action="#{themingNextOverlaysView.confirm}" update="growl" process="@this" icon="pi pi-check">
+                        <p:confirm header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    <p:commandButton value="Info" action="#{themingNextOverlaysView.confirm}" update="growl" process="@this"
+                                     icon="pi pi-info-circle" styleClass="ui-button-info">
+                        <p:confirm header="Information" message="This is an informational question." icon="pi pi-info-circle"/>
+                    </p:commandButton>
+                    <p:commandButton value="Delete" action="#{themingNextOverlaysView.delete}" update="growl" process="@this"
+                                     icon="pi pi-trash" styleClass="ui-button-danger">
+                        <p:confirm header="Delete record" message="Do you want to delete this record?" icon="pi pi-times-circle"
+                                   yesButtonLabel="Delete" yesButtonClass="ui-button-danger" yesButtonIcon="pi pi-trash"
+                                   noButtonLabel="Keep" noButtonIcon="pi pi-heart"/>
+                    </p:commandButton>
+                    <p:commandButton value="No icon" action="#{themingNextOverlaysView.confirm}" update="growl" process="@this"
+                                     styleClass="ui-button-secondary">
+                        <p:confirm header="Confirmation" message="A confirmation without an icon."/>
+                    </p:commandButton>
+                </div>
+
+                <h3>Non global (severity alert / info)</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Severity alert" icon="pi pi-exclamation-triangle" styleClass="ui-button-warning" onclick="PF('cdAlert').show()"/>
+                    <p:commandButton type="button" value="Severity info" icon="pi pi-info-circle" styleClass="ui-button-info" onclick="PF('cdInfo').show()"/>
+                </div>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" icon="pi pi-times"/>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                </p:confirmDialog>
+
+                <p:confirmDialog widgetVar="cdAlert" header="Initiating destroy process" message="Are you sure about destroying the world?"
+                                 severity="alert" dismissibleMask="true">
+                    <p:commandButton value="Not yet" type="button" styleClass="ui-button-flat" onclick="PF('cdAlert').hide()"/>
+                    <p:commandButton value="Yes, sure" type="button" styleClass="ui-button-danger" onclick="PF('cdAlert').hide()"/>
+                </p:confirmDialog>
+
+                <p:confirmDialog widgetVar="cdInfo" header="Information" message="The process finished successfully." severity="info">
+                    <p:commandButton value="Ok" type="button" onclick="PF('cdInfo').hide()"/>
+                </p:confirmDialog>
+            </div>
+
+            <!-- ============================== ConfirmPopup ============================== -->
+            <div class="demo-card">
+                <h2>ConfirmPopup</h2>
+                <h3>Global (p:confirm type="popup"), flips above the button near the bottom of the window</h3>
+                <div class="demo-row">
+                    <p:commandButton value="Save" action="#{themingNextOverlaysView.confirm}" update="growl" process="@this" icon="pi pi-check">
+                        <p:confirm type="popup" header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    <p:commandButton value="Delete" action="#{themingNextOverlaysView.delete}" update="growl" process="@this"
+                                     icon="pi pi-times" styleClass="ui-button-danger">
+                        <p:confirm type="popup" header="Confirmation" message="Do you want to delete this record?" icon="pi pi-info-circle"
+                                   yesButtonLabel="Delete" yesButtonClass="ui-button-danger" noButtonLabel="Cancel"/>
+                    </p:commandButton>
+                </div>
+
+                <p:confirmPopup global="true">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat ui-button-sm"/>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes ui-button-sm"/>
+                </p:confirmPopup>
+            </div>
+
+            <!-- ============================== OverlayPanel ============================== -->
+            <div class="demo-card">
+                <h2>OverlayPanel</h2>
+                <h3>Basic, close icon, not dismissable, modal</h3>
+                <div class="demo-row">
+                    <p:commandButton id="opBasicBtn" type="button" value="Basic" icon="pi pi-search"/>
+                    <p:commandButton id="opCloseBtn" type="button" value="With close icon" icon="pi pi-times-circle" styleClass="ui-button-secondary"/>
+                    <p:commandButton id="opStickyBtn" type="button" value="Not dismissable" icon="pi pi-lock" styleClass="ui-button-help"/>
+                    <p:commandButton id="opModalBtn" type="button" value="Modal" icon="pi pi-clone" styleClass="ui-button-contrast"/>
+                </div>
+
+                <p:overlayPanel for="opBasicBtn">
+                    <p style="margin: 0">Overlay content with <strong>formatted</strong> text.</p>
+                </p:overlayPanel>
+
+                <p:overlayPanel for="opCloseBtn" showCloseIcon="true" style="width: 18rem">
+                    <div style="display: flex; flex-direction: column; gap: .5rem">
+                        <p:outputLabel for="@next" value="Search"/>
+                        <p:inputText id="opSearch" placeholder="Keyword"/>
+                    </div>
+                </p:overlayPanel>
+
+                <p:overlayPanel for="opStickyBtn" dismissable="false" showCloseIcon="true">
+                    <p style="margin: 0">Stays open until the close icon is clicked.</p>
+                </p:overlayPanel>
+
+                <p:overlayPanel for="opModalBtn" modal="true" showCloseIcon="true">
+                    <p style="margin: 0">Modal overlay panel.</p>
+                </p:overlayPanel>
+            </div>
+
+            <!-- ============================== Sidebar ============================== -->
+            <div class="demo-card">
+                <h2>Sidebar</h2>
+                <h3>Positions and full screen</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Left" icon="pi pi-arrow-right" onclick="PF('sbLeft').show()"/>
+                    <p:commandButton type="button" value="Right" icon="pi pi-arrow-left" onclick="PF('sbRight').show()"/>
+                    <p:commandButton type="button" value="Top" icon="pi pi-arrow-down" onclick="PF('sbTop').show()"/>
+                    <p:commandButton type="button" value="Bottom" icon="pi pi-arrow-up" onclick="PF('sbBottom').show()"/>
+                    <p:commandButton type="button" value="Full screen" icon="pi pi-window-maximize" onclick="PF('sbFull').show()"/>
+                </div>
+                <h3>Sizes (ui-sidebar-md / ui-sidebar-lg), non modal</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Left md" styleClass="ui-button-outlined" onclick="PF('sbMd').show()"/>
+                    <p:commandButton type="button" value="Right lg" styleClass="ui-button-outlined" onclick="PF('sbLg').show()"/>
+                    <p:commandButton type="button" value="Non modal" styleClass="ui-button-outlined" onclick="PF('sbNonModal').show()"/>
+                </div>
+
+                <p:sidebar widgetVar="sbLeft" position="left">
+                    <h3 style="margin-top: 0">Left sidebar</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p:commandButton type="button" value="Close" styleClass="ui-button-secondary" onclick="PF('sbLeft').hide()"/>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbRight" position="right">
+                    <h3 style="margin-top: 0">Right sidebar</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbTop" position="top">
+                    <h3 style="margin-top: 0">Top sidebar</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbBottom" position="bottom">
+                    <h3 style="margin-top: 0">Bottom sidebar</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbFull" fullScreen="true">
+                    <h3 style="margin-top: 0">Full screen sidebar</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbMd" position="left" styleClass="ui-sidebar-md">
+                    <h3 style="margin-top: 0">Medium (40em)</h3>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbLg" position="right" styleClass="ui-sidebar-lg">
+                    <h3 style="margin-top: 0">Large (60em)</h3>
+                </p:sidebar>
+                <p:sidebar widgetVar="sbNonModal" position="right" modal="false">
+                    <h3 style="margin-top: 0">Non modal</h3>
+                    <p>The page stays usable.</p>
+                </p:sidebar>
+            </div>
+
+            <!-- ============================== Tooltip ============================== -->
+            <div class="demo-card">
+                <h2>Tooltip</h2>
+                <h3>Positions</h3>
+                <div class="demo-row">
+                    <p:commandButton id="ttTop" type="button" value="Top" styleClass="ui-button-outlined"/>
+                    <p:tooltip for="ttTop" value="Tooltip on top" position="top"/>
+                    <p:commandButton id="ttRight" type="button" value="Right" styleClass="ui-button-outlined"/>
+                    <p:tooltip for="ttRight" value="Tooltip on the right" position="right"/>
+                    <p:commandButton id="ttBottom" type="button" value="Bottom" styleClass="ui-button-outlined"/>
+                    <p:tooltip for="ttBottom" value="Tooltip at the bottom" position="bottom"/>
+                    <p:commandButton id="ttLeft" type="button" value="Left" styleClass="ui-button-outlined"/>
+                    <p:tooltip for="ttLeft" value="Tooltip on the left" position="left"/>
+                </div>
+
+                <h3>Global tooltip (title attribute), track mouse, HTML content, long text</h3>
+                <div class="demo-row">
+                    <p:inputText placeholder="Global tooltip" title="Global tooltip from the title attribute"/>
+                    <p:commandButton type="button" value="Global (button)" title="Also from the title" styleClass="ui-button-secondary"/>
+                    <h:outputText id="ttTrack" value="Track mouse" style="padding: .5rem; border: 1px dashed var(--p-content-border-color)"/>
+                    <p:tooltip for="ttTrack" value="Follows the mouse" trackMouse="true"/>
+                    <p:commandButton id="ttHtml" type="button" value="HTML content" icon="pi pi-image"/>
+                    <p:tooltip for="ttHtml" position="bottom">
+                        <div style="display: flex; align-items: center; gap: .5rem">
+                            <i class="pi pi-star-fill"></i>
+                            <span><strong>Rich</strong> tooltip <em>content</em></span>
+                        </div>
+                    </p:tooltip>
+                    <p:commandButton id="ttLong" type="button" value="Long text" styleClass="ui-button-help"/>
+                    <p:tooltip for="ttLong" position="top"
+                               value="A long tooltip text which wraps at the maximum tooltip width defined by the tooltip.max.width token of the theme."/>
+                </div>
+                <p:tooltip/>
+            </div>
+
+            <!-- ============================== Growl ============================== -->
+            <div class="demo-card">
+                <h2>Growl</h2>
+                <h3>Server side: info, warn, error, fatal / sticky</h3>
+                <div class="demo-row">
+                    <p:commandButton value="All severities" icon="pi pi-bell" action="#{themingNextOverlaysView.showGrowl}" update="growl" process="@this"/>
+                    <p:commandButton value="Sticky" icon="pi pi-thumbtack" styleClass="ui-button-help"
+                                     action="#{themingNextOverlaysView.showStickyGrowl}" update="growlSticky" process="@this"/>
+                </div>
+                <h3>Client side (renderMessage), incl. success</h3>
+                <div class="demo-row demo-severities">
+                    <c:forEach items="#{themingNextOverlaysView.severities}" var="sev">
+                        <p:commandButton type="button" value="#{sev}"
+                                         styleClass="#{sev eq 'info' ? 'ui-button-info' : sev eq 'success' ? 'ui-button-success' : sev eq 'warn' ? 'ui-button-warning' : sev eq 'error' ? 'ui-button-danger' : 'ui-button-contrast'}"
+                                         onclick="PF('growlClient').add({summary: '#{sev} message', detail: 'Rendered on the client', severity: '#{sev}'})"/>
+                    </c:forEach>
+                </div>
+                <p:growl widgetVar="growlClient" showDetail="true" for="growl-client-key"/>
+            </div>
+
+            <!-- ============================== Messages ============================== -->
+            <div class="demo-card">
+                <h2>Messages</h2>
+                <h3>Closable with detail / summary only / without icon</h3>
+                <div class="demo-row">
+                    <p:commandButton value="Show messages" icon="pi pi-envelope" action="#{themingNextOverlaysView.showMessages}"
+                                     update="messages messagesSummary messagesNoIcon" process="@this"/>
+                    <p:commandButton value="Multiple per severity" icon="pi pi-list" styleClass="ui-button-secondary"
+                                     action="#{themingNextOverlaysView.showMultipleMessages}"
+                                     update="messages messagesSummary messagesNoIcon" process="@this"/>
+                </div>
+                <div class="demo-grid">
+                    <div>
+                        <h3>closable, showDetail</h3>
+                        <p:messages id="messages" for="messages-key" showDetail="true" closable="true"/>
+                    </div>
+                    <div>
+                        <h3>summary only</h3>
+                        <p:messages id="messagesSummary" for="messages-key" showDetail="false"/>
+                    </div>
+                    <div>
+                        <h3>showIcon="false"</h3>
+                        <p:messages id="messagesNoIcon" for="messages-key" showDetail="true" showIcon="false" closable="true"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================== Message ============================== -->
+            <div class="demo-card">
+                <h2>Message</h2>
+                <h3>All severities, display both / icon / text</h3>
+                <div class="demo-row">
+                    <p:commandButton value="Show inline messages" icon="pi pi-comment" action="#{themingNextOverlaysView.showInlineMessages}"
+                                     update="inlineMessages" process="@this"/>
+                    <p:commandButton id="validateBtn" value="Validate (required)" icon="pi pi-check-circle" styleClass="ui-button-secondary"
+                                     process="@this required" update="required requiredMsg"/>
+                </div>
+                <h:panelGroup id="inlineMessages" layout="block" style="display: grid; grid-template-columns: repeat(3, max-content); gap: .75rem 1.5rem; align-items: center; margin-top: 1rem">
+                    <c:forEach items="#{['Info', 'Warn', 'Error', 'Fatal']}" var="sev">
+                        <h:panelGroup styleClass="demo-row">
+                            <p:inputText id="msg#{sev}" placeholder="#{sev} (both)" style="width: 10rem"/>
+                            <p:message for="msg#{sev}" showDetail="true"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="demo-row">
+                            <p:inputText id="msg#{sev}Icon" placeholder="#{sev} (icon)" style="width: 10rem"/>
+                            <p:message for="msg#{sev}Icon" display="icon"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="demo-row">
+                            <p:inputText id="msg#{sev}Text" placeholder="#{sev} (text)" style="width: 10rem"/>
+                            <p:message for="msg#{sev}Text" display="text"/>
+                        </h:panelGroup>
+                    </c:forEach>
+                </h:panelGroup>
+                <h3>Validation (required field)</h3>
+                <div class="demo-row">
+                    <p:inputText id="required" required="true" placeholder="Required" requiredMessage="Value is required"/>
+                    <p:message id="requiredMsg" for="required"/>
+                </div>
+            </div>
+
+            <!-- ============================== StaticMessage ============================== -->
+            <div class="demo-card">
+                <h2>StaticMessage</h2>
+                <h3>Severities</h3>
+                <div style="display: flex; flex-direction: column; gap: 1rem">
+                    <p:staticMessage severity="info" summary="Info" detail="Message content of an info message"/>
+                    <p:staticMessage severity="success" summary="Success" detail="Message content of a success message"/>
+                    <p:staticMessage severity="warn" summary="Warn" detail="Message content of a warn message"/>
+                    <p:staticMessage severity="error" summary="Error" detail="Message content of an error message"/>
+                    <p:staticMessage severity="fatal" summary="Fatal" detail="Message content of a fatal message"/>
+                </div>
+                <h3>Closable</h3>
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; padding: .75rem .75rem 0 0">
+                    <p:staticMessage severity="info" summary="Closable" detail="Click the close icon on the corner" closable="true"/>
+                    <p:staticMessage severity="error" summary="Closable error" detail="Click the close icon on the corner" closable="true"/>
+                </div>
+                <h3>Display icon / text, custom icon</h3>
+                <div class="demo-row">
+                    <p:staticMessage severity="warn" summary="Warn" detail="Icon only (hover for detail)" display="icon"/>
+                    <p:staticMessage severity="success" summary="Text only" detail="no icon" display="text"/>
+                    <p:staticMessage severity="info" summary="Custom icon" detail="pi pi-star-fill" icon="pi pi-star-fill"/>
+                </div>
+            </div>
+
+            <!-- ============================== Log ============================== -->
+            <div class="demo-card">
+                <h2>Log</h2>
+                <h3>p:log is a floating, draggable window (moved to the bottom right corner); write entries of each level</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Info" icon="pi pi-info-circle" styleClass="ui-button-info" onclick="PrimeFaces.info('Info entry')"/>
+                    <p:commandButton type="button" value="Warn" icon="pi pi-exclamation-triangle" styleClass="ui-button-warning" onclick="PrimeFaces.warn('Warn entry')"/>
+                    <p:commandButton type="button" value="Debug" icon="pi pi-search" styleClass="ui-button-secondary" onclick="PrimeFaces.debug('Debug entry')"/>
+                    <p:commandButton type="button" value="Error" icon="pi pi-times-circle" styleClass="ui-button-danger" onclick="PrimeFaces.error('Error entry')"/>
+                </div>
+                <p:log id="log"/>
+                <script>
+                    $(function () {
+                        $('.ui-log').css({ left: 'auto', top: 'auto', right: '2rem', bottom: '2rem' });
+                        PrimeFaces.info('Theming next: log ready');
+                        PrimeFaces.warn('A warning entry');
+                        PrimeFaces.debug('A debug entry');
+                        PrimeFaces.error('An error entry');
+                    });
+                </script>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

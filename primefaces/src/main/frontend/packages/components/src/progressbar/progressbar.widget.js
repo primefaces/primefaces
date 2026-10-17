@@ -92,7 +92,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
         const styles = isTransparent ?
             {
                 value: { 'background-color': 'transparent' },
-                label: { 'text-align': 'left', 'color': getComputedStyle(document.documentElement).getPropertyValue('--text-color') }
+                label: { 'text-align': 'left', 'color': 'var(--p-text-color, var(--text-color))' }
             } :
             {
                 value: { 'background-color': '' },

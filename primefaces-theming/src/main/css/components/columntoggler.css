@@ -1,0 +1,143 @@
+/*
+ * ColumnToggler: p:columnToggler overlay of p:dataTable / p:treeTable (+ responsive column priorities)
+ *
+ * Markup (built by the widget): .ui-columntoggler > ul.ui-columntoggler-items > li.ui-columntoggler-all / li.ui-columntoggler-item
+ *                               each with a .ui-chkbox and a label
+ * Tokens: the columntoggler block of presets/*.css (modelled on the PrimeUIX multiselect overlay)
+ */
+.ui-columntoggler {
+    padding: 0;
+    position: absolute;
+    overflow: auto;
+    display: none;
+    background: var(--p-columntoggler-background);
+    color: var(--p-columntoggler-color);
+    border: 1px solid var(--p-columntoggler-border-color);
+    border-radius: var(--p-columntoggler-border-radius);
+    box-shadow: var(--p-columntoggler-shadow);
+
+    /* the overlay closes on outside click / escape */
+    .ui-columntoggler-close {
+        display: none;
+    }
+
+    .ui-columntoggler-items {
+        display: flex;
+        flex-direction: column;
+        border: 0 none;
+        margin: 0;
+        list-style: none;
+        padding: var(--p-columntoggler-list-padding);
+        gap: var(--p-columntoggler-list-gap);
+    }
+
+    .ui-columntoggler-item,
+    .ui-columntoggler-all {
+        cursor: pointer;
+        margin: 0;
+        text-align: start;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .ui-columntoggler-item .ui-chkbox,
+    .ui-columntoggler-all .ui-chkbox {
+        position: static;
+        flex: 0 0 auto;
+        margin: 0;
+    }
+
+    .ui-columntoggler-item label,
+    .ui-columntoggler-all label {
+        display: block;
+        flex: 1 1 auto;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .ui-columntoggler-items {
+        .ui-columntoggler-item {
+            gap: var(--p-columntoggler-option-gap);
+            padding: var(--p-columntoggler-option-padding);
+            border: 0 none;
+            background: transparent;
+            color: var(--p-columntoggler-option-color);
+            font-size: var(--p-columntoggler-option-font-size);
+            font-weight: normal;
+            border-radius: var(--p-columntoggler-option-border-radius);
+            transition: background var(--p-columntoggler-transition-duration), color var(--p-columntoggler-transition-duration);
+
+            &:hover,
+            &:has(.ui-chkbox-box.ui-state-focus) {
+                background: var(--p-columntoggler-option-focus-background);
+                color: var(--p-columntoggler-option-focus-color);
+            }
+        }
+
+        .ui-columntoggler-all {
+            gap: var(--p-columntoggler-option-gap);
+            padding: var(--p-columntoggler-header-padding);
+            background: transparent;
+            color: var(--p-columntoggler-header-color);
+            font-weight: var(--p-columntoggler-header-font-weight);
+            border: 0 none;
+            border-bottom: 1px solid var(--p-columntoggler-header-border-color);
+            border-radius: 0;
+        }
+    }
+}
+
+/* column priorities: priority n is shown from 320px + (n - 1) * 160px on */
+@media only all {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-1,
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-2,
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-3,
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-4,
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-5,
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-6 {
+        display: none;
+    }
+
+    th.ui-helper-hidden,
+    td.ui-helper-hidden {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 20em) {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-1 {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 30em) {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-2 {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 40em) {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-3 {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 50em) {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-4 {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 60em) {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-5 {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 70em) {
+    .ui-columntoggler .ui-columntoggler-item.ui-column-p-6 {
+        display: flex;
+    }
+}

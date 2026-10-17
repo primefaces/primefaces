@@ -1,0 +1,41 @@
+/*
+ * TieredMenu: p:tieredMenu
+ *
+ * The tiered markup (.ui-menu-parent > .ui-menu-child overlay submenus, item hover / active states) is shared with
+ * p:menubar, p:megaMenu and p:contextMenu and styled by shared/menu.css; this file only maps the tieredmenu tokens.
+ */
+
+.ui-menu.ui-tieredmenu {
+    --_bg: var(--p-tieredmenu-background);
+    --_border-color: var(--p-tieredmenu-border-color);
+    --_border-radius: var(--p-tieredmenu-border-radius);
+    --_color: var(--p-tieredmenu-color);
+    --_shadow: var(--p-tieredmenu-shadow);
+    --_list-padding: var(--p-tieredmenu-list-padding);
+    --_list-gap: var(--p-tieredmenu-list-gap);
+    --_transition-duration: var(--p-tieredmenu-transition-duration);
+    --_item-border-radius: var(--p-tieredmenu-item-border-radius);
+    --_item-padding: var(--p-tieredmenu-item-padding);
+    --_item-gap: var(--p-tieredmenu-item-gap);
+    --_item-color: var(--p-tieredmenu-item-color);
+    --_item-focus-background: var(--p-tieredmenu-item-focus-background);
+    --_item-focus-color: var(--p-tieredmenu-item-focus-color);
+    --_item-active-background: var(--p-tieredmenu-item-active-background);
+    --_item-active-color: var(--p-tieredmenu-item-active-color);
+    --_item-icon-color: var(--p-tieredmenu-item-icon-color);
+    --_item-icon-focus-color: var(--p-tieredmenu-item-icon-focus-color);
+    --_item-icon-active-color: var(--p-tieredmenu-item-icon-active-color);
+    --_item-icon-size: var(--p-tieredmenu-item-icon-size);
+    --_item-label-font-size: var(--p-tieredmenu-item-label-font-size);
+    --_item-label-font-weight: var(--p-tieredmenu-item-label-font-weight);
+    --_submenu-icon-color: var(--p-tieredmenu-submenu-icon-color);
+    --_submenu-icon-focus-color: var(--p-tieredmenu-submenu-icon-focus-color);
+    --_submenu-icon-size: var(--p-tieredmenu-submenu-icon-size);
+    --_submenu-icon-active-color: var(--p-tieredmenu-submenu-icon-active-color);
+    --_separator-border-color: var(--p-tieredmenu-separator-border-color);
+    --_submenu-background: var(--p-tieredmenu-background);
+    --_submenu-border-color: var(--p-tieredmenu-border-color);
+    --_submenu-border-radius: var(--p-tieredmenu-border-radius);
+    --_submenu-padding: var(--p-tieredmenu-list-padding);
+    --_submenu-shadow: var(--p-tieredmenu-shadow);
+}

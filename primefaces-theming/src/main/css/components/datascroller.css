@@ -1,0 +1,86 @@
+/*
+ * DataScroller: p:dataScroller (document and inline mode, loader facet, virtual scroll)
+ *
+ * No own PrimeUIX component: styled with the dataview tokens (+ PrimeFaces dataview tokens).
+ * The default loading indicator is a CSS spinner.
+ */
+@keyframes ui-datascroller-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ui-datascroller {
+    .ui-datascroller-header {
+        text-align: center;
+        background: var(--p-dataview-header-background);
+        color: var(--p-dataview-header-color);
+        padding: var(--p-dataview-header-padding);
+        font-weight: var(--p-dataview-header-font-weight);
+        border: 1px solid var(--p-dataview-header-border-color);
+        border-width: var(--p-dataview-header-border-width);
+        border-radius: var(--p-dataview-header-border-radius);
+    }
+
+    .ui-datascroller-content {
+        border: 1px solid var(--p-dataview-content-border-color);
+        border-width: var(--p-dataview-content-border-width);
+        border-radius: var(--p-dataview-content-border-radius);
+        background: var(--p-dataview-content-background);
+        color: var(--p-dataview-content-color);
+        padding: var(--p-dataview-content-padding);
+    }
+
+    .ui-datascroller-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .ui-datascroller-item {
+        border: 1px solid var(--p-dataview-item-border-color);
+        border-width: 0 0 1px 0;
+
+        &:last-child {
+            border-bottom-width: 0;
+        }
+    }
+
+    .ui-datascroller-virtualscroll-wrapper {
+        position: relative;
+
+        .ui-datascroller-list {
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+    }
+
+    /* loader facet (e.g. a "more" button) */
+    .ui-datascroller-loader:not(:empty) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--p-dataview-loader-padding);
+    }
+
+    .ui-datascroller-loading .ui-datascroller-loading-default {
+        display: block;
+        width: var(--p-dataview-loading-icon-size);
+        height: var(--p-dataview-loading-icon-size);
+        margin: 0 auto;
+        padding: 0;
+        border: var(--p-dataview-loading-icon-border-width) solid var(--p-dataview-loading-icon-track-color);
+        border-top-color: var(--p-dataview-loading-icon-color);
+        border-radius: 50%;
+        animation: ui-datascroller-spin var(--p-dataview-loading-icon-animation-duration) linear infinite;
+    }
+}
+
+.ui-datascroller-inline .ui-datascroller-content {
+    overflow: auto;
+}

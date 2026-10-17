@@ -1,0 +1,180 @@
+/*
+ * ColorPicker: p:colorPicker (Coloris), mode="popup" (input .ui-colorpicker.ui-inputfield inside .clr-field)
+ * and mode="inline" (div .ui-colorpicker with an inline .clr-picker).
+ *
+ * coloris.css is in the vendor layer; these rules adjust it and apply the tokens.
+ * Supported classes: clr-rtl, ui-state-error, clr-dark (set by the widget, the tokens already follow the color scheme),
+ *                    .thumbnail (swatch only)
+ */
+.clr-field {
+    /* the popup input leaves room for the swatch */
+    .ui-colorpicker.ui-inputfield {
+        padding-inline-end: calc(var(--p-colorpicker-swatch-width) + var(--p-form-field-padding-x));
+    }
+
+    /* swatch of the popup input */
+    button {
+        width: var(--p-colorpicker-swatch-width);
+        height: calc(100% - 2px);
+        margin-right: 1px;
+        border-radius: 0 var(--p-colorpicker-preview-border-radius) var(--p-colorpicker-preview-border-radius) 0;
+    }
+
+    &.clr-rtl button {
+        right: unset;
+        border-radius: var(--p-colorpicker-preview-border-radius) 0 0 var(--p-colorpicker-preview-border-radius);
+    }
+
+    /* the widget copies ui-state-error of the input to the swatch */
+    button.ui-state-error {
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--p-form-field-invalid-border-color);
+    }
+}
+
+.field .clr-field {
+    display: block;
+}
+
+.ui-float-label .clr-field.clr-rtl + label {
+    left: unset;
+    margin-left: unset;
+    margin-right: var(--p-floatlabel-position-x);
+    right: 0;
+}
+
+.thumbnail .clr-field button {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--p-colorpicker-preview-border-radius);
+}
+
+.ui-fluid .clr-field {
+    display: block;
+
+    .ui-colorpicker.ui-inputfield {
+        width: 100%;
+    }
+}
+
+/* picker overlay (popup) and inline picker */
+.clr-picker {
+    width: 240px;
+    background: var(--p-colorpicker-overlay-background);
+    color: var(--p-colorpicker-overlay-color);
+    border: 1px solid var(--p-colorpicker-overlay-border-color);
+    border-radius: var(--p-colorpicker-overlay-border-radius);
+    box-shadow: var(--p-colorpicker-overlay-shadow);
+    font-family: inherit;
+
+    &.clr-pill {
+        width: 420px;
+    }
+
+    &[data-inline=true] {
+        box-shadow: none;
+    }
+
+    .clr-gradient {
+        border-radius: var(--p-colorpicker-overlay-border-radius) var(--p-colorpicker-overlay-border-radius) 0 0;
+    }
+
+    .clr-hue div,
+    .clr-alpha div,
+    .clr-marker {
+        border-color: var(--p-colorpicker-handle-color);
+    }
+
+    /* the hex / rgb / hsl text input */
+    input.clr-color {
+        font-family: inherit;
+        font-size: var(--p-form-field-sm-font-size);
+        color: var(--p-form-field-color);
+        background: var(--p-form-field-background);
+        border: 1px solid var(--p-form-field-border-color);
+        border-radius: var(--p-form-field-border-radius);
+        outline-color: transparent;
+        transition: border-color var(--p-form-field-transition-duration), box-shadow var(--p-form-field-transition-duration),
+            outline-color var(--p-form-field-transition-duration);
+
+        &:hover {
+            border-color: var(--p-form-field-hover-border-color);
+        }
+
+        &:focus {
+            border-color: var(--p-form-field-focus-border-color);
+            outline: var(--p-form-field-focus-ring-width) var(--p-form-field-focus-ring-style) var(--p-form-field-focus-ring-color);
+            outline-offset: var(--p-form-field-focus-ring-offset);
+            box-shadow: var(--p-form-field-focus-ring-shadow);
+        }
+    }
+
+    /* format switch (hex / rgb / hsl) */
+    .clr-segmented {
+        color: var(--p-text-muted-color);
+        border-color: var(--p-form-field-border-color);
+        border-radius: var(--p-form-field-border-radius);
+        font-size: var(--p-form-field-sm-font-size);
+
+        label:first-of-type {
+            border-radius: var(--p-form-field-border-radius) 0 0 var(--p-form-field-border-radius);
+        }
+
+        label:last-of-type {
+            border-radius: 0 var(--p-form-field-border-radius) var(--p-form-field-border-radius) 0;
+        }
+
+        input:checked + label {
+            color: var(--p-highlight-color);
+            background: var(--p-highlight-background);
+        }
+    }
+
+    /* close / clear buttons */
+    .clr-close,
+    .clr-clear {
+        font-family: inherit;
+        font-size: var(--p-button-sm-font-size);
+        font-weight: var(--p-button-label-font-weight);
+        border-radius: var(--p-button-border-radius);
+        transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration);
+    }
+
+    .clr-close {
+        color: var(--p-button-primary-color);
+        background: var(--p-button-primary-background);
+
+        &:hover {
+            color: var(--p-button-primary-hover-color);
+            background: var(--p-button-primary-hover-background);
+        }
+    }
+
+    .clr-clear {
+        color: var(--p-button-secondary-color);
+        background: var(--p-button-secondary-background);
+
+        &:hover {
+            color: var(--p-button-secondary-hover-color);
+            background: var(--p-button-secondary-hover-background);
+        }
+    }
+
+    .clr-swatches button {
+        border-radius: var(--p-colorpicker-preview-border-radius);
+    }
+}
+
+/* keyboard focus inside the picker */
+.clr-keyboard-nav .clr-picker .clr-marker:focus,
+.clr-keyboard-nav .clr-picker .clr-hue input:focus + div,
+.clr-keyboard-nav .clr-picker .clr-alpha input:focus + div,
+.clr-keyboard-nav .clr-picker .clr-segmented input:focus + label,
+.clr-picker .clr-swatches button:focus-visible,
+.clr-picker .clr-close:focus-visible,
+.clr-picker .clr-clear:focus-visible {
+    outline: var(--p-colorpicker-preview-focus-ring-width) var(--p-colorpicker-preview-focus-ring-style) var(--p-colorpicker-preview-focus-ring-color);
+    outline-offset: var(--p-colorpicker-preview-focus-ring-offset);
+    box-shadow: var(--p-colorpicker-preview-focus-ring-shadow);
+}

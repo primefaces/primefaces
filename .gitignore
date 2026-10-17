@@ -69,3 +69,4 @@ node_modules/
 /primefaces-theme/target/
 /primefaces-coverage/target/
 /primefaces-cdk/target/
+/primefaces-showcase/src/main/webapp/resources/theming-test/

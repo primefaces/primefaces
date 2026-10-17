@@ -33,6 +33,7 @@ import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.ThemeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * - Theme CSS
  * - PrimeIcons CSS
  * - Middle Facet
+ * - Token based Theme CSS (primefaces-theming, replaces the CSS of the PrimeFaces core library)
  * - Registered Resources
  * - Client Validation Scripts
  * - Locales
@@ -96,17 +98,12 @@ public class HeadRenderer extends Renderer<UIComponent> {
         }
 
         //Theme
-        String theme;
-        String themeParamValue = applicationContext.getConfig().getTheme();
+        String theme = ThemeUtils.resolveTheme(context);
 
-        if (themeParamValue != null) {
-            theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
-        }
-        else {
-            theme = "saga-blue";     //default
-        }
+        // token based themes (primefaces-theming) replace the CSS of the core, see PrimeResourceHandler#isResourceRendered
+        boolean tokenTheme = ThemeUtils.isTokenTheme(context, theme);
 
-        if (theme != null && !"none".equals(theme)) {
+        if (theme != null && !"none".equals(theme) && !tokenTheme) {
             if (THEME_MAPPING.containsKey(theme)) {
                 theme = THEME_MAPPING.get(theme);
             }
@@ -130,6 +127,11 @@ public class HeadRenderer extends Renderer<UIComponent> {
 
         // encode client side locale
         encodeLocaleResources(context, configuration);
+
+        // token based theme: contains the complete styling of all components
+        if (tokenTheme) {
+            encodeTokenTheme(context, theme);
+        }
 
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
@@ -159,6 +161,19 @@ public class HeadRenderer extends Renderer<UIComponent> {
         }
 
         writer.endElement("head");
+    }
+
+    protected void encodeTokenTheme(FacesContext context, String theme) throws IOException {
+        // components.css (the same for every theme) first: it declares the layer order and the default icons, the tokens
+        // of the theme (built-in or custom "library:name") follow and override them
+        encodeCSS(context, ThemeUtils.THEMING_LIBRARY, ThemeUtils.COMPONENTS + ".css");
+        int separator = theme.indexOf(':');
+        if (separator > 0) {
+            encodeCSS(context, theme.substring(0, separator), theme.substring(separator + 1));
+        }
+        else {
+            encodeCSS(context, ThemeUtils.THEMING_LIBRARY, theme + ".css");
+        }
     }
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {

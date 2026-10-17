@@ -1,0 +1,231 @@
+/*
+ * TextEditor: p:textEditor (Quill snow theme, PrimeUIX: editor)
+ *
+ * Supported classes: ui-state-error (on .ui-texteditor)
+ * quill.snow.css is in the vendor layer; these rules adjust it and apply the tokens.
+ */
+.ql-container {
+    font-family: var(--p-typography-font-family);
+}
+
+.ql-editor {
+    .ql-bg-blue {
+        background-color: var(--p-text-color);
+    }
+
+    .ql-color-white {
+        color: var(--p-content-background);
+    }
+
+    .ql-color-blue {
+        color: var(--p-text-color);
+    }
+
+    ol li[data-list="bullet"]::before {
+        content: none;
+    }
+
+    li[data-list=bullet] > .ql-ui::before {
+        content: "\2022";
+        text-align: center;
+    }
+}
+
+/* touch devices: no sticky hover color */
+@media (pointer: coarse) {
+    .ql-snow.ql-toolbar button:hover:not(.ql-active),
+    .ql-snow .ql-toolbar button:hover:not(.ql-active) {
+        color: var(--p-editor-toolbar-item-color);
+
+        .ql-fill,
+        .ql-stroke.ql-fill {
+            fill: var(--p-editor-toolbar-item-color);
+        }
+
+        .ql-stroke,
+        .ql-stroke-miter {
+            stroke: var(--p-editor-toolbar-item-color);
+        }
+    }
+}
+
+.ql-snow {
+    .ql-stroke,
+    .ql-stroke-miter {
+        stroke: var(--p-editor-toolbar-item-color);
+    }
+
+    .ql-fill,
+    .ql-stroke.ql-fill {
+        fill: var(--p-editor-toolbar-item-color);
+    }
+
+    .ql-picker {
+        color: var(--p-editor-toolbar-item-color);
+    }
+
+    .ql-picker-options {
+        background-color: var(--p-editor-overlay-background);
+    }
+
+    .ql-color-picker.ql-background .ql-picker-item {
+        background-color: var(--p-editor-overlay-background);
+    }
+
+    /* link / formula tooltip */
+    .ql-tooltip {
+        background-color: var(--p-editor-overlay-background);
+        color: var(--p-editor-overlay-color);
+        border-color: var(--p-editor-overlay-border-color);
+        border-radius: var(--p-editor-overlay-border-radius);
+        box-shadow: var(--p-editor-overlay-shadow);
+
+        input[type=text] {
+            font-family: inherit;
+            color: var(--p-form-field-color);
+            background: var(--p-form-field-background);
+            border-color: var(--p-form-field-border-color);
+            border-radius: var(--p-form-field-border-radius);
+        }
+
+        a {
+            color: var(--p-primary-color);
+        }
+    }
+}
+
+.ui-texteditor {
+    .ui-editor-toolbar {
+        background: var(--p-editor-toolbar-background);
+        border-top-right-radius: var(--p-editor-toolbar-border-radius);
+        border-top-left-radius: var(--p-editor-toolbar-border-radius);
+    }
+
+    .ui-editor-toolbar.ql-snow {
+        border: 1px solid var(--p-editor-toolbar-border-color);
+
+        .ql-stroke {
+            stroke: var(--p-editor-toolbar-item-color);
+        }
+
+        .ql-fill {
+            fill: var(--p-editor-toolbar-item-color);
+        }
+
+        .ql-picker .ql-picker-label {
+            border: 0 none;
+            color: var(--p-editor-toolbar-item-color);
+
+            &:hover {
+                color: var(--p-editor-toolbar-item-hover-color);
+            }
+
+            &:hover .ql-stroke {
+                stroke: var(--p-editor-toolbar-item-hover-color);
+            }
+
+            &:hover .ql-fill {
+                fill: var(--p-editor-toolbar-item-hover-color);
+            }
+        }
+
+        .ql-picker.ql-expanded .ql-picker-label {
+            color: var(--p-editor-toolbar-item-hover-color);
+
+            .ql-stroke {
+                stroke: var(--p-editor-toolbar-item-hover-color);
+            }
+
+            .ql-fill {
+                fill: var(--p-editor-toolbar-item-hover-color);
+            }
+        }
+
+        .ql-picker.ql-expanded .ql-picker-options {
+            background: var(--p-editor-overlay-background);
+            color: var(--p-editor-overlay-color);
+            border: 1px solid var(--p-editor-overlay-border-color);
+            box-shadow: var(--p-editor-overlay-shadow);
+            border-radius: var(--p-editor-overlay-border-radius);
+            padding: var(--p-editor-overlay-padding);
+
+            .ql-picker-item {
+                color: var(--p-editor-overlay-option-color);
+                border-radius: var(--p-editor-overlay-option-border-radius);
+            }
+
+            .ql-picker-item:hover {
+                color: var(--p-editor-overlay-option-focus-color);
+                background: var(--p-editor-overlay-option-focus-background);
+            }
+        }
+
+        .ql-picker.ql-expanded:not(.ql-icon-picker) .ql-picker-item {
+            padding: var(--p-editor-overlay-option-padding);
+        }
+    }
+
+    .ql-container {
+        border-bottom-right-radius: var(--p-editor-content-border-radius);
+        border-bottom-left-radius: var(--p-editor-content-border-radius);
+
+        &.ql-snow {
+            border: 1px solid var(--p-editor-content-border-color);
+        }
+
+        .ql-editor {
+            background: var(--p-editor-content-background);
+            color: var(--p-editor-content-color);
+            border-bottom-right-radius: var(--p-editor-content-border-radius);
+            border-bottom-left-radius: var(--p-editor-content-border-radius);
+        }
+    }
+
+    .ql-snow.ql-toolbar {
+        button:hover,
+        button:focus {
+            color: var(--p-editor-toolbar-item-hover-color);
+
+            .ql-stroke {
+                stroke: var(--p-editor-toolbar-item-hover-color);
+            }
+
+            .ql-fill {
+                fill: var(--p-editor-toolbar-item-hover-color);
+            }
+        }
+
+        /* the alternatives below differ in specificity, so they are not used as a nesting parent */
+        button.ql-active,
+        .ql-picker-label.ql-active,
+        .ql-picker-item.ql-selected {
+            color: var(--p-editor-toolbar-item-active-color);
+        }
+
+        button.ql-active .ql-stroke,
+        .ql-picker-label.ql-active .ql-stroke,
+        .ql-picker-item.ql-selected .ql-stroke {
+            stroke: var(--p-editor-toolbar-item-active-color);
+        }
+
+        button.ql-active .ql-fill,
+        .ql-picker-label.ql-active .ql-fill,
+        .ql-picker-item.ql-selected .ql-fill {
+            fill: var(--p-editor-toolbar-item-active-color);
+        }
+
+        button.ql-active .ql-picker-label,
+        .ql-picker-label.ql-active .ql-picker-label,
+        .ql-picker-item.ql-selected .ql-picker-label {
+            color: var(--p-editor-toolbar-item-active-color);
+        }
+    }
+
+    /* invalid */
+    &.ui-state-error {
+        .ui-editor-toolbar.ql-snow,
+        .ql-container.ql-snow {
+            border-color: var(--p-editor-invalid-border-color);
+        }
+    }
+}

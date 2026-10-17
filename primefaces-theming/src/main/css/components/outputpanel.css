@@ -1,0 +1,18 @@
+/*
+ * OutputPanel: p:outputPanel (layout block | inline, deferred loading)
+ *
+ * While a deferred panel loads it contains <i class="ui-outputpanel-loading ui-icon pi pi-spin pi-spinner">,
+ * centered here (PrimeFaces tokens).
+ */
+
+div.ui-outputpanel:has(> .ui-outputpanel-loading) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--p-outputpanel-loading-padding);
+}
+
+.ui-outputpanel .ui-outputpanel-loading {
+    font-size: var(--p-outputpanel-loading-icon-size);
+    color: var(--p-outputpanel-loading-icon-color);
+}

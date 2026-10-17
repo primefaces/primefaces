@@ -1,0 +1,506 @@
+/*
+ * SelectCheckboxMenu: p:selectCheckboxMenu (PrimeUIX: multiselect)
+ *
+ * Supported classes: ui-state-hover, ui-state-focus, ui-state-error, ui-state-disabled, ui-input-filled (on a parent),
+ *                    ui-selectcheckboxmenu-multiple (chips mode), .ui-fluid (on a parent)
+ * Panel items: ui-state-hover (mouse and keyboard), ui-state-highlight (selected)
+ * Variants: filter, toggle all checkbox, close icon, groups, table with columns (p:column children)
+ */
+.ui-selectcheckboxmenu {
+    display: inline-block;
+    width: auto;
+    cursor: pointer;
+    vertical-align: baseline;
+    border: 1px solid var(--p-multiselect-border-color);
+    position: relative;
+    background: var(--p-multiselect-background);
+    color: var(--p-multiselect-color);
+    border-radius: var(--p-multiselect-border-radius);
+    box-shadow: var(--p-multiselect-shadow);
+    outline-color: transparent;
+    transition: background var(--p-multiselect-transition-duration), color var(--p-multiselect-transition-duration),
+        border-color var(--p-multiselect-transition-duration), outline-color var(--p-multiselect-transition-duration),
+        box-shadow var(--p-multiselect-transition-duration);
+
+    .ui-selectcheckboxmenu-label {
+        display: block;
+        width: auto;
+        border: 0 none;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        /* keeps the line height when the label is empty */
+        &::after {
+            content: "p";
+            display: inline-flex;
+            visibility: hidden;
+            overflow: hidden;
+            width: 0;
+            clip: rect(0, 0, 0, 0);
+        }
+    }
+
+    .ui-selectcheckboxmenu-label-container {
+        padding: var(--p-multiselect-padding-y) var(--p-multiselect-padding-x);
+        padding-inline-end: var(--p-multiselect-dropdown-width);
+        display: block;
+        background: transparent;
+        border-radius: var(--p-multiselect-border-radius);
+
+        .ui-selectcheckboxmenu-label {
+            padding: 0;
+            background: transparent;
+            color: var(--p-multiselect-color);
+            font-size: var(--p-multiselect-font-size);
+            font-weight: var(--p-multiselect-font-weight);
+        }
+    }
+
+    .ui-selectcheckboxmenu-trigger {
+        border: 0 none;
+        cursor: pointer;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        inset-inline-end: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--p-multiselect-dropdown-width);
+        background: transparent;
+        color: var(--p-multiselect-dropdown-color);
+        border-start-end-radius: var(--p-multiselect-border-radius);
+        border-end-end-radius: var(--p-multiselect-border-radius);
+
+        /* pi-chevron-down */
+        .ui-icon {
+            position: static;
+            margin: 0;
+            color: var(--p-multiselect-dropdown-color);
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+        }
+
+        .ui-icon::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-multiselect-dropdown-icon) center / contain no-repeat;
+        }
+    }
+
+    &.ui-state-disabled .ui-selectcheckboxmenu-trigger,
+    &.ui-state-disabled .ui-selectcheckboxmenu-label {
+        cursor: auto;
+    }
+
+    &.ui-state-hover,
+    &:not(.ui-state-disabled):hover {
+        border-color: var(--p-multiselect-hover-border-color);
+    }
+
+    &.ui-state-focus {
+        border-color: var(--p-multiselect-focus-border-color);
+        outline: var(--p-multiselect-focus-ring-width) var(--p-multiselect-focus-ring-style) var(--p-multiselect-focus-ring-color);
+        outline-offset: var(--p-multiselect-focus-ring-offset);
+        box-shadow: var(--p-multiselect-focus-ring-shadow);
+    }
+
+    &.ui-state-error {
+        border-color: var(--p-multiselect-invalid-border-color);
+    }
+
+    &.ui-state-disabled {
+        opacity: 1;
+        background: var(--p-multiselect-disabled-background);
+
+        .ui-selectcheckboxmenu-label {
+            color: var(--p-multiselect-disabled-color);
+        }
+    }
+
+    /*
+     * chips mode: the container is also a .ui-inputfield, drop the field chrome of shared/inputfield.css.
+     * A flex row of chips, at least as high as the label of the non-chips mode, so the component keeps the input
+     * height (chips are smaller than a text line in Aura).
+     */
+    .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        row-gap: calc(var(--p-multiselect-padding-y) / 2);
+        min-height: calc(2 * var(--p-multiselect-padding-y) + var(--p-typography-line-height) * var(--p-multiselect-font-size));
+        padding: calc(var(--p-multiselect-padding-y) / 2) calc(var(--p-multiselect-padding-x) / 2);
+        padding-inline-end: var(--p-multiselect-dropdown-width);
+        background: transparent;
+        border: 0 none;
+        box-shadow: none;
+        outline: 0 none;
+    }
+
+    /* empty label of the chips mode (li added by the widget when nothing is selected) */
+    .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-emptylabel {
+        color: var(--p-multiselect-placeholder-color);
+        white-space: nowrap;
+    }
+
+    &.ui-state-error .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-emptylabel {
+        color: var(--p-multiselect-invalid-placeholder-color);
+    }
+
+    .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-token {
+        padding-block: calc(var(--p-multiselect-padding-y) / 2);
+        padding-inline: 0;
+        margin: 0;
+        margin-inline-end: calc(var(--p-multiselect-padding-y) / 2);
+        background: var(--p-chip-background);
+        color: var(--p-chip-color);
+        border-radius: var(--p-multiselect-chip-border-radius);
+
+        .ui-selectcheckboxmenu-token-label {
+            padding-block: 0;
+            padding-inline: calc(var(--p-icon-size) / 2) calc(2 * var(--p-icon-size));
+            font-size: var(--p-chip-label-font-size);
+            font-weight: var(--p-chip-label-font-weight);
+        }
+
+        /* pi-times */
+        .ui-selectcheckboxmenu-token-icon {
+            margin-top: calc(-1 * var(--p-icon-size) / 2);
+            position: absolute;
+            color: var(--p-chip-remove-icon-color);
+            font-size: var(--p-chip-remove-icon-size);
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+        }
+
+        .ui-selectcheckboxmenu-token-icon::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-multiselect-chip-remove-icon) center / contain no-repeat;
+        }
+    }
+}
+
+.ui-selectcheckboxmenu-multiple-container {
+    clear: left;
+    cursor: pointer;
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    min-width: 100px;
+
+    &:empty::after {
+        /* the renderer writes the empty label to data-label */
+        content: attr(data-label);
+        white-space: nowrap;
+        display: inline-block;
+        color: var(--p-multiselect-placeholder-color);
+    }
+}
+
+.ui-selectcheckboxmenu-token {
+    cursor: default;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.ui-selectcheckboxmenu-token-label {
+    display: block;
+}
+
+.ui-selectcheckboxmenu-token-icon {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: calc(var(--p-icon-size) / 2);
+    cursor: pointer;
+}
+
+/* filled variant */
+.ui-input-filled .ui-selectcheckboxmenu {
+    background: var(--p-multiselect-filled-background);
+
+    &.ui-state-hover,
+    &:not(.ui-state-disabled):hover {
+        background: var(--p-multiselect-filled-hover-background);
+    }
+
+    &.ui-state-focus {
+        background: var(--p-multiselect-filled-focus-background);
+    }
+
+    &.ui-state-disabled {
+        background: var(--p-multiselect-disabled-background);
+    }
+
+    /* keep the filled backgrounds of shared/inputfield.css off the inner chips container */
+    .ui-selectcheckboxmenu-multiple-container.ui-inputfield,
+    .ui-selectcheckboxmenu-multiple-container.ui-inputfield:hover {
+        background: transparent;
+    }
+}
+
+.ui-fluid .ui-selectcheckboxmenu {
+    width: 100%;
+}
+
+/* panel */
+.ui-selectcheckboxmenu-panel {
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    background: var(--p-multiselect-overlay-background);
+    color: var(--p-multiselect-overlay-color);
+    border: 1px solid var(--p-multiselect-overlay-border-color);
+    box-shadow: var(--p-multiselect-overlay-shadow);
+    border-radius: var(--p-multiselect-overlay-border-radius);
+
+    .ui-selectcheckboxmenu-items-wrapper {
+        overflow: auto;
+        position: relative;
+        padding: 0;
+    }
+
+    .ui-selectcheckboxmenu-item {
+        cursor: pointer;
+    }
+
+    .ui-selectcheckboxmenu-list {
+        border: 0 none;
+        margin: 0;
+        list-style-type: none;
+    }
+
+    .ui-selectcheckboxmenu-list-item {
+        border: 0 none;
+        display: flex;
+        align-items: center;
+        position: relative;
+        text-align: start;
+        white-space: nowrap;
+    }
+
+    .ui-selectcheckboxmenu-table {
+        border-collapse: collapse;
+        width: 100%;
+
+        th,
+        td {
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--p-datatable-body-cell-border-color);
+        }
+
+        /* first column holds the checkbox: shrink it to its content */
+        th:first-of-type,
+        td:first-of-type {
+            width: 1%;
+            white-space: nowrap;
+        }
+    }
+
+    .ui-selectcheckboxmenu-header {
+        padding: var(--p-multiselect-list-header-padding);
+        margin: 0;
+        border: 0 none;
+        border-radius: 0;
+        background: transparent;
+        color: var(--p-multiselect-overlay-color);
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .ui-chkbox {
+            margin-inline-end: var(--p-multiselect-option-gap);
+        }
+
+        .ui-selectcheckboxmenu-filter-container {
+            padding: 0;
+            margin: 0;
+            margin-inline-end: var(--p-multiselect-option-gap);
+            flex: 1 1 0;
+
+            .ui-inputfield {
+                width: 100%;
+                padding-block: var(--p-multiselect-padding-y);
+                padding-inline: var(--p-multiselect-padding-x);
+                padding-inline-start: calc(2 * var(--p-multiselect-padding-x) + var(--p-icon-size));
+            }
+
+            /* pi-search */
+            .ui-icon {
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+                position: absolute;
+                inset-inline-start: var(--p-multiselect-padding-x);
+                top: 50%;
+                margin-top: calc(-1 * var(--p-icon-size) / 2);
+                color: var(--p-form-field-icon-color);
+            }
+
+            .ui-icon::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-multiselect-filter-icon) center / contain no-repeat;
+            }
+        }
+
+        /* close action icon; no action icon tokens, the text-plain button tokens give the same look */
+        .ui-selectcheckboxmenu-close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--p-button-icon-only-width);
+            height: var(--p-button-icon-only-width);
+            padding: 0;
+            margin-inline: auto 0;
+            text-align: center;
+            user-select: none;
+            background: transparent;
+            color: var(--p-button-text-plain-color);
+            border: 0 none;
+            border-radius: 50%;
+            outline-color: transparent;
+            transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),
+                outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+
+            &:hover,
+            &.ui-state-hover {
+                background: var(--p-button-text-plain-hover-background);
+                color: var(--p-button-text-plain-color);
+            }
+
+            &:focus-visible {
+                outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+                outline-offset: var(--p-focus-ring-offset);
+                box-shadow: var(--p-focus-ring-shadow);
+            }
+
+            /* pi-times */
+            .ui-icon {
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+            }
+
+            .ui-icon::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-multiselect-close-icon) center / contain no-repeat;
+            }
+        }
+    }
+
+    .ui-selectcheckboxmenu-items {
+        padding: var(--p-multiselect-list-padding);
+
+        &.ui-selectcheckboxmenu-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--p-multiselect-list-gap);
+        }
+
+        &.ui-selectcheckboxmenu-table > thead tr th {
+            background: var(--p-datatable-header-cell-background);
+            border: 1px solid var(--p-datatable-header-cell-border-color);
+            color: var(--p-datatable-header-cell-color);
+            font-weight: var(--p-datatable-column-title-font-weight);
+            padding: var(--p-datatable-header-cell-padding);
+        }
+
+        .ui-selectcheckboxmenu-item {
+            padding: var(--p-multiselect-option-padding);
+            margin: 0;
+            outline: 0 none;
+            background: transparent;
+            color: var(--p-multiselect-option-color);
+            font-size: var(--p-multiselect-option-font-size);
+            font-weight: var(--p-multiselect-option-font-weight);
+            border-radius: var(--p-multiselect-option-border-radius);
+            transition: background var(--p-list-option-transition-duration), color var(--p-list-option-transition-duration),
+                border-color var(--p-list-option-transition-duration), box-shadow var(--p-list-option-transition-duration),
+                outline-color var(--p-list-option-transition-duration);
+
+            &.ui-state-hover {
+                background: var(--p-multiselect-option-focus-background);
+                color: var(--p-multiselect-option-focus-color);
+            }
+
+            &.ui-state-highlight {
+                background: var(--p-multiselect-option-selected-background);
+                color: var(--p-multiselect-option-selected-color);
+                font-weight: var(--p-multiselect-option-selected-font-weight);
+            }
+
+            &.ui-state-highlight.ui-state-hover {
+                background: var(--p-multiselect-option-selected-focus-background);
+                color: var(--p-multiselect-option-selected-focus-color);
+            }
+
+            .ui-chkbox {
+                position: static;
+                margin-inline-end: var(--p-multiselect-option-gap);
+            }
+
+            > label {
+                display: inline;
+                vertical-align: middle;
+            }
+
+            &.ui-selectcheckboxmenu-row {
+                background: var(--p-datatable-row-background);
+                color: var(--p-datatable-row-color);
+                border: 1px solid var(--p-datatable-body-cell-border-color);
+                border-radius: 0;
+            }
+
+            &.ui-selectcheckboxmenu-row > td {
+                padding: var(--p-datatable-body-cell-padding);
+                border-color: var(--p-datatable-body-cell-border-color);
+            }
+
+            &.ui-selectcheckboxmenu-row:first-child {
+                border-top-color: transparent;
+            }
+        }
+
+        .ui-selectcheckboxmenu-item-group {
+            margin: 0;
+            padding: var(--p-multiselect-option-group-padding);
+            background: var(--p-multiselect-option-group-background);
+            color: var(--p-multiselect-option-group-color);
+            font-weight: var(--p-multiselect-option-group-font-weight);
+            font-size: var(--p-multiselect-option-group-font-size);
+        }
+    }
+}
+
+.ui-selectcheckboxmenu-header {
+    .ui-chkbox {
+        cursor: pointer;
+    }
+
+    .ui-selectcheckboxmenu-filter-container {
+        position: relative;
+    }
+}
+
+.ui-selectcheckboxmenu-footer {
+    border: 0 none;
+    margin: 0;
+    padding: var(--p-multiselect-list-header-padding);
+}

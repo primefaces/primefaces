@@ -1,0 +1,182 @@
+/*
+ * Message: p:message (inline message of a single component), shared by p:staticMessage (see staticmessage.css)
+ *
+ * Markup p:message:       .ui-message.ui-message-<severity> > div > span.ui-message-<severity>-icon
+ *                         + span.ui-message-<severity>-summary + span.ui-message-<severity>-detail
+ * Markup p:staticMessage: .ui-message.ui-staticmessage.ui-message-<severity> > (a.ui-messages-close) + span.icon + summary + detail
+ * Severity classes only switch the private --_* variables: ui-message-info | -success | -warn | -error | -fatal,
+ * ui-message-icon-only (display="icon"). PF only tokens (fatal, summary/detail): the message block of presets/*.css
+ */
+
+.ui-message {
+    --_bg: var(--p-message-info-background);
+    --_border-color: var(--p-message-info-border-color);
+    --_color: var(--p-message-info-color);
+    --_shadow: var(--p-message-info-shadow);
+    --_close-hover-bg: var(--p-message-info-close-button-hover-background);
+    --_close-focus-ring-color: var(--p-message-info-close-button-focus-ring-color);
+    --_close-focus-ring-shadow: var(--p-message-info-close-button-focus-ring-shadow);
+
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: var(--p-message-border-radius);
+    font-size: var(--p-message-text-font-size);
+    font-weight: var(--p-message-text-font-weight);
+    outline-color: transparent;
+    transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
+        border-color var(--p-message-transition-duration);
+
+    /* an empty p:message (no message) has no severity class and stays invisible */
+    &.ui-message-info,
+    &.ui-message-success,
+    &.ui-message-warn,
+    &.ui-message-error,
+    &.ui-message-fatal {
+        padding: var(--p-message-content-padding);
+        background: var(--_bg);
+        border: var(--p-message-border-width) solid var(--_border-color);
+        color: var(--_color);
+        box-shadow: var(--_shadow);
+    }
+
+    &.ui-message-success {
+        --_bg: var(--p-message-success-background);
+        --_border-color: var(--p-message-success-border-color);
+        --_color: var(--p-message-success-color);
+        --_shadow: var(--p-message-success-shadow);
+        --_close-hover-bg: var(--p-message-success-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-success-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-success-close-button-focus-ring-shadow);
+    }
+
+    &.ui-message-warn {
+        --_bg: var(--p-message-warn-background);
+        --_border-color: var(--p-message-warn-border-color);
+        --_color: var(--p-message-warn-color);
+        --_shadow: var(--p-message-warn-shadow);
+        --_close-hover-bg: var(--p-message-warn-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-warn-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-warn-close-button-focus-ring-shadow);
+    }
+
+    &.ui-message-error {
+        --_bg: var(--p-message-error-background);
+        --_border-color: var(--p-message-error-border-color);
+        --_color: var(--p-message-error-color);
+        --_shadow: var(--p-message-error-shadow);
+        --_close-hover-bg: var(--p-message-error-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-error-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-error-close-button-focus-ring-shadow);
+    }
+
+    &.ui-message-fatal {
+        --_bg: var(--p-message-fatal-background);
+        --_border-color: var(--p-message-fatal-border-color);
+        --_color: var(--p-message-fatal-color);
+        --_shadow: var(--p-message-fatal-shadow);
+        --_close-hover-bg: var(--p-message-fatal-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-fatal-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-fatal-close-button-focus-ring-shadow);
+    }
+
+    /* content row: icon, summary, detail */
+    > div {
+        display: flex;
+        align-items: center;
+        gap: var(--p-message-content-gap);
+        /* keeps the text line height (= input height) when only the icon is shown */
+        min-height: calc(var(--p-typography-line-height) * 1em);
+    }
+
+    /* icons */
+    .ui-message-info-icon,
+    .ui-message-success-icon,
+    .ui-message-warn-icon,
+    .ui-message-error-icon,
+    .ui-message-fatal-icon {
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        background: none;
+        flex-shrink: 0;
+        color: var(--_color);
+        font-size: var(--p-message-icon-size);
+        line-height: 1;
+    }
+
+    .ui-message-info-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-info-icon) center / contain no-repeat;
+    }
+
+    .ui-message-success-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-success-icon) center / contain no-repeat;
+    }
+
+    .ui-message-warn-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-warn-icon) center / contain no-repeat;
+    }
+
+    .ui-message-error-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-error-icon) center / contain no-repeat;
+    }
+
+    .ui-message-fatal-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-fatal-icon) center / contain no-repeat;
+    }
+
+    /* texts */
+    .ui-message-info-summary,
+    .ui-message-success-summary,
+    .ui-message-warn-summary,
+    .ui-message-error-summary,
+    .ui-message-fatal-summary {
+        font-weight: var(--p-message-summary-font-weight);
+    }
+
+    .ui-message-info-detail,
+    .ui-message-success-detail,
+    .ui-message-warn-detail,
+    .ui-message-error-detail,
+    .ui-message-fatal-detail {
+        font-weight: var(--p-message-detail-font-weight);
+        overflow-wrap: break-word;
+        text-wrap: pretty;
+    }
+
+    .ui-message-info-summary:empty,
+    .ui-message-success-summary:empty,
+    .ui-message-warn-summary:empty,
+    .ui-message-error-summary:empty,
+    .ui-message-fatal-summary:empty,
+    .ui-message-info-detail:empty,
+    .ui-message-success-detail:empty,
+    .ui-message-warn-detail:empty,
+    .ui-message-error-detail:empty,
+    .ui-message-fatal-detail:empty {
+        display: none;
+    }
+
+    &.ui-helper-hidden {
+        display: none;
+    }
+}
+
+/* inline p:message next to its input; p:staticMessage is a block of its own */
+.ui-widget + .ui-message:not(.ui-staticmessage) {
+    margin-inline-start: var(--p-message-content-gap);
+}

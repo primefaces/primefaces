@@ -1,0 +1,102 @@
+/*
+ * Splitter: p:splitter (layout horizontal | vertical, nested splitters)
+ *
+ * The gutter size is set inline by the widget (gutterSize); .ui-splitter-gutter-resizing / .ui-splitter-resizing
+ * are set while dragging.
+ */
+
+.ui-splitter {
+    display: flex;
+    flex-wrap: nowrap;
+    background: var(--p-splitter-background);
+    color: var(--p-splitter-color);
+    border: 1px solid var(--p-splitter-border-color);
+    border-radius: var(--p-border-radius-md);
+
+    .ui-splitter-gutter {
+        position: relative;
+        z-index: 1;
+        background: var(--p-splitter-gutter-background);
+        transition: background var(--p-splitter-transition-duration);
+
+        .ui-splitter-gutter-handle {
+            background: var(--p-splitter-handle-background);
+            border-radius: var(--p-splitter-handle-border-radius);
+            outline-color: transparent;
+            transition: background var(--p-splitter-transition-duration), outline-color var(--p-splitter-transition-duration),
+                box-shadow var(--p-splitter-transition-duration);
+        }
+
+        &:focus-visible {
+            outline: 0 none;
+        }
+
+        &:focus-visible > .ui-splitter-gutter-handle,
+        .ui-splitter-gutter-handle:focus-visible {
+            outline: var(--p-splitter-handle-focus-ring-width) var(--p-splitter-handle-focus-ring-style) var(--p-splitter-handle-focus-ring-color);
+            outline-offset: var(--p-splitter-handle-focus-ring-offset);
+            box-shadow: var(--p-splitter-handle-focus-ring-shadow);
+        }
+    }
+
+    .ui-splitter-gutter-resizing {
+        background: var(--p-splitter-gutter-resizing-background);
+    }
+}
+
+.ui-splitter-panel {
+    flex-grow: 1;
+}
+
+.ui-splitter-panel-nested {
+    display: flex;
+}
+
+/* nested splitters have no own frame */
+.ui-splitter-panel .ui-splitter {
+    flex-grow: 1;
+    border: 0 none;
+    border-radius: 0;
+}
+
+.ui-splitter-gutter {
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-splitter-horizontal {
+    &.ui-splitter-resizing {
+        cursor: col-resize;
+        user-select: none;
+    }
+
+    > .ui-splitter-gutter {
+        cursor: col-resize;
+
+        > .ui-splitter-gutter-handle {
+            width: 100%;
+            height: var(--p-splitter-handle-size);
+        }
+    }
+}
+
+.ui-splitter-vertical {
+    flex-direction: column;
+
+    &.ui-splitter-resizing {
+        cursor: row-resize;
+        user-select: none;
+    }
+
+    > .ui-splitter-gutter {
+        cursor: row-resize;
+
+        > .ui-splitter-gutter-handle {
+            width: var(--p-splitter-handle-size);
+            height: 100%;
+        }
+    }
+}

@@ -1,0 +1,491 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough"
+                template="/theming-next/template.xhtml">
+    <ui:define name="head">
+        <style>
+            .demo-box {
+                padding: .75rem;
+                text-align: center;
+                border-radius: var(--p-border-radius-md);
+                background: var(--p-highlight-background);
+                color: var(--p-highlight-color);
+                font-weight: 500;
+            }
+
+            .demo-state {
+                padding: .75rem 1rem;
+                border: 1px solid;
+                min-width: 9rem;
+                text-align: center;
+            }
+
+            .demo-resize-box {
+                width: 16rem;
+                height: 8rem;
+                padding: 1rem;
+                border: 1px solid;
+                border-radius: var(--p-content-border-radius);
+            }
+
+            .demo-drag-item {
+                display: inline-flex;
+                align-items: center;
+                gap: .5rem;
+                padding: .5rem .75rem;
+                margin: .25rem;
+                border: 1px solid;
+                border-radius: var(--p-content-border-radius);
+                cursor: move;
+            }
+
+            .demo-drop-zone {
+                min-height: 8rem;
+                padding: 1rem;
+                border: 1px dashed var(--p-content-border-color);
+                border-radius: var(--p-content-border-radius);
+            }
+
+            .demo-effect-box {
+                width: 9rem;
+                padding: 1rem;
+                text-align: center;
+                cursor: pointer;
+                border: 1px solid;
+                border-radius: var(--p-content-border-radius);
+            }
+
+            .demo-sticky-bar {
+                z-index: 10;
+            }
+        </style>
+        <script>
+            var demoLayout = {
+                drop: function (event, ui) {
+                    ui.draggable.css({left: '', top: ''}).appendTo(this.jq.find('.demo-drop-list'));
+                }
+            };
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl"/>
+
+            <!-- ============================== Sticky ============================== -->
+            <div class="demo-card">
+                <h2>Sticky</h2>
+                <div class="muted">The toolbar below gets pinned (ui-sticky + ui-shadow) when scrolling down the page.</div>
+                <h3>p:sticky on a p:toolbar</h3>
+                <p:toolbar id="stickyBar" styleClass="demo-sticky-bar">
+                    <p:toolbarGroup>
+                        <p:commandButton type="button" value="New" icon="pi pi-plus"/>
+                        <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="ui-button-secondary"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton type="button" icon="pi pi-save" title="Save" styleClass="ui-button-success"/>
+                        <p:commandButton type="button" icon="pi pi-trash" title="Delete" styleClass="ui-button-danger"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:sticky target="stickyBar"/>
+            </div>
+
+            <!-- ============================== Grid ============================== -->
+            <div class="demo-card">
+                <h2>Grid CSS</h2>
+
+                <h3>ui-g: responsive 12 columns (ui-g-12 ui-md-6 ui-lg-3)</h3>
+                <div class="ui-g">
+                    <ui:repeat value="#{[1, 2, 3, 4]}" var="i">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3"><div class="demo-box">ui-lg-3 (#{i})</div></div>
+                    </ui:repeat>
+                </div>
+
+                <h3>ui-g: mixed widths</h3>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-8"><div class="demo-box">ui-md-8</div></div>
+                    <div class="ui-g-12 ui-md-4"><div class="demo-box">ui-md-4</div></div>
+                    <div class="ui-g-6 ui-md-3"><div class="demo-box">ui-md-3</div></div>
+                    <div class="ui-g-6 ui-md-3"><div class="demo-box">ui-md-3</div></div>
+                    <div class="ui-g-12 ui-md-6"><div class="demo-box">ui-md-6</div></div>
+                </div>
+
+                <h3>ui-g: offsets (ui-md-offset-*) and ui-g-nopad</h3>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-4 ui-md-offset-4"><div class="demo-box">ui-md-4 ui-md-offset-4</div></div>
+                    <div class="ui-g-12 ui-md-6 ui-md-offset-6"><div class="demo-box">ui-md-6 ui-md-offset-6</div></div>
+                    <div class="ui-g-6 ui-g-nopad"><div class="demo-box">ui-g-6 ui-g-nopad</div></div>
+                    <div class="ui-g-6 ui-g-nopad"><div class="demo-box">ui-g-6 ui-g-nopad</div></div>
+                </div>
+
+                <h3>ui-grid (deprecated): ui-grid-responsive ui-grid-pad</h3>
+                <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><div class="demo-box">ui-grid-col-4</div></div>
+                        <div class="ui-grid-col-4"><div class="demo-box">ui-grid-col-4</div></div>
+                        <div class="ui-grid-col-4"><div class="demo-box">ui-grid-col-4</div></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-3"><div class="demo-box">ui-grid-col-3</div></div>
+                        <div class="ui-grid-col-9"><div class="demo-box">ui-grid-col-9</div></div>
+                    </div>
+                </div>
+
+                <h3>ui-fluid form in ui-g</h3>
+                <div class="ui-fluid ui-g">
+                    <div class="ui-g-12 ui-md-4">
+                        <p:outputLabel for="@next" value="Firstname"/>
+                        <p:inputText value="#{themingNextLayoutView.firstname}" placeholder="Firstname"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <p:outputLabel for="@next" value="Lastname"/>
+                        <p:inputText value="#{themingNextLayoutView.lastname}" placeholder="Lastname"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <p:outputLabel for="@next" value="City"/>
+                        <p:selectOneMenu value="#{themingNextLayoutView.city}">
+                            <f:selectItem itemLabel="Select a city" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{themingNextLayoutView.cities}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <p:commandButton type="button" value="Full width button" icon="pi pi-check"/>
+                    </div>
+                </div>
+
+                <h3>Column priorities (ui-column-p-1 ... p-6, resize the window)</h3>
+                <table style="width: 100%; border-collapse: collapse">
+                    <tr>
+                        <ui:repeat value="#{[1, 2, 3, 4, 5, 6]}" var="i">
+                            <td class="ui-column-p-#{i} ui-widget-content" style="border: 1px solid; padding: .5rem">p-#{i}</td>
+                        </ui:repeat>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ============================== Generic classes ============================== -->
+            <div class="demo-card">
+                <h2>Generic widget classes</h2>
+
+                <h3>ui-widget-header / ui-widget-content / ui-corner-*</h3>
+                <div class="ui-widget" style="max-width: 32rem">
+                    <div class="ui-widget-header ui-corner-top" style="padding: .75rem 1rem; border: 1px solid">ui-widget-header ui-corner-top</div>
+                    <div class="ui-widget-content ui-corner-bottom" style="padding: 1rem; border: 1px solid; border-top: 0">
+                        ui-widget-content ui-corner-bottom with a <a href="#">link</a>.
+                    </div>
+                </div>
+
+                <h3>States: ui-state-default | -hover | -active | -highlight | -error | -disabled</h3>
+                <div class="demo-row">
+                    <div class="demo-state ui-widget ui-widget-content ui-state-default ui-corner-all">ui-state-default</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-state-hover ui-corner-all">ui-state-hover</div>
+                    <div class="demo-state ui-widget ui-state-active ui-corner-all">ui-state-active</div>
+                    <div class="demo-state ui-widget ui-state-highlight ui-corner-all">ui-state-highlight</div>
+                    <div class="demo-state ui-widget ui-state-error ui-corner-all">ui-state-error</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-state-disabled ui-corner-all">ui-state-disabled</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-all"><span class="ui-state-error-text">ui-state-error-text</span></div>
+                </div>
+
+                <h3>ui-priority-primary / ui-priority-secondary, ui-shadow, ui-corner-*</h3>
+                <div class="demo-row">
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-all ui-priority-primary">ui-priority-primary</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-all ui-priority-secondary">ui-priority-secondary</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-all ui-shadow">ui-shadow</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-left">ui-corner-left</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-right">ui-corner-right</div>
+                    <div class="demo-state ui-widget ui-widget-content ui-corner-tl ui-corner-br">ui-corner-tl + br</div>
+                </div>
+
+                <h3>Helpers: ui-helper-clearfix, ui-helper-hidden, ui-helper-hidden-accessible</h3>
+                <div class="ui-widget-content ui-corner-all ui-helper-clearfix" style="border: 1px solid; padding: .5rem">
+                    <div class="demo-box" style="float: left; width: 40%">float: left</div>
+                    <div class="demo-box" style="float: right; width: 40%">float: right</div>
+                </div>
+                <div class="ui-helper-hidden">ui-helper-hidden: you should not see this</div>
+                <span class="ui-helper-hidden-accessible">ui-helper-hidden-accessible: only for screen readers</span>
+
+                <h3>Icons (.ui-icon with primeicons)</h3>
+                <div class="demo-row">
+                    <span class="ui-icon pi pi-check"></span>
+                    <span class="ui-icon pi pi-times"></span>
+                    <span class="ui-icon pi pi-search"></span>
+                    <span class="ui-icon pi pi-cog pi-spin"></span>
+                    <span class="ui-state-highlight ui-corner-all" style="padding: .5rem"><span class="ui-icon pi pi-star-fill"></span></span>
+                </div>
+
+                <h3>Native elements (outside of components)</h3>
+                <div class="demo-row">
+                    <input type="text" placeholder="native input"/>
+                    <input type="number" value="3"/>
+                    <select>
+                        <option>native select</option>
+                        <option>Option 2</option>
+                    </select>
+                    <input type="text" disabled="disabled" value="disabled"/>
+                </div>
+            </div>
+
+            <!-- ============================== BlockUI ============================== -->
+            <div class="demo-card">
+                <h2>BlockUI</h2>
+                <div class="demo-grid">
+                    <div>
+                        <h3>Client side (no content)</h3>
+                        <p:panel id="blockPanel" header="Blocked panel">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <p:inputText placeholder="Try to type while blocked"/>
+                        </p:panel>
+                        <div class="demo-row" style="margin-top: .75rem">
+                            <p:commandButton type="button" value="Block" icon="pi pi-lock" onclick="PF('buiPanel').show()"/>
+                            <p:commandButton type="button" value="Unblock" icon="pi pi-lock-open" styleClass="ui-button-outlined"
+                                             onclick="PF('buiPanel').hide()"/>
+                        </div>
+                        <p:blockUI block="blockPanel" widgetVar="buiPanel"/>
+                    </div>
+
+                    <div>
+                        <h3>Ajax trigger with content</h3>
+                        <p:panel id="blockForm" header="Ajax blocked">
+                            <div class="ui-fluid">
+                                <p:outputLabel for="@next" value="Firstname"/>
+                                <p:inputText value="#{themingNextLayoutView.firstname}"/>
+                            </div>
+                            <p:commandButton id="blockSave" value="Save (1.5s)" icon="pi pi-check" action="#{themingNextLayoutView.slow}"
+                                             update="growl" style="margin-top: .75rem"/>
+                        </p:panel>
+                        <p:blockUI block="blockForm" trigger="blockSave">
+                            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                            <div style="margin-top: .5rem">Saving...</div>
+                        </p:blockUI>
+                    </div>
+
+                    <div>
+                        <h3>Initially blocked, with content</h3>
+                        <p:outputPanel id="blockedBox" layout="block" styleClass="ui-widget-content ui-corner-all"
+                                       style="border: 1px solid; padding: 1rem; height: 9rem">
+                            This area is blocked on page load.
+                        </p:outputPanel>
+                        <div class="demo-row" style="margin-top: .75rem">
+                            <p:commandButton type="button" value="Block" icon="pi pi-lock" onclick="PF('buiBox').show()"/>
+                            <p:commandButton type="button" value="Unblock" icon="pi pi-lock-open" styleClass="ui-button-outlined"
+                                             onclick="PF('buiBox').hide()"/>
+                        </div>
+                        <p:blockUI block="blockedBox" widgetVar="buiBox" blocked="true">
+                            <i class="pi pi-lock" style="margin-right: .5rem"></i>Locked
+                        </p:blockUI>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================== AjaxStatus ============================== -->
+            <div class="demo-card">
+                <h2>AjaxStatus</h2>
+                <h3>Facets default / start / complete</h3>
+                <div class="demo-row">
+                    <p:ajaxStatus id="status">
+                        <f:facet name="default">
+                            <span class="muted"><i class="pi pi-circle"></i> Idle</span>
+                        </f:facet>
+                        <f:facet name="start">
+                            <span><i class="pi pi-spin pi-spinner"></i> Loading...</span>
+                        </f:facet>
+                        <f:facet name="complete">
+                            <span class="muted"><i class="pi pi-check"></i> Completed</span>
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:commandButton value="Send ajax request (1.5s)" icon="pi pi-send" action="#{themingNextLayoutView.slow}"
+                                     update="growl" styleClass="ui-button-outlined"/>
+                    <p:commandButton value="Send with modal status" icon="pi pi-clock" action="#{themingNextLayoutView.slow}"
+                                     update="growl" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
+                                     styleClass="ui-button-secondary"/>
+                </div>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <div style="text-align: center; padding: 1rem">
+                        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                        <div style="margin-top: .5rem">Please wait</div>
+                    </div>
+                </p:dialog>
+            </div>
+
+            <!-- ============================== Spotlight ============================== -->
+            <div class="demo-card">
+                <h2>Spotlight</h2>
+                <p:panel id="spotPanel" header="Spotlight target" style="max-width: 32rem">
+                    <p>Everything around this panel is masked while the spotlight is active.</p>
+                    <div class="ui-fluid">
+                        <p:inputText placeholder="Focus stays inside"/>
+                    </div>
+                    <p:commandButton type="button" value="Hide spotlight" icon="pi pi-times" styleClass="ui-button-outlined"
+                                     style="margin-top: .75rem" onclick="PF('spot').hide()"/>
+                </p:panel>
+                <div class="demo-row" style="margin-top: .75rem">
+                    <p:commandButton type="button" value="Show spotlight" icon="pi pi-eye" onclick="PF('spot').show()"/>
+                </div>
+                <p:spotlight target="spotPanel" widgetVar="spot"/>
+            </div>
+
+            <!-- ============================== Resizable ============================== -->
+            <div class="demo-card">
+                <h2>Resizable</h2>
+                <div class="demo-grid">
+                    <div>
+                        <h3>Default (e, s, se handles)</h3>
+                        <p:panel id="resBasic" header="Basic" style="width: 16rem">Drag the bottom right corner.</p:panel>
+                        <p:resizable for="resBasic"/>
+                    </div>
+                    <div>
+                        <h3>All handles</h3>
+                        <h:panelGroup id="resAll" layout="block" styleClass="demo-resize-box ui-widget ui-widget-content">handles="n,e,s,w,ne,se,sw,nw"</h:panelGroup>
+                        <p:resizable for="resAll" handles="n,e,s,w,ne,se,sw,nw"/>
+                    </div>
+                    <div>
+                        <h3>Ghost</h3>
+                        <h:panelGroup id="resGhost" layout="block" styleClass="demo-resize-box ui-widget ui-widget-content">ghost="true" (ui-resizable-ghost)</h:panelGroup>
+                        <p:resizable for="resGhost" ghost="true"/>
+                    </div>
+                    <div>
+                        <h3>Proxy</h3>
+                        <h:panelGroup id="resProxy" layout="block" styleClass="demo-resize-box ui-widget ui-widget-content">proxy="true" (ui-resizable-proxy)</h:panelGroup>
+                        <p:resizable for="resProxy" proxy="true"/>
+                    </div>
+                    <div>
+                        <h3>Animated (helper)</h3>
+                        <h:panelGroup id="resAnimate" layout="block" styleClass="demo-resize-box ui-widget ui-widget-content">animate="true" (ui-resizable-helper)</h:panelGroup>
+                        <p:resizable for="resAnimate" animate="true"/>
+                    </div>
+                    <div>
+                        <h3>Boundaries, aspect ratio, grid</h3>
+                        <h:panelGroup id="resBounds" layout="block" styleClass="demo-resize-box ui-widget ui-widget-content">min 192px / max 384px, aspect ratio, grid 16</h:panelGroup>
+                        <p:resizable for="resBounds" minWidth="192" maxWidth="384" minHeight="96" maxHeight="256" aspectRatio="true" grid="16"/>
+                    </div>
+                    <div>
+                        <h3>Containment</h3>
+                        <h:panelGroup id="resContainer" layout="block" styleClass="ui-widget-content"
+                                      style="border: 1px dashed; width: 20rem; height: 10rem; border-radius: var(--p-content-border-radius)">
+                            <p:panel id="resContained" header="Contained" style="width: 12rem">Restricted to the parent.</p:panel>
+                            <p:resizable for="resContained" containment="true"/>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================== Drag and drop ============================== -->
+            <div class="demo-card">
+                <h2>Drag and drop</h2>
+                <div class="demo-grid">
+                    <div>
+                        <h3>Draggables (revert, helper clone, opacity, axis)</h3>
+                        <div class="ui-widget">
+                            <h:panelGroup id="drag1" layout="block" styleClass="demo-drag-item ui-widget-content"><i class="pi pi-file"></i>Revert</h:panelGroup>
+                            <p:draggable for="drag1" revert="true" scope="demo"/>
+                            <h:panelGroup id="drag2" layout="block" styleClass="demo-drag-item ui-widget-content"><i class="pi pi-file"></i>Revert 2</h:panelGroup>
+                            <p:draggable for="drag2" revert="true" scope="demo"/>
+                            <h:panelGroup id="drag3" layout="block" styleClass="demo-drag-item ui-widget-content"><i class="pi pi-copy"></i>Helper clone</h:panelGroup>
+                            <p:draggable for="drag3" helper="clone" revert="true" scope="demo"/>
+                            <h:panelGroup id="drag4" layout="block" styleClass="demo-drag-item ui-widget-content"><i class="pi pi-eye-slash"></i>Opacity 0.5</h:panelGroup>
+                            <p:draggable for="drag4" opacity="0.5" revert="true" scope="demo"/>
+                            <h:panelGroup id="drag5" layout="block" styleClass="demo-drag-item ui-widget-content"><i class="pi pi-arrows-h"></i>Axis x (not droppable)</h:panelGroup>
+                            <p:draggable for="drag5" axis="x"/>
+                        </div>
+                        <p:panel id="dragPanel" header="Draggable panel (handle = header)" style="width: 18rem; margin-top: .75rem">
+                            Drag me by the header.
+                        </p:panel>
+                        <p:draggable for="dragPanel" handle=".ui-panel-titlebar"/>
+                    </div>
+                    <div>
+                        <h3>Droppable (ui-droppable-active / -hover)</h3>
+                        <h:panelGroup id="drop1" layout="block" styleClass="demo-drop-zone ui-widget">
+                            <div class="muted">Drop items here</div>
+                            <div class="demo-drop-list"></div>
+                        </h:panelGroup>
+                        <p:droppable for="drop1" scope="demo" tolerance="pointer" onDrop="demoLayout.drop"/>
+
+                        <h3>activeStyleClass="ui-state-highlight" hoverStyleClass="ui-state-active"</h3>
+                        <h:panelGroup id="drop2" layout="block" styleClass="demo-drop-zone ui-widget">
+                            <div class="demo-drop-list"></div>
+                        </h:panelGroup>
+                        <p:droppable for="drop2" scope="demo" activeStyleClass="ui-state-highlight" hoverStyleClass="ui-state-active"
+                                     onDrop="demoLayout.drop"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================== Effect ============================== -->
+            <div class="demo-card">
+                <h2>Effect</h2>
+                <h3>Click a box</h3>
+                <div class="demo-row">
+                    <h:panelGroup id="fxBounce" layout="block" styleClass="demo-effect-box ui-widget ui-widget-content">
+                        bounce
+                        <p:effect type="bounce" event="click"/>
+                    </h:panelGroup>
+                    <h:panelGroup id="fxPulsate" layout="block" styleClass="demo-effect-box ui-widget ui-widget-content">
+                        pulsate
+                        <p:effect type="pulsate" event="click"/>
+                    </h:panelGroup>
+                    <h:panelGroup id="fxShake" layout="block" styleClass="demo-effect-box ui-widget ui-widget-content">
+                        shake
+                        <p:effect type="shake" event="click"/>
+                    </h:panelGroup>
+                    <h:panelGroup id="fxHighlight" layout="block" styleClass="demo-effect-box ui-widget ui-widget-content">
+                        highlight
+                        <p:effect type="highlight" event="click"/>
+                    </h:panelGroup>
+                    <h:panelGroup id="fxScale" layout="block" styleClass="demo-effect-box ui-widget ui-widget-content">
+                        scale (dblclick)
+                        <p:effect type="scale" event="dblclick">
+                            <f:param name="percent" value="90"/>
+                        </p:effect>
+                    </h:panelGroup>
+                </div>
+                <h3>Effects on another target</h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Fade out" icon="pi pi-eye-slash" styleClass="ui-button-outlined">
+                        <p:effect type="fade" event="click" for="fxTarget">
+                            <f:param name="mode" value="'hide'"/>
+                        </p:effect>
+                    </p:commandButton>
+                    <p:commandButton type="button" value="Fade in" icon="pi pi-eye" styleClass="ui-button-outlined">
+                        <p:effect type="fade" event="click" for="fxTarget">
+                            <f:param name="mode" value="'show'"/>
+                        </p:effect>
+                    </p:commandButton>
+                    <p:commandButton type="button" value="Blind toggle" icon="pi pi-arrows-v" styleClass="ui-button-outlined">
+                        <p:effect type="blind" event="click" for="fxTarget">
+                            <f:param name="mode" value="'toggle'"/>
+                        </p:effect>
+                    </p:commandButton>
+                    <h:panelGroup id="fxTarget" layout="block" styleClass="demo-effect-box ui-widget ui-state-highlight">target</h:panelGroup>
+                </div>
+            </div>
+
+            <!-- ============================== Lifecycle ============================== -->
+            <div class="demo-card">
+                <h2>Lifecycle</h2>
+                <div class="muted">Durations of the JSF phases of the last ajax request, colored by score (0 / 33 / 66 / 100).</div>
+                <h3>p:lifecycle</h3>
+                <div class="demo-row">
+                    <p:commandButton value="Fast request" icon="pi pi-bolt" action="#{themingNextLayoutView.fast}" process="@this" update="@none"/>
+                    <p:commandButton value="Slow request (1.5s)" icon="pi pi-clock" action="#{themingNextLayoutView.slow}" process="@this"
+                                     update="growl" styleClass="ui-button-secondary"/>
+                </div>
+                <div style="margin-top: .75rem">
+                    <p:lifecycle/>
+                </div>
+
+                <h3>All scores (static markup)</h3>
+                <table class="ui-lifecycle ui-widget">
+                    <tr>
+                        <ui:repeat value="#{[0, 33, 66, 100]}" var="score">
+                            <td>
+                                <div class="ui-lifecycle-name">SCORE #{score}</div>
+                                <div class="ui-lifecycle-result ui-lifecycle-score-#{score}">#{120 - score}ms</div>
+                            </td>
+                        </ui:repeat>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="height: 40vh"></div>
+        </h:form>
+    </ui:define>
+</ui:composition>

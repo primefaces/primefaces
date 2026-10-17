@@ -1,0 +1,466 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                xmlns:pt="jakarta.faces.passthrough"
+                template="/theming-next/template.xhtml">
+    <ui:define name="content">
+    <ui:param name="severities" value="#{['primary', 'secondary', 'info', 'success', 'warning', 'help', 'danger', 'contrast']}"/>
+    <h:form id="form">
+        <div class="demo-card">
+            <h2>Button</h2>
+
+            <h3>Severities</h3>
+            <div class="demo-row demo-severities">
+                <ui:repeat value="#{severities}" var="s">
+                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-#{s}"/>
+                </ui:repeat>
+            </div>
+
+            <h3>Outlined</h3>
+            <div class="demo-row demo-severities">
+                <ui:repeat value="#{severities}" var="s">
+                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-#{s} ui-button-outlined"/>
+                </ui:repeat>
+                <p:commandButton type="button" value="plain" styleClass="ui-button-outlined ui-button-plain"/>
+            </div>
+
+            <h3>Text (ui-button-flat)</h3>
+            <div class="demo-row demo-severities">
+                <ui:repeat value="#{severities}" var="s">
+                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-#{s} ui-button-flat"/>
+                </ui:repeat>
+                <p:commandButton type="button" value="plain" styleClass="ui-button-flat ui-button-plain"/>
+            </div>
+
+            <h3>Icons</h3>
+            <div class="demo-row">
+                <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+                <p:commandButton type="button" value="Next" icon="pi pi-arrow-right" iconPos="right" styleClass="ui-button-secondary"/>
+                <p:commandButton type="button" icon="pi pi-search"/>
+                <p:commandButton type="button" icon="pi pi-trash" styleClass="ui-button-danger ui-button-outlined"/>
+                <p:commandButton type="button" icon="pi pi-heart" styleClass="ui-button-help rounded-button"/>
+                <p:commandButton type="button" icon="pi pi-bell" styleClass="ui-button-warning ui-button-flat rounded-button"/>
+            </div>
+
+            <h3>Sizes, raised, rounded, disabled</h3>
+            <div class="demo-row">
+                <p:commandButton type="button" value="Small" icon="pi pi-check" styleClass="ui-button-sm"/>
+                <p:commandButton type="button" value="Normal" icon="pi pi-check"/>
+                <p:commandButton type="button" value="Large" icon="pi pi-check" styleClass="ui-button-lg"/>
+                <p:commandButton type="button" value="Raised" styleClass="ui-button-raised"/>
+                <p:commandButton type="button" value="Rounded" styleClass="rounded-button ui-button-success"/>
+                <p:commandButton type="button" value="Disabled" disabled="true"/>
+                <p:commandButton type="button" value="Disabled" disabled="true" styleClass="ui-button-outlined"/>
+            </div>
+
+            <h3>Other button components</h3>
+            <div class="demo-row">
+                <p:button value="p:button" icon="pi pi-external-link" href="#"/>
+                <p:linkButton value="p:linkButton" icon="pi pi-link" href="#" styleClass="ui-button-secondary"/>
+                <p:commandLink value="p:commandLink" onclick="return false;"/>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>InputText</h2>
+            <div class="demo-grid">
+                <div>
+                    <h3>Default</h3>
+                    <p:inputText placeholder="Placeholder"/>
+                </div>
+                <div>
+                    <h3>With value</h3>
+                    <p:inputText value="Hello Theming"/>
+                </div>
+                <div>
+                    <h3>Invalid</h3>
+                    <p:inputText placeholder="Required" styleClass="ui-state-error"/>
+                </div>
+                <div>
+                    <h3>Disabled</h3>
+                    <p:inputText value="Disabled" disabled="true"/>
+                </div>
+                <div class="ui-input-filled">
+                    <h3>Filled</h3>
+                    <p:inputText placeholder="Filled"/>
+                </div>
+                <div>
+                    <h3>Sizes</h3>
+                    <div class="demo-row">
+                        <p:inputText placeholder="Small" styleClass="ui-inputtext-sm"/>
+                        <p:inputText placeholder="Large" styleClass="ui-inputtext-lg"/>
+                    </div>
+                </div>
+                <div>
+                    <h3>Textarea</h3>
+                    <p:inputTextarea placeholder="Textarea" rows="3"/>
+                </div>
+                <div>
+                    <h3>Input + button</h3>
+                    <div class="demo-row">
+                        <p:inputText placeholder="Search"/>
+                        <p:commandButton type="button" icon="pi pi-search"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Form components</h2>
+            <div class="demo-grid">
+                <div>
+                    <h3>SelectOneMenu</h3>
+                    <p:selectOneMenu value="#{themingNextView.city}" style="width: 100%">
+                        <f:selectItem itemLabel="Select a city" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{themingNextView.cities}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div>
+                    <h3>SelectCheckboxMenu</h3>
+                    <p:selectCheckboxMenu value="#{themingNextView.selectedCities}" label="Cities" multiple="true" filter="true" style="width: 100%">
+                        <f:selectItems value="#{themingNextView.cities}"/>
+                    </p:selectCheckboxMenu>
+                </div>
+                <div>
+                    <h3>DatePicker</h3>
+                    <p:datePicker value="#{themingNextView.date}" showIcon="true"/>
+                </div>
+                <div>
+                    <h3>InputNumber / Spinner</h3>
+                    <div class="demo-row">
+                        <p:inputNumber value="#{themingNextView.number}" style="width: 8rem"/>
+                        <p:spinner value="#{themingNextView.number}" buttons="horizontal" style="width: 9rem"/>
+                    </div>
+                </div>
+                <div>
+                    <h3>Password</h3>
+                    <p:password value="#{themingNextView.password}" feedback="true" toggleMask="true" placeholder="Password"/>
+                </div>
+                <div>
+                    <h3>Chips</h3>
+                    <p:chips value="#{themingNextView.chips}"/>
+                </div>
+                <div>
+                    <h3>Checkbox, radio, switch</h3>
+                    <div class="demo-row">
+                        <p:selectBooleanCheckbox value="#{themingNextView.checked}" itemLabel="Checked"/>
+                        <p:toggleSwitch value="#{themingNextView.toggled}"/>
+                    </div>
+                    <p:selectOneRadio value="#{themingNextView.radio}" style="margin-top: .75rem">
+                        <f:selectItem itemLabel="A" itemValue="A"/>
+                        <f:selectItem itemLabel="B" itemValue="B"/>
+                        <f:selectItem itemLabel="C" itemValue="C"/>
+                    </p:selectOneRadio>
+                </div>
+                <div>
+                    <h3>SelectOneButton</h3>
+                    <p:selectOneButton value="#{themingNextView.option}">
+                        <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                        <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                        <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                    </p:selectOneButton>
+                </div>
+                <div>
+                    <h3>Rating / Slider</h3>
+                    <p:rating value="#{themingNextView.rating}"/>
+                    <div style="margin-top: 1rem">
+                        <p:inputText id="sliderValue" value="#{themingNextView.slider}" style="display: none"/>
+                        <p:slider for="sliderValue"/>
+                    </div>
+                </div>
+                <div>
+                    <h3>SelectOneListbox</h3>
+                    <p:selectOneListbox value="#{themingNextView.city}" style="width: 100%">
+                        <f:selectItems value="#{themingNextView.cities}"/>
+                    </p:selectOneListbox>
+                </div>
+                <div>
+                    <h3>Float label</h3>
+                    <span class="ui-float-label" style="margin-top: .75rem; display: block">
+                        <p:inputText id="floatInput" value="#{themingNextView.text}"/>
+                        <p:outputLabel for="@previous" value="Username"/>
+                    </span>
+                </div>
+                <div>
+                    <h3>Input icons</h3>
+                    <span class="ui-input-icon-left">
+                        <i class="pi pi-search"/>
+                        <p:inputText placeholder="Search"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>DataTable</h2>
+            <p:dataTable var="product" value="#{themingNextView.products}" rowKey="#{product.id}"
+                         selection="#{themingNextView.selectedProducts}" selectionMode="multiple" rows="5" paginator="true"
+                         paginatorPosition="bottom" stripedRows="true">
+                <f:facet name="header">Products</f:facet>
+                <p:column selectionBox="true" style="width: 3rem; text-align: center"/>
+                <p:column headerText="Code" sortBy="#{product.code}">
+                    <h:outputText value="#{product.code}"/>
+                </p:column>
+                <p:column headerText="Name" sortBy="#{product.name}" filterBy="#{product.name}" filterMatchMode="contains">
+                    <h:outputText value="#{product.name}"/>
+                </p:column>
+                <p:column headerText="Category" sortBy="#{product.category}">
+                    <h:outputText value="#{product.category}"/>
+                </p:column>
+                <p:column headerText="Price" sortBy="#{product.price}">
+                    <h:outputText value="#{product.price}">
+                        <f:convertNumber type="currency" currencySymbol="$"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Status">
+                    <p:tag value="#{product.inventoryStatus.text}"
+                           severity="#{product.inventoryStatus eq 'INSTOCK' ? 'success' : (product.inventoryStatus eq 'LOWSTOCK' ? 'warning' : 'danger')}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Tree</h2>
+                <p:tree value="#{themingNextView.documents}" var="doc" selectionMode="single">
+                    <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="app" icon="pi pi-save">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="document" icon="pi pi-file">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="excel" icon="pi pi-file-excel">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="travel" icon="pi pi-file-pdf">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="picture" icon="pi pi-image">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="video" icon="pi pi-video">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+            <div class="demo-card">
+                <h2>TreeTable</h2>
+                <p:treeTable value="#{themingNextView.documents}" var="doc">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{doc.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{doc.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Accordion</h2>
+                <p:accordionPanel activeIndex="0">
+                    <p:tab title="Header I">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.</p>
+                    </p:tab>
+                    <p:tab title="Header III" disabled="true">
+                        <p>Disabled</p>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+            <div class="demo-card">
+                <h2>TabView</h2>
+                <p:tabView>
+                    <p:tab title="Header I">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.</p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.</p>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Panel / Fieldset</h2>
+                <p:panel header="Panel" toggleable="true">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <f:facet name="footer">Footer</f:facet>
+                </p:panel>
+                <p:fieldset legend="Fieldset" toggleable="true" style="margin-top: 1rem">
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit.</p>
+                </p:fieldset>
+            </div>
+            <div class="demo-card">
+                <h2>Card / Toolbar / Divider</h2>
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton type="button" value="New" icon="pi pi-plus"/>
+                        <p:commandButton type="button" value="Delete" icon="pi pi-trash" styleClass="ui-button-danger" style="margin-left: .5rem"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-secondary"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:divider/>
+                <p:card>
+                    <f:facet name="title">Card title</f:facet>
+                    <f:facet name="subtitle">Card subtitle</f:facet>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:card>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Menus</h2>
+            <p:menubar>
+                <p:submenu label="File" icon="pi pi-file">
+                    <p:menuitem value="New" icon="pi pi-plus"/>
+                    <p:menuitem value="Open" icon="pi pi-folder-open"/>
+                    <p:divider/>
+                    <p:menuitem value="Quit" icon="pi pi-times"/>
+                </p:submenu>
+                <p:submenu label="Edit" icon="pi pi-pencil">
+                    <p:menuitem value="Undo" icon="pi pi-undo"/>
+                    <p:menuitem value="Redo" icon="pi pi-refresh"/>
+                </p:submenu>
+                <p:menuitem value="Help" icon="pi pi-question-circle"/>
+            </p:menubar>
+            <div class="demo-grid" style="margin-top: 1rem">
+                <div>
+                    <h3>Menu</h3>
+                    <p:menu>
+                        <p:submenu label="Options">
+                            <p:menuitem value="Update" icon="pi pi-refresh"/>
+                            <p:menuitem value="Delete" icon="pi pi-times"/>
+                        </p:submenu>
+                        <p:submenu label="Navigate">
+                            <p:menuitem value="External" icon="pi pi-home" url="#"/>
+                        </p:submenu>
+                    </p:menu>
+                </div>
+                <div>
+                    <h3>Breadcrumb</h3>
+                    <p:breadCrumb>
+                        <p:menuitem value="Home" url="#"/>
+                        <p:menuitem value="Components" url="#"/>
+                        <p:menuitem value="Theming" url="#"/>
+                    </p:breadCrumb>
+                    <h3>Steps</h3>
+                    <p:steps activeIndex="1">
+                        <p:menuitem value="Personal"/>
+                        <p:menuitem value="Seat"/>
+                        <p:menuitem value="Payment"/>
+                    </p:steps>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Messages</h2>
+                <p:messages id="msgs" showDetail="true" closable="true"/>
+                <p:growl id="growl" showDetail="true"/>
+                <div class="demo-row">
+                    <p:commandButton value="Info" action="#{themingNextView.info}" update="msgs growl" process="@this" styleClass="ui-button-info"/>
+                    <p:commandButton value="Warn" action="#{themingNextView.warn}" update="msgs growl" process="@this" styleClass="ui-button-warning"/>
+                    <p:commandButton value="Error" action="#{themingNextView.error}" update="msgs growl" process="@this" styleClass="ui-button-danger"/>
+                </div>
+                <div style="margin-top: 1rem; display: grid; gap: .5rem">
+                    <p:staticMessage severity="info" summary="Info" detail="Static message"/>
+                    <p:staticMessage severity="warn" summary="Warn" detail="Static message"/>
+                    <p:staticMessage severity="error" summary="Error" detail="Static message"/>
+                </div>
+            </div>
+            <div class="demo-card">
+                <h2>Overlays</h2>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Dialog" icon="pi pi-external-link" onclick="PF('demoDialog').show()"/>
+                    <p:commandButton type="button" value="Sidebar" icon="pi pi-arrow-right" onclick="PF('demoSidebar').show()" styleClass="ui-button-secondary"/>
+                    <p:commandButton id="overlayBtn" type="button" value="OverlayPanel" styleClass="ui-button-outlined"/>
+                    <p:commandButton id="tooltipBtn" type="button" value="Tooltip" styleClass="ui-button-flat"/>
+                    <p:tooltip for="tooltipBtn" value="Tooltip text" position="top"/>
+                </div>
+                <p:overlayPanel for="overlayBtn">
+                    <p style="margin: 0">Overlay panel content</p>
+                </p:overlayPanel>
+                <h3>Misc</h3>
+                <div class="demo-row">
+                    <p:tag value="Primary"/>
+                    <p:tag value="Success" severity="success"/>
+                    <p:tag value="Warning" severity="warning"/>
+                    <p:tag value="Danger" severity="danger"/>
+                    <p:chip label="Chip" icon="pi pi-user"/>
+                    <p:avatar label="PF" shape="circle"/>
+                    <p:avatar icon="pi pi-user" styleClass="mr-2"/>
+                </div>
+                <h3>ProgressBar / Skeleton</h3>
+                <p:progressBar value="60" labelTemplate="{value}%"/>
+                <div style="margin-top: 1rem; display: grid; gap: .5rem">
+                    <p:skeleton width="60%"/>
+                    <p:skeleton/>
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Dialog" widgetVar="demoDialog" modal="true" width="30rem">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <f:facet name="footer">
+                <p:commandButton type="button" value="Cancel" styleClass="ui-button-flat" onclick="PF('demoDialog').hide()"/>
+                <p:commandButton type="button" value="Save" onclick="PF('demoDialog').hide()"/>
+            </f:facet>
+        </p:dialog>
+
+        <p:sidebar widgetVar="demoSidebar">
+            <h2>Sidebar</h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+        </p:sidebar>
+
+        <div class="demo-grid">
+            <div class="demo-card" data-p-scope="" style="--p-primary-base: var(--p-rose-500)">
+                <h2>Scoped primary</h2>
+                <div class="muted" style="margin-bottom: 1rem"><code>data-p-scope</code> + <code>--p-primary-base: var(--p-rose-500)</code></div>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+                    <p:commandButton type="button" value="Outlined" styleClass="ui-button-outlined"/>
+                    <p:inputText placeholder="Focus me"/>
+                </div>
+            </div>
+
+            <div class="demo-card" style="color-scheme: dark">
+                <h2>Dark island</h2>
+                <div class="muted" style="margin-bottom: 1rem"><code>color-scheme: dark</code> on a container</div>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+                    <p:commandButton type="button" value="Cancel" styleClass="ui-button-secondary"/>
+                    <p:inputText placeholder="Dark input"/>
+                </div>
+            </div>
+
+            <div class="demo-card" style="--p-button-border-radius: 0; --p-inputtext-border-radius: 0; --p-button-label-font-weight: 700">
+                <h2>Component tokens</h2>
+                <div class="muted" style="margin-bottom: 1rem"><code>--p-button-border-radius: 0</code> etc. on a container</div>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Square" icon="pi pi-stop"/>
+                    <p:inputText placeholder="Square input"/>
+                </div>
+            </div>
+        </div>
+    </h:form>
+    </ui:define>
+</ui:composition>

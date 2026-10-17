@@ -1,0 +1,66 @@
+/*
+ * Stack: p:stack (Mac OS X like stack, fixed in the bottom right corner of the page)
+ *
+ * Markup: div.ui-stack > img (toggler) + ul (.openStack when expanded) > li > a.ui-menuitem-link > span (label) + img
+ * The widget animates positions and image sizes inline, the theme only styles the labels.
+ */
+
+.ui-stack {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+
+    > img {
+        position: relative;
+        cursor: pointer;
+        padding-top: 35px;
+        z-index: 2;
+    }
+
+    ul {
+        list-style: none;
+        position: absolute;
+        top: 5px;
+        cursor: pointer;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+
+        li {
+            position: absolute;
+
+            span {
+                display: none;
+            }
+
+            a {
+                display: block;
+                text-decoration: none;
+                outline-color: transparent;
+
+                &:focus-visible {
+                    outline: var(--p-stack-item-focus-ring-width) var(--p-stack-item-focus-ring-style) var(--p-stack-item-focus-ring-color);
+                    outline-offset: var(--p-stack-item-focus-ring-offset);
+                }
+            }
+        }
+    }
+
+    .openStack li span {
+        display: block;
+        position: absolute;
+        top: 17px;
+        right: 60px;
+        height: auto;
+        padding: var(--p-stack-item-label-padding);
+        font-size: var(--p-stack-item-label-font-size);
+        font-weight: var(--p-stack-item-label-font-weight);
+        line-height: var(--p-typography-line-height);
+        text-align: center;
+        white-space: nowrap;
+        background: var(--p-stack-item-label-background);
+        color: var(--p-stack-item-label-color);
+        border-radius: var(--p-stack-item-label-border-radius);
+        box-shadow: var(--p-stack-item-label-shadow);
+    }
+}

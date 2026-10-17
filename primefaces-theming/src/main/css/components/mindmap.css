@@ -1,0 +1,43 @@
+/*
+ * Mindmap: p:mindmap (PrimeFaces mindmap tokens)
+ *
+ * Raphael draws the nodes (ellipse + text) and connections (path) with presentation attributes (black stroke/text);
+ * CSS properties override them, except a fill the model sets on a node (only fill="none" gets the default background).
+ */
+
+.ui-mindmap {
+    position: relative;
+    background: var(--p-mindmap-background);
+    border: 1px solid var(--p-mindmap-border-color);
+    border-radius: var(--p-mindmap-border-radius);
+    overflow: hidden;
+
+    svg {
+        ellipse {
+            stroke: var(--p-mindmap-node-border-color);
+        }
+
+        ellipse[fill="none"] {
+            fill: var(--p-mindmap-node-background);
+        }
+
+        text {
+            fill: var(--p-mindmap-node-color);
+        }
+
+        path {
+            stroke: var(--p-mindmap-connector-color);
+        }
+    }
+}
+
+.ui-tooltip.ui-mindmap-tooltip {
+    position: absolute;
+    background: var(--p-mindmap-tooltip-background);
+    color: var(--p-mindmap-tooltip-color);
+    padding: var(--p-mindmap-tooltip-padding);
+    border: 0 none;
+    border-radius: var(--p-mindmap-tooltip-border-radius);
+    box-shadow: var(--p-mindmap-tooltip-shadow);
+    font-size: var(--p-mindmap-tooltip-font-size);
+}

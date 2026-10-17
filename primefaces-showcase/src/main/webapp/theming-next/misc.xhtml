@@ -1,0 +1,599 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough"
+                template="/theming-next/template.xhtml">
+    <ui:define name="content">
+        <ui:param name="img" value="#{request.contextPath}/resources/demo/images"/>
+        <h:form id="form">
+            <p:growl id="growl"/>
+
+            <!-- Avatar / AvatarGroup -->
+            <div class="demo-card">
+                <h2>Avatar</h2>
+
+                <h3>Label (normal, large, xlarge)</h3>
+                <div class="demo-row">
+                    <p:avatar label="P"/>
+                    <p:avatar label="V" size="large"/>
+                    <p:avatar label="U" size="xlarge"/>
+                    <p:avatar label="P" shape="circle"/>
+                    <p:avatar label="V" size="large" shape="circle"/>
+                    <p:avatar label="U" size="xlarge" shape="circle"/>
+                </div>
+
+                <h3>Icon</h3>
+                <div class="demo-row">
+                    <p:avatar icon="pi pi-user"/>
+                    <p:avatar icon="pi pi-user" size="large"/>
+                    <p:avatar icon="pi pi-user" size="xlarge"/>
+                    <p:avatar icon="pi pi-user" shape="circle"/>
+                    <p:avatar icon="pi pi-user" size="large" shape="circle"/>
+                    <p:avatar icon="pi pi-user" size="xlarge" shape="circle"/>
+                </div>
+
+                <h3>Image</h3>
+                <div class="demo-row">
+                    <p:avatar>
+                        <p:graphicImage name="demo/images/avatar/amyelsner.png"/>
+                    </p:avatar>
+                    <p:avatar size="large">
+                        <p:graphicImage name="demo/images/avatar/asiyajavayant.png"/>
+                    </p:avatar>
+                    <p:avatar size="xlarge">
+                        <p:graphicImage name="demo/images/avatar/onyamalimba.png"/>
+                    </p:avatar>
+                    <p:avatar shape="circle">
+                        <p:graphicImage name="demo/images/avatar/amyelsner.png"/>
+                    </p:avatar>
+                    <p:avatar size="large" shape="circle">
+                        <p:graphicImage name="demo/images/avatar/asiyajavayant.png"/>
+                    </p:avatar>
+                    <p:avatar size="xlarge" shape="circle">
+                        <p:graphicImage name="demo/images/avatar/onyamalimba.png"/>
+                    </p:avatar>
+                </div>
+
+                <h3>Dynamic color (dark / light text) and with badge</h3>
+                <div class="demo-row">
+                    <p:avatar label="PrimeFaces Rocks" dynamicColor="true" size="large"/>
+                    <p:avatar label="Johann Chrysostom Wolfgang Amadeus Mozart" dynamicColor="true" lightness="80" size="large"
+                              title="Wolfgang Amadeus Mozart"/>
+                    <p:avatar label="Ada Lovelace" dynamicColor="true" shape="circle" size="large"/>
+                    <p:badge value="4">
+                        <p:avatar label="U" size="xlarge"/>
+                    </p:badge>
+                    <p:badge value="2" severity="danger">
+                        <p:avatar icon="pi pi-user" size="large" shape="circle"/>
+                    </p:badge>
+                </div>
+
+                <h3>AvatarGroup (normal, large, xlarge)</h3>
+                <div class="demo-row">
+                    <p:avatarGroup>
+                        <p:avatar shape="circle"><p:graphicImage name="demo/images/avatar/amyelsner.png"/></p:avatar>
+                        <p:avatar shape="circle"><p:graphicImage name="demo/images/avatar/asiyajavayant.png"/></p:avatar>
+                        <p:avatar shape="circle"><p:graphicImage name="demo/images/avatar/onyamalimba.png"/></p:avatar>
+                        <p:avatar label="+2" shape="circle"/>
+                    </p:avatarGroup>
+                    <p:avatarGroup>
+                        <p:avatar size="large" shape="circle"><p:graphicImage name="demo/images/avatar/amyelsner.png"/></p:avatar>
+                        <p:avatar size="large" shape="circle"><p:graphicImage name="demo/images/avatar/asiyajavayant.png"/></p:avatar>
+                        <p:avatar size="large" shape="circle"><p:graphicImage name="demo/images/avatar/ionibowcher.png"/></p:avatar>
+                        <p:avatar label="+5" size="large" shape="circle"/>
+                    </p:avatarGroup>
+                    <p:avatarGroup>
+                        <p:avatar size="xlarge" shape="circle"><p:graphicImage name="demo/images/avatar/xuxuefeng.png"/></p:avatar>
+                        <p:avatar size="xlarge" shape="circle"><p:graphicImage name="demo/images/avatar/onyamalimba.png"/></p:avatar>
+                        <p:avatar size="xlarge" icon="pi pi-user" shape="circle"/>
+                    </p:avatarGroup>
+                </div>
+
+                <h3>RTL</h3>
+                <div class="demo-row" dir="rtl">
+                    <p:avatarGroup>
+                        <p:avatar size="large" shape="circle"><p:graphicImage name="demo/images/avatar/amyelsner.png"/></p:avatar>
+                        <p:avatar size="large" shape="circle"><p:graphicImage name="demo/images/avatar/asiyajavayant.png"/></p:avatar>
+                        <p:avatar label="+2" size="large" shape="circle"/>
+                    </p:avatarGroup>
+                    <p:badge value="3">
+                        <p:avatar label="R" size="large"/>
+                    </p:badge>
+                </div>
+            </div>
+
+            <!-- Badge -->
+            <div class="demo-card">
+                <h2>Badge</h2>
+
+                <h3>Severities</h3>
+                <div class="demo-row">
+                    <p:badge value="2"/>
+                    <p:badge value="7" severity="secondary"/>
+                    <p:badge value="4" severity="info"/>
+                    <p:badge value="8" severity="success"/>
+                    <p:badge value="12" severity="warning"/>
+                    <p:badge value="5" severity="help"/>
+                    <p:badge value="3" severity="danger"/>
+                </div>
+
+                <h3>Sizes (normal, large, xlarge) and dot</h3>
+                <div class="demo-row">
+                    <p:badge value="2"/>
+                    <p:badge value="4" size="large" severity="warning"/>
+                    <p:badge value="6" size="xlarge" severity="success"/>
+                    <p:badge value="99+"/>
+                    <p:badge value="99+" size="large" severity="info"/>
+                    <p:badge/>
+                    <p:badge severity="danger"/>
+                </div>
+
+                <h3>Icon (only, left, right)</h3>
+                <div class="demo-row">
+                    <p:badge icon="pi pi-bell"/>
+                    <p:badge icon="pi pi-check" severity="success" size="large"/>
+                    <p:badge icon="pi pi-plus" iconPos="left" value="99" severity="danger"/>
+                    <p:badge icon="pi pi-arrow-up" iconPos="right" value="12" severity="info" size="xlarge"/>
+                </div>
+
+                <h3>Overlay on icons</h3>
+                <div class="demo-row" style="gap: 2rem">
+                    <p:badge value="2">
+                        <i class="pi pi-bell" style="font-size: 1.75rem"/>
+                    </p:badge>
+                    <p:badge value="10+" severity="danger">
+                        <i class="pi pi-calendar" style="font-size: 1.75rem"/>
+                    </p:badge>
+                    <p:badge severity="danger">
+                        <i class="pi pi-envelope" style="font-size: 1.75rem"/>
+                    </p:badge>
+                    <p:badge value="0" visible="false">
+                        <i class="pi pi-inbox" style="font-size: 1.75rem"/>
+                    </p:badge>
+                    <span class="muted">(last one: visible="false")</span>
+                </div>
+
+                <h3>Overlay on buttons</h3>
+                <div class="demo-row" style="gap: 2rem">
+                    <p:badge value="8">
+                        <p:commandButton type="button" value="Emails"/>
+                    </p:badge>
+                    <p:badge value="8" severity="danger">
+                        <p:commandButton type="button" value="Messages" icon="pi pi-users" styleClass="ui-button-outlined"/>
+                    </p:badge>
+                    <p:badge icon="pi pi-bell" severity="warning">
+                        <p:commandButton type="button" value="Alerts" styleClass="ui-button-secondary"/>
+                    </p:badge>
+                    <p:badge severity="success">
+                        <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-secondary"/>
+                    </p:badge>
+                </div>
+
+                <h3>RTL</h3>
+                <div class="demo-row" dir="rtl" style="gap: 2rem">
+                    <p:badge value="5">
+                        <i class="pi pi-bell" style="font-size: 1.75rem"/>
+                    </p:badge>
+                    <p:badge icon="pi pi-plus" iconPos="left" value="9" severity="danger"/>
+                </div>
+            </div>
+
+            <!-- Chip -->
+            <div class="demo-card">
+                <h2>Chip</h2>
+
+                <h3>Basic and removable</h3>
+                <div class="demo-row">
+                    <p:chip label="Action"/>
+                    <p:chip label="Comedy"/>
+                    <p:chip label="Thriller" removable="true"/>
+                </div>
+
+                <h3>Icon</h3>
+                <div class="demo-row">
+                    <p:chip label="Apple" icon="pi pi-apple"/>
+                    <p:chip label="Google" icon="pi pi-google"/>
+                    <p:chip label="Microsoft" icon="pi pi-microsoft" removable="true"/>
+                </div>
+
+                <h3>Image</h3>
+                <div class="demo-row">
+                    <p:chip label="Amy Elsner" image="#{img}/avatar/amyelsner.png"/>
+                    <p:chip label="Asiya Javayant" image="#{img}/avatar/asiyajavayant.png"/>
+                    <p:chip label="Xuxue Feng" image="#{img}/avatar/xuxuefeng.png" removable="true"/>
+                </div>
+
+                <h3>RTL</h3>
+                <div class="demo-row" dir="rtl">
+                    <p:chip label="Onyama Limba" image="#{img}/avatar/onyamalimba.png" removable="true"/>
+                    <p:chip label="Apple" icon="pi pi-apple" removable="true"/>
+                </div>
+            </div>
+
+            <!-- Tag -->
+            <div class="demo-card">
+                <h2>Tag</h2>
+
+                <h3>Severities</h3>
+                <div class="demo-row">
+                    <p:tag value="Primary"/>
+                    <p:tag value="Secondary" severity="secondary"/>
+                    <p:tag value="Info" severity="info"/>
+                    <p:tag value="Success" severity="success"/>
+                    <p:tag value="Warning" severity="warning"/>
+                    <p:tag value="Help" severity="help"/>
+                    <p:tag value="Danger" severity="danger"/>
+                </div>
+
+                <h3>Rounded</h3>
+                <div class="demo-row">
+                    <p:tag value="Primary" rounded="true"/>
+                    <p:tag value="Secondary" severity="secondary" rounded="true"/>
+                    <p:tag value="Info" severity="info" rounded="true"/>
+                    <p:tag value="Success" severity="success" rounded="true"/>
+                    <p:tag value="Warning" severity="warning" rounded="true"/>
+                    <p:tag value="Help" severity="help" rounded="true"/>
+                    <p:tag value="Danger" severity="danger" rounded="true"/>
+                </div>
+
+                <h3>Icon</h3>
+                <div class="demo-row">
+                    <p:tag value="Primary" icon="pi pi-user"/>
+                    <p:tag value="Secondary" icon="pi pi-bookmark" severity="secondary"/>
+                    <p:tag value="Info" icon="pi pi-info-circle" severity="info"/>
+                    <p:tag value="Success" icon="pi pi-check" severity="success"/>
+                    <p:tag value="Warning" icon="pi pi-exclamation-triangle" severity="warning"/>
+                    <p:tag value="Help" icon="pi pi-question" severity="help" rounded="true"/>
+                    <p:tag value="Danger" icon="pi pi-times" severity="danger" rounded="true"/>
+                </div>
+
+                <h3>Plain styleClass (span class="ui-tag")</h3>
+                <div class="demo-row">
+                    <span class="ui-tag">plain</span>
+                    <span class="ui-tag ui-tag-success">plain success</span>
+                    <span class="ui-badge">3</span>
+                </div>
+            </div>
+
+            <!-- Skeleton -->
+            <div class="demo-card">
+                <h2>Skeleton</h2>
+                <div class="demo-grid">
+                    <div>
+                        <h3>Rectangle</h3>
+                        <p:skeleton/>
+                        <p:skeleton width="10rem" style="margin-top: .5rem"/>
+                        <p:skeleton width="5rem" style="margin-top: .5rem"/>
+                        <p:skeleton height="2rem" style="margin-top: .5rem"/>
+                        <p:skeleton width="10rem" height="4rem" style="margin-top: .5rem"/>
+                    </div>
+                    <div>
+                        <h3>Rounded (borderRadius) and no animation</h3>
+                        <p:skeleton borderRadius="16px"/>
+                        <p:skeleton width="10rem" borderRadius="16px" style="margin-top: .5rem"/>
+                        <p:skeleton height="2rem" borderRadius="16px" style="margin-top: .5rem"/>
+                        <p:skeleton height="2rem" animation="none" style="margin-top: .5rem"/>
+                    </div>
+                    <div>
+                        <h3>Square and circle</h3>
+                        <div class="demo-row" style="align-items: flex-end">
+                            <p:skeleton size="2rem"/>
+                            <p:skeleton size="3rem"/>
+                            <p:skeleton size="4rem"/>
+                            <p:skeleton shape="circle" size="2rem"/>
+                            <p:skeleton shape="circle" size="3rem"/>
+                            <p:skeleton shape="circle" size="4rem"/>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Card (RTL)</h3>
+                        <div dir="rtl" style="display: flex; gap: .5rem">
+                            <p:skeleton shape="circle" size="4rem"/>
+                            <div style="flex: 1">
+                                <p:skeleton width="10rem"/>
+                                <p:skeleton width="5rem" style="margin-top: .5rem"/>
+                                <p:skeleton height=".5rem" style="margin-top: .5rem"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ProgressBar -->
+            <div class="demo-card">
+                <h2>ProgressBar</h2>
+                <div class="demo-grid">
+                    <div>
+                        <h3>Client side (setValue)</h3>
+                        <p:progressBar widgetVar="pbClient" value="30" labelTemplate="{value}%"/>
+                        <div class="demo-row" style="margin-top: .75rem">
+                            <p:commandButton type="button" value="Random" icon="pi pi-refresh" styleClass="ui-button-sm"
+                                             onclick="PF('pbClient').setValue(Math.round(Math.random() * 100))"/>
+                            <p:commandButton type="button" value="Reset" styleClass="ui-button-sm ui-button-outlined"
+                                             onclick="PF('pbClient').setValue(0)"/>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Ajax</h3>
+                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarView.progress1}" labelTemplate="{value}%"
+                                       global="false" interval="1000">
+                            <p:ajax event="complete" listener="#{progressBarView.onComplete}" update="growl"/>
+                        </p:progressBar>
+                        <div class="demo-row" style="margin-top: .75rem">
+                            <p:commandButton type="button" value="Start" icon="pi pi-play" styleClass="ui-button-sm"
+                                             onclick="PF('pbAjax').start()"/>
+                            <p:commandButton value="Cancel" action="#{progressBarView.cancel}" process="@this" update="@none"
+                                             oncomplete="PF('pbAjax').cancel()" styleClass="ui-button-sm ui-button-outlined"/>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Static (displayOnly), no label, 0%, 100%</h3>
+                        <p:progressBar value="50" labelTemplate="{value}%" displayOnly="true"/>
+                        <p:progressBar value="65" displayOnly="true" style="margin-top: .75rem"/>
+                        <p:progressBar value="0" labelTemplate="{value}%" displayOnly="true" style="margin-top: .75rem"/>
+                        <p:progressBar value="100" labelTemplate="{value}%" displayOnly="true" style="margin-top: .75rem"/>
+                    </div>
+                    <div>
+                        <h3>Label template</h3>
+                        <p:progressBar value="42" labelTemplate="{value} of 100 files" displayOnly="true"/>
+                        <h3>Indeterminate</h3>
+                        <p:progressBar mode="indeterminate"/>
+                        <p:progressBar mode="indeterminate" severity="success" style="height: 6px; margin-top: .75rem"/>
+                    </div>
+                    <div>
+                        <h3>Severities</h3>
+                        <p:progressBar value="25" labelTemplate="{value}%" severity="danger" displayOnly="true"/>
+                        <p:progressBar value="50" labelTemplate="{value}%" severity="warning" displayOnly="true" style="margin-top: .75rem"/>
+                        <p:progressBar value="75" labelTemplate="{value}%" severity="info" displayOnly="true" style="margin-top: .75rem"/>
+                        <p:progressBar value="100" labelTemplate="{value}%" severity="success" displayOnly="true" style="margin-top: .75rem"/>
+                    </div>
+                    <div>
+                        <h3>Disabled</h3>
+                        <p:progressBar value="40" labelTemplate="{value}%" disabled="true" displayOnly="true"/>
+                        <h3>RTL</h3>
+                        <div dir="rtl">
+                            <p:progressBar value="60" labelTemplate="{value}%" displayOnly="true"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clock -->
+            <div class="demo-card">
+                <h2>Clock</h2>
+                <div class="demo-grid">
+                    <div>
+                        <h3>Digital (client, server with pattern)</h3>
+                        <div class="demo-row">
+                            <p:clock/>
+                            <p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server"/>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Analog</h3>
+                        <div style="width: 160px">
+                            <p:clock displayMode="analog"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal -->
+            <div class="demo-card">
+                <h2>Terminal</h2>
+                <h3>Try "greet John", "date" or anything else</h3>
+                <p:terminal id="terminal" widgetVar="term" commandHandler="#{terminalBasicView.handleCommand}"
+                            welcomeMessage="Welcome to PrimeFaces Terminal" prompt="primefaces $"/>
+                <div class="demo-row" style="margin-top: .75rem">
+                    <p:commandButton type="button" value="Clear" icon="pi pi-trash" styleClass="ui-button-sm ui-button-outlined"
+                                     onclick="PF('term').clear()"/>
+                </div>
+            </div>
+
+            <!-- Galleria -->
+            <div class="demo-card">
+                <h2>Galleria</h2>
+                <div class="demo-grid" style="grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr))">
+                    <div>
+                        <h3>Thumbnails bottom, item navigators, caption</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" circular="true" showItemNavigators="true"
+                                    showCaption="true">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            <f:facet name="caption">
+                                <div style="font-weight: 600">#{photo.title}</div>
+                                <div>#{photo.alt}</div>
+                            </f:facet>
+                            <f:facet name="thumbnail">
+                                <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block"/>
+                            </f:facet>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Thumbnails top, navigators on hover</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" thumbnailsPosition="top" circular="true"
+                                    showItemNavigators="true" showItemNavigatorsOnHover="true">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            <f:facet name="thumbnail">
+                                <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block"/>
+                            </f:facet>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Thumbnails left</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" thumbnailsPosition="left"
+                                    verticalViewPortHeight="320px">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            <f:facet name="thumbnail">
+                                <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            </f:facet>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Thumbnails right</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" thumbnailsPosition="right"
+                                    verticalViewPortHeight="320px">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            <f:facet name="thumbnail">
+                                <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            </f:facet>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Indicators bottom (outside)</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" showThumbnails="false" showIndicators="true"
+                                    showItemNavigators="true">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Indicators left (outside)</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" showThumbnails="false" showIndicators="true"
+                                    indicatorsPosition="left">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Indicators on item, bottom</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" showThumbnails="false" showIndicators="true"
+                                    showIndicatorsOnItem="true" changeItemOnIndicatorHover="true">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Indicators on item, top</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" showThumbnails="false" showIndicators="true"
+                                    showIndicatorsOnItem="true" indicatorsPosition="top">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Indicators on item, right</h3>
+                        <p:galleria value="#{galleriaView.photos}" var="photo" showThumbnails="false" showIndicators="true"
+                                    showIndicatorsOnItem="true" indicatorsPosition="right">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                        </p:galleria>
+                    </div>
+                    <div>
+                        <h3>Full screen</h3>
+                        <p:galleria widgetVar="galleriaFull" value="#{galleriaView.photos}" var="photo" numVisible="7" circular="true"
+                                    fullScreen="true" showItemNavigators="true" showCaption="true" style="max-width: 60%">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            <f:facet name="caption">
+                                <div style="font-weight: 600">#{photo.title}</div>
+                            </f:facet>
+                            <f:facet name="thumbnail">
+                                <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block"/>
+                            </f:facet>
+                        </p:galleria>
+                        <div class="demo-row">
+                            <p:commandButton type="button" value="Show with thumbnails" icon="pi pi-external-link"
+                                             onclick="PF('galleriaFull').show()"/>
+                            <p:commandButton type="button" value="Show with indicators" icon="pi pi-external-link"
+                                             styleClass="ui-button-outlined" onclick="PF('galleriaFull2').show()"/>
+                        </div>
+                        <p:galleria widgetVar="galleriaFull2" value="#{galleriaView.photos}" var="photo" circular="true" fullScreen="true"
+                                    showItemNavigators="true" showThumbnails="false" showIndicators="true" style="max-width: 60%">
+                            <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                        </p:galleria>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ImageCompare / ImageCropper / ImageSwitch / GraphicImage -->
+            <div class="demo-card">
+                <h2>Images</h2>
+                <div class="demo-grid" style="grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr))">
+                    <div>
+                        <h3>ImageCompare (drag the handle, Tab to focus it)</h3>
+                        <p:imageCompare leftImage="/resources/demo/images/compare/lara-ps3.png"
+                                        rightImage="/resources/demo/images/compare/lara-ps4.png" width="300" height="290"/>
+                    </div>
+                    <div>
+                        <h3>ImageCropper</h3>
+                        <p:imageCropper value="#{cropperView.croppedImage}" image="/resources/demo/images/nature/nature6.jpg"
+                                        initialCoords="100,50,150,100" minSize="50,50" boxWidth="340" zoomOnWheel="false"/>
+                    </div>
+                    <div>
+                        <h3>ImageSwitch (manual)</h3>
+                        <div class="demo-row" style="margin-bottom: .5rem">
+                            <p:commandButton type="button" icon="pi pi-chevron-left" styleClass="ui-button-sm ui-button-secondary"
+                                             onclick="PF('switcher').previous()"/>
+                            <p:commandButton type="button" icon="pi pi-chevron-right" styleClass="ui-button-sm ui-button-secondary"
+                                             onclick="PF('switcher').next()"/>
+                        </div>
+                        <p:imageSwitch effect="fade" widgetVar="switcher" slideshowAuto="false">
+                            <ui:repeat value="#{imagesView.images}" var="image">
+                                <p:graphicImage name="/demo/images/nature/#{image}" style="width: 320px"/>
+                            </ui:repeat>
+                        </p:imageSwitch>
+                    </div>
+                    <div>
+                        <h3>GraphicImage</h3>
+                        <p:graphicImage name="images/nature/nature4.jpg" library="demo" style="width: 320px; display: block"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media -->
+            <div class="demo-card">
+                <h2>Media / Audio / Video</h2>
+                <div class="demo-grid" style="grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr))">
+                    <div>
+                        <h3>Audio (OGG)</h3>
+                        <p:audio value="/resources/demo/media/sample-ogg.ogg" controls="true">
+                            Your browser does not support the audio element.
+                        </p:audio>
+                    </div>
+                    <div>
+                        <h3>Video (WEBM)</h3>
+                        <p:video value="/resources/demo/media/sample-webm.webm" controls="true" width="320" height="190">
+                            Your browser does not support the video element.
+                        </p:video>
+                    </div>
+                    <div>
+                        <h3>Media (PDF)</h3>
+                        <p:media value="/resources/demo/media/guide.pdf" width="100%" height="240px">
+                            Your browser can't display pdf.
+                        </p:media>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="demo-card">
+                <h2>Chart</h2>
+                <div class="demo-grid" style="grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr))">
+                    <div>
+                        <h3>Bar</h3>
+                        <p:chart value="#{chartView.barModel}" style="width: 100%; height: 280px"/>
+                    </div>
+                    <div>
+                        <h3>Line</h3>
+                        <p:chart value="#{chartView.lineModel}" style="width: 100%; height: 280px"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barcode -->
+            <div class="demo-card">
+                <h2>Barcode</h2>
+                <div class="demo-row" style="gap: 2rem; align-items: flex-start">
+                    <div>
+                        <h3>Code128</h3>
+                        <p:barcode value="0123456789" type="code128"/>
+                    </div>
+                    <div>
+                        <h3>EAN-13</h3>
+                        <p:barcode value="1234567890128" type="ean13"/>
+                    </div>
+                    <div>
+                        <h3>QR</h3>
+                        <p:barcode value="https://www.primefaces.org" type="qr" width="125" height="125"/>
+                    </div>
+                    <div>
+                        <h3>DataMatrix</h3>
+                        <p:barcode value="0123456789" type="datamatrix" magnification="3.0"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

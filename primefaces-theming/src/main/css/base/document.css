@@ -1,0 +1,81 @@
+/*
+ * Document level defaults and user preferences: native controls, text selection, reduced motion, print.
+ */
+:root {
+    /* native checkboxes, radios, ranges, progress of the application in the primary color */
+    accent-color: var(--p-primary-color);
+}
+
+::selection {
+    background: var(--p-highlight-background);
+    color: var(--p-highlight-color);
+}
+
+/* WCAG 2.2 target size: small icon controls get an invisible 24px hit area (centered), the layout stays the same */
+:where(.ui-chips-token-icon, .ui-autocomplete-token-icon, .ui-selectcheckboxmenu-token-icon, .ui-password-icon,
+    .ui-chip-remove-icon, .ui-breadcrumb-home-icon)::after {
+    content: "";
+    position: absolute;
+    inset: calc(50% - 12px);
+}
+
+:where(.ui-chip-remove-icon, .ui-breadcrumb-home-icon) {
+    position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-p-scope] {
+        --p-transition-duration: 0s;
+    }
+
+    /* fixed durations (keyframes, speed dial, dock); 0.01ms instead of none so animation events still fire
+       (the autofill detection of the input fields listens to animationstart) */
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media print {
+    :root {
+        color-scheme: light;
+    }
+
+    *,
+    ::before,
+    ::after {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* scrollable tables print all rows */
+    .ui-datatable-scrollable-body,
+    .ui-treetable-scrollable-body,
+    .ui-datatable-virtualscroll .ui-datatable-scrollable-body {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    tr,
+    .ui-panel,
+    .ui-card,
+    .ui-fieldset {
+        break-inside: avoid;
+    }
+
+    .ui-growl,
+    .ui-tooltip,
+    .ui-scrolltop,
+    .ui-blockui,
+    .ui-widget-overlay,
+    .ui-ajax-status,
+    .ui-paginator {
+        display: none !important;
+    }
+}

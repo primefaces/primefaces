@@ -1,0 +1,506 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough"
+                template="/theming-next/template.xhtml">
+    <ui:define name="head">
+        <style>
+            .designer {
+                display: grid;
+                grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+                gap: 1.5rem;
+                align-items: start;
+            }
+
+            @media (max-width: 960px) {
+                .designer {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+            }
+
+            .designer .demo-card {
+                margin-top: 0;
+            }
+
+            .designer-controls {
+                position: sticky;
+                top: 1rem;
+                max-height: calc(100vh - 2rem);
+                overflow: auto;
+            }
+
+            .designer-controls h3:first-of-type {
+                margin-top: 0;
+            }
+
+            .designer-field {
+                display: grid;
+                grid-template-columns: 7.5rem minmax(0, 1fr) 4.5rem;
+                gap: .5rem;
+                align-items: center;
+                margin-bottom: .5rem;
+            }
+
+            .designer-field label {
+                color: var(--p-text-muted-color);
+            }
+
+            .designer-field output {
+                font-variant-numeric: tabular-nums;
+                text-align: end;
+                color: var(--p-text-muted-color);
+            }
+
+            .designer-field.changed label {
+                color: var(--p-primary-color);
+                font-weight: 600;
+            }
+
+            .designer input[type=range] {
+                width: 100%;
+                accent-color: var(--p-primary-color);
+            }
+
+            .designer select {
+                grid-column: span 2;
+                font: inherit;
+                color: var(--p-form-field-color);
+                background: var(--p-form-field-background);
+                border: 1px solid var(--p-form-field-border-color);
+                border-radius: var(--p-form-field-border-radius);
+                padding: .25rem .5rem;
+            }
+
+            .designer-preview {
+                font-family: var(--p-typography-font-family);
+                font-size: var(--p-typography-font-size);
+            }
+
+            .designer-preview h3 {
+                margin-top: 1.25rem;
+            }
+
+            .designer-preview h3:first-of-type {
+                margin-top: 0;
+            }
+
+            .designer-snippet {
+                margin: 0;
+                padding: 1rem;
+                min-height: 4rem;
+                overflow: auto;
+                font: .8125rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                color: var(--p-content-color);
+                background: var(--p-content-hover-background);
+                border-radius: var(--p-content-border-radius);
+                white-space: pre;
+            }
+
+            .designer-snippet-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: .75rem;
+            }
+
+            .designer-snippet-header h2 {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="demo-card">
+            <h2>Theme Designer</h2>
+            <div class="muted">
+                Edits the main tokens live on <code>:root</code> (inline style of <code>&lt;html&gt;</code>). The values are kept in the
+                browser (<code>localStorage</code>) and applied on every page of this demo. The snippet at the bottom contains only the
+                tokens that differ from the current theme.
+            </div>
+        </div>
+
+        <div class="designer" style="margin-top: 1.5rem">
+            <div class="demo-card designer-controls">
+                <div class="designer-snippet-header">
+                    <h2>Tokens</h2>
+                    <p:commandButton type="button" value="Reset all" icon="pi pi-refresh" styleClass="ui-button-outlined ui-button-secondary ui-button-sm"
+                                     onclick="designer.resetAll()"/>
+                </div>
+
+                <h3>Primary color <span class="muted">--p-primary-base</span></h3>
+                <div class="demo-row">
+                    <ui:repeat value="#{['emerald', 'green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'red', 'orange', 'amber', 'yellow', 'lime', 'slate']}" var="c">
+                        <button type="button" class="demo-swatch" title="#{c}" style="background: var(--p-#{c}-500)"
+                                onclick="demo.primary('var(--p-#{c}-500)')"></button>
+                    </ui:repeat>
+                    <input type="color" id="designerPrimary" title="Custom brand color" oninput="demo.primary(this.value)"/>
+                </div>
+
+                <h3>Surface <span class="muted">--p-surface-50 … 950</span></h3>
+                <div class="designer-field">
+                    <label for="designerSurface">Palette</label>
+                    <select id="designerSurface" onchange="designer.surface(this.value)">
+                        <option value="">Theme default</option>
+                        <option value="slate">Slate</option>
+                        <option value="gray">Gray</option>
+                        <option value="zinc">Zinc</option>
+                        <option value="neutral">Neutral</option>
+                        <option value="stone">Stone</option>
+                    </select>
+                </div>
+
+                <h3>Border radius</h3>
+                <div class="demo-row" style="margin-bottom: .75rem">
+                    <p:commandButton type="button" value="Sharp" styleClass="ui-button-text ui-button-sm" onclick="designer.radius([0, 0, 0, 0])"/>
+                    <p:commandButton type="button" value="Theme" styleClass="ui-button-text ui-button-sm" onclick="designer.radius(null)"/>
+                    <p:commandButton type="button" value="Soft" styleClass="ui-button-text ui-button-sm" onclick="designer.radius([6, 10, 14, 20])"/>
+                    <p:commandButton type="button" value="Round" styleClass="ui-button-text ui-button-sm" onclick="designer.radius([10, 16, 22, 28])"/>
+                </div>
+                <div id="designerRadius"></div>
+
+                <h3>Typography</h3>
+                <div class="designer-field" data-token="--p-typography-font-family">
+                    <label for="designerFont">Font family</label>
+                    <select id="designerFont" onchange="designer.set('--p-typography-font-family', this.value)">
+                        <option value="">Theme default</option>
+                        <option value="&quot;Inter var&quot;, Inter, ui-sans-serif, system-ui, sans-serif">Inter</option>
+                        <option value="system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, sans-serif">System UI</option>
+                        <option value="Georgia, &quot;Times New Roman&quot;, serif">Serif</option>
+                        <option value="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Monospace</option>
+                    </select>
+                </div>
+                <div id="designerTypography"></div>
+
+                <h3>Focus ring</h3>
+                <div id="designerFocus"></div>
+
+                <h3>Form field</h3>
+                <div id="designerFormField"></div>
+
+                <h3>Density <span class="muted">data-p-density</span></h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Normal" styleClass="ui-button-sm" onclick="demo.density('normal')" pt:data-density="normal"/>
+                    <p:commandButton type="button" value="Compact" styleClass="ui-button-sm" onclick="demo.density('compact')" pt:data-density="compact"/>
+                    <p:commandButton type="button" value="Comfortable" styleClass="ui-button-sm" onclick="demo.density('comfortable')" pt:data-density="comfortable"/>
+                </div>
+
+                <h3>Color scheme <span class="muted">color-scheme</span></h3>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Light" icon="pi pi-sun" styleClass="ui-button-sm" onclick="demo.scheme('light')" pt:data-scheme="light"/>
+                    <p:commandButton type="button" value="Dark" icon="pi pi-moon" styleClass="ui-button-sm" onclick="demo.scheme('dark')" pt:data-scheme="dark"/>
+                    <p:commandButton type="button" value="System" icon="pi pi-desktop" styleClass="ui-button-sm" onclick="demo.scheme('system')" pt:data-scheme="system"/>
+                </div>
+            </div>
+
+            <div>
+                <h:form id="preview">
+                    <div class="demo-card designer-preview">
+                        <h2>Preview</h2>
+
+                        <h3>Buttons</h3>
+                        <div class="demo-row">
+                            <p:commandButton type="button" value="Primary" icon="pi pi-check"/>
+                            <p:commandButton type="button" value="Secondary" styleClass="ui-button-secondary"/>
+                            <p:commandButton type="button" value="Outlined" styleClass="ui-button-outlined"/>
+                            <p:commandButton type="button" value="Text" styleClass="ui-button-text"/>
+                            <p:commandButton type="button" value="Danger" icon="pi pi-trash" styleClass="ui-button-danger"/>
+                            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help" title="Icon only"/>
+                            <p:commandButton type="button" value="Disabled" disabled="true"/>
+                        </div>
+
+                        <h3>Form</h3>
+                        <div class="demo-row">
+                            <p:inputText placeholder="Name"/>
+                            <p:selectOneMenu value="#{themingNextView.city}">
+                                <f:selectItem itemLabel="Select a city" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{themingNextView.cities}"/>
+                            </p:selectOneMenu>
+                            <p:selectBooleanCheckbox value="#{themingNextView.checked}" itemLabel="Remember me"/>
+                            <p:inputText placeholder="Invalid" styleClass="ui-state-error"/>
+                        </div>
+
+                        <h3>Message</h3>
+                        <p:staticMessage severity="info" summary="Info" detail="Tokens are applied without a reload."/>
+
+                        <h3>Tabs</h3>
+                        <p:tabView>
+                            <p:tab title="Header I">
+                                <p style="margin: 0">The border radius, typography and focus ring tokens are inherited by all components.</p>
+                            </p:tab>
+                            <p:tab title="Header II">
+                                <p style="margin: 0">Press Tab to move the focus and see the focus ring.</p>
+                            </p:tab>
+                            <p:tab title="Header III">
+                                <p style="margin: 0">Third tab.</p>
+                            </p:tab>
+                        </p:tabView>
+
+                        <h3>DataTable (size="small")</h3>
+                        <p:dataTable var="product" value="#{themingNextView.products}" rows="4" size="small" paginator="true"
+                                     paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink}">
+                            <p:column headerText="Code">#{product.code}</p:column>
+                            <p:column headerText="Name">#{product.name}</p:column>
+                            <p:column headerText="Category">#{product.category}</p:column>
+                            <p:column headerText="Quantity" style="text-align: end">#{product.quantity}</p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>
+
+                <div class="demo-card">
+                    <div class="designer-snippet-header">
+                        <h2>CSS</h2>
+                        <p:commandButton id="designerCopy" type="button" value="Copy" icon="pi pi-copy" styleClass="ui-button-sm"
+                                         onclick="designer.copy(this)"/>
+                    </div>
+                    <pre id="designerSnippet" class="designer-snippet"></pre>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            //<![CDATA[
+            var designer = (function () {
+                var root = document.documentElement;
+                var KEY = 'pf-demo-tokens';
+                var SURFACE = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
+
+                // numeric tokens: [token, label, min, max, step, unit, container]
+                var RANGES = [
+                    ['--p-border-radius-sm', 'sm', 0, 32, 1, 'px', 'designerRadius'],
+                    ['--p-border-radius-md', 'md', 0, 32, 1, 'px', 'designerRadius'],
+                    ['--p-border-radius-lg', 'lg', 0, 32, 1, 'px', 'designerRadius'],
+                    ['--p-border-radius-xl', 'xl', 0, 40, 1, 'px', 'designerRadius'],
+                    ['--p-typography-font-size', 'Font size', 0.75, 1.125, 0.0625, 'rem', 'designerTypography'],
+                    ['--p-focus-ring-width', 'Width', 0, 4, 1, 'px', 'designerFocus'],
+                    ['--p-focus-ring-offset', 'Offset', -2, 6, 1, 'px', 'designerFocus'],
+                    ['--p-form-field-padding-x', 'Padding x', 0.25, 1.25, 0.0625, 'rem', 'designerFormField'],
+                    ['--p-form-field-padding-y', 'Padding y', 0.125, 1, 0.0625, 'rem', 'designerFormField']
+                ];
+                var NAMES = RANGES.map(function (r) { return r[0]; })
+                    .concat(['--p-typography-font-family'])
+                    .concat(SURFACE.map(function (s) { return '--p-surface-' + s; }));
+
+                var tokens = load();
+                var defaults = {};
+                var ready = false;
+
+                function load() {
+                    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; }
+                }
+
+                function save() {
+                    try {
+                        if (Object.keys(tokens).length) {
+                            localStorage.setItem(KEY, JSON.stringify(tokens));
+                        }
+                        else {
+                            localStorage.removeItem(KEY);
+                        }
+                    } catch (e) { }
+                }
+
+                // the theme values: computed without the inline overrides of the designer
+                function readDefaults() {
+                    var inline = {};
+                    NAMES.forEach(function (name) {
+                        inline[name] = root.style.getPropertyValue(name);
+                        root.style.removeProperty(name);
+                    });
+                    var cs = getComputedStyle(root);
+                    NAMES.forEach(function (name) {
+                        defaults[name] = cs.getPropertyValue(name).trim();
+                    });
+                    NAMES.forEach(function (name) {
+                        if (inline[name]) { root.style.setProperty(name, inline[name]); }
+                    });
+                }
+
+                function toUnit(value, unit) {
+                    var n = parseFloat(value);
+                    if (isNaN(n)) { return 0; }
+                    if (unit === 'px' && /rem$/.test(value)) { return n * 16; }
+                    if (unit === 'rem' && /px$/.test(value)) { return n / 16; }
+                    return n;
+                }
+
+                function set(name, value) {
+                    if (value === '' || value === null || value === undefined) {
+                        delete tokens[name];
+                        root.style.removeProperty(name);
+                    }
+                    else {
+                        tokens[name] = value;
+                        root.style.setProperty(name, value);
+                    }
+                    save();
+                    refresh();
+                }
+
+                function buildRanges() {
+                    RANGES.forEach(function (r) {
+                        var field = document.createElement('div');
+                        field.className = 'designer-field';
+                        field.setAttribute('data-token', r[0]);
+                        var id = 'designer' + r[0].replace(/[^a-z0-9]/g, '');
+                        var label = document.createElement('label');
+                        label.htmlFor = id;
+                        label.textContent = r[1];
+                        label.title = r[0];
+                        var input = document.createElement('input');
+                        input.type = 'range';
+                        input.id = id;
+                        input.min = r[2];
+                        input.max = r[3];
+                        input.step = r[4];
+                        input.addEventListener('input', function () {
+                            set(r[0], parseFloat(input.value) + r[5]);
+                        });
+                        var output = document.createElement('output');
+                        output.htmlFor = id;
+                        field.appendChild(label);
+                        field.appendChild(input);
+                        field.appendChild(output);
+                        document.getElementById(r[6]).appendChild(field);
+                    });
+                }
+
+                function refreshControls() {
+                    RANGES.forEach(function (r) {
+                        var field = document.querySelector('.designer-field[data-token="' + r[0] + '"]');
+                        var value = tokens[r[0]] || defaults[r[0]];
+                        field.querySelector('input').value = toUnit(value, r[5]);
+                        field.querySelector('output').textContent = value;
+                        field.classList.toggle('changed', r[0] in tokens);
+                    });
+                    var font = document.getElementById('designerFont');
+                    font.value = tokens['--p-typography-font-family'] || '';
+                    font.parentNode.classList.toggle('changed', '--p-typography-font-family' in tokens);
+                    var surface = tokens['--p-surface-500'];
+                    var match = surface && surface.match(/--p-([a-z]+)-500/);
+                    var select = document.getElementById('designerSurface');
+                    select.value = match ? match[1] : '';
+                    select.parentNode.classList.toggle('changed', !!match);
+
+                    var primary = getComputedStyle(root).getPropertyValue('--p-primary-500').trim();
+                    var probe = document.createElement('span');
+                    probe.style.color = primary;
+                    document.body.appendChild(probe);
+                    var color = getComputedStyle(probe).color;
+                    probe.remove();
+                    // keep the color input in sync (only possible for sRGB results)
+                    var rgb = /^rgba?\(/.test(color) ? color.match(/[\d.]+/g) : null;
+                    if (rgb && rgb.length >= 3) {
+                        document.getElementById('designerPrimary').value = '#' + rgb.slice(0, 3).map(function (c) {
+                            return ('0' + Math.round(parseFloat(c)).toString(16)).slice(-2);
+                        }).join('');
+                    }
+                }
+
+                function snippet() {
+                    var lines = [];
+                    var primary = null;
+                    try { primary = localStorage.getItem('pf-demo-primary'); } catch (e) { }
+                    if (primary) {
+                        lines.push('    --p-primary-base: ' + primary + ';');
+                    }
+                    NAMES.forEach(function (name) {
+                        if (name in tokens && tokens[name] !== defaults[name]) {
+                            lines.push('    ' + name + ': ' + tokens[name] + ';');
+                        }
+                    });
+                    var css = [];
+                    if (lines.length) {
+                        css.push(':root, [data-p-scope] {', lines.join('\n'), '}');
+                    }
+                    var scheme = root.style.colorScheme;
+                    if (scheme) {
+                        css.push((css.length ? '\n' : '') + ':root {\n    color-scheme: ' + scheme + ';\n}');
+                    }
+                    var density = root.getAttribute('data-p-density');
+                    if (density) {
+                        css.push((css.length ? '\n' : '') + '/* density: <html data-p-density="' + density + '"> */');
+                    }
+                    return css.length ? css.join('\n') : '/* no changes: the theme defaults are used */';
+                }
+
+                function refresh() {
+                    if (!ready) {
+                        return;
+                    }
+                    readDefaults();
+                    refreshControls();
+                    document.getElementById('designerSnippet').textContent = snippet();
+                }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    buildRanges();
+                    ready = true;
+                    refresh();
+                });
+                document.addEventListener('pf-demo-change', refresh);
+
+                return {
+                    set: set,
+                    surface: function (palette) {
+                        SURFACE.forEach(function (s) {
+                            var name = '--p-surface-' + s;
+                            if (palette) {
+                                tokens[name] = 'var(--p-' + palette + '-' + s + ')';
+                                root.style.setProperty(name, tokens[name]);
+                            }
+                            else {
+                                delete tokens[name];
+                                root.style.removeProperty(name);
+                            }
+                        });
+                        save();
+                        refresh();
+                    },
+                    radius: function (values) {
+                        ['sm', 'md', 'lg', 'xl'].forEach(function (size, i) {
+                            var name = '--p-border-radius-' + size;
+                            if (values) {
+                                tokens[name] = values[i] + 'px';
+                                root.style.setProperty(name, tokens[name]);
+                            }
+                            else {
+                                delete tokens[name];
+                                root.style.removeProperty(name);
+                            }
+                        });
+                        save();
+                        refresh();
+                    },
+                    resetAll: function () {
+                        Object.keys(tokens).forEach(function (name) { root.style.removeProperty(name); });
+                        tokens = {};
+                        save();
+                        demo.reset();
+                        demo.density('normal');
+                        demo.scheme('system');
+                    },
+                    copy: function (button) {
+                        var text = snippet();
+                        var done = function () {
+                            var label = button.querySelector('.ui-button-text');
+                            label.textContent = 'Copied';
+                            setTimeout(function () { label.textContent = 'Copy'; }, 1500);
+                        };
+                        if (navigator.clipboard && window.isSecureContext) {
+                            navigator.clipboard.writeText(text).then(done);
+                        }
+                        else {
+                            var area = document.createElement('textarea');
+                            area.value = text;
+                            document.body.appendChild(area);
+                            area.select();
+                            document.execCommand('copy');
+                            area.remove();
+                            done();
+                        }
+                    }
+                };
+            })();
+            //]]>
+        </script>
+    </ui:define>
+</ui:composition>

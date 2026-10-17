@@ -1,0 +1,185 @@
+/*
+ * Chronoline: p:chronoline (PrimeUIX timeline tokens)
+ *
+ * The default marker is a ring with a primary dot (::before) like the PrimeUIX timeline; a custom marker facet is not styled.
+ * Supported classes: ui-chronoline-vertical, ui-chronoline-horizontal, ui-chronoline-left, ui-chronoline-right,
+ *                    ui-chronoline-top, ui-chronoline-bottom, ui-chronoline-alternate
+ */
+.ui-chronoline {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+
+    .ui-chronoline-event {
+        min-height: var(--p-chronoline-event-min-height);
+
+        &:last-child {
+            min-height: 0;
+        }
+    }
+
+    .ui-chronoline-event-marker {
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border-width: var(--p-chronoline-event-marker-border-width);
+        border-style: solid;
+        border-color: var(--p-chronoline-event-marker-border-color);
+        border-radius: var(--p-chronoline-event-marker-border-radius);
+        width: var(--p-chronoline-event-marker-size);
+        height: var(--p-chronoline-event-marker-size);
+        background: var(--p-chronoline-event-marker-background);
+
+        &::before {
+            content: " ";
+            border-radius: var(--p-chronoline-event-marker-content-border-radius);
+            width: var(--p-chronoline-event-marker-content-size);
+            height: var(--p-chronoline-event-marker-content-size);
+            background: var(--p-chronoline-event-marker-content-background);
+        }
+
+        &::after {
+            content: " ";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--p-chronoline-event-marker-border-radius);
+            box-shadow: var(--p-chronoline-event-marker-content-inset-shadow);
+        }
+    }
+
+    .ui-chronoline-event-connector {
+        background: var(--p-chronoline-event-connector-color);
+    }
+
+    &.ui-chronoline-vertical {
+        .ui-chronoline-event-opposite,
+        .ui-chronoline-event-content {
+            padding: var(--p-chronoline-vertical-event-content-padding);
+        }
+
+        .ui-chronoline-event-connector {
+            width: var(--p-chronoline-event-connector-size);
+        }
+    }
+
+    &.ui-chronoline-horizontal {
+        .ui-chronoline-event-opposite,
+        .ui-chronoline-event-content {
+            padding: var(--p-chronoline-horizontal-event-content-padding);
+        }
+
+        .ui-chronoline-event-connector {
+            height: var(--p-chronoline-event-connector-size);
+        }
+    }
+}
+
+/* opposite and content are aligned towards the line */
+.ui-chronoline-left {
+    .ui-chronoline-event-opposite {
+        text-align: end;
+    }
+
+    .ui-chronoline-event-content {
+        text-align: start;
+    }
+}
+
+.ui-chronoline-right {
+    .ui-chronoline-event {
+        flex-direction: row-reverse;
+    }
+
+    .ui-chronoline-event-opposite {
+        text-align: start;
+    }
+
+    .ui-chronoline-event-content {
+        text-align: end;
+    }
+}
+
+.ui-chronoline-vertical.ui-chronoline-alternate .ui-chronoline-event {
+    &:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    &:nth-child(odd) {
+        .ui-chronoline-event-opposite {
+            text-align: end;
+        }
+
+        .ui-chronoline-event-content {
+            text-align: start;
+        }
+    }
+
+    &:nth-child(even) {
+        .ui-chronoline-event-opposite {
+            text-align: start;
+        }
+
+        .ui-chronoline-event-content {
+            text-align: end;
+        }
+    }
+}
+
+.ui-chronoline-event {
+    display: flex;
+    position: relative;
+}
+
+.ui-chronoline-event-opposite {
+    flex: 1;
+}
+
+.ui-chronoline-event-content {
+    flex: 1;
+}
+
+.ui-chronoline-event-separator {
+    flex: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ui-chronoline-event-marker {
+    display: flex;
+    align-self: baseline;
+}
+
+.ui-chronoline-event-connector {
+    flex-grow: 1;
+}
+
+.ui-chronoline-horizontal {
+    flex-direction: row;
+
+    .ui-chronoline-event {
+        flex-direction: column;
+        flex: 1;
+
+        &:last-child {
+            flex: 0;
+        }
+    }
+
+    .ui-chronoline-event-separator {
+        flex-direction: row;
+    }
+
+    .ui-chronoline-event-connector {
+        width: 100%;
+    }
+
+    &.ui-chronoline-alternate .ui-chronoline-event:nth-child(even) {
+        flex-direction: column-reverse;
+    }
+}
+
+.ui-chronoline-bottom .ui-chronoline-event {
+    flex-direction: column-reverse;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@primefaces/theming",
+  "version": "17.0.0-SNAPSHOT",
+  "private": true,
+  "description": "Builds the PrimeFaces token based themes: one minified CSS per preset (vendor CSS versions must match the core, checked by tools/build.mjs)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "npm run check && node tools/build.mjs && node tools/export-tokens.mjs",
+    "tokens": "node tools/export-tokens.mjs",
+    "check": "node tools/check.mjs && node tools/generate-density.mjs --check"
+  },
+  "devDependencies": {
+    "@fullcalendar/common": "5.11.5",
+    "@fullcalendar/daygrid": "5.11.5",
+    "@fullcalendar/list": "5.11.5",
+    "@fullcalendar/timegrid": "5.11.5",
+    "@melloware/coloris": "0.25.0",
+    "cropperjs": "1.6.3",
+    "culori": "4.0.2",
+    "esbuild": "0.28.2",
+    "jquery-ui": "1.14.2",
+    "jsplumb": "2.15.6",
+    "lucide-static": "1.51.0",
+    "quill": "2.0.3",
+    "vis-timeline": "8.5.4"
+  }
+}

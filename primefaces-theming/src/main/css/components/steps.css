@@ -1,0 +1,146 @@
+/*
+ * Steps: p:steps
+ *
+ * Markup: .ui-steps (.ui-steps-readonly) > ul > li.ui-steps-item
+ *         (ui-state-highlight = current step, ui-state-disabled = not reachable, ui-steps-item-executable = clickable)
+ *         > a.ui-menuitem-link > span.ui-steps-number (number or span.ui-steps-number-icon) + span.ui-steps-title
+ * Like PrimeUIX: a separator line runs through the middle of the numbers, the label is below the number.
+ */
+.ui-steps {
+    position: relative;
+    /* the labels are hidden by the width of the steps, not of the viewport */
+    container: p-steps / inline-size;
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
+
+    .ui-steps-item {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex: 1 1 0;
+        background: transparent;
+        text-align: center;
+        /* like PrimeUIX: inactive (.ui-state-disabled) steps are not dimmed, the muted number/label colors mark them */
+        opacity: 1;
+
+        /* separator through the middle of the numbers */
+        &::before {
+            content: ' ';
+            /* 2px line and 2px number border like PrimeUIX, centered on the number */
+            border-top: 2px solid var(--p-steps-separator-background);
+            width: 100%;
+            top: calc(var(--p-steps-item-number-size) / 2 - 1px);
+            inset-inline-start: 0;
+            display: block;
+            position: absolute;
+        }
+
+        &:first-child::before {
+            width: 50%;
+            inset-inline-start: 50%;
+        }
+
+        &:last-child::before {
+            width: 50%;
+        }
+
+        &:only-child::before {
+            display: none;
+        }
+
+        .ui-menuitem-link {
+            text-decoration: none;
+            position: relative;
+            text-align: center;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--p-steps-item-link-gap);
+            max-width: 100%;
+            background: transparent;
+            overflow: hidden;
+            padding: 0;
+            border-radius: var(--p-steps-item-link-border-radius);
+            outline-color: transparent;
+            transition: outline-color var(--p-steps-transition-duration), box-shadow var(--p-steps-transition-duration);
+
+            &:focus-visible {
+                outline: var(--p-steps-item-link-focus-ring-width) var(--p-steps-item-link-focus-ring-style) var(--p-steps-item-link-focus-ring-color);
+                outline-offset: var(--p-steps-item-link-focus-ring-offset);
+                box-shadow: var(--p-steps-item-link-focus-ring-shadow);
+            }
+
+            .ui-steps-number {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                z-index: 1;
+                color: var(--p-steps-item-number-color);
+                background: var(--p-steps-item-number-background);
+                border: 2px solid var(--p-steps-item-number-border-color);
+                box-shadow: var(--p-steps-item-number-shadow);
+                min-width: var(--p-steps-item-number-size);
+                height: var(--p-steps-item-number-size);
+                line-height: var(--p-steps-item-number-size);
+                font-size: var(--p-steps-item-number-font-size);
+                font-weight: var(--p-steps-item-number-font-weight);
+                padding: 0;
+                margin: 0;
+                border-radius: var(--p-steps-item-number-border-radius);
+
+                .ui-steps-number-icon {
+                    font-size: var(--p-icon-size);
+                    line-height: 1;
+                }
+            }
+
+            .ui-steps-title {
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 0;
+                color: var(--p-steps-item-label-color);
+                font-weight: var(--p-steps-item-label-font-weight);
+            }
+        }
+
+        &.ui-state-highlight {
+            .ui-steps-number {
+                background: var(--p-steps-item-number-active-background);
+                color: var(--p-steps-item-number-active-color);
+                border-color: var(--p-steps-item-number-active-border-color);
+            }
+
+            /* no separate active font-weight token, the active label only changes its color */
+            .ui-steps-title {
+                color: var(--p-steps-item-label-active-color);
+            }
+        }
+    }
+
+    .ui-steps-item.ui-state-highlight:not(.ui-steps-item-executable) .ui-menuitem-link,
+    .ui-steps-item.ui-state-disabled .ui-menuitem-link {
+        cursor: default;
+    }
+
+    .ui-steps-title {
+        display: block;
+        white-space: nowrap;
+    }
+
+    @container p-steps (max-width: 640px) {
+        .ui-steps-item .ui-steps-title {
+            display: none;
+        }
+    }
+}
+
+.ui-steps:not(.ui-steps-readonly) .ui-steps-item.ui-steps-item-executable .ui-menuitem-link {
+    cursor: pointer;
+}

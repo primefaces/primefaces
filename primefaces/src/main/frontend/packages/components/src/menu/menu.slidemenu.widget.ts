@@ -184,7 +184,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 }
             });
         }
-        this.backwardButton = _self.backward.children('ui-menuitem-link');
+        this.backwardButton = this.backward.children('ui-menuitem-link');
         this.backwardButton.attr('tabindex', -1);
         this.changeTabindex();
     }

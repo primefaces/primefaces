@@ -1121,7 +1121,7 @@ export class Core {
                 const uiIcon = button.find('.ui-icon');
                 if (uiIcon.length) {
                     var prefix = 'ui-button-icon-';
-                    loadIcon.addClass(prefix + uiIcon.attr('class')?.includes(prefix + 'left') ? 'left' : 'right');
+                    loadIcon.addClass(prefix + (uiIcon.attr('class')?.includes(prefix + 'left') ? 'left' : 'right'));
                 }
                 button.prepend(loadIcon);
             }

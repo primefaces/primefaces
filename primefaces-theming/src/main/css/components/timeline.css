@@ -1,0 +1,177 @@
+/*
+ * Timeline: p:timeline (vis-timeline, PrimeFaces timeline tokens)
+ *
+ * vis-timeline-graph2d.css is loaded in the vendor layer; these rules override its colors.
+ * Supported classes: vis-item box / range / point / background, vis-selected, timeline-menu (menu facet)
+ */
+div.timeline-menu {
+    position: absolute;
+    right: 0;
+    margin: var(--p-timeline-menu-gap);
+    /* must be equal to the z-index of vis-tooltip */
+    z-index: 5;
+}
+
+div.timeline-menu-axis-both {
+    top: 50px;
+}
+
+div.timeline-menu-axis-top {
+    bottom: 0;
+}
+
+div.timeline-menu-rtl {
+    left: 0;
+    right: auto;
+}
+
+.vis-timeline {
+    font-family: var(--p-typography-font-family);
+    border: 1px solid var(--p-timeline-frame-border-color);
+    border-radius: var(--p-timeline-frame-border-radius);
+    background: var(--p-timeline-frame-background);
+    color: var(--p-timeline-frame-color);
+
+    .vis-panel {
+        &.vis-center,
+        &.vis-left,
+        &.vis-right,
+        &.vis-top,
+        &.vis-bottom {
+            border-color: var(--p-timeline-frame-border-color);
+        }
+
+        .vis-shadow {
+            box-shadow: none;
+        }
+    }
+
+    .vis-time-axis {
+        .vis-text {
+            color: var(--p-timeline-axis-color);
+            font-size: var(--p-timeline-axis-font-size);
+        }
+
+        .vis-grid {
+            &.vis-minor {
+                border-color: var(--p-timeline-grid-minor-color);
+            }
+
+            &.vis-major {
+                border-color: var(--p-timeline-grid-major-color);
+            }
+        }
+    }
+
+    /* groups */
+    .vis-labelset .vis-label {
+        color: var(--p-timeline-group-color);
+        border-bottom-color: var(--p-timeline-group-border-color);
+    }
+
+    .vis-foreground .vis-group {
+        border-bottom-color: var(--p-timeline-group-border-color);
+    }
+
+    .vis-label.vis-nested-group {
+        &.vis-group-level-0 {
+            background-color: var(--p-timeline-frame-background);
+        }
+
+        &:not(.vis-group-level-0) {
+            background-color: var(--p-timeline-group-nested-background);
+        }
+    }
+
+    .vis-item {
+        border-color: var(--p-timeline-item-border-color);
+        background-color: var(--p-timeline-item-background);
+        color: var(--p-timeline-item-color);
+
+        &.vis-box,
+        &.vis-range {
+            border-radius: var(--p-timeline-item-border-radius);
+        }
+
+        .vis-item-content {
+            color: inherit;
+            padding: var(--p-timeline-item-padding);
+        }
+
+        &.vis-point {
+            background: none;
+
+            .vis-item-content {
+                color: var(--p-timeline-frame-color);
+            }
+
+            &.vis-selected {
+                background-color: transparent;
+            }
+
+            &.vis-selected .vis-item-content {
+                color: var(--p-timeline-item-selected-background);
+            }
+        }
+
+        /* a circle: the dot has no content box, radius = border width */
+        &.vis-dot {
+            border-width: var(--p-timeline-item-dot-border-width);
+            border-radius: var(--p-timeline-item-dot-border-width);
+        }
+
+        &.vis-line {
+            background-color: transparent;
+        }
+
+        &.vis-background {
+            border: 0 none;
+            background-color: var(--p-timeline-item-background-range-background);
+
+            .vis-item-content {
+                color: var(--p-timeline-frame-color);
+            }
+        }
+
+        &.vis-selected {
+            background-color: var(--p-timeline-item-selected-background);
+            border-color: var(--p-timeline-item-selected-border-color);
+            color: var(--p-timeline-item-selected-color);
+        }
+
+        .vis-delete::after,
+        .vis-delete-rtl::after {
+            color: var(--p-timeline-item-delete-color);
+        }
+
+        .vis-delete:hover,
+        .vis-delete-rtl:hover {
+            background: var(--p-timeline-item-delete-hover-background);
+        }
+
+        .vis-delete:hover::after,
+        .vis-delete-rtl:hover::after {
+            color: var(--p-timeline-item-delete-hover-color);
+        }
+    }
+
+    .vis-current-time {
+        background-color: var(--p-timeline-current-time-color);
+    }
+
+    .vis-custom-time {
+        background-color: var(--p-timeline-custom-time-color);
+    }
+}
+
+/* appended to the timeline */
+div.vis-tooltip {
+    font-family: var(--p-typography-font-family);
+    background-color: var(--p-timeline-tooltip-background);
+    color: var(--p-timeline-tooltip-color);
+    padding: var(--p-timeline-tooltip-padding);
+    border: 0 none;
+    border-radius: var(--p-timeline-tooltip-border-radius);
+    box-shadow: var(--p-timeline-tooltip-shadow);
+    font-size: var(--p-timeline-tooltip-font-size);
+}

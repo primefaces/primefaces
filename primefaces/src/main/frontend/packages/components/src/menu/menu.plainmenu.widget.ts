@@ -69,7 +69,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
         // Initialize collapsedIds with currently collapsed headers
         this.collapsedIds = this.headers.filter(function() {
-            return $(this).find('> h3 > .ui-icon').hasClass('ui-icon-triangle-1-e');
+            return $(this).find('> h3 > .ui-icon:not(.ui-submenu-icon)').hasClass('ui-icon-triangle-1-e');
         }).map(function() {
             return $(this).attr('id') ?? '';
         }).get().filter(function(id) {
@@ -84,7 +84,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
             $(this).removeClass('ui-state-hover');
         }).on('click.menu', function(e) {
             var header = $(this);
-            var icon = header.find('> h3 > .ui-icon');
+            var icon = header.find('> h3 > .ui-icon:not(.ui-submenu-icon)');
 
             if (icon.hasClass('ui-icon-triangle-1-s')) {
                 $this.collapseSubmenu(header, true);
@@ -247,7 +247,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         const items = header.nextUntil('li.ui-widget-header');
 
         header.attr('aria-expanded', "false")
-            .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+            .find('> h3 > .ui-icon:not(.ui-submenu-icon)').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
         items.filter('.ui-submenu-child').hide();
 
@@ -267,7 +267,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         var items = header.nextUntil('li.ui-widget-header');
 
         header.attr('aria-expanded', "true")
-            .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+            .find('> h3 > .ui-icon:not(.ui-submenu-icon)').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
         items.filter('.ui-submenu-child').show();
 

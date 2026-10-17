@@ -1,0 +1,60 @@
+/*
+ * NotificationBar: p:notificationBar (position top | bottom, set inline by the widget)
+ *
+ * A page wide neutral content bar (PrimeFaces tokens); an element with the class ui-notificationbar-close inside
+ * the bar is styled like the message close button.
+ */
+
+.ui-notificationbar {
+    display: none;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    min-height: 100px;
+    /* stays above sticky page headers */
+    z-index: 1100;
+    padding: var(--p-notificationbar-padding);
+    background: var(--p-notificationbar-background);
+    color: var(--p-notificationbar-color);
+    border: 0 none;
+    border-block: 1px solid var(--p-notificationbar-border-color);
+    box-shadow: var(--p-notificationbar-shadow);
+
+    .ui-notificationbar-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        top: var(--p-notificationbar-close-button-offset);
+        inset-inline-end: var(--p-notificationbar-close-button-offset);
+        width: var(--p-notificationbar-close-button-width);
+        height: var(--p-notificationbar-close-button-height);
+        border-radius: var(--p-notificationbar-close-button-border-radius);
+        background: transparent;
+        color: var(--p-notificationbar-close-button-color);
+        text-decoration: none;
+        outline-color: transparent;
+        transition: background var(--p-notificationbar-transition-duration), color var(--p-notificationbar-transition-duration),
+            outline-color var(--p-notificationbar-transition-duration), box-shadow var(--p-notificationbar-transition-duration);
+
+        &:hover {
+            background: var(--p-notificationbar-close-button-hover-background);
+            color: var(--p-notificationbar-close-button-hover-color);
+        }
+
+        &:focus-visible {
+            outline: var(--p-notificationbar-close-button-focus-ring-width) var(--p-notificationbar-close-button-focus-ring-style) var(--p-notificationbar-close-button-focus-ring-color);
+            outline-offset: var(--p-notificationbar-close-button-focus-ring-offset);
+            box-shadow: var(--p-notificationbar-close-button-focus-ring-shadow);
+        }
+
+        .ui-icon,
+        .pi {
+            font-size: var(--p-message-close-icon-size);
+        }
+    }
+}
+
+.ui-notificationbar-close {
+    position: absolute;
+    cursor: pointer;
+}

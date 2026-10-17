@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <f:event type="preRenderView" listener="#{theming004.addMessages}" />
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:messages id="messages" closable="true" />
+
+            <p:menubar id="menubar">
+                <p:submenu label="File">
+                    <p:menuitem value="New" />
+                    <p:submenu label="Export">
+                        <p:menuitem value="PDF" />
+                    </p:submenu>
+                </p:submenu>
+                <p:menuitem value="Help" />
+            </p:menubar>
+
+            <p:breadCrumb id="breadCrumb">
+                <p:menuitem value="Home" url="#" />
+                <p:menuitem value="Theming" url="#" />
+            </p:breadCrumb>
+
+            <p:tieredMenu id="tieredMenu">
+                <p:submenu label="Edit">
+                    <p:menuitem value="Copy" />
+                </p:submenu>
+                <p:menuitem value="Quit" />
+            </p:tieredMenu>
+
+            <p:panelMenu id="panelMenu">
+                <p:submenu label="Files" expanded="true">
+                    <p:menuitem value="Open" />
+                    <p:submenu label="Recent">
+                        <p:menuitem value="theming.xhtml" />
+                    </p:submenu>
+                </p:submenu>
+            </p:panelMenu>
+
+            <p:splitButton id="splitButton" value="Save" type="button">
+                <p:menuitem value="Update" />
+            </p:splitButton>
+
+            <p:menuButton id="menuButton" value="Options">
+                <p:menuitem value="Option 1" />
+            </p:menuButton>
+
+            <p:inputText id="messageInput" />
+            <p:message id="message" for="messageInput" />
+
+            <p:selectOneMenu id="selectOneMenu" value="#{theming004.text}">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectOneMenu>
+
+            <p:selectCheckboxMenu id="selectCheckboxMenu" value="#{theming004.selection}" label="Choose">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectCheckboxMenu>
+
+            <p:selectBooleanCheckbox id="checkbox" value="#{theming004.checked}" />
+
+            <p:selectOneRadio id="radio" value="#{theming004.text}">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectOneRadio>
+
+            <p:datePicker id="datePicker" value="#{theming004.date}" showIcon="true" />
+
+            <p:autoComplete id="autoComplete" value="#{theming004.text}" completeMethod="#{theming004.complete}" dropdown="true" />
+
+            <p:inputNumber id="inputNumber" />
+
+            <p:password id="password" toggleMask="true" redisplay="true" />
+
+            <p:rating id="rating" value="#{theming004.rating}" />
+
+            <p:toggleSwitch id="toggleSwitch" value="#{theming004.checked}" />
+
+            <p:accordionPanel id="accordion">
+                <p:tab title="Tab 1">Content 1</p:tab>
+                <p:tab title="Tab 2">Content 2</p:tab>
+            </p:accordionPanel>
+
+            <p:panel id="panel" header="Panel" toggleable="true" closable="true">Content</p:panel>
+
+            <p:fieldset id="fieldset" legend="Fieldset" toggleable="true">Content</p:fieldset>
+
+            <p:tabView id="tabView">
+                <p:tab title="Tab 1" closable="true">Content 1</p:tab>
+                <p:tab title="Tab 2" closable="true">Content 2</p:tab>
+            </p:tabView>
+
+            <p:dataTable id="dataTable" value="#{theming004.rows}" var="row" rows="2" paginator="true">
+                <p:column headerText="Name" sortBy="#{row}">#{row}</p:column>
+            </p:dataTable>
+
+            <p:tree id="tree" value="#{theming004.root}" var="node">
+                <p:treeNode>#{node}</p:treeNode>
+            </p:tree>
+
+            <p:treeTable id="treeTable" value="#{theming004.root}" var="node">
+                <p:column headerText="Name">#{node}</p:column>
+            </p:treeTable>
+
+            <p:dialog id="dialog" header="Dialog" visible="true" modal="false" maximizable="true" minimizable="true">
+                Dialog content
+            </p:dialog>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

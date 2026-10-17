@@ -1,0 +1,51 @@
+/*
+ * Card: p:card (header facet/image, title, subtitle, content, footer)
+ */
+
+.ui-card-header img {
+    display: block;
+    width: 100%;
+}
+
+.ui-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--p-card-background);
+    color: var(--p-card-color);
+    border: 0 none;
+    box-shadow: var(--p-card-shadow);
+    border-radius: var(--p-card-border-radius);
+
+    /* header (image): clipped to the rounded top corners of the card */
+    .ui-card-header {
+        overflow: hidden;
+        border-start-start-radius: var(--p-card-border-radius);
+        border-start-end-radius: var(--p-card-border-radius);
+    }
+
+    .ui-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--p-card-body-gap);
+        padding: var(--p-card-body-padding);
+    }
+
+    .ui-card-title {
+        margin: 0;
+        font-size: var(--p-card-title-font-size);
+        font-weight: var(--p-card-title-font-weight);
+    }
+
+    .ui-card-subtitle {
+        margin: 0;
+        color: var(--p-card-subtitle-color);
+        font-size: var(--p-card-subtitle-font-size);
+        font-weight: var(--p-card-subtitle-font-weight);
+    }
+
+    /* title + subtitle form the PrimeUIX caption: they sit closer together */
+    .ui-card-title + .ui-card-subtitle {
+        /* no token: replaces the body gap with the caption gap */
+        margin-top: calc(var(--p-card-caption-gap) - var(--p-card-body-gap));
+    }
+}
