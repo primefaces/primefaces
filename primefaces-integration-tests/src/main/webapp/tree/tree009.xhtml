@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:tree id="tree" value="#{tree009.root}" var="node" widgetVar="treeWidget"
+                    selectionMode="checkbox" selection="#{tree009.selectedNodes}">
+                <p:ajax event="select" process="@this"/>
+                <p:ajax event="unselect" process="@this"/>
+                <p:treeNode>
+                    <h:outputText value="#{node}"/>
+                </p:treeNode>
+            </p:tree>
+
+            <p:commandButton id="showSelected" value="Show Selected" update="@form"
+                             action="#{tree009.showSelectedNodes}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

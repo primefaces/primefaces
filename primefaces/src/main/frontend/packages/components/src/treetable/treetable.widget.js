@@ -1264,10 +1264,29 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.selectNode(node, true);
 
         //propagate down
+        var skippedKeys = [];
         if (this.cfg.propagateSelectionDown) {
-            var descendants = this.getDescendants(node);
+            var descendants = this.getDescendants(node),
+            skippedKey = null;
+
             for (var i = 0; i < descendants.length; i++) {
-                var descendant = descendants[i];
+                var descendant = descendants[i],
+                descendantKey = descendant.attr('data-rk');
+
+                // descendants are in depth-first order, so everything below a skipped node is still skipped
+                if (skippedKey && descendantKey.indexOf(skippedKey + '_') === 0) {
+                    continue;
+                }
+                skippedKey = null;
+
+                // a non-selectable node and its subtree are never changed by the propagation, neither selected nor
+                // unselected, just like CheckboxTreeNode#propagateSelectionDown does on the server side, see #14798
+                if (!descendant.hasClass('ui-treetable-selectable-node')) {
+                    skippedKey = descendantKey;
+                    skippedKeys.push(descendantKey);
+                    continue;
+                }
+
                 if (selected)
                     this.unselectNode(descendant, true);
                 else
@@ -1276,7 +1295,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         }
 
         if(selected) {
-           this.removeDescendantsFromSelection(node.data('rk'));
+           this.removeDescendantsFromSelection(node.data('rk'), skippedKeys);
         }
 
         //propagate up
@@ -1349,9 +1368,19 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} node A node that was selected or unselected.
      */
     propagateUp(node) {
+        // a non-selectable node must never be selected by the propagation either, see #14798
+        if (!node.hasClass('ui-treetable-selectable-node')) {
+            var parentNode = this.getParent(node);
+            if (parentNode) {
+                this.propagateUp(parentNode);
+            }
+            return;
+        }
+
         var children = this.getChildren(node),
         allSelected = true,
         partialSelected = false,
+        hasSelectableChild = false,
         checkbox = this.cfg.nativeElements ? node.find('> td:first-child > :checkbox') :
                             node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
 
@@ -1359,11 +1388,21 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             var child = children[i],
             childSelected = child.hasClass('ui-state-highlight');
 
+            // a non-selectable child can never be selected via its checkbox, so it must not keep its parent from
+            // being fully selected, see #14798
+            if (!child.hasClass('ui-treetable-selectable-node')) {
+                continue;
+            }
+
+            hasSelectableChild = true;
             allSelected = allSelected&&childSelected;
             partialSelected = partialSelected||childSelected||child.hasClass('ui-treetable-partialselected');
         }
 
-        if(allSelected) {
+        if(!hasSelectableChild) {
+            // without any selectable child there is nothing to derive the state of the node from, so it is kept
+        }
+        else if(allSelected) {
             node.removeClass('ui-treetable-partialselected');
             this.selectNode(node, true);
         }
@@ -1409,10 +1448,23 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * Removes all children of the given row from the list of currently selected rows.
      * @private
      * @param {string} rowKey A row with children that were unselected.
+     * @param {string[]} [keptRowKeys] Row keys of non-selectable descendants which, together with their own
+     * descendants, keep their selection state.
      */
-    removeDescendantsFromSelection(rowKey) {
+    removeDescendantsFromSelection(rowKey, keptRowKeys) {
+        keptRowKeys = keptRowKeys || [];
         this.selections = $.grep(this.selections, function(value) {
-            return value.indexOf(rowKey + '_') !== 0;
+            if (value.indexOf(rowKey + '_') !== 0) {
+                return true;
+            }
+
+            for (var i = 0; i < keptRowKeys.length; i++) {
+                if (value === keptRowKeys[i] || value.indexOf(keptRowKeys[i] + '_') === 0) {
+                    return true;
+                }
+            }
+
+            return false;
         });
     }
 

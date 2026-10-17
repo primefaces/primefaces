@@ -41,9 +41,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
@@ -318,6 +321,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
+    /**
+     * Collects the rowKeys of all descendants of the given node, which the checkbox selection propagates down to.
+     * A non-selectable node and its whole subtree are skipped, just like {@link CheckboxTreeNode} does when the
+     * selection is propagated down on the model, see #14798.
+     *
+     * @param node the node to collect the descendants of
+     * @param keys the list to add the collected rowKeys to
+     */
     public void populateRowKeys(TreeNode<?> node, List<String> keys) {
         if (node == null) {
             return;
@@ -331,10 +342,60 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
                 TreeNode<?> childNode = node.getChildren().get(i);
+                if (!childNode.isSelectable()) {
+                    continue;
+                }
                 keys.add(childNode.getRowKey());
                 populateRowKeys(childNode, keys);
             }
         }
+    }
+
+    /**
+     * Resolves the submitted rowKeys of the selection to their nodes. The client can never change the selection of a
+     * non-selectable node, see #14798: a submitted non-selectable node is only accepted if it is part of the previous
+     * selection already, and in checkbox mode a non-selectable node of the previous selection is kept even when the
+     * client didn't submit it, e.g. because it was not rendered when one of its ancestors got unchecked.
+     *
+     * @param root the root node
+     * @param rowKeys the submitted rowKeys
+     * @param previousSelection the selection before the request: a {@link TreeNode}, an array or a {@link Collection}
+     * of them, or {@code null}
+     * @return the selected nodes
+     */
+    public List<TreeNode<?>> decodeSelectedNodes(TreeNode<?> root, String[] rowKeys, Object previousSelection) {
+        Set<TreeNode<?>> previousNodes = new HashSet<>();
+        if (previousSelection instanceof TreeNode<?> node) {
+            previousNodes.add(node);
+        }
+        else if (previousSelection instanceof TreeNode<?>[] nodes) {
+            previousNodes.addAll(Arrays.asList(nodes));
+        }
+        else if (previousSelection instanceof Collection<?> nodes) {
+            for (Object node : nodes) {
+                previousNodes.add((TreeNode<?>) node);
+            }
+        }
+
+        Set<TreeNode<?>> selectedNodes = new LinkedHashSet<>();
+        for (String rowKey : rowKeys) {
+            setRowKey(root, rowKey);
+            TreeNode<?> node = getRowNode();
+            if (node != null && (node.isSelectable() || previousNodes.contains(node))) {
+                selectedNodes.add(node);
+            }
+        }
+        setRowKey(root, null);
+
+        if (isCheckboxSelectionMode()) {
+            for (TreeNode<?> node : previousNodes) {
+                if (!node.isSelectable()) {
+                    selectedNodes.add(node);
+                }
+            }
+        }
+
+        return new ArrayList<>(selectedNodes);
     }
 
     public void updateRowKeys(TreeNode<?> node) {

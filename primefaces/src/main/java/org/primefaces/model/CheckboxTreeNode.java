@@ -116,21 +116,29 @@ public class CheckboxTreeNode<T> extends DefaultTreeNode<T> implements TreeNode<
             return;
         }
         boolean allChildrenSelected = true;
-        this.partialSelected = false;
+        boolean anyChildSelected = false;
+        boolean hasSelectableChild = false;
 
         for (int i = 0; i < getChildCount(); i++) {
             TreeNode childNode = getChildren().get(i);
 
+            // a non-selectable child can never be selected via its checkbox, so it must not keep this node from being
+            // fully selected, see #14798
+            if (!childNode.isSelectable()) {
+                continue;
+            }
+
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
+            hasSelectableChild = true;
             allChildrenSelected = allChildrenSelected && childSelected;
-            this.partialSelected = partialSelected || childSelected || childPartialSelected;
+            anyChildSelected = anyChildSelected || childSelected || childPartialSelected;
         }
 
-        this.selected = allChildrenSelected;
-
-        if (allChildrenSelected) {
-            setPartialSelected(false);
+        // without any selectable child there is nothing to derive the state of this node from, so it is kept
+        if (hasSelectableChild) {
+            this.selected = allChildrenSelected;
+            this.partialSelected = !allChildrenSelected && anyChildSelected;
         }
 
         if (getParent() != null) {
