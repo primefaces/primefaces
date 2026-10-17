@@ -20,7 +20,7 @@ const scale = (value, factor) => value.replace(/(-?\d*\.?\d+)(rem|px|em)\b/g, (_
 
 fs.mkdirSync(outDir, { recursive: true });
 for (const preset of ['aura', 'lara', 'nora']) {
-    const css = fs.readFileSync(path.join(cssDir, 'presets', `${preset}.css`), 'utf8');
+    const css = fs.readFileSync(path.join(cssDir, 'presets', `${preset}.css`), 'utf8').replace(/\r\n/g, '\n');
     const tokens = [...css.matchAll(/^\s+(--p-[a-z0-9-]+):\s*(.+);$/gm)]
         .filter(([, n, v]) => SCALED.test(n) && !EXCLUDED.test(n) && /\d(rem|px|em)\b/.test(v) && !v.includes('var('))
         .map(([, n, v]) => [n, v]);
@@ -33,7 +33,7 @@ for (const preset of ['aura', 'lara', 'nora']) {
     out += '}\n';
     const file = path.join(outDir, `${preset}.css`);
     if (process.argv.includes('--check')) {
-        if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== out) {
+        if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n') !== out) {
             console.error(`density/${preset}.css is not up to date, run node tools/generate-density.mjs`);
             process.exit(1);
         }

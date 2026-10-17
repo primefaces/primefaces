@@ -31,7 +31,7 @@ if (!distDir) {
 function readExisting(file) {
     const result = { semantic: [], components: new Map() };
     if (!fs.existsSync(file)) return result;
-    const css = fs.readFileSync(file, 'utf8');
+    const css = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
     const decls = (body) => [...body.matchAll(/^\s+(--p-[a-z0-9-]+):\s*(.+);$/gm)].map((m) => [m[1], m[2]]);
     const semantic = css.match(/\n    :root, \[data-p-scope\] \{\n([\s\S]*?)\n    \}\n/);
     if (semantic) result.semantic = decls(semantic[1]);

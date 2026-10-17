@@ -18,7 +18,7 @@ const SOURCE_FOLDERS = ['base', 'shared', 'components', 'behaviors'];
 
 const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
 const readFolder = (folder) => fs.readdirSync(path.join(cssDir, folder)).filter((f) => f.endsWith('.css')).sort()
-    .map((f) => ({ file: `${folder}/${f}`, css: stripComments(fs.readFileSync(path.join(cssDir, folder, f), 'utf8')) }));
+    .map((f) => ({ file: `${folder}/${f}`, css: stripComments(fs.readFileSync(path.join(cssDir, folder, f), 'utf8').replace(/\r\n/g, '\n')) }));
 const defs = (css) => new Set([...css.matchAll(/(--p-[a-z0-9-]+)\s*:/g)].map((m) => m[1]));
 const refs = (css, withFallback) => new Set([...css.matchAll(withFallback ? /var\((--p-[a-z0-9-]+)/g : /var\((--p-[a-z0-9-]+)\s*\)/g)].map((m) => m[1]));
 
