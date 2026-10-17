@@ -55,6 +55,15 @@ If you use PrimeFaces in production, consider supporting the project through spo
 
 Feature development and bug fixes may also be sponsored. If you are interested in sponsoring a specific issue or feature, please ask directly in the relevant issue discussion.
 
+### Commercial Support
+
+PrimeTek no longer offers PrimeFaces PRO to new customers. Commercial support is now provided by the PrimeFaces project lead through [neroe.org](https://neroe.org) – the alternative to PrimeFaces PRO.
+
+* Independent, ticket-based PrimeFaces support straight from the project lead
+* Consulting on Jakarta EE, runtimes and operations
+* Backports of fixes to older PrimeFaces versions
+* Fixes for PrimeFaces bugs go upstream, so the whole community benefits
+
 ### Versions
 ***
 
