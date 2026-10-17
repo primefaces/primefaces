@@ -66,7 +66,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.event.PostValidateEvent;
 import jakarta.faces.event.PreValidateEvent;
 
-public abstract class UITree extends UIComponentBase implements NamingContainer {
+public abstract class UITree extends UIComponentBase implements NamingContainer, IterationCleanupAware {
 
     public static final String SEPARATOR = "_";
     public static final String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
@@ -148,6 +148,15 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         restoreDescendantState();
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        // the row key ends up in the client id of every descendant and puts the node in the request map under var,
+        // so we must not be left standing on a node once the phase which put us there is done
+        if (rowKey != null) {
+            setRowKey(null, null, null);
+        }
     }
 
     private void addToPreselection(TreeNode<?> node) {

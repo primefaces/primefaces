@@ -52,6 +52,7 @@ public class FacesContextMock extends FacesContext {
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
+    private RenderKit renderKit = new RenderKitMock();
     private Map<String, List<FacesMessage>> messages = new HashMap<>();
 
     private Map<Object, Object> attributes;
@@ -143,7 +144,7 @@ public class FacesContextMock extends FacesContext {
 
     @Override
     public RenderKit getRenderKit() {
-        return new RenderKitMock();
+        return renderKit;
     }
 
     @Override

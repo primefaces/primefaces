@@ -45,7 +45,7 @@ public class OverlayPanel extends OverlayPanelBaseImpl {
     public static final String CONTENT_CLASS = "ui-overlaypanel-content";
 
     public OverlayPanelRenderer getRenderer() {
-        return (OverlayPanelRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
+        return ComponentUtils.getUnwrappedRenderer(getFacesContext(), getFamily(), getRendererType());
     }
 
     @Override
