@@ -27,7 +27,7 @@ What breaks for applications that use a token theme:
     icon classes (`ui-icon-triangle-1-e`, ...), widgets switch states (`aria-expanded`) instead of icon classes.
 - **Later, also breaking:** `ui-*` → `p-*` style classes, removal of jQuery UI (the options of `p:draggable` /
   `p:droppable` / `p:resizable` mirror jQuery UI, effect attributes are reduced to a few CSS effects, `p:calendar` is
-  deprecated in favor of `p:datePicker`).
+  removed in favor of `p:datePicker`).
 
 Each breaking core change gets its entry in the migration guide (`docs/migrationguide`) when it is implemented.
 
@@ -92,26 +92,21 @@ src/main/css/
   behaviors/*.css           dragdrop, resizable, sticky
 tools/check.mjs             conventions check, runs before the build (see below)
 tools/build.mjs             bundles and minifies the themes (esbuild)
-tools/generate-presets.mjs  re-imports the PrimeUIX values into presets/*.css, keeps all PrimeFaces tokens
 tools/generate-density.mjs  generates density/*.css from the presets (--check: up to date)
 tools/export-tokens.mjs     exports the tokens in the W3C Design Tokens format (DTCG) to target/tokens/
-tools/unused-tokens.txt     PrimeUIX tokens of features PrimeFaces does not have (see check.mjs)
 ```
 
-- The preset files are edited by hand. They started as an import of `@primeuix/themes` 3.0.1; to pull in a newer
-  PrimeUIX version run the tool below. It overwrites the values of tokens PrimeUIX defines and keeps every other
-  token and every PrimeFaces-only component block (keypad, clock, wizard, ...) as it is:
-  ```bash
-  node tools/generate-presets.mjs <path to @primeuix/themes>/dist
-  ```
-- PrimeFaces tokens follow the PrimeUIX naming (`--p-<component>-<section>-<token>`), reference PrimeUIX tokens instead of
-  literal colors and live in the block of their component in all three presets.
+- The presets are the source of truth and are edited by hand. They started from PrimeUIX 3.0.1 (Aura, Lara, Nora) but
+  are not synced with PrimeUIX: PrimeUIX was the template, the presets deviate where that is right (e.g. form fields
+  follow the global focus ring in all presets).
+- All tokens follow the PrimeUIX naming (`--p-<component>-<section>-<token>`), reference other tokens instead of literal
+  colors and live in the block of their component, in all three presets.
 - Differences to PrimeUIX: the primary palette 50-950 is derived from `--p-primary-base` via `color-mix(in oklch)`,
   `--p-primary-contrast-color` is computed from the primary color, every semantic/component token is declared on
   `:root, [data-p-scope]`.
 - `tools/check.mjs` enforces: every `var(--p-*)` is defined, all presets define the same tokens, no literal colors
-  outside presets/ and icons/, no malformed values, the density files are up to date, and every preset token is used - tokens of PrimeUIX features PrimeFaces does not have
-  are listed in `tools/unused-tokens.txt` (`node tools/check.mjs --update-unused`).
+  outside presets/ and icons/, no malformed values, the density files are up to date, and every preset token is used (an unused token is
+  deleted, not kept for later).
 
 The CSS uses native nesting (states, variants and children nested under their component; selector lists with
 different specificity stay flat).
@@ -229,13 +224,15 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
 
 ## Presets
 
-- Token blocks of PrimeUIX components PrimeFaces does not have are not imported (`EXCLUDED_COMPONENTS` in
-  `tools/generate-presets.mjs`). The PrimeUIX `timeline` tokens are imported as `chronoline` (they style p:chronoline;
-  `--p-timeline-*` are the PrimeFaces tokens of the vis-timeline based p:timeline).
-- Upstream bugs of PrimeUIX 3.0.1 are corrected on import (`UPSTREAM_FIXES`, `REF_FIXES`, `fixSyntax`).
-- Size variants (sm/lg) of select, multiselect, cascadeselect, checkbox and radiobutton, message variants (simple /
-  outlined), mobile menus and the dataTable filter popover exist in PrimeUIX but not in PrimeFaces; their tokens are in
-  `tools/unused-tokens.txt` and can be wired when the feature comes.
+- The PrimeUIX `timeline` tokens style p:chronoline (`--p-chronoline-*`); `--p-timeline-*` are the tokens of the
+  vis-timeline based p:timeline.
+- Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes, its tokens are added
+  in all three presets (PrimeUIX 3.0.1 is the reference for names and values):
+  - size variants (sm/lg) of select, multiselect, cascadeselect, checkbox, radiobutton and badge (sm)
+  - message / growl variants (simple, outlined) and severities secondary / contrast (message, growl, tag, badge)
+  - responsive (mobile) menubar / megamenu, the dataTable filter menu, the datePicker year view and range ends,
+    float label variants "in" / "on", sidebar header / footer, listbox checkmark / striped rows, clear icons
+  - keyboard focus where PrimeFaces has none yet: growl close button, organigram nodes, autoComplete / chips tokens
 
 ## Known limitations
 
@@ -332,7 +329,8 @@ of p:calendar)
   own positioning or Floating UI.
 - Effects (dialog, inplace, mindmap, notificationBar, orderList, pickList, tabView, tooltip, wizard) → CSS transitions /
   Web Animations; reduce the effect attributes to a few (fade, slide, scale).
-- `datepicker` + timepicker addon: only p:calendar → deprecate p:calendar in favor of p:datePicker.
+- `datepicker` + timepicker addon: only p:calendar → remove p:calendar, p:datePicker (styled with the
+  `--p-datepicker-*` tokens) replaces it; then the calendar rules of `components/datepicker.css` go too.
 - `slider`: p:slider (and the p:calendar timepicker) → own implementation.
 - `sortable` (dashboard, dataTable, orderList, pickList), `draggable` / `droppable` (p:draggable / p:droppable,
   dashboard, dataTable, dialog, log, tree, treeTable, organigram, diagram, timeline), `resizable` (p:resizable, dialog)

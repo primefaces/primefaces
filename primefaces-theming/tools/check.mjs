@@ -4,16 +4,13 @@
 //   - no literal colors outside presets/ and icons/ (only tokens, currentColor, transparent, inherit)
 //   - transitions use the motion tokens (no literal curves or durations)
 //   - no malformed values (an identifier glued to var(), which makes the browser drop the declaration)
-//   - preset tokens nobody references are listed in tools/unused-tokens.txt (PrimeUIX tokens of features PrimeFaces does
-//     not have); a token that is unused but not listed, or listed but used, fails the check
-// node tools/check.mjs --update-unused rewrites tools/unused-tokens.txt.
+//   - every preset token is used (except the primitive palette, the primary base and the border radius scale)
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cssDir = path.join(root, 'src', 'main', 'css');
-const UNUSED_FILE = path.join(root, 'tools', 'unused-tokens.txt');
 const SOURCE_FOLDERS = ['base', 'shared', 'components', 'behaviors'];
 
 const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
@@ -81,20 +78,7 @@ for (const { file, css } of [...presets, ...sources, ...icons]) {
 const referenced = new Set([...refs(sourceCss, true), ...refs(iconCss, true), ...presets.flatMap((p) => [...refs(p.css, true)])]);
 const isPalette = (t) => /^--p-([a-z]+-\d+|primary-base|border-radius-[a-z]+)$/.test(t);
 const unused = [...presetDefs[0]].filter((t) => !referenced.has(t) && !isPalette(t)).sort();
-if (process.argv.includes('--update-unused')) {
-    fs.writeFileSync(UNUSED_FILE, '# PrimeUIX tokens of features PrimeFaces does not have (maintained by tools/check.mjs --update-unused)\n'
-        + unused.join('\n') + '\n');
-    console.log(`tools/unused-tokens.txt: ${unused.length} tokens`);
-}
-else {
-    const listed = fs.existsSync(UNUSED_FILE)
-        ? new Set(fs.readFileSync(UNUSED_FILE, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')))
-        : new Set();
-    const newlyUnused = unused.filter((t) => !listed.has(t));
-    const nowUsed = [...listed].filter((t) => !unused.includes(t));
-    if (newlyUnused.length) errors.push(`tokens nobody references (use them or add them to tools/unused-tokens.txt): ${newlyUnused.join(' ')}`);
-    if (nowUsed.length) errors.push(`tools/unused-tokens.txt lists tokens that are used now: ${nowUsed.join(' ')}`);
-}
+if (unused.length) errors.push(`tokens nobody references (use or delete them): ${unused.join(' ')}`);
 
 if (errors.length) {
     console.error(errors.join('\n'));
