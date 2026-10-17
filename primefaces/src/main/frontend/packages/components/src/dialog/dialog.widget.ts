@@ -226,7 +226,17 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     titleContainer?: JQuery;
 
+    /**
+     * Tracks the original DOM position when the dialog is appended to another container.
+     */
+    private placeholder: JQuery = $();
+
     override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+        if (cfg.appendTo && !this.placeholder[0]?.isConnected) {
+            this.placeholder = $('<span hidden></span>').insertBefore($(PrimeFaces.escapeClientId(String(cfg.id))));
+            this.placeholder.on('remove', () => this.jq.remove());
+        }
+
         super.init(cfg);
 
         this.box = this.jq.children('.ui-dialog-box');
@@ -284,6 +294,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         if(this.cfg.responsive) {
             this.bindResizeListener();
         }
+    }
+
+    override destroy(): void {
+        this.placeholder.off('remove').remove();
+        super.destroy();
     }
 
     override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
