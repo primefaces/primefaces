@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html" xmlns:p="primefaces">
+    <h:head />
+    <h:body>
+        <h:form id="form">
+            <p:wizard id="wizard" widgetVar="wizard" highlightCompletedSteps="#{wizard001.highlight}"
+                      step="#{wizard001.step}">
+                <p:tab id="first" title="First"><h:outputText value="First step" /></p:tab>
+                <p:tab id="hidden" title="Hidden" rendered="false" />
+                <p:tab id="second" title="Second"><h:outputText value="Second step" /></p:tab>
+                <p:tab id="third" title="Third"><h:outputText value="Third step" /></p:tab>
+            </p:wizard>
+            <p:commandButton id="refresh" value="Refresh" update="wizard" />
+        </h:form>
+    </h:body>
+</html>
