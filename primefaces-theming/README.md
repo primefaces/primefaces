@@ -23,8 +23,8 @@ What breaks for applications that use a token theme:
     expandedIcon / menuIcon`, `p:rowToggler expandIcon / collapseIcon`, `p:spinner upIcon / downIcon`,
     `p:chip removeIcon`, `p:breadCrumb homeIcon`, ...; full list below). Configure them in CSS. p:tabView has no
     such attributes, its close icon is `--p-tabs-close-icon` already.
-  - renderers emit neutral markup instead of the legacy jQuery UI icon classes (`ui-icon-triangle-1-e`, ...), widgets
-    switch states (`aria-expanded`) instead of icon classes.
+  - renderers emit semantic icon classes (`p-icon p-close-icon p-panel-close-icon`) instead of the legacy jQuery UI
+    icon classes (`ui-icon-triangle-1-e`, ...), widgets switch states (`aria-expanded`) instead of icon classes.
 - **Later, also breaking:** `ui-*` → `p-*` style classes, removal of jQuery UI (the options of `p:draggable` /
   `p:droppable` / `p:resizable` mirror jQuery UI, effect attributes are reduced to a few CSS effects, `p:calendar` is
   deprecated in favor of `p:datePicker`).
@@ -158,6 +158,8 @@ Overriding (application CSS is unlayered and always wins):
   uses it (the theme resource), not the one that declares it.
 - Directional icons are mirrored in RTL (`scale: -1 1`), so one icon per direction is enough.
 - A complete other icon set is a CSS file with all `--p-icon-*` tokens, included after the theme.
+- Planned: semantic icon classes in the markup with the same names as the tokens (`.p-panel-close-icon`), for full
+  control per icon via CSS (see "Planned (PrimeFaces core)").
 - In the source, `url("lucide-static/icons/x.svg")` refers to the npm package and is inlined by `tools/build.mjs`;
   `?fill` fills an outline icon (selected rating star).
 
@@ -248,11 +250,31 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
 
 The theming is done without changing the markup of the components. These steps follow in the core:
 
-**Icons**
+**Icons** ([primefaces/primefaces#15278](https://github.com/primefaces/primefaces/issues/15278))
 - Today the theme picks the icon from the legacy jQuery UI classes the renderers emit (`ui-icon-triangle-1-e` /
-  `-1-s`, `ui-icon-closethick`, ...). Renderers will emit neutral markup without icon library classes, and the widgets
-  will only switch the state (`aria-expanded`, `ui-state-active`) instead of swapping icon classes; the CSS selects
-  the icon token by state.
+  `-1-s`, `ui-icon-closethick`, ...). The widgets will only switch the state (`aria-expanded`, `ui-state-active`)
+  instead of swapping icon classes; the CSS selects the icon token by state.
+- Renderers emit semantic icon classes instead, named exactly like the icon tokens without `--`: a generic class, the
+  meaning and the component specific one.
+  ```html
+  <span class="p-icon p-close-icon p-panel-close-icon"></span>
+  ```
+  The theme maps each class to its token once (`.p-panel-close-icon { --p-icon: var(--p-panel-close-icon); }`), so
+  there are two ways to customize, with one naming scheme:
+  ```css
+  /* a different image: tokens (one line, scoped overrides possible, cross the Shadow DOM) */
+  :root { --p-icon-close: url("/myapp/icons/close.svg"); }          /* every close icon */
+  :root { --p-panel-close-icon: url("/myapp/icons/x.svg"); }        /* panel only */
+
+  /* full control (font icon, size, color of just this icon): the class, application CSS is unlayered and wins */
+  .p-panel-close-icon::before {
+      mask: none;
+      background: none;
+      content: "\f00d";
+      font-family: "Font Awesome 6 Free";
+  }
+  ```
+  The icon classes are new, so they start as `p-*` right away (no `ui-*` → `p-*` migration for them).
 - JSF attributes for icons the component draws itself are removed (breaking, no deprecation phase), they are
   configured with the icon tokens only:
   - remove: `breadCrumb homeIcon`, `chip removeIcon`, `datePicker triggerButtonIcon`, `galleria closeIcon`,
