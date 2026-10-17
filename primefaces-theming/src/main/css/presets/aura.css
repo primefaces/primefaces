@@ -3300,6 +3300,22 @@
         --p-tag-contrast-color: light-dark(var(--p-surface-0), var(--p-surface-950));
         --p-tag-help-background: light-dark(var(--p-purple-100), color-mix(in srgb, var(--p-purple-500), transparent 84%));
         --p-tag-help-color: light-dark(var(--p-purple-700), var(--p-purple-300));
+        --p-tag-outlined-background: transparent;
+        --p-tag-outlined-border-width: 1px;
+        --p-tag-outlined-primary-color: var(--p-tag-primary-color);
+        --p-tag-outlined-primary-border-color: var(--p-tag-primary-color);
+        --p-tag-outlined-secondary-color: var(--p-tag-secondary-color);
+        --p-tag-outlined-secondary-border-color: var(--p-tag-secondary-color);
+        --p-tag-outlined-success-color: var(--p-tag-success-color);
+        --p-tag-outlined-success-border-color: var(--p-tag-success-color);
+        --p-tag-outlined-info-color: var(--p-tag-info-color);
+        --p-tag-outlined-info-border-color: var(--p-tag-info-color);
+        --p-tag-outlined-warn-color: var(--p-tag-warn-color);
+        --p-tag-outlined-warn-border-color: var(--p-tag-warn-color);
+        --p-tag-outlined-danger-color: var(--p-tag-danger-color);
+        --p-tag-outlined-danger-border-color: var(--p-tag-danger-color);
+        --p-tag-outlined-help-color: var(--p-tag-help-color);
+        --p-tag-outlined-help-border-color: var(--p-tag-help-color);
     }
 
     /* tagcloud */
