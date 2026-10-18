@@ -47,33 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class Theming011Test extends AbstractThemingTest {
 
-    /**
-     * Lowest contrast between the text color of arguments[0] and the color stops of the background layers of arguments[1]
-     * (or its pseudo element arguments[2]) behind the text: no url() textures, no border-box edge layers.
-     */
-    private static final String MIN_CONTRAST_SCRIPT = ""
-            + "var text = arguments[0], el = arguments[1], pseudo = arguments[2];"
-            + "var ctx = document.createElement('canvas').getContext('2d');"
-            + "var rgba = function(c) { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = c; ctx.fillRect(0, 0, 1, 1);"
-            + "  var d = ctx.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2]]; };"
-            + "var lum = function(c) { var f = function(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };"
-            + "  return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };"
-            + "var split = function(v) { var out = [], depth = 0, cur = ''; for (var i = 0; i < v.length; i++) { var ch = v[i];"
-            + "  if (ch === '(') { depth++; } if (ch === ')') { depth--; } if (ch === ',' && depth === 0) { out.push(cur); cur = ''; } else { cur += ch; } }"
-            + "  out.push(cur); return out; };"
-            + "var bcs = getComputedStyle(el, pseudo); var layers = split(bcs.backgroundImage);"
-            + "var clips = bcs.backgroundClip.split(',').map(function(x) { return x.trim(); });"
-            + "var stops = [];"
-            + "layers.forEach(function(l, i) {"
-            + "  if (/^\\s*(url\\(|none)/.test(l)) { return; }"
-            + "  if (layers.length > 1 && (clips[i % clips.length] || 'border-box') === 'border-box') { return; }"
-            + "  (l.match(/(?:rgba?|oklch|oklab|lab|lch|color)\\([^()]*\\)/g) || []).forEach(function(s) { stops.push(rgba(s)); });"
-            + "});"
-            + "if (!stops.length) { stops.push(rgba(bcs.backgroundColor)); }"
-            + "var fg = lum(rgba(getComputedStyle(text).color));"
-            + "return Math.min.apply(null, stops.map(function(s) { var b = lum(s);"
-            + "  return (Math.max(fg, b) + 0.05) / (Math.min(fg, b) + 0.05); }));";
-
     @Test
     @Order(1)
     @DisplayName("Theming: Metal preset renders metal.css (?theme=metal)")
@@ -157,11 +130,6 @@ class Theming011Test extends AbstractThemingTest {
         assertEquals("none", computedStyle(page.primary.findElement(By.cssSelector(".ui-button-text")), "text-shadow"));
         assertEquals("none", computedStyle(page.toggleSwitch.findElement(By.cssSelector(".ui-toggleswitch-handler")), "box-shadow"));
         assertNoJavascriptErrors();
-    }
-
-    private static double minContrast(WebElement text, WebElement background, String pseudo) {
-        Number ratio = PrimeSelenium.executeScript(MIN_CONTRAST_SCRIPT, text, background, pseudo);
-        return Math.round(ratio.doubleValue() * 100) / 100.0;
     }
 
     public static class MetalPage extends AbstractPrimePage {

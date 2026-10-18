@@ -437,6 +437,11 @@
         --p-scrollbar-width: thin;
         --p-scrollbar-thumb-color: light-dark(var(--p-surface-400), var(--p-surface-500));
         --p-scrollbar-track-color: transparent;
+        --p-document-background: transparent;
+        --p-overlay-backdrop-filter: none;
+        --p-navigation-backdrop-filter: none;
+        --p-button-backdrop-filter: none;
+        --p-mask-backdrop-filter: none;
     }
 
     /* accordion */

@@ -10,6 +10,7 @@ Four presets are available:
 - **Lara**
 - **Nora**
 - **Metal**: graphite and brushed aluminium (light), black metal (dark), an orange focus ring
+- **Glass**: Apple Liquid Glass style, translucent overlays, menus, bars and buttons over a calm content layer
 
 Aura, Lara and Nora started from [PrimeUIX](https://github.com/primefaces/primeuix) (the theming of PrimeReact / PrimeVue),
 so the token names follow the same convention. They are maintained for PrimeFaces and are not kept in sync with PrimeUIX.
@@ -36,7 +37,7 @@ and select a preset with the `primefaces.THEME` context parameter:
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | library:name -->
+    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | glass | library:name -->
 </context-param>
 ```
 
@@ -279,7 +280,7 @@ with `library:name`:
 ```
 
 The file is rendered after `components.css` instead of a preset. Start from a copy of a preset
-(`aura.css`, `lara.css`, `nora.css` or `metal.css` of the `primefaces-theming` jar) or from the CSS of the Theme Designer.
+(`aura.css`, `lara.css`, `nora.css`, `metal.css` or `glass.css` of the `primefaces-theming` jar) or from the CSS of the Theme Designer.
 
 For small changes a custom theme is not needed: override the tokens in the CSS of your application on top of a preset.
 
@@ -298,6 +299,15 @@ progressBar, slider knob) also accept gradients and several layers. These tokens
 | `--p-button-label-shadow`, `--p-button-outlined-label-shadow` | text shadow of the label (engraved look) |
 | `--p-button-outlined-background` | background of outlined buttons (transparent by default) |
 | `--p-toggleswitch-handle-shadow` | shadow of the toggleSwitch knob |
+| `--p-document-background` | page background (`<html>`), e.g. a wallpaper behind glass |
+| `--p-overlay-backdrop-filter` | `backdrop-filter` of overlays (dialogs, popovers, dropdowns, menus, tooltips, growl) |
+| `--p-navigation-backdrop-filter` | `backdrop-filter` of the toolbar |
+| `--p-button-backdrop-filter` | `backdrop-filter` of buttons |
+| `--p-mask-backdrop-filter` | `backdrop-filter` of the modal mask |
+
+The **Glass** preset uses the backdrop tokens with translucent backgrounds (`blur(30px) saturate(180%)` for overlays).
+Content containers deliberately get no backdrop filter: it would make them the containing block of overlays inside
+them.
 
 Two techniques the Metal preset uses:
 

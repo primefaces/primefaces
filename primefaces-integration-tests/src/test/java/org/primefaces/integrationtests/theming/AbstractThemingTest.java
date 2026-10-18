@@ -87,6 +87,44 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
             + "return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];";
 
     /**
+     * Lowest contrast between the text color of arguments[0] and the color stops of the background of arguments[1] (or
+     * its pseudo element arguments[2]) behind the text: gradient stops and the background color, no url() textures; when a
+     * layer is clipped to the padding box, the border-box layers are edges (Metal) and skipped. Translucent stops (Glass)
+     * are blended over the background color of the element, then over the next opaque ancestor (or the page).
+     */
+    private static final String MIN_CONTRAST_SCRIPT = ""
+            + "var text = arguments[0], el = arguments[1], pseudo = arguments[2];"
+            + "var ctx = document.createElement('canvas').getContext('2d');"
+            + "var rgba = function(c) { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = c; ctx.fillRect(0, 0, 1, 1);"
+            + "  var d = ctx.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2], d[3] / 255]; };"
+            + "var over = function(top, bottom) { return [0, 1, 2].map(function(i) { return top[i] * top[3] + bottom[i] * (1 - top[3]); }).concat(1); };"
+            + "var lum = function(c) { var f = function(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };"
+            + "  return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };"
+            + "var split = function(v) { var out = [], depth = 0, cur = ''; for (var i = 0; i < v.length; i++) { var ch = v[i];"
+            + "  if (ch === '(') { depth++; } if (ch === ')') { depth--; } if (ch === ',' && depth === 0) { out.push(cur); cur = ''; } else { cur += ch; } }"
+            + "  out.push(cur); return out; };"
+            // the opaque base behind the element: the next ancestor with an opaque background color, else the page
+            + "var base = null;"
+            + "for (var a = el.parentElement; a && !base; a = a.parentElement) {"
+            + "  var c = rgba(getComputedStyle(a).backgroundColor); if (c[3] >= 1) { base = c; } }"
+            + "if (!base) { var h = rgba(getComputedStyle(document.documentElement).backgroundColor);"
+            + "  base = h[3] > 0 ? over(h, [255, 255, 255, 1]) : [255, 255, 255, 1]; }"
+            + "var bcs = getComputedStyle(el, pseudo); var layers = split(bcs.backgroundImage);"
+            + "var clips = bcs.backgroundClip.split(',').map(function(x) { return x.trim(); });"
+            + "var edges = clips.indexOf('padding-box') >= 0;"
+            + "var under = over(rgba(bcs.backgroundColor), base);"
+            + "var stops = [];"
+            + "layers.forEach(function(l, i) {"
+            + "  if (/^\\s*(url\\(|none)/.test(l)) { return; }"
+            + "  if (edges && (clips[i % clips.length] || 'border-box') === 'border-box') { return; }"
+            + "  (l.match(/(?:rgba?|oklch|oklab|lab|lch|color)\\([^()]*\\)/g) || []).forEach(function(s) { stops.push(over(rgba(s), under)); });"
+            + "});"
+            + "if (!stops.length) { stops.push(under); }"
+            + "var fg = lum(rgba(getComputedStyle(text).color));"
+            + "return Math.min.apply(null, stops.map(function(s) { var b = lum(s);"
+            + "  return (Math.max(fg, b) + 0.05) / (Math.min(fg, b) + 0.05); }));";
+
+    /**
      * Asserts that the computed property of the element equals the resolved value of the token, and that the element really
      * takes the property from the token (a sentinel value of the token shows up in the property).
      *
@@ -186,6 +224,15 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
 
     protected void removeApplicationStyle(String id) {
         PrimeSelenium.executeScript("var s = document.getElementById(arguments[0]); if (s) { s.remove(); }", id);
+    }
+
+    /**
+     * @return the lowest contrast (WCAG ratio, 2 decimals) between the text color of {@code text} and the color stops of
+     *         the background of {@code background} (or its pseudo element) behind the text
+     */
+    protected static double minContrast(WebElement text, WebElement background, String pseudo) {
+        Number ratio = PrimeSelenium.executeScript(MIN_CONTRAST_SCRIPT, text, background, pseudo);
+        return Math.round(ratio.doubleValue() * 100) / 100.0;
     }
 
     /**

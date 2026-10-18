@@ -29,7 +29,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cssDir = path.join(root, 'src', 'main', 'css');
 const outDir = path.join(root, 'target', 'tokens');
 
-const PRESETS = ['aura', 'lara', 'nora', 'metal'];
+const PRESETS = ['aura', 'lara', 'nora', 'metal', 'glass'];
 const ICONS = 'lucide';
 const MODES = ['light', 'dark'];
 const CSS_EXT = 'org.primefaces.css';

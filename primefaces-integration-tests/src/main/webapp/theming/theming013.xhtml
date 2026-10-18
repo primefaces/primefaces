@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <!-- Glass preset (?theme=glass): backdrop filters of the floating layer, page background; without the parameter: aura -->
+        <h:form id="form">
+            <p:toolbar id="toolbar">
+                <p:toolbarGroup>
+                    <p:commandButton id="primary" value="Primary" type="button"/>
+                    <p:commandButton id="secondary" value="Secondary" type="button" styleClass="ui-button-secondary"/>
+                    <p:commandButton id="outlined" value="Outlined" type="button" styleClass="ui-button-outlined"/>
+                    <p:commandButton id="success" value="Success" type="button" styleClass="ui-button-success"/>
+                    <p:commandButton id="danger" value="Danger" type="button" styleClass="ui-button-danger"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:menubar id="menubar">
+                <p:submenu label="File">
+                    <p:menuitem value="Open" url="#"/>
+                </p:submenu>
+            </p:menubar>
+
+            <p:panel id="panel" header="Panel">Content</p:panel>
+
+            <p:dialog id="dialog" widgetVar="dialog" header="Dialog" modal="true" visible="true">
+                Dialog content
+            </p:dialog>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

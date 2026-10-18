@@ -71,7 +71,8 @@ class Theming012Test extends AbstractThemingTest {
         "aura, light", "aura, dark",
         "lara, light", "lara, dark",
         "nora, light", "nora, dark",
-        "metal, light", "metal, dark"
+        "metal, light", "metal, dark",
+        "glass, light", "glass, dark"
     })
     void snapshot(String preset, String scheme) throws IOException {
         // Arrange

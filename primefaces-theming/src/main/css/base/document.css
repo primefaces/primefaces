@@ -41,6 +41,14 @@
     }
 }
 
+/*
+ * Page background: transparent in most presets (the page keeps its own background), a wallpaper in translucent presets
+ * (Glass), which need something colorful behind their glass. Application CSS (unlayered) wins.
+ */
+:root {
+    background: var(--p-document-background);
+}
+
 @media print {
     :root {
         color-scheme: light;

@@ -36,7 +36,7 @@ Each breaking core change gets its entry in the migration guide (`docs/migration
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | mylib:mytheme.css -->
+    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | glass | mylib:mytheme.css -->
 </context-param>
 ```
 
@@ -84,6 +84,7 @@ src/main/css/
   presets/lara.css            tokens and the PrimeFaces tokens (components/parts PrimeUIX does not have) side by side
   presets/nora.css
   presets/metal.css         own preset (graphite / brushed aluminium, black metal in dark mode), started from Aura
+  presets/glass.css         own preset (Apple Liquid Glass style), started from Aura
   density/<preset>.css      compact / comfortable spacing of a preset (generated)
   icons/lucide.css          the icon set: one --p-icon-* token per meaning (close, expanded, sort-asc, ...)
   base/*.css                ui-widget, ui-state-*, core helpers, grid (ui-g), jquery-ui helpers
@@ -264,7 +265,7 @@ values, color swatches and icon previews).
 ## Tests
 
 `primefaces-integration-tests`, package `org.primefaces.integrationtests.theming` (views under `/theming/` use aura,
-`?theme=lara|nora|metal` another preset):
+`?theme=lara|nora|metal|glass` another preset):
 rendered resources (also after ajax), component styles equal their resolved tokens (light and dark), overrides (primary
 color incl. contrast color and its light / dark threshold, icons, density), every icon has a mask, variants, float labels
 (incl. selectCheckboxMenu), motion tokens and reduced motion, `:focus-visible` of menu items, RTL, Metal (layers, 4.5:1
@@ -310,6 +311,26 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
     subtle tint instead.
   - Contrast: interactive edges >= 3:1 (WCAG 1.4.11), placeholder / muted text >= 4.5:1, selected vs. unselected
     (graphite vs. aluminium) clearly distinct.
+- **Glass** (`presets/glass.css`, not a PrimeUIX preset): Apple Liquid Glass style.
+  - Layers like the Apple HIG: the content layer (cards, panels, tables, accordion) is an almost opaque surface
+    (72%), the floating controls layer is glass: overlays, dialogs, menus, tooltips, growl, the toolbar and buttons blur
+    and saturate what lies behind them (`backdrop-filter`), with a light rim and a specular highlight on top. The modal
+    mask blurs the page.
+  - PrimeFaces tokens for it (neutral in the other presets): `--p-document-background` (page background, Glass: a soft
+    wallpaper, glass needs something colorful behind it), `--p-overlay-backdrop-filter`,
+    `--p-navigation-backdrop-filter` (toolbar), `--p-button-backdrop-filter`, `--p-mask-backdrop-filter`; applied in
+    `shared/backdrop.css` with zero specificity.
+  - No backdrop filter on content containers: it makes the element the containing block of its absolutely / fixed
+    positioned descendants (overlays inside it would be positioned wrong). Not on the menubar either: an element with a
+    backdrop filter is the backdrop root of its descendants, its submenus would only blur what lies inside the bar.
+    Nested overlays have the same limit, so the overlay backgrounds stay mostly opaque (86% light, 80% dark).
+  - Apple system colors: the accessible variants in light mode (white text >= 4.5:1: blue #0071e3, green #1f7a35,
+    orange #c93400, red #d70015, purple #8944ab, teal #0071a4), the bright ones for text in dark mode; Apple label /
+    separator grays, system font stack.
+  - Controls: capsule buttons (neutral glass, tinted glass for primary / severities), iOS switch (accessible green,
+    the off track has a border >= 3:1), segmented control for select buttons, iOS slider knob, macOS checkbox.
+  - `backdrop-filter` costs GPU time; large blurred areas that move (scrolling under a sticky glass bar) are the
+    expensive case.
 
 ## Known limitations
 
