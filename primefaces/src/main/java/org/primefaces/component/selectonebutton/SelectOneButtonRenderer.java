@@ -305,6 +305,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
 
         encodeClientBehaviors(context, component);
 
+        wb.callback("confirmation", "function()", component.getConfirmationScript());
         wb.finish();
     }
 

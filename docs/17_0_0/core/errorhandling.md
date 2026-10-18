@@ -52,8 +52,17 @@ both for `p:ajax` and `f:ajax`:
 A `p:ajaxExceptionHandler` can therefore be registered for exactly this kind of error:
 
 ```xhtml
-<p:ajaxExceptionHandler type="httpError" onexception="alert('The server is not reachable: ' + errorMessage);" />
+<p:ajaxExceptionHandler type="httpError" onexception="alert('The server is not reachable: ' + message);" />
 ```
+
+The `onexception` callback receives the following arguments, both for errors handled on the client and for exceptions
+handled by the server-side `PrimeExceptionHandler`:
+
+| Argument | Description |
+|---|---|
+| `type` | The error name, e.g. the exception type or `httpError`. |
+| `message` | The error message. |
+| `timestamp` | The timestamp of the error, formatted as `yyyy-MM-dd HH:mm:ss`. |
 
 A failed request of a `p:ajaxExceptionHandler` itself (e.g. its `update` while the server is still not reachable) is not
 handled again, to avoid an endless loop.

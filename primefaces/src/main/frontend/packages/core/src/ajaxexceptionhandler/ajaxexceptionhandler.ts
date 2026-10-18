@@ -53,6 +53,8 @@ export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExce
      * @param errorMessage The error message.
      */
     handle(errorName: string, errorMessage: string): void {
+        const timestamp = this.formatTimestamp(new Date());
+
         if (this.cfg.update) {
             const options: PrimeType.ajax.Configuration = {
                 source: this.getId(),
@@ -64,15 +66,27 @@ export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExce
                 skipErrorHandling: true,
                 oncomplete: () => {
                     if (this.cfg.onexception) {
-                        this.cfg.onexception.call(this, errorName, errorMessage);
+                        this.cfg.onexception.call(this, errorName, errorMessage, timestamp);
                     }
                 }
             };
             ajax.Request.handle(options);
         }
         else if (this.cfg.onexception) {
-            this.cfg.onexception.call(this, errorName, errorMessage);
+            this.cfg.onexception.call(this, errorName, errorMessage, timestamp);
         }
+    }
+
+    /**
+     * Formats the passed date like the server side `p:ajaxExceptionHandler` (`yyyy-MM-dd HH:mm:ss`).
+     * @param date The date to format.
+     * @returns The formatted date.
+     */
+    formatTimestamp(date: Date): string {
+        const pad = (value: number): string => String(value).padStart(2, '0');
+
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
+            + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
     }
 
     /**

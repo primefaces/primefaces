@@ -114,3 +114,23 @@ the list of structural style classes;
 .ui-selectonebutton | Main container element.
 .ui-button | Container element of an option.
 .ui-button-text | Visible label element of an option.
+
+## Confirmation
+
+Attach `p:confirm` to ask before changing the value. Cancelling leaves the selection unchanged and does not send the change AJAX request. Confirming applies the selection and then runs the change listener. Both mouse and keyboard interactions support confirmation.
+
+```xhtml
+<p:selectOneButton value="#{bean.value}">
+    <f:selectItem itemLabel="A" itemValue="A" />
+    <f:selectItem itemLabel="B" itemValue="B" />
+    <p:ajax listener="#{bean.onChange}" update="messages" />
+    <p:confirm message="Apply this change?" />
+</p:selectOneButton>
+
+<p:confirmDialog global="true">
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+</p:confirmDialog>
+```
+
+For a confirmation popup, use `type="popup"` on `p:confirm` and a global `p:confirmPopup` with `ui-confirm-popup-yes` and `ui-confirm-popup-no` buttons.

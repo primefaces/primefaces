@@ -13,7 +13,7 @@
 
 		<!-- GitHub #15225: a connection error must reach the *global* p:ajaxExceptionHandler -->
 		<p:ajaxExceptionHandler
-			onexception="$('#exceptionName').text(errorName); $('#exceptionMessage').text(errorMessage);" />
+			onexception="$('#exceptionName').text(type); $('#exceptionMessage').text(message);" />
 
 		<div>Name: <span id="exceptionName"></span></div>
 		<div>Message: <span id="exceptionMessage"></span></div>

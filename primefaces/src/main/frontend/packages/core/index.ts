@@ -2069,10 +2069,11 @@ declare global {
          */
         export type OnExceptionCallback =
             /**
-             * @param errorName Name of the AJAX error.
-             * @param errorMessage Message with details regarding the AJAX error.
+             * @param type Name of the AJAX error, e.g. the exception type or `httpError`.
+             * @param message Message with details regarding the AJAX error.
+             * @param timestamp Timestamp of the AJAX error, formatted as `yyyy-MM-dd HH:mm:ss`.
              */
-            (this: AjaxExceptionHandler, errorName: string, errorMessage: string) => void;
+            (this: AjaxExceptionHandler, type: string, message: string, timestamp: string) => void;
     }
 }
 
