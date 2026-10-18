@@ -25,8 +25,8 @@
     --font-family: var(--p-typography-font-family, "Inter var", Inter, ui-sans-serif, system-ui, sans-serif);
 }
 
-/* the page background of the preset (a wallpaper in Glass, transparent in the others) over the ground color */
-html body {
+/* Glass paints its wallpaper (the page background of the preset) instead of the grid pattern and glow of the layout */
+html[data-preset="glass"] body {
     background: var(--p-document-background);
     background-color: var(--surface-ground);
 }

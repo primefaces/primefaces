@@ -8,7 +8,8 @@
  * is a soft wallpaper, glass needs something colorful behind it; applications usually set their own page background.
  * Colors: Apple system colors, the accessible variants on light backgrounds (white text >= 4.5:1), the bright ones in
  * dark mode. Controls: capsule buttons, iOS switches, segmented control, system font stack.
- * Primary color: Apple blue; :root { --p-primary-base: ... } changes the palette like in the other presets.
+ * Primary color: Apple blue (#0071e3); :root { --p-primary-base: ... } changes it everywhere like in the other presets
+ * (the primary, focus ring, highlight and primary button tokens are shades of the base).
  */
 @layer primefaces.tokens {
     :root {
@@ -274,9 +275,9 @@
         --p-transition-duration: 0.2s;
         --p-focus-ring-width: 2px;
         --p-focus-ring-style: solid;
-        --p-focus-ring-color: light-dark(#0066cc, #0a84ff);
+        --p-focus-ring-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 7%), oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h));
         --p-focus-ring-offset: 2px;
-        --p-focus-ring-shadow: 0 0 0 5px light-dark(rgb(0 113 227 / 0.18), rgb(10 132 255 / 0.28));
+        --p-focus-ring-shadow: 0 0 0 5px light-dark(color-mix(in srgb, var(--p-primary-base) 18%, transparent), color-mix(in srgb, oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h) 28%, transparent));
         --p-disabled-opacity: 0.6;
         --p-icon-size: 0.875rem;
         --p-primary-base: #0071e3;
@@ -291,10 +292,10 @@
         --p-primary-800: color-mix(in oklch, var(--p-primary-base), black 50%);
         --p-primary-900: color-mix(in oklch, var(--p-primary-base), black 62%);
         --p-primary-950: color-mix(in oklch, var(--p-primary-base), black 76%);
-        --p-primary-color: light-dark(#0066cc, #0a84ff);
+        --p-primary-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 7%), oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h));
         --p-primary-contrast-color: light-dark(oklch(from var(--p-primary-color) clamp(0.21, (0.75 - l) * 1000, 1) 0 0), oklch(from var(--p-primary-color) clamp(0.21, (0.6 - l) * 1000, 1) 0 0));
-        --p-primary-hover-color: light-dark(#0058b0, #409cff);
-        --p-primary-active-color: light-dark(#004a94, #64b0ff);
+        --p-primary-hover-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 17%), oklch(from var(--p-primary-base) calc(l + 0.123) calc(c * 0.879) h));
+        --p-primary-active-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 27%), oklch(from var(--p-primary-base) calc(l + 0.179) calc(c * 0.713) h));
         --p-form-field-font-weight: var(--p-typography-font-weight);
         --p-form-field-font-size: var(--p-typography-font-size);
         --p-form-field-padding-x: 0.625rem;
@@ -419,10 +420,10 @@
         --p-surface-800: #2c2c2e;
         --p-surface-900: #1c1c1e;
         --p-surface-950: #000000;
-        --p-highlight-background: light-dark(rgb(0 113 227 / 0.12), rgb(10 132 255 / 0.24));
-        --p-highlight-focus-background: light-dark(rgb(0 113 227 / 0.18), rgb(10 132 255 / 0.32));
-        --p-highlight-color: light-dark(#0058b0, #8cc4ff);
-        --p-highlight-focus-color: light-dark(#004a94, #a6d1ff);
+        --p-highlight-background: light-dark(color-mix(in srgb, var(--p-primary-base) 12%, transparent), color-mix(in srgb, oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h) 24%, transparent));
+        --p-highlight-focus-background: light-dark(color-mix(in srgb, var(--p-primary-base) 18%, transparent), color-mix(in srgb, oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h) 32%, transparent));
+        --p-highlight-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 17%), oklch(from var(--p-primary-base) calc(l + 0.241) calc(c * 0.53) h));
+        --p-highlight-focus-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 27%), oklch(from var(--p-primary-base) calc(l + 0.283) calc(c * 0.409) h));
         --p-text-color: light-dark(#1d1d1f, #f5f5f7);
         --p-text-hover-color: light-dark(#1d1d1f, #f5f5f7);
         --p-text-muted-color: light-dark(#6e6e73, #98989d);
@@ -720,15 +721,15 @@
         --p-button-focus-ring-offset: var(--p-focus-ring-offset);
         --p-button-badge-size: 1rem;
         --p-button-transition-duration: var(--p-form-field-transition-duration);
-        --p-button-primary-background: #0071e3;
-        --p-button-primary-hover-background: #0066cc;
-        --p-button-primary-active-background: #0058b0;
+        --p-button-primary-background: var(--p-primary-base);
+        --p-button-primary-hover-background: color-mix(in oklch, var(--p-primary-base), black 7%);
+        --p-button-primary-active-background: color-mix(in oklch, var(--p-primary-base), black 17%);
         --p-button-primary-border-color: transparent;
         --p-button-primary-hover-border-color: transparent;
         --p-button-primary-active-border-color: transparent;
-        --p-button-primary-color: #ffffff;
-        --p-button-primary-hover-color: #ffffff;
-        --p-button-primary-active-color: #ffffff;
+        --p-button-primary-color: oklch(from var(--p-primary-base) clamp(0.21, (0.75 - l) * 1000, 1) 0 0);
+        --p-button-primary-hover-color: oklch(from var(--p-primary-base) clamp(0.21, (0.75 - l) * 1000, 1) 0 0);
+        --p-button-primary-active-color: oklch(from var(--p-primary-base) clamp(0.21, (0.75 - l) * 1000, 1) 0 0);
         --p-button-primary-focus-ring-color: var(--p-primary-color);
         --p-button-primary-focus-ring-shadow: none;
         --p-button-secondary-background: linear-gradient(180deg, light-dark(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.12)), rgb(255 255 255 / 0) 55%), light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.1));
@@ -808,10 +809,10 @@
         --p-button-contrast-active-color: light-dark(var(--p-surface-0), var(--p-surface-950));
         --p-button-contrast-focus-ring-color: light-dark(var(--p-surface-950), var(--p-surface-0));
         --p-button-contrast-focus-ring-shadow: none;
-        --p-button-outlined-primary-hover-background: light-dark(rgb(0 113 227 / 0.08), rgb(10 132 255 / 0.14));
-        --p-button-outlined-primary-active-background: light-dark(rgb(0 113 227 / 0.14), rgb(10 132 255 / 0.2));
+        --p-button-outlined-primary-hover-background: light-dark(color-mix(in srgb, var(--p-primary-base) 8%, transparent), color-mix(in srgb, oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h) 14%, transparent));
+        --p-button-outlined-primary-active-background: light-dark(color-mix(in srgb, var(--p-primary-base) 14%, transparent), color-mix(in srgb, oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h) 20%, transparent));
         --p-button-outlined-primary-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
-        --p-button-outlined-primary-color: light-dark(#0066cc, #64b0ff);
+        --p-button-outlined-primary-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 7%), oklch(from var(--p-primary-base) calc(l + 0.179) calc(c * 0.713) h));
         --p-button-outlined-secondary-hover-background: light-dark(var(--p-surface-50), rgba(255,255,255,0.04));
         --p-button-outlined-secondary-active-background: light-dark(var(--p-surface-100), rgba(255,255,255,0.16));
         --p-button-outlined-secondary-border-color: light-dark(var(--p-surface-200), var(--p-surface-700));
@@ -846,7 +847,7 @@
         --p-button-outlined-plain-color: light-dark(var(--p-surface-700), var(--p-surface-0));
         --p-button-text-primary-hover-background: light-dark(var(--p-primary-50), color-mix(in srgb, var(--p-primary-color), transparent 96%));
         --p-button-text-primary-active-background: light-dark(var(--p-primary-100), color-mix(in srgb, var(--p-primary-color), transparent 84%));
-        --p-button-text-primary-color: light-dark(#0066cc, #409cff);
+        --p-button-text-primary-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 7%), oklch(from var(--p-primary-base) calc(l + 0.123) calc(c * 0.879) h));
         --p-button-text-secondary-hover-background: light-dark(var(--p-surface-50), var(--p-surface-800));
         --p-button-text-secondary-active-background: light-dark(var(--p-surface-100), var(--p-surface-700));
         --p-button-text-secondary-color: light-dark(var(--p-surface-500), var(--p-surface-400));
