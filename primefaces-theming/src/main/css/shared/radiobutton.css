@@ -147,3 +147,8 @@
     --p-radiobutton-height: var(--p-radiobutton-lg-height);
     --p-radiobutton-icon-size: var(--p-radiobutton-icon-lg-size);
 }
+
+/* checked inside a selection (selected row / item): a rim in the selection text color, see checkbox.css */
+.ui-state-highlight .ui-radiobutton .ui-radiobutton-box.ui-state-active.ui-state-active {
+    border-color: var(--p-highlight-color);
+}

@@ -179,3 +179,12 @@
     --p-checkbox-height: var(--p-checkbox-lg-height);
     --p-checkbox-icon-size: var(--p-checkbox-icon-lg-size);
 }
+
+/*
+ * checked inside a selection (selected row / item, highlight background): the box can have the color of the selection
+ * (Nora: primary, Metal: graphite), a rim in the selection text color keeps it visible. The doubled class wins over the
+ * hover / focus rules above.
+ */
+.ui-state-highlight .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-active {
+    border-color: var(--p-highlight-color);
+}

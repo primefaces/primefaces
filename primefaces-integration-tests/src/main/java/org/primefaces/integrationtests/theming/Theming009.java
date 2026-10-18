@@ -44,6 +44,7 @@ public class Theming009 implements Serializable {
 
     private List<String> cities;
     private boolean checked;
+    private boolean unchecked;
     private List<String> selectedCities;
     private List<String> noCities;
 

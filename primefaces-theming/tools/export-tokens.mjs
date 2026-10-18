@@ -15,7 +15,8 @@
 //   - $type: color (srgb components + hex), dimension (px, rem), duration (ms, s), fontWeight, fontFamily, number,
 //     shadow (single or list, "inset"), strokeStyle. Unitless 0 is a dimension or a duration when the name says so.
 //   - DTCG 2025.10 defines no type for strings, files or multi-value shorthands ("file" is only announced). Those
-//     tokens (icon url()s, padding/margin shorthands, em sizes, inherit/unset/currentColor, ...) keep the CSS as
+//     tokens (icon url()s, padding/margin shorthands, em sizes, inherit/unset/currentColor, gradients and layered
+//     backgrounds of the Metal preset (DTCG gradient has no angle, clip or layers), ...) keep the CSS as
 //     $value without $type and carry the original value in $extensions["org.primefaces.css"]; strict DTCG tools may
 //     ignore them, CSS based tools can use the value as it is.
 //   - $extensions["org.primefaces.density"] = { compact, comfortable }: the value of the token in that density.

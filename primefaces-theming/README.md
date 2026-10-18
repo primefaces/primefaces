@@ -183,7 +183,9 @@ allowed), so new transitions use the tokens.
 - `prefers-reduced-motion`: `--p-transition-duration: 0s`, animations and transitions reduced to a minimum.
 - Native controls of the application (checkbox, radio, range, progress) use the primary color (`accent-color`), text
   selection the highlight colors.
-- Print: light colors, no shadows, scrollable tables print all rows, overlays / growl / paginator hidden.
+- Print: light colors, no shadows, scrollable tables print all rows, overlays / growl / paginator hidden. Small state
+  carrying elements (buttons, badges, tags, chips, checkbox / radio, toggleSwitch, slider, progressBar, selections) print
+  their background (`print-color-adjust: exact`), browsers drop backgrounds but keep the (e.g. white) text color.
 
 - Target size (WCAG 2.2, 24px): the small icon controls (chip / token remove, password toggle, breadcrumb home) get an
   invisible 24px hit area; checkboxes, radios and menu items rely on the spacing exception (as in PrimeUIX).
@@ -261,10 +263,18 @@ values, color swatches and icon previews).
 
 ## Tests
 
-`primefaces-integration-tests`, package `org.primefaces.integrationtests.theming` (views under `/theming/` use aura):
+`primefaces-integration-tests`, package `org.primefaces.integrationtests.theming` (views under `/theming/` use aura,
+`?theme=lara|nora|metal` another preset):
 rendered resources (also after ajax), component styles equal their resolved tokens (light and dark), overrides (primary
 color incl. contrast color and its light / dark threshold, icons, density), every icon has a mask, variants, float labels
-(incl. selectCheckboxMenu), motion tokens and reduced motion, `:focus-visible` of menu items, RTL.
+(incl. selectCheckboxMenu), motion tokens and reduced motion, `:focus-visible` of menu items, RTL, Metal (layers, 4.5:1
+text contrast on every gradient stop).
+
+Visual regression (`Theming012Test`): a fixed set of components is captured per preset and color scheme and compared
+with the reference images in `primefaces-integration-tests/src/test/resources/theming-baselines/<os>/` (font rendering
+differs per OS; a missing reference is created and the test skipped, review and commit it). On a difference the actual
+and a diff image (changed pixels red) are written to `target/theming-screenshots`; to accept an intended change delete
+the reference and run the test again.
 ```bash
 mvn verify -f primefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,mojarra-4.0 "-Dit.test=Theming*Test"
 ```
@@ -308,6 +318,10 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
 - Canvas based components (chart, knob) take colors from JS options, not from CSS.
 - Requires `light-dark()`, `color-mix()`, relative colors (`oklch(from ...)`), `:has()` and container queries
   (Chrome 123, Firefox 128, Safari 18).
+- Contrast of the primary color (Aura, Lara, Nora, like PrimeUIX / PrimeReact): white text on the default primary
+  (emerald-500, Nora emerald-600) and primary colored text on white (links, active tab / step) reach ~2.5:1 (Nora
+  ~3.9:1), below WCAG AA (4.5:1). Kept on purpose to stay close to PrimeReact. Applications that need AA use a darker
+  primary in light mode, e.g. `:root { --p-primary-base: var(--p-emerald-700); }`. Metal (graphite) meets AA.
 - The high contrast mode handling is not verified on Windows yet.
 - Size: `components.css` is ~540 KB minified (~77 KB gzip) plus ~24 KB gzip per preset. About 100 KB are third-party
   CSS (Quill, vis-timeline, FullCalendar, Coloris, jsPlumb, Cropper; jQuery UI only ~6 KB), the rest are the ~120

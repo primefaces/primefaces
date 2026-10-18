@@ -53,6 +53,25 @@
         text-shadow: none !important;
     }
 
+    /*
+     * Browsers drop backgrounds when printing (unless the user enables background graphics) but keep the text color:
+     * white text on a primary button would vanish, checked boxes / switches / selections would lose their state. These
+     * small elements print their background (inherited by their parts); large areas stay ink saving.
+     */
+    .ui-button,
+    .ui-badge,
+    .ui-tag,
+    .ui-chip,
+    .ui-chkbox-box,
+    .ui-radiobutton-box,
+    .ui-toggleswitch,
+    .ui-slider,
+    .ui-progressbar,
+    .ui-state-highlight,
+    .ui-state-active {
+        print-color-adjust: exact;
+    }
+
     /* scrollable tables print all rows */
     .ui-datatable-scrollable-body,
     .ui-treetable-scrollable-body,

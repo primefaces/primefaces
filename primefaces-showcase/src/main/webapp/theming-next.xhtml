@@ -9,6 +9,33 @@
     <ui:param name="severities" value="#{['primary', 'secondary', 'info', 'success', 'warning', 'help', 'danger', 'contrast']}"/>
     <h:form id="form">
         <div class="demo-card">
+            <h2>Presets</h2>
+            <div class="demo-grid">
+                <div>
+                    <h3>Aura</h3>
+                    <p class="muted">Soft and modern, the PrimeReact / PrimeVue default (PrimeUIX Aura).</p>
+                    <p:linkButton value="Use Aura" href="?theme=aura" styleClass="#{theme eq 'aura' ? '' : 'ui-button-outlined'}"/>
+                </div>
+                <div>
+                    <h3>Lara</h3>
+                    <p class="muted">Classic PrimeFaces look with stronger borders (PrimeUIX Lara).</p>
+                    <p:linkButton value="Use Lara" href="?theme=lara" styleClass="#{theme eq 'lara' ? '' : 'ui-button-outlined'}"/>
+                </div>
+                <div>
+                    <h3>Nora</h3>
+                    <p class="muted">Compact and angular, solid selections for enterprise apps (PrimeUIX Nora).</p>
+                    <p:linkButton value="Use Nora" href="?theme=nora" styleClass="#{theme eq 'nora' ? '' : 'ui-button-outlined'}"/>
+                </div>
+                <div>
+                    <h3>Metal</h3>
+                    <p class="muted">Graphite and brushed aluminium (light), black metal (dark): metal edges, turned knobs,
+                        anodized severities, an orange focus ring. Tokens only.</p>
+                    <p:linkButton value="Use Metal" href="?theme=metal" styleClass="#{theme eq 'metal' ? '' : 'ui-button-outlined'}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
             <h2>Button</h2>
 
             <h3>Severities</h3>

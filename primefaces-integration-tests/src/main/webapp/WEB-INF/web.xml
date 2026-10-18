@@ -24,8 +24,8 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <!-- token based theme (primefaces-theming) only for the views under /theming/ (aura, ?theme=metal), all other views keep the theme of the profile -->
-        <param-value>#{view.viewId.startsWith('/theming/') ? (param.theme eq 'metal' ? 'metal' : 'aura') : '${primefaces.THEME}'}</param-value>
+        <!-- token based theme (primefaces-theming) only for the views under /theming/ (aura, ?theme=lara / nora / metal), all other views keep the theme of the profile -->
+        <param-value>#{view.viewId.startsWith('/theming/') ? (param.theme eq 'lara' or param.theme eq 'nora' or param.theme eq 'metal' ? param.theme : 'aura') : '${primefaces.THEME}'}</param-value>
     </context-param>
     <context-param>
         <param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
