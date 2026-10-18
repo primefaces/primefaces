@@ -26,17 +26,13 @@ package org.primefaces.integrationtests.theming;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WrapsDriver;
 import org.openqa.selenium.chromium.HasCdp;
 import org.openqa.selenium.support.FindBy;
 
@@ -109,7 +105,7 @@ class Theming008Test extends AbstractThemingTest {
 
         try {
             // Act
-            emulateReducedMotion(cdp, true);
+            emulateMediaFeature(cdp, "prefers-reduced-motion", "reduce");
             Assumptions.assumeTrue(PrimeSelenium.<Boolean> executeScript("return matchMedia('(prefers-reduced-motion: reduce)').matches;"),
                     "prefers-reduced-motion emulation is not active");
 
@@ -121,7 +117,7 @@ class Theming008Test extends AbstractThemingTest {
             assertTrue(seconds < 0.001, "transform transition is not reduced: " + transition.get(1));
         }
         finally {
-            emulateReducedMotion(cdp, false);
+            emulateMediaFeature(cdp, "prefers-reduced-motion", null);
         }
 
         // Assert: back to normal
@@ -130,20 +126,6 @@ class Theming008Test extends AbstractThemingTest {
         assertNoJavascriptErrors();
     }
 
-    private static HasCdp cdp() {
-        WebDriver driver = PrimeSelenium.getWebDriver();
-        while (!(driver instanceof HasCdp) && driver instanceof WrapsDriver) {
-            driver = ((WrapsDriver) driver).getWrappedDriver();
-        }
-        return driver instanceof HasCdp ? (HasCdp) driver : null;
-    }
-
-    private static void emulateReducedMotion(HasCdp cdp, boolean reduce) {
-        List<Map<String, Object>> features = reduce
-                ? List.of(Map.of("name", "prefers-reduced-motion", "value", "reduce"))
-                : Collections.emptyList();
-        cdp.executeCdpCommand("Emulation.setEmulatedMedia", Map.of("features", features));
-    }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(css = "[id='form:toggleSwitch'] .ui-toggleswitch-handler")

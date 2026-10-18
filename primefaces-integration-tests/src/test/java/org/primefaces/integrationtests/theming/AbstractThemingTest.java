@@ -26,9 +26,14 @@ package org.primefaces.integrationtests.theming;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WrapsDriver;
+import org.openqa.selenium.chromium.HasCdp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -181,5 +186,26 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
 
     protected void removeApplicationStyle(String id) {
         PrimeSelenium.executeScript("var s = document.getElementById(arguments[0]); if (s) { s.remove(); }", id);
+    }
+
+    /**
+     * @return the Chrome DevTools Protocol of the driver (to emulate media features), null if the browser has none
+     */
+    protected static HasCdp cdp() {
+        WebDriver driver = PrimeSelenium.getWebDriver();
+        while (!(driver instanceof HasCdp) && driver instanceof WrapsDriver) {
+            driver = ((WrapsDriver) driver).getWrappedDriver();
+        }
+        return driver instanceof HasCdp ? (HasCdp) driver : null;
+    }
+
+    /**
+     * Emulates a media feature (e.g. prefers-reduced-motion: reduce, forced-colors: active); value null ends the emulation.
+     */
+    protected static void emulateMediaFeature(HasCdp cdp, String name, String value) {
+        List<Map<String, Object>> features = value == null
+                ? Collections.emptyList()
+                : List.of(Map.of("name", name, "value", value));
+        cdp.executeCdpCommand("Emulation.setEmulatedMedia", Map.of("features", features));
     }
 }

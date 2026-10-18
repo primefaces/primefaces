@@ -141,6 +141,41 @@ class Theming003Test extends AbstractThemingTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(4)
+    @DisplayName("Theming: primary contrast color - white on green-500 in light mode like PrimeUIX, dark on lime-500 and in dark mode")
+    void primaryContrastThreshold(Page page) {
+        // Arrange
+        setColorScheme("light");
+
+        // Act: green-500 (OKLCH lightness 0.723) was just above the former threshold 0.72 and got dark text
+        setApplicationStyle(STYLE_ID, ":root { --p-primary-base: var(--p-green-500); }");
+
+        // Assert
+        String greenText = computedStyle(page.buttonPrimary, "color");
+        assertTrue(luminance(greenText) > 0.9, "text on green-500 must be white: " + greenText);
+
+        // Act: lime-500 (0.768) is too light for white text
+        setApplicationStyle(STYLE_ID, ":root { --p-primary-base: var(--p-lime-500); }");
+
+        // Assert
+        String limeText = computedStyle(page.buttonPrimary, "color");
+        assertTrue(luminance(limeText) < 0.2, "text on lime-500 must be dark: " + limeText);
+
+        // Act: dark mode, the primary is a lighter shade with dark text
+        setColorScheme("dark");
+        setApplicationStyle(STYLE_ID, ":root { --p-primary-base: var(--p-green-500); }");
+
+        // Assert
+        String darkModeText = computedStyle(page.buttonPrimary, "color");
+        assertTrue(luminance(darkModeText) < 0.2, "text on the dark mode primary must be dark: " + darkModeText);
+
+        // Act
+        removeApplicationStyle(STYLE_ID);
+        setColorScheme("light");
+        assertNoJavascriptErrors();
+    }
+
     private static void assertIcon(String description, String maskImage) {
         assertTrue(maskImage != null && maskImage.startsWith("url("), description + " has no mask-image: " + maskImage);
     }

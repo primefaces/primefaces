@@ -262,7 +262,8 @@ values, color swatches and icon previews).
 
 `primefaces-integration-tests`, package `org.primefaces.integrationtests.theming` (views under `/theming/` use aura):
 rendered resources (also after ajax), component styles equal their resolved tokens (light and dark), overrides (primary
-color incl. contrast color, icons, density), every icon has a mask.
+color incl. contrast color and its light / dark threshold, icons, density), every icon has a mask, variants, float labels
+(incl. selectCheckboxMenu), motion tokens and reduced motion, `:focus-visible` of menu items, RTL.
 ```bash
 mvn verify -f primefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,mojarra-4.0 "-Dit.test=Theming*Test"
 ```
@@ -366,9 +367,14 @@ other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0
 - DataTable filter menu (popover with match modes and rules) next to the inline filters.
 - DatePicker: year view, highlighted range start / end, clear button / icon.
 - Clear icon (`showClear`) for selectOneMenu, selectCheckboxMenu, cascadeSelect, autoComplete, inputText.
-- Float label: p:selectCheckboxMenu gets no focus / filled class, so its label does not float; autoComplete multiple
-  and chips are marked filled only after an interaction (the theme detects their tokens with `:has()`).
+- Float label: p:selectCheckboxMenu, autoComplete multiple and chips get no filled class on page load (selectCheckboxMenu
+  no focus class while its panel has the focus); the theme detects checked options / tokens / the open panel with
+  `:has()`, a filled / focus class of the widgets would replace that.
 - Sidebar header (title, close) and footer.
+- Forced colors (Windows contrast themes): states shown only by a background (selected options / rows, checked
+  checkbox / radio / toggleSwitch, progress / slider value, focus of menu items) disappear; repeat them with system
+  colors (`Highlight` / `HighlightText`) in `@media (forced-colors: active)`, audit all components with the Chrome
+  forced-colors emulation.
 - Keyboard focus where PrimeFaces has none: growl close button, organigram nodes, autoComplete / chips tokens.
 - Empty states: consistent empty message for selects / listbox / multiSelect filters (dataTable, dataView, autoComplete
   have one).

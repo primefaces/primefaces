@@ -142,6 +142,18 @@
                         <p:outputLabel for="@previous" value="City"/>
                     </span>
                     <span class="ui-float-label ui-float-label-in">
+                        <p:selectCheckboxMenu id="floatInCheckboxMenu" value="#{themingNextFormsSelectView.noCities}" multiple="true">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:outputLabel for="@previous" value="Cities"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:selectCheckboxMenu id="floatInCheckboxMenuFilled" value="#{themingNextFormsSelectView.selectedCities}" multiple="true">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:outputLabel for="@previous" value="Cities"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
                         <p:datePicker id="floatInDate" value="#{themingNextFormsSelectView.noDate}"/>
                         <p:outputLabel for="@previous" value="Date"/>
                     </span>
