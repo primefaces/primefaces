@@ -29,7 +29,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -47,13 +46,11 @@ public class DatePicker018 implements Serializable {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private LocalDateTime value;
-    private List<LocalDateTime> rangeValue;
     private int dateSelectCount;
 
     @PostConstruct
     public void init() {
         value = LocalDateTime.of(2026, 6, 5, 15, 0, 0);
-        rangeValue = List.of(LocalDateTime.of(2026, 6, 5, 15, 0, 0), LocalDateTime.of(2026, 6, 6, 15, 0, 0));
         dateSelectCount = 0;
     }
 
