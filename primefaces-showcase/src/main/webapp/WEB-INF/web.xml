@@ -62,7 +62,7 @@
     </context-param>
     <context-param>
         <param-name>primefaces.DIR</param-name>
-        <param-value>#{app.locale.rtl ? 'rtl' : 'ltr'}</param-value>
+        <param-value>#{app.dir}</param-value>
     </context-param>
     <context-param>
         <param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>

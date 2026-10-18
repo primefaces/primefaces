@@ -46,6 +46,8 @@ public class App implements Serializable {
 
     private String theme = PRESETS.get(0);
     private Country locale = new Country(0, Locale.US);
+    // text direction chosen in the theme configurator (?dir=ltr|rtl); null: the direction of the locale
+    private String direction;
 
     /**
      * The current preset (primefaces.THEME in web.xml); a valid ?theme= request parameter switches it.
@@ -64,6 +66,23 @@ public class App implements Serializable {
         if (PRESETS.contains(theme)) {
             this.theme = theme;
         }
+    }
+
+    /**
+     * The text direction (primefaces.DIR in web.xml, dir of the html element): a valid ?dir= request parameter sets it,
+     * without a choice it follows the locale.
+     *
+     * @return ltr or rtl
+     */
+    public String getDir() {
+        String requested = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("dir");
+        if ("ltr".equals(requested) || "rtl".equals(requested)) {
+            direction = requested;
+        }
+        if (direction != null) {
+            return direction;
+        }
+        return locale.isRtl() ? "rtl" : "ltr";
     }
 
     public List<String> getPresets() {

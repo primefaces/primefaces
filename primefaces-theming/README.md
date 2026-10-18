@@ -261,10 +261,11 @@ Overlays, sidebars and the legacy `ui-g` grid stay on viewport media queries.
 showcase layout (`--surface-a`, `--primary-color`, ...) to the tokens, so topbar, menu and footer follow the preset.
 
 - **Theme configurator** on every page (both showcase templates): the palette button at the right edge opens it as an
-  overlay: preset, color scheme (light/dark with a view transition), input style, density, primary color, surface
-  palette, border radius, typography, focus ring, form field and the CSS of the changes. Everything but the preset is
-  set on `<html>` on the client and kept in `localStorage` (`theming/configurator.xhtml` +
-  `resources/theming/configurator.js/.css`).
+  overlay: preset, color scheme (light/dark with a view transition), input style, density, direction (LTR/RTL),
+  primary color, surface palette, button shape, shadows, animations, border radius, typography, focus ring, form field
+  and the CSS of the changes. Preset and direction are set on the server (`?theme=`, `?dir=`, kept in the session:
+  `primefaces.THEME` / `primefaces.DIR`, the renderers add their RTL classes); everything else is set on `<html>` on the
+  client and kept in `localStorage` (`theming/configurator.xhtml` + `resources/theming/configurator.js/.css`).
 - Menu Core → **Theming** (`/theming.xhtml`): a rough overview of the style, one representative per component
   (`theming/sections/*.xhtml`: buttons / menus, form, selection, DataTable, data, panels, overlays / messages,
   misc, scoping) with sticky jump links.

@@ -61,7 +61,31 @@
         });
         NAMES = RANGES.map(function (r) { return r[0]; })
             .concat(['--p-typography-font-family'])
-            .concat(SURFACE.map(function (s) { return '--p-surface-' + s; }));
+            .concat(SURFACE.map(function (s) { return '--p-surface-' + s; }))
+            .concat(EXTRA);
+    }
+
+    // segmented token settings: button shape, shadows, animations (the values of "theme" are the preset's own)
+    var SHAPES = { pill: '999px', square: '0' };
+    var DEEP_SHADOWS = {
+        '--p-overlay-select-shadow': '0 12px 32px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.18)',
+        '--p-overlay-popover-shadow': '0 12px 32px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.18)',
+        '--p-overlay-navigation-shadow': '0 12px 32px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.18)',
+        '--p-overlay-modal-shadow': '0 32px 64px -12px rgb(0 0 0 / 0.4), 0 12px 24px -8px rgb(0 0 0 / 0.25)',
+        '--p-card-shadow': '0 8px 24px -6px rgb(0 0 0 / 0.18), 0 2px 6px rgb(0 0 0 / 0.1)',
+        '--p-button-raised-shadow': '0 6px 16px -4px rgb(0 0 0 / 0.35)'
+    };
+    var MOTION = {
+        slow: { '--p-transition-duration': '0.6s', '--p-form-field-transition-duration': '0.6s', '--p-mask-transition-duration': '0.8s' },
+        off: { '--p-transition-duration': '0s', '--p-form-field-transition-duration': '0s', '--p-mask-transition-duration': '0s' }
+    };
+    var EXTRA = ['--p-button-border-radius'].concat(Object.keys(DEEP_SHADOWS)).concat(Object.keys(MOTION.slow));
+
+    // "Animations: off" also switches off the jQuery effects (fade in / out of the overlays)
+    function applyMotion() {
+        if (window.jQuery) {
+            window.jQuery.fx.off = tokens['--p-transition-duration'] === '0s';
+        }
     }
 
     // the slider being dragged: refresh() must not move it
@@ -124,6 +148,13 @@
         }).join('') : null;
     }
 
+    function markSegment(attr, value) {
+        document.querySelectorAll('[' + attr + ']').forEach(function (b) {
+            b.classList.toggle('ui-state-active', b.getAttribute(attr) === value);
+            b.setAttribute('aria-pressed', b.getAttribute(attr) === value);
+        });
+    }
+
     function mark() {
         var scheme = root.style.colorScheme || 'system';
         document.querySelectorAll('[data-cfg-scheme]').forEach(function (b) {
@@ -135,6 +166,13 @@
             b.classList.toggle('ui-state-active', b.getAttribute('data-cfg-input') === input);
             b.setAttribute('aria-pressed', b.getAttribute('data-cfg-input') === input);
         });
+        var shape = tokens['--p-button-border-radius'];
+        var shadow = tokens['--p-card-shadow'];
+        var motion = tokens['--p-transition-duration'];
+        markSegment('data-cfg-dir', root.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr');
+        markSegment('data-cfg-shape', shape === SHAPES.pill ? 'pill' : shape === SHAPES.square ? 'square' : 'theme');
+        markSegment('data-cfg-shadow', shadow === 'none' ? 'none' : shadow ? 'deep' : 'theme');
+        markSegment('data-cfg-motion', motion === '0s' ? 'off' : motion ? 'slow' : 'normal');
         var density = root.getAttribute('data-p-density') || 'normal';
         document.querySelectorAll('[data-cfg-density]').forEach(function (b) {
             b.classList.toggle('ui-state-active', b.getAttribute('data-cfg-density') === density);
@@ -231,6 +269,15 @@
         }
     }
 
+    // reloads the page with a request parameter (preset, direction), keeps the scroll position
+    function reloadWith(param, value) {
+        var url = new URL(window.location.href);
+        url.searchParams.set(param, value);
+        url.searchParams.delete('jfwid');
+        try { sessionStorage.setItem('pf-demo-scroll', String(window.scrollY)); } catch (e) { }
+        window.location.href = url.toString();
+    }
+
     var cfg = window.cfg = {
         scheme: function (value) {
             write(KEYS.scheme, value === 'system' ? null : value);
@@ -263,6 +310,30 @@
             }
             write(KEYS.primary, value);
             refresh();
+        },
+        buttonShape: function (value) {
+            setToken('--p-button-border-radius', SHAPES[value] || null);
+            saveTokens();
+            refresh();
+        },
+        shadows: function (value) {
+            Object.keys(DEEP_SHADOWS).forEach(function (name) {
+                setToken(name, value === 'none' ? 'none' : value === 'deep' ? DEEP_SHADOWS[name] : null);
+            });
+            saveTokens();
+            refresh();
+        },
+        motion: function (value) {
+            Object.keys(MOTION.slow).forEach(function (name) {
+                setToken(name, MOTION[value] ? MOTION[value][name] : null);
+            });
+            saveTokens();
+            applyMotion();
+            refresh();
+        },
+        // the direction is set on the server (primefaces.DIR: the renderers add their RTL classes): reload with ?dir=...
+        dir: function (value) {
+            reloadWith('dir', value);
         },
         // onSlide of the p:slider rows (configurator-sliders.xhtml)
         slide: function (widget, value) {
@@ -300,15 +371,12 @@
             write(KEYS.density, null);
             root.classList.remove('ui-input-filled');
             write(KEYS.input, null);
+            applyMotion();
             cfg.scheme('system');
         },
         // the preset is set on the server (primefaces.THEME): reload with ?theme=..., keep the scroll position (hash)
         preset: function (name) {
-            var url = new URL(window.location.href);
-            url.searchParams.set('theme', name);
-            url.searchParams.delete('jfwid');
-            try { sessionStorage.setItem('pf-demo-scroll', String(window.scrollY)); } catch (e) { }
-            window.location.href = url.toString();
+            reloadWith('theme', name);
         },
         toggle: function (open) {
             var value = open === undefined ? !root.classList.contains('cfg-open') : open;
@@ -362,6 +430,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         collectRanges();
+        applyMotion();
         ready = true;
         refresh();
         var scroll = null;

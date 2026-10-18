@@ -96,6 +96,13 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
+/* token names and CSS stay left to right in an RTL page (else the bidi algorithm moves the leading dashes) */
+.cfg-hint,
+.cfg-snippet {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
 .cfg-label {
     display: flex;
     align-items: baseline;
@@ -258,10 +265,10 @@
     /* a plain solid tab: no border (a transparent one shows as a darker band at fractional pixel ratios), no inset
        highlight and ring of the preset shadows (Glass), no backdrop blur (the button is opaque) */
     border: 0;
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-    border-start-start-radius: var(--p-border-radius-md);
-    border-end-start-radius: var(--p-border-radius-md);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: var(--p-border-radius-md);
+    border-bottom-left-radius: var(--p-border-radius-md);
     box-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
     backdrop-filter: none;
     /* the shadow stops at the window edge */
