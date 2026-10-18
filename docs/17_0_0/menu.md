@@ -47,6 +47,7 @@
   - [Portlets](/core/portlets.md)
   - [Responsive Design](/core/responsive.md)
   - [Search Expression](/core/searchexpression.md)
+  - [Tailwind CSS](/core/tailwind.md)
   - [Themes](/core/themes.md)
   - [Theming (design tokens)](/core/theming.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)

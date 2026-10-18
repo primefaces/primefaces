@@ -4,7 +4,7 @@ PrimeFaces 17 comes with a new theming based on **design tokens**: every color, 
 duration is a CSS variable (`--p-primary-color`, `--p-form-field-background`, `--p-button-border-radius`, ...).
 The look of an application is customized with plain CSS: no SASS, no build step, no theme to fork.
 
-Four presets are available:
+Five presets are available:
 
 - **Aura**
 - **Lara**
@@ -492,6 +492,11 @@ is included in `components.css` and styled with the tokens; there is nothing ext
 
 PrimeFaces does not compress resources. Enable gzip or brotli in your server or proxy: `components.css` is about
 540 KB raw and about 77 KB compressed (plus about 24 KB compressed for the preset).
+
+## Tailwind CSS
+
+The theme works together with Tailwind CSS v4: the utilities (`bg-primary`, `text-muted-color`, `rounded-border`,
+...) use the tokens of the preset. See [Tailwind CSS](/core/tailwind.md) for the setup, the token mapping and a sample.
 
 ## Design tokens export
 
