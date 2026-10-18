@@ -212,8 +212,14 @@
         display: none;
     }
 
+    /* focusable for the keyboard row navigation: ring inside on keyboard focus, the table would clip an outer one */
     tbody.ui-datatable-data {
         outline: 0;
+
+        &:focus-visible {
+            outline: var(--p-datatable-row-focus-ring-width) var(--p-datatable-row-focus-ring-style) var(--p-datatable-row-focus-ring-color);
+            outline-offset: calc(-1 * var(--p-datatable-row-focus-ring-width));
+        }
     }
 
     tr.ui-state-highlight {

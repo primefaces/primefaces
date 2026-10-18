@@ -56,6 +56,7 @@
         --p-fileupload-header-padding: 0.75rem;
         --p-fileupload-content-padding: 0 0.75rem 0.75rem 0.75rem;
         --p-fileupload-file-padding: 0.656rem;
+        --p-floatlabel-on-active-padding: 0 0.094rem;
         --p-galleria-thumbnails-content-padding: 0.656rem 0.188rem;
         --p-galleria-caption-padding: 0.656rem;
         --p-galleria-indicator-list-padding: 0.656rem;
@@ -164,6 +165,7 @@
         --p-fileupload-header-padding: 1.25rem;
         --p-fileupload-content-padding: 0 1.25rem 1.25rem 1.25rem;
         --p-fileupload-file-padding: 1.094rem;
+        --p-floatlabel-on-active-padding: 0 0.156rem;
         --p-galleria-thumbnails-content-padding: 1.094rem 0.313rem;
         --p-galleria-caption-padding: 1.094rem;
         --p-galleria-indicator-list-padding: 1.094rem;

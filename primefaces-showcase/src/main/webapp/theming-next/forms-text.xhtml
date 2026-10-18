@@ -64,7 +64,7 @@
                     </span>
                 </div>
 
-                <h3>Float label</h3>
+                <h3>Float label: variant over (ui-float-label)</h3>
                 <div class="demo-row" style="margin-top: 1rem">
                     <span class="ui-float-label">
                         <p:inputText id="floatEmpty" value="#{themingNextFormsTextView.emptyText}"/>
@@ -83,6 +83,128 @@
                     <span class="ui-float-label">
                         <p:inputTextarea id="floatArea" value="#{themingNextFormsTextView.emptyText}" rows="2" autoResize="false"/>
                         <p:outputLabel for="@previous" value="Textarea"/>
+                    </span>
+                </div>
+
+                <h3>Float label: variant in (ui-float-label ui-float-label-in)</h3>
+                <div class="demo-row" style="margin-top: 1rem">
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputText id="floatInEmpty" value="#{themingNextFormsTextView.emptyText}"/>
+                        <p:outputLabel for="@previous" value="Username"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputText id="floatInFilled" value="#{themingNextFormsTextView.text}"/>
+                        <p:outputLabel for="@previous" value="Framework"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputText id="floatInInvalid" value="#{themingNextFormsTextView.emptyText}">
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsTextView.markInvalid}"/>
+                        </p:inputText>
+                        <p:outputLabel for="@previous" value="Invalid"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputText id="floatInDisabled" value="#{themingNextFormsTextView.text}" disabled="true"/>
+                        <p:outputLabel for="@previous" value="Disabled"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputText id="floatInRtl" value="#{themingNextFormsTextView.text}" dir="rtl"/>
+                        <p:outputLabel for="@previous" value="RTL" dir="rtl"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputTextarea id="floatInArea" value="#{themingNextFormsTextView.emptyText}" rows="2" autoResize="false"/>
+                        <p:outputLabel for="@previous" value="Textarea"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:password id="floatInPassword" value="#{themingNextFormsTextView.password}" toggleMask="true" redisplay="true"/>
+                        <p:outputLabel for="@previous" value="Password"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:inputNumber id="floatInNumber" value="#{themingNextFormsTextView.amount}"/>
+                        <p:outputLabel for="@previous" value="Amount"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:autoComplete id="floatInAuto" value="#{themingNextFormsTextView.emptyText}" completeMethod="#{themingNextFormsTextView.completeFruit}" dropdown="true"/>
+                        <p:outputLabel for="@previous" value="Fruit"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:autoComplete id="floatInAutoMultiple" value="#{themingNextFormsTextView.autoTexts}" completeMethod="#{themingNextFormsTextView.completeFruit}" multiple="true"/>
+                        <p:outputLabel for="@previous" value="Fruits"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:chips id="floatInChips" value="#{themingNextFormsTextView.chips}"/>
+                        <p:outputLabel for="@previous" value="Themes"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:selectOneMenu id="floatInSelect" value="#{themingNextFormsSelectView.noCity}">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="@previous" value="City"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-in">
+                        <p:datePicker id="floatInDate" value="#{themingNextFormsSelectView.noDate}"/>
+                        <p:outputLabel for="@previous" value="Date"/>
+                    </span>
+                </div>
+
+                <h3>Float label: variant on (ui-float-label ui-float-label-on)</h3>
+                <div class="demo-row" style="margin-top: 1rem">
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputText id="floatOnEmpty" value="#{themingNextFormsTextView.emptyText}"/>
+                        <p:outputLabel for="@previous" value="Username"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputText id="floatOnFilled" value="#{themingNextFormsTextView.text}"/>
+                        <p:outputLabel for="@previous" value="Framework"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputText id="floatOnInvalid" value="#{themingNextFormsTextView.emptyText}">
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsTextView.markInvalid}"/>
+                        </p:inputText>
+                        <p:outputLabel for="@previous" value="Invalid"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputText id="floatOnDisabled" value="#{themingNextFormsTextView.text}" disabled="true"/>
+                        <p:outputLabel for="@previous" value="Disabled"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputText id="floatOnRtl" value="#{themingNextFormsTextView.text}" dir="rtl"/>
+                        <p:outputLabel for="@previous" value="RTL" dir="rtl"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputTextarea id="floatOnArea" value="#{themingNextFormsTextView.emptyText}" rows="2" autoResize="false"/>
+                        <p:outputLabel for="@previous" value="Textarea"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:password id="floatOnPassword" value="#{themingNextFormsTextView.password}" toggleMask="true" redisplay="true"/>
+                        <p:outputLabel for="@previous" value="Password"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:inputNumber id="floatOnNumber" value="#{themingNextFormsTextView.amount}"/>
+                        <p:outputLabel for="@previous" value="Amount"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:autoComplete id="floatOnAuto" value="#{themingNextFormsTextView.emptyText}" completeMethod="#{themingNextFormsTextView.completeFruit}" dropdown="true"/>
+                        <p:outputLabel for="@previous" value="Fruit"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:autoComplete id="floatOnAutoMultiple" value="#{themingNextFormsTextView.autoTexts}" completeMethod="#{themingNextFormsTextView.completeFruit}" multiple="true"/>
+                        <p:outputLabel for="@previous" value="Fruits"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:chips id="floatOnChips" value="#{themingNextFormsTextView.chips}"/>
+                        <p:outputLabel for="@previous" value="Themes"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:selectOneMenu id="floatOnSelect" value="#{themingNextFormsSelectView.noCity}">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="@previous" value="City"/>
+                    </span>
+                    <span class="ui-float-label ui-float-label-on">
+                        <p:datePicker id="floatOnDate" value="#{themingNextFormsSelectView.noDate}"/>
+                        <p:outputLabel for="@previous" value="Date"/>
                     </span>
                 </div>
 
@@ -426,6 +548,46 @@
                         <p:inputText placeholder="Invalid">
                             <f:event type="preRenderComponent" listener="#{themingNextFormsTextView.markInvalid}"/>
                         </p:inputText>
+                    </div>
+                </div>
+
+                <h3>RTL (dir="rtl" on a wrapper)</h3>
+                <div class="demo-grid" dir="rtl">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon">$</span>
+                        <p:inputText placeholder="Price"/>
+                        <span class="ui-inputgroup-addon">.00</span>
+                    </div>
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon">www</span>
+                        <span class="ui-inputgroup-addon"><i class="pi pi-globe"/></span>
+                        <p:inputText placeholder="Website"/>
+                    </div>
+                    <div class="ui-inputgroup">
+                        <p:commandButton type="button" icon="pi pi-check" styleClass="ui-button-success"/>
+                        <p:inputText placeholder="Vote"/>
+                        <p:commandButton type="button" icon="pi pi-times" styleClass="ui-button-danger"/>
+                    </div>
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon-checkbox">
+                            <p:selectBooleanCheckbox/>
+                        </span>
+                        <p:inputText placeholder="Checkbox addon"/>
+                    </div>
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-lock"/></span>
+                        <p:password placeholder="Password" toggleMask="true"/>
+                    </div>
+                    <div class="ui-inputgroup">
+                        <p:inputNumber value="#{themingNextFormsTextView.amount}"/>
+                        <span class="ui-inputgroup-addon">€</span>
+                    </div>
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-clock"/></span>
+                        <span class="ui-float-label">
+                            <p:inputText id="groupFloatRtl" value="#{themingNextFormsTextView.emptyText}"/>
+                            <p:outputLabel for="@previous" value="Float label"/>
+                        </span>
                     </div>
                 </div>
             </div>

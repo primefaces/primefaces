@@ -4,6 +4,7 @@
  * Markup: span.ui-badge > span.ui-badge-icon? span.ui-badge-label?, wrapper div.ui-overlay-badge
  * Supported classes: ui-badge-secondary | -success | -info | -warning | -danger | -help,
  *                    ui-badge-lg, ui-badge-xl, ui-badge-dot, ui-badge-no-gutter, ui-state-hidden
+ * styleClass only (the severity / size attributes do not know them): ui-badge-contrast, ui-badge-sm
  */
 .ui-badge {
     display: inline-flex;
@@ -68,6 +69,18 @@
     &.ui-badge-help {
         background: var(--p-badge-help-background);
         color: var(--p-badge-help-color);
+    }
+
+    &.ui-badge-contrast {
+        background: var(--p-badge-contrast-background);
+        color: var(--p-badge-contrast-color);
+    }
+
+    &.ui-badge-sm {
+        font-size: var(--p-badge-sm-font-size);
+        min-width: var(--p-badge-sm-min-width);
+        height: var(--p-badge-sm-height);
+        line-height: var(--p-badge-sm-height);
     }
 
     &.ui-badge-lg {

@@ -4,6 +4,8 @@
  * Markup: .ui-message.ui-staticmessage.ui-message-<severity>(.ui-message-icon-only)
  *         > a.ui-messages-close (closable) + span.ui-message-<severity>-icon (or the custom icon classes)
  *         + span.ui-message-<severity>-summary + span.ui-message-<severity>-detail
+ * Severities: info | success | warn | error | fatal | secondary | contrast (passed through as ui-message-<severity>),
+ * variants / sizes (styleClass): ui-message-outlined | -simple | -sm | -lg (message.css).
  * Colors, icons and texts come from message.css (it shares the ui-message-* classes); this file adds the block layout
  * and the close button. Tokens: PrimeUIX message + the message block of presets/*.css
  */
@@ -43,7 +45,7 @@
     > .pi {
         flex-shrink: 0;
         color: var(--_color);
-        font-size: var(--p-message-icon-size);
+        font-size: var(--_icon-size);
     }
 
     /* close button: a round badge on the top end corner, carrying the message colors */
@@ -77,7 +79,7 @@
             display: inline-block;
             background: none;
             color: inherit;
-            font-size: var(--p-message-close-icon-size);
+            font-size: var(--_close-icon-size);
         }
 
         .ui-icon-close::before {
@@ -86,5 +88,19 @@
             forced-color-adjust: none;
             mask: var(--p-message-close-icon) center / contain no-repeat;
         }
+    }
+
+    /* outlined / simple have no background, a badge on the corner would be see-through: inline button at the end
+       (like p:messages), background / shadow are already transparent / none through the private variables */
+    &.ui-message-outlined .ui-messages-close,
+    &.ui-message-simple .ui-messages-close {
+        position: static;
+        order: 1;
+        flex-shrink: 0;
+        margin-inline-start: auto;
+        width: var(--p-message-close-button-width);
+        height: var(--p-message-close-button-height);
+        border: 0 none;
+        border-radius: var(--p-message-close-button-border-radius);
     }
 }

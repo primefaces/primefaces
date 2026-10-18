@@ -229,19 +229,27 @@
 
             &:not(.ui-state-disabled):hover,
             &.ui-state-hover,
-            &.ui-state-focus {
+            &.ui-state-focus,
+            &:focus-visible {
                 background: var(--_item-focus-background);
+            }
+
+            /* keyboard focus (tab to a link with href): the background is the indicator, as for the widget focus */
+            &:focus-visible {
+                outline: 0 none;
             }
 
             &:not(.ui-state-disabled):hover .ui-icon,
             &.ui-state-hover .ui-icon,
-            &.ui-state-focus .ui-icon {
+            &.ui-state-focus .ui-icon,
+            &:focus-visible .ui-icon {
                 color: var(--_item-icon-focus-color);
             }
 
             &:not(.ui-state-disabled):hover .ui-menuitem-text,
             &.ui-state-hover .ui-menuitem-text,
-            &.ui-state-focus .ui-menuitem-text {
+            &.ui-state-focus .ui-menuitem-text,
+            &:focus-visible .ui-menuitem-text {
                 color: var(--_item-focus-color);
             }
 

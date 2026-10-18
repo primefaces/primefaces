@@ -4,6 +4,9 @@
  * Every level (.level-N) has the same look; style nodes with the
  * node styleClass if needed.
  * Supported classes: selectable, draggable, selected, drag-active, drop-hover, level-N, leaf, expanded, collapsed
+ *
+ * Connector lines, node icons / expander and the zoom controls use logical properties, so the chart mirrors in RTL
+ * (dir="rtl" on an ancestor).
  */
 .ui-organigram {
     position: relative;
@@ -46,11 +49,11 @@
         }
 
         &.left {
-            border-right-width: 1px;
+            border-inline-end-width: 1px;
         }
 
         &.right {
-            border-left-width: 1px;
+            border-inline-start-width: 1px;
         }
     }
 
@@ -88,11 +91,11 @@
         }
 
         .ui-organigram-icon.left {
-            float: left;
+            float: inline-start;
         }
 
         .ui-organigram-icon.right {
-            float: right;
+            float: inline-end;
         }
 
         .ui-organigram-node-content {
@@ -132,7 +135,7 @@
         /* a small round toggle button; the &nbsp; text is hidden with font-size 0 */
         .expander {
             cursor: pointer;
-            float: right;
+            float: inline-end;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -186,7 +189,7 @@
     .controls {
         position: absolute;
         bottom: 15px;
-        right: 15px;
+        inset-inline-end: 15px;
 
         table {
             border-collapse: separate;

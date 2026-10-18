@@ -5,7 +5,10 @@
  *                         + span.ui-message-<severity>-summary + span.ui-message-<severity>-detail
  * Markup p:staticMessage: .ui-message.ui-staticmessage.ui-message-<severity> > (a.ui-messages-close) + span.icon + summary + detail
  * Severity classes only switch the private --_* variables: ui-message-info | -success | -warn | -error | -fatal,
- * ui-message-icon-only (display="icon"). PF only tokens (fatal, summary/detail): the message block of presets/*.css
+ * ui-message-secondary | -contrast (p:staticMessage severity only), ui-message-icon-only (display="icon").
+ * Variants (styleClass, also on p:messages, see messages.css): ui-message-outlined | ui-message-simple,
+ * sizes ui-message-sm | ui-message-lg.
+ * PF only tokens (fatal, secondary/contrast icon, summary/detail): the message block of presets/*.css
  */
 
 .ui-message {
@@ -13,14 +16,22 @@
     --_border-color: var(--p-message-info-border-color);
     --_color: var(--p-message-info-color);
     --_shadow: var(--p-message-info-shadow);
+    --_outlined-color: var(--p-message-info-outlined-color);
+    --_outlined-border-color: var(--p-message-info-outlined-border-color);
+    --_simple-color: var(--p-message-info-simple-color);
     --_close-hover-bg: var(--p-message-info-close-button-hover-background);
     --_close-focus-ring-color: var(--p-message-info-close-button-focus-ring-color);
     --_close-focus-ring-shadow: var(--p-message-info-close-button-focus-ring-shadow);
+    --_border-width: var(--p-message-border-width);
+    --_padding: var(--p-message-content-padding);
+    --_font-size: var(--p-message-text-font-size);
+    --_icon-size: var(--p-message-icon-size);
+    --_close-icon-size: var(--p-message-close-icon-size);
 
     display: inline-block;
     vertical-align: middle;
     border-radius: var(--p-message-border-radius);
-    font-size: var(--p-message-text-font-size);
+    font-size: var(--_font-size);
     font-weight: var(--p-message-text-font-weight);
     outline-color: transparent;
     transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
@@ -31,10 +42,12 @@
     &.ui-message-success,
     &.ui-message-warn,
     &.ui-message-error,
-    &.ui-message-fatal {
-        padding: var(--p-message-content-padding);
+    &.ui-message-fatal,
+    &.ui-message-secondary,
+    &.ui-message-contrast {
+        padding: var(--_padding);
         background: var(--_bg);
-        border: var(--p-message-border-width) solid var(--_border-color);
+        border: var(--_border-width) solid var(--_border-color);
         color: var(--_color);
         box-shadow: var(--_shadow);
     }
@@ -44,6 +57,9 @@
         --_border-color: var(--p-message-success-border-color);
         --_color: var(--p-message-success-color);
         --_shadow: var(--p-message-success-shadow);
+        --_outlined-color: var(--p-message-success-outlined-color);
+        --_outlined-border-color: var(--p-message-success-outlined-border-color);
+        --_simple-color: var(--p-message-success-simple-color);
         --_close-hover-bg: var(--p-message-success-close-button-hover-background);
         --_close-focus-ring-color: var(--p-message-success-close-button-focus-ring-color);
         --_close-focus-ring-shadow: var(--p-message-success-close-button-focus-ring-shadow);
@@ -54,6 +70,9 @@
         --_border-color: var(--p-message-warn-border-color);
         --_color: var(--p-message-warn-color);
         --_shadow: var(--p-message-warn-shadow);
+        --_outlined-color: var(--p-message-warn-outlined-color);
+        --_outlined-border-color: var(--p-message-warn-outlined-border-color);
+        --_simple-color: var(--p-message-warn-simple-color);
         --_close-hover-bg: var(--p-message-warn-close-button-hover-background);
         --_close-focus-ring-color: var(--p-message-warn-close-button-focus-ring-color);
         --_close-focus-ring-shadow: var(--p-message-warn-close-button-focus-ring-shadow);
@@ -64,6 +83,9 @@
         --_border-color: var(--p-message-error-border-color);
         --_color: var(--p-message-error-color);
         --_shadow: var(--p-message-error-shadow);
+        --_outlined-color: var(--p-message-error-outlined-color);
+        --_outlined-border-color: var(--p-message-error-outlined-border-color);
+        --_simple-color: var(--p-message-error-simple-color);
         --_close-hover-bg: var(--p-message-error-close-button-hover-background);
         --_close-focus-ring-color: var(--p-message-error-close-button-focus-ring-color);
         --_close-focus-ring-shadow: var(--p-message-error-close-button-focus-ring-shadow);
@@ -74,9 +96,71 @@
         --_border-color: var(--p-message-fatal-border-color);
         --_color: var(--p-message-fatal-color);
         --_shadow: var(--p-message-fatal-shadow);
+        --_outlined-color: var(--p-message-fatal-outlined-color);
+        --_outlined-border-color: var(--p-message-fatal-outlined-border-color);
+        --_simple-color: var(--p-message-fatal-simple-color);
         --_close-hover-bg: var(--p-message-fatal-close-button-hover-background);
         --_close-focus-ring-color: var(--p-message-fatal-close-button-focus-ring-color);
         --_close-focus-ring-shadow: var(--p-message-fatal-close-button-focus-ring-shadow);
+    }
+
+    /* p:staticMessage only (severity="secondary" / "contrast"), p:message gets its severity from the FacesMessage */
+    &.ui-message-secondary {
+        --_bg: var(--p-message-secondary-background);
+        --_border-color: var(--p-message-secondary-border-color);
+        --_color: var(--p-message-secondary-color);
+        --_shadow: var(--p-message-secondary-shadow);
+        --_outlined-color: var(--p-message-secondary-outlined-color);
+        --_outlined-border-color: var(--p-message-secondary-outlined-border-color);
+        --_simple-color: var(--p-message-secondary-simple-color);
+        --_close-hover-bg: var(--p-message-secondary-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-secondary-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-secondary-close-button-focus-ring-shadow);
+    }
+
+    &.ui-message-contrast {
+        --_bg: var(--p-message-contrast-background);
+        --_border-color: var(--p-message-contrast-border-color);
+        --_color: var(--p-message-contrast-color);
+        --_shadow: var(--p-message-contrast-shadow);
+        --_outlined-color: var(--p-message-contrast-outlined-color);
+        --_outlined-border-color: var(--p-message-contrast-outlined-border-color);
+        --_simple-color: var(--p-message-contrast-simple-color);
+        --_close-hover-bg: var(--p-message-contrast-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-contrast-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-contrast-close-button-focus-ring-shadow);
+    }
+
+    /* sizes (styleClass) */
+    &.ui-message-sm {
+        --_padding: var(--p-message-content-sm-padding);
+        --_font-size: var(--p-message-text-sm-font-size);
+        --_icon-size: var(--p-message-icon-sm-size);
+        --_close-icon-size: var(--p-message-close-icon-sm-size);
+    }
+
+    &.ui-message-lg {
+        --_padding: var(--p-message-content-lg-padding);
+        --_font-size: var(--p-message-text-lg-font-size);
+        --_icon-size: var(--p-message-icon-lg-size);
+        --_close-icon-size: var(--p-message-close-icon-lg-size);
+    }
+
+    /* variants (styleClass): after the severities and sizes, they only switch the private variables */
+    &.ui-message-outlined {
+        --_bg: transparent;
+        --_border-width: var(--p-message-outlined-border-width);
+        --_border-color: var(--_outlined-border-color);
+        --_color: var(--_outlined-color);
+        --_shadow: none;
+    }
+
+    &.ui-message-simple {
+        --_bg: transparent;
+        --_border-width: 0;
+        --_color: var(--_simple-color);
+        --_shadow: none;
+        --_padding: var(--p-message-simple-content-padding);
     }
 
     /* content row: icon, summary, detail */
@@ -93,14 +177,16 @@
     .ui-message-success-icon,
     .ui-message-warn-icon,
     .ui-message-error-icon,
-    .ui-message-fatal-icon {
+    .ui-message-fatal-icon,
+    .ui-message-secondary-icon,
+    .ui-message-contrast-icon {
         font-style: normal;
         font-weight: normal;
         display: inline-block;
         background: none;
         flex-shrink: 0;
         color: var(--_color);
-        font-size: var(--p-message-icon-size);
+        font-size: var(--_icon-size);
         line-height: 1;
     }
 
@@ -139,12 +225,28 @@
         mask: var(--p-message-fatal-icon) center / contain no-repeat;
     }
 
+    .ui-message-secondary-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-secondary-icon) center / contain no-repeat;
+    }
+
+    .ui-message-contrast-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-contrast-icon) center / contain no-repeat;
+    }
+
     /* texts */
     .ui-message-info-summary,
     .ui-message-success-summary,
     .ui-message-warn-summary,
     .ui-message-error-summary,
-    .ui-message-fatal-summary {
+    .ui-message-fatal-summary,
+    .ui-message-secondary-summary,
+    .ui-message-contrast-summary {
         font-weight: var(--p-message-summary-font-weight);
     }
 
@@ -152,7 +254,9 @@
     .ui-message-success-detail,
     .ui-message-warn-detail,
     .ui-message-error-detail,
-    .ui-message-fatal-detail {
+    .ui-message-fatal-detail,
+    .ui-message-secondary-detail,
+    .ui-message-contrast-detail {
         font-weight: var(--p-message-detail-font-weight);
         overflow-wrap: break-word;
         text-wrap: pretty;
@@ -163,11 +267,15 @@
     .ui-message-warn-summary:empty,
     .ui-message-error-summary:empty,
     .ui-message-fatal-summary:empty,
+    .ui-message-secondary-summary:empty,
+    .ui-message-contrast-summary:empty,
     .ui-message-info-detail:empty,
     .ui-message-success-detail:empty,
     .ui-message-warn-detail:empty,
     .ui-message-error-detail:empty,
-    .ui-message-fatal-detail:empty {
+    .ui-message-fatal-detail:empty,
+    .ui-message-secondary-detail:empty,
+    .ui-message-contrast-detail:empty {
         display: none;
     }
 

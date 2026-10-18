@@ -568,7 +568,9 @@ button.ui-button::-moz-focus-inner {
 .ui-commandlink,
 .ui-link {
     color: var(--p-button-link-color);
-    transition: color var(--p-button-transition-duration);
+    border-radius: var(--p-border-radius-xs);
+    outline-color: transparent;
+    transition: color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration);
 
     &:hover {
         color: var(--p-button-link-hover-color);
@@ -577,5 +579,30 @@ button.ui-button::-moz-focus-inner {
 
     &:active {
         color: var(--p-button-link-active-color);
+    }
+
+    &:focus-visible {
+        outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+        outline-offset: var(--p-focus-ring-offset);
+        box-shadow: var(--p-focus-ring-shadow);
+    }
+}
+
+/* p:commandLink inline ajax status: the widget adds ui-state-loading (+ ui-state-disabled) while its request runs,
+   a spinner follows the text (the inline ajax status tokens, components/ajaxstatus.css) */
+.ui-commandlink.ui-state-loading {
+    cursor: progress;
+    text-decoration: none;
+
+    &::after {
+        content: "\2003";
+        display: inline-block;
+        line-height: 1;
+        margin-inline-start: var(--p-button-link-loading-icon-gap);
+        vertical-align: -0.125em;
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-button-link-loading-icon) center / contain no-repeat;
+        animation: ui-spin var(--p-ajaxstatus-loading-icon-animation-duration) linear infinite;
     }
 }

@@ -1,7 +1,8 @@
 /*
  * CascadeSelect: p:cascadeSelect
  *
- * Supported classes: ui-state-focus, ui-state-error, ui-state-disabled, ui-input-filled (on a parent)
+ * Supported classes: ui-state-focus, ui-state-error, ui-state-disabled, ui-input-filled (on a parent),
+ *                    ui-cascadeselect-sm, ui-cascadeselect-lg (styleClass)
  * The label is also a .ui-inputfield, so its input look (border, background, focus ring) is reset here.
  */
 .ui-cascadeselect {
@@ -68,6 +69,24 @@
         width: var(--p-cascadeselect-dropdown-width);
         border-start-end-radius: var(--p-cascadeselect-border-radius);
         border-end-end-radius: var(--p-cascadeselect-border-radius);
+    }
+
+    /* sizes (styleClass): the size tokens replace the base ones, the icon follows */
+    &.ui-cascadeselect-sm {
+        --p-cascadeselect-font-size: var(--p-cascadeselect-sm-font-size);
+        --p-cascadeselect-padding-x: var(--p-cascadeselect-sm-padding-x);
+        --p-cascadeselect-padding-y: var(--p-cascadeselect-sm-padding-y);
+    }
+
+    &.ui-cascadeselect-lg {
+        --p-cascadeselect-font-size: var(--p-cascadeselect-lg-font-size);
+        --p-cascadeselect-padding-x: var(--p-cascadeselect-lg-padding-x);
+        --p-cascadeselect-padding-y: var(--p-cascadeselect-lg-padding-y);
+    }
+
+    &.ui-cascadeselect-sm .ui-cascadeselect-trigger .ui-cascadeselect-trigger-icon,
+    &.ui-cascadeselect-lg .ui-cascadeselect-trigger .ui-cascadeselect-trigger-icon {
+        font-size: var(--p-cascadeselect-font-size);
     }
 }
 

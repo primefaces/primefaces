@@ -4,7 +4,8 @@
  * Supported classes: ui-tree-horizontal, ui-tree-rtl, ui-tree-selectable, ui-state-hover / ui-state-highlight (node content),
  *                    ui-treenode-outline (keyboard focus), ui-tree-droppoint, ui-tree-draghelper, ui-tree-checkbox-all, ui-noborder
  *
- * The connector lines of the horizontal tree are gradients.
+ * The connector lines of the horizontal tree are gradients; the horizontal tree uses logical properties, so it mirrors
+ * in RTL (ui-tree-rtl or dir="rtl" on an ancestor).
  */
 .ui-tree {
     position: relative;
@@ -391,7 +392,7 @@
 
     .ui-treenode.ui-treenode-leaf,
     .ui-treenode.ui-treenode-collapsed {
-        padding-right: 0;
+        padding-inline-end: 0;
     }
 
     .ui-treenode-children {
@@ -433,7 +434,7 @@
         }
 
         .ui-tree-toggler {
-            margin-right: var(--p-tree-node-gap);
+            margin-inline-end: var(--p-tree-node-gap);
             vertical-align: middle;
         }
 
@@ -453,7 +454,7 @@
 
         .ui-treenode-icon {
             vertical-align: middle;
-            margin-right: var(--p-tree-node-gap);
+            margin-inline-end: var(--p-tree-node-gap);
         }
 
         .ui-treenode-label {
@@ -463,7 +464,7 @@
 
         .ui-chkbox {
             vertical-align: bottom;
-            margin-right: var(--p-tree-node-gap);
+            margin-inline-end: var(--p-tree-node-gap);
         }
 
         .ui-chkbox .ui-icon-minus {
@@ -481,38 +482,6 @@
     .ui-treenode::before {
         background-color: var(--p-tree-background);
     }
-
-    &.ui-tree-rtl {
-        .ui-treenode.ui-treenode-leaf,
-        .ui-treenode.ui-treenode-collapsed {
-            padding-left: 0;
-            padding-right: 40px;
-        }
-
-        .ui-treenode-children {
-            padding: 0 0 0 var(--p-tree-indent);
-        }
-
-        .ui-treenode-content {
-            .ui-tree-toggler {
-                margin-right: 0;
-                margin-left: var(--p-tree-node-gap);
-            }
-
-            .ui-treenode-leaf-icon {
-                margin: 0 0 0 var(--p-tree-node-gap);
-            }
-
-            .ui-treenode-icon {
-                margin: 0 0 0 var(--p-tree-node-gap);
-            }
-
-            .ui-chkbox {
-                margin-right: 0;
-                margin-left: var(--p-tree-node-gap);
-            }
-        }
-    }
 }
 
 .ui-tree-horizontal .ui-treenode {
@@ -520,7 +489,7 @@
         content: " ";
         position: absolute;
         top: 0;
-        left: 40px;
+        inset-inline-start: 40px;
         height: 100%;
         width: calc(100% - 80px);
         pointer-events: none;
@@ -530,11 +499,6 @@
     &.ui-treenode-leaf::before {
         width: calc(100% - 40px);
     }
-}
-
-.ui-tree-rtl.ui-tree-horizontal .ui-treenode::before {
-    left: 0;
-    width: auto;
 }
 
 .ui-tree-draghelper,

@@ -2,7 +2,11 @@
  * ToggleSwitch: p:toggleSwitch
  *
  * Supported classes: ui-toggleswitch-checked, ui-toggleswitch-focus, ui-state-disabled, ui-state-readonly,
- *                    ui-toggleswitch-dual-icon (onIcon + offIcon), ui-state-error (on .ui-toggleswitch-slider)
+ *                    ui-toggleswitch-dual-icon (onIcon + offIcon), ui-state-error (on .ui-toggleswitch-slider),
+ *                    ui-toggleswitch-sm, ui-toggleswitch-lg (styleClass of p:toggleSwitch or any parent: small / large switch)
+ *
+ * RTL (dir="rtl" on the switch or an ancestor): the handle starts on the right and slides to the left, the dual icons
+ * roll the other way.
  */
 .ui-toggleswitch-handler {
     display: flex;
@@ -33,6 +37,23 @@
         & + span {
             opacity: 0;
             transform: rotate(90deg);
+        }
+    }
+
+    /* RTL: the handle rolls to the left, so the icons rotate the other way */
+    &:dir(rtl) .ui-toggleswitch-handler span {
+        transform: rotate(90deg);
+
+        & + span {
+            transform: rotate(0deg);
+        }
+    }
+
+    &.ui-toggleswitch-checked:dir(rtl) .ui-toggleswitch-handler span {
+        transform: rotate(0deg);
+
+        & + span {
+            transform: rotate(-90deg);
         }
     }
 }
@@ -68,7 +89,7 @@
         color: var(--p-toggleswitch-handle-color);
         width: var(--p-toggleswitch-handle-size);
         height: var(--p-toggleswitch-handle-size);
-        left: calc(var(--p-toggleswitch-gap) - var(--p-toggleswitch-border-width));
+        inset-inline-start: calc(var(--p-toggleswitch-gap) - var(--p-toggleswitch-border-width));
         margin-top: calc(-1 * var(--p-toggleswitch-handle-size) / 2);
         border-radius: var(--p-toggleswitch-handle-border-radius);
         font-size: var(--p-toggleswitch-handle-icon-size);
@@ -93,6 +114,10 @@
             background: var(--p-toggleswitch-handle-checked-background);
             color: var(--p-toggleswitch-handle-checked-color);
             transform: translateX(calc(var(--p-toggleswitch-width) - var(--p-toggleswitch-handle-size) - 2 * var(--p-toggleswitch-gap)));
+
+            &:dir(rtl) {
+                transform: translateX(calc(-1 * (var(--p-toggleswitch-width) - var(--p-toggleswitch-handle-size) - 2 * var(--p-toggleswitch-gap))));
+            }
         }
     }
 
@@ -151,4 +176,21 @@
     &.ui-state-readonly .ui-toggleswitch-slider {
         cursor: default;
     }
+}
+
+/* sizes: the size tokens replace the base ones (on the switch or on any parent) */
+.ui-toggleswitch-sm {
+    --p-toggleswitch-width: var(--p-toggleswitch-sm-width);
+    --p-toggleswitch-height: var(--p-toggleswitch-sm-height);
+    --p-toggleswitch-gap: var(--p-toggleswitch-sm-gap);
+    --p-toggleswitch-handle-size: var(--p-toggleswitch-handle-sm-size);
+    --p-toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-sm-icon-size);
+}
+
+.ui-toggleswitch-lg {
+    --p-toggleswitch-width: var(--p-toggleswitch-lg-width);
+    --p-toggleswitch-height: var(--p-toggleswitch-lg-height);
+    --p-toggleswitch-gap: var(--p-toggleswitch-lg-gap);
+    --p-toggleswitch-handle-size: var(--p-toggleswitch-handle-lg-size);
+    --p-toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-lg-icon-size);
 }

@@ -182,6 +182,14 @@
     }
 
     .ql-snow.ql-toolbar {
+        button:focus-visible,
+        .ql-picker-label:focus-visible {
+            outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+            outline-offset: var(--p-focus-ring-offset);
+            box-shadow: var(--p-focus-ring-shadow);
+            border-radius: var(--p-border-radius-xs);
+        }
+
         button:hover,
         button:focus {
             color: var(--p-editor-toolbar-item-hover-color);

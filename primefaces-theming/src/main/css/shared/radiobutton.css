@@ -4,6 +4,7 @@
  *
  * States on .ui-radiobutton-box: ui-state-hover, ui-state-focus, ui-state-active (checked), ui-state-error,
  *                                ui-state-disabled, ui-input-filled (on a parent), ui-state-readonly (on .ui-selectoneradio)
+ * Sizes: ui-radiobutton-sm, ui-radiobutton-lg (on the .ui-radiobutton or a parent)
  */
 .ui-radiobutton {
     position: relative;
@@ -129,4 +130,20 @@
     &.ui-state-disabled {
         background: var(--p-radiobutton-disabled-background);
     }
+}
+
+/*
+ * sizes: ui-radiobutton-sm / ui-radiobutton-lg on the .ui-radiobutton or on any parent (p:selectOneRadio styleClass,
+ * a wrapper): the size tokens replace the base ones
+ */
+.ui-radiobutton-sm {
+    --p-radiobutton-width: var(--p-radiobutton-sm-width);
+    --p-radiobutton-height: var(--p-radiobutton-sm-height);
+    --p-radiobutton-icon-size: var(--p-radiobutton-icon-sm-size);
+}
+
+.ui-radiobutton-lg {
+    --p-radiobutton-width: var(--p-radiobutton-lg-width);
+    --p-radiobutton-height: var(--p-radiobutton-lg-height);
+    --p-radiobutton-icon-size: var(--p-radiobutton-icon-lg-size);
 }

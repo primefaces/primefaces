@@ -2,7 +2,9 @@
  * SelectOneMenu: p:selectOneMenu (PrimeUIX: select)
  *
  * Supported classes: ui-state-hover, ui-state-focus, ui-state-error, ui-state-disabled, ui-state-loading,
- *                    ui-selectonemenu-rtl, ui-input-filled (on a parent), .ui-fluid (on a parent)
+ *                    ui-selectonemenu-rtl, ui-input-filled (on a parent), .ui-fluid (on a parent),
+ *                    ui-selectonemenu-sm, ui-selectonemenu-lg (styleClass)
+ * Panel: ui-select-checkmark (panelStyleClass, a check in front of the selected item)
  * Panel items: ui-state-hover (mouse and keyboard), ui-state-highlight (selected)
  * Variants: editable (input label), filter, groups, custom content (table with columns), footer facet
  */
@@ -118,7 +120,9 @@
         border-color: var(--p-select-hover-border-color);
     }
 
-    &.ui-state-focus {
+    /* the widget sets ui-state-focus; an editable label focused with tab does not get it */
+    &.ui-state-focus,
+    &:has(> .ui-selectonemenu-label:focus-visible) {
         border-color: var(--p-select-focus-border-color);
         outline: var(--p-select-focus-ring-width) var(--p-select-focus-ring-style) var(--p-select-focus-ring-color);
         outline-offset: var(--p-select-focus-ring-offset);
@@ -137,6 +141,24 @@
             color: var(--p-select-disabled-color);
         }
     }
+
+    /* sizes (styleClass): the size tokens replace the base ones (label, fluid and editable follow), the icon follows */
+    &.ui-selectonemenu-sm {
+        --p-select-font-size: var(--p-select-sm-font-size);
+        --p-select-padding-x: var(--p-select-sm-padding-x);
+        --p-select-padding-y: var(--p-select-sm-padding-y);
+    }
+
+    &.ui-selectonemenu-lg {
+        --p-select-font-size: var(--p-select-lg-font-size);
+        --p-select-padding-x: var(--p-select-lg-padding-x);
+        --p-select-padding-y: var(--p-select-lg-padding-y);
+    }
+
+    &.ui-selectonemenu-sm .ui-selectonemenu-trigger .ui-icon,
+    &.ui-selectonemenu-lg .ui-selectonemenu-trigger .ui-icon {
+        font-size: var(--p-select-font-size);
+    }
 }
 
 .ui-selectonemenu-rtl {
@@ -152,7 +174,8 @@
         background: var(--p-select-filled-hover-background);
     }
 
-    &.ui-state-focus {
+    &.ui-state-focus,
+    &:has(> .ui-selectonemenu-label:focus-visible) {
         background: var(--p-select-filled-focus-background);
     }
 
@@ -241,9 +264,15 @@
         cursor: pointer;
     }
 
+    /* the server renders ul.ui-selectonemenu-items.ui-selectonemenu-list, the widget (dynamic / grouped options)
+       div.ui-selectonemenu-items > ul.ui-selectonemenu-list; the items padding below wins when both are one element */
     .ui-selectonemenu-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--p-select-list-gap);
         border: 0 none;
         margin: 0;
+        padding: 0;
         list-style-type: none;
     }
 
@@ -270,12 +299,6 @@
 
     .ui-selectonemenu-items {
         padding: var(--p-select-list-padding);
-
-        &.ui-selectonemenu-list {
-            display: flex;
-            flex-direction: column;
-            gap: var(--p-select-list-gap);
-        }
 
         &.ui-selectonemenu-table > thead tr th {
             background: var(--p-datatable-header-cell-background);
@@ -340,6 +363,32 @@
         color: var(--p-select-option-group-color);
         font-weight: var(--p-select-option-group-font-weight);
         font-size: var(--p-select-option-group-font-size);
+    }
+
+    /*
+     * checkmark mode (panelStyleClass="ui-select-checkmark"): a check in front of the selected option, the others keep
+     * the space of the icon (PrimeUIX blank icon). List items only, not the table of p:column children.
+     */
+    &.ui-select-checkmark .ui-selectonemenu-items li.ui-selectonemenu-item {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: "\2003";
+            flex-shrink: 0;
+            font-size: var(--p-icon-size);
+            line-height: 1;
+            margin-inline-start: var(--p-select-checkmark-gutter-start);
+            margin-inline-end: var(--p-select-checkmark-gutter-end);
+            color: var(--p-select-checkmark-color);
+            background: transparent;
+            forced-color-adjust: none;
+            mask: var(--p-select-checkmark-icon) center / contain no-repeat;
+        }
+
+        &.ui-state-highlight::before {
+            background: currentColor;
+        }
     }
 }
 

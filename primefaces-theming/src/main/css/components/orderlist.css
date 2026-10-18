@@ -159,9 +159,11 @@
         }
     }
 
+    /* responsive: a block, so it can be the size container of the narrow layout below */
     &.ui-grid-responsive {
         display: block;
         width: 100%;
+        container: p-orderlist / inline-size;
 
         .ui-orderlist-list,
         .ui-orderlist-caption {
@@ -174,17 +176,29 @@
     }
 }
 
-@media (max-width: 640px) {
-    .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
-        text-align: center;
-        padding: 0;
-        flex-direction: row;
+/*
+ * narrow orderList (own width, also in narrow columns / sidebars): controls in a row above / below the list. The
+ * ui-g-12 ui-md-2 / ui-md-10 columns follow the viewport, so they are made full width here too.
+ */
+@container p-orderlist (max-width: 640px) {
+    .ui-orderlist.ui-grid-responsive .ui-g > div {
+        width: 100%;
 
-        .ui-button {
-            display: inline-flex;
-            width: 20%;
-            margin-top: var(--p-orderlist-controls-gap);
-            margin-inline-end: var(--p-orderlist-controls-gap);
+        &.ui-orderlist-controls {
+            text-align: center;
+            padding: 0;
+            flex-direction: row;
+
+            .ui-button {
+                display: inline-flex;
+                width: 20%;
+                margin-top: var(--p-orderlist-controls-gap);
+                margin-inline-end: var(--p-orderlist-controls-gap);
+            }
+
+            .ui-button:last-child {
+                margin-inline-end: 0;
+            }
         }
     }
 }

@@ -55,5 +55,7 @@
         --p-icon-warn: url("lucide-static/icons/triangle-alert.svg");
         --p-icon-error: url("lucide-static/icons/circle-x.svg");
         --p-icon-fatal: url("lucide-static/icons/ban.svg");
+
+        --p-icon-loading: url("lucide-static/icons/loader-circle.svg");
     }
 }

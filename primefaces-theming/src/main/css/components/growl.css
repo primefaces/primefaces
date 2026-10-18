@@ -5,6 +5,9 @@
  *         > .ui-growl-icon-close.ui-icon-closethick + span.ui-growl-image + .ui-growl-message (> .ui-growl-title + p)
  * Severity classes only switch the private --_* variables: ui-growl-info | -success | -warn | -error | -fatal
  * States: ui-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css
+ * Variants: ui-growl-outlined | ui-growl-simple, on the .ui-growl container or any ancestor. p:growl has no styleClass
+ * and appends its container to the body, so today: on the body (all growls) or added to the widget container
+ * (PF('growl').jq.addClass('ui-growl-outlined')); a styleClass / variant attribute in the core would set it there.
  */
 
 .ui-growl {
@@ -23,6 +26,9 @@
         --_close-hover-bg: var(--p-toast-info-close-button-hover-background);
         --_close-focus-ring-color: var(--p-toast-info-close-button-focus-ring-color);
         --_close-focus-ring-shadow: var(--p-toast-info-close-button-focus-ring-shadow);
+        --_outlined-color: var(--p-toast-info-outlined-color);
+        --_outlined-border-color: var(--p-toast-info-outlined-border-color);
+        --_simple-color: var(--p-toast-info-simple-color);
 
         margin: 0 0 var(--p-growl-gap) 0;
         background: var(--_bg);
@@ -41,6 +47,9 @@
             --_close-hover-bg: var(--p-toast-success-close-button-hover-background);
             --_close-focus-ring-color: var(--p-toast-success-close-button-focus-ring-color);
             --_close-focus-ring-shadow: var(--p-toast-success-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-toast-success-outlined-color);
+            --_outlined-border-color: var(--p-toast-success-outlined-border-color);
+            --_simple-color: var(--p-toast-success-simple-color);
         }
 
         &.ui-growl-warn {
@@ -52,6 +61,9 @@
             --_close-hover-bg: var(--p-toast-warn-close-button-hover-background);
             --_close-focus-ring-color: var(--p-toast-warn-close-button-focus-ring-color);
             --_close-focus-ring-shadow: var(--p-toast-warn-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-toast-warn-outlined-color);
+            --_outlined-border-color: var(--p-toast-warn-outlined-border-color);
+            --_simple-color: var(--p-toast-warn-simple-color);
         }
 
         &.ui-growl-error {
@@ -63,6 +75,9 @@
             --_close-hover-bg: var(--p-toast-error-close-button-hover-background);
             --_close-focus-ring-color: var(--p-toast-error-close-button-focus-ring-color);
             --_close-focus-ring-shadow: var(--p-toast-error-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-toast-error-outlined-color);
+            --_outlined-border-color: var(--p-toast-error-outlined-border-color);
+            --_simple-color: var(--p-toast-error-simple-color);
         }
 
         &.ui-growl-fatal {
@@ -74,6 +89,9 @@
             --_close-hover-bg: var(--p-growl-fatal-close-button-hover-background);
             --_close-focus-ring-color: var(--p-growl-fatal-close-button-focus-ring-color);
             --_close-focus-ring-shadow: var(--p-growl-fatal-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-growl-fatal-outlined-color);
+            --_outlined-border-color: var(--p-growl-fatal-outlined-border-color);
+            --_simple-color: var(--p-growl-fatal-simple-color);
         }
 
         .ui-growl-item {
@@ -130,7 +148,9 @@
             flex-shrink: 0;
             width: var(--p-toast-icon-size);
             height: var(--p-toast-icon-size);
-            margin: var(--p-toast-icon-margin);
+            /* centered on the first line of the title (the content is top aligned for multi line texts) */
+            margin: 0;
+            margin-block-start: calc((var(--p-typography-line-height) * var(--p-toast-summary-font-size) - var(--p-toast-icon-size)) / 2);
             font-size: var(--p-toast-icon-size);
             line-height: 1;
             color: var(--_color);
@@ -190,6 +210,7 @@
         .ui-growl-title {
             font-size: var(--p-toast-summary-font-size);
             font-weight: var(--p-toast-summary-font-weight);
+            line-height: var(--p-typography-line-height);
         }
 
         .ui-growl-message p {
@@ -199,6 +220,33 @@
             text-wrap: pretty;
         }
     }
+}
+
+/*
+ * Variants. :is() gives (0,3,0) whether the class is on the container itself or on an ancestor, so the variant wins
+ * over the severity rules (same specificity, later), which switch the same private variables.
+ * outlined: overlay surface, colored border, summary and icon (like ui-message-outlined).
+ * simple: no border and no severity tint, colored summary and icon. The overlay background and shadow stay: the growl
+ * floats over arbitrary content and would be unreadable (and indistinguishable from it) without them.
+ */
+:is(.ui-growl-outlined.ui-growl, .ui-growl-outlined .ui-growl) .ui-growl-item-container {
+    --_bg: var(--p-toast-outlined-background);
+    --_border-color: var(--_outlined-border-color);
+    --_color: var(--_outlined-color);
+    --_detail-color: var(--p-toast-outlined-detail-color);
+    --_shadow: var(--p-toast-outlined-shadow);
+    --_close-hover-bg: var(--p-toast-outlined-close-button-hover-background);
+
+    border-width: var(--p-toast-outlined-border-width);
+}
+
+:is(.ui-growl-simple.ui-growl, .ui-growl-simple .ui-growl) .ui-growl-item-container {
+    --_bg: var(--p-toast-simple-background);
+    --_border-color: transparent;
+    --_color: var(--_simple-color);
+    --_detail-color: var(--p-toast-simple-detail-color);
+    --_shadow: var(--p-toast-simple-shadow);
+    --_close-hover-bg: var(--p-toast-simple-close-button-hover-background);
 }
 
 .ui-growl-item-container {

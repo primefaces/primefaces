@@ -319,6 +319,28 @@
                     </c:forEach>
                 </div>
                 <p:growl widgetVar="growlClient" showDetail="true" for="growl-client-key"/>
+
+                <h3>Variants: ui-growl-outlined / ui-growl-simple (p:growl has no styleClass: the class is added to the growl container)</h3>
+                <div class="demo-row demo-severities">
+                    <c:forEach items="#{themingNextOverlaysView.severities}" var="sev">
+                        <p:commandButton type="button" value="Outlined #{sev}" styleClass="ui-button-outlined"
+                                         onclick="PF('growlOutlined').add({summary: '#{sev} message', detail: 'Outlined growl', severity: '#{sev}'})"/>
+                    </c:forEach>
+                </div>
+                <div class="demo-row demo-severities">
+                    <c:forEach items="#{themingNextOverlaysView.severities}" var="sev">
+                        <p:commandButton type="button" value="Simple #{sev}" styleClass="ui-button-text"
+                                         onclick="PF('growlSimple').add({summary: '#{sev} message', detail: 'Simple growl', severity: '#{sev}'})"/>
+                    </c:forEach>
+                </div>
+                <p:growl widgetVar="growlOutlined" showDetail="true" for="growl-outlined-key"/>
+                <p:growl widgetVar="growlSimple" showDetail="true" for="growl-simple-key"/>
+                <script>
+                    $(function () {
+                        PF('growlOutlined').jq.addClass('ui-growl-outlined');
+                        PF('growlSimple').jq.addClass('ui-growl-simple');
+                    });
+                </script>
             </div>
 
             <!-- ============================== Messages ============================== -->
@@ -327,10 +349,10 @@
                 <h3>Closable with detail / summary only / without icon</h3>
                 <div class="demo-row">
                     <p:commandButton value="Show messages" icon="pi pi-envelope" action="#{themingNextOverlaysView.showMessages}"
-                                     update="messages messagesSummary messagesNoIcon" process="@this"/>
+                                     update="messages messagesSummary messagesNoIcon messagesVariants" process="@this"/>
                     <p:commandButton value="Multiple per severity" icon="pi pi-list" styleClass="ui-button-secondary"
                                      action="#{themingNextOverlaysView.showMultipleMessages}"
-                                     update="messages messagesSummary messagesNoIcon" process="@this"/>
+                                     update="messages messagesSummary messagesNoIcon messagesVariants" process="@this"/>
                 </div>
                 <div class="demo-grid">
                     <div>
@@ -346,6 +368,28 @@
                         <p:messages id="messagesNoIcon" for="messages-key" showDetail="true" showIcon="false" closable="true"/>
                     </div>
                 </div>
+                <h:panelGroup id="messagesVariants" layout="block" styleClass="demo-grid">
+                    <div>
+                        <h3>styleClass="ui-message-outlined"</h3>
+                        <p:messages for="messages-key" showDetail="true" closable="true" styleClass="ui-message-outlined"/>
+                    </div>
+                    <div>
+                        <h3>styleClass="ui-message-simple"</h3>
+                        <p:messages for="messages-key" showDetail="true" closable="true" styleClass="ui-message-simple"/>
+                    </div>
+                    <div>
+                        <h3>styleClass="ui-message-sm"</h3>
+                        <p:messages for="messages-key" showDetail="true" closable="true" styleClass="ui-message-sm"/>
+                    </div>
+                    <div>
+                        <h3>styleClass="ui-message-lg"</h3>
+                        <p:messages for="messages-key" showDetail="true" closable="true" styleClass="ui-message-lg"/>
+                    </div>
+                    <div dir="rtl">
+                        <h3>RTL, ui-message-outlined</h3>
+                        <p:messages for="messages-key" showDetail="true" closable="true" styleClass="ui-message-outlined"/>
+                    </div>
+                </h:panelGroup>
             </div>
 
             <!-- ============================== Message ============================== -->
@@ -354,7 +398,7 @@
                 <h3>All severities, display both / icon / text</h3>
                 <div class="demo-row">
                     <p:commandButton value="Show inline messages" icon="pi pi-comment" action="#{themingNextOverlaysView.showInlineMessages}"
-                                     update="inlineMessages" process="@this"/>
+                                     update="inlineMessages inlineMessageVariants" process="@this"/>
                     <p:commandButton id="validateBtn" value="Validate (required)" icon="pi pi-check-circle" styleClass="ui-button-secondary"
                                      process="@this required" update="required requiredMsg"/>
                 </div>
@@ -374,6 +418,15 @@
                         </h:panelGroup>
                     </c:forEach>
                 </h:panelGroup>
+                <h3>Variants and sizes (styleClass="ui-message-outlined | ui-message-simple | ui-message-sm | ui-message-lg")</h3>
+                <h:panelGroup id="inlineMessageVariants" layout="block" style="display: grid; grid-template-columns: repeat(4, max-content); gap: .75rem 1.5rem; align-items: center">
+                    <c:forEach items="#{['Info', 'Warn', 'Error', 'Fatal']}" var="sev">
+                        <p:message for="msg#{sev}" showDetail="true" styleClass="ui-message-outlined"/>
+                        <p:message for="msg#{sev}" showDetail="true" styleClass="ui-message-simple"/>
+                        <p:message for="msg#{sev}" showDetail="true" styleClass="ui-message-sm"/>
+                        <p:message for="msg#{sev}" showDetail="true" styleClass="ui-message-lg"/>
+                    </c:forEach>
+                </h:panelGroup>
                 <h3>Validation (required field)</h3>
                 <div class="demo-row">
                     <p:inputText id="required" required="true" placeholder="Required" requiredMessage="Value is required"/>
@@ -391,6 +444,38 @@
                     <p:staticMessage severity="warn" summary="Warn" detail="Message content of a warn message"/>
                     <p:staticMessage severity="error" summary="Error" detail="Message content of an error message"/>
                     <p:staticMessage severity="fatal" summary="Fatal" detail="Message content of a fatal message"/>
+                    <p:staticMessage severity="secondary" summary="Secondary" detail="Message content of a secondary message"/>
+                    <p:staticMessage severity="contrast" summary="Contrast" detail="Message content of a contrast message"/>
+                </div>
+                <h3>Outlined (styleClass="ui-message-outlined")</h3>
+                <div style="display: flex; flex-direction: column; gap: 1rem">
+                    <c:forEach items="#{['info', 'success', 'warn', 'error', 'fatal', 'secondary', 'contrast']}" var="sev">
+                        <p:staticMessage severity="#{sev}" summary="#{sev}" detail="Outlined #{sev} message" styleClass="ui-message-outlined"/>
+                    </c:forEach>
+                    <p:staticMessage severity="error" summary="Closable" detail="Outlined, the close button is inline" closable="true" styleClass="ui-message-outlined"/>
+                </div>
+                <h3>Simple (styleClass="ui-message-simple")</h3>
+                <div style="display: flex; flex-direction: column; gap: .5rem">
+                    <c:forEach items="#{['info', 'success', 'warn', 'error', 'fatal', 'secondary', 'contrast']}" var="sev">
+                        <p:staticMessage severity="#{sev}" summary="#{sev}" detail="Simple #{sev} message" styleClass="ui-message-simple"/>
+                    </c:forEach>
+                    <p:staticMessage severity="warn" summary="Closable" detail="Simple, the close button is inline" closable="true" styleClass="ui-message-simple"/>
+                </div>
+                <h3>Sizes (styleClass="ui-message-sm" / "ui-message-lg")</h3>
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; padding: .75rem .75rem 0 0">
+                    <p:staticMessage severity="info" summary="Small" detail="ui-message-sm" styleClass="ui-message-sm" closable="true"/>
+                    <p:staticMessage severity="info" summary="Normal" detail="no size class" closable="true"/>
+                    <p:staticMessage severity="info" summary="Large" detail="ui-message-lg" styleClass="ui-message-lg" closable="true"/>
+                    <p:staticMessage severity="success" summary="Small outlined" detail="ui-message-sm ui-message-outlined" styleClass="ui-message-sm ui-message-outlined" closable="true"/>
+                </div>
+                <h3>Secondary / contrast closable, RTL</h3>
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; padding: .75rem .75rem 0 .75rem">
+                    <p:staticMessage severity="secondary" summary="Secondary" detail="Closable secondary message" closable="true"/>
+                    <p:staticMessage severity="contrast" summary="Contrast" detail="Closable contrast message" closable="true"/>
+                    <div dir="rtl" style="display: flex; flex-direction: column; gap: 1.25rem">
+                        <p:staticMessage severity="contrast" summary="RTL" detail="Closable contrast message" closable="true"/>
+                        <p:staticMessage severity="secondary" summary="RTL" detail="Outlined, closable" closable="true" styleClass="ui-message-outlined"/>
+                    </div>
                 </div>
                 <h3>Closable</h3>
                 <div style="display: flex; flex-direction: column; gap: 1.25rem; padding: .75rem .75rem 0 0">

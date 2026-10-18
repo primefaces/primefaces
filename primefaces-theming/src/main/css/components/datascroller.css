@@ -2,17 +2,9 @@
  * DataScroller: p:dataScroller (document and inline mode, loader facet, virtual scroll)
  *
  * No own PrimeUIX component: styled with the dataview tokens (+ PrimeFaces dataview tokens).
- * The default loading indicator is a CSS spinner.
+ * The default loading indicator (an empty div.ui-datascroller-loading-default without loading facet) is the
+ * --p-dataview-loading-icon spinner (ui-spin keyframes of components/ajaxstatus.css).
  */
-@keyframes ui-datascroller-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 .ui-datascroller {
     .ui-datascroller-header {
@@ -74,10 +66,11 @@
         height: var(--p-dataview-loading-icon-size);
         margin: 0 auto;
         padding: 0;
-        border: var(--p-dataview-loading-icon-border-width) solid var(--p-dataview-loading-icon-track-color);
-        border-top-color: var(--p-dataview-loading-icon-color);
-        border-radius: 50%;
-        animation: ui-datascroller-spin var(--p-dataview-loading-icon-animation-duration) linear infinite;
+        color: var(--p-dataview-loading-icon-color);
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-dataview-loading-icon) center / contain no-repeat;
+        animation: ui-spin var(--p-dataview-loading-icon-animation-duration) linear infinite;
     }
 }
 

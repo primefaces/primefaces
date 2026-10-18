@@ -2,7 +2,8 @@
  * Tag: p:tag
  *
  * Markup: span.ui-tag > span.ui-tag-icon?, span.ui-tag-value
- * Supported classes: ui-tag-success | -info | -warning | -danger | -secondary | -help, ui-tag-rounded, ui-tag-outlined
+ * Supported classes: ui-tag-success | -info | -warning | -danger | -secondary | -help, ui-tag-rounded, ui-tag-outlined,
+ *                    ui-tag-contrast (styleClass only, the severity attribute does not know it)
  */
 
 .ui-tag {
@@ -59,6 +60,11 @@
         color: var(--p-tag-help-color);
     }
 
+    &.ui-tag-contrast {
+        background: var(--p-tag-contrast-background);
+        color: var(--p-tag-contrast-color);
+    }
+
     /* outlined (outlined="true"): the border is an inset shadow, so outlined and filled tags have the same size */
     &.ui-tag-outlined {
         --_border-color: var(--p-tag-outlined-primary-border-color);
@@ -94,6 +100,11 @@
         &.ui-tag-help {
             --_border-color: var(--p-tag-outlined-help-border-color);
             color: var(--p-tag-outlined-help-color);
+        }
+
+        &.ui-tag-contrast {
+            --_border-color: var(--p-tag-outlined-contrast-border-color);
+            color: var(--p-tag-outlined-contrast-color);
         }
     }
 

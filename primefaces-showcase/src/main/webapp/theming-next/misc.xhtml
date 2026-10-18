@@ -113,10 +113,22 @@
                     <p:badge value="12" severity="warning"/>
                     <p:badge value="5" severity="help"/>
                     <p:badge value="3" severity="danger"/>
+                    <p:badge value="9" styleClass="ui-badge-contrast"/>
                 </div>
 
-                <h3>Sizes (normal, large, xlarge) and dot</h3>
+                <h3>Contrast (styleClass="ui-badge-contrast")</h3>
                 <div class="demo-row">
+                    <p:badge value="9" styleClass="ui-badge-contrast"/>
+                    <p:badge value="99+" styleClass="ui-badge-contrast" size="large"/>
+                    <p:badge icon="pi pi-bell" styleClass="ui-badge-contrast"/>
+                    <p:badge styleClass="ui-badge-contrast"/>
+                </div>
+
+                <h3>Sizes (styleClass="ui-badge-sm", normal, large, xlarge) and dot</h3>
+                <div class="demo-row">
+                    <p:badge value="1" styleClass="ui-badge-sm"/>
+                    <p:badge value="99+" styleClass="ui-badge-sm" severity="danger"/>
+                    <p:badge icon="pi pi-check" styleClass="ui-badge-sm" severity="success"/>
                     <p:badge value="2"/>
                     <p:badge value="4" size="large" severity="warning"/>
                     <p:badge value="6" size="xlarge" severity="success"/>
@@ -221,6 +233,16 @@
                     <p:tag value="Warning" severity="warning"/>
                     <p:tag value="Help" severity="help"/>
                     <p:tag value="Danger" severity="danger"/>
+                    <p:tag value="Contrast" styleClass="ui-tag-contrast"/>
+                </div>
+
+                <h3>Contrast (styleClass="ui-tag-contrast"), also outlined / rounded / icon</h3>
+                <div class="demo-row">
+                    <p:tag value="Contrast" styleClass="ui-tag-contrast"/>
+                    <p:tag value="Outlined" styleClass="ui-tag-contrast" outlined="true"/>
+                    <p:tag value="Rounded" styleClass="ui-tag-contrast" rounded="true"/>
+                    <p:tag value="Icon" icon="pi pi-star" styleClass="ui-tag-contrast"/>
+                    <p:tag value="Icon" icon="pi pi-star" styleClass="ui-tag-contrast" outlined="true" rounded="true"/>
                 </div>
 
                 <h3>Outlined (outlined="true"), also rounded and with icon</h3>
@@ -483,6 +505,31 @@
                                     showIndicatorsOnItem="true" indicatorsPosition="right">
                             <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
                         </p:galleria>
+                    </div>
+                    <div>
+                        <h3>RTL (dir="rtl" on a wrapper): thumbnails, item navigators, caption</h3>
+                        <div dir="rtl">
+                            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" circular="true" showItemNavigators="true"
+                                        showCaption="true">
+                                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                                <f:facet name="caption">
+                                    <div style="font-weight: 600">#{photo.title}</div>
+                                    <div>#{photo.alt}</div>
+                                </f:facet>
+                                <f:facet name="thumbnail">
+                                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block"/>
+                                </f:facet>
+                            </p:galleria>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>RTL: indicators on item, right</h3>
+                        <div dir="rtl">
+                            <p:galleria value="#{galleriaView.photos}" var="photo" showThumbnails="false" showIndicators="true"
+                                        showIndicatorsOnItem="true" indicatorsPosition="right" showItemNavigators="true">
+                                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                            </p:galleria>
+                        </div>
                     </div>
                     <div>
                         <h3>Full screen</h3>

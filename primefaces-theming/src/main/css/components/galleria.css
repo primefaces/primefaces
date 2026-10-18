@@ -4,6 +4,9 @@
  * Supported classes: ui-galleria-indicators-{top|right|bottom|left}, ui-galleria-indicator-onitem,
  *                    ui-galleria-thumbnails-{top|right|bottom|left}, ui-galleria-item-nav-onhover,
  *                    ui-galleria-fullscreen, ui-galleria-mask (fullScreen)
+ *
+ * RTL (dir="rtl" on the galleria or an ancestor): navigators, close button and inset indicators use logical positions,
+ * the slides and thumbnails are mirrored (see below).
  */
 .ui-galleria-content {
     display: flex;
@@ -34,11 +37,11 @@
 }
 
 .ui-galleria-item-prev {
-    left: 0;
+    inset-inline-start: 0;
 }
 
 .ui-galleria-item-next {
-    right: 0;
+    inset-inline-end: 0;
 }
 
 .ui-galleria-items {
@@ -241,13 +244,13 @@
 
     &.ui-galleria-indicators-top .ui-galleria-indicators {
         top: 0;
-        left: 0;
+        inset-inline-start: 0;
         width: 100%;
         align-items: flex-start;
     }
 
     &.ui-galleria-indicators-right .ui-galleria-indicators {
-        right: 0;
+        inset-inline-end: 0;
         top: 0;
         height: 100%;
         align-items: flex-end;
@@ -255,13 +258,13 @@
 
     &.ui-galleria-indicators-bottom .ui-galleria-indicators {
         bottom: 0;
-        left: 0;
+        inset-inline-start: 0;
         width: 100%;
         align-items: flex-end;
     }
 
     &.ui-galleria-indicators-left .ui-galleria-indicators {
-        left: 0;
+        inset-inline-start: 0;
         top: 0;
         height: 100%;
         align-items: flex-start;
@@ -302,7 +305,7 @@
 .ui-galleria-close {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -318,9 +321,27 @@
     }
 }
 
+/*
+ * RTL: the widget slides the items, captions and thumbnails with a negative translate, so these strips keep the LTR
+ * layout and are mirrored as a whole; each item is mirrored back (and gets its RTL direction back).
+ */
+.ui-galleria-items:dir(rtl),
+.ui-galleria-caption-items:dir(rtl),
+.ui-galleria-thumbnail-container:dir(rtl) {
+    direction: ltr;
+    scale: -1 1;
+}
+
+.ui-galleria-item:dir(rtl),
+.ui-galleria-caption-item:dir(rtl),
+.ui-galleria-thumbnail-item:dir(rtl) {
+    direction: rtl;
+    scale: -1 1;
+}
+
 /* button reset of all galleria buttons (navigators, indicators, close) */
 .ui-galleria-link {
-    text-align: left;
+    text-align: start;
     background-color: transparent;
     margin: 0;
     padding: 0;
@@ -333,6 +354,14 @@
     border: var(--p-galleria-border-width) solid var(--p-galleria-border-color);
     border-radius: var(--p-galleria-border-radius);
     overflow: hidden;
+    outline-color: transparent;
+
+    /* the root is focusable (keyboard navigation of the items) */
+    &:focus-visible {
+        outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+        outline-offset: var(--p-focus-ring-offset);
+        box-shadow: var(--p-focus-ring-shadow);
+    }
 
     &.ui-galleria-fullscreen {
         border: 0 none;
@@ -382,6 +411,15 @@
             border-radius: var(--p-galleria-nav-button-next-border-radius);
         }
 
+        /* RTL: prev sits on the right, next on the left */
+        &.ui-galleria-item-prev:dir(rtl) {
+            border-radius: var(--p-galleria-nav-button-next-border-radius);
+        }
+
+        &.ui-galleria-item-next:dir(rtl) {
+            border-radius: var(--p-galleria-nav-button-prev-border-radius);
+        }
+
         .ui-galleria-item-prev-icon,
         .ui-galleria-item-next-icon {
             font-style: normal;
@@ -402,6 +440,11 @@
             background: currentColor;
             forced-color-adjust: none;
             mask: var(--p-galleria-next-icon) center / contain no-repeat;
+        }
+
+        .ui-galleria-item-prev-icon:dir(rtl):before,
+        .ui-galleria-item-next-icon:dir(rtl):before {
+            scale: -1 1;
         }
 
         &:not(.ui-state-disabled):hover {

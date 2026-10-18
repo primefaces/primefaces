@@ -5,6 +5,7 @@
  * Supported classes on .ui-chkbox-box: ui-state-hover, ui-state-focus, ui-state-active (checked),
  *                                      ui-state-error (invalid), ui-state-disabled, ui-chkbox-readonly,
  *                                      ui-input-filled (on a parent), ui-state-readonly (on a parent)
+ * Sizes: ui-chkbox-sm, ui-chkbox-lg (on the .ui-chkbox or a parent)
  * Icons: ui-icon-check (checked), ui-icon-minus (partially checked), ui-icon-closethick (tri state "false")
  */
 .ui-chkbox {
@@ -161,4 +162,20 @@
     &.ui-state-disabled {
         background: var(--p-checkbox-disabled-background);
     }
+}
+
+/*
+ * sizes: ui-chkbox-sm / ui-chkbox-lg on the .ui-chkbox (p:selectBooleanCheckbox styleClass) or on any parent
+ * (p:selectManyCheckbox / p:triStateCheckbox styleClass, a wrapper): the size tokens replace the base ones
+ */
+.ui-chkbox-sm {
+    --p-checkbox-width: var(--p-checkbox-sm-width);
+    --p-checkbox-height: var(--p-checkbox-sm-height);
+    --p-checkbox-icon-size: var(--p-checkbox-icon-sm-size);
+}
+
+.ui-chkbox-lg {
+    --p-checkbox-width: var(--p-checkbox-lg-width);
+    --p-checkbox-height: var(--p-checkbox-lg-height);
+    --p-checkbox-icon-size: var(--p-checkbox-icon-lg-size);
 }

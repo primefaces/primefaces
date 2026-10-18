@@ -48,6 +48,7 @@
   - [Responsive Design](/core/responsive.md)
   - [Search Expression](/core/searchexpression.md)
   - [Themes](/core/themes.md)
+  - [Theming (design tokens)](/core/theming.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
   - [Widgets](/core/widgets.md)
   - [Misc](/core/misc.md)

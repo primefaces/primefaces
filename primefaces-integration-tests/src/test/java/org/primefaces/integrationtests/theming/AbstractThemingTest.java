@@ -52,6 +52,9 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
             + "var probe = document.createElement('div');"
             + "probe.style.setProperty('color-scheme', cs.getPropertyValue('color-scheme'));"
             + "probe.style.setProperty('color', cs.getPropertyValue('color'));"
+            // border / outline widths compute to 0 without a style
+            + "probe.style.setProperty('border-style', 'solid');"
+            + "probe.style.setProperty('outline-style', 'solid');"
             + "document.body.appendChild(probe);"
             + "probe.style.setProperty(prop, raw);"
             + "var applied = raw !== '' && probe.style.getPropertyValue(prop) !== '';"
@@ -103,6 +106,35 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
 
     protected String computedStyle(WebElement element, String property) {
         return PrimeSelenium.executeScript("return getComputedStyle(arguments[0]).getPropertyValue(arguments[1]);", element, property);
+    }
+
+    /**
+     * Asserts that the computed property of the element equals the resolved value of the token, for properties where the
+     * color sentinel of {@link #assertTokenWired} does not apply (lengths, timing functions, ...).
+     */
+    protected void assertTokenValue(String description, WebElement element, String property, String token) {
+        List<Object> result = PrimeSelenium.executeScript(RESOLVE_SCRIPT, element, property, token);
+        String tokenValue = (String) result.get(0);
+        String expected = (String) result.get(1);
+        String actual = (String) result.get(2);
+        String message = description + ": " + property + " / " + token + " (token value '" + tokenValue + "')";
+
+        assertFalse(tokenValue.isEmpty(), message + ": token is not defined");
+        assertNotNull(expected, message + ": token value is not a valid " + property);
+        assertEquals(expected, actual, message);
+    }
+
+    /**
+     * @return the value the token resolves to on the element as computed value of the property (e.g. "14px" for a rem
+     *         length), null if the token is not defined or not valid for the property
+     */
+    protected String resolveToken(WebElement element, String property, String token) {
+        List<Object> result = PrimeSelenium.executeScript(RESOLVE_SCRIPT, element, property, token);
+        return (String) result.get(1);
+    }
+
+    protected static double pixels(String value) {
+        return Double.parseDouble(value.replace("px", "").trim());
     }
 
     protected String tokenValue(WebElement element, String token) {

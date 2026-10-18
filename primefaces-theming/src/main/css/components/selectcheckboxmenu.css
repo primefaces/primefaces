@@ -2,7 +2,8 @@
  * SelectCheckboxMenu: p:selectCheckboxMenu (PrimeUIX: multiselect)
  *
  * Supported classes: ui-state-hover, ui-state-focus, ui-state-error, ui-state-disabled, ui-input-filled (on a parent),
- *                    ui-selectcheckboxmenu-multiple (chips mode), .ui-fluid (on a parent)
+ *                    ui-selectcheckboxmenu-multiple (chips mode), .ui-fluid (on a parent),
+ *                    ui-selectcheckboxmenu-sm, ui-selectcheckboxmenu-lg (styleClass)
  * Panel items: ui-state-hover (mouse and keyboard), ui-state-highlight (selected)
  * Variants: filter, toggle all checkbox, close icon, groups, table with columns (p:column children)
  */
@@ -122,6 +123,24 @@
         .ui-selectcheckboxmenu-label {
             color: var(--p-multiselect-disabled-color);
         }
+    }
+
+    /* sizes (styleClass): the size tokens replace the base ones (label and chips mode follow), the icon follows */
+    &.ui-selectcheckboxmenu-sm {
+        --p-multiselect-font-size: var(--p-multiselect-sm-font-size);
+        --p-multiselect-padding-x: var(--p-multiselect-sm-padding-x);
+        --p-multiselect-padding-y: var(--p-multiselect-sm-padding-y);
+    }
+
+    &.ui-selectcheckboxmenu-lg {
+        --p-multiselect-font-size: var(--p-multiselect-lg-font-size);
+        --p-multiselect-padding-x: var(--p-multiselect-lg-padding-x);
+        --p-multiselect-padding-y: var(--p-multiselect-lg-padding-y);
+    }
+
+    &.ui-selectcheckboxmenu-sm .ui-selectcheckboxmenu-trigger .ui-icon,
+    &.ui-selectcheckboxmenu-lg .ui-selectcheckboxmenu-trigger .ui-icon {
+        font-size: var(--p-multiselect-font-size);
     }
 
     /*

@@ -2,7 +2,8 @@
  * SelectOneListbox / SelectManyMenu: p:selectOneListbox, p:selectManyMenu (PrimeUIX: listbox)
  *
  * The container is also a .ui-inputfield, so it overrides the field look of shared/inputfield.css.
- * Supported classes: ui-state-error, ui-state-disabled, ui-input-filled (on a parent), .ui-fluid (on a parent)
+ * Supported classes: ui-state-error, ui-state-disabled, ui-input-filled (on a parent), .ui-fluid (on a parent),
+ *                    ui-listbox-striped, ui-listbox-checkmark (styleClass)
  * Items: ui-state-hover, ui-state-highlight (selected), ui-listbox-outline (keyboard focus)
  * Variants: filter, showCheckbox (p:selectManyMenu), custom content (table with p:column children)
  */
@@ -149,8 +150,53 @@
         }
     }
 
+    /* striped (styleClass="ui-listbox-striped"): every second option, the states keep their own background */
+    &.ui-listbox-striped .ui-selectlistbox-listcontainer .ui-selectlistbox-list
+        .ui-selectlistbox-item:nth-child(even of .ui-selectlistbox-item):not(.ui-state-hover, .ui-state-highlight, .ui-listbox-outline) {
+        background: var(--p-listbox-option-striped-background);
+    }
+
+    /*
+     * checkmark (styleClass="ui-listbox-checkmark"): a check in front of the selected option(s), the others keep the
+     * space of the icon (PrimeUIX blank icon); the selected background stays. List items only, not the table of
+     * p:column children.
+     */
+    &.ui-listbox-checkmark .ui-selectlistbox-listcontainer .ui-selectlistbox-list li.ui-selectlistbox-item {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: "\2003";
+            flex-shrink: 0;
+            font-size: var(--p-icon-size);
+            line-height: 1;
+            margin-inline-start: var(--p-listbox-checkmark-gutter-start);
+            margin-inline-end: var(--p-listbox-checkmark-gutter-end);
+            color: var(--p-listbox-checkmark-color);
+            background: transparent;
+            forced-color-adjust: none;
+            mask: var(--p-listbox-checkmark-icon) center / contain no-repeat;
+        }
+
+        &.ui-state-highlight::before {
+            background: currentColor;
+        }
+    }
+
     /* keyboard focus */
     .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-listbox-outline {
+        outline: 0 none;
+        background: var(--p-listbox-option-focus-background);
+        color: var(--p-listbox-option-focus-color);
+
+        &.ui-state-highlight {
+            background: var(--p-listbox-option-selected-focus-background);
+            color: var(--p-listbox-option-selected-focus-color);
+        }
+    }
+
+    /* an option reached with tab (tabindex on the item) */
+    .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item:focus-visible {
         outline: 0 none;
         background: var(--p-listbox-option-focus-background);
         color: var(--p-listbox-option-focus-color);

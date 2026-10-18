@@ -321,6 +321,18 @@
                         selection="#{themingNextDataView.checkedHorizontalNodes}">
                     <p:treeNode icon="pi pi-users">#{node}</p:treeNode>
                 </p:tree>
+
+                <h3>Horizontal, RTL (dir="rtl" on the tree)</h3>
+                <p:tree value="#{themingNextDataView.horizontalTree}" var="node" orientation="horizontal" selectionMode="single" dir="rtl">
+                    <p:treeNode>#{node}</p:treeNode>
+                </p:tree>
+
+                <h3>Horizontal, checkbox, RTL (dir="rtl" on a wrapper)</h3>
+                <div dir="rtl">
+                    <p:tree value="#{themingNextDataView.horizontalCheckboxTree}" var="node" orientation="horizontal" selectionMode="checkbox">
+                        <p:treeNode icon="pi pi-users">#{node}</p:treeNode>
+                    </p:tree>
+                </div>
             </div>
 
             <!-- ================= OrderList ================= -->
@@ -508,6 +520,16 @@
                     <p:organigramNode type="division" icon="pi pi-briefcase" iconPos="left">#{node.data}</p:organigramNode>
                     <p:organigramNode type="employee" icon="pi pi-user">#{node.data}</p:organigramNode>
                 </p:organigram>
+
+                <h3>RTL (dir="rtl" on a wrapper)</h3>
+                <div dir="rtl">
+                    <p:organigram value="#{organigramView.rootNode}" var="node" zoom="true" leafNodeConnectorHeight="10" style="height: 500px">
+                        <p:organigramNode>#{node.data}</p:organigramNode>
+                        <p:organigramNode type="root">#{node.data}</p:organigramNode>
+                        <p:organigramNode type="division" icon="pi pi-briefcase" iconPos="left">#{node.data}</p:organigramNode>
+                        <p:organigramNode type="employee" icon="pi pi-user">#{node.data}</p:organigramNode>
+                    </p:organigram>
+                </div>
             </div>
 
             <!-- ================= Diagram ================= -->

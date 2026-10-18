@@ -273,6 +273,26 @@
                             <i class="pi pi-lock" style="margin-right: .5rem"></i>Locked
                         </p:blockUI>
                     </div>
+
+                    <div>
+                        <h3>No content: loading spinner, styleClass="ui-blockui-light"</h3>
+                        <p:panel id="blockLight" header="Light mask">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <p:commandButton id="blockLightLoad" value="Reload (1.5s)" icon="pi pi-refresh" action="#{themingNextLayoutView.slow}"
+                                             update="growl"/>
+                        </p:panel>
+                        <p:blockUI block="blockLight" trigger="blockLightLoad" styleClass="ui-blockui-light"/>
+                    </div>
+
+                    <div dir="rtl">
+                        <h3>RTL, no content (modal mask)</h3>
+                        <p:panel id="blockRtl" header="لوحة">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p:commandButton id="blockRtlLoad" value="Reload (1.5s)" icon="pi pi-refresh" action="#{themingNextLayoutView.slow}"
+                                             update="growl"/>
+                        </p:panel>
+                        <p:blockUI block="blockRtl" trigger="blockRtlLoad"/>
+                    </div>
                 </div>
             </div>
 
@@ -304,6 +324,36 @@
                         <div style="margin-top: .5rem">Please wait</div>
                     </div>
                 </p:dialog>
+
+                <h3>ui-ajaxstatus-bar: an element in the start facet (progress bar at the top of the viewport)</h3>
+                <div class="demo-row">
+                    <p:ajaxStatus>
+                        <f:facet name="start">
+                            <div class="ui-ajaxstatus-bar"></div>
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:commandButton value="Send ajax request (1.5s)" icon="pi pi-send" action="#{themingNextLayoutView.slow}"
+                                     update="growl"/>
+                </div>
+
+                <h3>styleClass="ui-ajaxstatus-bar" on p:ajaxStatus (needs a start facet, its content is hidden)</h3>
+                <p class="muted">Both bars react to every ajax request of the page (p:ajaxStatus is global).</p>
+                <p:ajaxStatus styleClass="ui-ajaxstatus-bar">
+                    <f:facet name="start">
+                        <h:outputText value="Loading"/>
+                    </f:facet>
+                </p:ajaxStatus>
+
+                <h3>Inline ajax status: p:commandLink (ui-state-loading), p:commandButton</h3>
+                <div class="demo-row">
+                    <p:commandLink value="Save via link (1.5s)" action="#{themingNextLayoutView.slow}" update="growl"/>
+                    <p:commandButton value="Button (1.5s)" icon="pi pi-check" action="#{themingNextLayoutView.slow}" update="growl"/>
+                    <p:commandButton value="Text only (1.5s)" action="#{themingNextLayoutView.slow}" update="growl"
+                                     styleClass="ui-button-outlined"/>
+                </div>
+                <div class="demo-row" dir="rtl" style="margin-top: .75rem">
+                    <p:commandLink value="RTL link (1.5s)" action="#{themingNextLayoutView.slow}" update="growl"/>
+                </div>
             </div>
 
             <!-- ============================== Spotlight ============================== -->
@@ -483,6 +533,30 @@
                         </ui:repeat>
                     </tr>
                 </table>
+            </div>
+
+            <!-- ============================== Container queries ============================== -->
+            <div class="demo-card">
+                <h2>Container queries: pickList / orderList</h2>
+                <div class="muted">responsive="true" pickList and orderList react to their own width, not the viewport:
+                    in a 320px column they stack (buttons in a row between / above the lists) on a wide screen too.</div>
+                <div class="demo-row" style="align-items: flex-start">
+                    <div style="width: 320px; max-width: 100%">
+                        <h3>p:pickList (320px column)</h3>
+                        <p:pickList value="#{themingNextDataView.pickCities}" var="city" itemLabel="#{city}" itemValue="#{city}"
+                                    showSourceControls="true" showTargetControls="true" responsive="true">
+                            <f:facet name="sourceCaption">Available</f:facet>
+                            <f:facet name="targetCaption">Selected</f:facet>
+                        </p:pickList>
+                    </div>
+                    <div style="width: 320px; max-width: 100%">
+                        <h3>p:orderList (320px column)</h3>
+                        <p:orderList value="#{themingNextDataView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"
+                                     responsive="true">
+                            <f:facet name="caption">Cities</f:facet>
+                        </p:orderList>
+                    </div>
+                </div>
             </div>
 
             <div style="height: 40vh"></div>

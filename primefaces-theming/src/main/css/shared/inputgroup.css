@@ -10,11 +10,11 @@
     width: 100%;
 
     .ui-inputgroup-addon + .ui-inputgroup-addon {
-        border-left: 0 none;
+        border-inline-start: 0 none;
     }
 
     > .ui-password:not(.ui-inputfield) {
-        padding-left: 0;
+        padding-inline-start: 0;
     }
 
     /* inner borders: collapse the border between two neighbours */
@@ -31,9 +31,9 @@
     > .ui-autocomplete:not(:first-child) > .ui-autocomplete-input,
     > .ui-spinner:not(:first-child),
     > .ui-spinner:not(:first-child) > .ui-spinner-input {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-left: 0 none;
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        border-inline-start: 0 none;
     }
 
     > .ui-inputtext:not(:last-child),
@@ -50,13 +50,13 @@
     > .ui-spinner:not(:last-child),
     > .ui-spinner:not(:last-child) > .ui-spinner-input,
     > .ui-spinner:not(:last-child) > .ui-spinner-button {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border-right: 0 none;
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+        border-inline-end: 0 none;
     }
 
     .ui-button {
-        margin-right: 0;
+        margin-inline-end: 0;
         border-radius: 0;
     }
 
@@ -112,13 +112,13 @@
         font-weight: var(--p-inputgroup-addon-font-weight);
 
         &:first-child {
-            border-top-left-radius: var(--p-inputgroup-addon-border-radius);
-            border-bottom-left-radius: var(--p-inputgroup-addon-border-radius);
+            border-start-start-radius: var(--p-inputgroup-addon-border-radius);
+            border-end-start-radius: var(--p-inputgroup-addon-border-radius);
         }
 
         &:last-child {
-            border-top-right-radius: var(--p-inputgroup-addon-border-radius);
-            border-bottom-right-radius: var(--p-inputgroup-addon-border-radius);
+            border-start-end-radius: var(--p-inputgroup-addon-border-radius);
+            border-end-end-radius: var(--p-inputgroup-addon-border-radius);
         }
     }
 
@@ -130,45 +130,45 @@
     /* outer corners of widgets that are not a plain input / button (p:selectOneMenu, p:selectCheckboxMenu, ...), like PrimeUIX */
     > .ui-widget:first-child,
     > .ui-float-label:first-child > .ui-widget {
-        border-top-left-radius: var(--p-inputgroup-addon-border-radius);
-        border-bottom-left-radius: var(--p-inputgroup-addon-border-radius);
+        border-start-start-radius: var(--p-inputgroup-addon-border-radius);
+        border-end-start-radius: var(--p-inputgroup-addon-border-radius);
     }
 
     > .ui-widget:last-child,
     > .ui-float-label:last-child > .ui-widget {
-        border-top-right-radius: var(--p-inputgroup-addon-border-radius);
-        border-bottom-right-radius: var(--p-inputgroup-addon-border-radius);
+        border-start-end-radius: var(--p-inputgroup-addon-border-radius);
+        border-end-end-radius: var(--p-inputgroup-addon-border-radius);
     }
 
     button:first-child,
     input:first-child,
     textarea:first-child {
-        border-top-left-radius: var(--p-inputgroup-addon-border-radius);
-        border-bottom-left-radius: var(--p-inputgroup-addon-border-radius);
+        border-start-start-radius: var(--p-inputgroup-addon-border-radius);
+        border-end-start-radius: var(--p-inputgroup-addon-border-radius);
     }
 
     .ui-float-label:first-child {
         input,
         textarea {
-            border-right-width: 0;
-            border-top-left-radius: var(--p-inputgroup-addon-border-radius);
-            border-bottom-left-radius: var(--p-inputgroup-addon-border-radius);
+            border-inline-end-width: 0;
+            border-start-start-radius: var(--p-inputgroup-addon-border-radius);
+            border-end-start-radius: var(--p-inputgroup-addon-border-radius);
         }
     }
 
     button:last-child,
     input:last-child,
     textarea:last-child {
-        border-top-right-radius: var(--p-inputgroup-addon-border-radius);
-        border-bottom-right-radius: var(--p-inputgroup-addon-border-radius);
+        border-start-end-radius: var(--p-inputgroup-addon-border-radius);
+        border-end-end-radius: var(--p-inputgroup-addon-border-radius);
     }
 
     .ui-float-label:last-child {
         input,
         textarea {
-            border-left-width: 0;
-            border-top-right-radius: var(--p-inputgroup-addon-border-radius);
-            border-bottom-right-radius: var(--p-inputgroup-addon-border-radius);
+            border-inline-start-width: 0;
+            border-start-end-radius: var(--p-inputgroup-addon-border-radius);
+            border-end-end-radius: var(--p-inputgroup-addon-border-radius);
         }
     }
 
@@ -196,18 +196,18 @@
             vertical-align: baseline;
             position: absolute;
             top: 50%;
-            left: 50%;
+            inset-inline-start: 50%;
             margin-top: calc(-1 * var(--p-checkbox-height) / 2);
-            margin-left: calc(-1 * var(--p-checkbox-width) / 2);
+            margin-inline-start: calc(-1 * var(--p-checkbox-width) / 2);
         }
 
         .ui-radiobutton {
             margin: 0;
             position: absolute;
             top: 50%;
-            left: 50%;
+            inset-inline-start: 50%;
             margin-top: calc(-1 * var(--p-radiobutton-height) / 2);
-            margin-left: calc(-1 * var(--p-radiobutton-width) / 2);
+            margin-inline-start: calc(-1 * var(--p-radiobutton-width) / 2);
         }
     }
 }

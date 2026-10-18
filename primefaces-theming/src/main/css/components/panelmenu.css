@@ -109,14 +109,16 @@
 
         &:not(.ui-state-disabled):hover,
         &.ui-state-hover,
-        &:not(.ui-state-disabled):focus-visible {
+        &:not(.ui-state-disabled):focus-visible,
+        &:not(.ui-state-disabled):has(> a:focus-visible) {
             background: var(--p-panelmenu-item-focus-background);
             color: var(--p-panelmenu-item-focus-color);
         }
 
         &:not(.ui-state-disabled):hover .ui-icon,
         &.ui-state-hover .ui-icon,
-        &:not(.ui-state-disabled):focus-visible .ui-icon {
+        &:not(.ui-state-disabled):focus-visible .ui-icon,
+        &:not(.ui-state-disabled):has(> a:focus-visible) .ui-icon {
             color: var(--p-panelmenu-item-icon-focus-color);
         }
 
@@ -125,7 +127,9 @@
         &.ui-state-hover .ui-icon.ui-icon-triangle-1-e,
         &.ui-state-hover .ui-icon.ui-icon-triangle-1-s,
         &:not(.ui-state-disabled):focus-visible .ui-icon.ui-icon-triangle-1-e,
-        &:not(.ui-state-disabled):focus-visible .ui-icon.ui-icon-triangle-1-s {
+        &:not(.ui-state-disabled):has(> a:focus-visible) .ui-icon.ui-icon-triangle-1-e,
+        &:not(.ui-state-disabled):focus-visible .ui-icon.ui-icon-triangle-1-s,
+        &:not(.ui-state-disabled):has(> a:focus-visible) .ui-icon.ui-icon-triangle-1-s {
             color: var(--p-panelmenu-submenu-icon-focus-color);
         }
     }
@@ -221,7 +225,8 @@
         /* hover and focused item (the widget puts ui-menuitem-outline on the text of the focused item) */
         &:not(.ui-state-disabled):hover,
         &.ui-state-hover,
-        &:has(> .ui-menuitem-outline) {
+        &:has(> .ui-menuitem-outline),
+        &:not(.ui-state-disabled):focus-visible {
             background: var(--p-panelmenu-item-focus-background);
             color: var(--p-panelmenu-item-focus-color);
         }
@@ -232,19 +237,22 @@
 
         &:not(.ui-state-disabled):hover span.ui-icon,
         &.ui-state-hover span.ui-icon,
-        &:has(> .ui-menuitem-outline) span.ui-icon {
+        &:has(> .ui-menuitem-outline) span.ui-icon,
+        &:not(.ui-state-disabled):focus-visible span.ui-icon {
             color: var(--p-panelmenu-item-icon-focus-color);
         }
 
         &:not(.ui-state-disabled):hover span.ui-icon.ui-panelmenu-icon,
         &.ui-state-hover span.ui-icon.ui-panelmenu-icon,
-        &:has(> .ui-menuitem-outline) span.ui-icon.ui-panelmenu-icon {
+        &:has(> .ui-menuitem-outline) span.ui-icon.ui-panelmenu-icon,
+        &:not(.ui-state-disabled):focus-visible span.ui-icon.ui-panelmenu-icon {
             color: var(--p-panelmenu-submenu-icon-focus-color);
         }
 
         &:not(.ui-state-disabled):hover .ui-menuitem-text,
         &.ui-state-hover .ui-menuitem-text,
-        &:has(> .ui-menuitem-outline) .ui-menuitem-text {
+        &:has(> .ui-menuitem-outline) .ui-menuitem-text,
+        &:not(.ui-state-disabled):focus-visible .ui-menuitem-text {
             color: var(--p-panelmenu-item-focus-color);
         }
     }

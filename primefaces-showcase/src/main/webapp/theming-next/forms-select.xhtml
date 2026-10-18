@@ -38,6 +38,27 @@
                     <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.unchecked}"/>
                 </div>
 
+                <h3>Sizes (styleClass ui-chkbox-sm / ui-chkbox-lg)</h3>
+                <div class="demo-row">
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.checked}" itemLabel="Small" styleClass="ui-chkbox-sm"/>
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.checked}" itemLabel="Default"/>
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.checked}" itemLabel="Large" styleClass="ui-chkbox-lg"/>
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.checked}" itemLabel="Small disabled" styleClass="ui-chkbox-sm" disabled="true"/>
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.unchecked}" itemLabel="Large invalid" styleClass="ui-chkbox-lg">
+                        <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                    </p:selectBooleanCheckbox>
+                </div>
+
+                <h3>Sizes on a parent (div class="ui-chkbox-sm" / "ui-chkbox-lg", RTL)</h3>
+                <div class="demo-row ui-chkbox-sm">
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.checked}" itemLabel="Small"/>
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.unchecked}" itemLabel="Small"/>
+                </div>
+                <div class="demo-row ui-chkbox-lg" dir="rtl">
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.checked}" itemLabel="Large (rtl)"/>
+                    <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.unchecked}" itemLabel="Large (rtl)"/>
+                </div>
+
                 <h3>Filled variant (ui-input-filled)</h3>
                 <div class="demo-row ui-input-filled">
                     <p:selectBooleanCheckbox value="#{themingNextFormsSelectView.unchecked}" itemLabel="Unchecked"/>
@@ -70,6 +91,14 @@
                                         stateTwoIcon="pi pi-thumbs-up" stateThreeIcon="pi pi-thumbs-down"/>
                     <p:triStateCheckbox value="#{themingNextFormsSelectView.triFalse}" itemLabel="Disabled" disabled="true"/>
                     <p:triStateCheckbox value="#{themingNextFormsSelectView.triTrue}" itemLabel="Readonly" readonly="true"/>
+                </div>
+
+                <h3>Sizes (styleClass ui-chkbox-sm / ui-chkbox-lg)</h3>
+                <div class="demo-row">
+                    <p:triStateCheckbox value="#{themingNextFormsSelectView.triTrue}" itemLabel="Small" styleClass="ui-chkbox-sm"/>
+                    <p:triStateCheckbox value="#{themingNextFormsSelectView.triFalse}" itemLabel="Small" styleClass="ui-chkbox-sm"/>
+                    <p:triStateCheckbox value="#{themingNextFormsSelectView.triTrue}" itemLabel="Large" styleClass="ui-chkbox-lg"/>
+                    <p:triStateCheckbox value="#{themingNextFormsSelectView.triFalse}" itemLabel="Large" styleClass="ui-chkbox-lg"/>
                 </div>
             </div>
 
@@ -123,6 +152,18 @@
                         <p:selectManyCheckbox value="#{themingNextFormsSelectView.noCities}">
                             <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
                             <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                        </p:selectManyCheckbox>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Sizes (styleClass ui-chkbox-sm / ui-chkbox-lg)</h3>
+                        <p:selectManyCheckbox value="#{themingNextFormsSelectView.selectedCities}" styleClass="ui-chkbox-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectManyCheckbox>
+                        <p:selectManyCheckbox value="#{themingNextFormsSelectView.selectedCities}" styleClass="ui-chkbox-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectManyCheckbox>
+                        <p:selectManyCheckbox value="#{themingNextFormsSelectView.selectedCities}" styleClass="ui-chkbox-lg" disabled="true">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
                         </p:selectManyCheckbox>
                     </div>
                     <div class="demo-field ui-input-filled">
@@ -183,6 +224,28 @@
                             <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
                         </p:selectOneRadio>
                     </div>
+                    <div class="demo-field">
+                        <h3>Sizes (styleClass ui-radiobutton-sm / ui-radiobutton-lg)</h3>
+                        <p:selectOneRadio value="#{themingNextFormsSelectView.city}" styleClass="ui-radiobutton-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectOneRadio>
+                        <p:selectOneRadio value="#{themingNextFormsSelectView.city}" styleClass="ui-radiobutton-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectOneRadio>
+                        <p:selectOneRadio value="#{themingNextFormsSelectView.city}" styleClass="ui-radiobutton-lg" disabled="true">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectOneRadio>
+                        <p:selectOneRadio value="#{themingNextFormsSelectView.noCity}" styleClass="ui-radiobutton-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                        </p:selectOneRadio>
+                    </div>
+                    <div class="demo-field ui-radiobutton-sm" dir="rtl">
+                        <h3>Size on a parent, RTL (div class="ui-radiobutton-sm")</h3>
+                        <p:selectOneRadio value="#{themingNextFormsSelectView.city}" layout="pageDirection">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectOneRadio>
+                    </div>
                     <div class="demo-field ui-input-filled">
                         <h3>Filled</h3>
                         <p:selectOneRadio value="#{themingNextFormsSelectView.city}">
@@ -209,6 +272,26 @@
                     <p:toggleSwitch value="#{themingNextFormsSelectView.unchecked}">
                         <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
                     </p:toggleSwitch>
+                </div>
+
+                <h3>Sizes (styleClass="ui-toggleswitch-sm" / default / "ui-toggleswitch-lg")</h3>
+                <div class="demo-row">
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.unchecked}" styleClass="ui-toggleswitch-sm"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}" styleClass="ui-toggleswitch-sm" onIcon="pi pi-check" offIcon="pi pi-times"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.unchecked}"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}" onIcon="pi pi-check" offIcon="pi pi-times"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.unchecked}" styleClass="ui-toggleswitch-lg"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}" styleClass="ui-toggleswitch-lg" onIcon="pi pi-check" offIcon="pi pi-times"/>
+                </div>
+
+                <h3>RTL (dir="rtl" on a wrapper): off / on / dual icons / sizes</h3>
+                <div class="demo-row" dir="rtl">
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.unchecked}"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.unchecked}" onIcon="pi pi-check" offIcon="pi pi-times"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}" onIcon="pi pi-check" offIcon="pi pi-times"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}" styleClass="ui-toggleswitch-sm"/>
+                    <p:toggleSwitch value="#{themingNextFormsSelectView.checked}" styleClass="ui-toggleswitch-lg"/>
                 </div>
             </div>
 
@@ -369,6 +452,55 @@
                             <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
                         </p:selectOneMenu>
                     </div>
+                    <div class="demo-field">
+                        <h3>Sizes (styleClass ui-selectonemenu-sm / ui-selectonemenu-lg)</h3>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" styleClass="ui-selectonemenu-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" styleClass="ui-selectonemenu-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Sizes editable / disabled / invalid</h3>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" editable="true" styleClass="ui-selectonemenu-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" disabled="true" styleClass="ui-selectonemenu-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.noCity}" styleClass="ui-selectonemenu-lg">
+                            <f:selectItem itemLabel="Select a city" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="demo-field ui-fluid">
+                        <h3>Sizes fluid / RTL</h3>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" styleClass="ui-selectonemenu-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" styleClass="ui-selectonemenu-lg" dir="rtl">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Checkmark (panelStyleClass ui-select-checkmark)</h3>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" panelStyleClass="ui-select-checkmark">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.noCity}" panelStyleClass="ui-select-checkmark" filter="true"
+                                         filterMatchMode="contains">
+                            <f:selectItem itemLabel="Select a city" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{themingNextFormsSelectView.groupedCities}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{themingNextFormsSelectView.city}" panelStyleClass="ui-select-checkmark" dir="rtl">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneMenu>
+                    </div>
                 </div>
             </div>
 
@@ -444,6 +576,75 @@
                             <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
                         </p:selectCheckboxMenu>
                     </div>
+                    <div class="demo-field">
+                        <h3>Sizes (styleClass ui-selectcheckboxmenu-sm / ui-selectcheckboxmenu-lg)</h3>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.selectedCities}" label="Cities" styleClass="ui-selectcheckboxmenu-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.selectedCities}" label="Cities">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.selectedCities}" label="Cities" styleClass="ui-selectcheckboxmenu-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Sizes chips / disabled / invalid</h3>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.selectedCities}" multiple="true" style="min-width: 16rem"
+                                              styleClass="ui-selectcheckboxmenu-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.selectedCities}" multiple="true" style="min-width: 16rem"
+                                              styleClass="ui-selectcheckboxmenu-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.selectedCities}" label="Cities" disabled="true"
+                                              styleClass="ui-selectcheckboxmenu-sm">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectCheckboxMenu>
+                        <p:selectCheckboxMenu value="#{themingNextFormsSelectView.noCities}" label="Cities" styleClass="ui-selectcheckboxmenu-lg">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                        </p:selectCheckboxMenu>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CascadeSelect sizes (the other states: forms-text.xhtml) -->
+            <div class="demo-card">
+                <h2>CascadeSelect</h2>
+                <div class="demo-grid">
+                    <div class="demo-field">
+                        <h3>Sizes (styleClass ui-cascadeselect-sm / ui-cascadeselect-lg)</h3>
+                        <p:cascadeSelect value="#{themingNextFormsSelectView.noCity}" style="min-width: 14rem" placeholder="Small"
+                                         styleClass="ui-cascadeselect-sm">
+                            <f:selectItems value="#{cascadeSelectView.countries}"/>
+                        </p:cascadeSelect>
+                        <p:cascadeSelect value="#{themingNextFormsSelectView.noCity}" style="min-width: 14rem" placeholder="Default">
+                            <f:selectItems value="#{cascadeSelectView.countries}"/>
+                        </p:cascadeSelect>
+                        <p:cascadeSelect value="#{themingNextFormsSelectView.noCity}" style="min-width: 14rem" placeholder="Large"
+                                         styleClass="ui-cascadeselect-lg">
+                            <f:selectItems value="#{cascadeSelectView.countries}"/>
+                        </p:cascadeSelect>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Sizes disabled / invalid / fluid</h3>
+                        <p:cascadeSelect value="#{themingNextFormsSelectView.noCity}" style="min-width: 14rem" placeholder="Small disabled"
+                                         styleClass="ui-cascadeselect-sm" disabled="true">
+                            <f:selectItems value="#{cascadeSelectView.countries}"/>
+                        </p:cascadeSelect>
+                        <p:cascadeSelect value="#{themingNextFormsSelectView.noCity}" style="min-width: 14rem" placeholder="Large invalid"
+                                         styleClass="ui-cascadeselect-lg">
+                            <f:selectItems value="#{cascadeSelectView.countries}"/>
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                        </p:cascadeSelect>
+                        <div class="ui-fluid">
+                            <p:cascadeSelect value="#{themingNextFormsSelectView.noCity}" placeholder="Large fluid" styleClass="ui-cascadeselect-lg">
+                                <f:selectItems value="#{cascadeSelectView.countries}"/>
+                            </p:cascadeSelect>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -499,6 +700,52 @@
                         <p:selectOneListbox value="#{themingNextFormsSelectView.city}">
                             <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 8)}"/>
                         </p:selectOneListbox>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Striped (styleClass ui-listbox-striped)</h3>
+                        <p:selectOneListbox value="#{themingNextFormsSelectView.city}" styleClass="ui-listbox-striped">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneListbox>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Striped SelectManyMenu (checkbox) / disabled</h3>
+                        <p:selectManyMenu value="#{themingNextFormsSelectView.selectedCities}" showCheckbox="true" styleClass="ui-listbox-striped">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(0, 5)}"/>
+                        </p:selectManyMenu>
+                        <p:selectOneListbox value="#{themingNextFormsSelectView.city}" disabled="true" styleClass="ui-listbox-striped">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 8)}"/>
+                        </p:selectOneListbox>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Checkmark (styleClass ui-listbox-checkmark)</h3>
+                        <p:selectOneListbox value="#{themingNextFormsSelectView.city}" styleClass="ui-listbox-checkmark">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities}"/>
+                        </p:selectOneListbox>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Checkmark SelectManyMenu / filter, groups, striped</h3>
+                        <p:selectManyMenu value="#{themingNextFormsSelectView.selectedCities}" styleClass="ui-listbox-checkmark">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(0, 5)}"/>
+                        </p:selectManyMenu>
+                        <p:selectOneListbox value="#{themingNextFormsSelectView.city}" filter="true" filterMatchMode="contains"
+                                            styleClass="ui-listbox-checkmark ui-listbox-striped">
+                            <f:selectItems value="#{themingNextFormsSelectView.groupedCities}"/>
+                        </p:selectOneListbox>
+                    </div>
+                    <div class="demo-field">
+                        <h3>Checkmark RTL / disabled / invalid</h3>
+                        <div dir="rtl">
+                            <p:selectOneListbox value="#{themingNextFormsSelectView.city}" styleClass="ui-listbox-checkmark">
+                                <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                            </p:selectOneListbox>
+                        </div>
+                        <p:selectOneListbox value="#{themingNextFormsSelectView.city}" disabled="true" styleClass="ui-listbox-checkmark">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                        </p:selectOneListbox>
+                        <p:selectManyMenu value="#{themingNextFormsSelectView.noCities}" styleClass="ui-listbox-checkmark">
+                            <f:selectItems value="#{themingNextFormsSelectView.cities.subList(4, 7)}"/>
+                            <f:event type="preRenderComponent" listener="#{themingNextFormsSelectView.markInvalid}"/>
+                        </p:selectManyMenu>
                     </div>
                 </div>
 
