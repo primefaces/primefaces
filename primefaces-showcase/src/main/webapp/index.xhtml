@@ -39,32 +39,21 @@
                 <!-- ═══ LOGO STRIP (inside hero) ════════════════════════════════ -->
                 <div class="landing-logos">
                     <div class="landing-logos-track">
+                        <!-- customer logos [file, name, width, height]: white SVGs, drawn as a mask in the text color -->
+                        <ui:param name="customerLogos" value="#{[['fox', 'Fox', 92, 40], ['airbus', 'Airbus', 109, 19], ['nike', 'Nike', 118, 42],
+                                ['mercedes', 'Mercedes', 37, 38], ['ebay', 'eBay', 85, 35], ['ford', 'Ford', 77, 32], ['vw', 'VW', 39, 40],
+                                ['unicredit', 'UniCredit', 116, 27], ['lufthansa', 'Lufthansa', 115, 21], ['nvidia', 'Nvidia', 86, 17],
+                                ['verizon', 'Verizon', 102, 17], ['sap', 'SAP', 90, 45]]}"/>
                         <div class="landing-logos-inner">
-                            <p:graphicImage name="images/whouses/fox.svg"       library="showcase" alt="Fox" />
-                            <p:graphicImage name="images/whouses/airbus.svg"    library="showcase" alt="Airbus" />
-                            <p:graphicImage name="images/whouses/nike.svg"      library="showcase" alt="Nike" />
-                            <p:graphicImage name="images/whouses/mercedes.svg"  library="showcase" alt="Mercedes" />
-                            <p:graphicImage name="images/whouses/ebay.svg"      library="showcase" alt="eBay" />
-                            <p:graphicImage name="images/whouses/ford.svg"      library="showcase" alt="Ford" />
-                            <p:graphicImage name="images/whouses/vw.svg"        library="showcase" alt="VW" />
-                            <p:graphicImage name="images/whouses/unicredit.svg" library="showcase" alt="UniCredit" />
-                            <p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" alt="Lufthansa" />
-                            <p:graphicImage name="images/whouses/nvidia.svg"    library="showcase" alt="Nvidia" />
-                            <p:graphicImage name="images/whouses/verizon.svg"   library="showcase" alt="Verizon" />
-                            <p:graphicImage name="images/whouses/sap.svg"       library="showcase" alt="SAP" />
+                            <ui:repeat value="#{customerLogos}" var="logo">
+                                <span class="landing-logo" role="img" aria-label="#{logo[1]}"
+                                      style="--logo: url('#{resource['showcase:images/whouses/'.concat(logo[0]).concat('.svg')]}'); aspect-ratio: #{logo[2]} / #{logo[3]}"></span>
+                            </ui:repeat>
                             <!-- duplicate for seamless scroll -->
-                            <p:graphicImage name="images/whouses/fox.svg"       library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/airbus.svg"    library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/nike.svg"      library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/mercedes.svg"  library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/ebay.svg"      library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/ford.svg"      library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/vw.svg"        library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/unicredit.svg" library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/nvidia.svg"    library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/verizon.svg"   library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/sap.svg"       library="showcase" alt="" aria-hidden="true"/>
+                            <ui:repeat value="#{customerLogos}" var="logo">
+                                <span class="landing-logo" aria-hidden="true"
+                                      style="--logo: url('#{resource['showcase:images/whouses/'.concat(logo[0]).concat('.svg')]}'); aspect-ratio: #{logo[2]} / #{logo[3]}"></span>
+                            </ui:repeat>
                         </div>
                     </div>
                 </div>

@@ -262,24 +262,22 @@
     width: max-content;
     animation: landing-scroll 30s linear infinite;
 
-    img {
-        height: 22px;
-        width: auto;
-        opacity: .45;
-        filter: brightness(0);
-        transition: opacity .2s;
+    // the logo (a white SVG) as mask in the text color: follows light / dark without filters
+    .landing-logo {
+        display: block;
         flex-shrink: 0;
+        height: 22px;
+        background: currentColor;
+        color: var(--text-color);
+        opacity: .45;
+        transition: opacity .2s;
+        mask: var(--logo) center / contain no-repeat;
+        -webkit-mask: var(--logo) center / contain no-repeat;
 
         &:hover {
             opacity: .75;
         }
     }
-}
-
-/* Logos are forced to solid black for a uniform strip; invert them to white
-   on dark themes so they stay visible. */
-html[data-dark="true"] .landing-logos-inner img {
-    filter: brightness(0) invert(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
