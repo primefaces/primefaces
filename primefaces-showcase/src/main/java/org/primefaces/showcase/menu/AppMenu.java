@@ -99,7 +99,8 @@ public class AppMenu {
         coreMenuItems.add(new MenuItem("Accessiblity", "/accessibility"));
         coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
         coreMenuItems.add(new MenuItem("PrimeIcons", "/icons"));
-        coreMenuItems.add(new MenuItem("Theming", "/theming"));
+        coreMenuItems.add(new MenuItem("Theming", "/theming", "New"));
+        coreMenuItems.add(new MenuItem("Theming Tokens", "/theming/tokens", "New"));
         menuCategories.add(new MenuCategory("Core", coreMenuItems));
         //CORE FRAMEWORK CATEGORY END
 

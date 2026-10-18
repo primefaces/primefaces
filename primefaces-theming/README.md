@@ -256,11 +256,20 @@ Overlays, sidebars and the legacy `ui-g` grid stay on viewport media queries.
 
 ## Showcase
 
-`primefaces-showcase` → `/theming-next.xhtml` plus one page per component group under `/theming-next/` (forms, data,
-panels, overlays, menus, misc, layout) with theme / color scheme / density / primary color switchers (light/dark with a
-view transition), the Theme Designer (`/theming-next/designer.xhtml`: live editing of the main tokens, generates the CSS)
-and the token reference (`/theming-next/tokens.xhtml`: all tokens of the current theme, searchable, with computed
-values, color swatches and icon previews).
+`primefaces-showcase` runs on primefaces-theming: `primefaces.THEME` is `#{app.theme}`, the preset of the session
+(`?theme=aura|lara|nora|metal|glass` switches it). `resources/theming/showcase.css` maps the variables of the
+showcase layout (`--surface-a`, `--primary-color`, ...) to the tokens, so topbar, menu and footer follow the preset.
+
+- **Theme configurator** on every page (both showcase templates): the palette button at the right edge opens it as an
+  overlay: preset, color scheme (light/dark with a view transition), input style, density, primary color, surface
+  palette, border radius, typography, focus ring, form field and the CSS of the changes. Everything but the preset is
+  set on `<html>` on the client and kept in `localStorage` (`theming/configurator.xhtml` +
+  `resources/theming/configurator.js/.css`).
+- Menu Core → **Theming** (`/theming.xhtml`): a rough overview of the style, one representative per component
+  (`theming/sections/*.xhtml`: buttons / menus, form, selection, DataTable, data, panels, overlays / messages,
+  misc, scoping) with sticky jump links.
+- Menu Core → **Theming Tokens** (`/theming/tokens.xhtml`): all tokens of the current theme, searchable, with
+  computed values, color swatches and icon previews.
 
 ## Tests
 

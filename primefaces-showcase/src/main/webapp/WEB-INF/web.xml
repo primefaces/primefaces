@@ -58,7 +58,7 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>#{view.viewId eq '/theming-next.xhtml' or view.viewId.startsWith('/theming-next/') ? (param.theme eq 'lara' or param.theme eq 'nora' or param.theme eq 'metal' or param.theme eq 'glass' ? param.theme : 'aura') : app.theme}</param-value>
+        <param-value>#{app.theme}</param-value>
     </context-param>
     <context-param>
         <param-name>primefaces.DIR</param-name>

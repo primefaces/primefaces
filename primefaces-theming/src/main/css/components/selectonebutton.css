@@ -98,9 +98,12 @@
     }
 }
 
+/* label and icon sit on the pill (position: relative, above the ::before) */
 .ui-selectonebutton > .ui-button > .ui-button-text,
 .ui-selectmanybutton > .ui-button > .ui-button-text,
 .ui-button.ui-selectbooleanbutton > .ui-button-text,
+.ui-selectonebutton > .ui-button > .ui-button-icon-left,
+.ui-selectmanybutton > .ui-button > .ui-button-icon-left,
 .ui-button.ui-selectbooleanbutton > .ui-button-icon-left {
     position: relative;
     padding: var(--p-togglebutton-content-padding);
@@ -108,6 +111,8 @@
     cursor: inherit;
 }
 
+.ui-selectonebutton > .ui-button,
+.ui-selectmanybutton > .ui-button,
 .ui-button.ui-selectbooleanbutton {
     /* icon + label: the pill padding goes around both, the gap sits between them */
     > .ui-button-icon-left {
@@ -139,11 +144,11 @@
     &.ui-state-active > .ui-button-icon-left {
         color: var(--p-togglebutton-icon-checked-color);
     }
+}
 
-    /* invalid */
-    &.ui-state-error {
-        border-color: var(--p-togglebutton-invalid-border-color);
-    }
+/* invalid */
+.ui-button.ui-selectbooleanbutton.ui-state-error {
+    border-color: var(--p-togglebutton-invalid-border-color);
 }
 
 /* disabled */
@@ -164,6 +169,8 @@
     }
 }
 
+.ui-selectonebutton > .ui-button.ui-state-disabled > .ui-button-icon-left,
+.ui-selectmanybutton > .ui-button.ui-state-disabled > .ui-button-icon-left,
 .ui-button.ui-selectbooleanbutton.ui-state-disabled > .ui-button-icon-left {
     color: var(--p-togglebutton-icon-disabled-color);
 }

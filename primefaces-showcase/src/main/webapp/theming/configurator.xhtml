@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough">
+    <!--
+        Theme configurator: a palette button at the right edge opens it as an overlay. Preset, color scheme, density,
+        primary color and the main tokens. Self-contained (markup here, logic and styles in
+        resources/theming/configurator.js/.css), so it can be included in any showcase page.
+        Included by the showcase templates (WEB-INF/template.xhtml, template-landing.xhtml); the preset is app.theme.
+    -->
+    <h:outputStylesheet library="theming" name="configurator.css"/>
+    <h:outputScript library="theming" name="configurator.js" target="head"/>
+
+    <ui:param name="presets" value="#{[
+            ['aura', 'Aura', 'Soft and modern, the PrimeReact / PrimeVue default (PrimeUIX Aura).'],
+            ['lara', 'Lara', 'Classic PrimeFaces look with stronger borders (PrimeUIX Lara).'],
+            ['nora', 'Nora', 'Compact and angular, solid selections for enterprise apps (PrimeUIX Nora).'],
+            ['metal', 'Metal', 'Graphite and brushed aluminium (light), black metal (dark): metal edges, turned knobs, anodized severities.'],
+            ['glass', 'Glass', 'Apple Liquid Glass style: translucent overlays, menus and bars that blur the page behind them, capsule buttons.']]}"/>
+
+    <h:form id="cfgForm">
+        <button type="button" id="cfgToggle" class="cfg-toggle ui-button ui-widget ui-button-icon-only" aria-controls="cfgPanel"
+                aria-expanded="false" title="Theme configurator" onclick="cfg.toggle()">
+            <span class="ui-button-icon-left ui-icon ui-c pi pi-palette"></span>
+            <span class="ui-button-text ui-c">Theme</span>
+        </button>
+
+        <aside id="cfgPanel" class="cfg" aria-label="Theme configurator" tabindex="-1">
+            <div class="cfg-header">
+                <h2>Theme</h2>
+                <p:commandButton type="button" value="Reset" icon="pi pi-refresh" styleClass="ui-button-flat ui-button-secondary ui-button-sm"
+                                 onclick="cfg.resetAll()" title="Reset color scheme, density, primary color and tokens"/>
+                <p:commandButton type="button" icon="pi pi-times" styleClass="cfg-close ui-button-flat ui-button-secondary ui-button-sm"
+                                 onclick="cfg.toggle(false)" title="Close" pt:aria-label="Close"/>
+            </div>
+
+            <details class="cfg-group" open="open">
+                <summary>Preset <span class="cfg-hint">primefaces.THEME</span></summary>
+                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Preset">
+                    <ui:repeat value="#{presets}" var="p">
+                        <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only #{app.theme eq p[0] ? 'ui-state-active' : ''}"
+                                aria-pressed="#{app.theme eq p[0]}" onclick="cfg.preset('#{p[0]}')">
+                            <span class="ui-button-text ui-c">#{p[1]}</span>
+                        </button>
+                    </ui:repeat>
+                </div>
+                <ui:repeat value="#{presets}" var="p">
+                    <h:panelGroup rendered="#{app.theme eq p[0]}" layout="block" styleClass="cfg-note">#{p[2]}</h:panelGroup>
+                </ui:repeat>
+
+                <div class="cfg-label">Color scheme <span class="cfg-hint">color-scheme</span></div>
+                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Color scheme">
+                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-icon-left" data-cfg-scheme="light" onclick="cfg.scheme('light')">
+                        <span class="ui-button-icon-left ui-icon ui-c pi pi-sun"></span><span class="ui-button-text ui-c">Light</span>
+                    </button>
+                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-icon-left" data-cfg-scheme="dark" onclick="cfg.scheme('dark')">
+                        <span class="ui-button-icon-left ui-icon ui-c pi pi-moon"></span><span class="ui-button-text ui-c">Dark</span>
+                    </button>
+                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-icon-left" data-cfg-scheme="system" onclick="cfg.scheme('system')">
+                        <span class="ui-button-icon-left ui-icon ui-c pi pi-desktop"></span><span class="ui-button-text ui-c">System</span>
+                    </button>
+                </div>
+
+                <div class="cfg-label">Input style <span class="cfg-hint">ui-input-filled</span></div>
+                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Input style">
+                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-input="outlined" onclick="cfg.input('outlined')">
+                        <span class="ui-button-text ui-c">Outlined</span>
+                    </button>
+                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-input="filled" onclick="cfg.input('filled')">
+                        <span class="ui-button-text ui-c">Filled</span>
+                    </button>
+                </div>
+
+                <div class="cfg-label">Density <span class="cfg-hint">data-p-density</span></div>
+                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Density">
+                    <ui:repeat value="#{['normal', 'compact', 'comfortable']}" var="d">
+                        <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-density="#{d}" onclick="cfg.density('#{d}')">
+                            <span class="ui-button-text ui-c">#{d}</span>
+                        </button>
+                    </ui:repeat>
+                </div>
+            </details>
+
+            <details class="cfg-group" open="open">
+                <summary>Colors</summary>
+                <div class="cfg-label">Primary <span class="cfg-hint">--p-primary-base</span></div>
+                <div class="cfg-swatches">
+                    <ui:repeat value="#{['emerald', 'green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'red', 'orange', 'amber', 'yellow', 'lime', 'slate']}" var="c">
+                        <button type="button" class="cfg-swatch" title="#{c}" aria-label="#{c}" style="background: var(--p-#{c}-500)"
+                                data-cfg-primary="var(--p-#{c}-500)" onclick="cfg.primary('var(--p-#{c}-500)')"></button>
+                    </ui:repeat>
+                </div>
+                <div class="cfg-field">
+                    <label for="cfgPrimary">Custom</label>
+                    <input type="color" id="cfgPrimary" oninput="cfg.primary(this.value)"/>
+                    <p:commandButton type="button" value="Theme" styleClass="ui-button-flat ui-button-sm" onclick="cfg.primary(null)"
+                                     title="Primary color of the preset"/>
+                </div>
+                <div class="cfg-field">
+                    <label for="cfgSurface">Surface</label>
+                    <select id="cfgSurface" onchange="cfg.surface(this.value)">
+                        <option value="">Theme default</option>
+                        <option value="slate">Slate</option>
+                        <option value="gray">Gray</option>
+                        <option value="zinc">Zinc</option>
+                        <option value="neutral">Neutral</option>
+                        <option value="stone">Stone</option>
+                    </select>
+                </div>
+            </details>
+
+            <details class="cfg-group" open="open">
+                <summary>Border radius <span class="cfg-hint">--p-border-radius-*</span></summary>
+                <div class="cfg-chips">
+                    <p:commandButton type="button" value="Sharp" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius([0, 0, 0, 0])"/>
+                    <p:commandButton type="button" value="Theme" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius(null)"/>
+                    <p:commandButton type="button" value="Soft" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius([6, 10, 14, 20])"/>
+                    <p:commandButton type="button" value="Round" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius([10, 16, 22, 28])"/>
+                </div>
+                <ui:include src="/theming/configurator-sliders.xhtml">
+                    <ui:param name="ranges" value="#{[['--p-border-radius-sm', 'sm', 0, 32, 1, 'px'], ['--p-border-radius-md', 'md', 0, 32, 1, 'px'], ['--p-border-radius-lg', 'lg', 0, 32, 1, 'px'], ['--p-border-radius-xl', 'xl', 0, 40, 1, 'px']]}"/>
+                </ui:include>
+            </details>
+
+            <details class="cfg-group" open="open">
+                <summary>Typography</summary>
+                <div class="cfg-field" data-token="--p-typography-font-family">
+                    <label for="cfgFont">Font family</label>
+                    <select id="cfgFont" onchange="cfg.set('--p-typography-font-family', this.value)">
+                        <option value="">Theme default</option>
+                        <option value="&quot;Inter var&quot;, Inter, ui-sans-serif, system-ui, sans-serif">Inter</option>
+                        <option value="system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, sans-serif">System UI</option>
+                        <option value="Georgia, &quot;Times New Roman&quot;, serif">Serif</option>
+                        <option value="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Monospace</option>
+                    </select>
+                </div>
+                <ui:include src="/theming/configurator-sliders.xhtml">
+                    <ui:param name="ranges" value="#{[['--p-typography-font-size', 'Font size', 0.75, 1.125, 0.0625, 'rem']]}"/>
+                </ui:include>
+            </details>
+
+            <details class="cfg-group">
+                <summary>Focus ring</summary>
+                <ui:include src="/theming/configurator-sliders.xhtml">
+                    <ui:param name="ranges" value="#{[['--p-focus-ring-width', 'Width', 0, 4, 1, 'px'], ['--p-focus-ring-offset', 'Offset', -2, 6, 1, 'px']]}"/>
+                </ui:include>
+            </details>
+
+            <details class="cfg-group">
+                <summary>Form field</summary>
+                <ui:include src="/theming/configurator-sliders.xhtml">
+                    <ui:param name="ranges" value="#{[['--p-form-field-padding-x', 'Padding x', 0.25, 1.25, 0.0625, 'rem'], ['--p-form-field-padding-y', 'Padding y', 0.125, 1, 0.0625, 'rem']]}"/>
+                </ui:include>
+            </details>
+
+            <details class="cfg-group">
+                <summary>CSS</summary>
+                <div class="cfg-note">Only the tokens that differ from the preset.</div>
+                <pre id="cfgSnippet" class="cfg-snippet"></pre>
+                <p:commandButton type="button" value="Copy" icon="pi pi-copy" styleClass="ui-button-sm ui-button-outlined" onclick="cfg.copy(this)"/>
+            </details>
+        </aside>
+    </h:form>
+</ui:composition>

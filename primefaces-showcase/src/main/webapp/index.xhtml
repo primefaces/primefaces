@@ -389,36 +389,28 @@
                                     <span style="font-weight:700;font-size:.9rem;color:var(--text-color)">Available Themes</span>
                                 </div>
                                 <div class="landing-theme-list">
-                                    <h:form>
-                                        <ui:repeat value="#{themes.categories}" var="category">
-                                            <div class="landing-theme-category">#{category.name}</div>
-                                            <div class="landing-theme-items">
-                                                <ui:repeat value="#{category.themes}" var="theme">
-                                                    <p:commandLink styleClass="landing-theme-item #{app.theme eq theme.id ? 'active' : ''}"
-                                                                   actionListener="#{app.changeTheme(theme)}"
-                                                                   oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})"
-                                                                   update="@form"
-                                                                   title="#{theme.name}">
-                                                        <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}" />
-                                                        <span>#{theme.name}</span>
-                                                    </p:commandLink>
-                                                </ui:repeat>
-                                            </div>
+                                    <div class="landing-theme-category">primefaces-theming presets</div>
+                                    <div class="landing-theme-items">
+                                        <ui:repeat value="#{app.presets}" var="preset">
+                                            <a class="landing-theme-item #{app.theme eq preset ? 'active' : ''}" href="?theme=#{preset}" title="#{preset}">
+                                                <i class="pi pi-palette"></i>
+                                                <span style="text-transform: capitalize">#{preset}</span>
+                                            </a>
                                         </ui:repeat>
-                                    </h:form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="landing-theming-text">
                             <span class="landing-section-label">Theming</span>
                             <h2 class="landing-section-title">Pick your theme</h2>
-                            <p>Choose from a growing collection of free themes — Lara, Aura, Nora, Material, Bootstrap
-                               and more. Each theme is a complete CSS stylesheet that skins every component
-                               consistently. Switch themes at runtime without a page reload.</p>
+                            <p>Pure CSS themes built on design tokens: the presets Aura, Lara, Nora, Metal and Glass, each in a
+                               light and a dark color scheme. Change the primary color, density or any token without a build step.
+                               Try it with the palette button at the right edge.</p>
                             <ul class="landing-check-list">
                                 <li><i class="pi pi-check-circle"></i>Free and premium themes included</li>
                                 <li><i class="pi pi-check-circle"></i>Light and dark variants for every family</li>
-                                <li><i class="pi pi-check-circle"></i>Visual Theme Designer tool available</li>
+                                <li><i class="pi pi-check-circle"></i>Theme configurator with live token editing</li>
                                 <li><i class="pi pi-check-circle"></i>Runtime theme switching built-in</li>
                             </ul>
                             <h:link styleClass="landing-btn landing-btn-outline" outcome="/theming">

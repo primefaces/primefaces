@@ -1,0 +1,284 @@
+/*
+ * Theme configurator of the theming pages (theming/configurator.xhtml): a palette button at the right edge of the
+ * window opens the panel as an overlay from the right (no mask: the page stays visible and follows every change). The
+ * panel itself is themed by the tokens it edits.
+ */
+.cfg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1001;
+    box-sizing: border-box;
+    width: min(21rem, 100vw);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 1rem 1rem;
+    background: var(--p-content-background);
+    color: var(--p-content-color);
+    border-left: 1px solid var(--p-content-border-color);
+    box-shadow: var(--p-overlay-modal-shadow);
+    backdrop-filter: var(--p-overlay-backdrop-filter);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform .2s ease, visibility 0s .2s;
+    font-family: var(--p-typography-font-family, inherit);
+    font-size: 13px;
+    outline: none;
+    scrollbar-width: thin;
+}
+
+.cfg-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin: 0 -1rem;
+    padding: .75rem 1rem;
+    background: inherit;
+    border-bottom: 1px solid var(--p-content-border-color);
+}
+
+.cfg-header h2 {
+    flex: 1;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.cfg-group {
+    border-bottom: 1px solid var(--p-content-border-color);
+    padding: .25rem 0 .75rem;
+}
+
+.cfg-group > summary {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: .625rem 0 .375rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--p-border-radius-sm);
+}
+
+.cfg-group > summary::-webkit-details-marker {
+    display: none;
+}
+
+.cfg-group > summary::after {
+    content: "";
+    margin-inline-start: auto;
+    align-self: center;
+    width: .4rem;
+    height: .4rem;
+    border-inline-end: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform .15s;
+    opacity: .6;
+}
+
+.cfg-group[open] > summary::after {
+    transform: rotate(45deg);
+}
+
+.cfg-group > summary:focus-visible {
+    outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+    outline-offset: var(--p-focus-ring-offset);
+}
+
+.cfg-hint {
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--p-text-muted-color);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.cfg-label {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    margin: .875rem 0 .375rem;
+    color: var(--p-text-muted-color);
+}
+
+.cfg-note {
+    margin-top: .5rem;
+    color: var(--p-text-muted-color);
+    line-height: 1.45;
+}
+
+/* segmented controls: the select button of the theme */
+.cfg-seg {
+    display: flex;
+    width: 100%;
+}
+
+.cfg-seg > .ui-button {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    padding-inline: .25rem;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.cfg-seg > .ui-button .ui-icon {
+    font-size: 12px;
+}
+
+.cfg-swatches {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: .375rem;
+}
+
+.cfg-swatch {
+    aspect-ratio: 1;
+    width: 100%;
+    padding: 0;
+    border: 2px solid var(--p-content-background);
+    border-radius: 50%;
+    outline: 1px solid var(--p-content-border-color);
+    cursor: pointer;
+}
+
+.cfg-swatch[aria-pressed="true"] {
+    outline: 2px solid var(--p-text-color);
+}
+
+.cfg-swatch:focus-visible {
+    outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+    outline-offset: var(--p-focus-ring-offset);
+}
+
+.cfg-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    margin-bottom: .5rem;
+}
+
+.cfg-field {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr) auto;
+    gap: .5rem;
+    align-items: center;
+    margin-top: .5rem;
+}
+
+.cfg-field label {
+    color: var(--p-text-muted-color);
+}
+
+.cfg-field.changed label {
+    color: var(--p-primary-color);
+    font-weight: 600;
+}
+
+.cfg-field output {
+    min-width: 3.75rem;
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+    color: var(--p-text-muted-color);
+}
+
+/* p:slider: room for the handle, which overhangs the ends of the track */
+.cfg-field .ui-slider {
+    margin-inline: .5rem;
+}
+
+.cfg-field input[type=color] {
+    width: 100%;
+    height: 1.75rem;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--p-form-field-border-color);
+    border-radius: var(--p-form-field-border-radius);
+    background: transparent;
+    cursor: pointer;
+}
+
+/* the color fills the field: no inner padding and border of the native swatch */
+.cfg-field input[type=color]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.cfg-field input[type=color]::-webkit-color-swatch {
+    border: 0;
+    border-radius: 0;
+}
+
+.cfg-field input[type=color]::-moz-color-swatch {
+    border: 0;
+    border-radius: 0;
+}
+
+.cfg-field select {
+    grid-column: span 2;
+    min-width: 0;
+    font: inherit;
+    color: var(--p-form-field-color);
+    background: var(--p-form-field-background);
+    border: 1px solid var(--p-form-field-border-color);
+    border-radius: var(--p-form-field-border-radius);
+    padding: .25rem .5rem;
+}
+
+.cfg-snippet {
+    margin: .5rem 0;
+    padding: .75rem;
+    overflow: auto;
+    font: 11.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--p-content-color);
+    background: var(--p-content-hover-background);
+    border-radius: var(--p-content-border-radius);
+    white-space: pre;
+}
+
+:root.cfg-open .cfg {
+    transform: none;
+    visibility: visible;
+    transition: transform .2s ease;
+}
+
+/* the palette button at the right edge, vertically centered */
+.cfg-toggle.ui-button {
+    position: fixed;
+    right: 0;
+    /* centered without transform: a transformed layer is rasterized at sub-pixel positions, the edge at the window
+       border then gets a 1px anti-aliased gap with fractional device pixel ratios */
+    top: calc(50% - 1.375rem);
+    z-index: 1000;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    /* a plain solid tab: no border (a transparent one shows as a darker band at fractional pixel ratios), no inset
+       highlight and ring of the preset shadows (Glass), no backdrop blur (the button is opaque) */
+    border: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    border-start-start-radius: var(--p-border-radius-md);
+    border-end-start-radius: var(--p-border-radius-md);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
+    backdrop-filter: none;
+    /* the shadow stops at the window edge */
+    clip-path: inset(-2rem 0 -2rem -2rem);
+}
+
+.cfg-toggle .ui-icon {
+    font-size: 1.25rem;
+}
+
+:root.cfg-open .cfg-toggle.ui-button {
+    visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cfg,
+    :root.cfg-open .cfg {
+        transition: none;
+    }
+}

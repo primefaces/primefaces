@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces">
+    <!-- tokens set on a container instead of :root -->
+    <h:form id="scopingForm">
+        <div class="demo-grid">
+            <div class="demo-card" data-p-scope="" style="--p-primary-base: var(--p-rose-500)">
+                <h2>Scoped primary</h2>
+                <div class="muted" style="margin-bottom: 1rem"><code>data-p-scope</code> + <code>--p-primary-base: var(--p-rose-500)</code></div>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+                    <p:commandButton type="button" value="Outlined" styleClass="ui-button-outlined"/>
+                    <p:inputText placeholder="Focus me"/>
+                </div>
+            </div>
+
+            <div class="demo-card" style="color-scheme: dark">
+                <h2>Dark island</h2>
+                <div class="muted" style="margin-bottom: 1rem"><code>color-scheme: dark</code> on a container</div>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+                    <p:commandButton type="button" value="Cancel" styleClass="ui-button-secondary"/>
+                    <p:inputText placeholder="Dark input"/>
+                </div>
+            </div>
+
+            <div class="demo-card" style="--p-button-border-radius: 0; --p-inputtext-border-radius: 0; --p-button-label-font-weight: 700">
+                <h2>Component tokens</h2>
+                <div class="muted" style="margin-bottom: 1rem"><code>--p-button-border-radius: 0</code> etc. on a container</div>
+                <div class="demo-row">
+                    <p:commandButton type="button" value="Square" icon="pi pi-stop"/>
+                    <p:inputText placeholder="Square input"/>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

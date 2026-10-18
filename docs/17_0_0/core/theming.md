@@ -143,10 +143,10 @@ Override a semantic token to change all components at once, a component token to
 
 To find the right token, use the showcase:
 
-- **Token reference** (`/theming-next/tokens.xhtml`): all tokens of the current theme, searchable, with their
+- **Token reference** (`/theming/tokens.xhtml`): all tokens of the current theme, searchable, with their
   computed values, color swatches and icon previews.
-- **Theme Designer** (`/theming-next/designer.xhtml`): edit the main tokens live and copy the generated CSS into
-  your application.
+- **Theme configurator** (palette button at the right edge of every showcase page): switch the preset, edit the main
+  tokens live and copy the generated CSS into your application.
 
 ## Density
 
@@ -280,7 +280,7 @@ with `library:name`:
 ```
 
 The file is rendered after `components.css` instead of a preset. Start from a copy of a preset
-(`aura.css`, `lara.css`, `nora.css`, `metal.css` or `glass.css` of the `primefaces-theming` jar) or from the CSS of the Theme Designer.
+(`aura.css`, `lara.css`, `nora.css`, `metal.css` or `glass.css` of the `primefaces-theming` jar) or from the CSS of the theme configurator.
 
 For small changes a custom theme is not needed: override the tokens in the CSS of your application on top of a preset.
 

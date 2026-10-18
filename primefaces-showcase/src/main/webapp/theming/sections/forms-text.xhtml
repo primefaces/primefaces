@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <style>
+        .demo-field {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+    </style>
+
+    <h:form id="formsTextForm">
+        <div class="demo-card">
+            <h2>InputText</h2>
+            <h3>Default / placeholder / disabled / invalid / filled</h3>
+            <div class="demo-row">
+                <p:inputText value="#{themingFormsTextView.text}"/>
+                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Placeholder"/>
+                <p:inputText value="#{themingFormsTextView.text}" disabled="true"/>
+                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Invalid">
+                    <f:event type="preRenderComponent" listener="#{themingFormsTextView.markInvalid}"/>
+                </p:inputText>
+                <span class="ui-input-filled">
+                    <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Filled"/>
+                </span>
+            </div>
+
+            <h3>Sizes / icon / float label</h3>
+            <div class="demo-row">
+                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Small" styleClass="ui-inputtext-sm"/>
+                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Large" styleClass="ui-inputtext-lg"/>
+                <span class="ui-input-icon-left">
+                    <i class="pi pi-search"/>
+                    <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Search"/>
+                </span>
+                <span class="ui-float-label">
+                    <p:inputText id="floatText" value="#{themingFormsTextView.emptyText}"/>
+                    <p:outputLabel for="@previous" value="Username"/>
+                </span>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>InputTextarea</h2>
+                <p:inputTextarea value="#{themingFormsTextView.longText}" rows="4" style="width: 100%" autoResize="false"/>
+            </div>
+
+            <div class="demo-card">
+                <h2>InputNumber / InputMask / Password</h2>
+                <div class="demo-field">
+                    <p:inputNumber value="#{themingFormsTextView.amount}" symbol="$"/>
+                    <p:inputMask value="#{themingFormsTextView.mask}" mask="(999) 999-9999" placeholder="(999) 999-9999"/>
+                    <p:password value="#{themingFormsTextView.password}" feedback="true" toggleMask="true" redisplay="true"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>AutoComplete</h2>
+                <div class="demo-field">
+                    <p:autoComplete value="#{themingFormsTextView.autoText}" completeMethod="#{themingFormsTextView.completeFruit}"
+                                    dropdown="true" placeholder="Fruit"/>
+                    <p:autoComplete value="#{themingFormsTextView.autoTexts}" completeMethod="#{themingFormsTextView.completeFruit}"
+                                    multiple="true" placeholder="Fruits"/>
+                </div>
+            </div>
+
+            <div class="demo-card">
+                <h2>Chips</h2>
+                <p:chips value="#{themingFormsTextView.chips}"/>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>InputGroup</h2>
+            <div class="demo-grid">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Username"/>
+                </div>
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon">$</span>
+                    <p:inputText placeholder="Price"/>
+                    <span class="ui-inputgroup-addon">.00</span>
+                </div>
+                <div class="ui-inputgroup">
+                    <p:inputText placeholder="Keyword"/>
+                    <p:commandButton type="button" icon="pi pi-search"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Spinner / Slider</h2>
+                <div class="demo-field">
+                    <p:spinner value="#{themingFormsTextView.spinner}"/>
+                    <p:inputText id="sliderValue" value="#{themingFormsTextView.slider}"/>
+                    <p:slider for="sliderValue"/>
+                </div>
+            </div>
+
+            <div class="demo-card">
+                <h2>Rating / ColorPicker</h2>
+                <div class="demo-field">
+                    <p:rating value="#{themingFormsTextView.rating}"/>
+                    <p:colorPicker value="#{themingFormsTextView.color}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>TextEditor</h2>
+            <p:textEditor value="#{themingFormsTextView.editor}" height="140"/>
+        </div>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,359 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="head">
+        <style>
+            .tokens-toolbar {
+                position: sticky;
+                top: var(--layout-topbar-height);
+                z-index: 1;
+                display: flex;
+                flex-wrap: wrap;
+                gap: .75rem 1rem;
+                align-items: center;
+                padding: .75rem 0;
+                background: var(--p-content-background);
+            }
+
+            .tokens-toolbar .ui-inputtext {
+                flex: 1 1 18rem;
+                max-width: 32rem;
+            }
+
+            .tokens-groups {
+                display: flex;
+                flex-wrap: wrap;
+                gap: .25rem .5rem;
+                margin: .5rem 0 1rem;
+                font-size: .8125rem;
+            }
+
+            .tokens-groups a {
+                color: var(--p-primary-color);
+                text-decoration: none;
+            }
+
+            .tokens-groups a:hover {
+                text-decoration: underline;
+            }
+
+            .tokens-group {
+                margin-top: 1.5rem;
+                scroll-margin-top: 4.5rem;
+            }
+
+            .tokens-group h3 {
+                display: flex;
+                gap: .5rem;
+                align-items: baseline;
+                margin: 0 0 .5rem;
+                font-size: 1rem;
+                color: var(--p-text-color);
+            }
+
+            .tokens-table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+                font-size: .8125rem;
+            }
+
+            .tokens-table th,
+            .tokens-table td {
+                padding: .375rem .5rem;
+                text-align: start;
+                vertical-align: top;
+                border-bottom: 1px solid var(--p-content-border-color);
+                overflow-wrap: anywhere;
+            }
+
+            .tokens-table th {
+                font-weight: 600;
+                color: var(--p-text-muted-color);
+            }
+
+            .tokens-table th:first-child {
+                width: 34%;
+            }
+
+            .tokens-table code {
+                background: none;
+                padding: 0;
+            }
+
+            .tokens-name {
+                cursor: copy;
+            }
+
+            .tokens-value {
+                display: flex;
+                gap: .5rem;
+                align-items: flex-start;
+            }
+
+            .tokens-swatch {
+                flex: none;
+                width: 1.125rem;
+                height: 1.125rem;
+                border-radius: var(--p-border-radius-sm);
+                outline: 1px solid var(--p-content-border-color);
+                /* checkerboard so transparent colors are visible */
+                background-image: conic-gradient(var(--p-surface-300) 25%, var(--p-surface-0) 0 50%, var(--p-surface-300) 0 75%, var(--p-surface-0) 0);
+                background-size: .5rem .5rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .tokens-swatch > span {
+                position: absolute;
+                inset: 0;
+            }
+
+            .tokens-icon {
+                flex: none;
+                width: 1.125rem;
+                height: 1.125rem;
+                background: currentColor;
+                mask-position: center;
+                mask-size: contain;
+                mask-repeat: no-repeat;
+            }
+
+            .tokens-badge {
+                font-size: .75rem;
+                font-weight: 500;
+                padding: 0 .375rem;
+                border-radius: var(--p-border-radius-sm);
+                color: var(--p-primary-contrast-color);
+                background: var(--p-primary-color);
+            }
+
+            .tokens-muted {
+                color: var(--p-text-muted-color);
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="theming-page">
+            <div class="content-section introduction">
+                <div class="feature-intro">
+                    <h1>Theming Tokens</h1>
+                    <p>The design tokens (CSS variables) of the current preset. Change the preset or the tokens on the right, the values follow.</p>
+                </div>
+            </div>
+
+            <div class="content-section implementation">
+                <div class="demo-card">
+                    <h2>Tokens</h2>
+                    <div class="muted">
+                        All <code>--p-*</code> tokens of the current theme, read at runtime from the loaded stylesheets (rules <code>:root</code> and
+                        <code>:root, [data-p-scope]</code>, also inside cascade layers), grouped by the prefix after <code>--p-</code>.
+                        <em>Declared</em> is the value of the stylesheet, <em>computed</em> the value on <code>&lt;html&gt;</code> with the current
+                        color scheme, primary color, density and configurator overrides (marked <span class="tokens-badge">override</span>).
+                        Click a token name to copy <code>var(--p-...)</code>.
+                    </div>
+
+                    <div class="tokens-toolbar">
+                        <p:inputText id="tokensSearch" placeholder="Search name or value, e.g. button-primary or surface-500" pt:type="search"
+                                     pt:oninput="tokenRef.filter(this.value)" pt:autocomplete="off"/>
+                        <span id="tokensCount" class="tokens-muted"></span>
+                    </div>
+                    <div id="tokensGroups" class="tokens-groups"></div>
+                    <div id="tokensList"></div>
+                </div>
+
+                <script>
+                    //<![CDATA[
+                    var tokenRef = (function () {
+                        var root = document.documentElement;
+                        var SELECTORS = [':root', ':root,[data-p-scope]'];
+                        var PALETTES = ['emerald', 'green', 'lime', 'red', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue',
+                            'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone'];
+                        var MULTI = ['form-field', 'focus-ring', 'border-radius'];
+                        var KEYWORDS = /^(inherit|initial|unset|revert|revert-layer|currentcolor|transparent|none)$/i;
+                        var all = [];
+                        var query = '';
+                        var probe;
+
+                        function esc(s) {
+                            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                        }
+
+                        function short(value) {
+                            return value.length > 140 ? value.substring(0, 60) + ' … ' + value.substring(value.length - 20) : value;
+                        }
+
+                        function groupOf(name) {
+                            var rest = name.substring(4);
+                            var first = rest.split('-')[0];
+                            if (PALETTES.indexOf(first) >= 0 && /^[a-z]+-\d+$/.test(rest)) {
+                                return 'palette (primitive)';
+                            }
+                            // semantic groups whose name has a dash
+                            for (var i = 0; i < MULTI.length; i++) {
+                                if (rest === MULTI[i] || rest.indexOf(MULTI[i] + '-') === 0) {
+                                    return MULTI[i];
+                                }
+                            }
+                            return first;
+                        }
+
+                        function walk(rules, source, found) {
+                            for (var i = 0; i < rules.length; i++) {
+                                var rule = rules[i];
+                                if (rule instanceof CSSStyleRule
+                                        && SELECTORS.indexOf(rule.selectorText.replace(/\s+/g, '')) >= 0) {
+                                    for (var j = 0; j < rule.style.length; j++) {
+                                        var name = rule.style[j];
+                                        if (name.indexOf('--p-') === 0) {
+                                            // later declarations win, like in the cascade (all in the same layer)
+                                            found[name] = { declared: rule.style.getPropertyValue(name).trim(), source: source };
+                                        }
+                                    }
+                                }
+                                else if (!(rule instanceof CSSStyleRule) && rule.cssRules) {
+                                    // @layer blocks, @media, @supports
+                                    walk(rule.cssRules, source, found);
+                                }
+                            }
+                        }
+
+                        function collect() {
+                            var found = {};
+                            Array.prototype.forEach.call(document.styleSheets, function (sheet) {
+                                var rules;
+                                try { rules = sheet.cssRules; } catch (e) { return; }
+                                var href = sheet.href ? sheet.href.split('?')[0].split('/').pop().replace(/\.xhtml$/, '') : 'inline';
+                                walk(rules, href, found);
+                            });
+                            all = Object.keys(found).sort().map(function (name) {
+                                return { name: name, declared: found[name].declared, source: found[name].source, group: groupOf(name) };
+                            });
+                        }
+
+                        function isColor(value) {
+                            return value && !KEYWORDS.test(value) && !/^url\(/.test(value) && !/^-?[\d.]/.test(value)
+                                && CSS.supports('color', value);
+                        }
+
+                        function resolveColor(value) {
+                            probe.style.color = '';
+                            probe.style.color = value;
+                            return getComputedStyle(probe).color;
+                        }
+
+                        function valueCell(name, value, computed) {
+                            if (!value) {
+                                return '<span class="tokens-muted">(empty)</span>';
+                            }
+                            var html = '';
+                            if (/^url\(/.test(value)) {
+                                html += '<span class="tokens-icon" style="mask-image: var(' + name + '); -webkit-mask-image: var(' + name + ')"></span>';
+                            }
+                            else if (computed && isColor(value)) {
+                                html += '<span class="tokens-swatch"><span style="background: var(' + name + ')"></span></span>';
+                            }
+                            var text = esc(short(value));
+                            if (computed && isColor(value)) {
+                                var color = resolveColor(value);
+                                text = (value === color ? '' : text + '<br/>') + '<span class="tokens-muted">' + esc(color) + '</span>';
+                            }
+                            return '<span class="tokens-value">' + html + '<code>' + text + '</code></span>';
+                        }
+
+                        function render() {
+                            probe = document.createElement('span');
+                            document.body.appendChild(probe);
+                            var cs = getComputedStyle(root);
+                            var groups = {};
+                            var order = [];
+                            all.forEach(function (t) {
+                                if (!groups[t.group]) {
+                                    groups[t.group] = [];
+                                    order.push(t.group);
+                                }
+                                groups[t.group].push(t);
+                            });
+                            order.sort(function (a, b) {
+                                // primitives first, then the semantic and component groups alphabetically
+                                return (a === 'palette (primitive)' ? -1 : b === 'palette (primitive)' ? 1 : a.localeCompare(b));
+                            });
+
+                            var html = [];
+                            order.forEach(function (group) {
+                                html.push('<section class="tokens-group" id="group-' + esc(group.replace(/\W+/g, '-')) + '" data-group="' + esc(group) + '">',
+                                    '<h3>' + esc(group) + ' <span class="tokens-muted" data-count=""></span></h3>',
+                                    '<table class="tokens-table"><thead><tr><th>Token</th><th>Declared</th><th>Computed</th></tr></thead><tbody>');
+                                groups[group].forEach(function (t) {
+                                    var computed = cs.getPropertyValue(t.name).trim();
+                                    var override = root.style.getPropertyValue(t.name) !== '';
+                                    html.push('<tr data-search="' + esc((t.name + ' ' + t.declared).toLowerCase()) + '">',
+                                        '<td><code class="tokens-name" title="' + esc(t.source) + '">' + esc(t.name) + '</code>'
+                                            + (override ? ' <span class="tokens-badge">override</span>' : '') + '</td>',
+                                        '<td>' + valueCell(t.name, t.declared, false) + '</td>',
+                                        '<td>' + valueCell(t.name, computed, true) + '</td></tr>');
+                                });
+                                html.push('</tbody></table></section>');
+                            });
+                            document.getElementById('tokensList').innerHTML = html.join('');
+                            document.getElementById('tokensGroups').innerHTML = order.map(function (group) {
+                                return '<a href="#group-' + esc(group.replace(/\W+/g, '-')) + '" data-group="' + esc(group) + '">' + esc(group) + '</a>';
+                            }).join('');
+                            probe.remove();
+                            filter(query);
+                        }
+
+                        function filter(value) {
+                            query = (value || '').trim().toLowerCase();
+                            var total = 0;
+                            document.querySelectorAll('#tokensList .tokens-group').forEach(function (section) {
+                                var visible = 0;
+                                section.querySelectorAll('tbody tr').forEach(function (row) {
+                                    var match = !query || row.getAttribute('data-search').indexOf(query) >= 0
+                                        || section.getAttribute('data-group').indexOf(query) === 0;
+                                    row.hidden = !match;
+                                    if (match) { visible++; }
+                                });
+                                section.hidden = visible === 0;
+                                section.querySelector('[data-count]').textContent = '(' + visible + ')';
+                                var link = document.querySelector('#tokensGroups a[data-group="' + CSS.escape(section.getAttribute('data-group')) + '"]');
+                                if (link) { link.hidden = visible === 0; }
+                                total += visible;
+                            });
+                            document.getElementById('tokensCount').textContent = total + ' of ' + all.length + ' tokens';
+                        }
+
+                        document.addEventListener('click', function (e) {
+                            var name = e.target.closest && e.target.closest('.tokens-name');
+                            if (name && navigator.clipboard && window.isSecureContext) {
+                                navigator.clipboard.writeText('var(' + name.textContent + ')');
+                            }
+                        });
+
+                        var pending;
+                        function rerender() {
+                            // computed values depend on color scheme, primary color, density and overrides
+                            if (all.length) {
+                                cancelAnimationFrame(pending);
+                                pending = requestAnimationFrame(render);
+                            }
+                        }
+                        document.addEventListener('pf-demo-change', rerender);
+                        if (window.matchMedia) {
+                            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rerender);
+                        }
+
+                        window.addEventListener('load', function () {
+                            collect();
+                            render();
+                        });
+
+                        return { filter: filter };
+                    })();
+                    //]]>
+                </script>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

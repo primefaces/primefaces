@@ -1,99 +1,94 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
-                xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
-    <ui:define name="head">
-        <style>
-            .designer-image,
-            .architecture-image {
-                width: 75%;
-                margin: 0 auto;
-                display: block;
-                margin-top: 2rem;
-                margin-bottom: 2rem;
-            }
-            
-            @media screen and (max-width: 960px) {
-                .designer-image,
-                .architecture-image {
-                    width: 100%;
-                }
-            }
-        </style>
-    </ui:define>
-
-    <ui:define name="title">
-        Theming
-    </ui:define>
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:c="jakarta.tags.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+    <!-- a rough overview of the style: one section per component group (theming/sections), the theme is set in the configurator -->
+    <ui:param name="sections" value="#{[
+            ['buttons', 'Buttons / Menus'],
+            ['forms-text', 'Form'],
+            ['forms-select', 'Selection'],
+            ['datatable', 'DataTable'],
+            ['data', 'Data'],
+            ['panels', 'Panels'],
+            ['overlays', 'Overlays / Messages'],
+            ['misc', 'Misc'],
+            ['scoping', 'Scoping']]}"/>
 
     <ui:define name="content">
-        <div class="content-section documentation">
-            <h1>Theming</h1>
-            <p>Choose from a variety of themes or develop your own theme easily.</p>
+        <div class="theming-page">
+            <div class="content-section introduction">
+                <div class="feature-intro">
+                    <h1>Theming</h1>
+                    <p>
+                        The CSS variable based themes (<code>primefaces-theming</code>): presets Aura, Lara, Nora, Metal and Glass, light
+                        and dark color scheme, density and design tokens. Configure the theme on the right, every component on this page
+                        follows.
+                    </p>
+                </div>
+            </div>
 
-            <h5>Architecture</h5>
-            <p>PrimeFaces is a design agnostic library so unlike other UI libraries it does not enforce a certain styling such as material or bootstrap. In order to achieve this, styling has been
-                separated into core and theme. Core resides inside PrimeFaces to implement the structure of the components such as positioning whereas theme brings the colors, paddings
-                and margins.</p>
-            <p:graphicImage name="images/architecture.jpg" library="showcase" styleClass="architecture-image" />
-                
-            <h5>Built-in Themes</h5>
-            <p>PrimeFaces ships with three free themes to choose from named <i>saga-blue</i> (default), <i>vela-blue</i> and <i>arya-blue</i>. Even more themes such as <i>material</i> and <i>bootstrap</i> are available at <i>primefaces-sass-theme</i>
-                repository at <a href="https://github.com/primefaces/primefaces-sass-theme/tree/main/themes">github</a>. For a live preview of themes, use the configurator 
-                <span class="border-round inline-flex border-1 w-2rem h-2rem p-0 align-items-center justify-content-center bg-primary">
-                    <span class="pi pi-cog"></span>
-                </span> to switch themes. 
-            </p>
-            
-            <p>A theme is configured by setting the <i>primefaces.THEME</i> context parameter.</p>  
+            <nav class="demo-sections" aria-label="Sections">
+                <ui:repeat value="#{sections}" var="demoSection">
+                    <a href="##{demoSection[0]}">#{demoSection[1]}</a>
+                </ui:repeat>
+            </nav>
+            <script>
+                //<![CDATA[
+                // scroll spy: marks the link of the section at the top of the viewport
+                document.addEventListener('DOMContentLoaded', function () {
+                    var bar = document.querySelector('.demo-sections');
+                    var links = Array.prototype.slice.call(bar.querySelectorAll('a'));
+                    var sections = links.map(function (a) { return document.getElementById(a.hash.slice(1)); });
+                    var current = null;
+                    var update = function () {
+                        var offset = bar.getBoundingClientRect().bottom + 24;
+                        var active = sections[0];
+                        sections.forEach(function (s) {
+                            if (s && s.getBoundingClientRect().top - offset <= 0) {
+                                active = s;
+                            }
+                        });
+                        if (active !== current) {
+                            current = active;
+                            links.forEach(function (a, i) {
+                                var on = sections[i] === active;
+                                a.classList.toggle('active', on);
+                                if (on) {
+                                    a.setAttribute('aria-current', 'location');
+                                    bar.scrollLeft = a.offsetLeft - bar.clientWidth / 2 + a.offsetWidth / 2;
+                                }
+                                else {
+                                    a.removeAttribute('aria-current');
+                                }
+                            });
+                        }
+                    };
+                    var scheduled = false;
+                    window.addEventListener('scroll', function () {
+                        if (!scheduled) {
+                            scheduled = true;
+                            requestAnimationFrame(function () {
+                                scheduled = false;
+                                update();
+                            });
+                        }
+                    }, { passive: true });
+                    update();
+                });
+                //]]>
+            </script>
 
-<pre><code class="language-xml">
-&lt;context-param&gt;
-    &lt;param-name&gt;primefaces.THEME&lt;/param-name&gt;
-    &lt;param-value&gt;arya&lt;/param-value&gt;
-&lt;/context-param&gt;
-    
-</code></pre>
-            
-            <h5>Custom Theme</h5>
-            <p>Themes are created with SASS using the <i>primefaces-themes</i> project available at <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-themes/">github</a>.
-                This directory contains all the scss files for the components and the variables of all open source themes so that you may customize an existing theme or create your own. The scss variables used in a theme are available at the <a href="https://www.primefaces.org/designer/api/primefaces/13.0.0/">SASS API</a> documentation.</p>
-
-            <p>The easiest way to create your own theme is compiling a theme with sass using the existing files.</p>
-
-            <h6>Theme SCSS</h6>
-            <p>
-                The theme scss is available as open source at <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-themes">primefaces-themes</a> directory. The <i>theme-base</i> folder contains the theming structure of the components, themes under
-                <i>themes</i> folder import the base and define the SCSS variables. The <i>themes</i> folder also contains all the built-in themes so you can customize their code as well.
-            </p>
-            <p>
-                To create your own theme, <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-themes">download</a> the release matching your PrimeFaces version and access the <i>themes/mytheme</i> folder. You may also choose another theme
-                like <i>material</i> or <i>bootstrap</i> as your base. The sass variables to customize are available under the <i>variables</i> folder. The <i>_fonts</i> file can be used to define a custom font for your project whereas the optional <i>_extensions</i> file is provided to add overrides to the components designs. The
-                <i>theme.scss</i> file imports the theme files along with the <i>theme-base</i> folder at the root to combine everything together. Next step would be compilation of the scss that can either be command line or within your project with a maven plugin.
-            </p>
-
-            <p>Once your theme is ready run the following command at the root of the <i>primefaces-sass-theme </i>project to compile it as css.</p>
-<pre><code class="language-xml">
-mvn dart-sass:compile-sass
-        
-    </code></pre>
-
-            <h6>Apply Theme</h6>
-
-            <p>Give a name to your theme e.g. <i>mycooltheme</i> then copy and import the generated theme.css file in your application to <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> and finally set the <i>primefaces.THEME</i> context parameter. The <i>primefaces-</i> prefix
-            is required to distinguish the resources as a theme.</p>
-    
-<pre><code class="language-xml">
-    &lt;context-param&gt;
-        &lt;param-name&gt;primefaces.THEME&lt;/param-name&gt;
-        &lt;param-value&gt;mycooltheme&lt;/param-value&gt;
-    &lt;/context-param&gt;
-        
-</code></pre>
-
-            <p>If you'd like to package the theme in a jar file for reuse it in more projects, the location of the theme should be at the <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> path folder inside a jar.</p>
+            <div class="content-section implementation">
+                <c:forEach items="#{sections}" var="demoSection">
+                    <section id="#{demoSection[0]}" class="demo-section" aria-labelledby="#{demoSection[0]}-title">
+                        <h2 id="#{demoSection[0]}-title" class="demo-section-title">#{demoSection[1]}</h2>
+                        <ui:include src="/theming/sections/#{demoSection[0]}.xhtml"/>
+                    </section>
+                </c:forEach>
+            </div>
         </div>
     </ui:define>
-    
 </ui:composition>
