@@ -92,6 +92,7 @@
         inset-inline-start: calc(var(--p-toggleswitch-gap) - var(--p-toggleswitch-border-width));
         margin-top: calc(-1 * var(--p-toggleswitch-handle-size) / 2);
         border-radius: var(--p-toggleswitch-handle-border-radius);
+        box-shadow: var(--p-toggleswitch-handle-shadow);
         font-size: var(--p-toggleswitch-handle-icon-size);
         line-height: var(--p-toggleswitch-handle-size);
         transition: background var(--p-toggleswitch-transition-duration), color var(--p-toggleswitch-transition-duration),

@@ -179,7 +179,7 @@
     <ui:insert name="head"/>
 </h:head>
 <h:body>
-    <ui:param name="theme" value="#{param.theme eq 'lara' or param.theme eq 'nora' ? param.theme : 'aura'}"/>
+    <ui:param name="theme" value="#{param.theme eq 'lara' or param.theme eq 'nora' or param.theme eq 'metal' ? param.theme : 'aura'}"/>
     <ui:param name="severities" value="#{['primary', 'secondary', 'info', 'success', 'warning', 'help', 'danger', 'contrast']}"/>
     <ui:param name="pageId" value="#{view.viewId}"/>
 
@@ -213,6 +213,7 @@
                 <p:linkButton value="Aura" href="?theme=aura" styleClass="#{theme eq 'aura' ? '' : 'ui-button-outlined'}"/>
                 <p:linkButton value="Lara" href="?theme=lara" styleClass="#{theme eq 'lara' ? '' : 'ui-button-outlined'}"/>
                 <p:linkButton value="Nora" href="?theme=nora" styleClass="#{theme eq 'nora' ? '' : 'ui-button-outlined'}"/>
+                <p:linkButton value="Metal" href="?theme=metal" styleClass="#{theme eq 'metal' ? '' : 'ui-button-outlined'}"/>
             </div>
 
             <h3>Color scheme <span class="muted">(:root { color-scheme: ... })</span></h3>

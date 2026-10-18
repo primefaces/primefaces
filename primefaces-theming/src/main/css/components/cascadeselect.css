@@ -107,9 +107,25 @@
     cursor: pointer;
 }
 
+/*
+ * no value and no placeholder: the renderer writes an empty span with only this class (no .ui-cascadeselect-label /
+ * .ui-inputfield). It takes the box of the label, so the field keeps its height and the trigger stays at the end.
+ */
 .ui-cascadeselect-label-empty {
+    display: block;
+    flex: 1 1 auto;
+    width: 1%;
     overflow: hidden;
     visibility: hidden;
+    padding-block: var(--p-cascadeselect-padding-y);
+    padding-inline: var(--p-cascadeselect-padding-x);
+    font-size: var(--p-cascadeselect-font-size);
+    line-height: var(--p-typography-line-height);
+
+    /* an empty block has no line box */
+    &::before {
+        content: "\200b";
+    }
 }
 
 /* overlay: the root panel and every (sub)list carry ui-cascadeselect-panel */

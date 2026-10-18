@@ -78,6 +78,11 @@
     --_text-hover-bg: var(--p-button-text-primary-hover-background);
     --_text-active-bg: var(--p-button-text-primary-active-background);
     --_text-color: var(--p-button-text-primary-color);
+    --_shadow: var(--p-button-shadow);
+    --_active-shadow: var(--p-button-active-shadow);
+    --_label-shadow: var(--p-button-label-shadow);
+    /* texture layer above the background (e.g. brushed metal), none by default */
+    --_texture: var(--p-button-texture);
 
     /* !important: also against unlayered application rules like a:hover */
     text-decoration: none !important;
@@ -95,20 +100,22 @@
     user-select: none;
     font-size: var(--p-button-font-size);
     font-weight: var(--p-button-label-font-weight);
-    background: var(--_bg);
+    background: var(--_texture), var(--_bg);
     color: var(--_color);
     border: 1px solid var(--_border);
     border-radius: var(--p-button-border-radius);
+    box-shadow: var(--_shadow);
     outline-color: transparent;
     transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),
         border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration),
-        box-shadow var(--p-button-transition-duration);
+        box-shadow var(--p-button-transition-duration), translate var(--p-button-transition-duration);
 
     .ui-button-text {
         display: block;
         padding: 0;
         line-height: var(--p-typography-line-height);
         font-weight: var(--p-button-label-font-weight);
+        text-shadow: var(--_label-shadow);
     }
 
     /* the icon is a flex item (".ui-icon": icons without ".ui-c", e.g. datepicker trigger, menuButton triangle) */
@@ -162,16 +169,22 @@
 
     /* states */
     &:not(:disabled, .ui-state-disabled):hover {
-        background: var(--_hover-bg);
+        background: var(--_texture), var(--_hover-bg);
         border-color: var(--_hover-border);
         color: var(--_hover-color);
     }
 
     &:not(:disabled, .ui-state-disabled):active,
     &.ui-state-active {
-        background: var(--_active-bg);
+        background: var(--_texture), var(--_active-bg);
         border-color: var(--_active-border);
         color: var(--_active-color);
+    }
+
+    /* pressed (not the persistent ui-state-active of toggle buttons): e.g. pushed into the surface */
+    &:not(:disabled, .ui-state-disabled):active {
+        box-shadow: var(--_active-shadow);
+        translate: 0 var(--p-button-active-offset);
     }
 
     &:focus-visible,
@@ -462,7 +475,8 @@ button.ui-button::-moz-focus-inner {
 /* variants: they only remap the base variables, so all states above keep working */
 .ui-button.ui-button-outlined,
 :is(.ui-splitbutton, .ui-menubutton).ui-button-outlined > .ui-button {
-    --_bg: transparent;
+    --_bg: var(--p-button-outlined-background);
+    --_label-shadow: var(--p-button-outlined-label-shadow);
     --_hover-bg: var(--_outlined-hover-bg);
     --_active-bg: var(--_outlined-active-bg);
     --_border: var(--_outlined-border);
@@ -481,6 +495,10 @@ button.ui-button::-moz-focus-inner {
     --_border: transparent;
     --_hover-border: transparent;
     --_active-border: transparent;
+    --_shadow: none;
+    --_active-shadow: none;
+    --_texture: none;
+    --_label-shadow: var(--p-button-outlined-label-shadow);
     --_color: var(--_text-color);
     --_hover-color: var(--_text-color);
     --_active-color: var(--_text-color);
@@ -488,7 +506,8 @@ button.ui-button::-moz-focus-inner {
 
 .ui-button.ui-button-raised,
 :is(.ui-splitbutton, .ui-menubutton).ui-button-raised > .ui-button {
-    box-shadow: var(--p-button-raised-shadow);
+    --_shadow: var(--p-button-raised-shadow);
+    --_active-shadow: var(--p-button-raised-shadow);
 }
 
 /* shape and sizes (after the groups, so .rounded-button wins over ".ui-button-group .ui-button") */

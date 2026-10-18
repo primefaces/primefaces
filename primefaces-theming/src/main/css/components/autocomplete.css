@@ -155,7 +155,14 @@
     margin: 0;
     min-height: 1px;
     overflow: hidden;
+    /* legacy default width; never wider than its container (grid cell, fixed width parent) */
     width: 400px;
+    max-width: 100%;
+}
+
+/* the root is an inline-block that shrinks to the container: it needs the limit too */
+.ui-autocomplete.ui-autocomplete-multiple {
+    max-width: 100%;
 }
 
 .ui-autocomplete-token {
@@ -188,7 +195,11 @@
     }
 }
 
+/* tokens and input wrap as a flex row, the input takes the rest of the line (at least 4rem) instead of a fixed width */
 .ui-autocomplete .ui-autocomplete-multiple-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     padding: calc(var(--p-autocomplete-padding-y) / 2) var(--p-autocomplete-padding-x);
 
     &.ui-autocomplete-dd-multiple-container {
@@ -247,6 +258,8 @@
         display: inline-block;
         vertical-align: middle;
         float: none;
+        flex: 1 1 4rem;
+        min-width: 4rem;
 
         /* same line height as an input: padding-y / 2 (container) + padding-y / 2 (here) + line = input height */
         input {
@@ -256,6 +269,7 @@
             line-height: var(--p-typography-line-height);
             color: var(--p-autocomplete-color);
             appearance: none;
+            width: 100%;
             padding: 0;
             margin: 0;
         }

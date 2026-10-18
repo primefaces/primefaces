@@ -42,7 +42,7 @@ const VENDOR = [
     '@fullcalendar/list/main.css'
 ];
 const CORE_PACKAGE_JSON = path.join(root, '..', 'primefaces', 'src', 'main', 'frontend', 'package.json');
-const PRESETS = ['aura', 'lara', 'nora'];
+const PRESETS = ['aura', 'lara', 'nora', 'metal'];
 const ICONS = 'lucide';
 const minify = process.env.THEMING_MINIFY !== 'false';
 

@@ -1,6 +1,6 @@
 /*
  * Nora preset: all tokens of the theme (started from PrimeUIX Nora 3.0.1, maintained here, not synced with PrimeUIX).
- * Edit by hand; tools/check.mjs keeps the three presets in line (same tokens, every token used).
+ * Edit by hand; tools/check.mjs keeps the presets in line (same tokens, every token used).
  *
  * Token layers (PrimeUIX naming):
  *   primitive  --p-emerald-500, --p-border-radius-md
@@ -705,6 +705,13 @@
         --p-button-lg-icon-only-width: 2.625rem;
         --p-button-label-font-weight: 700;
         --p-button-raised-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        --p-button-shadow: none;
+        --p-button-active-shadow: var(--p-button-shadow);
+        --p-button-active-offset: 0px;
+        --p-button-label-shadow: none;
+        --p-button-outlined-label-shadow: none;
+        --p-button-outlined-background: transparent;
+        --p-button-texture: none;
         --p-button-focus-ring-width: var(--p-focus-ring-width);
         --p-button-focus-ring-style: var(--p-focus-ring-style);
         --p-button-focus-ring-offset: var(--p-focus-ring-offset);
@@ -3520,6 +3527,7 @@
         --p-toggleswitch-slide-duration: 0.1s;
         --p-toggleswitch-disabled-background: var(--p-form-field-disabled-background);
         --p-toggleswitch-handle-border-radius: 50%;
+        --p-toggleswitch-handle-shadow: none;
         --p-toggleswitch-handle-size: 0.875rem;
         --p-toggleswitch-handle-background: var(--p-form-field-border-color);
         --p-toggleswitch-handle-hover-background: var(--p-form-field-border-color);

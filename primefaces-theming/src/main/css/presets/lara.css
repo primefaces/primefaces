@@ -1,6 +1,6 @@
 /*
  * Lara preset: all tokens of the theme (started from PrimeUIX Lara 3.0.1, maintained here, not synced with PrimeUIX).
- * Edit by hand; tools/check.mjs keeps the three presets in line (same tokens, every token used).
+ * Edit by hand; tools/check.mjs keeps the presets in line (same tokens, every token used).
  *
  * Token layers (PrimeUIX naming):
  *   primitive  --p-emerald-500, --p-border-radius-md
@@ -705,6 +705,13 @@
         --p-button-lg-icon-only-width: 2.875rem;
         --p-button-label-font-weight: 600;
         --p-button-raised-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        --p-button-shadow: none;
+        --p-button-active-shadow: var(--p-button-shadow);
+        --p-button-active-offset: 0px;
+        --p-button-label-shadow: none;
+        --p-button-outlined-label-shadow: none;
+        --p-button-outlined-background: transparent;
+        --p-button-texture: none;
         --p-button-focus-ring-width: var(--p-form-field-focus-ring-width);
         --p-button-focus-ring-style: var(--p-form-field-focus-ring-style);
         --p-button-focus-ring-offset: var(--p-form-field-focus-ring-offset);
@@ -3520,6 +3527,7 @@
         --p-toggleswitch-checked-background: var(--p-primary-color);
         --p-toggleswitch-checked-hover-background: var(--p-primary-hover-color);
         --p-toggleswitch-handle-border-radius: 50%;
+        --p-toggleswitch-handle-shadow: none;
         --p-toggleswitch-handle-size: 1.125rem;
         --p-toggleswitch-handle-background: light-dark(var(--p-surface-0), var(--p-surface-400));
         --p-toggleswitch-handle-disabled-background: light-dark(var(--p-form-field-disabled-color), var(--p-surface-900));

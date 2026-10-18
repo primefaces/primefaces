@@ -36,7 +36,7 @@ Each breaking core change gets its entry in the migration guide (`docs/migration
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura | lara | nora | mylib:mytheme.css -->
+    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | mylib:mytheme.css -->
 </context-param>
 ```
 
@@ -83,6 +83,7 @@ src/main/css/
   presets/aura.css          all tokens of a theme: primitive, semantic and one block per component; the PrimeUIX
   presets/lara.css            tokens and the PrimeFaces tokens (components/parts PrimeUIX does not have) side by side
   presets/nora.css
+  presets/metal.css         own preset (graphite / brushed aluminium, black metal in dark mode), started from Aura
   density/<preset>.css      compact / comfortable spacing of a preset (generated)
   icons/lucide.css          the icon set: one --p-icon-* token per meaning (close, expanded, sort-asc, ...)
   base/*.css                ui-widget, ui-state-*, core helpers, grid (ui-g), jquery-ui helpers
@@ -101,7 +102,7 @@ tools/export-tokens.mjs     exports the tokens in the W3C Design Tokens format (
   are not synced with PrimeUIX: PrimeUIX was the template, the presets deviate where that is right (e.g. form fields
   follow the global focus ring in all presets).
 - All tokens follow the PrimeUIX naming (`--p-<component>-<section>-<token>`), reference other tokens instead of literal
-  colors and live in the block of their component, in all three presets.
+  colors and live in the block of their component, in all presets.
 - Differences to PrimeUIX: the primary palette 50-950 is derived from `--p-primary-base` via `color-mix(in oklch)`,
   `--p-primary-contrast-color` is computed from the primary color, every semantic/component token is declared on
   `:root, [data-p-scope]`.
@@ -280,7 +281,25 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
 - The PrimeUIX `timeline` tokens style p:chronoline (`--p-chronoline-*`); `--p-timeline-*` are the tokens of the
   vis-timeline based p:timeline.
 - Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes (see "Modern look and
-  feel" below), its tokens are added in all three presets; PrimeUIX 3.0.1 is the reference for names and values.
+  feel" below), its tokens are added in all presets; PrimeUIX 3.0.1 is the reference for names and values.
+- **Metal** (`presets/metal.css`, not a PrimeUIX preset): graphite and brushed aluminium in light mode, black metal in
+  dark mode, one signal color for the focus ring (orange). Everything is token values:
+  - Metal edge lit from above: a background token with a face layer (`padding-box`) and an edge layer (`border-box`),
+    border color `transparent` (buttons, toggleSwitch). The transparent border becomes visible in the forced colors
+    mode. Form fields keep a real border (hover / focus border colors keep working).
+  - `light-dark()` only takes colors, so the gradients switch per mode with `light-dark()` in their color stops.
+  - PrimeFaces tokens for it (neutral in the other presets): `--p-button-texture` (layer above the background, Metal:
+    SVG noise = brushed grain), `--p-button-shadow` (machined), `--p-button-active-shadow` / `--p-button-active-offset`
+    (pressed), `--p-button-label-shadow` / `--p-button-outlined-label-shadow` (engraved labels),
+    `--p-button-outlined-background`, `--p-toggleswitch-handle-shadow`.
+  - Turned metal knobs: `conic-gradient` on the toggleSwitch / slider handles; the toggleSwitch icon is 60% of the knob.
+  - Severity buttons are anodized metal (the metal face / edge tinted in the severity color, 700 shades with white text
+    in light mode, 400 with dark text in dark mode). Per mode gradient direction without duplicating the token:
+    `color-mix(in oklch, B, light-dark(black, B) 22%)` darkens only in light mode (mixing a color with itself keeps it).
+  - Selection (highlight) is graphite; areas that are only marked (schedule today, dashboard / drag & drop hover) use a
+    subtle tint instead.
+  - Contrast: interactive edges >= 3:1 (WCAG 1.4.11), placeholder / muted text >= 4.5:1, selected vs. unselected
+    (graphite vs. aluminium) clearly distinct.
 
 ## Known limitations
 
@@ -337,6 +356,9 @@ The theming is done without changing the markup of the components. These steps f
 - Delete the CSS of the core components (`primefaces/src/main/frontend/**/*.css`, not third-party) once the legacy
   themes are gone; until then `ThemeUtils` / `PrimeResourceHandler#isResourceRendered` suppress it for token themes.
 - `RatingRenderer` never renders `ui-state-readonly`, so the readonly styles of `components/rating.css` do not apply.
+- p:cascadeSelect without value and placeholder renders only `span.ui-cascadeselect-label-empty` (no
+  `ui-cascadeselect-label ui-inputfield`): the widget looks the label up by `.ui-cascadeselect-label`, so a selected item
+  is not shown and the empty label is no click trigger. Render both classes (the theme sizes the empty label already).
 - `p:message display="tooltip"` adds `ui-state-error` to the tooltip, but there is no invalid tooltip token / style.
 - RTL: toggleSwitch and galleria have no `*-rtl` class, they mirror only with a `dir` attribute (on them or an
   ancestor); galleria swipe and arrow keys are not mirrored (JS reads physical directions).

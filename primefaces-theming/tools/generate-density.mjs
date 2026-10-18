@@ -19,7 +19,7 @@ const scale = (value, factor) => value.replace(/(-?\d*\.?\d+)(rem|px|em)\b/g, (_
 });
 
 fs.mkdirSync(outDir, { recursive: true });
-for (const preset of ['aura', 'lara', 'nora']) {
+for (const preset of ['aura', 'lara', 'nora', 'metal']) {
     const css = fs.readFileSync(path.join(cssDir, 'presets', `${preset}.css`), 'utf8').replace(/\r\n/g, '\n');
     const tokens = [...css.matchAll(/^\s+(--p-[a-z0-9-]+):\s*(.+);$/gm)]
         .filter(([, n, v]) => SCALED.test(n) && !EXCLUDED.test(n) && /\d(rem|px|em)\b/.test(v) && !v.includes('var('))

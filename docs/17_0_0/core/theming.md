@@ -4,13 +4,14 @@ PrimeFaces 17 comes with a new theming based on **design tokens**: every color, 
 duration is a CSS variable (`--p-primary-color`, `--p-form-field-background`, `--p-button-border-radius`, ...).
 The look of an application is customized with plain CSS: no SASS, no build step, no theme to fork.
 
-Three presets are available:
+Four presets are available:
 
 - **Aura**
 - **Lara**
 - **Nora**
+- **Metal**: graphite and brushed aluminium (light), black metal (dark), an orange focus ring
 
-The presets started from [PrimeUIX](https://github.com/primefaces/primeuix) (the theming of PrimeReact / PrimeVue),
+Aura, Lara and Nora started from [PrimeUIX](https://github.com/primefaces/primeuix) (the theming of PrimeReact / PrimeVue),
 so the token names follow the same convention. They are maintained for PrimeFaces and are not kept in sync with PrimeUIX.
 
 Light and dark mode are built in, each preset supports both.
@@ -35,7 +36,7 @@ and select a preset with the `primefaces.THEME` context parameter:
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura | lara | nora | library:name -->
+    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | library:name -->
 </context-param>
 ```
 
@@ -278,7 +279,7 @@ with `library:name`:
 ```
 
 The file is rendered after `components.css` instead of a preset. Start from a copy of a preset
-(`aura.css`, `lara.css` or `nora.css` of the `primefaces-theming` jar) or from the CSS of the Theme Designer.
+(`aura.css`, `lara.css`, `nora.css` or `metal.css` of the `primefaces-theming` jar) or from the CSS of the Theme Designer.
 
 For small changes a custom theme is not needed: override the tokens in the CSS of your application on top of a preset.
 
