@@ -167,38 +167,168 @@ On another element than `<html>`, `data-p-scope` is needed as well:
 
 ## Icons
 
-The icons the components draw themselves (toggler, close, sort, dropdown, pagination, ...) are SVG images defined by
-tokens, not glyphs of an icon font. They are drawn in the current text color and sized by the font size.
-There are two levels:
+There are two kinds of icons:
+
+- **Icons the application sets**, e.g. `<p:commandButton icon="pi pi-check"/>` or `<p:menuitem icon="fa fa-home"/>`:
+  plain CSS classes of an icon library (PrimeIcons, Font Awesome, ...). They are not part of the theme and work as
+  before.
+- **Icons the components draw themselves**: toggler, close, sort, dropdown, pagination, checkbox check, loading, ...
+  They come from the theme, as **icon tokens**, and are configured with CSS only.
+
+The rest of this section is about the second kind.
+
+### How they are drawn
+
+Every component icon is an SVG image in a token. The component shows it as a mask:
 
 ```css
-/* the icon set: one token per meaning */
---p-icon-close
---p-icon-collapsed
---p-icon-expanded
---p-icon-loading
-...
+.ui-panel .ui-icon-closethick::before {
+    content: "\2003";                                        /* 1em wide */
+    background: currentColor;                                /* the color */
+    mask: var(--p-panel-close-icon) center / contain no-repeat;   /* the shape */
+}
+```
 
-/* per component: --p-<component>-<control>[-<state>]-icon, default: the token of the icon set */
+So:
+- **Color:** the icon has the text color of its element (`currentColor`), it follows the color tokens of the component
+  (hover, active, disabled) and the color scheme. Only the shape of the SVG is used; its own colors are ignored.
+- **Size:** the font size of its element (`1em`). Many components have size tokens for it, e.g.
+  `--p-checkbox-icon-size`, `--p-chip-remove-icon-size`, `--p-avatar-icon-size`.
+- No icon font is loaded for them and they need no extra request: the default icons are inlined in the theme.
+
+### Two levels of tokens
+
+```css
+/* 1. the icon set: one token per meaning, used by all components */
+--p-icon-close: url("data:image/svg+xml,...");
+--p-icon-collapsed: url(...);
+--p-icon-expanded: url(...);
+
+/* 2. per component: --p-<component>-<control>[-<state>]-icon, by default a token of the icon set */
+--p-panel-close-icon: var(--p-icon-close);
 --p-tree-toggle-collapsed-icon: var(--p-icon-collapsed);
---p-tabs-close-icon: var(--p-icon-close);
+--p-tree-toggle-expanded-icon: var(--p-icon-expanded);
+--p-datatable-sort-asc-icon: var(--p-icon-sort-asc);
 ```
 
-Override them like any other token:
+Change the icon set token to change an icon in all components, the component token to change it in one component.
+The **Theming Tokens** page of the showcase lists all icon tokens with a preview (search for `icon`).
+
+The icon set (default: [Lucide](https://lucide.dev), ISC license):
+
+| Token | Meaning | Token | Meaning |
+|---|---|---|---|
+| `--p-icon-close` | close, remove | `--p-icon-check` | checked, selected |
+| `--p-icon-collapsed` / `-expanded` | toggler (tree, accordion, row) | `--p-icon-indeterminate` | partially checked |
+| `--p-icon-dropdown` | dropdown trigger | `--p-icon-clear` | clear a field |
+| `--p-icon-up` / `-down` | spinner, move | `--p-icon-search` | search, filter |
+| `--p-icon-prev` / `-next` | navigate back / forward | `--p-icon-first` / `-last` | first / last page |
+| `--p-icon-top` / `-bottom` | move to top / bottom | `--p-icon-arrow-up` / `-down` / `-left` / `-right` | arrows |
+| `--p-icon-sort` / `-sort-asc` / `-sort-desc` | column sorting | `--p-icon-loading` | loading spinner (rotates) |
+| `--p-icon-plus` / `-minus` | add / remove, zoom | `--p-icon-zoom-in` / `-zoom-out` | zoom |
+| `--p-icon-maximize` / `-restore` | dialog maximize | `--p-icon-show` / `-hide` | password visibility |
+| `--p-icon-edit` / `-trash` | row edit / delete | `--p-icon-options` | menu, options |
+| `--p-icon-calendar` | date picker | `--p-icon-home` | breadcrumb home |
+| `--p-icon-file` | file upload | `--p-icon-star` / `-star-filled` | rating |
+| `--p-icon-info` / `-success` / `-warn` / `-error` / `-fatal` | message severities | | |
+
+### Overriding icons
+
+Icon tokens are overridden like any other token, in unlayered application CSS:
 
 ```css
-:root { --p-icon-close: url("/myapp/icons/close.svg"); }                    /* everywhere */
-:root { --p-tree-toggle-collapsed-icon: url("data:image/svg+xml,..."); }    /* one component */
-.sidebar { --p-icon-expanded: url("/myapp/icons/minus.svg"); }             /* one area */
+/* everywhere */
+:root, [data-p-scope] {
+    --p-icon-close: url("/myapp/resources/icons/close.svg");
+}
+
+/* one component */
+:root, [data-p-scope] {
+    --p-tree-toggle-collapsed-icon: url("/myapp/resources/icons/plus.svg");
+    --p-tree-toggle-expanded-icon: url("/myapp/resources/icons/minus.svg");
+}
+
+/* one area of the page */
+.sidebar {
+    --p-icon-expanded: url("/myapp/resources/icons/chevron-up.svg");
+}
 ```
 
-- Any SVG works (Font Awesome, PrimeIcons, Tabler, ...); only its shape is used, the color is the text color.
-- Use **absolute paths** or **data URIs**. A relative `url()` inside a CSS variable is resolved against the stylesheet
-  that uses it (the theme), not the one that declares it.
-- Directional icons (arrows, chevrons) are mirrored automatically in RTL, one icon per direction is enough.
-- A complete other icon set is a CSS file with all `--p-icon-*` tokens, included after the theme.
+From a JSF resource, with the resource EL in a stylesheet loaded by `h:outputStylesheet`:
 
-The default icon set is [Lucide](https://lucide.dev). The token reference page shows all icon tokens with a preview.
+```css
+:root, [data-p-scope] {
+    --p-icon-close: url("#{resource['myapp:icons/close.svg']}");
+}
+```
+
+Inline as data URI (no request; `#` must be encoded as `%23`, use single quotes inside):
+
+```css
+:root, [data-p-scope] {
+    --p-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6 9 17l-5-5' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+}
+```
+
+Good to know:
+- **Any SVG works:** Font Awesome, PrimeIcons, Tabler, Material Symbols, Heroicons, ... all ship their icons as SVG
+  files. Outline and filled icons both work; the color does not matter (only the shape is used).
+- **Use absolute paths or data URIs.** A relative `url()` inside a CSS variable is resolved against the stylesheet that
+  *uses* the variable (the theme resource), not against the stylesheet that declares it.
+- **`:root, [data-p-scope]`:** inside a `data-p-scope` element (scoped primary color, density, ...) the theme declares
+  its tokens again, so an override on `:root` alone does not reach into it.
+- **Size and color** are not part of the icon: change them on the element or with the size / color tokens of the
+  component.
+- **Directional icons** (arrows, chevrons, first / last, prev / next) are mirrored automatically in right-to-left
+  pages, one icon per direction is enough.
+- **High contrast mode** (Windows forced colors): the icons are drawn in the forced text color and stay visible.
+- **Loading icons** rotate (one animation for all spinners); with `prefers-reduced-motion` they stand still.
+- **Hiding an icon:** do not set the token to `none` (without a mask the whole 1em box is painted); hide the element
+  with CSS instead, e.g. `.my-panel .ui-panel-titlebar-icon { display: none; }`.
+
+### Another icon set
+
+A complete other icon set is a CSS file that sets all `--p-icon-*` tokens, included after the theme. The component
+tokens reference the set, so they follow automatically:
+
+```css
+/* resources/myapp/icons.css */
+:root, [data-p-scope] {
+    --p-icon-close: url("/myapp/resources/icons/x.svg");
+    --p-icon-collapsed: url("/myapp/resources/icons/chevron-right.svg");
+    --p-icon-expanded: url("/myapp/resources/icons/chevron-down.svg");
+    /* ... all --p-icon-* tokens of the table above */
+}
+```
+
+```xml
+<h:outputStylesheet library="myapp" name="icons.css"/>
+```
+
+### Font icons instead of SVG
+
+The tokens take images. To draw a component icon with an icon font, override the `::before` of the icon element:
+
+```css
+.ui-panel .ui-icon-closethick::before {
+    mask: none;
+    background: none;
+    content: "\f00d";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+```
+
+!> The selectors of the icon elements are the legacy jQuery UI icon classes (`ui-icon-closethick`, ...) for now. They
+will be replaced by semantic icon classes named like the tokens (`p-panel-close-icon`), see [Compatibility](#compatibility).
+Prefer the tokens; they keep working.
+
+### Icon attributes of the components
+
+Attributes that set an icon a component draws itself (e.g. `p:panel closeIcon`, `p:rowToggler expandIcon`,
+`p:spinner upIcon`, `p:chip removeIcon`) will be removed without replacement (planned, breaking): use the icon tokens.
+Attributes that set content chosen per instance stay, e.g. `icon` of buttons and menu items or the node icons of
+`p:tree`.
 
 ## Motion
 
