@@ -42,6 +42,7 @@
     --_active-color: var(--p-togglebutton-checked-color);
     --_focus-ring-color: var(--p-togglebutton-focus-ring-color);
     --_focus-ring-shadow: var(--p-togglebutton-focus-ring-shadow);
+    --_label-shadow: var(--p-button-outlined-label-shadow);
 
     position: relative;
     gap: var(--p-togglebutton-gap);

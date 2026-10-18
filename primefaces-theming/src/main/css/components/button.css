@@ -319,6 +319,7 @@ button.ui-button::-moz-focus-inner {
     --_active-color: var(--p-button-secondary-active-color);
     --_focus-ring-color: var(--p-button-secondary-focus-ring-color);
     --_focus-ring-shadow: var(--p-button-secondary-focus-ring-shadow);
+    --_label-shadow: var(--p-button-outlined-label-shadow);
     --_outlined-hover-bg: var(--p-button-outlined-secondary-hover-background);
     --_outlined-active-bg: var(--p-button-outlined-secondary-active-background);
     --_outlined-border: var(--p-button-outlined-secondary-border-color);
