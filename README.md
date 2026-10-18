@@ -8,12 +8,7 @@
 [![Prime Discussions](https://img.shields.io/github/discussions-search?query=org%3Aprimefaces&logo=github&label=Prime%20Discussions&link=https%3A%2F%2Fgithub.com%2Forgs%2Fprimefaces%2Fdiscussions)](https://github.com/orgs/primefaces/discussions)
 [![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20PrimeFaces%20Guru-006BFF)](https://gurubase.io/g/primefaces)
 
-[![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2021/10/PrimeFaces-GitHub-2021Q4.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
-
-### Overview
-
-[![PrimeFaces Logo](primefaces-showcase/src/main/webapp/resources/showcase/images/primefaces-logo.svg)](https://www.primefaces.org/showcase)
-***
+[![PrimeFaces Hero](primefaces-showcase/src/main/webapp/resources/showcase/images/primefaces-hero.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 
 PrimeFaces is one of the most popular UI libraries in Jakarta EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.
 

@@ -248,7 +248,9 @@
     overflow: hidden;
     position: relative;
     max-width: 540px;
-    margin: 0 auto;
+    // room above and below the logos: overflow hidden must not cut their edges at fractional pixel positions
+    padding: 6px 0;
+    margin: -6px auto;
     mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
