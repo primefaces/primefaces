@@ -73,8 +73,9 @@ A theme is rendered as two stylesheets: `primefaces-theming:components.css` (ico
 the same for every theme, stays cached when the theme changes) followed by the tokens of the theme
 (`primefaces-theming:aura.css`, or the custom `library:name`). The CSS of the PrimeFaces core library is not rendered
 anymore, neither in the head nor in the resource updates of ajax responses (`PrimeResourceHandler#isResourceRendered`).
-PrimeFaces does not compress resources: enable gzip/brotli in the server (components.css ~500 KB raw, ~70 KB gzip; a theme ~210 KB raw). PrimeIcons are still loaded (unless
-`primefaces.PRIME_ICONS` is false) for the icons applications set themselves (`icon="pi pi-check"`).
+PrimeFaces does not compress resources: enable gzip / brotli in the server (`components.css` ~530 KB minified, ~75 KB
+gzip; a preset ~210 KB, ~24 KB gzip). PrimeIcons are still loaded (unless `primefaces.PRIME_ICONS` is false) for the
+icons applications set themselves (`icon="pi pi-check"`).
 
 ## Structure
 
@@ -87,9 +88,11 @@ src/main/css/
   presets/glass.css         own preset (Apple Liquid Glass style), started from Aura
   density/<preset>.css      compact / comfortable spacing of a preset (generated)
   icons/lucide.css          the icon set: one --p-icon-* token per meaning (close, expanded, sort-asc, ...)
-  base/*.css                ui-widget, ui-state-*, core helpers, grid (ui-g), jquery-ui helpers
+  base/*.css                ui-widget, ui-state-*, core helpers, grid (ui-g), jquery-ui helpers, document (page,
+                            reduced motion, print), scrollbar
   shared/*.css              building blocks of several components: inputfield, checkbox, radiobutton, paginator,
-                            badge, inputgroup, menu (the common .ui-menu markup incl. menubar)
+                            badge, inputgroup, menu (the common .ui-menu markup incl. menubar), backdrop (the
+                            backdrop filters of Glass)
   components/*.css          one file per tag (keyboard, schedule, tabview, ...); two tags rendering the same widget
                             share the file of the main tag (datepicker + calendar, dialog + confirmDialog, ...)
   behaviors/*.css           dragdrop, resizable, sticky
@@ -108,8 +111,8 @@ tools/export-tokens.mjs     exports the tokens in the W3C Design Tokens format (
   `--p-primary-contrast-color` is computed from the primary color, every semantic/component token is declared on
   `:root, [data-p-scope]`.
 - `tools/check.mjs` enforces: every `var(--p-*)` is defined, all presets define the same tokens, no literal colors
-  outside presets/ and icons/, no malformed values, the density files are up to date, and every preset token is used (an unused token is
-  deleted, not kept for later).
+  outside presets/ and icons/, no malformed values, the density files are up to date, and every preset token is used
+  (an unused token is deleted, not kept for later).
 
 The CSS uses native nesting (states, variants and children nested under their component; selector lists with
 different specificity stay flat).
@@ -123,6 +126,54 @@ The build (`npm run build` = `npm run check` + `tools/build.mjs` + `tools/export
 - `target/tokens/<theme>.light|dark.tokens.json`: the tokens in the DTCG format (for Figma / Tokens Studio / Style
   Dictionary), light-dark() resolved per file, `var()` as aliases, color-mix / relative colors / calc resolved, the CSS
   value in `$extensions["org.primefaces.css"]`, density values in `$extensions["org.primefaces.density"]`.
+
+## Presets
+
+- The PrimeUIX `timeline` tokens style p:chronoline (`--p-chronoline-*`); `--p-timeline-*` are the tokens of the
+  vis-timeline based p:timeline.
+- Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes (see "Modern look and
+  feel" below), its tokens are added in all presets; PrimeUIX 3.0.1 is the reference for names and values.
+- **Metal** (`presets/metal.css`, not a PrimeUIX preset): graphite and brushed aluminium in light mode, black metal in
+  dark mode, one signal color for the focus ring (orange). Everything is token values:
+  - Metal edge lit from above: a background token with a face layer (`padding-box`) and an edge layer (`border-box`),
+    border color `transparent` (buttons, toggleSwitch). The transparent border becomes visible in the forced colors
+    mode. Form fields keep a real border (hover / focus border colors keep working).
+  - `light-dark()` only takes colors, so the gradients switch per mode with `light-dark()` in their color stops.
+  - PrimeFaces tokens for it (neutral in the other presets): `--p-button-texture` (layer above the background, Metal:
+    SVG noise = brushed grain), `--p-button-shadow` (machined), `--p-button-active-shadow` / `--p-button-active-offset`
+    (pressed), `--p-button-label-shadow` / `--p-button-outlined-label-shadow` (engraved labels),
+    `--p-button-outlined-background`, `--p-toggleswitch-handle-shadow`.
+  - Turned metal knobs: `conic-gradient` on the toggleSwitch / slider handles; the toggleSwitch icon is 60% of the knob.
+  - Severity buttons are anodized metal (the metal face / edge tinted in the severity color, 700 shades with white text
+    in light mode, 400 with dark text in dark mode). Per mode gradient direction without duplicating the token:
+    `color-mix(in oklch, B, light-dark(black, B) 22%)` darkens only in light mode (mixing a color with itself keeps it).
+  - Selection (highlight) is graphite; areas that are only marked (schedule today, dashboard / drag & drop hover) use a
+    subtle tint instead.
+  - Contrast: interactive edges >= 3:1 (WCAG 1.4.11), placeholder / muted text >= 4.5:1, selected vs. unselected
+    (graphite vs. aluminium) clearly distinct.
+- **Glass** (`presets/glass.css`, not a PrimeUIX preset): Apple Liquid Glass style.
+  - Layers like the Apple HIG: the content layer (cards, panels, tables, accordion) is an almost opaque surface
+    (72%), the floating controls layer is glass: overlays, dialogs, menus, tooltips, growl, the toolbar and buttons blur
+    and saturate what lies behind them (`backdrop-filter`), with a light rim and a specular highlight on top. The modal
+    mask blurs the page.
+  - PrimeFaces tokens for it (neutral in the other presets): `--p-document-background` (page background, Glass: a soft
+    wallpaper, glass needs something colorful behind it), `--p-overlay-backdrop-filter`,
+    `--p-navigation-backdrop-filter` (toolbar), `--p-button-backdrop-filter`, `--p-mask-backdrop-filter`; applied in
+    `shared/backdrop.css` with zero specificity.
+  - No backdrop filter on content containers: it makes the element the containing block of its absolutely / fixed
+    positioned descendants (overlays inside it would be positioned wrong). Not on the menubar either: an element with a
+    backdrop filter is the backdrop root of its descendants, its submenus would only blur what lies inside the bar.
+    Nested overlays have the same limit, so the overlay backgrounds stay mostly opaque (86% light, 80% dark).
+  - Apple system colors: the accessible variants in light mode (white text >= 4.5:1: blue #0071e3, green #1f7a35,
+    orange #c93400, red #d70015, purple #8944ab, teal #0071a4), the bright ones for text in dark mode; Apple label /
+    separator grays, system font stack.
+  - The primary color is `--p-primary-base` (default Apple blue #0071e3) like in the other presets: primary text, focus
+    ring, highlight and the primary button are shades of it (OKLCH offsets that give Apple's blues for #0071e3), the
+    text on the primary button is white or dark depending on its lightness.
+  - Controls: capsule buttons (neutral glass, tinted glass for primary / severities), iOS switch (accessible green,
+    the off track has a border >= 3:1), segmented control for select buttons, iOS slider knob, macOS checkbox.
+  - `backdrop-filter` costs GPU time; large blurred areas that move (scrolling under a sticky glass bar) are the
+    expensive case.
 
 ## Icons
 
@@ -187,7 +238,6 @@ allowed), so new transitions use the tokens.
 - Print: light colors, no shadows, scrollable tables print all rows, overlays / growl / paginator hidden. Small state
   carrying elements (buttons, badges, tags, chips, checkbox / radio, toggleSwitch, slider, progressBar, selections) print
   their background (`print-color-adjust: exact`), browsers drop backgrounds but keep the (e.g. white) text color.
-
 - Target size (WCAG 2.2, 24px): the small icon controls (chip / token remove, password toggle, breadcrumb home) get an
   invisible 24px hit area; checkboxes, radios and menu items rely on the spacing exception (as in PrimeUIX).
 
@@ -248,11 +298,11 @@ the CSS stays as it is and the classes keep working:
 ## Responsive components
 
 Paginator (page links), dataTable / treeTable reflow, fileUpload (stacked layout), steps (titles), responsive pickList /
-orderList (stacked) and full width selectOneButton / selectManyButton in `.ui-fluid` react to their own width with container queries
-(`container: p-paginator / inline-size`, `@container p-paginator (max-width: 640px)`), so they also adapt inside narrow
-sidebars or columns. Inline-size containment means the element does not take its width from its content: inside a
-shrink-to-fit parent (an auto layout table cell, a flex item without width) give the component a width.
-Overlays, sidebars and the legacy `ui-g` grid stay on viewport media queries.
+orderList (stacked) and full width selectOneButton / selectManyButton in `.ui-fluid` react to their own width with
+container queries (`container: p-paginator / inline-size`, `@container p-paginator (max-width: 640px)`), so they also
+adapt inside narrow sidebars or columns. Inline-size containment means the element does not take its width from its
+content: inside a shrink-to-fit parent (an auto layout table cell, a flex item without width) give the component a
+width. Overlays, sidebars and the legacy `ui-g` grid stay on viewport media queries.
 
 ## Showcase
 
@@ -279,13 +329,15 @@ showcase layout (`--surface-a`, `--primary-color`, ...) to the tokens, so topbar
 rendered resources (also after ajax), component styles equal their resolved tokens (light and dark), overrides (primary
 color incl. contrast color and its light / dark threshold, icons, density), every icon has a mask, variants, float labels
 (incl. selectCheckboxMenu), motion tokens and reduced motion, `:focus-visible` of menu items, RTL, Metal (layers, 4.5:1
-text contrast on every gradient stop).
+text contrast on every gradient stop), Glass (backdrop filters of the floating layer only, page wallpaper, 4.5:1 button
+text in light and dark mode).
 
-Visual regression (`Theming012Test`): a fixed set of components is captured per preset and color scheme and compared
-with the reference images in `primefaces-integration-tests/src/test/resources/theming-baselines/<os>/` (font rendering
-differs per OS; a missing reference is created and the test skipped, review and commit it). On a difference the actual
-and a diff image (changed pixels red) are written to `target/theming-screenshots`; to accept an intended change delete
-the reference and run the test again.
+Visual regression (`Theming012Test`): a fixed set of components is captured per preset (all five) and color scheme and
+compared with the reference images in
+`primefaces-integration-tests/src/test/resources/theming-baselines/<os>/` (font rendering differs per OS; a missing
+reference is created and the test skipped, review and commit it). On a difference the actual and a diff image (changed
+pixels red) are written to `target/theming-screenshots`; to accept an intended change delete the reference and run the
+test again.
 ```bash
 mvn verify -f primefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,mojarra-4.0 "-Dit.test=Theming*Test"
 ```
@@ -296,51 +348,6 @@ mvn verify -f primefaces-integration-tests/pom.xml -Pintegration-tests,headless,
 jQuery UI base, Coloris, jsPlumb, cropperjs, Quill snow, vis-timeline, FullCalendar 5. The npm versions in `package.json`
 must be the ones of the core (`primefaces/src/main/frontend/package.json`); the build fails otherwise. jScrollPane CSS is
 not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, styled by `components/scrollpanel.css`).
-
-## Presets
-
-- The PrimeUIX `timeline` tokens style p:chronoline (`--p-chronoline-*`); `--p-timeline-*` are the tokens of the
-  vis-timeline based p:timeline.
-- Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes (see "Modern look and
-  feel" below), its tokens are added in all presets; PrimeUIX 3.0.1 is the reference for names and values.
-- **Metal** (`presets/metal.css`, not a PrimeUIX preset): graphite and brushed aluminium in light mode, black metal in
-  dark mode, one signal color for the focus ring (orange). Everything is token values:
-  - Metal edge lit from above: a background token with a face layer (`padding-box`) and an edge layer (`border-box`),
-    border color `transparent` (buttons, toggleSwitch). The transparent border becomes visible in the forced colors
-    mode. Form fields keep a real border (hover / focus border colors keep working).
-  - `light-dark()` only takes colors, so the gradients switch per mode with `light-dark()` in their color stops.
-  - PrimeFaces tokens for it (neutral in the other presets): `--p-button-texture` (layer above the background, Metal:
-    SVG noise = brushed grain), `--p-button-shadow` (machined), `--p-button-active-shadow` / `--p-button-active-offset`
-    (pressed), `--p-button-label-shadow` / `--p-button-outlined-label-shadow` (engraved labels),
-    `--p-button-outlined-background`, `--p-toggleswitch-handle-shadow`.
-  - Turned metal knobs: `conic-gradient` on the toggleSwitch / slider handles; the toggleSwitch icon is 60% of the knob.
-  - Severity buttons are anodized metal (the metal face / edge tinted in the severity color, 700 shades with white text
-    in light mode, 400 with dark text in dark mode). Per mode gradient direction without duplicating the token:
-    `color-mix(in oklch, B, light-dark(black, B) 22%)` darkens only in light mode (mixing a color with itself keeps it).
-  - Selection (highlight) is graphite; areas that are only marked (schedule today, dashboard / drag & drop hover) use a
-    subtle tint instead.
-  - Contrast: interactive edges >= 3:1 (WCAG 1.4.11), placeholder / muted text >= 4.5:1, selected vs. unselected
-    (graphite vs. aluminium) clearly distinct.
-- **Glass** (`presets/glass.css`, not a PrimeUIX preset): Apple Liquid Glass style.
-  - Layers like the Apple HIG: the content layer (cards, panels, tables, accordion) is an almost opaque surface
-    (72%), the floating controls layer is glass: overlays, dialogs, menus, tooltips, growl, the toolbar and buttons blur
-    and saturate what lies behind them (`backdrop-filter`), with a light rim and a specular highlight on top. The modal
-    mask blurs the page.
-  - PrimeFaces tokens for it (neutral in the other presets): `--p-document-background` (page background, Glass: a soft
-    wallpaper, glass needs something colorful behind it), `--p-overlay-backdrop-filter`,
-    `--p-navigation-backdrop-filter` (toolbar), `--p-button-backdrop-filter`, `--p-mask-backdrop-filter`; applied in
-    `shared/backdrop.css` with zero specificity.
-  - No backdrop filter on content containers: it makes the element the containing block of its absolutely / fixed
-    positioned descendants (overlays inside it would be positioned wrong). Not on the menubar either: an element with a
-    backdrop filter is the backdrop root of its descendants, its submenus would only blur what lies inside the bar.
-    Nested overlays have the same limit, so the overlay backgrounds stay mostly opaque (86% light, 80% dark).
-  - Apple system colors: the accessible variants in light mode (white text >= 4.5:1: blue #0071e3, green #1f7a35,
-    orange #c93400, red #d70015, purple #8944ab, teal #0071a4), the bright ones for text in dark mode; Apple label /
-    separator grays, system font stack.
-  - Controls: capsule buttons (neutral glass, tinted glass for primary / severities), iOS switch (accessible green,
-    the off track has a border >= 3:1), segmented control for select buttons, iOS slider knob, macOS checkbox.
-  - `backdrop-filter` costs GPU time; large blurred areas that move (scrolling under a sticky glass bar) are the
-    expensive case.
 
 ## Known limitations
 
@@ -354,7 +361,7 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
   ~3.9:1), below WCAG AA (4.5:1). Kept on purpose to stay close to PrimeReact. Applications that need AA use a darker
   primary in light mode, e.g. `:root { --p-primary-base: var(--p-emerald-700); }`. Metal (graphite) meets AA.
 - The high contrast mode handling is not verified on Windows yet.
-- Size: `components.css` is ~540 KB minified (~77 KB gzip) plus ~24 KB gzip per preset. About 100 KB are third-party
+- Size: `components.css` is ~530 KB minified (~75 KB gzip) plus ~24 KB gzip per preset. About 100 KB are third-party
   CSS (Quill, vis-timeline, FullCalendar, Coloris, jsPlumb, Cropper; jQuery UI only ~6 KB), the rest are the ~120
   component files, no larger dead parts. The levers need the core: CSS per rendered component instead of one bundle,
   and the p:calendar removal (largest file `components/datepicker.css`, jQuery UI datepicker CSS).

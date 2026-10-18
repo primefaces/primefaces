@@ -44,7 +44,8 @@ public class App implements Serializable {
      */
     public static final List<String> PRESETS = List.of("aura", "lara", "nora", "metal", "glass");
 
-    private String theme = PRESETS.get(0);
+    // default preset of the showcase (for now: Glass)
+    private String theme = "glass";
     private Country locale = new Country(0, Locale.US);
     // text direction chosen in the theme configurator (?dir=ltr|rtl); null: the direction of the locale
     private String direction;
