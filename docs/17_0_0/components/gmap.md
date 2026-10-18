@@ -94,7 +94,29 @@ _org.primefaces.model.map.DefaultMapModel_ as the default implementation. API do
 related model classes are available at the end of `GMap` section and also at Javadocs of PrimeFaces.
 
 ## Markers
-A marker is represented by _org.primefaces.model.map.Marker._
+A marker is represented by _org.primefaces.model.map.Marker._ and rendered as a Google Maps
+[AdvancedMarkerElement](https://developers.google.com/maps/documentation/javascript/advanced-markers/overview).
+The widget loads the `marker` library itself, no need to add it to `libraries`.
+
+Advanced markers require a map ID. The `mapId` attribute defaults to `DEMO_MAP_ID`, which Google provides for
+testing only; [create your own map ID](https://developers.google.com/maps/documentation/get-map-id) for production.
+
+```xhtml
+<p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" style="width:600px;height:400px"
+        model="#{mapBean.model}" mapId="YOUR_MAP_ID"/>
+```
+
+Marker `icon` can be an image URL or an `org.primefaces.model.map.Symbol` (rendered as SVG). A `label` is rendered
+as the glyph of the default pin, only its `text` and `color` are used. `animation`, `cursor`, `flat` and `shadow`
+have no equivalent in advanced markers and are ignored.
+
+If you create markers yourself in JavaScript and load Google Maps with a script tag, add `libraries=marker` to the
+script URL:
+
+```js
+var marker = new google.maps.marker.AdvancedMarkerElement({ position: event.latLng });
+PF('map').addOverlay(marker);
+```
 
 ```xhtml
 <p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" style="width:600px;height:400px" model="#{mapBean.model}"/>
@@ -312,14 +334,15 @@ _org.primefaces.model.map.Marker_ extends _org.primefaces.model.map.Overlay_
 
 | Property | Default | Type | Description
 | --- | --- | --- | --- |
-| animation | null | Animation | Enumeration of either DROP or BOUNCE
-| clickable | 1 | Boolean | Defines if marker can be dragged
-| cursor | pointer | String | Cursor to display on rollover
+| animation | null | Animation | Deprecated, ignored by advanced markers
+| clickable | 1 | Boolean | Defines if marker can be clicked
+| cursor | pointer | String | Deprecated, ignored by advanced markers
 | draggable | 0 | Boolean | Defines if marker can be dragged
-| flat | 0 | Boolean | If enabled, shadow image is not displayed
-| icon | null | String | Icon of the foreground
+| flat | 0 | Boolean | Deprecated, ignored by advanced markers
+| icon | null | String or Symbol | Image URL or SVG symbol to display instead of the default pin
+| label | null | MarkerLabel | Text displayed as glyph of the default pin, only text and color are used
 | latlng | null | LatLng | Location of the marker
-| shadow | null | String | Shadow image of the marker
+| shadow | null | String | Deprecated, ignored by advanced markers
 | title | null | String | Text to display on rollover
 | visible | 1 | Boolean | Defines visibility of the marker
 

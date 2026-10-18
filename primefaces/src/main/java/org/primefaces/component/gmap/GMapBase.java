@@ -111,4 +111,8 @@ public abstract class GMapBase extends UIComponentBase implements Widget, StyleA
 
     @Property(description = "Comma-separated list of additional Google Maps libraries to load.")
     public abstract String getLibraries();
+
+    @Property(defaultValue = "DEMO_MAP_ID",
+            description = "Google Maps map ID, required by AdvancedMarkerElement. DEMO_MAP_ID is for testing only, use your own map ID in production.")
+    public abstract String getMapId();
 }

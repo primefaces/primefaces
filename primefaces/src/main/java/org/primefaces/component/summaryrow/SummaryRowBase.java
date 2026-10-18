@@ -44,6 +44,12 @@ public abstract class SummaryRowBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    @Property(description = "Name of the field associated to bean \"var\".")
+    public abstract String getField();
+
+    @Property(description = "Property to be used for grouping.")
+    public abstract String getGroupBy();
+
     @Property(description = "Method expression to execute before rendering summary row. (e.g. to calculate totals)")
     public abstract jakarta.el.MethodExpression getListener();
 

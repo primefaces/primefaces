@@ -704,7 +704,9 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
 
         var value = $this.input.val();
 
-        if ($this.cfg.pojo && !$this.cfg.multiple) {
+        // #15304 with forceSelection the hidden input only holds validated values, as a queued request
+        // may serialize the form before the typed text has been validated on blur
+        if ($this.cfg.pojo && !$this.cfg.multiple && (!$this.cfg.forceSelection || !value.length)) {
             $this.hinput.val(value);
         }
 
@@ -1010,8 +1012,8 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                     html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item" data-item-value="' + PrimeFaces.escapeHTML(itemValue, true) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded, true) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded, true) + '</li>';
                 });
                 if (suggestions.moreAvailable && $this.cfg.moreText) {
-                    var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + $this.cfg.moreText + '">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
+                    var moreTextEncoded = PrimeFaces.escapeHTML($("<div>").text($this.cfg.moreText).html(), true);
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + moreTextEncoded + '" data-item-label="' + moreTextEncoded + '">' + moreTextEncoded + '</li>';
                 }
                 html += '</ul>';
 
@@ -1565,7 +1567,16 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
             }
         }
 
-        if (!valid) {
+        if (valid) {
+            // #15304 sync the hidden input when a matching label was typed instead of selected
+            if (this.cfg.pojo && !this.cfg.multiple && this.items) {
+                var matchedItem = this.items.filter(':not(.ui-autocomplete-moretext)[data-item-label="' + CSS.escape(value) + '"]');
+                if (matchedItem.length) {
+                    this.hinput.val(matchedItem.attr('data-item-value'));
+                }
+            }
+        }
+        else {
             this.input.val('');
             if (!this.cfg.multiple) {
                 this.hinput.val('');

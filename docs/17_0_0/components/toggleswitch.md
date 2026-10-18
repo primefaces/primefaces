@@ -40,3 +40,20 @@ Following is the list of structural style classes;
 
 As skinning style classes are global, see the main theming section for more information.
 
+## Confirmation
+
+Attach `p:confirm` to ask before changing the value. Cancelling leaves the selection unchanged and does not send the change AJAX request. Confirming applies the selection and then runs the change listener. Both mouse and keyboard interactions support confirmation.
+
+```xhtml
+<p:toggleSwitch value="#{bean.value}">
+    <p:ajax listener="#{bean.onChange}" update="messages" />
+    <p:confirm message="Apply this change?" />
+</p:toggleSwitch>
+
+<p:confirmDialog global="true">
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+</p:confirmDialog>
+```
+
+For a confirmation popup, use `type="popup"` on `p:confirm` and a global `p:confirmPopup` with `ui-confirm-popup-yes` and `ui-confirm-popup-no` buttons.
