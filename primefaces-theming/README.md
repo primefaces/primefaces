@@ -374,6 +374,20 @@ other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0
   have one).
 - New components PrimeReact has: InputOtp, MeterGroup, Stepper (modern successor of steps / wizard).
 
+**Material preset** (after the markup changes above)
+
+PrimeUIX Material is more than token values: 32 components carry about 850 lines of preset-specific CSS (filled
+inputs with an animated underline, hover / focus halo on checkbox / radio / toggleSwitch, button focus by background,
+tab ink bar, card style accordion / fieldset, ...). Those rules target the component markup, so they are ported after
+the icon / markup / jQuery UI changes, otherwise twice. Needed mechanism:
+- `presets/material.css` (tokens) + `presets/material/<component>.css` (rules), bundled by `build.mjs` into the
+  delivered `material.css` with its density file. Only loaded when Material is active, so no scoping selector.
+- New layer after the components: `@layer primefaces.tokens, primefaces.vendor, primefaces.components,
+  primefaces.preset, primefaces.behaviors` (preset rules win without specificity tricks, application CSS still wins).
+- `check.mjs` also checks the preset rules (undefined tokens, literal colors / motion); tokens only Material has (e.g.
+  halo size) either exist in all presets or use a prefix the parity check exempts.
+- Limitation: presets with own rules cannot be mixed on one page via `[data-p-scope]`.
+
 **Animations: JS → CSS**
 
 State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) are CSS already (transitions with the
