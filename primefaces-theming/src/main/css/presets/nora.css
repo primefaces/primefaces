@@ -1966,7 +1966,7 @@
         --p-lifecycle-score-0-color: var(--p-message-error-color);
         --p-lifecycle-score-0-border-color: var(--p-message-error-border-color);
         --p-lifecycle-score-33-background: color-mix(in srgb, var(--p-orange-500), transparent 84%);
-        --p-lifecycle-score-33-color: light-dark(var(--p-orange-600), var(--p-orange-300));
+        --p-lifecycle-score-33-color: light-dark(var(--p-orange-800), var(--p-orange-300));
         --p-lifecycle-score-33-border-color: color-mix(in srgb, var(--p-orange-500), transparent 60%);
         --p-lifecycle-score-66-background: var(--p-message-warn-background);
         --p-lifecycle-score-66-color: var(--p-message-warn-color);
@@ -2206,8 +2206,8 @@
         --p-message-success-close-button-hover-background: light-dark(var(--p-green-600), var(--p-green-50));
         --p-message-success-close-button-focus-ring-color: light-dark(var(--p-green-50), var(--p-green-950));
         --p-message-success-close-button-focus-ring-shadow: none;
-        --p-message-warn-background: light-dark(var(--p-yellow-600), var(--p-yellow-200));
-        --p-message-warn-border-color: light-dark(var(--p-yellow-600), var(--p-yellow-200));
+        --p-message-warn-background: light-dark(var(--p-yellow-800), var(--p-yellow-200));
+        --p-message-warn-border-color: light-dark(var(--p-yellow-800), var(--p-yellow-200));
         --p-message-warn-color: light-dark(var(--p-yellow-50), var(--p-yellow-950));
         --p-message-warn-shadow: none;
         --p-message-warn-close-button-hover-background: light-dark(var(--p-yellow-400), var(--p-yellow-50));

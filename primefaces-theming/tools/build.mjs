@@ -27,7 +27,6 @@ const VENDOR = [
     'jquery-ui/themes/base/core.css',
     'jquery-ui/themes/base/draggable.css',
     'jquery-ui/themes/base/resizable.css',
-    'jquery-ui/themes/base/selectable.css',
     'jquery-ui/themes/base/sortable.css',
     'jquery-ui/themes/base/datepicker.css',
     'jquery-ui/themes/base/slider.css',

@@ -966,16 +966,16 @@
         --p-checkbox-width: 1.125rem;
         --p-checkbox-height: 1.125rem;
         --p-checkbox-background: var(--p-form-field-background);
-        --p-checkbox-checked-background: var(--p-primary-color);
-        --p-checkbox-checked-hover-background: var(--p-primary-hover-color);
+        --p-checkbox-checked-background: var(--p-button-primary-background);
+        --p-checkbox-checked-hover-background: var(--p-button-primary-hover-background);
         --p-checkbox-disabled-background: var(--p-form-field-disabled-background);
         --p-checkbox-filled-background: var(--p-form-field-filled-background);
         --p-checkbox-border-color: var(--p-form-field-border-color);
         --p-checkbox-hover-border-color: var(--p-form-field-hover-border-color);
         --p-checkbox-focus-border-color: var(--p-form-field-border-color);
-        --p-checkbox-checked-border-color: var(--p-primary-color);
-        --p-checkbox-checked-hover-border-color: var(--p-primary-hover-color);
-        --p-checkbox-checked-focus-border-color: var(--p-primary-color);
+        --p-checkbox-checked-border-color: transparent;
+        --p-checkbox-checked-hover-border-color: transparent;
+        --p-checkbox-checked-focus-border-color: transparent;
         --p-checkbox-checked-disabled-border-color: var(--p-form-field-border-color);
         --p-checkbox-invalid-border-color: var(--p-form-field-invalid-border-color);
         --p-checkbox-shadow: var(--p-form-field-shadow);
@@ -2679,10 +2679,10 @@
 
     /* progressbar */
     :root, [data-p-scope] {
-        --p-progressbar-background: var(--p-content-border-color);
+        --p-progressbar-background: linear-gradient(180deg, light-dark(#c9c9ce, #0a0a0b), light-dark(#e9e9ec, #121113) 70%);
         --p-progressbar-border-radius: var(--p-content-border-radius);
         --p-progressbar-height: 1.125rem;
-        --p-progressbar-value-background: var(--p-primary-color);
+        --p-progressbar-value-background: linear-gradient(180deg, light-dark(#5a5a62, #ffffff), light-dark(#2a2a2e, #e4e3e6) 50%, light-dark(#121214, #c9c7cc));
         --p-progressbar-label-color: var(--p-primary-contrast-color);
         --p-progressbar-label-font-size: 0.625rem;
         --p-progressbar-label-font-weight: 600;
@@ -2701,16 +2701,16 @@
         --p-radiobutton-width: 1.125rem;
         --p-radiobutton-height: 1.125rem;
         --p-radiobutton-background: var(--p-form-field-background);
-        --p-radiobutton-checked-background: var(--p-primary-color);
-        --p-radiobutton-checked-hover-background: var(--p-primary-hover-color);
+        --p-radiobutton-checked-background: var(--p-button-primary-background);
+        --p-radiobutton-checked-hover-background: var(--p-button-primary-hover-background);
         --p-radiobutton-disabled-background: var(--p-form-field-disabled-background);
         --p-radiobutton-filled-background: var(--p-form-field-filled-background);
         --p-radiobutton-border-color: var(--p-form-field-border-color);
         --p-radiobutton-hover-border-color: var(--p-form-field-hover-border-color);
         --p-radiobutton-focus-border-color: var(--p-form-field-border-color);
-        --p-radiobutton-checked-border-color: var(--p-primary-color);
-        --p-radiobutton-checked-hover-border-color: var(--p-primary-hover-color);
-        --p-radiobutton-checked-focus-border-color: var(--p-primary-color);
+        --p-radiobutton-checked-border-color: transparent;
+        --p-radiobutton-checked-hover-border-color: transparent;
+        --p-radiobutton-checked-focus-border-color: transparent;
         --p-radiobutton-checked-disabled-border-color: var(--p-form-field-border-color);
         --p-radiobutton-invalid-border-color: var(--p-form-field-invalid-border-color);
         --p-radiobutton-shadow: var(--p-form-field-shadow);
@@ -3464,14 +3464,14 @@
         --p-togglebutton-gap: 0.5rem;
         --p-togglebutton-font-weight: 500;
         --p-togglebutton-font-size: var(--p-form-field-font-size);
-        --p-togglebutton-background: light-dark(var(--p-surface-100), var(--p-surface-950));
-        --p-togglebutton-checked-background: light-dark(var(--p-surface-100), var(--p-surface-950));
-        --p-togglebutton-hover-background: light-dark(var(--p-surface-100), var(--p-surface-950));
-        --p-togglebutton-border-color: light-dark(var(--p-surface-100), var(--p-surface-950));
+        --p-togglebutton-background: var(--p-toggleswitch-background);
+        --p-togglebutton-checked-background: var(--p-toggleswitch-background);
+        --p-togglebutton-hover-background: var(--p-toggleswitch-background);
+        --p-togglebutton-border-color: transparent;
         --p-togglebutton-color: light-dark(var(--p-surface-700), var(--p-surface-200));
         --p-togglebutton-hover-color: light-dark(var(--p-surface-900), var(--p-surface-50));
         --p-togglebutton-checked-color: light-dark(var(--p-surface-900), var(--p-surface-0));
-        --p-togglebutton-checked-border-color: light-dark(var(--p-surface-100), var(--p-surface-950));
+        --p-togglebutton-checked-border-color: transparent;
         --p-togglebutton-disabled-background: var(--p-form-field-disabled-background);
         --p-togglebutton-disabled-border-color: var(--p-form-field-disabled-background);
         --p-togglebutton-disabled-color: var(--p-form-field-disabled-color);
@@ -3492,8 +3492,8 @@
         --p-togglebutton-icon-disabled-color: var(--p-form-field-disabled-color);
         --p-togglebutton-content-padding: 0.125rem 0.625rem;
         --p-togglebutton-content-border-radius: var(--p-content-border-radius);
-        --p-togglebutton-content-checked-background: light-dark(var(--p-surface-0), var(--p-surface-800));
-        --p-togglebutton-content-checked-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04);
+        --p-togglebutton-content-checked-background: linear-gradient(180deg, light-dark(#ffffff, #4a484e), light-dark(#eeeef0, #2c2b2d) 45%, light-dark(#dcdce0, #1f1e21));
+        --p-togglebutton-content-checked-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.18)), 0 0 0 0.5px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.25), 0 2px 6px rgb(0 0 0 / 0.1);
         --p-togglebutton-content-sm-padding: 0.125rem 0.625rem;
         --p-togglebutton-content-lg-padding: 0.125rem 0.625rem;
     }

@@ -1836,7 +1836,7 @@
     :root, [data-p-scope] {
         --p-inputgroup-addon-background: var(--p-form-field-background);
         --p-inputgroup-addon-border-color: var(--p-form-field-border-color);
-        --p-inputgroup-addon-color: var(--p-form-field-icon-color);
+        --p-inputgroup-addon-color: var(--p-text-muted-color);
         --p-inputgroup-addon-border-radius: var(--p-form-field-border-radius);
         --p-inputgroup-addon-padding: 0 0.5rem;
         --p-inputgroup-addon-min-width: 2.25rem;
@@ -1966,7 +1966,7 @@
         --p-lifecycle-score-0-color: var(--p-message-error-color);
         --p-lifecycle-score-0-border-color: var(--p-message-error-border-color);
         --p-lifecycle-score-33-background: color-mix(in srgb, var(--p-orange-500), transparent 84%);
-        --p-lifecycle-score-33-color: light-dark(var(--p-orange-600), var(--p-orange-300));
+        --p-lifecycle-score-33-color: light-dark(var(--p-orange-800), var(--p-orange-300));
         --p-lifecycle-score-33-border-color: color-mix(in srgb, var(--p-orange-500), transparent 60%);
         --p-lifecycle-score-66-background: var(--p-message-warn-background);
         --p-lifecycle-score-66-color: var(--p-message-warn-color);
@@ -2193,36 +2193,36 @@
         --p-message-close-icon-size: 0.875rem;
         --p-message-info-background: light-dark(color-mix(in srgb, var(--p-blue-50), transparent 5%), color-mix(in srgb, var(--p-blue-500), transparent 84%));
         --p-message-info-border-color: light-dark(var(--p-blue-200), color-mix(in srgb, var(--p-blue-700), transparent 64%));
-        --p-message-info-color: light-dark(var(--p-blue-600), var(--p-blue-500));
+        --p-message-info-color: light-dark(var(--p-blue-700), var(--p-blue-400));
         --p-message-info-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-blue-500), transparent 96%);
         --p-message-info-close-button-hover-background: light-dark(var(--p-blue-100), rgba(255, 255, 255, 0.05));
         --p-message-info-close-button-focus-ring-color: light-dark(var(--p-blue-600), var(--p-blue-500));
         --p-message-info-close-button-focus-ring-shadow: none;
-        --p-message-info-simple-color: light-dark(var(--p-blue-600), var(--p-blue-500));
+        --p-message-info-simple-color: light-dark(var(--p-blue-700), var(--p-blue-400));
         --p-message-success-background: light-dark(color-mix(in srgb, var(--p-green-50), transparent 5%), color-mix(in srgb, var(--p-green-500), transparent 84%));
         --p-message-success-border-color: light-dark(var(--p-green-200), color-mix(in srgb, var(--p-green-700), transparent 64%));
-        --p-message-success-color: light-dark(var(--p-green-600), var(--p-green-500));
+        --p-message-success-color: light-dark(var(--p-green-700), var(--p-green-400));
         --p-message-success-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-green-500), transparent 96%);
         --p-message-success-close-button-hover-background: light-dark(var(--p-green-100), rgba(255, 255, 255, 0.05));
         --p-message-success-close-button-focus-ring-color: light-dark(var(--p-green-600), var(--p-green-500));
         --p-message-success-close-button-focus-ring-shadow: none;
         --p-message-warn-background: light-dark(color-mix(in srgb, var(--p-yellow-50), transparent 5%), color-mix(in srgb, var(--p-yellow-500), transparent 84%));
         --p-message-warn-border-color: light-dark(var(--p-yellow-200), color-mix(in srgb, var(--p-yellow-700), transparent 64%));
-        --p-message-warn-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
+        --p-message-warn-color: light-dark(var(--p-yellow-800), var(--p-yellow-400));
         --p-message-warn-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-yellow-500), transparent 96%);
         --p-message-warn-close-button-hover-background: light-dark(var(--p-yellow-100), rgba(255, 255, 255, 0.05));
         --p-message-warn-close-button-focus-ring-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
         --p-message-warn-close-button-focus-ring-shadow: none;
-        --p-message-warn-simple-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
+        --p-message-warn-simple-color: light-dark(var(--p-yellow-800), var(--p-yellow-400));
         --p-message-error-background: light-dark(color-mix(in srgb, var(--p-red-50), transparent 5%), color-mix(in srgb, var(--p-red-500), transparent 84%));
         --p-message-error-border-color: light-dark(var(--p-red-200), color-mix(in srgb, var(--p-red-700), transparent 64%));
-        --p-message-error-color: light-dark(var(--p-red-600), var(--p-red-500));
+        --p-message-error-color: light-dark(var(--p-red-700), var(--p-red-400));
         --p-message-error-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-red-500), transparent 96%);
         --p-message-error-close-button-hover-background: light-dark(var(--p-red-100), rgba(255, 255, 255, 0.05));
         --p-message-error-close-button-focus-ring-color: light-dark(var(--p-red-600), var(--p-red-500));
         --p-message-error-close-button-focus-ring-shadow: none;
         --p-message-error-outlined-border-color: light-dark(var(--p-red-600), var(--p-red-500));
-        --p-message-error-simple-color: light-dark(var(--p-red-600), var(--p-red-500));
+        --p-message-error-simple-color: light-dark(var(--p-red-700), var(--p-red-400));
         --p-message-summary-font-weight: var(--p-message-text-font-weight);
         --p-message-detail-font-weight: var(--p-toast-detail-font-weight);
         --p-message-fatal-background: color-mix(in srgb, var(--p-message-error-background), var(--p-message-error-color) 15%);
@@ -2256,10 +2256,10 @@
         --p-message-contrast-outlined-color: light-dark(var(--p-surface-950), var(--p-surface-0));
         --p-message-contrast-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-surface-950), transparent 96%);
         --p-message-contrast-simple-color: light-dark(var(--p-surface-950), var(--p-surface-0));
-        --p-message-error-outlined-color: light-dark(var(--p-red-600), var(--p-red-500));
+        --p-message-error-outlined-color: light-dark(var(--p-red-700), var(--p-red-400));
         --p-message-icon-sm-size: 0.875rem;
         --p-message-info-outlined-border-color: light-dark(var(--p-blue-600), var(--p-blue-500));
-        --p-message-info-outlined-color: light-dark(var(--p-blue-600), var(--p-blue-500));
+        --p-message-info-outlined-color: light-dark(var(--p-blue-700), var(--p-blue-400));
         --p-message-outlined-border-width: 1px;
         --p-message-secondary-background: light-dark(var(--p-surface-100), var(--p-surface-800));
         --p-message-secondary-border-color: light-dark(var(--p-surface-200), var(--p-surface-700));
@@ -2273,12 +2273,12 @@
         --p-message-secondary-simple-color: light-dark(var(--p-surface-500), var(--p-surface-400));
         --p-message-simple-content-padding: 0;
         --p-message-success-outlined-border-color: light-dark(var(--p-green-600), var(--p-green-500));
-        --p-message-success-outlined-color: light-dark(var(--p-green-600), var(--p-green-500));
-        --p-message-success-simple-color: light-dark(var(--p-green-600), var(--p-green-500));
+        --p-message-success-outlined-color: light-dark(var(--p-green-700), var(--p-green-400));
+        --p-message-success-simple-color: light-dark(var(--p-green-700), var(--p-green-400));
         --p-message-text-lg-font-size: 1rem;
         --p-message-text-sm-font-size: 0.75rem;
         --p-message-warn-outlined-border-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
-        --p-message-warn-outlined-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
+        --p-message-warn-outlined-color: light-dark(var(--p-yellow-800), var(--p-yellow-400));
     }
 
     /* messages */
@@ -3401,7 +3401,7 @@
         --p-toast-close-icon-size: 0.875rem;
         --p-toast-info-background: light-dark(color-mix(in srgb, var(--p-blue-50), transparent 5%), color-mix(in srgb, var(--p-blue-500), transparent 84%));
         --p-toast-info-border-color: light-dark(var(--p-blue-200), color-mix(in srgb, var(--p-blue-700), transparent 64%));
-        --p-toast-info-color: light-dark(var(--p-blue-600), var(--p-blue-500));
+        --p-toast-info-color: light-dark(var(--p-blue-700), var(--p-blue-400));
         --p-toast-info-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
         --p-toast-info-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-blue-500), transparent 96%);
         --p-toast-info-close-button-hover-background: light-dark(var(--p-blue-100), rgba(255, 255, 255, 0.05));
@@ -3409,7 +3409,7 @@
         --p-toast-info-close-button-focus-ring-shadow: none;
         --p-toast-success-background: light-dark(color-mix(in srgb, var(--p-green-50), transparent 5%), color-mix(in srgb, var(--p-green-500), transparent 84%));
         --p-toast-success-border-color: light-dark(var(--p-green-200), color-mix(in srgb, var(--p-green-700), transparent 64%));
-        --p-toast-success-color: light-dark(var(--p-green-600), var(--p-green-500));
+        --p-toast-success-color: light-dark(var(--p-green-700), var(--p-green-400));
         --p-toast-success-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
         --p-toast-success-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-green-500), transparent 96%);
         --p-toast-success-close-button-hover-background: light-dark(var(--p-green-100), rgba(255, 255, 255, 0.05));
@@ -3417,7 +3417,7 @@
         --p-toast-success-close-button-focus-ring-shadow: none;
         --p-toast-warn-background: light-dark(color-mix(in srgb, var(--p-yellow-50), transparent 5%), color-mix(in srgb, var(--p-yellow-500), transparent 84%));
         --p-toast-warn-border-color: light-dark(var(--p-yellow-200), color-mix(in srgb, var(--p-yellow-700), transparent 64%));
-        --p-toast-warn-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
+        --p-toast-warn-color: light-dark(var(--p-yellow-800), var(--p-yellow-400));
         --p-toast-warn-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
         --p-toast-warn-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-yellow-500), transparent 96%);
         --p-toast-warn-close-button-hover-background: light-dark(var(--p-yellow-100), rgba(255, 255, 255, 0.05));
@@ -3425,7 +3425,7 @@
         --p-toast-warn-close-button-focus-ring-shadow: none;
         --p-toast-error-background: light-dark(color-mix(in srgb, var(--p-red-50), transparent 5%), color-mix(in srgb, var(--p-red-500), transparent 84%));
         --p-toast-error-border-color: light-dark(var(--p-red-200), color-mix(in srgb, var(--p-red-700), transparent 64%));
-        --p-toast-error-color: light-dark(var(--p-red-600), var(--p-red-500));
+        --p-toast-error-color: light-dark(var(--p-red-700), var(--p-red-400));
         --p-toast-error-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
         --p-toast-error-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-red-500), transparent 96%);
         --p-toast-error-close-button-hover-background: light-dark(var(--p-red-100), rgba(255, 255, 255, 0.05));

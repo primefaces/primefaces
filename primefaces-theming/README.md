@@ -309,6 +309,10 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
 - Requires `light-dark()`, `color-mix()`, relative colors (`oklch(from ...)`), `:has()` and container queries
   (Chrome 123, Firefox 128, Safari 18).
 - The high contrast mode handling is not verified on Windows yet.
+- Size: `components.css` is ~540 KB minified (~77 KB gzip) plus ~24 KB gzip per preset. About 100 KB are third-party
+  CSS (Quill, vis-timeline, FullCalendar, Coloris, jsPlumb, Cropper; jQuery UI only ~6 KB), the rest are the ~120
+  component files, no larger dead parts. The levers need the core: CSS per rendered component instead of one bundle,
+  and the p:calendar removal (largest file `components/datepicker.css`, jQuery UI datepicker CSS).
 
 ## Planned (PrimeFaces core)
 
