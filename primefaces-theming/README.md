@@ -226,13 +226,8 @@ not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*` classes, 
 
 - The PrimeUIX `timeline` tokens style p:chronoline (`--p-chronoline-*`); `--p-timeline-*` are the tokens of the
   vis-timeline based p:timeline.
-- Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes, its tokens are added
-  in all three presets (PrimeUIX 3.0.1 is the reference for names and values):
-  - size variants (sm/lg) of select, multiselect, cascadeselect, checkbox, radiobutton and badge (sm)
-  - message / growl variants (simple, outlined) and severities secondary / contrast (message, growl, tag, badge)
-  - responsive (mobile) menubar / megamenu, the dataTable filter menu, the datePicker year view and range ends,
-    float label variants "in" / "on", sidebar header / footer, listbox checkmark / striped rows, clear icons
-  - keyboard focus where PrimeFaces has none yet: growl close button, organigram nodes, autoComplete / chips tokens
+- Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes (see "Modern look and
+  feel" below), its tokens are added in all three presets; PrimeUIX 3.0.1 is the reference for names and values.
 
 ## Known limitations
 
@@ -296,6 +291,36 @@ The theming is done without changing the markup of the components. These steps f
 - `primefaces-theming` moves into the `primefaces` module (no separate artifact).
 - Overlays: Popover API (top layer, no z-index management) and CSS anchor positioning instead of JS positioning.
 - [primefaces/primefaces#15014](https://github.com/primefaces/primefaces/issues/15014)
+
+**Modern look and feel**
+
+Goal: PrimeFaces looks and behaves as current as other UI frameworks (PrimeReact / PrimeVue, shadcn/ui, MUI). Features
+other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0.1 is the reference) and a showcase demo.
+
+- Loading states. Today: autoComplete (search spinner), ajax buttons (loading icon), dataScroller (load more),
+  outputPanel (deferred), progressBar (indeterminate), skeleton, blockUI. Missing:
+  - dataTable / treeTable / dataView / dataGrid / dataList: loading overlay (mask + spinner) while paging, sorting,
+    filtering or lazy loading, optional skeleton rows instead of the spinner
+  - tree / treeTable: per node loading indicator for dynamic (lazy) children
+  - selectOneMenu / selectCheckboxMenu / cascadeSelect: loading state of the dropdown icon for lazy options
+  - consistent `loading` state for all buttons (commandButton, splitButton, menuButton, linkButton), not only ajax
+  - a token themed spinner component (PrimeUIX progressspinner) and an optional global ajax progress bar (top of the
+    page) for p:ajaxStatus
+  - tokens: `--p-<component>-loading-icon-size`, mask background of loading overlays (lighter than the modal mask)
+- Size variants (sm / lg) for select, multiSelect, cascadeSelect, checkbox, radioButton, toggleSwitch and badge (sm);
+  inputs and buttons have them already.
+- Message / staticMessage / growl: variants (simple, outlined), severities secondary and contrast (also tag and badge),
+  sizes (sm / lg).
+- Responsive menubar / megamenu (mobile button with a collapsible menu).
+- DataTable filter menu (popover with match modes and rules) next to the inline filters.
+- DatePicker: year view, highlighted range start / end, clear button / icon.
+- Clear icon (`showClear`) for selectOneMenu, selectCheckboxMenu, cascadeSelect, autoComplete, inputText.
+- Float label variants "in" (label inside the field) and "on" (label on the border), PrimeUIX IftaLabel.
+- Sidebar header (title, close) and footer; listbox checkmark mode and striped rows; select checkmark mode.
+- Keyboard focus where PrimeFaces has none: growl close button, organigram nodes, autoComplete / chips tokens.
+- Empty states: consistent empty message for selects / listbox / multiSelect filters (dataTable, dataView, autoComplete
+  have one).
+- New components PrimeReact has: InputOtp, MeterGroup, Stepper (modern successor of steps / wizard).
 
 **Animations: JS → CSS**
 
