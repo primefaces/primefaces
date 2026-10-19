@@ -2854,6 +2854,15 @@ $.widget("prime.datePicker", {
         if (!this.documentClickListener) {
             this.documentClickListener = function(event) {
                 if (!$this.datepickerClick) {
+                    if ($this.options.timeInput) {
+                        var focusedTimeInput = $this.panel.find(
+                            '.ui-hour-picker input, .ui-minute-picker input, .ui-second-picker input, .ui-millisecond-picker input'
+                        ).filter(':focus')[0];
+                        if (focusedTimeInput) {
+                            focusedTimeInput.blur();
+                        }
+                    }
+
                     $this.hideOverlay(event);
                     $this.onInputBlur();
                     PrimeFaces.queueTask(function() { $(event.target).trigger('focus') }, 1);
