@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.ajaxexceptionhandler;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -36,7 +35,7 @@ import lombok.Data;
 @Data
 public class AjaxExceptionHandler006 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 2853937016582841537L;
+    private static final long serialVersionUID = 2853937016582841537L;
 
     /**
      * A real server-side exception, handled by the PrimeExceptionHandler.

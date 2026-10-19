@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.ajaxexceptionhandler;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -39,7 +38,7 @@ import lombok.Data;
 @Data
 public class AjaxExceptionHandler008 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 7409652250131957319L;
+    private static final long serialVersionUID = 7409652250131957319L;
 
     /**
      * Simulates the default Faces AJAX error response (Mojarra prefixes the error name with 'class '),
