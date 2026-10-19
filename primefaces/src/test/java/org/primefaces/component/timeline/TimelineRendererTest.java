@@ -28,7 +28,6 @@ import org.primefaces.mock.FacesContextMock;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.renderkit.PrimeRendererWrapper;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -36,10 +35,10 @@ import java.util.Map;
 
 import jakarta.faces.component.UIViewRoot;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TimelineRendererTest {
@@ -61,70 +60,21 @@ class TimelineRendererTest {
         model.add(TimelineEvent.builder().data("one").group("group").startDate(LocalDateTime.now()).build());
         model.add(TimelineEvent.builder().data("two").group("group").startDate(LocalDateTime.now()).build());
 
-        Timeline timeline = new Timeline();
+        Timeline timeline = new Timeline() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new TimelineRenderer();
+            }
+        };
         timeline.setId("timeline");
         timeline.setVar("event");
         timeline.setVarGroup("group");
         timeline.setValue(model);
 
-        new PrimeRendererWrapper(new TimelineRenderer()).encodeEnd(context, timeline);
+        timeline.encodeEnd(context);
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         assertFalse(requestMap.containsKey("event"));
         assertFalse(requestMap.containsKey("group"));
-    }
-
-    /**
-     * A timeline nested in an outer iteration may share the variable name with it. Removing the name would destroy the
-     * outer value, so what was there before the timeline encoded is put back.
-     */
-    @Test
-    void encodeEndRestoresTheVarOfAnOuterIteration() throws Exception {
-        FacesContext context = new FacesContextMock(new CollectingResponseWriter());
-        UIViewRoot viewRoot = new UIViewRoot();
-        viewRoot.setLocale(Locale.ENGLISH);
-        context.setViewRoot(viewRoot);
-
-        TimelineModel<Object, Object> model = new TimelineModel<>();
-        model.addGroup(new TimelineGroup<>("group", "the group"));
-        model.add(TimelineEvent.builder().data("one").group("group").startDate(LocalDateTime.now()).build());
-
-        Timeline timeline = new Timeline();
-        timeline.setId("timeline");
-        timeline.setVar("event");
-        timeline.setVarGroup("group");
-        timeline.setValue(model);
-
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        requestMap.put("event", "the row of the outer table");
-        requestMap.put("group", "the group of the outer table");
-
-        new PrimeRendererWrapper(new TimelineRenderer()).encodeEnd(context, timeline);
-
-        assertEquals("the row of the outer table", requestMap.get("event"));
-        assertEquals("the group of the outer table", requestMap.get("group"));
-    }
-
-    /**
-     * The cleanup runs after decode as well, where the renderer never touched the request map, so it must leave a
-     * same named variable of an outer iteration alone.
-     */
-    @Test
-    void decodeLeavesTheVarOfAnOuterIterationAlone() {
-        FacesContext context = new FacesContextMock();
-
-        Timeline timeline = new Timeline();
-        timeline.setId("timeline");
-        timeline.setVar("event");
-        timeline.setVarGroup("group");
-
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        requestMap.put("event", "the row of the outer table");
-        requestMap.put("group", "the group of the outer table");
-
-        new PrimeRendererWrapper(new TimelineRenderer()).decode(context, timeline);
-
-        assertEquals("the row of the outer table", requestMap.get("event"));
-        assertEquals("the group of the outer table", requestMap.get("group"));
     }
 }

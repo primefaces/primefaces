@@ -30,13 +30,13 @@ import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.renderkit.PrimeRendererWrapper;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +55,7 @@ class TreeTableTest {
      * tree table.
      */
     @Test
-    void cleanupIterationStateLeavesTheTreeTableStandingOnNoRowAndNoColumn() {
+    void cleanupIterationStateLeavesTheTreeTableStandingOnNoRowAndNoColumn() throws Exception {
         FacesContext context = new FacesContextMock();
 
         TreeNode<String> root = new DefaultTreeNode<>();
@@ -82,7 +82,7 @@ class TreeTableTest {
         assertTrue(requestMap.containsKey("node"), "the tree table must stand on a node for this test to mean anything");
         assertTrue(requestMap.containsKey("col"), "the columns must stand on a column for this test to mean anything");
 
-        treeTable.cleanupIterationState(context);
+        treeTable.resetIterationState();
 
         assertNull(treeTable.getRowKey());
         assertEquals(-1, columns.getRowIndex());
@@ -109,7 +109,12 @@ class TreeTableTest {
         Column column = new Column();
         column.setId("col");
 
-        TreeTable treeTable = new TreeTable();
+        TreeTable treeTable = new TreeTable() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new TreeTableRenderer();
+            }
+        };
         treeTable.setId("treeTable");
         treeTable.setVar("node");
         treeTable.setValue(root);
@@ -122,7 +127,7 @@ class TreeTableTest {
         params.put(treeTable.getClientId(context) + "_encodeFeature", "true");
         params.put(treeTable.getClientId(context) + "_expand", "0");
 
-        new PrimeRendererWrapper(new TreeTableRenderer()).encodeEnd(context, treeTable);
+        treeTable.encodeEnd(context);
 
         assertNull(treeTable.getRowKey());
         assertEquals(treeTable.getClientId(context), treeTable.getContainerClientId(context));

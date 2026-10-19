@@ -47,7 +47,6 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -94,8 +93,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     }
 
     @Override
-    public void cleanupIterationState(FacesContext context) {
-        super.cleanupIterationState(context);
+    protected void resetIterationState() {
+        super.resetIterationState();
 
         resetDynamicColumns();
     }

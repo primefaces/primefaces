@@ -28,13 +28,13 @@ import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.renderkit.PrimeRendererWrapper;
 
 import java.util.List;
 import java.util.Map;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
@@ -63,13 +63,18 @@ class TreeRendererTest {
         UITreeNode treeNode = new UITreeNode();
         treeNode.setType("default");
 
-        Tree tree = new Tree();
+        Tree tree = new Tree() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new TreeRenderer();
+            }
+        };
         tree.setId("tree");
         tree.setVar("node");
         tree.setValue(root);
         tree.getChildren().add(treeNode);
 
-        new PrimeRendererWrapper(new TreeRenderer()).encodeEnd(context, tree);
+        tree.encodeEnd(context);
 
         assertNull(tree.getRowKey());
         assertEquals(tree.getClientId(context), tree.getContainerClientId(context));
@@ -93,7 +98,12 @@ class TreeRendererTest {
         ValueExpression selectionVE = mock(ValueExpression.class);
         when(selectionVE.getType(context.getELContext())).thenReturn((Class) List.class);
 
-        Tree tree = new Tree();
+        Tree tree = new Tree() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new TreeRenderer();
+            }
+        };
         tree.setId("tree");
         tree.setVar("node");
         tree.setValue(root);
@@ -106,7 +116,7 @@ class TreeRendererTest {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         params.put(tree.getClientId(context) + "_instantSelection", "0");
 
-        new PrimeRendererWrapper(new TreeRenderer()).decode(context, tree);
+        tree.decode(context);
 
         assertNull(tree.getRowKey());
         assertEquals(tree.getClientId(context), tree.getContainerClientId(context));

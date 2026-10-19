@@ -26,12 +26,12 @@ package org.primefaces.component.subtable;
 import org.primefaces.component.column.Column;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
-import org.primefaces.renderkit.PrimeRendererWrapper;
 
 import java.util.Arrays;
 
 import jakarta.faces.component.UIOutput;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
@@ -52,13 +52,18 @@ class SubTableRendererTest {
         Column column = new Column();
         column.getChildren().add(new UIOutput());
 
-        SubTable subTable = new SubTable();
+        SubTable subTable = new SubTable() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new SubTableRenderer();
+            }
+        };
         subTable.setId("subTable");
         subTable.setVar("stat");
         subTable.setValue(Arrays.asList("one", "two"));
         subTable.getChildren().add(column);
 
-        new PrimeRendererWrapper(new SubTableRenderer()).encodeEnd(context, subTable);
+        subTable.encodeEnd(context);
 
         assertEquals(-1, subTable.getRowIndex());
         assertEquals(subTable.getId(), subTable.getClientId(context));

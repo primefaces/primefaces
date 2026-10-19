@@ -29,7 +29,6 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
-import org.primefaces.renderkit.PrimeRendererWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +37,7 @@ import java.util.Map;
 import jakarta.el.ExpressionFactory;
 import jakarta.el.ValueExpression;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
@@ -60,7 +60,7 @@ class DataTableTest {
      * so the reset has to happen after encodeEnd, for every request which encoded the table.
      */
     @Test
-    void cleanupIterationStateLeavesTheTableStandingOnNoRowAndNoColumn() {
+    void cleanupIterationStateLeavesTheTableStandingOnNoRowAndNoColumn() throws Exception {
         FacesContext context = new FacesContextMock();
 
         Columns columns = new Columns();
@@ -68,7 +68,12 @@ class DataTableTest {
         columns.setVar("col");
         columns.setValue(Arrays.asList("id", "name"));
 
-        DataTable table = new DataTable();
+        DataTable table = new DataTable() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new DataTableRenderer();
+            }
+        };
         table.setId("table");
         table.setVar("row");
         table.setValue(Arrays.asList("one", "two"));
@@ -77,7 +82,7 @@ class DataTableTest {
         table.setRowIndex(1);
         columns.setRowIndex(1);
 
-        table.cleanupIterationState(context);
+        table.resetIterationState();
 
         assertEquals(-1, table.getRowIndex());
         assertEquals(-1, columns.getRowIndex());
@@ -104,7 +109,7 @@ class DataTableTest {
         params.put(table.getClientId(context) + "_fromIndex", "0");
         params.put(table.getClientId(context) + "_toIndex", "2");
 
-        new PrimeRendererWrapper(new DataTableRenderer()).decode(context, table);
+        table.decode(context);
 
         assertEquals(-1, table.getRowIndex());
         assertEquals(table.getClientId(context), table.getContainerClientId(context));

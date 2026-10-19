@@ -26,14 +26,15 @@ package org.primefaces.component.subtable;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.IterationCleanupAware;
+
+import java.io.IOException;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIData;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponentBase
-public abstract class SubTableBase extends UIData implements IterationCleanupAware {
+public abstract class SubTableBase extends UIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -53,9 +54,29 @@ public abstract class SubTableBase extends UIData implements IterationCleanupAwa
     }
 
     @Override
-    public void cleanupIterationState(FacesContext context) {
-        // UIData folds the row index into our own client id and into the client id of every descendant, and it puts
-        // the row in the request map under var, so we must not be left standing on a row once we are done
+    public void decode(FacesContext context) {
+        try {
+            super.decode(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        try {
+            super.encodeEnd(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    /**
+     * Resets the row index, so that neither the var nor a row-prefixed client id outlives the phase which set it.
+     */
+    protected void resetIterationState() {
         if (getRowIndex() != -1) {
             setRowIndex(-1);
         }

@@ -32,6 +32,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ import jakarta.faces.event.PhaseId;
 /**
  * Enhanced version of the Faces UIData.
  */
-public abstract class PrimeUIData extends UIDataPatch implements IterationCleanupAware {
+public abstract class PrimeUIData extends UIDataPatch {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeUIData.class.getName());
 
@@ -62,9 +63,30 @@ public abstract class PrimeUIData extends UIDataPatch implements IterationCleanu
     }
 
     @Override
-    public void cleanupIterationState(FacesContext context) {
-        // the row index ends up in the client id of every descendant and puts the row in the request map under var,
-        // so we must not be left standing on a row once the phase which put us there is done
+    public void decode(FacesContext context) {
+        try {
+            super.decode(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        try {
+            super.encodeEnd(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    /**
+     * Resets the row index, so that neither the var nor a row-prefixed client id outlives the phase which set it.
+     */
+    protected void resetIterationState() {
+        // guarded: while a row is set, the data model is already cached, so this never evaluates EL again
         if (getRowIndex() != -1) {
             setRowIndex(-1);
         }
