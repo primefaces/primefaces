@@ -26,14 +26,17 @@ package org.primefaces.integrationtests.wizard;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,8 +63,102 @@ class Wizard001Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @ParameterizedTest
+    @CsvSource({"missing", "hidden"})
+    @Order(2)
+    void invalidInitialStep(String start) {
+        // Arrange / Act
+        goTo("wizard/wizard001.xhtml?highlight=true&start=" + start);
+        // Assert
+        assertSteps(-1, false);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(3)
+    void preservesCustomHighlight() {
+        // Arrange
+        goTo("wizard/wizard001.xhtml?custom=true&highlight=true");
+        // Act / Assert
+        for (String id : new String[] {"form:wizard_next", "form:wizard_back", "form:refresh"}) {
+            click(id);
+            String classes = PrimeSelenium.getWebDriver().findElements(By.cssSelector(".ui-wizard-step-title")).get(2).getDomAttribute("class");
+            assertTrue(classes.contains("ui-state-highlight"));
+            assertTrue(classes.contains("custom"));
+        }
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(4)
+    void validationFailureKeepsStep() {
+        // Arrange
+        goTo("wizard/wizard001.xhtml?required=true&highlight=true");
+        // Act
+        click("form:wizard_next");
+        // Assert
+        assertSteps(0, true);
+        PrimeSelenium.getWebDriver().findElement(By.id("form:value")).sendKeys("valid");
+        click("form:wizard_next");
+        assertSteps(1, true);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(5)
+    void effectsAndHiddenStatus() {
+        // Arrange
+        goTo("wizard/wizard001.xhtml?highlight=true&effect=fade");
+        // Act
+        click("form:wizard_next");
+        // Assert
+        assertSteps(1, true);
+        click("form:wizard_back");
+        assertSteps(0, true);
+        goTo("wizard/wizard001.xhtml?status=false");
+        click("form:wizard_next");
+        assertTrue(PrimeSelenium.getWebDriver().findElements(By.cssSelector(".ui-wizard-step-title")).isEmpty());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(6)
+    void incompleteCallbackKeepsCurrentStep() {
+        // Arrange
+        goTo("wizard/wizard001.xhtml?highlight=true");
+        // Act: exercise callback responses without making a network request.
+        PrimeSelenium.executeScript("const original = PrimeFaces.ajax.Request.handle;"
+                + "try { PrimeFaces.ajax.Request.handle = o => {"
+                + "o.oncomplete(null, null, {}, null);"
+                + "o.oncomplete(null, null, {currentStep:'missing'}, null);"
+                + "o.oncomplete(null, null, {validationFailed:true,currentStep:'third'}, null);"
+                + "}; PF('wizard').loadStep('second', 'next'); }"
+                + "finally { PrimeFaces.ajax.Request.handle = original; }");
+        // Assert
+        assertEquals("first", PrimeSelenium.executeScript("return PF('wizard').currentStep;"));
+        assertSteps(0, true);
+        PrimeSelenium.executeScript("PF('wizard').currentStep = undefined; PF('wizard').updateStepStatus();");
+        assertSteps(0, true);
+        assertNoJavascriptErrors();
+    }
+
+    @ParameterizedTest
+    @CsvSource({"first,blockNext,next,0", "second,blockBack,back,1"})
+    @Order(7)
+    void callbackCanCancelNavigation(String start, String parameter, String direction, int index) {
+        // Arrange
+        goTo("wizard/wizard001.xhtml?highlight=true&start=" + start + "&" + parameter + "=true");
+        // Act: a vetoed callback intentionally sends no AJAX request.
+        PrimeSelenium.getWebDriver().findElement(By.id("form:wizard_" + direction)).click();
+        // Assert
+        assertSteps(index, true);
+        assertNoJavascriptErrors();
+    }
+
     private void click(String id) {
         PrimeSelenium.guardAjax(PrimeSelenium.getWebDriver().findElement(By.id(id))).click();
+        new WebDriverWait(PrimeSelenium.getWebDriver(), Duration.ofSeconds(5)).until(driver ->
+                Boolean.TRUE.equals(PrimeSelenium.executeScript("return !PF('wizard').content.is(':animated');")));
     }
 
     private void assertSteps(int current, boolean highlight) {

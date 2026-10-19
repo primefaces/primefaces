@@ -88,7 +88,13 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
      */
     updateStepStatus() {
         const currentStepIndex = this.getStepIndex(this.currentStep);
-        this.stepControls.removeClass('ui-state-highlight ui-wizard-step-current ui-wizard-step-completed');
+        if (currentStepIndex < 0) {
+            return;
+        }
+
+        this.stepControls = this.jq.find('.ui-wizard-step-titles li.ui-wizard-step-title');
+        this.stepControls.removeClass('ui-wizard-step-current ui-wizard-step-completed');
+        this.stepControls.not('[data-pf-user-highlight]').removeClass('ui-state-highlight');
         this.stepControls.eq(currentStepIndex).addClass('ui-state-highlight ui-wizard-step-current');
         if (this.cfg.highlightCompletedSteps) {
             this.stepControls.slice(0, currentStepIndex).addClass('ui-state-highlight ui-wizard-step-completed');
@@ -175,9 +181,10 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
                 return true;
             },
             oncomplete: function(xhr, status, args, data) {
-                $this.currentStep = args.currentStep;
-
-                if(!args.validationFailed) {
+                if(args && !args.validationFailed) {
+                    if ($this.getStepIndex(args.currentStep) >= 0) {
+                        $this.currentStep = args.currentStep;
+                    }
                     var currentStepIndex = $this.getStepIndex($this.currentStep);
 
                     if($this.cfg.showNavBar) {

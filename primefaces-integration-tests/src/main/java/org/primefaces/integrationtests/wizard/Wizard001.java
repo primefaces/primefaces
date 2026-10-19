@@ -38,11 +38,25 @@ import lombok.Data;
 public class Wizard001 implements Serializable {
     private boolean highlight;
     private String step;
+    private boolean custom;
+    private boolean required;
+    private boolean status;
+    private boolean blockNext;
+    private boolean blockBack;
+    private String effect;
+    private String value;
 
     @PostConstruct
     public void init() {
         var parameters = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         highlight = Boolean.parseBoolean(parameters.get("highlight"));
-        step = "second".equals(parameters.get("start")) ? "second" : "first";
+        step = parameters.getOrDefault("start", "first");
+        custom = Boolean.parseBoolean(parameters.get("custom"));
+        required = Boolean.parseBoolean(parameters.get("required"));
+        status = !"false".equals(parameters.get("status"));
+        blockNext = Boolean.parseBoolean(parameters.get("blockNext"));
+        blockBack = Boolean.parseBoolean(parameters.get("blockBack"));
+        effect = parameters.get("effect");
+        value = required ? null : "ok";
     }
 }

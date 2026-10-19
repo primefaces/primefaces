@@ -34,6 +34,7 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -231,6 +232,11 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         ResponseWriter writer = context.getResponseWriter();
         String currentStep = component.getStep();
         boolean currentFound = false;
+        boolean validStep = currentStep == null;
+        for (int i = 0; !validStep && i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            validStep = child instanceof Tab && child.isRendered() && child.getId().equals(currentStep);
+        }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Wizard.STEP_STATUS_CLASS, null);
@@ -240,8 +246,13 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getTitleFacet();
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
+                boolean completed = validStep && !currentFound && !active && component.isHighlightCompletedSteps();
+                boolean userHighlight = tab.getTitleStyleClass() != null
+                        && Arrays.asList(tab.getTitleStyleClass().split("\\s+")).contains("ui-state-highlight");
                 String titleStyleClass = getStyleClassBuilder(context)
-                        .add(active, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)
+                        .add(active || completed, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)
+                        .add(active, Wizard.CURRENT_STEP_CLASS)
+                        .add(completed, Wizard.COMPLETED_STEP_CLASS)
                         .add(tab.getTitleStyleClass())
                         .build();
 
@@ -251,6 +262,9 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", titleStyleClass, null);
+                if (userHighlight) {
+                    writer.writeAttribute("data-pf-user-highlight", true, null);
+                }
                 if (tab.getTitleStyle() != null) {
                     writer.writeAttribute("style", tab.getTitleStyle(), null);
                 }
