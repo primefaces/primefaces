@@ -12,7 +12,7 @@
             <p:commandButton id="refreshDialog" value="Refresh dialog" update="dlg" />
             <h:panelGroup id="container" layout="block">
                 <p:dialog id="dlg" widgetVar="relocatedDialog" header="Relocated dialog"
-                          appendTo="@(body)" rendered="#{dialog005.rendered}">
+                          minimizable="true" appendTo="@(body)" rendered="#{dialog005.rendered}">
                     Dialog content
                 </p:dialog>
             </h:panelGroup>
