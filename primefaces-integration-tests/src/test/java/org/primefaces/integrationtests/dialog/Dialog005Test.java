@@ -63,6 +63,7 @@ class Dialog005Test extends AbstractPrimePageTest {
     void refreshContainer(Page page) {
         // Arrange
         page.refresh.click();
+        assertSingleDialogAndMarker();
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
         page.dialog.hide();
@@ -81,6 +82,7 @@ class Dialog005Test extends AbstractPrimePageTest {
     void refreshDialog(Page page) {
         // Arrange
         page.refreshDialog.click();
+        assertSingleDialogAndMarker();
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
         page.dialog.hide();
@@ -91,6 +93,51 @@ class Dialog005Test extends AbstractPrimePageTest {
         // Assert
         assertNotPresent(page.dialog);
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Dialog: #14287 remove minimized clone with original container")
+    void removeMinimized(Page page) {
+        page.dialog.show();
+        page.dialog.toggleMinimize();
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"]').length"));
+        page.remove.click();
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"]').length"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Dialog: #14287 marker cleanup does not trigger ancestor removal")
+    void markerRemovalDoesNotBubble(Page page) {
+        PrimeSelenium.executeScript("window.containerRemovals = 0;"
+                + "$(document.getElementById('form:container')).on('remove.test', () => window.containerRemovals++);");
+        PrimeSelenium.executeScript("PF('relocatedDialog').destroy();");
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return window.containerRemovals"));
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Dialog: #14287 refresh minimized dialog without leaving its old clone")
+    void refreshMinimized(Page page) {
+        page.dialog.show();
+        page.dialog.toggleMinimize();
+        page.refreshDialog.click();
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"]').length"));
+        assertSingleDialogAndMarker();
+        page.dialog.show();
+        assertTrue(page.dialog.isVisible());
+        page.dialog.hide();
+        assertNoJavascriptErrors();
+    }
+
+    private void assertSingleDialogAndMarker() {
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg\"]').length"));
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -10,6 +10,18 @@ import { scrollParent as closestScrollParent } from "../interaction/interaction.
  * The class with various utilities needed by PrimeFaces.
  */
 export class Utils {
+    /** Original source positions of relocated overlays, retained across direct AJAX updates. */
+    private overlayPlaceholders = new WeakMap<BaseWidget, Map<string, JQuery>>();
+
+    /** Removes a source marker without bubbling a synthetic remove event to ancestor widgets. */
+    private removeOverlayPlaceholder(widget: BaseWidget, overlayId: string): void {
+        const placeholders = this.overlayPlaceholders.get(widget);
+        const placeholder = placeholders?.get(overlayId);
+        placeholder?.off('remove.pfOverlay');
+        placeholder?.[0]?.remove();
+        placeholders?.delete(overlayId);
+    }
+
     /**
      * TextEncoder instance used for string encoding operations.
      * 
@@ -147,6 +159,13 @@ export class Utils {
                 && !appendTo.is(overlay)) {
 
             this.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+            this.removeOverlayPlaceholder(widget, overlayId);
+            let placeholders = this.overlayPlaceholders.get(widget);
+            if (!placeholders) {
+                placeholders = new Map();
+                this.overlayPlaceholders.set(widget, placeholders);
+            }
+            placeholders.set(overlayId, $('<span hidden></span>').insertBefore(overlay));
 
             overlay.appendTo(appendTo);
         }
@@ -517,9 +536,15 @@ export class Utils {
             var appendTo = this.resolveDynamicOverlayContainer(widget);
             this.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
 
+            // A direct update reuses the source marker but must track the new DOM element.
+            // A container update creates a new marker, even if the old container is still connected.
+            const placeholder = this.overlayPlaceholders.get(widget)?.get(overlayId);
+            placeholder?.off('remove.pfOverlay').on('remove.pfOverlay', () => overlay.remove());
+
             widget.addDestroyListener(() => {
                 var appendTo = this.resolveDynamicOverlayContainer(widget);
                 // pass null as overlay - as every! overlay with this overlayId can be removed on destroying the whole widget
+                this.removeOverlayPlaceholder(widget, overlayId);
                 this.removeDynamicOverlay(widget, null, overlayId, appendTo);
             });
 
@@ -527,6 +552,9 @@ export class Utils {
                 var appendTo = this.resolveDynamicOverlayContainer(widget);
                 this.cleanupDynamicOverlay(widget, overlay, overlayId, appendTo);
             });
+        }
+        else {
+            this.removeOverlayPlaceholder(widget, overlayId);
         }
 
         return overlay;
