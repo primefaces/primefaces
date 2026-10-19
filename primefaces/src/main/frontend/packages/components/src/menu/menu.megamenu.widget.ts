@@ -8,7 +8,7 @@ import { Menu } from "./menu.base.widget.js";
  */
 export interface MegaMenuCfg extends PrimeType.widget.MenuCfg {
     /**
-     * Index of the menu item initially active.
+     * Index of the root menu item whose highlight persists during navigation.
      */
     activeIndex: number;
     /**
@@ -44,6 +44,11 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      * The currently active (highlighted) menu item.
      */
     activeitem?: JQuery | null;
+
+    /**
+     * The root item selected by activeIndex, independent of the open or focused item.
+     */
+    selectedRoot: JQuery = $();
 
     /**
      * Whether the writing direction is set to right-to-left.
@@ -84,9 +89,10 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
         this.isRTL = this.jq.hasClass('ui-menu-rtl');
 
-        if(this.cfg.activeIndex !== undefined) {
-            this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-hover').closest('li.ui-menuitem').addClass('ui-menuitem-active');
-        }
+        this.selectedRoot = this.cfg.activeIndex !== undefined && this.cfg.activeIndex >= 0
+            ? this.rootLinks.eq(this.cfg.activeIndex).parent()
+            : $();
+        this.selectedRoot.addClass('ui-menuitem-active');
 
         this.bindEvents();
         this.bindKeyEvents();
@@ -103,9 +109,9 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             var link = $(this),
             menuitem = link.parent();
 
-            var current = menuitem.siblings('.ui-menuitem-active');
+            var current = menuitem.siblings('.ui-menuitem-highlight');
             if(current.length > 0) {
-                current.find('li.ui-menuitem-active').each(function() {
+                current.find('li.ui-menuitem-highlight').each(function() {
                     $this.deactivate($(this));
                 });
                 $this.deactivate(current, false);
@@ -165,7 +171,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         });
 
         this.rootList.on("mouseleave", function() {
-            var activeitem = $this.rootList.children('.ui-menuitem-active');
+            var activeitem = $this.rootList.children('.ui-menuitem-highlight');
             if(activeitem.length === 1) {
                 $this.deactivate(activeitem, false);
             }
@@ -183,7 +189,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             }
 
             $this.active = false;
-            $this.deactivate($this.rootList.children('li.ui-menuitem-active'), true);
+            $this.deactivate($this.rootList.children('li.ui-menuitem-highlight'), true);
         });
         this.addDestroyListener(function() {
             $(document.body).off(clickNS);
@@ -401,7 +407,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         const $this = this;
         this.active = false;
 
-        this.jq.find('li.ui-menuitem-active').each(function() {
+        this.jq.find('li.ui-menuitem-highlight').each(function() {
             $this.deactivate($(this), true);
         });
         this.resetFocus(!this.lastFocusedItem);
@@ -419,13 +425,14 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     deactivate(menuitem: JQuery, animate?: boolean): void {
         const $this = this;
         this.activeitem = null;
-        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
+        menuitem.removeClass('ui-menuitem-highlight');
+        menuitem.not(this.selectedRoot).removeClass('ui-menuitem-active');
         const $link = menuitem.children('a.ui-menuitem-link');
         this.unfocus($link);
 
-        var activeSibling = menuitem.siblings('.ui-menuitem-active');
+        var activeSibling = menuitem.siblings('.ui-menuitem-highlight');
         if (activeSibling.length) {
-            activeSibling.find('li.ui-menuitem-active').each(function() {
+            activeSibling.find('li.ui-menuitem-highlight').each(function() {
                 $this.deactivate($(this));
             });
             $this.deactivate(activeSibling);

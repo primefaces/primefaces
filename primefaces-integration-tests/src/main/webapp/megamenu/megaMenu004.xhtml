@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+    <h:head />
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="refresh" value="Refresh" update="menu" />
+            <p:commandButton id="outside" value="Outside" type="button" />
+
+            <p:megaMenu id="menu" widgetVar="menu" activeIndex="#{megaMenu004.index}"
+                        orientation="#{megaMenu004.orientation}"
+                        autoDisplay="#{megaMenu004.autoDisplay}">
+                <p:submenu label="First">
+                    <p:column>
+                        <p:submenu label="First group"><p:menuitem value="First item" url="#" /></p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Second">
+                    <p:column>
+                        <p:submenu label="Second group"><p:menuitem value="Second item" url="#" /></p:submenu>
+                    </p:column>
+                </p:submenu>
+            </p:megaMenu>
+        </h:form>
+    </h:body>
+</html>
