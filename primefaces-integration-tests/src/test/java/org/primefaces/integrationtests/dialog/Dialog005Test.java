@@ -28,6 +28,7 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Dialog;
+import org.primefaces.selenium.component.SelectOneMenu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -135,6 +136,43 @@ class Dialog005Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(7)
+    @DisplayName("Dialog: minimizing and restoring preserves relocated child overlays")
+    void minimizeWithChildOverlay(Page page) {
+        // Arrange
+        page.dialog.show();
+        page.choice.select("Two");
+
+        // Act
+        page.dialog.toggleMinimize();
+        PrimeSelenium.waitGui().until(driver -> Boolean.TRUE.equals(PrimeSelenium.executeScript("return PF('relocatedDialog').minimized")));
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:choice_panel\"]').length"));
+        page.dialog.toggleMinimize();
+        PrimeSelenium.waitGui().until(driver -> Boolean.FALSE.equals(PrimeSelenium.executeScript("return PF('relocatedDialog').minimized")));
+
+        // Assert
+        page.choice.select("One");
+        assertEquals("One", page.choice.getSelectedLabel());
+        page.dialog.hide();
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("Dialog: disabled dynamic overlay refresh removes its previous source marker")
+    void disabledOverlayRefresh(Page page) {
+        // Arrange
+        assertSingleDialogAndMarker();
+
+        // Act: exercise the disabled DynamicOverlayWidget refresh path.
+        PrimeSelenium.executeScript("const widget = PF('relocatedDialog'); widget.refresh({...widget.cfg, disabled: true});");
+
+        // Assert
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
+        assertNoJavascriptErrors();
+    }
+
     private void assertSingleDialogAndMarker() {
         assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg\"]').length"));
         assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
@@ -143,6 +181,8 @@ class Dialog005Test extends AbstractPrimePageTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:dlg")
         Dialog dialog;
+        @FindBy(id = "form:choice")
+        SelectOneMenu choice;
         @FindBy(id = "form:remove")
         CommandButton remove;
         @FindBy(id = "form:refresh")

@@ -13,7 +13,10 @@
             <h:panelGroup id="container" layout="block">
                 <p:dialog id="dlg" widgetVar="relocatedDialog" header="Relocated dialog"
                           minimizable="true" appendTo="@(body)" rendered="#{dialog005.rendered}">
-                    Dialog content
+                    <p:selectOneMenu id="choice" widgetVar="dialogChoice">
+                        <f:selectItem itemLabel="One" itemValue="1" />
+                        <f:selectItem itemLabel="Two" itemValue="2" />
+                    </p:selectOneMenu>
                 </p:dialog>
             </h:panelGroup>
         </h:form>

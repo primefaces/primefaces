@@ -885,6 +885,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             
             // create a minimize clone which is just the titlebar
             this.minimizeClone = this.jq.clone(true);
+            // Cloned source markers must never remove the live overlays they originally tracked.
+            this.minimizeClone.find('.ui-overlay-placeholder').off('remove.pfOverlay');
             this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
             this.minimizeClone.addClass('ui-dialog-minimized');
             this.minimizeClone.children('.ui-dialog-content').remove();
