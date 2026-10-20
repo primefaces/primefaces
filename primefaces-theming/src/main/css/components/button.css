@@ -219,26 +219,13 @@
         }
     }
 
-    /* inline ajax status: a spinner .ui-icon-loading is prepended while the request runs */
-    &.ui-state-loading {
-        .ui-icon:not(.ui-icon-loading) {
-            display: none;
-        }
-
-        &.ui-button-text-only {
-            .ui-icon-loading + .ui-button-text {
-                opacity: 0;
-            }
-
-            .ui-icon.ui-icon-loading {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                width: var(--p-icon-size);
-                height: var(--p-icon-size);
-                margin: calc(var(--p-icon-size) / -2);
-            }
-        }
+    /*
+     * inline ajax status: the core prepends a spinner .ui-icon-loading while the request runs. It takes the place of
+     * the icon (it gets ui-button-icon-left / -right like it); a button without icon shows it next to the label.
+     * !important: PrimeIcons sets display on .pi unlayered, which would win over a layered display: none.
+     */
+    &.ui-state-loading .ui-icon:not(.ui-icon-loading) {
+        display: none !important;
     }
 }
 
