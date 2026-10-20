@@ -13,8 +13,12 @@ export class Utils {
     /** Original source positions of relocated overlays, retained across direct AJAX updates. */
     private overlayPlaceholders = new WeakMap<BaseWidget, Map<string, JQuery>>();
 
-    /** Removes a source marker without bubbling a synthetic remove event to ancestor widgets. */
-    private removeOverlayPlaceholder(widget: BaseWidget, overlayId: string): void {
+    /**
+     * Removes a source marker without bubbling a synthetic remove event to ancestor widgets.
+     * @param widget The widget that owns the relocated overlay.
+     * @param overlayId The ID of the relocated overlay.
+     */
+    removeOverlayPlaceholder(widget: BaseWidget, overlayId: string): void {
         const placeholders = this.overlayPlaceholders.get(widget);
         const placeholder = placeholders?.get(overlayId);
         placeholder?.off('remove.pfOverlay');
@@ -165,7 +169,7 @@ export class Utils {
                 placeholders = new Map();
                 this.overlayPlaceholders.set(widget, placeholders);
             }
-            placeholders.set(overlayId, $('<span hidden></span>').insertBefore(overlay));
+            placeholders.set(overlayId, $('<span hidden class="ui-overlay-placeholder"></span>').insertBefore(overlay));
 
             overlay.appendTo(appendTo);
         }
