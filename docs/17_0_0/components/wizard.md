@@ -196,7 +196,6 @@ of structural css classes.
 
 As skinning style classes are global, see the main theming section for more information.
 
-
 With `highlightCompletedSteps="true"`, both the current step and previous steps retain
 `ui-state-highlight`. Use the additional state classes to style them differently:
 

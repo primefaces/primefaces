@@ -92,7 +92,6 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
             return;
         }
 
-        this.stepControls = this.jq.find('.ui-wizard-step-titles li.ui-wizard-step-title');
         this.stepControls.removeClass('ui-wizard-step-current ui-wizard-step-completed');
         this.stepControls.not('[data-pf-user-highlight]').removeClass('ui-state-highlight');
         this.stepControls.eq(currentStepIndex).addClass('ui-state-highlight ui-wizard-step-current');

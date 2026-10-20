@@ -202,6 +202,17 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         }
     }
 
+    private Tab resolveCurrentTab(Wizard component) {
+        String currentStep = component.getStep();
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child instanceof Tab tab && tab.isRendered() && (currentStep == null || tab.getId().equals(currentStep))) {
+                return tab;
+            }
+        }
+        return null;
+    }
+
     protected void encodeNavigators(FacesContext facesContext, Wizard component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
@@ -230,13 +241,8 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
 
     protected void encodeStepStatus(FacesContext context, Wizard component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String currentStep = component.getStep();
+        Tab currentTab = resolveCurrentTab(component);
         boolean currentFound = false;
-        boolean validStep = currentStep == null;
-        for (int i = 0; !validStep && i < component.getChildCount(); i++) {
-            UIComponent child = component.getChildren().get(i);
-            validStep = child instanceof Tab && child.isRendered() && child.getId().equals(currentStep);
-        }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Wizard.STEP_STATUS_CLASS, null);
@@ -245,8 +251,8 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
             if (child instanceof Tab tab && child.isRendered()) {
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getTitleFacet();
-                boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
-                boolean completed = validStep && !currentFound && !active && component.isHighlightCompletedSteps();
+                boolean active = tab == currentTab;
+                boolean completed = currentTab != null && !currentFound && !active && component.isHighlightCompletedSteps();
                 boolean userHighlight = tab.getTitleStyleClass() != null
                         && Arrays.asList(tab.getTitleStyleClass().split("\\s+")).contains("ui-state-highlight");
                 String titleStyleClass = getStyleClassBuilder(context)
