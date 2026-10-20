@@ -125,7 +125,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $this.trigger('success', [xhr, settings]);
         })
         .on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
-            if($this.timeout && args && !args.redirect) {
+            if($this.timeout && !(args && args.redirect)) {
                 $this.deleteTimeout();
             }
             $this.trigger('complete', [xhr, settings, args]);
@@ -221,7 +221,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 // Only check for redirect if PrimeFaces is used
                 if (args.length > 1) { // PrimeFaces passes 3 args, JSF passes 1 arg
                     var pfArgs = args[2];
-                    if (!pfArgs || pfArgs.redirect) {
+                    if (pfArgs && pfArgs.redirect) {
                         return;
                     }
                 }
