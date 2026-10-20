@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="primefaces">
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head />
+    <h:body>
+        <h:form id="form">
+            <p:toggleSwitch id="toggle" widgetVar="toggle" value="#{confirmDialog003.enabled}">
+                <p:ajax listener="#{confirmDialog003.changed}" update="values" />
+                <p:confirm type="#{param.popup eq 'true' ? 'popup' : 'dialog'}" message="Change switch?" />
+            </p:toggleSwitch>
+            <p:selectOneButton id="select" value="#{confirmDialog003.choice}">
+                <f:selectItem itemValue="A" itemLabel="A" />
+                <f:selectItem itemValue="B" itemLabel="B" />
+                <p:ajax listener="#{confirmDialog003.changed}" update="values" />
+                <p:confirm type="#{param.popup eq 'true' ? 'popup' : 'dialog'}" source="this" message="Change selection?" />
+            </p:selectOneButton>
+            <p:commandButton id="disable" type="button" value="Disable" onclick="PF('toggle').disable()" />
+            <p:commandButton id="enable" type="button" value="Enable" onclick="PF('toggle').enable()" />
+            <h:outputText id="values" value="#{confirmDialog003.enabled},#{confirmDialog003.choice},#{confirmDialog003.changes}" />
+            <p:confirmDialog id="dialog" global="true">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+            </p:confirmDialog>
+            <p:confirmPopup id="popup" global="true">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no" />
+            </p:confirmPopup>
+        </h:form>
+    </h:body>
+</f:view>
+</html>

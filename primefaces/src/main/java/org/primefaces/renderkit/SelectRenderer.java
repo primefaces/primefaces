@@ -47,7 +47,6 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIInput;
 import jakarta.faces.component.UISelectItem;
 import jakarta.faces.component.UISelectItems;
-import jakarta.faces.component.ValueHolder;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
@@ -86,8 +85,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                 addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
             }
             else if (child instanceof UISelectItems items) {
-                UISelectItems uiSelectItems = items;
-                Object value = uiSelectItems.getValue();
+                Object value = items.getValue();
 
                 if (value != null) {
                     if (value instanceof SelectItem item1) {
@@ -98,10 +96,10 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                             Object item = Array.get(value, j);
 
                             if (item instanceof SelectItem selectItem1) {
-                                selectItem = updateSelectItem(context, uiSelectItems, selectItem1);
+                                selectItem = updateSelectItem(context, items, selectItem1);
                             }
                             else {
-                                selectItem = createSelectItem(context, uiSelectItems, item, null);
+                                selectItem = createSelectItem(context, items, item, null);
                             }
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
@@ -109,7 +107,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                     else if (value instanceof Map<?, ?> map) {
 
                         for (Map.Entry<?, ?> entry : map.entrySet()) {
-                            selectItem = createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey()));
+                            selectItem = createSelectItem(context, items, entry.getValue(), String.valueOf(entry.getKey()));
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
@@ -118,10 +116,10 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
                             if (item instanceof SelectItem selectItem11) {
-                                selectItem = updateSelectItem(context, uiSelectItems, selectItem11);
+                                selectItem = updateSelectItem(context, items, selectItem11);
                             }
                             else {
-                                selectItem = createSelectItem(context, uiSelectItems, item, null);
+                                selectItem = createSelectItem(context, items, item, null);
                             }
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
@@ -130,10 +128,10 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
 
                         for (Object item : collection) {
                             if (item instanceof SelectItem selectItem12) {
-                                selectItem = updateSelectItem(context, uiSelectItems, selectItem12);
+                                selectItem = updateSelectItem(context, items, selectItem12);
                             }
                             else {
-                                selectItem = createSelectItem(context, uiSelectItems, item, null);
+                                selectItem = createSelectItem(context, items, item, null);
                             }
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
@@ -224,7 +222,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
     }
 
     protected String getOptionAsString(FacesContext context, T component, Converter converter, Object value) throws ConverterException {
-        if (!(component instanceof ValueHolder)) {
+        if (component == null) {
             return value == null ? null : value.toString();
         }
 

@@ -333,10 +333,11 @@ export class AjaxUtils {
      * @param errorMessage The error message.
      */
     handleError(errorName: string, errorMessage: string): void {
-        let exceptionHandlers: AjaxExceptionHandler[] = [];
+        // always resolve the handlers, otherwise the global AjaxExceptionHandler below can never be found
+        const exceptionHandlers = core.getWidgetsByType(AjaxExceptionHandler);
+
         if (errorName) {
             // try to invoke specific AjaxExceptionHandler
-            exceptionHandlers = core.getWidgetsByType(AjaxExceptionHandler);
             for (var exceptionHandler of exceptionHandlers) {
                 if (exceptionHandler.handles(errorName)) {
                     exceptionHandler.handle(errorName, errorMessage);
@@ -888,6 +889,7 @@ export class AjaxRequest {
             dataType: "xml",
             portletForms: parameterPrefix ? ajax.Utils.getPorletForms(form, parameterPrefix) : null,
             source: cfg.source,
+            skipErrorHandling: cfg.skipErrorHandling,
             global: false,
             beforeSend: function(xhr, settings) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
@@ -1334,13 +1336,21 @@ export class AjaxResponse {
         xhr: PrimeType.ajax.pfXHR,
         updateHandler?: PrimeType.ajax.UpdateHandler<Widget> | null
     ): void {
+        // Faces spec: emptyResponse if there is no response XML
         if (xml === undefined || xml === null) {
+            this.handleResponseError(ajax.ERROR_EMPTY_RESPONSE, "The response has provided no data.", xhr);
             return;
         }
 
         const partialResponseNode = xml.getElementsByTagName("partial-response")[0];
 
-        for (const currentNode of partialResponseNode?.childNodes ?? []) {
+        // Faces spec: malformedXML if the response is not a partial response, e.g. a login page after a session timeout
+        if (!partialResponseNode) {
+            this.handleResponseError(ajax.ERROR_MALFORMED_XML, "No partial-response found.", xhr);
+            return;
+        }
+
+        for (const currentNode of partialResponseNode.childNodes) {
 
             switch (currentNode.nodeName) {
                 case "redirect":
@@ -1397,7 +1407,7 @@ export class AjaxResponse {
         }
 
         // handle redirect as last step, see #13289
-        const redirectNodes = Array.from(partialResponseNode?.childNodes ?? []).filter(node => node.nodeName === "redirect");
+        const redirectNodes = Array.from(partialResponseNode.childNodes).filter(node => node.nodeName === "redirect");
         for (const currentNode of redirectNodes) {
             const pfArgs = xhr.pfArgs;
             if (pfArgs) {
@@ -1406,6 +1416,22 @@ export class AjaxResponse {
             ajax.ResponseProcessor.doRedirect(currentNode);
             break;
         }
+    }
+
+    /**
+     * Handles an error of a response (invalid response or server error) via {@link AjaxUtils.handleError}, if not
+     * skipped via {@link PrimeType.ajax.Configuration.skipErrorHandling}.
+     * @param errorName The error name.
+     * @param errorMessage The error message.
+     * @param xhr The XHR request to which the response was received.
+     */
+    handleResponseError(errorName: string, errorMessage: string, xhr: PrimeType.ajax.pfXHR | null | undefined): void {
+        // e.g. the request of a p:ajaxExceptionHandler itself, see Configuration.skipErrorHandling
+        if (xhr?.pfSettings?.skipErrorHandling) {
+            core.error(errorName + ": " + errorMessage);
+            return;
+        }
+        ajax.Utils.handleError(errorName, errorMessage);
     }
 
     /**
@@ -1568,7 +1594,7 @@ export class AjaxResponseProcessor {
         var errorName = ajax.Utils.getContent(node.getElementsByTagName("error-name")[0]);
         var errorMessage = ajax.Utils.getContent(node.getElementsByTagName("error-message")[0]);
 
-        ajax.Utils.handleError(errorName, errorMessage);
+        ajax.Response.handleResponseError(errorName, errorMessage, xhr);
     }
 
     /**
@@ -1675,6 +1701,31 @@ export class Ajax {
      * @readonly
      */
     RESOURCE = "jakarta.faces.Resource";
+
+    /**
+     * Error name that is used when an AJAX response cannot be received at all, e.g. because of an HTTP error
+     * status, a timeout or a network failure. Register a `p:ajaxExceptionHandler` with this type to handle
+     * exactly these kind of errors. Same as the `httpError` status of `faces.ajax`.
+     * @type {string}
+     * @readonly
+     */
+    ERROR_HTTP = "httpError";
+
+    /**
+     * Error name that is used when an AJAX response was received but cannot be parsed or does not contain a
+     * `partial-response`, e.g. a login page after a session timeout. Same as the `malformedXML` status of `faces.ajax`.
+     * @type {string}
+     * @readonly
+     */
+    ERROR_MALFORMED_XML = "malformedXML";
+
+    /**
+     * Error name that is used when an AJAX response was received but did not contain any data.
+     * Same as the `emptyResponse` status of `faces.ajax`.
+     * @type {string}
+     * @readonly
+     */
+    ERROR_EMPTY_RESPONSE = "emptyResponse";
 
     /**
      * Parameter shortcut mapping for the method {@link ab}.
@@ -1789,18 +1840,42 @@ export function globalAjaxSetup(): void {
                 if (data.status === "serverError") {
                     ajax.Utils.handleError(data.errorName, data.errorMessage);
                 }
-                // malformedXML, emptyResponse, httpError, clientError, timeout
+                // httpError, malformedXML, emptyResponse, clientError, timeout
+                // p:ajax reports the same error names, so a p:ajaxExceptionHandler can be registered for them
                 else {
-                    // this are very likely very strange errors or client connection errors
-                    // just invoke the same logic, this will likely result in a global p:ajaxExceptionHandler or global error-page
-                    ajax.Utils.handleError(data.status, "AJAX failure");
+                    var errorMessage = 'AJAX failure';
+                    if (data.responseCode && data.responseCode > 0) {
+                        errorMessage += ' with HTTP status ' + data.responseCode;
+                    }
+                    ajax.Utils.handleError(data.status, errorMessage);
                 }
             });
         }
     });
 
     $(document).on('pfAjaxError', function(e, xhr, settings, error){
-        // this is very likely a connection error
-        ajax.Utils.handleError("", "AJAX failure");
+        // e.g. the request of a p:ajaxExceptionHandler itself, see Configuration.skipErrorHandling
+        if (settings?.skipErrorHandling) {
+            return;
+        }
+
+        var errorMessage = 'AJAX failure';
+        if (xhr && xhr.status) {
+            errorMessage += ' with HTTP status ' + xhr.status;
+        }
+        if (error) {
+            errorMessage += ': ' + error;
+        }
+
+        // a successful HTTP status means that the response was received but could not be parsed,
+        // e.g. a proxy returned a HTML login page
+        if (xhr && xhr.status >= 200 && xhr.status < 300) {
+            ajax.Utils.handleError(ajax.ERROR_MALFORMED_XML, errorMessage);
+            return;
+        }
+
+        // the response could not be received at all, e.g. HTTP error status, timeout or network failure;
+        // report it like faces.ajax does, so that a p:ajaxExceptionHandler can be registered for it
+        ajax.Utils.handleError(ajax.ERROR_HTTP, errorMessage);
     });
 }

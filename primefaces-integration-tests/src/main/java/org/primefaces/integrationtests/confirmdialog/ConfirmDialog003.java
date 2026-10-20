@@ -21,34 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.integrationtests.confirmdialog;
 
-import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
+import java.io.Serializable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
-import jakarta.faces.event.BehaviorEvent;
+import lombok.Data;
 
-@Deprecated
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
+@Named
+@ViewScoped
+@Data
+public class ConfirmDialog003 implements Serializable {
+    private boolean enabled;
+    private String choice = "A";
+    private int changes;
 
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
-
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
-
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
-    }
-
-    // just for now until all components using CDK
-    @Override
-    default PrimeClientBehaviorEventKeys[] getClientBehaviorEventKeys() {
-        return null;
+    public void changed() {
+        changes++;
     }
 }

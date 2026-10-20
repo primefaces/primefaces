@@ -183,6 +183,20 @@ PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.Deferr
 
             return delta;
         });
+
+        // #15217: QuillJS builds the text/html clipboard flavor with getSemanticHTML(), which replaces
+        // every normal space with an "&nbsp;" entity (see convertHTML in quill/core/editor.js). Other
+        // applications that prefer text/html therefore paste non-breaking spaces. Undo that here, right
+        // before the HTML is handed to the clipboard.
+        // Only the entity is replaced: a non-breaking space the user really typed is escaped as a raw
+        // U+00A0 character by QuillJS and so survives the copy.
+        var originalOnCopy = this.editor.clipboard.onCopy;
+        this.editor.clipboard.onCopy = function (range, isCut) {
+            var clipboardData = originalOnCopy.call(this, range, isCut);
+            clipboardData.html = clipboardData.html.replace(/&nbsp;/g, ' ');
+
+            return clipboardData;
+        };
     }
 
     /**

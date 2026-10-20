@@ -1554,9 +1554,10 @@ $.widget("prime.datePicker", {
 
     renderDayNames: function(weekDaysMin, weekDays) {
         var dayNamesHtml = '';
+        var colOffset = this.options.showWeek ? 1 : 0;
 
         if (this.options.showWeek) {
-            dayNamesHtml += '<th scope="col" abbr="' + this.options.locale.weekHeader + '">' +
+            dayNamesHtml += '<th scope="col" aria-colindex="1" abbr="' + this.options.locale.weekHeader + '">' +
                 '<span>' +
                 this.options.locale.weekHeader +
                 '</span>' +
@@ -1566,7 +1567,7 @@ $.widget("prime.datePicker", {
         for (var i = 0; i < weekDaysMin.length; i++) {
             var weekDayLabel = this.escapeHTML(weekDays[i]);
             var weekDayMinLabel = weekDaysMin[i];
-            dayNamesHtml += '<th scope="col" abbr="' + weekDayMinLabel + '">' +
+            dayNamesHtml += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDayMinLabel + '">' +
                 '<span title="' + weekDayLabel + '">' +
                 weekDayMinLabel +
                 '</span>' +
@@ -1630,7 +1631,7 @@ $.widget("prime.datePicker", {
                 lastDate = weekDates[6],
                 cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
 
-            weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
+            weekHtml += '<td aria-colindex="1" class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
                 this.options.weekCalculator(firstDate) +
                 '</span></td>';
         }
@@ -1653,14 +1654,17 @@ $.widget("prime.datePicker", {
                     'ui-state-disabled': disabled,
                     'ui-state-highlight': date.today
                 }).trim(),
-                content = this.renderDateCellContent(date, dateClass);
+                dateLabel = this.escapeHTML(this.formatDate(new Date(date.year, date.month, date.day), this.options.dateFormat)),
+                content = this.renderDateCellContent(date, dateClass, dateLabel);
 
+            // the focusable <a> carries the full date label so screen readers announce it while navigating;
+            // cells without a link (disabled) keep the label on the cell itself
             weekHtml += (
-                '<td role="gridcell"' +
+                '<td role="gridcell" aria-colindex="' + (i + 1 + (this.options.showWeek ? 1 : 0)) + '"' +
                 (cellClass ? ' class="' + cellClass + '"' : '') + 
                 (disabled ? ' aria-disabled="true"' : '') + 
                 (selected ? ' aria-selected="true"' : '') + 
-                ' aria-label="' + this.options.locale.monthNames[date.month] + ' ' + date.day + '">' +
+                (date.selectable ? '' : ' aria-label="' + dateLabel + '"') + '>' +
                 content +
                 '</td>'
             );
@@ -1669,7 +1673,7 @@ $.widget("prime.datePicker", {
         return weekHtml;
     },
 
-    renderDateCellContent: function(date, dateClass) {
+    renderDateCellContent: function(date, dateClass, dateLabel) {
         var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
         var classes = this.options.dateStyleClasses;
 
@@ -1680,7 +1684,7 @@ $.widget("prime.datePicker", {
             }
         }
         if (date.selectable) {
-            return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
+            return '<a tabindex="0" class="' + dateClass + '"' + (dateLabel ? ' aria-label="' + dateLabel + '"' : '') + '>' + content + '</a>';
         }
         else {
             return '<span class="' + dateClass + '">' + content + '</span>';
@@ -2346,14 +2350,14 @@ $.widget("prime.datePicker", {
                 this.hideOverlay();
             }
         } 
-        else if (this.options.showOnFocus) {
+        else if (this.options.showOnFocus && !this.options.showIcon) {
             // #12361 allow the input to be clicked again to open the panel if showOnFocus is true
             this.showOverlay();
         }
     },
 
     onInputFocus: function(event) {
-        if (this.options.showOnFocus && !this.isPanelVisible() && !this.datepickerFocus) {
+        if (this.options.showOnFocus && !this.isPanelVisible() && !this.datepickerFocus && !this.options.showIcon) {
             this.datepickerFocus = true;
             this.showOverlay()
         }
@@ -2850,6 +2854,15 @@ $.widget("prime.datePicker", {
         if (!this.documentClickListener) {
             this.documentClickListener = function(event) {
                 if (!$this.datepickerClick) {
+                    if ($this.options.timeInput) {
+                        var focusedTimeInput = $this.panel.find(
+                            '.ui-hour-picker input, .ui-minute-picker input, .ui-second-picker input, .ui-millisecond-picker input'
+                        ).filter(':focus')[0];
+                        if (focusedTimeInput) {
+                            focusedTimeInput.blur();
+                        }
+                    }
+
                     $this.hideOverlay(event);
                     $this.onInputBlur();
                     PrimeFaces.queueTask(function() { $(event.target).trigger('focus') }, 1);
@@ -2908,6 +2921,11 @@ $.widget("prime.datePicker", {
     },
 
     bindScrollListener: function() {
+        // Focusing a navigator control on iOS can scroll the viewport while the touch UI panel is open.
+        if (this.options.touchUI) {
+            return;
+        }
+
         var $this = this;
 
         this.scrollableParents = PrimeFaces.utils.getScrollableParents(this.element.get(0));
@@ -3609,7 +3627,13 @@ $.widget("prime.datePicker", {
         if (el && el.getAttribute("aria-label")) {
             var refocus = this.panel.find("[aria-label='" + PrimeFaces.escapeHTML(el.getAttribute("aria-label")) + "']");
             if (refocus.length) {
-                PrimeFaces.queueTask(function() { refocus.first().trigger('focus') });
+                if (PrimeFaces.env.ios && el.tagName === 'SELECT') {
+                    // Focus the calendar instead of reopening the native iOS picker after replacing its select.
+                    this.focusOverlay();
+                }
+                else {
+                    PrimeFaces.queueTask(function() { refocus.first().trigger('focus') });
+                }
             }
         }
 
