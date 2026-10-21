@@ -3535,6 +3535,8 @@
         --p-toggleswitch-transition-duration: var(--p-form-field-transition-duration);
         --p-toggleswitch-slide-duration: 0.1s;
         --p-toggleswitch-disabled-background: var(--p-form-field-disabled-background);
+        --p-toggleswitch-checked-disabled-background: var(--p-toggleswitch-disabled-background);
+        --p-toggleswitch-disabled-opacity: 1;
         --p-toggleswitch-handle-border-radius: 50%;
         --p-toggleswitch-handle-shadow: none;
         --p-toggleswitch-handle-size: 0.875rem;
@@ -3543,6 +3545,7 @@
         --p-toggleswitch-handle-checked-background: var(--p-primary-contrast-color);
         --p-toggleswitch-handle-checked-hover-background: var(--p-primary-contrast-color);
         --p-toggleswitch-handle-disabled-background: var(--p-form-field-disabled-color);
+        --p-toggleswitch-handle-checked-disabled-background: var(--p-toggleswitch-handle-disabled-background);
         --p-toggleswitch-handle-color: var(--p-surface-0);
         --p-toggleswitch-handle-hover-color: var(--p-surface-0);
         --p-toggleswitch-handle-checked-color: var(--p-primary-color);

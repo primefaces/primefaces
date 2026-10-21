@@ -3530,7 +3530,9 @@
         --p-toggleswitch-transition-duration: var(--p-form-field-transition-duration);
         --p-toggleswitch-slide-duration: 0.2s;
         --p-toggleswitch-background: light-dark(rgb(120 120 128 / 0.16), rgb(120 120 128 / 0.32));
-        --p-toggleswitch-disabled-background: light-dark(var(--p-form-field-disabled-background), var(--p-surface-600));
+        --p-toggleswitch-disabled-background: var(--p-toggleswitch-background);
+        --p-toggleswitch-checked-disabled-background: var(--p-toggleswitch-checked-background);
+        --p-toggleswitch-disabled-opacity: var(--p-disabled-opacity);
         --p-toggleswitch-hover-background: light-dark(rgb(120 120 128 / 0.22), rgb(120 120 128 / 0.4));
         --p-toggleswitch-checked-background: light-dark(#1f8f3e, #30d158);
         --p-toggleswitch-checked-hover-background: light-dark(#1b8038, #3ddc63);
@@ -3538,7 +3540,8 @@
         --p-toggleswitch-handle-shadow: 0 3px 8px rgb(0 0 0 / 0.15), 0 3px 1px rgb(0 0 0 / 0.06), 0 0 0 0.5px rgb(0 0 0 / 0.04);
         --p-toggleswitch-handle-size: 1.375rem;
         --p-toggleswitch-handle-background: #ffffff;
-        --p-toggleswitch-handle-disabled-background: light-dark(#f2f2f7, #636366);
+        --p-toggleswitch-handle-disabled-background: var(--p-toggleswitch-handle-background);
+        --p-toggleswitch-handle-checked-disabled-background: var(--p-toggleswitch-handle-checked-background);
         --p-toggleswitch-handle-hover-background: #ffffff;
         --p-toggleswitch-handle-checked-background: #ffffff;
         --p-toggleswitch-handle-checked-hover-background: #ffffff;

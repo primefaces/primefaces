@@ -3529,6 +3529,8 @@
         --p-toggleswitch-slide-duration: 0.2s;
         --p-toggleswitch-background: linear-gradient(180deg, light-dark(#c9c9ce, #0a0a0b), light-dark(#e9e9ec, #121113) 70%) padding-box, linear-gradient(180deg, light-dark(#8e8e96, #6b6870), light-dark(#5f5f67, #3a383d)) border-box;
         --p-toggleswitch-disabled-background: light-dark(var(--p-form-field-disabled-background), var(--p-surface-600));
+        --p-toggleswitch-checked-disabled-background: var(--p-toggleswitch-disabled-background);
+        --p-toggleswitch-disabled-opacity: 1;
         --p-toggleswitch-hover-background: var(--p-toggleswitch-background);
         --p-toggleswitch-checked-background: linear-gradient(180deg, light-dark(#5a5a62, #3a383d), light-dark(#121214, #1c1b1d)) padding-box, linear-gradient(180deg, light-dark(#71717a, #c9c7cc), light-dark(#000000, #3a383d)) border-box;
         --p-toggleswitch-checked-hover-background: var(--p-toggleswitch-checked-background);
@@ -3537,6 +3539,7 @@
         --p-toggleswitch-handle-size: 0.875rem;
         --p-toggleswitch-handle-background: conic-gradient(from 200deg, light-dark(#ffffff, #5a5860), light-dark(#d2d2d7, #2c2b2d) 15%, light-dark(#f7f7f8, #4a484e) 30%, light-dark(#bdbdc3, #232225) 50%, light-dark(#fbfbfc, #55535a) 66%, light-dark(#cfcfd4, #2f2e31) 84%, light-dark(#ffffff, #5a5860));
         --p-toggleswitch-handle-disabled-background: light-dark(var(--p-form-field-disabled-color), var(--p-surface-900));
+        --p-toggleswitch-handle-checked-disabled-background: var(--p-toggleswitch-handle-disabled-background);
         --p-toggleswitch-handle-hover-background: conic-gradient(from 200deg, light-dark(#ffffff, #5a5860), light-dark(#d2d2d7, #2c2b2d) 15%, light-dark(#f7f7f8, #4a484e) 30%, light-dark(#bdbdc3, #232225) 50%, light-dark(#fbfbfc, #55535a) 66%, light-dark(#cfcfd4, #2f2e31) 84%, light-dark(#ffffff, #5a5860));
         --p-toggleswitch-handle-checked-background: conic-gradient(from 200deg, light-dark(#ffffff, #ffffff), light-dark(#d2d2d7, #d2d2d7) 15%, light-dark(#f7f7f8, #f7f7f8) 30%, light-dark(#bdbdc3, #bdbdc3) 50%, light-dark(#fbfbfc, #fbfbfc) 66%, light-dark(#cfcfd4, #cfcfd4) 84%, light-dark(#ffffff, #ffffff));
         --p-toggleswitch-handle-checked-hover-background: conic-gradient(from 200deg, light-dark(#ffffff, #ffffff), light-dark(#d2d2d7, #d2d2d7) 15%, light-dark(#f7f7f8, #f7f7f8) 30%, light-dark(#bdbdc3, #bdbdc3) 50%, light-dark(#fbfbfc, #fbfbfc) 66%, light-dark(#cfcfd4, #cfcfd4) 84%, light-dark(#ffffff, #ffffff));

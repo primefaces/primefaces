@@ -167,9 +167,10 @@
         border-color: var(--p-toggleswitch-invalid-border-color);
     }
 
-    /* disabled */
+    /* disabled: a flat disabled look (opacity 1, the same tokens for on and off: Aura, Lara, Nora, Metal) or the
+       on / off look dimmed (Glass, like iOS) */
     &.ui-state-disabled {
-        opacity: 1;
+        opacity: var(--p-toggleswitch-disabled-opacity);
 
         .ui-toggleswitch-slider {
             cursor: default;
@@ -178,6 +179,16 @@
 
         .ui-toggleswitch-handler {
             background: var(--p-toggleswitch-handle-disabled-background);
+        }
+
+        &.ui-toggleswitch-checked {
+            .ui-toggleswitch-slider {
+                background: var(--p-toggleswitch-checked-disabled-background);
+            }
+
+            .ui-toggleswitch-handler {
+                background: var(--p-toggleswitch-handle-checked-disabled-background);
+            }
         }
     }
 

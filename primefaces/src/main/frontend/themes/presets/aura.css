@@ -3532,6 +3532,8 @@
         --p-toggleswitch-slide-duration: 0.2s;
         --p-toggleswitch-background: light-dark(var(--p-surface-300), var(--p-surface-700));
         --p-toggleswitch-disabled-background: light-dark(var(--p-form-field-disabled-background), var(--p-surface-600));
+        --p-toggleswitch-checked-disabled-background: var(--p-toggleswitch-disabled-background);
+        --p-toggleswitch-disabled-opacity: 1;
         --p-toggleswitch-hover-background: light-dark(var(--p-surface-400), var(--p-surface-600));
         --p-toggleswitch-checked-background: var(--p-primary-color);
         --p-toggleswitch-checked-hover-background: var(--p-primary-hover-color);
@@ -3540,6 +3542,7 @@
         --p-toggleswitch-handle-size: 0.875rem;
         --p-toggleswitch-handle-background: light-dark(var(--p-surface-0), var(--p-surface-400));
         --p-toggleswitch-handle-disabled-background: light-dark(var(--p-form-field-disabled-color), var(--p-surface-900));
+        --p-toggleswitch-handle-checked-disabled-background: var(--p-toggleswitch-handle-disabled-background);
         --p-toggleswitch-handle-hover-background: light-dark(var(--p-surface-0), var(--p-surface-300));
         --p-toggleswitch-handle-checked-background: light-dark(var(--p-surface-0), var(--p-surface-900));
         --p-toggleswitch-handle-checked-hover-background: light-dark(var(--p-surface-0), var(--p-surface-900));
