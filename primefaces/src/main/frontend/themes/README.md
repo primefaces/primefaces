@@ -158,7 +158,7 @@ The build (`yarn run build:bundle`, run by Maven through `frontend-maven-plugin`
 - Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes (see "Modern look and
   feel" below), its tokens are added in all presets; PrimeUIX 3.0.1 is the reference for names and values.
 - **Metal** (`themes/presets/metal.css`, not a PrimeUIX preset): graphite and brushed aluminium in light mode, black metal in
-  dark mode, one signal color for the focus ring (orange). Everything is token values:
+  dark mode, the focus ring in the primary color (graphite by default). Everything is token values:
   - Metal edge lit from above: a background token with a face layer (`padding-box`) and an edge layer (`border-box`),
     border color `transparent` (buttons, toggleSwitch). The transparent border becomes visible in the forced colors
     mode. Form fields keep a real border (hover / focus border colors keep working).

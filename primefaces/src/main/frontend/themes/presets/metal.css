@@ -5,7 +5,7 @@
  * Material: neutral surfaces, a metal edge lit from above (gradient border: a padding-box face and a border-box edge in
  * one background token, border-color transparent), brushed grain (--p-button-texture: SVG noise), machined shadows
  * (--p-button-shadow), pressed state (--p-button-active-shadow / -offset), engraved labels, turned metal knobs
- * (toggleSwitch / slider handles). One signal color: the focus ring (orange).
+ * (toggleSwitch / slider handles). The focus ring follows the primary color like in the other presets.
  * light-dark() only takes colors, so the gradients switch per mode by light-dark() in their color stops.
  * Primary color: graphite; :root { --p-primary-base: ... } changes it like in the other presets.
  */
@@ -273,9 +273,9 @@
         --p-transition-duration: 0.2s;
         --p-focus-ring-width: 2px;
         --p-focus-ring-style: solid;
-        --p-focus-ring-color: light-dark(#e5500f, #ff6a2b);
+        --p-focus-ring-color: var(--p-primary-color);
         --p-focus-ring-offset: 2px;
-        --p-focus-ring-shadow: 0 0 0 4px light-dark(rgb(229 80 15 / 0.16), rgb(255 106 43 / 0.2));
+        --p-focus-ring-shadow: 0 0 0 4px color-mix(in srgb, var(--p-primary-color) 20%, transparent);
         --p-disabled-opacity: 0.6;
         --p-icon-size: 0.875rem;
         --p-primary-base: #3f3f46;

@@ -9,7 +9,7 @@ Five themes are built in:
 - **Aura**
 - **Lara**
 - **Nora**
-- **Metal**: graphite and brushed aluminium (light), black metal (dark), an orange focus ring
+- **Metal**: graphite and brushed aluminium (light), black metal (dark)
 - **Glass**: Apple Liquid Glass style, translucent overlays, menus, bars and buttons over a calm content layer
 
 Aura, Lara and Nora started from [PrimeUIX](https://github.com/primefaces/primeuix) (the theming of PrimeReact / PrimeVue),
