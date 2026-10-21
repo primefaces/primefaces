@@ -57,6 +57,7 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
         //Step controls
         if(this.cfg.showStepStatus) {
             this.stepControls = $(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
+            this.updateStepStatus();
         }
 
         //Navigation controls
@@ -78,6 +79,24 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
                 this.backNav.hide();
             else if(currentStepIndex == this.cfg.steps.length - 1)
                 this.nextNav.hide();
+        }
+    }
+
+    /**
+     * Updates current/completed state classes and the existing theme highlight.
+     * @private
+     */
+    updateStepStatus() {
+        const currentStepIndex = this.getStepIndex(this.currentStep);
+        if (currentStepIndex < 0) {
+            return;
+        }
+
+        this.stepControls.removeClass('ui-wizard-step-current ui-wizard-step-completed');
+        this.stepControls.not('[data-pf-user-highlight]').removeClass('ui-state-highlight');
+        this.stepControls.eq(currentStepIndex).addClass('ui-state-highlight ui-wizard-step-current');
+        if (this.cfg.highlightCompletedSteps) {
+            this.stepControls.slice(0, currentStepIndex).addClass('ui-state-highlight ui-wizard-step-completed');
         }
     }
 
@@ -161,9 +180,10 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
                 return true;
             },
             oncomplete: function(xhr, status, args, data) {
-                $this.currentStep = args.currentStep;
-
-                if(!args.validationFailed) {
+                if(args && !args.validationFailed) {
+                    if ($this.getStepIndex(args.currentStep) >= 0) {
+                        $this.currentStep = args.currentStep;
+                    }
                     var currentStepIndex = $this.getStepIndex($this.currentStep);
 
                     if($this.cfg.showNavBar) {
@@ -181,13 +201,7 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
 
                     //update step status
                     if($this.cfg.showStepStatus) {
-                        if($this.cfg.highlightCompletedSteps) {
-                            $this.stepControls.addClass('ui-state-highlight');
-                            $this.stepControls.slice(currentStepIndex + 1).removeClass('ui-state-highlight');
-                        } else {
-                            $this.stepControls.removeClass('ui-state-highlight');
-                            $($this.stepControls.get(currentStepIndex)).addClass('ui-state-highlight');
-                        }
+                        $this.updateStepStatus();
                     }
                 }
             }
