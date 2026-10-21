@@ -35,6 +35,7 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "imagecompare/imagecompare.js")
+@ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "imagecompare/imagecompare.css")
 public class ImageCompare extends ImageCompareBaseImpl {
 

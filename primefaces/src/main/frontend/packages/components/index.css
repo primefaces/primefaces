@@ -37,7 +37,7 @@
 
 /* components */
 @import url("./src/accordion/accordion.css") layer(primefaces.components);
-@import url("./src/ajaxstatus/ajaxstatus.css") layer(primefaces.components);
+@import url("../core/src/ajaxstatus/ajaxstatus.css") layer(primefaces.components);
 @import url("./src/autocomplete/autocomplete.css") layer(primefaces.components);
 @import url("./src/avatar/avatar.css") layer(primefaces.components);
 @import url("./src/blockui/blockui.css") layer(primefaces.components);
@@ -65,12 +65,12 @@
 @import url("./src/inplace/inplace.css") layer(primefaces.components);
 @import url("./src/menu/megamenu.css") layer(primefaces.components);
 @import url("./src/menu/menu.css") layer(primefaces.components);
-@import url("./src/message/message.css") layer(primefaces.components);
+@import url("./src/messages/message.css") layer(primefaces.components);
 @import url("./src/messages/messages.css") layer(primefaces.components);
 @import url("./src/forms/multiselectlistbox.css") layer(primefaces.components);
 @import url("./src/notificationbar/notificationbar.css") layer(primefaces.components);
 @import url("./src/orderlist/orderlist.css") layer(primefaces.components);
-@import url("./src/outputlabel/outputlabel.css") layer(primefaces.components);
+@import url("./src/forms/outputlabel.css") layer(primefaces.components);
 @import url("./src/outputpanel/outputpanel.css") layer(primefaces.components);
 @import url("./src/overlaypanel/overlaypanel.css") layer(primefaces.components);
 @import url("./src/panel/panel.css") layer(primefaces.components);

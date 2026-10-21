@@ -114,19 +114,19 @@ __TL;DR__ You don't have to do anything. This is for information purposes.
 You may want to reference images and font files in CSS files, e.g.
 
 ```css
-background:transparent url("./password-meter.png") no-repeat left top;
+background:transparent url("./images/background.png") no-repeat left top;
 ```
 
 For Jakarta Faces, you'd normally need to use a resource EL expression. The build
 uses the [esbuild-plugin-faces-resource-loader](https://github.com/blutorange/esbuild-plugin-faces-resource-loader/)
 to create these resource EL expressions automatically. So you can just use the
-CSS code above, where `./password-meter.png` is relative to the CSS file. This
+CSS code above, where `./images/background.png` is relative to the CSS file. This
 also improves IDE support.
 
 During the build, it gets transformed to:
 
 ```css
-background: transparent url("#{resource['primefaces:components/src/forms/password-meter.png']}") no-repeat left top;
+background: transparent url("#{resource['primefaces:components/src/forms/images/background.png']}") no-repeat left top;
 ```
 
 # Linking packages
