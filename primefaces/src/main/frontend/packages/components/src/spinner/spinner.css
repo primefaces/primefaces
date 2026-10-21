@@ -15,6 +15,16 @@
     position: relative;
     vertical-align: middle;
 
+    /* disabled: the root carries ui-state-disabled too; the input shows the disabled field look (like p:inputText), so
+       the root is not faded on top of it, only the buttons */
+    &.ui-state-disabled {
+        opacity: 1;
+
+        > .ui-spinner-button {
+            opacity: var(--p-disabled-opacity);
+        }
+    }
+
     .ui-spinner-input {
         vertical-align: middle;
         text-align: right;

@@ -21,12 +21,16 @@
         width: var(--p-colorpicker-swatch-width);
         height: calc(100% - 2px);
         margin-right: 1px;
-        border-radius: 0 var(--p-colorpicker-preview-border-radius) var(--p-colorpicker-preview-border-radius) 0;
+        /* 1px inside the border of the field: the inner radius, otherwise a gap shows at the rounded corners */
+        --_radius: max(0px, calc(var(--p-colorpicker-preview-border-radius) - 1px));
+        border-radius: 0 var(--_radius) var(--_radius) 0;
     }
 
     &.clr-rtl button {
         right: unset;
-        border-radius: var(--p-colorpicker-preview-border-radius) 0 0 var(--p-colorpicker-preview-border-radius);
+        margin-right: 0;
+        margin-left: 1px;
+        border-radius: var(--_radius) 0 0 var(--_radius);
     }
 
     /* the widget copies ui-state-error of the input to the swatch */

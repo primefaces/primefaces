@@ -10,6 +10,9 @@
 .ui-selectonebutton,
 .ui-selectmanybutton {
     display: inline-flex;
+    /* the group wraps its options, also as a stretched flex / grid item (the invalid outline is drawn on the group) */
+    width: fit-content;
+    max-width: 100%;
     vertical-align: bottom;
     -webkit-user-select: none;
     user-select: none;

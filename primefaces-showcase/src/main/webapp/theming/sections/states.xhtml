@@ -1,0 +1,299 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:c="jakarta.tags.core" xmlns:p="primefaces">
+    <!-- the columns: label, readonly, disabled, invalid -->
+    <ui:param name="formStates" value="#{[
+            ['Default', false, false, false],
+            ['Readonly', true, false, false],
+            ['Disabled', false, true, false],
+            ['Invalid', false, false, true]]}"/>
+    <style>
+        .states-table {
+            display: grid;
+            grid-template-columns: 9rem repeat(4, minmax(12rem, 1fr));
+            gap: .75rem 1rem;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .states-table > * {
+            min-width: 0;
+        }
+
+        .states-head {
+            font-weight: 600;
+            color: var(--p-text-muted-color);
+        }
+
+        .states-na {
+            color: var(--p-text-muted-color);
+        }
+
+        .states-fluid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+            gap: 1rem 1.5rem;
+        }
+
+        .states-fluid .field {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+    </style>
+
+    <h:form id="statesForm">
+        <div class="demo-card">
+            <h2>Default / readonly / disabled / invalid</h2>
+            <h3>Single form components, each in every state</h3>
+            <div class="states-table">
+                <span></span>
+                <c:forEach items="#{formStates}" var="st">
+                    <span class="states-head">#{st[0]}</span>
+                </c:forEach>
+
+                <span>InputText</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:inputText value="#{themingStatesView.text}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:inputText>
+                </c:forEach>
+
+                <span>InputTextarea</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:inputTextarea value="#{themingStatesView.longText}" rows="2" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:inputTextarea>
+                </c:forEach>
+
+                <span>InputNumber</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:inputNumber value="#{themingStatesView.amount}" symbol="$" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:inputNumber>
+                </c:forEach>
+
+                <span>InputMask</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:inputMask value="#{themingStatesView.mask}" mask="(999) 999-9999" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:inputMask>
+                </c:forEach>
+
+                <span>Password</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:password value="#{themingStatesView.password}" redisplay="true" toggleMask="true" readonly="#{st[1]}"
+                                disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:password>
+                </c:forEach>
+
+                <span>AutoComplete</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:autoComplete value="#{themingStatesView.fruit}" completeMethod="#{themingStatesView.completeFruit}"
+                                    dropdown="true" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:autoComplete>
+                </c:forEach>
+
+                <span>Chips</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:chips value="#{themingStatesView.chips}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:chips>
+                </c:forEach>
+
+                <span>DatePicker</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:datePicker value="#{themingStatesView.date}" showIcon="true" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:datePicker>
+                </c:forEach>
+
+                <span>SelectOneMenu</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:selectOneMenu value="#{themingStatesView.city}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:selectItems value="#{themingStatesView.cities}"/>
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:selectOneMenu>
+                </c:forEach>
+
+                <span>SelectCheckboxMenu</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:selectCheckboxMenu value="#{themingStatesView.selectedCities}" multiple="true" readonly="#{st[1]}"
+                                          disabled="#{st[2]}">
+                        <f:selectItems value="#{themingStatesView.cities}"/>
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:selectCheckboxMenu>
+                </c:forEach>
+
+                <span>CascadeSelect</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:cascadeSelect value="#{themingStatesView.cascadeCity}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:selectItems value="#{themingFormsSelectView.groupedCities}"/>
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:cascadeSelect>
+                </c:forEach>
+
+                <span>Spinner</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:spinner value="#{themingStatesView.spinner}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:spinner>
+                </c:forEach>
+
+                <span>Slider</span>
+                <c:forEach items="#{formStates}" var="st" varStatus="stLoop">
+                    <div>
+                        <h:inputHidden id="sliderValue#{stLoop.index}" value="#{themingStatesView.slider}"/>
+                        <p:slider for="sliderValue#{stLoop.index}" readonly="#{st[1]}" disabled="#{st[2]}"/>
+                    </div>
+                </c:forEach>
+
+                <span>Rating</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:rating value="#{themingStatesView.rating}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:rating>
+                </c:forEach>
+
+                <span>ToggleSwitch</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:toggleSwitch value="#{themingStatesView.toggle}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:toggleSwitch>
+                </c:forEach>
+
+                <span>Checkbox</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:selectBooleanCheckbox value="#{themingStatesView.checkbox}" itemLabel="Checked" readonly="#{st[1]}"
+                                             disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:selectBooleanCheckbox>
+                </c:forEach>
+
+                <span>SelectOneRadio</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:selectOneRadio value="#{themingStatesView.radio}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                        <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:selectOneRadio>
+                </c:forEach>
+
+                <span>SelectOneButton</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <c:if test="#{st[1]}">
+                        <span class="states-na">no readonly</span>
+                    </c:if>
+                    <c:if test="#{not st[1]}">
+                        <p:selectOneButton value="#{themingStatesView.button}" disabled="#{st[2]}">
+                            <f:selectItem itemLabel="Day" itemValue="Day"/>
+                            <f:selectItem itemLabel="Week" itemValue="Week"/>
+                            <f:selectItem itemLabel="Month" itemValue="Month"/>
+                            <f:attribute name="invalid" value="#{st[3]}"/>
+                            <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                        </p:selectOneButton>
+                    </c:if>
+                </c:forEach>
+
+                <span>ColorPicker</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:colorPicker value="#{themingStatesView.color}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:colorPicker>
+                </c:forEach>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>ui-fluid</h2>
+            <h3>The same components in a .ui-fluid container: full width</h3>
+            <div class="states-fluid ui-fluid">
+                <div class="field">
+                    <p:outputLabel for="@next" value="InputText"/>
+                    <p:inputText value="#{themingStatesView.text}"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="InputNumber"/>
+                    <p:inputNumber value="#{themingStatesView.amount}" symbol="$"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="InputMask"/>
+                    <p:inputMask value="#{themingStatesView.mask}" mask="(999) 999-9999"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="Password"/>
+                    <p:password value="#{themingStatesView.password}" redisplay="true" toggleMask="true"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="AutoComplete"/>
+                    <p:autoComplete value="#{themingStatesView.fruit}" completeMethod="#{themingStatesView.completeFruit}"
+                                    dropdown="true"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="Chips"/>
+                    <p:chips value="#{themingStatesView.chips}"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="DatePicker"/>
+                    <p:datePicker value="#{themingStatesView.date}" showIcon="true"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="SelectOneMenu"/>
+                    <p:selectOneMenu value="#{themingStatesView.city}">
+                        <f:selectItems value="#{themingStatesView.cities}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="SelectCheckboxMenu"/>
+                    <p:selectCheckboxMenu value="#{themingStatesView.selectedCities}" multiple="true">
+                        <f:selectItems value="#{themingStatesView.cities}"/>
+                    </p:selectCheckboxMenu>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="CascadeSelect"/>
+                    <p:cascadeSelect value="#{themingStatesView.cascadeCity}">
+                        <f:selectItems value="#{themingFormsSelectView.groupedCities}"/>
+                    </p:cascadeSelect>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="Spinner"/>
+                    <p:spinner value="#{themingStatesView.spinner}"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="ColorPicker"/>
+                    <p:colorPicker value="#{themingStatesView.color}"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="SelectOneButton"/>
+                    <p:selectOneButton value="#{themingStatesView.button}">
+                        <f:selectItem itemLabel="Day" itemValue="Day"/>
+                        <f:selectItem itemLabel="Week" itemValue="Week"/>
+                        <f:selectItem itemLabel="Month" itemValue="Month"/>
+                    </p:selectOneButton>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="InputTextarea"/>
+                    <p:inputTextarea value="#{themingStatesView.longText}" rows="2"/>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

@@ -135,9 +135,12 @@
 .ui-chips-input-token {
     display: inline-flex;
     align-items: center;
-    flex: 1 1 auto;
+    /* fills the rest of the line, wraps only below 4rem (not at the intrinsic width of the input) */
+    flex: 1 1 4rem;
+    min-width: 4rem;
 
     input {
+        min-width: 0;
         background-color: transparent;
         border: 0 none;
         outline: 0 none;

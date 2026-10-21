@@ -38,6 +38,16 @@
     position: relative;
     display: inline-block;
 
+    /* disabled: the root carries ui-state-disabled too; the input shows the disabled field look (like p:inputText), so
+       the root is not faded on top of it, only the dropdown button */
+    &.ui-state-disabled {
+        opacity: 1;
+
+        > .ui-autocomplete-dropdown {
+            opacity: var(--p-disabled-opacity);
+        }
+    }
+
     /* dropdown: input (or multiple container) and button side by side, the button stretches to the input height */
     &.ui-autocomplete-dd {
         display: inline-flex;
