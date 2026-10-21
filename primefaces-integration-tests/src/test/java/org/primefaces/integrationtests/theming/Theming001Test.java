@@ -55,13 +55,13 @@ class Theming001Test extends AbstractThemingTest {
             + "return Array.from(document.querySelectorAll('script[src]')).map(function(s) { return s.src; });";
 
     private static final List<String> EXPECTED_STYLESHEETS = Arrays.asList(
+            "primefaces-aura:theme.css",
             "primefaces:primeicons/primeicons.css",
-            "primefaces-theming:components.css",
-            "primefaces-theming:aura.css");
+            "primefaces:components.css");
 
     @Test
     @Order(1)
-    @DisplayName("Theming: token theme renders only PrimeIcons + components.css + aura.css, no CSS of the core library")
+    @DisplayName("Theming: the theme (primefaces-aura:theme.css) first, then PrimeIcons and components.css")
     void stylesheets(Page page) {
         // Arrange
         setColorScheme("light");
@@ -77,7 +77,7 @@ class Theming001Test extends AbstractThemingTest {
 
     @Test
     @Order(2)
-    @DisplayName("Theming: components added by an ajax update do not add CSS of the core library")
+    @DisplayName("Theming: components added by an ajax update add their CSS, the theme stays applied")
     void stylesheetsAfterAjaxUpdate(Page page) {
         // Arrange
         setColorScheme("light");
@@ -92,9 +92,12 @@ class Theming001Test extends AbstractThemingTest {
         assertTrue(hasScript("colorpicker/colorpicker.js"), "colorpicker.js not added by the ajax resource update");
         assertTrue(hasScript("keyboard/keyboard.js"), "keyboard.js not added by the ajax resource update");
 
-        // ... but not their CSS (colorpicker/colorpicker.css, keyboard/keyboard.css, components.css)
+        // ... and their CSS, after the stylesheets of the page
         List<String> stylesheets = PrimeSelenium.executeScript(STYLESHEETS_SCRIPT);
-        assertEquals(EXPECTED_STYLESHEETS, stylesheets);
+        assertEquals(EXPECTED_STYLESHEETS, stylesheets.subList(0, EXPECTED_STYLESHEETS.size()));
+        assertTrue(stylesheets.contains("primefaces:colorpicker/colorpicker.css"), "colorpicker.css not added: " + stylesheets);
+        assertTrue(stylesheets.contains("primefaces:keyboard/keyboard.css"), "keyboard.css not added: " + stylesheets);
+        assertEquals(EXPECTED_STYLESHEETS.size() + 2, stylesheets.size(), "unexpected stylesheets: " + stylesheets);
         assertThemeApplied(page);
         assertNoJavascriptErrors();
     }

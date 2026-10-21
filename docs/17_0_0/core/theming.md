@@ -1,10 +1,10 @@
-# Theming (design tokens)
+# Theming
 
-PrimeFaces 17 comes with a new theming based on **design tokens**: every color, radius, spacing, shadow, icon and
+The themes of PrimeFaces are based on **design tokens**: every color, radius, spacing, shadow, icon and
 duration is a CSS variable (`--p-primary-color`, `--p-form-field-background`, `--p-button-border-radius`, ...).
 The look of an application is customized with plain CSS: no SASS, no build step, no theme to fork.
 
-Five presets are available:
+Five themes are built in:
 
 - **Aura**
 - **Lara**
@@ -17,42 +17,31 @@ so the token names follow the same convention. They are maintained for PrimeFace
 
 Light and dark mode are built in, each preset supports both.
 
-?> The new theming is independent from the [legacy themes](/core/themes.md) (saga, arya, ...), which keep working
-unchanged. See [Compatibility](#compatibility).
+?> PrimeFaces 17 replaced the SASS based themes (saga, arya, vela, the `primefaces-themes` jar, ...) with these themes.
+See [Migration from the SASS themes](#migration-from-the-sass-themes).
 
 ## Configuration
 
-Add the `primefaces-theming` dependency:
-
-```xml
-<dependency>
-    <groupId>org.primefaces</groupId>
-    <artifactId>primefaces-theming</artifactId>
-    <version>${primefaces.version}</version>
-</dependency>
-```
-
-and select a preset with the `primefaces.THEME` context parameter:
+The themes are part of the `primefaces` jar. Select one with the `primefaces.THEME` context parameter:
 
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura | lara | nora | metal | glass | library:name -->
+    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | metal | glass | none -->
 </context-param>
 ```
 
-`library:name` selects a [custom theme](#custom-theme).
+The value can be an EL expression, e.g. `#{userSettings.theme}` to switch the theme per user. `none` renders no theme
+(the components are unstyled then). A [custom theme](#custom-theme) is selected by its name the same way.
 
 ### What is rendered
 
-A token theme is rendered as two stylesheets in the head:
-
-1. `primefaces-theming:components.css`: the styles of all components, the icons and the CSS of the third-party
-   libraries the components use. It is the same for every theme, so it stays cached when the theme changes.
-2. the tokens of the theme, e.g. `primefaces-theming:aura.css` (or your custom `library:name`).
-
-The CSS of the PrimeFaces core library (`components.css` of `primefaces`) is **not** loaded with a token theme,
-neither on the initial request nor in ajax updates; the theme contains the complete styling of the components.
+- `primefaces-<theme>:theme.css`, first in the head: the tokens of the theme.
+- `primefaces:components.css`: the styles of the components, the icons and the jQuery UI CSS. It is the same for every
+  theme, so it stays cached when the theme changes.
+- the CSS of components that are loaded on demand together with their JavaScript, e.g.
+  `primefaces:schedule/schedule.css` (incl. the FullCalendar CSS), `texteditor/texteditor.css` (Quill) or
+  `timeline/timeline.css` (vis-timeline).
 
 PrimeIcons are still loaded (unless `primefaces.PRIME_ICONS` is `false`) for the icons the application sets itself,
 e.g. `<p:commandButton icon="pi pi-check"/>`. The icons the components draw themselves come from the theme,
@@ -320,7 +309,7 @@ The tokens take images. To draw a component icon with an icon font, override the
 ```
 
 !> The selectors of the icon elements are the legacy jQuery UI icon classes (`ui-icon-closethick`, ...) for now. They
-will be replaced by semantic icon classes named like the tokens (`p-panel-close-icon`), see [Compatibility](#compatibility).
+will be replaced by semantic icon classes named like the tokens (`p-panel-close-icon`), see [Compatibility](#migration-from-the-sass-themes).
 Prefer the tokens; they keep working.
 
 ### Icon attributes of the components
@@ -399,20 +388,33 @@ the same style classes, so the classes keep working.
 
 ## Custom theme
 
-A custom theme is a CSS file with tokens only, packaged as a resource of your application or library and selected
-with `library:name`:
+A custom theme is a CSS file with the tokens of a theme, packaged as `META-INF/resources/primefaces-<name>/theme.css`
+in your application or a jar and selected by its name:
 
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>mytheme:mytheme.css</param-value>
+    <param-value>mytheme</param-value>   <!-- renders primefaces-mytheme:theme.css -->
 </context-param>
 ```
 
-The file is rendered after `components.css` instead of a preset. Start from a copy of a preset
-(`aura.css`, `lara.css`, `nora.css`, `metal.css` or `glass.css` of the `primefaces-theming` jar) or from the CSS of the theme configurator.
+Start from a copy of a built-in theme (`primefaces-aura/theme.css`, ... in the `primefaces` jar, the sources are in
+`primefaces/src/main/frontend/themes`) or from the CSS of the theme configurator of the showcase. Keep the tokens in
+the `primefaces.tokens` cascade layer and start the file with the layer order:
 
-For small changes a custom theme is not needed: override the tokens in the CSS of your application on top of a preset.
+```css
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@layer primefaces.tokens {
+    :root, [data-p-scope] {
+        --p-primary-base: #0a7d5a;
+        /* ... */
+    }
+}
+```
+
+For small changes a custom theme is not needed: override the tokens in the CSS of your application on top of a
+built-in theme.
 
 ### Materials: gradients, texture and depth
 
@@ -502,20 +504,25 @@ The theme works together with Tailwind CSS v4: the utilities (`bg-primary`, `tex
 
 The tokens of each preset are exported in the [W3C Design Tokens format](https://www.designtokens.org/) (DTCG), one
 file per preset and mode (`aura.light.tokens.json`, `aura.dark.tokens.json`, ...). They are generated by the build of
-`primefaces-theming` into `target/tokens`. Import them into design tools like Figma (Tokens Studio) or use them with
+the `primefaces` module into `primefaces/target/tokens`. Import them into design tools like Figma (Tokens Studio) or use them with
 Style Dictionary to keep design and implementation in sync. References between tokens are kept as aliases. Values the format has no type for (gradients and layered backgrounds of Metal, icon urls,
 shorthands) are exported as CSS strings, resolved for the mode of the file.
 
-## Compatibility
+## Migration from the SASS themes
 
-The new theming is **intentionally breaking**, it is not a drop-in replacement for the legacy themes and there is no
-compatibility layer. Switch to it deliberately:
+The SASS based themes (saga, arya, vela, nova, luna, bootstrap4, material, the old aura, ...) and the
+`primefaces-themes` jar were removed in PrimeFaces 17. The design token themes replace them, there is no compatibility
+layer:
 
-- The legacy themes (`primefaces-themes`, saga, arya, ...) keep working unchanged.
-- The CSS of the PrimeFaces core is not loaded with a token theme. Application CSS that overrides PrimeFaces styles
-  by selector (written against the core CSS or a legacy `theme.css`) may need adjustments; customize with tokens
-  instead.
-- There is no SASS: colors, radius, density, icons etc. are CSS variables.
+- Remove the `primefaces-themes` dependency and select one of the themes above. Without `primefaces.THEME` the default
+  is `aura`.
+- A custom SASS theme (`primefaces-<name>/theme.css` built with the theme designer) does not work anymore: the
+  components need the tokens of a theme. Start a [custom theme](#custom-theme) from a built-in one or override tokens.
+- Application CSS that overrides PrimeFaces styles by selector (written against the old core CSS or a `theme.css`) may
+  need adjustments; customize with tokens instead. All PrimeFaces CSS lives in cascade layers, so unlayered application
+  CSS wins without `!important`.
+- Dark mode is the CSS `color-scheme` of the page (see [Light and dark mode](#light-and-dark-mode)), not a separate
+  theme (`arya`, `vela`, `*-dark`).
 - Icons drawn by the components come from icon tokens, not from PrimeIcons or Font Awesome classes.
 - Canvas based components (p:chart, p:knob) take their colors from their JavaScript options, not from the tokens.
 

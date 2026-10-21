@@ -55,7 +55,6 @@ import jakarta.faces.event.PhaseId;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
-@ResourceDependency(library = "primefaces", name = "calendar/calendar.css")
 @ResourceDependency(library = "primefaces", name = "calendar/calendar.js")
 public class Calendar extends CalendarBaseImpl {
 

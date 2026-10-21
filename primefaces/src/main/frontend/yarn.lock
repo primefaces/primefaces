@@ -312,6 +312,7 @@ __metadata:
     "@melloware/coloris": "npm:0.25.0"
     "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
     "@types/autosize": "npm:4.0.3"
+    "@types/culori": "npm:^4"
     "@types/downloadjs": "npm:1.4.6"
     "@types/hammerjs": "npm:2.0.46"
     "@types/inputmask": "npm:5.0.7"
@@ -340,6 +341,7 @@ __metadata:
     chartjs-plugin-zoom: "npm:2.2.0"
     component-emitter: "npm:1.3.1"
     cropperjs: "npm:1.6.3"
+    culori: "npm:4.0.2"
     downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:0.28.2"
     hammerjs: "npm:2.0.8"
@@ -354,6 +356,7 @@ __metadata:
     jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:2.15.6"
     keycharm: "npm:0.4.0"
+    lucide-static: "npm:1.51.0"
     moment: "npm:2.31.0"
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.6.4"
@@ -386,6 +389,13 @@ __metadata:
   version: 4.0.3
   resolution: "@types/autosize@npm:4.0.3"
   checksum: 10c0/3167b4551b408176c2a60e7b0c8ba6cccb89a1486267c47a4c7f2acc78c917a3487be0910eedc5cdd2dc2ef9436781dc95031db1ebbb0f7ccbc6ce46f7064c6b
+  languageName: node
+  linkType: hard
+
+"@types/culori@npm:^4":
+  version: 4.0.1
+  resolution: "@types/culori@npm:4.0.1"
+  checksum: 10c0/f25fcf01fe709d2fce569892eae71a268b19cf85a7c8f6bf6b041f02f232e5a7d1218e8213349d6b2a458be9f61158ed1e1893e7b81e2ee4a7cebc2a172b7ebb
   languageName: node
   linkType: hard
 
@@ -689,6 +699,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"culori@npm:4.0.2":
+  version: 4.0.2
+  resolution: "culori@npm:4.0.2"
+  checksum: 10c0/5d3c952b947ac5915409bab513e1d2e8bd813caa491af8ded0c769fdc1186a5ff61fb3c59fc8edf5393237d92074dbc54a492e6e99cb039dd6535d5d96106bfe
+  languageName: node
+  linkType: hard
+
 "downloadjs@npm:1.4.7":
   version: 1.4.7
   resolution: "downloadjs@npm:1.4.7"
@@ -940,6 +957,13 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.isequal@npm:4.5.0"
   checksum: 10c0/dfdb2356db19631a4b445d5f37868a095e2402292d59539a987f134a8778c62a2810c2452d11ae9e6dcac71fc9de40a6fedcb20e2952a15b431ad8b29e50e28f
+  languageName: node
+  linkType: hard
+
+"lucide-static@npm:1.51.0":
+  version: 1.51.0
+  resolution: "lucide-static@npm:1.51.0"
+  checksum: 10c0/c44672f5c7856479403b66333856c4d684e374a96ef4d34543ee24c460592b029325634b3c4ea7446027c0538137c1940c927e62ce53e741a997b8c9e0e33b96
   languageName: node
   linkType: hard
 

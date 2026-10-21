@@ -49,12 +49,12 @@ class Theming011Test extends AbstractThemingTest {
 
     @Test
     @Order(1)
-    @DisplayName("Theming: Metal preset renders metal.css (?theme=metal)")
+    @DisplayName("Theming: Metal preset renders primefaces-metal:theme.css (?theme=metal)")
     void rendered(MetalPage page) {
         // Assert
-        List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='primefaces-theming']"));
-        assertTrue(links.stream().anyMatch(l -> l.getAttribute("href").contains("metal.css")), "metal.css not rendered");
-        assertFalse(links.stream().anyMatch(l -> l.getAttribute("href").contains("aura.css")), "aura.css rendered with metal");
+        List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='ln=primefaces-']"));
+        assertTrue(links.stream().anyMatch(l -> l.getAttribute("href").contains("ln=primefaces-metal")), "primefaces-metal:theme.css not rendered");
+        assertFalse(links.stream().anyMatch(l -> l.getAttribute("href").contains("ln=primefaces-aura")), "primefaces-aura:theme.css rendered with metal");
         assertNoJavascriptErrors();
     }
 

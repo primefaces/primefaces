@@ -1,12 +1,110 @@
+/*
+ * Chips: p:chips (PrimeUIX: inputchips)
+ *
+ * The container is a .ui-inputfield (forms/inputfield.css: hover, focus, error, disabled, filled), only the chips live here.
+ * Supported classes: ui-state-hover / ui-state-focus / ui-state-error / ui-state-disabled (on .ui-chips-container),
+ *                    ui-inputwrapper-focus (on .ui-chips, float label)
+ */
 .ui-chips {
+    /* the container (.ui-inputfield) reads the inputtext tokens: point them to the inputchips tokens */
+    --p-inputtext-background: var(--p-inputchips-background);
+    --p-inputtext-disabled-background: var(--p-inputchips-disabled-background);
+    --p-inputtext-filled-background: var(--p-inputchips-filled-background);
+    --p-inputtext-filled-focus-background: var(--p-inputchips-filled-focus-background);
+    --p-inputtext-border-color: var(--p-inputchips-border-color);
+    --p-inputtext-hover-border-color: var(--p-inputchips-hover-border-color);
+    --p-inputtext-focus-border-color: var(--p-inputchips-focus-border-color);
+    --p-inputtext-invalid-border-color: var(--p-inputchips-invalid-border-color);
+    --p-inputtext-color: var(--p-inputchips-color);
+    --p-inputtext-disabled-color: var(--p-inputchips-disabled-color);
+    --p-inputtext-placeholder-color: var(--p-inputchips-placeholder-color);
+    --p-inputtext-shadow: var(--p-inputchips-shadow);
+    --p-inputtext-padding-x: var(--p-inputchips-padding-x);
+    --p-inputtext-padding-y: var(--p-inputchips-padding-y);
+    --p-inputtext-border-radius: var(--p-inputchips-border-radius);
+    --p-inputtext-focus-ring-width: var(--p-inputchips-focus-ring-width);
+    --p-inputtext-focus-ring-style: var(--p-inputchips-focus-ring-style);
+    --p-inputtext-focus-ring-color: var(--p-inputchips-focus-ring-color);
+    --p-inputtext-focus-ring-offset: var(--p-inputchips-focus-ring-offset);
+    --p-inputtext-focus-ring-shadow: var(--p-inputchips-focus-ring-shadow);
+    --p-inputtext-transition-duration: var(--p-inputchips-transition-duration);
+
     box-shadow: none;
     cursor: pointer;
     display: inline-flex;
     position: relative;
+
+    .ui-chips-container {
+        padding: calc(var(--p-inputchips-padding-y) / 2) var(--p-inputchips-padding-x);
+        gap: calc(var(--p-inputchips-padding-y) / 2);
+
+        .ui-chips-token {
+            padding: calc(var(--p-inputchips-padding-y) / 2) 0;
+            margin: 0;
+            background: var(--p-chip-background);
+            color: var(--p-inputchips-chip-color);
+            border-radius: var(--p-inputchips-chip-border-radius);
+            transition: background var(--p-inputchips-transition-duration), color var(--p-inputchips-transition-duration);
+
+            .ui-chips-token-label {
+                padding-block: 0;
+                padding-inline: var(--p-chip-padding-x) calc(var(--p-chip-padding-x) + var(--p-chip-gap) + var(--p-chip-remove-icon-size));
+                font-size: var(--p-chip-label-font-size);
+                font-weight: var(--p-chip-label-font-weight);
+            }
+
+            .ui-chips-token-icon {
+                inset-inline-end: var(--p-chip-padding-x);
+                margin-top: calc(-1 * var(--p-chip-remove-icon-size) / 2);
+                font-size: var(--p-chip-remove-icon-size);
+                color: var(--p-chip-remove-icon-color);
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+            }
+
+            .ui-chips-token-icon::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-inputchips-chip-remove-icon) center / contain no-repeat;
+            }
+        }
+
+        .ui-chips-input-token {
+            margin: 0;
+            padding: calc(var(--p-inputchips-padding-y) / 2) 0;
+
+            /* same line height as an input: padding-y / 2 (container) + padding-y / 2 (here) + line = input height */
+            input {
+                font-family: inherit;
+                font-size: var(--p-form-field-font-size);
+                font-weight: var(--p-form-field-font-weight);
+                line-height: var(--p-typography-line-height);
+                color: var(--p-inputchips-color);
+                appearance: none;
+            }
+
+            input::placeholder {
+                color: var(--p-inputchips-placeholder-color);
+            }
+        }
+
+        &.ui-state-error .ui-chips-input-token input::placeholder {
+            color: var(--p-form-field-invalid-placeholder-color);
+        }
+
+        &.ui-state-disabled .ui-chips-input-token input {
+            color: var(--p-inputchips-disabled-color);
+        }
+    }
 }
 
 .ui-chips-container {
-    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     clear: left;
     cursor: text;
     list-style-type: none;
@@ -21,46 +119,41 @@
     align-items: center;
     flex: 0 0 auto;
     overflow: hidden;
-    padding: 1px 3px;
     position: relative;
-    margin: 2px;
-}
 
-.ui-chips-token .ui-chips-token-label {
-    display: block;
-    padding: 0em 2.1em 0em 0.5em;
-}
+    .ui-chips-token-label {
+        display: block;
+    }
 
-.ui-chips-token .ui-chips-token-icon {
-    cursor: pointer;
-    margin-top: -9px;
-    position: absolute;
-    right: 0.2em;
-    top: 50%;
+    .ui-chips-token-icon {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+    }
 }
 
 .ui-chips-input-token {
-    display: inline;
+    display: inline-flex;
     align-items: center;
     flex: 1 1 auto;
-}
 
-.ui-chips-input-token input {
-    background-color: transparent;
-    border: 0 none;
-    outline: 0 none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-    border-radius: 0;
-    width: 100%;
+    input {
+        background-color: transparent;
+        border: 0 none;
+        outline: 0 none;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+        width: 100%;
+    }
 }
 
 .ui-fluid .ui-chips {
     display: flex;
     flex: 1 1 auto;
-}
 
-.ui-fluid .ui-chips .ui-chips-container {
-    width: 100%;
+    .ui-chips-container {
+        width: 100%;
+    }
 }

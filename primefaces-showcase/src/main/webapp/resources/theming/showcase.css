@@ -1,8 +1,8 @@
 /*
- * The showcase on primefaces-theming, loaded on every page (WEB-INF/template.xhtml, template-landing.xhtml).
+ * The showcase on the PrimeFaces themes, loaded on every page (WEB-INF/template.xhtml, template-landing.xhtml).
  *
  * The showcase layout (layout.css) is styled with the variables of the legacy themes (--surface-a, --primary-color, ...).
- * The primefaces-theming presets only define --p-* tokens, so these variables are mapped to the tokens here: the topbar, menu
+ * The themes only define --p-* tokens, so these variables are mapped to the tokens here: the topbar, menu
  * and footer follow the preset, its color scheme and the configurator.
  */
 :root {

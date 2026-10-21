@@ -1,2 +1,11 @@
-@import url("@melloware/coloris/dist/coloris.css");
-@import url("./src/colorpicker.css");
+/*
+ * colorpicker/colorpicker.css: loaded with colorpicker/colorpicker.js.
+ *
+ * Cascade layers (lowest first): primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors.
+ * The statement is repeated in every stylesheet of PrimeFaces, so the order is the same whichever is loaded first.
+ * Application CSS is unlayered and always wins, without !important and regardless of specificity.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("@melloware/coloris/dist/coloris.css") layer(primefaces.vendor);
+@import url("./src/colorpicker.css") layer(primefaces.components);

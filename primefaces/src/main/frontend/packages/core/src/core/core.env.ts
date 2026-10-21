@@ -94,14 +94,19 @@ export class Environment {
     }
 
     /**
-     * Based on the current PrimeFaces theme determine if light or dark contrast is being applied.
-     * 
+     * Determines if light or dark contrast is being applied. The themes switch between light and dark with the CSS
+     * `color-scheme` of the page: `light`, `dark` or `light dark` (the preferred color scheme of the operating system).
+     *
      * @return The theme contrast, either 'dark' or 'light'.
      */
     getThemeContrast(): PrimeType.ThemeKind {
-        var theme = this.getTheme();
-        var darkRegex = /(^(arya|vela|.+-(dim|dark))$)/gm;
-        return darkRegex.test(theme) ? 'dark' : 'light';
+        var schemes = window.getComputedStyle(document.documentElement).colorScheme.split(/\s+/);
+        var light = schemes.indexOf('light') >= 0;
+        var dark = schemes.indexOf('dark') >= 0;
+        if (light && dark) {
+            return this.getOSPreferredColorScheme();
+        }
+        return dark ? 'dark' : 'light';
     }
     
     /**

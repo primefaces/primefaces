@@ -6,7 +6,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>saga-blue</param-value>
+    <param-value>aura</param-value>
 </context-param>
 ```
 
@@ -32,6 +32,6 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | PRIME_ICONS | true      | Auto includes PrimeIcons font based icons. True by default for most themes use PrimeIcons. Only disable if you know you do not use PrimeIcons.                                               |
 | RESET_VALUES | false     | When enabled, AJAX updated inputs are always reset.                                                                                                                                          |
 | SUBMIT | full      | Defines ajax submit mode; 'full' or 'partial'.                                                                                                                                               |
-| THEME | saga-blue | Theme of the application. 'none' means no theme.                                                                                                                                                     |
+| THEME | aura      | Theme of the application: aura, lara, nora, metal, glass or a custom theme, see [Theming](/core/theming.md). 'none' means no theme.                                                                                                                                                |
 | TOUCHABLE | true      | Globally enables/disables touch support on browsers that support touch.                                                                                                                      |
 | TRANSFORM_METADATA | false     | Transforms bean validation metadata to HTML attributes.                                                                                                                                      |

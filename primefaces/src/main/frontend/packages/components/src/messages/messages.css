@@ -1,108 +1,283 @@
-.ui-messages-success, .ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal {
-    border: 1px solid;
-    margin: 10px 0px;
-    padding:10px 10px 10px 10px;
-}
+/*
+ * Messages: p:messages
+ *
+ * Markup: .ui-messages(.ui-messages-noicon) > div.ui-messages-<severity> > a.ui-messages-close (> .ui-icon-close)
+ *         + span.ui-messages-<severity>-icon + ul > li > span.ui-messages-<severity>-summary + span.ui-messages-<severity>-detail
+ * Severity classes only switch the private --_* variables: ui-messages-info | -success | -warn | -error | -fatal
+ * Variants / sizes (styleClass on .ui-messages, for all its messages): ui-message-outlined | -simple | -sm | -lg
+ * (the same classes as p:message). The default is the large padding / icon (block messages), ui-message-lg also
+ * enlarges the text and the close icon, ui-message-sm makes everything small.
+ * PF only tokens: the messages block of presets/*.css (spacing), the message block of presets/*.css (fatal, summary/detail)
+ */
 
-.ui-message-success, .ui-message-info, .ui-message-error, .ui-message-warn, .ui-message-fatal {
-    border: 1px solid;
-    margin: 0px 5px;
-    padding:2px 5px;
-}
+.ui-messages {
+    --_padding: var(--p-message-content-lg-padding);
+    --_font-size: var(--p-message-text-font-size);
+    --_icon-size: var(--p-message-icon-lg-size);
+    --_close-icon-size: var(--p-message-close-icon-size);
 
-.ui-messages-success-icon, .ui-messages-info-icon, .ui-messages-warn-icon, .ui-messages-error-icon, .ui-messages-fatal-icon,
-.ui-message-success-icon, .ui-message-info-icon, .ui-message-warn-icon, .ui-message-error-icon, .ui-message-fatal-icon {
-    background: url("./messages.png") no-repeat;
-    display:block;
-    float:left;
-    margin:0;
-    padding:0;
+    font-size: var(--_font-size);
+    font-weight: var(--p-message-text-font-weight);
     position: relative;
-}
+    border-radius: var(--p-message-border-radius);
 
-.ui-messages-success-icon, .ui-messages-info-icon, .ui-messages-warn-icon, .ui-messages-error-icon, .ui-messages-fatal-icon {
-    height:24px;
-    width:24px;
-    margin-top:-4px;
-}
+    > div {
+        --_bg: var(--p-message-info-background);
+        --_border-color: var(--p-message-info-border-color);
+        --_color: var(--p-message-info-color);
+        --_shadow: var(--p-message-info-shadow);
+        --_outlined-color: var(--p-message-info-outlined-color);
+        --_outlined-border-color: var(--p-message-info-outlined-border-color);
+        --_simple-color: var(--p-message-info-simple-color);
+        --_close-hover-bg: var(--p-message-info-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-info-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-info-close-button-focus-ring-shadow);
+        --_border-width: var(--p-message-border-width);
 
-.ui-message-success-icon, .ui-message-info-icon, .ui-message-warn-icon, .ui-message-error-icon, .ui-message-fatal-icon {
-    height:16px;
-    width:16px;
-}
+        display: flex;
+        align-items: flex-start;
+        gap: var(--p-message-content-gap);
+        padding: var(--_padding);
+        margin: var(--p-messages-gap) 0;
+        border-radius: var(--p-message-border-radius);
+        outline-color: transparent;
+        transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
+            border-color var(--p-message-transition-duration);
+    }
 
-.ui-messages-success-summary, .ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, 
-.ui-message-success-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary {
-    margin-left:10px;
-    font-weight:bold;
-}
+    .ui-messages-info,
+    .ui-messages-success,
+    .ui-messages-warn,
+    .ui-messages-error,
+    .ui-messages-fatal {
+        background: var(--_bg);
+        border: var(--_border-width) solid var(--_border-color);
+        color: var(--_color);
+        box-shadow: var(--_shadow);
+    }
 
-.ui-messages-success-detail, .ui-messages-info-detail, .ui-messages-warn-detail, .ui-messages-error-detail, .ui-messages-fatal-detail,
-.ui-message-success-detail, .ui-message-info-detail, .ui-message-warn-detail, .ui-message-error-detail, .ui-message-fatal-detail {
-    margin-left:5px;
-}
+    .ui-messages-success {
+        --_bg: var(--p-message-success-background);
+        --_border-color: var(--p-message-success-border-color);
+        --_color: var(--p-message-success-color);
+        --_shadow: var(--p-message-success-shadow);
+        --_outlined-color: var(--p-message-success-outlined-color);
+        --_outlined-border-color: var(--p-message-success-outlined-border-color);
+        --_simple-color: var(--p-message-success-simple-color);
+        --_close-hover-bg: var(--p-message-success-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-success-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-success-close-button-focus-ring-shadow);
+    }
 
-.ui-messages-success, .ui-message-success {
-    color: #1ea97c;
-    background-color: rgba(228, 248, 240, 0.7);
-    border-color: #1ea97c;
-}
+    .ui-messages-warn {
+        --_bg: var(--p-message-warn-background);
+        --_border-color: var(--p-message-warn-border-color);
+        --_color: var(--p-message-warn-color);
+        --_shadow: var(--p-message-warn-shadow);
+        --_outlined-color: var(--p-message-warn-outlined-color);
+        --_outlined-border-color: var(--p-message-warn-outlined-border-color);
+        --_simple-color: var(--p-message-warn-simple-color);
+        --_close-hover-bg: var(--p-message-warn-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-warn-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-warn-close-button-focus-ring-shadow);
+    }
 
-.ui-messages-info, .ui-message-info {
-    color: #3a87ad;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
+    .ui-messages-error {
+        --_bg: var(--p-message-error-background);
+        --_border-color: var(--p-message-error-border-color);
+        --_color: var(--p-message-error-color);
+        --_shadow: var(--p-message-error-shadow);
+        --_outlined-color: var(--p-message-error-outlined-color);
+        --_outlined-border-color: var(--p-message-error-outlined-border-color);
+        --_simple-color: var(--p-message-error-simple-color);
+        --_close-hover-bg: var(--p-message-error-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-error-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-error-close-button-focus-ring-shadow);
+    }
 
-.ui-messages-warn, .ui-message-warn {
-    color: #c09853;
-    background-color: #fcf8e3;
-    border-color: #fbeed5;
-}
+    .ui-messages-fatal {
+        --_bg: var(--p-message-fatal-background);
+        --_border-color: var(--p-message-fatal-border-color);
+        --_color: var(--p-message-fatal-color);
+        --_shadow: var(--p-message-fatal-shadow);
+        --_outlined-color: var(--p-message-fatal-outlined-color);
+        --_outlined-border-color: var(--p-message-fatal-outlined-border-color);
+        --_simple-color: var(--p-message-fatal-simple-color);
+        --_close-hover-bg: var(--p-message-fatal-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-message-fatal-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-message-fatal-close-button-focus-ring-shadow);
+    }
 
-.ui-messages-error, .ui-message-error {
-    color: #b94a48;
-    background-color: #f2dede;
-    border-color: #eed3d7;
-}
+    /* sizes (styleClass) */
+    &.ui-message-sm {
+        --_padding: var(--p-message-content-sm-padding);
+        --_font-size: var(--p-message-text-sm-font-size);
+        --_icon-size: var(--p-message-icon-sm-size);
+        --_close-icon-size: var(--p-message-close-icon-sm-size);
+    }
 
-.ui-messages-fatal, .ui-message-fatal {
-    color: #b94a48;
-    background-color: #f2dede;
-    border-color: #eed3d7;
-}
+    &.ui-message-lg {
+        --_font-size: var(--p-message-text-lg-font-size);
+        --_close-icon-size: var(--p-message-close-icon-lg-size);
+    }
 
-.ui-messages ul {
-    margin: 0 25px;
-    padding:0;
-    list-style-type:none;
-}
+    /* variants (styleClass), after the sizes: .ui-messages.ui-message-* > div wins over the severity rules */
+    &.ui-message-simple {
+        --_padding: var(--p-message-simple-content-padding);
+    }
 
-.ui-messages.ui-messages-noicon ul {
-    margin: 0 25px 0 0;
-}
+    &.ui-message-outlined > div {
+        --_bg: transparent;
+        --_border-width: var(--p-message-outlined-border-width);
+        --_border-color: var(--_outlined-border-color);
+        --_color: var(--_outlined-color);
+        --_shadow: none;
+    }
 
-.ui-message-icon-only {
-    width:16px;
-    height:16px
-}
+    &.ui-message-simple > div {
+        --_bg: transparent;
+        --_border-width: 0;
+        --_color: var(--_simple-color);
+        --_shadow: none;
+    }
 
-.ui-messages-success-icon {background-position: 0px -316px;}
-.ui-messages-info-icon {background-position: 0px -316px;}
-.ui-messages-warn-icon {background-position: 0px -448px;}
-.ui-messages-error-icon {background-position: 0px -52px;}
-.ui-messages-fatal-icon {background-position: 0px -184px;}
-.ui-message-success-icon {background-position: 0px -360px;}
-.ui-message-info-icon {background-position: 0px -360px;}
-.ui-message-warn-icon {background-position: 0px -492px;}
-.ui-message-error-icon {background-position: 0px -96px;}
-.ui-message-fatal-icon {background-position: 0px -228px;}
+    ul {
+        flex: 1 1 auto;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
 
-.ui-messages .ui-messages-close {
-    float:right;
-    cursor: pointer;
-}
+        > li {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            column-gap: var(--p-messages-text-gap);
 
-body .ui-message.ui-helper-hidden {
-  display: none;
+            + li {
+                margin-top: var(--p-message-content-gap);
+            }
+        }
+
+        .ui-messages-info-summary,
+        .ui-messages-success-summary,
+        .ui-messages-warn-summary,
+        .ui-messages-error-summary,
+        .ui-messages-fatal-summary {
+            font-weight: var(--p-message-summary-font-weight);
+        }
+
+        .ui-messages-info-detail,
+        .ui-messages-success-detail,
+        .ui-messages-warn-detail,
+        .ui-messages-error-detail,
+        .ui-messages-fatal-detail {
+            font-weight: var(--p-message-detail-font-weight);
+            overflow-wrap: break-word;
+            text-wrap: pretty;
+            min-width: 0;
+        }
+    }
+
+    /* severity icons */
+    .ui-messages-info-icon,
+    .ui-messages-success-icon,
+    .ui-messages-warn-icon,
+    .ui-messages-error-icon,
+    .ui-messages-fatal-icon {
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        background: none;
+        flex-shrink: 0;
+        font-size: var(--_icon-size);
+        line-height: 1;
+        /* centered on the first text line (the content is top aligned for multi line messages) */
+        margin: calc((var(--p-typography-line-height) * var(--_font-size) - var(--_icon-size)) / 2) 0 0;
+        color: var(--_color);
+    }
+
+    .ui-messages-info-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-info-icon) center / contain no-repeat;
+    }
+
+    .ui-messages-success-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-success-icon) center / contain no-repeat;
+    }
+
+    .ui-messages-warn-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-warn-icon) center / contain no-repeat;
+    }
+
+    .ui-messages-error-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-error-icon) center / contain no-repeat;
+    }
+
+    .ui-messages-fatal-icon::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-message-fatal-icon) center / contain no-repeat;
+    }
+
+    /* close button: rendered first, shown last */
+    .ui-messages-close {
+        order: 1;
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: var(--p-message-close-button-width);
+        height: var(--p-message-close-button-height);
+        padding: 0;
+        border: 0 none;
+        border-radius: var(--p-message-close-button-border-radius);
+        background: transparent;
+        color: var(--_color);
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        user-select: none;
+        outline-color: transparent;
+        transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
+            outline-color var(--p-message-transition-duration), box-shadow var(--p-message-transition-duration);
+
+        &:hover {
+            background: var(--_close-hover-bg);
+        }
+
+        &:focus-visible {
+            outline: var(--p-message-close-button-focus-ring-width) var(--p-message-close-button-focus-ring-style) var(--_close-focus-ring-color);
+            outline-offset: var(--p-message-close-button-focus-ring-offset);
+            box-shadow: var(--_close-focus-ring-shadow);
+        }
+
+        .ui-icon-close {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+            font-size: var(--_close-icon-size);
+            color: inherit;
+
+            &::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-message-close-icon) center / contain no-repeat;
+            }
+        }
+    }
 }

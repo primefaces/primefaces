@@ -1,80 +1,204 @@
+/*
+ * OrderList: p:orderList (PrimeUIX orderlist + listbox tokens, caption uses the panel header tokens)
+ *
+ * Supported classes: ui-orderlist-controls-right, ui-grid-responsive, ui-state-disabled
+ */
 .ui-orderlist {
     display: table;
-}
 
-.ui-orderlist .ui-orderlist-caption {
-    width: 180px;
-    text-align: center;
-    padding:4px 0px;
-    border-bottom:0px none;
-}
-
-.ui-orderlist .ui-orderlist-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow:auto;
-    height:200px;
-    width:200px;
-}
-
-.ui-orderlist .ui-orderlist-list li {
-    margin: 1px;
-    padding: 2px;
-}
-
-.ui-orderlist .ui-button {
-    display:block;
-    margin-bottom:0.3em;
-}
-
-.ui-orderlist .ui-orderlist-button.ui-button-text-icon-primary {
-    width:100%;
-}
-
-.ui-orderlist .ui-orderlist-item {
-    cursor:pointer;
-    border:0px none;
-    font-weight: inherit;
-}
-
-.ui-orderlist table {
-    width:100%;
-    border-collapse:collapse;
-}
-
-.ui-orderlist.ui-state-disabled .ui-orderlist-item,
-.ui-orderlist.ui-state-disabled .ui-button {
-    cursor: default;
-}
-
-.ui-orderlist.ui-state-disabled .ui-orderlist-list {
-    overflow:hidden;
-}
-
-/* Responsive */
-.ui-orderlist.ui-grid-responsive {
-    display: block;
-    width: 100%;
-}
-
-.ui-orderlist.ui-grid-responsive .ui-orderlist-list,
-.ui-orderlist.ui-grid-responsive .ui-orderlist-caption {
-    width: 100%;
-}  
-
-.ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {
-    width: 100%;
-}
-
-@media (max-width: 640px) { 
-    .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
+    /* the caption background is layered over the list background, as it is transparent in some presets */
+    .ui-orderlist-caption {
+        width: 200px;
         text-align: center;
-        padding: 0px;
+        background: linear-gradient(var(--p-orderlist-caption-background), var(--p-orderlist-caption-background)), var(--p-listbox-background);
+        border: 1px solid var(--p-orderlist-caption-border-color);
+        border-bottom: 0 none;
+        color: var(--p-orderlist-caption-color);
+        padding: var(--p-orderlist-caption-padding);
+        font-weight: var(--p-orderlist-caption-font-weight);
+        border-radius: var(--p-listbox-border-radius) var(--p-listbox-border-radius) 0 0;
     }
 
-    .ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {
-        display: inline;
-        width: 20%;
+    .ui-orderlist-list {
+        list-style-type: none;
+        margin: 0;
+        overflow: auto;
+        height: 200px;
+        width: 200px;
+        border: 1px solid var(--p-listbox-border-color);
+        background: var(--p-listbox-background);
+        color: var(--p-listbox-color);
+        padding: var(--p-listbox-list-padding);
+        box-shadow: var(--p-listbox-shadow);
+        border-radius: 0 0 var(--p-listbox-border-radius) var(--p-listbox-border-radius);
+
+        .ui-orderlist-item {
+            padding: var(--p-listbox-option-padding);
+            margin: 0;
+            border: 0 none;
+            color: var(--p-listbox-option-color);
+            font-size: var(--p-listbox-option-font-size);
+            font-weight: var(--p-listbox-option-font-weight);
+            border-radius: var(--p-listbox-option-border-radius);
+            transition: background var(--p-listbox-transition-duration), color var(--p-listbox-transition-duration),
+                border-color var(--p-listbox-transition-duration), box-shadow var(--p-listbox-transition-duration);
+        }
+
+        .ui-orderlist-item + .ui-orderlist-item {
+            margin-top: var(--p-listbox-list-gap);
+        }
+
+        .ui-orderlist-item:not(.ui-state-highlight):hover,
+        .ui-orderlist-item.ui-state-hover {
+            background: var(--p-listbox-option-focus-background);
+            color: var(--p-listbox-option-focus-color);
+        }
+
+        .ui-orderlist-item.ui-state-highlight {
+            background: var(--p-listbox-option-selected-background);
+            color: var(--p-listbox-option-selected-color);
+            font-weight: var(--p-listbox-option-selected-font-weight);
+        }
+
+        .ui-orderlist-item.ui-state-highlight.ui-sortable-placeholder {
+            background: var(--p-listbox-option-selected-focus-background);
+        }
+
+        /* without a caption the list has all corners rounded */
+        &:first-child {
+            border-radius: var(--p-listbox-border-radius);
+        }
+    }
+
+    /* flex: the (hidden) label of the icon only buttons is a block and would add a second line otherwise */
+    .ui-button {
+        display: flex;
+    }
+
+    .ui-orderlist-item {
+        cursor: pointer;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .ui-orderlist-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .ui-button {
+            margin-bottom: var(--p-orderlist-controls-gap);
+        }
+
+        .ui-icon-arrow-1-n,
+        .ui-icon-arrowstop-1-n,
+        .ui-icon-arrow-1-s,
+        .ui-icon-arrowstop-1-s {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+        }
+
+        .ui-icon-arrow-1-n::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-orderlist-move-up-icon) center / contain no-repeat;
+        }
+
+        .ui-icon-arrowstop-1-n::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-orderlist-move-top-icon) center / contain no-repeat;
+        }
+
+        .ui-icon-arrow-1-s::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-orderlist-move-down-icon) center / contain no-repeat;
+        }
+
+        .ui-icon-arrowstop-1-s::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-orderlist-move-bottom-icon) center / contain no-repeat;
+        }
+    }
+
+    .ui-g > div {
+        padding: 0;
+
+        &.ui-orderlist-controls {
+            padding: 0;
+            padding-inline-end: var(--p-orderlist-gap);
+        }
+    }
+
+    &.ui-orderlist-controls-right .ui-g > div.ui-orderlist-controls {
+        padding: 0;
+        padding-inline-start: var(--p-orderlist-gap);
+    }
+
+    &.ui-state-disabled {
+        .ui-orderlist-item,
+        .ui-button {
+            cursor: default;
+        }
+
+        .ui-orderlist-list {
+            overflow: hidden;
+            background: var(--p-listbox-disabled-background);
+            color: var(--p-listbox-disabled-color);
+        }
+    }
+
+    /* responsive: a block, so it can be the size container of the narrow layout below */
+    &.ui-grid-responsive {
+        display: block;
+        width: 100%;
+        container: p-orderlist / inline-size;
+
+        .ui-orderlist-list,
+        .ui-orderlist-caption {
+            width: 100%;
+        }
+
+        .ui-orderlist-controls .ui-button {
+            width: 100%;
+        }
+    }
+}
+
+/*
+ * narrow orderList (own width, also in narrow columns / sidebars): controls in a row above / below the list. The
+ * ui-g-12 ui-md-2 / ui-md-10 columns follow the viewport, so they are made full width here too.
+ */
+@container p-orderlist (max-width: 640px) {
+    .ui-orderlist.ui-grid-responsive .ui-g > div {
+        width: 100%;
+
+        &.ui-orderlist-controls {
+            text-align: center;
+            padding: 0;
+            flex-direction: row;
+
+            .ui-button {
+                display: inline-flex;
+                width: 20%;
+                margin-top: var(--p-orderlist-controls-gap);
+                margin-inline-end: var(--p-orderlist-controls-gap);
+            }
+
+            .ui-button:last-child {
+                margin-inline-end: 0;
+            }
+        }
     }
 }

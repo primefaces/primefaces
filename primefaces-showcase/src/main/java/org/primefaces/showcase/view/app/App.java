@@ -39,7 +39,7 @@ import jakarta.inject.Named;
 public class App implements Serializable {
 
     /**
-     * The presets of primefaces-theming. The theme configurator (theming/configurator.xhtml) switches with ?theme=...,
+     * The themes of PrimeFaces. The theme configurator (theming/configurator.xhtml) switches with ?theme=...,
      * the choice is kept in the session; color scheme, density, primary color and input style are set on the client.
      */
     public static final List<String> PRESETS = List.of("aura", "lara", "nora", "metal", "glass");

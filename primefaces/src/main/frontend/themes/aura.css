@@ -1,0 +1,8 @@
+/*
+ * Theme "aura" (primefaces.THEME = aura): the tokens of the preset and its density, built to primefaces-aura/theme.css.
+ * The CSS of the components (components.css, ...) is the same for every theme.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./presets/aura.css");
+@import url("./density/aura.css");

@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.colorpicker;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
@@ -67,7 +68,8 @@ class ColorPicker002Test extends AbstractColorPickerTest {
         assertNoJavascriptErrors();
         System.out.println("ColorPicker Config = " + cfg);
         assertEquals("popup", cfg.getString("mode"));
-        assertEquals("light", cfg.getString("themeMode"));
+        // the contrast of the page: the theme follows the color-scheme (light, dark or the one of the OS)
+        assertEquals(PrimeSelenium.executeScript("return PrimeFaces.env.getThemeContrast();"), cfg.getString("themeMode"));
         assertEquals("pill", cfg.getString("theme"));
         assertEquals("nl", cfg.getString("locale"));
         assertEquals("Wissen", cfg.getString("clearLabel"));

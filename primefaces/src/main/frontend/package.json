@@ -12,7 +12,10 @@
   },
   "scripts": {
     "build": "run build:bundle",
-    "build:bundle": "node build/scripts/bundle.mjs",
+    "build:bundle": "run build:themes:check && node build/scripts/bundle.mjs && run build:themes:tokens",
+    "build:themes:check": "node build/scripts/themes/check.mjs && node build/scripts/themes/generate-density.mjs --check",
+    "build:themes:density": "node build/scripts/themes/generate-density.mjs",
+    "build:themes:tokens": "node build/scripts/themes/export-tokens.mjs",
     "verify": "node build/scripts/verify.mjs"
   },
   "jsdocs": {},
@@ -59,6 +62,7 @@
   },
   "devDependencies": {
     "@rwap/jquery-ui-touch-punch": "1.1.5",
+    "@types/culori": "^4",
     "@types/node": "26.6.3",
     "@types/pnpapi": "0.0.5",
     "@xenorange/esbuild-plugin-banned-dependencies": "1.0.0",
@@ -68,6 +72,7 @@
     "autosize": "6.0.1",
     "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
     "component-emitter": "1.3.1",
+    "culori": "4.0.2",
     "downloadjs": "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch",
     "esbuild": "0.28.2",
     "hammerjs": "2.0.8",
@@ -80,6 +85,7 @@
     "jquery-ui-timepicker-addon": "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch",
     "js-cookie": "3.0.8",
     "jscrollpane": "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch",
+    "lucide-static": "1.51.0",
     "moment-jdateformatparser": "1.2.1",
     "primeicons": "7.0.0",
     "primelocale": "2.5.0",

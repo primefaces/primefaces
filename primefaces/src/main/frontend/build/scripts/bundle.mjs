@@ -3,7 +3,9 @@
 /** @import { LoadFromExpressionPluginExpressions } from "@xenorange/esbuild-plugin-load-from-expression" */
 /** @import { FrontendProject} from "./common.mjs" */
 
+import * as fsSync from "node:fs";
 import * as fs from "node:fs/promises";
+import { createRequire } from "node:module";
 import * as path from "node:path";
 
 import { bannedDependenciesPlugin } from "@xenorange/esbuild-plugin-banned-dependencies";
@@ -42,6 +44,8 @@ async function main() {
         ...await createFrontendBuildTasks(),
         // packages/locales are separate because they don't have a tsconfig.json
         ...await createLocaleBuildTasks(),
+        // themes/<theme>.css -> primefaces-<theme>/theme.css
+        ...createThemeBuildTasks(),
     ];
 
     const t2 = Date.now();
@@ -216,6 +220,8 @@ async function createFrontendBuildTask(project) {
             entryPoints: [project.indexScript],
             outfile: `${targetPath}.js`,
         };
+        // CSS comes from index.css only (in the cascade layers of the theme), not from CSS imported by JS dependencies
+        buildOptions.plugins.unshift(ignoreCssImportsPlugin());
         // Replace imports with window globals, e.g. <import "jquery"> with <window.$>
         if (buildSettings.loadFromExpression !== undefined) {
             buildOptions.plugins.push(loadFromExpressionPlugin({
@@ -235,6 +241,7 @@ async function createFrontendBuildTask(project) {
             entryPoints: [project.indexStyle],
             outfile: `${targetPath}.css`,
         };
+        buildOptions.plugins.unshift(inlineIconsPlugin());
         buildTasks.push(buildOptions);
     }
 
@@ -260,6 +267,73 @@ async function createLocaleBuildTasks() {
             outfile: toPath,
         };
     });
+}
+
+/**
+ * Creates the ESBuild tasks for the themes: each `themes/<theme>.css` (the tokens of a preset and its density) is
+ * written to `META-INF/resources/primefaces-<theme>/theme.css`, the stylesheet the `primefaces.THEME` context
+ * parameter renders.
+ * @returns {import("esbuild").BuildOptions[]} The ESBuild tasks.
+ */
+function createThemeBuildTasks() {
+    return fsSync.readdirSync(Env.ThemesDir, { withFileTypes: true })
+        .filter(entry => entry.isFile() && entry.name.endsWith(".css"))
+        .map(entry => {
+            const theme = entry.name.slice(0, -".css".length);
+            const fromPath = path.join(Env.ThemesDir, entry.name);
+            const toPath = path.join(Env.TargetResourceDir, `primefaces-${theme}`, "theme.css");
+            console.log(`Creating build task from <${path.relative(Env.MavenRootDir, fromPath)}> to <${path.relative(Env.MavenRootDir, toPath)}>`);
+            return {
+                ...createBaseOptions(),
+                entryPoints: [fromPath],
+                outfile: toPath,
+            };
+        });
+}
+
+/**
+ * Drops CSS files imported by JavaScript (e.g. FullCalendar imports its own CSS). All CSS of PrimeFaces comes from
+ * the index.css files, which put third-party CSS into the `primefaces.vendor` cascade layer.
+ * @returns {import("esbuild").Plugin}
+ */
+function ignoreCssImportsPlugin() {
+    return {
+        name: "primefaces-ignore-css-imports",
+        setup(build) {
+            build.onResolve({ filter: /\.css$/ }, args => ({ path: args.path, namespace: "primefaces-ignored-css" }));
+            build.onLoad({ filter: /.*/, namespace: "primefaces-ignored-css" }, () => ({ contents: "", loader: "empty" }));
+        },
+    };
+}
+
+/**
+ * Inlines the icons of the icon set (`url("lucide-static/icons/x.svg")` in
+ * `packages/components/src/icons/lucide.css`) as data URIs. The SVG is only used as a mask, so the color does not
+ * matter. A `?fill` suffix fills the outline (e.g. a selected star).
+ * @returns {import("esbuild").Plugin}
+ */
+function inlineIconsPlugin() {
+    const require = createRequire(Env.PackageJsonPath);
+    return {
+        name: "primefaces-inline-icons",
+        setup(build) {
+            build.onResolve({ filter: /^lucide-static\/.+\.svg(\?fill)?$/ }, args => {
+                const [file, query] = args.path.split("?");
+                const packageDir = path.dirname(require.resolve("lucide-static/package.json"));
+                let svg = fsSync.readFileSync(path.join(packageDir, file.substring("lucide-static/".length)), "utf8")
+                    .replace(/<!--[\s\S]*?-->/g, "")
+                    .replace(/\s+class="[^"]*"/, "")
+                    .replace(/\s+/g, " ")
+                    .replace(/> </g, "><")
+                    .trim();
+                if (query === "fill") {
+                    svg = svg.replace('fill="none"', 'fill="#000"');
+                }
+                const data = svg.replace(/"/g, "'").replace(/[<>#%\n]/g, encodeURIComponent);
+                return { path: `data:image/svg+xml,${data}`, external: true };
+            });
+        },
+    };
 }
 
 /**

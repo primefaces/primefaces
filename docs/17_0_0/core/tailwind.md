@@ -8,8 +8,7 @@ without rebuilding the CSS.
 A complete Maven project (Jetty, Tailwind built by Maven, no local Node needed) is the
 [tailwind sample](https://github.com/primefaces/primefaces-samples/tree/master/tailwind) in `primefaces-samples`.
 
-?> Tailwind CSS v4 is required (cascade layers, `@theme inline`, `@source inline`). The legacy themes (saga, arya, ...)
-are not supported.
+?> Tailwind CSS v4 is required (cascade layers, `@theme inline`, `@source inline`).
 
 ## Setup
 

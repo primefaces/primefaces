@@ -90,6 +90,20 @@ to build all files via ESBuild.
 
 For the development build (non-minified), set the environment variable `NODE_ENV=development`.
 
+# CSS and themes
+
+__TL;DR__ The CSS of a component lives next to its widget and uses design tokens (`var(--p-...)`) only; the
+values come from the themes in `themes/`. See [themes/README.md](themes/README.md).
+
+- Each `index.css` imports its files into a cascade layer (`@import url("./src/x.css") layer(primefaces.components);`)
+  and starts with the layer order, so the order is the same whichever PrimeFaces stylesheet loads first.
+- Third-party CSS is imported by `index.css` into `@layer primefaces.vendor`; CSS that JavaScript dependencies import
+  themselves (e.g. FullCalendar) is dropped by the build.
+- `themes/<theme>.css` is built to `META-INF/resources/primefaces-<theme>/theme.css`, the stylesheet of the
+  `primefaces.THEME` context parameter.
+- `yarn run build:themes:check` checks the conventions (every token defined, no literal colors, ...), it runs before
+  every build; `yarn run build:themes:density` regenerates `themes/density/` after changing a preset.
+
 # Image and font resources
 
 __TL;DR__ You don't have to do anything. This is for information purposes.

@@ -224,8 +224,14 @@
                             Array.prototype.forEach.call(document.styleSheets, function (sheet) {
                                 var rules;
                                 try { rules = sheet.cssRules; } catch (e) { return; }
-                                var href = sheet.href ? sheet.href.split('?')[0].split('/').pop().replace(/\.xhtml$/, '') : 'inline';
-                                walk(rules, href, found);
+                                var source = 'inline';
+                                if (sheet.href) {
+                                    // library:name, e.g. primefaces-aura:theme.css or primefaces:components.css
+                                    var url = new URL(sheet.href, location.href);
+                                    source = (url.searchParams.get('ln') || '') + ':'
+                                        + url.pathname.split(';')[0].split('/').pop().replace(/\.xhtml$/, '');
+                                }
+                                walk(rules, source, found);
                             });
                             all = Object.keys(found).sort().map(function (name) {
                                 return { name: name, declared: found[name].declared, source: found[name].source, group: groupOf(name) };

@@ -31,9 +31,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.ResourceUtils;
-import org.primefaces.util.ThemeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +59,6 @@ import jakarta.servlet.http.HttpServletResponse;
  * - Theme CSS
  * - PrimeIcons CSS
  * - Middle Facet
- * - Token based Theme CSS (primefaces-theming, replaces the CSS of the PrimeFaces core library)
  * - Registered Resources
  * - Client Validation Scripts
  * - Locales
@@ -74,12 +71,6 @@ public class HeadRenderer extends Renderer<UIComponent> {
 
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
-
-    private static final Map<String, String> THEME_MAPPING = MapBuilder.<String, String>builder()
-            .put("saga", "saga-blue")
-            .put("arya", "arya-blue")
-            .put("vela", "vela-blue")
-            .build();
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -98,16 +89,19 @@ public class HeadRenderer extends Renderer<UIComponent> {
         }
 
         //Theme
-        String theme = ThemeUtils.resolveTheme(context);
+        String theme;
+        String themeParamValue = applicationContext.getConfig().getTheme();
 
-        // token based themes (primefaces-theming) replace the CSS of the core, see PrimeResourceHandler#isResourceRendered
-        boolean tokenTheme = ThemeUtils.isTokenTheme(context, theme);
+        if (themeParamValue != null) {
+            theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
+        }
+        else {
+            theme = "aura";     //default
+        }
 
-        if (theme != null && !"none".equals(theme) && !tokenTheme) {
-            if (THEME_MAPPING.containsKey(theme)) {
-                theme = THEME_MAPPING.get(theme);
-            }
-
+        // the tokens of the theme (aura, lara, nora, metal, glass or a custom primefaces-<name>/theme.css); the CSS of the
+        // components is the same for every theme
+        if (theme != null && !"none".equals(theme)) {
             encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
         }
 
@@ -127,11 +121,6 @@ public class HeadRenderer extends Renderer<UIComponent> {
 
         // encode client side locale
         encodeLocaleResources(context, configuration);
-
-        // token based theme: contains the complete styling of all components
-        if (tokenTheme) {
-            encodeTokenTheme(context, theme);
-        }
 
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
@@ -161,19 +150,6 @@ public class HeadRenderer extends Renderer<UIComponent> {
         }
 
         writer.endElement("head");
-    }
-
-    protected void encodeTokenTheme(FacesContext context, String theme) throws IOException {
-        // components.css (the same for every theme) first: it declares the layer order and the default icons, the tokens
-        // of the theme (built-in or custom "library:name") follow and override them
-        encodeCSS(context, ThemeUtils.THEMING_LIBRARY, ThemeUtils.COMPONENTS + ".css");
-        int separator = theme.indexOf(':');
-        if (separator > 0) {
-            encodeCSS(context, theme.substring(0, separator), theme.substring(separator + 1));
-        }
-        else {
-            encodeCSS(context, ThemeUtils.THEMING_LIBRARY, theme + ".css");
-        }
     }
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {

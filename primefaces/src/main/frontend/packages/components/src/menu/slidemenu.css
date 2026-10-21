@@ -1,0 +1,132 @@
+/*
+ * SlideMenu: p:slideMenu
+ *
+ * The common .ui-menu markup is styled by menu/menu.base.css, this file has the sliding wrapper, the "back" header
+ * (.ui-slidemenu-backward) and the slidemenu tokens (PrimeFaces only, the slidemenu block of presets/*.css).
+ */
+
+/*
+ * The lists are absolutely positioned (carousel), so the container has no content width: it needs a fixed width
+ * (menu/menu.base.css only gives the other menus width: fit-content + min-width). style="width: ..." still wins.
+ */
+.ui-slidemenu {
+    width: 12.5rem;
+
+    .ui-slidemenu-wrapper {
+        position: relative;
+    }
+
+    .ui-slidemenu-content {
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .ui-menu-list {
+        position: absolute;
+        top: 0;
+    }
+
+    .ui-menu-parent {
+        position: static;
+    }
+
+    .ui-menu-child {
+        box-shadow: none;
+        border: 0 none;
+    }
+}
+
+.ui-slidemenu-backward {
+    position: absolute;
+    cursor: pointer;
+}
+
+.ui-menu.ui-slidemenu {
+    --_bg: var(--p-slidemenu-background);
+    --_border-color: var(--p-slidemenu-border-color);
+    --_border-radius: var(--p-slidemenu-border-radius);
+    --_color: var(--p-slidemenu-color);
+    --_shadow: var(--p-slidemenu-shadow);
+    --_list-padding: var(--p-slidemenu-list-padding);
+    --_list-gap: var(--p-slidemenu-list-gap);
+    --_transition-duration: var(--p-slidemenu-transition-duration);
+    --_item-border-radius: var(--p-slidemenu-item-border-radius);
+    --_item-padding: var(--p-slidemenu-item-padding);
+    --_item-gap: var(--p-slidemenu-item-gap);
+    --_item-color: var(--p-slidemenu-item-color);
+    --_item-focus-background: var(--p-slidemenu-item-focus-background);
+    --_item-focus-color: var(--p-slidemenu-item-focus-color);
+    --_item-active-background: var(--p-slidemenu-item-active-background);
+    --_item-active-color: var(--p-slidemenu-item-active-color);
+    --_item-icon-color: var(--p-slidemenu-item-icon-color);
+    --_item-icon-focus-color: var(--p-slidemenu-item-icon-focus-color);
+    --_item-icon-active-color: var(--p-slidemenu-item-icon-active-color);
+    --_item-icon-size: var(--p-slidemenu-item-icon-size);
+    --_item-label-font-size: var(--p-slidemenu-item-label-font-size);
+    --_item-label-font-weight: var(--p-slidemenu-item-label-font-weight);
+    --_submenu-icon-color: var(--p-slidemenu-submenu-icon-color);
+    --_submenu-icon-focus-color: var(--p-slidemenu-submenu-icon-focus-color);
+    --_submenu-icon-size: var(--p-slidemenu-submenu-icon-size);
+    --_submenu-icon-active-color: var(--p-slidemenu-item-icon-active-color);
+    /* the "back" header */
+    --_submenu-label-background: var(--p-slidemenu-back-background);
+    --_submenu-label-color: var(--p-slidemenu-back-color);
+    --_submenu-label-font-weight: var(--p-slidemenu-back-font-weight);
+    --_submenu-background: var(--p-slidemenu-background);
+    --_submenu-border-color: var(--p-slidemenu-border-color);
+    --_submenu-border-radius: var(--p-slidemenu-border-radius);
+    --_submenu-padding: var(--p-slidemenu-list-padding);
+    --_submenu-shadow: var(--p-slidemenu-shadow);
+
+    .ui-slidemenu-backward {
+        padding: 0;
+        color: var(--_submenu-label-color);
+        width: 100%;
+        border: 0 none;
+        background: var(--_submenu-label-background);
+        margin-bottom: 0;
+        border-radius: 0;
+
+        .ui-menuitem-link {
+            color: var(--_submenu-label-color);
+            padding: var(--_item-padding);
+            width: 100%;
+            border: 0 none;
+            float: none;
+            border-radius: var(--_item-border-radius);
+            transition: background var(--_transition-duration), color var(--_transition-duration);
+
+            .ui-menuitem-text {
+                color: var(--_submenu-label-color);
+                font-weight: var(--_submenu-label-font-weight);
+            }
+
+            .ui-icon-triangle-1-w:first-child {
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+                position: relative;
+                float: none;
+                margin: 0;
+
+                &::before {
+                    content: "\2003";
+                    background: currentColor;
+                    forced-color-adjust: none;
+                    mask: var(--p-slidemenu-back-icon) center / contain no-repeat;
+                }
+            }
+        }
+    }
+
+    .ui-menu-child {
+        padding: 0;
+
+        &.ui-shadow {
+            box-shadow: none;
+            border: 0 none;
+        }
+    }
+}

@@ -1,5 +1,4 @@
 import "./src/schedule.widget.js";
-import "./src/fullcalendar-custom.css";
 import { createFullCalendarGlobal, type FullCalendarGlobal } from "./src/createFullCalendarGlobal.js";
 
 declare global {

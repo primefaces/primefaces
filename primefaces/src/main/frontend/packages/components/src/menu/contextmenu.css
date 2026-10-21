@@ -1,0 +1,53 @@
+/*
+ * ContextMenu: p:contextMenu
+ *
+ * Renders the tiered .ui-menu markup (styled by menu/menu.base.css) as an overlay; this file maps the contextmenu tokens.
+ */
+
+/* set by the widget on the target: disables the mobile browser context menu */
+.ui-touch-selection-disabled {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ui-menu.ui-contextmenu {
+    --_bg: var(--p-contextmenu-background);
+    --_border-color: var(--p-contextmenu-border-color);
+    --_border-radius: var(--p-contextmenu-border-radius);
+    --_color: var(--p-contextmenu-color);
+    --_shadow: var(--p-contextmenu-shadow);
+    --_list-padding: var(--p-contextmenu-list-padding);
+    --_list-gap: var(--p-contextmenu-list-gap);
+    --_transition-duration: var(--p-contextmenu-transition-duration);
+    --_item-border-radius: var(--p-contextmenu-item-border-radius);
+    --_item-padding: var(--p-contextmenu-item-padding);
+    --_item-gap: var(--p-contextmenu-item-gap);
+    --_item-color: var(--p-contextmenu-item-color);
+    --_item-focus-background: var(--p-contextmenu-item-focus-background);
+    --_item-focus-color: var(--p-contextmenu-item-focus-color);
+    --_item-active-background: var(--p-contextmenu-item-active-background);
+    --_item-active-color: var(--p-contextmenu-item-active-color);
+    --_item-icon-color: var(--p-contextmenu-item-icon-color);
+    --_item-icon-focus-color: var(--p-contextmenu-item-icon-focus-color);
+    --_item-icon-active-color: var(--p-contextmenu-item-icon-active-color);
+    --_item-icon-size: var(--p-contextmenu-item-icon-size);
+    --_item-label-font-size: var(--p-contextmenu-item-label-font-size);
+    --_item-label-font-weight: var(--p-contextmenu-item-label-font-weight);
+    --_submenu-icon-color: var(--p-contextmenu-submenu-icon-color);
+    --_submenu-icon-focus-color: var(--p-contextmenu-submenu-icon-focus-color);
+    --_submenu-icon-size: var(--p-contextmenu-submenu-icon-size);
+    --_submenu-icon-active-color: var(--p-contextmenu-submenu-icon-active-color);
+    --_separator-border-color: var(--p-contextmenu-separator-border-color);
+    --_submenu-label-background: var(--p-contextmenu-submenu-label-background);
+    --_submenu-label-color: var(--p-contextmenu-submenu-label-color);
+    --_submenu-label-font-size: var(--p-contextmenu-submenu-label-font-size);
+    --_submenu-label-font-weight: var(--p-contextmenu-submenu-label-font-weight);
+    --_submenu-label-padding: var(--p-contextmenu-submenu-label-padding);
+    --_submenu-background: var(--p-contextmenu-background);
+    --_submenu-border-color: var(--p-contextmenu-border-color);
+    --_submenu-border-radius: var(--p-contextmenu-border-radius);
+    --_submenu-padding: var(--p-contextmenu-list-padding);
+    --_submenu-shadow: var(--p-contextmenu-shadow);
+}

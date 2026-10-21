@@ -54,8 +54,8 @@ class Theming013Test extends AbstractThemingTest {
         setColorScheme("light");
 
         // Assert
-        List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='primefaces-theming']"));
-        assertTrue(links.stream().anyMatch(l -> l.getAttribute("href").contains("glass.css")), "glass.css not rendered");
+        List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='ln=primefaces-']"));
+        assertTrue(links.stream().anyMatch(l -> l.getAttribute("href").contains("ln=primefaces-glass")), "primefaces-glass:theme.css not rendered");
         assertBlur("dialog", page.dialog);
         assertBlur("modal mask", PrimeSelenium.getWebDriver().findElement(By.cssSelector(".ui-widget-overlay, .ui-dialog-mask")));
         assertBlur("toolbar", page.toolbar);

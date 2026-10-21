@@ -1,184 +1,241 @@
+/*
+ * Organigram: p:organigram (PrimeFaces organigram tokens, derived from the PrimeUIX organizationchart tokens)
+ *
+ * Every level (.level-N) has the same look; style nodes with the
+ * node styleClass if needed.
+ * Supported classes: selectable, draggable, selected, drag-active, drop-hover, level-N, leaf, expanded, collapsed
+ *
+ * Connector lines, node icons / expander and the zoom controls use logical properties, so the chart mirrors in RTL
+ * (dir="rtl" on an ancestor).
+ */
 .ui-organigram {
     position: relative;
-}
 
-.ui-organigram .controls {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    width: 35px;
-    height: 70px;
-}
+    > ul {
+        display: none;
+    }
 
-.ui-organigram .control {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-}
+    .target {
+        overflow: auto;
+        position: relative;
+        height: 100%;
 
-.ui-organigram .control.zoom-in {
-    background-image: url("./zoom-in.png");
-}
+        > * {
+            overflow: hidden;
+            padding: 5px;
+            max-width: 100%;
+        }
+    }
 
-.ui-organigram .control.zoom-out {
-    background-image: url("./zoom-out.png");
-}
+    .line {
+        height: 20px;
+        width: 2px;
+        border-style: solid;
+        border-width: 0;
+        border-color: var(--p-organigram-connector-color);
 
-.ui-organigram > ul {
-    display: none;
-}
+        &.small {
+            height: 10px;
+            font-size: 0;
+        }
 
-.ui-organigram .target {
-    overflow: auto;
-    position: relative;
-    height: 100%;
-}
+        &.down {
+            margin: 0 auto;
+            background-color: var(--p-organigram-connector-color);
+        }
 
-.ui-organigram .target > * {
-    overflow: hidden;
-    padding: 5px;
-    max-width: 100%;
-}
+        &.top {
+            border-top-width: 2px;
+        }
 
-.ui-organigram .line {
-    height: 20px;
-    width: 2px;
-    border-color: black;
-    border-style: solid;
-    border-width: 0px;
-}
+        &.left {
+            border-inline-end-width: 1px;
+        }
 
-.ui-organigram .line.small {
-    height: 10px;
-    font-size: 0px;
-}
+        &.right {
+            border-inline-start-width: 1px;
+        }
+    }
 
-.ui-organigram .line.down {
-    background-color: black;
-    margin: 0px auto;
-}
+    td {
+        text-align: center;
+        vertical-align: top;
+        padding: 0;
+        margin: 0;
+    }
 
-.ui-organigram .line.top {
-    border-top-width: 2px;
-}
+    tr {
+        padding: 0;
+        margin: 0;
+    }
 
-.ui-organigram .line.left {
-    border-right-width: 1px;
-}
+    .ui-organigram-node {
+        width: 110px;
+        min-height: 20px;
+        margin: 0 2px;
+        position: relative;
+        display: inline-block;
+        padding: var(--p-organigram-node-padding);
+        background: var(--p-organigram-node-background);
+        color: var(--p-organigram-node-color);
+        border: 1px solid var(--p-organigram-node-border-color);
+        border-radius: var(--p-organigram-node-border-radius);
+        font-size: var(--p-organigram-node-font-size);
+        font-weight: var(--p-organigram-node-font-weight);
+        transition: background var(--p-organigram-transition-duration), color var(--p-organigram-transition-duration),
+            border-color var(--p-organigram-transition-duration), box-shadow var(--p-organigram-transition-duration);
 
-.ui-organigram .line.right {
-    border-left-width: 1px;
-}
+        .ui-organigram-icon {
+            display: inline-block;
+            color: var(--p-organigram-node-icon-color);
+        }
 
-.ui-organigram td {
-    text-align: center;
-    vertical-align: top;
-    padding: 0;
-    margin: 0;
-}
+        .ui-organigram-icon.left {
+            float: inline-start;
+        }
 
-.ui-organigram tr {
-    padding: 0;
-    margin: 0;
-}
+        .ui-organigram-icon.right {
+            float: inline-end;
+        }
 
-.ui-organigram .ui-organigram-node {
-    width: 110px;
-    min-height: 20px;
+        .ui-organigram-node-content {
+            clear: both;
+            word-wrap: break-word;
+        }
 
-    margin: 0 2px;
-    padding: 2px;
+        &.draggable,
+        &.selectable {
+            cursor: pointer;
+        }
 
-    position: relative;
-    display: inline-block;
+        &.selectable:not(.selected):hover {
+            background: var(--p-organigram-node-hover-background);
+            color: var(--p-organigram-node-hover-color);
+        }
 
-    font-size: 14px;
-    color: white;
+        &.selected {
+            background: var(--p-organigram-node-selected-background);
+            color: var(--p-organigram-node-selected-color);
+        }
 
-    -webkit-box-shadow: 3px 3px 6px -4px rgba(0,0,0,0.75);
-    -moz-box-shadow: 3px 3px 6px -4px rgba(0,0,0,0.75);
-    box-shadow: 3px 3px 6px -4px rgba(0,0,0,0.75);
+        &.selected .ui-organigram-icon {
+            color: var(--p-organigram-node-selected-icon-color);
+        }
 
-    background: #9c53e0;
-    background: -moz-linear-gradient(top, #9c53e0 0%, #8a2be2 100%);
-    background: -webkit-linear-gradient(top, #9c53e0 0%,#8a2be2 100%);
-    background: linear-gradient(to bottom, #9c53e0 0%,#8a2be2 100%);
-}
+        &.drag-active {
+            opacity: var(--p-organigram-node-drag-opacity);
+        }
 
-.ui-organigram .ui-organigram-icon-container {
-    width: 100%;
-    height: 16px;
-}
+        &.drop-hover {
+            opacity: 1;
+            border-color: var(--p-organigram-node-drop-border-color);
+            border-style: dashed;
+        }
 
-.ui-organigram .ui-organigram-node .ui-organigram-icon {
-    display: inline-block;
-    margin-top: -1px;
-}
+        /* a small round toggle button; the &nbsp; text is hidden with font-size 0 */
+        .expander {
+            cursor: pointer;
+            float: inline-end;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--p-organigram-toggle-button-size);
+            height: var(--p-organigram-toggle-button-size);
+            font-size: 0;
+            background: var(--p-organigram-toggle-button-background);
+            color: var(--p-organigram-toggle-button-color);
+            border: 1px solid var(--p-organigram-toggle-button-border-color);
+            border-radius: var(--p-organigram-toggle-button-border-radius);
+            transition: background var(--p-organigram-transition-duration), color var(--p-organigram-transition-duration);
 
-.ui-organigram .ui-organigram-node .ui-organigram-icon.left {
-    float: left;
-}
+            &:hover {
+                background: var(--p-organigram-toggle-button-hover-background);
+                color: var(--p-organigram-toggle-button-hover-color);
+            }
 
-.ui-organigram .ui-organigram-node .ui-organigram-icon.right {
-    float: right;
-}
+            &::before {
+                font-size: var(--p-organigram-toggle-button-icon-size);
+            }
 
-.ui-organigram .ui-organigram-node .ui-organigram-node-content {
-    clear: both;
-    word-wrap: break-word;
-}
+            &.ui-icon-plusthick::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-organigram-toggle-collapsed-icon) center / contain no-repeat;
+            }
 
-.ui-organigram .ui-organigram-node.draggable {
-    cursor: pointer;
-}
+            &.ui-icon-minusthick::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-organigram-toggle-expanded-icon) center / contain no-repeat;
+            }
+        }
+    }
 
-.ui-organigram .ui-organigram-node.selectable {
-    cursor: pointer;
-}
+    .ui-organigram-icon-container {
+        width: 100%;
+        min-height: 16px;
+    }
 
-.ui-organigram .ui-organigram-node.drag-active {
-    opacity: 0.6;
-}
+    .ui-organigram-node .expander.ui-icon-plusthick,
+    .ui-organigram-node .expander.ui-icon-minusthick,
+    .controls .control {
+        font-style: normal;
+        font-weight: normal;
+    }
 
-.ui-organigram .ui-organigram-node.drop-hover {
-    opacity: 1;
-}
+    /* zoom controls */
+    .controls {
+        position: absolute;
+        bottom: 15px;
+        inset-inline-end: 15px;
 
-.ui-organigram .ui-organigram-node.selected {
-    -webkit-box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
-    -moz-box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
-    box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
-}
+        table {
+            border-collapse: separate;
+            border-spacing: 0 var(--p-organigram-control-gap);
+        }
 
-.ui-organigram .ui-organigram-node.level-1 {
-    background: #02a7f2;
-    background: -moz-linear-gradient(top, #02a7f2 0%, #0289d2 100%);
-    background: -webkit-linear-gradient(top, #02a7f2 0%,#0289d2 100%);
-    background: linear-gradient(to bottom, #02a7f2 0%,#0289d2 100%);
-}
+        .control {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--p-organigram-control-size);
+            height: var(--p-organigram-control-size);
+            font-size: 0;
+            background: var(--p-organigram-control-background);
+            color: var(--p-organigram-control-color);
+            border: 1px solid var(--p-organigram-control-border-color);
+            border-radius: var(--p-organigram-control-border-radius);
+            box-shadow: var(--p-organigram-control-shadow);
+            transition: background var(--p-organigram-transition-duration), color var(--p-organigram-transition-duration);
 
-.ui-organigram .ui-organigram-node.level-2 {
-    background: #ffc86b;
-    background: -moz-linear-gradient(top, #ffc86b 0%, #ffac1e 100%);
-    background: -webkit-linear-gradient(top, #ffc86b 0%,#ffac1e 100%);
-    background: linear-gradient(to bottom, #ffc86b 0%,#ffac1e 100%);
-}
+            &:hover {
+                background: var(--p-organigram-control-hover-background);
+                color: var(--p-organigram-control-hover-color);
+            }
 
-.ui-organigram .ui-organigram-node.level-3 {
-    background: #88c048;
-    background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
-    background: -webkit-linear-gradient(top, #88c048 0%,#69a038 100%);
-    background: linear-gradient(to bottom, #88c048 0%,#69a038 100%);
-}
+            &::before {
+                font-size: var(--p-icon-size);
+            }
 
-.ui-organigram .ui-organigram-node.level-4 {
-    background: #f77a31;
-    background: -moz-linear-gradient(top, #f77a31 0%, #d82d1e 100%);
-    background: -webkit-linear-gradient(top, #f77a31 0%,#d82d1e 100%);
-    background: linear-gradient(to bottom, #f77a31 0%,#d82d1e 100%);
-}
+            &.zoom-in::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-organigram-zoom-in-icon) center / contain no-repeat;
+            }
 
-.ui-organigram .ui-organigram-node .expander {
-    cursor: pointer;
-    float: right;
+            &.zoom-out::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-organigram-zoom-out-icon) center / contain no-repeat;
+            }
+        }
+    }
+
+    .control {
+        cursor: pointer;
+    }
 }

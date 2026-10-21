@@ -1,0 +1,61 @@
+/*
+ * Icon set: Lucide (https://lucide.dev, ISC). Maps every icon meaning the theme uses to an SVG.
+ * The component tokens of the presets (e.g. --p-tree-toggle-collapsed-icon) reference these, so replacing this file
+ * (or overriding single --p-icon-* tokens) changes the icons of all components.
+ *
+ * Values are url()s of SVG files: "package/path.svg" is resolved in node_modules and inlined as data URI by
+ * build/scripts/bundle.mjs, "?fill" fills the outline. The SVG only serves as mask, the color is currentColor.
+ */
+@layer primefaces.tokens {
+    :root, [data-p-scope] {
+        --p-icon-close: url("lucide-static/icons/x.svg");
+        --p-icon-clear: url("lucide-static/icons/circle-x.svg");
+        --p-icon-check: url("lucide-static/icons/check.svg");
+        --p-icon-indeterminate: url("lucide-static/icons/minus.svg");
+        --p-icon-plus: url("lucide-static/icons/plus.svg");
+        --p-icon-minus: url("lucide-static/icons/minus.svg");
+
+        --p-icon-collapsed: url("lucide-static/icons/chevron-right.svg");
+        --p-icon-expanded: url("lucide-static/icons/chevron-down.svg");
+        --p-icon-dropdown: url("lucide-static/icons/chevron-down.svg");
+        --p-icon-up: url("lucide-static/icons/chevron-up.svg");
+        --p-icon-down: url("lucide-static/icons/chevron-down.svg");
+        --p-icon-prev: url("lucide-static/icons/chevron-left.svg");
+        --p-icon-next: url("lucide-static/icons/chevron-right.svg");
+        --p-icon-first: url("lucide-static/icons/chevrons-left.svg");
+        --p-icon-last: url("lucide-static/icons/chevrons-right.svg");
+        --p-icon-top: url("lucide-static/icons/chevrons-up.svg");
+        --p-icon-bottom: url("lucide-static/icons/chevrons-down.svg");
+        --p-icon-arrow-up: url("lucide-static/icons/arrow-up.svg");
+        --p-icon-arrow-down: url("lucide-static/icons/arrow-down.svg");
+        --p-icon-arrow-left: url("lucide-static/icons/arrow-left.svg");
+        --p-icon-arrow-right: url("lucide-static/icons/arrow-right.svg");
+
+        --p-icon-sort: url("lucide-static/icons/arrow-up-down.svg");
+        --p-icon-sort-asc: url("lucide-static/icons/arrow-up-narrow-wide.svg");
+        --p-icon-sort-desc: url("lucide-static/icons/arrow-down-wide-narrow.svg");
+        --p-icon-search: url("lucide-static/icons/search.svg");
+        --p-icon-edit: url("lucide-static/icons/pencil.svg");
+        --p-icon-trash: url("lucide-static/icons/trash-2.svg");
+        --p-icon-file: url("lucide-static/icons/file-text.svg");
+        --p-icon-options: url("lucide-static/icons/settings.svg");
+        --p-icon-home: url("lucide-static/icons/house.svg");
+        --p-icon-calendar: url("lucide-static/icons/calendar.svg");
+        --p-icon-maximize: url("lucide-static/icons/maximize-2.svg");
+        --p-icon-restore: url("lucide-static/icons/minimize-2.svg");
+        --p-icon-show: url("lucide-static/icons/eye.svg");
+        --p-icon-hide: url("lucide-static/icons/eye-off.svg");
+        --p-icon-zoom-in: url("lucide-static/icons/zoom-in.svg");
+        --p-icon-zoom-out: url("lucide-static/icons/zoom-out.svg");
+        --p-icon-star: url("lucide-static/icons/star.svg");
+        --p-icon-star-filled: url("lucide-static/icons/star.svg?fill");
+
+        --p-icon-info: url("lucide-static/icons/info.svg");
+        --p-icon-success: url("lucide-static/icons/circle-check.svg");
+        --p-icon-warn: url("lucide-static/icons/triangle-alert.svg");
+        --p-icon-error: url("lucide-static/icons/circle-x.svg");
+        --p-icon-fatal: url("lucide-static/icons/ban.svg");
+
+        --p-icon-loading: url("lucide-static/icons/loader-circle.svg");
+    }
+}

@@ -1,30 +1,65 @@
-.ui-datalist .ui-datalist-header,
-.ui-datalist .ui-datalist-footer {
-    text-align:center;
-    padding:4px 10px;
-}
+/*
+ * DataList: p:dataList (unordered, ordered and definition list)
+ *
+ * No own PrimeUIX component: styled with the dataview tokens (+ PrimeFaces dataview tokens).
+ * Supported classes: ui-datalist-nobullets (itemType="none")
+ */
+.ui-datalist {
+    .ui-datalist-header {
+        text-align: center;
+        background: var(--p-dataview-header-background);
+        color: var(--p-dataview-header-color);
+        padding: var(--p-dataview-header-padding);
+        font-weight: var(--p-dataview-header-font-weight);
+        border: 1px solid var(--p-dataview-header-border-color);
+        border-width: var(--p-dataview-header-border-width);
+        border-radius: var(--p-dataview-header-border-radius);
+    }
 
-.ui-datalist .ui-datalist-header {
-    border-bottom: 0px none;
-}
+    .ui-datalist-footer {
+        text-align: center;
+        background: var(--p-dataview-footer-background);
+        color: var(--p-dataview-footer-color);
+        padding: var(--p-dataview-footer-padding);
+        font-weight: var(--p-dataview-footer-font-weight);
+        border: 1px solid var(--p-dataview-footer-border-color);
+        border-width: var(--p-dataview-footer-border-width);
+        border-radius: var(--p-dataview-footer-border-radius);
+    }
 
-.ui-datalist .ui-datalist-footer {
-    border-top: 0px none;
-}
+    .ui-datalist-content {
+        border: 1px solid var(--p-dataview-content-border-color);
+        border-width: var(--p-dataview-content-border-width);
+        border-radius: var(--p-dataview-content-border-radius);
+        background: var(--p-dataview-content-background);
+        color: var(--p-dataview-content-color);
+        padding: var(--p-dataview-content-padding);
+    }
 
-.ui-datalist .ui-paginator-top {
-    border-bottom: 0px none;
-}
+    .ui-datalist-nobullets {
+        list-style-type: none;
+    }
 
-.ui-datalist .ui-paginator-bottom {
-    border-top: 0px none;
-}
+    .ui-datalist-empty-message {
+        padding: var(--p-dataview-empty-message-padding);
+        color: var(--p-dataview-empty-message-color);
+    }
 
-.ui-datalist .ui-datalist-empty-message {
-    padding: 4px 10px;
-}
+    .ui-paginator {
+        padding: var(--p-paginator-padding);
 
-.ui-datalist .ui-datalist-nobullets {
-    list-style-type: none;
-}
+        &.ui-paginator-top {
+            border-style: solid;
+            border-color: var(--p-dataview-paginator-top-border-color);
+            border-width: var(--p-dataview-paginator-top-border-width);
+            border-radius: 0;
+        }
 
+        &.ui-paginator-bottom {
+            border-style: solid;
+            border-color: var(--p-dataview-paginator-bottom-border-color);
+            border-width: var(--p-dataview-paginator-bottom-border-width);
+            border-radius: 0;
+        }
+    }
+}

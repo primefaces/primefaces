@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Helpers for the token based theming (primefaces-theming) tests: they compare computed styles with the resolved values of
+ * Helpers for the token based theming tests: they compare computed styles with the resolved values of
  * the design tokens instead of fixed colors, so they survive token value changes but fail when the wiring breaks.
  */
 abstract class AbstractThemingTest extends AbstractPrimePageTest {
