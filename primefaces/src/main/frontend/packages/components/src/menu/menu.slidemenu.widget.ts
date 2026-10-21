@@ -156,7 +156,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 PrimeFaces.queueTask(function() {submenu.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
             }
         });
-        this.backwardButton = _self.backward.children('ui-menuitem-link');
+        this.backwardButton = _self.backward.find('a.ui-menuitem-link');
         this.backwardButton.attr('tabindex', 0);
         this.changeTabindex();
     }
@@ -184,7 +184,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 }
             });
         }
-        this.backwardButton = this.backward.children('ui-menuitem-link');
+        this.backwardButton = this.backward.find('a.ui-menuitem-link');
         this.backwardButton.attr('tabindex', -1);
         this.changeTabindex();
     }

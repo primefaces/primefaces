@@ -3,8 +3,8 @@
  *
  * While a deferred panel loads it contains <i class="ui-outputpanel-loading ui-icon pi pi-spin pi-spinner">,
  * centered here (PrimeFaces tokens). The PrimeIcons glyph is replaced by --p-outputpanel-loading-icon (::after, the
- * ::before of PrimeIcons is hidden); the rotation comes from pi-spin of PrimeIcons when it is loaded (unlayered, it
- * wins), otherwise from the ui-spin keyframes (ajaxstatus/ajaxstatus.css).
+ * ::before of PrimeIcons is hidden). The rotation is the ui-spin animation (ajaxstatus/ajaxstatus.css): PrimeIcons
+ * is in the primefaces.vendor layer, so it wins over pi-spin.
  */
 
 div.ui-outputpanel:has(> .ui-outputpanel-loading) {

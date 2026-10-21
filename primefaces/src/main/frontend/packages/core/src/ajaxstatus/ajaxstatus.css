@@ -13,8 +13,7 @@
  * Inline ajax status: buttons, p:autoComplete and p:selectOneMenu get a spinner
  * <span class="ui-icon-loading [ui-icon] pi pi-spin pi-spinner"> from the core while their request runs. The PrimeIcons
  * glyph is replaced by the --p-ajaxstatus-loading-icon token (::after, the ::before of PrimeIcons is hidden). The
- * rotation comes from pi-spin of PrimeIcons when it is loaded (unlayered, it wins), otherwise from the ui-spin
- * keyframes below.
+ * rotation is the ui-spin animation below: PrimeIcons is in the primefaces.vendor layer, so it wins over pi-spin.
  */
 
 /* the rotation of every spinner of the theme (blockUI, commandLink, dataScroller, outputPanel, inline ajax status);

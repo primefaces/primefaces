@@ -40,12 +40,12 @@ The value can be an EL expression, e.g. `#{userSettings.theme}` to switch the th
 - `primefaces:components.css`: the styles of the components, the icons and the jQuery UI CSS. It is the same for every
   theme, so it stays cached when the theme changes.
 - the CSS of components that are loaded on demand together with their JavaScript, e.g.
-  `primefaces:schedule/schedule.css` (incl. the FullCalendar CSS), `texteditor/texteditor.css` (Quill) or
-  `timeline/timeline.css` (vis-timeline).
+  `primefaces:datepicker/datepicker.css`, `schedule/schedule.css` (incl. the FullCalendar CSS),
+  `texteditor/texteditor.css` (Quill) or `timeline/timeline.css` (vis-timeline).
 
 PrimeIcons are still loaded (unless `primefaces.PRIME_ICONS` is `false`) for the icons the application sets itself,
-e.g. `<p:commandButton icon="pi pi-check"/>`. The icons the components draw themselves come from the icon tokens (in `components.css`),
-see [Icons](#icons).
+e.g. `<p:commandButton icon="pi pi-check"/>`. The icons the components draw themselves come from the icon tokens (in
+`components.css`), see [Icons](#icons).
 
 ## Light and dark mode
 
@@ -511,13 +511,16 @@ Prefer tokens where one exists; style rules are the fallback for everything toke
 
 ### Third-party CSS
 
-The CSS of the libraries the components use (jQuery UI, Coloris, cropperjs, Quill, vis-timeline, FullCalendar, ...)
-is included in `components.css` and styled with the tokens; there is nothing extra to include.
+The CSS of the libraries the components use is part of the PrimeFaces stylesheets, in the `primefaces.vendor` layer
+below the component styles, and styled with the tokens; there is nothing extra to include. It is loaded with the
+component that needs it: jQuery UI in `components.css` (its datepicker CSS with p:calendar), Coloris with
+p:colorPicker, cropperjs with p:imageCropper, Quill with p:textEditor, vis-timeline with p:timeline, FullCalendar with
+p:schedule, jsPlumb with p:diagram.
 
 ### Compression
 
 PrimeFaces does not compress resources. Enable gzip or brotli in your server or proxy: `components.css` is about
-390 KB minified and about 51 KB compressed (plus a theme with about 210 KB minified, 25 KB compressed).
+360 KB minified and about 47 KB compressed, a theme about 210 KB minified and 25 KB compressed.
 
 ## Tailwind CSS
 
@@ -528,9 +531,10 @@ The theme works together with Tailwind CSS v4: the utilities (`bg-primary`, `tex
 
 The tokens of each preset are exported in the [W3C Design Tokens format](https://www.designtokens.org/) (DTCG), one
 file per preset and mode (`aura.light.tokens.json`, `aura.dark.tokens.json`, ...). They are published next to the jar
-as `primefaces-<version>-tokens.zip` (Maven `org.primefaces:primefaces:<version>:zip:tokens`). Import them into design tools like Figma (Tokens Studio) or use them with
-Style Dictionary to keep design and implementation in sync. References between tokens are kept as aliases. Values the format has no type for (gradients and layered backgrounds of Metal, icon urls,
-shorthands) are exported as CSS strings, resolved for the mode of the file.
+as `primefaces-<version>-tokens.zip` (Maven `org.primefaces:primefaces:<version>:zip:tokens`). Import them into design
+tools like Figma (Tokens Studio) or use them with Style Dictionary to keep design and implementation in sync.
+References between tokens are kept as aliases. Values the format has no type for (gradients and layered backgrounds of
+Metal, icon urls, shorthands) are exported as CSS strings, resolved for the mode of the file.
 
 ## Migration from the SASS themes
 
