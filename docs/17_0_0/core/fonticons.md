@@ -10,7 +10,9 @@ PrimeFaces provides support for both PrimeIcons and FontAwesome web fonts.
 ## PrimeIcons
 
 PrimeIcons is PrimeTek's web font used in PrimeFaces, PrimeNG, PrimeVue, and PrimeReact.
-It comes built into PrimeFaces JAR and they are always added to the view as newer Themes are based on it.
+It comes built into the PrimeFaces JAR and is added to the view unless `primefaces.PRIME_ICONS` is `false`. The themes do
+not need it (the icons the components draw come from the icon tokens), it is there for the icons an application sets
+itself, e.g. `icon="pi pi-check"`.
 
 ## FontAwesome
 PrimeFaces supports FontAwesome 4.x, 5.x, and 6.x+, you just need to manually include it via your pom.xml:

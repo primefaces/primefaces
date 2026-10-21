@@ -51,8 +51,8 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponent(value = Schedule.COMPONENT_TYPE, namespace = Schedule.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Schedule provides an Outlook Calendar, iCal like Faces component to manage events."
     + " Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.")
-@ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "moment/moment.js")
 @ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

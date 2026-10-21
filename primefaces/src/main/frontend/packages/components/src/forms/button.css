@@ -1,0 +1,576 @@
+/*
+ * Button: p:commandButton, p:button, p:linkButton, ...
+ *
+ * Severity classes only switch the private --_* variables, the visual rules exist once.
+ * Supported classes: ui-button-secondary | -info | -success | -warning | -help | -danger | -contrast,
+ *                    ui-button-outlined, ui-button-flat (text), ui-button-plain, ui-button-raised,
+ *                    rounded-button, ui-button-sm, ui-button-lg
+ * Also: ui-state-loading (inline ajax status), ui-buttonset / ui-button-group, p:menuButton trigger, links.
+ */
+
+/* before the .ui-button rules: icon only buttons keep their width (same specificity) */
+.ui-fluid {
+    .ui-button {
+        width: 100%;
+    }
+
+    /* the options of p:selectOneButton / p:selectManyButton (ui-buttonset-N) share the width: forms/selectonebutton.css */
+    .ui-buttonset {
+        width: 100%;
+    }
+}
+
+.ui-button {
+    --_bg: var(--p-button-primary-background);
+    --_hover-bg: var(--p-button-primary-hover-background);
+    --_active-bg: var(--p-button-primary-active-background);
+    --_border: var(--p-button-primary-border-color);
+    --_hover-border: var(--p-button-primary-hover-border-color);
+    --_active-border: var(--p-button-primary-active-border-color);
+    --_color: var(--p-button-primary-color);
+    --_hover-color: var(--p-button-primary-hover-color);
+    --_active-color: var(--p-button-primary-active-color);
+    --_focus-ring-color: var(--p-button-primary-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-primary-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-primary-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-primary-active-background);
+    --_outlined-border: var(--p-button-outlined-primary-border-color);
+    --_outlined-color: var(--p-button-outlined-primary-color);
+    --_text-hover-bg: var(--p-button-text-primary-hover-background);
+    --_text-active-bg: var(--p-button-text-primary-active-background);
+    --_text-color: var(--p-button-text-primary-color);
+    --_shadow: var(--p-button-shadow);
+    --_active-shadow: var(--p-button-active-shadow);
+    --_label-shadow: var(--p-button-label-shadow);
+    /* texture layer above the background (e.g. brushed metal), none by default */
+    --_texture: var(--p-button-texture);
+
+    /* !important: also against unlayered application rules like a:hover */
+    text-decoration: none !important;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p-button-gap);
+    position: relative;
+    margin: 0;
+    padding: var(--p-button-padding-y) var(--p-button-padding-x);
+    vertical-align: bottom;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    font-size: var(--p-button-font-size);
+    font-weight: var(--p-button-label-font-weight);
+    background: var(--_texture), var(--_bg);
+    color: var(--_color);
+    border: 1px solid var(--_border);
+    border-radius: var(--p-button-border-radius);
+    box-shadow: var(--_shadow);
+    outline-color: transparent;
+    transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),
+        border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration),
+        box-shadow var(--p-button-transition-duration), translate var(--p-button-transition-duration);
+
+    .ui-button-text {
+        display: block;
+        padding: 0;
+        line-height: var(--p-typography-line-height);
+        font-weight: var(--p-button-label-font-weight);
+        text-shadow: var(--_label-shadow);
+    }
+
+    /* the icon is a flex item (".ui-icon": icons without ".ui-c", e.g. datepicker trigger, menuButton triangle) */
+    .ui-icon,
+    .ui-icon.ui-c {
+        position: static;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .ui-button-icon-right {
+        order: 1;
+    }
+
+    /* icon only: keep the (hidden) label in the flow so the height matches text buttons */
+    &.ui-button-icon-only {
+        width: var(--p-button-icon-only-width);
+        padding-inline: 0;
+        gap: 0;
+
+        .ui-button-text {
+            visibility: hidden;
+            width: 0;
+            /* an empty label (value="") must still give the button the height of a text button */
+            min-height: calc(1em * var(--p-typography-line-height));
+            padding: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        &.rounded-button {
+            border-radius: 50%;
+            height: var(--p-button-icon-only-width);
+        }
+    }
+
+    /* p:linkButton renders span.ui-button > a */
+    &.ui-linkbutton {
+        padding: 0;
+
+        > a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--p-button-gap);
+            padding: var(--p-button-padding-y) var(--p-button-padding-x);
+            color: inherit;
+            text-decoration: none;
+            outline: 0 none;
+        }
+    }
+
+    /* states */
+    &:not(:disabled, .ui-state-disabled):hover {
+        background: var(--_texture), var(--_hover-bg);
+        border-color: var(--_hover-border);
+        color: var(--_hover-color);
+    }
+
+    &:not(:disabled, .ui-state-disabled):active,
+    &.ui-state-active {
+        background: var(--_texture), var(--_active-bg);
+        border-color: var(--_active-border);
+        color: var(--_active-color);
+    }
+
+    /* pressed (not the persistent ui-state-active of toggle buttons): e.g. pushed into the surface */
+    &:not(:disabled, .ui-state-disabled):active {
+        box-shadow: var(--_active-shadow);
+        translate: 0 var(--p-button-active-offset);
+    }
+
+    &:focus-visible,
+    &.ui-linkbutton:has(> a:focus-visible) {
+        outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--_focus-ring-color);
+        outline-offset: var(--p-button-focus-ring-offset);
+        box-shadow: var(--_focus-ring-shadow);
+    }
+
+    &:disabled,
+    &.ui-state-disabled {
+        cursor: default;
+    }
+
+    /* disabled attribute without .ui-state-disabled (e.g. disabled by the ajax status), same look as .ui-state-disabled */
+    &:disabled {
+        opacity: var(--p-disabled-opacity);
+    }
+
+    /* default icon of p:menuButton (and other buttons using the jQuery UI triangle) */
+    .ui-icon-triangle-1-s {
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        background: none;
+
+        &::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-button-dropdown-icon) center / contain no-repeat;
+        }
+    }
+
+    /*
+     * inline ajax status: the core prepends a spinner .ui-icon-loading while the request runs. It takes the place of
+     * the icon (it gets ui-button-icon-left / -right like it); a button without icon shows it next to the label.
+     */
+    &.ui-state-loading .ui-icon:not(.ui-icon-loading) {
+        display: none;
+    }
+}
+
+/* button groups: .ui-button-group (joined buttons) */
+/*
+ * first / last are counted among the buttons only ("of .ui-button"): every PrimeFaces button renders its widget
+ * <script> right after itself, so :last-child would never be the last button.
+ */
+.ui-button-group {
+    display: inline-flex;
+    border-radius: var(--p-button-border-radius);
+
+    /* raised: one shadow around the whole group (like PrimeUIX) */
+    &:has(.ui-button-raised) {
+        box-shadow: var(--p-button-raised-shadow);
+    }
+
+    .ui-button {
+        margin: 0;
+        border-radius: 0;
+
+        &:not(:nth-last-child(1 of .ui-button)) {
+            border-inline-end-width: 0;
+        }
+
+        &:nth-child(1 of .ui-button) {
+            border-start-start-radius: var(--p-button-border-radius);
+            border-end-start-radius: var(--p-button-border-radius);
+        }
+
+        &:nth-last-child(1 of .ui-button) {
+            border-start-end-radius: var(--p-button-border-radius);
+            border-end-end-radius: var(--p-button-border-radius);
+        }
+
+        &:focus-visible {
+            z-index: 1;
+        }
+
+        &.ui-button-raised:not(:focus-visible) {
+            box-shadow: none;
+        }
+    }
+}
+
+.ui-buttonset .ui-button {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+button.ui-button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/* p:menuButton: span.ui-menubutton > button.ui-button + overlay .ui-menu (styled by menu/menu.base.css) */
+.ui-menubutton {
+    display: inline-flex;
+    position: relative;
+    padding: 0;
+
+    .ui-button {
+        margin: 0;
+    }
+}
+
+/* severities */
+.ui-button.ui-button-secondary,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-secondary > .ui-button {
+    --_bg: var(--p-button-secondary-background);
+    --_hover-bg: var(--p-button-secondary-hover-background);
+    --_active-bg: var(--p-button-secondary-active-background);
+    --_border: var(--p-button-secondary-border-color);
+    --_hover-border: var(--p-button-secondary-hover-border-color);
+    --_active-border: var(--p-button-secondary-active-border-color);
+    --_color: var(--p-button-secondary-color);
+    --_hover-color: var(--p-button-secondary-hover-color);
+    --_active-color: var(--p-button-secondary-active-color);
+    --_focus-ring-color: var(--p-button-secondary-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-secondary-focus-ring-shadow);
+    --_label-shadow: var(--p-button-outlined-label-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-secondary-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-secondary-active-background);
+    --_outlined-border: var(--p-button-outlined-secondary-border-color);
+    --_outlined-color: var(--p-button-outlined-secondary-color);
+    --_text-hover-bg: var(--p-button-text-secondary-hover-background);
+    --_text-active-bg: var(--p-button-text-secondary-active-background);
+    --_text-color: var(--p-button-text-secondary-color);
+}
+
+.ui-button.ui-button-info,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-info > .ui-button {
+    --_bg: var(--p-button-info-background);
+    --_hover-bg: var(--p-button-info-hover-background);
+    --_active-bg: var(--p-button-info-active-background);
+    --_border: var(--p-button-info-border-color);
+    --_hover-border: var(--p-button-info-hover-border-color);
+    --_active-border: var(--p-button-info-active-border-color);
+    --_color: var(--p-button-info-color);
+    --_hover-color: var(--p-button-info-hover-color);
+    --_active-color: var(--p-button-info-active-color);
+    --_focus-ring-color: var(--p-button-info-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-info-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-info-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-info-active-background);
+    --_outlined-border: var(--p-button-outlined-info-border-color);
+    --_outlined-color: var(--p-button-outlined-info-color);
+    --_text-hover-bg: var(--p-button-text-info-hover-background);
+    --_text-active-bg: var(--p-button-text-info-active-background);
+    --_text-color: var(--p-button-text-info-color);
+}
+
+.ui-button.ui-button-success,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-success > .ui-button {
+    --_bg: var(--p-button-success-background);
+    --_hover-bg: var(--p-button-success-hover-background);
+    --_active-bg: var(--p-button-success-active-background);
+    --_border: var(--p-button-success-border-color);
+    --_hover-border: var(--p-button-success-hover-border-color);
+    --_active-border: var(--p-button-success-active-border-color);
+    --_color: var(--p-button-success-color);
+    --_hover-color: var(--p-button-success-hover-color);
+    --_active-color: var(--p-button-success-active-color);
+    --_focus-ring-color: var(--p-button-success-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-success-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-success-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-success-active-background);
+    --_outlined-border: var(--p-button-outlined-success-border-color);
+    --_outlined-color: var(--p-button-outlined-success-color);
+    --_text-hover-bg: var(--p-button-text-success-hover-background);
+    --_text-active-bg: var(--p-button-text-success-active-background);
+    --_text-color: var(--p-button-text-success-color);
+}
+
+.ui-button.ui-button-warning,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-warning > .ui-button {
+    --_bg: var(--p-button-warn-background);
+    --_hover-bg: var(--p-button-warn-hover-background);
+    --_active-bg: var(--p-button-warn-active-background);
+    --_border: var(--p-button-warn-border-color);
+    --_hover-border: var(--p-button-warn-hover-border-color);
+    --_active-border: var(--p-button-warn-active-border-color);
+    --_color: var(--p-button-warn-color);
+    --_hover-color: var(--p-button-warn-hover-color);
+    --_active-color: var(--p-button-warn-active-color);
+    --_focus-ring-color: var(--p-button-warn-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-warn-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-warn-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-warn-active-background);
+    --_outlined-border: var(--p-button-outlined-warn-border-color);
+    --_outlined-color: var(--p-button-outlined-warn-color);
+    --_text-hover-bg: var(--p-button-text-warn-hover-background);
+    --_text-active-bg: var(--p-button-text-warn-active-background);
+    --_text-color: var(--p-button-text-warn-color);
+}
+
+.ui-button.ui-button-help,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-help > .ui-button {
+    --_bg: var(--p-button-help-background);
+    --_hover-bg: var(--p-button-help-hover-background);
+    --_active-bg: var(--p-button-help-active-background);
+    --_border: var(--p-button-help-border-color);
+    --_hover-border: var(--p-button-help-hover-border-color);
+    --_active-border: var(--p-button-help-active-border-color);
+    --_color: var(--p-button-help-color);
+    --_hover-color: var(--p-button-help-hover-color);
+    --_active-color: var(--p-button-help-active-color);
+    --_focus-ring-color: var(--p-button-help-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-help-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-help-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-help-active-background);
+    --_outlined-border: var(--p-button-outlined-help-border-color);
+    --_outlined-color: var(--p-button-outlined-help-color);
+    --_text-hover-bg: var(--p-button-text-help-hover-background);
+    --_text-active-bg: var(--p-button-text-help-active-background);
+    --_text-color: var(--p-button-text-help-color);
+}
+
+.ui-button.ui-button-danger,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-danger > .ui-button {
+    --_bg: var(--p-button-danger-background);
+    --_hover-bg: var(--p-button-danger-hover-background);
+    --_active-bg: var(--p-button-danger-active-background);
+    --_border: var(--p-button-danger-border-color);
+    --_hover-border: var(--p-button-danger-hover-border-color);
+    --_active-border: var(--p-button-danger-active-border-color);
+    --_color: var(--p-button-danger-color);
+    --_hover-color: var(--p-button-danger-hover-color);
+    --_active-color: var(--p-button-danger-active-color);
+    --_focus-ring-color: var(--p-button-danger-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-danger-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-danger-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-danger-active-background);
+    --_outlined-border: var(--p-button-outlined-danger-border-color);
+    --_outlined-color: var(--p-button-outlined-danger-color);
+    --_text-hover-bg: var(--p-button-text-danger-hover-background);
+    --_text-active-bg: var(--p-button-text-danger-active-background);
+    --_text-color: var(--p-button-text-danger-color);
+}
+
+.ui-button.ui-button-contrast,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-contrast > .ui-button {
+    --_bg: var(--p-button-contrast-background);
+    --_hover-bg: var(--p-button-contrast-hover-background);
+    --_active-bg: var(--p-button-contrast-active-background);
+    --_border: var(--p-button-contrast-border-color);
+    --_hover-border: var(--p-button-contrast-hover-border-color);
+    --_active-border: var(--p-button-contrast-active-border-color);
+    --_color: var(--p-button-contrast-color);
+    --_hover-color: var(--p-button-contrast-hover-color);
+    --_active-color: var(--p-button-contrast-active-color);
+    --_focus-ring-color: var(--p-button-contrast-focus-ring-color);
+    --_focus-ring-shadow: var(--p-button-contrast-focus-ring-shadow);
+    --_outlined-hover-bg: var(--p-button-outlined-contrast-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-contrast-active-background);
+    --_outlined-border: var(--p-button-outlined-contrast-border-color);
+    --_outlined-color: var(--p-button-outlined-contrast-color);
+    --_text-hover-bg: var(--p-button-text-contrast-hover-background);
+    --_text-active-bg: var(--p-button-text-contrast-active-background);
+    --_text-color: var(--p-button-text-contrast-color);
+}
+
+/* plain: neutral colors for outlined / text buttons */
+.ui-button.ui-button-plain,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-plain > .ui-button {
+    --_outlined-hover-bg: var(--p-button-outlined-plain-hover-background);
+    --_outlined-active-bg: var(--p-button-outlined-plain-active-background);
+    --_outlined-border: var(--p-button-outlined-plain-border-color);
+    --_outlined-color: var(--p-button-outlined-plain-color);
+    --_text-hover-bg: var(--p-button-text-plain-hover-background);
+    --_text-active-bg: var(--p-button-text-plain-active-background);
+    --_text-color: var(--p-button-text-plain-color);
+}
+
+/* variants: they only remap the base variables, so all states above keep working */
+.ui-button.ui-button-outlined,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-outlined > .ui-button {
+    --_bg: var(--p-button-outlined-background);
+    --_label-shadow: var(--p-button-outlined-label-shadow);
+    --_hover-bg: var(--_outlined-hover-bg);
+    --_active-bg: var(--_outlined-active-bg);
+    --_border: var(--_outlined-border);
+    --_hover-border: var(--_outlined-border);
+    --_active-border: var(--_outlined-border);
+    --_color: var(--_outlined-color);
+    --_hover-color: var(--_outlined-color);
+    --_active-color: var(--_outlined-color);
+}
+
+.ui-button.ui-button-flat,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-flat > .ui-button {
+    --_bg: transparent;
+    --_hover-bg: var(--_text-hover-bg);
+    --_active-bg: var(--_text-active-bg);
+    --_border: transparent;
+    --_hover-border: transparent;
+    --_active-border: transparent;
+    --_shadow: none;
+    --_active-shadow: none;
+    --_texture: none;
+    --_label-shadow: var(--p-button-outlined-label-shadow);
+    --_color: var(--_text-color);
+    --_hover-color: var(--_text-color);
+    --_active-color: var(--_text-color);
+}
+
+.ui-button.ui-button-raised,
+:is(.ui-splitbutton, .ui-menubutton).ui-button-raised > .ui-button {
+    --_shadow: var(--p-button-raised-shadow);
+    --_active-shadow: var(--p-button-raised-shadow);
+}
+
+/* shape and sizes (after the groups, so .rounded-button wins over ".ui-button-group .ui-button") */
+.ui-button {
+    &.rounded-button {
+        border-radius: var(--p-button-rounded-border-radius);
+    }
+
+    &.ui-button-sm {
+        font-size: var(--p-button-sm-font-size);
+        padding: var(--p-button-sm-padding-y) var(--p-button-sm-padding-x);
+
+        .ui-icon {
+            font-size: var(--p-button-sm-font-size);
+        }
+
+        &.ui-button-icon-only {
+            width: var(--p-button-sm-icon-only-width);
+            padding-inline: 0;
+
+            &.rounded-button {
+                height: var(--p-button-sm-icon-only-width);
+            }
+        }
+    }
+
+    &.ui-button-lg {
+        font-size: var(--p-button-lg-font-size);
+        padding: var(--p-button-lg-padding-y) var(--p-button-lg-padding-x);
+
+        .ui-icon {
+            font-size: var(--p-button-lg-font-size);
+        }
+
+        &.ui-button-icon-only {
+            width: var(--p-button-lg-icon-only-width);
+            padding-inline: 0;
+
+            &.rounded-button {
+                height: var(--p-button-lg-icon-only-width);
+            }
+        }
+    }
+
+    /* p:linkButton: the padding sits on the inner link (see above), also for the sizes and icon only */
+    &.ui-linkbutton {
+        &.ui-button-sm,
+        &.ui-button-lg {
+            padding: 0;
+        }
+
+        &.ui-button-sm > a {
+            padding: var(--p-button-sm-padding-y) var(--p-button-sm-padding-x);
+        }
+
+        &.ui-button-lg > a {
+            padding: var(--p-button-lg-padding-y) var(--p-button-lg-padding-x);
+        }
+
+        &.ui-button-icon-only > a {
+            flex: 1 1 auto;
+            align-self: stretch;
+            justify-content: center;
+            padding-inline: 0;
+            gap: 0;
+        }
+    }
+
+    .ui-badge {
+        min-width: var(--p-button-badge-size);
+        height: var(--p-button-badge-size);
+        line-height: var(--p-button-badge-size);
+    }
+}
+
+/* links */
+.ui-commandlink,
+.ui-link {
+    color: var(--p-button-link-color);
+    border-radius: var(--p-border-radius-xs);
+    outline-color: transparent;
+    transition: color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration);
+
+    &:hover {
+        color: var(--p-button-link-hover-color);
+        text-decoration: underline;
+    }
+
+    &:active {
+        color: var(--p-button-link-active-color);
+    }
+
+    &:focus-visible {
+        outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+        outline-offset: var(--p-focus-ring-offset);
+        box-shadow: var(--p-focus-ring-shadow);
+    }
+}
+
+/* p:commandLink inline ajax status: the widget adds ui-state-loading (+ ui-state-disabled) while its request runs,
+   a spinner follows the text (the inline ajax status tokens, ajaxstatus/ajaxstatus.css) */
+.ui-commandlink.ui-state-loading {
+    cursor: progress;
+    text-decoration: none;
+
+    &::after {
+        content: "\2003";
+        display: inline-block;
+        line-height: 1;
+        margin-inline-start: var(--p-button-link-loading-icon-gap);
+        vertical-align: -0.125em;
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-button-link-loading-icon) center / contain no-repeat;
+        animation: ui-spin var(--p-ajaxstatus-loading-icon-animation-duration) linear infinite;
+    }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <!-- float labels of fields with values on page load, without any interaction -->
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label">
+                    <p:chips id="chips" value="#{theming007.chips}" />
+                    <p:outputLabel id="chipsLabel" for="@previous" value="Chips" />
+                </span>
+            </div>
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label">
+                    <p:autoComplete id="autoComplete" value="#{theming007.autoComplete}" multiple="true"
+                                    completeMethod="#{theming007.complete}" />
+                    <p:outputLabel id="autoCompleteLabel" for="@previous" value="AutoComplete" />
+                </span>
+            </div>
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label">
+                    <p:chips id="emptyChips" value="#{theming007.emptyChips}" />
+                    <p:outputLabel id="emptyChipsLabel" for="@previous" value="Empty chips" />
+                </span>
+            </div>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

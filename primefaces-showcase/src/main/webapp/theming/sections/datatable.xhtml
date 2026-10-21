@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <h:form id="datatableForm">
+        <p:growl id="msgs" showDetail="true"/>
+
+        <!-- filter, sort, paginator, checkbox selection -->
+        <div class="demo-card">
+            <h2>DataTable</h2>
+            <p:dataTable id="customers" var="customer" value="#{themingDataTableView.customers}" widgetVar="dtCustomers"
+                         filteredValue="#{themingDataTableView.filteredCustomers}" rowKey="#{customer.id}"
+                         selection="#{themingDataTableView.selectedCustomers}" selectionMode="multiple" selectionRowMode="none"
+                         rows="5" paginator="true" rowsPerPageTemplate="5,10,25"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+                         emptyMessage="No customers found">
+                <f:facet name="header">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap">
+                        <span>Customers</span>
+                        <span class="ui-input-icon-left">
+                            <i class="pi pi-search"/>
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('dtCustomers').filter())"
+                                         placeholder="Search"/>
+                        </span>
+                    </div>
+                </f:facet>
+                <p:column selectionBox="true" style="width: 3rem; text-align: center"/>
+                <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains"
+                          filterPlaceholder="Name">
+                    <h:outputText value="#{customer.name}"/>
+                </p:column>
+                <p:column headerText="Country" sortBy="#{customer.country.name}" filterBy="#{customer.country.name}"
+                          filterMatchMode="contains">
+                    <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px; vertical-align: middle"/>
+                    <h:outputText value="#{customer.country.name}" style="margin-inline-start: .5rem"/>
+                </p:column>
+                <p:column field="status" headerText="Status" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('dtCustomers').filter()" autoWidth="false">
+                            <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{themingDataTableView.customerStatus}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <p:tag value="#{customer.status}" severity="#{customer.status eq 'UNQUALIFIED' ? 'danger' : customer.status eq 'QUALIFIED' ? 'success' : customer.status eq 'NEGOTIATION' ? 'warning' : customer.status eq 'NEW' ? 'info' : 'secondary'}"/>
+                </p:column>
+                <p:column headerText="Activity" sortBy="#{customer.activity}">
+                    <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+
+        <!-- row expansion, row editing, striped rows -->
+        <div class="demo-card">
+            <h2>DataTable: row expansion and editing</h2>
+            <p:dataTable var="product" value="#{themingDataTableView.products}" rowKey="#{product.code}" editable="true"
+                         stripedRows="true" size="small">
+                <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update=":datatableForm:msgs"/>
+                <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":datatableForm:msgs"/>
+                <p:column style="width: 3rem" ariaHeaderText="Row Toggler">
+                    <p:rowToggler/>
+                </p:column>
+                <p:column headerText="Name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.name}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.name}" style="width: 100%" label="Name"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Status">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.inventoryStatus.text}"/></f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{product.inventoryStatus}" style="width: 100%">
+                                <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status" itemLabel="#{status.text}" itemValue="#{status}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Price" style="text-align: end">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.price}"><f:convertNumber type="currency" currencySymbol="$"/></h:outputText>
+                        </f:facet>
+                        <f:facet name="input"><p:inputNumber value="#{product.price}" style="width: 100%" label="Price" symbol="$"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column style="width: 6rem" ariaHeaderText="Edit">
+                    <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+                </p:column>
+                <p:rowExpansion>
+                    <div style="padding: .5rem 0">
+                        <strong>#{product.name}</strong>
+                        <div class="muted">#{product.description}</div>
+                        <p:rating readonly="true" value="#{product.rating}"/>
+                    </div>
+                </p:rowExpansion>
+            </p:dataTable>
+        </div>
+
+        <div class="demo-card">
+            <h2>TreeTable</h2>
+            <p:treeTable value="#{ttSelectionView.root3}" var="document" selectionMode="checkbox"
+                         selection="#{ttSelectionView.selectedNodes2}">
+                <f:facet name="header">Documents</f:facet>
+                <p:column headerText="Name" sortBy="#{document.name}"><h:outputText value="#{document.name}"/></p:column>
+                <p:column headerText="Size"><h:outputText value="#{document.size}"/></p:column>
+                <p:column headerText="Type"><h:outputText value="#{document.type}"/></p:column>
+            </p:treeTable>
+        </div>
+    </h:form>
+</ui:composition>

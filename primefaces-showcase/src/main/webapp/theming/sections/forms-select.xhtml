@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <h:form id="formsSelectForm">
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Checkbox / RadioButton</h2>
+                <div class="demo-row">
+                    <p:selectBooleanCheckbox value="#{themingFormsSelectView.checked}" itemLabel="Checked"/>
+                    <p:selectBooleanCheckbox value="#{themingFormsSelectView.unchecked}" itemLabel="Unchecked"/>
+                    <p:selectBooleanCheckbox value="#{themingFormsSelectView.checked}" itemLabel="Disabled" disabled="true"/>
+                </div>
+                <h3>SelectManyCheckbox / SelectOneRadio</h3>
+                <p:selectManyCheckbox value="#{themingFormsSelectView.selectedCities}" layout="responsive" columns="3">
+                    <f:selectItems value="#{themingFormsSelectView.cities.subList(4, 7)}"/>
+                </p:selectManyCheckbox>
+                <p:selectOneRadio value="#{themingFormsSelectView.city}" layout="responsive" columns="3" style="margin-top: .75rem">
+                    <f:selectItems value="#{themingFormsSelectView.cities.subList(4, 7)}"/>
+                </p:selectOneRadio>
+            </div>
+
+            <div class="demo-card">
+                <h2>ToggleSwitch / SelectOneButton</h2>
+                <div class="demo-row">
+                    <p:toggleSwitch value="#{themingFormsSelectView.checked}"/>
+                    <p:toggleSwitch value="#{themingFormsSelectView.unchecked}"/>
+                    <p:toggleSwitch value="#{themingFormsSelectView.checked}" disabled="true"/>
+                </div>
+                <h3>SelectOneButton / SelectManyButton</h3>
+                <div class="demo-row">
+                    <p:selectOneButton value="#{themingFormsSelectView.city}">
+                        <f:selectItems value="#{themingFormsSelectView.cities.subList(4, 7)}"/>
+                    </p:selectOneButton>
+                    <p:selectManyButton value="#{themingFormsSelectView.selectedCities}">
+                        <f:selectItems value="#{themingFormsSelectView.cities.subList(4, 7)}"/>
+                    </p:selectManyButton>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>SelectOneMenu / SelectCheckboxMenu / CascadeSelect</h2>
+            <h3>Default / disabled / invalid / filled</h3>
+            <div class="demo-row">
+                <p:selectOneMenu value="#{themingFormsSelectView.city}" style="min-width: 12rem">
+                    <f:selectItems value="#{themingFormsSelectView.cities}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{themingFormsSelectView.city}" style="min-width: 12rem" disabled="true">
+                    <f:selectItems value="#{themingFormsSelectView.cities}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{themingFormsSelectView.noCity}" style="min-width: 12rem">
+                    <f:selectItem itemLabel="Invalid" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{themingFormsSelectView.cities}"/>
+                    <f:event type="preRenderComponent" listener="#{themingFormsSelectView.markInvalid}"/>
+                </p:selectOneMenu>
+                <span class="ui-input-filled">
+                    <p:selectOneMenu value="#{themingFormsSelectView.noCity}" style="min-width: 12rem">
+                        <f:selectItem itemLabel="Filled" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{themingFormsSelectView.cities}"/>
+                    </p:selectOneMenu>
+                </span>
+            </div>
+            <h3>Filter and groups / multiple / cascade</h3>
+            <div class="demo-row">
+                <p:selectOneMenu value="#{themingFormsSelectView.noCity}" filter="true" filterMatchMode="contains" style="min-width: 12rem">
+                    <f:selectItem itemLabel="Select a city" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{themingFormsSelectView.groupedCities}"/>
+                </p:selectOneMenu>
+                <p:selectCheckboxMenu value="#{themingFormsSelectView.selectedCities}" label="Cities" multiple="true" filter="true"
+                                      style="min-width: 15rem" panelStyle="width: 15rem">
+                    <f:selectItems value="#{themingFormsSelectView.cities}"/>
+                </p:selectCheckboxMenu>
+                <p:cascadeSelect value="#{themingFormsSelectView.noCity}" style="min-width: 14rem" placeholder="Select a City">
+                    <f:selectItems value="#{cascadeSelectView.countries}"/>
+                </p:cascadeSelect>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>SelectOneListbox</h2>
+                <p:selectOneListbox value="#{themingFormsSelectView.city}" filter="true" filterMatchMode="contains">
+                    <f:selectItems value="#{themingFormsSelectView.cities}"/>
+                </p:selectOneListbox>
+            </div>
+
+            <div class="demo-card">
+                <h2>DatePicker</h2>
+                <div class="demo-row" style="align-items: flex-start">
+                    <p:datePicker value="#{themingFormsSelectView.date}" showIcon="true"/>
+                    <p:datePicker value="#{themingFormsSelectView.range}" selectionMode="range" inline="true"/>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

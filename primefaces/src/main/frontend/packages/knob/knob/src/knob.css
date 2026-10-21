@@ -1,0 +1,27 @@
+/*
+ * Knob: p:knob (jQuery Knob, drawn on a canvas)
+ *
+ * The arc colors are canvas paint set by the widget (colorTheme / foregroundColor / backgroundColor attributes),
+ * CSS cannot reach them. The plugin writes an inline font ("bold ... Arial") and color on the value label,
+ * only the font family is aligned with the theme here.
+ * Supported classes: ui-state-disabled (on .ui-knob)
+ */
+.ui-knob {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+
+    canvas {
+        border-radius: 50%;
+        outline-color: transparent;
+    }
+
+    /* !important: the plugin writes an inline font */
+    input {
+        font-family: var(--p-typography-font-family) !important;
+    }
+
+    &.ui-state-disabled {
+        opacity: var(--p-disabled-opacity);
+    }
+}

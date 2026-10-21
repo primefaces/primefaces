@@ -11,19 +11,20 @@
                 display: inline-block;
                 padding: 0.5rem 1rem;
                 margin: 0.25rem;
-                border: 1px solid #dee2e6;
+                border: 1px solid var(--p-content-border-color);
                 border-radius: 0.25rem;
-                background: #fff;
+                background: var(--p-content-background);
+                color: var(--p-text-color);
                 cursor: pointer;
                 transition: all 0.2s;
             }
             .custom-button:hover {
-                background: #f8f9fa;
+                background: var(--p-content-hover-background);
             }
             .custom-button.ui-state-active {
-                background: #007bff;
-                color: #fff;
-                border-color: #007bff;
+                background: var(--p-primary-color);
+                color: var(--p-primary-contrast-color);
+                border-color: var(--p-primary-color);
             }
             .legend {
                 display: inline-block;
@@ -42,7 +43,8 @@
                 margin: 0.5rem;
                 border: 2px solid;
                 border-radius: 0.5rem;
-                background: #fff;
+                background: var(--p-content-background);
+                color: var(--p-text-color);
                 cursor: pointer;
                 transition: all 0.2s;
                 min-width: 200px;
@@ -53,7 +55,7 @@
                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             }
             .payment-button.ui-state-active {
-                background: #f8f9fa;
+                background: var(--p-content-hover-background);
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
@@ -62,28 +64,28 @@
             }
             .payment-button.paypal.ui-state-active {
                 border-color: #0070ba;
-                background: #f0f7ff;
+                background: color-mix(in srgb, #0070ba 14%, var(--p-content-background));
             }
             .payment-button.bitcoin {
                 border-color: #f7931a;
             }
             .payment-button.bitcoin.ui-state-active {
                 border-color: #f7931a;
-                background: #fff8f0;
+                background: color-mix(in srgb, #f7931a 14%, var(--p-content-background));
             }
             .payment-button.creditcard {
                 border-color: #6c757d;
             }
             .payment-button.creditcard.ui-state-active {
                 border-color: #6c757d;
-                background: #f8f9fa;
+                background: color-mix(in srgb, #6c757d 14%, var(--p-content-background));
             }
             .payment-button.cash {
                 border-color: #28a745;
             }
             .payment-button.cash.ui-state-active {
                 border-color: #28a745;
-                background: #f0fff4;
+                background: color-mix(in srgb, #28a745 14%, var(--p-content-background));
             }
             .payment-button.ui-state-disabled {
                 opacity: 0.5;
@@ -113,11 +115,11 @@
             }
             .payment-tagline {
                 font-size: 0.85rem;
-                color: #6c757d;
+                color: var(--p-text-muted-color);
                 text-align: center;
             }
             .payment-button.ui-state-active .payment-tagline {
-                color: #495057;
+                color: var(--p-text-color);
             }
         </style>
     </ui:define>

@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         java: [17]
-        profile: [ 'headless,safari,csp,theme-nova,mojarra-4.0' ]
+        profile: [ 'headless,safari,csp,theme-nora,mojarra-4.0' ]
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

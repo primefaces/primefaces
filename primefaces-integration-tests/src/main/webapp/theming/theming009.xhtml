@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <!-- float label of p:selectCheckboxMenu: the widget sets no filled class, the theme detects checked options -->
+        <h:form id="form">
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label">
+                    <p:selectCheckboxMenu id="filled" value="#{theming009.selectedCities}" multiple="true">
+                        <f:selectItems value="#{theming009.cities}" />
+                    </p:selectCheckboxMenu>
+                    <p:outputLabel id="filledLabel" for="@previous" value="Filled" />
+                </span>
+            </div>
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label">
+                    <p:selectCheckboxMenu id="empty" value="#{theming009.noCities}" multiple="true">
+                        <f:selectItems value="#{theming009.cities}" />
+                    </p:selectCheckboxMenu>
+                    <p:outputLabel id="emptyLabel" for="@previous" value="Empty" />
+                </span>
+            </div>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

@@ -1,1 +1,11 @@
-@import url("cropperjs/dist/cropper.css");
+/*
+ * imagecropper/imagecropper.css: loaded with imagecropper/imagecropper.js.
+ *
+ * Cascade layers (lowest first): primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors.
+ * The statement is repeated in every stylesheet of PrimeFaces, so the order is the same whichever is loaded first.
+ * Application CSS is unlayered and always wins, without !important and regardless of specificity.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("cropperjs/dist/cropper.css") layer(primefaces.vendor);
+@import url("./src/imagecropper.css") layer(primefaces.components);

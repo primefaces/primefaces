@@ -1,76 +1,184 @@
+/*
+ * Log: p:log (client side log window)
+ *
+ * No PrimeUIX counterpart: styled like a dialog, PF only tokens in the log block of presets/*.css.
+ * Markup: .ui-log > .ui-log-header (> a.ui-log-button.ui-log-{clear|all|info|warn|debug|error}),
+ *         .ui-log-content > ul.ui-log-items > li.ui-log-item.ui-log-item-{info|warn|debug|error} (> span.ui-icon + text)
+ */
+
 .ui-log {
-    position:fixed;
-    width:400px;
-    height:300px;
-    left:50px;
-    top:50px;
-    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
-    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    position: fixed;
+    width: 400px;
+    left: 50px;
+    top: 50px;
+    display: flex;
+    flex-direction: column;
+    background: var(--p-log-background);
+    color: var(--p-log-color);
+    border: 1px solid var(--p-log-border-color);
+    border-radius: var(--p-log-border-radius);
+    box-shadow: var(--p-log-shadow);
+
+    .ui-log-header {
+        display: flex;
+        align-items: center;
+        gap: var(--p-log-header-gap);
+        background: transparent;
+        color: var(--p-log-color);
+        border: 0 none;
+        border-radius: 0;
+        padding: var(--p-log-header-padding);
+        cursor: move;
+
+        /* the ui-helper-clearfix pseudos would be flex items with a gap each */
+        &::before,
+        &::after {
+            content: none;
+        }
+
+        /* header buttons: rounded text secondary icon-only buttons */
+        .ui-log-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: var(--p-log-button-size);
+            height: var(--p-log-button-size);
+            padding: 0;
+            border: 0 none;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--p-log-button-color);
+            text-decoration: none;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            outline-color: transparent;
+            transition: background var(--p-log-button-transition-duration), color var(--p-log-button-transition-duration),
+                outline-color var(--p-log-button-transition-duration), box-shadow var(--p-log-button-transition-duration);
+
+            &:hover,
+            &.ui-state-hover {
+                background: var(--p-log-button-hover-background);
+                color: var(--p-log-button-color);
+            }
+
+            &:active,
+            &.ui-state-active {
+                background: var(--p-log-button-active-background);
+                color: var(--p-log-button-active-color);
+            }
+
+            &:focus-visible {
+                outline: var(--p-log-button-focus-ring-width) var(--p-log-button-focus-ring-style) var(--p-log-button-focus-ring-color);
+                outline-offset: var(--p-log-button-focus-ring-offset);
+                box-shadow: var(--p-log-button-focus-ring-shadow);
+            }
+        }
+    }
+
+    /* header buttons and log entries */
+    .ui-icon-trash,
+    .ui-icon-note,
+    .ui-icon-info,
+    .ui-icon-notice,
+    .ui-icon-search,
+    .ui-icon-alert {
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        background: none;
+        color: inherit;
+    }
+
+    .ui-icon-trash::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-log-clear-icon) center / contain no-repeat;
+    }
+
+    .ui-icon-note::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-log-all-icon) center / contain no-repeat;
+    }
+
+    .ui-icon-info::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-log-info-icon) center / contain no-repeat;
+    }
+
+    .ui-icon-notice::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-log-warn-icon) center / contain no-repeat;
+    }
+
+    .ui-icon-search::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-log-debug-icon) center / contain no-repeat;
+    }
+
+    .ui-icon-alert::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-log-error-icon) center / contain no-repeat;
+    }
+
+    .ui-log-content {
+        flex-grow: 1;
+        background: transparent;
+        color: var(--p-log-color);
+        border: 0 none;
+        padding: var(--p-log-content-padding);
+    }
+
+    .ui-log-items {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .ui-log-item {
+        margin: 0 0 var(--p-log-item-gap) 0;
+        font-size: var(--p-log-item-font-size);
+        overflow-wrap: anywhere;
+
+        .ui-icon {
+            margin-inline-end: var(--p-log-item-gap);
+        }
+
+        &.ui-log-item-info .ui-icon {
+            color: var(--p-log-item-info-icon-color);
+        }
+
+        &.ui-log-item-warn .ui-icon {
+            color: var(--p-log-item-warn-icon-color);
+        }
+
+        &.ui-log-item-debug .ui-icon {
+            color: var(--p-log-item-debug-icon-color);
+        }
+
+        &.ui-log-item-error .ui-icon {
+            color: var(--p-log-item-error-icon-color);
+        }
+    }
 }
 
 .ui-log-header {
-    padding: .4em .4em .4em 1em; 
-    position: relative; 
-    border:0px;
-    height:18px;
+    position: relative;
 }
 
 .ui-log-content {
     overflow: auto;
-    height:274px;
-}
-
-.ui-log .ui-log-header .ui-log-button { 
-    position:absolute;
-    display: block;
-    padding: 1px;
-}
-
-.ui-log .ui-log-header .ui-log-button.ui-log-clear {
-    top:4px;
-    left:10px;
-}
-
-.ui-log .ui-log-header .ui-log-button.ui-log-all {
-    top:4px;
-    left:30px;
-}
-
-.ui-log .ui-log-header .ui-log-button.ui-log-info {
-    top:4px;
-    left:50px;
-}
-
-.ui-log .ui-log-header .ui-log-button.ui-log-warn {
-    top:4px;
-    left:70px;
-}
-
-.ui-log .ui-log-header .ui-log-button.ui-log-debug {
-    top:4px;
-    left:90px;
-}
-
-.ui-log .ui-log-header .ui-log-button.ui-log-error {
-    top:4px;
-    left:110px;
-}
-
-.ui-log .ui-log-button:hover, .ui-log .ui-log-button.ui-state-active { 
-    padding: 0; 
-}
-
-.ui-log .ui-log-items {
-    list-style-type: none;
-    padding-left: 10px;
-}
-
-.ui-log .ui-log-item {
-    margin-bottom:5px;
-}
-
-.ui-log .ui-log-item .ui-icon {
-    float:left;
-    margin-right: 10px;
+    height: 274px;
 }

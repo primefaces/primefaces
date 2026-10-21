@@ -1,23 +1,90 @@
+/*
+ * Tooltip: p:tooltip (also the global tooltip .ui-tooltip-global and p:message display="tooltip")
+ *
+ * Markup: .ui-tooltip.ui-tooltip-{top|right|bottom|left} > .ui-tooltip-arrow, .ui-tooltip-text
+ */
+
 .ui-tooltip {
-    position:absolute;
-    display:none;
-}
+    position: absolute;
+    display: none;
+    max-width: var(--p-tooltip-max-width);
 
-.ui-tooltip.ui-tooltip-right,
-.ui-tooltip.ui-tooltip-left {
-    padding: 0 5px;
-}
+    &.ui-tooltip-right,
+    &.ui-tooltip-left {
+        padding: 0 var(--p-tooltip-gutter);
+    }
 
-.ui-tooltip.ui-tooltip-top,
-.ui-tooltip.ui-tooltip-bottom {
-    padding: 5px 0px;
-}
+    &.ui-tooltip-top,
+    &.ui-tooltip-bottom {
+        padding: var(--p-tooltip-gutter) 0;
+    }
 
-.ui-tooltip .ui-tooltip-text {
-   padding: 3px 10px;
-   background-color: rgb(76, 76, 76);
-   background-image: none;
-   color: #ffffff;
+    .ui-tooltip-text {
+        word-break: break-word;
+        background: var(--p-tooltip-background);
+        color: var(--p-tooltip-color);
+        padding: var(--p-tooltip-padding);
+        box-shadow: var(--p-tooltip-shadow);
+        border-radius: var(--p-tooltip-border-radius);
+        font-size: var(--p-tooltip-font-size);
+        font-weight: var(--p-tooltip-font-weight);
+
+        /* p:tooltip with content: images fit into the box (max width of the tooltip) */
+        img,
+        svg,
+        video,
+        canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    &.ui-tooltip-right .ui-tooltip-arrow {
+        margin-top: calc(-1 * var(--p-tooltip-gutter));
+        border-width: var(--p-tooltip-gutter) var(--p-tooltip-gutter) var(--p-tooltip-gutter) 0;
+        border-right-color: var(--p-tooltip-background);
+    }
+
+    &.ui-tooltip-left .ui-tooltip-arrow {
+        margin-top: calc(-1 * var(--p-tooltip-gutter));
+        border-width: var(--p-tooltip-gutter) 0 var(--p-tooltip-gutter) var(--p-tooltip-gutter);
+        border-left-color: var(--p-tooltip-background);
+    }
+
+    &.ui-tooltip-top .ui-tooltip-arrow {
+        margin-left: calc(-1 * var(--p-tooltip-gutter));
+        border-width: var(--p-tooltip-gutter) var(--p-tooltip-gutter) 0 var(--p-tooltip-gutter);
+        border-top-color: var(--p-tooltip-background);
+    }
+
+    &.ui-tooltip-bottom .ui-tooltip-arrow {
+        margin-left: calc(-1 * var(--p-tooltip-gutter));
+        border-width: 0 var(--p-tooltip-gutter) var(--p-tooltip-gutter) var(--p-tooltip-gutter);
+        border-bottom-color: var(--p-tooltip-background);
+    }
+
+    /* invalid: the widget marks text and arrow when the target is ui-state-error (p:message display="tooltip") */
+    .ui-tooltip-text.ui-state-error {
+        background: var(--p-tooltip-invalid-background);
+        color: var(--p-tooltip-invalid-color);
+    }
+
+    &.ui-tooltip-right .ui-tooltip-arrow.ui-state-error {
+        border-right-color: var(--p-tooltip-invalid-background);
+    }
+
+    &.ui-tooltip-left .ui-tooltip-arrow.ui-state-error {
+        border-left-color: var(--p-tooltip-invalid-background);
+    }
+
+    &.ui-tooltip-top .ui-tooltip-arrow.ui-state-error {
+        border-top-color: var(--p-tooltip-invalid-background);
+    }
+
+    &.ui-tooltip-bottom .ui-tooltip-arrow.ui-state-error {
+        border-bottom-color: var(--p-tooltip-invalid-background);
+    }
 }
 
 .ui-tooltip-arrow {
@@ -31,35 +98,19 @@
 .ui-tooltip-right .ui-tooltip-arrow {
     top: 50%;
     left: 0;
-    margin-top: -5px;
-    border-width: 5px 5px 5px 0;
-    border-right-color: rgb(76, 76, 76);
 }
 
 .ui-tooltip-left .ui-tooltip-arrow {
     top: 50%;
     right: 0;
-    margin-top: -5px;
-    border-width: 5px 0 5px 5px;
-    border-left-color: rgb(76, 76, 76);
-}
-
-.ui-tooltip.ui-tooltip-top {
-    padding: 5px 0;
 }
 
 .ui-tooltip-top .ui-tooltip-arrow {
     bottom: 0;
     left: 50%;
-    margin-left: -5px;
-    border-width: 5px 5px 0;
-    border-top-color: rgb(76, 76, 76);
 }
 
 .ui-tooltip-bottom .ui-tooltip-arrow {
     top: 0;
     left: 50%;
-    margin-left: -5px;
-    border-width: 0 5px 5px;
-    border-bottom-color: rgb(76, 76, 76);
 }

@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <ui:param name="severities" value="#{['primary', 'secondary', 'info', 'success', 'warning', 'help', 'danger', 'contrast']}"/>
+    <h:form id="menusForm">
+        <div class="demo-card">
+            <h2>Button</h2>
+            <h3>Severities: filled / outlined / text</h3>
+            <div class="demo-row demo-severities">
+                <ui:repeat value="#{severities}" var="s">
+                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-#{s}"/>
+                </ui:repeat>
+            </div>
+            <div class="demo-row demo-severities" style="margin-top: .75rem">
+                <ui:repeat value="#{severities}" var="s">
+                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-outlined ui-button-#{s}"/>
+                </ui:repeat>
+            </div>
+            <div class="demo-row demo-severities" style="margin-top: .75rem">
+                <ui:repeat value="#{severities}" var="s">
+                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-flat ui-button-#{s}"/>
+                </ui:repeat>
+            </div>
+
+            <h3>Icons / sizes / rounded / raised / badge / disabled</h3>
+            <div class="demo-row">
+                <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+                <p:commandButton type="button" value="Next" icon="pi pi-arrow-right" iconPos="right" styleClass="ui-button-secondary"/>
+                <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button" title="Search"/>
+                <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-outlined" title="Like"/>
+                <p:commandButton type="button" value="Small" size="small"/>
+                <p:commandButton type="button" value="Large" size="large"/>
+                <p:commandButton type="button" value="Rounded" styleClass="rounded-button ui-button-success"/>
+                <p:commandButton type="button" value="Raised" styleClass="ui-button-raised ui-button-info"/>
+                <p:commandButton type="button" value="Messages" icon="pi pi-envelope" styleClass="ui-button-warning">
+                    <p:badge value="8" severity="danger"/>
+                </p:commandButton>
+                <p:commandButton type="button" value="Disabled" disabled="true"/>
+            </div>
+
+            <h3>SplitButton / MenuButton</h3>
+            <div class="demo-row">
+                <p:splitButton value="Save" icon="pi pi-save">
+                    <p:menuitem value="Update" icon="pi pi-refresh" url="#"/>
+                    <p:menuitem value="Delete" icon="pi pi-times" url="#"/>
+                    <p:divider/>
+                    <p:menuitem value="Homepage" icon="pi pi-home" url="#"/>
+                </p:splitButton>
+                <p:splitButton value="Outlined" icon="pi pi-save" styleClass="ui-button-outlined">
+                    <p:menuitem value="Update" icon="pi pi-refresh" url="#"/>
+                    <p:menuitem value="Delete" icon="pi pi-times" url="#"/>
+                </p:splitButton>
+                <p:menuButton value="Options" icon="pi pi-cog" styleClass="ui-button-secondary">
+                    <p:menuitem value="Save" icon="pi pi-save" url="#"/>
+                    <p:menuitem value="Update" icon="pi pi-refresh" url="#"/>
+                    <p:menuitem value="Delete" icon="pi pi-trash" url="#"/>
+                </p:menuButton>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Menubar</h2>
+            <p:menubar>
+                <p:submenu label="File" icon="pi pi-file">
+                    <p:submenu label="New" icon="pi pi-plus">
+                        <p:menuitem value="Project" url="#"/>
+                        <p:menuitem value="Other" url="#"/>
+                    </p:submenu>
+                    <p:menuitem value="Open" icon="pi pi-folder-open" url="#"/>
+                    <p:divider/>
+                    <p:menuitem value="Quit" icon="pi pi-power-off" url="#"/>
+                </p:submenu>
+                <p:submenu label="Edit" icon="pi pi-pencil">
+                    <p:menuitem value="Undo" icon="pi pi-undo" url="#"/>
+                    <p:menuitem value="Redo" icon="pi pi-refresh" url="#"/>
+                </p:submenu>
+                <p:menuitem value="Help" icon="pi pi-question-circle" url="#"/>
+                <f:facet name="options">
+                    <p:inputText placeholder="Search" style="margin-inline-end: .5rem"/>
+                    <p:commandButton type="button" value="Logout" icon="pi pi-sign-out" styleClass="ui-button-secondary"/>
+                </f:facet>
+            </p:menubar>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Menu</h2>
+                <p:menu>
+                    <p:submenu label="Options">
+                        <p:menuitem value="Save" icon="pi pi-save" url="#"/>
+                        <p:menuitem value="Update" icon="pi pi-refresh" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Navigate">
+                        <p:menuitem value="Home" icon="pi pi-home" url="#"/>
+                        <p:menuitem value="Disabled" icon="pi pi-ban" url="#" disabled="true"/>
+                    </p:submenu>
+                </p:menu>
+            </div>
+
+            <div class="demo-card">
+                <h2>TieredMenu</h2>
+                <p:tieredMenu>
+                    <p:submenu label="File" icon="pi pi-file">
+                        <p:menuitem value="New" icon="pi pi-plus" url="#"/>
+                        <p:menuitem value="Open" icon="pi pi-folder-open" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Edit" icon="pi pi-pencil">
+                        <p:menuitem value="Undo" icon="pi pi-undo" url="#"/>
+                        <p:menuitem value="Redo" icon="pi pi-refresh" url="#"/>
+                    </p:submenu>
+                    <p:menuitem value="Quit" icon="pi pi-power-off" url="#"/>
+                </p:tieredMenu>
+            </div>
+
+            <div class="demo-card">
+                <h2>PanelMenu</h2>
+                <p:panelMenu>
+                    <p:submenu label="Files" icon="pi pi-file" expanded="true">
+                        <p:menuitem value="Documents" icon="pi pi-folder" url="#"/>
+                        <p:menuitem value="Images" icon="pi pi-image" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Settings" icon="pi pi-cog">
+                        <p:menuitem value="Profile" icon="pi pi-user" url="#"/>
+                    </p:submenu>
+                </p:panelMenu>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>BreadCrumb / Steps / TabMenu</h2>
+            <p:breadCrumb>
+                <p:menuitem value="Home" url="#"/>
+                <p:menuitem value="Components" url="#"/>
+                <p:menuitem value="Menu" url="#"/>
+                <p:menuitem value="BreadCrumb" url="#"/>
+            </p:breadCrumb>
+            <p:steps activeIndex="1" style="margin-top: 1.5rem">
+                <p:menuitem value="Personal"/>
+                <p:menuitem value="Seat"/>
+                <p:menuitem value="Payment"/>
+                <p:menuitem value="Confirmation"/>
+            </p:steps>
+            <p:tabMenu activeIndex="0" style="margin-top: 1.5rem">
+                <p:menuitem value="Overview" icon="pi pi-home" url="#"/>
+                <p:menuitem value="Demos" icon="pi pi-star" url="#"/>
+                <p:menuitem value="Documentation" icon="pi pi-search" url="#"/>
+            </p:tabMenu>
+        </div>
+    </h:form>
+</ui:composition>

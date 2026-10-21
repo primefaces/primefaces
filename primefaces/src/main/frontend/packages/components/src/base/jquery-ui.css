@@ -1,0 +1,35 @@
+/*
+ * Overrides of the jQuery UI CSS (vendor layer: core, draggable, resizable, selectable, sortable).
+ * The helper and resizable rules repeat vendor rules on purpose: here they also beat lower or equal specificity
+ * theme rules (e.g. display / position of .ui-icon in common.css), which the vendor layer cannot.
+ */
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.ui-selectable-helper {
+    border-color: var(--p-text-color);
+}
+
+/* repeats the vendor rule: the default se handle also carries .ui-icon, whose display (common.css) beats the vendor layer */
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+    display: none;
+}
+
+/* p:resizable: the resized content grows with the container. In :where(), so the display of every component wins */
+:where(.ui-resizable) {
+    display: flex;
+    flex-direction: column;
+
+    > .ui-widget-content {
+        flex-grow: 1;
+    }
+}

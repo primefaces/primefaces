@@ -1,9 +1,0 @@
-body {
-  .ui-selectbooleancheckbox,
-  .ui-tristatecheckbox {
-    width: auto;
-    height: auto;
-    display: inline-flex;
-    @include flex-align-center();
-  }
-}

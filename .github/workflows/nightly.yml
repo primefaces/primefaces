@@ -22,30 +22,30 @@ jobs:
         include:
           # Java 17 with Faces 4.0
           - java: 17
-            profile: 'firefox,theme-saga,myfaces-4.0'
+            profile: 'firefox,theme-lara,myfaces-4.0'
           - java: 17
-            profile: 'firefox,csp,theme-saga,myfaces-4.0'
+            profile: 'firefox,csp,theme-lara,myfaces-4.0'
           - java: 17
-            profile: 'chrome,theme-saga,myfaces-4.0'
+            profile: 'chrome,theme-lara,myfaces-4.0'
           - java: 17
-            profile: 'chrome,csp,theme-nova,myfaces-4.0'
+            profile: 'chrome,csp,theme-nora,myfaces-4.0'
           - java: 17
-            profile: 'chrome,csp,theme-nova,mojarra-4.0'
+            profile: 'chrome,csp,theme-nora,mojarra-4.0'
           - java: 17
-            profile: 'chrome,client-state-saving,theme-nova,mojarra-4.0'
+            profile: 'chrome,client-state-saving,theme-nora,mojarra-4.0'
           # Java 21 with Faces 4.1
           - java: 21
-            profile: 'firefox,theme-saga,myfaces-4.1'
+            profile: 'firefox,theme-lara,myfaces-4.1'
           - java: 21
-            profile: 'firefox,csp,theme-saga,myfaces-4.1'
+            profile: 'firefox,csp,theme-lara,myfaces-4.1'
           - java: 21
-            profile: 'chrome,theme-saga,myfaces-4.1'
+            profile: 'chrome,theme-lara,myfaces-4.1'
           - java: 21
-            profile: 'chrome,csp,theme-nova,myfaces-4.1'
+            profile: 'chrome,csp,theme-nora,myfaces-4.1'
           - java: 21
-            profile: 'chrome,csp,theme-nova,mojarra-4.1'
+            profile: 'chrome,csp,theme-nora,mojarra-4.1'
           - java: 21
-            profile: 'chrome,client-state-saving,theme-nova,mojarra-4.1'
+            profile: 'chrome,client-state-saving,theme-nora,mojarra-4.1'
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

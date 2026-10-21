@@ -39,32 +39,21 @@
                 <!-- ═══ LOGO STRIP (inside hero) ════════════════════════════════ -->
                 <div class="landing-logos">
                     <div class="landing-logos-track">
+                        <!-- customer logos [file, name, width, height]: white SVGs, drawn as a mask in the text color -->
+                        <ui:param name="customerLogos" value="#{[['fox', 'Fox', 92, 40], ['airbus', 'Airbus', 109, 19], ['nike', 'Nike', 118, 42],
+                                ['mercedes', 'Mercedes', 37, 38], ['ebay', 'eBay', 85, 35], ['ford', 'Ford', 77, 32], ['vw', 'VW', 39, 40],
+                                ['unicredit', 'UniCredit', 116, 27], ['lufthansa', 'Lufthansa', 115, 21], ['nvidia', 'Nvidia', 86, 17],
+                                ['verizon', 'Verizon', 102, 17], ['sap', 'SAP', 90, 45]]}"/>
                         <div class="landing-logos-inner">
-                            <p:graphicImage name="images/whouses/fox.svg"       library="showcase" alt="Fox" />
-                            <p:graphicImage name="images/whouses/airbus.svg"    library="showcase" alt="Airbus" />
-                            <p:graphicImage name="images/whouses/nike.svg"      library="showcase" alt="Nike" />
-                            <p:graphicImage name="images/whouses/mercedes.svg"  library="showcase" alt="Mercedes" />
-                            <p:graphicImage name="images/whouses/ebay.svg"      library="showcase" alt="eBay" />
-                            <p:graphicImage name="images/whouses/ford.svg"      library="showcase" alt="Ford" />
-                            <p:graphicImage name="images/whouses/vw.svg"        library="showcase" alt="VW" />
-                            <p:graphicImage name="images/whouses/unicredit.svg" library="showcase" alt="UniCredit" />
-                            <p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" alt="Lufthansa" />
-                            <p:graphicImage name="images/whouses/nvidia.svg"    library="showcase" alt="Nvidia" />
-                            <p:graphicImage name="images/whouses/verizon.svg"   library="showcase" alt="Verizon" />
-                            <p:graphicImage name="images/whouses/sap.svg"       library="showcase" alt="SAP" />
+                            <ui:repeat value="#{customerLogos}" var="logo">
+                                <span class="landing-logo" role="img" aria-label="#{logo[1]}"
+                                      style="--logo: url('#{resource['showcase:images/whouses/'.concat(logo[0]).concat('.svg')]}'); aspect-ratio: #{logo[2]} / #{logo[3]}"></span>
+                            </ui:repeat>
                             <!-- duplicate for seamless scroll -->
-                            <p:graphicImage name="images/whouses/fox.svg"       library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/airbus.svg"    library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/nike.svg"      library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/mercedes.svg"  library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/ebay.svg"      library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/ford.svg"      library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/vw.svg"        library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/unicredit.svg" library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/nvidia.svg"    library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/verizon.svg"   library="showcase" alt="" aria-hidden="true"/>
-                            <p:graphicImage name="images/whouses/sap.svg"       library="showcase" alt="" aria-hidden="true"/>
+                            <ui:repeat value="#{customerLogos}" var="logo">
+                                <span class="landing-logo" aria-hidden="true"
+                                      style="--logo: url('#{resource['showcase:images/whouses/'.concat(logo[0]).concat('.svg')]}'); aspect-ratio: #{logo[2]} / #{logo[3]}"></span>
+                            </ui:repeat>
                         </div>
                     </div>
                 </div>
@@ -294,7 +283,7 @@
                         <a href="#{request.contextPath}/theming" class="landing-feature-card">
                             <div class="lf-icon lf-icon-purple"><i class="pi pi-palette"></i></div>
                             <h3>Themes</h3>
-                            <p>Choose from 30+ premium and free themes including Material, Bootstrap, Tailwind and custom presets.</p>
+                            <p>Five design token themes (Aura, Lara, Nora, Metal, Glass) with light and dark mode, customizable with CSS variables.</p>
                         </a>
 
                         <div class="landing-feature-card">
@@ -385,40 +374,32 @@
                         <div class="landing-theming-preview">
                             <div class="landing-theme-card">
                                 <div class="landing-theme-card-header">
-                                    <i class="pi pi-palette" style="font-size:1.1rem;color:var(--primary-color)"></i>
-                                    <span style="font-weight:700;font-size:.9rem;color:var(--text-color)">Available Themes</span>
+                                    <i class="pi pi-palette" style="font-size:1.1rem;color:var(--p-primary-color)"></i>
+                                    <span style="font-weight:700;font-size:.9rem;color:var(--p-text-color)">Available Themes</span>
                                 </div>
                                 <div class="landing-theme-list">
-                                    <h:form>
-                                        <ui:repeat value="#{themes.categories}" var="category">
-                                            <div class="landing-theme-category">#{category.name}</div>
-                                            <div class="landing-theme-items">
-                                                <ui:repeat value="#{category.themes}" var="theme">
-                                                    <p:commandLink styleClass="landing-theme-item #{app.theme eq theme.id ? 'active' : ''}"
-                                                                   actionListener="#{app.changeTheme(theme)}"
-                                                                   oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})"
-                                                                   update="@form"
-                                                                   title="#{theme.name}">
-                                                        <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}" />
-                                                        <span>#{theme.name}</span>
-                                                    </p:commandLink>
-                                                </ui:repeat>
-                                            </div>
+                                    <div class="landing-theme-category">Presets</div>
+                                    <div class="landing-theme-items">
+                                        <ui:repeat value="#{app.presets}" var="preset">
+                                            <a class="landing-theme-item #{app.theme eq preset ? 'active' : ''}" href="?theme=#{preset}" title="#{preset}">
+                                                <i class="pi pi-palette"></i>
+                                                <span style="text-transform: capitalize">#{preset}</span>
+                                            </a>
                                         </ui:repeat>
-                                    </h:form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="landing-theming-text">
                             <span class="landing-section-label">Theming</span>
                             <h2 class="landing-section-title">Pick your theme</h2>
-                            <p>Choose from a growing collection of free themes — Lara, Aura, Nora, Material, Bootstrap
-                               and more. Each theme is a complete CSS stylesheet that skins every component
-                               consistently. Switch themes at runtime without a page reload.</p>
+                            <p>Pure CSS themes built on design tokens: the presets Aura, Lara, Nora, Metal and Glass, each in a
+                               light and a dark color scheme. Change the primary color, density or any token without a build step.
+                               Try it with the palette button at the right edge.</p>
                             <ul class="landing-check-list">
                                 <li><i class="pi pi-check-circle"></i>Free and premium themes included</li>
                                 <li><i class="pi pi-check-circle"></i>Light and dark variants for every family</li>
-                                <li><i class="pi pi-check-circle"></i>Visual Theme Designer tool available</li>
+                                <li><i class="pi pi-check-circle"></i>Theme configurator with live token editing</li>
                                 <li><i class="pi pi-check-circle"></i>Runtime theme switching built-in</li>
                             </ul>
                             <h:link styleClass="landing-btn landing-btn-outline" outcome="/theming">

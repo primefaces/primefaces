@@ -90,7 +90,10 @@ public class RatingRenderer extends InputRenderer<Rating> {
         boolean disabled = rating.isDisabled();
         boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
-        String styleClass = createStyleClass(rating, Rating.CONTAINER_CLASS);
+        String styleClass = getStyleClassBuilder(context)
+                .add(createStyleClass(rating, Rating.CONTAINER_CLASS))
+                .add(readonly, "ui-state-readonly")
+                .build();
 
         writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");

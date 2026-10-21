@@ -1,0 +1,214 @@
+/*
+ * Shared styling for all components (counterpart of the PrimeUIX base style).
+ *
+ * Generic jQuery UI style classes (ui-widget-header/content, ui-state-*, ui-corner-*) are wrapped in :where(),
+ * so they have zero specificity: they style plain markup (e.g. <div class="ui-widget-content">) but every
+ * component rule wins, independent of the file order.
+ */
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+.ui-widget {
+    font-family: var(--p-typography-font-family);
+    font-size: var(--p-typography-font-size);
+    font-weight: var(--p-typography-font-weight);
+    line-height: var(--p-typography-line-height);
+    text-decoration: none;
+
+    /* nested widget (= :where(.ui-widget) .ui-widget, specificity of one class): component rules with their own
+       font size token (e.g. .ui-badge inside a panel or toolbar) must still win */
+    :where(.ui-widget) & {
+        font-size: inherit;
+    }
+}
+
+:where(.ui-widget-content) {
+    background: var(--p-widget-content-background);
+    color: var(--p-widget-content-color);
+    border-color: var(--p-widget-content-border-color);
+}
+
+:where(.ui-widget-header) {
+    background: var(--p-widget-header-background);
+    color: var(--p-widget-header-color);
+    border-color: var(--p-widget-header-border-color);
+    font-weight: var(--p-widget-header-font-weight);
+}
+
+:where(.ui-state-hover) {
+    background: var(--p-widget-hover-background);
+    color: var(--p-widget-hover-color);
+}
+
+:where(.ui-state-active) {
+    background: var(--p-widget-active-background);
+    color: var(--p-widget-active-color);
+}
+
+:where(.ui-state-highlight) {
+    background: var(--p-widget-highlight-background);
+    color: var(--p-widget-highlight-color);
+}
+
+:where(.ui-state-highlight a, .ui-state-active a) {
+    color: inherit;
+}
+
+/* only text and border: ui-state-error is also set on labels and inputs, which keep their own background */
+:where(.ui-state-error) {
+    color: var(--p-widget-error-color);
+    border-color: var(--p-widget-error-border-color);
+}
+
+:where(.ui-state-error-text) {
+    color: var(--p-widget-error-color);
+}
+
+/* cursor and pointer-events: jquery-ui core.css */
+.ui-state-disabled {
+    opacity: var(--p-disabled-opacity);
+
+    .ui-state-disabled {
+        opacity: 1;
+    }
+}
+
+:where(.ui-priority-primary) {
+    font-weight: 600;
+}
+
+:where(.ui-priority-secondary) {
+    opacity: var(--p-disabled-opacity);
+    font-weight: var(--p-typography-font-weight);
+}
+
+:where(.ui-corner-all) {
+    border-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-top) {
+    border-top-left-radius: var(--p-widget-border-radius);
+    border-top-right-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-bottom) {
+    border-bottom-left-radius: var(--p-widget-border-radius);
+    border-bottom-right-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-left) {
+    border-top-left-radius: var(--p-widget-border-radius);
+    border-bottom-left-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-right) {
+    border-top-right-radius: var(--p-widget-border-radius);
+    border-bottom-right-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-tl) {
+    border-top-left-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-tr) {
+    border-top-right-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-bl) {
+    border-bottom-left-radius: var(--p-widget-border-radius);
+}
+
+:where(.ui-corner-br) {
+    border-bottom-right-radius: var(--p-widget-border-radius);
+}
+
+.ui-shadow {
+    box-shadow: var(--p-widget-shadow);
+}
+
+.ui-icon,
+.pi {
+    font-size: var(--p-icon-size);
+}
+
+/* font icons: overrides the sprite icon rules of jquery-ui core.css and datepicker.css */
+.ui-icon {
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 0;
+    position: static;
+    text-indent: 0;
+    overflow: visible;
+    line-height: 1;
+}
+
+/* the rest of the reset comes from jquery-ui core.css (line-height 1.3 there) */
+.ui-helper-reset {
+    line-height: normal;
+}
+
+.ui-widget-overlay {
+    background: var(--p-mask-background);
+    color: var(--p-mask-color);
+}
+
+/*
+ * Native form elements outside of components. In :where(): otherwise the :hover / :focus rules would beat the inputs
+ * inside components (p:autoComplete multiple, p:chips, p:selectCheckboxMenu, p:knob, ...).
+ */
+:where(select,
+input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
+    .ui-widget, .ui-inputfield)) {
+    color: var(--p-form-field-color);
+    background: var(--p-form-field-background);
+    padding: var(--p-form-field-padding-y) var(--p-form-field-padding-x);
+    border: 1px solid var(--p-form-field-border-color);
+    border-radius: var(--p-form-field-border-radius);
+    outline: 0 none;
+    font-family: inherit;
+    font-size: var(--p-form-field-font-size);
+    box-shadow: var(--p-form-field-shadow);
+    transition: background var(--p-form-field-transition-duration), color var(--p-form-field-transition-duration),
+        border-color var(--p-form-field-transition-duration), outline-color var(--p-form-field-transition-duration),
+        box-shadow var(--p-form-field-transition-duration);
+}
+
+:where(select:hover,
+input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
+    .ui-widget, .ui-inputfield):hover) {
+    border-color: var(--p-form-field-hover-border-color);
+}
+
+:where(select:focus,
+input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
+    .ui-widget, .ui-inputfield):focus) {
+    border-color: var(--p-form-field-focus-border-color);
+    outline: var(--p-form-field-focus-ring-width) var(--p-form-field-focus-ring-style) var(--p-form-field-focus-ring-color);
+    outline-offset: var(--p-form-field-focus-ring-offset);
+    box-shadow: var(--p-form-field-focus-ring-shadow);
+}
+
+/*
+ * content a widget inserts by ajax (new messages, items of dataView / dataScroller): an animation runs when an element is
+ * inserted, so it fades in (and slides by --_enter-offset) with CSS only; also on page load, reduced motion:
+ * base/document.css
+ */
+@keyframes ui-enter {
+    from {
+        opacity: 0;
+        translate: 0 var(--_enter-offset, 0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

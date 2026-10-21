@@ -1,29 +1,148 @@
-.ui-dataview .ui-dataview-header {
-    border-bottom: 0 none;
-}
+/*
+ * DataView: p:dataView (list and grid layout), PrimeUIX dataview tokens + PrimeFaces dataview tokens
+ *
+ * Supported classes: ui-dataview-list, ui-dataview-grid, ui-dataview-layout-options (layout switch, styled like a select button)
+ */
+.ui-dataview {
+    position: relative;
+    border: 1px solid var(--p-dataview-border-color);
+    border-width: var(--p-dataview-border-width);
+    border-radius: var(--p-dataview-border-radius);
+    padding: var(--p-dataview-padding);
 
-.ui-dataview .ui-dataview-header, 
-.ui-dataview .ui-dataview-footer {
-    text-align: center;
-    padding: 4px 10px;
-}
+    .ui-paginator {
+        &.ui-paginator-top {
+            border-style: solid;
+            border-color: var(--p-dataview-paginator-top-border-color);
+            border-width: var(--p-dataview-paginator-top-border-width);
+            border-radius: 0;
+        }
 
-.ui-dataview .ui-dataview-header .ui-dataview-layout-options {
-    float: right;
-}
+        &.ui-paginator-bottom {
+            border-style: solid;
+            border-color: var(--p-dataview-paginator-bottom-border-color);
+            border-width: var(--p-dataview-paginator-bottom-border-width);
+            border-radius: 0;
+        }
+    }
 
-.ui-dataview-list .ui-dataview-content {
-    padding: 4px 10px;
+    .ui-dataview-header {
+        text-align: center;
+        background: var(--p-dataview-header-background);
+        color: var(--p-dataview-header-color);
+        padding: var(--p-dataview-header-padding);
+        font-weight: var(--p-dataview-header-font-weight);
+        border: 1px solid var(--p-dataview-header-border-color);
+        border-width: var(--p-dataview-header-border-width);
+        border-radius: var(--p-dataview-header-border-radius);
+
+        .ui-dataview-layout-options {
+            float: inline-end;
+        }
+    }
+
+    .ui-dataview-footer {
+        text-align: center;
+        background: var(--p-dataview-footer-background);
+        color: var(--p-dataview-footer-color);
+        border: 1px solid var(--p-dataview-footer-border-color);
+        border-width: var(--p-dataview-footer-border-width);
+        padding: var(--p-dataview-footer-padding);
+        font-weight: var(--p-dataview-footer-font-weight);
+        border-radius: var(--p-dataview-footer-border-radius);
+    }
+
+    .ui-dataview-content {
+        border: 1px solid var(--p-dataview-content-border-color);
+        border-width: var(--p-dataview-content-border-width);
+        border-radius: var(--p-dataview-content-border-radius);
+        background: var(--p-dataview-content-background);
+        color: var(--p-dataview-content-color);
+        padding: var(--p-dataview-content-padding);
+
+        /* the widget replaces the items on a layout switch and on paging: the new ones fade and slide in (base/common.css) */
+        > * {
+            --_enter-offset: var(--p-dataview-content-enter-offset);
+            animation: ui-enter var(--p-dataview-content-enter-duration) var(--p-transition-easing-enter);
+        }
+    }
+
+    &.ui-dataview-list .ui-dataview-row {
+        border: 1px solid var(--p-dataview-item-border-color);
+        border-width: 0 0 1px 0;
+
+        &:last-child {
+            border-bottom-width: 0;
+        }
+    }
+
+    &.ui-dataview-grid .ui-dataview-column {
+        padding: var(--p-dataview-grid-column-padding);
+    }
+
+    /* layout switch: a select button (PrimeUIX selectbutton = togglebutton tokens) */
+    .ui-dataview-layout-options {
+        display: inline-flex;
+        gap: 0;
+        background: var(--p-togglebutton-background);
+        border: 1px solid var(--p-togglebutton-border-color);
+        border-radius: var(--p-togglebutton-border-radius);
+        padding: var(--p-togglebutton-padding);
+
+        .ui-button {
+            margin: 0;
+            width: auto;
+            padding: var(--p-togglebutton-content-padding);
+            background: transparent;
+            color: var(--p-togglebutton-icon-color);
+            border: 0 none;
+            border-radius: var(--p-togglebutton-content-border-radius);
+            box-shadow: none;
+            transition: background var(--p-togglebutton-transition-duration), color var(--p-togglebutton-transition-duration),
+                box-shadow var(--p-togglebutton-transition-duration), outline-color var(--p-togglebutton-transition-duration);
+
+            .ui-button-text {
+                display: none;
+            }
+
+            /* the button itself is the pill, the ::before pill of selectonebutton.css would cover the icon */
+            &::before {
+                content: none;
+            }
+
+            /* beats the outer corner radius of grouped buttons (selectonebutton.css) */
+            &:first-child,
+            &:last-child {
+                border-radius: var(--p-togglebutton-content-border-radius);
+            }
+
+            &:not(.ui-state-active):hover,
+            &.ui-state-hover:not(.ui-state-active) {
+                background: transparent;
+                color: var(--p-togglebutton-icon-hover-color);
+            }
+
+            /* the :hover variant beats the checked hover of selectonebutton.css */
+            &.ui-state-active,
+            &.ui-state-active:not(.ui-state-disabled):hover {
+                background: var(--p-togglebutton-content-checked-background);
+                color: var(--p-togglebutton-icon-checked-color);
+                box-shadow: var(--p-togglebutton-content-checked-shadow);
+            }
+
+            &.ui-state-focus,
+            &:focus-visible {
+                outline: var(--p-togglebutton-focus-ring-width) var(--p-togglebutton-focus-ring-style) var(--p-togglebutton-focus-ring-color);
+                outline-offset: var(--p-togglebutton-focus-ring-offset);
+            }
+        }
+    }
 }
 
 .ui-dataview-list .ui-dataview-list-container {
     list-style-type: none;
     margin: 0;
     padding: 0;
-}
-
-.ui-dataview-list .ui-dataview-row {
-    border: 0 none;
 }
 
 .ui-fluid .ui-dataview-layout-options.ui-buttonset {

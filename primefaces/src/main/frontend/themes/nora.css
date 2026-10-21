@@ -1,0 +1,8 @@
+/*
+ * Theme "nora" (primefaces.THEME = nora): the tokens of the preset and its density, built to primefaces-nora/theme.css.
+ * The CSS of the components (components.css, ...) is the same for every theme.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./presets/nora.css");
+@import url("./density/nora.css");
