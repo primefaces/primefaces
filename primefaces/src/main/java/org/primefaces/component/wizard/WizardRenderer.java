@@ -34,6 +34,7 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -201,6 +202,17 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         }
     }
 
+    private Tab resolveCurrentTab(Wizard component) {
+        String currentStep = component.getStep();
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child instanceof Tab tab && tab.isRendered() && (currentStep == null || tab.getId().equals(currentStep))) {
+                return tab;
+            }
+        }
+        return null;
+    }
+
     protected void encodeNavigators(FacesContext facesContext, Wizard component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
@@ -229,7 +241,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
 
     protected void encodeStepStatus(FacesContext context, Wizard component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String currentStep = component.getStep();
+        Tab currentTab = resolveCurrentTab(component);
         boolean currentFound = false;
 
         writer.startElement("ul", null);
@@ -239,9 +251,14 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
             if (child instanceof Tab tab && child.isRendered()) {
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getTitleFacet();
-                boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
+                boolean active = tab == currentTab;
+                boolean completed = currentTab != null && !currentFound && !active && component.isHighlightCompletedSteps();
+                boolean userHighlight = tab.getTitleStyleClass() != null
+                        && Arrays.asList(tab.getTitleStyleClass().split("\\s+")).contains("ui-state-highlight");
                 String titleStyleClass = getStyleClassBuilder(context)
-                        .add(active, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)
+                        .add(active || completed, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)
+                        .add(active, Wizard.CURRENT_STEP_CLASS)
+                        .add(completed, Wizard.COMPLETED_STEP_CLASS)
                         .add(tab.getTitleStyleClass())
                         .build();
 
@@ -251,6 +268,9 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", titleStyleClass, null);
+                if (userHighlight) {
+                    writer.writeAttribute("data-pf-user-highlight", true, null);
+                }
                 if (tab.getTitleStyle() != null) {
                     writer.writeAttribute("style", tab.getTitleStyle(), null);
                 }
