@@ -65,6 +65,7 @@
         background: transparent;
         color: var(--p-sidebar-close-button-color);
         text-decoration: none;
+        -webkit-user-select: none;
         user-select: none;
         outline-color: transparent;
         transition: background var(--p-sidebar-close-button-transition-duration),

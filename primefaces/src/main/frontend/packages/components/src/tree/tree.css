@@ -135,6 +135,7 @@
             line-height: var(--p-tree-node-toggle-button-size);
             text-align: center;
             padding: 0;
+            -webkit-user-select: none;
             user-select: none;
             background: transparent;
             color: var(--p-tree-node-toggle-button-color);

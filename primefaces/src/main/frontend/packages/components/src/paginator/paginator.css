@@ -85,6 +85,7 @@
         justify-content: center;
         position: relative;
         overflow: hidden;
+        -webkit-user-select: none;
         user-select: none;
         background: var(--p-paginator-nav-button-background);
         color: var(--p-paginator-nav-button-color);

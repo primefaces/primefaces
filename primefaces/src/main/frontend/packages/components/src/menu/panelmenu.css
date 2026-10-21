@@ -63,6 +63,7 @@
         border-radius: var(--p-panelmenu-item-border-radius);
         font-size: var(--p-panelmenu-item-label-font-size);
         font-weight: var(--p-panelmenu-item-label-font-weight);
+        -webkit-user-select: none;
         user-select: none;
         /* also hides the ui-menuitem-outline the widget sets on every focus (click too), :focus-visible marks keyboard focus */
         outline: 0 none;
@@ -178,6 +179,7 @@
         border: 0 none;
         border-radius: var(--p-panelmenu-item-border-radius);
         line-height: inherit;
+        -webkit-user-select: none;
         user-select: none;
         overflow: hidden;
         outline-color: transparent;

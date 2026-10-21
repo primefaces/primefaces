@@ -253,6 +253,7 @@
         text-align: center;
         text-decoration: none;
         cursor: pointer;
+        -webkit-user-select: none;
         user-select: none;
         outline-color: transparent;
         transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),

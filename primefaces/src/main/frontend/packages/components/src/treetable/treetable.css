@@ -168,6 +168,7 @@
 
     .ui-sortable-column {
         cursor: pointer;
+        -webkit-user-select: none;
         user-select: none;
     }
 
@@ -245,6 +246,7 @@
             border-radius: var(--p-treetable-node-toggle-button-border-radius);
             text-align: center;
             padding: 0;
+            -webkit-user-select: none;
             user-select: none;
             outline-color: transparent;
             transition: background var(--p-treetable-transition-duration), color var(--p-treetable-transition-duration),
@@ -433,6 +435,7 @@
             border-radius: var(--p-treetable-node-toggle-button-border-radius);
             text-align: center;
             padding: 0;
+            -webkit-user-select: none;
             user-select: none;
             outline-color: transparent;
             transition: background var(--p-treetable-transition-duration), color var(--p-treetable-transition-duration),

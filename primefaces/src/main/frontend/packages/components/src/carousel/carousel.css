@@ -21,6 +21,7 @@
             border-radius: 50%;
             text-align: center;
             line-height: var(--p-button-icon-only-width);
+            -webkit-user-select: none;
             user-select: none;
             outline-color: transparent;
             transition: background var(--p-carousel-transition-duration), color var(--p-carousel-transition-duration),
@@ -147,6 +148,7 @@
         margin: 0;
         padding: 0;
         cursor: pointer;
+        -webkit-user-select: none;
         user-select: none;
     }
 }

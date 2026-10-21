@@ -128,19 +128,19 @@
 
 /* the dropdown border follows the hover / focus / invalid state of the input */
 .ui-autocomplete-dd {
-    &:has(.ui-inputfield.ui-state-hover, .ui-inputfield:hover) .ui-autocomplete-dropdown.ui-button {
+    &:has(> .ui-inputfield.ui-state-hover, > .ui-inputfield:hover) .ui-autocomplete-dropdown.ui-button {
         --_border: var(--p-autocomplete-hover-border-color);
         --_hover-border: var(--p-autocomplete-hover-border-color);
         --_active-border: var(--p-autocomplete-hover-border-color);
     }
 
-    &:has(.ui-inputfield.ui-state-focus, .ui-inputfield:focus) .ui-autocomplete-dropdown.ui-button {
+    &:has(> .ui-inputfield.ui-state-focus, > .ui-inputfield:focus) .ui-autocomplete-dropdown.ui-button {
         --_border: var(--p-autocomplete-focus-border-color);
         --_hover-border: var(--p-autocomplete-focus-border-color);
         --_active-border: var(--p-autocomplete-focus-border-color);
     }
 
-    &:has(.ui-inputfield.ui-state-error) .ui-autocomplete-dropdown.ui-button {
+    &:has(> .ui-inputfield.ui-state-error) .ui-autocomplete-dropdown.ui-button {
         --_border: var(--p-autocomplete-invalid-border-color);
         --_hover-border: var(--p-autocomplete-invalid-border-color);
         --_active-border: var(--p-autocomplete-invalid-border-color);

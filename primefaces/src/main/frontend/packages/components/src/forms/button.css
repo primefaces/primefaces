@@ -58,6 +58,7 @@
     vertical-align: bottom;
     overflow: hidden;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
     font-size: var(--p-button-font-size);
     font-weight: var(--p-button-label-font-weight);

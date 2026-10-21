@@ -181,6 +181,7 @@
         margin: 0;
         padding: 0;
         text-align: center;
+        -webkit-user-select: none;
         user-select: none;
         background: transparent;
         color: var(--p-button-text-secondary-color);
@@ -512,6 +513,7 @@
         padding: 0;
         margin: 0;
         text-align: center;
+        -webkit-user-select: none;
         user-select: none;
         cursor: pointer;
         background: transparent;

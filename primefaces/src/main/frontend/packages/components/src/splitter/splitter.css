@@ -70,6 +70,7 @@
 .ui-splitter-horizontal {
     &.ui-splitter-resizing {
         cursor: col-resize;
+        -webkit-user-select: none;
         user-select: none;
     }
 
@@ -88,6 +89,7 @@
 
     &.ui-splitter-resizing {
         cursor: row-resize;
+        -webkit-user-select: none;
         user-select: none;
     }
 

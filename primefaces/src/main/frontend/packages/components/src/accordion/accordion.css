@@ -20,6 +20,7 @@
         border-color: var(--p-accordion-header-border-color);
         border-radius: var(--p-accordion-header-border-radius);
         cursor: pointer;
+        -webkit-user-select: none;
         user-select: none;
         outline: 0 none;
         outline-color: transparent;
@@ -161,6 +162,7 @@
             border-radius: 50%;
             text-align: center;
             text-decoration: none;
+            -webkit-user-select: none;
             user-select: none;
             outline-color: transparent;
             transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),

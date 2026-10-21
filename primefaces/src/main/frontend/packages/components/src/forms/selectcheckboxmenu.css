@@ -388,6 +388,7 @@
             padding: 0;
             margin-inline: auto 0;
             text-align: center;
+            -webkit-user-select: none;
             user-select: none;
             background: transparent;
             color: var(--p-button-text-plain-color);

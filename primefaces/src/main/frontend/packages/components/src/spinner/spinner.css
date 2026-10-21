@@ -266,11 +266,11 @@
     }
 
     /* sizes: the input carries ui-inputtext-sm / -lg (forms/inputfield.css), the icons follow */
-    &:has(.ui-inputtext-sm) .ui-spinner-button .ui-icon {
+    &:has(> .ui-inputtext-sm) .ui-spinner-button .ui-icon {
         font-size: var(--p-form-field-sm-font-size);
     }
 
-    &:has(.ui-inputtext-lg) .ui-spinner-button .ui-icon {
+    &:has(> .ui-inputtext-lg) .ui-spinner-button .ui-icon {
         font-size: var(--p-form-field-lg-font-size);
     }
 }

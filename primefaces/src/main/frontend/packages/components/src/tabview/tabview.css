@@ -62,6 +62,7 @@
                 margin: var(--p-tabs-tab-margin);
                 padding: var(--p-tabs-tab-padding);
                 cursor: pointer;
+                -webkit-user-select: none;
                 user-select: none;
                 font-size: var(--p-tabs-tab-font-size);
                 font-weight: var(--p-tabs-tab-font-weight);

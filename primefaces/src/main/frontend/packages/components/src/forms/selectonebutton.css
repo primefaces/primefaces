@@ -11,6 +11,7 @@
 .ui-selectmanybutton {
     display: inline-flex;
     vertical-align: bottom;
+    -webkit-user-select: none;
     user-select: none;
     padding: 0;
     border-radius: var(--p-selectbutton-border-radius);

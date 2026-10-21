@@ -30,6 +30,7 @@
         border-width: var(--p-fieldset-legend-border-width);
         border-color: var(--p-fieldset-legend-border-color);
         border-radius: var(--p-fieldset-legend-border-radius);
+        -webkit-user-select: none;
         user-select: none;
         outline-color: transparent;
         transition: background var(--p-fieldset-transition-duration), color var(--p-fieldset-transition-duration),

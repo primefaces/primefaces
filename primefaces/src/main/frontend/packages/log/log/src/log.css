@@ -51,6 +51,7 @@
             color: var(--p-log-button-color);
             text-decoration: none;
             cursor: pointer;
+            -webkit-user-select: none;
             user-select: none;
             outline-color: transparent;
             transition: background var(--p-log-button-transition-duration), color var(--p-log-button-transition-duration),

@@ -142,6 +142,7 @@ body.ui-dialog-open {
                 background: transparent;
                 color: var(--p-button-text-secondary-color);
                 text-decoration: none;
+                -webkit-user-select: none;
                 user-select: none;
                 outline-color: transparent;
                 transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),
@@ -365,6 +366,7 @@ body.ui-dialog-open {
     right: 0;
     bottom: 0;
     left: 0;
+    -webkit-user-select: none;
     user-select: none;
 }
 

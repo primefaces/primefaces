@@ -347,6 +347,7 @@
     padding: 0;
     border: none;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
 }
 

@@ -589,3 +589,5 @@ The theme uses `light-dark()`, `color-mix()`, relative colors, `:has()` and CSS 
 - Chrome / Edge 123+
 - Firefox 128+
 - Safari 18+
+
+Themed scrollbars (`scrollbar-width`, `scrollbar-color`) need Safari 18.2, older versions show the default scrollbars.

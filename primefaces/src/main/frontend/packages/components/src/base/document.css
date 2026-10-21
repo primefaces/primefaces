@@ -78,6 +78,7 @@
     .ui-progressbar,
     .ui-state-highlight,
     .ui-state-active {
+        -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
 

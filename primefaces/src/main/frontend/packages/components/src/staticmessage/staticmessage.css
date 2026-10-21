@@ -21,6 +21,7 @@
         width: 2rem;
         height: 2rem;
         padding: 0;
+        -webkit-user-select: none;
         user-select: none;
         text-align: center;
     }
