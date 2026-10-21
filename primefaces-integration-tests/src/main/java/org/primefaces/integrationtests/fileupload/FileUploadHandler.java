@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
@@ -64,6 +65,12 @@ public class FileUploadHandler implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) {
         fileUploadView.doFileUpload(event.getFile());
+    }
+
+    public void handleFileUploadWithScript(FileUploadEvent event) {
+        handleFileUpload(event);
+        PrimeFaces.current().executeScript("document.getElementById('form:scriptResult').textContent = '"
+                + event.getComponent().getId() + "';");
     }
 
     public void handleFilesUpload(FilesUploadEvent event) {

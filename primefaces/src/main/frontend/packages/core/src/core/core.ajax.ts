@@ -1010,7 +1010,7 @@ export class AjaxRequest {
                 core.debug('DOM is updated.');
             })
             .always(function(this: PrimeType.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeType.ajax.pfXHR) {
-                const { pfArgs = {}, pfScripts = [], pfSettings = {} } = typeof xhr === "string" ? {} : xhr;
+                const { pfArgs = {} } = typeof xhr === "string" ? {} : xhr;
 
                 // first call the extension callback (e.g. datatable paging)
                 if (cfg.ext && cfg.ext.oncomplete) {
@@ -1023,29 +1023,7 @@ export class AjaxRequest {
                 }
 
                 // finally, call the programmatic scripts
-                if (pfScripts.length) {
-                    try {
-                        (window.PrimeFaces as any).scriptContext = {
-                            xhr: xhr,
-                            status: status,
-                            args: pfArgs,
-                            data: data
-                        };
-
-                        for (const script of pfScripts) {
-                            csp.eval(`(function(xhr, status, args, data) {
-                                ${script}
-                            })(
-                                window.PrimeFaces.scriptContext.xhr,
-                                window.PrimeFaces.scriptContext.status,
-                                window.PrimeFaces.scriptContext.args,
-                                window.PrimeFaces.scriptContext.data
-                            );`, pfSettings.nonce, window);
-                        }
-                    } finally {
-                        delete (window.PrimeFaces as any).scriptContext;
-                    }
-                }
+                ajax.Response.executeScripts(xhr, status, data);
 
                 if (global) {
                     $(document).trigger('pfAjaxComplete', [xhr, this, pfArgs]);
@@ -1432,6 +1410,44 @@ export class AjaxResponse {
             return;
         }
         ajax.Utils.handleError(errorName, errorMessage);
+    }
+
+    /**
+     * Executes the scripts added via `PrimeFaces.current().executeScript(...)`, which were collected in
+     * {@link PrimeType.ajax.pfXHR.pfScripts} while handling the response. They are invoked the same way as the
+     * `oncomplete` attribute of an AJAX source. Widgets sending their own AJAX request instead of using
+     * {@link AjaxRequest.send} (e.g. FileUpload) must call this after their `oncomplete` callback.
+     * @param xhr The XHR request to which a response was received.
+     * @param status Text status of the request.
+     * @param data The data returned by the request.
+     */
+    executeScripts(xhr: string | PrimeType.ajax.pfXHR | null | undefined, status?: string, data?: unknown): void {
+        if (!xhr || typeof xhr === "string" || !xhr.pfScripts?.length) {
+            return;
+        }
+
+        const { pfArgs = {}, pfScripts, pfSettings = {} } = xhr;
+        try {
+            (window.PrimeFaces as any).scriptContext = {
+                xhr: xhr,
+                status: status,
+                args: pfArgs,
+                data: data
+            };
+
+            for (const script of pfScripts) {
+                csp.eval(`(function(xhr, status, args, data) {
+                    ${script}
+                })(
+                    window.PrimeFaces.scriptContext.xhr,
+                    window.PrimeFaces.scriptContext.status,
+                    window.PrimeFaces.scriptContext.args,
+                    window.PrimeFaces.scriptContext.data
+                );`, pfSettings.nonce, window);
+            }
+        } finally {
+            delete (window.PrimeFaces as any).scriptContext;
+        }
     }
 
     /**
