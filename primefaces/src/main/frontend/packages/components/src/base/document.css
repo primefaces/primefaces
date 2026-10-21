@@ -42,6 +42,18 @@
 }
 
 /*
+ * PrimeFaces.utils.disableAnimations() (also called by PrimeFaces Selenium): content that fades in when it is inserted
+ * appears at once. These animations start at opacity 0, so the content would be invisible in its first frame.
+ * Also on scopes, which re-declare the tokens.
+ */
+:root[data-p-animations="off"],
+:root[data-p-animations="off"] [data-p-scope] {
+    --p-message-enter-duration: 0s;
+    --p-dataview-content-enter-duration: 0s;
+    --p-fileupload-transition-duration: 0s;
+}
+
+/*
  * Page background: transparent in most presets (the page keeps its own background), a wallpaper in translucent presets
  * (Glass), which need something colorful behind their glass. Application CSS (unlayered) wins.
  */
