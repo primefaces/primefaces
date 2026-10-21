@@ -359,6 +359,34 @@ textarea::placeholder {
     }
 }
 
+/*
+ * fields with a trigger button next to the input (p:autoComplete dropdown, p:datePicker / p:calendar showIcon): the focus
+ * ring encloses input and button, like a field with the icon inside (password, colorPicker); the input keeps its focus
+ * border. The --p-inputtext-* tokens are the ones of the component (autocomplete.css remaps them).
+ */
+.ui-autocomplete.ui-autocomplete-dd,
+.ui-calendar.ui-trigger-calendar {
+    border-radius: var(--p-inputtext-border-radius);
+    /* the ring follows the wrapper: it wraps input and button, also as a stretched flex / grid item */
+    width: fit-content;
+    max-width: 100%;
+
+    .ui-fluid & {
+        width: 100%;
+    }
+
+    &:has(> .ui-inputfield:not(:disabled, .ui-state-disabled):is(:focus-within, .ui-state-focus)) {
+        outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
+        outline-offset: var(--p-inputtext-focus-ring-offset);
+        box-shadow: var(--p-inputtext-focus-ring-shadow);
+
+        > .ui-inputfield {
+            outline: 0 none;
+            box-shadow: none;
+        }
+    }
+}
+
 /* input with icon */
 .ui-input-icon-left,
 .ui-input-icon-right {
