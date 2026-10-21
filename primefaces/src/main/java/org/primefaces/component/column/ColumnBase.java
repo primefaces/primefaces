@@ -158,6 +158,11 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
             defaultValue = "false")
     public abstract boolean isGroupRow();
 
+    @Property(description = "Renders the column's body cells as <th scope=\"row\"> instead of <td>, marking it as a row header"
+            + " for accessibility (WCAG tables with two headers).",
+            defaultValue = "false")
+    public abstract boolean isRowHeader();
+
     @Property(description = "Defines the value of the cell to be exported if something other than the cell contents or exportFunction.")
     public abstract Object getExportValue();
 
