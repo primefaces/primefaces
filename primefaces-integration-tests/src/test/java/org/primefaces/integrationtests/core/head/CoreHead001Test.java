@@ -70,12 +70,17 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         assertEquals(componentsCss.getTagName(), "link");
         assertTrue(componentsCss.getDomAttribute("href").contains("components.css"));
 
+        // the CSS of p:datePicker (loaded with its script)
+        WebElement datePickerCss = headElements.get(4);
+        assertEquals(datePickerCss.getTagName(), "link");
+        assertTrue(datePickerCss.getDomAttribute("href").contains("datepicker/datepicker.css"));
+
         // Title
-        WebElement titleTag =  headElements.get(4);
+        WebElement titleTag =  headElements.get(5);
         assertEquals(titleTag.getTagName(), "title");
 
         // <f:facet name="last">
-        WebElement webMeta = headElements.get(5);
+        WebElement webMeta = headElements.get(6);
         assertEquals(webMeta.getTagName(), "meta");
         assertEquals(webMeta.getDomAttribute("name"), "mobile-web-app-capable");
         assertEquals(webMeta.getDomAttribute("content"), "yes");

@@ -64,10 +64,6 @@ body.ui-dialog-open {
         cursor: pointer;
     }
 
-    .ui-dialog-actions .ui-state-loading .ui-icon:not(.ui-icon-loading) {
-        display: initial;
-    }
-
     &.ui-overflow-hidden,
     &.ui-dialog-absolute,
     &.ui-dialog-fitviewport {

@@ -97,13 +97,25 @@
         break-inside: avoid;
     }
 
+    /* overlays, and the fixed helpers browsers would repeat on every page: the sticky header clone of a dataTable,
+       p:log, p:stack, p:dock */
     .ui-growl,
     .ui-tooltip,
     .ui-scrolltop,
     .ui-blockui,
     .ui-widget-overlay,
     .ui-ajax-status,
-    .ui-paginator {
+    .ui-paginator,
+    .ui-datatable-sticky,
+    .ui-log,
+    .ui-stack,
+    .ui-dock {
         display: none !important;
+    }
+
+    /* a pinned p:sticky target prints in its place (the widget sets position fixed inline) */
+    .ui-sticky {
+        position: static !important;
+        width: auto !important;
     }
 }

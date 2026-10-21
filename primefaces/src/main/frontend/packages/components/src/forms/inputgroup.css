@@ -55,6 +55,15 @@
         border-inline-end: 0 none;
     }
 
+    /* the trailing buttons of composite fields: their own rules (autocomplete.css, spinner.css, datepicker.css) are
+       bundled later or stronger, so these need the higher specificity */
+    > .ui-autocomplete:not(:last-child) > .ui-autocomplete-dropdown.ui-button,
+    > .ui-calendar:not(:last-child) > .ui-button.ui-button-icon-only,
+    > .ui-spinner.ui-spinner-horizontal:not(:last-child) > .ui-spinner-button.ui-spinner-up {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+    }
+
     .ui-button {
         margin-inline-end: 0;
         border-radius: 0;

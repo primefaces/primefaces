@@ -72,8 +72,8 @@ A page renders:
 - the CSS of lazily loaded components with their JS, e.g. `primefaces:schedule/schedule.css` (FullCalendar + p:schedule),
   `texteditor/texteditor.css` (Quill), `timeline/timeline.css` (vis-timeline).
 
-PrimeFaces does not compress resources: enable gzip / brotli in the server (`components.css` ~390 KB minified; a theme
-~210 KB; gzip ~51 KB + ~25 KB). PrimeIcons are still loaded (unless `primefaces.PRIME_ICONS` is false) for the icons applications
+PrimeFaces does not compress resources: enable gzip / brotli in the server (`components.css` ~360 KB minified; a theme
+~210 KB; gzip ~47 KB + ~25 KB). PrimeIcons are still loaded (unless `primefaces.PRIME_ICONS` is false) for the icons applications
 set themselves (`icon="pi pi-check"`), in the `primefaces.vendor` layer (component CSS and application CSS win
 over the `.pi` rules).
 
@@ -129,7 +129,7 @@ primefaces/src/main/frontend/
   lead to a density token (`themes/density/<preset>.css`) also on `[data-p-density]`. It fails on a block it cannot
   split (one token per line).
 - `build/scripts/themes/check.mjs` enforces: every `var(--p-*)` is defined, all presets define the same tokens, no
-  literal colors outside the presets and the icon set, no malformed values, the density files are up to date, and every
+  literal colors outside the presets and the icon set, no malformed values, and every
   preset token is used (an unused token is deleted, not kept for later), no container queries, no
   var() cycles (presets + component CSS), no values that are invalid where they are used (size without unit, unitless 0
   in calc(), "inset none", several widths in a border shorthand).
@@ -420,7 +420,7 @@ classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
   ~3.9:1), below WCAG AA (4.5:1). Kept on purpose to stay close to PrimeReact. Applications that need AA use a darker
   primary in light mode, e.g. `:root { --p-primary-base: var(--p-emerald-700); }`. Metal (graphite) meets AA.
 - The high contrast mode handling is not verified on Windows yet.
-- Size: `components.css` is ~390 KB minified (~51 KB gzip) plus ~25 KB gzip per theme; the third-party CSS of the lazily loaded
+- Size: `components.css` is ~360 KB minified (~47 KB gzip) plus ~25 KB gzip per theme; the third-party CSS of the lazily loaded
   components (Quill, vis-timeline, FullCalendar, Coloris, jsPlumb, Cropper, jQuery UI datepicker) is only loaded with them.
   The largest component file is `packages/datepicker/datepicker/src/datepicker.css`, loaded only with p:datePicker /
   p:calendar.

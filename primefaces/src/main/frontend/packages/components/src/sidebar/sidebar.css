@@ -2,7 +2,8 @@
  * Sidebar: p:sidebar (PrimeUIX drawer)
  *
  * Markup: .ui-sidebar.ui-sidebar-{left|right|top|bottom} > a.ui-sidebar-close, .ui-sidebar-content
- * States: ui-sidebar-active (opened), ui-sidebar-full (fullScreen), ui-sidebar-sm | -md | -lg (size)
+ * States: ui-sidebar-active (opened), ui-sidebar-full (fullScreen)
+ * Sizes: ui-sidebar-sm | -md | -lg via styleClass (the component has no size attribute)
  * PF only tokens: the sidebar block of presets/*.css
  */
 

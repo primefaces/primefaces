@@ -207,11 +207,6 @@
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
-    &.ui-filter-toggleable thead .ui-column-customfilter,
-    &.ui-filter-toggleable thead .ui-column-filter {
-        display: none;
-    }
-
     /* focusable for the keyboard row navigation: ring inside on keyboard focus, the table would clip an outer one */
     tbody.ui-datatable-data {
         outline: 0;
@@ -631,7 +626,8 @@
     }
 
     .ui-datatable-frozen-container {
-        margin-right: -1px;
+        /* the frozen container comes first: its inner edge overlaps the border of the scrollable one (also in RTL) */
+        margin-inline-end: -1px;
 
         .ui-row-toggler {
             margin-top: -2px;

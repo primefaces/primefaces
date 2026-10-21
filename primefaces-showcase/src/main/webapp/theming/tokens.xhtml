@@ -257,10 +257,10 @@
                             }
                             var html = '';
                             if (/^url\(/.test(value)) {
-                                html += '<span class="tokens-icon" style="mask-image: var(' + name + '); -webkit-mask-image: var(' + name + ')"></span>';
+                                html += '<span class="tokens-icon" style="mask-image: var(' + esc(name) + '); -webkit-mask-image: var(' + esc(name) + ')"></span>';
                             }
                             else if (computed && isColor(value)) {
-                                html += '<span class="tokens-swatch"><span style="background: var(' + name + ')"></span></span>';
+                                html += '<span class="tokens-swatch"><span style="background: var(' + esc(name) + ')"></span></span>';
                             }
                             var text = esc(short(value));
                             if (computed && isColor(value)) {

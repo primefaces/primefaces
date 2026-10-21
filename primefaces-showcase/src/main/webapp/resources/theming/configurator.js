@@ -26,7 +26,14 @@
 
     // the token overrides of the configurator, name -> value
     var tokens = {};
-    try { tokens = JSON.parse(read(KEYS.tokens) || '{}'); } catch (e) { }
+    try {
+        var stored = JSON.parse(read(KEYS.tokens) || '{}');
+        // only --p-* tokens: stored values are trusted, stored names are not (a "display" would hide the page)
+        if (stored && typeof stored === 'object') {
+            Object.keys(stored).filter(function (name) { return name.indexOf('--p-') === 0; })
+                .forEach(function (name) { tokens[name] = String(stored[name]); });
+        }
+    } catch (e) { }
 
     // data-dark: the effective color scheme for the showcase layout (code highlighting)
     function syncDark() {

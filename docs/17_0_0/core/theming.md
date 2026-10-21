@@ -105,9 +105,9 @@ that depend on the overridden one are recalculated inside it:
 }
 ```
 
-!> Inside a `[data-p-scope]` element the theme declares the tokens that reference other tokens again (colors,
-`--p-primary-base`, most component tokens), so they are recalculated there. Global overrides of such tokens that should
-also reach into scopes must target `:root, [data-p-scope]` instead of `:root` alone. Tokens with a literal value (sizes,
+!> Inside a `[data-p-scope]` element the theme declares the tokens that reference other tokens again (colors, most
+component tokens), so they are recalculated there. Global overrides of such tokens that should also reach into scopes
+must target `:root, [data-p-scope]` instead of `:root` alone. `--p-primary-base` and tokens with a literal value (sizes,
 paddings, the icons of the icon set) are declared on `:root` only, an override on `:root` reaches into scopes.
 
 ## Overriding tokens

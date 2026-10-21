@@ -303,8 +303,14 @@ function createThemeBuildTasks() {
  *   `--p-primary-base`).
  * - Reference that leads to a density token (`themes/density/<preset>.css`, e.g. `--p-button-padding-x:
  *   var(--p-form-field-padding-x)`): also on `[data-p-density]`, so it follows the density of the element.
+ * - The inputs of the theme (`--p-primary-base`): on `:root` only whatever their value, so that the documented
+ *   `:root { --p-primary-base: ... }` reaches into scopes in every preset (Aura references a palette color, Metal a
+ *   literal); a scoped override is unlayered and wins there anyway, and everything derived from them is re-declared.
  * @returns {import("esbuild").Plugin}
  */
+const ROOT_INPUTS = new Set(["--p-primary-base"]);
+const isRootInput = (token) => ROOT_INPUTS.has(token);
+
 function scopedTokensPlugin() {
     return {
         name: "primefaces-scoped-tokens",
@@ -355,7 +361,7 @@ function splitScopedTokens(css, density, file) {
             if (m === null) {
                 throw new Error(`${file}: one token per line expected in a token block: ${line.trim()}`);
             }
-            groups[!m[2].includes("var(") ? "literal" : dense.has(m[1]) ? "dense" : "referencing"].push(line);
+            groups[isRootInput(m[1]) || !m[2].includes("var(") ? "literal" : dense.has(m[1]) ? "dense" : "referencing"].push(line);
         }
         return [
             [":root", groups.literal],
