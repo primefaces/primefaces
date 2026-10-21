@@ -110,8 +110,7 @@ class ColorPicker003Test extends AbstractColorPickerTest {
         System.out.println("ColorPicker Config = " + cfg);
         assertEquals("popup", cfg.getString("mode"));
         if (cfg.has("themeMode")) {
-            // the contrast of the page: the theme follows the color-scheme (light, dark or the one of the OS)
-            assertEquals(PrimeSelenium.executeScript("return PrimeFaces.env.getThemeContrast();"), cfg.getString("themeMode"));
+            assertEquals("light", cfg.getString("themeMode"));
         }
         assertFalse(cfg.has("theme"));
         assertEquals("en", cfg.getString("locale"));

@@ -42,6 +42,12 @@
         }
     }
 
+    /* loaded items fade and slide in (base/common.css); not with virtual scrolling, it replaces the items while scrolling */
+    .ui-datascroller-content > .ui-datascroller-list > .ui-datascroller-item {
+        --_enter-offset: var(--p-dataview-content-enter-offset);
+        animation: ui-enter var(--p-dataview-content-enter-duration) var(--p-transition-easing-enter);
+    }
+
     .ui-datascroller-virtualscroll-wrapper {
         position: relative;
 

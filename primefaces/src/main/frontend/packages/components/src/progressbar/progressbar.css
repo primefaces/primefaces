@@ -94,6 +94,20 @@
         animation: ui-progressbar-indeterminate-anim-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
         animation-delay: 1.15s;
     }
+
+    /* reduced motion: the bars would stop outside of the track (one iteration, see base/document.css); a full, lighter
+       bar shows that something is going on */
+    @media (prefers-reduced-motion: reduce) {
+        &::before {
+            right: 0;
+            animation: none;
+            opacity: 0.5;
+        }
+
+        &::after {
+            content: none;
+        }
+    }
 }
 
 @keyframes ui-progressbar-indeterminate-anim {

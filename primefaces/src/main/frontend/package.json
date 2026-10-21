@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@rwap/jquery-ui-touch-punch": "1.1.5",
-    "@types/culori": "^4",
+    "@types/culori": "4.0.1",
     "@types/node": "26.6.3",
     "@types/pnpapi": "0.0.5",
     "@xenorange/esbuild-plugin-banned-dependencies": "1.0.0",

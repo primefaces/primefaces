@@ -17,6 +17,17 @@
 
             <p:inputText id="inputText" />
 
+            <!-- nested density: the spacing tokens follow the nearest data-p-density, also inside a scope; normal restores -->
+            <div data-p-density="compact">
+                <p:commandButton id="buttonCompact" value="Compact" type="button" />
+                <div data-p-scope="">
+                    <p:inputText id="inputCompactScope" />
+                </div>
+                <div data-p-density="normal">
+                    <p:inputText id="inputNormal" />
+                </div>
+            </div>
+
             <p:dialog id="dialog" widgetVar="dialog" header="Dialog" visible="true" modal="false" closable="true">
                 Dialog content
             </p:dialog>

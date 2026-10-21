@@ -39,6 +39,7 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponent(value = Mindmap.COMPONENT_TYPE, namespace = Mindmap.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "MindMap is an interactive mindmapping component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "mindmap/mindmap.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

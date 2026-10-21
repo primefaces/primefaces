@@ -25,6 +25,8 @@
         <yarn.version>v1.22.22</yarn.version>
         <frontend.directory>${basedir}/src/main/frontend</frontend.directory>
         <frontend.node.env>development</frontend.node.env>
+        <!-- -Dskip.yarn=true skips the frontend build (frontend-maven-plugin) and the tokens zip, which needs its output -->
+        <skip.yarn>false</skip.yarn>
         <sonar.skip>false</sonar.skip>
         <vdl.skip>true</vdl.skip>
     </properties>
@@ -608,6 +610,28 @@
                         <phase>verify</phase>
                         <configuration>
                             <arguments>run verify</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Design tokens of the themes (W3C DTCG, written by the frontend build to target/tokens) as primefaces-<version>-tokens.zip -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.8.0</version>
+                <executions>
+                    <execution>
+                        <id>tokens</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <skipAssembly>${skip.yarn}</skipAssembly>
+                            <descriptors>
+                                <descriptor>src/main/assembly/tokens.xml</descriptor>
+                            </descriptors>
                         </configuration>
                     </execution>
                 </executions>

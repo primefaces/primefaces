@@ -97,6 +97,9 @@ values come from the themes in `themes/`. See [themes/README.md](themes/README.m
 
 - Each `index.css` imports its files into a cascade layer (`@import url("./src/x.css") layer(primefaces.components);`)
   and starts with the layer order, so the order is the same whichever PrimeFaces stylesheet loads first.
+- A widget in its own package (`packages/knob/knob`, `packages/datepicker/datepicker`, ...) has its CSS in that package
+  (`src/<name>.css` + `index.css`, built to `<package>/<name>.css`), loaded by the `@ResourceDependency` of the
+  component; only the widgets of `components.js` have their CSS in `components.css`.
 - Third-party CSS is imported by `index.css` into `@layer primefaces.vendor`; CSS that JavaScript dependencies import
   themselves (e.g. FullCalendar) is dropped by the build.
 - `themes/<theme>.css` is built to `META-INF/resources/primefaces-<theme>/theme.css`, the stylesheet of the

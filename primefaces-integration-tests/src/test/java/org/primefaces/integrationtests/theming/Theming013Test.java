@@ -55,11 +55,13 @@ class Theming013Test extends AbstractThemingTest {
 
         // Assert
         List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='ln=primefaces-']"));
-        assertTrue(links.stream().anyMatch(l -> l.getAttribute("href").contains("ln=primefaces-glass")), "primefaces-glass:theme.css not rendered");
-        assertBlur("dialog", page.dialog);
-        assertBlur("modal mask", PrimeSelenium.getWebDriver().findElement(By.cssSelector(".ui-widget-overlay, .ui-dialog-mask")));
-        assertBlur("toolbar", page.toolbar);
-        assertBlur("button", page.primary);
+        assertTrue(links.stream().anyMatch(l -> l.getDomAttribute("href").contains("ln=primefaces-glass")), "primefaces-glass:theme.css not rendered");
+        assertBlur("dialog box", backdropFilter(dialogBox(page.dialog), "::before"));
+        assertEquals("none", backdropFilter(page.dialog), "the full viewport dialog container must not blur the page");
+        assertBlur("modal mask", backdropFilter(PrimeSelenium.getWebDriver().findElement(By.cssSelector(".ui-widget-overlay, .ui-dialog-mask"))));
+        assertBlur("toolbar", backdropFilter(page.toolbar, "::before"));
+        assertEquals("none", backdropFilter(page.toolbar), "the toolbar itself must not be a backdrop root / stacking context");
+        assertBlur("button", backdropFilter(page.primary));
         assertEquals("none", backdropFilter(page.panel), "the content layer (panel) must not get a backdrop filter");
         assertEquals("none", backdropFilter(page.menubar), "the menubar must not get a backdrop filter (backdrop root of its submenus)");
         String wallpaper = PrimeSelenium.executeScript("return getComputedStyle(document.documentElement).backgroundImage;");
@@ -92,8 +94,8 @@ class Theming013Test extends AbstractThemingTest {
         setColorScheme("light");
 
         // Assert
-        assertEquals("none", backdropFilter(page.dialog));
-        assertEquals("none", backdropFilter(page.toolbar));
+        assertEquals("none", backdropFilter(dialogBox(page.dialog), "::before"));
+        assertEquals("none", backdropFilter(page.toolbar, "::before"));
         assertEquals("none", backdropFilter(page.primary));
         String background = PrimeSelenium.executeScript("return getComputedStyle(document.documentElement).backgroundImage;");
         assertFalse(background.contains("gradient"), "aura paints a page background: " + background);
@@ -104,8 +106,16 @@ class Theming013Test extends AbstractThemingTest {
         return computedStyle(element, "backdrop-filter");
     }
 
-    private void assertBlur(String description, WebElement element) {
-        String filter = backdropFilter(element);
+    private String backdropFilter(WebElement element, String pseudo) {
+        return PrimeSelenium.executeScript("return getComputedStyle(arguments[0], arguments[1]).getPropertyValue('backdrop-filter');",
+                element, pseudo);
+    }
+
+    private static WebElement dialogBox(WebElement dialog) {
+        return dialog.findElement(By.cssSelector(".ui-dialog-box"));
+    }
+
+    private void assertBlur(String description, String filter) {
         assertTrue(filter.contains("blur("), description + " has no backdrop blur: " + filter);
     }
 

@@ -53,8 +53,8 @@ class Theming011Test extends AbstractThemingTest {
     void rendered(MetalPage page) {
         // Assert
         List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='ln=primefaces-']"));
-        assertTrue(links.stream().anyMatch(l -> l.getAttribute("href").contains("ln=primefaces-metal")), "primefaces-metal:theme.css not rendered");
-        assertFalse(links.stream().anyMatch(l -> l.getAttribute("href").contains("ln=primefaces-aura")), "primefaces-aura:theme.css rendered with metal");
+        assertTrue(links.stream().anyMatch(l -> l.getDomAttribute("href").contains("ln=primefaces-metal")), "primefaces-metal:theme.css not rendered");
+        assertFalse(links.stream().anyMatch(l -> l.getDomAttribute("href").contains("ln=primefaces-aura")), "primefaces-aura:theme.css rendered with metal");
         assertNoJavascriptErrors();
     }
 

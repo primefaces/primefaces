@@ -31,7 +31,9 @@
         box-shadow: var(--p-cascadeselect-focus-ring-shadow);
     }
 
-    &.ui-state-error {
+    /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
+    &.ui-state-error,
+    &.ui-state-error:is(:hover, .ui-state-focus) {
         border-color: var(--p-cascadeselect-invalid-border-color);
     }
 

@@ -15,7 +15,6 @@
 @import url("jquery-ui/themes/base/draggable.css") layer(primefaces.vendor);
 @import url("jquery-ui/themes/base/resizable.css") layer(primefaces.vendor);
 @import url("jquery-ui/themes/base/sortable.css") layer(primefaces.vendor);
-@import url("jquery-ui/themes/base/datepicker.css") layer(primefaces.vendor);
 @import url("jquery-ui/themes/base/slider.css") layer(primefaces.vendor);
 
 /* base */
@@ -59,18 +58,15 @@
 @import url("./src/datascroller/datascroller.css") layer(primefaces.components);
 @import url("./src/datatable/datatable.css") layer(primefaces.components);
 @import url("./src/dataview/dataview.css") layer(primefaces.components);
-@import url("./src/datepicker/datepicker.css") layer(primefaces.components);
 @import url("./src/dialog/dialog.css") layer(primefaces.components);
 @import url("./src/divider/divider.css") layer(primefaces.components);
 @import url("./src/fieldset/fieldset.css") layer(primefaces.components);
 @import url("./src/growl/growl.css") layer(primefaces.components);
 @import url("./src/inplace/inplace.css") layer(primefaces.components);
-@import url("./src/knob/knob.css") layer(primefaces.components);
 @import url("./src/menu/megamenu.css") layer(primefaces.components);
 @import url("./src/menu/menu.css") layer(primefaces.components);
 @import url("./src/message/message.css") layer(primefaces.components);
 @import url("./src/messages/messages.css") layer(primefaces.components);
-@import url("./src/mindmap/mindmap.css") layer(primefaces.components);
 @import url("./src/forms/multiselectlistbox.css") layer(primefaces.components);
 @import url("./src/notificationbar/notificationbar.css") layer(primefaces.components);
 @import url("./src/orderlist/orderlist.css") layer(primefaces.components);
@@ -116,6 +112,7 @@
 @import url("./src/wizard/wizard.css") layer(primefaces.components);
 
 /* behaviors */
+@import url("./src/base/hidden.css") layer(primefaces.behaviors);
 @import url("./src/dragdrop/dragdrop.css") layer(primefaces.behaviors);
 @import url("./src/resizable/resizable.css") layer(primefaces.behaviors);
 @import url("./src/sticky/sticky.css") layer(primefaces.behaviors);

@@ -681,15 +681,12 @@
 }
 
 .ui-treetable-reflow {
-    /* the reflow layout follows the width of the table, not of the viewport (e.g. inside a narrow sidebar) */
-    container: p-treetable / inline-size;
-
     .ui-treetable-data td .ui-column-title {
         display: none;
     }
 }
 
-@container p-treetable (max-width: 640px) {
+@media (max-width: 640px) {
     .ui-treetable-reflow thead th,
     .ui-treetable-reflow tfoot td {
         display: none;

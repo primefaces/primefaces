@@ -563,7 +563,8 @@
     }
 
     > .ui-icon-arrowthick-1-s {
-        display: none !important;
+        /* not shown: jQuery show() writes an inline display, visibility keeps it hidden without !important */
+        visibility: hidden;
 
         &::before {
             content: "\2003";
@@ -575,7 +576,7 @@
 
     > .ui-icon-arrowthick-1-n {
         /* push the up arrow below the header */
-        padding-top: var(--p-datatable-drop-point-offset) !important;
+        padding-top: var(--p-datatable-drop-point-offset);
 
         &::before {
             content: "\2003";
@@ -852,9 +853,6 @@
 }
 
 .ui-datatable-reflow {
-    /* the reflow layout follows the width of the table, not of the viewport (e.g. inside a narrow sidebar) */
-    container: p-datatable / inline-size;
-
     .ui-datatable-data td[role="gridcell"] .ui-column-title,
     .ui-expanded-row-content td .ui-column-title {
         display: none;
@@ -891,7 +889,7 @@
     }
 }
 
-@container p-datatable (max-width: 640px) {
+@media (max-width: 640px) {
     .ui-datatable-reflow thead th,
     .ui-datatable-reflow tfoot td {
         display: none;

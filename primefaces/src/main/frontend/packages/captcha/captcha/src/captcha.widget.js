@@ -32,7 +32,7 @@ PrimeFaces.widget.Captcha = class Captcha extends PrimeFaces.widget.BaseWidget {
     init(cfg) {
         super.init(cfg);
         this.cfg.language = this.cfg.language || 'en';
-        this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast();
+        this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast(this.jq[0]);
 
         var $this = this;
 

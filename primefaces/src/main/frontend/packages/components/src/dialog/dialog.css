@@ -21,6 +21,11 @@ body.ui-dialog-open {
     overflow-x: hidden;
     overflow-y: auto;
     outline: 0;
+    /* non modal: the container covers the viewport, only the box takes the pointer, so the page around the dialog stays
+       usable (scrolling over the box still scrolls the container); a modal dialog keeps it for its scrollbar */
+    &:not([aria-modal="true"]) {
+        pointer-events: none;
+    }
 
     &.ui-dialog-absolute {
         position: absolute;
@@ -76,6 +81,7 @@ body.ui-dialog-open {
     .ui-dialog-box {
         position: relative;
         display: inline-flex;
+        pointer-events: auto;
         flex-direction: column;
         max-width: 100%;
         background: var(--p-dialog-background);

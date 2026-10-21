@@ -3,10 +3,6 @@
  * The helper and resizable rules repeat vendor rules on purpose: here they also beat lower or equal specificity
  * theme rules (e.g. display / position of .ui-icon in common.css), which the vendor layer cannot.
  */
-.ui-helper-hidden {
-    display: none;
-}
-
 .ui-helper-hidden-accessible {
     border: 0;
     clip: rect(0 0 0 0);

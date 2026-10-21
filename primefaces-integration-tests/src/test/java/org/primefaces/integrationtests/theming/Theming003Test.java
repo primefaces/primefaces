@@ -176,6 +176,32 @@ class Theming003Test extends AbstractThemingTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("Theming: nested data-p-density follows the nearest one (also in a scope) and keeps a global --p-primary-base")
+    void nestedDensity(Page page) {
+        // Arrange
+        setColorScheme("light");
+        double normalInput = px(computedStyle(page.inputText, "padding-left"));
+        double normalButton = px(computedStyle(page.buttonPrimary, "padding-left"));
+
+        // Assert: the referencing spacing tokens (button padding) and the scope inside follow the compact density
+        assertTrue(px(computedStyle(page.buttonCompact, "padding-left")) < normalButton, "button in a compact area is not compact");
+        assertTrue(px(computedStyle(page.inputCompactScope, "padding-left")) < normalInput, "a scope inside a compact area resets the density");
+        assertEquals(normalInput, px(computedStyle(page.inputNormal, "padding-left")), "data-p-density=normal does not restore the preset");
+
+        // Act: global primary color
+        setApplicationStyle(STYLE_ID, ":root { --p-primary-base: #1e3a8a; }");
+
+        // Assert: the density area does not declare the color tokens again
+        assertEquals(computedStyle(page.buttonPrimary, "background-color"), computedStyle(page.buttonCompact, "background-color"),
+                "a global --p-primary-base does not reach into the compact area");
+
+        // Act: remove the override
+        removeApplicationStyle(STYLE_ID);
+        assertNoJavascriptErrors();
+    }
+
     private static void assertIcon(String description, String maskImage) {
         assertTrue(maskImage != null && maskImage.startsWith("url("), description + " has no mask-image: " + maskImage);
     }
@@ -190,6 +216,15 @@ class Theming003Test extends AbstractThemingTest {
 
         @FindBy(id = "form:inputText")
         WebElement inputText;
+
+        @FindBy(id = "form:buttonCompact")
+        WebElement buttonCompact;
+
+        @FindBy(id = "form:inputCompactScope")
+        WebElement inputCompactScope;
+
+        @FindBy(id = "form:inputNormal")
+        WebElement inputNormal;
 
         @FindBy(css = "[id='form:dialog'] .ui-dialog-titlebar-close .ui-icon-closethick")
         WebElement dialogCloseIcon;

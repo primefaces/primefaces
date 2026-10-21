@@ -241,7 +241,7 @@ async function createFrontendBuildTask(project) {
             entryPoints: [project.indexStyle],
             outfile: `${targetPath}.css`,
         };
-        buildOptions.plugins.unshift(inlineIconsPlugin());
+        buildOptions.plugins.unshift(inlineIconsPlugin(), scopedTokensPlugin());
         buildTasks.push(buildOptions);
     }
 
@@ -283,12 +283,93 @@ function createThemeBuildTasks() {
             const fromPath = path.join(Env.ThemesDir, entry.name);
             const toPath = path.join(Env.TargetResourceDir, `primefaces-${theme}`, "theme.css");
             console.log(`Creating build task from <${path.relative(Env.MavenRootDir, fromPath)}> to <${path.relative(Env.MavenRootDir, toPath)}>`);
-            return {
+            /** @type {BaseBuildOptions} */
+            const buildOptions = {
                 ...createBaseOptions(),
                 entryPoints: [fromPath],
                 outfile: toPath,
             };
+            buildOptions.plugins.unshift(scopedTokensPlugin());
+            return buildOptions;
         });
+}
+
+/**
+ * Splits the token blocks of the presets and the icon set (`:root, [data-p-scope] { ... }`) by where a token has to be
+ * declared. The sources keep one block per component.
+ * - Literal value: on `:root` only, it inherits into scopes and density elements, so an application override on `:root`
+ *   reaches them.
+ * - Reference to other tokens: on `:root, [data-p-scope]`, so it resolves against the values of a scope (e.g. a scoped
+ *   `--p-primary-base`).
+ * - Reference that leads to a density token (`themes/density/<preset>.css`, e.g. `--p-button-padding-x:
+ *   var(--p-form-field-padding-x)`): also on `[data-p-density]`, so it follows the density of the element.
+ * @returns {import("esbuild").Plugin}
+ */
+function scopedTokensPlugin() {
+    return {
+        name: "primefaces-scoped-tokens",
+        setup(build) {
+            build.onLoad({ filter: /[\\/](themes[\\/]presets|icons)[\\/][^\\/]+\.css$/ }, async args => {
+                const css = await fs.readFile(args.path, "utf8");
+                const densityFile = path.join(Env.ThemesDir, "density", path.basename(args.path));
+                const density = args.path.includes(`${path.sep}presets${path.sep}`) && fsSync.existsSync(densityFile)
+                    ? await fs.readFile(densityFile, "utf8")
+                    : "";
+                const contents = splitScopedTokens(css, density, path.relative(Env.RootDir, args.path));
+                return { contents, loader: "css", resolveDir: path.dirname(args.path) };
+            });
+        },
+    };
+}
+
+/**
+ * @param {string} css The CSS of a preset or of the icon set.
+ * @param {string} density The CSS of the density of the preset (empty for the icon set).
+ * @param {string} file The file name for error messages.
+ * @returns {string} The CSS with every `:root, [data-p-scope]` block split, see {@link scopedTokensPlugin}.
+ */
+function splitScopedTokens(css, density, file) {
+    const declaration = /^\s*(--p-[a-z0-9-]+)\s*:\s*(.*);\s*$/;
+    const references = (value) => [...value.matchAll(/var\((--p-[a-z0-9-]+)/g)].map(m => m[1]);
+
+    // tokens that follow the density: the density tokens and everything that references them (transitively)
+    const values = new Map(css.split(/\r?\n/).map(line => line.match(declaration)).filter(m => m !== null).map(m => [m[1], m[2]]));
+    const dense = new Set([...density.matchAll(/(--p-[a-z0-9-]+)\s*:/g)].map(m => m[1]));
+    for (let grown = true; grown;) {
+        grown = false;
+        for (const [token, value] of values) {
+            if (!dense.has(token) && references(value).some(ref => dense.has(ref))) {
+                dense.add(token);
+                grown = true;
+            }
+        }
+    }
+
+    let blocks = 0;
+    const split = css.replace(/^([ \t]*):root, \[data-p-scope\] \{\r?\n([\s\S]*?)^\1\}/gm, (_, indent, body) => {
+        blocks++;
+        const lines = body.split(/\r?\n/).filter(line => line.trim() !== "");
+        const groups = { literal: [], referencing: [], dense: [] };
+        for (const line of lines) {
+            const m = line.match(declaration);
+            if (m === null) {
+                throw new Error(`${file}: one token per line expected in a token block: ${line.trim()}`);
+            }
+            groups[!m[2].includes("var(") ? "literal" : dense.has(m[1]) ? "dense" : "referencing"].push(line);
+        }
+        return [
+            [":root", groups.literal],
+            [":root, [data-p-scope]", groups.referencing],
+            [":root, [data-p-scope], [data-p-density]", groups.dense],
+        ]
+            .filter(([, group]) => group.length > 0)
+            .map(([selector, group]) => `${indent}${selector} {\n${group.join("\n")}\n${indent}}`)
+            .join("\n");
+    });
+    if (blocks !== (css.match(/\[data-p-scope\]\s*\{/g) ?? []).length) {
+        throw new Error(`${file}: a [data-p-scope] block was not split, write it as ":root, [data-p-scope] {" with one token per line`);
+    }
+    return split;
 }
 
 /**

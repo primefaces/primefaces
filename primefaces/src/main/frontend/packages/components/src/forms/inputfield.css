@@ -32,7 +32,7 @@ input:-webkit-autofill {
     padding: 0;
     position: absolute;
     width: 1px;
-    word-wrap: normal !important;
+    word-wrap: normal;
 }
 
 input::placeholder,
@@ -78,9 +78,13 @@ textarea::placeholder {
         box-shadow: var(--p-inputtext-focus-ring-shadow);
     }
 
-    &.ui-state-error {
+    /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
+    &.ui-state-error,
+    &.ui-state-error:is(:hover, :focus, .ui-state-hover, .ui-state-focus) {
         border-color: var(--p-inputtext-invalid-border-color);
+    }
 
+    &.ui-state-error {
         &::placeholder {
             color: var(--p-inputtext-invalid-placeholder-color);
         }
@@ -373,24 +377,28 @@ textarea::placeholder {
     }
 }
 
+/*
+ * physical sides on purpose: the class names the side, the renderers swap the class for RTL (p:password toggleMask),
+ * and dir="rtl" is often only written on the input, so logical sides of the wrapper / icon would resolve LTR
+ */
 .ui-input-icon-left {
     > i:first-of-type {
-        inset-inline-start: var(--p-form-field-padding-x);
+        left: var(--p-form-field-padding-x);
         color: var(--p-iconfield-icon-color);
     }
 
     > .ui-inputfield {
-        padding-inline-start: calc(var(--p-form-field-padding-x) * 2 + var(--p-icon-size));
+        padding-left: calc(var(--p-form-field-padding-x) * 2 + var(--p-icon-size));
     }
 }
 
 .ui-input-icon-right {
     > i:last-of-type {
-        inset-inline-end: var(--p-form-field-padding-x);
+        right: var(--p-form-field-padding-x);
         color: var(--p-iconfield-icon-color);
     }
 
     > .ui-inputfield {
-        padding-inline-end: calc(var(--p-form-field-padding-x) * 2 + var(--p-icon-size));
+        padding-right: calc(var(--p-form-field-padding-x) * 2 + var(--p-icon-size));
     }
 }

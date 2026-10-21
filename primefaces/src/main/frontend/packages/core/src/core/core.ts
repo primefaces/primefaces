@@ -1289,7 +1289,7 @@ export class Core {
 
     /**
      * Gets the currently loaded PrimeFaces theme.
-     * @return The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
+     * @return The current theme, such as `aura` or `lara`. Empty string when no theme is loaded.
      */
     getTheme(): string {
         return env.getTheme();
@@ -1298,7 +1298,7 @@ export class Core {
     /**
      * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
      * installed and is available.
-     * @param newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
+     * @param newTheme The new theme, e.g. `aura`, `lara`, `nora`, `metal` or `glass`.
      */
     changeTheme(newTheme: string): void {
         if(newTheme && newTheme !== '') {

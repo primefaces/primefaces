@@ -32,7 +32,9 @@
 
         margin: 0 0 var(--p-growl-gap) 0;
         background: var(--_bg);
-        border: var(--p-toast-border-width) solid var(--_border-color);
+        border-width: var(--p-toast-border-width);
+        border-style: solid;
+        border-color: var(--_border-color);
         color: var(--_color);
         border-radius: var(--p-toast-border-radius);
         box-shadow: var(--_shadow);

@@ -282,3 +282,17 @@
         width: 100%;
     }
 }
+
+/* client side validation marks the wrapper (the server marks input and buttons) */
+.ui-spinner.ui-state-error {
+    .ui-spinner-input,
+    .ui-spinner-input:is(:hover, :focus, .ui-state-hover, .ui-state-focus) {
+        border-color: var(--p-inputtext-invalid-border-color);
+    }
+
+    .ui-spinner-button {
+        --_border: var(--p-form-field-invalid-border-color);
+        --_hover-border: var(--p-form-field-invalid-border-color);
+        --_active-border: var(--p-form-field-invalid-border-color);
+    }
+}

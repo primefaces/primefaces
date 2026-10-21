@@ -45,14 +45,18 @@
     }
 }
 
-/* readonly: no hover feedback (wins over the states of forms/radiobutton.css by specificity) */
+/* readonly: no hover feedback (wins over the states of forms/radiobutton.css by specificity); an invalid box keeps its
+   invalid border */
 .ui-selectoneradio.ui-state-readonly .ui-radiobutton .ui-radiobutton-box {
-    &:hover {
+    &:not(.ui-state-error):hover {
         border-color: var(--p-radiobutton-border-color);
     }
 
-    &.ui-state-active:hover {
+    &.ui-state-active:not(.ui-state-error):hover {
         border-color: var(--p-radiobutton-checked-border-color);
+    }
+
+    &.ui-state-active:hover {
         background: var(--p-radiobutton-checked-background);
 
         .ui-icon-bullet {

@@ -274,7 +274,7 @@
         --p-typography-font-weight: normal;
         --p-typography-font-size: 0.875rem;
         --p-transition-duration: 0.2s;
-        --p-focus-ring-width: 0;
+        --p-focus-ring-width: 0px;
         --p-focus-ring-style: none;
         --p-focus-ring-color: transparent;
         --p-focus-ring-offset: 0;
@@ -905,7 +905,7 @@
         --p-carousel-indicator-list-gap: 0.5rem;
         --p-carousel-indicator-width: 0.875rem;
         --p-carousel-indicator-height: 0.875rem;
-        --p-carousel-indicator-border-radius: 50;
+        --p-carousel-indicator-border-radius: 50%;
         --p-carousel-indicator-focus-ring-width: var(--p-focus-ring-width);
         --p-carousel-indicator-focus-ring-style: var(--p-focus-ring-style);
         --p-carousel-indicator-focus-ring-color: var(--p-focus-ring-color);
@@ -1309,6 +1309,8 @@
         --p-dataview-border-width: 1px;
         --p-dataview-border-radius: 4px;
         --p-dataview-padding: 0;
+        --p-dataview-content-enter-duration: var(--p-transition-duration);
+        --p-dataview-content-enter-offset: 0.5rem;
         --p-dataview-header-background: light-dark(var(--p-surface-50), var(--p-surface-800));
         --p-dataview-header-color: var(--p-text-color);
         --p-dataview-header-border-color: var(--p-content-border-color);
@@ -1678,7 +1680,7 @@
         --p-galleria-nav-button-color: var(--p-surface-100);
         --p-galleria-nav-button-hover-color: var(--p-surface-0);
         --p-galleria-nav-button-size: 2.625rem;
-        --p-galleria-nav-button-gutter: 0;
+        --p-galleria-nav-button-gutter: 0px;
         --p-galleria-nav-button-prev-border-radius: 0 12px 12px 0;
         --p-galleria-nav-button-next-border-radius: 12px 0 0 12px;
         --p-galleria-nav-button-focus-ring-width: var(--p-focus-ring-width);
@@ -2180,6 +2182,8 @@
     /* message */
     :root, [data-p-scope] {
         --p-message-border-radius: var(--p-content-border-radius);
+        --p-message-enter-duration: var(--p-transition-duration);
+        --p-message-enter-offset: -0.25rem;
         --p-message-border-width: 1px;
         --p-message-transition-duration: var(--p-transition-duration);
         --p-message-content-padding: 0.625rem 0.875rem;
@@ -3577,6 +3581,8 @@
         --p-tooltip-font-size: 0.625rem;
         --p-tooltip-background: var(--p-surface-700);
         --p-tooltip-color: var(--p-surface-0);
+        --p-tooltip-invalid-background: var(--p-message-error-color);
+        --p-tooltip-invalid-color: light-dark(var(--p-surface-0), var(--p-surface-950));
     }
 
     /* tree */

@@ -37,6 +37,12 @@
     transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
         border-color var(--p-message-transition-duration);
 
+    /* a new message (inserted by an ajax update or the client side validation) fades in, base/common.css */
+    &:not(.ui-staticmessage) {
+        --_enter-offset: var(--p-message-enter-offset);
+        animation: ui-enter var(--p-message-enter-duration) var(--p-transition-easing-enter);
+    }
+
     /* an empty p:message (no message) has no severity class and stays invisible */
     &.ui-message-info,
     &.ui-message-success,

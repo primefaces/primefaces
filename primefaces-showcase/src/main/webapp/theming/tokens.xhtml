@@ -147,8 +147,10 @@
                 <div class="demo-card">
                     <h2>Tokens</h2>
                     <div class="muted">
-                        All <code>--p-*</code> tokens of the current theme, read at runtime from the loaded stylesheets (rules <code>:root</code> and
-                        <code>:root, [data-p-scope]</code>, also inside cascade layers), grouped by the prefix after <code>--p-</code>.
+                        All <code>--p-*</code> tokens of the current theme, read at runtime from the loaded stylesheets, also inside cascade layers:
+                        tokens with a literal value are declared on <code>:root</code>, tokens that reference other tokens on
+                        <code>:root, [data-p-scope]</code> and tokens that depend on the density on <code>:root, [data-p-scope], [data-p-density]</code>.
+                        They are grouped by the prefix after <code>--p-</code>.
                         <em>Declared</em> is the value of the stylesheet, <em>computed</em> the value on <code>&lt;html&gt;</code> with the current
                         color scheme, primary color, density and configurator overrides (marked <span class="tokens-badge">override</span>).
                         Click a token name to copy <code>var(--p-...)</code>.
@@ -167,7 +169,7 @@
                     //<![CDATA[
                     var tokenRef = (function () {
                         var root = document.documentElement;
-                        var SELECTORS = [':root', ':root,[data-p-scope]'];
+                        var SELECTORS = [':root', ':root,[data-p-scope]', ':root,[data-p-scope],[data-p-density]'];
                         var PALETTES = ['emerald', 'green', 'lime', 'red', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue',
                             'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone'];
                         var MULTI = ['form-field', 'focus-ring', 'border-radius'];

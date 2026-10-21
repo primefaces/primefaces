@@ -1,5 +1,5 @@
 /*
- * Theme configurator of the showcase (theming-next/configurator.xhtml): color scheme, density, input style, primary color
+ * Theme configurator of the showcase (theming/configurator.xhtml): color scheme, density, input style, primary color
  * and the main tokens, set live on :root (<html>) and kept in localStorage. Loaded in <head>, so the stored values are
  * applied before the first paint and a reload (e.g. a preset switch) keeps them. The preset itself is chosen on the server
  * (?theme=..., kept in the session).
@@ -24,6 +24,10 @@
         } catch (e) { }
     }
 
+    // the token overrides of the configurator, name -> value
+    var tokens = {};
+    try { tokens = JSON.parse(read(KEYS.tokens) || '{}'); } catch (e) { }
+
     // data-dark: the effective color scheme for the showcase layout (code highlighting)
     function syncDark() {
         var scheme = root.style.colorScheme;
@@ -36,11 +40,10 @@
         var scheme = read(KEYS.scheme);
         var primary = read(KEYS.primary);
         var density = read(KEYS.density);
-        var tokens = {};
-        try { tokens = JSON.parse(read(KEYS.tokens) || '{}'); } catch (e) { }
         if (scheme) { root.style.colorScheme = scheme; }
         if (primary) { root.style.setProperty('--p-primary-base', primary); }
-        if (density) { root.setAttribute('data-p-density', density); }
+        // "normal" is the page default: no attribute
+        if (density && density !== 'normal') { root.setAttribute('data-p-density', density); }
         root.classList.toggle('ui-input-filled', read(KEYS.input) === 'filled');
         Object.keys(tokens).forEach(function (name) { root.style.setProperty(name, tokens[name]); });
         syncDark();
@@ -91,8 +94,6 @@
     // the slider being dragged: refresh() must not move it
     var sliding = null;
 
-    var tokens = {};
-    try { tokens = JSON.parse(read(KEYS.tokens) || '{}'); } catch (e) { }
     var defaults = {};
     var ready = false;
 
@@ -156,28 +157,31 @@
     }
 
     function mark() {
-        var scheme = root.style.colorScheme || 'system';
-        document.querySelectorAll('[data-cfg-scheme]').forEach(function (b) {
-            b.classList.toggle('ui-state-active', b.getAttribute('data-cfg-scheme') === scheme);
-            b.setAttribute('aria-pressed', b.getAttribute('data-cfg-scheme') === scheme);
-        });
-        var input = root.classList.contains('ui-input-filled') ? 'filled' : 'outlined';
-        document.querySelectorAll('[data-cfg-input]').forEach(function (b) {
-            b.classList.toggle('ui-state-active', b.getAttribute('data-cfg-input') === input);
-            b.setAttribute('aria-pressed', b.getAttribute('data-cfg-input') === input);
-        });
         var shape = tokens['--p-button-border-radius'];
         var shadow = tokens['--p-card-shadow'];
         var motion = tokens['--p-transition-duration'];
+        markSegment('data-cfg-scheme', root.style.colorScheme || 'system');
+        markSegment('data-cfg-input', root.classList.contains('ui-input-filled') ? 'filled' : 'outlined');
+        markSegment('data-cfg-density', root.getAttribute('data-p-density') || 'normal');
         markSegment('data-cfg-dir', root.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr');
         markSegment('data-cfg-shape', shape === SHAPES.pill ? 'pill' : shape === SHAPES.square ? 'square' : 'theme');
         markSegment('data-cfg-shadow', shadow === 'none' ? 'none' : shadow ? 'deep' : 'theme');
         markSegment('data-cfg-motion', motion === '0s' ? 'off' : motion ? 'slow' : 'normal');
-        var density = root.getAttribute('data-p-density') || 'normal';
-        document.querySelectorAll('[data-cfg-density]').forEach(function (b) {
-            b.classList.toggle('ui-state-active', b.getAttribute('data-cfg-density') === density);
-            b.setAttribute('aria-pressed', b.getAttribute('data-cfg-density') === density);
-        });
+    }
+
+    // p:slider renders no ARIA on its handle: role slider, labelled by the label of the row, the token value as text
+    function labelHandle(widget, token, value, unit) {
+        var handle = widget.jq.children('.ui-slider-handle')[0];
+        if (!handle) {
+            return;
+        }
+        handle.id = 'cfg-handle' + token;
+        handle.setAttribute('role', 'slider');
+        handle.setAttribute('aria-labelledby', 'cfg-label' + token);
+        handle.setAttribute('aria-valuemin', widget.cfg.min);
+        handle.setAttribute('aria-valuemax', widget.cfg.max);
+        handle.setAttribute('aria-valuenow', toUnit(value, unit));
+        handle.setAttribute('aria-valuetext', value);
     }
 
     function refreshControls() {
@@ -191,6 +195,9 @@
             var widget = slider ? PrimeFaces.getWidgetById(slider.id) : null;
             if (widget && widget !== sliding) {
                 widget.setValue(toUnit(value, r[1]));
+            }
+            if (widget) {
+                labelHandle(widget, r[0], value, r[1]);
             }
             field.querySelector('output').textContent = value;
             field.classList.toggle('changed', r[0] in tokens);
@@ -218,20 +225,31 @@
         }
     }
 
+    // split like the theme build: literal values on :root, values with var() also on [data-p-scope] (resolved per scope)
     function snippet() {
-        var lines = [];
+        var literal = [];
+        var referencing = [];
+        var add = function (name, value) {
+            (/var\(/.test(value) ? referencing : literal).push('    ' + name + ': ' + value + ';');
+        };
         var primary = read(KEYS.primary);
         if (primary) {
-            lines.push('    --p-primary-base: ' + primary + ';');
+            add('--p-primary-base', primary);
         }
         NAMES.forEach(function (name) {
             if (name in tokens && tokens[name] !== defaults[name]) {
-                lines.push('    ' + name + ': ' + tokens[name] + ';');
+                add(name, tokens[name]);
             }
         });
         var css = [];
-        if (lines.length) {
-            css.push(':root, [data-p-scope] {', lines.join('\n'), '}');
+        if (literal.length || referencing.length) {
+            css.push('/* literal values on :root (they inherit into scopes and density areas), var() references also on [data-p-scope] */');
+        }
+        if (literal.length) {
+            css.push(':root {', literal.join('\n'), '}');
+        }
+        if (referencing.length) {
+            css.push((literal.length ? '\n' : '') + ':root, [data-p-scope] {', referencing.join('\n'), '}');
         }
         var scheme = root.style.colorScheme;
         if (scheme) {
@@ -257,6 +275,17 @@
         }
         // lets pages (e.g. the token reference) react to changes
         document.dispatchEvent(new CustomEvent('pf-demo-change'));
+    }
+
+    // at most one refresh per frame, for continuous input (color picker)
+    var frame = 0;
+    function refreshLater() {
+        if (!frame) {
+            frame = requestAnimationFrame(function () {
+                frame = 0;
+                refresh();
+            });
+        }
     }
 
     function withTransition(apply) {
@@ -301,7 +330,8 @@
             write(KEYS.input, value === 'filled' ? value : null);
             refresh();
         },
-        primary: function (value) {
+        // live: from the oninput of the color picker, refreshes once per frame
+        primary: function (value, live) {
             if (value) {
                 root.style.setProperty('--p-primary-base', value);
             }
@@ -309,7 +339,12 @@
                 root.style.removeProperty('--p-primary-base');
             }
             write(KEYS.primary, value);
-            refresh();
+            if (live) {
+                refreshLater();
+            }
+            else {
+                refresh();
+            }
         },
         buttonShape: function (value) {
             setToken('--p-button-border-radius', SHAPES[value] || null);
@@ -380,17 +415,21 @@
         },
         toggle: function (open) {
             var value = open === undefined ? !root.classList.contains('cfg-open') : open;
-            root.classList.toggle('cfg-open', value);
+            var panel = document.getElementById('cfgPanel');
             var button = document.getElementById('cfgToggle');
+            // closing with the focus inside of the panel: the focus goes back to the toggle button
+            var restore = !value && panel && panel.contains(document.activeElement);
+            root.classList.toggle('cfg-open', value);
             if (button) {
                 button.setAttribute('aria-expanded', value);
-            }
-            if (value) {
-                var panel = document.getElementById('cfgPanel');
-                if (panel) {
-                    panel.focus({ preventScroll: true });
+                if (restore) {
+                    button.focus({ preventScroll: true });
                 }
             }
+            if (value && panel) {
+                panel.focus({ preventScroll: true });
+            }
+            return restore;
         },
         copy: function (button) {
             var text = snippet();
@@ -418,7 +457,15 @@
     // closes on a click outside of the panel (the page itself stays usable while it is open)
     document.addEventListener('pointerdown', function (e) {
         if (root.classList.contains('cfg-open') && !e.target.closest('#cfgPanel, #cfgToggle, .ui-colorpicker-container')) {
-            cfg.toggle(false);
+            if (cfg.toggle(false)) {
+                // the click itself may blur the toggle button again: keep it unless the click focused another element
+                setTimeout(function () {
+                    var button = document.getElementById('cfgToggle');
+                    if (button && (!document.activeElement || document.activeElement === document.body)) {
+                        button.focus({ preventScroll: true });
+                    }
+                });
+            }
         }
     });
 

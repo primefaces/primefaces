@@ -43,6 +43,10 @@
         outline-color: transparent;
         transition: background var(--p-message-transition-duration), color var(--p-message-transition-duration),
             border-color var(--p-message-transition-duration);
+
+        /* a new message (inserted by an ajax update or the client side validation) fades in, base/common.css */
+        --_enter-offset: var(--p-message-enter-offset);
+        animation: ui-enter var(--p-message-enter-duration) var(--p-transition-easing-enter);
     }
 
     .ui-messages-info,

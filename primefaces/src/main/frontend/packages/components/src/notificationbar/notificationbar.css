@@ -11,8 +11,6 @@
     left: 0;
     width: 100%;
     min-height: 100px;
-    /* stays above sticky page headers */
-    z-index: 1100;
     padding: var(--p-notificationbar-padding);
     background: var(--p-notificationbar-background);
     color: var(--p-notificationbar-color);

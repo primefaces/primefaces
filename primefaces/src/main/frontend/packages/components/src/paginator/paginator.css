@@ -7,8 +7,6 @@
  * States (set by the widget): ui-state-hover, ui-state-focus, ui-state-active (current page), ui-state-disabled
  */
 .ui-paginator {
-    /* the page links are hidden by the width of the paginator, not of the viewport (e.g. inside a narrow sidebar) */
-    container: p-paginator / inline-size;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -270,7 +268,7 @@
     }
 
     /* after the display of .ui-paginator-pages (same specificity) */
-    @container p-paginator (max-width: 640px) {
+    @media (max-width: 640px) {
         .ui-paginator-pages {
             display: none;
         }

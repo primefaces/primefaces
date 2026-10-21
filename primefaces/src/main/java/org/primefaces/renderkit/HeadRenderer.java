@@ -30,6 +30,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.ResourceUtils;
 
@@ -38,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,6 +74,8 @@ public class HeadRenderer extends Renderer<UIComponent> {
 
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
+    // themes without a theme.css, warned once (Development stage only)
+    private static final Set<String> MISSING_THEMES = ConcurrentHashMap.newKeySet();
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -100,9 +105,17 @@ public class HeadRenderer extends Renderer<UIComponent> {
         }
 
         // the tokens of the theme (aura, lara, nora, metal, glass or a custom primefaces-<name>/theme.css); the CSS of the
-        // components is the same for every theme
-        if (theme != null && !"none".equals(theme)) {
-            encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
+        // components is the same for every theme; "none" or an empty value: no theme
+        if (LangUtils.isNotBlank(theme) && !"none".equals(theme)) {
+            String themeLibrary = LIBRARY + "-" + theme;
+            if (context.isProjectStage(ProjectStage.Development) && !MISSING_THEMES.contains(theme)
+                    && context.getApplication().getResourceHandler().createResource("theme.css", themeLibrary) == null
+                    && MISSING_THEMES.add(theme)) {
+                LOGGER.log(Level.WARNING, "Theme \"{0}\" not found (no {1}:theme.css), the components are rendered without "
+                        + "their tokens. Use aura, lara, nora, metal, glass or a custom theme, the SASS themes (saga, arya, "
+                        + "nova, ...) were removed in PrimeFaces 17.", new Object[] {theme, themeLibrary});
+            }
+            encodeCSS(context, themeLibrary, "theme.css");
         }
 
         //Icons

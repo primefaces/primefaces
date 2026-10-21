@@ -12,7 +12,7 @@
 //     its target.
 //   - color-mix(), relative colors (oklch(from ...)) and calc() are computed (culori, CSS gamut mapping to sRGB) and
 //     keep the original CSS in $extensions["org.primefaces.css"]; "none" shadows become a transparent zero shadow.
-//   - $type: color (srgb components + hex), dimension (px, rem), duration (ms, s), fontWeight, fontFamily, number,
+//   - $type: color (srgb components + hex), dimension (px, rem), duration (ms, s), cubicBezier, fontWeight, fontFamily, number,
 //     shadow (single or list, "inset"), strokeStyle. Unitless 0 is a dimension or a duration when the name says so.
 //   - DTCG 2025.10 defines no type for strings, files or multi-value shorthands ("file" is only announced). Those
 //     tokens (icon url()s, padding/margin shorthands, em sizes, inherit/unset/currentColor, gradients and layered
@@ -31,7 +31,7 @@ const themesDir = path.join(root, 'themes');
 const iconsDir = path.join(root, 'packages', 'components', 'src', 'icons');
 const outDir = path.join(root, '..', '..', '..', 'target', 'tokens');
 
-const PRESETS = ['aura', 'lara', 'nora', 'metal', 'glass'];
+const PRESETS = fs.readdirSync(path.join(themesDir, 'presets')).filter((f) => f.endsWith('.css')).map((f) => f.slice(0, -4)).sort();
 const ICONS = 'lucide';
 const MODES = ['light', 'dark'];
 const CSS_EXT = 'org.primefaces.css';
@@ -41,7 +41,7 @@ const FONT_WEIGHTS = ['thin', 'hairline', 'extra-light', 'ultra-light', 'light',
     'semi-bold', 'demi-bold', 'bold', 'extra-bold', 'ultra-bold', 'black', 'heavy', 'extra-black', 'ultra-black'];
 const STROKE_STYLES = ['solid', 'dashed', 'dotted', 'double', 'groove', 'ridge', 'outset', 'inset'];
 const CSS_KEYWORDS = ['inherit', 'initial', 'unset', 'revert', 'revert-layer', 'currentcolor', 'none', 'auto', 'normal'];
-const DIMENSION_NAME = /-(width|height|padding|margin|radius|gap|size|offset|top|left|right|bottom|spacing|indent|gutter|x|y|blur|spread)$/;
+const DIMENSION_NAME = /-(width|height|padding|margin|radius|gap|size|offset|top|left|right|bottom|spacing|indent|gutter|x|y|blur|spread|none)$/;
 const COLOR_SPACES = { srgb: 'rgb', 'srgb-linear': 'lrgb', oklab: 'oklab', oklch: 'oklch', lab: 'lab', lch: 'lch' };
 const CHANNELS = { rgb: ['r', 'g', 'b'], lrgb: ['r', 'g', 'b'], oklab: ['l', 'a', 'b'], oklch: ['l', 'c', 'h'], lab: ['l', 'a', 'b'], lch: ['l', 'c', 'h'] };
 const toRgb = toGamut('rgb', 'oklch');
@@ -68,6 +68,7 @@ function parseDeclarations(file, onDecl) {
 function loadTokens(preset) {
     const tokens = new Map();
     const add = (name, value, block) => {
+        if (block.density === 'normal') return; // the values of the preset
         if (block.density) {
             const token = tokens.get(name);
             if (!token) throw new Error(`density/${preset}.css: --p-${name} is not a token of the preset`);
@@ -313,6 +314,8 @@ function typed(name, s) {
     }
     if (name.endsWith('font-family')) return keyword ? null : { $type: 'fontFamily', $value: s };
     if (name.endsWith('style') && STROKE_STYLES.includes(s)) return { $type: 'strokeStyle', $value: s };
+    const bezier = s.match(/^cubic-bezier\(([^)]+)\)$/);
+    if (bezier) return { $type: 'cubicBezier', $value: bezier[1].split(',').map((n) => parseFloat(n)) };
     const duration = s.match(/^(\d*\.?\d+)(ms|s)$/);
     if (duration) return { $type: 'duration', $value: { value: parseFloat(duration[1]), unit: duration[2] } };
     if (s === '0' && name.endsWith('duration')) return { $type: 'duration', $value: { value: 0, unit: 'ms' } };
@@ -385,7 +388,7 @@ function exportMode(tokens, mode) {
 
 function buildTree(preset, mode, tokens, exported) {
     const tree = {
-        $description: `PrimeFaces ${preset} theme, ${mode} mode. Generated from src/main/css (presets/${preset}.css, icons/${ICONS}.css, density/${preset}.css) by tools/export-tokens.mjs, do not edit.`
+        $description: `PrimeFaces ${preset} theme, ${mode} mode. Generated from primefaces/src/main/frontend (themes/presets/${preset}.css, packages/components/src/icons/${ICONS}.css, themes/density/${preset}.css) by build/scripts/themes/export-tokens.mjs, do not edit.`
     };
     for (const [name, token] of exported) {
         let group = tree;

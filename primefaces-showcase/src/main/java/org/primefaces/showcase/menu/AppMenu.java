@@ -51,16 +51,6 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
 
-        //THEMING CATEGORY START
-        /*
-        List<MenuItem> themingMenuItems = new ArrayList<>();
-        themingMenuItems.add(new MenuItem("Overview", "/theming"));
-        themingMenuItems.add(new MenuItem("Colors", "/colors"));
-        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/13.0.0/"));
-        menuCategories.add(new MenuCategory("Theming", themingMenuItems));
-        */
-        //THEMING CATEGORY END
-
         //CORE CATEGORY START
         List<MenuItem> ajaxMenuItems = new ArrayList<>();
         ajaxMenuItems.add(new MenuItem("Introduction", "/ui/ajax/basic"));

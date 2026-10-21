@@ -51,6 +51,8 @@ import jakarta.faces.event.PhaseId;
 @FacesComponent(value = Calendar.COMPONENT_TYPE, namespace = Calendar.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Calendar is an input component used to provide a date.")
 @ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "datepicker/datepicker.css")
+@ResourceDependency(library = "primefaces", name = "calendar/calendar.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

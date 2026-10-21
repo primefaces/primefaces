@@ -744,8 +744,8 @@
         --p-button-secondary-focus-ring-color: light-dark(var(--p-surface-600), var(--p-surface-300));
         --p-button-secondary-focus-ring-shadow: none;
         --p-button-info-background: color-mix(in srgb, #0071a4 92%, transparent);
-        --p-button-info-hover-background: color-mix(in srgb, #0071a4 100%, black 8%);
-        --p-button-info-active-background: color-mix(in srgb, #0071a4 100%, black 16%);
+        --p-button-info-hover-background: color-mix(in srgb, #0071a4, black 8%);
+        --p-button-info-active-background: color-mix(in srgb, #0071a4, black 16%);
         --p-button-info-border-color: transparent;
         --p-button-info-hover-border-color: transparent;
         --p-button-info-active-border-color: transparent;
@@ -755,8 +755,8 @@
         --p-button-info-focus-ring-color: light-dark(var(--p-sky-500), var(--p-sky-400));
         --p-button-info-focus-ring-shadow: none;
         --p-button-success-background: color-mix(in srgb, #1f7a35 92%, transparent);
-        --p-button-success-hover-background: color-mix(in srgb, #1f7a35 100%, black 8%);
-        --p-button-success-active-background: color-mix(in srgb, #1f7a35 100%, black 16%);
+        --p-button-success-hover-background: color-mix(in srgb, #1f7a35, black 8%);
+        --p-button-success-active-background: color-mix(in srgb, #1f7a35, black 16%);
         --p-button-success-border-color: transparent;
         --p-button-success-hover-border-color: transparent;
         --p-button-success-active-border-color: transparent;
@@ -766,8 +766,8 @@
         --p-button-success-focus-ring-color: light-dark(var(--p-green-500), var(--p-green-400));
         --p-button-success-focus-ring-shadow: none;
         --p-button-warn-background: color-mix(in srgb, #c93400 92%, transparent);
-        --p-button-warn-hover-background: color-mix(in srgb, #c93400 100%, black 8%);
-        --p-button-warn-active-background: color-mix(in srgb, #c93400 100%, black 16%);
+        --p-button-warn-hover-background: color-mix(in srgb, #c93400, black 8%);
+        --p-button-warn-active-background: color-mix(in srgb, #c93400, black 16%);
         --p-button-warn-border-color: transparent;
         --p-button-warn-hover-border-color: transparent;
         --p-button-warn-active-border-color: transparent;
@@ -777,8 +777,8 @@
         --p-button-warn-focus-ring-color: light-dark(var(--p-orange-500), var(--p-orange-400));
         --p-button-warn-focus-ring-shadow: none;
         --p-button-help-background: color-mix(in srgb, #8944ab 92%, transparent);
-        --p-button-help-hover-background: color-mix(in srgb, #8944ab 100%, black 8%);
-        --p-button-help-active-background: color-mix(in srgb, #8944ab 100%, black 16%);
+        --p-button-help-hover-background: color-mix(in srgb, #8944ab, black 8%);
+        --p-button-help-active-background: color-mix(in srgb, #8944ab, black 16%);
         --p-button-help-border-color: transparent;
         --p-button-help-hover-border-color: transparent;
         --p-button-help-active-border-color: transparent;
@@ -788,8 +788,8 @@
         --p-button-help-focus-ring-color: light-dark(var(--p-purple-500), var(--p-purple-400));
         --p-button-help-focus-ring-shadow: none;
         --p-button-danger-background: color-mix(in srgb, #d70015 92%, transparent);
-        --p-button-danger-hover-background: color-mix(in srgb, #d70015 100%, black 8%);
-        --p-button-danger-active-background: color-mix(in srgb, #d70015 100%, black 16%);
+        --p-button-danger-hover-background: color-mix(in srgb, #d70015, black 8%);
+        --p-button-danger-active-background: color-mix(in srgb, #d70015, black 16%);
         --p-button-danger-border-color: transparent;
         --p-button-danger-hover-border-color: transparent;
         --p-button-danger-active-border-color: transparent;
@@ -1308,6 +1308,8 @@
         --p-dataview-border-width: 0;
         --p-dataview-border-radius: 0;
         --p-dataview-padding: 0;
+        --p-dataview-content-enter-duration: var(--p-transition-duration);
+        --p-dataview-content-enter-offset: 0.5rem;
         --p-dataview-header-background: var(--p-content-background);
         --p-dataview-header-color: var(--p-content-color);
         --p-dataview-header-border-color: var(--p-content-border-color);
@@ -2179,6 +2181,8 @@
     /* message */
     :root, [data-p-scope] {
         --p-message-border-radius: var(--p-content-border-radius);
+        --p-message-enter-duration: var(--p-transition-duration);
+        --p-message-enter-offset: -0.25rem;
         --p-message-border-width: 1px;
         --p-message-transition-duration: var(--p-transition-duration);
         --p-message-content-padding: 0.375rem 0.625rem;
@@ -3576,6 +3580,8 @@
         --p-tooltip-font-size: 0.75rem;
         --p-tooltip-background: var(--p-surface-700);
         --p-tooltip-color: var(--p-surface-0);
+        --p-tooltip-invalid-background: var(--p-message-error-color);
+        --p-tooltip-invalid-color: light-dark(var(--p-surface-0), var(--p-surface-950));
     }
 
     /* tree */

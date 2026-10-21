@@ -140,6 +140,7 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
 
         assertFalse(tokenValue.isEmpty(), message + ": token is not defined");
         assertNotNull(expected, message + ": token value is not a valid " + property);
+        assertFalse(expected.isEmpty(), message + ": the browser does not serialize the computed " + property);
         assertEquals(expected, actual, message);
 
         // sentinel: proves the property is driven by the token (and does not only happen to have the same value)
@@ -164,6 +165,7 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
 
         assertFalse(tokenValue.isEmpty(), message + ": token is not defined");
         assertNotNull(expected, message + ": token value is not a valid " + property);
+        assertFalse(expected.isEmpty(), message + ": the browser does not serialize the computed " + property);
         assertEquals(expected, actual, message);
     }
 

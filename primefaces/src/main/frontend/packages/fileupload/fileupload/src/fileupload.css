@@ -20,8 +20,6 @@
 
 /* advanced mode: the root is the frame (like PrimeUIX), the header draws its own (bottom) border inside it */
 .ui-fileupload {
-    /* the stacked layout follows the width of the component, not of the viewport */
-    container: p-fileupload / inline-size;
     position: relative;
     background: var(--p-fileupload-background);
     color: var(--p-fileupload-color);
@@ -275,8 +273,7 @@
     }
 }
 
-/* 640px = the former 40em media query (em in a container query would be relative to the font size of the component) */
-@container p-fileupload (max-width: 640px) {
+@media (max-width: 640px) {
     .ui-fileupload-files,
     .ui-fileupload-files > div,
     .ui-fileupload-row,

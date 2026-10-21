@@ -247,14 +247,12 @@
     }
 
     /*
-     * responsive: reacts to its own width (container query below). A display: table element can not be a size
-     * container (Chrome ignores the containment on tables), so the responsive pickList is a grid with the column widths
+     * responsive: the pickList is a grid with the column widths
      * the table had (lists 45% / buttons 10%; lists 35% next to reorder controls, which share the rest like auto table
      * columns), and a block in the vertical layout (its table rows were full width already). Same layout as the table.
      */
     &.ui-picklist-responsive {
         width: 100%;
-        container: p-picklist / inline-size;
 
         * {
             box-sizing: border-box;
@@ -327,8 +325,8 @@
     z-index: 1;
 }
 
-/* narrow pickList (own width, also in narrow columns / sidebars): lists and buttons stacked */
-@container p-picklist (max-width: 640px) {
+/* narrow viewport: lists and buttons stacked */
+@media (max-width: 640px) {
     .ui-picklist.ui-picklist-responsive {
         > div {
             grid-column: 1 / -1;

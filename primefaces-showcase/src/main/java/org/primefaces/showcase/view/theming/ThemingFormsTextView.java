@@ -48,7 +48,7 @@ public class ThemingFormsTextView implements Serializable {
 
     private String text = "PrimeFaces";
     private String emptyText;
-    private String longText = "Theming next: every color, size and spacing comes from a design token.";
+    private String longText = "Theming: every color, size and spacing comes from a design token.";
     private String mask = "(555) 123-4567";
     private Double amount = 1234.56;
     private String password = "Secret#2026";

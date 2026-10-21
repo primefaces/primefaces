@@ -312,7 +312,7 @@ __metadata:
     "@melloware/coloris": "npm:0.25.0"
     "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
     "@types/autosize": "npm:4.0.3"
-    "@types/culori": "npm:^4"
+    "@types/culori": "npm:4.0.1"
     "@types/downloadjs": "npm:1.4.6"
     "@types/hammerjs": "npm:2.0.46"
     "@types/inputmask": "npm:5.0.7"
@@ -392,7 +392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/culori@npm:^4":
+"@types/culori@npm:4.0.1":
   version: 4.0.1
   resolution: "@types/culori@npm:4.0.1"
   checksum: 10c0/f25fcf01fe709d2fce569892eae71a268b19cf85a7c8f6bf6b041f02f232e5a7d1218e8213349d6b2a458be9f61158ed1e1893e7b81e2ee4a7cebc2a172b7ebb

@@ -71,9 +71,9 @@
 
                 <div class="cfg-label">Density <span class="cfg-hint">data-p-density</span></div>
                 <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Density">
-                    <ui:repeat value="#{['normal', 'compact', 'comfortable']}" var="d">
-                        <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-density="#{d}" onclick="cfg.density('#{d}')">
-                            <span class="ui-button-text ui-c">#{d}</span>
+                    <ui:repeat value="#{[['normal', 'Normal'], ['compact', 'Compact'], ['comfortable', 'Comfortable']]}" var="d">
+                        <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-density="#{d[0]}" onclick="cfg.density('#{d[0]}')">
+                            <span class="ui-button-text ui-c">#{d[1]}</span>
                         </button>
                     </ui:repeat>
                 </div>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="cfg-field">
                     <label for="cfgPrimary">Custom</label>
-                    <input type="color" id="cfgPrimary" oninput="cfg.primary(this.value)"/>
+                    <input type="color" id="cfgPrimary" oninput="cfg.primary(this.value, true)"/>
                     <p:commandButton type="button" value="Theme" styleClass="ui-button-flat ui-button-sm" onclick="cfg.primary(null)"
                                      title="Primary color of the preset"/>
                 </div>

@@ -24,10 +24,12 @@
 package org.primefaces.integrationtests.theming;
 
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.internal.ConfigProvider;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,9 +54,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * scheme and compared with a reference image.
  * <p>
  * The references live in {@code src/test/resources/theming-baselines/<os>/<preset>-<scheme>.png} (font rendering differs
- * between operating systems). A missing reference is created from the current rendering and the test is skipped: review
- * the image and commit it. On a difference the actual and a diff image are written to {@code target/theming-screenshots}.
- * To accept an intended change, delete the reference and run the test again.
+ * between operating systems; Chrome at device pixel ratio 1 only, other browsers and HiDPI are skipped). Without a
+ * reference for the operating system the test is skipped and the current rendering is written as a candidate to
+ * {@code <out>/theming-baselines/<os>/}: review it and copy it to the references (for linux, take it from the screenshot
+ * artifact of the CI run). On a difference the actual and a diff image are written to
+ * {@code <out>}. {@code <out>} is the {@code screenshotDirectory} of the configuration (SCREENSHOT_DIRECTORY, uploaded by
+ * the CI) or {@code target/theming-screenshots}. The test never writes into {@code src}. To accept an intended change,
+ * replace the reference with the actual image.
  */
 class Theming012Test extends AbstractThemingTest {
 
@@ -77,6 +83,10 @@ class Theming012Test extends AbstractThemingTest {
     void snapshot(String preset, String scheme) throws IOException {
         // Arrange
         PrimeSelenium.goTo("theming/theming012.xhtml?theme=" + preset);
+        // the references are Chrome screenshots at device pixel ratio 1 (other browsers and HiDPI render different pixels)
+        Assumptions.assumeTrue(PrimeSelenium.isChrome(), "visual references exist for Chrome only");
+        Number pixelRatio = PrimeSelenium.executeScript("return window.devicePixelRatio;");
+        Assumptions.assumeTrue(pixelRatio.doubleValue() == 1, "visual references need device pixel ratio 1, not " + pixelRatio);
         WebElement snapshot = PrimeSelenium.getWebDriver().findElement(By.id("snapshot"));
         setColorScheme(scheme);
         PrimeSelenium.executeScript("document.activeElement && document.activeElement.blur();");
@@ -87,14 +97,17 @@ class Theming012Test extends AbstractThemingTest {
 
         // Assert
         String name = preset + "-" + scheme + ".png";
-        Path baseline = Paths.get("src", "test", "resources", "theming-baselines", os(), name);
-        if (!Files.exists(baseline)) {
-            Files.createDirectories(baseline.getParent());
-            ImageIO.write(actual, "png", baseline.toFile());
-            Assumptions.abort("reference created, review and commit it: " + baseline.toAbsolutePath());
+        String baseline = "theming-baselines/" + os() + "/" + name;
+        URL reference = Theming012Test.class.getResource("/" + baseline);
+        Path out = outputDirectory();
+        if (reference == null) {
+            Path candidate = out.resolve(Paths.get("theming-baselines", os(), name));
+            Files.createDirectories(candidate.getParent());
+            ImageIO.write(actual, "png", candidate.toFile());
+            Assumptions.abort("no reference for " + os() + ", candidate written to " + candidate.toAbsolutePath()
+                    + ": review it and copy it to src/test/resources/" + baseline);
         }
-        BufferedImage expected = ImageIO.read(baseline.toFile());
-        Path out = Paths.get("target", "theming-screenshots");
+        BufferedImage expected = ImageIO.read(reference);
         if (expected.getWidth() != actual.getWidth() || expected.getHeight() != actual.getHeight()) {
             write(out, name, actual, null);
             assertEquals(expected.getWidth() + "x" + expected.getHeight(), actual.getWidth() + "x" + actual.getHeight(),
@@ -133,6 +146,13 @@ class Theming012Test extends AbstractThemingTest {
         if (diff != null) {
             ImageIO.write(diff, "png", dir.resolve(name.replace(".png", "-diff.png")).toFile());
         }
+    }
+
+    private static Path outputDirectory() {
+        String screenshotDirectory = ConfigProvider.getInstance().getScreenshotDirectory();
+        return screenshotDirectory == null || screenshotDirectory.isBlank()
+                ? Paths.get("target", "theming-screenshots")
+                : Paths.get(screenshotDirectory, "theming-screenshots");
     }
 
     private static String os() {

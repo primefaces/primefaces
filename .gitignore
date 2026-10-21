@@ -55,8 +55,6 @@ node_modules/
 # Optional npm cache directory
 .npm
 
-/primefaces-showcase/src/main/resources/META-INF/resources/primefaces-bootstrap4-*/
-
 # End of https://www.gitignore.io/api/node
 /primefaces-showcase/target/
 /primefaces-cli/target/
@@ -65,8 +63,6 @@ node_modules/
 /primefaces-selenium/primefaces-selenium-core/target/
 /primefaces-selenium/primefaces-selenium-components/target/
 /primefaces-integration-tests/target/
-/primefaces-theme/*.css
-/primefaces-theme/target/
 /primefaces-coverage/target/
 /primefaces-cdk/target/
-/primefaces-showcase/src/main/webapp/resources/theming-test/
+/.claude/launch.json

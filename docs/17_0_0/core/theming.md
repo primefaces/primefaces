@@ -44,7 +44,7 @@ The value can be an EL expression, e.g. `#{userSettings.theme}` to switch the th
   `timeline/timeline.css` (vis-timeline).
 
 PrimeIcons are still loaded (unless `primefaces.PRIME_ICONS` is `false`) for the icons the application sets itself,
-e.g. `<p:commandButton icon="pi pi-check"/>`. The icons the components draw themselves come from the theme,
+e.g. `<p:commandButton icon="pi pi-check"/>`. The icons the components draw themselves come from the icon tokens (in `components.css`),
 see [Icons](#icons).
 
 ## Light and dark mode
@@ -105,8 +105,10 @@ that depend on the overridden one are recalculated inside it:
 }
 ```
 
-!> Inside a `[data-p-scope]` element the theme defaults are declared again. Global overrides of colors and icons that
-should also reach into scopes must target `:root, [data-p-scope]` instead of `:root` alone.
+!> Inside a `[data-p-scope]` element the theme declares the tokens that reference other tokens again (colors,
+`--p-primary-base`, most component tokens), so they are recalculated there. Global overrides of such tokens that should
+also reach into scopes must target `:root, [data-p-scope]` instead of `:root` alone. Tokens with a literal value (sizes,
+paddings, the icons of the icon set) are declared on `:root` only, an override on `:root` reaches into scopes.
 
 ## Overriding tokens
 
@@ -146,13 +148,20 @@ The spacing of forms, lists, tables, menus etc. can be made more compact or more
 <html xmlns="http://www.w3.org/1999/xhtml" data-p-density="compact">   <!-- compact | comfortable -->
 ```
 
-On another element than `<html>`, `data-p-scope` is needed as well:
+It works on any element, also nested (the nearest `data-p-density` wins) and inside scopes; `normal` restores the
+spacing of the theme inside a compact or comfortable area:
 
 ```xml
-<div data-p-density="compact" data-p-scope="">
+<div data-p-density="compact">
     <p:dataTable ...>
+    <div data-p-density="normal">...</div>
 </div>
 ```
+
+Inside a `data-p-density` element the theme declares the tokens that depend on the spacing again (e.g.
+`--p-button-padding-x: var(--p-form-field-padding-x)`), so they follow the density. Global overrides of such tokens that
+should also apply there must target `:root, [data-p-scope], [data-p-density]`; all other tokens are not touched by the
+density.
 
 ## Icons
 
@@ -162,7 +171,7 @@ There are two kinds of icons:
   plain CSS classes of an icon library (PrimeIcons, Font Awesome, ...). They are not part of the theme and work as
   before.
 - **Icons the components draw themselves**: toggler, close, sort, dropdown, pagination, checkbox check, loading, ...
-  They come from the theme, as **icon tokens**, and are configured with CSS only.
+  They come from **icon tokens** (the icon set in `components.css`) and are configured with CSS only.
 
 The rest of this section is about the second kind.
 
@@ -183,7 +192,7 @@ So:
   (hover, active, disabled) and the color scheme. Only the shape of the SVG is used; its own colors are ignored.
 - **Size:** the font size of its element (`1em`). Many components have size tokens for it, e.g.
   `--p-checkbox-icon-size`, `--p-chip-remove-icon-size`, `--p-avatar-icon-size`.
-- No icon font is loaded for them and they need no extra request: the default icons are inlined in the theme.
+- No icon font is loaded for them and they need no extra request: the default icons are inlined in `components.css`.
 
 ### Two levels of tokens
 
@@ -264,8 +273,9 @@ Good to know:
   files. Outline and filled icons both work; the color does not matter (only the shape is used).
 - **Use absolute paths or data URIs.** A relative `url()` inside a CSS variable is resolved against the stylesheet that
   *uses* the variable (the theme resource), not against the stylesheet that declares it.
-- **`:root, [data-p-scope]`:** inside a `data-p-scope` element (scoped primary color, density, ...) the theme declares
-  its tokens again, so an override on `:root` alone does not reach into it.
+- **`:root` or `:root, [data-p-scope]`:** the `--p-icon-*` tokens are declared on `:root` only, so overriding them on
+  `:root` reaches every scope. Component icon tokens (`--p-tree-toggle-collapsed-icon`, ...) reference the icon set and
+  are declared again inside a `data-p-scope` element: override them on `:root, [data-p-scope]`.
 - **Size and color** are not part of the icon: change them on the element or with the size / color tokens of the
   component.
 - **Directional icons** (arrows, chevrons, first / last, prev / next) are mirrored automatically in right-to-left
@@ -309,7 +319,8 @@ The tokens take images. To draw a component icon with an icon font, override the
 ```
 
 !> The selectors of the icon elements are the legacy jQuery UI icon classes (`ui-icon-closethick`, ...) for now. They
-will be replaced by semantic icon classes named like the tokens (`p-panel-close-icon`), see [Compatibility](#migration-from-the-sass-themes).
+will be replaced by semantic icon classes named like the tokens (`p-panel-close-icon`), see the
+[migration guide](../migrationguide/migrationguide.md) when they are done.
 Prefer the tokens; they keep working.
 
 ### Icon attributes of the components
@@ -400,14 +411,27 @@ in your application or a jar and selected by its name:
 
 Start from a copy of a built-in theme (`primefaces-aura/theme.css`, ... in the `primefaces` jar, the sources are in
 `primefaces/src/main/frontend/themes`) or from the CSS of the theme configurator of the showcase. Keep the tokens in
-the `primefaces.tokens` cascade layer and start the file with the layer order:
+the `primefaces.tokens` cascade layer, start the file with the layer order and declare the tokens like the built-in
+themes do: literal values on `:root` (they inherit into scopes and density areas), tokens that reference other tokens on
+`:root, [data-p-scope]` (recalculated inside a scope), and those that depend on the spacing also on `[data-p-density]`:
 
 ```css
 @layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
 
 @layer primefaces.tokens {
-    :root, [data-p-scope] {
+    :root {
         --p-primary-base: #0a7d5a;
+        --p-form-field-padding-x: 0.75rem;
+        /* ... */
+    }
+
+    :root, [data-p-scope] {
+        --p-primary-color: light-dark(var(--p-primary-500), var(--p-primary-400));
+        /* ... */
+    }
+
+    :root, [data-p-scope], [data-p-density] {
+        --p-button-padding-x: var(--p-form-field-padding-x);
         /* ... */
     }
 }
@@ -493,7 +517,7 @@ is included in `components.css` and styled with the tokens; there is nothing ext
 ### Compression
 
 PrimeFaces does not compress resources. Enable gzip or brotli in your server or proxy: `components.css` is about
-540 KB raw and about 77 KB compressed (plus about 24 KB compressed for the preset).
+390 KB minified and about 51 KB compressed (plus a theme with about 210 KB minified, 25 KB compressed).
 
 ## Tailwind CSS
 
@@ -503,8 +527,8 @@ The theme works together with Tailwind CSS v4: the utilities (`bg-primary`, `tex
 ## Design tokens export
 
 The tokens of each preset are exported in the [W3C Design Tokens format](https://www.designtokens.org/) (DTCG), one
-file per preset and mode (`aura.light.tokens.json`, `aura.dark.tokens.json`, ...). They are generated by the build of
-the `primefaces` module into `primefaces/target/tokens`. Import them into design tools like Figma (Tokens Studio) or use them with
+file per preset and mode (`aura.light.tokens.json`, `aura.dark.tokens.json`, ...). They are published next to the jar
+as `primefaces-<version>-tokens.zip` (Maven `org.primefaces:primefaces:<version>:zip:tokens`). Import them into design tools like Figma (Tokens Studio) or use them with
 Style Dictionary to keep design and implementation in sync. References between tokens are kept as aliases. Values the format has no type for (gradients and layered backgrounds of Metal, icon urls,
 shorthands) are exported as CSS strings, resolved for the mode of the file.
 
@@ -521,17 +545,42 @@ layer:
 - Application CSS that overrides PrimeFaces styles by selector (written against the old core CSS or a `theme.css`) may
   need adjustments; customize with tokens instead. All PrimeFaces CSS lives in cascade layers, so unlayered application
   CSS wins without `!important`.
+- An unknown theme name (e.g. `saga`, `nova-light`, `aura-light-emerald`) renders a stylesheet that does not exist and
+  the components have no tokens. In the `Development` project stage PrimeFaces logs a warning.
 - Dark mode is the CSS `color-scheme` of the page (see [Light and dark mode](#light-and-dark-mode)), not a separate
   theme (`arya`, `vela`, `*-dark`).
+- **The default follows the operating system** (`color-scheme: light dark`): after the upgrade, users with a dark OS
+  setting get dark components. Applications whose own CSS is light only set `:root { color-scheme: light; }`.
+- The CSS variables of the SASS themes (`--primary-color`, `--primary-color-text`, `--surface-a` ... `--surface-f`,
+  `--surface-ground`, `--surface-border`, `--surface-0` ... `--surface-900`, `--text-color`, `--text-color-secondary`,
+  `--font-family`, `--border-radius`, `--focus-ring`, `--maskbg`, the palettes like `--blue-500`, ...) are gone. Use the
+  tokens (`--p-primary-color`, `--p-surface-500`, `--p-blue-500`, ...) or map the old names in application CSS:
+
+```css
+:root {
+    --primary-color: var(--p-primary-color);
+    --primary-color-text: var(--p-primary-contrast-color);
+    --text-color: var(--p-text-color);
+    --text-color-secondary: var(--p-text-muted-color);
+    --surface-a: var(--p-content-background);
+    --surface-ground: light-dark(var(--p-surface-50), var(--p-surface-950));
+    --surface-border: var(--p-content-border-color);
+    --surface-hover: var(--p-content-hover-background);
+    --border-radius: var(--p-border-radius-md);
+    --maskbg: var(--p-mask-background);
+}
+```
+
 - Icons drawn by the components come from icon tokens, not from PrimeIcons or Font Awesome classes.
 - Canvas based components (p:chart, p:knob) take their colors from their JavaScript options, not from the tokens.
+- The browser requirements are higher, see [Browser requirements](#browser-requirements).
 
 Further breaking changes in the components (icon attributes, `ui-*` to `p-*` style classes, ...) are listed in the
 [migration guide](../migrationguide/migrationguide.md) when they are done.
 
 ## Browser requirements
 
-The theme uses `light-dark()`, `color-mix()`, relative colors, `:has()` and container queries and requires:
+The theme uses `light-dark()`, `color-mix()`, relative colors, `:has()` and CSS nesting and requires:
 
 - Chrome / Edge 123+
 - Firefox 128+

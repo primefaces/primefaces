@@ -59,10 +59,16 @@
 }
 
 .ui-toggleswitch {
+    /* the size classes set --_toggleswitch-* (a size token must not be redeclared from itself on the same element) */
+    --_width: var(--_toggleswitch-width, var(--p-toggleswitch-width));
+    --_height: var(--_toggleswitch-height, var(--p-toggleswitch-height));
+    --_gap: var(--_toggleswitch-gap, var(--p-toggleswitch-gap));
+    --_handle-size: var(--_toggleswitch-handle-size, var(--p-toggleswitch-handle-size));
+    --_handle-icon-size: var(--_toggleswitch-handle-icon-size, var(--p-toggleswitch-handle-icon-size));
     position: relative;
     display: inline-block;
-    width: var(--p-toggleswitch-width);
-    height: var(--p-toggleswitch-height);
+    width: var(--_width);
+    height: var(--_height);
 
     .ui-toggleswitch-slider {
         position: absolute;
@@ -87,21 +93,21 @@
         top: 50%;
         background: var(--p-toggleswitch-handle-background);
         color: var(--p-toggleswitch-handle-color);
-        width: var(--p-toggleswitch-handle-size);
-        height: var(--p-toggleswitch-handle-size);
-        inset-inline-start: calc(var(--p-toggleswitch-gap) - var(--p-toggleswitch-border-width));
-        margin-top: calc(-1 * var(--p-toggleswitch-handle-size) / 2);
+        width: var(--_handle-size);
+        height: var(--_handle-size);
+        inset-inline-start: calc(var(--_gap) - var(--p-toggleswitch-border-width));
+        margin-top: calc(-1 * var(--_handle-size) / 2);
         border-radius: var(--p-toggleswitch-handle-border-radius);
         box-shadow: var(--p-toggleswitch-handle-shadow);
-        font-size: var(--p-toggleswitch-handle-icon-size);
-        line-height: var(--p-toggleswitch-handle-size);
+        font-size: var(--_handle-icon-size);
+        line-height: var(--_handle-size);
         transition: background var(--p-toggleswitch-transition-duration), color var(--p-toggleswitch-transition-duration),
             transform var(--p-toggleswitch-slide-duration) var(--p-transition-easing), box-shadow var(--p-toggleswitch-slide-duration);
     }
 
     .ui-toggleswitch-handler span {
-        font-size: var(--p-toggleswitch-handle-icon-size);
-        line-height: var(--p-toggleswitch-handle-size);
+        font-size: var(--_handle-icon-size);
+        line-height: var(--_handle-size);
     }
 
     /* checked */
@@ -114,10 +120,10 @@
         .ui-toggleswitch-handler {
             background: var(--p-toggleswitch-handle-checked-background);
             color: var(--p-toggleswitch-handle-checked-color);
-            transform: translateX(calc(var(--p-toggleswitch-width) - var(--p-toggleswitch-handle-size) - 2 * var(--p-toggleswitch-gap)));
+            transform: translateX(calc(var(--_width) - var(--_handle-size) - 2 * var(--_gap)));
 
             &:dir(rtl) {
-                transform: translateX(calc(-1 * (var(--p-toggleswitch-width) - var(--p-toggleswitch-handle-size) - 2 * var(--p-toggleswitch-gap))));
+                transform: translateX(calc(-1 * (var(--_width) - var(--_handle-size) - 2 * var(--_gap))));
             }
         }
     }
@@ -154,8 +160,10 @@
         box-shadow: var(--p-toggleswitch-focus-ring-shadow);
     }
 
-    /* invalid */
-    .ui-toggleswitch-slider.ui-state-error {
+    /* invalid: the border also wins over the (checked) hover border (same specificity, later) */
+    .ui-toggleswitch-slider.ui-state-error,
+    &:hover .ui-toggleswitch-slider.ui-state-error,
+    &.ui-toggleswitch-checked:hover .ui-toggleswitch-slider.ui-state-error {
         border-color: var(--p-toggleswitch-invalid-border-color);
     }
 
@@ -179,19 +187,19 @@
     }
 }
 
-/* sizes: the size tokens replace the base ones (on the switch or on any parent) */
+/* sizes: the size tokens replace the base ones (on the switch or on any parent), through the private --_toggleswitch-* */
 .ui-toggleswitch-sm {
-    --p-toggleswitch-width: var(--p-toggleswitch-sm-width);
-    --p-toggleswitch-height: var(--p-toggleswitch-sm-height);
-    --p-toggleswitch-gap: var(--p-toggleswitch-sm-gap);
-    --p-toggleswitch-handle-size: var(--p-toggleswitch-handle-sm-size);
-    --p-toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-sm-icon-size);
+    --_toggleswitch-width: var(--p-toggleswitch-sm-width);
+    --_toggleswitch-height: var(--p-toggleswitch-sm-height);
+    --_toggleswitch-gap: var(--p-toggleswitch-sm-gap);
+    --_toggleswitch-handle-size: var(--p-toggleswitch-handle-sm-size);
+    --_toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-sm-icon-size);
 }
 
 .ui-toggleswitch-lg {
-    --p-toggleswitch-width: var(--p-toggleswitch-lg-width);
-    --p-toggleswitch-height: var(--p-toggleswitch-lg-height);
-    --p-toggleswitch-gap: var(--p-toggleswitch-lg-gap);
-    --p-toggleswitch-handle-size: var(--p-toggleswitch-handle-lg-size);
-    --p-toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-lg-icon-size);
+    --_toggleswitch-width: var(--p-toggleswitch-lg-width);
+    --_toggleswitch-height: var(--p-toggleswitch-lg-height);
+    --_toggleswitch-gap: var(--p-toggleswitch-lg-gap);
+    --_toggleswitch-handle-size: var(--p-toggleswitch-handle-lg-size);
+    --_toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-lg-icon-size);
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <!-- responsive rules (narrow viewport), RTL, size classes in a scope / density area, print, reduced motion, hidden -->
+        <h:form id="form">
+            <div class="ui-fluid">
+                <p:selectOneButton id="fluidButtons" value="#{theming016.city}">
+                    <f:selectItems value="#{theming016.cities}" />
+                </p:selectOneButton>
+            </div>
+
+            <p:dataTable id="reflow" value="#{theming016.cities}" var="city" reflow="true">
+                <p:column headerText="City">#{city}</p:column>
+            </p:dataTable>
+
+            <p:password id="rtlPassword" value="#{theming016.password}" toggleMask="true" redisplay="true" dir="rtl" />
+
+            <p:toggleSwitch id="normalSwitch" value="#{theming016.normal}" />
+            <div class="ui-toggleswitch-sm" data-p-scope="" data-p-density="compact">
+                <p:toggleSwitch id="smallSwitch" value="#{theming016.small}" />
+            </div>
+
+            <p:progressBar id="progress" mode="indeterminate" />
+
+            <p:commandButton id="hiddenButton" value="Hidden" type="button" styleClass="ui-helper-hidden" />
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

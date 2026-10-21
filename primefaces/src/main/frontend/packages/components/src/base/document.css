@@ -50,8 +50,9 @@
 }
 
 @media print {
+    /* light on paper, also over an application color-scheme: dark (a layered !important beats unlayered CSS) */
     :root {
-        color-scheme: light;
+        color-scheme: light !important;
     }
 
     *,

@@ -8,8 +8,6 @@
  */
 .ui-steps {
     position: relative;
-    /* the labels are hidden by the width of the steps, not of the viewport */
-    container: p-steps / inline-size;
 
     ul {
         list-style-type: none;
@@ -63,8 +61,9 @@
             gap: var(--p-steps-item-link-gap);
             max-width: 100%;
             background: transparent;
-            overflow: hidden;
             padding: 0;
+            /* shape of the focus ring only: no overflow clipping, the rounded corners would cut the title (the title
+               clips itself with an ellipsis) */
             border-radius: var(--p-steps-item-link-border-radius);
             outline-color: transparent;
             transition: outline-color var(--p-steps-transition-duration), box-shadow var(--p-steps-transition-duration);
@@ -134,7 +133,7 @@
         white-space: nowrap;
     }
 
-    @container p-steps (max-width: 640px) {
+    @media (max-width: 640px) {
         .ui-steps-item .ui-steps-title {
             display: none;
         }
