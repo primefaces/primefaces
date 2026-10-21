@@ -178,8 +178,9 @@ textarea::placeholder {
     font-variant-numeric: tabular-nums;
 }
 
-/* fluid: InputText, InputNumber, InputTextarea, InputMask */
+/* fluid: InputText, InputNumber, InputTextarea, InputMask and any other .ui-inputfield (e.g. p:keyboard) */
 .ui-fluid {
+    .ui-inputfield,
     .ui-inputtext,
     .ui-inputnumber,
     .ui-inputtextarea,

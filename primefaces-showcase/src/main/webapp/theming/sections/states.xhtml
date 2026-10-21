@@ -293,6 +293,25 @@
                     <p:outputLabel for="@next" value="InputTextarea"/>
                     <p:inputTextarea value="#{themingStatesView.longText}" rows="2"/>
                 </div>
+                <div class="field">
+                    <p:outputLabel for="fluidSliderValue" value="Slider"/>
+                    <h:inputHidden id="fluidSliderValue" value="#{themingStatesView.slider}"/>
+                    <p:slider for="fluidSliderValue"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="InputGroup"/>
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon">$</span>
+                        <p:inputNumber value="#{themingStatesView.amount}"/>
+                        <p:commandButton icon="pi pi-check" type="button"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="SelectOneListbox"/>
+                    <p:selectOneListbox value="#{themingStatesView.listCity}" scrollHeight="120">
+                        <f:selectItems value="#{themingStatesView.cities}"/>
+                    </p:selectOneListbox>
+                </div>
             </div>
         </div>
     </h:form>

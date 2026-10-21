@@ -16,8 +16,10 @@
         padding-inline-end: calc(var(--p-colorpicker-swatch-width) + var(--p-form-field-padding-x));
     }
 
-    /* swatch of the popup input */
+    /* swatch of the popup input: Coloris paints the selected color as currentColor (inherited from .clr-field); also with
+       ui-state-error, whose color would win over the vendor layer */
     button {
+        color: inherit;
         width: var(--p-colorpicker-swatch-width);
         height: calc(100% - 2px);
         margin-right: 1px;
