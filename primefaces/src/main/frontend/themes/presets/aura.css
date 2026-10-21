@@ -3008,7 +3008,7 @@
         --p-slider-handle-height: 20px;
         --p-slider-handle-border-radius: 50%;
         --p-slider-handle-background: var(--p-content-border-color);
-        --p-slider-handle-hover-background: var(--p-content-border-color);
+        --p-slider-handle-hover-background: var(--p-form-field-hover-border-color);
         --p-slider-handle-content-border-radius: 50%;
         --p-slider-handle-content-background: light-dark(var(--p-surface-0), var(--p-surface-950));
         --p-slider-handle-content-hover-background: var(--p-content-background);

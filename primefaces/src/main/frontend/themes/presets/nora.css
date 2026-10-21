@@ -320,7 +320,7 @@
         --p-form-field-filled-hover-background: light-dark(var(--p-surface-100), var(--p-surface-800));
         --p-form-field-filled-focus-background: light-dark(var(--p-surface-100), var(--p-surface-800));
         --p-form-field-border-color: light-dark(var(--p-surface-500), var(--p-surface-500));
-        --p-form-field-hover-border-color: light-dark(var(--p-surface-500), var(--p-surface-500));
+        --p-form-field-hover-border-color: light-dark(var(--p-surface-700), var(--p-surface-300));
         --p-form-field-focus-border-color: light-dark(var(--p-surface-500), var(--p-surface-500));
         --p-form-field-invalid-border-color: light-dark(var(--p-red-500), var(--p-red-400));
         --p-form-field-color: light-dark(var(--p-surface-900), var(--p-surface-0));
@@ -2756,7 +2756,7 @@
         --p-rating-focus-ring-shadow: var(--p-focus-ring-shadow);
         --p-rating-icon-size: 1rem;
         --p-rating-icon-color: var(--p-text-color);
-        --p-rating-icon-hover-color: var(--p-text-color);
+        --p-rating-icon-hover-color: var(--p-primary-color);
         --p-rating-icon-active-color: var(--p-text-color);
         --p-rating-cancel-icon-color: var(--p-rating-icon-color);
         --p-rating-cancel-icon-hover-color: var(--p-form-field-invalid-border-color);
@@ -3008,10 +3008,10 @@
         --p-slider-handle-height: 16px;
         --p-slider-handle-border-radius: 50%;
         --p-slider-handle-background: var(--p-primary-color);
-        --p-slider-handle-hover-background: var(--p-primary-color);
+        --p-slider-handle-hover-background: var(--p-primary-hover-color);
         --p-slider-handle-content-border-radius: 50%;
         --p-slider-handle-content-background: var(--p-primary-color);
-        --p-slider-handle-content-hover-background: var(--p-primary-color);
+        --p-slider-handle-content-hover-background: var(--p-primary-hover-color);
         --p-slider-handle-content-width: 12px;
         --p-slider-handle-content-height: 12px;
         --p-slider-handle-content-shadow: none;
@@ -3524,14 +3524,14 @@
         --p-toggleswitch-focus-ring-shadow: var(--p-focus-ring-shadow);
         --p-toggleswitch-border-width: 1px;
         --p-toggleswitch-border-color: var(--p-form-field-border-color);
-        --p-toggleswitch-hover-border-color: var(--p-form-field-border-color);
+        --p-toggleswitch-hover-border-color: var(--p-form-field-hover-border-color);
         --p-toggleswitch-checked-border-color: var(--p-primary-color);
-        --p-toggleswitch-checked-hover-border-color: var(--p-primary-color);
+        --p-toggleswitch-checked-hover-border-color: var(--p-primary-hover-color);
         --p-toggleswitch-invalid-border-color: var(--p-form-field-invalid-border-color);
         --p-toggleswitch-background: var(--p-form-field-background);
         --p-toggleswitch-hover-background: var(--p-form-field-background);
         --p-toggleswitch-checked-background: var(--p-primary-color);
-        --p-toggleswitch-checked-hover-background: var(--p-primary-color);
+        --p-toggleswitch-checked-hover-background: var(--p-primary-hover-color);
         --p-toggleswitch-transition-duration: var(--p-form-field-transition-duration);
         --p-toggleswitch-slide-duration: 0.1s;
         --p-toggleswitch-disabled-background: var(--p-form-field-disabled-background);
@@ -3541,7 +3541,7 @@
         --p-toggleswitch-handle-shadow: none;
         --p-toggleswitch-handle-size: 0.875rem;
         --p-toggleswitch-handle-background: var(--p-form-field-border-color);
-        --p-toggleswitch-handle-hover-background: var(--p-form-field-border-color);
+        --p-toggleswitch-handle-hover-background: var(--p-form-field-hover-border-color);
         --p-toggleswitch-handle-checked-background: var(--p-primary-contrast-color);
         --p-toggleswitch-handle-checked-hover-background: var(--p-primary-contrast-color);
         --p-toggleswitch-handle-disabled-background: var(--p-form-field-disabled-color);
@@ -3549,7 +3549,7 @@
         --p-toggleswitch-handle-color: var(--p-surface-0);
         --p-toggleswitch-handle-hover-color: var(--p-surface-0);
         --p-toggleswitch-handle-checked-color: var(--p-primary-color);
-        --p-toggleswitch-handle-checked-hover-color: var(--p-primary-color);
+        --p-toggleswitch-handle-checked-hover-color: var(--p-primary-hover-color);
         --p-toggleswitch-handle-icon-size: 0.75rem;
         --p-toggleswitch-sm-width: calc(var(--p-toggleswitch-width) * 0.8);
         --p-toggleswitch-sm-height: calc(var(--p-toggleswitch-height) * 0.8);

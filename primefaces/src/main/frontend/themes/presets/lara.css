@@ -2756,7 +2756,7 @@
         --p-rating-focus-ring-shadow: var(--p-focus-ring-shadow);
         --p-rating-icon-size: 1.125rem;
         --p-rating-icon-color: var(--p-primary-color);
-        --p-rating-icon-hover-color: var(--p-primary-color);
+        --p-rating-icon-hover-color: var(--p-primary-hover-color);
         --p-rating-icon-active-color: var(--p-primary-color);
         --p-rating-cancel-icon-color: var(--p-rating-icon-color);
         --p-rating-cancel-icon-hover-color: var(--p-form-field-invalid-border-color);
