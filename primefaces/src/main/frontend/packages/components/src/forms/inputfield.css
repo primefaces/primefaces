@@ -363,9 +363,13 @@ textarea::placeholder {
 .ui-input-icon-right {
     position: relative;
     display: inline-block;
+    /* the icon is positioned at the edge of the wrapper: it wraps its input, also as a stretched flex / grid item */
+    width: fit-content;
+    max-width: 100%;
 
     .ui-fluid & {
         display: block;
+        width: auto;
     }
 
     > i {

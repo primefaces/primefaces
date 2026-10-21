@@ -7,6 +7,10 @@
  *                    .thumbnail (swatch only)
  */
 .clr-field {
+    /* the swatch is positioned at the end of the field: the field wraps its input, also as a stretched flex / grid item */
+    width: fit-content;
+    max-width: 100%;
+
     /* the popup input leaves room for the swatch */
     .ui-colorpicker.ui-inputfield {
         padding-inline-end: calc(var(--p-colorpicker-swatch-width) + var(--p-form-field-padding-x));
@@ -35,6 +39,7 @@
 
 .field .clr-field {
     display: block;
+    width: auto;
 }
 
 .ui-float-label .clr-field.clr-rtl + label {
@@ -52,6 +57,7 @@
 
 .ui-fluid .clr-field {
     display: block;
+    width: auto;
 
     .ui-colorpicker.ui-inputfield {
         width: 100%;
