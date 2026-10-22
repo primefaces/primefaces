@@ -87,7 +87,6 @@
     </properties>
 
     <modules>
-        <module>primefaces-themes</module>
         <module>primefaces-cdk</module>
         <module>primefaces</module>
         <module>primefaces-showcase</module>

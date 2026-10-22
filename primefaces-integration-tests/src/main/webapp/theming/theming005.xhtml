@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <f:event type="preRenderView" listener="#{theming005.addMessages}" />
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <!-- sizes -->
+            <p:selectOneMenu id="selectDefault" value="#{theming005.text}">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectOneMenu>
+            <p:selectOneMenu id="selectSm" value="#{theming005.text}" styleClass="ui-selectonemenu-sm">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectOneMenu>
+            <p:selectOneMenu id="selectLg" value="#{theming005.text}" styleClass="ui-selectonemenu-lg">
+                <f:selectItem itemLabel="One" itemValue="One" />
+                <f:selectItem itemLabel="Two" itemValue="Two" />
+            </p:selectOneMenu>
+
+            <p:selectBooleanCheckbox id="checkboxDefault" value="#{theming005.checked}" />
+            <p:selectBooleanCheckbox id="checkboxSm" value="#{theming005.checked}" styleClass="ui-chkbox-sm" />
+            <p:selectBooleanCheckbox id="checkboxLg" value="#{theming005.checked}" styleClass="ui-chkbox-lg" />
+
+            <p:selectOneRadio id="radioDefault" value="#{theming005.text}">
+                <f:selectItem itemLabel="One" itemValue="One" />
+            </p:selectOneRadio>
+            <p:selectOneRadio id="radioSm" value="#{theming005.text}" styleClass="ui-radiobutton-sm">
+                <f:selectItem itemLabel="One" itemValue="One" />
+            </p:selectOneRadio>
+            <p:selectOneRadio id="radioLg" value="#{theming005.text}" styleClass="ui-radiobutton-lg">
+                <f:selectItem itemLabel="One" itemValue="One" />
+            </p:selectOneRadio>
+
+            <p:badge id="badgeDefault" value="12" />
+            <p:badge id="badgeSm" value="12" styleClass="ui-badge-sm" />
+
+            <!-- message variants -->
+            <p:inputText id="messageInput" />
+            <p:message id="messageOutlined" for="messageInput" styleClass="ui-message-outlined" />
+            <p:staticMessage id="staticSimple" severity="error" summary="Error" detail="Error detail" styleClass="ui-message-simple" />
+
+            <!-- contrast severity -->
+            <p:tag id="tagContrast" value="Contrast" styleClass="ui-tag-contrast" />
+            <p:badge id="badgeContrast" value="3" styleClass="ui-badge-contrast" />
+
+            <!-- float label variants (filled on page load) -->
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label ui-float-label-in">
+                    <p:inputText id="floatIn" value="#{theming005.filled}" />
+                    <p:outputLabel id="floatInLabel" for="@previous" value="In label" />
+                </span>
+            </div>
+            <div style="margin-top: 2rem">
+                <span class="ui-float-label ui-float-label-on">
+                    <p:inputText id="floatOn" value="#{theming005.filled}" />
+                    <p:outputLabel id="floatOnLabel" for="@previous" value="On label" />
+                </span>
+            </div>
+
+            <!-- blockUI without content: light mask and default mask, both with the spinner -->
+            <p:panel id="lightTarget" header="Light">Content</p:panel>
+            <p:blockUI id="blockLight" widgetVar="blockLight" block="lightTarget" styleClass="ui-blockui-light" />
+            <p:panel id="defaultTarget" header="Default">Content</p:panel>
+            <p:blockUI id="blockDefault" widgetVar="blockDefault" block="defaultTarget" />
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

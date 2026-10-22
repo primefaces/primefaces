@@ -1,0 +1,274 @@
+/*
+ * SelectOneButton / SelectManyButton / SelectBooleanButton (PrimeUIX: selectbutton + togglebutton)
+ *
+ * Every option is a .ui-button (button.css) restyled as a toggle button. Like PrimeUIX the checked state can show an
+ * inner "pill" (togglebutton content tokens, e.g. Aura); it is drawn by ::before so icon and label both sit on it.
+ * Supported classes on the option / boolean button: ui-state-hover, ui-state-focus, ui-state-active (checked),
+ *                                                  ui-state-disabled, ui-state-error, ui-button-sm, ui-button-lg
+ * On the group: ui-state-error (invalid), ui-state-disabled, .ui-fluid parent
+ */
+.ui-selectonebutton,
+.ui-selectmanybutton {
+    display: inline-flex;
+    /* the group wraps its options, also as a stretched flex / grid item (the invalid outline is drawn on the group) */
+    width: fit-content;
+    max-width: 100%;
+    vertical-align: bottom;
+    -webkit-user-select: none;
+    user-select: none;
+    padding: 0;
+    border-radius: var(--p-selectbutton-border-radius);
+    outline-color: transparent;
+
+    &.ui-state-error {
+        outline: 1px solid var(--p-selectbutton-invalid-border-color);
+        outline-offset: 0;
+    }
+
+    .ui-button.ui-state-focus {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/* all alternatives have the same specificity (0,2,0), so nesting under this list keeps the flat specificity */
+.ui-selectonebutton > .ui-button,
+.ui-selectmanybutton > .ui-button,
+.ui-button.ui-selectbooleanbutton {
+    --_bg: var(--p-togglebutton-background);
+    --_hover-bg: var(--p-togglebutton-hover-background);
+    --_active-bg: var(--p-togglebutton-checked-background);
+    --_border: var(--p-togglebutton-border-color);
+    --_hover-border: var(--p-togglebutton-border-color);
+    --_active-border: var(--p-togglebutton-checked-border-color);
+    --_color: var(--p-togglebutton-color);
+    --_hover-color: var(--p-togglebutton-hover-color);
+    --_active-color: var(--p-togglebutton-checked-color);
+    --_focus-ring-color: var(--p-togglebutton-focus-ring-color);
+    --_focus-ring-shadow: var(--p-togglebutton-focus-ring-shadow);
+    --_label-shadow: var(--p-button-outlined-label-shadow);
+
+    position: relative;
+    gap: var(--p-togglebutton-gap);
+    padding: var(--p-togglebutton-padding);
+    font-size: var(--p-togglebutton-font-size);
+    font-weight: var(--p-togglebutton-font-weight);
+    background: var(--p-togglebutton-background);
+    color: var(--p-togglebutton-color);
+    border: 1px solid var(--p-togglebutton-border-color);
+    border-radius: var(--p-togglebutton-border-radius);
+    outline-color: transparent;
+    transition: background var(--p-togglebutton-transition-duration), color var(--p-togglebutton-transition-duration),
+        border-color var(--p-togglebutton-transition-duration), outline-color var(--p-togglebutton-transition-duration),
+        box-shadow var(--p-togglebutton-transition-duration);
+
+    /* inner pill of the checked state */
+    &::before {
+        content: "";
+        position: absolute;
+        inset: var(--p-togglebutton-padding);
+        background: transparent;
+        border-radius: var(--p-togglebutton-content-border-radius);
+        transition: background var(--p-togglebutton-transition-duration), box-shadow var(--p-togglebutton-transition-duration);
+    }
+
+    /* hover (unchecked only) */
+    &.ui-state-hover:not(.ui-state-active, .ui-state-disabled),
+    &:not(.ui-state-active, .ui-state-disabled):hover {
+        background: var(--p-togglebutton-hover-background);
+        border-color: var(--p-togglebutton-border-color);
+        color: var(--p-togglebutton-hover-color);
+    }
+
+    /* checked (also while hovered) */
+    &.ui-state-active,
+    &.ui-state-active:not(.ui-state-disabled):hover {
+        background: var(--p-togglebutton-checked-background);
+        border-color: var(--p-togglebutton-checked-border-color);
+        color: var(--p-togglebutton-checked-color);
+    }
+
+    &.ui-state-active::before {
+        background: var(--p-togglebutton-content-checked-background);
+        box-shadow: var(--p-togglebutton-content-checked-shadow);
+    }
+
+    /* focus */
+    &.ui-state-focus,
+    &:focus-visible {
+        outline: var(--p-togglebutton-focus-ring-width) var(--p-togglebutton-focus-ring-style) var(--p-togglebutton-focus-ring-color);
+        outline-offset: var(--p-togglebutton-focus-ring-offset);
+        box-shadow: var(--p-togglebutton-focus-ring-shadow);
+    }
+}
+
+/* label and icon sit on the pill (position: relative, above the ::before) */
+.ui-selectonebutton > .ui-button > .ui-button-text,
+.ui-selectmanybutton > .ui-button > .ui-button-text,
+.ui-button.ui-selectbooleanbutton > .ui-button-text,
+.ui-selectonebutton > .ui-button > .ui-button-icon-left,
+.ui-selectmanybutton > .ui-button > .ui-button-icon-left,
+.ui-button.ui-selectbooleanbutton > .ui-button-icon-left {
+    position: relative;
+    padding: var(--p-togglebutton-content-padding);
+    font-weight: var(--p-togglebutton-font-weight);
+    cursor: inherit;
+}
+
+.ui-selectonebutton > .ui-button,
+.ui-selectmanybutton > .ui-button,
+.ui-button.ui-selectbooleanbutton {
+    /* icon + label: the pill padding goes around both, the gap sits between them */
+    > .ui-button-icon-left {
+        padding-inline-end: 0;
+        color: var(--p-togglebutton-icon-color);
+    }
+
+    > .ui-button-icon-left + .ui-button-text {
+        padding-inline-start: 0;
+    }
+
+    &.ui-button-icon-only {
+        width: auto;
+
+        > .ui-button-icon-left {
+            padding: var(--p-togglebutton-content-padding);
+        }
+
+        /* icon only: the label is kept hidden by button.css, it must not add width */
+        > .ui-button-text {
+            padding: 0;
+        }
+    }
+
+    &:not(.ui-state-active, .ui-state-disabled):hover > .ui-button-icon-left {
+        color: var(--p-togglebutton-icon-hover-color);
+    }
+
+    &.ui-state-active > .ui-button-icon-left {
+        color: var(--p-togglebutton-icon-checked-color);
+    }
+}
+
+/* invalid: the border also wins over hover and checked hover (same specificity, later) */
+.ui-button.ui-selectbooleanbutton.ui-state-error,
+.ui-button.ui-selectbooleanbutton.ui-state-error:is(:hover, .ui-state-hover),
+.ui-button.ui-selectbooleanbutton.ui-state-error.ui-state-active:hover {
+    border-color: var(--p-togglebutton-invalid-border-color);
+}
+
+/* disabled */
+.ui-selectonebutton > .ui-button,
+.ui-selectmanybutton > .ui-button,
+.ui-button.ui-selectbooleanbutton {
+    &.ui-state-disabled {
+        opacity: 1;
+        cursor: default;
+        background: var(--p-togglebutton-disabled-background);
+        border-color: var(--p-togglebutton-disabled-border-color);
+        color: var(--p-togglebutton-disabled-color);
+    }
+
+    &.ui-state-disabled::before {
+        background: transparent;
+        box-shadow: none;
+    }
+}
+
+.ui-selectonebutton > .ui-button.ui-state-disabled > .ui-button-icon-left,
+.ui-selectmanybutton > .ui-button.ui-state-disabled > .ui-button-icon-left,
+.ui-button.ui-selectbooleanbutton.ui-state-disabled > .ui-button-icon-left {
+    color: var(--p-togglebutton-icon-disabled-color);
+}
+
+/* sizes */
+.ui-selectonebutton > .ui-button,
+.ui-selectmanybutton > .ui-button,
+.ui-button.ui-selectbooleanbutton {
+    &.ui-button-sm {
+        padding: var(--p-togglebutton-sm-padding);
+        font-size: var(--p-togglebutton-sm-font-size);
+
+        &::before {
+            inset: var(--p-togglebutton-sm-padding);
+        }
+
+        > .ui-button-text {
+            padding: var(--p-togglebutton-content-sm-padding);
+        }
+    }
+
+    &.ui-button-lg {
+        padding: var(--p-togglebutton-lg-padding);
+        font-size: var(--p-togglebutton-lg-font-size);
+
+        &::before {
+            inset: var(--p-togglebutton-lg-padding);
+        }
+
+        > .ui-button-text {
+            padding: var(--p-togglebutton-content-lg-padding);
+        }
+    }
+}
+
+/* grouped: only the outer corners are rounded, neighbours share one border */
+.ui-selectonebutton,
+.ui-selectmanybutton {
+    > .ui-button {
+        margin: 0;
+        border-radius: 0;
+        border-width: 1px;
+        border-inline-start-width: 0;
+
+        &:first-child {
+            border-inline-start-width: 1px;
+            border-start-start-radius: var(--p-selectbutton-border-radius);
+            border-end-start-radius: var(--p-selectbutton-border-radius);
+        }
+
+        &:last-child {
+            border-start-end-radius: var(--p-selectbutton-border-radius);
+            border-end-end-radius: var(--p-selectbutton-border-radius);
+        }
+    }
+}
+
+/* fluid */
+.ui-fluid .ui-selectonebutton,
+.ui-fluid .ui-selectmanybutton {
+    display: flex;
+    width: 100%;
+
+    > .ui-button {
+        flex: 1 1 0;
+        width: auto;
+    }
+}
+
+/* fluid on small screens: the options stack vertically, only the outer corners are rounded, neighbours share one border */
+@media (max-width: 640px) {
+    .ui-fluid .ui-selectonebutton,
+    .ui-fluid .ui-selectmanybutton {
+        flex-direction: column;
+
+        > .ui-button {
+            flex: 0 0 auto;
+            width: 100%;
+            border-radius: 0;
+            border-inline-start-width: 1px;
+            border-block-start-width: 0;
+
+            &:first-child {
+                border-block-start-width: 1px;
+                border-start-start-radius: var(--p-selectbutton-border-radius);
+                border-start-end-radius: var(--p-selectbutton-border-radius);
+            }
+
+            &:last-child {
+                border-end-start-radius: var(--p-selectbutton-border-radius);
+                border-end-end-radius: var(--p-selectbutton-border-radius);
+            }
+        }
+    }
+}

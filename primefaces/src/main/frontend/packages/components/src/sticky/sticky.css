@@ -1,0 +1,13 @@
+/*
+ * Sticky: p:sticky
+ * The widget sets position fixed + top/width/z-index inline and adds ui-sticky ui-shadow to the target while pinned;
+ * div.ui-sticky-ghost keeps the original space in the flow.
+ * PrimeFaces only tokens: the sticky block of presets/*.css.
+ */
+.ui-sticky {
+    box-shadow: var(--p-sticky-shadow);
+}
+
+.ui-sticky-ghost {
+    visibility: hidden;
+}

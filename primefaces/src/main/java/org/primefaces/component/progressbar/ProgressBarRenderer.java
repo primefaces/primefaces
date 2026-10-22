@@ -97,7 +97,7 @@ public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
         if (labelTemplate != null) {
             if (value == 0) {
-                writer.writeAttribute("style", "color:var(--text-color);display:block", style);
+                writer.writeAttribute("style", "color:var(--p-text-color);display:block", style);
             }
             else {
                 writer.writeAttribute("style", "display:block", style);

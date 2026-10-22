@@ -203,7 +203,10 @@ public class Csv003Test extends AbstractPrimePageTest {
     }
 
     protected void assertMessage(Message message, String expected) {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(message));
+        // an empty p:message has no size (it is invisible), only a message is shown
+        if (!expected.isEmpty()) {
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(message));
+        }
         Assertions.assertEquals(expected, message.getText());
         assertNoJavascriptErrors();
     }

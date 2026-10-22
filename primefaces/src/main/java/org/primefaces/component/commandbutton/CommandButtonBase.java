@@ -84,7 +84,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     @Property(description = "Displays button inline instead of fitting the content width, only used by mobile.")
     public abstract boolean isInline();
 
-    @Property(description = "Defines if label of the component is escaped or not.")
+    @Property(defaultValue = "true", description = "Defines if label of the component is escaped or not.")
     public abstract boolean isEscape();
 
     @Property(description = "When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.")
@@ -94,7 +94,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
             + "Used together with p:clientValidator on all relevant input-components.")
     public abstract boolean isEnabledByValidateClient();
 
-    @Property(description = "When enabled, click event can be added to disabled button.")
+    @Property(defaultValue = "true", description = "When enabled, click event can be added to disabled button.")
     public abstract boolean isRenderDisabledClick();
 
     @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")

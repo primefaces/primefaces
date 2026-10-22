@@ -1,1 +1,11 @@
-@import url("primeicons/primeicons.css");
+/*
+ * primeicons/primeicons.css: the PrimeIcons font for the icons applications set themselves (icon="pi pi-check"),
+ * rendered by the HeadRenderer unless primefaces.PRIME_ICONS is false.
+ *
+ * Cascade layers (lowest first): primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors.
+ * In the vendor layer like the other third-party CSS, so the component CSS (e.g. display: none of a replaced icon) wins
+ * over the .pi rules without !important, and application CSS wins over both.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("primeicons/primeicons.css") layer(primefaces.vendor);

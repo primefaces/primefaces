@@ -1,82 +1,124 @@
+/*
+ * ScrollPanel: p:scrollPanel (custom jScrollPane bars and mode="native")
+ *
+ * jScrollPane (patched by PF) renders .ui-scrollpanel-container > .ui-scrollpanel-content plus
+ * .ui-scrollpanel-vbar / -hbar > .ui-scrollpanel-track > .ui-scrollpanel-drag.
+ * The frame and the track use PrimeFaces tokens, the bar the PrimeUIX scrollpanel tokens.
+ */
+
 .ui-scrollpanel {
-   overflow: hidden;
-   outline: none;
-   background-image: none;
+    overflow: hidden;
+    outline: none;
+    padding: var(--p-scrollpanel-padding);
+    background: var(--p-scrollpanel-background);
+    color: var(--p-scrollpanel-color);
+    border: 1px solid var(--p-scrollpanel-border-color);
+    border-radius: var(--p-scrollpanel-border-radius);
+
+    /* native mode: style the browser scrollbar with the same tokens */
+    &.ui-scrollpanel-native {
+        scrollbar-width: thin;
+        scrollbar-color: var(--p-scrollpanel-bar-background) var(--p-scrollpanel-track-background);
+    }
+
+    .ui-scrollpanel-track {
+        background: var(--p-scrollpanel-track-background);
+        border-radius: var(--p-scrollpanel-bar-border-radius);
+    }
+
+    .ui-scrollpanel-drag {
+        position: relative;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+        border: 0 none;
+        background: var(--p-scrollpanel-bar-background);
+        color: inherit;
+        border-radius: var(--p-scrollpanel-bar-border-radius);
+        transition: background var(--p-scrollpanel-transition-duration);
+
+        &:hover,
+        &.jspActive {
+            background: var(--p-scrollpanel-bar-hover-background);
+        }
+    }
+
+    .ui-scrollpanel-corner {
+        background: var(--p-scrollpanel-track-background);
+    }
+
+    /* keyboard scrolling: jScrollPane makes the panel focusable (tabindex 0), the bars show the focus */
+    &:focus-visible .ui-scrollpanel-drag {
+        outline: var(--p-scrollpanel-bar-focus-ring-width) var(--p-scrollpanel-bar-focus-ring-style) var(--p-scrollpanel-bar-focus-ring-color);
+        outline-offset: var(--p-scrollpanel-bar-focus-ring-offset);
+        box-shadow: var(--p-scrollpanel-bar-focus-ring-shadow);
+    }
 }
 
 .ui-scrollpanel-native {
-   overflow: auto;
+    overflow: auto;
 }
 
 .ui-scrollpanel-container {
-   overflow: hidden;
-   position: relative;
+    overflow: hidden;
+    position: relative;
 }
 
 .ui-scrollpanel-content {
-   position: absolute;
+    position: absolute;
 }
 
 .ui-scrollpanel-vbar {
-   position: absolute;
-   top: 0;
-   right: 0;
-   width: 16px;
-   height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--p-scrollpanel-bar-size);
+    height: 100%;
 }
 
 .ui-scrollpanel-hbar {
-   position: absolute;
-   bottom: 0;
-   left: 0;
-   width: 100%;
-   height: 16px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--p-scrollpanel-bar-size);
 }
 
 .ui-scrollpanel-cap {
-   display: none;
+    display: none;
 }
 
 .ui-scrollpanel-hbar .ui-scrollpanel-cap {
-   float: left;
+    float: left;
 }
 
 .ui-scrollpanel-track {
-   background-image: none;
-   position: relative;
-   border: 0 none;
-}
-
-.ui-scrollpanel .ui-scrollpanel-drag {
-   position: relative;
-   top: 0;
-   left: 0;
-   cursor: pointer;
-   border: 0px none;
+    position: relative;
+    border: 0 none;
 }
 
 .ui-scrollpanel-hbar .ui-scrollpanel-track,
 .ui-scrollpanel-hbar .ui-scrollpanel-drag {
-   float: left;
-   height: 100%;
+    float: left;
+    height: 100%;
 }
 
 .ui-scrollpanel-vbar .jspArrow {
-   height: 16px;
+    height: var(--p-scrollpanel-bar-size);
 }
 
 .ui-scrollpanel-hbar .jspArrow {
-   width: 16px;
-   float: left;
-   height: 100%;
+    width: var(--p-scrollpanel-bar-size);
+    float: left;
+    height: 100%;
 }
 
 .ui-scrollpanel-vbar .jspArrow:focus {
-   outline: none;
+    outline: none;
 }
 
 .ui-scrollpanel-corner {
-   float: left;
-   height: 100%;
-   border: 0 none;
+    float: left;
+    height: 100%;
+    border: 0 none;
 }

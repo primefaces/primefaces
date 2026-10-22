@@ -1,0 +1,63 @@
+/*
+ * Backdrop: translucent presets (Glass) blur and saturate what lies behind the floating layer. All tokens are "none"
+ * in the other presets.
+ *
+ * Only elements that float or form a bar get a backdrop filter: overlays (dialogs, popovers, dropdown panels, menus,
+ * tooltips, growl), the toolbar and buttons. Nested overlays (submenus inside a menu) only blur what lies inside their
+ * parent overlay (backdrop root), so the overlay backgrounds stay mostly opaque.
+ * Content containers (panel, card, table) stay without one: a backdrop filter makes the element the containing block
+ * of its absolutely / fixed positioned descendants (overlays appended inside it would be positioned wrong), and
+ * translucency belongs to the controls layer above the content (Apple HIG).
+ * Zero specificity (:where), so component rules and application CSS win.
+ */
+:where(.ui-sidebar, .ui-overlaypanel, .ui-confirm-popup, .ui-input-overlay, .ui-selectonemenu-panel,
+    .ui-selectcheckboxmenu-panel, .ui-autocomplete-panel,
+    .ui-cascadeselect-panel:not(.ui-cascadeselect-panel .ui-cascadeselect-panel),
+    .ui-menu-dynamic, .ui-menu-child, .ui-contextmenu, .ui-tooltip-text, .ui-growl-item-container, .ui-password-panel,
+    .ui-columntoggler) {
+    backdrop-filter: var(--p-overlay-backdrop-filter);
+}
+
+/*
+ * dialog box and toolbar: the filter is on a ::before behind the element, not on the element. .ui-dialog is the
+ * transparent full viewport container (a filter there blurs the whole page, also for a non-modal dialog), and a filter
+ * on the box or the toolbar makes it the stacking context and containing block of its descendants: the dropdowns inside
+ * a toolbar would be painted under the content that follows it.
+ * Toolbar only (not menubar / megamenu): an element with a backdrop filter is the backdrop root of its descendants, the
+ * submenus would only blur what lies inside the bar.
+ */
+:where(.ui-dialog-box, .ui-toolbar)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+/* behind the box: the dialog container is a stacking context (z-index of the widget), the box background paints over it */
+:where(.ui-dialog-box)::before {
+    z-index: -1;
+    backdrop-filter: var(--p-overlay-backdrop-filter);
+}
+
+/* no stacking context on the toolbar: the ::before comes first in the positioned layer, the positioned children follow */
+:where(.ui-toolbar) {
+    position: relative;
+}
+
+:where(.ui-toolbar) > * {
+    position: relative;
+}
+
+:where(.ui-toolbar)::before {
+    backdrop-filter: var(--p-navigation-backdrop-filter);
+}
+
+:where(.ui-button) {
+    backdrop-filter: var(--p-button-backdrop-filter);
+}
+
+/* modal mask: blurs the page behind a modal dialog / sidebar / blockUI */
+:where(.ui-widget-overlay, .ui-dialog-mask) {
+    backdrop-filter: var(--p-mask-backdrop-filter);
+}

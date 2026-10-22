@@ -5,8 +5,7 @@
       xmlns:ui="jakarta.faces.facelets"
       xmlns:p="primefaces"
       xmlns:sc="primefaces.showcase"
-      lang="#{p:language()}" xml:lang="#{p:language()}"
-      data-dark="#{app.darkMode}">
+      lang="#{p:language()}" xml:lang="#{p:language()}" data-preset="#{app.theme}" dir="#{app.dir}">
 
     <h:head>
         <f:facet name="first">
@@ -28,6 +27,8 @@
 
         <h:outputStylesheet name="primeflex/4.0.0/primeflex.min.css" library="webjars" />
         <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
+        <!-- maps the variables of the showcase layout to the tokens of the theme -->
+        <h:outputStylesheet name="theming/showcase.css"/>
 
         <h:outputScript name="jquery/jquery.js" library="primefaces"/>
         <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
@@ -38,9 +39,10 @@
 
     <h:body>
         <f:view locale="#{app.locale.locale}">
-        <div class="layout-wrapper layout-landing-wrapper #{app.inputStyleClass}">
+        <div class="layout-wrapper layout-landing-wrapper">
             <ui:include src="./topbar.xhtml"/>
-            <ui:include src="./config.xhtml"/>
+            <!-- theme configurator: palette button at the right edge + overlay -->
+            <ui:include src="/theming/configurator.xhtml"/>
             <div class="layout-mask"></div>
 
             <div class="layout-landing-content">

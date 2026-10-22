@@ -1,44 +1,137 @@
+/*
+ * Badge (shared): p:badge (standalone and as wrapper = overlay badge) and the badge attribute of other components
+ *
+ * Markup: span.ui-badge > span.ui-badge-icon? span.ui-badge-label?, wrapper div.ui-overlay-badge
+ * Supported classes: ui-badge-secondary | -success | -info | -warning | -danger | -help,
+ *                    ui-badge-lg, ui-badge-xl, ui-badge-dot, ui-badge-no-gutter, ui-state-hidden
+ * styleClass only (the severity / size attributes do not know them): ui-badge-contrast, ui-badge-sm
+ */
 .ui-badge {
-    display: inline-block;
-    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p-badge-gap);
+    padding: var(--p-badge-padding);
+    background: var(--p-badge-primary-background);
+    color: var(--p-badge-primary-color);
+    font-size: var(--p-badge-font-size);
+    font-weight: var(--p-badge-font-weight);
+    min-width: var(--p-badge-min-width);
+    height: var(--p-badge-height);
+    line-height: var(--p-badge-height);
+    border-radius: var(--p-badge-border-radius);
     text-align: center;
-    padding: 0 .5rem;
+    white-space: nowrap;
+
+    /* badge used as plain styleClass (e.g. <span class="ui-badge">) */
+    &:not(.ui-widget) {
+        display: inline-block;
+        border-radius: 50%;
+    }
+
+    /* after :not(.ui-widget) (same specificity) */
+    &.ui-state-hidden {
+        display: none;
+    }
+
+    /* the icon follows the badge font size (lg / xl) instead of the global icon size */
+    .ui-badge-icon {
+        font-size: inherit;
+        line-height: 1;
+        margin: 0;
+    }
+
+    &.ui-badge-secondary {
+        background: var(--p-badge-secondary-background);
+        color: var(--p-badge-secondary-color);
+    }
+
+    &.ui-badge-success {
+        background: var(--p-badge-success-background);
+        color: var(--p-badge-success-color);
+    }
+
+    &.ui-badge-info {
+        background: var(--p-badge-info-background);
+        color: var(--p-badge-info-color);
+    }
+
+    &.ui-badge-warning {
+        background: var(--p-badge-warn-background);
+        color: var(--p-badge-warn-color);
+    }
+
+    &.ui-badge-danger {
+        background: var(--p-badge-danger-background);
+        color: var(--p-badge-danger-color);
+    }
+
+    &.ui-badge-help {
+        background: var(--p-badge-help-background);
+        color: var(--p-badge-help-color);
+    }
+
+    &.ui-badge-contrast {
+        background: var(--p-badge-contrast-background);
+        color: var(--p-badge-contrast-color);
+    }
+
+    &.ui-badge-sm {
+        font-size: var(--p-badge-sm-font-size);
+        min-width: var(--p-badge-sm-min-width);
+        height: var(--p-badge-sm-height);
+        line-height: var(--p-badge-sm-height);
+    }
+
+    &.ui-badge-lg {
+        font-size: var(--p-badge-lg-font-size);
+        min-width: var(--p-badge-lg-min-width);
+        height: var(--p-badge-lg-height);
+        line-height: var(--p-badge-lg-height);
+    }
+
+    &.ui-badge-xl {
+        font-size: var(--p-badge-xl-font-size);
+        min-width: var(--p-badge-xl-min-width);
+        height: var(--p-badge-xl-height);
+        line-height: var(--p-badge-xl-height);
+    }
+
+    &.ui-badge-dot {
+        width: var(--p-badge-dot-size);
+        min-width: var(--p-badge-dot-size);
+        height: var(--p-badge-dot-size);
+        border-radius: 50%;
+        padding: 0;
+    }
+
+    &.ui-badge-no-gutter {
+        padding: 0;
+        border-radius: 50%;
+    }
 }
 
 .ui-overlay-badge {
     position: relative;
     display: inline-block;
     cursor: pointer;
-}
 
-.ui-overlay-badge .ui-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(50%,-50%);
-    transform-origin: 100% 0;
-    margin: 0;
-    z-index: 1;
-}
+    .ui-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%);
+        transform-origin: 100% 0;
+        margin: 0;
+        z-index: 1;
+        /* ring in the surrounding background color like PrimeUIX overlaybadge */
+        outline: var(--p-overlaybadge-outline-width) solid var(--p-overlaybadge-outline-color);
 
-.ui-badge.ui-badge-dot {
-    width: .5rem;
-    min-width: .5rem;
-    height: .5rem;
-    border-radius: 50%;
-    padding: 0;
-}
-
-.ui-badge.ui-badge-no-gutter {
-    padding: 0;
-    border-radius: 50%;
-}
-
-.ui-badge.ui-state-hidden {
-    display: none;
-}
-
-.ui-badge .ui-badge-icon {
-	font-size: 0.75rem;
-	margin-top: 0.4rem;
+        &:dir(rtl) {
+            right: auto;
+            left: 0;
+            transform: translate(-50%, -50%);
+            transform-origin: 0 0;
+        }
+    }
 }

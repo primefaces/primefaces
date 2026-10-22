@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+        <style>
+            /* fixed size and font, no caret / animations: stable screenshots */
+            #snapshot {
+                width: 560px;
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                background: var(--p-content-background);
+                color: var(--p-text-color);
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                caret-color: transparent;
+            }
+            #snapshot .row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+            }
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <!-- visual regression: one fixed set of components, screenshot per preset (?theme=) and color scheme -->
+        <h:form id="form">
+            <div id="snapshot">
+                <div class="row">
+                    <p:commandButton value="Primary" type="button"/>
+                    <p:commandButton value="Secondary" type="button" styleClass="ui-button-secondary"/>
+                    <p:commandButton value="Outlined" type="button" styleClass="ui-button-outlined"/>
+                    <p:commandButton value="Success" type="button" styleClass="ui-button-success"/>
+                    <p:commandButton value="Danger" type="button" styleClass="ui-button-danger"/>
+                </div>
+                <div class="row">
+                    <p:inputText value="PrimeFaces"/>
+                    <p:inputText placeholder="Placeholder"/>
+                    <p:selectOneMenu value="#{theming009.cities[1]}" style="width: 10rem">
+                        <f:selectItems value="#{theming009.cities}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="row">
+                    <p:selectBooleanCheckbox value="#{theming009.checked}"/>
+                    <p:selectBooleanCheckbox value="#{theming009.unchecked}"/>
+                    <p:selectOneRadio value="#{theming009.cities[1]}">
+                        <f:selectItems value="#{theming009.cities}"/>
+                    </p:selectOneRadio>
+                    <p:toggleSwitch value="#{theming009.checked}"/>
+                </div>
+                <div class="row">
+                    <p:selectOneButton value="#{theming009.cities[1]}">
+                        <f:selectItems value="#{theming009.cities}"/>
+                    </p:selectOneButton>
+                    <p:tag value="Tag"/>
+                    <p:tag value="Success" severity="success"/>
+                </div>
+                <p:progressBar value="60" displayOnly="true"/>
+                <p:staticMessage severity="warn" summary="Warn" detail="Message content"/>
+            </div>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

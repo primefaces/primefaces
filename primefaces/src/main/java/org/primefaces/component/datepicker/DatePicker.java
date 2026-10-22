@@ -59,6 +59,7 @@ import jakarta.faces.event.PhaseId;
 @FacesComponent(value = DatePicker.COMPONENT_TYPE, namespace = DatePicker.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "DatePicker is an input component used to select a date.")
 @ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "datepicker/datepicker.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

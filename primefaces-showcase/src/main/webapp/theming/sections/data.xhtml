@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <style>
+        .demo-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .demo-item img {
+            width: 4rem;
+            border-radius: var(--p-border-radius-sm);
+        }
+
+        .demo-item-name {
+            font-weight: 600;
+        }
+
+        .demo-grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+            padding: 1rem;
+            height: 100%;
+            text-align: center;
+            border: 1px solid var(--p-content-border-color);
+            border-radius: var(--p-content-border-radius);
+        }
+
+        .demo-grid-item img {
+            width: 6rem;
+        }
+    </style>
+
+    <h:form id="dataForm">
+        <div class="demo-card">
+            <h2>DataView</h2>
+            <p:dataView var="product" value="#{themingDataView.products}" rows="3" paginator="true" layout="grid"
+                        paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink}" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                <f:facet name="header">Products</f:facet>
+                <p:dataViewGridItem>
+                    <div class="demo-grid-item">
+                        <p:graphicImage name="images/product/#{product.image}" library="demo"/>
+                        <div class="demo-item-name">#{product.name}</div>
+                        <div class="muted">#{product.category}</div>
+                        <p:commandButton type="button" value="Add" icon="pi pi-shopping-cart" styleClass="ui-button-sm"/>
+                    </div>
+                </p:dataViewGridItem>
+                <p:dataViewListItem>
+                    <div class="demo-item">
+                        <p:graphicImage name="images/product/#{product.image}" library="demo"/>
+                        <div>
+                            <div class="demo-item-name">#{product.name}</div>
+                            <div class="muted">#{product.category}</div>
+                        </div>
+                    </div>
+                </p:dataViewListItem>
+            </p:dataView>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Tree</h2>
+                <p:tree value="#{themingDataView.checkboxTree}" var="doc" selectionMode="checkbox"
+                        selection="#{themingDataView.checkedNodes}">
+                    <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">#{doc.name}</p:treeNode>
+                    <p:treeNode type="app" icon="pi pi-desktop">#{doc.name}</p:treeNode>
+                    <p:treeNode type="document" icon="pi pi-file">#{doc.name}</p:treeNode>
+                    <p:treeNode type="excel" icon="pi pi-file-excel">#{doc.name}</p:treeNode>
+                    <p:treeNode type="travel" icon="pi pi-map">#{doc.name}</p:treeNode>
+                    <p:treeNode type="picture" icon="pi pi-image">#{doc.name}</p:treeNode>
+                    <p:treeNode type="video" icon="pi pi-video">#{doc.name}</p:treeNode>
+                </p:tree>
+            </div>
+
+            <div class="demo-card">
+                <h2>Chronoline</h2>
+                <p:chronoline value="#{chronolineView.events}" var="event">#{event.status}</p:chronoline>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>PickList</h2>
+            <p:pickList value="#{themingDataView.pickCitiesFiltered}" var="city" itemLabel="#{city}" itemValue="#{city}"
+                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" showSourceControls="true"
+                        showTargetControls="true" responsive="true">
+                <f:facet name="sourceCaption">Available</f:facet>
+                <f:facet name="targetCaption">Selected</f:facet>
+            </p:pickList>
+        </div>
+    </h:form>
+</ui:composition>

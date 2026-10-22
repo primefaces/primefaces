@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:datePicker id="datepicker" value="#{datePicker018.value}"
+                          pattern="dd/MM/yyyy HH:mm:ss" showTime="true" showSeconds="true"
+                          hourFormat="12" readonlyInput="true" timeInput="true" focusOnSelect="true">
+                <p:ajax event="dateSelect" process="@this" update="@form"
+                        listener="#{datePicker018.onDateSelect}"/>
+            </p:datePicker>
+
+            <h:outputText id="selectedValue" value="#{datePicker018.formattedValue}"/>
+            <h:outputText id="dateSelectCount" value="#{datePicker018.dateSelectCount}"/>
+            <div id="outside">Outside picker</div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

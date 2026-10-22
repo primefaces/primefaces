@@ -57,7 +57,7 @@ export class Environment {
 
     /**
      * Gets the currently loaded PrimeFaces theme.
-     * @return The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
+     * @return The current theme, such as `aura` or `lara`. Empty string when no theme is loaded.
      */
     getTheme(): string {
         var themeLink = core.getThemeLink();
@@ -90,18 +90,25 @@ export class Environment {
      * @return The preferred color scheme, either 'dark' or 'light'
      */
     getOSPreferredColorScheme(): PrimeType.ThemeKind {
-        return this.preferredColorSchemeLight ? 'light' : 'dark';
+        // evaluated now, the setting can change while the page is open
+        return this.evaluateMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     }
 
     /**
-     * Based on the current PrimeFaces theme determine if light or dark contrast is being applied.
-     * 
+     * Determines if light or dark contrast is being applied. The themes switch between light and dark with the CSS
+     * `color-scheme`: `light`, `dark` or `light dark` (the preferred color scheme of the operating system).
+     *
+     * @param element The element whose color scheme is used (e.g. a widget inside a dark sidebar), default: the page.
      * @return The theme contrast, either 'dark' or 'light'.
      */
-    getThemeContrast(): PrimeType.ThemeKind {
-        var theme = this.getTheme();
-        var darkRegex = /(^(arya|vela|.+-(dim|dark))$)/gm;
-        return darkRegex.test(theme) ? 'dark' : 'light';
+    getThemeContrast(element?: Element): PrimeType.ThemeKind {
+        var schemes = (window.getComputedStyle(element || document.documentElement).colorScheme || '').split(/\s+/);
+        var light = schemes.indexOf('light') >= 0;
+        var dark = schemes.indexOf('dark') >= 0;
+        if (light && dark) {
+            return this.getOSPreferredColorScheme();
+        }
+        return dark ? 'dark' : 'light';
     }
     
     /**

@@ -156,9 +156,10 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 PrimeFaces.queueTask(function() {submenu.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
             }
         });
-        this.backwardButton = _self.backward.children('ui-menuitem-link');
-        this.backwardButton.attr('tabindex', 0);
+        // after the swap of changeTabindex(), which would flip the back link too: reachable inside a submenu
         this.changeTabindex();
+        this.backwardButton = _self.backward.find('a.ui-menuitem-link');
+        this.backwardButton.attr('tabindex', 0);
     }
 
     /**
@@ -184,9 +185,10 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 }
             });
         }
-        this.backwardButton = _self.backward.children('ui-menuitem-link');
-        this.backwardButton.attr('tabindex', -1);
+        // after the swap of changeTabindex(), which would flip the back link too: reachable as long as a submenu is shown
         this.changeTabindex();
+        this.backwardButton = this.backward.find('a.ui-menuitem-link');
+        this.backwardButton.attr('tabindex', this.depth() > 0 ? 0 : -1);
     }
 
     /**

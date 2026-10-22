@@ -13,6 +13,7 @@ export const Env = {
 
     get MavenRootDir() { return path.resolve(this.RootDir, "..", "..", "..") },
     get PackagesDir() { return path.resolve(this.RootDir, "packages") },
+    get ThemesDir() { return path.resolve(this.RootDir, "themes") },
     get DistDir() { return path.resolve(this.RootDir, "dist") },
     get DocsDir() { return path.resolve(this.RootDir, "docs") },
     

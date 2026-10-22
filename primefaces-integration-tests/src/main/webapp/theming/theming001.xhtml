@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:c="jakarta.tags.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:inputText id="inputText" />
+            <p:selectBooleanCheckbox id="checkbox" />
+            <p:panel id="panel" header="Panel">Content</p:panel>
+
+            <!-- components with their own CSS in the core (colorpicker/colorpicker.css, keyboard/keyboard.css),
+                 added to the view by an ajax request -->
+            <c:if test="#{theming001.visible}">
+                <p:colorPicker id="colorPicker" />
+                <p:keyboard id="keyboard" />
+            </c:if>
+
+            <p:commandButton id="show" value="Show" actionListener="#{theming001.show}" update="@form" />
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

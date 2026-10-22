@@ -31,6 +31,7 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponent(value = ImageCropper.COMPONENT_TYPE, namespace = ImageCropper.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "ImageCropper allows cropping a certain region of an image. " +
     "A new image is created containing the cropped area and assigned to a CroppedImage instanced on the server side.")
+@ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

@@ -916,14 +916,17 @@ export class Utils {
     enableAnimations(): void {
         $.fx.off = false;
         core.animationEnabled = true;
+        document.documentElement.removeAttribute('data-p-animations');
     }
 
     /**
-     * Disables CSS and jQuery animation.
+     * Disables CSS and jQuery animation. The theme shows entering content (messages, data view items, file upload
+     * rows) without fading it in (`data-p-animations="off"` on the html element).
      */
     disableAnimations(): void {
         $.fx.off = true;
         core.animationEnabled = false;
+        document.documentElement.setAttribute('data-p-animations', 'off');
     }
 
     /**

@@ -140,25 +140,6 @@ App = {
         item.addClass('topbar-submenu-active');
     },
 
-    changeTheme: function(theme, dark) {
-        PrimeFaces.changeTheme(theme);
-
-        // Keep the data-dark attribute in sync so Shiki CSS variables switch correctly
-        document.documentElement.setAttribute('data-dark', dark ? 'true' : 'false');
-
-        if (dark)
-            $('#homepage-intro').addClass('introduction-dark');
-        else
-            $('#homepage-intro').removeClass('introduction-dark');
-    },
-
-    updateInputStyle: function(value) {
-        if (value === 'filled')
-            this.wrapper.addClass('ui-input-filled');
-        else
-            this.wrapper.removeClass('ui-input-filled');
-    },
-
     isMenuButton: function(element) {
         return $.contains(this.menuButton.get(0), element) || this.menuButton.is(element);
     },

@@ -1,0 +1,18 @@
+/*
+ * ImageCropper: p:imageCropper
+ *
+ * The widget is cropperjs, its CSS (cropperjs/dist/cropper.css) is bundled in the vendor layer.
+ * This file only replaces the cropperjs accent color (#39f) with the primary color. Tokens in the imagecropper block of presets/*.css.
+ */
+
+.cropper-container {
+    .cropper-view-box {
+        outline-color: var(--p-imagecropper-outline-color);
+    }
+
+    .cropper-line,
+    .cropper-point,
+    .cropper-point.point-se::before {
+        background-color: var(--p-imagecropper-guide-color);
+    }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <!-- Metal preset (?theme=metal): metal tokens, contrast of the gradient buttons; without the parameter: aura -->
+        <h:form id="form">
+            <p:commandButton id="primary" value="Primary" type="button"/>
+            <p:commandButton id="secondary" value="Secondary" type="button" styleClass="ui-button-secondary"/>
+            <p:commandButton id="outlined" value="Outlined" type="button" styleClass="ui-button-outlined"/>
+            <p:commandButton id="info" value="Info" type="button" styleClass="ui-button-info"/>
+            <p:commandButton id="success" value="Success" type="button" styleClass="ui-button-success"/>
+            <p:commandButton id="warning" value="Warning" type="button" styleClass="ui-button-warning"/>
+            <p:commandButton id="help" value="Help" type="button" styleClass="ui-button-help"/>
+            <p:commandButton id="danger" value="Danger" type="button" styleClass="ui-button-danger"/>
+            <p:commandButton id="contrast" value="Contrast" type="button" styleClass="ui-button-contrast"/>
+
+            <p:selectOneButton id="selectButton" value="#{theming009.cities[1]}">
+                <f:selectItems value="#{theming009.cities}"/>
+            </p:selectOneButton>
+
+            <p:toggleSwitch id="toggleSwitch" value="#{theming009.checked}"/>
+            <p:slider id="slider" for="sliderValue"/>
+            <h:inputHidden id="sliderValue" value="50"/>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

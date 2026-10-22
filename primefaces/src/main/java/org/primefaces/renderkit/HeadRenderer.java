@@ -30,8 +30,8 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.ResourceUtils;
 
 import java.io.IOException;
@@ -73,12 +73,6 @@ public class HeadRenderer extends Renderer<UIComponent> {
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
 
-    private static final Map<String, String> THEME_MAPPING = MapBuilder.<String, String>builder()
-            .put("saga", "saga-blue")
-            .put("arya", "arya-blue")
-            .put("vela", "vela-blue")
-            .build();
-
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -101,17 +95,24 @@ public class HeadRenderer extends Renderer<UIComponent> {
 
         if (themeParamValue != null) {
             theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
+            if (LangUtils.isNotBlank(theme)) {
+                theme = theme.trim();
+            }
         }
         else {
-            theme = "saga-blue";     //default
+            theme = "aura";     //default
         }
 
-        if (theme != null && !"none".equals(theme)) {
-            if (THEME_MAPPING.containsKey(theme)) {
-                theme = THEME_MAPPING.get(theme);
+        // the tokens of the theme (aura, lara, nora, metal, glass or a custom primefaces-<name>/theme.css); the CSS of the
+        // components is the same for every theme; "none" or an empty value: no theme
+        if (LangUtils.isNotBlank(theme) && !"none".equals(theme)) {
+            String themeLibrary = LIBRARY + "-" + theme;
+            if (context.isProjectStage(ProjectStage.Development)
+                    && context.getApplication().getResourceHandler().createResource("theme.css", themeLibrary) == null) {
+                LOGGER.log(Level.WARNING, "Theme \"{0}\" not found (no {1}:theme.css), the components are rendered without "
+                        + "their tokens. Use aura, lara, nora, metal, glass or a custom theme.", new Object[] {theme, themeLibrary});
             }
-
-            encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
+            encodeCSS(context, themeLibrary, "theme.css");
         }
 
         //Icons

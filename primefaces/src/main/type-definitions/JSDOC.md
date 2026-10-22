@@ -4,7 +4,7 @@ This is the documentation for the client-side JavaScript part of PrimeFaces, ple
 [PrimeFaces.org](https://www.primefaces.org) for more information. You may also  be interested in the
 [user guide](https://primefaces.github.io/primefaces/).
 
-[![PrimeFaces Logo](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png)](https://www.primefaces.org/showcase)
+[![PrimeFaces Logo](https://raw.githubusercontent.com/primefaces/primefaces/master/primefaces-showcase/src/main/webapp/resources/showcase/images/primefaces-logo.svg)](https://www.primefaces.org/showcase)
 
 * [Type declarations file](#type-declarations-file)
 * [API Overview](#api-overview)

@@ -1,29 +1,33 @@
+/*
+ * Divider: p:divider (layout horizontal | vertical, type solid | dashed | dotted, align left | center | right | top | bottom)
+ */
+
 .ui-divider-horizontal {
     display: flex;
     width: 100%;
     position: relative;
     align-items: center;
-}
 
-.ui-divider-horizontal:before {
-    position: absolute;
-    display: block;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    content: "";
-}
+    &::before {
+        position: absolute;
+        display: block;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        content: "";
+    }
 
-.ui-divider-horizontal.ui-divider-left {
-    justify-content: flex-start;
-}
+    &.ui-divider-left {
+        justify-content: flex-start;
+    }
 
-.ui-divider-horizontal.ui-divider-right {
-    justify-content: flex-end;
-}
+    &.ui-divider-right {
+        justify-content: flex-end;
+    }
 
-.ui-divider-horizontal.ui-divider-center {
-    justify-content: center;
+    &.ui-divider-center {
+        justify-content: center;
+    }
 }
 
 .ui-divider-content {
@@ -32,53 +36,93 @@
 
 .ui-divider-vertical {
     min-height: 100%;
-    margin: 0 1rem;
     display: flex;
     position: relative;
     justify-content: center;
+
+    &::before {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 50%;
+        height: 100%;
+        content: "";
+    }
+
+    &.ui-divider-top {
+        align-items: flex-start;
+    }
+
+    &.ui-divider-center {
+        align-items: center;
+    }
+
+    &.ui-divider-bottom {
+        align-items: flex-end;
+    }
 }
 
-.ui-divider-vertical:before {
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 50%;
-    height: 100%;
-    content: "";
-}
+.ui-divider {
+    &.ui-divider-solid {
+        &.ui-divider-horizontal::before {
+            border-top-style: solid;
+        }
 
-.ui-divider-vertical.ui-divider-top {
-    align-items: flex-start;
-}
+        &.ui-divider-vertical::before {
+            border-left-style: solid;
+        }
+    }
 
-.ui-divider-vertical.ui-divider-center {
-    align-items: center;
-}
+    &.ui-divider-dashed {
+        &.ui-divider-horizontal::before {
+            border-top-style: dashed;
+        }
 
-.ui-divider-vertical.ui-divider-bottom {
-    align-items: flex-end;
-}
+        &.ui-divider-vertical::before {
+            border-left-style: dashed;
+        }
+    }
 
-.ui-divider.ui-divider-solid.ui-divider-horizontal:before {
-    border-top-style: solid;
-}
+    &.ui-divider-dotted {
+        &.ui-divider-horizontal::before {
+            border-top-style: dotted;
+        }
 
-.ui-divider.ui-divider-solid.ui-divider-vertical:before {
-    border-left-style: solid;
-}
+        &.ui-divider-vertical::before {
+            border-left-style: dotted;
+        }
+    }
 
-.ui-divider.ui-divider-dashed.ui-divider-horizontal:before {
-    border-top-style: dashed;
-}
+    .ui-divider-content {
+        background-color: var(--p-divider-content-background);
+        color: var(--p-divider-content-color);
+    }
 
-.ui-divider.ui-divider-dashed.ui-divider-vertical:before {
-    border-left-style: dashed;
-}
+    &.ui-divider-horizontal {
+        margin: var(--p-divider-horizontal-margin);
+        padding: var(--p-divider-horizontal-padding);
 
-.ui-divider.ui-divider-dotted.ui-divider-horizontal:before {
-    border-top-style: dotted;
-}
+        &::before {
+            border-top-width: 1px;
+            border-top-color: var(--p-divider-border-color);
+        }
 
-.ui-divider.ui-divider-dotted.ui-divider-vertical:before {
-    border-left-style: dotted;
+        .ui-divider-content {
+            padding: var(--p-divider-horizontal-content-padding);
+        }
+    }
+
+    &.ui-divider-vertical {
+        margin: var(--p-divider-vertical-margin);
+        padding: var(--p-divider-vertical-padding);
+
+        &::before {
+            border-left-width: 1px;
+            border-left-color: var(--p-divider-border-color);
+        }
+
+        .ui-divider-content {
+            padding: var(--p-divider-vertical-content-padding);
+        }
+    }
 }
