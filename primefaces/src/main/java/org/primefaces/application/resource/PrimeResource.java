@@ -43,7 +43,7 @@ public class PrimeResource extends ResourceWrapper {
         FacesContext context = FacesContext.getCurrentInstance();
         version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
                 ? null
-                : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
+                : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getResourceVersion();
     }
 
     @Override

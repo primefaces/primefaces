@@ -44,12 +44,15 @@ public class PrimeEnvironment {
 
     private final String buildVersion;
 
+    private final String resourceVersion;
+
     private final boolean htmlSanitizerAvailable;
 
     public PrimeEnvironment(FacesContext context) {
         beanValidationAvailable = resolveBeanValidationAvailable();
 
         buildVersion = resolveBuildVersion();
+        resourceVersion = resolveResourceVersion(buildVersion);
 
         htmlSanitizerAvailable = LangUtils.isClassAvailable("org.owasp.html.PolicyFactory");
 
@@ -101,6 +104,16 @@ public class PrimeEnvironment {
         return buildVersion;
     }
 
+    protected String resolveResourceVersion(String buildVersion) {
+        // A SNAPSHOT keeps its version across builds, so the resource URLs would not change after a redeploy and the
+        // browser would serve the old CSS/JS from its cache. Append the startup time to bust the cache on every start.
+        if (buildVersion.endsWith("-SNAPSHOT")) {
+            return buildVersion + "." + Long.toString(System.currentTimeMillis(), Character.MAX_RADIX);
+        }
+
+        return buildVersion;
+    }
+
     public boolean isBeanValidationAvailable() {
         return beanValidationAvailable;
     }
@@ -111,6 +124,13 @@ public class PrimeEnvironment {
 
     public String getBuildVersion() {
         return buildVersion;
+    }
+
+    /**
+     * The version appended to the resource URLs ({@code &v=}): the build version, for a SNAPSHOT plus the startup time.
+     */
+    public String getResourceVersion() {
+        return resourceVersion;
     }
 
     public boolean isHtmlSanitizerAvailable() {
