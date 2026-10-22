@@ -314,23 +314,23 @@
         --p-form-field-focus-ring-shadow: var(--p-focus-ring-shadow);
         --p-form-field-transition-duration: var(--p-transition-duration);
         --p-form-field-background: light-dark(rgb(255 255 255 / 0.82), rgb(255 255 255 / 0.07));
-        --p-form-field-disabled-background: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.2));
-        --p-form-field-filled-background: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
+        --p-form-field-disabled-background: light-dark(color-mix(in srgb, var(--p-surface-500) 12%, transparent), color-mix(in srgb, var(--p-surface-500) 20%, transparent));
+        --p-form-field-filled-background: light-dark(color-mix(in srgb, var(--p-surface-500) 12%, transparent), color-mix(in srgb, var(--p-surface-500) 24%, transparent));
         --p-form-field-filled-hover-background: var(--p-form-field-filled-background);
         --p-form-field-filled-focus-background: var(--p-form-field-background);
-        --p-form-field-border-color: light-dark(#8e8e93, #7c7c80);
-        --p-form-field-hover-border-color: light-dark(#636366, #aeaeb2);
+        --p-form-field-border-color: light-dark(color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 50%), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 78%));
+        --p-form-field-hover-border-color: light-dark(var(--p-surface-600), var(--p-surface-400));
         --p-form-field-focus-border-color: var(--p-primary-color);
         --p-form-field-invalid-border-color: light-dark(var(--p-red-400), var(--p-red-300));
-        --p-form-field-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-form-field-disabled-color: light-dark(#8e8e93, #7c7c80);
-        --p-form-field-placeholder-color: light-dark(#6e6e73, #98989d);
+        --p-form-field-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-form-field-disabled-color: light-dark(color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 50%), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 78%));
+        --p-form-field-placeholder-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-form-field-invalid-placeholder-color: light-dark(var(--p-red-600), var(--p-red-400));
-        --p-form-field-float-label-color: light-dark(#6e6e73, #98989d);
+        --p-form-field-float-label-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-form-field-float-label-focus-color: var(--p-primary-color);
-        --p-form-field-float-label-active-color: light-dark(#6e6e73, #98989d);
+        --p-form-field-float-label-active-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-form-field-float-label-invalid-color: var(--p-form-field-invalid-placeholder-color);
-        --p-form-field-icon-color: light-dark(#6e6e73, #98989d);
+        --p-form-field-icon-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-form-field-shadow: inset 0 1px 1px light-dark(rgb(0 0 0 / 0.04), rgb(0 0 0 / 0.3));
         --p-list-padding: 0.25rem 0.25rem;
         --p-list-gap: 2px;
@@ -340,7 +340,7 @@
         --p-list-option-font-weight: var(--p-typography-font-weight);
         --p-list-option-font-size: var(--p-typography-font-size);
         --p-list-option-transition-duration: 0s;
-        --p-list-option-focus-background: light-dark(rgb(118 118 128 / 0.12), rgb(255 255 255 / 0.08));
+        --p-list-option-focus-background: light-dark(color-mix(in srgb, var(--p-surface-500) 12%, transparent), rgb(255 255 255 / 0.08));
         --p-list-option-selected-background: var(--p-highlight-background);
         --p-list-option-selected-focus-background: var(--p-highlight-focus-background);
         --p-list-option-color: var(--p-text-color);
@@ -356,9 +356,9 @@
         --p-list-option-group-background: transparent;
         --p-list-option-group-color: var(--p-text-muted-color);
         --p-content-border-radius: var(--p-border-radius-lg);
-        --p-content-background: light-dark(rgb(255 255 255 / 0.72), rgb(28 28 30 / 0.72));
-        --p-content-hover-background: light-dark(rgb(118 118 128 / 0.1), rgb(255 255 255 / 0.07));
-        --p-content-border-color: light-dark(rgb(60 60 67 / 0.16), rgb(84 84 88 / 0.65));
+        --p-content-background: light-dark(rgb(255 255 255 / 0.72), color-mix(in srgb, var(--p-surface-900) 72%, transparent));
+        --p-content-hover-background: light-dark(color-mix(in srgb, var(--p-surface-500) 10%, transparent), rgb(255 255 255 / 0.07));
+        --p-content-border-color: light-dark(color-mix(in srgb, var(--p-surface-700) 16%, transparent), color-mix(in srgb, color-mix(in srgb, var(--p-surface-600), var(--p-surface-700) 50%) 65%, transparent));
         --p-content-color: var(--p-text-color);
         --p-content-hover-color: var(--p-text-hover-color);
         --p-mask-transition-duration: 0.3s;
@@ -369,8 +369,8 @@
         --p-navigation-item-padding: 0.25rem 0.625rem;
         --p-navigation-item-border-radius: var(--p-border-radius-sm);
         --p-navigation-item-gap: 0.5rem;
-        --p-navigation-item-focus-background: light-dark(rgb(118 118 128 / 0.12), rgb(255 255 255 / 0.08));
-        --p-navigation-item-active-background: light-dark(rgb(118 118 128 / 0.16), rgb(255 255 255 / 0.12));
+        --p-navigation-item-focus-background: light-dark(color-mix(in srgb, var(--p-surface-500) 12%, transparent), rgb(255 255 255 / 0.08));
+        --p-navigation-item-active-background: light-dark(color-mix(in srgb, var(--p-surface-500) 16%, transparent), rgb(255 255 255 / 0.12));
         --p-navigation-item-color: var(--p-text-color);
         --p-navigation-item-focus-color: var(--p-text-hover-color);
         --p-navigation-item-active-color: var(--p-text-hover-color);
@@ -392,19 +392,19 @@
         --p-navigation-submenu-icon-active-color: light-dark(var(--p-surface-500), var(--p-surface-400));
         --p-overlay-select-border-radius: var(--p-border-radius-lg);
         --p-overlay-select-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
-        --p-overlay-select-background: light-dark(rgb(250 250 252 / 0.92), rgb(44 44 48 / 0.9));
+        --p-overlay-select-background: light-dark(color-mix(in srgb, var(--p-surface-50) 92%, transparent), color-mix(in srgb, var(--p-surface-800) 90%, transparent));
         --p-overlay-select-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-overlay-select-color: var(--p-text-color);
         --p-overlay-popover-border-radius: var(--p-border-radius-lg);
         --p-overlay-popover-padding: 0.625rem;
         --p-overlay-popover-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
-        --p-overlay-popover-background: light-dark(rgb(250 250 252 / 0.92), rgb(44 44 48 / 0.9));
+        --p-overlay-popover-background: light-dark(color-mix(in srgb, var(--p-surface-50) 92%, transparent), color-mix(in srgb, var(--p-surface-800) 90%, transparent));
         --p-overlay-popover-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-overlay-popover-color: var(--p-text-color);
         --p-overlay-modal-border-radius: var(--p-border-radius-xl);
         --p-overlay-modal-padding: 1.125rem;
         --p-overlay-modal-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
-        --p-overlay-modal-background: light-dark(rgb(250 250 252 / 0.92), rgb(44 44 48 / 0.9));
+        --p-overlay-modal-background: light-dark(color-mix(in srgb, var(--p-surface-50) 92%, transparent), color-mix(in srgb, var(--p-surface-800) 90%, transparent));
         --p-overlay-modal-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-overlay-modal-color: var(--p-text-color);
         --p-overlay-navigation-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
@@ -424,10 +424,10 @@
         --p-highlight-focus-background: light-dark(color-mix(in srgb, var(--p-primary-base) 18%, transparent), color-mix(in srgb, oklch(from var(--p-primary-base) calc(l + 0.061) calc(c * 1.063) h) 32%, transparent));
         --p-highlight-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 17%), oklch(from var(--p-primary-base) calc(l + 0.241) calc(c * 0.53) h));
         --p-highlight-focus-color: light-dark(color-mix(in oklch, var(--p-primary-base), black 27%), oklch(from var(--p-primary-base) calc(l + 0.283) calc(c * 0.409) h));
-        --p-text-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-text-hover-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-text-muted-color: light-dark(#6e6e73, #98989d);
-        --p-text-hover-muted-color: light-dark(#48484a, #c7c7cc);
+        --p-text-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-text-hover-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-text-muted-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
+        --p-text-hover-muted-color: light-dark(var(--p-surface-700), color-mix(in srgb, var(--p-surface-300), var(--p-surface-400) 30%));
         --p-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
         --p-transition-easing-enter: cubic-bezier(0, 0, 0.2, 1);
         --p-transition-easing-exit: cubic-bezier(0.4, 0, 1, 1);
@@ -436,7 +436,7 @@
         --p-scrollbar-width: thin;
         --p-scrollbar-thumb-color: light-dark(rgb(0 0 0 / 0.28), rgb(255 255 255 / 0.3));
         --p-scrollbar-track-color: transparent;
-        --p-document-background: radial-gradient(70vmax 55vmax at 8% 5%, light-dark(#ffd3e6, #4a1f6e) 0%, transparent 62%) fixed, radial-gradient(65vmax 55vmax at 95% 10%, light-dark(#c4e1ff, #0c3b7a) 0%, transparent 60%) fixed, radial-gradient(70vmax 55vmax at 20% 95%, light-dark(#ffe3bd, #53300d) 0%, transparent 60%) fixed, radial-gradient(60vmax 50vmax at 92% 90%, light-dark(#cff3dd, #0b4d3c) 0%, transparent 60%) fixed, light-dark(#f2f2f7, #0a0a0f);
+        --p-document-background: radial-gradient(70vmax 55vmax at 8% 5%, light-dark(#ffd3e6, #4a1f6e) 0%, transparent 62%) fixed, radial-gradient(65vmax 55vmax at 95% 10%, light-dark(#c4e1ff, #0c3b7a) 0%, transparent 60%) fixed, radial-gradient(70vmax 55vmax at 20% 95%, light-dark(#ffe3bd, #53300d) 0%, transparent 60%) fixed, radial-gradient(60vmax 50vmax at 92% 90%, light-dark(#cff3dd, #0b4d3c) 0%, transparent 60%) fixed, light-dark(var(--p-surface-100), color-mix(in srgb, var(--p-surface-950), var(--p-surface-900) 35%));
         --p-overlay-backdrop-filter: blur(30px) saturate(180%);
         --p-navigation-backdrop-filter: blur(24px) saturate(180%);
         --p-button-backdrop-filter: blur(16px) saturate(180%);
@@ -734,13 +734,13 @@
         --p-button-primary-focus-ring-shadow: none;
         --p-button-secondary-background: linear-gradient(180deg, light-dark(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.12)), rgb(255 255 255 / 0) 55%), light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.1));
         --p-button-secondary-hover-background: linear-gradient(180deg, light-dark(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.12)), rgb(255 255 255 / 0) 55%), light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.16));
-        --p-button-secondary-active-background: light-dark(rgb(229 229 234 / 0.9), rgb(255 255 255 / 0.22));
+        --p-button-secondary-active-background: light-dark(color-mix(in srgb, var(--p-surface-200) 90%, transparent), rgb(255 255 255 / 0.22));
         --p-button-secondary-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-button-secondary-hover-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-button-secondary-active-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
-        --p-button-secondary-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-button-secondary-hover-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-button-secondary-active-color: light-dark(#1d1d1f, #f5f5f7);
+        --p-button-secondary-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-button-secondary-hover-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-button-secondary-active-color: light-dark(var(--p-surface-900), var(--p-surface-50));
         --p-button-secondary-focus-ring-color: light-dark(var(--p-surface-600), var(--p-surface-300));
         --p-button-secondary-focus-ring-shadow: none;
         --p-button-info-background: color-mix(in srgb, #0071a4 92%, transparent);
@@ -1222,7 +1222,7 @@
         --p-datatable-row-color: var(--p-content-color);
         --p-datatable-row-hover-color: var(--p-content-hover-color);
         --p-datatable-row-selected-color: var(--p-highlight-color);
-        --p-datatable-row-striped-background: light-dark(rgb(118 118 128 / 0.06), rgb(255 255 255 / 0.04));
+        --p-datatable-row-striped-background: light-dark(color-mix(in srgb, var(--p-surface-500) 6%, transparent), rgb(255 255 255 / 0.04));
         --p-datatable-row-focus-ring-width: var(--p-focus-ring-width);
         --p-datatable-row-focus-ring-style: var(--p-focus-ring-style);
         --p-datatable-row-focus-ring-color: var(--p-focus-ring-color);
@@ -1986,7 +1986,7 @@
     :root, [data-p-scope] {
         --p-listbox-background: var(--p-form-field-background);
         --p-listbox-disabled-background: var(--p-form-field-disabled-background);
-        --p-listbox-border-color: light-dark(#c6c6c8, #48484a);
+        --p-listbox-border-color: light-dark(color-mix(in srgb, var(--p-surface-300), var(--p-surface-400) 30%), var(--p-surface-700));
         --p-listbox-invalid-border-color: var(--p-form-field-invalid-border-color);
         --p-listbox-color: var(--p-form-field-color);
         --p-listbox-disabled-color: var(--p-form-field-disabled-color);
@@ -2018,7 +2018,7 @@
         --p-listbox-checkmark-icon: var(--p-icon-check);
         --p-listbox-checkmark-color: var(--p-list-option-color);
         --p-listbox-checkmark-gutter-start: -0.25rem;
-        --p-listbox-option-striped-background: light-dark(rgb(118 118 128 / 0.06), rgb(255 255 255 / 0.04));
+        --p-listbox-option-striped-background: light-dark(color-mix(in srgb, var(--p-surface-500) 6%, transparent), rgb(255 255 255 / 0.04));
     }
 
     /* log */
@@ -2141,7 +2141,7 @@
 
     /* menubar */
     :root, [data-p-scope] {
-        --p-menubar-background: light-dark(rgb(255 255 255 / 0.7), rgb(44 44 48 / 0.7));
+        --p-menubar-background: light-dark(rgb(255 255 255 / 0.7), color-mix(in srgb, var(--p-surface-800) 70%, transparent));
         --p-menubar-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-menubar-border-radius: var(--p-content-border-radius);
         --p-menubar-color: var(--p-content-color);
@@ -2276,9 +2276,9 @@
         --p-message-secondary-close-button-hover-background: light-dark(var(--p-surface-200), var(--p-surface-700));
         --p-message-secondary-color: light-dark(var(--p-surface-600), var(--p-surface-300));
         --p-message-secondary-outlined-border-color: light-dark(var(--p-surface-500), var(--p-surface-400));
-        --p-message-secondary-outlined-color: light-dark(#6e6e73, #98989d);
+        --p-message-secondary-outlined-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-message-secondary-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-surface-500), transparent 96%);
-        --p-message-secondary-simple-color: light-dark(#6e6e73, #98989d);
+        --p-message-secondary-simple-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-message-simple-content-padding: 0;
         --p-message-success-outlined-border-color: light-dark(var(--p-green-600), var(--p-green-500));
         --p-message-success-outlined-color: light-dark(var(--p-green-700), var(--p-green-400));
@@ -2690,7 +2690,7 @@
 
     /* progressbar */
     :root, [data-p-scope] {
-        --p-progressbar-background: light-dark(rgb(120 120 128 / 0.2), rgb(120 120 128 / 0.36));
+        --p-progressbar-background: light-dark(color-mix(in srgb, var(--p-surface-500) 20%, transparent), color-mix(in srgb, var(--p-surface-500) 36%, transparent));
         --p-progressbar-border-radius: var(--p-content-border-radius);
         --p-progressbar-height: 1.125rem;
         --p-progressbar-value-background: var(--p-primary-color);
@@ -2999,7 +2999,7 @@
     /* slider */
     :root, [data-p-scope] {
         --p-slider-transition-duration: var(--p-transition-duration);
-        --p-slider-track-background: light-dark(rgb(120 120 128 / 0.2), rgb(120 120 128 / 0.36));
+        --p-slider-track-background: light-dark(color-mix(in srgb, var(--p-surface-500) 20%, transparent), color-mix(in srgb, var(--p-surface-500) 36%, transparent));
         --p-slider-track-border-radius: var(--p-content-border-radius);
         --p-slider-track-size: 3px;
         --p-slider-range-background: var(--p-primary-color);
@@ -3007,10 +3007,10 @@
         --p-slider-handle-height: 1.375rem;
         --p-slider-handle-border-radius: 50%;
         --p-slider-handle-background: #ffffff;
-        --p-slider-handle-hover-background: #f2f2f7;
+        --p-slider-handle-hover-background: var(--p-surface-100);
         --p-slider-handle-content-border-radius: 50%;
         --p-slider-handle-content-background: #ffffff;
-        --p-slider-handle-content-hover-background: #f2f2f7;
+        --p-slider-handle-content-hover-background: var(--p-surface-100);
         --p-slider-handle-content-width: var(--p-slider-handle-width);
         --p-slider-handle-content-height: var(--p-slider-handle-height);
         --p-slider-handle-content-shadow: 0 3px 8px rgb(0 0 0 / 0.15), 0 3px 1px rgb(0 0 0 / 0.06), 0 0 0 0.5px rgb(0 0 0 / 0.06);
@@ -3475,13 +3475,13 @@
         --p-togglebutton-gap: 0.5rem;
         --p-togglebutton-font-weight: 500;
         --p-togglebutton-font-size: var(--p-form-field-font-size);
-        --p-togglebutton-background: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
-        --p-togglebutton-checked-background: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
-        --p-togglebutton-hover-background: light-dark(rgb(118 118 128 / 0.2), rgb(118 118 128 / 0.34));
+        --p-togglebutton-background: light-dark(color-mix(in srgb, var(--p-surface-500) 12%, transparent), color-mix(in srgb, var(--p-surface-500) 24%, transparent));
+        --p-togglebutton-checked-background: light-dark(color-mix(in srgb, var(--p-surface-500) 12%, transparent), color-mix(in srgb, var(--p-surface-500) 24%, transparent));
+        --p-togglebutton-hover-background: light-dark(color-mix(in srgb, var(--p-surface-500) 20%, transparent), color-mix(in srgb, var(--p-surface-500) 34%, transparent));
         --p-togglebutton-border-color: transparent;
-        --p-togglebutton-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-togglebutton-hover-color: light-dark(#1d1d1f, #f5f5f7);
-        --p-togglebutton-checked-color: light-dark(#1d1d1f, #f5f5f7);
+        --p-togglebutton-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-togglebutton-hover-color: light-dark(var(--p-surface-900), var(--p-surface-50));
+        --p-togglebutton-checked-color: light-dark(var(--p-surface-900), var(--p-surface-50));
         --p-togglebutton-checked-border-color: transparent;
         --p-togglebutton-disabled-background: var(--p-form-field-disabled-background);
         --p-togglebutton-disabled-border-color: var(--p-form-field-disabled-background);
@@ -3497,13 +3497,13 @@
         --p-togglebutton-sm-padding: 0.25rem;
         --p-togglebutton-lg-font-size: var(--p-form-field-lg-font-size);
         --p-togglebutton-lg-padding: 0.25rem;
-        --p-togglebutton-icon-color: light-dark(#6e6e73, #98989d);
+        --p-togglebutton-icon-color: light-dark(var(--p-surface-500), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 35%));
         --p-togglebutton-icon-hover-color: light-dark(var(--p-surface-700), var(--p-surface-300));
-        --p-togglebutton-icon-checked-color: light-dark(#1d1d1f, #f5f5f7);
+        --p-togglebutton-icon-checked-color: light-dark(var(--p-surface-900), var(--p-surface-50));
         --p-togglebutton-icon-disabled-color: var(--p-form-field-disabled-color);
         --p-togglebutton-content-padding: 0.125rem 0.625rem;
         --p-togglebutton-content-border-radius: 8px;
-        --p-togglebutton-content-checked-background: light-dark(#ffffff, #636366);
+        --p-togglebutton-content-checked-background: light-dark(#ffffff, var(--p-surface-600));
         --p-togglebutton-content-checked-shadow: 0 3px 8px rgb(0 0 0 / 0.12), 0 3px 1px rgb(0 0 0 / 0.04), 0 0 0 0.5px rgb(0 0 0 / 0.04);
         --p-togglebutton-content-sm-padding: 0.125rem 0.625rem;
         --p-togglebutton-content-lg-padding: 0.125rem 0.625rem;
@@ -3522,18 +3522,18 @@
         --p-toggleswitch-focus-ring-offset: var(--p-focus-ring-offset);
         --p-toggleswitch-focus-ring-shadow: var(--p-focus-ring-shadow);
         --p-toggleswitch-border-width: 1px;
-        --p-toggleswitch-border-color: light-dark(#8e8e93, #7c7c80);
-        --p-toggleswitch-hover-border-color: light-dark(#8e8e93, #7c7c80);
+        --p-toggleswitch-border-color: light-dark(color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 50%), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 78%));
+        --p-toggleswitch-hover-border-color: light-dark(color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 50%), color-mix(in srgb, var(--p-surface-400), var(--p-surface-500) 78%));
         --p-toggleswitch-checked-border-color: transparent;
         --p-toggleswitch-checked-hover-border-color: transparent;
         --p-toggleswitch-invalid-border-color: var(--p-form-field-invalid-border-color);
         --p-toggleswitch-transition-duration: var(--p-form-field-transition-duration);
         --p-toggleswitch-slide-duration: 0.2s;
-        --p-toggleswitch-background: light-dark(rgb(120 120 128 / 0.16), rgb(120 120 128 / 0.32));
+        --p-toggleswitch-background: light-dark(color-mix(in srgb, var(--p-surface-500) 16%, transparent), color-mix(in srgb, var(--p-surface-500) 32%, transparent));
         --p-toggleswitch-disabled-background: var(--p-toggleswitch-background);
         --p-toggleswitch-checked-disabled-background: var(--p-toggleswitch-checked-background);
         --p-toggleswitch-disabled-opacity: var(--p-disabled-opacity);
-        --p-toggleswitch-hover-background: light-dark(rgb(120 120 128 / 0.22), rgb(120 120 128 / 0.4));
+        --p-toggleswitch-hover-background: light-dark(color-mix(in srgb, var(--p-surface-500) 22%, transparent), color-mix(in srgb, var(--p-surface-500) 40%, transparent));
         --p-toggleswitch-checked-background: light-dark(#1f8f3e, #30d158);
         --p-toggleswitch-checked-hover-background: light-dark(#1b8038, #3ddc63);
         --p-toggleswitch-handle-border-radius: 50%;
@@ -3545,8 +3545,8 @@
         --p-toggleswitch-handle-hover-background: #ffffff;
         --p-toggleswitch-handle-checked-background: #ffffff;
         --p-toggleswitch-handle-checked-hover-background: #ffffff;
-        --p-toggleswitch-handle-color: #1d1d1f;
-        --p-toggleswitch-handle-hover-color: #1d1d1f;
+        --p-toggleswitch-handle-color: var(--p-surface-900);
+        --p-toggleswitch-handle-hover-color: var(--p-surface-900);
         --p-toggleswitch-handle-checked-color: light-dark(#1f8f3e, #1f8f3e);
         --p-toggleswitch-handle-checked-hover-color: light-dark(#1b8038, #1b8038);
         --p-toggleswitch-handle-icon-size: calc(var(--p-toggleswitch-handle-size) * 0.55);
@@ -3564,7 +3564,7 @@
 
     /* toolbar */
     :root, [data-p-scope] {
-        --p-toolbar-background: light-dark(rgb(255 255 255 / 0.55), rgb(44 44 48 / 0.55));
+        --p-toolbar-background: light-dark(rgb(255 255 255 / 0.55), color-mix(in srgb, var(--p-surface-800) 55%, transparent));
         --p-toolbar-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-toolbar-border-radius: var(--p-content-border-radius);
         --p-toolbar-color: var(--p-content-color);
