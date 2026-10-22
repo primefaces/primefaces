@@ -220,10 +220,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             // write script includes
             for (Entry<String, List<Map<String, String>>> entry : state.getIncludes().entrySet()) {
 
+                String type = TRACKING_SUFFIX_PATTERN.matcher(entry.getKey()).replaceAll(Constants.EMPTY_STRING);
                 List<Map<String, String>> includes = entry.getValue();
                 for (int i = 0; i < includes.size(); i++) {
                     Map<String, String> attributes = includes.get(i);
-                    attributes.put(TYPE_ATTRIBUTE, entry.getKey());
+                    attributes.put(TYPE_ATTRIBUTE, type);
                     getWrapped().startElement(SCRIPT_TAG, null);
                     for (Entry<String, String> attribute : attributes.entrySet()) {
                         String attributeName = attribute.getKey();
