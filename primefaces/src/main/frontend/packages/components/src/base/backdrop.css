@@ -4,7 +4,8 @@
  *
  * Only elements that float or form a bar get a backdrop filter: overlays (dialogs, popovers, dropdown panels, menus,
  * tooltips, growl), the toolbar and buttons. Nested overlays (submenus inside a menu) only blur what lies inside their
- * parent overlay (backdrop root), so the overlay backgrounds stay mostly opaque.
+ * parent overlay (backdrop root), so the overlay backgrounds stay mostly opaque. CascadeSelect: the root panel is only
+ * the anchor (no height, its first list is absolutely positioned), so the first list gets the filter.
  * Content containers (panel, card, table) stay without one: a backdrop filter makes the element the containing block
  * of its absolutely / fixed positioned descendants (overlays appended inside it would be positioned wrong), and
  * translucency belongs to the controls layer above the content (Apple HIG).
@@ -12,7 +13,7 @@
  */
 :where(.ui-sidebar, .ui-overlaypanel, .ui-confirm-popup, .ui-input-overlay, .ui-selectonemenu-panel,
     .ui-selectcheckboxmenu-panel, .ui-autocomplete-panel,
-    .ui-cascadeselect-panel:not(.ui-cascadeselect-panel .ui-cascadeselect-panel),
+    .ui-cascadeselect-items-wrapper > .ui-cascadeselect-items,
     .ui-menu-dynamic, .ui-menu-child, .ui-contextmenu, .ui-tooltip-text, .ui-growl-item-container, .ui-password-panel,
     .ui-columntoggler) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
