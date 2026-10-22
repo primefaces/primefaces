@@ -31,6 +31,8 @@ import jakarta.faces.context.ResponseWriter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -209,6 +211,25 @@ class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter).writeAttribute("src", "include", null);
         verify(wrappedWriter).writeAttribute("async", "true", null);
         verify(wrappedWriter).writeAttribute("defer", "true", null);
+        verify(wrappedWriter).endElement("script");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"application/javascript", "module"})
+    void preservesExternalScriptTypes(String type) throws IOException {
+        writer.startElement("body", null);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", type, null);
+        writer.writeURIAttribute("src", "script.js", null);
+        writer.endElement("script");
+
+        verify(wrappedWriter, never()).startElement("script", null);
+        writer.endElement("body");
+
+        verify(wrappedWriter).startElement("script", null);
+        verify(wrappedWriter).writeAttribute("type", type, null);
+        verify(wrappedWriter).writeAttribute("src", "script.js", null);
         verify(wrappedWriter).endElement("script");
     }
 
