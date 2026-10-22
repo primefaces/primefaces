@@ -89,10 +89,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
         this.isRTL = this.jq.hasClass('ui-menu-rtl');
 
-        this.selectedRoot = this.cfg.activeIndex !== undefined && this.cfg.activeIndex >= 0
-            ? this.rootLinks.eq(this.cfg.activeIndex).parent()
-            : $();
-        this.selectedRoot.addClass('ui-menuitem-active');
+        this.selectedRoot = this.rootList.children('li.ui-menuitem-selected');
 
         this.bindEvents();
         this.bindKeyEvents();
@@ -202,11 +199,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     private bindKeyEvents(): void {
         const $this = this;
 
-        // make first focusable
-        const firstLink = this.rootLinks.filter(':not([disabled])').first();
-        firstLink.attr("tabindex", "0");
         this.resetFocus(true);
-        firstLink.removeClass('ui-state-hover ui-state-active');
 
         this.jq.on("blur.menu focusout.menu", (e) => {
             const fe = e as JQuery.FocusEventBase;
@@ -410,11 +403,24 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         this.jq.find('li.ui-menuitem-highlight').each(function() {
             $this.deactivate($(this), true);
         });
-        this.resetFocus(!this.lastFocusedItem);
-        if (this.lastFocusedItem) {
+        this.resetFocus(this.selectedRoot.length > 0 || !this.lastFocusedItem);
+        if (!this.selectedRoot.length && this.lastFocusedItem) {
             this.lastFocusedItem.children('a.ui-menuitem-link').attr('tabindex', this.tabIndex);
         }
         this.rootLinks.removeClass('ui-state-hover');
+    }
+
+    /**
+     * Restores the roving tab stop to the current section, or the first enabled root.
+     */
+    override resetFocus(resetFirst: boolean): void {
+        super.resetFocus(resetFirst);
+        if (resetFirst) {
+            const selectedLink = this.selectedRoot.children('a.ui-menuitem-link:not(.ui-state-disabled)');
+            const defaultLink = selectedLink.length ? selectedLink : this.rootLinks.first();
+            this.rootLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', '-1');
+            defaultLink.attr('tabindex', this.tabIndex || '0');
+        }
     }
 
     /**
@@ -425,8 +431,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     deactivate(menuitem: JQuery, animate?: boolean): void {
         const $this = this;
         this.activeitem = null;
-        menuitem.removeClass('ui-menuitem-highlight');
-        menuitem.not(this.selectedRoot).removeClass('ui-menuitem-active');
+        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
         const $link = menuitem.children('a.ui-menuitem-link');
         this.unfocus($link);
 

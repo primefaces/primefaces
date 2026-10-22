@@ -6,6 +6,12 @@
  * Submenu overlay: .ui-menu-child > table > tbody > tr > td (column) > ul.ui-menu-list > li.ui-widget-header > span.
  */
 .ui-megamenu {
+    > .ui-menu-list > .ui-menuitem-selected > .ui-menuitem-link {
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
+        text-decoration-thickness: 0.125em;
+    }
+
     td {
         vertical-align: top;
     }

@@ -89,9 +89,10 @@ current section. Rendered disabled links and separators do not count towards thi
 index. By default, no root item is highlighted; negative or out-of-range values
 also leave no item selected.
 
-The selected root retains `ui-menuitem-active` when another item is hovered,
+The selected root is rendered with `ui-menuitem-selected` and its link has
+`aria-current="page"`. Its underline persists when another item is hovered,
 focused, or opened, and when the menu is dismissed. Hover styling and open
-submenus remain temporary. To change the current section, update `activeIndex`
+submenus remain temporary. Keyboard focus defaults to the selected root. To change the current section, update `activeIndex`
 and refresh the menu with AJAX.
 
 ## Skinning
