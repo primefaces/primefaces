@@ -43,7 +43,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
              */
             severityContainer = $(
                  '<div class="ui-messages-' + msg.severity + '">' +
-                    (this.cfg.closable ? '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="' + closeLabel + '">' +
+                    (this.cfg.closable ? '<a href="#" class="ui-messages-close" role="button" aria-label="' + closeLabel + '">' +
                         '<span class="ui-icon ui-icon-close"></span>' +
                     '</a>' : '') +
                     '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
@@ -51,6 +51,12 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
 
                     '</ul>' +
                 '</div>').appendTo(this.jq);
+
+            // bind via JS instead of an inline onclick, which a Content Security Policy would block
+            severityContainer.children('.ui-messages-close').on('click', function(e) {
+                e.preventDefault();
+                $(this).parent().slideUp();
+            });
         }
 
         severityContainer.find('ul').append(
