@@ -40,6 +40,10 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         if (this.cfg.active) {
             this.show();
         }
+
+        this.addDestroyListener(() => {
+            $(window).off('.spotlight' + this.id);
+        });
     }
 
     /**
@@ -124,7 +128,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         });
 
         const namespace = '.spotlight' + this.id;
-        $(window).on('resize' + namespace + ' scroll' + namespace, () => {
+        $(window).off(namespace).on('resize' + namespace + ' scroll' + namespace, () => {
             this.calculatePositions();
         });
     }

@@ -104,7 +104,7 @@ PrimeFaces.widget.Slider = class Slider extends PrimeFaces.widget.BaseWidget {
             });
         }
         else {
-            this.input.on('keydown.slider', function(e) {
+            this.input.off('keydown.slider keyup.slider').on('keydown.slider', function(e) {
                 if (PrimeFaces.utils.ignoreFilterKey(e)) {
                     return;
                 }

@@ -81,18 +81,20 @@ declare namespace JQueryKeyfilter {
          * Enables the key filter on the current input filter. Only text that matches the given regular expression is
          * allowed in the input field.
          * @param regExp Regular expression the value of the input field needs to match.
+         * @param namespace Optional additional event namespace for the keypress handler, e.g. `.myId`.
          * @return this jQuery instance for chaining.
          */
-        (regExp: RegExp): JQuery<TElement>;
+        (regExp: RegExp, namespace?: string): JQuery<TElement>;
 
         /**
          * Enables the key filter on the current input filter. An entered character needs to match the given test
          * function to be allowed. If it does not match, the character is blocked and the entered character is
          * discarded.
          * @param testFunction A function that tests whether an entered character is allowed.
+         * @param namespace Optional additional event namespace for the keypress handler, e.g. `.myId`.
          * @return this jQuery instance for chaining.
          */
-        (testFunction: JQueryKeyfilter.TestFunction): JQuery<TElement>;
+        (testFunction: JQueryKeyfilter.TestFunction, namespace?: string): JQuery<TElement>;
 
         /**
          * Default, global configuration for the key filter.

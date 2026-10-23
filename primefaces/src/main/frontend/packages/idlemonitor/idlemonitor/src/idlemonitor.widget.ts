@@ -100,15 +100,25 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
         }
     }
 
+    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+        this._cleanup();
+        super.refresh(cfg);
+    }
+
     override destroy(): void {
-        if (this.cfg.multiWindowSupport) {
-            clearInterval(this.timer);
-        }
+        this._cleanup();
+
+        super.destroy();
+    }
+
+    /**
+     * Clean up this widget and remove the timers and events from the DOM.
+     */
+    private _cleanup(): void {
+        clearInterval(this.timer);
         $(document).off("idle.idleTimer" + this.getId());
         $(document).off("active.idleTimer" + this.getId());
         $.idleTimer('destroy', document, this.getId());
-
-        super.destroy();
     }
 
     /**

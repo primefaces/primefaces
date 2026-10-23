@@ -75,22 +75,23 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
      * @private
      */
     bindEvents() {
-        var $this = this;
-    
-        this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter', function() {
+        var $this = this,
+        namespace = '.selectManyCheckbox';
+
+        this.outputs.filter(':not(.ui-state-disabled)').off(namespace).on('mouseenter' + namespace, function() {
             $(this).addClass('ui-state-hover');
         })
-        .on('mouseleave', function() {
+        .on('mouseleave' + namespace, function() {
             $(this).removeClass('ui-state-hover');
         })
-        .on('click', function(e) {
+        .on('click' + namespace, function(e) {
             var checkbox = $(this),
             input = checkbox.prev().children(':checkbox');
 
             $this.toggle(input, checkbox, e);
         });
 
-        this.labels.filter(':not(.ui-state-disabled)').on('click', function(e) {
+        this.labels.filter(':not(.ui-state-disabled)').off(namespace).on('click' + namespace, function(e) {
             var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
             checkbox = null;
 
@@ -106,19 +107,19 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
         });
 
         //delegate focus-blur states
-        this.enabledInputs.on('focus', function() {
+        this.enabledInputs.off(namespace).on('focus' + namespace, function() {
             var input = $(this),
             checkbox = input.parent().next();
 
             checkbox.addClass('ui-state-focus');
         })
-        .on('blur', function() {
+        .on('blur' + namespace, function() {
             var input = $(this),
             checkbox = input.parent().next();
 
             checkbox.removeClass('ui-state-focus');
         })
-        .on('keydown', function(e) {
+        .on('keydown' + namespace, function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {
                 var input = $(this),
                 checkbox = input.parent().next();

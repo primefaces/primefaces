@@ -5,6 +5,7 @@
  * automatically after each AJAX request.
  * 
  * @prop {boolean} initialized Whether this widget was initialized.
+ * @prop {boolean} [facesListenerAdded] Whether the Faces AJAX event listener was registered already.
  * @prop {boolean} updating Whether the lifecycle display is currently being updated.
  * 
  * @interface {PrimeFaces.widget.LifecycleCfg} cfg The configuration for the {@link  Lifecycle| Lifecycle widget}.
@@ -30,7 +31,7 @@ PrimeFaces.widget.Lifecycle = class Lifecycle extends PrimeFaces.widget.BaseWidg
         }
 
         var $this = this;
-        $(document).on('pfAjaxSuccess.'+this.id, function() {
+        $(document).off('pfAjaxSuccess.'+this.id).on('pfAjaxSuccess.'+this.id, function() {
             if (!$this.updating) {
                 PrimeFaces.queueTask(function() {
                     if (!$this.updating) {
@@ -43,7 +44,9 @@ PrimeFaces.widget.Lifecycle = class Lifecycle extends PrimeFaces.widget.BaseWidg
             $(document).off('pfAjaxSuccess.'+this.id);
         });
 
-        if (window.faces && window.faces.ajax) {
+        // faces listeners can't be removed, so register it only once for this widget instance which survives refreshes
+        if (window.faces && window.faces.ajax && !this.facesListenerAdded) {
+            this.facesListenerAdded = true;
             faces.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if (!$this.updating) {

@@ -284,7 +284,7 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
         var $this = this,
             inputs = this.itemContainer.find('> li:not(.ui-columntoggler-all) > div.ui-chkbox > div.ui-chkbox-box');
 
-        this.trigger.on('focus.columnToggler', function() {
+        this.trigger.off('focus.columnToggler blur.columnToggler keydown.columnToggler').on('focus.columnToggler', function() {
             $(this).addClass('ui-state-focus');
         }).on('blur.columnToggler', function() {
             $(this).removeClass('ui-state-focus');

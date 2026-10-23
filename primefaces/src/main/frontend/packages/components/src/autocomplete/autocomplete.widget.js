@@ -198,6 +198,11 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
             this.cfg.itemtipMyPosition = this.cfg.itemtipMyPosition || 'left top';
             this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition || 'right bottom';
             this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
+            var removeItemtip = function() {
+                this.itemtip.remove();
+            };
+            this.addRefreshListener(removeItemtip);
+            this.addDestroyListener(removeItemtip);
         }
 
         //aria
@@ -251,6 +256,11 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
         this.cacheTimeout = setInterval(function() {
             $this.clearCache();
         }, this.cfg.cacheTimeout);
+        var stopCacheTimeout = function() {
+            clearInterval(this.cacheTimeout);
+        };
+        this.addRefreshListener(stopCacheTimeout);
+        this.addDestroyListener(stopCacheTimeout);
     }
 
     /**

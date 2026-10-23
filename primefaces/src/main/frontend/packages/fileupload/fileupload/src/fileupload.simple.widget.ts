@@ -215,20 +215,26 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
      */
     private bindDropZone(): void {
         if (this.dropZone) {
-            this.dropZone.on("dragenter dragover dragleave drop", (event) => {
+            // the dropZone is usually not part of this widget, so it can survive an update of this widget
+            const namespace = '.fileuploadDropZone' + this.getId();
+            const dropZone = this.dropZone;
+            this.addRefreshListener(() => dropZone.off(namespace));
+            this.addDestroyListener(() => dropZone.off(namespace));
+
+            this.dropZone.on("dragenter" + namespace + " dragover" + namespace + " dragleave" + namespace + " drop" + namespace, (event) => {
                 event.preventDefault();
                 event.stopPropagation();
             });
 
-            this.dropZone.on("dragenter dragover", () => {
+            this.dropZone.on("dragenter" + namespace + " dragover" + namespace, () => {
                 this.dropZone.addClass('ui-state-drag');
             });
-            this.dropZone.on("dragleave drop", () => {
+            this.dropZone.on("dragleave" + namespace + " drop" + namespace, () => {
                 this.dropZone.removeClass('ui-state-drag');
             });
 
-            this.dropZone.on("drop", (event) => {
-                const dataTransfer = event.originalEvent?.dataTransfer;
+            this.dropZone.on("drop" + namespace, (event) => {
+                const dataTransfer = (event.originalEvent as DragEvent | undefined)?.dataTransfer;
                 if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
                     const input = this.input[0];
                     if (input instanceof HTMLInputElement) {

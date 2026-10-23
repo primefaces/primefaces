@@ -166,7 +166,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 if (eltLabeledBy) {
                     var $this = this;
                     this.labeledBy = $(eltLabeledBy);
-                    this.labeledBy.on('click', function (e) {
+                    this.labeledBy.off('click.selectonemenu').on('click.selectonemenu', function (e) {
                         $this.keyboardTarget.focus();
                     });
                 }

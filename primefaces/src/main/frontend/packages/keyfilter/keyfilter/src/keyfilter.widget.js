@@ -49,12 +49,20 @@ PrimeFaces.widget.KeyFilter = class KeyFilter extends PrimeFaces.widget.BaseWidg
      * @private
      */
     applyKeyFilter(input, cfg) {
+        // the input is not replaced when only the keyFilter itself is updated, so remove the handlers of the
+        // previous init - only the own ones, as other keyFilters could be applied to the same input
+        var namespace = '.keyFilter' + this.id;
+        input.off(namespace);
+        this.addDestroyListener(function() {
+            input.off(namespace);
+        });
+
         if (this.cfg.regEx) {
-            input.keyfilter(this.cfg.regEx);
+            input.keyfilter(this.cfg.regEx, namespace);
         } else if(this.cfg.inputRegEx) {
             var inputRegEx = this.cfg.inputRegEx;
             var previousInputValue = '';
-            input.on('input', function(e) {
+            input.on('input' + namespace, function(e) {
                     var ok = inputRegEx.test(this.value);
                     if(ok) {
                             previousInputValue = this.value;
@@ -64,19 +72,19 @@ PrimeFaces.widget.KeyFilter = class KeyFilter extends PrimeFaces.widget.BaseWidg
                     }
             });
         } else if (this.cfg.testFunction) {
-            input.keyfilter(this.cfg.testFunction);
+            input.keyfilter(this.cfg.testFunction, namespace);
         } else if (this.cfg.mask) {
-            input.keyfilter($.fn.keyfilter.defaults.masks[this.cfg.mask]);
+            input.keyfilter($.fn.keyfilter.defaults.masks[this.cfg.mask], namespace);
         }
-        
+
         //disable drop
-        input.on('drop', function(e) {
+        input.on('drop' + namespace, function(e) {
             e.preventDefault();
         });
 
         if (cfg.preventPaste) {
             //disable paste
-            input.on('paste', function(e) {
+            input.on('paste' + namespace, function(e) {
                 e.preventDefault();
             });
         }

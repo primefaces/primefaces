@@ -29,6 +29,39 @@ PrimeFaces.widget.ImageSwitch = class ImageSwitch extends PrimeFaces.widget.Base
     }
 
     /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        this.stopCycleTimer();
+        super.refresh(cfg);
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy() {
+        super.destroy();
+        this.stopCycleTimer();
+    }
+
+    /**
+     * Stops the timer chain of the cycle plugin on the (possibly already detached) element. The plugin data is already
+     * gone when the element was removed by an update, so `cycle('stop')` can't be used here.
+     * @private
+     */
+    stopCycleTimer() {
+        var cont = this.jq.get(0);
+        if (cont) {
+            cont.cycleStop = (cont.cycleStop || 0) + 1; // pending callbacks look for this change
+            clearTimeout(cont.cycleTimeout);
+            cont.cycleTimeout = 0;
+        }
+    }
+
+    /**
      * Starts slideshow mode.
      */
     resumeSlideshow() {

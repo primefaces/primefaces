@@ -51,7 +51,9 @@ PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
             this.runner.call();
         } 
         else {
-            this.source.on(this.cfg.event, this.runner);
+            var namespace = '.effect' + this.id;
+            var events = this.cfg.event.split(' ').map(function(e) { return e + namespace; }).join(' ');
+            this.source.off(namespace).on(events, this.runner);
         }
     }
     

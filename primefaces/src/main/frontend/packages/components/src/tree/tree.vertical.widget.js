@@ -322,7 +322,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
 
         /* For copy/paste operation on drag and drop */
         var namespace = '.tree' + this.id;
-        $(document.body).on('keydown' + namespace, function(e) {
+        $(document.body).off(namespace).on('keydown' + namespace, function(e) {
             $this.shiftKey = e.shiftKey;
         }).on('keyup' + namespace, function() {
             $this.shiftKey = false;

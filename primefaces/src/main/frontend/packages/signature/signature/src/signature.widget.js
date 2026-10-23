@@ -135,7 +135,13 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
 
         // focus from label
         if (this.cfg.ariaLabelledBy) {
-            $(PrimeFaces.escapeClientId(this.cfg.ariaLabelledBy)).on('click', () => $this.canvas.trigger('focus'));
+            // the label is not part of this widget, so it can survive an update of this widget
+            var label = $(PrimeFaces.escapeClientId(this.cfg.ariaLabelledBy));
+            var labelClickEvent = 'click.signature.' + this.id;
+            label.off(labelClickEvent).on(labelClickEvent, () => $this.canvas.trigger('focus'));
+            this.addDestroyListener(function() {
+                label.off(labelClickEvent);
+            });
         }
 
         // events

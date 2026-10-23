@@ -91,6 +91,11 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
      */
     device: string = "";
 
+    /**
+     * The error hook registered with the Webcam library by this widget.
+     */
+    private errorHook: ((error: Error) => void) | null = null;
+
     override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.width = this.cfg.width||320;
@@ -107,6 +112,13 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
         if (this.cfg.autoStart) {
             this.attach();
         }
+    }
+
+    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+        // release the camera of the old element, so that it can be attached to the new one
+        this.detach();
+
+        super.refresh(cfg);
     }
 
     override destroy(): void {
@@ -134,7 +146,12 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
             });
 
             const errorCallback = this.cfg.onCameraError ?? defaultErrorCallback;
-            Webcam.on("error", error => errorCallback.call(this, error));
+            // remove only the own hook of a previous attach, Webcam is a singleton
+            if (this.errorHook) {
+                Webcam.off("error", this.errorHook);
+            }
+            this.errorHook = (error: Error) => errorCallback.call(this, error);
+            Webcam.on("error", this.errorHook);
 
             Webcam.attach(this.getId());
             this.attached = true;

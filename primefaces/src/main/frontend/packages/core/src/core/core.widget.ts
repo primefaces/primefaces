@@ -343,7 +343,10 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
         // it is imperative to unbind their event listeners to avoid memory leaks in the DOM.
         for (var key in this) {
             var jq = this[key];
-            if (jq instanceof jQuery) {
+            // never strip the global targets which are shared with all other widgets, e.g. $(window) or $(document)
+            var element = jq instanceof jQuery ? (jq as unknown as JQuery<any>).get(0) : undefined;
+            if (jq instanceof jQuery && element !== window && element !== document
+                    && element !== document.documentElement && element !== document.body) {
                 // remove events on all descendants
                 (jq as unknown as JQuery).children().off();
                 // remove events from element

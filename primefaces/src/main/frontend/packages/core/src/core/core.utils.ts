@@ -337,9 +337,12 @@ export class Utils {
         hideCallback: PrimeType.OverlayHideCallback
     ): PrimeType.Unbindable {
 
-        widget.addDestroyListener(() => {
+        const unbindHideHandler = () => {
             $(document).off(hideNamespace);
-        });
+        };
+
+        widget.addDestroyListener(unbindHideHandler);
+        widget.addRefreshListener(unbindHideHandler);
 
         $(document).off(hideNamespace).on(hideNamespace, (e) => {
             if (overlay.is(':hidden') || overlay.css('visibility') === 'hidden') {
@@ -365,9 +368,7 @@ export class Utils {
         });
 
         return {
-            unbind: () => {
-                $(document).off(hideNamespace);
-            }
+            unbind: unbindHideHandler
         };
     }
 
@@ -592,22 +593,21 @@ export class Utils {
             scrollCallback(e);
         };
 
+        const unbindScrollHandler = () => {
+            for (const scrollParent of scrollableParents) {
+                $(scrollParent).off(scrollNamespace, scrollHandler);
+            }
+        };
+
+        widget.addDestroyListener(unbindScrollHandler);
+        widget.addRefreshListener(unbindScrollHandler);
+
         for (const scrollParent of scrollableParents) {
-            var $scrollParent = $(scrollParent);
-
-            widget.addDestroyListener(() => {
-                $scrollParent.off(scrollNamespace, scrollHandler);
-            });
-
-            $scrollParent.off(scrollNamespace, scrollHandler).on(scrollNamespace, scrollHandler);
+            $(scrollParent).off(scrollNamespace, scrollHandler).on(scrollNamespace, scrollHandler);
         }
 
         return {
-            unbind: () => {
-                for (const scrollParent of scrollableParents) {
-                    $(scrollParent).off(scrollNamespace, scrollHandler);
-                }
-            }
+            unbind: unbindScrollHandler
         };
     }
 

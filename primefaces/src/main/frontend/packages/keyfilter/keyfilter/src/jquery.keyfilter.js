@@ -36,8 +36,8 @@
         alphanum: /[a-z0-9_]/i
     };
 
-    $.fn.keyfilter = function(re) {
-        return this.on('keypress.keyfilter', function(e) {
+    $.fn.keyfilter = function(re, namespace) {
+        return this.on('keypress.keyfilter' + (namespace || ''), function(e) {
             // PF GitHub #1852 / #3785 keyCode.CONTROL and keyCode.ALT
             var key = e.key;
             if (key === 'Control' || key === 'Alt' || key === 'Meta' || e.ctrlKey || e.altKey || e.metaKey)

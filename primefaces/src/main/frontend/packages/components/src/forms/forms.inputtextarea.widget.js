@@ -302,9 +302,12 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
                 $this.hide();
             }
         });
-        this.addDestroyListener(function() {
+        var cleanup = function() {
              $(document.body).off('mousedown.ui-inputtextarea'+this.id);
-        });
+             this.panel.remove();
+        };
+        this.addRefreshListener(cleanup);
+        this.addDestroyListener(cleanup);
 
         //Hide overlay on resize
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {

@@ -131,6 +131,13 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
             this.panel.appendTo('body');
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
+
+        // the panel is created on init (if enabled), so remove it on refresh too
+        var removePanel = function() {
+            this.panel.remove();
+        };
+        this.addRefreshListener(removePanel);
+        this.addDestroyListener(removePanel);
     }
 
     /**

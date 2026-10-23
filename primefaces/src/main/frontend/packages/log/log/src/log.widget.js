@@ -64,6 +64,18 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
     }
 
     /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        // remove the old element, which was moved to body - an update of the log itself replaces it in place
+        // inside body, so it must not be removed by its id
+        this.jq.remove();
+        super.refresh(cfg);
+    }
+
+    /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */

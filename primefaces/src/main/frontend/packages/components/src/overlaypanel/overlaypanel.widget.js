@@ -149,9 +149,11 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
 
         //show and hide events for target
         if (this.cfg.showEvent === this.cfg.hideEvent) {
-            var event = this.cfg.showEvent;
+            // own namespace, as other overlay panels could use the same target
+            var namespace = '.ui-overlaypanel.' + this.id;
+            var event = this.cfg.showEvent.split(' ').map(function(e) { return e + namespace; }).join(' ');
 
-            this.target.on(event, function(e) {
+            this.target.off(event).on(event, function(e) {
                 $this.toggle();
             });
         }

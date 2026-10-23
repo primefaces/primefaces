@@ -60,6 +60,7 @@ export interface AjaxStatusCfg extends BaseWidgetCfg {
 export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseWidget<Cfg> {
     private hasSuccessOrErrorFacet: boolean = false;
     private timeout: number | null | undefined = null;
+    private facesListenersAdded: boolean = false;
 
     override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
@@ -91,7 +92,7 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
     private bind(): void {
         var namespace = '.status' + this.id;
         // Handle start of AJAX request
-        $(document).on('pfAjaxStart' + namespace, (...args) => {
+        $(document).off(namespace).on('pfAjaxStart' + namespace, (...args) => {
             // Queue task to trigger start event after configured delay
             this.timeout = core.queueTask(() => {
                 this.trigger('start', args);
@@ -119,7 +120,9 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
         // also bind to Faces (f:ajax) events
         // NOTE: PrimeFaces fires "complete" as the final event, while Faces ends with either "success" or "error", 
         // requiring us to manually trigger a "complete" event in those cases
-        if (window.faces && faces.ajax) {
+        // faces listeners can't be removed, so register them only once for this widget instance which survives refreshes
+        if (window.faces && faces.ajax && !this.facesListenersAdded) {
+            this.facesListenersAdded = true;
             faces.ajax.addOnEvent((...args) => {
                 const data = args[0];
                 if(data.status === 'begin') {

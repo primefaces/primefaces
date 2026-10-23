@@ -2,6 +2,8 @@ import Coloris from "@melloware/coloris";
 
 // Ensure Coloris is only initialized once
 let colorisInitialized = false;
+// Coloris binds its (not removable) document listeners for the popup fields on every call with `el`
+let colorisFieldsBound = false;
 
 /**
  * __PrimeFaces Color Picker Widget__
@@ -103,15 +105,23 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
         this.cfg.inline = !this.popup;
         this.cfg.themeMode = this.cfg.themeMode || PrimeFaces.env.getThemeContrast(this.jq[0]);
         var settings = this.cfg;
+        var wrapFields = false;
         if (this.popup) {
             colorisInitialized = true;
             settings = {
-                el: '.ui-colorpicker',
                 inline: this.cfg.inline,
                 a11y: this.cfg.a11y,
                 clearLabel: this.cfg.clearLabel,
                 closeLabel: this.cfg.closeLabel
             };
+            if (colorisFieldsBound) {
+                // the delegated document listeners already handle new fields, they only need to be wrapped
+                wrapFields = true;
+            }
+            else {
+                colorisFieldsBound = true;
+                settings.el = '.ui-colorpicker';
+            }
         }
         else {
             colorisInitialized = false;
@@ -122,6 +132,9 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
         $(document).ready(function() {
             Coloris.init();
             Coloris(settings);
+            if (wrapFields) {
+                Coloris.wrap('.ui-colorpicker');
+            }
             if ($this.cfg.inline) {
                 Coloris.updatePosition();
             }
@@ -213,8 +226,8 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
     bindInlineCallbacks() {
         var $this = this;
         if ($this.hasBehavior('change')) {
-            var pickNS = 'coloris:pick';
-            $(document).on(pickNS, function(e) {
+            var pickNS = 'coloris:pick.' + this.id;
+            $(document).off(pickNS).on(pickNS, function(e) {
                 var ext = {
                     params: [
                         { name: $this.id + '_color', value: e.detail.color }

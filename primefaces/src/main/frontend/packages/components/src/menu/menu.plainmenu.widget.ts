@@ -109,7 +109,8 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
             });
 
             // Handle keyboard navigation for overlay
-            this.trigger.on('keydown.ui-menu', (e) => {
+            const keydownEvent = 'keydown.ui-menu.' + this.id;
+            this.trigger.off(keydownEvent).on(keydownEvent, (e) => {
                 switch (e.key) {
                     case 'ArrowDown':
                         if (!this.jq.is(':visible')) {

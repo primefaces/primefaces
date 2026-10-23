@@ -1103,7 +1103,7 @@ export class Core {
         const $this = this;
         widget.ajaxCount = 0;
         const namespace = '.' + widget.id;
-        $(document).on('pfAjaxSend' + namespace, function(_, __, settings) {
+        $(document).off('pfAjaxSend' + namespace + ' pfAjaxComplete' + namespace).on('pfAjaxSend' + namespace, function(_, __, settings) {
             if (isXhrSource.call(this, widget, settings)) {
                 widget.ajaxCount++;
                 if (widget.ajaxCount > 1) {

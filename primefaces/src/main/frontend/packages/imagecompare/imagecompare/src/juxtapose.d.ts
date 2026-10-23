@@ -152,6 +152,10 @@ declare namespace juxtapose {
          */
         constructor(elementSelector: string, leftAndRightImage: [ImageSpecification, ImageSpecification], options: Partial<JXSliderConfiguration>);
         /**
+         * Releases the global window listener of this slider and removes it from the list of sliders.
+         */
+        destroy(): void;
+        /**
          * Display the given label text for the left or right image. Adds to the exiting label(s).
          * @param image The image for which to display the label. Should be either the `leftImage` or `rightImage`
          * property of this image slider instance.

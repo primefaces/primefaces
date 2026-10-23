@@ -93,6 +93,31 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
     }
 
     /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        if (this.calendar) {
+            this.calendar.destroy();
+        }
+
+        super.refresh(cfg);
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy() {
+        super.destroy();
+
+        if (this.calendar) {
+            this.calendar.destroy();
+        }
+    }
+
+    /**
      * @include
      * @override
      * @protected
@@ -308,7 +333,8 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
      */
     setupTitlebarHandlers() {
         var $this = this;
-        $('.fc-prev-button, .fc-next-button, .fc-today-button').on('click.' + this.id, function() {
+        // only the own buttons, the ones of other schedules on the page are not replaced by an update of this one
+        this.jq.find('.fc-prev-button, .fc-next-button, .fc-today-button').off('click.' + this.id).on('click.' + this.id, function() {
             $this.callBehavior('viewChange');
         });
     }

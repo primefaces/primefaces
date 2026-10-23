@@ -316,6 +316,10 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
                 $this.enableNextNav();
             }
         });
+        var unbindTriggers = function() {
+            $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+        };
+        this.addRefreshListener(unbindTriggers);
         this.addDestroyListener(function() {
             $(document).off('.' + this.id);
         });

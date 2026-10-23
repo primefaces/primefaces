@@ -88,7 +88,14 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh(cfg) {
-        this._cleanup();
+        if (this.cfg.target) {
+            // remove the old element, which was moved to body - an update of the tooltip itself replaces it in
+            // place inside body, so it must not be removed by its id
+            this.jq.remove();
+        }
+        else {
+            this._cleanup();
+        }
         super.refresh(cfg);
     }
 
@@ -112,8 +119,22 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                 targetTooltip.remove();
         }
         else {
-            $(document.body).children('.ui-tooltip-global').remove();
+            // only the own element, other global tooltips have their own one
+            this.jq.remove();
         }
+    }
+
+    /**
+     * Appends the given namespace to every event of the given space separated list of events.
+     * @private
+     * @param {string} events Space separated list of events.
+     * @param {string} namespace The namespace to append, e.g. `.myId`.
+     * @return {string} The namespaced events.
+     */
+    namespaceEvents(events, namespace) {
+        return events.split(' ').map(function(event) {
+            return event + namespace;
+        }).join(' ');
     }
 
     /**
@@ -131,8 +152,10 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         var $this = this;
 
         var namespace = '.' + this.id;
-        $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, this.cfg.globalSelector)
-            .on(this.cfg.showEvent + namespace, this.cfg.globalSelector, function(e) {
+        var showEvents = this.namespaceEvents(this.cfg.showEvent, namespace);
+        var hideEvents = this.namespaceEvents(this.cfg.hideEvent, namespace);
+        $(document).off(showEvents + ' ' + hideEvents, this.cfg.globalSelector)
+            .on(showEvents, this.cfg.globalSelector, function(e) {
                 $this._hide();
                 var element = $(this);
                 if (element.prop('disabled')) {
@@ -173,7 +196,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                     }, $this.cfg.showDelay);
                 }
             })
-            .on(this.cfg.hideEvent + namespace, this.cfg.globalSelector, function() {
+            .on(hideEvents, this.cfg.globalSelector, function() {
                 $this.hide();
             });
         this.addDestroyListener(function() {
@@ -199,7 +222,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         var describedBy = this.target.attr("aria-describedby");
         if (!describedBy || 0 === describedBy.length) {
             describedBy = this.id;
-        } else {
+        } else if (!describedBy.split(' ').includes(this.id)) {
             describedBy += " " + this.id;
         }
         this.target.attr("aria-describedby", describedBy);
@@ -211,8 +234,8 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
             var targetSelector = (matchResult && matchResult.length > 1) ? matchResult[1] : "*[id='" + this.target.attr('id') + "']";
 
             var namespace = '.' + this.id;
-            $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, targetSelector)
-                .on(this.cfg.showEvent + namespace, targetSelector, function(e) {
+            $(document).off(namespace)
+                .on(this.namespaceEvents(this.cfg.showEvent, namespace), targetSelector, function(e) {
                     if ($this.cfg.trackMouse) {
                         $this.mouseEvent = e;
                     }
@@ -222,7 +245,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                         $this.show();
                     }
                 })
-                .on(this.cfg.hideEvent + namespace, function() {
+                .on(this.namespaceEvents(this.cfg.hideEvent, namespace), function() {
                     $this.hide();
                 });
             this.addDestroyListener(function() {

@@ -403,6 +403,11 @@ $.widget("prime.galleriaThumbnail", {
         if (this.options.responsiveOptions) {
             this.unbindDocumentListeners();
         }
+
+        if (this.thumbnailsStyle) {
+            this.thumbnailsStyle.remove();
+            this.thumbnailsStyle = null;
+        }
     },
 
     _bindEvents: function() {

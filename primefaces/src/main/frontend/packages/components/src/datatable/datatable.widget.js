@@ -258,7 +258,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             this.bindEditEvents();
             // ensure DOM memory is cleaned up by releasing document event handlers
             this.addDestroyListener(function () {
-                $(document).off(namespace);
+                $(document).off('.datatable' + this.id);
                 $(document).off('mouseup.datatable-cell-blur' + this.id);
             });
         }
@@ -1829,12 +1829,19 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             if (!thead.data("resizeTimer")) {
                 thead.data("resizeTimer", true);
                 const thiz = this;
+                const resizeNamespace = 'resize.' + this.id + '_autolayout';
                 var resizeTimer;
-    
-                $(window).on('resize', function() {
+
+                $(window).off(resizeNamespace).on(resizeNamespace, function() {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(thiz.resetColumnsWidth.bind(thiz), 100);
                 });
+                const unbindResize = () => {
+                    clearTimeout(resizeTimer);
+                    $(window).off(resizeNamespace);
+                };
+                this.addRefreshListener(unbindResize);
+                this.addDestroyListener(unbindResize);
             }
         }
 

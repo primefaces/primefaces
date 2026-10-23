@@ -604,6 +604,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             if (bodyToObserve) {
                 resizeObserver.observe(bodyToObserve);
             }
+            this.addRefreshListener(() => resizeObserver.disconnect());
+            this.addDestroyListener(() => resizeObserver.disconnect());
         }
 
         if(this.cfg.closeOnEscape) {
@@ -1077,6 +1079,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             if (firstElement) {
                 observer.observe(firstElement);
             }
+            this.addRefreshListener(() => observer.disconnect());
+            this.addDestroyListener(() => observer.disconnect());
         }
     }
 }
