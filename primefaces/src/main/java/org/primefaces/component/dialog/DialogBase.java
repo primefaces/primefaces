@@ -94,6 +94,18 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
     @Property(defaultValue = "false", description = "Renders dialog as visible.")
     public abstract boolean isVisible();
 
+    @Property(description = "Inline style of the dialog box, the visible dialog inside the scrollable container.")
+    public abstract String getBoxStyle();
+
+    @Property(description = "Style class of the dialog box, the visible dialog inside the scrollable container.")
+    public abstract String getBoxStyleClass();
+
+    @Property(description = "Inline style of the dialog content.")
+    public abstract String getContentStyle();
+
+    @Property(description = "Style class of the dialog content.")
+    public abstract String getContentStyleClass();
+
     @Property(description = "Width of the dialog.")
     public abstract String getWidth();
 

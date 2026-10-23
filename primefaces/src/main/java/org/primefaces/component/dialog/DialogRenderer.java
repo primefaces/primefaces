@@ -130,7 +130,11 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.BOX_CLASS, null);
+        writer.writeAttribute("class", getStyleClassBuilder(context).add(Dialog.BOX_CLASS).add(component.getBoxStyleClass()).build(), null);
+
+        if (component.getBoxStyle() != null) {
+            writer.writeAttribute("style", component.getBoxStyle(), null);
+        }
 
         if (component.isShowHeader()) {
             encodeHeader(context, component);
@@ -220,8 +224,12 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+        writer.writeAttribute("class", getStyleClassBuilder(context).add(Dialog.CONTENT_CLASS).add(component.getContentStyleClass()).build(), null);
         writer.writeAttribute("id", component.getClientId(context) + "_content", null);
+
+        if (component.getContentStyle() != null) {
+            writer.writeAttribute("style", component.getContentStyle(), null);
+        }
 
         if (!component.isDynamic()) {
             renderChildren(context, component);
