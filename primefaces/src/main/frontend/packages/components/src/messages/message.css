@@ -285,7 +285,7 @@
         display: none;
     }
 
-    &.ui-helper-hidden {
+    &.p-hidden {
         display: none;
     }
 }

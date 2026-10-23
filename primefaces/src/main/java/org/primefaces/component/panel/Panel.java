@@ -55,7 +55,7 @@ public class Panel extends PanelBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Panel";
 
     public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content";
-    public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix";
+    public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header";
     public static final String PANEL_TITLEBAR_TOGGLEABLE_CLASS = "ui-panel-titlebar-toggleable";
     public static final String PANEL_TITLE_CLASS = "ui-panel-title";
     public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-state-default";

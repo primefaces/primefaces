@@ -62,7 +62,7 @@ public class BlockUIRenderer extends CoreRenderer<BlockUI> {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content ui-helper-hidden ui-shadow", null);
+        writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content p-hidden", null);
 
         renderChildren(context, component);
 

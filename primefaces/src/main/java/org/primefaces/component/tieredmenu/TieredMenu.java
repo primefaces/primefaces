@@ -39,7 +39,7 @@ public class TieredMenu extends TieredMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TieredMenu";
 
-    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-tieredmenu ui-widget ui-widget-content ui-helper-clearfix";
-    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-tieredmenu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
+    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-tieredmenu ui-widget ui-widget-content";
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-tieredmenu ui-menu-dynamic ui-widget ui-widget-content";
 
 }

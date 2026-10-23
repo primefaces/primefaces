@@ -112,7 +112,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         String inputid = clientId + "_input";
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("select", null);
         writer.writeAttribute("id", inputid, "id");

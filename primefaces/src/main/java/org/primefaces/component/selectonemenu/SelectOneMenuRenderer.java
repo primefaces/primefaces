@@ -155,7 +155,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
             //input for accessibility
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+            writer.writeAttribute("class", "p-hidden-accessible", null);
 
             writer.startElement("input", null);
             writer.writeAttribute("id", focusId, null);
@@ -177,7 +177,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
         //hidden select
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         encodeHiddenSelect(context, component, clientId, selectItems, values, submittedValues, converter);
 

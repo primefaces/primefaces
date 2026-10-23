@@ -34,7 +34,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
         this.cfg.unselectable = this.cfg.unselectable !== false;
         // the default layout root is also a radiogroup, so the role alone doesn't identify the facet span
         this.facet = this.cfg.custom && this.jq.attr('role') === 'radiogroup';
-        this.inputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio:not(:disabled)');
+        this.inputs = this.jq.find((this.facet ? '.p-hidden ' : '') + ':radio:not(:disabled)');
 
         //custom layout
         if(this.cfg.custom) {

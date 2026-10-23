@@ -258,7 +258,7 @@ PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
                 currentContent = this.jq;
 
             // create a specific blocker for this target
-            var currentBlocker = $('<div id="' + widgetId + '_' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+            var currentBlocker = $('<div id="' + widgetId + '_' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay p-hidden"></div>');
 
             // style the blocker
             if (this.cfg.styleClass) {

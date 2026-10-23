@@ -245,10 +245,10 @@ textarea::placeholder {
     > textarea.ui-state-filled ~ label,
     > .ui-inputwrapper-focus ~ label,
     > .ui-selectcheckboxmenu.ui-state-focus ~ label,
-    > :where(.ui-selectcheckboxmenu:has(> .ui-helper-hidden-accessible > [aria-expanded="true"])) ~ label,
+    > :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])) ~ label,
     > .ui-inputwrapper-filled ~ label,
     > :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-        .ui-selectcheckboxmenu:has(> .ui-helper-hidden > :checked)) ~ label,
+        .ui-selectcheckboxmenu:has(> .p-hidden > :checked)) ~ label,
     > input:-webkit-autofill ~ label,
     > textarea:-webkit-autofill ~ label {
         top: var(--p-floatlabel-over-active-top);
@@ -261,7 +261,7 @@ textarea::placeholder {
     > textarea.ui-state-filled ~ label,
     > .ui-inputwrapper-filled ~ label,
     > :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-        .ui-selectcheckboxmenu:has(> .ui-helper-hidden > :checked)) ~ label {
+        .ui-selectcheckboxmenu:has(> .p-hidden > :checked)) ~ label {
         color: var(--p-floatlabel-active-color);
     }
 
@@ -269,7 +269,7 @@ textarea::placeholder {
     > textarea:focus ~ label,
     > .ui-inputwrapper-focus ~ label,
     > .ui-selectcheckboxmenu.ui-state-focus ~ label,
-    > :where(.ui-selectcheckboxmenu:has(> .ui-helper-hidden-accessible > [aria-expanded="true"])) ~ label,
+    > :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])) ~ label,
     > input:-webkit-autofill ~ label,
     > textarea:-webkit-autofill ~ label {
         color: var(--p-floatlabel-focus-color);
@@ -329,10 +329,10 @@ textarea::placeholder {
 
         > :is(input:focus, input.ui-state-filled, textarea:focus, textarea.ui-state-filled, .ui-inputwrapper-focus,
             .ui-selectcheckboxmenu.ui-state-focus,
-            :where(.ui-selectcheckboxmenu:has(> .ui-helper-hidden-accessible > [aria-expanded="true"])),
+            :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])),
             .ui-inputwrapper-filled, input:-webkit-autofill, textarea:-webkit-autofill,
             :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-                .ui-selectcheckboxmenu:has(> .ui-helper-hidden > :checked))) ~ label {
+                .ui-selectcheckboxmenu:has(> .p-hidden > :checked))) ~ label {
             top: var(--p-floatlabel-in-active-top);
             margin-top: 0;
         }
@@ -342,10 +342,10 @@ textarea::placeholder {
     &.ui-float-label-on {
         > :is(input:focus, input.ui-state-filled, textarea:focus, textarea.ui-state-filled, .ui-inputwrapper-focus,
             .ui-selectcheckboxmenu.ui-state-focus,
-            :where(.ui-selectcheckboxmenu:has(> .ui-helper-hidden-accessible > [aria-expanded="true"])),
+            :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])),
             .ui-inputwrapper-filled, input:-webkit-autofill, textarea:-webkit-autofill,
             :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-                .ui-selectcheckboxmenu:has(> .ui-helper-hidden > :checked))) ~ label {
+                .ui-selectcheckboxmenu:has(> .p-hidden > :checked))) ~ label {
             top: 0;
             /* .ui-outputlabel spans the field height (min-height: 100%); on the border only the text gets the background */
             min-height: 0;

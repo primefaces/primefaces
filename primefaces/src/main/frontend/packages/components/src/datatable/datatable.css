@@ -185,7 +185,7 @@
         justify-content: center;
         vertical-align: middle;
 
-        &.ui-helper-hidden {
+        &.p-hidden {
             display: none;
         }
     }
@@ -927,7 +927,7 @@
         }
 
         .ui-datatable-data {
-            td[role="gridcell"]:not(.ui-helper-hidden) {
+            td[role="gridcell"]:not(.p-hidden) {
                 box-sizing: border-box;
                 clear: inline-start;
                 float: inline-start;

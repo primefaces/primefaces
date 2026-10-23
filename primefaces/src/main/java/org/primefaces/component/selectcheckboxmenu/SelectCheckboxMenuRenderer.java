@@ -121,7 +121,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         Object submittedValues = getSubmittedValues(component);
 
         writer.startElement("div", component);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         int idx = -1;
         for (int i = 0; i < selectItems.size(); i++) {
@@ -726,7 +726,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         String tabindex = component.isDisabled() ? "-1" : Objects.toString(component.getTabindex(), "0");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.startElement("input", component);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);

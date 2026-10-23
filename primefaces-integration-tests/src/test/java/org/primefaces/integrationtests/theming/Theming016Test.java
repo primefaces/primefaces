@@ -126,7 +126,7 @@ class Theming016Test extends AbstractThemingTest {
     @ParameterizedTest
     @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
     @Order(4)
-    @DisplayName("Theming: ui-helper-hidden hides a component that sets its own display")
+    @DisplayName("Theming: p-hidden hides a component that sets its own display")
     void helperHidden(String preset) {
         // Arrange
         open(preset);

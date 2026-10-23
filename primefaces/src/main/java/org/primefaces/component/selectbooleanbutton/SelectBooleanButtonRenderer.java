@@ -86,7 +86,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButt
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         // input
         writer.startElement("input", null);

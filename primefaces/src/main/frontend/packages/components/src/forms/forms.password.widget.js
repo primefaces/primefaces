@@ -74,7 +74,7 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
         var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
 
         //create panel element
-        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-password-panel ui-widget ui-state-highlight ui-helper-hidden ' + panelStyle + '">';
+        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-password-panel ui-widget ui-state-highlight p-hidden ' + panelStyle + '">';
         panelMarkup += '<div class="ui-password-meter" style="background-position:0pt 0pt">&nbsp;</div>';
         panelMarkup += '<div class="ui-password-info">' + PrimeFaces.escapeHTML(this.cfg.promptLabel) + '</div>';
         panelMarkup += '</div>';
@@ -82,10 +82,6 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
         this.panel = $(panelMarkup).insertAfter(this.jq);
         this.meter = this.panel.children('div.ui-password-meter');
         this.infoText = this.panel.children('div.ui-password-info');
-
-        if (!this.cfg.inline) {
-            this.panel.addClass('ui-shadow');
-        }
 
         //events
         this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent + ' keyup.password')

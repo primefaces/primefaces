@@ -283,12 +283,6 @@
             grid-template-columns: auto 35% 10% 35% auto;
         }
 
-        /* the clearfix pseudo elements would take grid cells */
-        &::before,
-        &::after {
-            content: none;
-        }
-
         > div {
             display: block;
         }
@@ -332,7 +326,7 @@
             grid-column: 1 / -1;
         }
 
-        > div.ui-helper-hidden-accessible {
+        > div.p-hidden-accessible {
             display: none;
         }
 

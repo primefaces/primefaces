@@ -1258,7 +1258,6 @@ $.widget("prime.datePicker", {
         //add classes according to conditions
         var _classes = this.getClassesToAdd({
             'ui-datepicker-inline': this.options.inline,
-            'ui-shadow': !this.options.inline,
             'ui-input-overlay': !this.options.inline,
             'ui-state-disabled': this.options.disabled,
             'ui-state-error': this.options.inline && !this.options.valid,
@@ -1270,7 +1269,7 @@ $.widget("prime.datePicker", {
 
         var panelId = this.container.attr('id') + '_panel';
         var _aria = ' role="dialog" aria-modal="true" aria-label="' + this.options.locale.chooseDate + '" ';
-        this.panel = $('<div id="' + panelId + '"' + _aria + ' class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ' + _classes + '"></div>');
+        this.panel = $('<div id="' + panelId + '"' + _aria + ' class="ui-datepicker ui-widget ui-widget-content ' + _classes + '"></div>');
 
         //render inner elements
         this.panel.get(0).innerHTML = this.renderPanelElements();
@@ -1328,7 +1327,7 @@ $.widget("prime.datePicker", {
             yearElement = this.renderTitleYearElement(this.viewDate.getFullYear(), 0),
             months = this.renderMonthViewMonths();
 
-        return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
+        return ('<div class="ui-datepicker-header ui-widget-header">' +
             backwardNavigator +
             forwardNavigator +
             '<div class="ui-datepicker-title">' +
@@ -1385,7 +1384,7 @@ $.widget("prime.datePicker", {
             now = this.truncateDate(now);
         }
         if ((minDate && minDate > now) || (maxDate && maxDate < now)) {
-            todayStyleClass += ' ui-helper-hidden';
+            todayStyleClass += ' p-hidden';
         }
         return '<div class="ui-datepicker-buttonbar ui-widget-header">' +
             '<div class="' + grid + '">' +
@@ -1451,7 +1450,7 @@ $.widget("prime.datePicker", {
             dateViewGrid = this.renderDateViewGrid(monthMetadata, weekDaysMin, weekDays);
 
         return ('<div class="ui-datepicker-group ui-widget-content">' +
-            '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
+            '<div class="ui-datepicker-header ui-widget-header">' +
             backwardNavigator +
             forwardNavigator +
             title +

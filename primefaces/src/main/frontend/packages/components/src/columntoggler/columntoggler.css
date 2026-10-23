@@ -100,8 +100,8 @@
         display: none;
     }
 
-    th.ui-helper-hidden,
-    td.ui-helper-hidden {
+    th.p-hidden,
+    td.p-hidden {
         display: none;
     }
 }

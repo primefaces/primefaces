@@ -212,7 +212,7 @@ public class DataViewRenderer extends DataRenderer<DataView> {
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", layout, null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
 
         if (isActive) {

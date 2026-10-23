@@ -3,6 +3,11 @@
  * The helper and resizable rules repeat vendor rules on purpose: here they also beat lower or equal specificity
  * theme rules (e.g. display / position of .ui-icon in common.css), which the vendor layer cannot.
  */
+/*
+ * p-hidden-accessible: visually hidden, but still focusable and read by screen readers (the native inputs behind the
+ * checkbox, radio, select, ... widgets). ui-helper-hidden-accessible: the jQuery UI name, only for application markup.
+ */
+.p-hidden-accessible,
 .ui-helper-hidden-accessible {
     border: 0;
     clip: rect(0 0 0 0);

@@ -30,12 +30,6 @@
         padding: var(--p-log-header-padding);
         cursor: move;
 
-        /* the ui-helper-clearfix pseudos would be flex items with a gap each */
-        &::before,
-        &::after {
-            content: none;
-        }
-
         /* header buttons: rounded text secondary icon-only buttons */
         .ui-log-button {
             display: inline-flex;

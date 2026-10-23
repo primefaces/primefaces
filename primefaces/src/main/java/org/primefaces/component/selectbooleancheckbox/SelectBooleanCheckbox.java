@@ -40,7 +40,7 @@ public class SelectBooleanCheckbox extends SelectBooleanCheckboxBaseImpl {
 
     public static final String STYLE_CLASS = "ui-checkbox ui-widget";
     public static final String CHECKBOX_BOX_CLASS = "ui-checkbox-box ui-widget ui-state-default";
-    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
+    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "p-hidden";
     public static final String CHECKBOX_ICON_CLASS = "ui-checkbox-icon";
     public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-icon ui-icon-check";
     public static final String LABEL_CLASS = "ui-checkbox-label";

@@ -34,12 +34,6 @@
 
     &.ui-message-icon-only {
         display: inline-flex;
-
-        /* the ui-helper-clearfix pseudos would be flex items with a gap each */
-        &::before,
-        &::after {
-            content: none;
-        }
     }
 
     /* custom icon (icon attribute, e.g. "pi pi-star") */

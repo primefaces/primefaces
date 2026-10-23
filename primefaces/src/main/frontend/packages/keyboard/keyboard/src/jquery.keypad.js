@@ -857,7 +857,7 @@ $('selector').tabs(); // And instantiate it */
 		_updateKeypad: function(inst) {
 			inst._mainDiv.empty().append(this._generateHTML(inst)).
 				removeClass().addClass(inst.options.keypadClass +
-					(inst.options.useThemeRoller ? ' ui-widget ui-widget-content ui-corner-all ui-shadow' : '') +
+					(inst.options.useThemeRoller ? ' ui-widget ui-widget-content ui-corner-all' : '') +
 					(inst.options.isRTL ? ' ' + this._rtlClass : '') + ' ' +
 					(inst._inline ? this._inlineClass : this._mainDivClass));
 			if (typeof inst.options.beforeShow === "function") {

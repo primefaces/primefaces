@@ -218,7 +218,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         String clientId = component.getClientId(facesContext);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
+        writer.writeAttribute("class", "ui-wizard-navbar", null);
 
         encodeNavigator(facesContext, component, clientId + "_back", component.getBackLabel(), Wizard.BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w", true);
         encodeNavigator(facesContext, component, clientId + "_next", component.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e", false);

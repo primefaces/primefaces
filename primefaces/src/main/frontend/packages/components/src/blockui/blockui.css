@@ -1,7 +1,7 @@
 /*
  * BlockUI: p:blockUI
  * Markup: mask div.ui-blockui.ui-widget-overlay (appended to body, sized/positioned to the target by the widget)
- *         containing div.ui-blockui-content.ui-widget.ui-widget-content.ui-shadow (optional content).
+ *         containing div.ui-blockui-content.ui-widget.ui-widget-content (optional content).
  *         The widget sets aria-busy on the blocked target.
  * Without content (no children) a spinner (--p-blockui-loading-icon) is shown centered on the mask. With several
  * targets the content is only appended to one mask, the others have no .ui-blockui-content at all.

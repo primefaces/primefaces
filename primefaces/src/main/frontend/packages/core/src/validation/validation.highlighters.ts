@@ -139,7 +139,7 @@ class OneMenuHighlighter implements PrimeType.validation.Highlighter {
     }
 
     private getFocusElement(element: JQuery): JQuery {
-        return element.closest('.ui-selectonemenu').find('.ui-helper-hidden-accessible > input');
+        return element.closest('.ui-selectonemenu').find('.p-hidden-accessible > input');
     }
 }
 

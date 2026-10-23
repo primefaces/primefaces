@@ -143,7 +143,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "true", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         //options generated at client side
         writer.endElement("select");

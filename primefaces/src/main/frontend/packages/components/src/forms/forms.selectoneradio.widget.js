@@ -38,7 +38,7 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
         //custom layout
         if(this.cfg.custom) {
             this.facet = this.jq.attr('role') === 'radiogroup';
-            this.originalInputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio');
+            this.originalInputs = this.jq.find((this.facet ? '.p-hidden ' : '') + ':radio');
             this.inputs = $('input:radio[name="' + this.id + '_clone"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();

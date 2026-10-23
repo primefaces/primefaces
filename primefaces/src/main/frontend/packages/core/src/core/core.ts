@@ -1519,7 +1519,7 @@ export class Core {
     focusElement(el: JQuery): void {
         if(el.is(':radio')) {
             // github issue: #2582
-            if(el.hasClass('ui-helper-hidden-accessible')) {
+            if(el.hasClass('p-hidden-accessible')) {
                 el.parent().trigger('focus');
             }
             else {

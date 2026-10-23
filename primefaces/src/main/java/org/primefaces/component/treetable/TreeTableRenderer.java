@@ -715,7 +715,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         String title = column.getTitle();
         String titlestyleClass = getStyleClassBuilder(context)
                 .add("ui-column-title")
-                .add(isColumnAriaHeaderTextDefined(context, column), "ui-helper-hidden-accessible")
+                .add(isColumnAriaHeaderTextDefined(context, column), "p-hidden-accessible")
                 .build();
         writer.startElement("span", null);
         writer.writeAttribute("class", titlestyleClass, null);

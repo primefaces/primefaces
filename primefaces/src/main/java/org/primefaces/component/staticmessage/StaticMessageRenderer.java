@@ -56,7 +56,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
 
         String styleClass = getStyleClassBuilder(context)
                 .add("ui-message ui-staticmessage ui-widget ui-message-" + severity)
-                .add(iconOnly, "ui-message-icon-only ui-helper-clearfix")
+                .add(iconOnly, "ui-message-icon-only")
                 .add(component.getStyleClass())
                 .build();
 

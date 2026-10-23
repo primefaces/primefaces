@@ -123,10 +123,7 @@
 
     .ui-menu-child {
         padding: 0;
-
-        &.ui-shadow {
-            box-shadow: none;
-            border: 0 none;
-        }
+        box-shadow: none;
+        border: 0 none;
     }
 }

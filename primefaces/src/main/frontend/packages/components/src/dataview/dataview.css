@@ -27,6 +27,8 @@
     }
 
     .ui-dataview-header {
+        /* contains the floated layout options */
+        display: flow-root;
         text-align: center;
         background: var(--p-dataview-header-background);
         color: var(--p-dataview-header-color);
