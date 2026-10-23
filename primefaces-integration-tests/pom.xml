@@ -35,7 +35,7 @@
         <hibernate-validator.version>9.1.4.Final</hibernate-validator.version>
         <resteasy.version>7.0.5.Final</resteasy.version>
         <jakarta.version>11.0.0</jakarta.version>
-        <weld.version>6.0.4.Final</weld.version>
+        <weld.version>7.0.0.Final</weld.version>
         <jakarta.persistence-api.version>3.2.0</jakarta.persistence-api.version>
         <jetty.version>12.1.13</jetty.version>
         <lombok.version>1.18.48</lombok.version>
