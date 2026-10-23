@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <style>
+            .box-wide {
+                width: 600px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dialog header="Box and content style" id="dlg" widgetVar="dlg" maximizable="true"
+                      style="opacity: 0.99" styleClass="container-class"
+                      boxStyle="min-height: 100px" boxStyleClass="box-wide"
+                      contentStyle="padding: 7px" contentStyleClass="content-class">
+                <p class="m-0">Lorem ipsum dolor sit amet</p>
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
