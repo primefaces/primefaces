@@ -21,8 +21,8 @@ What changed for applications compared to the legacy themes:
   - renderers emit semantic icon classes (`p-icon p-close-icon p-panel-close-icon`) instead of the legacy jQuery UI
     icon classes (`ui-icon-triangle-1-e`, ...), widgets switch states (`aria-expanded`) instead of icon classes.
 - **Later, also breaking:** `ui-*` → `p-*` style classes, removal of jQuery UI (the options of `p:draggable` /
-  `p:droppable` / `p:resizable` mirror jQuery UI, effect attributes are reduced to a few CSS effects, `p:calendar` is
-  removed in favor of `p:datePicker`).
+  `p:droppable` / `p:resizable` mirror jQuery UI, effect attributes are reduced to a few CSS effects). `p:calendar` is
+  removed already in favor of `p:datePicker`.
 
 Each breaking core change gets its entry in the migration guide (`docs/migrationguide`) when it is implemented.
 
@@ -102,13 +102,11 @@ primefaces/src/main/frontend/
   packages/components/src/base/hidden.css                     ui-helper-hidden (wins over every display of the components)
   packages/<name>/<name>/index.css + src/<name>.css           components whose widget is its own package (not in
                                              components.js): CSS next to the widget, loaded with it by the
-                                             @ResourceDependency of the component (calendar, clock, colorpicker,
+                                             @ResourceDependency of the component (clock, colorpicker,
                                              datepicker, diagram, dock, fileupload, galleria, imagecompare,
                                              imagecropper, keyboard, knob, lifecycle, log, mindmap, organigram,
                                              schedule, scrollpanel, signature, stack, terminal, texteditor,
-                                             timeline) with their third-party CSS; p:calendar loads
-                                             datepicker.css (the panel styles of p:datePicker) and calendar.css
-                                             (jQuery UI datepicker CSS + everything only p:calendar renders)
+                                             timeline) with their third-party CSS
   build/scripts/bundle.mjs                   esbuild: bundles the index.css files and the themes, inlines the icons
   build/scripts/themes/check.mjs             conventions check, runs before the build (see below)
   build/scripts/themes/generate-density.mjs  generates themes/density/*.css from the presets (--check: up to date)
@@ -389,7 +387,7 @@ establish loopback connection"), Tomcat / Jetty do not start: set
 ## Third-party CSS
 
 The `index.css` files import the CSS of the libraries the components use into `@layer primefaces.vendor` (below the
-components): jQuery UI base (components.css; the jQuery UI datepicker CSS only in calendar.css, for p:calendar), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
+components): jQuery UI base (components.css), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
 snow (textEditor), vis-timeline (timeline), FullCalendar 5 (schedule), PrimeIcons (primeicons/primeicons.css). The versions are the ones of `package.json`, the
 same the JavaScript uses. jScrollPane CSS is not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*`
 classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
@@ -421,9 +419,8 @@ classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
   primary in light mode, e.g. `:root { --p-primary-base: var(--p-emerald-700); }`. Metal (graphite) meets AA.
 - The high contrast mode handling is not verified on Windows yet.
 - Size: `components.css` is ~360 KB minified (~47 KB gzip) plus ~25 KB gzip per theme; the third-party CSS of the lazily loaded
-  components (Quill, vis-timeline, FullCalendar, Coloris, jsPlumb, Cropper, jQuery UI datepicker) is only loaded with them.
-  The largest component file is `packages/datepicker/datepicker/src/datepicker.css`, loaded only with p:datePicker /
-  p:calendar.
+  components (Quill, vis-timeline, FullCalendar, Coloris, jsPlumb, Cropper) is only loaded with them.
+  The largest component file is `packages/datepicker/datepicker/src/datepicker.css`, loaded only with p:datePicker.
 
 ## Planned (PrimeFaces core)
 
@@ -552,18 +549,15 @@ State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) 
 - Until then: `$.fx.off = matchMedia('(prefers-reduced-motion: reduce)').matches` (also disables the jQuery UI effects)
   would make the JS animations respect reduced motion with one line in the core.
 
-**Remove jQuery UI** (custom bundle `packages/jquery/jquery-plugins/src/jquery.ui.ts`, datepicker + timepicker addon
-of p:calendar)
+**Remove jQuery UI** (custom bundle `packages/jquery/jquery-plugins/src/jquery.ui.ts`; the datepicker + timepicker
+addon went with p:calendar)
 - `selectable` (unused), `jquery.color`, `$.ui.version` / `uiBackCompat`: remove.
 - Helpers: `:focusable` / `:tabbable`, `scrollParent()` → own small utils, `disableSelection()` → `user-select: none`.
-- `position()` (autocomplete, calendar, columnToggler, confirmPopup, dialog, overlays, menu, overlayPanel, tooltip) →
+- `position()` (autocomplete, columnToggler, confirmPopup, dialog, overlays, menu, overlayPanel, tooltip) →
   own positioning or Floating UI.
 - Effects (dialog, inplace, mindmap, notificationBar, orderList, pickList, tabView, tooltip, wizard) → CSS transitions /
   Web Animations; reduce the effect attributes to a few (fade, slide, scale).
-- `datepicker` + timepicker addon: only p:calendar → remove p:calendar, p:datePicker (styled with the
-  `--p-datepicker-*` tokens) replaces it; then the package `packages/calendar` goes, with the jQuery UI datepicker CSS and all
-  p:calendar-only rules; `datepicker.css` keeps working unchanged.
-- `slider`: p:slider (and the p:calendar timepicker) → own implementation.
+- `slider`: p:slider → own implementation.
 - `sortable` (dashboard, dataTable, orderList, pickList), `draggable` / `droppable` (p:draggable / p:droppable,
   dashboard, dataTable, dialog, log, tree, treeTable, organigram, diagram, timeline), `resizable` (p:resizable, dialog)
   → own pointer events implementation (or SortableJS / interact.js); the public API of p:draggable / p:droppable /

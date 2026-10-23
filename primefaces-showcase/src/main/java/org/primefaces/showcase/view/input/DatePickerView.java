@@ -43,7 +43,7 @@ import jakarta.validation.constraints.Future;
 
 @Named
 @ViewScoped
-public class CalendarView implements Serializable {
+public class DatePickerView implements Serializable {
 
     private Date date;
     private Date date1;

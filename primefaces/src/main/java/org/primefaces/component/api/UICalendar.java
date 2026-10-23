@@ -56,11 +56,11 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default";
-    public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
-    public static final String DATE_MIN_DATE_ID = "primefaces.calendar.MIN_DATE";
-    public static final String DATE_MAX_DATE_ID = "primefaces.calendar.MAX_DATE";
-    public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
-    public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
+    public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.datepicker.OUT_OF_RANGE";
+    public static final String DATE_MIN_DATE_ID = "primefaces.datepicker.MIN_DATE";
+    public static final String DATE_MAX_DATE_ID = "primefaces.datepicker.MAX_DATE";
+    public static final String DATE_INVALID_MESSAGE_ID = "primefaces.datepicker.INVALID";
+    public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.datepicker.DATE_INVALID_RANGE_MESSAGE_ID";
 
     protected String timeOnlyPattern;
 

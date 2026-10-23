@@ -202,7 +202,7 @@ function hideModal() {
     <!-- Main Page content -->
     <main>
         <h:form>
-            <p:calendar />
+            <p:datePicker />
             <div>
                 <p:commandButton value="Open Dialog" type="button" onclick="PF('modalDlg').show()" />
             </div>

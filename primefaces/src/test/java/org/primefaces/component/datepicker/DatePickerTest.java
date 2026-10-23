@@ -154,7 +154,7 @@ class DatePickerTest {
 
     @Test
     void dateAsStringShouldBeNullIfValueIsNull() {
-        org.primefaces.component.calendar.Calendar calendar = new org.primefaces.component.calendar.Calendar();
+        DatePicker calendar = new DatePicker();
         String dateAsString = CalendarUtils.getValueAsString(null, calendar);
 
         assertNull(dateAsString);
@@ -162,7 +162,7 @@ class DatePickerTest {
 
     @Test
     void dateAsStringShouldBeSubmittedValueIfExists() {
-        org.primefaces.component.calendar.Calendar calendar = new org.primefaces.component.calendar.Calendar();
+        DatePicker calendar = new DatePicker();
         calendar.setSubmittedValue("05.07.2010");
         String dateAsString = CalendarUtils.getValueAsString(null, calendar);
 

@@ -73,7 +73,6 @@
   - [BreadCrumb](/components/breadcrumb.md)
   - [Button](/components/button.md)
   - [Cache](/components/cache.md)
-  - [Calendar](/components/calendar.md)
   - [Captcha](/components/captcha.md)
   - [Card](/components/card.md)
   - [Carousel](/components/carousel.md)

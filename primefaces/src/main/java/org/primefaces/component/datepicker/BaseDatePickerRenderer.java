@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.calendar;
+package org.primefaces.component.datepicker;
 
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.el.ValueExpressionAnalyzer;
@@ -58,7 +58,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 
-public abstract class BaseCalendarRenderer<T extends UICalendar> extends InputRenderer<T> {
+public abstract class BaseDatePickerRenderer<T extends UICalendar> extends InputRenderer<T> {
 
     @Override
     public void decode(FacesContext context, T component) {
@@ -223,7 +223,7 @@ public abstract class BaseCalendarRenderer<T extends UICalendar> extends InputRe
             }
         }
         else if (type == LocalTime.class) {
-            String pattern = component instanceof Calendar ? component.calculatePattern() : component.calculateTimeOnlyPattern();
+            String pattern = component.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern(pattern, component.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(component.getTimeZone()))

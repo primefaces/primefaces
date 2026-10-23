@@ -360,7 +360,7 @@ textarea::placeholder {
 }
 
 /*
- * fields with a trigger button next to the input (p:autoComplete dropdown, p:datePicker / p:calendar showIcon): the focus
+ * fields with a trigger button next to the input (p:autoComplete dropdown, p:datePicker showIcon): the focus
  * ring encloses input and button, like a field with the icon inside (password, colorPicker); the input keeps its focus
  * border. The --p-inputtext-* tokens are the ones of the component (autocomplete.css remaps them).
  */

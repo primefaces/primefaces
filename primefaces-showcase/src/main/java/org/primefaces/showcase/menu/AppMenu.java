@@ -97,12 +97,6 @@ public class AppMenu {
         //FORM CATEGORY START
         List<MenuItem> formMenuItems = new ArrayList<>();
         formMenuItems.add(new MenuItem("AutoComplete", "/ui/input/autoComplete"));
-
-        //Calendar Nested MenuItem
-        /*List<MenuItem> calendarMenuItems = new ArrayList<>();
-        calendarMenuItems.add(new MenuItem("Date (java.util.Date)", "/ui/input/calendar/calendar"));
-        calendarMenuItems.add(new MenuItem("LocalDate (java.time.Local*)", "/ui/input/calendar/calendarJava8"));
-        formMenuItems.add(new MenuItem("Calendar", calendarMenuItems));*/
         formMenuItems.add(new MenuItem("CascadeSelect", "/ui/input/cascadeSelect"));
         formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
 

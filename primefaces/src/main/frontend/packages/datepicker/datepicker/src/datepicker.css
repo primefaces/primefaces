@@ -1,7 +1,5 @@
 /*
- * DatePicker: p:datePicker, month picker, time picker, button bar. Loaded with datepicker/datepicker.js; p:calendar
- * (jQuery UI datepicker) loads it too for the shared panel styles, its own parts are in
- * packages/calendar/calendar/src/calendar.css.
+ * DatePicker: p:datePicker, month picker, time picker, button bar. Loaded with datepicker/datepicker.js.
  *
  * Supported state classes: ui-state-active (selected date / month), ui-state-hover, ui-state-disabled (date, month,
  *                          navigator, whole panel), ui-datepicker-today,
@@ -10,7 +8,7 @@
  *                          ui-datepicker-touch-ui, ui-trigger-calendar; RTL follows the dir of the panel
  * The trigger button is a .ui-button: it only remaps the private --_* button variables to the datepicker dropdown tokens.
  * PrimeFaces only tokens: the datepicker block of presets/*.css
- * Without the jQuery UI datepicker CSS (that comes with p:calendar); the header and button bar are flex rows.
+ * Without the jQuery UI datepicker CSS; the header and button bar are flex rows.
  */
 
 /* p:datePicker */
@@ -715,7 +713,7 @@
     }
 }
 
-/* trigger button (showIcon / p:calendar showOn="button") */
+/* trigger button (showIcon) */
 .ui-calendar .ui-button.ui-button-icon-only {
     --_bg: var(--p-datepicker-dropdown-background);
     --_hover-bg: var(--p-datepicker-dropdown-hover-background);
@@ -757,11 +755,7 @@
     }
 }
 
-/* p:calendar with a trigger: a flex row like p:datePicker (.p-datepicker), so the trigger always has the input height */
-.ui-calendar.ui-trigger-calendar {
-    display: inline-flex;
-}
-
+/* with a trigger: the container is a flex row (.p-datepicker), so the trigger always has the input height */
 .ui-calendar.ui-trigger-calendar > .ui-inputfield {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
@@ -779,10 +773,6 @@
     }
 
     .p-datepicker {
-        display: flex;
-    }
-
-    .ui-calendar.ui-trigger-calendar {
         display: flex;
     }
 

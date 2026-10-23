@@ -4,7 +4,7 @@
  * DatePicker is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
  *
- * DatePicker is designed to replace the old {@link Calendar|p:calendar} component.
+ * DatePicker replaces the old p:calendar component, which was removed in PrimeFaces 17.
  *
  * To interact with the calendar, use the methods of this widget, or for more advanced usages, use the `datePicker`
  * JQueryUI widget plugin, for example:

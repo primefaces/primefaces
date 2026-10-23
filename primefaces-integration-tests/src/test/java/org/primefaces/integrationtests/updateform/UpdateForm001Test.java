@@ -25,8 +25,8 @@ package org.primefaces.integrationtests.updateform;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.Calendar;
 import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.InputNumber;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.InputTextarea;
@@ -74,7 +74,7 @@ class UpdateForm001Test extends AbstractPrimePageTest {
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:calendar")
-        Calendar calendar;
+        DatePicker calendar;
 
         @FindBy(id = "form:inputnumber0")
         InputNumber inputnumber0;

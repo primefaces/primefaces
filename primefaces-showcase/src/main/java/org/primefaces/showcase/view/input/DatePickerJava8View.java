@@ -45,7 +45,7 @@ import jakarta.validation.constraints.Future;
 
 @Named
 @ViewScoped
-public class CalendarJava8View implements Serializable {
+public class DatePickerJava8View implements Serializable {
 
     private LocalDate date;
     private LocalDate date1;

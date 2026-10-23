@@ -134,7 +134,7 @@
     font-size: var(--p-icon-size);
 }
 
-/* font icons: overrides the sprite icon rules of jquery-ui core.css and datepicker.css */
+/* font icons: overrides the sprite icon rules of jquery-ui core.css */
 .ui-icon {
     display: inline-block;
     vertical-align: baseline;

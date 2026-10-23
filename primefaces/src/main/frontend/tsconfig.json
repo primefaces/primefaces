@@ -8,7 +8,6 @@
         "noCheck": true
     },
     "references": [
-        { "path": "./packages/calendar/calendar" },
         { "path": "./packages/captcha/captcha" },
         { "path": "./packages/chart/chart" },
         { "path": "./packages/clock/clock" },

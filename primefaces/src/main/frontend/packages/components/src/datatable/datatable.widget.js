@@ -3733,13 +3733,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                             // ignore clicks inside input overlays like calendar popups etc
                             var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
                             // and menus - in case smth like menubutton is inside the table
-                            ignoredOverlay += ', .ui-datepicker-buttonpane, .ui-menuitem, .ui-menuitem-link';
+                            ignoredOverlay += ', .ui-menuitem, .ui-menuitem-link';
                             // and blockers
                             ignoredOverlay += ', .ui-blockui, .blockUI';
                             if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
-                                return;
-
-                            if($.datepicker && ($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length))
                                 return;
 
                             if($this.cfg.saveOnCellBlur)

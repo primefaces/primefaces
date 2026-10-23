@@ -1,9 +1,8 @@
 List of Plugins
 - jQuery UI Core
 - jQuery UI Interactions: Draggable, Droppable, Resizable, Selectable, Sortable
-- jQuery UI Widgets: Datepicker, Slider
+- jQuery UI Widgets: Slider
 - jQuery UI Effects
-- Timepicker (https://github.com/trentrichardson/jQuery-Timepicker-Addon)
 - MouseWheel (https://github.com/jquery/jquery-mousewheel)
 - Input Mask (https://github.com/RobinHerbots/Inputmask)
 - Rangy Text (https://github.com/timdown/rangy)
@@ -15,13 +14,7 @@ List of Plugins
 Extensions:
 
 jquery.ui.pfextensions:
-- Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)
 - Sortable performance fix (/https://github.com/primefaces/primefaces/issues/3675)
-- Timepicker Fix (https://github.com/primefaces/primefaces/issues/2811)
-- Timepicker Fix (https://github.com/primefaces/primefaces/issues/3765)
-- Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4295)
-- Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4719)
-- Datepicker style fix (https://github.com/primefaces/primefaces/issues/5374)
 - Slider step min max fix (https://github.com/primefaces/primefaces/issues/8619)
 - Tooltip removal fix (https://github.com/primefaces/primefaces/issues/9941)
 - Droppable zoom factor handling (https://github.com/primefaces/primefaces/issues/10689)

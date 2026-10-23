@@ -1,5 +1,5 @@
 /*
- * datepicker/datepicker.css: loaded with datepicker/datepicker.js (p:datePicker); p:calendar uses it as well until it is removed.
+ * datepicker/datepicker.css: loaded with datepicker/datepicker.js (p:datePicker).
  *
  * Cascade layers (lowest first): primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors.
  * The statement is repeated in every stylesheet of PrimeFaces, so the order is the same whichever is loaded first.

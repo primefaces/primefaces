@@ -2,11 +2,11 @@
 
 You may have a need to set the same attribute on hundreds of components in a large application.
 
-The perfect example is needing the same date pattern on all of your Calendar/DatePicker 
+The perfect example is needing the same date pattern on all of your DatePicker
 components but not wanting to repeat yourself on every single instance on every single XHTML page.
 
 ```xml
-<p:calendar pattern="dd-MMM-yyyy"/>
+<p:datePicker pattern="dd-MMM-yyyy"/>
 ```
 
 This can be accomplished by using a custom Jakarta Faces Application wrapper.

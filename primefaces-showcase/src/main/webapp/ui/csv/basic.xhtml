@@ -74,16 +74,6 @@
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </h:outputText>
 
-                    <h:outputLabel for="date2" value="Date (java.util.Date; PF Calendar)"/>
-                    <p:calendar id="date2" value="#{validationView.date2}" pattern="MM/dd/yyyy"
-                                label="Date (java.util.Date; PF Calendar)">
-                        <f:convertDateTime pattern="MM/dd/yyyy"/>
-                    </p:calendar>
-                    <p:message for="date2"/>
-                    <h:outputText value="#{validationView.date2}">
-                        <f:convertDateTime pattern="MM/dd/yyyy"/>
-                    </h:outputText>
-
                     <h:outputLabel for="date3" value="Date (java.util.Date; PF DatePicker)"
                                    />
                     <p:datePicker id="date3" value="#{validationView.date3}" pattern="MM/dd/yyyy"
@@ -102,17 +92,6 @@
                     <p:message for="localDate"/>
                     <h:outputText value="#{validationView.localDate}">
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
-                    </h:outputText>
-
-                    <h:outputLabel for="localDate2" value="LocalDate (Java8; PF Calendar)"
-                                   />
-                    <p:calendar id="localDate2" value="#{validationView.localDate2}" pattern="MM/dd/yyyy"
-                                label="LocalDate (Java8; PF Calendar)">
-                        <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
-                    </p:calendar>
-                    <p:message for="localDate2"/>
-                    <h:outputText value="#{validationView.localDate2}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </h:outputText>
 
                     <h:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"

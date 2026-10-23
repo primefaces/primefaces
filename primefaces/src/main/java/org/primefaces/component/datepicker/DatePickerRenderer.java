@@ -24,7 +24,6 @@
 package org.primefaces.component.datepicker;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
@@ -56,7 +55,7 @@ import jakarta.faces.render.FacesRenderer;
 import org.json.JSONObject;
 
 @FacesRenderer(rendererType = DatePicker.DEFAULT_RENDERER, componentFamily = DatePicker.COMPONENT_FAMILY)
-public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
+public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
 
     @Override
     public void decode(FacesContext context, DatePicker component) {

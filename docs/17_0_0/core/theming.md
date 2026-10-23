@@ -513,7 +513,7 @@ Prefer tokens where one exists; style rules are the fallback for everything toke
 
 The CSS of the libraries the components use is part of the PrimeFaces stylesheets, in the `primefaces.vendor` layer
 below the component styles, and styled with the tokens; there is nothing extra to include. It is loaded with the
-component that needs it: jQuery UI in `components.css` (its datepicker CSS with p:calendar), Coloris with
+component that needs it: jQuery UI in `components.css`, Coloris with
 p:colorPicker, cropperjs with p:imageCropper, Quill with p:textEditor, vis-timeline with p:timeline, FullCalendar with
 p:schedule, jsPlumb with p:diagram.
 

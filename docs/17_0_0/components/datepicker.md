@@ -3,7 +3,7 @@
 DatePicker is an input component used to select a date featuring display modes, paging, localization,
 ajax selection and more.
 
-> DatePicker is designed to replace the old p:calendar component.
+> DatePicker replaces the old p:calendar component, which was removed in PrimeFaces 17.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
