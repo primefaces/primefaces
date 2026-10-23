@@ -4,11 +4,11 @@
  * Markup: .ui-panelmenu > .ui-panelmenu-panel
  *           > h3.ui-panelmenu-header (ui-state-active when expanded, ui-state-hover, ui-menuitem-outline when focused)
  *             > span.ui-icon.ui-icon-triangle-1-e|s (toggle) + span.ui-icon (submenu icon, optional) + a (label)
- *           + .ui-panelmenu-content (ui-helper-hidden when collapsed) > ul.ui-menu-list
+ *           + .ui-panelmenu-content (p-hidden when collapsed) > ul.ui-menu-list
  *             > li.ui-menuitem > a.ui-menuitem-link (ui-state-hover) > span.ui-menuitem-icon + span.ui-menuitem-text
  *               (ui-menuitem-outline on the text = keyboard / click focus)
  *             > li.ui-menu-parent > a.ui-menuitem-link > span.ui-panelmenu-icon (toggle) + span.ui-icon + span.ui-menuitem-text
- *               + ul.ui-menu-list (ui-helper-hidden when collapsed)
+ *               + ul.ui-menu-list (p-hidden when collapsed)
  * Like PrimeUIX: separate bordered panels with a gap, the headers look like items.
  */
 .ui-panelmenu {

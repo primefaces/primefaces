@@ -47,7 +47,7 @@ public class MultiSelectListbox extends MultiSelectListboxBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
-    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget";
     public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
     public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header";
     public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";

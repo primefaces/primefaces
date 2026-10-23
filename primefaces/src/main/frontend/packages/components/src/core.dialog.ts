@@ -136,8 +136,8 @@ export class DialogHandler {
 
         const styleClass = cfg.options.styleClass || '';
         const dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-hidden-container ui-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>');
-        const box = $('<div class="ui-dialog-box ui-widget-content ui-shadow"></div>').appendTo(dialogDOM);
-        const titlebar = $('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>').appendTo(box);
+        const box = $('<div class="ui-dialog-box ui-widget-content"></div>').appendTo(dialogDOM);
+        const titlebar = $('<div class="ui-dialog-titlebar ui-widget-header"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>').appendTo(box);
 
         if (cfg.options.closable !== false) {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
@@ -387,7 +387,7 @@ export class DialogHandler {
     showMessageInDialog(msg: PrimeType.hook.messageInDialog.DialogMessageData): void {
         if (!this.messageDialog) {
             $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-hidden-container"></div>')
-                .append($('<div class="ui-dialog-box ui-widget-content ui-shadow"></div>').append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span class="ui-dialog-title"></span>' +
+                .append($('<div class="ui-dialog-box ui-widget-content"></div>').append('<div class="ui-dialog-titlebar ui-widget-header"><span class="ui-dialog-title"></span>' +
                     '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                     '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>'))
                 .appendTo(document.body);

@@ -162,7 +162,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
      * @private
      */
     setupAutoComplete() {
-        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content ui-helper-hidden ui-shadow"></div>',
+        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content p-hidden"></div>',
         $this = this;
 
         this.panel = $(panelMarkup).appendTo(document.body);

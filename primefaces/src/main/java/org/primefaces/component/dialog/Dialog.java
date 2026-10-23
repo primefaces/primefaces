@@ -51,8 +51,8 @@ public class Dialog extends DialogBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dialog";
 
     public static final String DIALOG_CLASS = "ui-dialog ui-widget ui-hidden-container";
-    public static final String BOX_CLASS = "ui-dialog-box ui-widget-content ui-shadow";
-    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-helper-clearfix";
+    public static final String BOX_CLASS = "ui-dialog-box ui-widget-content";
+    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header";
     public static final String TITLE_CLASS = "ui-dialog-title";
     public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-close";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";

@@ -248,7 +248,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         //items generated on client side
         writer.endElement("select");
@@ -385,7 +385,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);

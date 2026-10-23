@@ -38,7 +38,7 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
         this.box = this.jq.find('.ui-chkbox-box');
         this.icon = this.box.children('.ui-chkbox-icon');
         this.itemLabel = this.jq.find('.ui-chkbox-label');
-        this.ariaHelper = $('<span class="ui-helper-hidden-accessible" aria-live="polite"></span>').prependTo(this.jq);
+        this.ariaHelper = $('<span class="p-hidden-accessible" aria-live="polite"></span>').prependTo(this.jq);
         this.updateAriaLabel();
         this.updateStatus();
         this.fixedMod = function(number, mod){

@@ -69,7 +69,7 @@ public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
     protected void writeLabel(ResponseWriter writer, String label, boolean visible) throws IOException {
         writer.startElement("span", null);
         if (!visible) {
-            writer.writeAttribute("class", "ui-helper-hidden", null);
+            writer.writeAttribute("class", "p-hidden", null);
         }
         writer.writeText(label, null);
         writer.endElement("span");

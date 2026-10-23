@@ -109,7 +109,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         String inputid = clientId + "_input";
 
         writer.startElement("div", component);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("select", component);
         writer.writeAttribute("id", inputid, "id");

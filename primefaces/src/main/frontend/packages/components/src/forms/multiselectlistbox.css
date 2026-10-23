@@ -6,6 +6,9 @@
  * Supported classes: ui-state-disabled (on the root), items: ui-state-hover, ui-state-highlight (selected)
  */
 .ui-multiselectlistbox {
+    /* contains the floated lists */
+    display: flow-root;
+
     .ui-multiselectlistbox-listcontainer {
         float: inline-start;
         overflow: auto;

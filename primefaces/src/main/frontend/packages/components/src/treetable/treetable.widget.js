@@ -701,7 +701,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                                         'position': 'fixed',
                                         'top': '0px'
                                     })
-                                    .addClass('ui-shadow ui-sticky');
+                                    .addClass('ui-sticky');
 
                 if($this.cfg.resizableColumns) {
                     $this.relativeHeight = scrollTop - tableOffset.top;
@@ -717,7 +717,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                                         'position': 'absolute',
                                         'top': tableOffset.top + 'px'
                                     })
-                                    .removeClass('ui-shadow ui-sticky');
+                                    .removeClass('ui-sticky');
 
                 if($this.stickyContainer.is(':hidden')) {
                     $this.stickyContainer.show();
@@ -2646,7 +2646,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         var $this = this;
 
         // remove all indicator numbers first
-        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('ui-helper-hidden');
+        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('p-hidden');
 
         // add 1,2,3 etc to columns if more than 1 column is sorted
         var sortMeta =  $this.sortMeta;
@@ -2655,7 +2655,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 var id = $(this).attr("id");
                 for (var i = 0; i < sortMeta.length; i++) {
                     if (sortMeta[i].col == id) {
-                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('ui-helper-hidden');
+                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('p-hidden');
                     }
                 }
             });

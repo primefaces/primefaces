@@ -99,7 +99,7 @@ primefaces/src/main/frontend/
                                              forms/radiobutton.css, forms/inputgroup.css, badge/badge.css,
                                              paginator/paginator.css, menu/menu.base.css
   packages/components/src/{dragdrop,resizable,sticky}/*.css   behaviors (layer primefaces.behaviors), also
-  packages/components/src/base/hidden.css                     ui-helper-hidden (wins over every display of the components)
+  packages/components/src/base/hidden.css                     p-hidden (wins over every display of the components)
   packages/<name>/<name>/index.css + src/<name>.css           components whose widget is its own package (not in
                                              components.js): CSS next to the widget, loaded with it by the
                                              @ResourceDependency of the component (clock, colorpicker,
@@ -367,7 +367,7 @@ text contrast on every gradient stop), Glass (backdrop filters of the floating l
 text in light and dark mode), nested density / scopes. In all five presets: invalid fields after server and client side
 validation incl. hover / focus, label, message, invalid tooltip and readonly radio (`Theming014`), layering and hit testing of a dropdown in a toolbar and
 of a non modal dialog (`Theming015`), narrow viewport, RTL password, size classes in a scope, print, reduced motion,
-`ui-helper-hidden` (`Theming016`).
+`p-hidden` (`Theming016`).
 
 Visual regression (`Theming012Test`, Chrome at device pixel ratio 1 only, skipped otherwise): a fixed set of components
 is captured per preset (all five) and color scheme and compared with the reference images in

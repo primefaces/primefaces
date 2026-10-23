@@ -102,7 +102,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCh
         String ariaLabel = component.getAriaLabel() != null ? component.getAriaLabel() : component.getItemLabel();
 
         writer.startElement("div", component);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");

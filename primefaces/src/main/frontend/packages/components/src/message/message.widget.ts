@@ -54,7 +54,7 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
         const display = this.jq.data('display');
 
         if (display !== 'tooltip') {
-            this.jq.addClass('ui-message-error ui-widget ui-helper-clearfix');
+            this.jq.addClass('ui-message-error ui-widget');
 
             if (display === 'both') {
                 this.jq.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
@@ -78,7 +78,7 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
      */
     clearMessage(): void {
         this.jq.html('');
-        this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-helper-clearfix');
+        this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget');
     }
 }
 

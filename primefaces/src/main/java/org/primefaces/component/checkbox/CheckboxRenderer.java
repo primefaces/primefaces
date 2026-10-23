@@ -81,7 +81,7 @@ public class CheckboxRenderer extends InputRenderer<Checkbox> {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);

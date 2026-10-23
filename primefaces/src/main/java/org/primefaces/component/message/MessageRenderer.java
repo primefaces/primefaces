@@ -73,7 +73,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
         String style = component.getStyle();
         StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
                 .add("ui-message", component.getStyleClass())
-                .add("tooltip".equals(display), "ui-helper-hidden");
+                .add("tooltip".equals(display), "p-hidden");
 
         Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
@@ -101,7 +101,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
             if (shouldRender(component, msg, severityName)) {
 
                 styleClassBuilder.add("ui-message-" + severityName + " ui-widget");
-                styleClassBuilder.add(iconOnly, "ui-message-icon-only ui-helper-clearfix");
+                styleClassBuilder.add(iconOnly, "ui-message-icon-only");
 
                 writer.writeAttribute("class", styleClassBuilder.build(), null);
 

@@ -50,7 +50,7 @@ public abstract class UIPageableData extends PrimeUIData implements Pageable, To
     public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default ui-state-active";
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
     public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default";
-    public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
+    public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label p-hidden";
     public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default";
     public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default";

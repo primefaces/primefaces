@@ -50,8 +50,8 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
      * Creates the mask overlay element for the spotlight effect and adds it to the DOM.
      */
     private createMasks(): void {
-        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
-            '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right ui-helper-hidden"></div>');
+        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top p-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom p-hidden"></div>' +
+            '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left p-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right p-hidden"></div>');
     }
 
     /**

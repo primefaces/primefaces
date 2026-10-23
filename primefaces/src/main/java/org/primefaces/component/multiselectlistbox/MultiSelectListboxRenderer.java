@@ -141,7 +141,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectLis
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("ul", component);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
         encodeListItems(context, component, selectItems);
         writer.endElement("ul");
     }

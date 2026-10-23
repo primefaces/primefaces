@@ -191,7 +191,7 @@ public class ChipsRenderer extends InputRenderer<Chips> {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");

@@ -999,7 +999,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      * Displays the current error messages on this widget.
      */
     private renderMessages(): void {
-        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error">' +
+        var markup = '<div class="ui-messages ui-widget p-hidden ui-fileupload-messages"><div class="ui-messages-error">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
                 '<span class="ui-messages-error-icon"></span>' +
                 '<ul></ul>' +

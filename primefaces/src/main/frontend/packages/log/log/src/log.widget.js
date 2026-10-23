@@ -172,7 +172,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
         var visible = this.severity == severity || this.severity == 'all',
         style = visible ? 'display:block' : 'display:none';
 
-        var item = '<li class="ui-log-item ui-log-item-' + severity + ' ui-helper-clearfix" style="' + style + 
+        var item = '<li class="ui-log-item ui-log-item-' + severity + '" style="' + style + 
             '"><span class="ui-icon ' + icon + '"></span>' + new Date().toLocaleString() + ' : '  + PrimeFaces.escapeHTML(msg) + '</li>';
 
         this.itemsContainer.append(item);

@@ -71,20 +71,17 @@
         min-width: 12.5rem;
     }
 
+    /* overlay menus */
     &.ui-menu-dynamic {
         position: absolute;
         display: none;
         z-index: 100000;
+        border: 1px solid var(--_border-color);
+        box-shadow: var(--_shadow);
     }
 
     &.ui-menu-dynamic-maxheight {
         overflow-y: auto;
-    }
-
-    /* overlay menus */
-    &.ui-shadow {
-        border: 1px solid var(--_border-color);
-        box-shadow: var(--_shadow);
     }
 
     .ui-menu-list .ui-widget-header {
@@ -350,12 +347,9 @@
     .ui-menu-list .ui-menu-child {
         background: var(--_submenu-background);
         padding: var(--_submenu-padding);
-
-        &.ui-shadow {
-            border-radius: var(--_submenu-border-radius);
-            border: 1px solid var(--_submenu-border-color);
-            box-shadow: var(--_submenu-shadow);
-        }
+        border-radius: var(--_submenu-border-radius);
+        border: 1px solid var(--_submenu-border-color);
+        box-shadow: var(--_submenu-shadow);
     }
 
     /* separators (p:divider inside menus) */

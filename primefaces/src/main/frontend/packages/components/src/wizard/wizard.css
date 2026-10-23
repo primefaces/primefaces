@@ -17,12 +17,6 @@
         padding: 0;
         list-style-type: none;
 
-        /* the ui-helper-clearfix pseudos would be flex items */
-        &::before,
-        &::after {
-            content: none;
-        }
-
         .ui-wizard-step-title {
             flex: 1 1 0;
             margin: 0;
@@ -69,12 +63,6 @@
         display: flex;
         align-items: center;
         gap: var(--p-wizard-gap);
-
-        /* the ui-helper-clearfix pseudos would be flex items (::before added a gap in front of the back button) */
-        &::before,
-        &::after {
-            content: none;
-        }
 
         .ui-wizard-nav-next {
             margin-inline-start: auto;

@@ -122,7 +122,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
             .add(component.getStyleClass())
             .add(collapsed, Panel.PANEL_COLLAPSED_CLASS)
             .add(collapsed && "horizontal".equals(component.getToggleOrientation()), Panel.PANEL_COLLAPSED_HORIZONTAL_CLASS)
-            .add(!visible, "ui-helper-hidden")
+            .add(!visible, "p-hidden")
             .build();
 
         writer.writeAttribute("class", styleClass, "styleClass");

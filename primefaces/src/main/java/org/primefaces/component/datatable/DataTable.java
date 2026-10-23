@@ -131,10 +131,10 @@ public class DataTable extends DataTableBaseImpl {
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
-    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge ui-helper-hidden";
+    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge p-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
     public static final String UNSELECTABLE_COLUMN_CLASS = "ui-column-unselectable";
-    public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
+    public static final String HIDDEN_COLUMN_CLASS = "p-hidden";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
     public static final String COLUMN_TITLE_CLASS = "ui-column-title";
     public static final String COLUMN_FILTER_CLASS = "ui-column-filter ui-widget ui-state-default";
@@ -151,7 +151,7 @@ public class DataTable extends DataTableBaseImpl {
     public static final String CELL_EDITOR_OUTPUT_CLASS = "ui-cell-editor-output";
     public static final String CELL_EDITOR_DISABLED_CLASS = "ui-cell-editor-disabled";
     public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
-    public static final String ROW_EDITOR_CLASS = "ui-row-editor ui-helper-clearfix";
+    public static final String ROW_EDITOR_CLASS = "ui-row-editor";
     public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
     public static final String GROUPED_COLUMN_CLASS = "ui-grouped-column";
     public static final String EVEN_ROW_CLASS = "ui-datatable-even";

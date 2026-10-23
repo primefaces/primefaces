@@ -39,8 +39,8 @@ public class Steps extends StepsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Steps";
 
-    public static final String CONTAINER_CLASS = "ui-steps ui-widget ui-helper-clearfix";
-    public static final String READONLY_CONTAINER_CLASS = "ui-steps ui-steps-readonly ui-widget ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-steps ui-widget";
+    public static final String READONLY_CONTAINER_CLASS = "ui-steps ui-steps-readonly ui-widget";
     public static final String INACTIVE_ITEM_CLASS = "ui-steps-item ui-state-default ui-state-disabled";
     public static final String ACTIVE_ITEM_CLASS = "ui-steps-item ui-state-highlight";
     public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default";

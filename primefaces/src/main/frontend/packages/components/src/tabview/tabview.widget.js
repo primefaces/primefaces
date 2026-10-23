@@ -589,7 +589,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
         //aria
         oldPanel.attr('aria-hidden', true);
-        oldPanel.addClass('ui-helper-hidden');
+        oldPanel.addClass('p-hidden');
         oldHeader.find('a').attr('aria-expanded', false);
         oldHeader.find('a').attr('aria-selected', false);
         if(hasOldActions) {
@@ -597,7 +597,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         }
 
         newPanel.attr('aria-hidden', false);
-        newPanel.removeClass('ui-helper-hidden');
+        newPanel.removeClass('p-hidden');
         newHeader.find('a').attr('aria-expanded', true);
         newHeader.find('a').attr('aria-selected', true);
         if(hasNewActions) {

@@ -179,7 +179,7 @@
         justify-content: center;
         vertical-align: middle;
 
-        &.ui-helper-hidden {
+        &.p-hidden {
             display: none;
         }
     }

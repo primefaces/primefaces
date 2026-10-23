@@ -229,7 +229,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
         if (addId) {
             writer.writeAttribute("id", component.getClientId(context), "id");
         }
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         Converter converter = component.getConverter();
         String name = component.getClientId(context);
@@ -272,7 +272,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);

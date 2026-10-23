@@ -144,7 +144,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
     bindGlobal() {
         this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
             .appendTo('body');
-        this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow"></div>');
+        this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text"></div>');
 
         this.jq.addClass(this.cfg.styleClass);
 
