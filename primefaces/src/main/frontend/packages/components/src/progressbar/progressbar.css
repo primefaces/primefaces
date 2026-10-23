@@ -51,6 +51,19 @@
     }
 }
 
+/*
+ * inside a selection (selected row / item, highlight background): the value can have the color of the selection
+ * (Nora: primary), so the bar takes the selection text color on a translucent track of it
+ */
+.ui-state-highlight .ui-progressbar {
+    background: color-mix(in srgb, var(--p-highlight-color), transparent 70%);
+
+    &:not(.ui-progressbar-success, .ui-progressbar-info, .ui-progressbar-warning, .ui-progressbar-danger) {
+        --_value-bg: var(--p-highlight-color);
+        --_label-color: var(--p-highlight-background);
+    }
+}
+
 .ui-progressbar-determinate {
     /* width is animated by the widget (jQuery), so no CSS transition here */
     .ui-progressbar-value {
