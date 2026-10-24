@@ -7,24 +7,24 @@
  * DraggableCfg.onStart}.
  * @this {PrimeFaces.widget.Draggable} PrimeFaces.widget.Draggable.OnStartCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnStartCallback.event The drag event that occurred.
- * @param {PrimeType.interaction.DraggableUi} PrimeFaces.widget.Draggable.OnStartCallback.ui Details about the drag event.
+ * @param {PrimeFacesTypes.interactions.DraggableUi} PrimeFaces.widget.Draggable.OnStartCallback.ui Details about the drag event.
  * 
  * @typedef PrimeFaces.widget.Draggable.OnStopCallback Callback for when dragging ends. See also {@link
  * DraggableCfg.onStop}.
  * @this {PrimeFaces.widget.Draggable} PrimeFaces.widget.Draggable.OnStopCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnStopCallback.event The drag event that occurred.
- * @param {PrimeType.interaction.DraggableUi} PrimeFaces.widget.Draggable.OnStopCallback.ui Details about the drag event.
+ * @param {PrimeFacesTypes.interactions.DraggableUi} PrimeFaces.widget.Draggable.OnStopCallback.ui Details about the drag event.
  * 
  * @typedef PrimeFaces.widget.Draggable.OnDragCallback Callback for when dragging. See also {@link DraggableCfg.onDrag}.
  * @this {PrimeFaces.widget.Draggable} PrimeFaces.widget.Draggable.OnDragCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnDragCallback.event The drag event that occurred.
- * @param {PrimeType.interaction.DraggableUi} PrimeFaces.widget.Draggable.OnDragCallback.ui Details about the drag event.
+ * @param {PrimeFacesTypes.interactions.DraggableUi} PrimeFaces.widget.Draggable.OnDragCallback.ui Details about the drag event.
  * 
  * @interface {PrimeFaces.widget.DraggableCfg} cfg The configuration for the {@link  Draggable| Draggable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {PrimeType.interaction.DraggableOptions} cfg
+ * @extends {PrimeFacesTypes.interactions.DraggableOptions} cfg
  * 
  * @prop {JQuery} jqTarget The DOM element of the target that should be made draggable.
  * 
@@ -70,11 +70,11 @@ PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidg
             }
         };
 
-        this.jqTarget.draggable(this.cfg);
+        PrimeFaces.interactions.draggable(this.jqTarget, this.cfg);
 
         this.addDestroyListener(function() {
             if ($this.jqTarget.length) {
-                $this.jqTarget.draggable('destroy');
+                PrimeFaces.interactions.destroy($this.jqTarget, 'draggable');
             }
         });
     }
@@ -90,7 +90,7 @@ PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidg
  * DroppableCfg.onDrop}.
  * @this {PrimeFaces.widget.Droppable} PrimeFaces.widget.Droppable.OnDropCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Droppable.OnDropCallback.event The drop event that occurred.
- * @param {PrimeType.interaction.DroppableUi} PrimeFaces.widget.Droppable.OnDropCallback.ui Details about the drop event.
+ * @param {PrimeFacesTypes.interactions.DroppableUi} PrimeFaces.widget.Droppable.OnDropCallback.ui Details about the drop event.
  * 
  * @prop {JQuery} jqTarget The DOM element of the target that should be made droppable.
  * 
@@ -98,7 +98,7 @@ PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidg
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {PrimeType.interaction.DroppableOptions} cfg
+ * @extends {PrimeFacesTypes.interactions.DroppableOptions} cfg
  * 
  * @prop {PrimeFaces.widget.Droppable.OnDropCallback} cfg.onDrop Callback for when an items is dropped.
  * @prop {string} cfg.target ID of the target of this droppable.
@@ -116,12 +116,12 @@ PrimeFaces.widget.Droppable = class Droppable extends PrimeFaces.widget.BaseWidg
 
         this.bindDropListener();
 
-        this.jqTarget.droppable(this.cfg);
+        PrimeFaces.interactions.droppable(this.jqTarget, this.cfg);
 
         var $this = this;
         this.addDestroyListener(function() {
             if ($this.jqTarget.length) {
-                $this.jqTarget.droppable('destroy');
+                PrimeFaces.interactions.destroy($this.jqTarget, 'droppable');
             }
         });
     }

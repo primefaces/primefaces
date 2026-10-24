@@ -1866,7 +1866,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {number} An estimate in pixels for the width of the native scrollbar.
      */
     getScrollbarWidth() {
-        return PrimeFaces.env.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+        return PrimeFaces.calculateScrollbarWidth();
     }
 
     /**
@@ -1907,7 +1907,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
         $this = this;
 
-        resizers.draggable({
+        PrimeFaces.interactions.draggable(resizers, {
             axis: 'x',
             start: function() {
                 if($this.cfg.liveResize) {
@@ -1974,7 +1974,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * Callback for when a row was resized. Adjust the column widths.
      * @private
      * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
-     * @param {PrimeType.interaction.DraggableUi} ui Details about the resize.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Details about the resize.
      */
     resize(event, ui) {
         var columnHeader = ui.helper.parent(),
@@ -1997,8 +1997,9 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         }
 
         const tableWidthChange = change > 0 ? -change : change;
-        const scrollbarWidth = this.getScrollbarWidth();
-        if(newWidth > scrollbarWidth && nextColumnWidth > scrollbarWidth || (expandMode && newWidth > scrollbarWidth)) {
+        // the minimum width of a column, like in the DataTable (it was the scrollbar width, which is 0 for overlay scrollbars)
+        const minWidth = parseInt(columnHeader.css('min-width')) || 15;
+        if(newWidth > minWidth && nextColumnWidth > minWidth || (expandMode && newWidth > minWidth)) {
             if (expandMode) {
                 table.width(table.width() + tableWidthChange);
                 setTimeout(function () {

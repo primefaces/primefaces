@@ -9,7 +9,7 @@ import { core } from "./core.js";
  */
 
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes.effects {
         /**
          * Mode of an effect:
          *
@@ -19,24 +19,24 @@ declare global {
          * - `effect`: runs the effect on the element without showing or hiding it.
          * @since 17.0.0
          */
-        export type EffectMode = "show" | "hide" | "toggle" | "effect";
+        export type Mode = "show" | "hide" | "toggle" | "effect";
 
         /**
          * Callback invoked when an effect has finished.
          * @since 17.0.0
          */
-        export type EffectCallback = (this: HTMLElement) => void;
+        export type Callback = (this: HTMLElement) => void;
 
         /**
          * Options for the effects of {@link PrimeFaces.effects}. Besides the general options, each effect supports
          * its own options, e.g. `direction` for `blind`.
          * @since 17.0.0
          */
-        export interface EffectOptions {
+        export interface Options {
             /**
              * The mode of the effect, defaults to the default mode of the effect.
              */
-            mode?: EffectMode;
+            mode?: Mode;
             /**
              * Duration in milliseconds, or one of `fast` (200), `normal` (400) and `slow` (600). Defaults to 400.
              */
@@ -49,7 +49,7 @@ declare global {
             /**
              * Called when the effect has finished.
              */
-            complete?: EffectCallback | null;
+            complete?: Callback | null;
             /**
              * By default, the effect is queued after the running effects and animations of the element. With
              * `false`, the running and queued effects and animations are finished first and the effect starts
@@ -115,10 +115,10 @@ declare global {
         }
 
         /**
-         * Context passed to an {@link EffectImplementation}.
+         * Context passed to an {@link Implementation}.
          * @since 17.0.0
          */
-        export interface EffectContext {
+        export interface Context {
             /**
              * The element to animate.
              */
@@ -135,7 +135,7 @@ declare global {
             /**
              * The options of the effect.
              */
-            options: EffectOptions;
+            options: Options;
             /**
              * The duration in milliseconds.
              */
@@ -149,7 +149,7 @@ declare global {
              * the effect has finished, so the effect styles are removed again.
              * @param keyframes The keyframes to animate.
              * @param target The element to animate, defaults to the element of the effect.
-             * @return A promise that resolves when the animation finished.
+             * @returns A promise that resolves when the animation finished.
              */
             animate(keyframes: Keyframe[], target?: Element): Promise<void>;
             /**
@@ -157,7 +157,7 @@ declare global {
              * keyframes. Each step uses the easing of the effect.
              * @param keyframes The keyframes to animate.
              * @param durations The durations of the steps, one less than the keyframes.
-             * @return A promise that resolves when the animation finished.
+             * @returns A promise that resolves when the animation finished.
              */
             animateSteps(keyframes: Keyframe[], durations: number[]): Promise<void>;
             /**
@@ -168,35 +168,65 @@ declare global {
         }
 
         /**
-         * Implementation of an effect registered with {@link PrimeFaces.effects.register}.
+         * Implementation of an effect registered with {@link PrimeFaces.effects.register}. It receives the
+         * {@link Context} and animates the element with {@link Context.animate} or
+         * {@link Context.animateSteps}. The effect is finished when the returned promise resolves, or
+         * immediately when nothing is returned.
          * @since 17.0.0
          */
-        export type EffectImplementation = (context: EffectContext) => Promise<void> | void;
+        export type Implementation = (context: Context) => Promise<void> | void;
     }
 }
 
+/**
+ * A registered effect: its default mode and its implementation.
+ */
 interface EffectDefinition {
-    mode: PrimeType.EffectMode;
-    run: PrimeType.EffectImplementation;
+    /** The mode used when the options of the effect do not specify one, e.g. `hide` for `blind`. */
+    mode: PrimeFacesTypes.effects.Mode;
+    /** Animates the element, see {@link PrimeFacesTypes.effects.Implementation}. */
+    run: PrimeFacesTypes.effects.Implementation;
 }
 
+/**
+ * State of the effect currently running on an element, used to finish it early via {@link Effects.stop}.
+ */
 interface RunningEffect {
+    /** The Web Animations started by the effect, cancelled when the effect finishes to remove the effect styles. */
     animations: Animation[];
+    /** Functions registered via {@link PrimeFacesTypes.effects.Context.onCleanup}, called when the effect finishes. */
     cleanups: (() => void)[];
-    finish: () => void;
+    /**
+     * Finishes the effect: hides the element in `hide` mode, runs the cleanups, cancels the animations, calls the
+     * `complete` callback and dequeues the next effect. Calling it again does nothing.
+     * @param stopped `true` when called by {@link Effects.stop}, which cleared the queue already: the next effect is
+     * not dequeued, as that would remove the marker of an effect the `complete` callback just started.
+     */
+    finish: (stopped?: boolean) => void;
 }
 
+/** A pair of numbers, e.g. the horizontal and vertical scale factor. */
 type Point = [number, number];
 
+/** Durations in milliseconds of the named speeds, as in jQuery (`$.fx.speeds`). */
 const SPEEDS: Record<string, number> = { fast: 200, normal: 400, slow: 600 };
 
+/** Matches the CSS easing functions, which are passed to the Web Animations API unchanged. */
 const CSS_EASING = /^(linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end)$|^(cubic-bezier|steps|linear)\(/;
 
+/** CSS `linear()` easing functions sampled from the jQuery easing functions, by name of the jQuery easing. */
 const easingCache: Record<string, string> = {};
 
+/** The effect currently running on each element. */
 const runningEffects: WeakMap<HTMLElement, RunningEffect> = new WeakMap();
 
-function resolveDuration(duration: PrimeType.EffectOptions["duration"]): number {
+/**
+ * Resolves the `duration` option of an effect into milliseconds. Returns `0` when animations are disabled via
+ * `$.fx.off` or {@link PrimeFaces.animationEnabled}, so effects finish immediately.
+ * @param duration Duration in milliseconds, a named speed (`fast`, `normal`, `slow`) or a numeric string.
+ * @returns The duration in milliseconds, never negative; `400` for a missing or invalid duration.
+ */
+function resolveDuration(duration: PrimeFacesTypes.effects.Options["duration"]): number {
     if ($.fx.off || !core.animationEnabled) {
         return 0;
     }
@@ -216,7 +246,11 @@ function resolveDuration(duration: PrimeType.EffectOptions["duration"]): number 
 }
 
 /**
- * Converts the name of a jQuery easing function into a CSS easing function.
+ * Converts the name of a jQuery easing function into a CSS easing function. CSS easing functions are returned
+ * unchanged, jQuery easing functions from `$.easing` are sampled into a cached CSS `linear()` function and unknown
+ * names fall back to `ease`.
+ * @param easing The name of a jQuery easing function or a CSS easing function, defaults to `swing`.
+ * @returns The CSS easing function for the Web Animations API.
  */
 function resolveEasing(easing: string | null | undefined): string {
     const name = easing || "swing";
@@ -244,33 +278,68 @@ function resolveEasing(easing: string | null | undefined): string {
     return cssEasing;
 }
 
+/**
+ * Formats a number as CSS pixel length.
+ * @param value The length in pixels.
+ * @returns The CSS length, e.g. `10px`.
+ */
 function px(value: number): string {
     return value + "px";
 }
 
+/**
+ * Builds the value of the CSS `translate` property that moves an element along one axis.
+ * @param axis The axis to move along.
+ * @param value The distance in pixels, negative to move up or left.
+ * @returns The CSS `translate` value, e.g. `10px 0px`.
+ */
 function translate(axis: "x" | "y", value: number): string {
     return axis === "x" ? px(value) + " 0px" : "0px " + px(value);
 }
 
+/**
+ * Determines the computed opacity of an element, so effects fading the element restore its own opacity.
+ * @param element The element to check.
+ * @returns The computed opacity, `1` if it cannot be determined.
+ */
 function opacityOf(element: HTMLElement): number {
     const opacity = parseFloat(getComputedStyle(element).opacity);
     return isNaN(opacity) ? 1 : opacity;
 }
 
+/**
+ * Checks whether a direction moves along the vertical axis.
+ * @param direction The `direction` option of an effect.
+ * @returns `true` for `up` and `down`, `false` otherwise.
+ */
 function isVertical(direction: string): boolean {
     return direction === "up" || direction === "down";
 }
 
+/**
+ * Checks whether a direction moves towards the negative coordinates.
+ * @param direction The `direction` option of an effect.
+ * @returns `true` for `up` and `left`, `false` otherwise.
+ */
 function isNegative(direction: string): boolean {
     return direction === "up" || direction === "left";
 }
 
+/**
+ * Determines the outer size of an element along one axis.
+ * @param jq The element to measure.
+ * @param axis `x` for the outer width, `y` for the outer height.
+ * @param includeMargin Whether to include the margin.
+ * @returns The outer size in pixels, `0` if it cannot be determined.
+ */
 function outerSize(jq: JQuery<HTMLElement>, axis: "x" | "y", includeMargin?: boolean): number {
     return (axis === "x" ? jq.outerWidth(!!includeMargin) : jq.outerHeight(!!includeMargin)) ?? 0;
 }
 
 /**
  * Builds the `inset()` of a `clip-path`, that hides the element up to the given side.
+ * @param side The side from which the element is clipped away, e.g. `bottom` leaves the top edge last.
+ * @returns The `clip-path` value that hides the whole element.
  */
 function hiddenInset(side: "top" | "right" | "bottom" | "left"): string {
     switch (side) {
@@ -287,18 +356,36 @@ function hiddenInset(side: "top" | "right" | "bottom" | "left"): string {
 
 /**
  * A negative bottom (`y`) or right (`x`) margin that removes the given part of the element from the layout, so the
- * following content moves while the element is clipped.
+ * following content moves while the element is clipped. The size is pinned, as the negative margin would stretch an
+ * element with an automatic size.
+ * @param ctx The context of the running effect.
+ * @param axis `y` to collapse the height via the bottom margin, `x` to collapse the width via the right margin.
+ * @param part The size in pixels to remove from the layout, `0` for the full size.
+ * @returns The keyframe properties with the margin and the pinned size.
  */
-function collapse(ctx: PrimeType.EffectContext, axis: "x" | "y", part: number): Keyframe {
+function collapse(ctx: PrimeFacesTypes.effects.Context, axis: "x" | "y", part: number): Keyframe {
     const property = axis === "y" ? "marginBottom" : "marginRight";
-    return { [property]: px((parseFloat(ctx.jq.css(property)) || 0) - part) };
+    const size = axis === "y" ? "height" : "width";
+    return { [property]: px((parseFloat(ctx.jq.css(property)) || 0) - part), [size]: getComputedStyle(ctx.element)[size] };
 }
 
+/**
+ * Computes the scale factors of the `scale` and `puff` effects for the given direction.
+ * @param direction The `direction` option: `vertical` or `horizontal` scales one axis only, anything else both.
+ * @param percent The percentage to scale to.
+ * @returns The horizontal and vertical scale factor.
+ */
 function scaleFactor(direction: string | undefined, percent: number): Point {
     const factor = percent / 100;
     return [direction === "vertical" ? 1 : factor, direction === "horizontal" ? 1 : factor];
 }
 
+/**
+ * Parses the value of the CSS `scale` property (e.g. `1.5`, `50% 2`), so an inline scale of the element is kept
+ * while scaling.
+ * @param value The value of the CSS `scale` property.
+ * @returns The horizontal and vertical scale factor, `[1, 1]` for an empty value or `none`.
+ */
 function parseScale(value: string): Point {
     if (!value || value === "none") {
         return [1, 1];
@@ -308,7 +395,13 @@ function parseScale(value: string): Point {
     return [x, parts.length > 1 && !isNaN(parts[1]!) ? parts[1]! : x];
 }
 
-function transformOrigin(origin: PrimeType.EffectOptions["origin"]): string {
+/**
+ * Converts the `origin` option of the `scale` and `puff` effects into a CSS `transform-origin`.
+ * @param origin The vanishing point as `[vertical, horizontal]`, with the keywords `top` / `middle` / `bottom` and
+ * `left` / `center` / `right` or pixel values. Defaults to `["middle", "center"]`.
+ * @returns The CSS `transform-origin` value, e.g. `50% 0%`.
+ */
+function transformOrigin(origin: PrimeFacesTypes.effects.Options["origin"]): string {
     const [vertical, horizontal] = origin || ["middle", "center"];
     const y = vertical === "top" ? "0%" : vertical === "bottom" ? "100%" : vertical === "middle" ? "50%" : px(Number(vertical));
     const x = horizontal === "left" ? "0%" : horizontal === "right" ? "100%" : horizontal === "center" ? "50%" : px(Number(horizontal));
@@ -316,9 +409,14 @@ function transformOrigin(origin: PrimeType.EffectOptions["origin"]): string {
 }
 
 /**
- * Shared implementation of the `scale` and `puff` effects.
+ * Shared implementation of the `scale` and `puff` effects. Scales the element between its current scale and the
+ * given percentage around the `origin`, optionally fading it. In `effect` mode, the element keeps the new scale.
+ * @param ctx The context of the running effect.
+ * @param percent The percentage to scale to.
+ * @param fade Whether to fade the element while scaling.
+ * @returns A promise that resolves when the animation finished.
  */
-function scaleEffect(ctx: PrimeType.EffectContext, percent: number, fade: boolean): Promise<void> {
+function scaleEffect(ctx: PrimeFacesTypes.effects.Context, percent: number, fade: boolean): Promise<void> {
     const base = parseScale(ctx.element.style.scale);
     const factor = scaleFactor(ctx.options.direction, percent);
     const origin = transformOrigin(ctx.options.origin);
@@ -345,9 +443,19 @@ function scaleEffect(ctx: PrimeType.EffectContext, percent: number, fade: boolea
     return ctx.animate(ctx.mode === "show" ? [scaled, visible] : [visible, scaled]);
 }
 
+/**
+ * The effects by name: the built-in effects formerly provided by jQuery UI plus the effects added via
+ * {@link Effects.register}.
+ */
 const effectDefinitions: Record<string, EffectDefinition> = {
     blind: {
         mode: "hide",
+        /**
+         * Blind: rolls the element up towards one edge with a `clip-path` (`direction` `up` / `vertical` (default),
+         * `down`, `left` / `horizontal` or `right`), while the following content moves into the freed space.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const sides: Record<string, "top" | "right" | "bottom" | "left"> = {
                 up: "bottom", vertical: "bottom", down: "top", left: "right", horizontal: "right", right: "left"
@@ -362,6 +470,13 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     bounce: {
         mode: "effect",
+        /**
+         * Bounce: bounces the element `times` times (default 5) by `distance` (default a third of its size) in the
+         * given `direction` (default `up`), halving the distance with each bounce. In `show` mode, the element first
+         * drops in while fading in; in `hide` mode, the bounces grow and the element fades out during the last one.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const direction = ctx.options.direction || "up";
             const axis = isVertical(direction) ? "y" : "x";
@@ -386,6 +501,8 @@ const effectDefinitions: Record<string, EffectDefinition> = {
                 distance = hide ? distance * 2 : distance / 2;
             }
             if (hide) {
+                // fade out during the last bounce only
+                keyframes[keyframes.length - 1]!.opacity = opacity;
                 keyframes.push({ translate: translate(axis, sign * distance), opacity: 0 });
             }
 
@@ -395,6 +512,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     clip: {
         mode: "hide",
+        /**
+         * Clip: clips the element towards its center with a `clip-path`, `vertical`ly (default), `horizontal`ly or
+         * in `both` directions.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const direction = ctx.options.direction || "vertical";
             const hidden = {
@@ -407,6 +530,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     drop: {
         mode: "hide",
+        /**
+         * Drop: moves the element by `distance` (default half its outer size including the margin) in the given
+         * `direction` (default `left`) while fading it out, or the reverse in `show` mode.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const direction = ctx.options.direction || "left";
             const axis = isVertical(direction) ? "y" : "x";
@@ -419,6 +548,13 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     explode: {
         mode: "hide",
+        /**
+         * Explode: splits the element into `pieces` (default 9, rounded to a square grid) that fly apart from the
+         * center while fading out, or fly together in `show` mode. The pieces are clones of the element (without
+         * IDs) appended to the body and removed when the effect finishes; the element itself is invisible meanwhile.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animations of all pieces finished.
+         */
         run(ctx) {
             const rows = ctx.options.pieces ? Math.round(Math.sqrt(ctx.options.pieces)) : 3;
             const show = ctx.mode === "show";
@@ -480,6 +616,11 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     fade: {
         mode: "toggle",
+        /**
+         * Fade: fades the element between its own opacity and transparent.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const hidden = { opacity: 0 };
             const visible = { opacity: opacityOf(ctx.element) };
@@ -489,6 +630,13 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     fold: {
         mode: "hide",
+        /**
+         * Fold: folds the element like a sheet of paper, first vertically down to `size` (default 15 pixels, or a
+         * percentage of the folded dimension), then horizontally; with `horizFirst` the other way round. Each fold
+         * takes half of the duration and the height leaves the layout while the element is folded.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const show = ctx.mode === "show";
             const hide = ctx.mode === "hide";
@@ -520,6 +668,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     highlight: {
         mode: "show",
+        /**
+         * Highlight: animates the background from the highlight `color` (default `#ffff99`) back to the background
+         * color of the element; in `hide` mode, the element also fades out.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const from: Keyframe = { backgroundImage: "none", backgroundColor: ctx.options.color || "#ffff99" };
             const to: Keyframe = { backgroundImage: "none", backgroundColor: getComputedStyle(ctx.element).backgroundColor };
@@ -533,6 +687,11 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     puff: {
         mode: "hide",
+        /**
+         * Puff: scales the element up to `percent` (default 150) while fading it out, or the reverse in `show` mode.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             return scaleEffect(ctx, parseInt(String(ctx.options.percent), 10) || 150, true);
         }
@@ -540,6 +699,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     pulsate: {
         mode: "show",
+        /**
+         * Pulsate: blinks the element `times` times (default 5) by animating its opacity. In `show` mode (or when the
+         * element is hidden) it starts transparent and ends visible; in `hide` mode it ends transparent.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const show = ctx.mode === "show";
             const anims = (ctx.options.times || 5) * 2 + (show || ctx.mode === "hide" ? 1 : 0);
@@ -567,6 +732,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     scale: {
         mode: "effect",
+        /**
+         * Scale: scales the element to `percent` (default 0 in `show` / `hide` mode, 100 in `effect` mode) in the given
+         * `direction` (`both`, `vertical` or `horizontal`) around the `origin`, fading it when `fade` is set.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const parsed = parseInt(String(ctx.options.percent), 10);
             const percent = isNaN(parsed) ? (ctx.mode !== "effect" ? 0 : 100) : parsed;
@@ -576,6 +747,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     shake: {
         mode: "effect",
+        /**
+         * Shake: shakes the element back and forth `times` times (default 3) by `distance` (default 20 pixels) along
+         * the axis of the given `direction` (default `left`), ending at its original position.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const direction = ctx.options.direction || "left";
             const axis = isVertical(direction) ? "y" : "x";
@@ -598,6 +775,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     size: {
         mode: "effect",
+        /**
+         * Size: resizes the element with hidden overflow from `from` (default its current size) to `to` (default
+         * `0x0`), or the reverse in `show` mode. In `effect` mode, the element keeps the target size.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const jq = ctx.jq;
             const originalWidth = jq.width() ?? 0;
@@ -615,6 +798,11 @@ const effectDefinitions: Record<string, EffectDefinition> = {
                 [from, to] = [to, from];
             }
 
+            /**
+             * Creates the keyframe for the given content size, adding padding and border for `border-box` sizing.
+             * @param size The content width and height in pixels.
+             * @returns The keyframe with the size and hidden overflow.
+             */
             const keyframe = (size: { width: number; height: number }): Keyframe => ({
                 overflow: "hidden",
                 width: px(size.width + extraWidth),
@@ -634,6 +822,12 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     slide: {
         mode: "show",
+        /**
+         * Slide: slides the element out of its box by `distance` (default its outer size including the margin) in the
+         * given `direction` (default `left`), clipping the part outside the box; in `show` mode it slides in.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished.
+         */
         run(ctx) {
             const direction = ctx.options.direction || "left";
             const axis = isVertical(direction) ? "y" : "x";
@@ -650,6 +844,13 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 
     transfer: {
         mode: "effect",
+        /**
+         * Transfer: animates an outline element (style class `p-effect-transfer` plus `className`) from the bounds of
+         * the element to the bounds of the target element given by `to`. The outline element is appended to the body
+         * and removed when the effect finishes.
+         * @param ctx The context of the running effect.
+         * @returns A promise that resolves when the animation finished, nothing when the target does not exist.
+         */
         run(ctx) {
             const target = $(ctx.options.to as any) as JQuery<HTMLElement>;
             if (!target.length) {
@@ -686,7 +887,9 @@ const effectDefinitions: Record<string, EffectDefinition> = {
 };
 
 /**
- * Easing functions formerly provided by jQuery UI, e.g. `easeInOutCirc`, registered in `$.easing`.
+ * Registers the easing functions formerly provided by jQuery UI in `$.easing`: the `easeIn`, `easeOut` and
+ * `easeInOut` variants (e.g. `easeInOutCirc`) of `Quad`, `Cubic`, `Quart`, `Quint`, `Expo`, `Sine`, `Circ`,
+ * `Elastic`, `Back` and `Bounce`. Existing easing functions with the same name are not overridden.
  */
 function registerEasings(): void {
     const baseEasings: Record<string, (p: number) => number> = {
@@ -729,33 +932,45 @@ function registerEasings(): void {
  */
 export class Effects {
     /**
-     * Checks whether an effect with the given name exists.
+     * Checks whether an effect with the given name exists, either built-in (e.g. `fade`, `slide`) or registered via
+     * {@link register}.
      * @param effect The name of an effect.
-     * @return `true` if the effect exists.
+     * @returns `true` if the effect exists, `false` for an unknown or empty name.
      */
     exists(effect: string | null | undefined): boolean {
         return !!effect && Object.prototype.hasOwnProperty.call(effectDefinitions, effect);
     }
 
     /**
-     * Registers a custom effect or overrides an existing one.
+     * Registers a custom effect or overrides an existing one. The implementation receives a
+     * {@link PrimeFacesTypes.effects.Context} and animates the element with its `animate` / `animateSteps` methods; the
+     * showing, hiding, queueing and the `complete` callback are handled by this module.
+     *
+     * ```js
+     * PrimeFaces.effects.register('spin', 'effect', (ctx) => ctx.animate([{ rotate: '0deg' }, { rotate: '360deg' }]));
+     * ```
      * @param effect The name of the effect.
-     * @param mode The default mode of the effect.
+     * @param mode The default mode of the effect, used when the options do not specify one.
      * @param implementation The implementation of the effect.
      */
-    register(effect: string, mode: PrimeType.EffectMode, implementation: PrimeType.EffectImplementation): void {
+    register(effect: string, mode: PrimeFacesTypes.effects.Mode, implementation: PrimeFacesTypes.effects.Implementation): void {
         effectDefinitions[effect] = { mode, run: implementation };
     }
 
     /**
      * Runs an effect on the given elements, in the mode given by the options or else in the default mode of the
      * effect (e.g. `hide` for `blind`, `effect` for `shake`).
+     *
+     * By default, the effect is added to the jQuery `fx` queue of each element, so it starts after the running
+     * effects and animations; with `queue: false` these are finished first and the effect starts immediately. An
+     * explicit `show` / `hide` mode that is already fulfilled only calls `complete`, and an unknown effect just
+     * shows / hides the element. When animations are disabled, the effect finishes synchronously.
      * @param element The elements to animate.
      * @param effect The name of the effect.
      * @param options The options of the effect.
-     * @return The given elements, for chaining.
+     * @returns The given elements, for chaining.
      */
-    run<T extends JQuery<any>>(element: T, effect: string, options?: PrimeType.EffectOptions | null): T {
+    run<T extends JQuery<any>>(element: T, effect: string, options?: PrimeFacesTypes.effects.Options | null): T {
         const opts = { ...options };
         const queue = opts.queue !== false;
 
@@ -774,53 +989,70 @@ export class Effects {
     }
 
     /**
-     * Shows the given elements with an effect.
+     * Shows the given elements with an effect, see {@link run}. Elements that are already visible are not animated.
      * @param element The elements to show.
-     * @param effect The name of the effect. Without an effect, the elements are shown immediately.
-     * @param options The options of the effect.
-     * @return The given elements, for chaining.
+     * @param effect The name of the effect. Without an effect, the elements are shown immediately and `complete` is
+     * called synchronously.
+     * @param options The options of the effect, the `mode` is always `show`.
+     * @returns The given elements, for chaining.
      */
-    show<T extends JQuery<any>>(element: T, effect: string | null | undefined, options?: PrimeType.EffectOptions | null): T {
+    show<T extends JQuery<any>>(element: T, effect: string | null | undefined, options?: PrimeFacesTypes.effects.Options | null): T {
         return this.runMode(element, effect, options, "show");
     }
 
     /**
-     * Hides the given elements with an effect.
+     * Hides the given elements with an effect, see {@link run}. Elements that are already hidden are not animated.
+     * The elements are hidden (`display: none`) when the effect finished.
      * @param element The elements to hide.
-     * @param effect The name of the effect. Without an effect, the elements are hidden immediately.
-     * @param options The options of the effect.
-     * @return The given elements, for chaining.
+     * @param effect The name of the effect. Without an effect, the elements are hidden immediately and `complete` is
+     * called synchronously.
+     * @param options The options of the effect, the `mode` is always `hide`.
+     * @returns The given elements, for chaining.
      */
-    hide<T extends JQuery<any>>(element: T, effect: string | null | undefined, options?: PrimeType.EffectOptions | null): T {
+    hide<T extends JQuery<any>>(element: T, effect: string | null | undefined, options?: PrimeFacesTypes.effects.Options | null): T {
         return this.runMode(element, effect, options, "hide");
     }
 
     /**
-     * Shows the hidden or hides the visible elements with an effect.
+     * Shows the hidden or hides the visible elements with an effect, see {@link run}. The visibility of each element
+     * is checked when its effect starts, i.e. after the effects queued before.
      * @param element The elements to toggle.
-     * @param effect The name of the effect. Without an effect, the elements are toggled immediately.
-     * @param options The options of the effect.
-     * @return The given elements, for chaining.
+     * @param effect The name of the effect. Without an effect, the elements are toggled immediately and `complete` is
+     * called synchronously.
+     * @param options The options of the effect, the `mode` is always `toggle`.
+     * @returns The given elements, for chaining.
      */
-    toggle<T extends JQuery<any>>(element: T, effect: string | null | undefined, options?: PrimeType.EffectOptions | null): T {
+    toggle<T extends JQuery<any>>(element: T, effect: string | null | undefined, options?: PrimeFacesTypes.effects.Options | null): T {
         return this.runMode(element, effect, options, "toggle");
     }
 
     /**
-     * Finishes the running effects and animations of the given elements immediately and clears their queue.
+     * Finishes the running effects and animations of the given elements immediately and clears their queue. A running
+     * effect jumps to its end state: in `hide` mode the element gets hidden, the effect styles are removed and its
+     * `complete` callback is called. Queued effects are discarded without calling their callbacks.
      * @param element The elements to stop.
-     * @return The given elements, for chaining.
+     * @returns The given elements, for chaining.
      */
     stop<T extends JQuery<any>>(element: T): T {
-        // clear the queue first, so finishing the running effect does not start the next one
-        element.clearQueue("fx");
+        // clear the queue and finish the jQuery animations first, so finishing the running effect does not start the
+        // next one, and an effect its complete callback starts keeps running and queued
+        element.stop(true, true);
         element.each((_, el) => {
-            runningEffects.get(el)?.finish();
+            runningEffects.get(el)?.finish(true);
         });
-        return element.stop(true, true);
+        return element;
     }
 
-    private runMode<T extends JQuery<any>>(element: T, effect: string | null | undefined, options: PrimeType.EffectOptions | null | undefined,
+    /**
+     * Shared implementation of {@link show}, {@link hide} and {@link toggle}: runs the effect in the given mode, or
+     * without an effect, shows / hides / toggles the elements immediately via jQuery and calls `complete` for each.
+     * @param element The elements to show, hide or toggle.
+     * @param effect The name of the effect, empty to change the visibility without effect.
+     * @param options The options of the effect.
+     * @param mode The mode that overrides the mode of the options.
+     * @returns The given elements, for chaining.
+     */
+    private runMode<T extends JQuery<any>>(element: T, effect: string | null | undefined, options: PrimeFacesTypes.effects.Options | null | undefined,
             mode: "show" | "hide" | "toggle"): T {
         if (!effect) {
             const complete = options?.complete;
@@ -833,13 +1065,30 @@ export class Effects {
         return this.run(element, effect, { ...options, mode });
     }
 
-    private execute(el: HTMLElement, effect: string, options: PrimeType.EffectOptions, next?: () => void): void {
+    /**
+     * Runs an effect on a single element. Resolves the mode (`toggle` by the current visibility), shows the element
+     * for `show` / `hide`, registers the {@link RunningEffect} so {@link stop} can finish it, builds the
+     * {@link PrimeFacesTypes.effects.Context} and calls the implementation of the effect. When the implementation is done
+     * (or fails, which is logged), the effect is finished: the element is hidden in `hide` mode, the cleanups run,
+     * the animations are cancelled, `complete` is called and the next queued effect starts.
+     * @param el The element to animate.
+     * @param effect The name of the effect.
+     * @param options The options of the effect.
+     * @param next Dequeues the next effect of the `fx` queue, when the effect was queued.
+     */
+    private execute(el: HTMLElement, effect: string, options: PrimeFacesTypes.effects.Options, next?: () => void): void {
         const jq = $(el);
         const definition = this.exists(effect) ? effectDefinitions[effect] : undefined;
         const duration = resolveDuration(options.duration);
-        const done = () => {
+        /**
+         * Calls the `complete` callback and dequeues the next effect.
+         * @param stopped Whether the effect was stopped, the queue was cleared then and nothing is dequeued.
+         */
+        const done = (stopped: boolean = false) => {
             options.complete?.call(el);
-            next?.();
+            if (!stopped) {
+                next?.();
+            }
         };
 
         // resolve the mode, an explicit mode that is already fulfilled does nothing
@@ -869,7 +1118,7 @@ export class Effects {
         const running: RunningEffect = {
             animations: [],
             cleanups: [],
-            finish: () => {
+            finish: (stopped?: boolean) => {
                 if (finished) {
                     return;
                 }
@@ -887,21 +1136,48 @@ export class Effects {
                 for (const animation of running.animations) {
                     animation.cancel();
                 }
-                done();
+                done(stopped);
             }
         };
         runningEffects.set(el, running);
 
         const easing = resolveEasing(options.easing);
+        /**
+         * Starts a Web Animation that is tracked by the running effect, so it is cancelled when the effect finishes.
+         * Does nothing when the effect has already finished. As the `finished` promise does not resolve in hidden
+         * tabs, the animation is finished by a timeout as a fallback.
+         * @param keyframes The keyframes to animate.
+         * @param target The element to animate.
+         * @param animationDuration The duration in milliseconds.
+         * @param animationEasing The CSS easing function.
+         * @returns A promise that resolves when the animation finished or was cancelled.
+         */
         const animate = (keyframes: Keyframe[], target: Element = el, animationDuration: number = duration,
                 animationEasing: string = easing): Promise<void> => {
+            if (finished) {
+                return Promise.resolve();
+            }
             const animation = target.animate(keyframes, { duration: animationDuration, easing: animationEasing, fill: "both" });
             running.animations.push(animation);
+            // the finished promise resolves in the rendering update, which does not run in hidden tabs: finish the
+            // animation there; in a visible tab it may just have started later (busy main thread), so check again
+            const fallback = (): void => {
+                if (animation.playState === "idle" || animation.playState === "finished") {
+                    return;
+                }
+                if (document.visibilityState === "hidden") {
+                    animation.finish();
+                }
+                else {
+                    setTimeout(fallback, Math.max(0, animationDuration - (Number(animation.currentTime) || 0)) + 100);
+                }
+            };
+            setTimeout(fallback, animationDuration + 100);
             // a cancelled animation rejects, treat it as finished
             return animation.finished.then(() => undefined, () => undefined);
         };
 
-        const context: PrimeType.EffectContext = {
+        const context: PrimeFacesTypes.effects.Context = {
             element: el,
             jq,
             mode,
@@ -931,15 +1207,23 @@ export class Effects {
         catch (error) {
             core.error(error);
         }
-        Promise.resolve(result).catch((error: unknown) => core.error(error)).then(running.finish);
+        Promise.resolve(result).catch((error: unknown) => core.error(error)).then(() => running.finish());
+        if (duration === 0) {
+            // without animation, the effect finishes synchronously like in jQuery
+            running.finish();
+        }
     }
 }
 
 /**
- * The effects module of PrimeFaces.
+ * The effects module of PrimeFaces, available as {@link PrimeFaces.effects}.
  */
 export const effects: Effects = new Effects();
 
+/**
+ * Global setup of the effects module, called once when PrimeFaces is loaded: registers the jQuery UI easing
+ * functions in `$.easing`.
+ */
 export function globalEffectsSetup(): void {
     registerEasings();
 }

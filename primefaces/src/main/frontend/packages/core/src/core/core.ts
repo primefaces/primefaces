@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { ajax, type Ajax } from "./core.ajax.js";
 import { csp, type Csp } from "./core.csp.js";
 import { effects, type Effects } from "./core.effects.js";
+import { interactions, type Interactions } from "./core.interactions.js";
 import { clientwindow, type ClientWindow } from "./core.clientwindow.js";
 import { env, type Environment } from "./core.env.js";
 import { expressions, type Expressions } from "./core.expressions.js";
@@ -23,9 +24,9 @@ declare global {
     }
 }
 
-type HookMap = {[P in keyof PrimeType.HookRegistry]: Set<PrimeType.HookRegistry[P]>};
+type HookMap = {[P in keyof PrimeFacesTypes.HookRegistry]: Set<PrimeFacesTypes.HookRegistry[P]>};
 
-const LocaleEnUs: PrimeType.Locale = {
+const LocaleEnUs: PrimeFacesTypes.Locale = {
     "accept": "Yes",
     "addRule": "Add Rule",
     "am": "AM",
@@ -197,7 +198,7 @@ const LocaleEnUs: PrimeType.Locale = {
     },
 };
 
-function toArticulateValidationConfiguration(cfg: PrimeType.validation.ShorthandConfiguration): PrimeType.validation.Configuration {
+function toArticulateValidationConfiguration(cfg: PrimeFacesTypes.validation.ShorthandConfiguration): PrimeFacesTypes.validation.Configuration {
     for (var option in cfg) {
         if (!cfg.hasOwnProperty(option)) {
             continue;
@@ -212,7 +213,7 @@ function toArticulateValidationConfiguration(cfg: PrimeType.validation.Shorthand
         }
     }
 
-    return cfg as unknown as PrimeType.validation.Configuration;
+    return cfg as unknown as PrimeFacesTypes.validation.Configuration;
 }
 
 
@@ -226,6 +227,7 @@ function toArticulateValidationConfiguration(cfg: PrimeType.validation.Shorthand
  * - `PrimeFaces.dialog` The dialog module with functionality related to the dialog framework
  * - {@link Effects | PrimeFaces.effects} The effects module for animating elements with effects such as fade or slide
  * - {@link Environment | PrimeFaces.env} The environment module with information about the current browser
+ * - {@link Interactions | PrimeFaces.interactions} The interactions module for drag and drop, sorting and resizing
  * - {@link Expressions | PrimeFaces.expressions} The search expressions module with functionality for working with search expression
  * - {@link Resources | PrimeFaces.resources} The resources module with functionality for creating resource links
  * - {@link Utils | PrimeFaces.utils} The utility module with functionality that does not fit anywhere else
@@ -266,7 +268,7 @@ export class Core {
     /**
      * A map between some HTML entities and their HTML-escaped equivalent.
      */
-    entityMap: PrimeType.EntityMap = {
+    entityMap: PrimeFacesTypes.EntityMap = {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
@@ -284,7 +286,7 @@ export class Core {
      * key is the name of the converter, e.g. `jakarta.faces.Length`, the value is
      * the converter implementation.
      */
-    converter: Record<string, PrimeType.validation.Converter> = {};
+    converter: Record<string, PrimeFacesTypes.validation.Converter> = {};
 
     /**
      * Registry with the client-side implementation of some faces validators.
@@ -292,7 +294,7 @@ export class Core {
      * key is the name of the validator, e.g. `jakarta.faces.LongRange`, the value
      * is the validator implementation.
      */
-    validator: PrimeType.validation.ValidatorInstanceMap = {
+    validator: PrimeFacesTypes.validation.ValidatorInstanceMap = {
         Highlighter: validationHighlighter,
     };
 
@@ -314,7 +316,7 @@ export class Core {
      * - {@link DynamicOverlayWidget | PrimeFaces.widget.DynamicOverlayWidget}: When your widget is an overlay with
      * dynamically loaded content, you can use this base class.
      */
-    widget: PrimeType.WidgetRegistry  = {
+    widget: PrimeFacesTypes.WidgetRegistry  = {
         AjaxExceptionHandler,
         AjaxStatus,
         BaseWidget,
@@ -327,7 +329,7 @@ export class Core {
      * A map of all instantiated widgets that are available on the current page.
      * The key is the widget variable of the widget, the value the instantiated widget.
      */
-    widgets: PrimeType.WidgetInstanceMap = {};
+    widgets: PrimeFacesTypes.WidgetInstanceMap = {};
 
     /**
      * A list of widget variable IDs (widgetVar) that were once instantiated, but are now removed from the DOM, such as
@@ -345,13 +347,13 @@ export class Core {
      *
      * This is the list of renders for widgets that are currently waiting to become visible.
      */
-    deferredRenders: PrimeType.DeferredRender[]= [];
+    deferredRenders: PrimeFacesTypes.DeferredRender[]= [];
 
     /**
      * A map with language specific translations. This is a map between the language keys and another map with the i18n
      * keys mapped to the translation.
      */
-    locales: PrimeType.Locales = {
+    locales: PrimeFacesTypes.Locales = {
         en_US: LocaleEnUs,
         en: LocaleEnUs,
     };
@@ -360,14 +362,14 @@ export class Core {
      * Custom logger for logging messages. Defaults to logging to the console
      * when not given.
      */
-    logger: PrimeType.Logger | undefined;
+    logger: PrimeFacesTypes.Logger | undefined;
 
     /**
      * Settings provided by the server. Uses defaults when the core instance is
      * initialized, should have been changed to the settings from the server
      * before the document is ready.
      */
-    settings: PrimeType.PFSettings = {
+    settings: PrimeFacesTypes.PFSettings = {
         considerEmptyStringNull: false,
         contextPath: "/",
         cookiesSecure: false,
@@ -407,6 +409,12 @@ export class Core {
     readonly effects: Effects = effects;
 
     /**
+     * The object with the interactions for drag and drop, sorting and resizing, such as `draggable` or `sortable`.
+     * @since 17.0.0
+     */
+    readonly interactions: Interactions = interactions;
+
+    /**
      * The object providing the entry point for functions related to search expressions. 
      */
     readonly expressions: Expressions = expressions;
@@ -430,7 +438,7 @@ export class Core {
 
     private debounceTimer: number | undefined = undefined;
 
-    private localeSettings: PrimeType.Locale | undefined;
+    private localeSettings: PrimeFacesTypes.Locale | undefined;
 
     private scrollbarWidth: number | undefined;
 
@@ -515,18 +523,18 @@ export class Core {
      * the server and processes the response. You can use this method if you need more fine-grained control over which
      * components you want to update or process, or if you need to change some other AJAX options.
      * @param cfg Configuration for the AJAX request, with shorthand
-     * options. The individual options are documented in {@link PrimeType.ajax.Configuration}.
+     * options. The individual options are documented in {@link PrimeFacesTypes.ajax.Configuration}.
      * @param ext Optional extender with additional options that
      * overwrite the options given in `cfg`.
      * @return A promise that resolves once the AJAX requests is done. Use this
      * to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled. Otherwise, when the
      * AJAX request fails, the promise is rejected. If the promise is rejected, the rejection handler receives an object
-     * of type {@link PrimeType.ajax.FailedRequestData}.
+     * of type {@link PrimeFacesTypes.ajax.FailedRequestData}.
      */
     ab(
-        cfg: PrimeType.ajax.ShorthandConfiguration,
-        ext?: PrimeType.ajax.ConfigurationExtender
-    ): PromiseLike<PrimeType.ajax.ResponseData> {
+        cfg: PrimeFacesTypes.ajax.ShorthandConfiguration,
+        ext?: PrimeFacesTypes.ajax.ConfigurationExtender
+    ): PromiseLike<PrimeFacesTypes.ajax.ResponseData> {
         for (var option in cfg) {
             if (!cfg.hasOwnProperty(option)) {
                 continue;
@@ -563,7 +571,7 @@ export class Core {
      * @param cfg An configuration.
      * @return `true` if the request would not result in validation errors, or `false` otherwise.
      */
-    vb(cfg: PrimeType.validation.ShorthandConfiguration): boolean {
+    vb(cfg: PrimeFacesTypes.validation.ShorthandConfiguration): boolean {
         const config = toArticulateValidationConfiguration(cfg);
 
         const highlight = config.highlight || true;
@@ -633,9 +641,9 @@ export class Core {
      * @returns The validator with the given ID, or `undefined` if no such
      * validator exists.
      */
-    getValidatorById(id: string): PrimeType.validation.Validator | undefined {
+    getValidatorById(id: string): PrimeFacesTypes.validation.Validator | undefined {
         return id !== "Highlighter" 
-            ? this.validator[id as Exclude<keyof PrimeType.validation.ValidatorInstanceMap, "Highlighter">] 
+            ? this.validator[id as Exclude<keyof PrimeFacesTypes.validation.ValidatorInstanceMap, "Highlighter">] 
             : undefined;
     }
 
@@ -663,7 +671,7 @@ export class Core {
      * @return An array of widgets that are of the requested type. If no suitable widgets
      * are found on the current page, an empty array will be returned.
      */
-    getWidgetsByType<Widget extends PrimeType.AnyNewable>(type: Widget): InstanceType<Widget>[] {
+    getWidgetsByType<Widget extends PrimeFacesTypes.AnyNewable>(type: Widget): InstanceType<Widget>[] {
         return $.map(this.widgets, (widget) => {
             return widget instanceof type ? widget as InstanceType<Widget> : null;
         });
@@ -677,8 +685,8 @@ export class Core {
      * are found on the current page, an empty array will be returned.
      */
     getWidgetsByTypeName<
-        TypeName extends keyof PrimeType.WidgetRegistry,
-    >(type: TypeName): InstanceType<PrimeType.WidgetRegistry[TypeName]>[] {
+        TypeName extends keyof PrimeFacesTypes.WidgetRegistry,
+    >(type: TypeName): InstanceType<PrimeFacesTypes.WidgetRegistry[TypeName]>[] {
         const widgetType = this.getWidgetTypeByName(type);
         return widgetType !== undefined ? this.getWidgetsByType(widgetType) : [];
     }
@@ -692,8 +700,8 @@ export class Core {
      * are found on the current page, returns undefined.
      */
     getWidgetTypeByName<
-        TypeName extends keyof PrimeType.WidgetRegistry,
-    >(type: TypeName): PrimeType.WidgetRegistry[TypeName] | undefined {
+        TypeName extends keyof PrimeFacesTypes.WidgetRegistry,
+    >(type: TypeName): PrimeFacesTypes.WidgetRegistry[TypeName] | undefined {
         return this.widget[type];
     }
 
@@ -1359,15 +1367,15 @@ export class Core {
 
     /**
      * A shortcut for {@link createWidget}.
-     * @typeParam WidgetName Name of the widget class, as registered in {@link PrimeType.WidgetRegistry}
+     * @typeParam WidgetName Name of the widget class, as registered in {@link PrimeFacesTypes.WidgetRegistry}
      * @param widgetName Name of the widget class, as registered in {@link widget PrimeFaces.widget}
      * @param widgetVar Widget variable of the widget
      * @param cfg Configuration for the widget
      */
-    cw<WidgetName extends keyof PrimeType.WidgetRegistry>(
+    cw<WidgetName extends keyof PrimeFacesTypes.WidgetRegistry>(
         widgetName: WidgetName,
         widgetVar: string,
-        cfg: PrimeType.widget.PartialCreateWidgetCfg<PrimeType.widget.WidgetCfg<PrimeType.WidgetRegistry[WidgetName]>>
+        cfg: PrimeFacesTypes.widget.PartialCreateWidgetCfg<PrimeFacesTypes.widget.WidgetCfg<PrimeFacesTypes.WidgetRegistry[WidgetName]>>
     ): void {
         this.createWidget(widgetName, widgetVar, cfg);
     }
@@ -1388,19 +1396,19 @@ export class Core {
      * Creates a new widget of the given type and with the given configuration. Registers that widget in the widgets
      * registry {@link widgets}. If this method is called in response to an AJAX request and the method
      * exists already, it is refreshed.
-     * @typeParam WidgetName Name of the widget class, as registered in {@link PrimeType.WidgetRegistry}
+     * @typeParam WidgetName Name of the widget class, as registered in {@link PrimeFacesTypes.WidgetRegistry}
      * @param widgetName Name of the widget class, as registered in {@link widget | PrimeFaces.widget}
      * @param widgetVar Widget variable of the widget
      * @param cfg Configuration for the widget, without the `widgetVar` property.
      */
-    createWidget<WidgetName extends keyof PrimeType.WidgetRegistry>(
+    createWidget<WidgetName extends keyof PrimeFacesTypes.WidgetRegistry>(
         widgetName: WidgetName,
         widgetVar: string,
-        partialCfg: PrimeType.widget.PartialCreateWidgetCfg<PrimeType.widget.WidgetCfg<PrimeType.WidgetRegistry[WidgetName]>>
+        partialCfg: PrimeFacesTypes.widget.PartialCreateWidgetCfg<PrimeFacesTypes.widget.WidgetCfg<PrimeFacesTypes.WidgetRegistry[WidgetName]>>
     ): void {
         const cfg = Object.assign(partialCfg, { widgetVar });
 
-        const widgetType = this.widget[widgetName] as PrimeType.Newable<[], InstanceType<PrimeType.WidgetRegistry[WidgetName]>> | undefined;
+        const widgetType = this.widget[widgetName] as PrimeFacesTypes.Newable<[], InstanceType<PrimeFacesTypes.WidgetRegistry[WidgetName]>> | undefined;
         if(widgetType) {
             const widget = this.widgets[widgetVar];
 
@@ -1717,8 +1725,8 @@ export class Core {
      * @param fns A list of callback functions. If any returns `false`, the other callbacks are not invoked.
      */
     bcnu(
-        ext: Partial<PrimeType.ajax.ConfigurationExtender>, event: Event, 
-        fns: ((this: this, ext: Partial<PrimeType.ajax.ConfigurationExtender>, event: Event) => boolean | undefined)[]
+        ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender>, event: Event, 
+        fns: ((this: this, ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender>, event: Event) => boolean | undefined)[]
     ): void {
         if (fns) {
             for (const fn of fns) {
@@ -1748,7 +1756,7 @@ export class Core {
      * Opens the dialog with the given configuration.
      * @param cfg Configuration of the dialog.
      */
-    openDialog(cfg: PrimeType.hook.dialog.DialogConfiguration): void {
+    openDialog(cfg: PrimeFacesTypes.hook.dialog.DialogConfiguration): void {
         for (const dialogHook of this.hooks.dialog ?? []) {
             const handled = dialogHook.openDialog(cfg);
             if (handled) {
@@ -1761,7 +1769,7 @@ export class Core {
      * Close the dialog with the given configuration.
      * @param cfg Configuration of the dialog.
      */
-    closeDialog(cfg: PrimeType.hook.dialog.DialogConfiguration): void {
+    closeDialog(cfg: PrimeFacesTypes.hook.dialog.DialogConfiguration): void {
         for (const dialogHook of this.hooks.dialog ?? []) {
             const handled = dialogHook.closeDialog(cfg);
             if (handled) {
@@ -1774,7 +1782,7 @@ export class Core {
      * Shows the given message inside a dialog.
      * @param msg Message to show in a dialog.
      */
-    showMessageInDialog(msg: PrimeType.hook.messageInDialog.DialogMessageData): void {
+    showMessageInDialog(msg: PrimeFacesTypes.hook.messageInDialog.DialogMessageData): void {
         for (const messageInDialogHook of this.hooks.messageInDialog ?? []) {
             const handled = messageInDialogHook.showMessage(msg);
             if (handled) {
@@ -1787,7 +1795,7 @@ export class Core {
      * Displays dialog or popup according to the type of confirm component.
      * @param msg Message to show with the confirm dialog or popup.
      */
-    confirm(msg: PrimeType.hook.confirm.ExtendedConfirmMessage): void {
+    confirm(msg: PrimeFacesTypes.hook.confirm.ExtendedConfirmMessage): void {
         for (const confirmHook of this.hooks.confirm ?? []) {
             const handled = confirmHook.handleMessage(msg);
             if (handled) {
@@ -1807,9 +1815,9 @@ export class Core {
      * @param name Name of the hook to register.
      * @param hook Hook implementation to register.
      */
-    registerHook<HookName extends keyof PrimeType.HookRegistry>(
+    registerHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(
         name: HookName,
-        hook: PrimeType.HookRegistry[HookName],
+        hook: PrimeFacesTypes.HookRegistry[HookName],
     ): void {
         this.hooks[name] ??= new Set() as HookMap[HookName];
         this.hooks[name].add(hook);
@@ -1823,9 +1831,9 @@ export class Core {
      * @param name Name of the hook to unregister.
      * @param hook Hook implementation to register.
      */
-    unregisterHook<HookName extends keyof PrimeType.HookRegistry>(
+    unregisterHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(
         name: HookName,
-        hook: PrimeType.HookRegistry[HookName],
+        hook: PrimeFacesTypes.HookRegistry[HookName],
     ): void {
         this.hooks[name]?.delete(hook);
     }
@@ -1836,7 +1844,7 @@ export class Core {
      * @typeParam HookName Type of the the hook name to register.
      * @param name Name of the hook to unregister.
      */
-    clearHook<HookName extends keyof PrimeType.HookRegistry>(name: HookName): void {
+    clearHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(name: HookName): void {
         this.hooks[name] = undefined;
     }
 
@@ -1848,9 +1856,9 @@ export class Core {
      * @typeParam HookName Type of the the hook name to register.
      * @param name Name of the hook to unregister.
      */
-    getHook<HookName extends keyof PrimeType.HookRegistry>(
+    getHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(
         name: HookName,
-    ): PrimeType.HookRegistry[HookName][] {
+    ): PrimeFacesTypes.HookRegistry[HookName][] {
         return [...this.hooks[name] ?? []];
     }
 
@@ -1929,13 +1937,13 @@ export class Core {
 
     /**
      * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
-     * as specified by {@link PrimeType.PFSettings.locale | PrimeFaces.settings.locale}. When no locale was found for
+     * as specified by {@link PrimeFacesTypes.PFSettings.locale | PrimeFaces.settings.locale}. When no locale was found for
      * the given locale, falls back to the default English locale.
      * @param cfgLocale Optional configuration locale from the widget
      * @return The current locale with the key-value pairs.
      */
-    getLocaleSettings(cfgLocale?: string): PrimeType.Locale {
-        let locale: PrimeType.Locale | undefined;
+    getLocaleSettings(cfgLocale?: string): PrimeFacesTypes.Locale {
+        let locale: PrimeFacesTypes.Locale | undefined;
 
         if(cfgLocale) {
             // widget locale must not be cached since it can change per widget
@@ -1981,7 +1989,7 @@ export class Core {
      * @param options - An object containing placeholder replacements in the format `{placeholderKey: replacementValue}`.
      * @returns string - The localized ARIA label, with placeholders replaced by their corresponding values from `options` if provided.
      */
-    getAriaLabel(key: keyof PrimeType.LocaleAria, defaultValue?: string, options?: Record<string, string>): string {
+    getAriaLabel(key: keyof PrimeFacesTypes.LocaleAria, defaultValue?: string, options?: Record<string, string>): string {
         var ariaLocaleSettings = this.getLocaleSettings()['aria'] || {};
         var label = ariaLocaleSettings[key] || this.locales['en_US']?.['aria']?.[key] || defaultValue || "???" + key + "???";
         if (options) {
@@ -1997,7 +2005,7 @@ export class Core {
      * @param {string} key The locale key
      * @return {string} The translation for the given key
      */
-    getLocaleLabel<K extends keyof PrimeType.Locale>(key: K): PrimeType.Locale[K] {
+    getLocaleLabel<K extends keyof PrimeFacesTypes.Locale>(key: K): PrimeFacesTypes.Locale[K] {
         const locale = this.getLocaleSettings();
         return (locale&&locale[key]) ? locale[key] : this.locales['en_US']?.[key];
     }
@@ -2170,7 +2178,7 @@ export const core: Core = new Core();
  * Note to TypeScript users: You might want to define a method that takes a widget variables and widget constructor, and
  * check whether the widget is of the given type. If so, you can return the widget and cast it to the desired type:
  * ```ts
- * function getWidget<T extends PrimeType.widget.BaseWidget>(widgetVar: string, widgetClass: PrimeType.Newable<[], T>): T | undefined {
+ * function getWidget<T extends PrimeFacesTypes.widget.BaseWidget>(widgetVar: string, widgetClass: PrimeFacesTypes.Newable<[], T>): T | undefined {
  *   const widget = PrimeFaces.widget[widgetVar];
  *   return widget !== undefined && widget instanceof constructor ? widgetClass : undefined;
  * }

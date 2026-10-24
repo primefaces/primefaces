@@ -101,11 +101,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
                 this.setScrollWidth(parseInt(this.cfg.scrollWidth));
 
             if(this.hasVerticalOverflow()) {
-                var browser = PrimeFaces.env.browser;
-                if(browser.webkit === true || browser.mozilla === true)
-                    this.frozenBody.append('<div style="height:' + scrollBarWidth + ';border:1px solid transparent"></div>');
-                else
-                    this.frozenBodyTable.css('margin-bottom', scrollBarWidth);
+                this.frozenBody.append('<div style="height:' + scrollBarWidth + ';border:1px solid transparent"></div>');
             }
         }
 
@@ -571,7 +567,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @override
      * @protected
      * @inheritdoc
-     * @param {PrimeType.interaction.DraggableUi} ui Data of the drag event.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Data of the drag event.
      * @return {JQuery|null}
      */
     findGroupResizer(ui) {
@@ -587,7 +583,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
     /**
      * Finds the resizer DOM element that matches the given draggable event params.
      * @protected
-     * @param {PrimeType.interaction.DraggableUi} ui Data of the drag event.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Data of the drag event.
      * @param {JQuery} resizers List of all available resizers.
      * @return {JQuery|null} DOM element of the resizer.
      */
@@ -630,7 +626,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @protected
      * @inheritdoc
      * @param {JQuery.TriggeredEvent} event
-     * @param {PrimeType.interaction.DraggableUi} ui
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui
      */
     resize(event, ui) {
         var columnHeader = null,
@@ -900,12 +896,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
             this.fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
             var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
             if (scrollBarHeight > 0) {
-                var browser = PrimeFaces.env.browser;
-                if (browser.webkit === true || browser.mozilla === true) {
-                    this.frozenBody.append('<div style="height:' + scrollBarHeight + 'px"></div>');
-                } else {
-                    this.frozenBodyTable.css('margin-bottom', scrollBarHeight);
-                }
+                this.frozenBody.append('<div style="height:' + scrollBarHeight + 'px"></div>');
             }
         }
     }

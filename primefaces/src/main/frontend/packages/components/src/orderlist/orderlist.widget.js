@@ -39,7 +39,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
             this.setupButtons();
 
             //Enable dnd
-            this.list.sortable({
+            PrimeFaces.interactions.sortable(this.list, {
                 revert: 1,
                 placeholder: "ui-orderlist-item ui-state-highlight",
                 forcePlaceholderSize: true,
@@ -79,19 +79,22 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
     bindEvents() {
         var $this = this;
         
+        // #4716 on mobile the list scrolls by touch, a tap on an item enables the sorting until the next touch ends
         if (PrimeFaces.env.browser.mobile) {
             var disabledSortable = function() {
-                $this.list.sortable('disable');
+                PrimeFaces.interactions.disable($this.list, 'sortable');
                 $this.items.css('touch-action', 'auto');
             };
-            
+
             disabledSortable();
-            
+
             this.items.on('touchend.orderList-mobile', function() {
                 disabledSortable();
             })
             .on('click.orderList-mobile', function() {
-                $this.list.sortable('enable');
+                PrimeFaces.interactions.enable($this.list, 'sortable');
+                // the items must not scroll anymore, else the browser takes over the pointer of the drag
+                $this.items.css('touch-action', '');
             });
         }
 
@@ -148,7 +151,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      * and invokes the appropriate behaviors.
      * @private
      * @param {JQuery.TriggeredEvent} event The event that triggered the drag or drop.
-     * @param {PrimeType.interaction.SortableUi} ui The details about the sorting.
+     * @param {PrimeFacesTypes.interactions.SortableUi} ui The details about the sorting.
      */
     onDragDrop(event, ui) {
         ui.item.removeClass('ui-state-highlight');

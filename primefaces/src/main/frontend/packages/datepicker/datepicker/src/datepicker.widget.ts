@@ -2,19 +2,38 @@
  * A day of the calendar.
  */
 export interface DateMeta {
+    /** Day of the month, 1-based. */
     day: number;
     /** 0-based month. */
     month: number;
+    /** Full year, e.g. `2026`. */
     year: number;
+    /**
+     * Whether the day belongs to the previous or next month and only fills the first or last week of the displayed
+     * month.
+     */
     otherMonth?: boolean;
+    /** Whether the day is today, in the time zone of the date picker. */
     today?: boolean;
+    /**
+     * Whether the day can be selected: within min / max date, not disabled and not a day of another month unless
+     * `selectOtherMonths` is set.
+     */
     selectable?: boolean;
 }
 
+/** A month displayed in the date view, with its weeks of days. */
 interface MonthMeta {
+    /** 0-based month. */
     month: number;
+    /** Full year. */
     year: number;
+    /**
+     * The weeks of the month with 7 days each, including the days of the previous and next month that fill the first
+     * and last week.
+     */
     dates: DateMeta[][];
+    /** Index of the month among the displayed months, see `numberOfMonths`. */
     index: number;
 }
 
@@ -22,50 +41,89 @@ interface MonthMeta {
  * Localized texts and settings of the date picker.
  */
 export interface DatePickerLocale {
+    /** First day of the week, 0 = sunday. */
     firstDayOfWeek: number;
     /** Offset of the first day of the first week of the year, see `showWeek`. */
     firstDayWeekOffset?: number;
+    /** Whether the year is displayed before the month in the header of the panel. */
     showMonthAfterYear: boolean;
+    /**
+     * Full names of the week days, starting with sunday, used by the `DD` date format and as title of the column
+     * headers.
+     */
     dayNames: string[];
+    /** Short names of the week days, starting with sunday, used by the `D` date format. */
     dayNamesShort: string[];
+    /** Minimal names of the week days, starting with sunday, displayed as column headers of the date grid. */
     dayNamesMin: string[];
+    /** Full names of the months, used by the `MM` date format, the header and with `showLongMonthNames`. */
     monthNames: string[];
+    /** Short names of the months, used by the `M` date format and the month navigator. */
     monthNamesShort: string[];
+    /** Header of the week number column, see `showWeek`. */
     weekHeader?: string;
+    /** Label of the today button. */
     today: string;
+    /** Label of the clear button. */
     clear: string;
+    /** Label of the today button when the time is shown. */
     now: string;
+    /** Accessible label of the year navigator. */
     year: string;
+    /** Accessible label of the month navigator. */
     month: string;
+    /** Localized text for a week. */
     week: string;
+    /** Localized text for a day. */
     day: string;
+    /** Accessible label of the hour input of the time picker. */
     hourText: string;
+    /** Accessible label of the minute input of the time picker. */
     minuteText: string;
+    /** Accessible label of the second input of the time picker. */
     secondText: string;
+    /** Accessible label of the millisecond input of the time picker. */
     millisecondText: string;
+    /** Text of the period before noon in the 12 hour format. */
     am: string;
+    /** Text of the period after noon in the 12 hour format. */
     pm: string;
+    /** Accessible label of the panel and the trigger button. */
     chooseDate: string;
+    /** Accessible label for navigating to the previous decade. */
     prevDecade: string;
+    /** Accessible label for navigating to the next decade. */
     nextDecade: string;
+    /** Accessible label of the button that navigates to the previous year in the month view. */
     prevYear: string;
+    /** Accessible label of the button that navigates to the next year in the month view. */
     nextYear: string;
+    /** Accessible label of the button that navigates to the previous month. */
     prevMonth: string;
+    /** Accessible label of the button that navigates to the next month. */
     nextMonth: string;
+    /** Accessible label of the button that decrements the hour. */
     prevHour: string;
+    /** Accessible label of the button that increments the hour. */
     nextHour: string;
+    /** Accessible label of the button that decrements the minute. */
     prevMinute: string;
+    /** Accessible label of the button that increments the minute. */
     nextMinute: string;
+    /** Accessible label of the button that decrements the second. */
     prevSecond: string;
+    /** Accessible label of the button that increments the second. */
     nextSecond: string;
+    /** Accessible label of the button that decrements the millisecond. */
     prevMillisecond: string;
+    /** Accessible label of the button that increments the millisecond. */
     nextMillisecond: string;
 }
 
 /**
  * The configuration for the {@link DatePicker} widget.
  */
-export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface DatePickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Search expression of the element to which the panel is appended. */
     appendTo: string | null;
     /** Whether to switch to the touch UI below the responsive breakpoint. */
@@ -84,9 +142,13 @@ export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
     dateTemplate: ((this: DatePicker, date: DateMeta | string) => string) | null;
     /** The selected value as rendered on the server. */
     defaultDate: string | Date | Date[] | null;
+    /** Hour of the initial view date when no date is selected. */
     defaultHour: number;
+    /** Millisecond of the initial view date when no date is selected, only used with `showMilliseconds`. */
     defaultMillisecond: number;
+    /** Minute of the initial view date when no date is selected. */
     defaultMinute: number;
+    /** Second of the initial view date when no date is selected, only used with `showSeconds` or `showMilliseconds`. */
     defaultSecond: number;
     /** Whether the date picker is disabled. */
     disabled: boolean;
@@ -154,6 +216,7 @@ export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
     readonly: boolean;
     /** Screen width below which the touch UI is used. */
     responsiveBreakpoint: number;
+    /** Whether a single date, multiple dates or a range of dates can be selected. */
     selectionMode: "single" | "multiple" | "range";
     /** Whether dates of other months can be selected. */
     selectOtherMonths: boolean;
@@ -163,6 +226,7 @@ export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
     showIcon: boolean;
     /** Whether to display full month names. */
     showLongMonthNames: boolean;
+    /** Whether the time picker displays the milliseconds. */
     showMilliseconds: boolean;
     /** Whether to restrict the navigation to min / max date. */
     showMinMaxRange: boolean;
@@ -170,6 +234,7 @@ export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
     showOnFocus: boolean;
     /** Whether to display dates of other months. */
     showOtherMonths: boolean;
+    /** Whether the time picker displays the seconds. */
     showSeconds: boolean;
     /** Whether to display a time picker. */
     showTime: boolean;
@@ -177,9 +242,13 @@ export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
     showWeek: boolean;
     /** Cutoff of 2-digit years, e.g. `+10`. */
     shortYearCutoff: string | number;
+    /** Hours to add or subtract per step of the time picker buttons. */
     stepHour: number;
+    /** Milliseconds to add or subtract per step of the time picker buttons. */
     stepMillisecond: number;
+    /** Minutes to add or subtract per step of the time picker buttons, entered minutes are rounded to this step too. */
     stepMinute: number;
+    /** Seconds to add or subtract per step of the time picker buttons. */
     stepSecond: number;
     /** Whether the time is edited with inputs. */
     timeInput: boolean;
@@ -209,6 +278,10 @@ export interface DatePickerCfg extends PrimeType.widget.BaseWidgetCfg {
     yearRange: string | null;
 }
 
+/**
+ * English defaults of the localized texts, merged with the `locale` option and the PrimeFaces locale settings of the
+ * `userLocale`.
+ */
 const DEFAULT_LOCALE: DatePickerLocale = {
     firstDayOfWeek: 0,
     showMonthAfterYear: false,
@@ -247,7 +320,11 @@ const DEFAULT_LOCALE: DatePickerLocale = {
     nextMillisecond: "Next Millisecond"
 };
 
-const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeType.widget.BaseWidgetCfg, "disabled"> | "locale"> = {
+/**
+ * Default values of the configuration, applied to {@link DatePicker.options} for every option that is `undefined` or
+ * `null`.
+ */
+const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWidgetCfg, "disabled"> | "locale"> = {
     appendTo: null,
     autoDetectDisplay: true,
     autoMonthFormat: true,
@@ -328,6 +405,12 @@ const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeType.widget.BaseWidgetCfg
 /** Offset of the `!` date format (ticks since 0001-01-01). */
 const TICKS_TO_1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
 
+/**
+ * Pads a number with leading zeros.
+ * @param value Number to pad.
+ * @param length Minimum length of the result, `2` by default.
+ * @returns The number as a string with at least `length` digits.
+ */
 function pad0(value: number, length: number = 2): string {
     let text = String(value);
     while (text.length < length) {
@@ -336,10 +419,17 @@ function pad0(value: number, length: number = 2): string {
     return text;
 }
 
+/**
+ * Gets the physical key code of a keyboard event, e.g. `ArrowLeft` or `Enter`.
+ * @param event A keyboard event, native or triggered via jQuery.
+ * @returns The `code` of the event, or an empty string if it has none.
+ */
 function keyCode(event: JQuery.TriggeredEvent): string {
-    return (event.originalEvent as KeyboardEvent | undefined)?.code ?? '';
+    // jQuery copies `code` onto its event, so key events triggered via jQuery work too
+    return (event as JQuery.KeyboardEventBase).code || '';
 }
 
+/** HTML entities of the characters escaped by `escapeHTML`. */
 const ENTITY_MAP: Record<string, string> = {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;'
 };
@@ -368,26 +458,82 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     /** The view date to restore after an update of a range date picker. */
     viewDateOption: Date | undefined;
 
-    private minDate: Date | null = null;
-    private maxDate: Date | null = null;
+    /** The resolved `appendTo` element the overlay panel is appended to, or `null` to keep the panel in the widget. */
     private appendTarget: JQuery | null = null;
+    /** Whether a `yearRange` was configured, otherwise it is derived from the view date by `updateYearNavigator`. */
     private hasCustomYearRange: boolean = false;
+    /** Metadata of the months currently rendered in the date view, used to map the clicked or focused cells to days. */
     private monthsMetadata: MonthMeta[] = [];
+    /** The modal mask of the touch UI while the panel is shown, `null` otherwise. */
     private mask: JQuery | null = null;
-    private transition: PrimeType.CssTransitionHandler | null = null;
+    /** Handler of the CSS transition that shows and hides the overlay panel. */
+    private transition: PrimeFacesTypes.CssTransitionHandler | null = null;
+    /** Listener that hides the overlay on a click outside of the panel, only set while the overlay is shown. */
     private documentClickListener: ((event: JQuery.TriggeredEvent) => void) | null = null;
+    /** The scrollable parents of the widget, scrolling one of them hides the overlay. */
     private scrollableParents: (Window | Element)[] = [];
+    /** Scroll listener bound to the scrollable parents while the overlay is shown. */
     private scrollableListener: (() => void) | null = null;
+    /**
+     * Set when a click happened inside the panel or on the input, so the document click listener does not hide the
+     * overlay.
+     */
     private datepickerClick: boolean = false;
+    /**
+     * Set while the overlay is shown because the input received focus, so the following click on the input does not
+     * hide it again (#11928).
+     */
     private datepickerFocus: boolean = false;
+    /**
+     * Set while the input is focused again after a selection with `focusOnSelect`, so `beforeShow` skips its
+     * preparations.
+     */
     private refocusInput: boolean = false;
+    /**
+     * Whether the input is made readonly while the panel is shown, to prevent the virtual keyboard on touch devices
+     * with a trigger button.
+     */
     private touchEnabled: boolean = false;
+    /** The selected value when the input received focus, used to detect changes made via the input mask (#12754). */
     private valueOnFocus: unknown;
-    private timePickerTimer: number | null | undefined;
+    /** Timer that repeats the time change while a time picker button is held down. */
+    private timePickerTimer: number | null = null;
+    /**
+     * The original `onchange` handler of the input, detached from it and called by `onInputChange` after the value was
+     * reformatted.
+     */
     private changeHandler: ((this: unknown, event: JQuery.TriggeredEvent) => void) | null = null;
+    /** Values of the time inputs when they received focus, by unit, restored when an invalid value is entered. */
     private oldTime: Record<string, string> = {};
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    /** @deprecated Use {@link input}, kept for callbacks written for the old date picker plugin. */
+    get inputfield(): JQuery {
+        return this.input;
+    }
+
+    /** @deprecated Use {@link jq}, kept for callbacks written for the old date picker plugin. */
+    get container(): JQuery {
+        return this.jq;
+    }
+
+    // min / max date are read from the options, so they can be changed at runtime
+    /** The minimum selectable date, parsed from the `minDate` option, or `null` if there is none. */
+    private get minDate(): Date | null {
+        return this.parseMinMaxValue(this.options.minDate);
+    }
+
+    /** The maximum selectable date, parsed from the `maxDate` option, or `null` if there is none. */
+    private get maxDate(): Date | null {
+        return this.parseMinMaxValue(this.options.maxDate);
+    }
+
+    /**
+     * Initializes the widget: applies the defaults to the {@link options}, sets up the locale, input mask and
+     * behaviors, parses the initial value and view date and renders the trigger button and panel. The instance is
+     * reused when the widget is refreshed.
+     * @param cfg The widget configuration from the server.
+     */
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         // the options are a copy of the configuration with the defaults applied, they also hold the runtime state
@@ -412,6 +558,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         // default date should be input value before widget value
         this.options.defaultDate = String(this.input.val() ?? '') || this.options.defaultDate;
         this.options.focusOnSelect = !!this.options.focusOnSelect;
+        // #6450 empty separators fall back to the defaults
+        this.options.rangeSeparator = this.options.rangeSeparator || '-';
+        this.options.timeSeparator = this.options.timeSeparator || ':';
         this.configureLocale();
 
         this.touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr('readonly') && this.options.showIcon;
@@ -448,7 +597,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    /**
+     * Unbinds the global listeners of an open overlay and removes the panel appended to another element before the
+     * widget is initialized again, e.g. after an AJAX update.
+     * @param cfg The new widget configuration from the server.
+     */
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+        this.unbindOverlayListeners();
+
         if (this.panel.length && this.cfg.appendTo) {
             const appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
             PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', appendTo);
@@ -457,13 +613,18 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         super.refresh(cfg);
     }
 
+    /**
+     * Unbinds the global and responsive listeners, removes the panel appended to another element and the input mask
+     * when the widget is destroyed.
+     */
     override destroy(): void {
+        this.unbindOverlayListeners();
+
         if (this.panel.length && this.cfg.appendTo) {
             const appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
             PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', appendTo);
         }
 
-        this.hideOverlay();
         this.unbindResponsiveResizeListener();
         PrimeFaces.utils.cleanseDomElement(this.panel);
 
@@ -472,13 +633,30 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             this.input.off();
         }
 
+        // otherwise BaseWidget#destroy removes all handlers of the append target, e.g. the form
+        this.appendTarget = null;
+
         super.destroy();
+    }
+
+    /** Unbinds the global listeners of an open overlay right away, the animated hideOverlay unbinds them on exit only. */
+    private unbindOverlayListeners(): void {
+        this.clearTimePickerTimer();
+        this.unbindDocumentClickListener();
+        this.unbindWindowResizeListener();
+        this.unbindScrollListener();
+        this.disableModality();
     }
 
     // =========================
     // === PrimeFaces widget ===
     // =========================
 
+    /**
+     * Builds the localized texts from the English defaults, the `locale` option and the PrimeFaces locale settings of
+     * the `userLocale`; with locale settings, the `localeAm` / `localePm` options override the AM / PM texts. The
+     * result is stored in the `locale` option.
+     */
     private configureLocale(): void {
         const locale: DatePickerLocale = { ...DEFAULT_LOCALE, ...(this.options.locale as Partial<DatePickerLocale> | undefined) };
         const settings = PrimeFaces.getLocaleSettings(this.options.userLocale ?? undefined) as Partial<DatePickerLocale> | undefined;
@@ -494,6 +672,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.options.locale = locale;
     }
 
+    /**
+     * Applies the `mask` option to the input with Inputmask, using the `datetime` alias if the mask contains date or
+     * time tokens. Skipped for inline, readonly and disabled date pickers.
+     */
     private applyMask(): void {
         if (this.options.inline || this.input.is('[readonly]') || this.input.is(':disabled') || !this.options.mask) {
             return;
@@ -524,6 +706,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.input.off('blur'); // GitHub #9259/#12428
     }
 
+    /**
+     * Sets up the trigger button rendered for `showIcon`: adds the ARIA attributes, copies the title and tabindex of
+     * the input, skins it and disables it for a disabled date picker.
+     */
     private bindTriggerButton(): void {
         if (this.options.inline || !this.options.showIcon) {
             return;
@@ -548,7 +734,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Called after the panel was created. */
+    /**
+     * Called after the panel was created, resolves the `appendTo` target the overlay panel is appended to. An inline
+     * panel is not positioned (#8423).
+     */
     private onPanelCreated(): void {
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this as unknown as Parameters<typeof PrimeFaces.utils.resolveAppendTo>[0], this.jq, this.panel) ?? null;
         // #8423
@@ -560,7 +749,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             : null;
     }
 
-    /** Called before the overlay is shown. */
+    /**
+     * Called before the overlay is shown: brings the panel to the front, makes the input readonly on touch devices and
+     * calls the `preShow` callback, or otherwise updates a lazy model (#7457). Skipped while the input is focused again
+     * after a selection.
+     */
     private beforeShow(): void {
         if (this.refocusInput) {
             this.refocusInput = false;
@@ -585,7 +778,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Called before the overlay is hidden. */
+    /**
+     * Called before the overlay is hidden: makes the input editable again on touch devices and calls the `close`
+     * behavior.
+     */
     private beforeHide(): void {
         if (this.touchEnabled) {
             this.jqEl.attr('readonly', null);
@@ -596,7 +792,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Called after a date was selected. */
+    /**
+     * Called after a date or time was selected: triggers the `change` event of the input and the `dateSelect` behavior
+     * (in range selection only once both dates are set, #5830) and focuses the input again with `focusOnSelect`.
+     */
     private onDateSelected(): void {
         this.viewDateOption = this.viewDate;
 
@@ -619,9 +818,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Notifies the server that the displayed month changed by calling the `viewChange` behavior. With a lazy model, the
+     * panel is disabled during the request and the disabled dates, enabled dates and date style classes of the response
+     * are applied; without a `viewChange` behavior a plain AJAX request is sent in that case.
+     * @param date The new view date, its year and month are sent as request parameters.
+     */
     private fireViewChangeEvent(date: Date): void {
         const lazy = this.options.lazyModel;
-        const options: Partial<PrimeType.ajax.Configuration> = {
+        const options: Partial<PrimeFacesTypes.ajax.Configuration> = {
             params: [
                 { name: this.id + '_year', value: date.getFullYear() },
                 { name: this.id + '_month', value: date.getMonth() }
@@ -691,7 +896,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Sets the selected date. */
+    /**
+     * Selects the given date, displays its month and fires the same events as a selection in the panel (`change` and
+     * `dateSelect`). Passing `null` or an empty string clears the selection without firing events.
+     * @param date The date to select, a `Date` or a string in the date (and time) format of the date picker.
+     */
     setDate(date: Date | string | null): void {
         if (!date) {
             this.updateModel(null, null);
@@ -704,33 +913,55 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.onDateSelect(null, { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true });
     }
 
-    /** The selected date, a list of dates for multiple and range selection, or `null`. */
+    /**
+     * Gets the selected value.
+     * @returns The selected date, a list of dates in multiple and range selection (the end of an incomplete range is
+     * `null`), the raw text of the input if it could not be parsed, or `null` if nothing is selected.
+     */
     getDate(): any {
         return this.value;
     }
 
-    /** Whether a date is selected. */
+    /**
+     * Checks whether a single date is selected.
+     * @returns `true` if the selected value is a `Date`, `false` if nothing or a list of dates is selected.
+     */
     hasDate(): boolean {
         return this.getDate() instanceof Date;
     }
 
-    /** Sets the displayed month, optionally without triggering the AJAX viewChange event. */
+    /**
+     * Displays the month of the given date without changing the selection.
+     * @param date The date whose month to display, a `Date` or a string in the date format of the date picker.
+     * @param silent `true` to skip the AJAX `viewChange` event, e.g. to avoid a request for a lazy model.
+     */
     setViewDate(date: string | Date, silent: boolean = false): void {
         this.updateViewDate(null, this.parseValue(date) as Date, silent);
     }
 
-    /** The displayed month. */
+    /**
+     * Gets the date whose month is displayed first in the panel.
+     * @returns The current view date.
+     */
     getViewDate(): Date {
         return this.viewDate;
     }
 
-    /** Sets the disabled dates. */
+    /**
+     * Disables the given dates so they cannot be selected anymore and renders the panel again.
+     * @param disabledDates The dates to disable, as `Date` or string in the date format, or `null` to enable all dates
+     * again.
+     */
     setDisabledDates(disabledDates: (string | Date)[] | null): void {
         this.options.disabledDates = disabledDates ? disabledDates.map((date) => this.parseOptionValue(date) as Date) : null;
         this.updatePanel();
     }
 
-    /** Sets the enabled dates. */
+    /**
+     * Restricts the selectable dates to the given dates and renders the panel again.
+     * @param enabledDates The only dates that can be selected, as `Date` or string in the date format. An empty list or
+     * `null` keeps the current enabled dates.
+     */
     setEnabledDates(enabledDates: (string | Date)[] | null): void {
         if (enabledDates && enabledDates.length > 0) {
             this.options.enabledDates = enabledDates.map((date) => this.parseOptionValue(date) as Date);
@@ -738,23 +969,26 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.updatePanel();
     }
 
-    /** Sets the disabled week days, 0 = sunday. */
+    /**
+     * Disables the given week days and renders the panel again.
+     * @param disabledDays The week days to disable, 0 = sunday, or `null` to enable all week days again.
+     */
     setDisabledDays(disabledDays: number[] | null): void {
         this.options.disabledDays = disabledDays;
         this.updatePanel();
     }
 
-    /** Shows the panel. */
+    /** Shows the overlay panel, unless the date picker is inline, disabled or the panel is already shown. */
     show(): void {
         this.showOverlay();
     }
 
-    /** Hides the panel. */
+    /** Hides the overlay panel and puts the focus back to the input. */
     hide(): void {
         this.hideOverlay();
     }
 
-    /** Enables the date picker. */
+    /** Enables the date picker, so the input, the trigger button and the panel can be used again. */
     override enable(): void {
         this.options.disabled = false;
         this.updatePanel();
@@ -764,7 +998,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Disables the date picker. */
+    /** Disables the date picker: hides the overlay and disables the input, the trigger button and the panel. */
     override disable(): void {
         this.hide();
         this.options.disabled = true;
@@ -779,6 +1013,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     // === Model ===
     // =============
 
+    /**
+     * Initializes the runtime state from the options: parses the selected value, the view date (now with the default
+     * time if there is none, kept within min / max date), min / max date and the disabled and enabled dates, sets up
+     * the default week calculator for `showWeek` and writes the formatted value to the input (#13634).
+     */
     private setInitValues(): void {
         const o = this.options;
 
@@ -833,8 +1072,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.viewDate = this.isDate(viewDate) ? new Date(viewDate) : this.getNow();
         this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
 
-        this.minDate = this.parseMinMaxValue(o.minDate);
-        this.maxDate = this.parseMinMaxValue(o.maxDate);
+        o.minDate = this.parseMinMaxValue(o.minDate);
+        o.maxDate = this.parseMinMaxValue(o.maxDate);
 
         if (viewDateDefaultsToNow) {
             if (this.minDate && this.viewDate < this.minDate) {
@@ -868,7 +1107,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.input.val(String(inputValue ?? ''));
     }
 
-    /** Parses a date option, e.g. a disabled date, in the date format. */
+    /**
+     * Parses a date option, e.g. a disabled date, in the date format without time.
+     * @param option The option value, a string in the date format or already a `Date`.
+     * @returns The parsed date, or the given value if it is not a non-empty string.
+     */
     parseOptionValue(option: string | Date | null | undefined): Date | null | undefined {
         if (option && typeof option === 'string') {
             return this.parseDate(option, this.options.dateFormat);
@@ -876,6 +1119,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return option as Date | null | undefined;
     }
 
+    /**
+     * Parses the `minDate` or `maxDate` option, which may contain a time.
+     * @param option The option value, a string in the date (and time) format or already a `Date`.
+     * @returns The parsed date, or `null` if no value is set.
+     */
     private parseMinMaxValue(option: string | Date | null | undefined): Date | null {
         if (option && typeof option === 'string') {
             return this.parseDateTime(option);
@@ -883,7 +1131,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return (option as Date | null | undefined) ?? null;
     }
 
-    /** Parses a value as entered in the input. */
+    /**
+     * Parses a value as entered in the input: depending on the selection mode a date, a comma separated list of dates
+     * or a range of two dates.
+     * @param option The value to parse; anything but a non-empty string, e.g. a `Date` or a list of dates, is returned
+     * unchanged.
+     * @returns The parsed date or dates, or `undefined` if the text is invalid (the error is logged).
+     */
     parseValue(option: unknown): any {
         if (option && typeof option === 'string') {
             return this.parseValueFromString(option);
@@ -891,6 +1145,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return option;
     }
 
+    /**
+     * Gets the column of the first day of a month in the date grid, respecting the first day of the week of the locale.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Column index from 0 to 6.
+     */
     private getFirstDayOfMonthIndex(month: number, year: number): number {
         const day = this.getNow();
         day.setDate(1);
@@ -901,41 +1161,88 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return dayIndex >= 7 ? dayIndex - 7 : dayIndex;
     }
 
+    /**
+     * Gets the first day of the week of the locale.
+     * @returns 0 = sunday to 6 = saturday.
+     */
     private getFirstDayOfWeek(): number {
         return this.options.locale.firstDayOfWeek;
     }
 
+    /**
+     * Gets the column of the sundays in the date grid, which depends on the first day of the week.
+     * @returns Column index from 0 to 6.
+     */
     private getSundayIndex(): number {
         const firstDayOfWeek = this.getFirstDayOfWeek();
         return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
     }
 
+    /**
+     * Gets the column of the saturdays in the date grid, which depends on the first day of the week.
+     * @returns Column index from 0 to 6.
+     */
     private getSaturdayIndex(): number {
         return 7 - this.getFirstDayOfWeek() - 1;
     }
 
+    /**
+     * Gets the number of days of a month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Number of days, 28 to 31.
+     */
     private getDaysCountInMonth(month: number, year: number): number {
         return 32 - this.daylightSavingAdjust(new Date(year, month, 32)).getDate();
     }
 
+    /**
+     * Gets the number of days of the month before the given month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Number of days, 28 to 31.
+     */
     private getDaysCountInPrevMonth(month: number, year: number): number {
         const prev = this.getPreviousMonthAndYear(month, year);
         return this.getDaysCountInMonth(prev.month, prev.year);
     }
 
+    /**
+     * Moves the hours of a date so that a daylight saving time change cannot move it to another day, ported from the
+     * jQuery UI datepicker: hours after 12 are moved 2 hours ahead, all others are set to 0.
+     * @param date The date to adjust, modified in place.
+     * @returns The given date.
+     */
     private daylightSavingAdjust(date: Date): Date {
         date.setHours(date.getHours() > 12 ? date.getHours() + 2 : 0);
         return date;
     }
 
+    /**
+     * Gets the month before the given month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns The 0-based month and the year of the previous month.
+     */
     private getPreviousMonthAndYear(month: number, year: number): { month: number; year: number } {
         return month === 0 ? { month: 11, year: year - 1 } : { month: month - 1, year };
     }
 
+    /**
+     * Gets the month after the given month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns The 0-based month and the year of the next month.
+     */
     private getNextMonthAndYear(month: number, year: number): { month: number; year: number } {
         return month === 11 ? { month: 0, year: year + 1 } : { month: month + 1, year };
     }
 
+    /**
+     * Orders the given week day names so they start with the first day of the week of the locale.
+     * @param dayNames Week day names, starting with sunday.
+     * @returns The 7 names, starting with the first day of the week.
+     */
     private createWeekDays(dayNames: string[]): string[] {
         const weekDays: string[] = [];
         let dayIndex = this.getFirstDayOfWeek();
@@ -946,6 +1253,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return weekDays;
     }
 
+    /**
+     * Creates the metadata of all displayed months, see `numberOfMonths`.
+     * @param month 0-based month of the first displayed month.
+     * @param year Year of the first displayed month.
+     * @returns The metadata of each displayed month.
+     */
     private createMonths(month: number, year: number): MonthMeta[] {
         const months: MonthMeta[] = [];
         for (let i = 0; i < this.options.numberOfMonths; i++) {
@@ -960,6 +1273,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return months;
     }
 
+    /**
+     * Creates the metadata of a month: its weeks with the days, including the days of the previous and next month that
+     * fill the first and last week.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @param index Index of the month among the displayed months.
+     * @returns The metadata of the month.
+     */
     private createMonth(month: number, year: number, index: number): MonthMeta {
         const dates: DateMeta[][] = [];
         const firstDay = this.getFirstDayOfMonthIndex(month, year);
@@ -1001,6 +1322,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return { month, year, dates, index };
     }
 
+    /**
+     * Checks whether a day can be selected: it must be within min / max date, not disabled (or enabled if enabled dates
+     * are set), not on a disabled week day and not a day of another month unless `selectOtherMonths` is set.
+     * @param day Day of the month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @param otherMonth Whether the day belongs to the previous or next month of the displayed month.
+     * @returns Whether the day can be selected.
+     */
     private isSelectable(day: number, month: number, year: number, otherMonth: boolean): boolean {
         const compare = (date: Date) => (date.getFullYear() - year) || (date.getMonth() - month) || (date.getDate() - day);
         const validMin = !this.minDate || compare(this.minDate) <= 0;
@@ -1020,6 +1350,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return validMin && validMax && validDate && validDay && validMonth;
     }
 
+    /**
+     * Checks whether a day is selected: it equals the selected date or one of the selected dates, is within the
+     * selected range, or is in the selected week in the week view.
+     * @param dateMeta The day to check.
+     * @returns Whether the day is selected.
+     */
     private isSelected(dateMeta: DateMeta): boolean {
         if (!this.value) {
             return false;
@@ -1045,6 +1381,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return false;
     }
 
+    /**
+     * Checks whether a month of the displayed year is selected in the month view, or within the selected range.
+     * @param month 0-based month.
+     * @returns Whether the month is selected.
+     */
     private isMonthSelected(month: number): boolean {
         if (!this.value) {
             return false;
@@ -1058,10 +1399,23 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return this.isDate(this.value) && this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear();
     }
 
+    /**
+     * Checks whether a date is on the given day, ignoring the time.
+     * @param value The date to compare, any other value never matches.
+     * @param dateMeta The day to compare with.
+     * @returns Whether both are on the same day.
+     */
     private isDateEquals(value: unknown, dateMeta: DateMeta): boolean {
         return this.isDate(value) && value.getDate() === dateMeta.day && value.getMonth() === dateMeta.month && value.getFullYear() === dateMeta.year;
     }
 
+    /**
+     * Checks whether a day is within a date range, including its start and end.
+     * @param start Start of the range.
+     * @param end End of the range.
+     * @param dateMeta The day to check.
+     * @returns Whether the day is within the range, `false` if start or end is no valid date.
+     */
     private isDateBetween(start: unknown, end: unknown, dateMeta: DateMeta): boolean {
         if (this.isDate(start) && this.isDate(end)) {
             const date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
@@ -1070,27 +1424,61 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return false;
     }
 
+    /**
+     * Checks whether the `selectionMode` is `single`.
+     * @returns Whether only a single date can be selected.
+     */
     private isSingleSelection(): boolean {
         return this.options.selectionMode === 'single';
     }
 
+    /**
+     * Checks whether the `selectionMode` is `range`.
+     * @returns Whether a range of dates can be selected.
+     */
     private isRangeSelection(): boolean {
         return this.options.selectionMode === 'range';
     }
 
+    /**
+     * Checks whether the `selectionMode` is `multiple`.
+     * @returns Whether multiple dates can be selected.
+     */
     private isMultipleSelection(): boolean {
         return this.options.selectionMode === 'multiple';
     }
 
+    /**
+     * Checks whether a day is today.
+     * @param today The current date, see {@link getNow}.
+     * @param day Day of the month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Whether the day is today.
+     */
     private isToday(today: Date, day: number, month: number, year: number): boolean {
         return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
     }
 
+    /**
+     * Checks whether a day is one of the `disabledDates`.
+     * @param day Day of the month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Whether the day is disabled.
+     */
     private isDateDisabled(day: number, month: number, year: number): boolean {
         return (this.options.disabledDates as Date[] | null ?? [])
             .some((date) => date.getFullYear() === year && date.getMonth() === month && date.getDate() === day);
     }
 
+    /**
+     * Checks whether a day is one of the `enabledDates`.
+     * @param day Day of the month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Whether the day is enabled, always `true` if no enabled dates are set.
+     */
     private isDateEnabled(day: number, month: number, year: number): boolean {
         const enabledDates = this.options.enabledDates as Date[] | null;
         if (enabledDates && enabledDates.length > 0) {
@@ -1099,10 +1487,22 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return true;
     }
 
+    /**
+     * Checks whether a day falls on one of the `disabledDays` of the week.
+     * @param day Day of the month.
+     * @param month 0-based month.
+     * @param year Full year.
+     * @returns Whether the week day of the day is disabled.
+     */
     private isDayDisabled(day: number, month: number, year: number): boolean {
         return !!this.options.disabledDays && this.options.disabledDays.indexOf(new Date(year, month, day).getDay()) !== -1;
     }
 
+    /**
+     * Formats the selected value for the input: a single date, comma separated dates, or the dates of a range separated
+     * by the `rangeSeparator`, followed by the week number in the week view.
+     * @returns The formatted value, an empty string if nothing is selected, or the raw value if it cannot be formatted.
+     */
     private getValueToRender(): string {
         let formattedValue = '';
         if (!this.value) {
@@ -1115,7 +1515,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                     const startDate: Date = this.value[0];
                     const endDate: Date | null = this.value[1];
 
-                    formattedValue = this.formatDateTime(startDate);
+                    formattedValue = this.formatDateTime(startDate) ?? '';
                     if (endDate) {
                         formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
                     }
@@ -1127,7 +1527,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 }
             }
             else if (this.isSingleSelection()) {
-                formattedValue = this.formatDateTime(this.value);
+                formattedValue = this.formatDateTime(this.value) ?? '';
             }
             else if (this.isMultipleSelection()) {
                 formattedValue = (this.value as Date[]).map((date) => this.formatDateTime(date)).join(', ');
@@ -1140,10 +1540,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return formattedValue;
     }
 
-    /** Formats a date with the date and time format of the date picker. */
-    formatDateTime(date: Date | null | undefined): string {
+    /**
+     * Formats a date with the date format of the date picker, followed by the time if `showTime` is set, or only the
+     * time with `timeOnly`.
+     * @param date The date to format.
+     * @returns The formatted date and time, or `null` if no date is given.
+     */
+    formatDateTime(date: Date | null | undefined): string | null {
         if (!date) {
-            return '';
+            return null;
         }
         if (this.options.timeOnly) {
             return this.formatTime(date);
@@ -1155,10 +1560,22 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return formattedValue;
     }
 
-    /** Formats a date with the given format, ported from the jQuery UI datepicker. */
-    formatDate(date: Date | null | undefined, format: string): string {
+    /**
+     * Formats a date with the given format, ported from the jQuery UI datepicker. Supports `d` / `dd` (day of month),
+     * `o` / `oo` (day of year), `D` / `DD` (day name), `m` / `mm` (month), `M` / `MM` (month name), `y` / `yy` (2 /
+     * 4-digit year), `@` (Unix timestamp in ms), `!` (Windows ticks) and literal text in single quotes.
+     * @param date The date to format, or a day of the calendar.
+     * @param format The date format, e.g. `mm/dd/yy`.
+     * @returns The formatted date, or an empty string if no date is given.
+     */
+    formatDate(date: Date | DateMeta | null | undefined, format: string): string {
         if (!date) {
             return '';
+        }
+        // a day of the calendar (DateMeta); other values that are not a Date, e.g. an unparsable text typed into the
+        // input, must still fail, so getValueToRender keeps the text
+        if (!(date instanceof Date) && typeof date === 'object' && 'day' in date) {
+            date = new Date(date.year, date.month, date.day);
         }
 
         const locale = this.options.locale;
@@ -1239,7 +1656,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return output;
     }
 
-    /** Formats the time of a date with the time format of the date picker. */
+    /**
+     * Formats the time of a date with the time format of the date picker, i.e. its `hourFormat`, `timeSeparator`,
+     * `fractionSeparator` and the seconds and milliseconds if they are shown.
+     * @param date The date whose time to format.
+     * @returns The formatted time, e.g. `14:30` or `02:30 PM`, or an empty string if no date is given.
+     */
     formatTime(date: Date | null | undefined): string {
         if (!date) {
             return '';
@@ -1269,6 +1691,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return output;
     }
 
+    /**
+     * Parses a time in the time format of the date picker.
+     * @param value The time to parse, e.g. `14:30`.
+     * @param ampm The AM / PM text of the locale, for the 12 hour format.
+     * @returns The parsed hour (0 to 23), minute, second and millisecond.
+     * @throws If the time has the wrong number of parts or a value is out of range.
+     */
     private parseTime(value: string, ampm: string | null | undefined): { hour: number; minute: number; second: number; millisecond: number } {
         const o = this.options;
         const tokens = value.replace(o.fractionSeparator, o.timeSeparator).split(o.timeSeparator);
@@ -1299,7 +1728,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return { hour: h, minute: m, second: s, millisecond: ms };
     }
 
-    /** Parses a date with the given format, ported from the jQuery UI datepicker. */
+    /**
+     * Parses a date with the given format, ported from the jQuery UI datepicker. Supports the same tokens as
+     * {@link formatDate}, 2-digit years are expanded using the `shortYearCutoff`.
+     * @param text The text to parse.
+     * @param format The date format, e.g. `mm/dd/yy`.
+     * @returns The parsed date without time, or `null` for an empty text.
+     * @throws If the text or format is missing, or the text does not match the format or is no valid date.
+     */
     parseDate(text: string | null | undefined, format: string): Date | null {
         if (format == null || text == null) {
             throw "Invalid arguments";
@@ -1459,6 +1895,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return date;
     }
 
+    /**
+     * Parses the text of the input depending on the selection mode: a single date, comma separated dates, or a range
+     * separated by the `rangeSeparator`. Errors are logged, not thrown.
+     * @param text The text to parse.
+     * @returns The parsed date or dates, `null` for an empty text, or `undefined` if the text is invalid.
+     */
     private parseValueFromString(text: string): any {
         if (!text || text.trim().length === 0) {
             return null;
@@ -1484,6 +1926,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return value;
     }
 
+    /**
+     * Parses a single date with the date format, followed by the time if `showTime` is set; with `timeOnly`, the parsed
+     * time is applied to the current date.
+     * @param text The text to parse, e.g. `10/24/2026 14:30`.
+     * @returns The parsed date, or `null` if the date text is empty.
+     * @throws If the date or the time is invalid.
+     */
     private parseDateTime(text: string): Date | null {
         const o = this.options;
         const parts = text.split(' ');
@@ -1515,6 +1964,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return date;
     }
 
+    /**
+     * Applies a time in the time format of the date picker to a date, rounding the minute to the `stepMinute` and
+     * dropping seconds and milliseconds that are not shown.
+     * @param value The date to modify in place.
+     * @param timeString The time to parse.
+     * @param ampm The AM / PM text of the locale, for the 12 hour format.
+     * @throws If the time or the AM / PM text is invalid.
+     */
     private populateTime(value: Date, timeString: string, ampm: string | null | undefined): void {
         const o = this.options;
         if (o.hourFormat === '12' && ampm !== o.locale.pm && ampm !== o.locale.am) {
@@ -1528,10 +1985,18 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         value.setMilliseconds(o.showMilliseconds ? time.millisecond : 0);
     }
 
+    /**
+     * Checks whether the displayed year is the year of the min date.
+     * @returns `true` if a min date is set and the view date is in its year.
+     */
     private isInMinYear(): boolean {
         return !!this.minDate && this.minDate.getFullYear() === this.viewDate.getFullYear();
     }
 
+    /**
+     * Checks whether the displayed year is the year of the max date.
+     * @returns `true` if a max date is set and the view date is in its year.
+     */
     private isInMaxYear(): boolean {
         return !!this.maxDate && this.maxDate.getFullYear() === this.viewDate.getFullYear();
     }
@@ -1540,6 +2005,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     // === Render ===
     // ==============
 
+    /**
+     * Renders the trigger button and the panel, appends the panel to the widget or to the `appendTo` target (removing
+     * an old panel there), binds the events and registers the CSS transition of the overlay. Called on init and when
+     * switching between the touch UI and the overlay.
+     */
     private renderDatePicker(): void {
         const o = this.options;
 
@@ -1575,6 +2045,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
     }
 
+    /**
+     * Syncs the month and year navigators of the rendered panel with the view date and updates the state of the
+     * navigator buttons (#6379).
+     */
     private setInitOptionValues(): void {
         if (this.isYearNavigator()) {
             let year = this.viewDate.getFullYear();
@@ -1601,6 +2075,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.setNavigationState(this.viewDate);
     }
 
+    /**
+     * Creates the trigger button for `showIcon` and stores it in {@link triggerButton}, the caller appends it to the
+     * widget.
+     */
     private renderTriggerButton(): void {
         const aria = ' aria-haspopup="dialog" aria-expanded="false" aria-controls="' + this.id + '_panel" ';
         this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-button-icon-only'
@@ -1610,6 +2088,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</button>');
     }
 
+    /** Creates the panel element with its content and its state classes and stores it in {@link panel}. */
     private renderDatePickerPanel(): void {
         const o = this.options;
         const classes = this.getClassesToAdd({
@@ -1634,7 +2113,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.onPanelCreated();
     }
 
-    /** Renders the inner elements of the panel. */
+    /**
+     * Renders the inner elements of the panel depending on the options: the date or month view, the time picker and the
+     * button bar. Also updates the disabled state class of the panel.
+     * @returns The HTML of the panel content.
+     */
     renderPanelElements(): string {
         const o = this.options;
         let html = '';
@@ -1659,11 +2142,19 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return html;
     }
 
+    /**
+     * Creates the metadata of the displayed months and renders them.
+     * @returns The HTML of the date view.
+     */
     private renderDateView(): string {
         this.monthsMetadata = this.createMonths(this.viewDate.getMonth(), this.viewDate.getFullYear());
         return this.monthsMetadata.map((month, i) => this.renderMonth(month, i)).join('');
     }
 
+    /**
+     * Renders the month view: a header with the year navigation and the 12 months of the displayed year.
+     * @returns The HTML of the month view.
+     */
     private renderMonthView(): string {
         let months = '';
         for (let i = 0; i <= 11; i++) {
@@ -1678,6 +2169,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '<div class="ui-monthpicker">' + months + '</div>';
     }
 
+    /**
+     * Renders the time picker with the hour, minute, second, millisecond and AM / PM pickers, depending on the options.
+     * @returns The HTML of the time picker.
+     */
     private renderTimePicker(): string {
         const o = this.options;
         return '<div class="ui-timepicker ui-widget-header' + (o.timeInput ? ' ui-timepicker-timeinput' : '') + '">'
@@ -1692,6 +2187,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</div>';
     }
 
+    /**
+     * Renders the button bar with the today (or now) and clear buttons. The today button is hidden if today is not
+     * within min / max date.
+     * @returns The HTML of the button bar.
+     */
     private renderButtonBar(): string {
         const o = this.options;
         const grid = o.flex ? 'grid' : 'ui-g';
@@ -1718,6 +2218,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</div>';
     }
 
+    /**
+     * Renders a month of the month view, disabled if it is not within min / max date.
+     * @param index 0-based month.
+     * @returns The HTML of the month.
+     */
     private renderMonthViewMonth(index: number): string {
         const o = this.options;
         const monthName = (o.showLongMonthNames ? o.locale.monthNames[index] : o.locale.monthNamesShort[index]) ?? '';
@@ -1732,6 +2237,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
     }
 
+    /**
+     * Renders a month of the date view with its header and date grid; the first month gets the backward and the last
+     * month the forward navigator.
+     * @param monthMetadata The month to render.
+     * @param index Index of the month among the displayed months.
+     * @returns The HTML of the month.
+     */
     private renderMonth(monthMetadata: MonthMeta, index: number): string {
         const o = this.options;
         const backwardNavigator = index === 0 ? this.renderNavigator('prev', o.locale.prevMonth) : '';
@@ -1747,12 +2259,25 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</div>';
     }
 
+    /**
+     * Renders a button that navigates to the previous or next month, or year in the month view.
+     * @param type Whether the button navigates backward (`prev`) or forward (`next`).
+     * @param ariaLabel Accessible label of the button.
+     * @returns The HTML of the button.
+     */
     private renderNavigator(type: 'prev' | 'next', ariaLabel: string): string {
         return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-' + type + '" tabindex="0">'
             + '<span class="ui-icon ui-icon-circle-triangle-' + (type === 'prev' ? 'w' : 'e') + '"></span>'
             + '</button>';
     }
 
+    /**
+     * Renders the month of a header: a dropdown for the first displayed month with `monthNavigator`, otherwise the
+     * month name.
+     * @param month 0-based month.
+     * @param index Index of the month among the displayed months.
+     * @returns The HTML of the month element.
+     */
     private renderTitleMonthElement(month: number, index: number): string {
         const o = this.options;
         if (o.monthNavigator && o.view !== 'month' && index === 0) {
@@ -1762,6 +2287,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return '<span class="ui-datepicker-month">' + this.escapeHTML(o.locale.monthNames[month]) + '</span>';
     }
 
+    /**
+     * Renders the year of a header: for the first displayed month with a year navigator a number input or a dropdown
+     * limited to the year range and min / max date, otherwise the plain year.
+     * @param year The year to render.
+     * @param index Index of the month among the displayed months.
+     * @returns The HTML of the year element.
+     */
     private renderTitleYearElement(year: number, index: number): string {
         const o = this.options;
         if (!this.isYearNavigator() || index !== 0) {
@@ -1787,6 +2319,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return '<select class="ui-datepicker-year" tabindex="0" aria-label="' + o.locale.year + '">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
     }
 
+    /**
+     * Renders the options of the month or year dropdown, restricted to min / max date with `showMinMaxRange`.
+     * @param name Whether the options are months or years.
+     * @param options The month names or the years.
+     * @param current The selected month index or year.
+     * @returns The HTML of the options.
+     */
     private renderTitleOptions(name: 'month' | 'year', options: (string | number)[], current: number): string {
         const showMinMaxRange = this.options.showMinMaxRange;
         let html = '';
@@ -1808,6 +2347,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return html;
     }
 
+    /**
+     * Renders the title of a month header with the month and the year, ordered according to `showMonthAfterYear` of the
+     * locale.
+     * @param monthMetadata The month to render.
+     * @returns The HTML of the title.
+     */
     private renderTitle(monthMetadata: MonthMeta): string {
         const month = this.renderTitleMonthElement(monthMetadata.month, monthMetadata.index);
         const year = this.renderTitleYearElement(monthMetadata.year, monthMetadata.index);
@@ -1815,6 +2360,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return '<div class="ui-datepicker-title">' + content + '</div>';
     }
 
+    /**
+     * Renders the column headers of the date grid with the week day names, preceded by the week number header with
+     * `showWeek`.
+     * @param weekDaysMin Minimal week day names, displayed as header.
+     * @param weekDays Full week day names, used as title of the headers.
+     * @returns The HTML of the header cells.
+     */
     private renderDayNames(weekDaysMin: string[], weekDays: string[]): string {
         const o = this.options;
         const colOffset = o.showWeek ? 1 : 0;
@@ -1833,6 +2385,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     }
 
     // start-of-first-week - start-of-year, based on the implementation of moment.js
+    /**
+     * Calculates the offset of the start of the first week to the start of the year.
+     * @param year Full year.
+     * @param dow First day of the week, 0 = sunday.
+     * @param doy The `firstDayWeekOffset` of the locale, determines which day of january is always in the first week.
+     * @returns The offset in days, may be negative.
+     */
     private firstWeekOffset(year: number, dow: number, doy: number): number {
         // first-week day -- which january is always in the first week (4 for iso, 1 for other)
         const fwd = 7 + dow - doy;
@@ -1841,18 +2400,41 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return -fwdlw + fwd - 1;
     }
 
+    /**
+     * Calculates the day of the year of a day.
+     * @param d The day.
+     * @returns The 1-based day of the year.
+     */
     private dayOfYear(d: DateMeta): number {
         return Math.round((new Date(d.year, d.month, d.day).getTime() - new Date(d.year, 0, 0).getTime()) / 86400000);
     }
 
+    /**
+     * Gets the number of days of a year.
+     * @param year Full year.
+     * @returns 366 for a leap year, otherwise 365.
+     */
     private daysInYear(year: number): number {
         return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365;
     }
 
+    /**
+     * Calculates the number of weeks of a year, based on the implementation of moment.js.
+     * @param year Full year.
+     * @param dow First day of the week, 0 = sunday.
+     * @param doy The `firstDayWeekOffset` of the locale.
+     * @returns The number of weeks, 52 or 53.
+     */
     private weeksInYear(year: number, dow: number, doy: number): number {
         return (this.daysInYear(year) - this.firstWeekOffset(year, dow, doy) + this.firstWeekOffset(year + 1, dow, doy)) / 7;
     }
 
+    /**
+     * Default week calculator for `showWeek`, calculates the week of the year according to the first day of the week
+     * and the `firstDayWeekOffset` of the locale.
+     * @param d The day.
+     * @returns The week number.
+     */
     private calculateWeekNumber(d: DateMeta): number {
         const firstDayOfWeek = this.getFirstDayOfWeek();
         const doy = this.options.locale.firstDayWeekOffset ?? 6;
@@ -1867,6 +2449,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return week;
     }
 
+    /**
+     * Renders the cells of a week row: the week number with `showWeek` and the days with their state classes and ARIA
+     * attributes.
+     * @param weekDates The 7 days of the week.
+     * @returns The HTML of the cells.
+     */
     private renderWeek(weekDates: DateMeta[]): string {
         const o = this.options;
         let html = '';
@@ -1911,6 +2499,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return html;
     }
 
+    /**
+     * Renders the content of a day cell using the `dateTemplate` and the `dateStyleClasses`: a focusable link for a
+     * selectable day, otherwise a span.
+     * @param date The day.
+     * @param dateClass Style classes of the day.
+     * @param dateLabel Accessible label of the day, its formatted date.
+     * @returns The HTML of the cell content.
+     */
     private renderDateCellContent(date: DateMeta, dateClass: string, dateLabel: string): string {
         const content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
         const styleClass = this.options.dateStyleClasses?.[this.toISODateString(new Date(date.year, date.month, date.day))];
@@ -1923,6 +2519,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return '<span class="' + dateClass + '">' + content + '</span>';
     }
 
+    /**
+     * Renders the date grid of a month: a table with the week day headers and a row per week.
+     * @param monthMetadata The month to render.
+     * @param weekDaysMin Minimal week day names, starting with the first day of the week.
+     * @param weekDays Full week day names, starting with the first day of the week.
+     * @returns The HTML of the grid.
+     */
     private renderDateViewGrid(monthMetadata: MonthMeta, weekDaysMin: string[], weekDays: string[]): string {
         return '<div class="ui-datepicker-calendar-container">'
             + '<table class="ui-datepicker-calendar" role="grid">'
@@ -1932,16 +2535,32 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</div>';
     }
 
-    /** The date whose time is displayed in the time picker. */
+    /**
+     * Gets the date whose time is displayed in the time picker.
+     * @returns The selected date if a single date is selected, otherwise the view date.
+     */
     private getTimeSource(): Date {
         return this.isDate(this.value) ? this.value : this.viewDate;
     }
 
+    /**
+     * Renders a number input of the time picker, used with `timeInput`.
+     * @param value The current value.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @param label Accessible label of the input.
+     * @param size Size and maximum length of the input.
+     * @returns The HTML of the input.
+     */
     private renderTimeInput(value: string | number, min: number, max: number, label: string, size: number): string {
         return '<input type="number" min="' + min + '" max="' + max + '" value="' + value + '" aria-label="' + label + '" size="' + size
             + '" maxlength="' + size + '" tabindex="0" class="ui-inputfield"></input>';
     }
 
+    /**
+     * Renders the hour picker, converting the hour for the 12 hour format.
+     * @returns The HTML of the hour picker.
+     */
     private renderHourPicker(): string {
         const o = this.options;
         let hour = this.getTimeSource().getHours();
@@ -1961,12 +2580,20 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return this.renderTimeElements('ui-hour-picker', o.timeInput ? this.renderTimeInput(display, 0, maxHour, o.locale.hourText, 2) : '<span>' + display + '</span>', 0);
     }
 
+    /**
+     * Renders the minute picker.
+     * @returns The HTML of the minute picker.
+     */
     private renderMinutePicker(): string {
         const o = this.options;
         const display = pad0(this.getTimeSource().getMinutes());
         return this.renderTimeElements('ui-minute-picker', o.timeInput ? this.renderTimeInput(display, 0, 59, o.locale.minuteText, 2) : '<span>' + display + '</span>', 1);
     }
 
+    /**
+     * Renders the second picker if `showSeconds` is set.
+     * @returns The HTML of the second picker, or an empty string.
+     */
     private renderSecondPicker(): string {
         const o = this.options;
         if (!o.showSeconds) {
@@ -1976,6 +2603,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return this.renderTimeElements('ui-second-picker', o.timeInput ? this.renderTimeInput(display, 0, 59, o.locale.secondText, 2) : '<span>' + display + '</span>', 2);
     }
 
+    /**
+     * Renders the millisecond picker if `showMilliseconds` is set.
+     * @returns The HTML of the millisecond picker, or an empty string.
+     */
     private renderMillisecondPicker(): string {
         const o = this.options;
         if (!o.showMilliseconds) {
@@ -1985,6 +2616,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return this.renderTimeElements('ui-millisecond-picker', o.timeInput ? this.renderTimeInput(display, 0, 999, o.locale.millisecondText, 3) : '<span>' + display + '</span>', 3);
     }
 
+    /**
+     * Renders the AM / PM picker for the 12 hour format.
+     * @returns The HTML of the AM / PM picker, or an empty string for the 24 hour format.
+     */
     private renderAmPmPicker(): string {
         const o = this.options;
         if (o.hourFormat !== '12') {
@@ -1994,6 +2629,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return this.renderTimeElements('ui-ampm-picker', '<span>' + display + '</span>', 4);
     }
 
+    /**
+     * Renders an element of the time picker with an up and a down button around the given content.
+     * @param containerClass Style class of the element, e.g. `ui-hour-picker`.
+     * @param text The HTML content between the buttons.
+     * @param type Type of the element, stored as `data-type` and used for the button labels: 0 = hour, 1 = minute, 2 =
+     * second, 3 = millisecond, 4 = AM / PM, -1 = divider.
+     * @returns The HTML of the element.
+     */
     private renderTimeElements(containerClass: string, text: string, type: number): string {
         const locale = this.options.locale;
         const upLabels = [locale.nextHour, locale.nextMinute, locale.nextSecond, locale.nextMillisecond, locale.am];
@@ -2008,11 +2651,20 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</div>';
     }
 
+    /**
+     * Joins the names of the enabled style classes.
+     * @param classes The style classes, mapped to whether to add them.
+     * @returns The enabled style classes, each with a leading space.
+     */
     private getClassesToAdd(classes: Record<string, boolean>): string {
         return Object.keys(classes).filter((key) => classes[key]).map((key) => ' ' + key).join('');
     }
 
-    /** Formats a date as ISO date, e.g. `2026-10-24`. */
+    /**
+     * Formats the local date of a date as ISO date, e.g. `2026-10-24`, as used for the keys of the `dateStyleClasses`.
+     * @param date The date to format.
+     * @returns The ISO date without time.
+     */
     toISODateString(date: Date): string {
         return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
     }
@@ -2021,6 +2673,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     // === Events ===
     // ==============
 
+    /**
+     * Binds the event handlers of the input, the trigger button and the panel. The input handlers are bound with a
+     * delay so the CSP event handlers are registered first (#13269), the original `onchange` handler of the input is
+     * moved to `changeHandler`. Nothing is bound for a readonly date picker (#12385).
+     */
     private bindEvents(): void {
         if (this.options.readonly) {
             // #12385 readonly input should not allow any events
@@ -2030,7 +2687,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (!this.options.inline) {
             // #13269 delay registering events until CSP has registered
             PrimeFaces.queueTask(() => {
-                if (!this.options) {
+                // the input was removed meanwhile, e.g. by an AJAX update
+                if (!this.input[0]?.isConnected) {
                     return;
                 }
                 if (!this.changeHandler) {
@@ -2114,7 +2772,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             }
         })
         .on('mouseup.datePicker keyup.datePicker', timeSelector, (e) => this.onTimePickerElementMouseUp(e))
-        .on('mouseout.datePicker', timeSelector, (e) => {
+        // mouseleave, mouseout would also fire when the pointer moves between the button and its icon
+        .on('mouseleave.datePicker', timeSelector, (e) => {
             if (this.timePickerTimer) {
                 this.onTimePickerElementMouseUp(e);
             }
@@ -2153,6 +2812,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         });
     }
 
+    /**
+     * Highlights the hovered and the selected week in the week view, called whenever the panel content was rendered.
+     */
     private bindPanelEvents(): void {
         if (this.options.view === 'week') {
             // highlight the whole week
@@ -2169,7 +2831,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Moves the focus within the days or months of the panel. */
+    /**
+     * Moves the focus within the days or months of the panel with the arrow keys, navigating to the previous or next
+     * month (or year) at the edges; PageUp and PageDown navigate directly.
+     * @param event The keydown event.
+     * @param rowSize Number of items per row, 7 days or 3 months.
+     * @param firstRowStart Whether ArrowUp may move the focus to the very first item, otherwise it navigates backward
+     * then.
+     * @returns `true` if an arrow key was handled and its default action should be prevented.
+     */
     private moveFocus(event: JQuery.TriggeredEvent, rowSize: number, firstRowStart: boolean): boolean {
         const tabbables = this.panel.find('a:tabbable');
         const currentIndex = tabbables.index($(event.currentTarget));
@@ -2212,6 +2882,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return false;
     }
 
+    /**
+     * Handles the keyboard on a day: Enter and Space select it, Home and End focus the first or last day of the week,
+     * the arrow and page keys move the focus.
+     * @param event The keydown event.
+     * @param dateMeta The focused day.
+     */
     private onDateKeyDown(event: JQuery.TriggeredEvent, dateMeta: DateMeta): void {
         if (this.options.disabled || !dateMeta.selectable) {
             event.preventDefault();
@@ -2240,6 +2916,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Handles the keyboard on a month of the month view: Enter and Space select it, Home and End focus the first or
+     * last month, the arrow and page keys move the focus.
+     * @param event The keydown event.
+     * @param index 0-based month of the focused month.
+     */
     private onMonthKeyDown(event: JQuery.TriggeredEvent, index: number): void {
         if (this.options.disabled) {
             event.preventDefault();
@@ -2268,9 +2950,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Restricts the keys of the time inputs and the year input to digits, navigation keys and clipboard shortcuts.
+     * Enter in a 2-digit time input hides the overlay, a digit in a full year input clears it first. Skipped on
+     * Android.
+     * @param event The keydown event.
+     */
     private onTimeInputKeyDown(event: JQuery.TriggeredEvent): void {
         if (this.options.disabled) {
             event.preventDefault();
+            event.stopPropagation();
             return;
         }
         if (PrimeFaces.env.android) {
@@ -2282,7 +2971,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (input.maxLength === 2 && key === 'Enter') {
             this.hideOverlay();
+            // like master (return false): no default command of the form
             event.preventDefault();
+            event.stopPropagation();
             return;
         }
 
@@ -2303,6 +2994,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Removes all non-digits from a time input or the year input and clamps its value to its min / max; a year is only
+     * checked once it has 4 digits.
+     * @param event The keyup event.
+     */
     private onTimeInputKeyUp(event: JQuery.TriggeredEvent): void {
         const input = event.currentTarget as HTMLInputElement;
         let newValue = input.value.replace(/[^0-9]/g, '');
@@ -2329,20 +3025,37 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         input.value = newValue;
     }
 
+    /**
+     * Focuses the element matching the selector within the given element.
+     * @param jq The element to search in.
+     * @param selector Selector of the element to focus, e.g. `a:visible:first`.
+     */
     private focusDate(jq: JQuery, selector: string): void {
         jq.find(selector).trigger('focus');
     }
 
+    /**
+     * Navigates to the next month (or year in the month view) and focuses its first item.
+     * @param event The keyboard event that triggered the navigation.
+     */
     private focusNextInterval(event: JQuery.TriggeredEvent): void {
         this.navForward(event);
         this.focusDate(this.panel, 'a:visible:first');
     }
 
+    /**
+     * Navigates to the previous month (or year in the month view) and focuses its last item.
+     * @param event The keyboard event that triggered the navigation.
+     */
     private focusPreviousInterval(event: JQuery.TriggeredEvent): void {
         this.navBackward(event);
         this.focusDate(this.panel, 'a:visible:last');
     }
 
+    /**
+     * Handles a click on the input: hides the shown overlay unless it was just shown by the focus (#11928), otherwise
+     * shows it with `showOnFocus` (#12361).
+     */
     private onInputClick(): void {
         if (this.documentClickListener) {
             this.datepickerClick = true;
@@ -2360,6 +3073,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Handles the focus of the input: shows the overlay with `showOnFocus` (unless a trigger button is used), adds the
+     * focus styles and remembers the value to detect a change on blur.
+     */
     private onInputFocus(): void {
         if (this.options.showOnFocus && !this.isPanelVisible() && !this.datepickerFocus && !this.options.showIcon) {
             this.datepickerFocus = true;
@@ -2370,6 +3087,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.valueOnFocus = this.getDate();
     }
 
+    /**
+     * Handles the blur of the input: removes the focus styles and, if a mask is used, handles a changed value like a
+     * change of the input (#12754).
+     * @param event The blur event, if any.
+     */
     private onInputBlur(event?: JQuery.TriggeredEvent): void {
         this.input.removeClass('ui-state-focus');
         this.jq.removeClass('ui-inputwrapper-focus');
@@ -2381,6 +3103,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Handles the change of the input: keeps the displayed month within min / max date, reformats the input unless
+     * `keepInvalid` is set and calls the original `onchange` handler of the input.
+     * @param event The change event, if any.
+     */
     private onInputChange(event?: JQuery.TriggeredEvent): void {
         this.alignViewMonth();
 
@@ -2391,6 +3118,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.changeHandler?.(event as JQuery.TriggeredEvent);
     }
 
+    /**
+     * Handles the keyboard on the input: ArrowDown shows the overlay, Escape hides it.
+     * @param event The keydown event.
+     */
     private onInputKeyDown(event: JQuery.TriggeredEvent): void {
         switch (event.key) {
             case 'ArrowDown':
@@ -2403,6 +3134,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Handles typing in the input: updates the selected value and the displayed month without reformatting the input. A
+     * text that cannot be parsed is kept as the value, unless a mask is used.
+     * @param event The input event.
+     */
     private onUserInput(event: JQuery.TriggeredEvent): void {
         const rawValue = (event.target as HTMLInputElement).value;
 
@@ -2418,6 +3154,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Handles the change of the month dropdown: calls `onMonthChange` and displays the selected month.
+     * @param event The change event of the dropdown.
+     */
     private onMonthDropdownChange(event: JQuery.TriggeredEvent): void {
         const newViewDate = new Date(this.viewDate.getTime());
         newViewDate.setDate(1); // always set to first of month
@@ -2427,6 +3167,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.updateViewDate(event, newViewDate);
     }
 
+    /**
+     * Handles the change of the year input or dropdown: calls `onYearChange` and displays the selected year.
+     * @param event The change event.
+     */
     private onYearInputChange(event: JQuery.TriggeredEvent): void {
         const newViewDate = new Date(this.viewDate.getTime());
         newViewDate.setFullYear(parseInt((event.target as HTMLInputElement).value, 10));
@@ -2435,6 +3179,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.updateViewDate(event, newViewDate);
     }
 
+    /**
+     * Displays the previous or next month (or year in the month view) and calls `onMonthChange` or `onYearChange`. With
+     * `showMinMaxRange`, a month outside of min / max date is not displayed (#5967); in the month view, the year is
+     * kept within the year range of the year navigator.
+     * @param event The event that triggered the navigation, its default action is prevented.
+     * @param direction `-1` to navigate backward, `1` to navigate forward.
+     */
     private navigate(event: JQuery.TriggeredEvent, direction: 1 | -1): void {
         event.preventDefault();
         event.stopPropagation();
@@ -2467,7 +3218,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             let newYear = newViewDate.getFullYear() + direction;
             if (this.isYearNavigator()) {
                 const limit = parseInt((o.yearRange ?? '').split(':')[direction < 0 ? 0 : 1] ?? '', 10);
-                newYear = direction < 0 ? Math.max(newYear, limit) : Math.min(newYear, limit);
+                // a range that is not numeric (e.g. c-10:c+10) does not limit the navigation, like master
+                if (!isNaN(limit)) {
+                    newYear = direction < 0 ? Math.max(newYear, limit) : Math.min(newYear, limit);
+                }
             }
             newViewDate.setFullYear(newYear);
 
@@ -2477,16 +3231,27 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.updateViewDate(event, newViewDate);
     }
 
-    /** Displays the previous month, or year in the month view. */
+    /**
+     * Displays the previous month, or the previous year in the month view.
+     * @param event The event that triggered the navigation, e.g. a click on the navigator button.
+     */
     navBackward(event: JQuery.TriggeredEvent): void {
         this.navigate(event, -1);
     }
 
-    /** Displays the next month, or year in the month view. */
+    /**
+     * Displays the next month, or the next year in the month view.
+     * @param event The event that triggered the navigation, e.g. a click on the navigator button.
+     */
     navForward(event: JQuery.TriggeredEvent): void {
         this.navigate(event, 1);
     }
 
+    /**
+     * Disables the navigator buttons if the previous or next month is outside of min / max date, or both if the date
+     * picker is disabled. Only applies with `showMinMaxRange` outside of the month view.
+     * @param newViewDate The displayed month.
+     */
     private setNavigationState(newViewDate: Date | null | undefined): void {
         if (!newViewDate || !this.options.showMinMaxRange || this.options.view === 'month') {
             return;
@@ -2516,6 +3281,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Starts changing the time when a time picker button is pressed with the left mouse button (repeating while it is
+     * held down) or with Enter / Space.
+     * @param event The mousedown or keydown event.
+     * @param type The part of the time to change: 0 = hour, 1 = minute, 2 = second, 3 = millisecond.
+     * @param direction `1` to increment, `-1` to decrement.
+     */
     private onTimePickerElementMouseDown(event: JQuery.TriggeredEvent, type: number, direction: 1 | -1): void {
         // only left button, Enter and Space key allowed
         const isActionKey = PrimeFaces.utils.isActionKey(event);
@@ -2527,16 +3299,30 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Stops changing the time when a time picker button is released and fires the selection events if a value is
+     * selected.
+     * @param event The mouseup, keyup or mouseout event.
+     */
     private onTimePickerElementMouseUp(event: JQuery.TriggeredEvent): void {
         if (this.options.disabled) {
             return;
         }
         this.clearTimePickerTimer();
-        if (event.key !== 'Tab' && this.value) {
+        // the time was changed on mousedown or on keydown of Enter / Space
+        if ((!event.key || PrimeFaces.utils.isActionKey(event)) && this.value) {
             this.onDateSelected();
         }
     }
 
+    /**
+     * Changes the time by one step and, for a mouse press, schedules the next change: after 500 ms for the first
+     * repetition, then every 100 ms until the button is released.
+     * @param event The event that started the change.
+     * @param interval Delay of the next change in ms, `null` for the first one or `-1` for a single change by keyboard.
+     * @param type The part of the time to change: 0 = hour, 1 = minute, 2 = second, 3 = millisecond.
+     * @param direction `1` to increment, `-1` to decrement.
+     */
     private repeat(event: JQuery.TriggeredEvent, interval: number | null, type: number, direction: 1 | -1): void {
         if (interval === null || interval > -1) {
             this.clearTimePickerTimer();
@@ -2549,7 +3335,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Increments (positive step) or decrements the hour (0), minute (1), second (2) or millisecond (3). */
+    /**
+     * Increments (positive step) or decrements the hour (0), minute (1), second (2) or millisecond (3), wrapping around
+     * at the end of the range, and updates the selected value if the new time is within min / max date.
+     * @param event The event that triggered the change.
+     * @param type The part of the time to change.
+     * @param step The amount to add, negative to decrement.
+     */
     private stepTime(event: JQuery.TriggeredEvent, type: number, step: number): void {
         const currentTime = this.getTimeSource();
         const time = [currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds()];
@@ -2568,6 +3360,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /** Stops the repeated time change of a held down time picker button. */
     private clearTimePickerTimer(): void {
         if (this.timePickerTimer) {
             clearTimeout(this.timePickerTimer);
@@ -2575,7 +3368,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Focuses the selected or a suitable item of the panel. */
+    /**
+     * Focuses the selected day, today or the first day (the first month in the month view) of the panel and marks the
+     * input and the trigger button as expanded. Called after the overlay was shown and after a lazy model was loaded.
+     */
     focusOverlay(): void {
         let focused: JQuery | null = null;
         if (this.options.view === 'month') {
@@ -2603,7 +3399,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.triggerButton?.attr('aria-expanded', 'true');
     }
 
-    /** Shows the overlay panel. */
+    /**
+     * Shows the overlay panel with a transition, unless the date picker is inline, disabled or the panel is already
+     * shown. Once shown, the listeners that hide it on an outside click, resize and scroll are bound and the panel is
+     * focused.
+     */
     showOverlay(): void {
         if (this.options.disabled || this.documentClickListener || this.options.inline || this.isPanelVisible() || !this.transition) {
             return;
@@ -2635,7 +3435,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         });
     }
 
-    /** Hides the overlay panel. */
+    /**
+     * Hides the overlay panel with a transition and unbinds its listeners. Afterwards, the month of the selected (or
+     * initial view) date is displayed again.
+     * @param event The event that caused the hiding; without an event, the focus is put back to the input.
+     */
     hideOverlay(event?: JQuery.TriggeredEvent): void {
         if (!this.documentClickListener || this.options.inline || !this.isPanelVisible() || !this.transition) {
             return;
@@ -2672,6 +3476,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         });
     }
 
+    /**
+     * Binds the listener that hides the overlay on a click outside of the panel and the input, and prevents tabbing
+     * outside of the panel.
+     */
     private bindDocumentClickListener(): void {
         if (this.documentClickListener) {
             return;
@@ -2697,6 +3505,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         PrimeFaces.utils.preventTabbing(undefined, this.id + '_panel', this.panel.zIndex(), () => this.panel.find(':tabbable'));
     }
 
+    /** Unbinds the outside click listener and allows tabbing outside of the panel again. */
     private unbindDocumentClickListener(): void {
         if (this.documentClickListener) {
             $(document).off('click', this.documentClickListener);
@@ -2705,6 +3514,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /** Binds a window resize listener that switches between the touch UI and the overlay, see `autoDetectDisplay`. */
     private bindResponsiveResizeListener(): void {
         if (this.options.autoDetectDisplay && !this.options.inline) {
             const namespace = 'resize.responsive' + this.id;
@@ -2712,10 +3522,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /** Unbinds the window resize listener that switches between the touch UI and the overlay. */
     private unbindResponsiveResizeListener(): void {
         $(window).off('resize.responsive' + this.id);
     }
 
+    /** Binds a window resize listener that hides the overlay, not for inline, touch UI and mobile date pickers. */
     private bindWindowResizeListener(): void {
         if (this.options.inline || this.options.touchUI || PrimeFaces.env.mobile) {
             return;
@@ -2728,10 +3540,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         });
     }
 
+    /** Unbinds the window resize listener that hides the overlay. */
     private unbindWindowResizeListener(): void {
         $(window).off('resize.' + this.id);
     }
 
+    /**
+     * Binds scroll listeners to the scrollable parents that hide the overlay, not for inline and touch UI date pickers.
+     */
     private bindScrollListener(): void {
         // focusing a navigator control on iOS can scroll the viewport while the touch UI panel is open
         if (this.options.touchUI || this.options.inline) {
@@ -2745,6 +3561,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /** Unbinds the scroll listeners of the scrollable parents. */
     private unbindScrollListener(): void {
         if (this.scrollableListener) {
             for (const parent of this.scrollableParents) {
@@ -2754,7 +3571,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Switches between the touch UI and the overlay depending on the screen size. */
+    /**
+     * Switches between the touch UI and the overlay depending on the screen size and the `responsiveBreakpoint`,
+     * rendering the date picker again when the mode changes. Only applies with `autoDetectDisplay` to a date picker
+     * that is not inline.
+     */
     updateResponsiveness(): void {
         if (this.options.autoDetectDisplay && this.options.responsiveBreakpoint && !this.options.inline) {
             const touchUI = PrimeFaces.env.mobile || PrimeFaces.env.isScreenSizeLessThan(this.options.responsiveBreakpoint);
@@ -2765,24 +3586,43 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Whether the panel is displayed. */
+    /**
+     * Checks whether the panel is displayed.
+     * @returns `true` if the panel is visible and the date picker is not disabled.
+     */
     isPanelVisible(): boolean {
         return !this.options.disabled && this.panel.is(':visible');
     }
 
+    /**
+     * Checks whether a value is a valid date.
+     * @param value The value to check.
+     * @returns `true` for a `Date` that is not invalid.
+     */
     private isDate(value: unknown): value is Date {
         return value instanceof Date && !isNaN(value.getTime());
     }
 
+    /**
+     * Checks whether the year can be selected in the header, see `yearNavigator`.
+     * @returns `true` for a year input or dropdown.
+     */
     private isYearNavigator(): boolean {
         return ['input', 'select', 'true'].includes(this.options.yearNavigator);
     }
 
+    /**
+     * Checks whether the year navigator is a number input rather than a dropdown.
+     * @returns `true` if `yearNavigator` is `true` or `input`.
+     */
     private isYearNavigatorInput(): boolean {
         return ['input', 'true'].includes(this.options.yearNavigator);
     }
 
-    /** Positions the overlay panel at the input. */
+    /**
+     * Positions the overlay panel below the input, flipping it when there is not enough space, or shows the modal mask
+     * in the touch UI. Does nothing if the panel is not visible.
+     */
     alignPanel(): void {
         if (!this.isPanelVisible()) {
             return;
@@ -2798,7 +3638,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
 
         if (this.panel.parent().is(this.jq)) {
-            this.panel.css({ left: '0px', top: String(this.jq.innerHeight()), 'transform-origin': 'center top' });
+            this.panel.css({ left: '0px', top: this.jq.innerHeight() + 'px', 'transform-origin': 'center top' });
         }
         else {
             PrimeFaces.utils.position(this.panel.css({ left: '', top: '', 'transform-origin': 'center top' }), {
@@ -2813,7 +3653,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Displays the panel as a modal touch UI. */
+    /**
+     * Displays the panel as a modal touch UI: adds a mask below the panel that blocks scrolling of the page, a click on
+     * the mask removes it again.
+     */
     enableModality(): void {
         if (this.mask) {
             return;
@@ -2824,7 +3667,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         $(document.body).append(this.mask).addClass('ui-overflow-hidden');
     }
 
-    /** Removes the modal mask of the touch UI. */
+    /**
+     * Removes the modal mask of the touch UI and allows scrolling of the page again, unless the mask of another date
+     * picker is still shown.
+     */
     disableModality(): void {
         if (!this.mask) {
             return;
@@ -2836,11 +3682,30 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
+    /**
+     * Finds the week of a day among the displayed months, comparing month and year too since a week can contain days of
+     * the previous or next month.
+     * @param dateMeta The day.
+     * @returns The 7 days of the week, or `null` if the day is not displayed.
+     */
     private findWeekMetadata(dateMeta: DateMeta): DateMeta[] | null {
-        const month = this.monthsMetadata.find((m) => m.month === dateMeta.month && m.year === dateMeta.year);
-        return month?.dates.find((week) => week.some((day) => day.day === dateMeta.day)) ?? null;
+        // compare month and year too, a week can contain days of the previous or next month
+        for (const month of this.monthsMetadata) {
+            const week = month.dates.find((w) => w.some((day) => day.day === dateMeta.day && day.month === dateMeta.month && day.year === dateMeta.year));
+            if (week) {
+                return week;
+            }
+        }
+        return null;
     }
 
+    /**
+     * Handles the selection of a day or month: selects the whole week in the week view, toggles the day in multiple
+     * selection (respecting `maxDateCount`, an unselect is notified too, #10850) or selects it, then hides the overlay
+     * if configured via `focusOnSelect` / `hideOnDateTimeSelect` or `hideOnRangeSelection`.
+     * @param event The click or keydown event, or `null` when called via the API.
+     * @param dateMeta The selected day, ignored if it is not selectable.
+     */
     private onDateSelect(event: JQuery.TriggeredEvent | null, dateMeta: DateMeta): void {
         if (this.options.disabled || !dateMeta.selectable) {
             event?.preventDefault();
@@ -2883,6 +3748,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         event?.preventDefault();
     }
 
+    /**
+     * Selects a day, keeping the time of the current value with `showTime` and clamping it to min / max date. In range
+     * selection, the day becomes the end of the range if it is not before the start, otherwise it starts a new range.
+     * Fires the selection events and updates the filled state of the input (#14158).
+     * @param event The event that triggered the selection, or `null`.
+     * @param dateMeta The day to select.
+     */
     private selectDate(event: JQuery.TriggeredEvent | null, dateMeta: DateMeta): void {
         let date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
 
@@ -2932,6 +3804,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         PrimeFaces.updateFilledState(this.input, this.input.parent());
     }
 
+    /**
+     * Rounds a minute to the `stepMinute`, or adds a step to it (#6047).
+     * @param currentMinute The current minute.
+     * @param step Minutes to add, rounded to a multiple of the step; if omitted, the minute is rounded up to the next
+     * multiple of `stepMinute` unless it already is one.
+     * @returns The new minute, not wrapped to the range 0 to 59.
+     */
     private stepMinute(currentMinute: number, step?: number): number {
         if (this.options.stepMinute <= 1) {
             return step ? currentMinute + step : currentMinute;
@@ -2945,13 +3824,25 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return Math.floor((currentMinute + step) / step) * step;
     }
 
+    /**
+     * Switches the time between AM and PM by adding or subtracting 12 hours and fires the selection events.
+     * @param event The click event of the AM / PM button.
+     */
     private toggleAmPm(event: JQuery.TriggeredEvent): void {
         const currentTime = this.getTimeSource();
         const currentHour = currentTime.getHours();
         this.updateTime(event, currentHour >= 12 ? currentHour - 12 : currentHour + 12, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds());
+        this.onDateSelected();
         event.preventDefault();
     }
 
+    /**
+     * Handles the change of a time input with `timeInput`: applies a valid value within min / max date to the selected
+     * value and fires the selection events, otherwise restores the value from before the input received focus.
+     * @param unit The part of the time the input edits.
+     * @param input The changed input.
+     * @param event The change event.
+     */
     private handleTimeInput(unit: 'hour' | 'minute' | 'second' | 'millisecond', input: HTMLInputElement, event: JQuery.TriggeredEvent): void {
         const currentTime = this.getTimeSource();
         const time = [currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds()];
@@ -2964,6 +3855,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (new RegExp(unit === 'millisecond' ? '^([0-9]){1,3}$' : '^([0-9]){1,2}$').test(input.value)) {
             newValue = parseInt(input.value, 10);
             if (newValue >= min && newValue <= max) {
+                if (twelve) {
+                    // 1-12 in the current half of the day, e.g. 3 at 2 PM is 15:00
+                    newValue = newValue % 12 + (currentTime.getHours() >= 12 ? 12 : 0);
+                }
                 time[index] = newValue;
                 valid = this.validateTime(time[0]!, time[1]!, time[2]!, time[3]!, currentTime);
             }
@@ -2988,6 +3883,17 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.onDateSelected();
     }
 
+    /**
+     * Checks whether a time on the day of the given date is within min / max date. When the time is stepped, a new time
+     * still outside of the range is valid if it comes nearer to it.
+     * @param hour The new hour.
+     * @param minute The new minute.
+     * @param second The new second.
+     * @param millisecond The new millisecond.
+     * @param value The current date, provides the day and the time the direction refers to.
+     * @param direction Whether the time is incremented or decremented, if it is stepped.
+     * @returns Whether the new time is valid.
+     */
     private validateTime(hour: number, minute: number, second: number, millisecond: number, value: Date, direction?: 'INCREMENT' | 'DECREMENT'): boolean {
         const dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, millisecond);
 
@@ -3001,6 +3907,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return true;
     }
 
+    /**
+     * Sets the time of the selected date (or of the view date if no single date is selected) as the new value, without
+     * firing events.
+     * @param event The event that caused the change.
+     * @param hour The new hour.
+     * @param minute The new minute.
+     * @param second The new second.
+     * @param millisecond The new millisecond.
+     */
     private updateTime(event: JQuery.TriggeredEvent, hour: number, minute: number, second: number, millisecond: number): void {
         const newDateTime = this.getCurrentTime();
         newDateTime.setHours(hour);
@@ -3008,15 +3923,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         newDateTime.setSeconds(second);
         newDateTime.setMilliseconds(millisecond);
 
+        // the callers notify the selection, the time picker buttons on mouseup / keyup
         this.updateModel(event, newDateTime);
-
-        // while the time picker repeats, the selection is notified on mouseup
-        if (this.timePickerTimer === null) {
-            this.onDateSelected();
-        }
     }
 
-    /** The current date and time, in the time zone of the date picker. */
+    /**
+     * Gets the current date and time in the `timeZone` of the date picker, or in the time zone of the browser if none
+     * is set.
+     * @returns The current date and time.
+     */
     getNow(): Date {
         let now = new Date();
         if (this.options.timeZone) {
@@ -3034,11 +3949,20 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return now;
     }
 
+    /**
+     * Gets a copy of the date whose time is displayed in the time picker.
+     * @returns A new date with the date and time of the selected date or the view date.
+     */
     private getCurrentTime(): Date {
         return new Date(this.getTimeSource());
     }
 
-    /** Converts a Java time zone like `GMT+02:00` to an IANA time zone. */
+    /**
+     * Converts a Java time zone like `GMT+02:00` to an IANA time zone like `Etc/GMT-2`, which `Intl` understands. Other
+     * time zones are returned unchanged.
+     * @param javaTimeZone The Java time zone ID.
+     * @returns The IANA time zone.
+     */
     private convertTimeZone(javaTimeZone: string): string {
         if (['ETC/UTC', 'ETC/GMT', 'UTC', 'GMT'].includes(javaTimeZone.toUpperCase())) {
             return javaTimeZone;
@@ -3053,6 +3977,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return hours === 0 ? 'Etc/GMT' : 'Etc/GMT' + (matches[2] === '+' ? '-' : '+') + hours;
     }
 
+    /**
+     * Handles a click on the today button: displays and selects today, with the current time if `showTime` is set.
+     * @param event The click event.
+     */
     private onTodayButtonClick(event: JQuery.TriggeredEvent): void {
         const today = this.getNow();
         this.updateViewDate(event, today);
@@ -3062,6 +3990,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.onDateSelect(event, { day: today.getDate(), month: today.getMonth(), year: today.getFullYear(), today: true, selectable: true });
     }
 
+    /**
+     * Handles a click on the clear button: clears the selection, fires the `change` event and the `dateSelect` behavior
+     * and hides the overlay.
+     * @param event The click event.
+     */
     private onClearButtonClick(event: JQuery.TriggeredEvent): void {
         this.updateViewDate(event, this.getNow());
         this.updateModel(event, null);
@@ -3070,16 +4003,29 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.hideOverlay();
     }
 
+    /**
+     * Escapes the HTML special characters of a value.
+     * @param value The value to escape, converted to a string.
+     * @returns The escaped text.
+     */
     private escapeHTML(value: unknown): string {
         return String(value).replace(/[&<>"'`=/]/g, (s) => ENTITY_MAP[s] ?? s);
     }
 
-    /** Sets the time of the date to 00:00. */
+    /**
+     * Sets the time of the date to 00:00.
+     * @param value The date to modify in place.
+     * @returns The given date.
+     */
     private truncateDate(value: Date): Date {
         value.setHours(0, 0, 0, 0);
         return value;
     }
 
+    /**
+     * Derives the `yearRange` of the year navigator from the view date, 10 years around it for a dropdown and 1000 for
+     * an input, unless a year range was configured.
+     */
     private updateYearNavigator(): void {
         const isYearInput = this.isYearNavigatorInput();
         if (this.hasCustomYearRange || (isYearInput && this.options.yearRange)) {
@@ -3103,7 +4049,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
     }
 
-    /** Displays the month of the given date, optionally without triggering the AJAX viewChange event. */
+    /**
+     * Displays the month of the given date and renders the panel again. Unless silent, the date is remembered for range
+     * selection and the AJAX `viewChange` event is fired, which also updates a lazy model.
+     * @param event The event that caused the change, or `null`.
+     * @param value The date whose month to display.
+     * @param silent `true` to skip the `viewChange` event.
+     */
     updateViewDate(event: JQuery.TriggeredEvent | null, value: Date, silent: boolean = false): void {
         if (!silent) {
             this.viewDateOption = value;
@@ -3115,6 +4067,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.updatePanel();
     }
 
+    /**
+     * Sets the selected value, writes it formatted to the input and renders the panel again, without firing events.
+     * @param event The event that caused the change, or `null`.
+     * @param value The new value: a date, a list of dates, `null`, or the raw text of the input; an empty string clears
+     * the value.
+     * @param updateInput `false` to keep the text of the input, e.g. while the user is typing.
+     */
     private updateModel(event: JQuery.TriggeredEvent | null, value: unknown, updateInput: boolean = true): void {
         this.value = value === '' ? null : value;
         if (updateInput) {
@@ -3123,7 +4082,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.updatePanel();
     }
 
-    /** Renders the content of the panel again. */
+    /**
+     * Renders the content of the panel again and restores the focus to the new element with the same ARIA label. Call
+     * it after changing options at runtime, e.g. the disabled dates, so the panel reflects them.
+     */
     updatePanel(): void {
         // remember the focused element before we destroy the inner elements
         const el = document.activeElement;

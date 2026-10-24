@@ -160,7 +160,7 @@ function exposeToGlobalScope() {
 
 // Global extensions
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         interface WindowExtensions {
             autosize: typeof autosize;
         }
@@ -169,7 +169,7 @@ declare global {
 
 // src/confirmpopup
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             ConfirmPopup: typeof ConfirmPopup;
         }
@@ -178,11 +178,11 @@ declare global {
             confirmPopupSource?: JQuery | null;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type ConfirmPopupCfg = import("./src/confirmpopup/confirmpopup.widget.js").ConfirmPopupCfg;
     }
 
-    namespace PrimeType.widget.ConfirmPopup {
+    namespace PrimeFacesTypes.widget.ConfirmPopup {
         /**
          * Callback invoked after the popup is hidden.
          */
@@ -192,7 +192,7 @@ declare global {
 
 // Types (src/dialog)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface PrimeFaces {
             dialog: Dialogs;
             /**
@@ -213,18 +213,18 @@ declare global {
         }
         export type Dialog = Dialogs;
     }
-    namespace PrimeType.dialog {
+    namespace PrimeFacesTypes.dialog {
         export type DialogHandler = _DialogHandler;
 
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type ConfirmDialogCfg = import("./src/dialog/dialog.widget.js").ConfirmDialogCfg;
         export type DialogCfg = import("./src/dialog/dialog.widget.js").DialogCfg;
         export type DynamicDialogCfg = import("./src/dialog/dialog.widget.js").DynamicDialogCfg;
     }
-    namespace PrimeType.dialog {
+    namespace PrimeFacesTypes.dialog {
     }
-    namespace PrimeType.widget.Dialog {
+    namespace PrimeFacesTypes.widget.Dialog {
         /**
          * Client-side callback to invoke when the dialog is closed, see
          * {@link DialogCfg.onHide}.
@@ -288,19 +288,19 @@ declare global {
 
 // Types (src/forms)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             CommandButton: typeof CommandButton;
             SplitButton: typeof SplitButton;
         }
     }
 
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type CommandButtonCfg = import("./src/forms/forms.commandbutton.widget.js").CommandButtonCfg;
         export type SplitButtonCfg = import("./src/forms/forms.splitbutton.widget.js").SplitButtonCfg;
     }
 
-    namespace PrimeType.widget.SplitButton {
+    namespace PrimeFacesTypes.widget.SplitButton {
         /**
          * Available modes for filtering the options of the available buttons actions of a split button. When `custom` is set, a
          * `filterFunction` must be specified.
@@ -324,19 +324,19 @@ declare global {
 
 // Types (src/growl)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             Growl: typeof Growl;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type GrowlCfg = import("./src/growl/growl.widget.js").GrowlCfg;
     }
 }
 
 // Types (src/menu)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             BreadCrumb: typeof BreadCrumb;
             ContextMenu: typeof ContextMenu;
@@ -353,7 +353,7 @@ declare global {
         }
     }
 
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type BreadCrumbCfg = import("./src/menu/menu.breadcrumb.widget.js").BreadCrumbCfg;
         export type ContextMenuCfg = import("./src/menu/menu.contextmenu.widget.js").ContextMenuCfg;
         export type MegaMenuCfg = import("./src/menu/menu.megamenu.widget.js").MegaMenuCfg;
@@ -368,7 +368,7 @@ declare global {
         export type TieredMenuCfg = import("./src/menu/menu.tieredmenu.widget.js").TieredMenuCfg;
     }
 
-    namespace PrimeType.widget.ContextMenu {
+    namespace PrimeFacesTypes.widget.ContextMenu {
         /**
          * Client side callback invoked before the context menu is
          * shown.
@@ -389,7 +389,7 @@ declare global {
         export type SelectionMode = "single" | "multiple";
     }
 
-    namespace PrimeType.widget.PlainMenu {
+    namespace PrimeFacesTypes.widget.PlainMenu {
         /**
          * The direction in which to navigate, either to the next menu item
          * or to the previous menu item.
@@ -397,7 +397,7 @@ declare global {
         export type NavigationDirection = "prev" | "next";
     }
 
-    namespace PrimeType.widget.TieredMenu {
+    namespace PrimeFacesTypes.widget.TieredMenu {
         /**
          * Allowed event types for toggling a tiered menu.
          */
@@ -407,13 +407,13 @@ declare global {
 
 // Types (src/message(s))
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             Message: typeof Message;
             Messages: typeof Messages;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type Message = import("./src/message/message.widget.js").Message;
         export type Messages = import("./src/messages/messages.widget.js").Messages;
     }
@@ -422,12 +422,12 @@ declare global {
 
 // Types (src/slider)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             Slider: typeof Slider;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type SliderCfg = import("./src/slider/slider.widget.js").SliderCfg;
         export type SliderEventData = import("./src/slider/slider.widget.js").SliderEventData;
     }
@@ -435,24 +435,24 @@ declare global {
 
 // Types (src/spotlight)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             Spotlight: typeof Spotlight;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type SpotlightCfg = import("./src/spotlight/spotlight.widget.js").SpotlightCfg;
     }
 }
 
 // Types (src/staticmessage)
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             StaticMessage: typeof StaticMessage;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type StaticMessageCfg = import("./src/staticmessage/staticmessage.widget.js").StaticMessageCfg;
     }
 }

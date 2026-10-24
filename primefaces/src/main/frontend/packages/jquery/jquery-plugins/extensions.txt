@@ -1,18 +1,15 @@
 List of Plugins
-- Interactions (own implementation with pointer events, jQuery UI compatible API): draggable, droppable, resizable, sortable
 - MouseWheel (https://github.com/jquery/jquery-mousewheel)
-- Input Mask (https://github.com/RobinHerbots/Inputmask)
-- Rangy Text (https://github.com/timdown/rangy)
-- Cursor Position (https://github.com/beviz/jquery-caret-position-getter)
-- Browser (https://github.com/gabceb/jquery-browser-plugin/releases)
-- Autosize (https://github.com/jackmoore/autosize)
 
 Extensions:
 
 jquery.pfextensions:
+- focus(delay, callback): focuses the elements after a delay
+- zIndex(): the z-index of the element or its closest positioned parent (formerly jQuery UI)
 - :focusable and :tabbable selectors (formerly jQuery UI)
-- Tooltip removal fix (https://github.com/primefaces/primefaces/issues/9941)
+- remove event on removed elements ($.cleanData, formerly jQuery UI), used to destroy widgets and interactions after AJAX updates
+  (replaces the $.fn.remove patch of the tooltip removal fix https://github.com/primefaces/primefaces/issues/9941)
 
-interaction/plugins:
-- remove event on removed elements ($.cleanData), used to destroy widgets after AJAX updates
-- Droppable zoom factor handling (https://github.com/primefaces/primefaces/issues/10689)
+The interactions (draggable, droppable, resizable, sortable) are PrimeFaces code in core/src/interaction (PrimeFaces.interactions),
+the browser detection (formerly the jQuery Browser plugin) is in core/src/core/core.env.ts (PrimeFaces.env.browser) and the caret
+position of the textarea (formerly the jQuery Caret Position plugin) is in the InputTextarea widget.

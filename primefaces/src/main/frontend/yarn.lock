@@ -324,7 +324,6 @@ __metadata:
     "@types/moment-jdateformatparser": "npm:1.2.0"
     "@types/node": "npm:26.6.3"
     "@types/pnpapi": "npm:0.0.5"
-    "@types/rangyinputs": "npm:1.2.5"
     "@types/raphael": "npm:2.3.10"
     "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
@@ -360,7 +359,6 @@ __metadata:
     primelocale: "npm:2.5.0"
     propagating-hammerjs: "npm:3.0.0"
     quill: "npm:2.0.3"
-    rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
     typescript: "npm:5.9.3"
     uuid: "npm:14.0.2"
@@ -479,15 +477,6 @@ __metadata:
   version: 0.0.5
   resolution: "@types/pnpapi@npm:0.0.5"
   checksum: 10c0/2ade69b20d0ad5d16e6f709b1a40a8c43034ae5e8ca3b979a7fc7c26fbf0cc75791b7e8539f84e98c0e910b9c31d805fb420840e73482c6ed7bba9760ee938be
-  languageName: node
-  linkType: hard
-
-"@types/rangyinputs@npm:1.2.5":
-  version: 1.2.5
-  resolution: "@types/rangyinputs@npm:1.2.5"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/09900cd941b682aedd862beec752797e656bc5c0bdea3f96bd8862c150a34f3dd5454484754af2481477ea10f53b200ee351646a3d92390c13828f4a3db0e01e
   languageName: node
   linkType: hard
 
@@ -1002,13 +991,6 @@ __metadata:
     parchment: "npm:^3.0.0"
     quill-delta: "npm:^5.1.0"
   checksum: 10c0/9897468b3e2b0fbf9c91471deea745d7b6494f866cb8caace63267769b2c4c6128e49da0988c4ed64f1a91a171fbf91c84009b663b1256a3caca0755204bb6b5
-  languageName: node
-  linkType: hard
-
-"rangyinputs@npm:1.2.0":
-  version: 1.2.0
-  resolution: "rangyinputs@npm:1.2.0"
-  checksum: 10c0/ab8cf8edeec2e8578172792f70d9d2f36053a97509cf547c8969e7dc315ed318679ae84c051b1b1ea1e3436339f917809d45a941d954b44a8ebe4c3d79ae50ae
   languageName: node
   linkType: hard
 

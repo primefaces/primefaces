@@ -12,7 +12,7 @@ registerKillSwitchHookForIdleMonitor();
 
 // Global types
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             /**
              * __PrimeFaces IdleMonitor Widget__
@@ -25,7 +25,7 @@ declare global {
         }
     }
 
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         /**
          * The configuration for the {@link  IdleMonitor} widget.
          * 
@@ -36,7 +36,7 @@ declare global {
         export type IdleMonitorCfg = import("./src/idlemonitor.widget.js").IdleMonitorCfg;
     }
 
-    namespace PrimeType.widget.IdleMonitor {
+    namespace PrimeFacesTypes.widget.IdleMonitor {
         /**
         * Client side callback to execute when the user comes back. See
         * also {@link IdleMonitorCfg.onactive | cfg.onactive}.

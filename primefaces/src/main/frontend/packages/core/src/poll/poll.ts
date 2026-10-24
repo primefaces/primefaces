@@ -16,7 +16,7 @@ export interface PollCfg extends BaseWidgetCfg {
     /**
      * Callback that performs the polling action.
      */
-    fn: PrimeType.widget.Poll.PollingAction;
+    fn: PrimeFacesTypes.widget.Poll.PollingAction;
     /**
      * Duration between two successive AJAX poll request, either in milliseconds or seconds,
      * depending on the configure `intervalType`.
@@ -25,15 +25,15 @@ export interface PollCfg extends BaseWidgetCfg {
     /**
      * Time unit for the frequency.
      */
-    intervalType: PrimeType.widget.Poll.IntervalType;
+    intervalType: PrimeFacesTypes.widget.Poll.IntervalType;
     /**
      * Optional callback invoked when polling starts.
      */
-    onActivated: PrimeType.widget.Poll.OnActivatedCallback;
+    onActivated: PrimeFacesTypes.widget.Poll.OnActivatedCallback;
     /**
      * Optional callback invoked when polling stops.
      */
-    onDeactivated: PrimeType.widget.Poll.OnDeactivatedCallback;
+    onDeactivated: PrimeFacesTypes.widget.Poll.OnDeactivatedCallback;
 }
 
 /**
@@ -52,7 +52,7 @@ export class Poll<Cfg extends PollCfg = PollCfg> extends BaseWidget<Cfg> {
      */
     timer: number = 0;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.active = false;
@@ -62,7 +62,7 @@ export class Poll<Cfg extends PollCfg = PollCfg> extends BaseWidget<Cfg> {
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         this.stop();
 
         super.refresh(cfg);

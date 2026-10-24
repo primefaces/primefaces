@@ -4,7 +4,7 @@ import { PF as _PF, core, type Core } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 import { globalEffectsSetup } from "./src/core/core.effects.js";
-// global PrimeType declarations of the position options
+// global PrimeFacesTypes declarations of the position options
 import "./src/core/core.position.js";
 
 import type { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
@@ -59,7 +59,7 @@ function exposeToGlobalScope() {
 
 // General types
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export type EntityMap = Record<string, string>;
 
         /**
@@ -359,7 +359,7 @@ declare global {
 
 // Features for the core
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         /**
          * Registry for hooks. Hooks are a way for external code to interact
          * with and adjust core functions. The core provides entry points
@@ -372,7 +372,7 @@ declare global {
         export interface HookRegistry { }
     }
 
-    namespace PrimeType.hook {
+    namespace PrimeFacesTypes.hook {
         /**
          * The confirm hook. Lets external scripts subscribe to emitted
          * confirmation messages. Implementations usually make use of this
@@ -437,7 +437,7 @@ declare global {
         export interface MessageRender {
             clearMessagesForWidget: (widget: BaseWidget) => void;
 
-            renderMessageForWidget: (widget: BaseWidget, messages: PrimeType.FacesMessage[]) => void;
+            renderMessageForWidget: (widget: BaseWidget, messages: PrimeFacesTypes.FacesMessage[]) => void;
 
             /**
              * Renders all given messages in the given containers.
@@ -445,7 +445,7 @@ declare global {
              * @param containers The container for the messages. Note that this JQuery
              * instance may contain multiple elements -- you should iterate over them. 
              */
-            renderMessagesInContainers: (messages: Record<string, PrimeType.FacesMessage[]>, containers: JQuery) => void;
+            renderMessagesInContainers: (messages: Record<string, PrimeFacesTypes.FacesMessage[]>, containers: JQuery) => void;
         }
 
         /**
@@ -459,11 +459,11 @@ declare global {
              * @returns Whether the message was handled. If true, subsequent
              * registered implementations will not be called anymore.
              */
-            showMessage: (message: PrimeType.hook.messageInDialog.DialogMessageData) => boolean;
+            showMessage: (message: PrimeFacesTypes.hook.messageInDialog.DialogMessageData) => boolean;
         }
     }
 
-    namespace PrimeType.hook.confirm {
+    namespace PrimeFacesTypes.hook.confirm {
         /**
          * Interface for a confirmation message to show, such as in a confirm
          * popup or a confirm dialog. Used by the {@link ConfirmCoreFeature}.
@@ -548,7 +548,7 @@ declare global {
         }
     }
 
-    namespace PrimeType.hook.dialog {
+    namespace PrimeFacesTypes.hook.dialog {
         /**
          * Interface with the options shared by the open / close methods of the
          * `PrimeFaces.dialog.DialogHandler` and the configuration of the
@@ -734,7 +734,7 @@ declare global {
         }
     }
 
-    namespace PrimeType.hook.messageInDialog {
+    namespace PrimeFacesTypes.hook.messageInDialog {
         /**
          * Interface for a message received from the server that is to be shown
          * in a dialog, via the dialog framework.
@@ -778,7 +778,7 @@ declare global {
      * Namespace related to AJAX functionality, such as sending post-back requests
      * to the server and handling the response.
      */
-    namespace PrimeType.ajax {
+    namespace PrimeFacesTypes.ajax {
         /**
          * An entry on the {@link JQuery.jqXHR} request object with additional values added by PrimeFaces. For example, when
          * you call `PrimeFaces.current().ajax().addCallbackParam(...)` on the server in a bean method, the added parameters
@@ -1055,7 +1055,7 @@ declare global {
              * {@link PFSettings.earlyPostParamEvaluation | earlyPostParamEvaluation}
              * is enabled. 
              */
-            earlyPostParams?: PrimeType.ajax.RequestParameter<string, string | Blob>[];
+            earlyPostParams?: PrimeFacesTypes.ajax.RequestParameter<string, string | Blob>[];
             /**
              * The AJAX behavior event that triggered the AJAX request.
              */
@@ -1199,7 +1199,7 @@ declare global {
         /**
          * Mapping from articulate to shortname names for the options passed to AJAX calls made by PrimeFaces.
          */
-        export type ShorthandToArticulateConfigurationMap = PrimeType.InvertRecord<ArticulateToShorthandConfigurationMap>;
+        export type ShorthandToArticulateConfigurationMap = PrimeFacesTypes.InvertRecord<ArticulateToShorthandConfigurationMap>;
 
         /**
          * Options passed to AJAX calls made by PrimeFaces. This is the same as `Configuration`, but with shorter
@@ -1311,7 +1311,7 @@ declare global {
      * Namespace for functionality related to validation, such as client-side
      * validation logic.
      */
-    namespace PrimeType.validation {
+    namespace PrimeFacesTypes.validation {
         /**
          * Type of the value of an element that is about to be submitted, passed
          * e.g. to {@link Converter.convert}.
@@ -1479,19 +1479,19 @@ declare global {
 
 // Base widget types
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         /**
          * Shortcut for the type of a specific widget. For example, if you want to
          * write a function that takes a single parameter named `commandButton`
          * that must be a CommandButton instance:
          * 
          * ```ts
-         * function processCommandButton(widget: PrimeType.Widget<"CommandButton">): void {
+         * function processCommandButton(widget: PrimeFacesTypes.Widget<"CommandButton">): void {
          *   // do something with command button
          * }
          * ```
          */
-        export type Widget<Name extends keyof WidgetRegistry> = InstanceType<PrimeType.WidgetRegistry[Name]>;
+        export type Widget<Name extends keyof WidgetRegistry> = InstanceType<PrimeFacesTypes.WidgetRegistry[Name]>;
 
         /**
          * A map of all instantiated widgets that are available on the current page.
@@ -1512,12 +1512,12 @@ declare global {
          * ```ts
          * import { YourWidget } from "./src/widgets/your-widget.js";
          * declare global {
-         *   namespace PrimeType {
+         *   namespace PrimeFacesTypes {
          *     export interface WidgetRegistry {
          *       YourWidget: typeof YourWidget;
          *     }
          *   }
-         *   namespace PrimeType.widget {
+         *   namespace PrimeFacesTypes.widget {
          *     export type YourWidgetCfg = import("./src/widgets/your-widget.js").YourWidgetCfg;
          *   }
          * }
@@ -1525,16 +1525,16 @@ declare global {
          */
         export interface WidgetRegistry { }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         /**
          * Gets the configuration of a widget.
          * 
          * ```ts
-         * // PrimeType.widget.AjaxStatusCfg
-         * type Cfg = PrimeType.widget.WidgetCfg<PrimeType.WidgetRegistry["AjaxStatus"]>
+         * // PrimeFacesTypes.widget.AjaxStatusCfg
+         * type Cfg = PrimeFacesTypes.widget.WidgetCfg<PrimeFacesTypes.WidgetRegistry["AjaxStatus"]>
          * ```
          */
-        export type WidgetCfg<Widget extends PrimeType.Newable<[], BaseWidget<any>>> = Widget extends PrimeType.Newable<[], BaseWidget<infer Cfg>> ? Cfg : never;
+        export type WidgetCfg<Widget extends PrimeFacesTypes.Newable<[], BaseWidget<any>>> = Widget extends PrimeFacesTypes.Newable<[], BaseWidget<infer Cfg>> ? Cfg : never;
 
         /**
          * Interface of the context menu widget configuration available to other
@@ -1682,7 +1682,7 @@ declare global {
             /**
              * @param widgetCfg The configuration of the widget that is about to be constructed.
              */
-            (this: null, widgetCfg: PrimeType.widget.PartialWidgetCfg<import("./src/core/core.widget.js").BaseWidgetCfg>) => void;
+            (this: null, widgetCfg: PrimeFacesTypes.widget.PartialWidgetCfg<import("./src/core/core.widget.js").BaseWidgetCfg>) => void;
 
         /**
          * An optional callback that is invoked before a widget is about to be
@@ -1724,7 +1724,7 @@ declare global {
 
 // Locale types
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface LocaleAria {
             "cancelEdit"?: string;
             "close"?: string;
@@ -1980,7 +1980,7 @@ declare global {
 
 // AJAX status widget
 declare global {
-    namespace PrimeType.widget.AjaxStatus {
+    namespace PrimeFacesTypes.widget.AjaxStatus {
         /**
          * Available
          * types of AJAX related events to which you can listen.
@@ -2030,7 +2030,7 @@ declare global {
              * @param settings The settings of the jQuery
              * AJAX request.
              */
-            (this: Document, xhr: JQuery.jqXHR, settings: JQuery.AjaxSettings, args: PrimeType.ajax.PrimeFacesArgs) => void;
+            (this: Document, xhr: JQuery.jqXHR, settings: JQuery.AjaxSettings, args: PrimeFacesTypes.ajax.PrimeFacesArgs) => void;
 
         /**
          * Maps between the
@@ -2067,7 +2067,7 @@ declare global {
 
 // AJAX exception handler widget
 declare global {
-    namespace PrimeType.widget.AjaxExceptionHandler {
+    namespace PrimeFacesTypes.widget.AjaxExceptionHandler {
         /**
          * Callback invoked when an AJAX request fails.
          */
@@ -2083,7 +2083,7 @@ declare global {
 
 // Poll widget
 declare global {
-    namespace PrimeType.widget.Poll {
+    namespace PrimeFacesTypes.widget.Poll {
         /**
          * Time unit for the polling interval.
          */
@@ -2114,7 +2114,7 @@ declare global {
 
 // Re-exports
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         /**
          * The class with functionality related to multiple window support in PrimeFaces applications.
          */
@@ -2149,7 +2149,7 @@ declare global {
         export type Validation = import("./src/validation/validation.common.js").Validation;
     }
 
-    namespace PrimeType.ajax {
+    namespace PrimeFacesTypes.ajax {
         /**
          * The class with functionality related to sending and receiving AJAX requests that are made by PrimeFaces. Each
          * request receives an XML response, which consists of one or multiple actions that are to be performed. This
@@ -2181,14 +2181,14 @@ declare global {
         export type AjaxUtils = import("./src/core/core.ajax.js").AjaxUtils;
     }
 
-    namespace PrimeType.expressions {
+    namespace PrimeFacesTypes.expressions {
         /**
          * The class providing the entry point for functions related to search expressions. 
          */
         export type SearchExpressionFacade = import("./src/core/core.expressions.js").SearchExpressionFacade;
     }
 
-    namespace PrimeType.validation {
+    namespace PrimeFacesTypes.validation {
         /**
          * The class that contains functionality related to handling faces messages, especially validation errror messages.
          * Contains methods for clearing message of an element or adding messages to an element.
@@ -2209,12 +2209,12 @@ declare global {
 // Module augmentation
 declare global {
     // Extend PrimeFaces namespace with core methods and properties
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface PrimeFaces extends Core { }
     }
 
     // Extend Window global
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WindowExtensions {
             Cookies: typeof Cookies;
             PrimeFaces: PrimeFaces;
@@ -2223,7 +2223,7 @@ declare global {
     }
 
     // Extend widget registry (available widget types)
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             AjaxExceptionHandler: typeof AjaxExceptionHandler;
             AjaxStatus: typeof AjaxStatus;
@@ -2235,7 +2235,7 @@ declare global {
     }
 
     // Extend hook registry
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface HookRegistry {
             /**
              * The confirm feature that lets external scripts subscribe to emitted
@@ -2282,7 +2282,7 @@ declare global {
     }
 
     // Extend validators (common)
-    namespace PrimeType.validation {
+    namespace PrimeFacesTypes.validation {
         interface ValidatorInstanceMap {
             "jakarta.faces.Length"?: Validator;
             "jakarta.faces.LongRange"?: Validator;
@@ -2293,7 +2293,7 @@ declare global {
     }
 
     // Extend validators (bean validation)
-    namespace PrimeType.validation {
+    namespace PrimeFacesTypes.validation {
         interface ValidatorInstanceMap {
             "AssertFalse"?: Validator;
             "AssertTrue"?: Validator;
@@ -2321,7 +2321,7 @@ declare global {
     }
 
     // Extend widget configurations
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type AjaxStatusCfg = import("./src/ajaxstatus/ajaxstatus.js").AjaxStatusCfg;
         export type BaseWidgetCfg = import("./src/core/core.widget.js").BaseWidgetCfg;
         export type DeferredWidgetCfg = import("./src/core/core.widget.js").DeferredWidgetCfg;
@@ -2330,6 +2330,6 @@ declare global {
     }
 
     // Extend globals
-    let PrimeFaces: PrimeType.PrimeFaces;
+    let PrimeFaces: PrimeFacesTypes.PrimeFaces;
     let PF: typeof _PF;
 }

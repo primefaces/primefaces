@@ -3,13 +3,13 @@ import { DatePicker } from "./src/datepicker.widget.js";
 PrimeFaces.widget.DatePicker = DatePicker;
 
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             DatePicker: typeof DatePicker;
         }
     }
 
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type DatePickerCfg = import("./src/datepicker.widget.js").DatePickerCfg;
     }
 }

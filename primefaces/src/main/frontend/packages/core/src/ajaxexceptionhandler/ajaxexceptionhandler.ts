@@ -19,7 +19,7 @@ export interface AjaxExceptionHandlerCfg extends BaseWidgetCfg {
     /**
      * Callback to invoke when an AJAX request fails.
      */
-    onexception: PrimeType.widget.AjaxExceptionHandler.OnExceptionCallback;
+    onexception: PrimeFacesTypes.widget.AjaxExceptionHandler.OnExceptionCallback;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface AjaxExceptionHandlerCfg extends BaseWidgetCfg {
  * JavaScript callback and/or updates Faces components when an error occurs.
  */
 export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExceptionHandlerCfg> extends BaseWidget<AjaxExceptionHandlerCfg> {
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
     }
 
@@ -56,7 +56,7 @@ export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExce
         const timestamp = this.formatTimestamp(new Date());
 
         if (this.cfg.update) {
-            const options: PrimeType.ajax.Configuration = {
+            const options: PrimeFacesTypes.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId(),
                 update: this.cfg.update,

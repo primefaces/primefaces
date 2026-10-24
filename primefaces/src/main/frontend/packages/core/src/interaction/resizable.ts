@@ -1,11 +1,14 @@
-import { contentBox, cssPosition, Interaction, offsetOf, type Callback, type Coordinates, type InteractionOptions, type Size, pageX, pageY } from "./interaction.js";
+import { contentBox, cssPosition, Interaction, num, offsetOf, type Callback, type Coordinates, type InteractionOptions, type Size, pageX, pageY } from "./interaction.js";
 
+/** The options of a resizable, see the jQuery UI resizable. */
 export interface ResizableOptions extends InteractionOptions {
     /** Other elements resized together with the element. */
     alsoResize: string | Element | JQuery | false;
-    /** Whether the helper is animated to the new size. */
+    /** Whether the element is animated to the new size after resizing a helper. */
     animate: boolean;
+    /** Duration of the animation. */
     animateDuration: number | string;
+    /** Easing of the animation. */
     animateEasing: string;
     /** Keeps the aspect ratio: `true` for the current one, or a ratio (width / height). */
     aspectRatio: boolean | number;
@@ -19,25 +22,41 @@ export interface ResizableOptions extends InteractionOptions {
     handles: string;
     /** Style class of a helper that is resized instead of the element. */
     helper: string | false;
+    /** Maximum height in pixels. */
     maxHeight: number | null;
+    /** Maximum width in pixels. */
     maxWidth: number | null;
+    /** Minimum height in pixels. */
     minHeight: number;
+    /** Minimum width in pixels. */
     minWidth: number;
+    /** Called when the resizing starts. */
     start: Callback;
+    /** Called on every move. */
     resize: Callback;
+    /** Called when the resizing stops. */
     stop: Callback;
 }
 
+/** The `ui` argument of the resizable callbacks. */
 export interface ResizableUi {
+    /** The element that is resized, the wrapper for a wrapped element. */
     element: JQuery;
+    /** The helper that is resized instead of the element, or the element. */
     helper: JQuery;
+    /** The element the resizable was created for. */
     originalElement: JQuery;
+    /** The new size (content box). */
     size: Size;
+    /** The size when the resizing started. */
     originalSize: Size;
+    /** The new CSS position. */
     position: Coordinates;
+    /** The CSS position when the resizing started. */
     originalPosition: Coordinates;
 }
 
+/** The default options, the same as in jQuery UI. */
 const DEFAULTS: ResizableOptions = {
     disabled: false,
     distance: 1,
@@ -69,30 +88,72 @@ const WRAPPED = /^(canvas|textarea|input|select|button|img)$/i;
 export class Resizable extends Interaction<ResizableOptions> {
     /** The element that is resized, a wrapper for elements that can't contain the handles. */
     readonly resizeElement: JQuery<HTMLElement>;
+    /** The new size (content box). */
     size: Size = { width: 0, height: 0 };
+    /** The size when the resizing started. */
     originalSize: Size = { width: 0, height: 0 };
+    /** The new CSS position. */
     position: Coordinates = { left: 0, top: 0 };
+    /** The CSS position when the resizing started. */
     originalPosition: Coordinates = { left: 0, top: 0 };
+    /** The helper resized instead of the element (`helper`, `ghost` or `animate` option). */
     helper: JQuery | null = null;
 
+    /** The direction of the handle, e.g. `se`. */
     private axis: string = '';
+    /** The pointer position when the resizing started. */
     private startPointer: Coordinates = { left: 0, top: 0 };
+    /** The offset of the element when the resizing started. */
     private originalOffset: Coordinates = { left: 0, top: 0 };
+    /** Padding and border of the element: outer size minus size. */
     private sizeDiff: Size = { width: 0, height: 0 };
+    /** The aspect ratio (width / height) to keep. */
     private ratio: number = 1;
+    /** The elements of the `alsoResize` option with their size when the resizing started. */
     private alsoResizeSizes: { element: JQuery; size: Size }[] = [];
+    /** The inline cursor of the body, restored after the resizing. */
     private storedCursor: string = '';
 
+    /**
+     * Makes the element resizable, wrapping it if it can't contain the handles.
+     * @param element The element.
+     * @param options The options.
+     */
     constructor(element: HTMLElement, options?: Partial<ResizableOptions>) {
         super(element, 'resizable', 'resize', DEFAULTS, options);
         this.resizeElement = WRAPPED.test(element.nodeName) ? this.wrap() : this.element;
-        this.resizeElement.addClass('ui-resizable');
-        this.element.addClass('ui-resizable');
+        this.addClasses();
         this.createHandles();
         this.bindPointer(this.resizeElement);
     }
 
+    /**
+     * Like with jQuery UI, the wrapper of a wrapped element gets the state classes, triggers the events and is `this`
+     * in the callbacks, while `ui-resizable` stays on the element itself.
+     * @returns The element that is resized.
+     */
+    protected override widget(): JQuery<HTMLElement> {
+        return this.resizeElement;
+    }
+
+    /**
+     * Sets an option, like jQuery UI a changed `handles` option recreates the handles.
+     * @param key The name of the option.
+     * @param value The new value.
+     */
+    protected override setOption(key: string, value: unknown): void {
+        const changed = key === 'handles' && value !== this.options.handles;
+        super.setOption(key, value);
+        if (changed) {
+            this.createHandles();
+        }
+    }
+
+    /** Removes the handles and unwraps a wrapped element, a resizing in progress ends first. */
     override destroy(): void {
+        if (this.isActive()) {
+            this.abort($.Event('pointercancel') as JQuery.TriggeredEvent);
+        }
         this.resizeElement.children('.ui-resizable-handle').remove();
         this.resizeElement.off(this.namespace).removeClass('ui-resizable ui-resizable-resizing');
         if (this.resizeElement[0] !== this.element[0]) {
@@ -104,7 +165,10 @@ export class Resizable extends Interaction<ResizableOptions> {
         super.destroy();
     }
 
-    /** Wraps elements like a textarea in a div, which gets the handles. */
+    /**
+     * Wraps elements like a textarea in a div, which gets the handles.
+     * @returns The wrapper.
+     */
     private wrap(): JQuery<HTMLElement> {
         const el = this.element;
         const wrapper = $('<div class="ui-wrapper" style="overflow: hidden;"></div>').css({
@@ -125,12 +189,17 @@ export class Resizable extends Interaction<ResizableOptions> {
         return wrapped;
     }
 
+    /**
+     * Gives a wrapped element the size of its wrapper.
+     * @param wrapper The wrapper, defaults to the resized element.
+     */
     private syncWrapped(wrapper: JQuery = this.resizeElement): void {
         if (wrapper[0] !== this.element[0]) {
             this.element.outerWidth(wrapper.width() ?? 0).outerHeight(wrapper.height() ?? 0);
         }
     }
 
+    /** Creates the handles of the `handles` option, the `se` handle with the grip icon. */
     private createHandles(): void {
         const handles = this.options.handles === 'all' ? 'n,e,s,w,se,sw,ne,nw' : this.options.handles;
         this.resizeElement.children('.ui-resizable-handle').remove();
@@ -140,6 +209,10 @@ export class Resizable extends Interaction<ResizableOptions> {
         }
     }
 
+    /**
+     * Creates the `ui` argument of the callbacks.
+     * @returns The `ui` argument.
+     */
     ui(): ResizableUi {
         return {
             element: this.resizeElement,
@@ -152,6 +225,11 @@ export class Resizable extends Interaction<ResizableOptions> {
         };
     }
 
+    /**
+     * Starts on a handle of this resizable (not of a nested one) and remembers its direction.
+     * @param event The pointerdown event.
+     * @returns Whether the resizing can start.
+     */
     protected capture(event: JQuery.TriggeredEvent): boolean {
         const handle = $(event.target).closest('.ui-resizable-handle');
         if (!handle.length || handle.parent()[0] !== this.resizeElement[0]) {
@@ -161,6 +239,11 @@ export class Resizable extends Interaction<ResizableOptions> {
         return true;
     }
 
+    /**
+     * Measures the element, creates the helper (or ghost) and calls `start`.
+     * @param event The pointerdown event.
+     * @returns Always `true`.
+     */
     protected start(event: JQuery.TriggeredEvent): boolean {
         const o = this.options;
         const el = this.resizeElement;
@@ -206,6 +289,11 @@ export class Resizable extends Interaction<ResizableOptions> {
         return true;
     }
 
+    /**
+     * Computes the new size and position from the pointer (grid, aspect ratio, min / max, containment), resizes the
+     * helper or the element and calls `resize`.
+     * @param event The pointermove event.
+     */
     protected move(event: JQuery.TriggeredEvent): void {
         const o = this.options;
         const dx = pageX(event) - this.startPointer.left;
@@ -287,7 +375,16 @@ export class Resizable extends Interaction<ResizableOptions> {
         this.trigger('resize', event, this.ui());
     }
 
-    /** Keeps the element in the containment. */
+    /**
+     * Keeps the element in the containment: like jQuery UI, the left / top edge may be in the padding of the
+     * containment (positioned elements are placed relative to its padding box) and is only moved by the `w` / `n`
+     * handles, the right / bottom edge stays in the content box.
+     * @param width The new width.
+     * @param height The new height.
+     * @param left The new CSS left.
+     * @param top The new CSS top.
+     * @returns The size and position within the containment.
+     */
     private contain(width: number, height: number, left: number, top: number): { width: number; height: number; left: number; top: number } {
         const containment = this.options.containment;
         if (!containment) {
@@ -299,18 +396,20 @@ export class Resizable extends Interaction<ResizableOptions> {
         }
 
         const [cl, ct, cr, cb] = contentBox(container.first());
+        const minLeft = cl - num(container.first().css('paddingLeft'));
+        const minTop = ct - num(container.first().css('paddingTop'));
         let pageLeft = this.originalOffset.left + left - this.originalPosition.left;
         let pageTop = this.originalOffset.top + top - this.originalPosition.top;
 
-        if (pageLeft < cl) {
-            width -= cl - pageLeft;
-            left += cl - pageLeft;
-            pageLeft = cl;
+        if (this.axis.includes('w') && pageLeft < minLeft) {
+            width -= minLeft - pageLeft;
+            left += minLeft - pageLeft;
+            pageLeft = minLeft;
         }
-        if (pageTop < ct) {
-            height -= ct - pageTop;
-            top += ct - pageTop;
-            pageTop = ct;
+        if (this.axis.includes('n') && pageTop < minTop) {
+            height -= minTop - pageTop;
+            top += minTop - pageTop;
+            pageTop = minTop;
         }
         if (pageLeft + width + this.sizeDiff.width > cr) {
             width = cr - pageLeft - this.sizeDiff.width;
@@ -321,7 +420,7 @@ export class Resizable extends Interaction<ResizableOptions> {
         return { width, height, left, top };
     }
 
-    /** Applies the size and position to the element. */
+    /** Applies the size and position to the element, a wrapped element and the `alsoResize` elements. */
     private apply(): void {
         const el = this.resizeElement;
         el.width(this.size.width).height(this.size.height);
@@ -337,12 +436,20 @@ export class Resizable extends Interaction<ResizableOptions> {
         }
     }
 
+    /**
+     * Applies the size (or animates to it), calls `stop` and removes the helper.
+     * @param event The pointerup or pointercancel event.
+     */
     protected stop(event: JQuery.TriggeredEvent): void {
         const o = this.options;
         const helper = this.helper;
 
         if (helper && !o.animate) {
             this.apply();
+        }
+        if (helper) {
+            // like jQuery UI, the helper gets the new size, e.g. for ui.helper.width() in the stop callback
+            helper.width(this.size.width).height(this.size.height);
         }
 
         this.resizeElement.removeClass('ui-resizable-resizing');

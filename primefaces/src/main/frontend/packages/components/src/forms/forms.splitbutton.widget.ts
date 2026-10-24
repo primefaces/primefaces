@@ -4,7 +4,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SplitButtonCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface SplitButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * The search expression for the element to which the overlay panel should be appended.
      */
@@ -24,7 +24,7 @@ export interface SplitButtonCfg extends PrimeType.widget.BaseWidgetCfg {
      * Custom JavaScript function for filtering the
      * available split button actions.
      */
-    filterFunction: PrimeType.widget.SplitButton.FilterFunction;
+    filterFunction: PrimeFacesTypes.widget.SplitButton.FilterFunction;
 
     /**
      * Defines if the filter should receive focus on overlay popup.
@@ -35,7 +35,7 @@ export interface SplitButtonCfg extends PrimeType.widget.BaseWidgetCfg {
      * Match mode for filtering, how the search
      * term is matched against the items.
      */
-    filterMatchMode: PrimeType.widget.SplitButton.FilterMatchMode;
+    filterMatchMode: PrimeFacesTypes.widget.SplitButton.FilterMatchMode;
 
     /**
      * Defines if filtering would be done using normalized values.
@@ -70,18 +70,18 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     /**
      * The current filter function.
      */
-    filterMatcher?: PrimeType.widget.SplitButton.FilterFunction;
+    filterMatcher?: PrimeFacesTypes.widget.SplitButton.FilterFunction;
 
     /**
      * A map of all flter functions. The
      * key is the name of the filter function.
      */
-    filterMatchers: Partial<Record<string, PrimeType.widget.SplitButton.FilterFunction>> = {};
+    filterMatchers: Partial<Record<string, PrimeFacesTypes.widget.SplitButton.FilterFunction>> = {};
 
     /**
      * Unbind callback for the hide overlay handler.
      */
-    hideOverlayHandler?: PrimeType.Unbindable;
+    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * The DOM element for the additional buttons actions.
@@ -112,24 +112,24 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     /**
      * Unbind callback for the resize handler.
      */
-    resizeHandler?: PrimeType.Unbindable;
+    resizeHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * Unbind callback for the scroll handler.
      */
-    scrollHandler?: PrimeType.Unbindable;
+    scrollHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * Handler for CSS transitions used by this widget.
      */
-    transition?: PrimeType.CssTransitionHandler | null;
+    transition?: PrimeFacesTypes.CssTransitionHandler | null;
 
     /**
      * If dynamic loading is enabled, whether the menu content was loaded already.
      */
     isDynamicLoaded: boolean = false;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
          super.init(cfg);
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
@@ -154,7 +154,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         this.menuButton.off('click.splitbutton');
         if (this.menuitems.length > 0) {
             this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
@@ -692,7 +692,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 at: 'left bottom',
                 of: this.jq,
                 collision: 'flipfit',
-                using: function(pos: { top: number; left: number }, directions: PrimeType.PositionFeedback) {
+                using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 },
             });

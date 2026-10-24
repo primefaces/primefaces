@@ -495,7 +495,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
             }, this);
 
             // make the timeline droppable
-            $(el).droppable(droppableOpts);
+            PrimeFaces.interactions.droppable($(el), droppableOpts);
         }
     }
 

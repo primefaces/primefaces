@@ -156,7 +156,7 @@ yarn tsc -b             # TypeScript type check only
   as `@ResourceDependency` of the component), only the widgets of `components.js` go into `components.css`.
 - Set `NODE_ENV=production` for minified output; default is `development`.
 
-Key frontend dependencies: jQuery 4 (no jQuery UI: drag and drop, sorting and resizing are PrimeFaces' own pointer event interactions in `packages/jquery/jquery-plugins/src/interaction`), Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
+Key frontend dependencies: jQuery 4 (no jQuery UI: drag and drop, sorting and resizing are PrimeFaces' own pointer event interactions `PrimeFaces.interactions` in `packages/core/src/interaction`; widgets call them directly, there are no jQuery plugins `$.fn.draggable`, ... anymore), Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
 
 ## Code Generation (CDK)
 

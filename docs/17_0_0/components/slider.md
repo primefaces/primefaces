@@ -85,8 +85,8 @@ information about the event.
 ```
 ```js
 function handleSlideEnd(event, ui) {
-    //ui.helper = Handle element of slider
-    //ui.value = Current value of slider
+    //ui.handle = Handle element of slider, ui.handleIndex = its index (0 or 1 for a range slider)
+    //ui.value = Current value of the handle, ui.values = Values of both handles of a range slider
 }
 ```
 

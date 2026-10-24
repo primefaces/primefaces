@@ -4,7 +4,7 @@
  * You can access this configuration via {@link ConfirmPopup.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface ConfirmPopupCfg extends PrimeType.widget.DynamicOverlayWidgetCfg {
+export interface ConfirmPopupCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg {
     /**
      * The search expression for the element to which the overlay panel should be
      * appended.
@@ -51,7 +51,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
     /**
      * Unbind callback for the hide overlay handler.
      */
-    hideOverlayHandler?: PrimeType.Unbindable;
+    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * The DOM element for the message icon.
@@ -71,24 +71,24 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
     /**
      * Unbind callback for the resize handler.
      */
-    resizeHandler?: PrimeType.Unbindable;
+    resizeHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * Unbind callback for the scroll handler.
      */
-    scrollHandler?: PrimeType.Unbindable;
+    scrollHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * Handler for CSS transitions used by this widget.
      */
-    transition?: PrimeType.CssTransitionHandler | null = null;
+    transition?: PrimeFacesTypes.CssTransitionHandler | null = null;
 
     /**
      * DOM element of the Yes button.
      */
     yesButton: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         cfg.dismissable = cfg.dismissable !== false;
         if (!cfg.appendTo && cfg.global) {
             cfg.appendTo = '@(body)';
@@ -257,7 +257,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
      * Hides the popup.
      * @param callback Callback that is invoked after this popup was closed.
      */
-    hide(callback?: PrimeType.widget.ConfirmPopup.HideCallback): void {
+    hide(callback?: PrimeFacesTypes.widget.ConfirmPopup.HideCallback): void {
         if (this.transition) {
             this.transition.hide({
                 onExit: () => {
@@ -321,7 +321,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
                 at: 'left bottom',
                 of: target,
                 collision: 'flipfit',
-                using: function (pos: { top: number; left: number }, directions: PrimeType.PositionFeedback) {
+                using: function (pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
                     const targetOffset = target.offset() ?? { top: 0, left:0 };
                     let arrowLeft = 0;
 
@@ -373,7 +373,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
      * Shows the given message in this confirmation popup.
      * @param msg Message to show.
      */
-    showMessage(msg: Partial<PrimeType.hook.confirm.ExtendedConfirmMessage>): void {
+    showMessage(msg: Partial<PrimeFacesTypes.hook.confirm.ExtendedConfirmMessage>): void {
         PrimeFaces.confirmPopupSource = typeof msg.source === 'string' ? $(PrimeFaces.escapeClientId(msg.source)) : PrimeFaces.utils.toJQuery(msg.source);
 
         const beforeShow = () => {

@@ -439,7 +439,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // #5582: destroy any current draggable items
         if (this.cfg.draggableColumns || this.cfg.draggableRows) {
-            var dragdrop = $.pfDragDrop.current;
+            var dragdrop = PrimeFaces.interactions.dragDrop.current;
             if (dragdrop && dragdrop.helper) {
                 var item = dragdrop.item();
                 if(item.closest('.ui-datatable')[0] === this.jq[0]) {
@@ -3755,7 +3755,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     switchToRowEdit(row) {
         // #1499 disable rowReorder while editing
         if (this.cfg.draggableRows) {
-            this.tbody.sortable("disable");
+            PrimeFaces.interactions.disable(this.tbody, "sortable");
         }
 
         if(this.cfg.rowEditMode === "lazy") {
@@ -4292,7 +4292,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
                             // #1499 enable rowReorder when done editing
                             if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
-                                this.tbody.sortable("enable");
+                                PrimeFaces.interactions.enable(this.tbody, "sortable");
                             }
 
                             // #258 must reflow after editing
@@ -4552,7 +4552,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             $this.autosizeColumnWidth($(this).parent());
         });
 
-        resizers.draggable({
+        PrimeFaces.interactions.draggable(resizers, {
             axis: 'x',
             start: function(event, ui) {
                 ui.helper.data('originalposition', ui.helper.offset());
@@ -4699,7 +4699,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Finds the group resizer element for the given drag event data.
      * @protected
-     * @param {PrimeType.interaction.DraggableUi} ui Data for the drag event.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Data for the drag event.
      * @return {JQuery|null} The resizer DOM element.
      */
     findGroupResizer(ui) {
@@ -4735,7 +4735,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * Resizes this DataTable, row, or columns in response to a drag event of a resizer element.
      * @protected
      * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
-     * @param {PrimeType.interaction.DraggableUi} ui Data for the drag event.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Data for the drag event.
      */
     resize(event, ui) {
         var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null,
@@ -4906,9 +4906,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.dragIndicatorTop = $('<span class="ui-icon ui-icon-arrowthick-1-s" style="position:absolute"></span>').hide().appendTo(this.jq);
         this.dragIndicatorBottom = $('<span class="ui-icon ui-icon-arrowthick-1-n" style="position:absolute"></span>').hide().appendTo(this.jq);
 
-        var $this = this;
+        var $this = this,
+            columns = $(this.jqId + ' thead th.ui-draggable-column');
 
-        $(this.jqId + ' thead th.ui-draggable-column').draggable({
+        PrimeFaces.interactions.draggable(columns, {
             appendTo: 'body',
             opacity: 0.75,
             cursor: 'move',
@@ -4975,7 +4976,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
                 return helper.get(0);
             }
-        }).droppable({
+        });
+
+        PrimeFaces.interactions.droppable(columns, {
             hoverClass:'ui-state-highlight',
             tolerance:'pointer',
             scope: this.id,
@@ -5068,9 +5071,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         // GitHub #5013 Frozen Columns should not be draggable/droppable
         if($this.cfg.frozenColumns) {
             var frozenHeaders = this.frozenThead.find('.ui-frozen-column');
-            frozenHeaders.draggable('disable');
-            frozenHeaders.droppable('disable');
-            frozenHeaders.disableSelection();
+            PrimeFaces.interactions.disable(frozenHeaders, 'draggable');
+            PrimeFaces.interactions.disable(frozenHeaders, 'droppable');
+            frozenHeaders.on('selectstart', function(e) {
+                e.preventDefault();
+            });
         }
     }
 
@@ -5097,7 +5102,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var $this = this,
         draggableHandle = this.cfg.rowDragSelector||'td,span:not(.ui-c)';
 
-        this.tbody.sortable({
+        PrimeFaces.interactions.sortable(this.tbody, {
             placeholder: 'ui-datatable-rowordering ui-state-active',
             cursor: 'move',
             handle: draggableHandle,

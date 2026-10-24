@@ -4,7 +4,7 @@
  * You can access this configuration via {@link IdleMonitor.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface IdleMonitorCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface IdleMonitorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * When set to true, the lastAccessed state will be shared between all browser
      * windows for the same servlet context.
@@ -15,13 +15,13 @@ export interface IdleMonitorCfg extends PrimeType.widget.BaseWidgetCfg {
      * Client side callback to execute when the user
      * comes back.
      */
-    onactive: PrimeType.widget.IdleMonitor.OnActiveCallback;
+    onactive: PrimeFacesTypes.widget.IdleMonitor.OnActiveCallback;
 
     /**
      * Client side callback to execute when the user goes
      * idle.
      */
-    onidle: PrimeType.widget.IdleMonitor.OnIdleCallback;
+    onidle: PrimeFacesTypes.widget.IdleMonitor.OnIdleCallback;
 
     /**
      * Time to wait in milliseconds until deciding if the user is idle. Default is 5 minutes.
@@ -42,7 +42,7 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
      */
     timer: number = 0;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         $(document).on("idle.idleTimer" + this.cfg.id, () => {
@@ -100,7 +100,7 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }

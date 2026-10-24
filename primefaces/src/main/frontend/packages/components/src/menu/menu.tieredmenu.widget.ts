@@ -27,7 +27,7 @@ export interface TieredMenuCfg extends MenuCfg {
     /**
      * Event to toggle the submenus.
      */
-    toggleEvent: PrimeType.widget.TieredMenu.ToggleEvent;
+    toggleEvent: PrimeFacesTypes.widget.TieredMenu.ToggleEvent;
 }
 
 /**
@@ -86,7 +86,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
      */
     timeoutId?: number;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';

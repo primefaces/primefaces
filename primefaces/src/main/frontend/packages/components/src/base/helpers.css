@@ -1,7 +1,7 @@
 /*
- * Overrides of the base rules in base/interactions.css (vendor layer: core, draggable, resizable, sortable).
- * The helper and resizable rules repeat vendor rules on purpose: here they also beat lower or equal specificity
- * theme rules (e.g. display / position of .ui-icon in common.css), which the vendor layer cannot.
+ * Helpers and overrides of the base rules in base/interactions.css (vendor layer: core, draggable, resizable, sortable).
+ * The resizable rule repeats a vendor rule on purpose: here it also beats lower or equal specificity theme rules
+ * (e.g. display / position of .ui-icon in common.css), which the vendor layer cannot.
  */
 /*
  * p-hidden-accessible: visually hidden, but still focusable and read by screen readers (the native inputs behind the
@@ -17,10 +17,6 @@
     padding: 0;
     position: absolute;
     width: 1px;
-}
-
-.ui-selectable-helper {
-    border-color: var(--p-text-color);
 }
 
 /* repeats the vendor rule: the default se handle also carries .ui-icon, whose display (common.css) beats the vendor layer */

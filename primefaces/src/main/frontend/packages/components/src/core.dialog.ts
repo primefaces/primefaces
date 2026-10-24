@@ -20,7 +20,7 @@ export class DialogHandler {
      * the server.
      * @param cfg Configuration of the dialog.
      */
-    openDialog(cfg: PrimeType.hook.dialog.DialogConfiguration): void {
+    openDialog(cfg: PrimeFacesTypes.hook.dialog.DialogConfiguration): void {
         var rootWindow = this.findRootWindow(),
             dialogId = cfg.sourceComponentId + '_dlg';
 
@@ -186,7 +186,7 @@ export class DialogHandler {
 
             if (!$frame.data('initialized')) {
                 PrimeFaces.cw.call<
-                    PrimeType.PrimeFaces, ["DynamicDialog", string, PrimeType.widget.PartialCreateWidgetCfg<PrimeType.widget.DynamicDialogCfg>], void
+                    PrimeFacesTypes.PrimeFaces, ["DynamicDialog", string, PrimeFacesTypes.widget.PartialCreateWidgetCfg<PrimeFacesTypes.widget.DynamicDialogCfg>], void
                 >(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                     id: dialogId,
                     position: cfg.options.position || 'center',
@@ -197,8 +197,8 @@ export class DialogHandler {
                         if (cfg.options.onShow) {
                             const onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
                             const onShowCallback = rootWindow.PrimeFaces.csp.NONCE_VALUE
-                                ? PrimeFaces.csp.evalResult(onShowFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeType.widget.Dialog.OnShowCallback | undefined
-                                : rootWindow.eval(onShowFunction) as PrimeType.widget.Dialog.OnShowCallback | undefined;
+                                ? PrimeFaces.csp.evalResult(onShowFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeFacesTypes.widget.Dialog.OnShowCallback | undefined
+                                : rootWindow.eval(onShowFunction) as PrimeFacesTypes.widget.Dialog.OnShowCallback | undefined;
                             if (onShowCallback) {
                                 onShowCallback.call(this);
                             }
@@ -208,8 +208,8 @@ export class DialogHandler {
                         if (cfg.options.onHide) {
                             const onHideFunction = '(function(ext){' + cfg.options.onHide + '})';
                             const onHideCallback = rootWindow.PrimeFaces.csp.NONCE_VALUE
-                                ? PrimeFaces.csp.evalResult(onHideFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeType.widget.Dialog.OnHideCallback | undefined
-                                : rootWindow.eval(onHideFunction) as PrimeType.widget.Dialog.OnHideCallback | undefined;
+                                ? PrimeFaces.csp.evalResult(onHideFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeFacesTypes.widget.Dialog.OnHideCallback | undefined
+                                : rootWindow.eval(onHideFunction) as PrimeFacesTypes.widget.Dialog.OnHideCallback | undefined;
                             if (onHideCallback) {
                                 onHideCallback.call(this);
                             }
@@ -258,7 +258,7 @@ export class DialogHandler {
                 });
             }
 
-            const dialogWidget = rootWindow.PF(dialogWidgetVar) as PrimeType.Widget<"Dialog"> | undefined;
+            const dialogWidget = rootWindow.PF(dialogWidgetVar) as PrimeFacesTypes.Widget<"Dialog"> | undefined;
             const title = dialogWidget?.titlebar.children('span.ui-dialog-title') ?? $();
             if (headerElement.length > 0) {
                 if (isCustomHeader) {
@@ -301,16 +301,16 @@ export class DialogHandler {
      * Closes the dialog as specified by the given configuration.
      * @param cfg Configuration of the dialog.
      */
-    closeDialog(cfg: PrimeType.hook.dialog.DialogConfiguration): void {
+    closeDialog(cfg: PrimeFacesTypes.hook.dialog.DialogConfiguration): void {
         const rootWindow = this.findRootWindow();
         const dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + CSS.escape(cfg.pfdlgcid) + '"]').not('[data-queuedforremoval]');
         const dlgsLength = dlgs.length;
         const dlg = dlgs.eq(dlgsLength - 1);
         const parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null;
-        let dialogReturnBehavior: PrimeType.widget.Behavior | undefined = undefined;
+        let dialogReturnBehavior: PrimeFacesTypes.widget.Behavior | undefined = undefined;
         let windowContext: Window | null | undefined = null;
 
-        const dlgWidget = rootWindow.PF(dlg.data('widget')) as PrimeType.Widget<"Dialog"> | undefined;
+        const dlgWidget = rootWindow.PF(dlg.data('widget')) as PrimeFacesTypes.Widget<"Dialog"> | undefined;
         if (!dlgWidget) {
             // GitHub #2039 dialog may already be closed on slow internet
             PrimeFaces.error('Dialog widget was not found to close.');
@@ -350,10 +350,10 @@ export class DialogHandler {
                 const dialogFunction = '(function(ext){this.' + dialogReturnBehaviorStr + '})';
                 const nonceValue = windowContext?.PrimeFaces.csp.NONCE_VALUE;
                 if (nonceValue && windowContext) {
-                    dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction, nonceValue, windowContext) as PrimeType.widget.Behavior | undefined;
+                    dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction, nonceValue, windowContext) as PrimeFacesTypes.widget.Behavior | undefined;
                 }
                 else {
-                    dialogReturnBehavior = windowContext?.eval(dialogFunction) as PrimeType.widget.Behavior | undefined;
+                    dialogReturnBehavior = windowContext?.eval(dialogFunction) as PrimeFacesTypes.widget.Behavior | undefined;
                 }
             }
         }
@@ -384,7 +384,7 @@ export class DialogHandler {
      * Displays a message in the messages dialog.
      * @param msg Details of the message to show.
      */
-    showMessageInDialog(msg: PrimeType.hook.messageInDialog.DialogMessageData): void {
+    showMessageInDialog(msg: PrimeFacesTypes.hook.messageInDialog.DialogMessageData): void {
         if (!this.messageDialog) {
             $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-hidden-container"></div>')
                 .append($('<div class="ui-dialog-box ui-widget-content"></div>').append('<div class="ui-dialog-titlebar ui-widget-header"><span class="ui-dialog-title"></span>' +
@@ -420,7 +420,7 @@ export class DialogHandler {
      * `<p:confirmDialog>` to be available on the current page.
      * @param msg Message to show in the confirmation dialog.
      */
-    confirm(msg: PrimeType.hook.confirm.ExtendedConfirmMessage): void {
+    confirm(msg: PrimeFacesTypes.hook.confirm.ExtendedConfirmMessage): void {
         if (PrimeFaces.confirmDialog) {
             PrimeFaces.confirmSource = (typeof (msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
             PrimeFaces.confirmDialog.showMessage(msg);
@@ -455,7 +455,7 @@ export class DialogHandler {
  * 
  * - `confirm` feature: Redirects the emitted messages
  * either to the ConfirmPopup widget if available and the message's
- * {@link PrimeType.hook.confirm.ExtendedConfirmMessage.type | type} is
+ * {@link PrimeFacesTypes.hook.confirm.ExtendedConfirmMessage.type | type} is
  * `popup`; or to the {@link DialogHandler | PrimeFaces.dialog.DialogHandler}
  * otherwise.
  * - `dialog` feature: Opens and closes dialogs via the

@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Dialog.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface DialogCfg extends PrimeType.widget.DynamicOverlayWidgetCfg, PrimeType.hook.dialog.SharedDialogOptions {
+export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg, PrimeFacesTypes.hook.dialog.SharedDialogOptions {
     /**
      * Whether the dialog is positioned absolutely.
      */
@@ -28,7 +28,7 @@ export interface DialogCfg extends PrimeType.widget.DynamicOverlayWidgetCfg, Pri
     /**
      * Optional handler for obtaining additional DOM elements which are allowed to be focused via tabbing.
      */
-    getModalTabbables: PrimeType.widget.Dialog.GetModalTabbablesHandler;
+    getModalTabbables: PrimeFacesTypes.widget.Dialog.GetModalTabbablesHandler;
 
     /**
      * Whether the dialog contents contain an {@link HTMLIFrameElement}. 
@@ -64,12 +64,12 @@ export interface DialogCfg extends PrimeType.widget.DynamicOverlayWidgetCfg, Pri
      * Client-side callback to invoke when the dialog is
      * closed.
      */
-    onHide: PrimeType.widget.Dialog.OnHideCallback;
+    onHide: PrimeFacesTypes.widget.Dialog.OnHideCallback;
 
     /**
      * Client-side callback to invoke when the dialog is opened.
      */
-    onShow: PrimeType.widget.Dialog.OnShowCallback;
+    onShow: PrimeFacesTypes.widget.Dialog.OnShowCallback;
 
     /**
      * Effect to use when showing the dialog
@@ -214,7 +214,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * The client-side state of the dialog such as its width
      * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
      */
-    state?: PrimeType.widget.Dialog.ClientState;
+    state?: PrimeFacesTypes.widget.Dialog.ClientState;
 
     /**
      * DOM element of the title bar container of this dialog.
@@ -226,7 +226,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     titleContainer?: JQuery;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.box = this.jq.children('.ui-dialog-box');
@@ -286,7 +286,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         this.positionInitialized = false;
         this.loaded = false;
 
@@ -671,7 +671,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected setupDraggable(): void {
         var $this = this;
 
-        this.box.draggable({
+        PrimeFaces.interactions.draggable(this.box, {
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
             containment : $this.jq,
@@ -702,7 +702,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Sets up all event listeners required to make this dialog resizable.
      */
     protected setupResizable(): void {
-        this.box.resizable({
+        PrimeFaces.interactions.resizable(this.box, {
             handles : 'n,s,e,w,ne,nw,se,sw',
             minWidth : this.cfg.minWidth,
             minHeight : this.cfg.minHeight,
@@ -992,7 +992,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * loaded.
      */
     protected loadContents(): void {
-        const options: PrimeType.ajax.Configuration = {
+        const options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -1136,7 +1136,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
      */
     yesButton: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
@@ -1256,7 +1256,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
      * Shows the given message in this confirmation dialog.
      * @param msg Message to show.
      */
-    showMessage(msg: Partial<PrimeType.hook.confirm.ConfirmMessage>): void {
+    showMessage(msg: Partial<PrimeFacesTypes.hook.confirm.ConfirmMessage>): void {
         // Execute any code specified to run before showing the message
         if (msg.beforeShow) {
             const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);

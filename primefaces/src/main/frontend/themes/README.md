@@ -91,7 +91,7 @@ primefaces/src/main/frontend/
   packages/components/index.css    components.css: layer order, icon set, interaction CSS, then base -> shared -> components
                                    -> behaviors (alphabetical inside each group, see the comments there)
   packages/components/src/icons/lucide.css   the icon set: one --p-icon-* token per meaning (close, expanded, ...)
-  packages/components/src/base/*.css         ui-widget, ui-state-*, core helpers, grid (ui-g), jquery-ui helpers,
+  packages/components/src/base/*.css         ui-widget, ui-state-*, core helpers, grid (ui-g), interaction base rules,
                                              document (page, reduced motion, print), scrollbar, backdrop (Glass)
   packages/components/src/<widget>/*.css     one file per tag next to its widget (datatable/datatable.css,
                                              forms/selectonemenu.css, menu/tieredmenu.css, ...); building blocks of
@@ -529,7 +529,8 @@ the icon / markup / jQuery UI changes, otherwise twice. Needed mechanism:
 
 State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) are CSS already (transitions with the
 `--p-*-transition-duration` tokens, keyframes) and respect `prefers-reduced-motion`. These still animate in JS
-(jQuery / `PrimeFaces.effects`, setting inline styles per frame, so a CSS transition on the same property would fight them):
+(jQuery animations set inline styles per frame and `PrimeFaces.effects` uses Web Animations, both override a CSS
+transition on the same property):
 - Show / hide of overlays (`fadeIn` / `fadeOut`): autoComplete, blockUI, columnToggler, growl, menus, panel / tree
   context parts, pickList, scrollTop, wizard, the overlays in `forms` → CSS enter/leave transitions with
   `@starting-style` + `transition-behavior: allow-discrete` (display / Popover API), the widget only toggles a class.
@@ -540,7 +541,7 @@ State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) 
 - Expand / collapse (`slideDown` / `slideUp` / `slideToggle`): accordion, fieldset, inplace, messages, notificationBar,
   panel, panelMenu / menu, tree → height transition with `interpolate-size: allow-keywords` (progressive) or the
   `grid-template-rows: 0fr → 1fr` technique.
-- Configurable effects (`showEffect` / `hideEffect` / `effect` with the 16 `PrimeFaces.effects`): dialog, tooltip,
+- Configurable effects (`showEffect` / `hideEffect` / `effect` with the 15 `PrimeFaces.effects`): dialog, tooltip,
   orderList / pickList, tabView, overlays in `forms` → a few CSS effects (fade, slide, scale) selected by class.
 - Scrolling (`animate({scrollTop})`): core, tabView navigator, slideMenu → `scrollTo({behavior: 'smooth'})` /
   `scroll-behavior`, slideMenu with a transform transition.
@@ -551,7 +552,8 @@ State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) 
 
 **jQuery UI is removed** (done): own `:focusable` / `:tabbable` selectors, `PrimeFaces.utils.position` /
 `getScrollParent`, `PrimeFaces.effects` (Web Animations API), slider, DatePicker / Galleria / Signature as TS widgets,
-and drag and drop / sorting / resizing with pointer events in `packages/jquery/jquery-plugins/src/interaction` (the
-options of p:draggable / p:droppable / p:resizable stay compatible). The base rules of the generic classes and of the
+and drag and drop / sorting / resizing with pointer events as `PrimeFaces.interactions` in `packages/core/src/interaction`
+(the options of p:draggable / p:droppable / p:resizable stay compatible, there are no jQuery plugins `$.fn.draggable`,
+... anymore). The base rules of the generic classes and of the
 interactions are in `packages/components/src/base/interactions.css` (vendor layer), the overrides in
 `packages/components/src/base/helpers.css`.

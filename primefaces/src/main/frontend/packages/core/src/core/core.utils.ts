@@ -59,8 +59,8 @@ export class Utils {
      * @return The container DOM element to which the overlay is to be appended.
      */
     resolveDynamicOverlayContainer<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget): JQuery {
         return widget.cfg.appendTo
             ? expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.jq, widget.cfg.appendTo)
@@ -95,8 +95,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     cleanupDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         if (widget.cfg.appendTo) {
             var overlays = $("[id='" + overlayId + "']");
@@ -117,8 +117,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     removeDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery | null, overlayId: string, appendTo: JQuery): void {
         appendTo.children("[id='" +  overlayId + "']").not(overlay ?? (() => false)).remove();
     }
@@ -134,8 +134,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     appendDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         var elementParent = overlay.parent();
 
@@ -334,9 +334,9 @@ export class Utils {
         widget: BaseWidget,
         hideNamespace: string,
         overlay: JQuery,
-        resolveIgnoredElementsCallback: PrimeType.OverlayResolveIgnoredElementCallback | undefined | null,
-        hideCallback: PrimeType.OverlayHideCallback
-    ): PrimeType.Unbindable {
+        resolveIgnoredElementsCallback: PrimeFacesTypes.OverlayResolveIgnoredElementCallback | undefined | null,
+        hideCallback: PrimeFacesTypes.OverlayHideCallback
+    ): PrimeFacesTypes.Unbindable {
 
         const unbindHideHandler = () => {
             $(document).off(hideNamespace);
@@ -388,9 +388,9 @@ export class Utils {
         widget: BaseWidget,
         resizeNamespace: string,
         element: JQuery | undefined | null,
-        resizeCallback: PrimeType.ResizeCallback,
+        resizeCallback: PrimeFacesTypes.ResizeCallback,
         params?: string
-    ): PrimeType.Unbindable {
+    ): PrimeFacesTypes.Unbindable {
 
         const unbindResizeHandler = () => {
             $(window).off(resizeNamespace);
@@ -427,8 +427,8 @@ export class Utils {
     registerMutationObserver(
         widget: BaseWidget,
         element: JQuery | HTMLElement,
-        mutationCallback: PrimeType.MutationCallback,
-    ): PrimeType.Controllable {
+        mutationCallback: PrimeFacesTypes.MutationCallback,
+    ): PrimeFacesTypes.Controllable {
         const domElement = this.isJQuery(element) ? element.get(0) : element;
 
         if (domElement === undefined) {
@@ -508,8 +508,8 @@ export class Utils {
      * @return The overlay that was passed to this function.
      */
     registerDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery, overlayId: string): JQuery {
 
         if (widget.cfg.appendTo) {
@@ -542,8 +542,8 @@ export class Utils {
     registerScrollHandler(
         widget: BaseWidget,
         scrollNamespace: string,
-        scrollCallback: PrimeType.ScrollCallback,
-    ): PrimeType.Unbindable {
+        scrollCallback: PrimeFacesTypes.ScrollCallback,
+    ): PrimeFacesTypes.Unbindable {
         let scrollParent: JQuery<any> | null = this.getScrollParent(widget.getJQ());
 
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
@@ -585,8 +585,8 @@ export class Utils {
         widget: BaseWidget,
         scrollNamespace: string,
         element: JQuery | undefined,
-        scrollCallback: PrimeType.ScrollCallback
-    ): PrimeType.Unbindable {
+        scrollCallback: PrimeFacesTypes.ScrollCallback
+    ): PrimeFacesTypes.Unbindable {
         const scrollableParents = this.getScrollableParents((element ?? widget.getJQ()).get(0));
 
         const scrollHandler = (e: JQuery.TriggeredEvent) => {
@@ -650,7 +650,7 @@ export class Utils {
      * @returns The given elements, for chaining.
      * @since 17.0.0
      */
-    position<T extends JQuery<any>>(element: T, options: PrimeType.PositionOptions | null | undefined): T {
+    position<T extends JQuery<any>>(element: T, options: PrimeFacesTypes.utils.PositionOptions | null | undefined): T {
         return position(element, options);
     }
 
@@ -785,6 +785,70 @@ export class Utils {
         return false;
     }
     
+    /**
+     * Gets the selected text of a text input or textarea, formerly `$.fn.getSelection` of the rangyinputs plugin.
+     *
+     * ```js
+     * const selection = PrimeFaces.utils.getTextSelection($('#text'));
+     * if (selection) {
+     *     console.log(selection.start, selection.end, selection.text);
+     * }
+     * ```
+     * @param element The input or textarea, the first one of a jQuery instance.
+     * @returns The start and end of the selection (equal when only the caret is placed), its length and text, or
+     * `null` if there is no element or it doesn't support a text selection (e.g. `type="number"` or a checkbox).
+     * @since 17.0.0
+     */
+    getTextSelection(element: JQuery<any> | Element | null | undefined): PrimeFacesTypes.utils.TextSelection | null {
+        const el = this.toTextField(element);
+        if (!el || el.selectionStart === null || el.selectionEnd === null) {
+            return null;
+        }
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        return { start, end, length: end - start, text: el.value.substring(start, end) };
+    }
+
+    /**
+     * Selects the given range of the text of a text input or textarea, formerly `$.fn.setSelection` of the
+     * rangyinputs plugin. Does nothing if the element doesn't support a text selection.
+     * @param element The input or textarea, the first one of a jQuery instance.
+     * @param start The index of the first selected character.
+     * @param end The index after the last selected character, `start` (only places the caret) by default.
+     * @since 17.0.0
+     */
+    setTextSelection(element: JQuery<any> | Element | null | undefined, start: number, end: number = start): void {
+        const el = this.toTextField(element);
+        if (el && el.selectionStart !== null) {
+            el.setSelectionRange(start, end);
+        }
+    }
+
+    /**
+     * Replaces the selected text of a text input or textarea and places the caret after the inserted text, formerly
+     * `$.fn.replaceSelectedText` of the rangyinputs plugin. Does nothing if the element doesn't support a text
+     * selection.
+     * @param element The input or textarea, the first one of a jQuery instance.
+     * @param text The text to insert in place of the selection.
+     * @since 17.0.0
+     */
+    replaceTextSelection(element: JQuery<any> | Element | null | undefined, text: string): void {
+        const el = this.toTextField(element);
+        if (el && el.selectionStart !== null) {
+            el.setRangeText(text, el.selectionStart, el.selectionEnd ?? el.selectionStart, 'end');
+        }
+    }
+
+    /**
+     * Gets the text input or textarea of the given element.
+     * @param element An element, the first one of a jQuery instance.
+     * @returns The input or textarea, `null` if the element is neither of both.
+     */
+    private toTextField(element: JQuery<any> | Element | null | undefined): HTMLInputElement | HTMLTextAreaElement | null {
+        const el = element instanceof Element ? element : element?.[0];
+        return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement ? el : null;
+    }
+
     /**
      * Is this CMD on MacOs or CTRL key on other OSes. 
      * @param e The key event that occurred.
@@ -980,7 +1044,7 @@ export class Utils {
      * when the element gets shown and hidden. If the given element or className property is `undefined` or `null`,
      * this function returns `null`.
      */
-    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeType.CssTransitionHandler | null {
+    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFacesTypes.CssTransitionHandler | null {
         if (element && className != null) {
             const classNameStates = {
                'enter': className + '-enter',
@@ -990,10 +1054,10 @@ export class Utils {
                'exitActive': className + '-exit-active',
                'exitDone': className + '-exit-done'
             };
-            const callTransitionEvent = <K extends keyof PrimeType.CssTransitionCallback>(
-                callbacks: PrimeType.CssTransitionCallback | null | undefined,
+            const callTransitionEvent = <K extends keyof PrimeFacesTypes.CssTransitionCallback>(
+                callbacks: PrimeFacesTypes.CssTransitionCallback | null | undefined,
                 key: K,
-                param: ThisParameterType<Exclude<PrimeType.CssTransitionCallback[K], undefined>>
+                param: ThisParameterType<Exclude<PrimeFacesTypes.CssTransitionCallback[K], undefined>>
             ) => {
                 callbacks?.[key]?.call(param as any);
             };
@@ -1483,5 +1547,24 @@ export function globalUtilsSetup(): void {
     if (env.prefersReducedMotion) {
         utils.disableAnimations();
         core.warn("Animations are disabled because OS has requested prefers-reduced-motion: reduce")
+    }
+}
+
+declare global {
+    namespace PrimeFacesTypes.utils {
+        /**
+         * The selected text of a text input or textarea, see {@link Utils.getTextSelection}.
+         * @since 17.0.0
+         */
+        export interface TextSelection {
+            /** The index of the first selected character, or of the caret if nothing is selected. */
+            start: number;
+            /** The index after the last selected character, equal to `start` if nothing is selected. */
+            end: number;
+            /** The number of selected characters. */
+            length: number;
+            /** The selected text. */
+            text: string;
+        }
     }
 }

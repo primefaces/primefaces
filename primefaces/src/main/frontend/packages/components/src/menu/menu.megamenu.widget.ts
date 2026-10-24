@@ -6,7 +6,7 @@ import { Menu } from "./menu.base.widget.js";
  * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MegaMenuCfg extends PrimeType.widget.MenuCfg {
+export interface MegaMenuCfg extends PrimeFacesTypes.widget.MenuCfg {
     /**
      * Index of the menu item initially active.
      */
@@ -75,7 +75,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      */
     timeoutId?: number = undefined;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.vertical = this.jq.hasClass('ui-megamenu-vertical');
@@ -485,7 +485,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      * @param submenu One of the submenus of the given menu item to show.
      */
     private showSubmenu(menuItem: JQuery, submenu: JQuery): void {
-        let pos: PrimeType.PositionOptions | undefined;
+        let pos: PrimeFacesTypes.utils.PositionOptions | undefined;
 
         if (this.cfg.vertical) {
             pos = {

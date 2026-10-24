@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Signature} widget.
  */
-export interface SignatureCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface SignatureCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Label of the canvas for screen readers. */
     ariaLabel: string;
     /** ID of the label of the canvas. */
@@ -34,6 +34,7 @@ export interface SignatureCfg extends PrimeType.widget.BaseWidgetCfg {
     thickness: number;
 }
 
+/** A point of a line as `[x, y]`, in pixels relative to the top left corner of the canvas. */
 type Point = [number, number];
 
 /**
@@ -51,11 +52,19 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
     /** The hidden input with the PNG data URL, if `base64` is enabled. */
     inputBase64: JQuery = $();
 
+    /** The 2D rendering context of the canvas, `null` after the widget was destroyed. */
     private ctx: CanvasRenderingContext2D | null = null;
+    /** The drawn lines, each a list of points; empty for a typed signature or a drawn image. */
     private lines: Point[][] = [];
+    /** The line currently drawn with the pointer, `null` while not drawing. */
     private currentLine: Point[] | null = null;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    /**
+     * Initializes the signature: renders the canvas, binds the events and draws the initial value, from the JSON
+     * lines or else from the typed text.
+     * @param cfg The configuration of the signature.
+     */
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.inputJson = this.jq.children(this.jqId + '_value');
         this.inputText = this.jq.children(this.jqId + '_text');
@@ -83,12 +92,17 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
     }
 
+    /** Removes the canvas and releases its rendering context. */
     override destroy(): void {
         super.destroy();
         this.canvas.remove();
         this.ctx = null;
     }
 
+    /**
+     * Renders the client-side parts of this widget: a canvas with the size of the widget and its accessibility
+     * attributes, filled with the background and the guideline. Replaces the canvas of a previous rendering.
+     */
     private render(): void {
         this.jq.children('canvas').remove();
         this.jq.addClass('ui-signature');
@@ -108,6 +122,10 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         this.clearCanvas();
     }
 
+    /**
+     * Binds event handlers to the signature canvas: hover and focus styles, drawing with the pointer and typing with
+     * the keyboard. A click on the label focuses the canvas. Nothing is bound when the signature is readonly.
+     */
     private bindEvents(): void {
         if (this.cfg.readonly) {
             return;
@@ -130,15 +148,27 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
                 this.updateBase64();
             })
             .on('pointerdown.signature', (e) => this.onPointerDown(e))
+            // no text selection while drawing; not on pointerdown, that would suppress the mousedown event the overlays
+            // of other widgets listen to on the document to hide
+            .on('mousedown.signature', (e) => e.preventDefault())
             .on('pointermove.signature', (e) => this.onPointerMove(e))
             .on('pointerup.signature pointercancel.signature', (e) => this.onPointerUp(e))
             .on('keydown.signature', (e) => this.onKeyDown(e));
     }
 
+    /**
+     * Checks whether the user cannot change the signature.
+     * @returns `true` if the signature is readonly or disabled.
+     */
     private isDisabled(): boolean {
         return !!this.cfg.readonly || this.jq.hasClass('ui-state-disabled');
     }
 
+    /**
+     * Determines the position of a pointer event on the canvas.
+     * @param e The pointer event.
+     * @returns The point relative to the canvas, rounded to two decimals.
+     */
     private pointAt(e: JQuery.TriggeredEvent): Point {
         const event = e.originalEvent as PointerEvent;
         const rect = this.canvas[0]!.getBoundingClientRect();
@@ -146,24 +176,36 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         return [round(event.clientX - rect.left), round(event.clientY - rect.top)];
     }
 
+    /**
+     * Starts a new line at the pointer when the canvas is pressed with the primary mouse button, a pen or a touch.
+     * Focuses the canvas and captures the pointer, so the line continues outside of the canvas.
+     * @param e The `pointerdown` event.
+     */
     private onPointerDown(e: JQuery.TriggeredEvent): void {
         const event = e.originalEvent as PointerEvent;
         if (this.isDisabled() || (event.pointerType === 'mouse' && event.button !== 0)) {
             return;
         }
-        e.preventDefault();
         this.canvas.trigger('focus');
         this.canvas[0]!.setPointerCapture(event.pointerId);
         this.currentLine = [this.pointAt(e)];
         this.lines.push(this.currentLine);
     }
 
+    /**
+     * Extends the current line to the pointer while drawing.
+     * @param e The `pointermove` event.
+     */
     private onPointerMove(e: JQuery.TriggeredEvent): void {
         if (this.currentLine) {
             this.lineTo(this.pointAt(e));
         }
     }
 
+    /**
+     * Ends the current line, draws a dot for a single click and stores the changed signature.
+     * @param e The `pointerup` or `pointercancel` event.
+     */
     private onPointerUp(e: JQuery.TriggeredEvent): void {
         if (!this.currentLine) {
             return;
@@ -178,6 +220,10 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         e.preventDefault();
     }
 
+    /**
+     * Adds a point to the current line and draws the segment from the previous point to it.
+     * @param point The new point of the line.
+     */
     private lineTo(point: Point): void {
         const line = this.currentLine!;
         const last = line[line.length - 1]!;
@@ -190,7 +236,15 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
     }
 
+    /**
+     * Types the signature with the keyboard: printable keys append to the text, `Backspace` / `Delete` remove the
+     * last character and `Escape` clears the signature. The text is stored and drawn as signature.
+     * @param e The `keydown` event of the canvas.
+     */
     private onKeyDown(e: JQuery.TriggeredEvent): void {
+        if (this.isDisabled()) {
+            return;
+        }
         let text = String(this.inputText.val() ?? '');
         switch ((e.originalEvent as KeyboardEvent | undefined)?.code) {
             case 'Backspace':
@@ -220,11 +274,18 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
     }
 
+    /**
+     * Determines the thickness of the lines.
+     * @returns The configured thickness in pixels, `2` by default.
+     */
     private thickness(): number {
         return this.cfg.thickness ?? 2;
     }
 
-    /** Fills the canvas with the background and draws the guideline. */
+    /**
+     * Fills the canvas with the background and draws the guideline. Also sets up the line style and forgets the
+     * drawn lines, but does not update the inputs.
+     */
     private clearCanvas(): void {
         const ctx = this.ctx;
         if (!ctx) {
@@ -256,30 +317,44 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         this.lines = [];
     }
 
-    /** Stores the lines in the input and notifies the change. */
+    /** Stores the lines (and the PNG data URL with `base64`) in the inputs and calls the `onchange` callback. */
     private changed(): void {
         this.inputJson.val(this.toJSON());
         this.updateBase64();
         this.cfg.onchange?.call(this);
     }
 
+    /**
+     * Updates the base64 value of the signature widget with the canvas as PNG data URL, if `base64` is enabled.
+     * @param clear Whether to clear the base64 value.
+     */
     private updateBase64(clear: boolean = false): void {
         if (this.cfg.base64) {
             this.inputBase64.val(clear ? '' : this.canvas[0]!.toDataURL());
         }
     }
 
-    /** The drawn lines as JSON, e.g. `{"lines":[[[10,20],[11,22]]]}`. */
+    /**
+     * Converts the signature to a JSON string for transferral / storage, the format stored in the hidden input and
+     * accepted by {@link draw}. A typed signature or a drawn image has no lines.
+     * @returns The drawn lines as JSON, e.g. `{"lines":[[[10,20],[11,22]]]}`.
+     */
     toJSON(): string {
         return JSON.stringify({ lines: this.lines });
     }
 
-    /** Whether nothing was drawn. */
+    /**
+     * Determines whether no lines are drawn. Note that a typed signature or a drawn image has no lines either.
+     * @returns `true` if no lines are drawn, `false` otherwise.
+     */
     isEmpty(): boolean {
         return this.lines.length === 0;
     }
 
-    /** Clears the signature. */
+    /**
+     * Clears this signature widget, removing all drawn lines and the typed text, and empties the hidden inputs. Calls
+     * the `onchange` callback.
+     */
     clear(): void {
         this.clearCanvas();
         this.changed();
@@ -290,7 +365,10 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
 
     /**
      * Draws a signature, given as JSON lines (as string or object), as SVG with polylines or as a `data:` URL of an
-     * image. An image does not restore the lines.
+     * image. An image does not restore the lines. Replaces the current signature, stores it in the inputs and calls
+     * the `onchange` callback (for an image once it is loaded).
+     * @param value The signature data to draw: JSON lines as obtained from {@link toJSON} (as string or object), an
+     * SVG string with polylines or a `data:` URL. Nothing is drawn for an empty value.
      */
     draw(value: string | { lines: Point[][] } | null | undefined): void {
         if (!value) {
@@ -326,7 +404,11 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         this.changed();
     }
 
-    /** Draws the text as signature. */
+    /**
+     * Draws the text as signature, replacing the current signature, with the configured `fontFamily`, `fontSize` and
+     * `color`. Stores the signature in the inputs and calls the `onchange` callback; the JSON value has no lines.
+     * @param text The text to draw as signature.
+     */
     createSignatureFromText(text: string): void {
         const canvas = this.canvas[0];
         const ctx = this.ctx;
@@ -335,8 +417,8 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
         const fontSize = this.cfg.fontSize || 40;
 
+        this.clearCanvas();
         ctx.save();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = this.cfg.color || 'black';
         ctx.font = fontSize + 'px ' + (this.cfg.fontFamily || 'Brush Script MT, cursive');
         ctx.fillText(text, 10, (canvas.height + fontSize) / 2);
@@ -345,12 +427,12 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         this.changed();
     }
 
-    /** Disables the signature. */
+    /** Disables this input so that the user cannot draw or type a signature anymore. */
     override disable(): void {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputJson);
     }
 
-    /** Enables the signature. */
+    /** Enables this input so that the user can draw or type a signature. */
     override enable(): void {
         PrimeFaces.utils.enableInputWidget(this.jq, this.inputJson);
     }

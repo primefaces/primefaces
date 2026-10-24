@@ -8,7 +8,7 @@
  *
  * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams Describes a drag & drop operation
  * when a tree node is being dragged.
- * @prop {PrimeType.interaction.DroppableUi} DroppedNodeParams.ui Details about the drop event.
+ * @prop {PrimeFacesTypes.interactions.DroppableUi} DroppedNodeParams.ui Details about the drop event.
  * @prop {PrimeFaces.widget.VerticalTree} DroppedNodeParams.dragSource Tree widget of the dragged node.
  * @prop {JQuery} DroppedNodeParams.dragNode The node that was dragged.
  * @prop {JQuery} DroppedNodeParams.targetDragNode The node that was the target of the drag.
@@ -656,7 +656,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
-        elements.draggable({
+        PrimeFaces.interactions.draggable(elements, {
             start: function(event, ui) {
                 if(ui.helper) {
                     var element = $(event.target),
@@ -697,7 +697,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
-        elements.droppable({
+        PrimeFaces.interactions.droppable(elements, {
             hoverClass: 'ui-state-hover',
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
@@ -789,7 +789,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     /**
      * Callback for when a node was dropped on a drop point.
      * @private
-     * @param {PrimeType.interaction.DroppableUi} ui Details about the drop event.
+     * @param {PrimeFacesTypes.interactions.DroppableUi} ui Details about the drop event.
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget of the dragged node.
      * @param {JQuery} dragNode Node that was dragged.
      * @param {JQuery} targetDragNode Node that was the target of the drag.
@@ -852,7 +852,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
-        elements.droppable({
+        PrimeFaces.interactions.droppable(elements, {
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
@@ -953,7 +953,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     /**
      * Callback for when a node was dropped.
      * @private
-     * @param {PrimeType.interaction.DroppableUi} ui Details about the drop event.
+     * @param {PrimeFacesTypes.interactions.DroppableUi} ui Details about the drop event.
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget of the dragged node.
      * @param {JQuery} dragNode Node that was dragged.
      * @param {JQuery} targetDragNode Node that was the target of the drag.
@@ -1045,7 +1045,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
 
         this.jq.prepend('<div class="ui-tree-scroller ui-tree-scrollertop"></div>').append('<div class="ui-tree-scroller ui-tree-scrollerbottom"></div>');
 
-        this.jq.children('div.ui-tree-scroller').droppable({
+        PrimeFaces.interactions.droppable(this.jq.children('div.ui-tree-scroller'), {
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
@@ -1083,14 +1083,14 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         //descendant droppoints
         var subtreeDropPoints = node.find('li.ui-tree-droppoint');
         if(subtreeDropPoints.hasClass('ui-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
-            subtreeDropPoints.droppable('destroy');
+            PrimeFaces.interactions.destroy(subtreeDropPoints, 'droppable');
         }
         this.makeDropPoints(subtreeDropPoints);
 
         //descendant drop node contents
         var subtreeDropNodeContents = node.find('.ui-treenode-content');
         if(subtreeDropNodeContents.hasClass('ui-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
-            subtreeDropNodeContents.droppable('destroy');
+            PrimeFaces.interactions.destroy(subtreeDropNodeContents, 'droppable');
         }
         this.makeDropNodes(subtreeDropNodeContents);
 

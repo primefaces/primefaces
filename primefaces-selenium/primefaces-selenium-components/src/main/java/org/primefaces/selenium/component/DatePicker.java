@@ -240,7 +240,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public boolean isLazy() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript()
-                + ".cfg.lazyDataModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyDataModel");
+                + ".cfg.lazyModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyModel");
     }
 
     /**

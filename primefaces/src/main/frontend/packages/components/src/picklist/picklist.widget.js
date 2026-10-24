@@ -161,7 +161,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         const dragDropDisabled = ($this.cfg.dragDrop === false) || PrimeFaces.env.isTouchable($this.cfg);
 
         //Sortable lists
-        $(this.jqId + ' ul').sortable({
+        PrimeFaces.interactions.sortable($(this.jqId + ' ul'), {
             cancel: '.ui-state-disabled,.ui-chkbox-box',
             connectWith: this.jqId + ' .ui-picklist-list',
             disabled: dragDropDisabled, 
@@ -1441,7 +1441,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             return;
         }
-        $(this.jqId + ' ul').sortable(enable ? 'enable' : 'disable');
+        if (enable) {
+            PrimeFaces.interactions.enable($(this.jqId + ' ul'), 'sortable');
+        }
+        else {
+            PrimeFaces.interactions.disable($(this.jqId + ' ul'), 'sortable');
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 import { Interaction, offsetOf, type Callback, type Coordinates, type InteractionOptions, pageX, pageY } from "./interaction.js";
 
+/** The options of a droppable, see the jQuery UI droppable. */
 export interface DroppableOptions extends InteractionOptions {
     /** Selector or function deciding which draggables are accepted. */
     accept: string | ((this: HTMLElement, draggable: JQuery) => boolean);
@@ -17,33 +18,53 @@ export interface DroppableOptions extends InteractionOptions {
     tolerance: 'intersect' | 'fit' | 'pointer' | 'touch';
     /** Zoom factor of the droppable (CSS zoom / transform). */
     zoomFactor: (() => number) | null;
+    /** Called when an accepted draggable starts dragging. */
     activate: Callback;
+    /** Called when an accepted draggable stops dragging. */
     deactivate: Callback;
+    /** Called when an accepted draggable is dragged over this droppable. */
     over: Callback;
+    /** Called when an accepted draggable is dragged out of this droppable. */
     out: Callback;
+    /** Called when an accepted draggable is dropped on this droppable. */
     drop: Callback;
 }
 
 /** The interaction (draggable or sortable) that is dragged over droppables. */
 export interface DragSource {
-    /** The dragged element. */
+    /**
+     * The dragged element.
+     * @returns The element of a draggable, the current item of a sortable.
+     */
     item(): JQuery;
+    /** The element that moves with the pointer. */
     helper: JQuery | null;
+    /**
+     * The scope of the drag, only droppables with the same scope are activated.
+     * @returns The `scope` option.
+     */
     scope(): string;
     /** The offset of the helper. */
     offset: Coordinates;
     /** The CSS position of the helper. */
     position: Coordinates;
+    /** Aborts the drag. */
     cancel(): void;
 }
 
+/** The `ui` argument of the droppable callbacks. */
 export interface DroppableUi {
+    /** The dragged element. */
     draggable: JQuery;
+    /** The element that moves with the pointer. */
     helper: JQuery | null;
+    /** The CSS position of the helper. */
     position: Coordinates;
+    /** The offset of the helper. */
     offset: Coordinates;
 }
 
+/** The default options, the same as in jQuery UI. */
 const DEFAULTS: DroppableOptions = {
     disabled: false,
     distance: 0,
@@ -68,21 +89,39 @@ const DEFAULTS: DroppableOptions = {
 export class Droppable extends Interaction<DroppableOptions> {
     /** The box in page coordinates while a draggable is dragged. */
     box: [number, number, number, number] = [0, 0, 0, 0];
+    /** Whether the dragged helper is over this droppable. */
     isOver: boolean = false;
+    /** The scope under which this droppable is registered at the manager. */
     private currentScope: string;
 
+    /**
+     * Makes the element a droppable and registers it at the manager.
+     * @param element The element.
+     * @param options The options.
+     */
     constructor(element: HTMLElement, options?: Partial<DroppableOptions>) {
         super(element, 'droppable', 'drop', DEFAULTS, options);
-        this.element.addClass('ui-droppable');
+        this.addClasses();
         this.currentScope = this.options.scope;
         DragDropManager.add(this);
     }
 
+    /** Unregisters the droppable, during a drag it also leaves it and removes its state classes. */
     override destroy(): void {
+        const active = DragDropManager.active.includes(this);
         DragDropManager.remove(this, this.currentScope);
+        if (active) {
+            this.toggleClasses('active', false);
+            this.toggleClasses('hover', false);
+        }
         super.destroy();
     }
 
+    /**
+     * Sets an option, a new scope registers the droppable under that scope.
+     * @param key The name of the option.
+     * @param value The new value.
+     */
     protected override setOption(key: string, value: unknown): void {
         if (key === 'scope') {
             DragDropManager.remove(this, this.currentScope);
@@ -94,27 +133,47 @@ export class Droppable extends Interaction<DroppableOptions> {
         super.setOption(key, value);
     }
 
+    /**
+     * Droppables don't react to the pointer themselves.
+     * @returns Always `false`.
+     */
     protected capture(): boolean {
         return false;
     }
 
+    /**
+     * Droppables don't start an interaction.
+     * @returns Always `false`.
+     */
     protected start(): boolean {
         return false;
     }
 
+    /** Droppables don't move. */
     protected move(): void {
         // droppables don't move
     }
 
+    /** Droppables don't move. */
     protected stop(): void {
         // droppables don't move
     }
 
+    /**
+     * Whether the `accept` option accepts the dragged element.
+     * @param item The dragged element.
+     * @returns `true` if it can be dropped here.
+     */
     accepts(item: JQuery): boolean {
         const accept = this.options.accept;
         return typeof accept === 'function' ? !!accept.call(this.element[0]!, item) : item.is(accept);
     }
 
+    /**
+     * Creates the `ui` argument of the callbacks.
+     * @param source The dragged interaction.
+     * @returns The `ui` argument.
+     */
     ui(source: DragSource): DroppableUi {
         return { draggable: source.item(), helper: source.helper, position: source.position, offset: source.offset };
     }
@@ -127,17 +186,32 @@ export class Droppable extends Interaction<DroppableOptions> {
         this.box = [offset.left, offset.top, offset.left + el.offsetWidth * zoom, offset.top + el.offsetHeight * zoom];
     }
 
+    /**
+     * Adds or removes the classes of a state, including the `classes`, `activeClass` and `hoverClass` options.
+     * @param state The state.
+     * @param on Whether to add the classes.
+     */
     private toggleClasses(state: 'active' | 'hover', on: boolean): void {
         const key = 'ui-droppable-' + state;
         const custom = state === 'active' ? this.options.activeClass : this.options.hoverClass;
         this.element.toggleClass([key, this.options.classes[key] ?? '', custom || ''].join(' ').trim(), on);
     }
 
+    /**
+     * An accepted draggable started dragging.
+     * @param event The event that started the drag.
+     * @param source The dragged interaction.
+     */
     activate(event: JQuery.TriggeredEvent | null, source: DragSource): void {
         this.toggleClasses('active', true);
         this.trigger('activate', event, this.ui(source));
     }
 
+    /**
+     * The accepted draggable stopped dragging.
+     * @param event The event that ended the drag.
+     * @param source The dragged interaction.
+     */
     deactivate(event: JQuery.TriggeredEvent | null, source: DragSource): void {
         this.toggleClasses('active', false);
         this.toggleClasses('hover', false);
@@ -145,19 +219,34 @@ export class Droppable extends Interaction<DroppableOptions> {
         this.trigger('deactivate', event, this.ui(source));
     }
 
+    /**
+     * The helper moved over this droppable.
+     * @param event The pointermove event.
+     * @param source The dragged interaction.
+     */
     over(event: JQuery.TriggeredEvent, source: DragSource): void {
         this.isOver = true;
         this.toggleClasses('hover', true);
         this.trigger('over', event, this.ui(source));
     }
 
+    /**
+     * The helper moved out of this droppable.
+     * @param event The pointermove event.
+     * @param source The dragged interaction.
+     */
     out(event: JQuery.TriggeredEvent, source: DragSource): void {
         this.isOver = false;
         this.toggleClasses('hover', false);
         this.trigger('out', event, this.ui(source));
     }
 
-    /** @return `true` if the drop was accepted. */
+    /**
+     * The helper was dropped on this droppable.
+     * @param event The pointerup event.
+     * @param source The dragged interaction.
+     * @returns `true` if the drop was accepted.
+     */
     dropItem(event: JQuery.TriggeredEvent, source: DragSource): boolean {
         this.toggleClasses('hover', false);
         this.isOver = false;
@@ -165,7 +254,12 @@ export class Droppable extends Interaction<DroppableOptions> {
         return true;
     }
 
-    /** Whether the helper of the source intersects this droppable according to the tolerance. */
+    /**
+     * Whether the helper of the source intersects this droppable according to the tolerance.
+     * @param source The dragged interaction.
+     * @param event The pointer event, for the `pointer` tolerance.
+     * @returns `true` if the helper is over this droppable.
+     */
     intersects(source: DragSource, event: JQuery.TriggeredEvent): boolean {
         const helper = source.helper;
         if (!helper) {
@@ -203,21 +297,38 @@ export const DragDropManager = {
     /** The interaction that is dragged right now. */
     current: null as DragSource | null,
 
+    /** The droppables by scope. */
     droppables: {} as Record<string, Droppable[]>,
 
+    /** The droppables activated for the current drag. */
     active: [] as Droppable[],
 
+    /** Measures the active droppables again when a container scrolls during the drag. */
     scrollListener: null as (() => void) | null,
 
+    /**
+     * Registers a droppable under its scope.
+     * @param droppable The droppable.
+     */
     add(droppable: Droppable): void {
         (this.droppables[droppable.options.scope] ??= []).push(droppable);
     },
 
+    /**
+     * Unregisters a droppable, also from the current drag.
+     * @param droppable The droppable.
+     * @param scope The scope it was registered under.
+     */
     remove(droppable: Droppable, scope: string): void {
         this.droppables[scope] = (this.droppables[scope] ?? []).filter((d) => d !== droppable);
+        this.active = this.active.filter((d) => d !== droppable);
     },
 
-    /** Activates the droppables accepting the source, when the drag starts. */
+    /**
+     * Activates the droppables accepting the source, when the drag starts.
+     * @param source The dragged interaction.
+     * @param event The event that started the drag.
+     */
     start(source: DragSource, event: JQuery.TriggeredEvent): void {
         this.current = source;
         const item = source.item();
@@ -232,11 +343,18 @@ export const DragDropManager = {
         }
 
         // the boxes change when a container scrolls
+        if (this.scrollListener) {
+            document.removeEventListener('scroll', this.scrollListener, true);
+        }
         this.scrollListener = () => this.active.forEach((d) => d.measure());
         document.addEventListener('scroll', this.scrollListener, true);
     },
 
-    /** Calls over / out of the droppables. */
+    /**
+     * Calls over / out of the droppables.
+     * @param source The dragged interaction.
+     * @param event The pointermove event.
+     */
     drag(source: DragSource, event: JQuery.TriggeredEvent): void {
         let intersecting = this.active.filter((d) => d.intersects(source, event));
         // a greedy droppable hides its parent droppables
@@ -254,7 +372,12 @@ export const DragDropManager = {
         }
     },
 
-    /** Drops the source on the droppables it is over. @return whether it was dropped. */
+    /**
+     * Drops the source on the droppables it is over.
+     * @param source The dragged interaction.
+     * @param event The pointerup event.
+     * @returns Whether it was dropped.
+     */
     drop(source: DragSource, event: JQuery.TriggeredEvent): boolean {
         let dropped = false;
         for (const droppable of this.active) {
@@ -265,7 +388,11 @@ export const DragDropManager = {
         return dropped;
     },
 
-    /** Deactivates the droppables when the drag ended. */
+    /**
+     * Deactivates the droppables when the drag ended.
+     * @param source The dragged interaction.
+     * @param event The event that ended the drag, `null` if it was cancelled or destroyed.
+     */
     stop(source: DragSource, event: JQuery.TriggeredEvent | null): void {
         for (const droppable of this.active) {
             droppable.deactivate(event, source);
@@ -280,4 +407,3 @@ export const DragDropManager = {
         }
     }
 };
-

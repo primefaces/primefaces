@@ -2,6 +2,13 @@
 (function () {
     $.fn.extend({
         focus: (function (orig) {
+            /**
+             * Focuses the elements, with a number as first argument after the given delay, otherwise like the jQuery
+             * `focus` method.
+             * @param {number | unknown} delay The delay in milliseconds, or the arguments of the jQuery `focus` method.
+             * @param {(this: HTMLElement) => void} [fn] Called with each element after it was focused.
+             * @return {JQuery} this for chaining.
+             */
             return function (delay, fn) {
                 return typeof delay === "number" ?
                         this.each(function () {
@@ -17,22 +24,12 @@
             };
         })($.fn.focus),
 
-        disableSelection: (function () {
-            var eventType = "onselectstart" in document.createElement("div") ?
-                    "selectstart" :
-                    "mousedown";
-
-            return function () {
-                return this.on(eventType + ".ui-disableSelection", function (event) {
-                    event.preventDefault();
-                });
-            };
-        })(),
-
-        enableSelection: function () {
-            return this.off(".ui-disableSelection");
-        },
-
+        /**
+         * Sets the z-index of the elements, or gets the z-index of the first element: the one of the element or of its
+         * closest positioned parent with a z-index (formerly jQuery UI).
+         * @param {number | string} [zIndex] The z-index to set, omitted to get it.
+         * @return {JQuery | number} this for chaining when setting, the z-index (0 if none) when getting.
+         */
         zIndex: function (zIndex) {
             if (zIndex !== undefined) {
                 return this.css("zIndex", String(zIndex));
@@ -63,7 +60,13 @@
         }
     });
 
-    // :focusable and :tabbable selectors, formerly provided by jQuery UI
+    /**
+     * Checks whether an element can get the focus, for the `:focusable` and `:tabbable` selectors (formerly jQuery UI):
+     * enabled form elements, links with href, areas of a visible image map and elements with a tabindex, if visible.
+     * @param {Element} element The element to check.
+     * @param {boolean} hasTabindex Whether the element has a tabindex attribute.
+     * @return {boolean} `true` if the element can get the focus.
+     */
     function focusable(element, hasTabindex) {
         var nodeName = element.nodeName.toLowerCase(),
             focusableIfVisible;
@@ -98,13 +101,41 @@
     }
 
     $.extend($.expr.pseudos, {
+        /**
+         * The `:focusable` selector: elements that can get the focus, by mouse or script.
+         * @param {Element} element The element to check.
+         * @return {boolean} `true` if the element can get the focus.
+         */
         focusable: function(element) {
             return focusable(element, $.attr(element, "tabindex") != null);
         },
+        /**
+         * The `:tabbable` selector: focusable elements reachable with the Tab key (no negative tabindex).
+         * @param {Element} element The element to check.
+         * @return {boolean} `true` if the element can be reached with the Tab key.
+         */
         tabbable: function(element) {
             var tabIndex = $.attr(element, "tabindex"),
                 hasTabindex = tabIndex != null;
             return (!hasTabindex || tabIndex >= 0) && focusable(element, hasTabindex);
         }
     });
+
+    // "remove" event on removed elements, e.g. on .remove(), .html() or .replaceWith(), formerly provided by the jQuery UI
+    // widget factory. The widgets and interactions use it to detect that they were removed by an AJAX update.
+    var cleanData = $.cleanData;
+    /**
+     * Triggers the `remove` event on each removed element that has a handler for it, then cleans the data like jQuery.
+     * @param {ArrayLike<Element>} elems The removed elements.
+     */
+    $.cleanData = function(elems) {
+        for (var i = 0; i < elems.length; i++) {
+            var elem = elems[i],
+                events = elem ? $._data(elem, "events") : undefined;
+            if (events && events.remove) {
+                $(elem).triggerHandler("remove");
+            }
+        }
+        cleanData(elems);
+    };
 })();

@@ -75,7 +75,7 @@ export function registerBeanValidationMessages(): void {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `AssertFalse`.
  */
-class AssertFalseValidator implements PrimeType.validation.Validator {
+class AssertFalseValidator implements PrimeFacesTypes.validation.Validator {
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.AssertFalse.message';
 
     validate(element: JQuery, value: unknown): void {
@@ -90,7 +90,7 @@ class AssertFalseValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `AssertTrue`.
  */
-class AssertTrueValidator implements PrimeType.validation.Validator {
+class AssertTrueValidator implements PrimeFacesTypes.validation.Validator {
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.AssertTrue.message';
 
     validate(element: JQuery, value: unknown): void {
@@ -105,7 +105,7 @@ class AssertTrueValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `DecimalMax`.
  */
-class DecimalMaxValidator implements PrimeType.validation.Validator {
+class DecimalMaxValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.DecimalMax.message';
 
@@ -126,7 +126,7 @@ class DecimalMaxValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `DecimalMin`.
  */
-class DecimalMinValidator implements PrimeType.validation.Validator {
+class DecimalMinValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.DecimalMin.message';
 
@@ -147,7 +147,7 @@ class DecimalMinValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Digits`.
  */
-class DigitsValidator implements PrimeType.validation.Validator {
+class DigitsValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Digits.message';
 
@@ -176,7 +176,7 @@ class DigitsValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Email`.
  */
-class EmailValidator implements PrimeType.validation.Validator {
+class EmailValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Email.message';
 
@@ -195,7 +195,7 @@ class EmailValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Future`.
  */
-class FutureValidator implements PrimeType.validation.Validator {
+class FutureValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Future.message';
 
@@ -212,7 +212,7 @@ class FutureValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `FutureOrPresent`.
  */
-class FutureOrPresentValidator implements PrimeType.validation.Validator {
+class FutureOrPresentValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.FutureOrPresent.message';
 
@@ -229,7 +229,7 @@ class FutureOrPresentValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Max`.
  */
-class MaxValidator implements PrimeType.validation.Validator {
+class MaxValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Max.message';
 
@@ -250,7 +250,7 @@ class MaxValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Min`.
  */
-class MinValidator implements PrimeType.validation.Validator {
+class MinValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Min.message';
 
@@ -271,7 +271,7 @@ class MinValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Negative`.
  */
-class NegativeValidator implements PrimeType.validation.Validator {
+class NegativeValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Negative.message';
 
@@ -289,7 +289,7 @@ class NegativeValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `NegativeOrZero`.
  */
-class NegativeOrZeroValidator implements PrimeType.validation.Validator {
+class NegativeOrZeroValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.NegativeOrZero.message';
 
@@ -307,7 +307,7 @@ class NegativeOrZeroValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `NotBlank`.
  */
-class NotBlankValidator implements PrimeType.validation.Validator {
+class NotBlankValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.NotBlank.message';
 
@@ -323,7 +323,7 @@ class NotBlankValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `NotEmpty`.
  */
-class NotEmptyValidator implements PrimeType.validation.Validator {
+class NotEmptyValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.NotEmpty.message';
 
@@ -339,7 +339,7 @@ class NotEmptyValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `NotNull`.
  */
-class NotNullValidator implements PrimeType.validation.Validator {
+class NotNullValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.NotNull.message';
 
@@ -355,7 +355,7 @@ class NotNullValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Null`.
  */
-class NullValidator implements PrimeType.validation.Validator {
+class NullValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Null.message';
 
@@ -371,7 +371,7 @@ class NullValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Past`.
  */
-class PastValidator implements PrimeType.validation.Validator {
+class PastValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Past.message';
 
@@ -388,7 +388,7 @@ class PastValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `PastOrPresent`.
  */
-class PastOrPresentValidator implements PrimeType.validation.Validator {
+class PastOrPresentValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.PastOrPresent.message';
 
@@ -405,7 +405,7 @@ class PastOrPresentValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Pattern`.
  */
-class PatternValidator implements PrimeType.validation.Validator {
+class PatternValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Pattern.message';
 
@@ -426,7 +426,7 @@ class PatternValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Positive`.
  */
-class PositiveValidator implements PrimeType.validation.Validator {
+class PositiveValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Positive.message';
 
@@ -444,7 +444,7 @@ class PositiveValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `PositiveOrZero`.
  */
-class PositiveOrZeroValidator implements PrimeType.validation.Validator {
+class PositiveOrZeroValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.PositiveOrZero.message';
 
@@ -462,7 +462,7 @@ class PositiveOrZeroValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Jakarta Bean Validation
  * validator `Size`.
  */
-class SizeValidator implements PrimeType.validation.Validator {
+class SizeValidator implements PrimeFacesTypes.validation.Validator {
 
     private readonly MESSAGE_ID = 'jakarta.validation.constraints.Size.message';
 

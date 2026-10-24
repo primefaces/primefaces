@@ -45,7 +45,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
         var _self = this;
 
         //make draggable
-        this.jq.draggable({handle:this.header});
+        PrimeFaces.interactions.draggable(this.jq, {handle:this.header});
         
         //z-index
         PrimeFaces.nextZindex(this.jq);
