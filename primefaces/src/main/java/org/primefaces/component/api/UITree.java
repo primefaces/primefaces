@@ -150,6 +150,35 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         restoreDescendantState();
     }
 
+    @Override
+    public void decode(FacesContext context) {
+        try {
+            super.decode(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        try {
+            super.encodeEnd(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    /**
+     * Resets the row key, so that neither the var nor a row-prefixed client id outlives the phase which set it.
+     */
+    protected void resetIterationState() {
+        if (rowKey != null) {
+            setRowKey(null, null, null);
+        }
+    }
+
     private void addToPreselection(TreeNode<?> node) {
         if (preselection == null) {
             preselection = new ArrayList<>();

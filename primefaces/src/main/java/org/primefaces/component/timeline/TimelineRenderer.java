@@ -338,6 +338,10 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
         }
 
+        if (LangUtils.isNotBlank(component.getVarGroup())) {
+            context.getExternalContext().getRequestMap().remove(component.getVarGroup());
+        }
+
         if (group.getTreeLevel() != null) {
             fsw.write(", treeLevel:\"" + group.getTreeLevel() + "\"");
 
@@ -512,6 +516,10 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         }
         else if (data != null) {
             fsw.write(data.toString());
+        }
+
+        if (LangUtils.isNotBlank(component.getVar())) {
+            context.getExternalContext().getRequestMap().remove(component.getVar());
         }
 
         fsw.write("\"");
