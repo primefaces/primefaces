@@ -108,6 +108,10 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
     @Property(description = "CSS class for the suggestions panel.")
     public abstract String getPanelStyleClass();
 
+    @Property(description = "Style class of the table element rendered in advanced layout, when columns are used."
+            + " Themes provide \"ui-table-gridlines\", \"ui-table-striped\", \"ui-table-sm\" and \"ui-table-lg\".")
+    public abstract String getAdvancedStyleClass();
+
     @Property(description = "When enabled, allows multiple selections.", defaultValue = "false")
     public abstract boolean isMultiple();
 
