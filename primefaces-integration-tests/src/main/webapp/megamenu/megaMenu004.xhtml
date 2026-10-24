@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+    <h:head />
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="refresh" value="Refresh" update="menu" />
+            <p:commandButton id="outside" value="Outside" type="button" />
+
+            <p:megaMenu id="menu" widgetVar="menu" activeIndex="#{megaMenu004.index}"
+                        orientation="#{megaMenu004.orientation}"
+                        autoDisplay="#{megaMenu004.autoDisplay}">
+                <p:submenu label="First">
+                    <p:column>
+                        <p:submenu label="First group"><p:menuitem value="First item" url="#" /></p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Second">
+                    <p:column>
+                        <p:submenu label="Second group"><p:menuitem value="Second item" url="#" /></p:submenu>
+                    </p:column>
+                </p:submenu>
+            </p:megaMenu>
+            <p:megaMenu id="itemsMenu" activeIndex="1">
+                <p:menuitem value="Hidden" url="#" rendered="false" />
+                <p:menuitem value="First link" url="#" />
+                <p:divider />
+                <p:menuitem value="Disabled" url="#" disabled="true" />
+                <p:menuitem value="Current link" url="#" />
+            </p:megaMenu>
+            <p:megaMenu id="defaultMenu" widgetVar="defaultMenu">
+                <p:submenu label="Default"><p:column><p:menuitem value="Item" url="#" /></p:column></p:submenu>
+            </p:megaMenu>
+        </h:form>
+    </h:body>
+</html>

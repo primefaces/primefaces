@@ -64,7 +64,8 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget, Style
     @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu.")
     public abstract int getDelay();
 
-    @Property(description = "Index of the active root menu to display as highlighted. By default no root is highlighted.")
+    @Property(defaultValue = "Integer.MIN_VALUE", implicitDefaultValue = "none",
+            description = "Index of the active root menu to display as highlighted. By default no root is highlighted.")
     public abstract int getActiveIndex();
 
     @Property(defaultValue = "horizontal", description = "Defines the orientation of the root menuitems, valid values are \"horizontal\" and \"vertical\".")
