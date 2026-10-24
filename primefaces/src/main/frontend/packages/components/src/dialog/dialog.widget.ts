@@ -286,19 +286,18 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
     }
 
+    override destroy(): void {
+        this.minimizeClone.remove();
+        super.destroy();
+    }
+
     override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
         this.positionInitialized = false;
         this.loaded = false;
 
         $(document).off('keydown.dialog_' + cfg.id);
 
-        if(this.minimized) {
-            var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
-            if(dockingZone.length && dockingZone.children(this.jqId).length) {
-                this.removeMinimize();
-                dockingZone.children(this.jqId).remove();
-            }
-        }
+        this.minimizeClone.remove();
 
         this.minimized = false;
         this.maximized = false;
@@ -894,6 +893,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             
             // create a minimize clone which is just the titlebar
             this.minimizeClone = this.jq.clone(true);
+            // Cloned source markers must never remove the live overlays they originally tracked.
+            this.minimizeClone.find('.ui-overlay-placeholder').off('remove.pfOverlay');
             this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
             this.minimizeClone.addClass('ui-dialog-minimized');
             this.minimizeClone.children('.ui-dialog-content').remove();

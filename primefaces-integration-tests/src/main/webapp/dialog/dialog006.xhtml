@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head />
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="refresh" value="Refresh form" update="@form" />
+            <p:commandButton id="remove" value="Remove overlays" action="#{dialog005.remove}" update="container" />
+            <h:panelGroup id="container" layout="block">
+                <p:sidebar id="sidebar" widgetVar="relocatedSidebar" appendTo="@(body)" rendered="#{dialog005.rendered}">
+                    <p:dialog id="dlg" widgetVar="nestedDialog" header="Nested dialog" appendTo="@(body)">
+                        Nested content
+                    </p:dialog>
+                </p:sidebar>
+            </h:panelGroup>
+            <h:panelGroup id="localContainer" layout="block">
+                <p:dialog id="localDialog" widgetVar="localDialog" appendTo="@parent" header="Not relocated" />
+            </h:panelGroup>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
