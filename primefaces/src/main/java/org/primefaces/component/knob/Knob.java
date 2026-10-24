@@ -41,4 +41,6 @@ public class Knob extends KnobBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Knob";
 
+    public static final String STYLE_CLASS = "ui-knob";
+
 }

@@ -58,23 +58,20 @@ public abstract class KnobBase extends PrimeUIInput implements Widget, StyleAwar
     @Property(defaultValue = "1", description = "Step size.")
     public abstract int getStep();
 
-    @Property(description = "Thickness of the knob arc.")
+    @Property(description = "Thickness of the knob arc as a fraction of the radius, between 0 and 1 (default 0.35).")
     public abstract Float getThickness();
 
-    @Property(description = "Width of the knob.")
+    @Property(description = "Width of the knob, in pixels or a CSS length (e.g. 50%), the height follows if it is not set.")
     public abstract Object getWidth();
 
-    @Property(description = "Height of the knob.")
+    @Property(description = "Height of the knob, in pixels or a CSS length, the width follows if it is not set.")
     public abstract Object getHeight();
 
-    @Property(description = "Foreground color of the knob.")
+    @Property(description = "Color of the value arc (a CSS color or java.awt.Color), overrides the --p-knob-value-background token.")
     public abstract Object getForegroundColor();
 
-    @Property(description = "Background color of the knob.")
+    @Property(description = "Color of the range arc (a CSS color or java.awt.Color), overrides the --p-knob-range-background token.")
     public abstract Object getBackgroundColor();
-
-    @Property(description = "Color theme for the knob.")
-    public abstract String getColorTheme();
 
     @Property(description = "Disables the component.")
     public abstract boolean isDisabled();

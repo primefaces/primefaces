@@ -174,6 +174,8 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
     private readonly observer: MutationObserver;
     /** Whether the sorting is finishing right now, the final events are triggered. */
     private clearing: boolean = false;
+    /** Whether the sortable was destroyed. */
+    private destroyed: boolean = false;
     /** Whether the dragged item is over this sortable (as a container of a sorting). */
     private isOver: boolean = false;
     /** The boxes of the items while an item is dragged over this sortable, measured again when the layout changes. */
@@ -204,8 +206,12 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
 
     /** Removes the handle classes; a sorting in progress ends at the original position and a running revert finishes. */
     override destroy(): void {
+        this.destroyed = true;
         this.observer.disconnect();
-        this.cancel();
+        // destroyed in a final callback (e.g. by an AJAX update in stop): the sorting finishes as it is
+        if (!this.clearing) {
+            this.cancel();
+        }
         // the revert started by the cancel
         this.helper?.stop(true, true);
         this.externalOut();
@@ -696,6 +702,8 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         if (item.parent().length) {
             item.insertBefore(this.placeholder);
         }
+        // like jQuery UI, the final events are determined before beforeStop, which may cancel the sorting
+        const updated = this.domPosition.prev !== item.prev()[0] || this.domPosition.parent !== item.parent()[0];
         this.trigger('beforeStop', event, this.ui());
 
         if (this.helper && this.helper[0] === item[0]) {
@@ -719,7 +727,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
             DragDropManager.stop(this, event);
         }
 
-        if (this.domPosition.prev !== item.prev()[0] || this.domPosition.parent !== item.parent()[0]) {
+        if (updated) {
             this.trigger('update', event, this.ui());
         }
         if (receiver !== sender) {
@@ -740,8 +748,13 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         this.invalidate();
         this.containers = [];
         this.currentContainer = this;
-        this.updateHandles();
-        receiver.updateHandles();
+        // a callback may have destroyed the sortable
+        if (!this.destroyed) {
+            this.updateHandles();
+        }
+        if (!receiver.destroyed) {
+            receiver.updateHandles();
+        }
     }
 
     // ==========================

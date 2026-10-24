@@ -2971,7 +2971,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (input.maxLength === 2 && key === 'Enter') {
             this.hideOverlay();
-            // like master (return false): no default command of the form
+            // not to the form, e.g. its default command (before, the event propagated)
             event.preventDefault();
             event.stopPropagation();
             return;

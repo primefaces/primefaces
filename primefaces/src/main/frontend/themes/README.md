@@ -401,7 +401,7 @@ classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
   themes: its literal tokens are declared again in every scope, so a density or a `:root` override does not reach into
   scopes. Write literal tokens on `:root` (docs: "Custom theme").
 - `!important` is used only where the CSS has to beat inline styles of jQuery / the widgets (dialog maximize / minimize,
-  dataTable / treeTable reflow widths, jQuery UI datepicker width, knob font), for two structural rules (the header clone
+  dataTable / treeTable reflow widths), for two structural rules (the header clone
   of scrollable dataTables has no height, #12908; buttons are never underlined, also not by `a:hover` of the
   application) and for the user preferences (reduced motion, print). An `!important` in a cascade layer beats unlayered
   application CSS even with `!important`, so these can not be overridden; hiding uses the behaviors layer
@@ -410,7 +410,7 @@ classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
   backgrounds stay mostly opaque for that.
 - ColorPicker / Captcha read light or dark (`PrimeFaces.env.getThemeContrast(element)`) once when they are created; a
   later change of the color scheme does not switch them.
-- Canvas based components (chart, knob) take colors from JS options, not from CSS.
+- Canvas based components (chart) take colors from JS options, not from CSS.
 - Requires `light-dark()`, `color-mix()`, relative colors (`oklch(from ...)`), `:has()` and CSS nesting
   (Chrome 123, Firefox 128, Safari 18).
 - Contrast of the primary color (Aura, Lara, Nora, like PrimeUIX / PrimeReact): white text on the default primary

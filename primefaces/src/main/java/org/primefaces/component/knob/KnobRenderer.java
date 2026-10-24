@@ -84,76 +84,86 @@ public class KnobRenderer extends CoreRenderer<Knob> {
 
     private void encodeMarkup(FacesContext context, Knob component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+        String clientId = component.getClientId(context);
         Object value = component.getValue() != null ? component.getValue() : 0;
+        String styleClass = getStyleClassBuilder(context)
+                .add(Knob.STYLE_CLASS)
+                .add(component.getStyleClass())
+                .add(component.isDisabled(), "ui-state-disabled")
+                .build();
 
-        writer.startElement("input", component);
-        writer.writeAttribute("id", component.getClientId(), null);
-        writer.writeAttribute("name", component.getClientId(), null);
-        writer.writeAttribute("disabled", true, null);
-        writer.writeAttribute("value", value.toString(), null);
-        writer.writeAttribute("data-min", component.getMin(), null);
-        writer.writeAttribute("data-step", component.getStep(), null);
-        writer.writeAttribute("data-max", component.getMax(), null);
-        writer.writeAttribute("data-displayInput", Boolean.toString(component.isShowLabel()), null);
-        writer.writeAttribute("data-readOnly", Boolean.toString(component.isDisabled()), null);
-        writer.writeAttribute("data-cursor", Boolean.toString(component.isCursor()), null);
-        writer.writeAttribute("data-linecap", component.getLineCap(), "butt");
+        // the knob is a square: the missing one of width and height follows the other (aspect-ratio of .ui-knob)
+        String width = toCssLength(component.getWidth());
+        String height = toCssLength(component.getHeight());
+        String style = getStyleBuilder(context)
+                .add(width != null, "width", width)
+                .add(width == null && height != null, "width", "auto")
+                .add(height != null, "height", height)
+                .add(component.getForegroundColor() != null, "--p-knob-value-background", toCssColor(component.getForegroundColor()))
+                .add(component.getBackgroundColor() != null, "--p-knob-range-background", toCssColor(component.getBackgroundColor()))
+                .add(component.getStyle())
+                .build();
 
-        if (component.getThickness() != null) {
-            writer.writeAttribute("data-thickness", component.getThickness(), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+        if (LangUtils.isNotBlank(style)) {
+            writer.writeAttribute("style", style, null);
         }
 
-        if (component.getWidth() != null) {
-            writer.writeAttribute("data-width", component.getWidth().toString(), null);
-        }
+        renderHiddenInput(context, clientId + "_hidden", value.toString(), component.isDisabled());
 
-        if (component.getHeight() != null) {
-            writer.writeAttribute("data-height", component.getHeight().toString(), null);
-        }
-
-        writer.writeAttribute("class", "knob", null);
-
-        writer.endElement("input");
-
-        renderHiddenInput(context, component.getClientId() + "_hidden", value.toString(), component.isDisabled());
+        writer.endElement("div");
     }
 
     private void encodeScript(FacesContext context, Knob component) throws IOException {
-        String styleClass = component.getStyleClass() != null ? "ui-knob " + component.getStyleClass() : "ui-knob";
-
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Knob", component);
-        wb.attr("labelTemplate", component.getLabelTemplate())
-                .attr("colorTheme", component.getColorTheme())
-                .attr("styleClass", styleClass)
+        wb.init("Knob", component)
+                .attr("min", component.getMin())
+                .attr("max", component.getMax())
+                .attr("step", component.getStep())
+                .attr("disabled", component.isDisabled(), false)
+                .attr("showLabel", component.isShowLabel(), true)
+                .attr("cursor", component.isCursor(), false)
+                .attr("lineCap", component.getLineCap(), "butt")
+                .attr("labelTemplate", component.getLabelTemplate(), "{value}")
                 .callback("onchange", "function(value)", component.getOnchange());
 
-        if (component.getForegroundColor() != null) {
-            String fg;
-            if (component.getForegroundColor() instanceof Color) {
-                fg = colorToHex((Color) component.getForegroundColor());
-            }
-            else {
-                fg = component.getForegroundColor().toString();
-            }
-            wb.attr("fgColor", fg);
+        if (component.getThickness() != null) {
+            wb.attr("thickness", component.getThickness());
         }
 
-        if (component.getBackgroundColor() != null) {
-            String bg;
-            if (component.getBackgroundColor() instanceof Color) {
-                bg = colorToHex((Color) component.getBackgroundColor());
-            }
-            else {
-                bg = component.getBackgroundColor().toString();
-            }
-            wb.attr("bgColor", bg);
-        }
         encodeClientBehaviors(context, component);
 
         wb.finish();
+    }
+
+    /**
+     * Converts a width or height to a CSS length: numbers are pixels.
+     *
+     * @param size the width or height, a number or a CSS length like {@code 50%}
+     * @return the CSS length, {@code null} if the size is not set
+     */
+    protected String toCssLength(Object size) {
+        if (size == null || LangUtils.isBlank(size.toString())) {
+            return null;
+        }
+        String length = size.toString().trim();
+        return length.matches("\\d+(\\.\\d+)?") ? length + "px" : length;
+    }
+
+    /**
+     * Converts a color to a CSS color.
+     *
+     * @param color a {@link Color} or a CSS color
+     * @return the CSS color, {@code null} if the color is not set
+     */
+    protected String toCssColor(Object color) {
+        if (color == null) {
+            return null;
+        }
+        return color instanceof Color ? colorToHex((Color) color) : color.toString();
     }
 
     @Override

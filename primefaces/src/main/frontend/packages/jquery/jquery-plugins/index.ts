@@ -1,6 +1,3 @@
-/// <reference types="jquery-mousewheel" preserve="true" />
-
-import setupMousewheel from "jquery-mousewheel";
 import "./src/jquery.pfextensions.js";
 
 // JQuery extension made by PrimeFaces
@@ -28,5 +25,3 @@ declare global {
         zIndex(zIndex: number): this;
     }
 }
-
-setupMousewheel($);

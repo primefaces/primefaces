@@ -1160,12 +1160,15 @@ export class Effects {
             const animation = target.animate(keyframes, { duration: animationDuration, easing: animationEasing, fill: "both" });
             running.animations.push(animation);
             // the finished promise resolves in the rendering update, which does not run in hidden tabs: finish the
-            // animation there; in a visible tab it may just have started later (busy main thread), so check again
+            // animation there; in a visible tab it may just have started later (busy main thread), so check again,
+            // but not forever (e.g. an offscreen iframe that does not render)
+            const started = performance.now();
+            /** Finishes the animation if it can't finish by itself, otherwise checks again later. */
             const fallback = (): void => {
                 if (animation.playState === "idle" || animation.playState === "finished") {
                     return;
                 }
-                if (document.visibilityState === "hidden") {
+                if (document.visibilityState === "hidden" || performance.now() - started > animationDuration * 3 + 1000) {
                     animation.finish();
                 }
                 else {

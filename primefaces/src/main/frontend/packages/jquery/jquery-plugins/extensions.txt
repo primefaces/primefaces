@@ -1,5 +1,4 @@
-List of Plugins
-- MouseWheel (https://github.com/jquery/jquery-mousewheel)
+No third-party jQuery plugins anymore (the mouse wheel uses the native wheel event).
 
 Extensions:
 
