@@ -445,14 +445,23 @@ export abstract class Interaction<O extends InteractionOptions> {
         this.cleanupPointer();
         if (started) {
             this.stop(e);
-            // no click after a drag
+            // no click after a drag: the click of a tap comes in a later task than pointerup, so the click is blocked
+            // until it comes, the next pointer is pressed or a short time passed
             if (target instanceof Element) {
+                let timer = 0;
+                const release = () => {
+                    clearTimeout(timer);
+                    target.removeEventListener('click', preventClick, { capture: true });
+                    document.removeEventListener('pointerdown', release, { capture: true });
+                };
                 const preventClick = (ev: Event) => {
                     ev.stopImmediatePropagation();
                     ev.preventDefault();
+                    release();
                 };
-                target.addEventListener('click', preventClick, { capture: true, once: true });
-                setTimeout(() => target.removeEventListener('click', preventClick, { capture: true }), 0);
+                target.addEventListener('click', preventClick, { capture: true });
+                document.addEventListener('pointerdown', release, { capture: true });
+                timer = window.setTimeout(release, 500);
             }
         }
     }

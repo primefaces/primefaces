@@ -45,7 +45,7 @@ public class AppMenu {
         //GENERAL CATEGORY START
         List<MenuItem> generalMenuItems = new ArrayList<>();
         generalMenuItems.add(new MenuItem("Get Started", "/getstarted"));
-        generalMenuItems.add(new MenuItem("TagLib", "/taglib", "New"));
+        generalMenuItems.add(new MenuItem("TagLib", "/taglib"));
         generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/16_0_0/#/"));
         generalMenuItems.add(new MenuItem("Support", "/support"));
         menuCategories.add(new MenuCategory("General", generalMenuItems));

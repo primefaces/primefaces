@@ -64,6 +64,8 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
     private valueBeforeDrag: number | null = null;
     /** Timer that releases the value after the mouse wheel stopped. */
     private wheelTimer: number | null = null;
+    /** Whether the value is being changed with the keyboard, it is released on key up. */
+    private keyChanging: boolean = false;
 
     /**
      * Initializes the knob: creates the SVG in the container rendered by the server and binds the events.
@@ -156,8 +158,17 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
     private bindEvents(): void {
         this.svg
             .on('pointerdown.knob', (e) => this.onPointerDown(e))
+            // no text selection and no focus change; not on pointerdown, that would suppress the mousedown event the
+            // overlays of other widgets listen to on the document to hide
+            .on('mousedown.knob', (e) => e.preventDefault())
             .on('wheel.knob', (e) => this.onWheel(e))
-            .on('keydown.knob', (e) => this.onKeyDown(e));
+            .on('keydown.knob', (e) => this.onKeyDown(e))
+            .on('keyup.knob', () => {
+                if (this.keyChanging) {
+                    this.keyChanging = false;
+                    this.release(this.currentValue);
+                }
+            });
     }
 
     /**
@@ -169,7 +180,6 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
         if (this.disabled || !event || (event.pointerType === 'mouse' && event.button !== 0)) {
             return;
         }
-        e.preventDefault();
         this.svg[0]!.focus();
         this.svg[0]!.setPointerCapture(event.pointerId);
         this.valueBeforeDrag = this.value;
@@ -230,7 +240,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
 
     /**
      * Changes the value with the keyboard: the arrow keys by one step, Page Up / Page Down by a tenth of the range,
-     * Home / End to the minimum / maximum.
+     * Home / End to the minimum / maximum. The value is released on key up, so a held key releases it only once.
      * @param e The keydown event.
      */
     private onKeyDown(e: JQuery.TriggeredEvent): void {
@@ -251,7 +261,8 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
         const value = values[e.key ?? ''];
         if (value !== undefined) {
             e.preventDefault();
-            this.release(value);
+            this.keyChanging = true;
+            this.change(value);
         }
     }
 

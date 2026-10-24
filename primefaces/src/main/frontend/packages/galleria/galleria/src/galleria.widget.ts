@@ -203,11 +203,14 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
     }
 
     /**
-     * Releases what the rendering added outside of the gallery: the scroll lock of the body, the slideshow interval
-     * and the resize listener and styles of the thumbnails. Resets the rendering state for a refresh.
+     * Releases what the rendering added outside of the gallery: the scroll lock of the body (only set while shown in
+     * fullscreen, other widgets like a dialog with `blockScroll` use it too), the slideshow interval and the resize
+     * listener and styles of the thumbnails. Resets the rendering state for a refresh.
      */
     private cleanup(): void {
-        $(document.body).removeClass('ui-overflow-hidden');
+        if (this.visible) {
+            $(document.body).removeClass('ui-overflow-hidden');
+        }
         this.stopSlideShow();
         this.thumbnails?.destroy();
         // refresh renders into the same instance

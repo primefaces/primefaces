@@ -18,7 +18,7 @@ export interface SliderEventData {
  * @param event The event that moved the handle, e.g. a pointer or keyboard event.
  * @param data The handle and the new value(s).
  */
-export type SliderCallback = (this: Slider | HTMLElement, event: JQuery.TriggeredEvent | null, data: SliderEventData) => void;
+export type SliderCallback = (this: Slider | HTMLElement, event: JQuery.TriggeredEvent | null, data: SliderEventData) => void | boolean;
 
 /**
  * The configuration for the {@link Slider} widget.
@@ -50,10 +50,10 @@ export interface SliderCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     range: boolean | "min" | "max";
     /** The step size. */
     step: number;
-    /** The value of a slider with one handle. */
-    value: number;
+    /** The value of a slider with one handle (rendered as string by the server). */
+    value: number | string;
     /** The values of a range slider. */
-    values: number[] | null;
+    values: (number | string)[] | null;
 }
 
 /**
@@ -199,7 +199,8 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             }
             else {
                 $(input).off('keydown.slider keyup.slider').on('keydown.slider', (e) => {
-                    if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                    // editing keys, shortcuts and the keys of virtual keyboards ("Unidentified") are not filtered
+                    if (!PrimeFaces.utils.isPrintableKey(e) || e.key === 'Unidentified' || e.ctrlKey || e.metaKey || e.altKey) {
                         return;
                     }
                     const key = e.key ?? '';
@@ -257,10 +258,12 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
                 : event.clientX - rect.left - rect.width / 2;
         }
 
+        this.handles.eq(index).trigger('focus');
+        if (!this.onSlideStart(e, this.data(index))) {
+            return;
+        }
         this.dragIndex = index;
         this.jq[0]?.setPointerCapture(event.pointerId);
-        this.handles.eq(index).trigger('focus');
-        this.onSlideStart(e, this.data(index));
         if (!onHandle.length) {
             this.slide(e, index, value, true);
         }
@@ -290,8 +293,10 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
 
         e.preventDefault();
         if (!this.keySliding) {
+            if (!this.onSlideStart(e, this.data(index))) {
+                return;
+            }
             this.keySliding = true;
-            this.onSlideStart(e, this.data(index));
         }
         this.slide(e, index, this.align(current + delta), true);
     }
@@ -312,8 +317,8 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Moves a handle to a new value by user interaction and fires `onSlide` if the value changed. The handles of a
-     * range slider cannot pass each other.
+     * Moves a handle to a new value by user interaction and fires `onSlide` if the value changed, the callback can
+     * cancel the move (see {@link callSlideCallback}). The handles of a range slider cannot pass each other.
      * @param event The event that moved the handle.
      * @param index The index of the handle.
      * @param value The new, step aligned value.
@@ -328,10 +333,17 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             return;
         }
 
-        this.values[index] = value;
+        const values = this.values.slice();
+        values[index] = value;
+        const data = this.data(index, values);
+        if (!this.callSlideCallback(this.cfg.onSlide, this, 'slide', event, data)) {
+            return;
+        }
+
+        this.values = values;
         this.lastIndex = index;
         this.updateUI(animate);
-        this.onSlide(event, this.data(index));
+        this.updateInputs(data);
     }
 
     /**
@@ -388,24 +400,52 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     /**
      * Creates the data passed to the slider callbacks for a handle.
      * @param index The index of the handle.
+     * @param values The values of the handles, the current values by default.
      * @returns The handle, its index and value, and both values of a range slider.
      */
-    private data(index: number): SliderEventData {
+    private data(index: number, values: number[] = this.values): SliderEventData {
         return {
             handle: this.handles[index],
             handleIndex: index,
-            value: this.values[index]!,
-            values: this.values.length === 2 ? this.values.slice() : undefined
+            value: values[index]!,
+            values: values.length === 2 ? values.slice() : undefined
         };
     }
 
     /**
-     * Fires the `onSlideStart` callback, with the slider element as `this`, when a handle starts moving.
+     * Calls the `onSlideStart` or `onSlide` callback like jQuery UI did: with a `slidestart` / `slide` event that
+     * wraps the original event. The callback cancels the slide by calling `event.preventDefault()` or by returning
+     * `false`.
+     * @param callback The callback to call, if any.
+     * @param thisArg The `this` of the callback.
+     * @param type The type of the event passed to the callback.
+     * @param event The original event, `null` if there is none.
+     * @param data The data of the moved handle.
+     * @returns `false` if the callback cancelled the slide, `true` otherwise.
+     */
+    private callSlideCallback(callback: SliderCallback | undefined, thisArg: Slider | HTMLElement, type: string,
+            event: JQuery.TriggeredEvent | null, data: SliderEventData): boolean {
+        if (!callback) {
+            return true;
+        }
+        // jQuery.Event also wraps an event object (typed for event names only), like jQuery UI did
+        const wrap = $.Event as unknown as (src: JQuery.TriggeredEvent) => JQuery.TriggeredEvent;
+        const slideEvent = event ? wrap(event) : null;
+        if (slideEvent) {
+            slideEvent.type = type;
+        }
+        return callback.call(thisArg, slideEvent, data) !== false && !slideEvent?.isDefaultPrevented();
+    }
+
+    /**
+     * Fires the `onSlideStart` callback, with the slider element as `this`, when a handle starts moving; the callback
+     * can cancel the slide (see {@link callSlideCallback}).
      * @param event The event that started the slide.
      * @param data The data of the moved handle.
+     * @returns `false` if the callback cancelled the slide.
      */
-    private onSlideStart(event: JQuery.TriggeredEvent | null, data: SliderEventData): void {
-        this.cfg.onSlideStart?.call(this.jq[0]!, event, data);
+    private onSlideStart(event: JQuery.TriggeredEvent | null, data: SliderEventData): boolean {
+        return this.callSlideCallback(this.cfg.onSlideStart, this.jq[0]!, 'slidestart', event, data);
     }
 
     /**
@@ -416,7 +456,14 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      */
     onSlide(event: JQuery.TriggeredEvent | null, data: SliderEventData): void {
         this.cfg.onSlide?.call(this, event, data);
+        this.updateInputs(data);
+    }
 
+    /**
+     * Updates the inputs and the display (formatted with the decimals of the step) after a handle moved.
+     * @param data The data of the moved handle.
+     */
+    private updateInputs(data: SliderEventData): void {
         const decimals = this.step % 1 !== 0 ? String(this.step).split('.')[1]?.length ?? 0 : 0;
         const format = (value: number) => value.toFixed(decimals);
 

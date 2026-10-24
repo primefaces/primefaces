@@ -1077,6 +1077,10 @@ export class Effects {
      * @param next Dequeues the next effect of the `fx` queue, when the effect was queued.
      */
     private execute(el: HTMLElement, effect: string, options: PrimeFacesTypes.effects.Options, next?: () => void): void {
+        // an effect still running here was not stopped with stop() (e.g. jQuery's stop() cleared the queue): it jumps
+        // to its end first, so it does not hide the element or dequeue later
+        runningEffects.get(el)?.finish(true);
+
         const jq = $(el);
         const definition = this.exists(effect) ? effectDefinitions[effect] : undefined;
         const duration = resolveDuration(options.duration);
@@ -1225,8 +1229,12 @@ export const effects: Effects = new Effects();
 
 /**
  * Global setup of the effects module, called once when PrimeFaces is loaded: registers the jQuery UI easing
- * functions in `$.easing`.
+ * functions in `$.easing` and lets the `:animated` selector of jQuery match elements with a running effect.
  */
 export function globalEffectsSetup(): void {
     registerEasings();
+
+    // the effects are Web Animations, jQuery only knows its own animations
+    const animated = $.expr.pseudos["animated"];
+    $.expr.pseudos["animated"] = (elem: Element) => runningEffects.has(elem as HTMLElement) || !!animated?.(elem);
 }

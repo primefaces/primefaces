@@ -319,9 +319,11 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
     /**
      * Creates the helper according to the `helper` and `appendTo` options.
      * @param event The pointerdown event.
+     * @param width The content width of the item, for a helper without an inline width.
+     * @param height The content height of the item, for a helper without an inline height.
      * @returns The item itself, a clone or the element of the helper function, with the size of the item.
      */
-    private createHelper(event: JQuery.TriggeredEvent): JQuery {
+    private createHelper(event: JQuery.TriggeredEvent, width: number, height: number): JQuery {
         const o = this.options;
         const item = this.currentItem;
         const helper = typeof o.helper === 'function' ? $(o.helper.call(this.element[0]!, event, item))
@@ -332,10 +334,10 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         }
         if (helper[0] !== item[0]) {
             if (!(helper[0] as HTMLElement).style.width) {
-                helper.width(item.width() ?? 0);
+                helper.width(width);
             }
             if (!(helper[0] as HTMLElement).style.height) {
-                helper.height(item.height() ?? 0);
+                helper.height(height);
             }
         }
         return helper as JQuery;
@@ -365,9 +367,10 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
             placeholder.css('visibility', 'hidden');
         }
         if (!o.placeholder || o.forcePlaceholderSize) {
-            placeholder.height((item.innerHeight() ?? 0) - (parseFloat(item.css('paddingTop')) || 0) - (parseFloat(item.css('paddingBottom')) || 0));
+            // the border box of the item: the placeholder is not inserted yet, jQuery can't detect its box-sizing there
+            placeholder.css({ boxSizing: 'border-box', height: item.outerHeight() ?? 0 });
             if (nodeName !== 'tr') {
-                placeholder.width((item.innerWidth() ?? 0) - (parseFloat(item.css('paddingLeft')) || 0) - (parseFloat(item.css('paddingRight')) || 0));
+                placeholder.css('width', item.outerWidth() ?? 0);
             }
         }
         return placeholder;
@@ -386,12 +389,16 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
 
         this.domPosition = { prev: item.prev()[0], parent: item.parent()[0] };
         this.clickOffset = { left: pageX(event) - itemOffset.left, top: pageY(event) - itemOffset.top };
+        // measured before the placeholder is inserted, it may add a scrollbar to the container
+        const itemWidth = item.width() ?? 0;
+        const itemHeight = item.height() ?? 0;
         this.placeholder = this.createPlaceholder(item).insertAfter(item);
 
-        const helper = this.helper = this.createHelper(event);
+        const helper = this.helper = this.createHelper(event, itemWidth, itemHeight);
         if (helper[0] === item[0]) {
             this.storedStyle = item.attr('style') ?? '';
-            item.css({ width: item.width() ?? 0, height: item.height() ?? 0 });
+            // the setters of jQuery respect the box-sizing, unlike css()
+            item.width(itemWidth).height(itemHeight);
         }
         else {
             item.hide();

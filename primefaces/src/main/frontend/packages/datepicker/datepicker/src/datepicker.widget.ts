@@ -580,14 +580,6 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.input.addClass('hasDatepicker'); // needed for ui-float-label
         this.setInitValues();
         this.renderDatePicker();
-
-        this.bindTriggerButton();
-
-        // mark target and descendants of target as a trigger for a PrimeFaces overlay
-        if (!this.options.inline) {
-            this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
-        }
-
         this.updateResponsiveness();
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
@@ -2007,8 +1999,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
     /**
      * Renders the trigger button and the panel, appends the panel to the widget or to the `appendTo` target (removing
-     * an old panel there), binds the events and registers the CSS transition of the overlay. Called on init and when
-     * switching between the touch UI and the overlay.
+     * an old panel there), binds the events, registers the CSS transition of the overlay, sets up the trigger button and
+     * marks the widget as overlay target. Called on init and when switching between the touch UI and the overlay.
      */
     private renderDatePicker(): void {
         const o = this.options;
@@ -2043,6 +2035,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.bindPanelEvents();
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
+
+        this.bindTriggerButton();
+
+        // mark target and descendants of target as a trigger for a PrimeFaces overlay
+        if (!o.inline) {
+            this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
+        }
     }
 
     /**
@@ -3302,7 +3301,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     /**
      * Stops changing the time when a time picker button is released and fires the selection events if a value is
      * selected.
-     * @param event The mouseup, keyup or mouseout event.
+     * @param event The mouseup, keyup or mouseleave event.
      */
     private onTimePickerElementMouseUp(event: JQuery.TriggeredEvent): void {
         if (this.options.disabled) {
@@ -3581,6 +3580,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             const touchUI = PrimeFaces.env.mobile || PrimeFaces.env.isScreenSizeLessThan(this.options.responsiveBreakpoint);
             if (this.options.touchUI !== touchUI) {
                 this.options.touchUI = touchUI;
+                // the open overlay is removed with the panel: unbind its listeners, otherwise it can't be opened again
+                if (this.documentClickListener) {
+                    if (this.isPanelVisible()) {
+                        this.beforeHide();
+                    }
+                    this.unbindOverlayListeners();
+                    this.datepickerClick = false;
+                    this.input.attr('aria-expanded', 'false');
+                    this.triggerButton?.attr('aria-expanded', 'false');
+                }
                 this.renderDatePicker();
             }
         }

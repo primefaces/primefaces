@@ -85,7 +85,9 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
 
         if (this.cfg.inputRegEx) {
             const inputRegEx = this.cfg.inputRegEx;
-            let previousInputValue = '';
+            // a value that does not match can't be restored
+            const initialValue = String(input.val() ?? '');
+            let previousInputValue = inputRegEx.test(initialValue) ? initialValue : '';
             input.on('input' + namespace, (e) => {
                 const element = e.currentTarget as HTMLInputElement;
                 if (inputRegEx.test(element.value)) {

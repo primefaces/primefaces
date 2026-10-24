@@ -95,10 +95,12 @@ Widget: _PrimeFaces.widget.Slider_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-getValue() | - | Number | Returns the current value
+getValue() | - | Number | Returns the current value (of the first handle of a range slider).
 setValue(value) | value: Value to set | void | Updates slider value with provided one.
-disable() | index: Index of tab to disable | void | Disables slider.
-enable() | index: Index of tab to enable | void | Enables slider.
+getValues() | - | Number[] | Returns the values of both handles of a range slider.
+setValues(values) | values: Values to set | void | Updates both values of a range slider.
+disable() | - | void | Disables slider.
+enable() | - | void | Enables slider.
 
 ## Skinning
 Slider resides in a main container which _style_ and _styleClass_ attributes apply. These attributes are
