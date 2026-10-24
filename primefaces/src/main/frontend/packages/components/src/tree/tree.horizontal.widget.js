@@ -214,12 +214,11 @@ PrimeFaces.widget.HorizontalTree = class HorizontalTree extends PrimeFaces.widge
         this.toggleCheckboxState(checkbox, checked);
 
         if(this.cfg.propagateDown) {
-            node.next('.ui-treenode-children-container').find('.ui-chkbox').each(function() {
-                $this.toggleCheckboxState($(this), checked);
-            });
+            var skippedRowKeys = [];
+            this.propagateCheckboxDown(this.getChildNodes(node), checked, skippedRowKeys);
 
             if(this.cfg.dynamic) {
-                this.removeDescendantsFromSelection(node.data('rowkey'));
+                this.removeDescendantsFromSelection(node.data('rowkey'), skippedRowKeys);
             }
         }
 
@@ -228,7 +227,17 @@ PrimeFaces.widget.HorizontalTree = class HorizontalTree extends PrimeFaces.widge
                 var childrenContainer = $(this),
                 parentNode = childrenContainer.prev('.ui-treenode-parent'),
                 parentsCheckbox = parentNode.find('> .ui-treenode-content > .ui-chkbox'),
-                children = childrenContainer.find('> .ui-treenode-children > table > tbody > tr > td.ui-treenode');
+                children = childrenContainer.find('> .ui-treenode-children > table > tbody > tr > td.ui-treenode').filter(function() {
+                    // a non-selectable child can never be selected via its checkbox, so it must not keep its parent
+                    // from being fully selected, see #14798
+                    return $this.isSelectableNode($(this));
+                });
+
+                // a non-selectable node must never be selected by the propagation either, and without any selectable
+                // child there is nothing to derive the state of the node from, see #14798
+                if(!$this.isSelectableNode(parentNode) || !children.length) {
+                    return;
+                }
 
                 if(checked) {
                     if(children.filter('.ui-treenode-unselected').length === children.length)
@@ -251,6 +260,18 @@ PrimeFaces.widget.HorizontalTree = class HorizontalTree extends PrimeFaces.widge
             this.fireNodeUnselectEvent(node);
         else
             this.fireNodeSelectEvent(node);
+    }
+
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} node
+     * @return {JQuery}
+     */
+    getChildNodes(node) {
+        return node.next('.ui-treenode-children-container')
+                .find('> .ui-treenode-children > table > tbody > tr > td.ui-treenode');
     }
 
     /**
