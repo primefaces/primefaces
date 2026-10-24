@@ -297,7 +297,6 @@ Variants other UI frameworks have, done in CSS only: the application selects the
 | `ui-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
 | `ui-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
 | `ui-listbox-checkmark`, `ui-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
-| `ui-table-gridlines`, `ui-table-striped`, `ui-table-sm` / `-lg` | p:autoComplete, p:selectOneMenu, p:selectOneListbox, p:selectManyMenu with `p:column` children (`advancedStyleClass`, on the table) | cell borders / striped rows / small / large cells (the DataTable tokens) |
 | `ui-message-outlined`, `ui-message-simple`, `ui-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
 | `ui-growl-outlined`, `ui-growl-simple` | the growl container (`div.ui-growl`, appended to the body) or an ancestor (`h:body`); p:growl has no `styleClass` yet, so per growl: `PF('growl').jq.addClass(...)` | outlined (overlay background, colored border and title) / simple (no border, no severity tint, colored title; keeps the overlay background and shadow, as the growl floats over content) |
 | `severity="secondary"` / `"contrast"` | p:staticMessage | additional severities |
