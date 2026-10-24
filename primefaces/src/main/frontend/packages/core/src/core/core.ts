@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 
 import { ajax, type Ajax } from "./core.ajax.js";
 import { csp, type Csp } from "./core.csp.js";
+import { effects, type Effects } from "./core.effects.js";
 import { clientwindow, type ClientWindow } from "./core.clientwindow.js";
 import { env, type Environment } from "./core.env.js";
 import { expressions, type Expressions } from "./core.expressions.js";
@@ -223,6 +224,7 @@ function toArticulateValidationConfiguration(cfg: PrimeType.validation.Shorthand
  * - {@link ClientWindow | PrimeFaces.clientwindow} The client window module for multiple window support in PrimeFaces applications.
  * - {@link Csp | PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
  * - `PrimeFaces.dialog` The dialog module with functionality related to the dialog framework
+ * - {@link Effects | PrimeFaces.effects} The effects module for animating elements with effects such as fade or slide
  * - {@link Environment | PrimeFaces.env} The environment module with information about the current browser
  * - {@link Expressions | PrimeFaces.expressions} The search expressions module with functionality for working with search expression
  * - {@link Resources | PrimeFaces.resources} The resources module with functionality for creating resource links
@@ -397,6 +399,12 @@ export class Core {
      * The object with functionality related to the browser environment, such as information about the current browser.
      */
     readonly env: Environment = env;
+
+    /**
+     * The object with the effects for animating elements, such as `fade`, `slide` or `pulsate`.
+     * @since 17.0.0
+     */
+    readonly effects: Effects = effects;
 
     /**
      * The object providing the entry point for functions related to search expressions. 
@@ -2125,7 +2133,7 @@ export class Core {
      * @returns The current PrimeFaces and jQuery version as a string.
      */
     version(): string {
-        const version = 'PrimeFaces ' + this.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
+        const version = 'PrimeFaces ' + this.VERSION + ' (jQuery ' + jQuery.fn.jquery + ')';
         console.log(version);
         return version;
     }

@@ -1,5 +1,5 @@
 /*
- * Overrides of the jQuery UI CSS (vendor layer: core, draggable, resizable, selectable, sortable).
+ * Overrides of the base rules in base/interactions.css (vendor layer: core, draggable, resizable, sortable).
  * The helper and resizable rules repeat vendor rules on purpose: here they also beat lower or equal specificity
  * theme rules (e.g. display / position of .ui-icon in common.css), which the vendor layer cannot.
  */

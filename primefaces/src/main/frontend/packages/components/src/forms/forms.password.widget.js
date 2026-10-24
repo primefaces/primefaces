@@ -271,12 +271,12 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
      * @private
      */
     align() {
-        this.panel.css({
+        PrimeFaces.utils.position(this.panel.css({
             left: '',
             top: '',
             'min-width': this.jq.outerWidth(),
             'transform-origin': 'center top'
-        }).position({
+        }), {
             my: 'left top'
             , at: 'left bottom'
             , of: this.jq

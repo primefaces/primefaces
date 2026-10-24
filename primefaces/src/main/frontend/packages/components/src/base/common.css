@@ -67,7 +67,7 @@
     color: var(--p-widget-error-color);
 }
 
-/* cursor and pointer-events: jquery-ui core.css */
+/* cursor and pointer-events: base/interactions.css */
 .ui-state-disabled {
     opacity: var(--p-disabled-opacity);
 
@@ -135,7 +135,7 @@
     font-size: var(--p-icon-size);
 }
 
-/* font icons: overrides the sprite icon rules of jquery-ui core.css */
+/* font icons: overrides the sprite icon rules of base/interactions.css */
 .ui-icon {
     display: inline-block;
     vertical-align: baseline;
@@ -146,7 +146,7 @@
     line-height: 1;
 }
 
-/* the rest of the reset comes from jquery-ui core.css (line-height 1.3 there) */
+/* the rest of the reset comes from base/interactions.css (line-height 1.3 there) */
 .ui-helper-reset {
     line-height: normal;
 }

@@ -571,7 +571,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @override
      * @protected
      * @inheritdoc
-     * @param {JQueryUI.DraggableEventUIParams} ui Data of the drag event.
+     * @param {PrimeType.interaction.DraggableUi} ui Data of the drag event.
      * @return {JQuery|null}
      */
     findGroupResizer(ui) {
@@ -587,7 +587,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
     /**
      * Finds the resizer DOM element that matches the given draggable event params.
      * @protected
-     * @param {JQueryUI.DraggableEventUIParams} ui Data of the drag event.
+     * @param {PrimeType.interaction.DraggableUi} ui Data of the drag event.
      * @param {JQuery} resizers List of all available resizers.
      * @return {JQuery|null} DOM element of the resizer.
      */
@@ -630,7 +630,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @protected
      * @inheritdoc
      * @param {JQuery.TriggeredEvent} event
-     * @param {JQueryUI.DraggableEventUIParams} ui
+     * @param {PrimeType.interaction.DraggableUi} ui
      */
     resize(event, ui) {
         var columnHeader = null,

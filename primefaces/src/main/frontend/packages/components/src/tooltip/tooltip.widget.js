@@ -408,7 +408,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         });
 
         if (this.cfg.trackMouse && this.mouseEvent) {
-            this.jq.position({
+            PrimeFaces.utils.position(this.jq, {
                 my: 'left+3 top',
                 of: this.mouseEvent,
                 collision: 'flipfit',
@@ -447,7 +447,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                 }
             }
 
-            this.jq.position({
+            PrimeFaces.utils.position(this.jq, {
                 my: _my,
                 at: _at,
                 of: this.getTarget(),
@@ -508,11 +508,11 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         if (this.cfg.trackMouse) {
             this.followMouse();
         }
-        this.jq.show(this.cfg.showEffect, {}, 250, function() {
+        PrimeFaces.effects.show(this.jq, this.cfg.showEffect, { duration: 250, complete: function() {
             if ($this.cfg.onShow) {
                 $this.cfg.onShow.call();
             }
-        });
+        } });
     }
 
     /**
@@ -539,7 +539,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                 return;
             }
 
-            this.jq.hide(this.cfg.hideEffect, {}, this.cfg.hideEffectDuration, function() {
+            PrimeFaces.effects.hide(this.jq, this.cfg.hideEffect, { duration: this.cfg.hideEffectDuration, complete: function() {
                 $(this).css('z-index', '');
                 if ($this.cfg.trackMouse) {
                     $this.unfollowMouse();
@@ -548,7 +548,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                 if ($this.cfg.onHide) {
                     $this.cfg.onHide.call();
                 }
-            });
+            } });
 
             if ($this.globalTitle) {
                 $this.globalTitle = null;
@@ -579,7 +579,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         var $this = this;
 
         this.getTarget().on('mousemove.tooltip-track', function(e) {
-            $this.jq.position({
+            PrimeFaces.utils.position($this.jq, {
                 my: 'left+3 top',
                 of: e,
                 collision: 'flipfit'

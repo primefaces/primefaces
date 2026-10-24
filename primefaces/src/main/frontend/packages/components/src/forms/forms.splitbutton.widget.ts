@@ -687,12 +687,12 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
             });
         }
         else {
-            this.menu.position({
+            PrimeFaces.utils.position(this.menu, {
                 my: 'left top',
                 at: 'left bottom',
                 of: this.jq,
                 collision: 'flipfit',
-                using: function(pos: { top: number; left: number }, directions: {horizontal: number; vertical: number;}) {
+                using: function(pos: { top: number; left: number }, directions: PrimeType.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 },
             });

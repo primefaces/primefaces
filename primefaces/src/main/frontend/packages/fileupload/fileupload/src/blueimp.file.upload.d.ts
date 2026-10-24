@@ -1290,7 +1290,27 @@ declare namespace JQueryFileUpload {
      * 
      * See https://github.com/blueimp/jQuery-File-Upload
      */
-    interface FileUpload extends JQueryUI.WidgetCommonProperties {
+    interface FileUpload {
+        /**
+         * The element of the widget.
+         */
+        element: JQuery;
+
+        /**
+         * The current options of the widget.
+         */
+        options: FileUploadOptions;
+
+        /**
+         * Full name of the widget, including the namespace.
+         */
+        widgetFullName: string;
+
+        /**
+         * Name of the widget.
+         */
+        widgetName: string;
+
         /**
          * Namespace for the events of this widget.
          */

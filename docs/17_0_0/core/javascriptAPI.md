@@ -49,6 +49,23 @@ well:
 [PrimeFaces.utils.disableAnimations()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#disableAnimations) | Disables all CSS and jQuery animations.
 [PrimeFaces.utils.enableAnimations()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#enableAnimations) | Enables all CSS and jQuery animations.
 [PrimeFaces.utils.killswitch()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#killswitch) | Killswitch that stops all AJAX requests, running Pollers and IdleMonitors.
+[PrimeFaces.utils.position(element, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#position) | Positions an element relative to another element, a mouse event or the window, e.g. `PrimeFaces.utils.position($('#panel'), { my: 'left top', at: 'left bottom', of: $('#button'), collision: 'flipfit' })`. Replaces the jQuery UI `$.fn.position(options)`.
+
+
+## PrimeFaces Effects (PrimeFaces.effects.*)
+
+[PrimeFaces.effects](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html) animates elements with effects (`blind`, `bounce`, `clip`, `drop`,
+`explode`, `fade`, `fold`, `highlight`, `puff`, `pulsate`, `scale`, `shake`, `size`, `slide`, `transfer`), see
+[Effect](../components/effect.md). It replaces the jQuery UI effects.
+
+| Method | Description |
+| --- | --- |
+[PrimeFaces.effects.run(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#run) | Runs an effect in the mode given by `options.mode` or in the default mode of the effect, e.g. `PrimeFaces.effects.run($('#msg'), 'pulsate', { times: 3 })`.
+[PrimeFaces.effects.show(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#show) | Shows an element with an effect, e.g. `PrimeFaces.effects.show($('#panel'), 'blind', { duration: 500 })`.
+[PrimeFaces.effects.hide(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#hide) | Hides an element with an effect.
+[PrimeFaces.effects.toggle(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#toggle) | Shows a hidden or hides a visible element with an effect.
+[PrimeFaces.effects.stop(element)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#stop) | Finishes the running and queued effects of an element immediately.
+[PrimeFaces.effects.register(effect, mode, implementation)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#register) | Registers a custom effect.
 
 
 ## PrimeFaces Environment (PrimeFaces.env.*)

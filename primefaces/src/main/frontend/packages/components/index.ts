@@ -71,7 +71,7 @@ import "./src/picklist/picklist.widget.js";
 import "./src/progressbar/progressbar.widget.js";
 import "./src/rating/rating.widget.js";
 import "./src/resizable/resizable.widget.js";
-import "./src/slider/slider.widget.js";
+import { Slider } from "./src/slider/slider.widget.js";
 import "./src/spinner/spinner.widget.js";
 import "./src/splitter/splitter.widget.js";
 import { Spotlight } from "./src/spotlight/spotlight.widget.js";
@@ -147,6 +147,9 @@ function exposeToGlobalScope() {
     // src/message(s)
     PrimeFaces.widget.Message = Message;
     PrimeFaces.widget.Messages = Messages;
+
+    // src/slider
+    PrimeFaces.widget.Slider = Slider;
 
     // src/spotlight
     PrimeFaces.widget.Spotlight = Spotlight;
@@ -416,6 +419,19 @@ declare global {
     }
 }
 
+
+// Types (src/slider)
+declare global {
+    namespace PrimeType {
+        export interface WidgetRegistry {
+            Slider: typeof Slider;
+        }
+    }
+    namespace PrimeType.widget {
+        export type SliderCfg = import("./src/slider/slider.widget.js").SliderCfg;
+        export type SliderEventData = import("./src/slider/slider.widget.js").SliderEventData;
+    }
+}
 
 // Types (src/spotlight)
 declare global {

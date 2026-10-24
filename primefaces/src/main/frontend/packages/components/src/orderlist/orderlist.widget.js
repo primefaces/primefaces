@@ -148,7 +148,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      * and invokes the appropriate behaviors.
      * @private
      * @param {JQuery.TriggeredEvent} event The event that triggered the drag or drop.
-     * @param {JQueryUI.SortableUIParams} ui The UI params as passed by JQuery UI to the event handler.
+     * @param {PrimeType.interaction.SortableUi} ui The details about the sorting.
      */
     onDragDrop(event, ui) {
         ui.item.removeClass('ui-state-highlight');
@@ -185,16 +185,16 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
             var item = $(this);
 
             if(!item.is(':first-child')) {
-                item.hide($this.cfg.effect, {}, 'fast', function() {
-                    item.insertBefore(item.prev()).show($this.cfg.effect, {}, 'fast', function() {
+                PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: 'fast', complete: function() {
+                    PrimeFaces.effects.show(item.insertBefore(item.prev()), $this.cfg.effect, { duration: 'fast', complete: function() {
                         movedItemsCount++;
 
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
                         }
-                    });
-                });
+                    } });
+                } });
             }
             else {
                 itemsToMoveCount--;
@@ -222,16 +222,16 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
                 currentIndex = (index === 0) ? 0 : (item.index() - firstSelectedItemIndex);
 
             if(!item.is(':first-child')) {
-                item.hide($this.cfg.effect, {}, 'fast', function() {
-                    item.insertBefore($this.list.children('.ui-orderlist-item').eq(currentIndex)).show($this.cfg.effect, {}, 'fast', function(){
+                PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: 'fast', complete: function() {
+                    PrimeFaces.effects.show(item.insertBefore($this.list.children('.ui-orderlist-item').eq(currentIndex)), $this.cfg.effect, { duration: 'fast', complete: function(){
                         movedItemsCount++;
 
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
                         }
-                    });
-                });
+                    } });
+                } });
             }
             else {
                 itemsToMoveCount--;
@@ -257,16 +257,16 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
             var item = $(this);
 
             if(!item.is(':last-child')) {
-                item.hide($this.cfg.effect, {}, 'fast', function() {
-                    item.insertAfter(item.next()).show($this.cfg.effect, {}, 'fast', function() {
+                PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: 'fast', complete: function() {
+                    PrimeFaces.effects.show(item.insertAfter(item.next()), $this.cfg.effect, { duration: 'fast', complete: function() {
                         movedItemsCount++;
 
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
                         }
-                    });
-                });
+                    } });
+                } });
             }
             else {
                 itemsToMoveCount--;
@@ -295,16 +295,16 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
                 currentIndex = (index === 0) ? itemsLength - 1 : (item.index() - lastSelectedItemIndex) - 1;
 
             if(!item.is(':last-child')) {
-                item.hide($this.cfg.effect, {}, 'fast', function() {
-                    item.insertAfter($this.list.children('.ui-orderlist-item').eq(currentIndex)).show($this.cfg.effect, {}, 'fast', function() {
+                PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: 'fast', complete: function() {
+                    PrimeFaces.effects.show(item.insertAfter($this.list.children('.ui-orderlist-item').eq(currentIndex)), $this.cfg.effect, { duration: 'fast', complete: function() {
                         movedItemsCount++;
 
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
                         }
-                    });
-                });
+                    } });
+                } });
             }
             else {
                 itemsToMoveCount--;

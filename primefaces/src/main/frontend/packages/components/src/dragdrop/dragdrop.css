@@ -1,6 +1,6 @@
 /*
- * Drag and drop: p:draggable, p:droppable (jQuery UI draggable/droppable); touch-action comes from jquery-ui draggable.css.
- * Classes set by jQuery UI: ui-draggable, ui-draggable-handle, ui-draggable-dragging (element or helper while dragging),
+ * Drag and drop: p:draggable, p:droppable; touch-action comes from base/interactions.css.
+ * Classes set by the interactions: ui-draggable, ui-draggable-handle, ui-draggable-dragging (element or helper while dragging),
  * ui-droppable, ui-droppable-active (an acceptable draggable is dragged), ui-droppable-hover (it is over the droppable).
  * activeStyleClass / hoverStyleClass of p:droppable are added on top (e.g. ui-state-highlight).
  * PrimeFaces only tokens: the dragdrop block of presets/*.css.

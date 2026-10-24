@@ -431,13 +431,16 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
 
         if (this.cfg.showEffect) {
-            this.jq.show(this.cfg.showEffect, duration, 'normal', () => {
-                this.postShow();
+            PrimeFaces.effects.show(this.jq, this.cfg.showEffect, {
+                duration,
+                complete: () => {
+                    this.postShow();
+                }
             });
         }
         else {
             //display dialog
-            this.jq.show(duration);
+            this.jq.show(duration as JQuery.Duration | undefined);
 
             this.postShow();
         }
@@ -492,12 +495,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         this.lastOffset = [ this.box.css('top'), this.box.css('left') ];
 
         if (this.cfg.hideEffect) {
-            this.jq.hide(this.cfg.hideEffect, duration, 'normal', () => {
-                if(this.cfg.modal) {
-                    this.disableModality();
-                    this.unbindDismissibleMaskListener();
+            PrimeFaces.effects.hide(this.jq, this.cfg.hideEffect, {
+                duration,
+                complete: () => {
+                    if(this.cfg.modal) {
+                        this.disableModality();
+                        this.unbindDismissibleMaskListener();
+                    }
+                    this.onHide();
                 }
-                this.onHide();
             });
         }
         else {
@@ -762,7 +768,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         if(/(center|left|top|right|bottom)/.test(this.cfg.position ?? "")) {
             this.cfg.position = this.cfg.position?.replace(',', ' ');
 
-            this.box.position({
+            PrimeFaces.utils.position(this.box, {
                         my: this.cfg.my,
                         at: this.cfg.position,
                         collision: 'fit',
@@ -904,13 +910,12 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             }
 
             if (animate) {
-                this.jq.transfer(
-                    {
-                        to: dockingZone,
-                        className: 'ui-dialog-minimizing',
-                        duration: 500,
-                    },
-                    () => this.dock(dockingZone));
+                PrimeFaces.effects.run(this.jq, 'transfer', {
+                    to: dockingZone,
+                    className: 'ui-dialog-minimizing',
+                    duration: 500,
+                    complete: () => this.dock(dockingZone)
+                });
             }
             else {
                 this.dock(dockingZone);

@@ -61,7 +61,7 @@ import * as VisUtil from "vis-util/esnext";
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
- * @prop {string} cfg.accept `accept` option for the jQueryUI droppable overlay when using drag&drop.
+ * @prop {string} cfg.accept `accept` option for the droppable overlay when using drag&drop.
  * @prop {string} cfg.activeClass Active style class for the droppable overlay when using drag&drop.
  * @prop {Date} cfg.currentTime The currently shown time.
  * @prop {import("vis-data/declarations/data-set").DataSetInitialOptions<"id">} cfg.data The data for the vis-timeline
@@ -79,7 +79,7 @@ import * as VisUtil from "vis-util/esnext";
  * the preload factor is `0.2`, the result is `5 * 0.2 = 1` day. That means, 1 day backwards and 1 day onwards will be
  * added to the original calculated time range. The event's area to be preloaded is wider then. This helps to avoid
  * frequently, time-consuming fetching of events. Default value is `0`.
- * @prop {string} cfg.scope `scope` option for the jQuery UI droppable overlay when using drag&drop.
+ * @prop {string} cfg.scope `scope` option for the droppable overlay when using drag&drop.
  */
 PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWidget {
     /**

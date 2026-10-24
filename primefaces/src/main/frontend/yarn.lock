@@ -310,7 +310,6 @@ __metadata:
     "@fullcalendar/moment-timezone": "npm:~5.11.5"
     "@fullcalendar/timegrid": "npm:~5.11.5"
     "@melloware/coloris": "npm:0.25.0"
-    "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
     "@types/autosize": "npm:4.0.3"
     "@types/culori": "npm:4.0.1"
     "@types/downloadjs": "npm:1.4.6"
@@ -320,7 +319,6 @@ __metadata:
     "@types/jquery-cropper": "npm:1.0.4"
     "@types/jquery-mousewheel": "npm:3.1.12"
     "@types/jquery-touchswipe": "npm:1.6.0"
-    "@types/jqueryui": "npm:1.12.24"
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
     "@types/moment-jdateformatparser": "npm:1.2.0"
@@ -350,7 +348,6 @@ __metadata:
     jquery-cropper: "npm:1.0.2"
     jquery-mousewheel: "npm:3.2.2"
     jquery-touchswipe: "npm:1.6.19"
-    jquery-ui: "npm:1.14.2"
     js-cookie: "npm:3.0.8"
     jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:2.15.6"
@@ -374,15 +371,6 @@ __metadata:
     xss: "npm:1.0.15"
   languageName: unknown
   linkType: soft
-
-"@rwap/jquery-ui-touch-punch@npm:1.1.5":
-  version: 1.1.5
-  resolution: "@rwap/jquery-ui-touch-punch@npm:1.1.5"
-  dependencies:
-    jquery-ui: "npm:>=1.8"
-  checksum: 10c0/01b880bc0292afad65e55168da00b455865aa3fa1f5310343f06e9966d2c8f8aff2eaf786a599e86f8bca447f06533b27dfc57b645e29fdd3e928f57f69ae25f
-  languageName: node
-  linkType: hard
 
 "@types/autosize@npm:4.0.3":
   version: 4.0.3
@@ -450,15 +438,6 @@ __metadata:
   version: 4.0.0
   resolution: "@types/jquery@npm:4.0.0"
   checksum: 10c0/3e453accf2786e6ea5a5fb4b7f8c2298f42d3bc22253cc5a14f4d4a1a5ccc461db7af5a5df92a0b0c03c75a1968d2deda06597b63f8118613f88f27452911275
-  languageName: node
-  linkType: hard
-
-"@types/jqueryui@npm:1.12.24":
-  version: 1.12.24
-  resolution: "@types/jqueryui@npm:1.12.24"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/95afc94bfa4cf31de6b34b7770de849ccb2b5c2c9d8e092e6b9d3a1e0b4ee913659ede75eeebcbf8cb00a59d73da0da648da2be15fea2b94dd8ddeb237027bcf
   languageName: node
   linkType: hard
 
@@ -866,15 +845,6 @@ __metadata:
   version: 1.6.19
   resolution: "jquery-touchswipe@npm:1.6.19"
   checksum: 10c0/0971402f8206629f3fc8a2d19c7514ccefe1441ea3f633daafe189ba43b74cc0c0dc8ed3df6e85a5655f7fe2d482adf5994f0c87d430a5e6ce39848db8fb32c7
-  languageName: node
-  linkType: hard
-
-"jquery-ui@npm:1.14.2":
-  version: 1.14.2
-  resolution: "jquery-ui@npm:1.14.2"
-  dependencies:
-    jquery: "npm:>=1.12.0 <5.0.0"
-  checksum: 10c0/83b65744c4f4f2e9fa12833feb76c964f9565ef8301ef4e224e93e6c867e10a45d7da3e93bc7bcaec5227a61e09a2a6d1ce0198d9c38de08e4ada3d53a628615
   languageName: node
   linkType: hard
 

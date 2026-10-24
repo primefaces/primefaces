@@ -1,16 +1,19 @@
 /*
- * Slider: p:slider (jQuery UI slider markup)
+ * Slider: p:slider
  *
- * Supported classes: ui-slider-horizontal, ui-slider-vertical, ui-state-hover / ui-state-focus (on the handle),
- *                    ui-state-disabled (on .ui-slider), range (two handles + .ui-slider-range), range="min" / "max"
- * The basic layout (absolute handle / range) comes from jquery-ui slider.css (vendor layer).
+ * Supported classes: ui-slider-horizontal, ui-slider-vertical, ui-state-disabled, ui-slider-animate (while the
+ *                    handle moves to a clicked / set value), range (two handles + .ui-slider-range), range="min" / "max"
  */
 .ui-slider {
+    position: relative;
+    text-align: start;
     background: var(--p-slider-track-background);
     border: 0 none;
     border-radius: var(--p-slider-track-border-radius);
 
     .ui-slider-handle {
+        position: absolute;
+        z-index: 2;
         cursor: grab;
         touch-action: none;
         display: flex;
@@ -42,10 +45,6 @@
             cursor: grabbing;
         }
 
-        &.ui-state-focus {
-            outline: 0 none;
-        }
-
         &:focus-visible {
             outline: var(--p-slider-handle-focus-ring-width) var(--p-slider-handle-focus-ring-style) var(--p-slider-handle-focus-ring-color);
             outline-offset: var(--p-slider-handle-focus-ring-offset);
@@ -57,18 +56,30 @@
         cursor: default;
     }
 
-    .ui-slider-handle.ui-state-hover,
     &:not(.ui-state-disabled) .ui-slider-handle:hover {
         background: var(--p-slider-handle-hover-background);
     }
 
-    .ui-slider-handle.ui-state-hover::before,
     &:not(.ui-state-disabled) .ui-slider-handle:hover::before {
         background: var(--p-slider-handle-content-hover-background);
     }
 
     &.ui-slider-horizontal {
         height: var(--p-slider-track-size);
+        touch-action: pan-y;
+
+        .ui-slider-range {
+            top: 0;
+            height: 100%;
+        }
+
+        .ui-slider-range-min {
+            left: 0;
+        }
+
+        .ui-slider-range-max {
+            right: 0;
+        }
 
         .ui-slider-handle {
             top: calc(var(--p-slider-track-size) / 2 - var(--p-slider-handle-height) / 2);
@@ -78,8 +89,23 @@
 
     &.ui-slider-vertical {
         width: var(--p-slider-track-size);
+        height: 100px;
+        touch-action: pan-x;
 
-        /* jQuery UI positions the vertical handle with bottom, so the centering offset goes to margin-bottom */
+        .ui-slider-range {
+            left: 0;
+            width: 100%;
+        }
+
+        .ui-slider-range-min {
+            bottom: 0;
+        }
+
+        .ui-slider-range-max {
+            top: 0;
+        }
+
+        /* the vertical handle is positioned with bottom, so the centering offset goes to margin-bottom */
         .ui-slider-handle {
             left: calc(var(--p-slider-track-size) / 2 - var(--p-slider-handle-width) / 2);
             margin-left: 0;
@@ -89,8 +115,21 @@
     }
 
     .ui-slider-range {
+        position: absolute;
+        z-index: 1;
+        display: block;
+        border: 0;
         background: var(--p-slider-range-background);
         border-radius: var(--p-slider-track-border-radius);
+    }
+}
+
+/* moves the handle / range to a clicked or set value; keeps the transitions of the handle states */
+.ui-slider.ui-slider-animate {
+    .ui-slider-handle,
+    .ui-slider-range {
+        transition-property: left, bottom, width, height, background, color, border-color, box-shadow, outline-color;
+        transition-duration: var(--p-slider-transition-duration);
     }
 }
 

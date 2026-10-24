@@ -316,12 +316,12 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
 
             this.jq.removeClass('ui-confirm-popup-flipped');
 
-            this.jq.css({ left: '0px', top: '0px', 'transform-origin': 'center top' }).position({
+            PrimeFaces.utils.position(this.jq.css({ left: '0px', top: '0px', 'transform-origin': 'center top' }), {
                 my: 'left top',
                 at: 'left bottom',
                 of: target,
                 collision: 'flipfit',
-                using: function (pos: { top: number; left: number }, directions: { horizontal: number; vertical: number }) {
+                using: function (pos: { top: number; left: number }, directions: PrimeType.PositionFeedback) {
                     const targetOffset = target.offset() ?? { top: 0, left:0 };
                     let arrowLeft = 0;
 

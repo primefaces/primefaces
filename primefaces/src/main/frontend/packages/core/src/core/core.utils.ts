@@ -2,6 +2,7 @@ import { core } from "./core.js";
 import { ajax } from "./core.ajax.js";
 import { env } from "./core.env.js";
 import { expressions } from "./core.expressions.js";
+import { position } from "./core.position.js";
 import type { BaseWidget, DynamicOverlayWidget } from "./core.widget.js";
 
 /**
@@ -543,8 +544,7 @@ export class Utils {
         scrollNamespace: string,
         scrollCallback: PrimeType.ScrollCallback,
     ): PrimeType.Unbindable {
-        let widgetJq = widget.getJQ();
-        let scrollParent: JQuery<any> | null = (widgetJq && typeof widgetJq.scrollParent === 'function') ? widgetJq.scrollParent() : null;
+        let scrollParent: JQuery<any> | null = this.getScrollParent(widget.getJQ());
 
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
             scrollParent = $(window);
@@ -612,6 +612,49 @@ export class Utils {
     }
 
     /**
+     * Finds the closest scrollable parent of an element, as the former jQuery UI `$.fn.scrollParent`.
+     * @param jq The element whose scroll parent to find.
+     * @param includeHidden Whether parents with `overflow: hidden` count as scrollable.
+     * @returns The closest scrollable parent, or the document if there is none or the element is fixed. `null` when
+     * no element is given.
+     * @since 17.0.0
+     */
+    getScrollParent(jq: JQuery | undefined | null, includeHidden: boolean = false): JQuery<any> | null {
+        if (!jq || !jq.length) {
+            return null;
+        }
+
+        const position = jq.css('position');
+        const excludeStaticParent = position === 'absolute';
+        const overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
+        const scrollParent = jq.parents().filter(function() {
+            const parent = $(this);
+            if (excludeStaticParent && parent.css('position') === 'static') {
+                return false;
+            }
+            return overflowRegex.test(parent.css('overflow') + parent.css('overflow-y') + parent.css('overflow-x'));
+        }).eq(0);
+
+        return position === 'fixed' || !scrollParent.length ? $(jq[0]!.ownerDocument || document) : scrollParent;
+    }
+
+    /**
+     * Positions an element relative to another element, a mouse event or the window, as the former jQuery UI
+     * `$.fn.position(options)`.
+     *
+     * ```js
+     * PrimeFaces.utils.position($('#panel'), { my: 'left top', at: 'left bottom', of: $('#button'), collision: 'flipfit' });
+     * ```
+     * @param element The elements to position.
+     * @param options The options for positioning, e.g. `my`, `at` and `of`.
+     * @returns The given elements, for chaining.
+     * @since 17.0.0
+     */
+    position<T extends JQuery<any>>(element: T, options: PrimeType.PositionOptions | null | undefined): T {
+        return position(element, options);
+    }
+
+    /**
      * Finds scrollable parents (not the document).
      * @param element An element used to find its scrollable parents.
      * @returns The list of scrollable parents.
@@ -670,8 +713,8 @@ export class Utils {
      * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
      */
     unbindScrollHandler(widget: BaseWidget, scrollNamespace: string): void {
-        var scrollParent = widget.getJQ().scrollParent();
-        if (this.isScrollParentWindow(scrollParent)) {
+        var scrollParent = this.getScrollParent(widget.getJQ());
+        if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
             $(window).off(scrollNamespace); // Unbind directly from window
         } else {
             scrollParent.off(scrollNamespace);

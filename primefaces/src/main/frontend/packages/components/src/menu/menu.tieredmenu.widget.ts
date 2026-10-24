@@ -479,9 +479,8 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
             collision: 'flipfit'
         };
 
-        submenu.css('z-index', PrimeFaces.nextZindex())
-            .show()
-            .position(pos);
+        submenu.css('z-index', PrimeFaces.nextZindex()).show();
+        PrimeFaces.utils.position(submenu, pos);
 
         //avoid queuing multiple runs
         if (this.timeoutId) {
@@ -489,9 +488,8 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         }
 
         this.timeoutId = PrimeFaces.queueTask(function() {
-            submenu.css('z-index', PrimeFaces.nextZindex())
-                .show()
-                .position(pos);
+            submenu.css('z-index', PrimeFaces.nextZindex()).show();
+            PrimeFaces.utils.position(submenu, pos);
             var $link = menuitem.children('a.ui-menuitem-link');
             $link.attr('aria-expanded', 'true');
             if (focus) {

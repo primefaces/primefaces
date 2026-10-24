@@ -29,7 +29,7 @@ export interface MenuCfg extends PrimeType.widget.BaseWidgetCfg {
     /**
      * Describes how to align this menu.
      */
-    pos: JQueryUI.JQueryPositionOptions;
+    pos: PrimeType.PositionOptions;
     /**
      * The tab index of the menu.
      */
@@ -168,7 +168,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
             at: this.cfg.at,
             of: this.trigger,
             collision: this.cfg.collision || "flip",
-            using: function(pos: { top: number; left: number }, directions: {horizontal: number; vertical: number;}) {
+            using: function(pos: { top: number; left: number }, directions: PrimeType.PositionFeedback) {
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         };
@@ -324,7 +324,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
     align(): void {
-        this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }).position(this.cfg.pos ?? {});
+        PrimeFaces.utils.position(this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }), this.cfg.pos ?? {});
     }
 
     /**

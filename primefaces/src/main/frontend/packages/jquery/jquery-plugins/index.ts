@@ -1,18 +1,26 @@
 /// <reference types="rangyinputs" preserve="true" />
-/// <reference types="jqueryui" preserve="true" />
 /// <reference types="jquery-mousewheel" preserve="true" />
 /// <reference path="./src/jquery.caretposition.ts" preserve="true" />
 
-import "./src/jquery.ui.js";
 import "./src/jquery.caretposition.js";
 import setupMousewheel from "jquery-mousewheel";
 import "rangyinputs";
-import "@rwap/jquery-ui-touch-punch";
-import "./src/jquery.ui.pfextensions.js";
+import "./src/jquery.pfextensions.js";
+// side effect import, so the declarations keep the jQuery plugin types
+import "./src/interaction/plugins.js";
+import { registerInteractions } from "./src/interaction/plugins.js";
 
 // JQuery extension made by PrimeFaces
 declare global {
     interface JQuery {
+        /**
+         * Focuses the elements after the given delay.
+         * @param delay Delay in milliseconds.
+         * @param callback Called after the elements were focused.
+         * @return this for chaining.
+         */
+        focus(delay: number, callback?: (this: HTMLElement) => void): this;
+
         /**
          * Prevents the user from selection any text of this element.
          * @return this for chaining.
@@ -41,3 +49,4 @@ declare global {
 }
 
 setupMousewheel($);
+registerInteractions();

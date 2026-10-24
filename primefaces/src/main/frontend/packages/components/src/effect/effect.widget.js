@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Effect Widget__
  * 
- * Effect component is based on the jQuery UI effects library.
+ * Effect component runs an effect of {@link PrimeFaces.effects} on an element.
  * 
  * @typedef {() => void} PrimeFaces.widget.Effect.EffectCallback Function that runs the effect when invoked. See also
  * {@link EffectCfg.fn}.
@@ -18,7 +18,6 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryUI.EffectOptions} cfg
  * 
  * @prop {string} cfg.source ID of the source element for the effect.
  * @prop {number} cfg.delay Delay between effect repetitions in milliseconds.

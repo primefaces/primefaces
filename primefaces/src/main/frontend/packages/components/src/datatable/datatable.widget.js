@@ -439,9 +439,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // #5582: destroy any current draggable items
         if (this.cfg.draggableColumns || this.cfg.draggableRows) {
-            var dragdrop = $.ui.ddmanager.current;
+            var dragdrop = $.pfDragDrop.current;
             if (dragdrop && dragdrop.helper) {
-                var item = dragdrop.currentItem || dragdrop.element;
+                var item = dragdrop.item();
                 if(item.closest('.ui-datatable')[0] === this.jq[0]) {
                     document.body.style.cursor = 'default';
                     dragdrop.cancel();
@@ -4699,7 +4699,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Finds the group resizer element for the given drag event data.
      * @protected
-     * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
+     * @param {PrimeType.interaction.DraggableUi} ui Data for the drag event.
      * @return {JQuery|null} The resizer DOM element.
      */
     findGroupResizer(ui) {
@@ -4735,7 +4735,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * Resizes this DataTable, row, or columns in response to a drag event of a resizer element.
      * @protected
      * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
-     * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
+     * @param {PrimeType.interaction.DraggableUi} ui Data for the drag event.
      */
     resize(event, ui) {
         var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null,
@@ -5090,7 +5090,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Makes the rows of this DataTable draggable via JQueryUI.
+     * Makes the rows of this DataTable draggable.
      * @private
      */
     makeRowsDraggable() {

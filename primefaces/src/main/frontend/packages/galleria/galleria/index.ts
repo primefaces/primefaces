@@ -1,4 +1,15 @@
-import "./src/jquery.ui.prime.galleria.js";
-import "./src/jquery.ui.prime.galleria.item.js";
-import "./src/jquery.ui.prime.galleria.thumbnail.js";
-import "./src/galleria.widget.js";
+import { Galleria } from "./src/galleria.widget.js";
+
+PrimeFaces.widget.Galleria = Galleria;
+
+declare global {
+    namespace PrimeType {
+        export interface WidgetRegistry {
+            Galleria: typeof Galleria;
+        }
+    }
+
+    namespace PrimeType.widget {
+        export type GalleriaCfg = import("./src/galleria.widget.js").GalleriaCfg;
+    }
+}

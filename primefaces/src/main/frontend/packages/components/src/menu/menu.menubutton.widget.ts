@@ -100,9 +100,8 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
         }
 
         this.timeoutId = PrimeFaces.queueTask(function() {
-            submenu.css('z-index', PrimeFaces.nextZindex())
-                .show()
-                .position(pos);
+            submenu.css('z-index', PrimeFaces.nextZindex()).show();
+            PrimeFaces.utils.position(submenu, pos);
             var $link = menuitem.children('a.ui-menuitem-link');
             $link.attr('aria-expanded', 'true');
             submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
@@ -244,13 +243,13 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
                 top: this.jq.innerHeight() + 'px'
             });
         }
-        else {
-            this.menu?.position({
+        else if (this.menu) {
+            PrimeFaces.utils.position(this.menu, {
                 my: 'left top',
                 at: 'left bottom',
                 of: this.trigger,
                 collision: this.cfg.collision || 'flip',
-                using: function(pos: { top: number; left: number }, directions: {horizontal: number; vertical: number;}) {
+                using: function(pos: { top: number; left: number }, directions: PrimeType.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }
             });

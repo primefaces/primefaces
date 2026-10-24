@@ -1,6 +1,7 @@
 # Effect
 
-Effect component is based on the jQuery UI effects library.
+Effect component runs an animation effect of [PrimeFaces.effects](../core/javascriptAPI.md#primefaces-effects-primefaceseffects) on a
+component. The effects are implemented with the Web Animations API (formerly jQuery UI effects).
 
 ## Getting started with Effect
 Effect component needs a trigger and target which is effect’s parent by default. In example below
@@ -18,7 +19,7 @@ keeping the parent as the trigger. Use _for_ option to specify a target.
 ```xhtml
 <h:outputLink id="lnk" value="#">
     <h:outputText value="Show the Barca Temple" />
-    <p:effect type="appear" event="click" for="img" />
+    <p:effect type="fade" event="click" for="img" />
 </h:outputLink>
 <p:graphicImage id="img" value="/ui/barca/campnou.jpg" style="display:none"/>
 ```
@@ -30,23 +31,28 @@ assigned id because some components do not render their clientId’s if you don�
 explicitly.
 
 ## List of Effects
-Following is the list of effects;
+Following is the list of effects with their default mode and options;
 
-- blind
-- clip
-- drop
-- explode
-- fold
-- puff
-- slide
-- scale
-- bounce
-- highlight
-- pulsate
-- shake
-- size
-- transfer
+| Effect | Default mode | Options |
+| --- | --- | --- |
+| blind | hide | `direction` (`up`, `down`, `left`, `right`, `vertical`, `horizontal`) |
+| bounce | effect | `direction`, `distance`, `times` |
+| clip | hide | `direction` (`vertical`, `horizontal`, `both`) |
+| drop | hide | `direction`, `distance` |
+| explode | hide | `pieces` |
+| fade | toggle | |
+| fold | hide | `size`, `horizFirst` |
+| highlight | show | `color` |
+| puff | hide | `percent`, `origin` |
+| pulsate | show | `times` |
+| scale | effect | `percent`, `direction`, `origin`, `fade` |
+| shake | effect | `direction`, `distance`, `times` |
+| size | effect | `from`, `to` (`{width: 200, height: 60}`) |
+| slide | show | `direction`, `distance` |
+| transfer | effect | `to` (selector of the target element), `className` |
 
+Each effect also supports `mode` (`show`, `hide`, `toggle` or `effect`) and `easing` (e.g. `'easeInOutCirc'` or a
+CSS easing function like `'ease-in'`).
 
 ## Effect Configuration
 Each effect has different parameters for animation like colors, duration and more. In order to change
@@ -68,9 +74,7 @@ It’s important to provide string options with single quotes.
     </p:effect>
 </h:outputText>
 ```
-For the full list of configuration parameters for each effect, please see the jquery documentation;
-
-http://docs.jquery.com/UI/Effects
+Effects can also be run in JavaScript, e.g. `PrimeFaces.effects.run($('#panel'), 'shake', { times: 2 })`.
 
 ## Effect on Load
 Effects can also be applied to any Jakarta Faces component when page is loaded for the first time or after an

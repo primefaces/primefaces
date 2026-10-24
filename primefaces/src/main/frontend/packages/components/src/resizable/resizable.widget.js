@@ -7,20 +7,20 @@
  * {@link ResizableCfg.onResize}.
  * @this {PrimeFaces.widget.Resizable} PrimeFaces.widget.Resizable.OnResizeCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Resizable.OnResizeCallback.event The event that triggered the resize.
- * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnResizeCallback.ui The details about the resize.
+ * @param {PrimeType.interaction.ResizableUi} PrimeFaces.widget.Resizable.OnResizeCallback.ui The details about the resize.
  * 
  * @typedef PrimeFaces.widget.Resizable.OnStartCallback Client-side callback to execute when resizing begins. See also
  * {@link ResizableCfg.onStart}.
  * @this {PrimeFaces.widget.Resizable} PrimeFaces.widget.Resizable.OnStartCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Resizable.OnStartCallback.event The event that triggered the resizing to
  * start.
- * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnStartCallback.ui Details about the resize.
+ * @param {PrimeType.interaction.ResizableUi} PrimeFaces.widget.Resizable.OnStartCallback.ui Details about the resize.
  * 
  * @typedef PrimeFaces.widget.Resizable.OnStopCallback Client-side callback to execute after resizing end. See also
  * {@link ResizableCfg.onStop}.
  * @this {PrimeFaces.widget.Resizable} PrimeFaces.widget.Resizable.OnStopCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Resizable.OnStopCallback.event The event that triggered the resize to end.
- * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnStopCallback.ui Details about the resize.
+ * @param {PrimeType.interaction.ResizableUi} PrimeFaces.widget.Resizable.OnStopCallback.ui Details about the resize.
  * 
  * @prop {JQuery} jqTarget The DOM element for the target widget t o be resized.
  * @prop {string | JQuery | HTMLElement} [target] Target for the resizable, when using AJAX resize.
@@ -37,9 +37,9 @@
  * begins.
  * @prop {PrimeFaces.widget.Resizable.OnStopCallback} cfg.onStop Client-side callback to execute after resizing end.
  * @prop {string} cfg.parentComponentId ID of the parent of the resizable element. 
- * @prop {JQueryUI.ResizableEvent} cfg.resize Callback passed to JQuery UI for when a resizing event occurs.
- * @prop {JQueryUI.ResizableEvent} cfg.start Callback passed to JQuery UI for when a resizing event starts.
- * @prop {JQueryUI.ResizableEvent} cfg.stop Callback passed to JQuery UI for when a resizing event ends.
+ * @prop {(event: JQuery.TriggeredEvent, ui: PrimeType.interaction.ResizableUi) => void} cfg.resize Callback for when a resizing event occurs.
+ * @prop {(event: JQuery.TriggeredEvent, ui: PrimeType.interaction.ResizableUi) => void} cfg.start Callback for when a resizing event starts.
+ * @prop {(event: JQuery.TriggeredEvent, ui: PrimeType.interaction.ResizableUi) => void} cfg.stop Callback for when a resizing event ends.
  * @prop {string} cfg.target ID of the target widget or element to be resized. 
  */
 PrimeFaces.widget.Resizable = class Resizable extends PrimeFaces.widget.BaseWidget {
@@ -143,7 +143,7 @@ PrimeFaces.widget.Resizable = class Resizable extends PrimeFaces.widget.BaseWidg
      * Triggers the behavior for when the component was resized.
      * @private
      * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
-     * @param {JQueryUI.ResizableUIParams} ui Data of the resize event.
+     * @param {PrimeType.interaction.ResizableUi} ui Data of the resize event.
      */
     fireAjaxResizeEvent(event, ui) {
         if (this.hasBehavior('resize')) {

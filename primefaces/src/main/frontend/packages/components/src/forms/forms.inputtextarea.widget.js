@@ -464,7 +464,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
         posLeft = (pos.left > 0 ? '+' : '-') + pos.left,
         posTop = (pos.top > 0 ? '+' : '-') + pos.top;
 
-        this.panel.css({left:'', top:''}).position({
+        PrimeFaces.utils.position(this.panel.css({left:'', top:''}), {
             my: 'left top'
             ,at: 'left' + posLeft + 'px' +  ' top' + posTop + 'px'
             ,of: this.jq

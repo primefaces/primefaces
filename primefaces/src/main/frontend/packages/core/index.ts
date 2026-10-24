@@ -3,6 +3,9 @@ import Cookies from "js-cookie";
 import { PF as _PF, core, type Core } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
+import { globalEffectsSetup } from "./src/core/core.effects.js";
+// global PrimeType declarations of the position options
+import "./src/core/core.position.js";
 
 import type { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
 import type { AjaxStatus } from "./src/ajaxstatus/ajaxstatus.js";
@@ -51,6 +54,7 @@ function exposeToGlobalScope() {
     // Global setup
     globalAjaxSetup();
     globalUtilsSetup();
+    globalEffectsSetup();
 }
 
 // General types

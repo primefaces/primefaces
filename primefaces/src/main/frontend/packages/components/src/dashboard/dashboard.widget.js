@@ -3,7 +3,7 @@
  * 
  * Dashboard provides a portal like layout with drag & drop based reorder capabilities.
  * 
- * Currently this uses the JQueryUI sortable widget. You can use `$.fn.sortable` to interact with the dashboard
+ * The columns are sortable with `$.fn.sortable`, which can be used to interact with the dashboard
  * programmatically.
  * 
  * ```javascript
@@ -17,7 +17,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryUI.SortableOptions} cfg
+ * @extends {PrimeType.interaction.SortableOptions} cfg
  */
 PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidget {
 

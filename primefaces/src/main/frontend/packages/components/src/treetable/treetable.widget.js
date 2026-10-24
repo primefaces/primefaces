@@ -1893,7 +1893,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Sets up the JQuery UI draggable with the appropriate event listeners for resizing columns.
+     * Sets up the draggable with the appropriate event listeners for resizing columns.
      * @private
      */
     setupResizableColumns() {
@@ -1974,7 +1974,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * Callback for when a row was resized. Adjust the column widths.
      * @private
      * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
-     * @param {JQueryUI.DraggableEventUIParams} ui Details about the resize.
+     * @param {PrimeType.interaction.DraggableUi} ui Details about the resize.
      */
     resize(event, ui) {
         var columnHeader = ui.helper.parent(),

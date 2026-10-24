@@ -888,16 +888,16 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 if(!item.is(':first-child')) {
 
                     if(animated) {
-                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
-                            item.insertBefore(item.prev()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                        PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
+                            PrimeFaces.effects.show(item.insertBefore(item.prev()), $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
                                     $this.saveState();
                                     $this.fireReorderEvent();
                                 }
-                            });
-                        });
+                            } });
+                        } });
                     }
                     else {
                         item.hide().insertBefore(item.prev()).show();
@@ -932,16 +932,16 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 if(!item.is(':first-child')) {
 
                     if(animated) {
-                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
-                            item.prependTo(item.parent()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function(){
+                        PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
+                            PrimeFaces.effects.show(item.prependTo(item.parent()), $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function(){
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
                                     $this.saveState();
                                     $this.fireReorderEvent();
                                 }
-                            });
-                        });
+                            } });
+                        } });
                     }
                     else {
                         item.hide().prependTo(item.parent()).show();
@@ -973,16 +973,16 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
                 if(!item.is(':last-child')) {
                     if(animated) {
-                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
-                            item.insertAfter(item.next()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                        PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
+                            PrimeFaces.effects.show(item.insertAfter(item.next()), $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
                                     $this.saveState();
                                     $this.fireReorderEvent();
                                 }
-                            });
-                        });
+                            } });
+                        } });
                     }
                     else {
                         item.hide().insertAfter(item.next()).show();
@@ -1016,16 +1016,16 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 if(!item.is(':last-child')) {
 
                     if(animated) {
-                        item.hide($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
-                            item.appendTo(item.parent()).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                        PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
+                            PrimeFaces.effects.show(item.appendTo(item.parent()), $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
                                 movedCount++;
 
                                 if(movedCount === itemsCount) {
                                     $this.saveState();
                                     $this.fireReorderEvent();
                                 }
-                            });
-                        });
+                            } });
+                        } });
                     }
                     else {
                         item.hide().appendTo(item.parent()).show();
@@ -1070,7 +1070,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var transferCount = 0;
 
         if(this.isAnimated()) {
-            items.hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
+            PrimeFaces.effects.hide(items, this.cfg.effect, { duration: this.cfg.effectSpeed, complete: function() {
                 var item = $(this);
                 $this.unselectItem(item);
 
@@ -1083,7 +1083,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     }
                 }
 
-                item.appendTo(to).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                PrimeFaces.effects.show(item.appendTo(to), $this.cfg.effect, { duration: $this.cfg.effectSpeed, complete: function() {
                     transferCount++;
 
                     //fire transfer when all items are transferred
@@ -1091,14 +1091,14 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                         $this.saveState();
                         $this.fireTransferEvent(items, from, to, type);
                     }
-                });
+                } });
 
                 $this.updateListRole();
 
                 if (callback) {
                     callback.call($this);
                 }
-            });
+            } });
         }
         else {
             items.hide();

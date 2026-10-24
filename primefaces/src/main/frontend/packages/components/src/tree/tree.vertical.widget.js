@@ -8,7 +8,7 @@
  *
  * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams Describes a drag & drop operation
  * when a tree node is being dragged.
- * @prop {JQueryUI.DroppableOptions} DroppedNodeParams.ui Details about the drop event.
+ * @prop {PrimeType.interaction.DroppableUi} DroppedNodeParams.ui Details about the drop event.
  * @prop {PrimeFaces.widget.VerticalTree} DroppedNodeParams.dragSource Tree widget of the dragged node.
  * @prop {JQuery} DroppedNodeParams.dragNode The node that was dragged.
  * @prop {JQuery} DroppedNodeParams.targetDragNode The node that was the target of the drag.
@@ -648,7 +648,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Sets up the JQuery UI draggable for the given elements.
+     * Sets up the draggable for the given elements.
      * @private
      * @param {JQuery} elements A list of draggable nodes to set up.
      */
@@ -689,7 +689,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Sets up the JQuery UI drop points for the given elements.
+     * Sets up the drop points for the given elements.
      * @private
      * @param {JQuery} elements A list of drop points to set up.
      */
@@ -789,7 +789,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     /**
      * Callback for when a node was dropped on a drop point.
      * @private
-     * @param {JQueryUI.DroppableOptions} ui Details about the drop event.
+     * @param {PrimeType.interaction.DroppableUi} ui Details about the drop event.
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget of the dragged node.
      * @param {JQuery} dragNode Node that was dragged.
      * @param {JQuery} targetDragNode Node that was the target of the drag.
@@ -844,7 +844,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Sets up the JQuery UI dropables for the droppable nodes.
+     * Sets up the dropables for the droppable nodes.
      * @private
      * @param {JQuery} elements List of elements to make droppable.
      */
@@ -953,11 +953,11 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     /**
      * Callback for when a node was dropped.
      * @private
-     * @param {JQueryUI.DroppableOptions} ui Details about the drop event.
+     * @param {PrimeType.interaction.DroppableUi} ui Details about the drop event.
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget of the dragged node.
      * @param {JQuery} dragNode Node that was dragged.
      * @param {JQuery} targetDragNode Node that was the target of the drag.
-     * @param {JQuery} droppable The jQUery UI droppable where the drop occurred.
+     * @param {JQuery} droppable The droppable where the drop occurred.
      * @param {JQuery} dropNode The node on which the dragged node was dropped.
      * @param {boolean} transfer Whether a transfer should occur.
      */

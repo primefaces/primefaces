@@ -31,15 +31,14 @@ public class EffectBuilder implements JSObjectBuilder {
 
     private boolean hasOption;
 
+    private boolean queue;
+
     public EffectBuilder(String type, String id, boolean queue) {
+        this.queue = queue;
         buffer = new StringBuilder();
-        buffer.append("$(PrimeFaces.escapeClientId('");
+        buffer.append("PrimeFaces.effects.run($(PrimeFaces.escapeClientId('");
         buffer.append(id);
-        buffer.append("'))");
-        if (!queue) {
-            buffer.append(".stop(true,true)");
-        }
-        buffer.append(".effect('");
+        buffer.append("')),'");
         buffer.append(type);
         buffer.append("',{");
     }
@@ -60,15 +59,15 @@ public class EffectBuilder implements JSObjectBuilder {
     }
 
     public EffectBuilder atSpeed(int speed) {
-        buffer.append("},");
-        buffer.append(speed);
-
-        return this;
+        return withOption("duration", String.valueOf(speed));
     }
 
     @Override
     public String build() {
-        buffer.append(");");
+        if (!queue) {
+            withOption("queue", "false");
+        }
+        buffer.append("});");
 
         return buffer.toString();
     }

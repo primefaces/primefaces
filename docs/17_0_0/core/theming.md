@@ -37,7 +37,7 @@ The value can be an EL expression, e.g. `#{userSettings.theme}` to switch the th
 ### What is rendered
 
 - `primefaces-<theme>:theme.css`, first in the head: the tokens of the theme.
-- `primefaces:components.css`: the styles of the components, the icons and the jQuery UI CSS. It is the same for every
+- `primefaces:components.css`: the styles of the components, the icons and the base CSS of the drag and drop / resize interactions. It is the same for every
   theme, so it stays cached when the theme changes.
 - the CSS of components that are loaded on demand together with their JavaScript, e.g.
   `primefaces:datepicker/datepicker.css`, `schedule/schedule.css` (incl. the FullCalendar CSS),
@@ -513,7 +513,7 @@ Prefer tokens where one exists; style rules are the fallback for everything toke
 
 The CSS of the libraries the components use is part of the PrimeFaces stylesheets, in the `primefaces.vendor` layer
 below the component styles, and styled with the tokens; there is nothing extra to include. It is loaded with the
-component that needs it: jQuery UI in `components.css`, Coloris with
+component that needs it: Coloris with
 p:colorPicker, cropperjs with p:imageCropper, Quill with p:textEditor, vis-timeline with p:timeline, FullCalendar with
 p:schedule, jsPlumb with p:diagram.
 

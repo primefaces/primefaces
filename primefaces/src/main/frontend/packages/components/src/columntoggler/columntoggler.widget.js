@@ -569,7 +569,7 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
      * Aligns the overlay panel of this column toggler according to the current widget configuration.
      */
     alignPanel() {
-        this.panel.css({ 'left': '', 'top': '', 'z-index': PrimeFaces.nextZindex() }).position({
+        PrimeFaces.utils.position(this.panel.css({ 'left': '', 'top': '', 'z-index': PrimeFaces.nextZindex() }), {
             my: 'left top'
             , at: 'left bottom'
             , of: this.trigger
