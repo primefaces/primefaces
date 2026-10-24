@@ -121,5 +121,7 @@ Following is the list of structural style classes;
 .ui-treetable | Main container element.
 .ui-treetable-header | Header of treetable.
 .ui-treetable-data | Body element of the table containing data
+.ui-treetable-gridlines | Main container element; when showGridlines is enabled.
+.ui-treetable-striped | Main container element; when stripedRows is enabled.
 
 As skinning style classes are global, see the main theming section for more information.

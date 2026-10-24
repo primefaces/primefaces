@@ -318,6 +318,16 @@ Following is the list of structural style classes;
 | .ui-autocomplete-query | Highlighted part in suggestions. |
 | .ui-state-loading | Container element; while search queries are executed. |
 
+When columns are used, the suggestions are rendered as a table and the _advancedStyleClass_ attribute
+applies to that table element. Themes provide the following generic modifier classes for it;
+
+| Class | Applies |
+| --- | --- |
+| .ui-table-gridlines | Displays cell borders. |
+| .ui-table-striped | Displays striped rows to visually separate content. |
+| .ui-table-sm | Renders the cells with reduced padding. |
+| .ui-table-lg | Renders the cells with increased padding. |
+
 As skinning style classes are global, see the main theming section for more information.
 
 ## Tips
