@@ -7,7 +7,6 @@
  * Panel: ui-select-checkmark (panelStyleClass, a check in front of the selected item)
  * Panel items: ui-state-hover (mouse and keyboard), ui-state-highlight (selected)
  * Variants: editable (input label), filter, groups, custom content (table with columns), footer facet
- * Table (p:column children, advancedStyleClass): ui-table-gridlines (always on), ui-table-striped, ui-table-sm, ui-table-lg
  */
 .ui-selectonemenu {
     display: inline-block;
@@ -356,32 +355,6 @@
         &.ui-state-highlight.ui-state-hover {
             background: var(--p-select-option-selected-focus-background);
             color: var(--p-select-option-selected-focus-color);
-        }
-    }
-
-    /* table variants (advancedStyleClass): ui-table-striped, ui-table-sm / -lg; the cells always have gridlines */
-    .ui-selectonemenu-items.ui-selectonemenu-table.ui-table-striped > tbody
-        > tr.ui-selectonemenu-row:nth-child(even of .ui-selectonemenu-row):not(.ui-state-hover, .ui-state-highlight) {
-        background: var(--p-datatable-row-striped-background);
-    }
-
-    .ui-selectonemenu-items.ui-selectonemenu-table.ui-table-sm {
-        > thead > tr > th {
-            padding: var(--p-datatable-header-cell-sm-padding);
-        }
-
-        > tbody > tr.ui-selectonemenu-row > td {
-            padding: var(--p-datatable-body-cell-sm-padding);
-        }
-    }
-
-    .ui-selectonemenu-items.ui-selectonemenu-table.ui-table-lg {
-        > thead > tr > th {
-            padding: var(--p-datatable-header-cell-lg-padding);
-        }
-
-        > tbody > tr.ui-selectonemenu-row > td {
-            padding: var(--p-datatable-body-cell-lg-padding);
         }
     }
 

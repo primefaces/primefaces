@@ -1,7 +1,7 @@
 /*
  * TreeTable: p:treeTable
  *
- * Supported classes: ui-treetable-gridlines, ui-treetable-striped, ui-treetable-sm, ui-treetable-lg, ui-treetable-scrollable,
+ * Supported classes: ui-treetable-gridlines, ui-treetable-sm, ui-treetable-lg, ui-treetable-scrollable,
  *                    ui-treetable-resizable, ui-treetable-reflow, ui-treetable-checkbox-all
  * States (set by the widget): th.ui-state-hover / ui-state-active (sorted) / ui-state-focus,
  *                             tr.ui-state-hover / ui-state-highlight (selected) / ui-treetable-partialselected / ui-row-editing,
@@ -547,12 +547,6 @@
         z-index: 10;
         display: none;
         background: var(--p-treetable-resize-indicator-color);
-    }
-
-    /* striped: :nth-child because expanding / collapsing a node adds and removes rows on the client */
-    &.ui-treetable-striped .ui-treetable-data
-        > tr:nth-child(even of :not(.ui-expanded-row-content)):not(.ui-state-hover, .ui-state-highlight) {
-        background: var(--p-datatable-row-striped-background);
     }
 
     /* sizes */
