@@ -46,14 +46,14 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
     @Override
     public void decode(FacesContext context, TabView component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String activeIndexValue = params.get(component.getClientId(context) + "_activeIndex");
+        String activeValue = params.get(component.getClientId(context) + "_active");
 
-        if (LangUtils.isNotBlank(activeIndexValue)) {
-            component.setActiveIndex(Integer.parseInt(activeIndexValue));
+        if (LangUtils.isNotBlank(activeValue)) {
+            component.setActive(activeValue);
 
             if (component.isMultiViewState()) {
                 TabViewState ts = component.getMultiViewState(true);
-                ts.setActiveIndex(component.getActiveIndex());
+                ts.setActive(component.getActive());
             }
         }
 
@@ -162,7 +162,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
             encodeFooter(context, component);
         }
 
-        encodeStateHolder(context, component, clientId + "_activeIndex", String.valueOf(component.getActiveIndex()));
+        encodeStateHolder(context, component, clientId + "_active", component.resolveActive());
 
         if (component.isScrollable()) {
             String scrollParam = clientId + "_scrollState";
@@ -250,6 +250,9 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "presentation", null);
         writer.writeAttribute("data-index", index, null);
+        if (tab.getKey() != null) {
+            writer.writeAttribute("data-key", tab.getKey(), null);
+        }
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
         }
@@ -338,6 +341,9 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, tabHeaderId, null);
         writer.writeAttribute("data-index", index, null);
+        if (tab.getKey() != null) {
+            writer.writeAttribute("data-key", tab.getKey(), null);
+        }
         writer.writeAttribute("tabindex", tabindex, null);
 
         if (dynamic) {
