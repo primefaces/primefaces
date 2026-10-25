@@ -37,8 +37,8 @@ scrollY(y) | y: vertical position in pixels | void | Scrolls to the given vertic
 redraw() | - | void | Updates the bars, only needed for changes the scroll panel does not notice.
 
 ## Keyboard Support
-The content is focusable and scrolls with the keys of the browser (arrow keys, Page Up / Page Down, Home / End,
-space).
+While the content overflows, it is focusable and scrolls with the keys of the browser (arrow keys, Page Up /
+Page Down, Home / End, space).
 
 ## Skinning
 ScrollPanel resides in a main container which _style_ and _styleClass_ attributes apply. As skinning style

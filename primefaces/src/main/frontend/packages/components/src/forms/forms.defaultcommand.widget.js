@@ -27,21 +27,19 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
      */
     init(cfg) {
         super.init(cfg);
-        this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        this.jqTarget = this.findTarget();
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
         var $this = this;
-
-        // Support container elements such as splitButton
-        if (this.jqTarget.is(':not(:button):not(:input):not(a)')) {
-            this.jqTarget = this.jqTarget.find('button,a').filter(':visible').first();
-        }
-        // destroyed with the target
-        this.bindLifecycleTo(this.jqTarget);
 
         // attach keypress listener to parent form
         var closestForm = this.jqTarget[0] && this.jqTarget[0].hasAttribute('data-pf-form')
             ? $(PrimeFaces.escapeClientId(this.jqTarget[0].getAttribute('data-pf-form')))
             : this.jqTarget.closest('form');
+
+        // destroyed with the form that has the listener, not with the target: an update of only the target (e.g. to
+        // enable it) must keep the default command, the target is found again on each Enter
+        this.bindLifecycleTo(closestForm);
+
         var scopeKeydown = 'keydown.' + this.id;
         closestForm.off(scopeKeydown).on(scopeKeydown, { scopeEnter: false }, function(e, data) {
             if (e.key !== 'Enter') {
@@ -53,6 +51,13 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
                 if (PrimeFaces.utils.isEnterKeyBlocked(e)) {
                     return true;
                 }
+
+                $this.jqTarget = $this.findTarget();
+                if (!$this.jqTarget.length) {
+                    // the target is not rendered anymore, the browser handles the key
+                    return;
+                }
+
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
                     // focus default command button and click it
                     $this.jqTarget.trigger('focus').trigger(PrimeFaces.csp.clickEvent($this.jqTarget));
@@ -72,12 +77,25 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
             });
         }
 
-        // the form and the scope stay when the default command is removed
+        // the scope may stay when the form is re-rendered without the default command
         this.addDestroyListener(function() {
             closestForm.off(scopeKeydown);
             if ($this.scope) {
                 $this.scope.off(scopeKeydown);
             }
         });
+    }
+
+    /**
+     * Finds the target button or link; of a container such as a splitButton its first visible button or link.
+     * @return {JQuery} The target, empty if it is not rendered.
+     */
+    findTarget() {
+        var target = $(PrimeFaces.escapeClientId(this.cfg.target));
+        // Support container elements such as splitButton
+        if (target.is(':not(:button):not(:input):not(a)')) {
+            target = target.find('button,a').filter(':visible').first();
+        }
+        return target;
     }
 }

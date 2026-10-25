@@ -143,6 +143,10 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
      */
     constructor(element: HTMLElement, options?: Partial<DraggableOptions>) {
         super(element, 'draggable', 'drag', DEFAULTS, options);
+        // like jQuery UI a draggable that moves itself is positioned from the start, not only from its first drag
+        if (this.options.helper === 'original' && this.element.css('position') === 'static') {
+            this.element.css('position', 'relative');
+        }
         this.addClasses();
         this.updateHandles();
         this.bindPointer();

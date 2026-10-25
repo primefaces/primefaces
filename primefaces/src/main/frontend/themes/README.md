@@ -387,7 +387,8 @@ establish loopback connection"), Tomcat / Jetty do not start: set
 ## Third-party CSS
 
 The `index.css` files import the CSS of the libraries the components use into `@layer primefaces.vendor` (below the
-components): jQuery UI base (components.css), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
+components): the base rules of the interactions (components.css, `src/base/interactions.css`, derived from the jQuery
+UI base theme), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
 snow (textEditor), vis-timeline (timeline), FullCalendar 5 (schedule), PrimeIcons (primeicons/primeicons.css). The versions are the ones of `package.json`, the
 same the JavaScript uses.
 

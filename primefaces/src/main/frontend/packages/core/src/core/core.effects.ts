@@ -962,8 +962,9 @@ export class Effects {
      * Runs an effect on the given elements, in the mode given by the options or else in the default mode of the
      * effect (e.g. `hide` for `blind`, `effect` for `shake`).
      *
-     * By default, the effect is added to the jQuery `fx` queue of each element, so it starts after the running
-     * effects and animations; with `queue: false` these are finished first and the effect starts immediately. An
+     * The effect is added to the jQuery `fx` queue of each element, so it starts after the running effects and
+     * animations; with `queue: false` these are finished first (like `stop(true, true)`) and the effect starts
+     * immediately, effects queued later still wait for it. An
      * explicit `show` / `hide` mode that is already fulfilled only calls `complete`, and an unknown effect shows /
      * hides the element with the jQuery animation (like jQuery UI). When animations are disabled, the effect finishes
      * synchronously.
@@ -974,19 +975,14 @@ export class Effects {
      */
     run<T extends JQuery<any>>(element: T, effect: string, options?: PrimeFacesTypes.effects.Options | null): T {
         const opts = { ...options };
-        const queue = opts.queue !== false;
 
-        if (!queue) {
+        if (opts.queue === false) {
+            // the cleared queue starts the effect right away
             this.stop(element);
         }
 
         return element.each((_, el) => {
-            if (queue) {
-                $(el).queue("fx", (next) => this.execute(el, effect, opts, next));
-            }
-            else {
-                this.execute(el, effect, opts);
-            }
+            $(el).queue("fx", (next) => this.execute(el, effect, opts, next));
         });
     }
 

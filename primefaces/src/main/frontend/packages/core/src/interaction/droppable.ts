@@ -154,9 +154,9 @@ export class Droppable extends Interaction<DroppableOptions> {
         // droppables don't move
     }
 
-    /** Droppables don't move. */
+    /** Droppables don't start an interaction, so they don't stop one. */
     protected stop(): void {
-        // droppables don't move
+        // droppables don't stop an interaction
     }
 
     /**
@@ -330,6 +330,10 @@ export const DragDropManager = {
      * @param event The event that started the drag.
      */
     start(source: DragSource, event: JQuery.TriggeredEvent): void {
+        // droppables a previous drag left active (e.g. a sortable that still reverts) are deactivated first
+        if (this.current && this.active.length) {
+            this.deactivate(this.current, null);
+        }
         this.current = source;
         const item = source.item();
         this.active = (this.droppables[source.scope()] ?? []).filter((d) => {
@@ -389,11 +393,11 @@ export const DragDropManager = {
     },
 
     /**
-     * Deactivates the droppables when the drag ended.
+     * Deactivates the droppables of the drag, e.g. at the drop.
      * @param source The dragged interaction.
      * @param event The event that ended the drag, `null` if it was cancelled or destroyed.
      */
-    stop(source: DragSource, event: JQuery.TriggeredEvent | null): void {
+    deactivate(source: DragSource, event: JQuery.TriggeredEvent | null): void {
         for (const droppable of this.active) {
             droppable.deactivate(event, source);
         }
@@ -402,6 +406,15 @@ export const DragDropManager = {
             document.removeEventListener('scroll', this.scrollListener, true);
             this.scrollListener = null;
         }
+    },
+
+    /**
+     * Deactivates the droppables when the drag ended, the drag is not current anymore.
+     * @param source The dragged interaction.
+     * @param event The event that ended the drag, `null` if it was cancelled or destroyed.
+     */
+    stop(source: DragSource, event: JQuery.TriggeredEvent | null): void {
+        this.deactivate(source, event);
         if (this.current === source) {
             this.current = null;
         }

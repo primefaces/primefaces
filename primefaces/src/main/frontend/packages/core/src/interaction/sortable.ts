@@ -369,7 +369,9 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         if (!o.placeholder || o.forcePlaceholderSize) {
             // the border box of the item: the placeholder is not inserted yet, jQuery can't detect its box-sizing there
             placeholder.css({ boxSizing: 'border-box', height: item.outerHeight() ?? 0 });
-            if (nodeName !== 'tr') {
+            // like jQuery UI only a placeholder without a width of its own (floating, inline, flex row) gets the width
+            // of the item, a block placeholder fills the container it is moved to
+            if (nodeName !== 'tr' && isFloating(item)) {
                 placeholder.css('width', item.outerWidth() ?? 0);
             }
         }
@@ -470,12 +472,12 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         this.delta = this.helperDelta();
         let left = pageX(event) - this.clickOffset.left;
         let top = pageY(event) - this.clickOffset.top;
-        const itemOffset = offsetOf(this.placeholder);
+        // like jQuery UI the helper keeps its position on the other axis, also in a connected container
         if (o.axis === 'y') {
-            left = itemOffset.left;
+            left = this.originalPosition.left + this.delta.left;
         }
         if (o.axis === 'x') {
-            top = itemOffset.top;
+            top = this.originalPosition.top + this.delta.top;
         }
         this.offset = { left, top };
         this.position = { left: left - this.delta.left, top: top - this.delta.top };
@@ -522,7 +524,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
     }
 
     /**
-     * Whether the pointer is inside the element.
+     * Whether the pointer is inside the element; with the `axis` option only that coordinate counts, like jQuery UI.
      * @param event A pointer event.
      * @returns `true` if the element is visible and the pointer is inside its border box.
      */
@@ -530,8 +532,9 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         const offset = offsetOf(this.element);
         const x = pageX(event);
         const y = pageY(event);
-        return this.element.is(':visible') && x >= offset.left && x <= offset.left + (this.element.outerWidth() ?? 0)
-            && y >= offset.top && y <= offset.top + (this.element.outerHeight() ?? 0);
+        const insideX = this.options.axis === 'y' || (x >= offset.left && x <= offset.left + (this.element.outerWidth() ?? 0));
+        const insideY = this.options.axis === 'x' || (y >= offset.top && y <= offset.top + (this.element.outerHeight() ?? 0));
+        return this.element.is(':visible') && insideX && insideY;
     }
 
     /**
@@ -554,7 +557,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
 
     /**
      * Moves the placeholder before or after the item under the pointer (by the left / right halves for horizontal
-     * items, else by the top / bottom halves).
+     * items, else by the top / bottom halves); with the `axis` option only that coordinate counts, like jQuery UI.
      * @param placeholder The placeholder.
      * @param current The dragged item.
      * @param event The pointermove event.
@@ -566,8 +569,10 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         const boxes = this.itemBoxes(current);
         const before = (box: ItemBox) => this.floating ? x < box.left + box.width / 2 : y < box.top + box.height / 2;
 
+        const axis = this.options.axis;
         for (const box of boxes) {
-            if (x < box.left || x > box.left + box.width || y < box.top || y > box.top + box.height) {
+            if ((axis !== 'y' && (x < box.left || x > box.left + box.width))
+                    || (axis !== 'x' && (y < box.top || y > box.top + box.height))) {
                 continue;
             }
             const item = $(box.el);
@@ -622,6 +627,11 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
     protected stop(event: JQuery.TriggeredEvent): void {
         if (!this.cancelled) {
             DragDropManager.drop(this, event);
+        }
+        // like jQuery UI the droppables are deactivated at the drop, before the revert; the drag stays current until
+        // the sorting is cleared (e.g. for the cancel of an AJAX update)
+        if (DragDropManager.current === this) {
+            DragDropManager.deactivate(this, event);
         }
         this.cancelled = false;
         const revert = this.options.revert;

@@ -65,7 +65,6 @@ public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
             // the content scrolls natively with hidden browser scrollbars, the widget positions the bars
             writer.startElement("div", null);
             writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, null);
-            writer.writeAttribute("tabindex", "0", null);
             renderChildren(context, component);
             writer.endElement("div");
 

@@ -388,8 +388,10 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
 
         if (typeof value === 'string' && value.indexOf('<svg') > -1) {
-            this.lines = $(value).find('polyline').map((_, polyline) => [($(polyline).attr('points') ?? '').split(' ')
-                .map((point) => point.split(',').map(parseFloat) as Point)]).get() as Point[][];
+            // parsed in an inert document: the value may come from a request, markup like <img onerror> must not run
+            const svg = new DOMParser().parseFromString(value, 'text/html');
+            this.lines = Array.from(svg.querySelectorAll('polyline'), (polyline) => (polyline.getAttribute('points') ?? '')
+                .split(' ').map((point) => point.split(',').map(parseFloat) as Point));
         }
         else {
             const json = typeof value === 'string' ? JSON.parse(value) as { lines?: Point[][] } : value;

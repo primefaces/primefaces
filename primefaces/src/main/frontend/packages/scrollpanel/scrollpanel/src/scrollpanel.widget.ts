@@ -64,8 +64,27 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
                 // no text selection and no focus change; not on pointerdown, that would suppress the mousedown event
                 // the overlays of other widgets listen to on the document to hide
                 .on('mousedown.scrollpanel', (e) => e.preventDefault())
-                .on('pointerdown.scrollpanel', (e) => this.onTrackPointerDown(e, axis));
+                .on('pointerdown.scrollpanel', (e) => this.onTrackPointerDown(e, axis))
+                // the tracks lie over the content, the wheel scrolls the content and not the page
+                .on('wheel.scrollpanel', (e) => this.onTrackWheel(e));
         }
+    }
+
+    /**
+     * Scrolls the content with the mouse wheel over a track.
+     * @param e The wheel event of a track.
+     */
+    private onTrackWheel(e: JQuery.TriggeredEvent): void {
+        const event = e.originalEvent as WheelEvent | undefined;
+        const content = this.content[0];
+        if (!event || !content) {
+            return;
+        }
+        e.preventDefault();
+        // the delta in lines or pages, like the browser scrolls
+        const factor = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16
+            : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? content.clientHeight : 1;
+        content.scrollBy({ left: event.deltaX * factor, top: event.deltaY * factor });
     }
 
     /**
@@ -82,15 +101,24 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         }
         this.resizeObserver = new ResizeObserver(() => this.requestUpdate());
         this.resizeObserver.observe(content);
-        const observeChildren = () => {
-            for (const child of Array.from(content.children)) {
-                this.resizeObserver?.observe(child);
-            }
-        };
-        observeChildren();
+        for (const child of Array.from(content.children)) {
+            this.resizeObserver.observe(child);
+        }
 
-        this.mutationObserver = new MutationObserver(() => {
-            observeChildren();
+        // observe added children, release removed ones (a ResizeObserver keeps its targets until it is disconnected)
+        this.mutationObserver = new MutationObserver((records) => {
+            for (const record of records) {
+                record.removedNodes.forEach((node) => {
+                    if (node instanceof Element) {
+                        this.resizeObserver?.unobserve(node);
+                    }
+                });
+                record.addedNodes.forEach((node) => {
+                    if (node instanceof Element) {
+                        this.resizeObserver?.observe(node);
+                    }
+                });
+            }
             this.requestUpdate();
         });
         this.mutationObserver.observe(content, { childList: true });
@@ -156,9 +184,9 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         const rect = bar.getBoundingClientRect();
         const before = axis === 'x' ? event.clientX < rect.left : event.clientY < rect.top;
         const page = axis === 'x' ? content.clientWidth : content.clientHeight;
-        // in a right-to-left content the start of the horizontal scroll range is on the right
-        const sign = (before ? -1 : 1) * (axis === 'x' && this.isRtl() ? -1 : 1);
-        content.scrollBy(axis === 'x' ? { left: sign * page } : { top: sign * page });
+        // a negative delta scrolls left / up, also in a right-to-left content (its scrollLeft runs from 0 to negative)
+        const delta = before ? -page : page;
+        content.scrollBy(axis === 'x' ? { left: delta } : { top: delta });
     }
 
     /**
@@ -182,12 +210,16 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         if (!content) {
             return;
         }
+        let scrollableContent = false;
         for (const axis of ['x', 'y'] as Axis[]) {
             const { scrollSize, clientSize } = this.sizes(axis);
             const scrollable = scrollSize > clientSize + 1;
+            scrollableContent ||= scrollable;
             this.tracks[axis].toggleClass('p-hidden', !scrollable);
             this.jq.toggleClass('ui-scrollpanel-scrollable-' + axis, scrollable);
         }
+        // focusable for keyboard scrolling only while there is something to scroll, no extra tab stop otherwise
+        this.content.attr('tabindex', scrollableContent ? 0 : null);
         for (const axis of ['x', 'y'] as Axis[]) {
             if (this.jq.hasClass('ui-scrollpanel-scrollable-' + axis)) {
                 this.positionBar(axis);

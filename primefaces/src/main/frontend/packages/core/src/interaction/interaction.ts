@@ -32,6 +32,7 @@ let activeInteraction: Interaction<InteractionOptions> | null = null;
 
 /**
  * Removes `undefined` values, so they don't override the defaults.
+ * @typeParam T Type of the options.
  * @param options The options passed by the caller.
  * @returns A copy of the options without the `undefined` values.
  */
@@ -126,6 +127,7 @@ export function scrollParent(jq: JQuery): HTMLElement | null {
 /**
  * Base of the interactions: options, `enable` / `disable` / `destroy`, the callbacks and events, and the pointer
  * handling that starts the interaction after the pointer moved the minimum distance.
+ * @typeParam O Type of the options of the interaction.
  */
 export abstract class Interaction<O extends InteractionOptions> {
     /** The element the interaction was created for. */

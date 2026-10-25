@@ -2,7 +2,7 @@
  * ScrollPanel: p:scrollPanel (themed bars and mode="native")
  *
  * The content scrolls natively with hidden browser scrollbars, the widget positions the bars of the tracks.
- * Structure: div.ui-scrollpanel > div.ui-scrollpanel-content[tabindex=0]
+ * Structure: div.ui-scrollpanel > div.ui-scrollpanel-content (tabindex 0 while it overflows)
  *            + div.ui-scrollpanel-track.ui-scrollpanel-track-y > div.ui-scrollpanel-bar
  *            + div.ui-scrollpanel-track.ui-scrollpanel-track-x > div.ui-scrollpanel-bar
  * mode="native": div.ui-scrollpanel.ui-scrollpanel-native, the browser scrollbars styled with the same tokens.
@@ -24,11 +24,27 @@
         scrollbar-width: thin;
         scrollbar-color: var(--p-scrollpanel-bar-background) var(--p-scrollpanel-track-background);
     }
+
+    /* the content fills the panel, also one with a max-height only, and scrolls up to the border */
+    &:not(.ui-scrollpanel-native) {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    /* keyboard scrolling: the content is focusable, the panel shows the focus (an outline is not clipped) */
+    &:has(> .ui-scrollpanel-content:focus-visible) {
+        outline: var(--p-scrollpanel-bar-focus-ring-width) var(--p-scrollpanel-bar-focus-ring-style) var(--p-scrollpanel-bar-focus-ring-color);
+        outline-offset: var(--p-scrollpanel-bar-focus-ring-offset);
+        box-shadow: var(--p-scrollpanel-bar-focus-ring-shadow);
+    }
 }
 
 .ui-scrollpanel-content {
+    flex: 1 1 auto;
+    min-height: 0;
     width: 100%;
-    height: 100%;
+    padding: var(--p-scrollpanel-padding);
     overflow: auto;
     outline: none;
     /* the bars replace the browser scrollbars */
@@ -39,7 +55,7 @@
     }
 }
 
-/* the tracks lie on the inner edge of the border, over the padding */
+/* the tracks lie on the inner edge of the border, over the padding of the content */
 .ui-scrollpanel-track {
     position: absolute;
     background: var(--p-scrollpanel-track-background);
@@ -93,11 +109,4 @@
 
 .ui-scrollpanel-track-x > .ui-scrollpanel-bar {
     width: auto;
-}
-
-/* keyboard scrolling: the content is focusable, the bars show the focus */
-.ui-scrollpanel:has(> .ui-scrollpanel-content:focus-visible) .ui-scrollpanel-bar {
-    outline: var(--p-scrollpanel-bar-focus-ring-width) var(--p-scrollpanel-bar-focus-ring-style) var(--p-scrollpanel-bar-focus-ring-color);
-    outline-offset: var(--p-scrollpanel-bar-focus-ring-offset);
-    box-shadow: var(--p-scrollpanel-bar-focus-ring-shadow);
 }

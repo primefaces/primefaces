@@ -34,14 +34,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
     /** The widgets without own markup, destroyed with the elements they work on. */
     private static final String[] WIDGETS = {
-        "form:drag", "form:drop", "form:resize", "form:keyFilter", "form:defaultCommand", "form:effect"
+        "form:drag", "form:drop", "form:resize", "form:keyFilter", "form:effect"
     };
+
+    /** The default command works on the form (its listener is there), it stays while the form stays. */
+    private static final String DEFAULT_COMMAND = "form:defaultCommand";
 
     /** The handlers of an element by event type and namespace. */
     private static final String HANDLERS = "var events = jQuery._data(document.getElementById(arguments[0]), 'events') || {}, result = {};"
@@ -64,6 +66,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
     private static final String TOGGLE = "PrimeFaces.ab({s: 'form:btnToggle', p: 'form:btnToggle', u: 'form:wrapper'});";
     private static final String UPDATE = "PrimeFaces.ab({s: 'form:btnUpdate', p: 'form:btnUpdate', u: 'form:wrapper'});";
+    private static final String UPDATE_TARGET = "PrimeFaces.ab({s: 'form:btnUpdateTarget', p: 'form:btnUpdateTarget', u: 'form:btnDefault'});";
 
     /** The keydown handler of the default command on the form, which stays. */
     private static final String DEFAULT_COMMAND_HANDLER = "keydown.form:defaultCommand";
@@ -79,10 +82,14 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
         // Act
         PrimeSelenium.executeScript(true, TOGGLE);
 
-        // Assert: destroyed, also the listener of the default command on the form that stays is removed
+        // Assert: destroyed
         assertWidgetCount(0, WIDGETS);
         assertEquals(0, globalState().getInt("droppables"));
-        assertFalse(handlers("form").has(DEFAULT_COMMAND_HANDLER), handlers("form").toString());
+
+        // Assert: the default command stays with the form, without its target Enter is left to the browser
+        assertWidgetCount(1, DEFAULT_COMMAND);
+        assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
+        assertEquals(0L, enter());
         assertNoJavascriptErrors();
     }
 
@@ -97,6 +104,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
         // Assert: still there, once, bound to the new elements
         assertWidgetCount(1, WIDGETS);
+        assertWidgetCount(1, DEFAULT_COMMAND);
         assertSameState(new JSONObject("{draggable:true,droppable:true,resizable:true}"), targetInteractions());
         assertEquals(1, globalState().getInt("droppables"));
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
@@ -129,6 +137,21 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
         assertWidgetCount(0, WIDGETS);
         assertSameState(removed, globalState());
         assertSameState(removedFormHandlers, handlers("form"));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Widget lifecycle: a default command stays when only its target is updated")
+    void updateTarget(Page page) {
+        // Act: e.g. an update that enables the target
+        PrimeSelenium.executeScript(true, UPDATE_TARGET);
+        PrimeSelenium.executeScript(true, UPDATE_TARGET);
+
+        // Assert: Enter clicks the new target, once
+        assertWidgetCount(1, DEFAULT_COMMAND);
+        assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
+        assertEquals(1L, enter());
         assertNoJavascriptErrors();
     }
 

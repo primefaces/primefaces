@@ -14,6 +14,7 @@
         <h:form id="form">
             <p:commandButton id="btnUpdate" value="Update" process="@this" update="wrapper"/>
             <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreWidget003.toggle}"/>
+            <p:commandButton id="btnUpdateTarget" value="Update target" process="@this" update="btnDefault"/>
 
             <!-- the widgets without own markup are destroyed with the elements they work on, the form stays -->
             <h:panelGroup id="wrapper" layout="block">
