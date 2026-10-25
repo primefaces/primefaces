@@ -79,6 +79,9 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
         // previous init - only the own ones, as other keyFilters could be applied to the same input
         const namespace = '.keyFilter' + this.id;
         input.off(namespace);
+
+        // destroyed with the input
+        this.bindLifecycleTo(input);
         this.addDestroyListener(() => {
             input.off(namespace);
         });
@@ -156,10 +159,12 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
             if (event.inputType !== 'insertText' || !event.data) {
                 return;
             }
+
             let filtered = filter(element, event.data);
             if (filtered === event.data) {
                 return;
             }
+
             e.preventDefault();
             // insert the allowed characters, within the maxlength like the browser; inputs without a text selection
             // (e.g. type="email") get nothing
@@ -180,10 +185,12 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
             if (!text) {
                 return;
             }
+
             const filtered = filter(element, text);
             if (filtered === text) {
                 return;
             }
+
             // after the browser inserted the composed text (some do that after compositionend): the composed text is
             // before the caret, it may have replaced more than the selection (e.g. a whole word on Android)
             setTimeout(() => {
@@ -192,6 +199,7 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
                 if (!selection || start < 0 || element.value.slice(start, selection.start) !== text) {
                     return;
                 }
+
                 element.value = element.value.slice(0, start) + filtered + element.value.slice(selection.start);
                 PrimeFaces.utils.setTextSelection(element, start + filtered.length);
                 $(element).trigger('input');

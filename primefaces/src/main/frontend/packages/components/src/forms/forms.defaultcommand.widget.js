@@ -35,6 +35,8 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
         if (this.jqTarget.is(':not(:button):not(:input):not(a)')) {
             this.jqTarget = this.jqTarget.find('button,a').filter(':visible').first();
         }
+        // destroyed with the target
+        this.bindLifecycleTo(this.jqTarget);
 
         // attach keypress listener to parent form
         var closestForm = this.jqTarget[0] && this.jqTarget[0].hasAttribute('data-pf-form')
@@ -69,5 +71,13 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
                 }
             });
         }
+
+        // the form and the scope stay when the default command is removed
+        this.addDestroyListener(function() {
+            closestForm.off(scopeKeydown);
+            if ($this.scope) {
+                $this.scope.off(scopeKeydown);
+            }
+        });
     }
 }

@@ -53,6 +53,8 @@ PrimeFaces.widget.Resizable = class Resizable extends PrimeFaces.widget.BaseWidg
         super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        // destroyed with the target
+        this.bindLifecycleTo(this.jqTarget);
 
         this.renderDeferred();
     }

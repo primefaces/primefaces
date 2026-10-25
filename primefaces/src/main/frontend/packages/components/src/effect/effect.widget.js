@@ -35,6 +35,8 @@ PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
         super.init(cfg);
 
         this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
+        // destroyed with the source
+        this.bindLifecycleTo(this.source);
         var _self = this;
 
         this.runner = function() {
@@ -46,14 +48,22 @@ PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
             _self.timeoutId = PrimeFaces.queueTask(_self.cfg.fn, _self.cfg.delay);
         };
 
+        var namespace = '.effect' + this.id;
         if(this.cfg.event == 'load') {
             this.runner.call();
-        } 
+        }
         else {
-            var namespace = '.effect' + this.id;
             var events = this.cfg.event.split(' ').map(function(e) { return e + namespace; }).join(' ');
             this.source.off(namespace).on(events, this.runner);
         }
+
+        // the source may stay when the effect is removed
+        this.addDestroyListener(function() {
+            if(_self.timeoutId) {
+                clearTimeout(_self.timeoutId);
+            }
+            _self.source.off(namespace);
+        });
     }
     
 }

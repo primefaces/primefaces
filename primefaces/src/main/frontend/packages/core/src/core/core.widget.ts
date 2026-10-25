@@ -201,6 +201,12 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
     jq: JQuery = $();
 
     /**
+     * For a widget without own markup (e.g. `p:draggable` or `p:keyFilter`), the element it works on, see
+     * {@link bindLifecycleTo}. An element, not a jQuery instance, so {@link destroy} does not unbind its events.
+     */
+    private lifecycleElement: Element | null = null;
+
+    /**
      * A CSS selector for the container element (or elements, in case {@link id} is an array) of
      * this widget, This is usually an ID selector (that is properly escaped). You can select the container element or
      * elements like this: `$(widget.jqId)`.
@@ -267,17 +273,48 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
         this.destroyListeners = [];
         this.refreshListeners = [];
 
+        this.lifecycleElement = null;
+
         //remove script tag
         this.removeScriptElement(this.id);
 
         if (this.widgetVar) {
-            var $this = this;
-            this.jq.on("remove", function () {
-                if (!core.detachedWidgets.includes($this.widgetVar)) {
-                    core.detachedWidgets.push($this.widgetVar);
-                }
-            });
+            this.jq.on("remove", () => this.markDetached());
         }
+    }
+
+    /**
+     * Ties a widget without own markup (e.g. `p:draggable` or `p:keyFilter`) to the element it works on: the widget is
+     * detached when that element is removed, and destroyed after the AJAX update unless the update rendered it again
+     * (then it is bound to the new element). Call it in {@link init}. A widget removed while the element stays can't
+     * be detected, it has no element of its own.
+     * @param element The element the widget works on, e.g. the target of `p:draggable`.
+     */
+    protected bindLifecycleTo(element: JQuery<any> | Element | null | undefined): void {
+        const el = element instanceof Element ? element : element?.get(0);
+        if (!el || !this.widgetVar) {
+            return;
+        }
+        this.lifecycleElement = el;
+        // the element may stay when only the widget is refreshed
+        $(el).off(this.lifecycleNamespace()).on(this.lifecycleNamespace(), () => this.markDetached());
+    }
+
+    /**
+     * Marks this widget as detached, it is destroyed after the AJAX update unless it was rendered again.
+     */
+    private markDetached(): void {
+        if (!core.detachedWidgets.includes(this.widgetVar)) {
+            core.detachedWidgets.push(this.widgetVar);
+        }
+    }
+
+    /**
+     * The event namespace of the `remove` listener on the {@link lifecycleElement}.
+     * @returns The event type with the namespace of this widget.
+     */
+    private lifecycleNamespace(): string {
+        return "remove.pfwidget_" + String(this.widgetVar).replace(/\./g, "_");
     }
 
     /**
@@ -339,6 +376,14 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
         }
         this.destroyListeners = [];
 
+        if (this.lifecycleElement) {
+            // a widget without own markup only references elements of others (e.g. the scope of p:defaultCommand),
+            // which may stay: it removes its own listeners in its destroy listeners, unbinding all events would break
+            // the other widgets
+            $(this.lifecycleElement).off(this.lifecycleNamespace());
+            return;
+        }
+
         // Iterate through all stored variables within this widget. If any of them are jQuery objects, 
         // it is imperative to unbind their event listeners to avoid memory leaks in the DOM.
         for (var key in this) {
@@ -370,10 +415,15 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
     /**
      * Checks if this widget is detached, ie whether the HTML element of this widget is currently contained within
      * the DOM (the HTML body element). A widget may become detached during an AJAX update, and it may remain
-     * detached in case the update removed this component from the component tree.
+     * detached in case the update removed this component from the component tree. A widget without own markup (e.g.
+     * `p:draggable`) is detached when the element it works on was removed, see {@link bindLifecycleTo}.
      * @return `true` if this widget is currently detached, or `false` otherwise.
      */
     isDetached(): boolean {
+        if (this.lifecycleElement) {
+            // refreshed by the update, the widget is bound to the new element already
+            return !this.lifecycleElement.isConnected;
+        }
         const id = Array.isArray(this.id) ? this.id[0] : this.id;
         return id === undefined || document.getElementById(id) === null;
     }

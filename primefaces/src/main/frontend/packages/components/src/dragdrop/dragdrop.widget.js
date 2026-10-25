@@ -44,6 +44,8 @@ PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidg
         super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        // destroyed with the target
+        this.bindLifecycleTo(this.jqTarget);
         this.cfg.cancel = this.cfg.cancel || "input,textarea,button,select,option";
 
         if (this.cfg.appendTo) {
@@ -113,6 +115,8 @@ PrimeFaces.widget.Droppable = class Droppable extends PrimeFaces.widget.BaseWidg
     init(cfg) {
         super.init(cfg);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        // destroyed with the target
+        this.bindLifecycleTo(this.jqTarget);
 
         this.bindDropListener();
 
