@@ -282,7 +282,7 @@ pickList / orderList, tree, scrollable dataTable / treeTable bodies, dialog, sid
 var(--p-scrollbar-track-color)`, semantic tokens). The page and the application's own scroll areas keep the browser
 scrollbars; to opt in, use the same two declarations (e.g. on `:root`). The rule has zero specificity (`:where()`);
 `scrollbar-color` inherits into application content inside a dialog / sidebar; forced colors mode shows the system
-scrollbars. p:scrollPanel keeps its own scrollbars (`--p-scrollpanel-*`).
+scrollbars. p:scrollPanel draws its own bars over the natively scrolling content (`--p-scrollpanel-*`).
 
 ## Variants (style classes)
 
@@ -389,8 +389,7 @@ establish loopback connection"), Tomcat / Jetty do not start: set
 The `index.css` files import the CSS of the libraries the components use into `@layer primefaces.vendor` (below the
 components): jQuery UI base (components.css), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
 snow (textEditor), vis-timeline (timeline), FullCalendar 5 (schedule), PrimeIcons (primeicons/primeicons.css). The versions are the ones of `package.json`, the
-same the JavaScript uses. jScrollPane CSS is not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*`
-classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
+same the JavaScript uses.
 
 ## Known limitations
 

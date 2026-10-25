@@ -319,7 +319,6 @@ __metadata:
     "@types/jquery-cropper": "npm:1.0.4"
     "@types/jquery-touchswipe": "npm:1.6.0"
     "@types/js-cookie": "npm:3.0.6"
-    "@types/jscrollpane": "npm:2.0.35"
     "@types/moment-jdateformatparser": "npm:1.2.0"
     "@types/node": "npm:26.6.3"
     "@types/pnpapi": "npm:0.0.5"
@@ -346,7 +345,6 @@ __metadata:
     jquery-cropper: "npm:1.0.2"
     jquery-touchswipe: "npm:1.6.19"
     js-cookie: "npm:3.0.8"
-    jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:2.15.6"
     keycharm: "npm:0.4.0"
     lucide-static: "npm:1.51.0"
@@ -432,15 +430,6 @@ __metadata:
   version: 3.0.6
   resolution: "@types/js-cookie@npm:3.0.6"
   checksum: 10c0/173afaf5ea9d86c22395b9d2a00b6adb0006dcfef165d6dcb0395cdc32f5a5dcf9c3c60f97194119963a15849b8f85121e1ae730b03e40bc0c29b84396ba22f9
-  languageName: node
-  linkType: hard
-
-"@types/jscrollpane@npm:2.0.35":
-  version: 2.0.35
-  resolution: "@types/jscrollpane@npm:2.0.35"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/4fe938858184e4d14ba15604372d9e31aec7aa6e6e9ef906cae46ef50ba16077be0ee442d68a68fd0a2b18c343f0a3077252214571e94ec8fcc1ecc315c60c7a
   languageName: node
   linkType: hard
 
@@ -562,7 +551,7 @@ __metadata:
 
 "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch":
   version: 10.32.0
-  resolution: "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch::version=10.32.0&hash=c70680"
+  resolution: "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch::version=10.32.0&hash=4b3343"
   dependencies:
     blueimp-canvas-to-blob: "npm:3"
     blueimp-load-image: "npm:5"
@@ -576,7 +565,7 @@ __metadata:
       optional: true
     blueimp-tmpl:
       optional: true
-  checksum: 10c0/48a69c3a79c8f97cf53cefed6e1fee6c836db8f9ab89dfb0a74bb0eec328a9708eb70ee2e492395543bbc5204f0ffc5020c69cb0c2303853270658f18df18bfc
+  checksum: 10c0/1ec2bf07f384fc95f3ffd61e3781897c4aa37a54d3df4429dc7288aa0e6875a24805fce64206c2c8c19c322a01323375e0cf1d48ff323e5b032ead791adf0e24
   languageName: node
   linkType: hard
 
@@ -828,24 +817,6 @@ __metadata:
   version: 3.0.8
   resolution: "js-cookie@npm:3.0.8"
   checksum: 10c0/421912a4a55535bda32b3059835864e1182c3af5b4516df00a060edc1fa5a53d38bb8d5a91d5d305e396206f4fd11e829f17850aa5aa8164118c04d8ebf1ff5d
-  languageName: node
-  linkType: hard
-
-"jscrollpane@npm:2.2.3-rc.2":
-  version: 2.2.3-rc.2
-  resolution: "jscrollpane@npm:2.2.3-rc.2"
-  dependencies:
-    jquery: "npm:^3.5.1"
-  checksum: 10c0/a7cad13cd54f1014c6e43790c9fafd8e0946ccc1bbd85501ec2903094ae9f5d64ded85be5ddf1415c5de60b4a76043311395677b7b2f887e0178c39dfde51414
-  languageName: node
-  linkType: hard
-
-"jscrollpane@patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch":
-  version: 2.2.3-rc.2
-  resolution: "jscrollpane@patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch::version=2.2.3-rc.2&hash=591506"
-  dependencies:
-    jquery: "npm:^3.5.1"
-  checksum: 10c0/0fcf06990b4c32b5bd82a0a53abf8fbcdf024678fdea67b68b56eafb9a8f736abcffebb009fb125d9d0620ba4df0abfce24d427d06c3305d53dc8f1cd6d31ecc
   languageName: node
   linkType: hard
 

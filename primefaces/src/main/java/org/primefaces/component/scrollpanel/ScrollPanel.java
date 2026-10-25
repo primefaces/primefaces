@@ -41,23 +41,10 @@ public class ScrollPanel extends ScrollPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollPanel";
 
-
     public static final String SCROLL_PANEL_CLASS = "ui-scrollpanel ui-widget ui-widget-content";
     public static final String SCROLL_PANEL_NATIVE_CLASS = "ui-scrollpanel ui-scrollpanel-native ui-widget ui-widget-content";
-    public static final String SCROLL_PANEL_CONTAINER_CLASS = "ui-scrollpanel-container";
-    public static final String SCROLL_PANEL_WRAPPER_CLASS = "ui-scrollpanel-wrapper";
     public static final String SCROLL_PANEL_CONTENT_CLASS = "ui-scrollpanel-content";
-    public static final String SCROLL_PANEL_HBAR_CLASS = "ui-scrollpanel-hbar ui-widget-header";
-    public static final String SCROLL_PANEL_VBAR_CLASS = "ui-scrollpanel-vbar ui-widget-header";
-    public static final String SCROLL_PANEL_HANDLE_CLASS = "ui-scrollpanel-handle ui-state-default";
-    public static final String SCROLL_PANEL_BLEFT_CLASS = "ui-scrollpanel-bl ui-state-default";
-    public static final String SCROLL_PANEL_BRIGHT_CLASS = "ui-scrollpanel-br ui-state-default";
-    public static final String SCROLL_PANEL_BTOP_CLASS = "ui-scrollpanel-bt ui-state-default";
-    public static final String SCROLL_PANEL_BBOTTOM_CLASS = "ui-scrollpanel-bb ui-state-default";
-    public static final String SCROLL_PANEL_VGRIP_CLASS = "ui-icon ui-icon-grip-solid-vertical";
-    public static final String SCROLL_PANEL_HGRIP_CLASS = "ui-icon ui-icon-grip-solid-horizontal";
-    public static final String SCROLL_PANEL_IWEST_CLASS = "ui-icon ui-icon-triangle-1-w";
-    public static final String SCROLL_PANEL_IEAST_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String SCROLL_PANEL_INORTH_CLASS = "ui-icon ui-icon-triangle-1-n";
-    public static final String SCROLL_PANEL_ISOUTH_CLASS = "ui-icon ui-icon-triangle-1-s";
+    public static final String SCROLL_PANEL_TRACK_X_CLASS = "ui-scrollpanel-track ui-scrollpanel-track-x p-hidden";
+    public static final String SCROLL_PANEL_TRACK_Y_CLASS = "ui-scrollpanel-track ui-scrollpanel-track-y p-hidden";
+    public static final String SCROLL_PANEL_BAR_CLASS = "ui-scrollpanel-bar";
 }

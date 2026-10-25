@@ -20,7 +20,6 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Hotkeys Plugin](../jsdocs/interfaces/src_PrimeFaces.JQueryStatic.html#hotkeys) | 0.2.0 | https://github.com/tzuryby/jquery.hotkeys |
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 4.0.0 | https://jquery.com/ |
-| [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.15.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.1 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.30.1 | https://github.com/moment/moment |
