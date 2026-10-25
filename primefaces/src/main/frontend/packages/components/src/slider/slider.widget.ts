@@ -15,8 +15,10 @@ export interface SliderEventData {
 /**
  * Callback that is invoked when a slider handle starts moving, moves or stops moving. `this` is the slider widget
  * for `onSlide` / `onSlideEnd` and the slider element for `onSlideStart`.
- * @param event The event that moved the handle, e.g. a pointer or keyboard event.
+ * @param event Like with jQuery UI a `slidestart`, `slide` or `slidestop` event wrapping the pointer or keyboard
+ * event, `null` if there is none. `onSlideStart` and `onSlide` cancel the slide with `event.preventDefault()`.
  * @param data The handle and the new value(s).
+ * @returns `false` to cancel the slide (`onSlideStart` and `onSlide` only).
  */
 export type SliderCallback = (this: Slider | HTMLElement, event: JQuery.TriggeredEvent | null, data: SliderEventData) => void | boolean;
 
@@ -335,15 +337,13 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
 
         const values = this.values.slice();
         values[index] = value;
-        const data = this.data(index, values);
-        if (!this.callSlideCallback(this.cfg.onSlide, this, 'slide', event, data)) {
+        if (!this.onSlide(event, this.data(index, values))) {
             return;
         }
 
         this.values = values;
         this.lastIndex = index;
         this.updateUI(animate);
-        this.updateInputs(data);
     }
 
     /**
@@ -374,7 +374,8 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      * @returns The aligned value; the minimum for a missing or invalid value.
      */
     private align(value: number | string | undefined | null): number {
-        const val = Number(value);
+        // an empty value (e.g. a null model value or a cleared input) is the minimum, not 0
+        const val = value === null || value === undefined || String(value).trim() === '' ? NaN : Number(value);
         const { min, max, step } = this;
         if (isNaN(val) || val <= min) {
             return min;
@@ -449,14 +450,18 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Fires the `onSlide` callback and updates the inputs and the display (formatted with the decimals of the step)
-     * after a handle moved.
-     * @param event The event that moved the handle.
-     * @param data The data of the moved handle.
+     * Fires the `onSlide` callback before a handle moves and, unless the callback cancelled the move (see
+     * {@link callSlideCallback}), updates the inputs and the display (formatted with the decimals of the step).
+     * @param event The event that moves the handle.
+     * @param data The data of the moved handle with the new value(s).
+     * @returns `false` if the callback cancelled the move.
      */
-    onSlide(event: JQuery.TriggeredEvent | null, data: SliderEventData): void {
-        this.cfg.onSlide?.call(this, event, data);
+    onSlide(event: JQuery.TriggeredEvent | null, data: SliderEventData): boolean {
+        if (!this.callSlideCallback(this.cfg.onSlide, this, 'slide', event, data)) {
+            return false;
+        }
         this.updateInputs(data);
+        return true;
     }
 
     /**
@@ -486,7 +491,8 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      * @param data The data of the moved handle.
      */
     onSlideEnd(event: JQuery.TriggeredEvent | null, data: SliderEventData): void {
-        this.cfg.onSlideEnd?.call(this, event, data);
+        // like jQuery UI a `slidestop` event, the slide has ended already and can't be cancelled
+        this.callSlideCallback(this.cfg.onSlideEnd, this, 'slidestop', event, data);
 
         this.input.each((_, input) => {
             // the input of an InputNumber / Spinner; the inputs of a range slider are their wrappers

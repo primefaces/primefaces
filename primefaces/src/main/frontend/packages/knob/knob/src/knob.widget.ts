@@ -163,7 +163,8 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
             .on('mousedown.knob', (e) => e.preventDefault())
             .on('wheel.knob', (e) => this.onWheel(e))
             .on('keydown.knob', (e) => this.onKeyDown(e))
-            .on('keyup.knob', () => {
+            // also on blur: the focus may leave while the key is held
+            .on('keyup.knob blur.knob', () => {
                 if (this.keyChanging) {
                     this.keyChanging = false;
                     this.release(this.currentValue);

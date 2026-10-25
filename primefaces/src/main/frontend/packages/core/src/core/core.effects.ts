@@ -199,8 +199,9 @@ interface RunningEffect {
     /**
      * Finishes the effect: hides the element in `hide` mode, runs the cleanups, cancels the animations, calls the
      * `complete` callback and dequeues the next effect. Calling it again does nothing.
-     * @param stopped `true` when called by {@link Effects.stop}, which cleared the queue already: the next effect is
-     * not dequeued, as that would remove the marker of an effect the `complete` callback just started.
+     * @param stopped `true` when called by {@link Effects.stop}, which cleared the queue already, or when a new effect
+     * starts on the element while this one is still registered: the next effect is not dequeued, as that would remove
+     * the marker of an effect the `complete` callback just started.
      */
     finish: (stopped?: boolean) => void;
 }
@@ -963,8 +964,9 @@ export class Effects {
      *
      * By default, the effect is added to the jQuery `fx` queue of each element, so it starts after the running
      * effects and animations; with `queue: false` these are finished first and the effect starts immediately. An
-     * explicit `show` / `hide` mode that is already fulfilled only calls `complete`, and an unknown effect just
-     * shows / hides the element. When animations are disabled, the effect finishes synchronously.
+     * explicit `show` / `hide` mode that is already fulfilled only calls `complete`, and an unknown effect shows /
+     * hides the element with the jQuery animation (like jQuery UI). When animations are disabled, the effect finishes
+     * synchronously.
      * @param element The elements to animate.
      * @param effect The name of the effect.
      * @param options The options of the effect.
@@ -1078,8 +1080,12 @@ export class Effects {
      */
     private execute(el: HTMLElement, effect: string, options: PrimeFacesTypes.effects.Options, next?: () => void): void {
         // an effect still running here was not stopped with stop() (e.g. jQuery's stop() cleared the queue): it jumps
-        // to its end first, so it does not hide the element or dequeue later
-        runningEffects.get(el)?.finish(true);
+        // to its end first, so it does not hide the element or dequeue later; also an effect its complete callback
+        // starts, it would be overwritten in runningEffects below
+        let previous: RunningEffect | undefined;
+        while ((previous = runningEffects.get(el))) {
+            previous.finish(true);
+        }
 
         const jq = $(el);
         const definition = this.exists(effect) ? effectDefinitions[effect] : undefined;
@@ -1106,11 +1112,14 @@ export class Effects {
         }
 
         if (!definition) {
-            // unknown effect, just show / hide the element
+            // unknown effect (e.g. a jQuery animation name like fadeIn): like jQuery UI the jQuery animation of show /
+            // hide, not queued as this already runs in the queue
             if (mode !== "effect") {
-                jq[mode]();
+                jq[mode]({ duration, queue: false, complete: () => done() });
             }
-            done();
+            else {
+                done();
+            }
             return;
         }
 

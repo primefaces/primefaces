@@ -22,7 +22,7 @@ Showing and hiding the dialog is easy using the client side api.
 ## Effects
 There are various effect options to be used when displaying and closing the dialog. Use _showEffect_
 and _hideEffect_ options to apply these effects; blind, bounce, clip, drop, explode, fade, fold,
-highlight, puff, pulsate, scale, shake, size, slide and transfer.
+highlight, puff, pulsate, scale, shake, size and slide.
 
 ```xhtml
 <p:dialog showEffect="fade" hideEffect="explode" ...>
