@@ -82,6 +82,19 @@ MegaMenu supports `start` and `end` facets to control UI output or add logos or 
 <p:megaMenu>
 ```
 
+## Active Root Item
+
+Set `activeIndex` to the zero-based index of an enabled root link to highlight the
+current section. Rendered disabled links and separators do not count towards this
+index. By default, no root item is highlighted; negative or out-of-range values
+also leave no item selected.
+
+The selected root is rendered with `ui-menuitem-selected` and its link has
+`aria-current="page"`. Its underline persists when another item is hovered,
+focused, or opened, and when the menu is dismissed. Hover styling and open
+submenus remain temporary. Keyboard focus defaults to the selected root. To change the current section, update `activeIndex`
+and refresh the menu with AJAX.
+
 ## Skinning
 MegaMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
 list of structural style classes;
