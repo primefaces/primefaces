@@ -111,6 +111,8 @@ export class Resizable extends Interaction<ResizableOptions> {
     private ratio: number = 1;
     /** The elements of the `alsoResize` option with their size when the resizing started. */
     private alsoResizeSizes: { element: JQuery; size: Size }[] = [];
+    /** Whether the resizing was aborted, it ends with the original size. */
+    private aborted: boolean = false;
     /** The inline cursor of the body, restored after the resizing. */
     private storedCursor: string = '';
 
@@ -152,7 +154,7 @@ export class Resizable extends Interaction<ResizableOptions> {
     /** Removes the handles and unwraps a wrapped element, a resizing in progress ends first. */
     override destroy(): void {
         if (this.isActive()) {
-            this.abort($.Event('pointercancel') as JQuery.TriggeredEvent);
+            this.abort(this.cancelEvent());
         }
         this.resizeElement.children('.ui-resizable-handle').remove();
         this.resizeElement.off(this.namespace).removeClass('ui-resizable ui-resizable-resizing');
@@ -437,14 +439,32 @@ export class Resizable extends Interaction<ResizableOptions> {
     }
 
     /**
-     * Applies the size (or animates to it), calls `stop` and removes the helper.
+     * The browser took over the pointer or the resizable is destroyed: like a cancelled drag, the element gets its
+     * original size and position back; `stop` is still called, with that size, so the callers can clean up.
+     * @param e The pointercancel event.
+     */
+    protected override abort(e: JQuery.TriggeredEvent): void {
+        this.size = { ...this.originalSize };
+        this.position = { ...this.originalPosition };
+        if (!this.helper) {
+            this.apply();
+        }
+        this.aborted = true;
+        this.end(e);
+    }
+
+    /**
+     * Applies the size (or animates to it), calls `stop` and removes the helper. An aborted resizing is not applied
+     * to the element with a helper and not animated.
      * @param event The pointerup or pointercancel event.
      */
     protected stop(event: JQuery.TriggeredEvent): void {
         const o = this.options;
         const helper = this.helper;
+        const aborted = this.aborted;
+        this.aborted = false;
 
-        if (helper && !o.animate) {
+        if (helper && !o.animate && !aborted) {
             this.apply();
         }
         if (helper) {
@@ -459,7 +479,7 @@ export class Resizable extends Interaction<ResizableOptions> {
         if (helper) {
             helper.remove();
             this.helper = null;
-            if (o.animate) {
+            if (o.animate && !aborted) {
                 const target: Record<string, number> = {
                     width: this.size.width + (this.resizeElement.css('box-sizing') === 'border-box' ? this.sizeDiff.width : 0),
                     height: this.size.height + (this.resizeElement.css('box-sizing') === 'border-box' ? this.sizeDiff.height : 0)

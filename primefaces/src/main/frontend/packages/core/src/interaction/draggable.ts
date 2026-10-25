@@ -423,7 +423,7 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
     cancel(): void {
         if (this.isActive()) {
             this.cancelled = true;
-            this.end($.Event('pointercancel') as JQuery.TriggeredEvent);
+            this.end(this.cancelEvent());
         }
         else {
             this.helper?.stop(true);

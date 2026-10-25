@@ -246,10 +246,13 @@ function resolveDuration(duration: PrimeFacesTypes.effects.Options["duration"]):
     return SPEEDS.normal!;
 }
 
+/** Whether the browser supports the CSS `linear()` easing function (older browsers throw in `Element.animate`). */
+let linearEasingSupported: boolean | undefined;
+
 /**
  * Converts the name of a jQuery easing function into a CSS easing function. CSS easing functions are returned
  * unchanged, jQuery easing functions from `$.easing` are sampled into a cached CSS `linear()` function and unknown
- * names fall back to `ease`.
+ * names fall back to `ease`. Without support for `linear()`, `swing` is a cubic Bézier curve and the others are `ease`.
  * @param easing The name of a jQuery easing function or a CSS easing function, defaults to `swing`.
  * @returns The CSS easing function for the Web Animations API.
  */
@@ -257,6 +260,11 @@ function resolveEasing(easing: string | null | undefined): string {
     const name = easing || "swing";
     if (CSS_EASING.test(name)) {
         return name;
+    }
+    linearEasingSupported ??= typeof CSS !== "undefined" && CSS.supports("animation-timing-function", "linear(0, 1)");
+    if (!linearEasingSupported) {
+        // swing is the sine curve of easeInOutSine
+        return name === "swing" ? "cubic-bezier(0.37, 0, 0.63, 1)" : "ease";
     }
 
     let cssEasing = easingCache[name];

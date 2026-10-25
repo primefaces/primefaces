@@ -653,7 +653,8 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
 
     /**
      * Aborts the sorting, the item goes back to its original position. Like jQuery UI, this also works during the
-     * revert animation and in the callbacks at the end of the sorting (e.g. `receive`, `update` or `stop`).
+     * revert animation, in the callbacks at the end of the sorting (e.g. `receive`, `update` or `stop`) and after
+     * the sorting, e.g. to undo a reorder the server rejected; then no events are triggered.
      */
     cancel(): void {
         if (this.clearing) {
@@ -666,12 +667,16 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
                 this.restore(this.placeholder);
                 this.helper.stop(true, true);
             }
+            else if (this.currentItem[0]?.isConnected) {
+                // after the sorting: the last sorted item goes back
+                this.restore(this.currentItem);
+            }
             return;
         }
         this.restore(this.placeholder);
         this.currentContainer = this;
         this.cancelled = true;
-        this.end($.Event('pointercancel') as JQuery.TriggeredEvent);
+        this.end(this.cancelEvent());
     }
 
     /**

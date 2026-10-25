@@ -143,6 +143,8 @@ export abstract class Interaction<O extends InteractionOptions> {
     protected readonly namespace: string;
     /** The pointerdown event of the pointer that is down. */
     private startEvent: JQuery.TriggeredEvent | null = null;
+    /** The last event of the pointer that is down, for the position of an interaction cancelled by code. */
+    private lastEvent: JQuery.TriggeredEvent | null = null;
     /** The id of the pointer that is down. */
     private pointerId: number | null = null;
     /** The element that captured the pointer while the interaction is in progress. */
@@ -251,7 +253,7 @@ export abstract class Interaction<O extends InteractionOptions> {
     /** Removes the interaction from the element, one in progress ends without a drop. */
     destroy(): void {
         if (this.started) {
-            this.abort($.Event('pointercancel') as JQuery.TriggeredEvent);
+            this.abort(this.cancelEvent());
         }
         this.cleanupPointer();
         this.element.off(this.namespace).removeClass('ui-' + this.name);
@@ -367,6 +369,7 @@ export abstract class Interaction<O extends InteractionOptions> {
         event[HANDLED] = true;
 
         this.startEvent = e;
+        this.lastEvent = e;
         this.pointerId = event.pointerId;
         activeInteraction = this as unknown as Interaction<InteractionOptions>;
         // in the capture phase, so an event handler that stops the propagation can't swallow the end of the drag
@@ -402,6 +405,7 @@ export abstract class Interaction<O extends InteractionOptions> {
      * @param e The pointermove event.
      */
     private onPointerMove(e: JQuery.TriggeredEvent): void {
+        this.lastEvent = e;
         const pointer = e.originalEvent as PointerEvent | undefined;
         // the pointerup got lost, e.g. the button was released over an iframe
         if (pointer?.pointerType === 'mouse' && pointer.buttons === 0) {
@@ -485,6 +489,21 @@ export abstract class Interaction<O extends InteractionOptions> {
         this.pointerId = null;
         this.started = false;
         this.startEvent = null;
+        this.lastEvent = null;
+    }
+
+    /**
+     * A `pointercancel` event for an interaction cancelled or destroyed by code, with the position of the last pointer
+     * event, so the callbacks get a position (e.g. `event.pageX` in the `stop` callback).
+     * @returns The event.
+     */
+    protected cancelEvent(): JQuery.TriggeredEvent {
+        const last = this.lastEvent;
+        const position = last ? {
+            pageX: last.pageX, pageY: last.pageY, clientX: last.clientX, clientY: last.clientY,
+            target: last.target, originalEvent: last.originalEvent
+        } : {};
+        return $.Event('pointercancel', position) as unknown as JQuery.TriggeredEvent;
     }
 
     /**
