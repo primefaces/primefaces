@@ -38,7 +38,6 @@ import jakarta.faces.context.FacesContext;
         "Poll is an AJAX component that has the ability to send periodical AJAX requests and execute listeners on Faces backing beans.")
 @FacesComponentHandler(PollHandler.class)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 public class Poll extends PollBaseImpl {
 

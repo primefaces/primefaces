@@ -35,7 +35,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "CommandLink extends standard Faces commandLink with extra PrimeFaces capabilities.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class CommandLink extends CommandLinkBaseImpl implements DialogReturnAware {

@@ -8,7 +8,6 @@
 			"../../types/dist",
 			"../../moment/moment/dist",
 			"../../jquery/jquery/dist",
-			"../../jquery/jquery-plugins/dist",
 			"../../core/dist",
 			"../../components/dist"
 		],
@@ -18,7 +17,6 @@
 		{ "path": "../../types" },
 		{ "path": "../../moment/moment" },
 		{ "path": "../../jquery/jquery" },
-		{ "path": "../../jquery/jquery-plugins" },
 		{ "path": "../../core" },
 		{ "path": "../../components" }
 	]

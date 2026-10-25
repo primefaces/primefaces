@@ -31,7 +31,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponent(value = Effect.COMPONENT_TYPE, namespace = Effect.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Effect component runs an animation effect on a component.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Effect extends EffectBaseImpl {

@@ -4,8 +4,12 @@ import { PF as _PF, core, type Core } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 import { globalEffectsSetup } from "./src/core/core.effects.js";
+import { globalJQueryExtensionsSetup } from "./src/jquery-extensions/jquery-extensions.js";
 // global PrimeFacesTypes declarations of the position options
 import "./src/core/core.position.js";
+// global declarations of the jQuery extensions $.fn.focus(delay) and $.fn.zIndex()
+import "./src/jquery-extensions/jquery.focus.js";
+import "./src/jquery-extensions/jquery.zindex.js";
 
 import type { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
 import type { AjaxStatus } from "./src/ajaxstatus/ajaxstatus.js";
@@ -27,6 +31,9 @@ function exposeToGlobalScope() {
         window.PrimeFaces.debug("PrimeFaces already loaded, ignoring duplicate execution.");
         return;
     }
+
+    // the jQuery extensions first, the rest of PrimeFaces uses them (e.g. the remove event to destroy widgets)
+    globalJQueryExtensionsSetup();
 
     // Expose js-cookie to the global scope
     Object.assign(window, {

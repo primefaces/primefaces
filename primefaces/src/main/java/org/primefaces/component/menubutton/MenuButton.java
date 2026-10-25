@@ -33,7 +33,6 @@ import jakarta.faces.context.FacesContext;
 @FacesComponentInfo(description = "MenuButton displays different commands in a popup menu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class MenuButton extends MenuButtonBaseImpl {

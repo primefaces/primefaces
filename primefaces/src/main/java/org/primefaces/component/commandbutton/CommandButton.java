@@ -37,7 +37,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "CommandButton is an extended version of standard Faces commandButton with ajax and skinning features.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class CommandButton extends CommandButtonBaseImpl implements DialogReturnAware {

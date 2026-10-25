@@ -7,7 +7,6 @@
 		"types": [
 			"../../types/dist",
 			"../../jquery/jquery/dist",
-			"../../jquery/jquery-plugins/dist",
 			"../../core/dist"
 		],
 	},
@@ -15,7 +14,6 @@
 	"references": [
 		{ "path": "../../types" },
 		{ "path": "../../jquery/jquery" },
-		{ "path": "../../jquery/jquery-plugins" },
 		{ "path": "../../core" }
 	]
 }

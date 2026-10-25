@@ -45,7 +45,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "SplitButton displays a default command and additional ones in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SplitButton extends SplitButtonBaseImpl {
