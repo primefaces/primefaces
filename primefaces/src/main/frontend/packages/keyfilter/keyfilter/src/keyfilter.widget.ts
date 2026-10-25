@@ -175,7 +175,7 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
                 }
                 if (filtered) {
                     PrimeFaces.utils.replaceTextSelection(element, filtered);
-                    $(element).trigger('input');
+                    element.dispatchEvent(new Event('input', { bubbles: true }));
                 }
             }
         })
@@ -202,7 +202,7 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
 
                 element.value = element.value.slice(0, start) + filtered + element.value.slice(selection.start);
                 PrimeFaces.utils.setTextSelection(element, start + filtered.length);
-                $(element).trigger('input');
+                element.dispatchEvent(new Event('input', { bubbles: true }));
             });
         });
     }

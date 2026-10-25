@@ -383,6 +383,8 @@ export const DragDropManager = {
      * @returns Whether it was dropped.
      */
     drop(source: DragSource, event: JQuery.TriggeredEvent): boolean {
+        // over / out at the final position: the pointer may not have moved since a container scrolled under it
+        this.drag(source, event);
         let dropped = false;
         for (const droppable of this.active) {
             if (droppable.isOver && droppable.intersects(source, event) && droppable.accepts(source.item())) {

@@ -32,6 +32,11 @@ PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init(cfg) {
+        // a refresh does not run the destroy listeners: a run scheduled by the previous initialization is cancelled here
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = undefined;
+        }
         super.init(cfg);
 
         this.source = $(PrimeFaces.escapeClientId(this.cfg.source));

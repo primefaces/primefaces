@@ -3609,7 +3609,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * @returns `true` for a `Date` that is not invalid.
      */
     private isDate(value: unknown): value is Date {
-        return value instanceof Date && !isNaN(value.getTime());
+        // not instanceof: a date of another frame (e.g. an iframe) has another Date constructor
+        return Object.prototype.toString.call(value) === '[object Date]' && !isNaN((value as Date).getTime());
     }
 
     /**

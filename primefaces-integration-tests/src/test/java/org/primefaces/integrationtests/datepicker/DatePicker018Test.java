@@ -59,6 +59,7 @@ class DatePicker018Test extends AbstractDatePickerTest {
 
         // The non-focusable outside target leaves the time input focused until the
         // popup closes, so hideOverlay must blur it to fire the normal change handler.
+        awaitOutsideClickHandled(datePicker);
         PrimeSelenium.guardAjax(page.outside).click();
         assertEquals("2026-06-05 15:05:00", page.selectedValue.getText());
         assertEquals("1", page.dateSelectCount.getText());
@@ -67,6 +68,13 @@ class DatePicker018Test extends AbstractDatePickerTest {
         minuteInput = panel.findElement(By.cssSelector(".ui-minute-picker input"));
         assertEquals("05", minuteInput.getAttribute("value"));
         assertConfiguration(datePicker.getWidgetConfiguration());
+    }
+
+    // showOverlay ignores document clicks for 200ms after the panel opens (datepickerClick), so an
+    // outside click sent sooner leaves the panel open and the typed minutes are never committed.
+    private void awaitOutsideClickHandled(DatePicker datePicker) {
+        PrimeSelenium.waitGui().until(d -> Boolean.FALSE.equals(PrimeSelenium.executeScript(
+                "return " + datePicker.getWidgetByIdScript() + ".datepickerClick;")));
     }
 
     private void clearInput(WebElement input) {
