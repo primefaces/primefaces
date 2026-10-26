@@ -355,7 +355,12 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
      * Resolves the submitted rowKeys of the selection to their nodes. The client can never change the selection of a
      * non-selectable node, see #14798: a submitted non-selectable node is only accepted if it is part of the previous
      * selection already, and in checkbox mode a non-selectable node of the previous selection is kept even when the
-     * client didn't submit it, e.g. because it was not rendered when one of its ancestors got unchecked.
+     * client didn't submit it, e.g. because it was not rendered when one of its ancestors got unchecked. Such a node is
+     * only kept as long as the current tree still contains it at its rowKey.
+     * <p>
+     * The previous selection only contains the nodes preselected by the model ({@link TreeNode#isSelected()}) when the
+     * {@code selection} attribute is bound to a value expression, as {@link #initPreselection()} writes them into it.
+     * Without such a binding, a preselected non-selectable node is dropped from the selection on the first submit.
      *
      * @param root the root node
      * @param rowKeys the submitted rowKeys
@@ -385,15 +390,21 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 selectedNodes.add(node);
             }
         }
-        setRowKey(root, null);
 
         if (isCheckboxSelectionMode()) {
-            for (TreeNode<?> node : previousNodes) {
-                if (!node.isSelectable()) {
+            for (TreeNode<?> previousNode : previousNodes) {
+                if (previousNode.isSelectable()) {
+                    continue;
+                }
+                // a node removed from or moved within the tree must not stay selected forever
+                setRowKey(root, previousNode.getRowKey());
+                TreeNode<?> node = getRowNode();
+                if (node != null && node.equals(previousNode) && !node.isSelectable()) {
                     selectedNodes.add(node);
                 }
             }
         }
+        setRowKey(root, null);
 
         return new ArrayList<>(selectedNodes);
     }
@@ -685,23 +696,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
                 if (previousSelections != null) {
                     for (TreeNode<?> node : previousSelections) {
-                        if (node instanceof CheckboxTreeNode<?> treeNode) {
-                            treeNode.setSelected(false, propagateSelectionDown, propagateSelectionUp);
-                        }
-                        else {
-                            node.setSelected(false);
-                        }
+                        updateNodeSelection(node, false, propagateSelectionDown, propagateSelectionUp);
                     }
                 }
 
                 if (selections != null) {
                     for (TreeNode<?> node : selections) {
-                        if (node instanceof CheckboxTreeNode<?> treeNode1) {
-                            treeNode1.setSelected(true, propagateSelectionDown, propagateSelectionUp);
-                        }
-                        else {
-                            node.setSelected(true);
-                        }
+                        updateNodeSelection(node, true, propagateSelectionDown, propagateSelectionUp);
                     }
                 }
             }
@@ -716,6 +717,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
             selectionVE.setValue(context.getELContext(), selection);
             setSelection(null);
+        }
+    }
+
+    private void updateNodeSelection(TreeNode<?> node, boolean selected, boolean propagateSelectionDown, boolean propagateSelectionUp) {
+        if (node instanceof CheckboxTreeNode<?> treeNode) {
+            // the selection of a non-selectable node is only kept, see #decodeSelectedNodes, so it must not be
+            // propagated: that would e.g. select its children again after the user unchecked them, see #14798
+            boolean propagate = treeNode.isSelectable();
+            treeNode.setSelected(selected, propagate && propagateSelectionDown, propagate && propagateSelectionUp);
+        }
+        else {
+            node.setSelected(selected);
         }
     }
 

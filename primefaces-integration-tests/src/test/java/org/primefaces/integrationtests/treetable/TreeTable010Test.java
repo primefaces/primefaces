@@ -68,6 +68,10 @@ class TreeTable010Test extends AbstractTreeTableTest {
     private static final String ARCHIVE_GRANDCHILD = "1_0_0";
     /** rowKey of the collapsed "Backup", whose non-rendered "snapshot.app" is non-selectable but selected. */
     private static final String BACKUP = "2";
+    /** rowKey of "Shared", which is {@code setSelectable(false)} but selected by the model. */
+    private static final String SHARED = "3";
+    /** rowKey of "shared.app", a selectable child of "Shared", also selected by the model. */
+    private static final String SHARED_CHILD = "3_0";
 
     @Test
     @Order(1)
@@ -151,7 +155,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
 
         page.showSelected.click();
         // only the preselected non-selectable nodes of the other folders are left
-        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -175,7 +179,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertTrue(isChecked(treeTable, PRESELECTED_UNSELECTABLE_CHILD));
 
         page.showSelected.click();
-        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -200,7 +204,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
 
         selectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
         page.showSelected.click();
-        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "old.app");
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app", "old.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -218,7 +222,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
 
         // Assert
         page.showSelected.click();
-        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -233,7 +237,28 @@ class TreeTable010Test extends AbstractTreeTableTest {
         page.showSelected.click();
 
         // Assert
-        assertSubmittedSelection(page, "legacy.app", "snapshot.app");
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
+        assertConfiguration(page.treeTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("TreeTable: GitHub #14798 an unchecked child of a preselected non-selectable node must not be reselected")
+    void uncheckedChildOfPreselectedUnselectableNodeStaysUnselected(Page page) {
+        // Arrange
+        TreeTable treeTable = page.treeTable;
+        assertTrue(isSelected(treeTable, SHARED));
+        assertTrue(isSelected(treeTable, SHARED_CHILD));
+
+        // Act - uncheck the child, then re-render the tree from the model
+        unselectCheckbox(treeTable, SHARED_CHILD);
+        page.showSelected.click();
+
+        // Assert - the server must not propagate the kept selection of "Shared" down into its child again
+        assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared");
+        assertTrue(isSelected(page.treeTable, SHARED));
+        assertFalse(isSelected(page.treeTable, SHARED_CHILD));
+        assertFalse(isChecked(page.treeTable, SHARED_CHILD));
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
