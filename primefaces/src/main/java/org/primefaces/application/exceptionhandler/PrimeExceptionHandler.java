@@ -361,13 +361,19 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean isResponseReset) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         if (externalContext.getSession(false) != null) {
-            ClientWindow clientWindow = externalContext.getClientWindow();
-            if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
-                Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
-                        externalContext.getSessionMap().computeIfAbsent(ExceptionInfo.ATTRIBUTE_NAME + "_map", k -> new LimitedSizeHashMap<>(5));
-                windowsMap.put(clientWindow.getId(), info);
+            if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
+                ClientWindow clientWindow = externalContext.getClientWindow();
+                if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
+                    Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
+                            externalContext.getSessionMap().computeIfAbsent(ExceptionInfo.ATTRIBUTE_NAME + "_map", k -> new LimitedSizeHashMap<>(5));
+                    windowsMap.put(clientWindow.getId(), info);
+                }
+                else {
+                    externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+                }
             }
             else {
+                // ClientWindow is only available since JSF 2.2; fallback to session scope
                 externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
             }
         }
