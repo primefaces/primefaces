@@ -207,7 +207,10 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
             (_, eventTarget) => {
                 const menuItemLink = '.ui-menuitem-link:not(.ui-submenu-link, .ui-state-disabled)';
 
-                if (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length) {
+                // the SlideMenu back link only navigates within the menu, it must not close the overlay
+                const isSlideMenuBackward = eventTarget.closest('.ui-slidemenu-backward').length > 0;
+
+                if (!isSlideMenuBackward && (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length)) {
                     this.itemMouseDown = true;
                 }
                 else if (!($menu.is(eventTarget) || $menu.has(eventTarget[0] ?? "").length > 0)) {
