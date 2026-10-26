@@ -25,15 +25,17 @@ package org.primefaces.integrationtests.slidemenu;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.SlideMenu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,18 +46,21 @@ class SlideMenu001Test extends AbstractPrimePageTest {
     @DisplayName("SlideMenu: GitHub #15402 overlay stays open when clicking the back button")
     void backButtonKeepsOverlayOpen(Page page) {
         // Arrange
+        SlideMenu menu = page.menu;
         page.trigger.click();
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(page.menu));
-        page.submenuLink.click();
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(page.backward));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(menu));
+        menu.selectMenuitemByValue("Submenu");
+        assertEquals(1, menu.getDepth());
+        assertTrue(menu.isBackwardVisible());
 
         // Act
-        page.backward.click();
-        PrimeSelenium.waitGui().until(ExpectedConditions.invisibilityOf(page.backward));
+        menu.back();
 
         // Assert
-        assertTrue(page.menu.isDisplayed(), "Overlay should stay open after navigating back");
-        assertTrue(page.item3.isDisplayed(), "Root list should be visible again");
+        assertTrue(menu.isDisplayed(), "Overlay should stay open after navigating back");
+        assertEquals(0, menu.getDepth());
+        assertFalse(menu.isBackwardVisible());
+        assertTrue(menu.findMenuitemByValue("Item 3").isDisplayed(), "Root list should be visible again");
         assertNoJavascriptErrors();
     }
 
@@ -64,34 +69,26 @@ class SlideMenu001Test extends AbstractPrimePageTest {
     @DisplayName("SlideMenu: GitHub #15402 overlay still closes when clicking a menu item")
     void menuItemClosesOverlay(Page page) {
         // Arrange
+        SlideMenu menu = page.menu;
         page.trigger.click();
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(page.menu));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(menu));
 
         // Act
-        page.item3.click();
-        PrimeSelenium.waitGui().until(ExpectedConditions.invisibilityOf(page.menu));
+        menu.selectMenuitemByValue("Item 3");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(menu));
 
         // Assert
-        assertFalse(page.menu.isDisplayed(), "Overlay should close after clicking a menu item");
+        assertFalse(menu.isDisplayed(), "Overlay should close after clicking a menu item");
         assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
 
         @FindBy(id = "form:menuButton")
-        WebElement trigger;
+        CommandButton trigger;
 
         @FindBy(id = "form:menu")
-        WebElement menu;
-
-        @FindBy(css = "[id='form:submenu'] > a")
-        WebElement submenuLink;
-
-        @FindBy(css = "[id='form:menu'] .ui-slidemenu-backward a")
-        WebElement backward;
-
-        @FindBy(id = "form:item3")
-        WebElement item3;
+        SlideMenu menu;
 
         @Override
         public String getLocation() {

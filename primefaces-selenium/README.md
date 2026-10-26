@@ -126,6 +126,7 @@ Currently, only the following components are implemented (partially):
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
+- SlideMenu
 - Slider
 - Spinner
 - TabView
