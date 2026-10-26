@@ -65,7 +65,10 @@ class DatePicker002Test extends AbstractDatePickerTest {
         List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.ui-datepicker-other-month"));
         assertNotNull(daysOtherMonths);
         assertEquals(7, daysOtherMonths.size());
-        assertEquals(0, daysOtherMonths.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
+        // only the content is hidden, the cells stay in the table so screen readers announce the right column (#15338)
+        List<WebElement> daysOtherMonthsContent = table.findElements(By.cssSelector("td.ui-datepicker-other-month > *"));
+        assertEquals(7, daysOtherMonthsContent.size());
+        assertEquals(0, daysOtherMonthsContent.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
     }
 
     @Test
