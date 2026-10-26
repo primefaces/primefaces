@@ -1420,7 +1420,7 @@ $.widget("prime.datePicker", {
             'ui-state-disabled': disabled
         });
 
-        return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
+        return '<a role="button" tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
     },
 
     renderMonthViewMonths: function() {
@@ -1567,7 +1567,8 @@ $.widget("prime.datePicker", {
         for (var i = 0; i < weekDaysMin.length; i++) {
             var weekDayLabel = this.escapeHTML(weekDays[i]);
             var weekDayMinLabel = weekDaysMin[i];
-            dayNamesHtml += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDayMinLabel + '">' +
+            // screen readers announce the abbr as column header, so it holds the full week day name
+            dayNamesHtml += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDayLabel + '">' +
                 '<span title="' + weekDayLabel + '">' +
                 weekDayMinLabel +
                 '</span>' +
@@ -1642,11 +1643,12 @@ $.widget("prime.datePicker", {
             var date = weekDates[i],
                 disabled = !weekDates[i].selectable,
                 selected = this.isSelected(date),
+                hidden = date.otherMonth && !this.options.showOtherMonths,
                 cellClass = this.getClassesToAdd({
                     'ui-datepicker-other-month': date.otherMonth,
                     'ui-datepicker-today': date.today,
                     'ui-datepicker-week-end': i == sundayIndex || i == saturdayIndex,
-                    'ui-datepicker-other-month-hidden': date.otherMonth && !this.options.showOtherMonths
+                    'ui-datepicker-other-month-hidden': hidden
                 }).trim(),
                 dateClass = this.getClassesToAdd({
                     'ui-state-default': true,
@@ -1658,13 +1660,13 @@ $.widget("prime.datePicker", {
                 content = this.renderDateCellContent(date, dateClass, dateLabel);
 
             // the focusable <a> carries the full date label so screen readers announce it while navigating;
-            // cells without a link (disabled) keep the label on the cell itself
+            // cells without a link (disabled) keep the label on the cell itself, hidden cells stay unlabeled
             weekHtml += (
                 '<td role="gridcell" aria-colindex="' + (i + 1 + (this.options.showWeek ? 1 : 0)) + '"' +
                 (cellClass ? ' class="' + cellClass + '"' : '') + 
                 (disabled ? ' aria-disabled="true"' : '') + 
                 (selected ? ' aria-selected="true"' : '') + 
-                (date.selectable ? '' : ' aria-label="' + dateLabel + '"') + '>' +
+                (date.selectable || hidden ? '' : ' aria-label="' + dateLabel + '"') + '>' +
                 content +
                 '</td>'
             );
@@ -1684,7 +1686,8 @@ $.widget("prime.datePicker", {
             }
         }
         if (date.selectable) {
-            return '<a tabindex="0" class="' + dateClass + '"' + (dateLabel ? ' aria-label="' + dateLabel + '"' : '') + '>' + content + '</a>';
+            // role button, as an <a> without href has no role and its aria-label is ignored by screen readers
+            return '<a role="button" tabindex="0" class="' + dateClass + '"' + (dateLabel ? ' aria-label="' + dateLabel + '"' : '') + '>' + content + '</a>';
         }
         else {
             return '<span class="' + dateClass + '">' + content + '</span>';
