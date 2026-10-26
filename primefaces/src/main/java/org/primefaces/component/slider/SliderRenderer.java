@@ -28,6 +28,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -96,7 +97,8 @@ public class SliderRenderer extends CoreRenderer<Slider> {
             }
 
             wb.attr("input", inputMin.getClientId(context) + "," + inputMax.getClientId(context))
-                    .append(",values:[").append(inputMinValue).append(",").append(inputMaxValue).append("]");
+                    .append(",values:[\"").append(EscapeUtils.forJavaScript(inputMinValue))
+                    .append("\",\"").append(EscapeUtils.forJavaScript(inputMaxValue)).append("\"]");
         }
         else {
             UIComponent input = getTarget(context, component, component.getFor());

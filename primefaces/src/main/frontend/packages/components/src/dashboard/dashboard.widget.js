@@ -3,21 +3,21 @@
  * 
  * Dashboard provides a portal like layout with drag & drop based reorder capabilities.
  * 
- * Currently this uses the JQueryUI sortable widget. You can use `$.fn.sortable` to interact with the dashboard
+ * The columns are sortable with {@link PrimeFaces.interactions.sortable}, which can be used to interact with the dashboard
  * programmatically.
  * 
  * ```javascript
  * const widget = PF("MyDashboardWidget");
  * 
  * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
- * widget.jq.find(".ui-dashboard-column").sortable("option", "revert", true);
+ * PrimeFaces.interactions.sortable(widget.jq.find(".ui-dashboard-column"), { revert: true });
  * ```
  * 
  * @interface {PrimeFaces.widget.DashboardCfg} cfg The configuration for the {@link  Dashboard| Dashboard widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryUI.SortableOptions} cfg
+ * @extends {PrimeFacesTypes.interactions.SortableOptions} cfg
  */
 PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidget {
 
@@ -57,7 +57,7 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
      */
     bindDraggable() {
         // draggable panels by their title bar
-        $(this.cfg.panels).draggable({
+        PrimeFaces.interactions.draggable($(this.cfg.panels), {
             scope: this.cfg.scope || 'dashboard',
             revert: true,
             handle: '.ui-panel-titlebar',
@@ -73,7 +73,7 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
     bindDroppable() {
         var $this = this;
         // droppable on other panels in the dashboard
-        $(this.cfg.panels).droppable({
+        PrimeFaces.interactions.droppable($(this.cfg.panels), {
             scope: this.cfg.scope || 'dashboard',
             tolerance: 'pointer',
             classes: {
@@ -113,7 +113,7 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
         this.cfg.revert = false;
         this.cfg.handle = '.ui-panel-titlebar';
         this.bindSortableEvents();
-        $(this.cfg.connectWith).sortable(this.cfg);
+        PrimeFaces.interactions.sortable($(this.cfg.connectWith), this.cfg);
     }
 
     /**

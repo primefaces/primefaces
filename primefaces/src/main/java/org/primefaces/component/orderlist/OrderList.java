@@ -44,7 +44,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "OrderList is used to reorder a list via drag and drop.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class OrderList extends OrderListBaseImpl {

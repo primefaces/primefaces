@@ -9,7 +9,6 @@
 			"../../moment/moment/dist",
 			"../../moment/moment-timezone-with-data/dist",
 			"../../jquery/jquery/dist",
-			"../../jquery/jquery-plugins/dist",
 			"../../core/dist",
 			"../../components/dist"
 		],
@@ -20,7 +19,6 @@
 		{ "path": "../../moment/moment" },
 		{ "path": "../../moment/moment-timezone-with-data" },
 		{ "path": "../../jquery/jquery" },
-		{ "path": "../../jquery/jquery-plugins" },
 		{ "path": "../../core" },
 		{ "path": "../../components" }
 	]

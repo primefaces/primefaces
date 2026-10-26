@@ -32,7 +32,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "Spotlight highlights a certain component on page.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Spotlight extends SpotlightBaseImpl {

@@ -50,7 +50,6 @@ import jakarta.faces.validator.ValidatorException;
 @FacesComponentInfo(description = "SelectOneMenu is an extended version of the standard Faces SelectOneMenu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectOneMenu extends SelectOneMenuBaseImpl {

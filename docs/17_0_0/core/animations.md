@@ -5,7 +5,8 @@ Many of the PrimeFaces components use animations to create dynamic interactions 
 Animations in newer components are hardcoded per component via CSS transitions.
 In theorie they could be changed by overwriting PrimeFaces internal CSS but we don't offer a documentation for it, as it would be very much effort to provide this for every component.
 
-Some older components are still based on JQuery animations and have attributes to configure it (e.g. `effect` and `effectDuration`):
+Some older components have attributes to configure the effect (e.g. `effect` and `effectDuration`), the effects are
+the ones of [PrimeFaces.effects](javascriptAPI.md#primefaces-effects-primefaceseffects) (see [Effect](../components/effect.md)):
 ```xml
 <p:dialog showEffect="fade" hideEffect="fade" />
 ```

@@ -768,12 +768,12 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                     'top': '',
                     'z-index': PrimeFaces.nextZindex(),
                     'width': content.outerWidth() + 'px'
-                })
-                .position({
-                    my: this.cfg.itemtipMyPosition
-                    , at: this.cfg.itemtipAtPosition
-                    , of: item
                 });
+            PrimeFaces.utils.position(this.itemtip, {
+                my: this.cfg.itemtipMyPosition
+                , at: this.cfg.itemtipAtPosition
+                , of: item
+            });
 
             //scrollbar offset
             if (this.cfg.checkForScrollbar) {
@@ -1428,7 +1428,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
             });
         }
         else {
-            this.panel.position({
+            PrimeFaces.utils.position(this.panel, {
                 my: this.cfg.myPos
                 , at: this.cfg.atPos
                 , of: this.cfg.multiple ? this.jq : this.input

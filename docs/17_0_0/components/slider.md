@@ -85,8 +85,8 @@ information about the event.
 ```
 ```js
 function handleSlideEnd(event, ui) {
-    //ui.helper = Handle element of slider
-    //ui.value = Current value of slider
+    //ui.handle = Handle element of slider, ui.handleIndex = its index (0 or 1 for a range slider)
+    //ui.value = Current value of the handle, ui.values = Values of both handles of a range slider
 }
 ```
 
@@ -95,10 +95,12 @@ Widget: _PrimeFaces.widget.Slider_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-getValue() | - | Number | Returns the current value
+getValue() | - | Number | Returns the current value (of the first handle of a range slider).
 setValue(value) | value: Value to set | void | Updates slider value with provided one.
-disable() | index: Index of tab to disable | void | Disables slider.
-enable() | index: Index of tab to enable | void | Enables slider.
+getValues() | - | Number[] | Returns the values of both handles of a range slider.
+setValues(values) | values: Values to set | void | Updates both values of a range slider.
+disable() | - | void | Disables slider.
+enable() | - | void | Enables slider.
 
 ## Skinning
 Slider resides in a main container which _style_ and _styleClass_ attributes apply. These attributes are
@@ -110,6 +112,12 @@ handy to specify the dimensions of the slider. Following is the list of structur
 .ui-slider-horizontal | Main container element of horizontal slider
 .ui-slider-vertical | Main container element of vertical slider
 .ui-slider-handle | Slider handle
+.ui-slider-range | Range between the handles of a range slider
+.ui-slider-range-min | Range from the minimum to the handle (range="min")
+.ui-slider-range-max | Range from the handle to the maximum (range="max")
+.ui-slider-animate | Main container element while the handles move animated
+.ui-state-disabled | Main container element of a disabled slider
+.ui-state-readonly | Main container element of a readonly slider
 
 As skinning style classes are global, see the main theming section for more information.
 

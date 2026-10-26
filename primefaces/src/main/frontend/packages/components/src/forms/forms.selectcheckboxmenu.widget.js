@@ -1240,9 +1240,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
      * Align the overlay panel with the available checkbox options so that is is positioned next to the the button.
      */
     alignPanel() {
-        var fixedPosition = this.panel.css('position') == 'fixed',
-            positionOffset = fixedPosition ? '-' + $(window).scrollLeft() + ' -' + $(window).scrollTop() : null,
-            panelStyle = this.panel.attr('style');
+        var panelStyle = this.panel.attr('style');
 
         this.panel.css({
             'left': '',
@@ -1258,11 +1256,10 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
             });
         }
         else {
-            this.panel.position({
+            PrimeFaces.utils.position(this.panel, {
                 my: 'left top'
                 , at: 'left bottom'
                 , of: this.jq
-                , offset: positionOffset
                 , collision: 'flipfit'
                 , using: function(pos, directions) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);

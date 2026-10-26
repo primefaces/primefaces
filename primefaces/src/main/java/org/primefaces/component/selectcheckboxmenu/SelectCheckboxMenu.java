@@ -45,7 +45,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "SelectCheckboxMenu is a multi select component that displays options in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectCheckboxMenu extends SelectCheckboxMenuBaseImpl {

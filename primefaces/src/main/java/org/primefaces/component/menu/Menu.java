@@ -32,7 +32,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "Menu is a navigation component with submenus and menuitems.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Menu extends MenuBaseImpl {

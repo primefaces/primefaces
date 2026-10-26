@@ -4,8 +4,9 @@
         Slider rows of the theme configurator (configurator.xhtml), one p:slider per numeric token.
         Parameter: ranges, a list of [token, label, min, max, step, unit]. configurator.js sets the token on slide and
         moves the slider (setValue) when the value changes elsewhere (reset, presets).
-        The ids are unique by the token; configurator.js gives the slider handle the id cfg-handle<token>, role="slider"
-        and aria-labelledby the label (p:slider renders no ARIA on its handle).
+        The ids are unique by the token; configurator.js gives the slider handle the id cfg-handle<token>,
+        aria-labelledby the label and the value with its unit as aria-valuetext (p:slider renders role="slider" and
+        the aria-value* attributes).
     -->
     <ui:repeat value="#{ranges}" var="range">
         <div class="cfg-field" data-token="#{range[0]}" data-unit="#{range[5]}">

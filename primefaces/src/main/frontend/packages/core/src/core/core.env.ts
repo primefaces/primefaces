@@ -1,6 +1,99 @@
 import { core } from "./core.js";
 import type { BaseWidgetCfg } from "./core.widget.js";
-import type { JQueryBrowser } from "../../../jquery/jquery-plugins/src/jquery.browser.d.ts";
+
+/**
+ * The browser and platform of the user agent, see {@link Environment.browser}. Only the flags of the detected
+ * browser and platform are set (e.g. `chrome` and `win`), the others are `undefined`.
+ */
+export interface BrowserDetection {
+    /** Chrome (or another Chromium based browser that is not detected separately). */
+    chrome?: boolean;
+    /** Firefox and other browsers without a more specific token. */
+    mozilla?: boolean;
+    /** Microsoft Edge. */
+    msedge?: boolean;
+    /** Opera. */
+    opr?: boolean;
+    /** Safari. */
+    safari?: boolean;
+    /** A browser with a WebKit or Blink engine (Chrome, Edge, Opera, Safari). */
+    webkit?: boolean;
+
+    /** Android. */
+    android?: boolean;
+    /** Chrome OS. */
+    cros?: boolean;
+    /** iOS (iPhone, iPad or iPod; an iPad with a desktop user agent is detected as `mac`). */
+    ios?: boolean;
+    /** iPad. */
+    ipad?: boolean;
+    /** iPhone. */
+    iphone?: boolean;
+    /** iPod. */
+    ipod?: boolean;
+    /** Kindle. */
+    kindle?: boolean;
+    /** Linux. */
+    linux?: boolean;
+    /** macOS. */
+    mac?: boolean;
+    /** Amazon Silk. */
+    silk?: boolean;
+    /** Windows. */
+    win?: boolean;
+
+    /** A mobile platform (Android, iOS, Kindle, Silk). */
+    mobile?: boolean;
+    /** A desktop platform (Chrome OS, Linux, macOS, Windows). */
+    desktop?: boolean;
+
+    /** The name of the browser, e.g. `chrome`, empty when unknown. */
+    name: string;
+    /** The version of the browser, e.g. `120.0.6099.129`. */
+    version: string;
+    /** The major version of the browser, e.g. `120`. */
+    versionNumber: number;
+    /** The platform, e.g. `win` or `android`, empty when unknown. */
+    platform: string;
+}
+
+/**
+ * Detects the browser and the platform from the user agent, formerly done by the jQuery Browser plugin (`$.browser`).
+ * @returns The detected browser and platform.
+ */
+function detectBrowser(): BrowserDetection {
+    const ua = window.navigator.userAgent.toLowerCase();
+    const match = /(edg|edga|edgios)\/([\w.]+)/.exec(ua)
+        || /(opr)[/]([\w.]+)/.exec(ua)
+        || /(chrome)[ /]([\w.]+)/.exec(ua)
+        || /(webkit)[ /]([\w.]+).*(version)[ /]([\w.]+).*(safari)[ /]([\w.]+)/.exec(ua)
+        || /(webkit)[ /]([\w.]+)/.exec(ua)
+        || (ua.indexOf('compatible') < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua))
+        || [];
+    // in this order, e.g. the user agent of Android contains "linux" too
+    const platform = ['ipad', 'ipod', 'iphone', 'kindle', 'silk', 'android', 'win', 'mac', 'linux', 'cros'].find((p) => ua.includes(p)) ?? '';
+    const name = /^edg/.test(match[1] ?? '') ? 'msedge' : match[5] || match[3] || match[1] || '';
+
+    const browser: BrowserDetection = {
+        name,
+        // for Safari the version after "version/", not the WebKit version
+        version: name ? match[4] || match[2] || '0' : '',
+        versionNumber: name ? parseInt(match[4] || match[2] || '0', 10) : 0,
+        platform
+    };
+    const flags = browser as unknown as Record<string, boolean>;
+    if (name) {
+        flags[name] = true;
+    }
+    if (platform) {
+        flags[platform] = true;
+    }
+    browser.ios = !!(browser.ipad || browser.iphone || browser.ipod) || undefined;
+    browser.mobile = !!(browser.android || browser.ios || browser.kindle || browser.silk) || undefined;
+    browser.desktop = !!(browser.cros || browser.mac || browser.linux || browser.win) || undefined;
+    browser.webkit = !!(browser.webkit || browser.chrome || browser.opr || browser.safari || browser.msedge) || undefined;
+    return browser;
+}
 
 /**
  * The class with functionality related to the browser environment, such as information about the current browser.
@@ -26,7 +119,7 @@ export class Environment {
     /**
      * The current browser type.
      */
-    browser: JQueryBrowser.BrowserDetection | null = null;
+    browser: BrowserDetection = detectBrowser();
     /**
      * `true` if the user's current OS setting prefers dark mode, `false` otherwise.
      */
@@ -45,11 +138,10 @@ export class Environment {
      * Initializes the environment by reading the browser environment.
      */
     constructor() {
-        this.browser = jQBrowser;
-        this.mobile = this.browser.mobile!;
+        this.mobile = !!this.browser.mobile;
         this.touch = 'ontouchstart' in window || window.navigator.maxTouchPoints > 0 || this.mobile === true;
-        this.ios = this.browser.ios! || (this.browser.mac! && this.touch);
-        this.android = this.browser.android!;
+        this.ios = !!this.browser.ios || (!!this.browser.mac && this.touch);
+        this.android = !!this.browser.android;
         this.preferredColorSchemeDark = this.evaluateMediaQuery('(prefers-color-scheme: dark)');
         this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
         this.prefersReducedMotion =  this.evaluateMediaQuery('(prefers-reduced-motion: reduce)');
@@ -79,7 +171,7 @@ export class Environment {
      * @param cfg the widget configuration.
      * @return `true` if touch is enabled, false if disabled
      */
-    isTouchable(cfg: PrimeType.widget.PartialWidgetCfg<BaseWidgetCfg>): boolean {
+    isTouchable(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<BaseWidgetCfg>): boolean {
         var widgetTouchable = (cfg == undefined) || (cfg.touchable != undefined ? cfg.touchable : true);
         return this.touch && widgetTouchable;
     }
@@ -89,7 +181,7 @@ export class Environment {
      * 
      * @return The preferred color scheme, either 'dark' or 'light'
      */
-    getOSPreferredColorScheme(): PrimeType.ThemeKind {
+    getOSPreferredColorScheme(): PrimeFacesTypes.ThemeKind {
         // evaluated now, the setting can change while the page is open
         return this.evaluateMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     }
@@ -101,7 +193,7 @@ export class Environment {
      * @param element The element whose color scheme is used (e.g. a widget inside a dark sidebar), default: the page.
      * @return The theme contrast, either 'dark' or 'light'.
      */
-    getThemeContrast(element?: Element): PrimeType.ThemeKind {
+    getThemeContrast(element?: Element): PrimeFacesTypes.ThemeKind {
         var schemes = (window.getComputedStyle(element || document.documentElement).colorScheme || '').split(/\s+/);
         var light = schemes.indexOf('light') >= 0;
         var dark = schemes.indexOf('dark') >= 0;

@@ -4,7 +4,7 @@
  * You can access this configuration via {@link BreadCrumb.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface BreadCrumbCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface BreadCrumbCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Used to produce an Advanced SEO structure on the page. Default is false.
      */
@@ -21,7 +21,7 @@ export interface BreadCrumbCfg extends PrimeType.widget.BaseWidgetCfg {
 export class BreadCrumb<Cfg extends BreadCrumbCfg = BreadCrumbCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
     seoScript: JQuery | undefined = undefined;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         if (this.cfg.seo) {
@@ -29,7 +29,7 @@ export class BreadCrumb<Cfg extends BreadCrumbCfg = BreadCrumbCfg> extends Prime
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         if (this.seoScript) {
             this.seoScript.remove();
         }

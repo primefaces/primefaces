@@ -341,13 +341,13 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
         .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
-            selectionStart = $this.jq.getSelection().start,
+            selectionStart = PrimeFaces.utils.getTextSelection($this.jq).start,
             queryLength = $this.query.length;
 
             $this.jq.trigger('focus');
 
-            $this.jq.setSelection(selectionStart-queryLength, selectionStart);
-            $this.jq.replaceSelectedText(itemValue);
+            PrimeFaces.utils.setTextSelection($this.jq, selectionStart-queryLength, selectionStart);
+            PrimeFaces.utils.replaceTextSelection($this.jq, itemValue);
 
             $this.invokeItemSelectBehavior(event, itemValue);
 
@@ -391,7 +391,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
      * @return {string} The keyword or search term the autocomplete method receives as input.
      */
     extractQuery() {
-        var end = this.jq.getSelection().end,
+        var end = PrimeFaces.utils.getTextSelection(this.jq).end,
         result = /\S+$/.exec(this.jq.get(0).value.slice(0, end)),
         lastWord = result ? result[0] : null;
 
@@ -460,16 +460,65 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
      * Aligns the search window panel of the autocomplete feature.
      */
     alignPanel() {
-        var pos = this.jq.getCaretPosition(),
+        var pos = this.getCaretPosition(),
         posLeft = (pos.left > 0 ? '+' : '-') + pos.left,
         posTop = (pos.top > 0 ? '+' : '-') + pos.top;
 
-        this.panel.css({left:'', top:''}).position({
+        PrimeFaces.utils.position(this.panel.css({left:'', top:''}), {
             my: 'left top'
             ,at: 'left' + posLeft + 'px' +  ' top' + posTop + 'px'
             ,of: this.jq
             ,collision: 'flipfit'
         });
+    }
+
+    /**
+     * Finds the position of the caret in pixels by rendering the text into a hidden copy of the textarea with the same
+     * styles, formerly the jQuery plugin `getCaretPosition`.
+     * @private
+     * @return {{top: number, left: number}} The position below the caret line, relative to the top left corner of the
+     * textarea.
+     */
+    getCaretPosition() {
+        var element = this.jq[0],
+            value = element.value,
+            caret = element.selectionStart || 0,
+            mirror = $('<div></div>').css({
+                position: 'absolute',
+                top: '0px',
+                left: '0px',
+                visibility: 'hidden',
+                width: this.jq.width() + 'px',
+                height: this.jq.height() + 'px',
+                // the size is the content size of the textarea, the global border-box would subtract padding and border
+                'box-sizing': 'content-box',
+                'white-space': 'pre-wrap',
+                'word-wrap': 'break-word',
+                'overflow-x': 'hidden',
+                'overflow-y': 'auto'
+            }),
+            // a zero width space, so the caret has a line box in every browser
+            focus = $('<span></span>').text('​');
+
+        for (var style of ['fontFamily', 'fontSize', 'fontWeight', 'fontVariant', 'fontStyle', 'lineHeight', 'letterSpacing',
+                'wordSpacing', 'textTransform', 'textIndent', 'tabSize',
+                'paddingLeft', 'paddingTop', 'paddingBottom', 'paddingRight', 'borderLeftStyle', 'borderTopStyle',
+                'borderBottomStyle', 'borderRightStyle', 'borderLeftWidth', 'borderTopWidth', 'borderBottomWidth',
+                'borderRightWidth']) {
+            mirror.css(style, this.jq.css(style));
+        }
+
+        mirror.append(document.createTextNode(value.substring(0, caret)), focus, document.createTextNode(value.substring(caret)))
+            .appendTo(document.body);
+
+        var focusOffset = focus.offset(),
+            mirrorOffset = mirror.offset(),
+            position = {
+                top: focusOffset.top - mirrorOffset.top - element.scrollTop + (parseFloat(this.jq.css('fontSize')) || 0),
+                left: focusOffset.left - mirrorOffset.left - element.scrollLeft
+            };
+        mirror.remove();
+        return position;
     }
 
     /**

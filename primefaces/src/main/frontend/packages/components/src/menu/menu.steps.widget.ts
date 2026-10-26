@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Steps.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface StepsCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface StepsCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
     
 /**
@@ -25,7 +25,7 @@ export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.Ba
      */
     items: JQuery= $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('.ui-steps-item');

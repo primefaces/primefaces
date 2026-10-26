@@ -1,7 +1,7 @@
 /*
  * Dashboard: p:dashboard (legacy columns and responsive mode); the panels themselves are styled by panel.css.
  *
- * Drag states: .ui-sortable-placeholder (legacy, jQuery UI sortable), .ui-dashboard-active / .ui-dashboard-hover
+ * Drag states: .ui-sortable-placeholder (legacy, sortable), .ui-dashboard-active / .ui-dashboard-hover
  * (responsive, droppable classes), .ui-state-disabled (disabled dashboard).
  */
 

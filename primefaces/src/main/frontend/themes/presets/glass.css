@@ -1947,6 +1947,19 @@
         --p-keypad-special-key-active-color: var(--p-button-primary-active-color);
     }
 
+    /* knob */
+    :root, [data-p-scope] {
+        --p-knob-value-background: var(--p-primary-color);
+        --p-knob-range-background: var(--p-content-border-color);
+        --p-knob-text-color: var(--p-text-muted-color);
+        --p-knob-text-font-weight: 600;
+        --p-knob-focus-ring-width: var(--p-focus-ring-width);
+        --p-knob-focus-ring-style: var(--p-focus-ring-style);
+        --p-knob-focus-ring-color: var(--p-focus-ring-color);
+        --p-knob-focus-ring-offset: var(--p-focus-ring-offset);
+        --p-knob-focus-ring-shadow: var(--p-focus-ring-shadow);
+    }
+
     /* label */
     :root, [data-p-scope] {
         --p-label-font-size: var(--p-typography-font-size);

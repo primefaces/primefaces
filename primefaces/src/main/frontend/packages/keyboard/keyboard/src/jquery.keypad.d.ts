@@ -63,7 +63,7 @@ declare namespace JQueryKeypad {
 
         /**
          * Set which animation is used to display the keypad. Choose from three standard animations `show`, `fadeIn`, or
-         * `slideDown`; or use one of the jQuery UI effects if you include that package. For no animation use the empty
+         * `slideDown`; or use one of the effects of `PrimeFaces.effects` (e.g. `blind`). For no animation use the empty
          * string.
          * 
          * @since 1.2.3 - use empty string for no animation.
@@ -71,7 +71,7 @@ declare namespace JQueryKeypad {
         showAnim: "show" | "fadeIn" | "slideDown" | string;
 
         /**
-         * If you use one of the jQuery UI effects for the animation above, you can supply additional options for that
+         * If you use one of the `PrimeFaces.effects` for the animation above, you can supply additional options for that
          * effect via this setting:
          * 
          * ```javascript

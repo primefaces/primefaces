@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Messages.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MessagesCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface MessagesCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     closable: boolean;
 }
 
@@ -21,7 +21,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
      */
     closer: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.closer = $('.ui-messages-close');
         PrimeFaces.skinCloseAction(this.closer);
@@ -31,7 +31,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
      * Creates the HTML elements for the given faces message, and adds it to the DOM.
      * @param msg A message to translate into an HTML element.
      */
-    appendMessage(msg: PrimeType.FacesMessage): void {
+    appendMessage(msg: PrimeFacesTypes.FacesMessage): void {
         const closeLabel = this.getAriaLabel('close');
 
         let severityContainer =  this.jq.children('div.ui-messages-' + msg.severity);

@@ -60,7 +60,7 @@ public abstract class SignatureBase extends AbstractPrimeHtmlInputText implement
     @Property(description = "Color of the guideline.")
     public abstract String getGuidelineColor();
 
-    @Property(description = "Offset of the guideline from the top.", defaultValue = "25")
+    @Property(description = "Offset of the guideline from the bottom.", defaultValue = "25")
     public abstract int getGuidelineOffset();
 
     @Property(description = "Indent of the guideline.", defaultValue = "10")

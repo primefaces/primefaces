@@ -11,7 +11,7 @@ PrimeFaces.widget.PhotoCam = PhotoCam;
 
 // Global types
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             /**
              * __PrimeFaces PhotoCam Widget__
@@ -22,7 +22,7 @@ declare global {
         }
     }
 
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         /**
          * The configuration for the {@link PhotoCam} widget.
          * 
@@ -33,7 +33,7 @@ declare global {
         export type PhotoCamCfg = import("./src/photocam.widget.js").PhotoCamCfg;
     }
 
-    namespace PrimeType.widget.PhotoCam {
+    namespace PrimeFacesTypes.widget.PhotoCam {
         /**
          * Callback invoked when an error is caught by the Webcam.js engine.
          * See also {@link PhotoCamCfg.onCameraError}.

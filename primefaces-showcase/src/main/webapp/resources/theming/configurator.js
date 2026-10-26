@@ -176,18 +176,15 @@
         markSegment('data-cfg-motion', motion === '0s' ? 'off' : motion ? 'slow' : 'normal');
     }
 
-    // p:slider renders no ARIA on its handle: role slider, labelled by the label of the row, the token value as text
-    function labelHandle(widget, token, value, unit) {
+    // p:slider renders role slider and the aria-value* of its handle: labelled by the label of the row, the token value
+    // (with its unit) as text
+    function labelHandle(widget, token, value) {
         var handle = widget.jq.children('.ui-slider-handle')[0];
         if (!handle) {
             return;
         }
         handle.id = 'cfg-handle' + token;
-        handle.setAttribute('role', 'slider');
         handle.setAttribute('aria-labelledby', 'cfg-label' + token);
-        handle.setAttribute('aria-valuemin', widget.cfg.min);
-        handle.setAttribute('aria-valuemax', widget.cfg.max);
-        handle.setAttribute('aria-valuenow', toUnit(value, unit));
         handle.setAttribute('aria-valuetext', value);
     }
 
@@ -204,7 +201,7 @@
                 widget.setValue(toUnit(value, r[1]));
             }
             if (widget) {
-                labelHandle(widget, r[0], value, r[1]);
+                labelHandle(widget, r[0], value);
             }
             field.querySelector('output').textContent = value;
             field.classList.toggle('changed', r[0] in tokens);

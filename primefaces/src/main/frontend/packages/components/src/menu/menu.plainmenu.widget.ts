@@ -47,7 +47,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      */
     stateKey: string = "";
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
@@ -222,7 +222,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * @param direction The direction to navigate ('prev' or 'next').
      * @param firstOrLast The first or last item to navigate to ('first' or 'last').
      */
-    private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: PrimeType.widget.PlainMenu.NavigationDirection, firstOrLast: string): void {
+    private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: PrimeFacesTypes.widget.PlainMenu.NavigationDirection, firstOrLast: string): void {
         const targetItem = currentLink.parent()[`${direction}All`]('.ui-menuitem:not(:has(.ui-state-disabled)):' + firstOrLast);
         if (targetItem.length) {
             this.unfocus(currentLink, event);

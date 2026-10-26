@@ -11,18 +11,14 @@
 
 @import url("./src/icons/lucide.css");
 
-@import url("jquery-ui/themes/base/core.css") layer(primefaces.vendor);
-@import url("jquery-ui/themes/base/draggable.css") layer(primefaces.vendor);
-@import url("jquery-ui/themes/base/resizable.css") layer(primefaces.vendor);
-@import url("jquery-ui/themes/base/sortable.css") layer(primefaces.vendor);
-@import url("jquery-ui/themes/base/slider.css") layer(primefaces.vendor);
+@import url("./src/base/interactions.css") layer(primefaces.vendor);
 
 /* base */
 @import url("./src/base/common.css") layer(primefaces.components);
 @import url("./src/base/core.css") layer(primefaces.components);
 @import url("./src/base/document.css") layer(primefaces.components);
 @import url("./src/base/grid.css") layer(primefaces.components);
-@import url("./src/base/jquery-ui.css") layer(primefaces.components);
+@import url("./src/base/helpers.css") layer(primefaces.components);
 @import url("./src/base/scrollbar.css") layer(primefaces.components);
 
 /* shared */

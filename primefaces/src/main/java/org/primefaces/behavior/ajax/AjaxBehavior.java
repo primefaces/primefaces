@@ -39,7 +39,6 @@ import jakarta.faces.event.AjaxBehaviorListener;
 @FacesBehaviorHandler(AjaxBehaviorHandler.class)
 @FacesBehaviorInfo(description = "AjaxBehavior is an extension to standard f:ajax.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 public class AjaxBehavior extends AjaxBehaviorBaseImpl {
 

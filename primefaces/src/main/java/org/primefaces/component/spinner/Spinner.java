@@ -33,7 +33,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "Spinner is an input component to provide a numerical input via increment and decrement buttons.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Spinner extends SpinnerBaseImpl {

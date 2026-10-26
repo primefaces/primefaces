@@ -193,7 +193,7 @@ public abstract class DatePicker extends AbstractInputComponent {
 
     public String millisAsFormattedDate(long millis) {
         return PrimeSelenium.executeScript(
-                    "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.formatDateTime(new Date(" + millis + "));");
+                    "return " + getWidgetByIdScript() + ".formatDateTime(new Date(" + millis + "));");
     }
 
     /**
@@ -240,7 +240,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public boolean isLazy() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript()
-                + ".cfg.lazyDataModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyDataModel");
+                + ".cfg.lazyModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyModel");
     }
 
     /**
@@ -258,7 +258,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void updateViewDate(long epoch) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".updateViewDate(null, new Date(" + epoch + "));");
     }
 
     /**

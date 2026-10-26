@@ -118,13 +118,12 @@ public class CoreHead003Test extends AbstractPrimePageTest {
         for (WebElement script : scriptElements) {
             System.out.println(script.getDomAttribute("src"));
         }
-        assertTrue(scriptElements.size() >= 6, "Script elements not expected size");
+        assertTrue(scriptElements.size() >= 5, "Script elements not expected size");
         assertTrue(scriptElements.get(0).getDomAttribute("src").contains("jquery/jquery.js"));
-        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("jquery/jquery-plugins.js"));
-        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("core.js"));
-        assertTrue(scriptElements.get(3).getDomAttribute("src").contains("components.js"));
-        assertTrue(scriptElements.get(4).getDomAttribute("src").contains("moment/moment.js"));
-        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("locales/locale-en.js"));
+        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("core.js"));
+        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("components.js"));
+        assertTrue(scriptElements.get(3).getDomAttribute("src").contains("moment/moment.js"));
+        assertTrue(scriptElements.get(4).getDomAttribute("src").contains("locales/locale-en.js"));
         assertNoJavascriptErrors();
     }
 

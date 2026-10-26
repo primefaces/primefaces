@@ -31,7 +31,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponent(value = RemoteCommand.COMPONENT_TYPE, namespace = RemoteCommand.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "RemoteCommand provides a way to execute Faces backing bean methods directly from javascript.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 public class RemoteCommand extends RemoteCommandBaseImpl {
 

@@ -34,7 +34,6 @@ import jakarta.faces.context.FacesContext;
 @FacesComponentInfo(description = "OverlayPanel is a generic container component that is displayed as a popup.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class OverlayPanel extends OverlayPanelBaseImpl {

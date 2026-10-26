@@ -118,7 +118,7 @@ class DataTable057Test extends AbstractPrimePageTest {
     }
 
     /**
-     * Drags the header of the column at {@code fromIndex} onto the header of the column at {@code toIndex}. jQuery UI draggable is driven by mouse
+     * Drags the header of the column at {@code fromIndex} onto the header of the column at {@code toIndex}. The draggable is driven by pointer
      * events, so the drag has to be performed step by step: press, exceed the drag threshold, move over the target header and release there.
      *
      * @param page the page under test

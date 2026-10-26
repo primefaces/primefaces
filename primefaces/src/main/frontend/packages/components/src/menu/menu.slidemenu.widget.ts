@@ -62,7 +62,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      */
     wrapper: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         //elements

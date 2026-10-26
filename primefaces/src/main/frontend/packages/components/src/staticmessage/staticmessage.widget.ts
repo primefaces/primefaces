@@ -4,7 +4,7 @@
  * You can access this configuration via {@link StaticMessage.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface StaticMessageCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface StaticMessageCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
@@ -16,7 +16,7 @@ export interface StaticMessageCfg extends PrimeType.widget.BaseWidgetCfg {
  */
 export class StaticMessage<Cfg extends StaticMessageCfg = StaticMessageCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.bindEvents();
     }

@@ -43,7 +43,7 @@
  * @prop {boolean} cfg.cache `true` if the content of dynamically loaded nodes is cached for the next time the node is
  * expanded, or `false` to always fetch the content from the server.
  * @prop {boolean} cfg.disabled `true` is this widget is disabled, or `false` otherwise.
- * @prop {string} cfg.dragdropScope Optional scope for the dragging and dropping, passed to JQuery UI.
+ * @prop {string} cfg.dragdropScope Optional scope for the dragging and dropping, of the draggables and droppables.
  * @prop {boolean} cfg.draggable `true` if nodes are draggable, or `false` otherwise.
  * @prop {PrimeFaces.widget.BaseTree.DragMode} cfg.dragMode Defines parent-child relationship when a node is dragged.
  * @prop {boolean} cfg.dropCopyNode When enabled, the copy of the selected nodes can be dropped from a tree to another

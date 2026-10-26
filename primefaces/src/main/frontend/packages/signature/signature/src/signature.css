@@ -1,11 +1,11 @@
 /*
- * Signature: p:signature (jQuery UI signature plugin, a canvas inside a .ui-inputfield.ui-inputtextarea)
+ * Signature: p:signature (a canvas inside a .ui-inputfield.ui-inputtextarea)
  *
- * Border, hover, focus, invalid and disabled come from forms/inputfield.css; the canvas itself is painted by the plugin
+ * Border, hover, focus, invalid and disabled come from forms/inputfield.css; the canvas itself is painted by the widget
  * (background / color / guideline attributes of the component), so only the frame is themed.
- * Supported classes: ui-state-error, ui-state-disabled, kbw-signature-disabled, readonly (ui-widget-content)
+ * Supported classes: ui-state-error, ui-state-disabled, readonly (ui-widget-content)
  */
-.kbw-signature {
+.ui-signature {
     display: inline-block;
     border-width: 1px;
     border-style: solid;
@@ -16,19 +16,15 @@
 
     canvas {
         display: block;
+        touch-action: none;
         border-radius: calc(var(--p-signature-border-radius) - 1px);
     }
 
-    &.kbw-signature-disabled {
-        opacity: var(--p-disabled-opacity);
-    }
-
-    &.ui-state-disabled canvas,
-    &.kbw-signature-disabled canvas {
+    &.ui-state-disabled canvas {
         cursor: default;
     }
 }
 
-.ui-inputfield.kbw-signature {
+.ui-inputfield.ui-signature {
     padding: 0;
 }

@@ -47,7 +47,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "Panel is a grouping component for other components, notable features are toggling, closing and built-in popup menu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Panel extends PanelBaseImpl {

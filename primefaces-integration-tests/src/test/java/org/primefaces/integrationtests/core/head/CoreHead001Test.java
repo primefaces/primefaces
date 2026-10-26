@@ -86,17 +86,16 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         assertEquals(webMeta.getDomAttribute("content"), "yes");
 
         // Scripts in order
-        assertEquals(10, scriptElements.size());
+        assertEquals(9, scriptElements.size());
         assertTrue(scriptElements.get(0).getDomAttribute("src").contains("jquery/jquery.js"));
-        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("jquery/jquery-plugins.js"));
-        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("core.js"));
-        assertTrue(scriptElements.get(3).getDomAttribute("src").contains("components.js"));
-        assertTrue(scriptElements.get(4).getDomAttribute("src").contains("inputmask/inputmask.js"));
-        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("datepicker/datepicker.js"));
-        assertTrue(scriptElements.get(6).getDomAttribute("src").contains("locales/locale-de.js"));
-        assertTrue(scriptElements.get(7).getDomAttribute("src").contains("moment/moment.js"));
-        assertTrue(scriptElements.get(8).getDomAttribute("src").contains("locales/locale-en.js"));
-        assertTrue(scriptElements.get(9).getDomAttribute("src").contains("locales/locale-fr.js"));
+        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("core.js"));
+        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("components.js"));
+        assertTrue(scriptElements.get(3).getDomAttribute("src").contains("inputmask/inputmask.js"));
+        assertTrue(scriptElements.get(4).getDomAttribute("src").contains("datepicker/datepicker.js"));
+        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("locales/locale-de.js"));
+        assertTrue(scriptElements.get(6).getDomAttribute("src").contains("moment/moment.js"));
+        assertTrue(scriptElements.get(7).getDomAttribute("src").contains("locales/locale-en.js"));
+        assertTrue(scriptElements.get(8).getDomAttribute("src").contains("locales/locale-fr.js"));
         assertNoJavascriptErrors();
     }
 

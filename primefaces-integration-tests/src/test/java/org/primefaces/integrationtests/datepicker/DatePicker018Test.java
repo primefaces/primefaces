@@ -74,7 +74,7 @@ class DatePicker018Test extends AbstractDatePickerTest {
     // outside click sent sooner leaves the panel open and the typed minutes are never committed.
     private void awaitOutsideClickHandled(DatePicker datePicker) {
         PrimeSelenium.waitGui().until(d -> Boolean.FALSE.equals(PrimeSelenium.executeScript(
-                "return " + datePicker.getWidgetByIdScript() + ".jq.data('primeDatePicker').datepickerClick;")));
+                "return " + datePicker.getWidgetByIdScript() + ".datepickerClick;")));
     }
 
     private void clearInput(WebElement input) {
