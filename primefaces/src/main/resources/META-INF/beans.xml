@@ -6,6 +6,12 @@
     version="4.0" bean-discovery-mode="all">
 
     <scan>
+        <!-- Only MyFaces' CdiAnnotationProviderExtension (USE_CDI_FOR_ANNOTATION_SCANNING) needs PrimeFaces
+             classes to be CDI-discovered. Without it (e.g. Mojarra) discovering all classes only slows deployment. -->
+        <exclude name="org.primefaces.**">
+            <if-class-not-available name="org.apache.myfaces.config.annotation.CdiAnnotationProviderExtension"/>
+        </exclude>
+
         <exclude name="org.primefaces.util.ExcelStylesManager"/>
         <exclude name="org.primefaces.util.ExcelXmlStylesManager"/>
         <exclude name="org.primefaces.util.ExcelStylesManager$Styles"/>
