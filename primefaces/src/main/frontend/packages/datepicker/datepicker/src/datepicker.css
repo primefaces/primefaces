@@ -32,7 +32,8 @@
             text-align: center;
         }
 
-        td.ui-datepicker-other-month-hidden {
+        /* hide only the content, a hidden cell would shift the columns announced by screen readers */
+        td.ui-datepicker-other-month-hidden > * {
             visibility: hidden;
         }
     }
