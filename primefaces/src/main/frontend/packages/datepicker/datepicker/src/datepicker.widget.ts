@@ -2236,7 +2236,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             'ui-state-disabled': disabled
         });
 
-        return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
+        return '<a role="button" tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
     }
 
     /**
@@ -2378,8 +2378,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             html += '<th scope="col" aria-colindex="1" abbr="' + o.locale.weekHeader + '"><span>' + o.locale.weekHeader + '</span></th>';
         }
         weekDaysMin.forEach((weekDayMin, i) => {
-            html += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDayMin + '">'
-                + '<span title="' + PrimeFaces.escapeHTML(weekDays[i] ?? '') + '">' + weekDayMin + '</span>'
+            // screen readers announce the abbr as column header, so it holds the full week day name
+            const weekDay = PrimeFaces.escapeHTML(weekDays[i] ?? '');
+            html += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDay + '">'
+                + '<span title="' + weekDay + '">' + weekDayMin + '</span>'
                 + '</th>';
         });
 
@@ -2473,11 +2475,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         weekDates.forEach((date, i) => {
             const disabled = !date.selectable;
             const selected = this.isSelected(date);
+            const hidden = !!date.otherMonth && !o.showOtherMonths;
             const cellClass = this.getClassesToAdd({
                 'ui-datepicker-other-month': !!date.otherMonth,
                 'ui-datepicker-today': !!date.today,
                 'ui-datepicker-week-end': i === sundayIndex || i === saturdayIndex,
-                'ui-datepicker-other-month-hidden': !!date.otherMonth && !o.showOtherMonths
+                'ui-datepicker-other-month-hidden': hidden
             }).trim();
             const dateClass = this.getClassesToAdd({
                 'ui-state-default': true,
@@ -2488,12 +2491,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             const dateLabel = PrimeFaces.escapeHTML(this.formatDate(new Date(date.year, date.month, date.day), o.dateFormat));
 
             // the focusable <a> carries the full date label so screen readers announce it while navigating;
-            // cells without a link (disabled) keep the label on the cell itself
+            // cells without a link (disabled) keep the label on the cell itself, hidden cells stay unlabeled
             html += '<td role="gridcell" aria-colindex="' + (i + 1 + (o.showWeek ? 1 : 0)) + '"'
                 + (cellClass ? ' class="' + cellClass + '"' : '')
                 + (disabled ? ' aria-disabled="true"' : '')
                 + (selected ? ' aria-selected="true"' : '')
-                + (date.selectable ? '' : ' aria-label="' + dateLabel + '"') + '>'
+                + (date.selectable || hidden ? '' : ' aria-label="' + dateLabel + '"') + '>'
                 + this.renderDateCellContent(date, dateClass, dateLabel)
                 + '</td>';
         });
@@ -2516,7 +2519,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             dateClass += ' ' + styleClass;
         }
         if (date.selectable) {
-            return '<a tabindex="0" class="' + dateClass + '"' + (dateLabel ? ' aria-label="' + dateLabel + '"' : '') + '>' + content + '</a>';
+            // role button, as an <a> without href has no role and its aria-label is ignored by screen readers
+            return '<a role="button" tabindex="0" class="' + dateClass + '"' + (dateLabel ? ' aria-label="' + dateLabel + '"' : '') + '>' + content + '</a>';
         }
         return '<span class="' + dateClass + '">' + content + '</span>';
     }
