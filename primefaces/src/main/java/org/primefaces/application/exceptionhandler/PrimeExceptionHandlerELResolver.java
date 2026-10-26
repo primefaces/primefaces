@@ -33,6 +33,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.ClientWindow;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LangUtils;
 
 public class PrimeExceptionHandlerELResolver extends ELResolver {
@@ -51,15 +52,21 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
             ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
 
             if (info == null && externalContext.getSession(false) != null) {
-                ClientWindow clientWindow = externalContext.getClientWindow();
-                if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
-                    Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
-                            externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME + "_map");
-                    if (windowsMap != null) {
-                        info = windowsMap.get(clientWindow.getId());
+                if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
+                    ClientWindow clientWindow = externalContext.getClientWindow();
+                    if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
+                        Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
+                                externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME + "_map");
+                        if (windowsMap != null) {
+                            info = windowsMap.get(clientWindow.getId());
+                        }
+                    }
+                    if (info == null) {
+                        info = (ExceptionInfo) externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
                     }
                 }
-                if (info == null) {
+                else {
+                    // ClientWindow is only available since JSF 2.2; fallback to session scope
                     info = (ExceptionInfo) externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
                 }
             }
