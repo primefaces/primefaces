@@ -1,8 +1,9 @@
-import { cssPosition, Interaction, offsetOf, type Callback, type Coordinates, type InteractionOptions, pageX, pageY, scrollParent } from "./interaction.js";
+import { cssPosition, dataKey, offsetOf, type Callback, type Coordinates, pageX, pageY, PointerInteraction, type PointerInteractionOptions,
+    positionDelta, scrollParent } from "./interaction.js";
 import { DragDropManager, type DragSource } from "./droppable.js";
 
 /** The options of a sortable, see the jQuery UI sortable. */
-export interface SortableOptions extends InteractionOptions {
+export interface SortableOptions extends PointerInteractionOptions {
     /** Where the helper is appended while sorting, `parent` for the parent of the item. */
     appendTo: string | Element | JQuery;
     /** Restricts the movement of the helper to the `x` or `y` axis. */
@@ -138,7 +139,7 @@ function isFloating(item: JQuery): boolean {
 /**
  * Makes the items of an element sortable by dragging them, also into connected sortables.
  */
-export class Sortable extends Interaction<SortableOptions> implements DragSource {
+export class Sortable extends PointerInteraction<SortableOptions> implements DragSource {
     /** The element that moves with the pointer, from the start of the sorting until the end of the revert animation. */
     helper: JQuery | null = null;
     /** The element that marks the new position of the item. */
@@ -164,18 +165,12 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
     private currentContainer: Sortable = this;
     /** The inline style of the item, restored after the sorting. */
     private storedStyle: string = '';
-    /** The inline cursor of the body, restored after the sorting. */
-    private storedCursor: string | null = null;
     /** The scroll parent of the placeholder, `null` for the window. */
     private scrollContainer: HTMLElement | null = null;
-    /** Whether the sorting was aborted, it ends without a drop on droppables. */
-    private cancelled: boolean = false;
     /** Watches for added items, so they get the handle class. */
     private readonly observer: MutationObserver;
     /** Whether the sorting is finishing right now, the final events are triggered. */
     private clearing: boolean = false;
-    /** Whether the sortable was destroyed. */
-    private destroyed: boolean = false;
     /** Whether the dragged item is over this sortable (as a container of a sorting). */
     private isOver: boolean = false;
     /** The boxes of the items while an item is dragged over this sortable, measured again when the layout changes. */
@@ -195,7 +190,8 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         this.addClasses();
         this.updateHandles();
         this.bindPointer();
-        // items added later get the handle class too, its touch-action: none is needed before a touch starts
+        // items added later (also by a sorting or a connectToSortable drop) get the handle class too, its
+        // touch-action: none is needed before a touch starts
         this.observer = new MutationObserver(() => {
             if (!this.isActive() && !this.helper) {
                 this.updateHandles();
@@ -206,10 +202,10 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
 
     /** Removes the handle classes; a sorting in progress ends at the original position and a running revert finishes. */
     override destroy(): void {
-        this.destroyed = true;
         this.observer.disconnect();
-        // destroyed in a final callback (e.g. by an AJAX update in stop): the sorting finishes as it is
-        if (!this.clearing) {
+        // only a sorting in progress or a revert is cancelled, not the last sorting; destroyed in a final callback
+        // (e.g. by an AJAX update in stop) the sorting finishes as it is
+        if (!this.clearing && (this.isActive() || this.helper)) {
             this.cancel();
         }
         // the revert started by the cancel
@@ -317,33 +313,6 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
     }
 
     /**
-     * Creates the helper according to the `helper` and `appendTo` options.
-     * @param event The pointerdown event.
-     * @param width The content width of the item, for a helper without an inline width.
-     * @param height The content height of the item, for a helper without an inline height.
-     * @returns The item itself, a clone or the element of the helper function, with the size of the item.
-     */
-    private createHelper(event: JQuery.TriggeredEvent, width: number, height: number): JQuery {
-        const o = this.options;
-        const item = this.currentItem;
-        const helper = typeof o.helper === 'function' ? $(o.helper.call(this.element[0]!, event, item))
-            : o.helper === 'clone' ? item.clone() : item;
-
-        if (!helper.parents('body').length) {
-            helper.appendTo(o.appendTo === 'parent' ? item.parent() : $(o.appendTo as string));
-        }
-        if (helper[0] !== item[0]) {
-            if (!(helper[0] as HTMLElement).style.width) {
-                helper.width(width);
-            }
-            if (!(helper[0] as HTMLElement).style.height) {
-                helper.height(height);
-            }
-        }
-        return helper as JQuery;
-    }
-
-    /**
      * Creates the placeholder: an element of the same type with the `placeholder` class (like jQuery UI the classes of
      * the item without that option), with cells for a table row.
      * @param item The sorted item.
@@ -396,13 +365,20 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         const itemHeight = item.height() ?? 0;
         this.placeholder = this.createPlaceholder(item).insertAfter(item);
 
-        const helper = this.helper = this.createHelper(event, itemWidth, itemHeight);
+        const helper = this.helper = this.createHelper(event, item, item);
         if (helper[0] === item[0]) {
             this.storedStyle = item.attr('style') ?? '';
             // the setters of jQuery respect the box-sizing, unlike css()
             item.width(itemWidth).height(itemHeight);
         }
         else {
+            // a helper without an inline size gets the size of the item
+            if (!(helper[0] as HTMLElement).style.width) {
+                helper.width(itemWidth);
+            }
+            if (!(helper[0] as HTMLElement).style.height) {
+                helper.height(itemHeight);
+            }
             item.hide();
         }
         helper.css('position', 'absolute').addClass('ui-sortable-helper');
@@ -419,14 +395,13 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
             helper.css('opacity', o.opacity);
         }
         if (o.cursor && o.cursor !== 'auto') {
-            this.storedCursor = document.body.style.cursor;
-            document.body.style.cursor = o.cursor;
+            this.setCursor(o.cursor);
         }
 
         this.containers = [this];
         if (o.connectWith) {
             $(o.connectWith).each((_, el) => {
-                const sortable = $.data(el, 'pf-sortable') as Sortable | undefined;
+                const sortable = $.data(el, dataKey('sortable')) as Sortable | undefined;
                 // a sortable inside the item can't take the item
                 if (sortable && sortable !== this && !sortable.options.disabled && !$.contains(item[0]!, el)) {
                     this.containers.push(sortable);
@@ -434,7 +409,6 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
             });
         }
         this.currentContainer = this;
-        this.cancelled = false;
         this.invalidate();
         this.scrollContainer = scrollParent(this.placeholder);
         // the item boxes change when a container scrolls, e.g. by the mouse wheel
@@ -469,7 +443,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
             this.invalidate();
         }
         // the helper moves when its container scrolls
-        this.delta = this.helperDelta();
+        this.delta = positionDelta(this.helper!);
         let left = pageX(event) - this.clickOffset.left;
         let top = pageY(event) - this.clickOffset.top;
         // like jQuery UI the helper keeps its position on the other axis, also in a connected container
@@ -511,16 +485,6 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
 
         DragDropManager.drag(this, event);
         this.trigger('sort', event, this.ui());
-    }
-
-    /**
-     * The offset of the helper minus its CSS position, which changes when a container of the helper scrolls.
-     * @returns The difference.
-     */
-    private helperDelta(): Coordinates {
-        const offset = offsetOf(this.helper!);
-        const css = cssPosition(this.helper!);
-        return { left: offset.left - css.left, top: offset.top - css.top };
     }
 
     /**
@@ -625,7 +589,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
      * @param event The pointerup or pointercancel event.
      */
     protected stop(event: JQuery.TriggeredEvent): void {
-        if (!this.cancelled) {
+        if (!this.aborted) {
             DragDropManager.drop(this, event);
         }
         // like jQuery UI the droppables are deactivated at the drop, before the revert; the drag stays current until
@@ -633,10 +597,9 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         if (DragDropManager.current === this) {
             DragDropManager.deactivate(this, event);
         }
-        this.cancelled = false;
         const revert = this.options.revert;
         if (revert && this.helper) {
-            this.delta = this.helperDelta();
+            this.delta = positionDelta(this.helper);
             const target = offsetOf(this.placeholder);
             this.helper.animate({ left: target.left - this.delta.left, top: target.top - this.delta.top },
                 typeof revert === 'number' ? revert : 500, () => this.clear(event));
@@ -646,9 +609,15 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         }
     }
 
-    /** The browser took over the pointer, the item goes back to its original position. */
-    protected override abort(): void {
-        this.cancel();
+    /**
+     * The browser took over the pointer, or the sorting is cancelled or destroyed: the item goes back to its original
+     * position.
+     * @param e The pointercancel event.
+     */
+    protected override abort(e: JQuery.TriggeredEvent): void {
+        this.restore(this.placeholder);
+        this.currentContainer = this;
+        super.abort(e);
     }
 
     /**
@@ -673,10 +642,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
             }
             return;
         }
-        this.restore(this.placeholder);
-        this.currentContainer = this;
-        this.cancelled = true;
-        this.end(this.cancelEvent());
+        this.abort(this.cancelEvent());
     }
 
     /**
@@ -741,10 +707,7 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         this.placeholder.remove();
         this.helper = null;
 
-        if (this.storedCursor !== null) {
-            document.body.style.cursor = this.storedCursor;
-            this.storedCursor = null;
-        }
+        this.restoreCursor();
         if (DragDropManager.current === this) {
             DragDropManager.stop(this, event);
         }
@@ -770,13 +733,6 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         this.invalidate();
         this.containers = [];
         this.currentContainer = this;
-        // a callback may have destroyed the sortable
-        if (!this.destroyed) {
-            this.updateHandles();
-        }
-        if (!receiver.destroyed) {
-            receiver.updateHandles();
-        }
     }
 
     // ==========================
@@ -837,7 +793,6 @@ export class Sortable extends Interaction<SortableOptions> implements DragSource
         const ui = { helper: null, placeholder: $(), position: source.position, originalPosition: source.position, offset: source.offset, item, sender: null };
         this.trigger('receive', event, { ...ui, sender: source.item() });
         this.trigger('update', event, ui);
-        this.updateHandles();
         return true;
     }
 }

@@ -39,6 +39,9 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
  * styled with the `--p-knob-*` tokens.
  */
 export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+    /** The configuration, the server always renders `min`, `max` and `step`. */
+    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & Pick<KnobCfg, "min" | "max" | "step">;
+
     /** The hidden input with the submitted value. */
     input: JQuery = $();
     /** The SVG element the knob is drawn with, it is focusable and has the role `slider`. */
@@ -61,7 +64,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
     /** The label in the center, `null` if the label is hidden. */
     private label: SVGTextElement | null = null;
     /** The value before a drag started, restored when the drag is cancelled with Escape. */
-    private valueBeforeDrag: number | null = null;
+    private valueBeforeDrag: number = 0;
     /** Timer that releases the value after the mouse wheel stopped. */
     private wheelTimer: number | null = null;
     /** Whether the value is being changed with the keyboard, it is released on key up. */
@@ -75,9 +78,9 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
         super.init(cfg);
 
         this.input = $(this.jqId + '_hidden');
-        this.min = this.cfg.min ?? 0;
-        this.max = this.cfg.max ?? 100;
-        this.step = this.cfg.step || 1;
+        this.min = this.cfg.min;
+        this.max = this.cfg.max;
+        this.step = this.cfg.step;
         this.value = parseFloat(String(this.input.val() ?? ''));
         if (isNaN(this.value) || this.value < this.min || this.value > this.max) {
             this.value = this.min;
@@ -158,8 +161,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
     private bindEvents(): void {
         this.svg
             .on('pointerdown.knob', (e) => this.onPointerDown(e))
-            // no text selection and no focus change; not on pointerdown, that would suppress the mousedown event the
-            // overlays of other widgets listen to on the document to hide
+            // no text selection or focus change; not on pointerdown: overlays hide on mousedown on the document
             .on('mousedown.knob', (e) => e.preventDefault())
             .on('wheel.knob', (e) => this.onWheel(e))
             .on('keydown.knob', (e) => this.onKeyDown(e))
@@ -203,13 +205,11 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
     private endDrag(release: boolean): void {
         this.svg.off('.knob-drag');
         $(document).off('keydown.knob-drag' + this.id);
-        const before = this.valueBeforeDrag;
-        this.valueBeforeDrag = null;
-        if (release || before === null) {
+        if (release) {
             this.release(this.currentValue);
         }
         else {
-            this.change(before);
+            this.change(this.valueBeforeDrag);
         }
     }
 
@@ -223,7 +223,6 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
             return;
         }
         e.preventDefault();
-        e.stopImmediatePropagation();
         const delta = (e.originalEvent as WheelEvent).deltaY;
         if (!delta) {
             return;

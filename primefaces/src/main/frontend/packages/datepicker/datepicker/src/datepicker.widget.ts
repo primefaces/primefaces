@@ -38,6 +38,13 @@ interface MonthMeta {
 }
 
 /**
+ * The selected value of a {@link DatePicker}: a date (single selection), a list of dates (multiple and range selection,
+ * the end of an incomplete range is `null`), the raw text of the input if it could not be parsed, or `null` /
+ * `undefined` if nothing or an invalid value is selected.
+ */
+export type DatePickerValue = Date | (Date | null)[] | string | null | undefined;
+
+/**
  * Localized texts and settings of the date picker.
  */
 export interface DatePickerLocale {
@@ -209,7 +216,7 @@ export interface DatePickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Style class of the panel. */
     panelStyleClass: string | null;
     /** Called before the panel is shown. */
-    preShow: ((this: DatePicker, datePicker: DatePicker) => boolean | void) | null;
+    preShow: ((this: DatePicker, datePicker: DatePicker) => void) | null;
     /** Separator of the range dates. */
     rangeSeparator: string;
     /** Whether the date picker is readonly. */
@@ -324,8 +331,7 @@ const DEFAULT_LOCALE: DatePickerLocale = {
  * Default values of the configuration, applied to {@link DatePicker.options} for every option that is `undefined` or
  * `null`.
  */
-const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWidgetCfg, "disabled"> | "locale"> = {
-    appendTo: null,
+const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWidgetCfg, "disabled"> | "appendTo" | "locale"> = {
     autoDetectDisplay: true,
     autoMonthFormat: true,
     buttonTabindex: '',
@@ -406,7 +412,7 @@ const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWid
 const TICKS_TO_1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
 
 /**
- * Pads a number with leading zeros.
+ * Pads a number with leading zeros (`String.prototype.padStart` is not part of the configured ES2016 lib).
  * @param value Number to pad.
  * @param length Minimum length of the result, `2` by default.
  * @returns The number as a string with at least `length` digits.
@@ -424,15 +430,10 @@ function pad0(value: number, length: number = 2): string {
  * @param event A keyboard event, native or triggered via jQuery.
  * @returns The `code` of the event, or an empty string if it has none.
  */
-function keyCode(event: JQuery.TriggeredEvent): string {
+function eventCode(event: JQuery.TriggeredEvent): string {
     // jQuery copies `code` onto its event, so key events triggered via jQuery work too
     return (event as JQuery.KeyboardEventBase).code || '';
 }
-
-/** HTML entities of the characters escaped by `escapeHTML`. */
-const ENTITY_MAP: Record<string, string> = {
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;'
-};
 
 /**
  * __PrimeFaces DatePicker Widget__
@@ -443,8 +444,6 @@ const ENTITY_MAP: Record<string, string> = {
 export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
     /** The input with the selected date. */
     input: JQuery = $();
-    /** The input, or nothing for an inline date picker. */
-    jqEl: JQuery = $();
     /** The panel with the calendar. */
     panel: JQuery = $();
     /** The trigger button if using `showIcon`. */
@@ -452,7 +451,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     /** A copy of the configuration with the defaults applied, also holds the runtime state (e.g. lazy loaded dates). */
     options!: Cfg;
     /** The selected value: a date, a list of dates (multiple and range selection) or `null`. */
-    value: any = null;
+    value: DatePickerValue = null;
     /** The first displayed month. */
     viewDate: Date = new Date();
     /** The view date to restore after an update of a range date picker. */
@@ -516,15 +515,30 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         return this.jq;
     }
 
-    // min / max date are read from the options, so they can be changed at runtime
-    /** The minimum selectable date, parsed from the `minDate` option, or `null` if there is none. */
+    /** @deprecated Use {@link input}. */
+    get jqEl(): JQuery {
+        return this.input;
+    }
+
+    /**
+     * The minimum selectable date, parsed from the `minDate` option on each access so it can be changed at runtime, or
+     * `null` if there is none.
+     */
     private get minDate(): Date | null {
         return this.parseMinMaxValue(this.options.minDate);
     }
 
-    /** The maximum selectable date, parsed from the `maxDate` option, or `null` if there is none. */
+    /**
+     * The maximum selectable date, parsed from the `maxDate` option on each access so it can be changed at runtime, or
+     * `null` if there is none.
+     */
     private get maxDate(): Date | null {
         return this.parseMinMaxValue(this.options.maxDate);
+    }
+
+    /** The selected dates of a multiple or range selection, empty if the value is not a list of dates. */
+    private get selectedDates(): (Date | null)[] {
+        return Array.isArray(this.value) ? this.value : [];
     }
 
     /**
@@ -548,16 +562,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         // the instance is reused on refresh
         this.changeHandler = null;
-        this.documentClickListener = null;
-        this.mask = null;
         this.triggerButton = undefined;
 
         this.input = $(this.jqId + '_input');
-        this.jqEl = this.options.inline ? $() : this.input;
 
         // default date should be input value before widget value
         this.options.defaultDate = String(this.input.val() ?? '') || this.options.defaultDate;
-        this.options.focusOnSelect = !!this.options.focusOnSelect;
         // #6450 empty separators fall back to the defaults
         this.options.rangeSeparator = this.options.rangeSeparator || '-';
         this.options.timeSeparator = this.options.timeSeparator || ':';
@@ -567,10 +577,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (!this.options.inline) {
             this.applyMask(); // must be before datepicker/input see #6445/#7176/#13059
-            PrimeFaces.skinInput(this.jqEl);
+            PrimeFaces.skinInput(this.input);
 
             if (this.cfg.behaviors) {
-                PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors as unknown as Parameters<typeof PrimeFaces.attachBehaviors>[1]);
+                PrimeFaces.attachBehaviors(this.input,this.cfg.behaviors as unknown as Parameters<typeof PrimeFaces.attachBehaviors>[1]);
             }
         }
 
@@ -622,7 +632,6 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (this.options.mask) {
             this.input.inputmask('remove');
-            this.input.off();
         }
 
         // otherwise BaseWidget#destroy removes all handlers of the append target, e.g. the form
@@ -673,11 +682,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return;
         }
 
-        const isAutoClear = this.options.maskAutoClear !== false;
         const maskCfg: Inputmask.Options = {
             placeholder: this.options.maskSlotChar || '_',
-            clearMaskOnLostFocus: isAutoClear,
-            clearIncomplete: isAutoClear,
+            clearMaskOnLostFocus: this.options.maskAutoClear,
+            clearIncomplete: this.options.maskAutoClear,
             autoUnmask: false,
             showMaskOnHover: false,
             onBeforePaste: (pastedValue: string) => {
@@ -699,46 +707,31 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     }
 
     /**
-     * Sets up the trigger button rendered for `showIcon`: adds the ARIA attributes, copies the title and tabindex of
+     * Sets up the trigger button rendered for `showIcon`: adds the ARIA label, copies the title and tabindex of
      * the input, skins it and disables it for a disabled date picker.
      */
     private bindTriggerButton(): void {
-        if (this.options.inline || !this.options.showIcon) {
+        const button = this.triggerButton;
+        if (!button) {
             return;
         }
 
-        this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-        this.triggerButton.attr('aria-label', this.getLabel('chooseDate') ?? '').attr('aria-haspopup', 'true');
+        button.attr('aria-label', this.getLabel('chooseDate') ?? '');
 
-        const title = this.jqEl.attr('title');
+        const title = this.input.attr('title');
         if (title) {
-            this.triggerButton.attr('title', title);
+            button.attr('title', title);
         }
 
-        const buttonIndex = this.options.buttonTabindex || this.jqEl.attr('tabindex');
+        const buttonIndex = this.options.buttonTabindex || this.input.attr('tabindex');
         if (buttonIndex) {
-            this.triggerButton.attr('tabindex', buttonIndex);
+            button.attr('tabindex', buttonIndex);
         }
 
-        PrimeFaces.skinButton(this.triggerButton);
+        PrimeFaces.skinButton(button);
         if (this.options.disabled) {
-            PrimeFaces.utils.disableButton(this.triggerButton);
+            PrimeFaces.utils.disableButton(button);
         }
-    }
-
-    /**
-     * Called after the panel was created, resolves the `appendTo` target the overlay panel is appended to. An inline
-     * panel is not positioned (#8423).
-     */
-    private onPanelCreated(): void {
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this as unknown as Parameters<typeof PrimeFaces.utils.resolveAppendTo>[0], this.jq, this.panel) ?? null;
-        // #8423
-        if (this.options.inline) {
-            this.panel.css('position', '');
-        }
-        this.appendTarget = this.cfg.appendTo
-            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.appendTo)
-            : null;
     }
 
     /**
@@ -756,7 +749,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         // touch support - prevents keyboard popup
         if (this.touchEnabled) {
-            this.jqEl.prop('readonly', true);
+            this.input.prop('readonly', true);
         }
 
         if (this.options.preShow) {
@@ -776,7 +769,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private beforeHide(): void {
         if (this.touchEnabled) {
-            this.jqEl.attr('readonly', null);
+            this.input.attr('readonly', null);
         }
         const closeBehavior = this.cfg.behaviors?.['close'];
         if (closeBehavior) {
@@ -788,7 +781,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * Called after a date or time was selected: triggers the `change` event of the input and the `dateSelect` behavior
      * (in range selection only once both dates are set, #5830) and focuses the input again with `focusOnSelect`.
      */
-    private onDateSelected(): void {
+    private fireDateSelectEvent(): void {
         this.viewDateOption = this.viewDate;
 
         // #5830: do not fire in range mode if only the first value is set
@@ -799,9 +792,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (!this.options.inline && this.options.focusOnSelect) {
             this.refocusInput = true;
-            this.jqEl.trigger('focus');
+            this.input.trigger('focus');
             if (!this.options.showIcon) {
-                this.jqEl.off('click.datepicker').on('click.datepicker', () => this.showOverlay());
+                this.input.off('click.datepicker').on('click.datepicker', () => this.showOverlay());
             }
 
             PrimeFaces.queueTask(() => {
@@ -910,16 +903,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * @returns The selected date, a list of dates in multiple and range selection (the end of an incomplete range is
      * `null`), the raw text of the input if it could not be parsed, or `null` if nothing is selected.
      */
-    getDate(): any {
+    getDate(): DatePickerValue {
         return this.value;
     }
 
     /**
      * Checks whether a single date is selected.
-     * @returns `true` if the selected value is a `Date`, `false` if nothing or a list of dates is selected.
+     * @returns `true` if the selected value is a valid `Date`, `false` if nothing or a list of dates is selected.
      */
     hasDate(): boolean {
-        return this.getDate() instanceof Date;
+        return this.isDate(this.getDate());
     }
 
     /**
@@ -1042,7 +1035,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const parsedDefaultDate = this.parseValue(o.defaultDate);
         const hasMultipleDates = (this.isMultipleSelection() || this.isRangeSelection()) && Array.isArray(parsedDefaultDate);
         let viewDateDefaultsToNow = false;
-        let viewDate: any;
+        let viewDate: DatePickerValue;
 
         this.value = parsedDefaultDate;
         if (o.viewDate && !hasMultipleDates) {
@@ -1130,7 +1123,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * unchanged.
      * @returns The parsed date or dates, or `undefined` if the text is invalid (the error is logged).
      */
-    parseValue(option: unknown): any {
+    parseValue(option: DatePickerValue): DatePickerValue {
         if (option && typeof option === 'string') {
             return this.parseValueFromString(option);
         }
@@ -1354,7 +1347,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
 
         if (this.options.view === 'week') {
-            const currentDate: Date = this.value[0];
+            const currentDate = this.selectedDates[0]!;
             const weekCalculator = this.options.weekCalculator!;
             return weekCalculator({ day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() }) === weekCalculator(dateMeta);
         }
@@ -1363,14 +1356,24 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return this.isDateEquals(this.value, dateMeta);
         }
         if (this.isMultipleSelection()) {
-            return (this.value as Date[]).some((date) => this.isDateEquals(date, dateMeta));
+            return this.selectedDates.some((date) => this.isDateEquals(date, dateMeta));
         }
         if (this.isRangeSelection()) {
-            return this.value[1]
-                ? this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta)
-                : this.isDateEquals(this.value[0], dateMeta);
+            return this.isInRange(dateMeta);
         }
         return false;
+    }
+
+    /**
+     * Checks whether a day is the start or the end of the selected range, or between them.
+     * @param dateMeta The day to check.
+     * @returns Whether the day is within the selected range, only the start counts while the range is incomplete.
+     */
+    private isInRange(dateMeta: DateMeta): boolean {
+        const [start, end] = this.selectedDates;
+        return end
+            ? this.isDateEquals(start, dateMeta) || this.isDateEquals(end, dateMeta) || this.isDateBetween(start, end, dateMeta)
+            : this.isDateEquals(start, dateMeta);
     }
 
     /**
@@ -1383,10 +1386,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return false;
         }
         if (this.isRangeSelection()) {
-            const dateMeta = { year: this.viewDate.getFullYear(), month, day: 1, selectable: true };
-            return this.value[1]
-                ? this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta)
-                : this.isDateEquals(this.value[0], dateMeta);
+            return this.isInRange({ year: this.viewDate.getFullYear(), month, day: 1, selectable: true });
         }
         return this.isDate(this.value) && this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear();
     }
@@ -1501,11 +1501,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return formattedValue;
         }
 
+        // a raw text that could not be parsed fails in formatDate and is kept by the catch
         try {
             if (this.isRangeSelection()) {
-                if (this.value.length) {
-                    const startDate: Date = this.value[0];
-                    const endDate: Date | null = this.value[1];
+                const dates = this.value as (Date | null)[];
+                if (dates.length) {
+                    const startDate = dates[0]!;
+                    const endDate = dates[1];
 
                     formattedValue = this.formatDateTime(startDate) ?? '';
                     if (endDate) {
@@ -1519,14 +1521,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 }
             }
             else if (this.isSingleSelection()) {
-                formattedValue = this.formatDateTime(this.value) ?? '';
+                formattedValue = this.formatDateTime(this.value as Date) ?? '';
             }
             else if (this.isMultipleSelection()) {
                 formattedValue = (this.value as Date[]).map((date) => this.formatDateTime(date)).join(', ');
             }
         }
         catch (err) {
-            formattedValue = this.value;
+            formattedValue = String(this.value);
         }
 
         return formattedValue;
@@ -1579,15 +1581,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             }
             return matches;
         };
-        const formatNumber = (match: string, value: number, len: number) => {
-            let num = String(value);
-            if (lookAhead(match)) {
-                while (num.length < len) {
-                    num = '0' + num;
-                }
-            }
-            return num;
-        };
+        const formatNumber = (match: string, value: number, len: number) => lookAhead(match) ? pad0(value, len) : String(value);
         const formatName = (match: string, value: number, shortNames: string[], longNames: string[]) =>
             (lookAhead(match) ? longNames[value] : shortNames[value]) ?? '';
 
@@ -1660,21 +1654,20 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
 
         const o = this.options;
-        const pad = (value: number, length: number = 2) => pad0(value, length);
         let hours = date.getHours();
 
         if (o.hourFormat === '12' && hours > 11 && hours !== 12) {
             hours -= 12;
         }
 
-        let output = o.hourFormat === '12' && hours === 0 ? '12' : pad(hours);
-        output += o.timeSeparator + pad(date.getMinutes());
+        let output = o.hourFormat === '12' && hours === 0 ? '12' : pad0(hours);
+        output += o.timeSeparator + pad0(date.getMinutes());
 
         if (o.showSeconds) {
-            output += o.timeSeparator + pad(date.getSeconds());
+            output += o.timeSeparator + pad0(date.getSeconds());
         }
         if (o.showMilliseconds) {
-            output += o.fractionSeparator + pad(date.getMilliseconds(), 3);
+            output += o.fractionSeparator + pad0(date.getMilliseconds(), 3);
         }
         if (o.hourFormat === '12') {
             output += ' ' + (date.getHours() > 11 ? o.locale.pm : o.locale.am);
@@ -1893,12 +1886,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * @param text The text to parse.
      * @returns The parsed date or dates, `null` for an empty text, or `undefined` if the text is invalid.
      */
-    private parseValueFromString(text: string): any {
+    private parseValueFromString(text: string): DatePickerValue {
         if (!text || text.trim().length === 0) {
             return null;
         }
 
-        let value: any;
+        let value: DatePickerValue;
         try {
             if (this.isSingleSelection()) {
                 value = this.parseDateTime(text);
@@ -2087,7 +2080,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             + '</button>');
     }
 
-    /** Creates the panel element with its content and its state classes and stores it in {@link panel}. */
+    /**
+     * Creates the panel element with its content and its state classes, stores it in {@link panel} and resolves the
+     * `appendTo` target the overlay panel is appended to. An inline panel is not positioned (#8423).
+     */
     private renderDatePickerPanel(): void {
         const o = this.options;
         const classes = this.getClassesToAdd({
@@ -2109,7 +2105,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             'position': o.inline || o.touchUI ? '' : 'absolute'
         });
 
-        this.onPanelCreated();
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this as unknown as Parameters<typeof PrimeFaces.utils.resolveAppendTo>[0], this.jq, this.panel) ?? null;
+        // #8423
+        if (o.inline) {
+            this.panel.css('position', '');
+        }
+        this.appendTarget = this.cfg.appendTo
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.appendTo)
+            : null;
     }
 
     /**
@@ -2225,7 +2228,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     private renderMonthViewMonth(index: number): string {
         const o = this.options;
         const monthName = (o.showLongMonthNames ? o.locale.monthNames[index] : o.locale.monthNamesShort[index]) ?? '';
-        const content = o.dateTemplate ? o.dateTemplate.call(this, monthName) : this.escapeHTML(monthName);
+        const content = o.dateTemplate ? o.dateTemplate.call(this, monthName) : PrimeFaces.escapeHTML(monthName);
         const compareDate = new Date(this.viewDate.getFullYear(), index, 1);
         const disabled = !!((this.minDate && this.minDate > compareDate) || (this.maxDate && this.maxDate < compareDate));
         const monthClass = this.getClassesToAdd({
@@ -2283,7 +2286,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             const monthNames = o.showLongMonthNames ? o.locale.monthNames : o.locale.monthNamesShort;
             return '<select class="ui-datepicker-month" tabindex="0" aria-label="' + o.locale.month + '">' + this.renderTitleOptions('month', monthNames, month) + '</select>';
         }
-        return '<span class="ui-datepicker-month">' + this.escapeHTML(o.locale.monthNames[month]) + '</span>';
+        return '<span class="ui-datepicker-month">' + PrimeFaces.escapeHTML(o.locale.monthNames[month] ?? '') + '</span>';
     }
 
     /**
@@ -2332,7 +2335,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         options.forEach((option, i) => {
             if (name === 'month') {
                 if (!showMinMaxRange || ((!this.isInMinYear() || i >= this.minDate!.getMonth()) && (!this.isInMaxYear() || i <= this.maxDate!.getMonth()))) {
-                    html += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + this.escapeHTML(option) + '</option>';
+                    html += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + PrimeFaces.escapeHTML(String(option)) + '</option>';
                 }
             }
             else {
@@ -2376,16 +2379,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
         weekDaysMin.forEach((weekDayMin, i) => {
             html += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDayMin + '">'
-                + '<span title="' + this.escapeHTML(weekDays[i]) + '">' + weekDayMin + '</span>'
+                + '<span title="' + PrimeFaces.escapeHTML(weekDays[i] ?? '') + '">' + weekDayMin + '</span>'
                 + '</th>';
         });
 
         return html;
     }
 
-    // start-of-first-week - start-of-year, based on the implementation of moment.js
     /**
-     * Calculates the offset of the start of the first week to the start of the year.
+     * Calculates the offset of the start of the first week to the start of the year (start-of-first-week -
+     * start-of-year), based on the implementation of moment.js.
      * @param year Full year.
      * @param dow First day of the week, 0 = sunday.
      * @param doy The `firstDayWeekOffset` of the locale, determines which day of january is always in the first week.
@@ -2482,7 +2485,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 'ui-state-disabled': disabled,
                 'ui-state-highlight': !!date.today
             }).trim();
-            const dateLabel = this.escapeHTML(this.formatDate(new Date(date.year, date.month, date.day), o.dateFormat));
+            const dateLabel = PrimeFaces.escapeHTML(this.formatDate(new Date(date.year, date.month, date.day), o.dateFormat));
 
             // the focusable <a> carries the full date label so screen readers announce it while navigating;
             // cells without a link (disabled) keep the label on the cell itself
@@ -2686,16 +2689,18 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (!this.options.inline) {
             // #13269 delay registering events until CSP has registered
             PrimeFaces.queueTask(() => {
+                const input = this.input[0];
                 // the input was removed meanwhile, e.g. by an AJAX update
-                if (!this.input[0]?.isConnected) {
+                if (!input?.isConnected) {
                     return;
                 }
                 if (!this.changeHandler) {
                     // get the current attached events if using CSP, use DOM if non-CSP and JQ event if CSP
-                    const events = this.input[0] ? ($ as unknown as { _data(element: Element, key: string): Record<string, { handler: () => void }[]> | undefined })._data(this.input[0], 'events') : undefined;
+                    // @ts-expect-error Internal JQuery method
+                    const events = $._data(input, 'events');
                     let originalOnchange = this.input.prop('onchange') as ((event: JQuery.TriggeredEvent) => void) | null;
-                    if (!originalOnchange && events?.['change']) {
-                        originalOnchange = events['change'][0]?.handler ?? null;
+                    if (!originalOnchange && events?.change) {
+                        originalOnchange = events.change[0]?.handler ?? null;
                     }
                     this.input.prop('onchange', null).off('change');
                     this.changeHandler = (event) => originalOnchange?.call(this, event);
@@ -2835,16 +2840,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * month (or year) at the edges; PageUp and PageDown navigate directly.
      * @param event The keydown event.
      * @param rowSize Number of items per row, 7 days or 3 months.
-     * @param firstRowStart Whether ArrowUp may move the focus to the very first item, otherwise it navigates backward
-     * then.
      * @returns `true` if an arrow key was handled and its default action should be prevented.
      */
-    private moveFocus(event: JQuery.TriggeredEvent, rowSize: number, firstRowStart: boolean): boolean {
+    private moveFocus(event: JQuery.TriggeredEvent, rowSize: number): boolean {
         const tabbables = this.panel.find('a:tabbable');
         const currentIndex = tabbables.index($(event.currentTarget));
         const focusAt = (index: number) => tabbables.eq(index).trigger('focus');
 
-        switch (keyCode(event)) {
+        switch (eventCode(event)) {
             case 'ArrowLeft':
                 focusAt((currentIndex - 1) % tabbables.length);
                 return true;
@@ -2863,7 +2866,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             }
             case 'ArrowUp': {
                 const nextIndex = (currentIndex - rowSize) % tabbables.length;
-                if (firstRowStart ? nextIndex < 0 : nextIndex <= 0) {
+                if (nextIndex < 0) {
                     this.focusPreviousInterval(event);
                 }
                 else {
@@ -2893,7 +2896,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return;
         }
 
-        switch (keyCode(event)) {
+        switch (eventCode(event)) {
             case 'Enter':
             case 'NumpadEnter':
             case 'Space':
@@ -2910,7 +2913,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 return;
         }
 
-        if (this.moveFocus(event, 7, true)) {
+        if (this.moveFocus(event, 7)) {
             event.preventDefault();
         }
     }
@@ -2927,7 +2930,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return;
         }
 
-        switch (keyCode(event)) {
+        switch (eventCode(event)) {
             case 'Enter':
             case 'NumpadEnter':
             case 'Space':
@@ -2944,7 +2947,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 return;
         }
 
-        if (this.moveFocus(event, 3, false)) {
+        if (this.moveFocus(event, 3)) {
             event.preventDefault();
         }
     }
@@ -2970,7 +2973,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (input.maxLength === 2 && key === 'Enter') {
             this.hideOverlay();
-            // not to the form, e.g. its default command (before, the event propagated)
+            // not to the form, e.g. its default command
             event.preventDefault();
             event.stopPropagation();
             return;
@@ -3140,16 +3143,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private onUserInput(event: JQuery.TriggeredEvent): void {
         const rawValue = (event.target as HTMLInputElement).value;
+        const value = this.parseValueFromString(rawValue);
+        const viewDate = Array.isArray(value) ? value[0] : value;
 
-        try {
-            const value = this.parseValueFromString(rawValue);
+        if (this.isDate(viewDate)) {
             this.updateModel(event, value, false);
-            this.updateViewDate(event, value.length ? value[0] : value);
+            this.updateViewDate(event, viewDate);
         }
-        catch (err) {
-            if (!this.options.mask) {
-                this.updateModel(event, rawValue, false);
-            }
+        else {
+            this.updateModel(event, this.options.mask ? value : rawValue, false);
         }
     }
 
@@ -3217,7 +3219,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             let newYear = newViewDate.getFullYear() + direction;
             if (this.isYearNavigator()) {
                 const limit = parseInt((o.yearRange ?? '').split(':')[direction < 0 ? 0 : 1] ?? '', 10);
-                // a range that is not numeric (e.g. c-10:c+10) does not limit the navigation, like master
+                // a range that is not numeric (e.g. c-10:c+10) does not limit the navigation
                 if (!isNaN(limit)) {
                     newYear = direction < 0 ? Math.max(newYear, limit) : Math.min(newYear, limit);
                 }
@@ -3310,7 +3312,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.clearTimePickerTimer();
         // the time was changed on mousedown or on keydown of Enter / Space
         if ((!event.key || PrimeFaces.utils.isActionKey(event)) && this.value) {
-            this.onDateSelected();
+            this.fireDateSelectEvent();
         }
     }
 
@@ -3352,10 +3354,6 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (this.validateTime(time[0]!, time[1]!, time[2]!, time[3]!, currentTime, step > 0 ? 'INCREMENT' : 'DECREMENT')) {
             this.updateTime(event, time[0]!, time[1]!, time[2]!, time[3]!);
-        }
-
-        if (type !== 0 || step < 0 || !PrimeFaces.utils.isActionKey(event)) {
-            event.preventDefault();
         }
     }
 
@@ -3403,7 +3401,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * shown. Once shown, the listeners that hide it on an outside click, resize and scroll are bound and the panel is
      * focused.
      */
-    showOverlay(): void {
+    private showOverlay(): void {
         if (this.options.disabled || this.documentClickListener || this.options.inline || this.isPanelVisible() || !this.transition) {
             return;
         }
@@ -3439,7 +3437,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * initial view) date is displayed again.
      * @param event The event that caused the hiding; without an event, the focus is put back to the input.
      */
-    hideOverlay(event?: JQuery.TriggeredEvent): void {
+    private hideOverlay(event?: JQuery.TriggeredEvent): void {
         if (!this.documentClickListener || this.options.inline || !this.isPanelVisible() || !this.transition) {
             return;
         }
@@ -3736,11 +3734,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
         else if (this.isMultipleSelection()) {
             if (this.isSelected(dateMeta)) {
-                this.updateModel(event, (this.value as Date[]).filter((date) => !this.isDateEquals(date, dateMeta)));
+                this.updateModel(event, this.selectedDates.filter((date) => !this.isDateEquals(date, dateMeta)));
                 // #10850 notify unselect
-                this.onDateSelected();
+                this.fireDateSelectEvent();
             }
-            else if (!o.maxDateCount || !this.value || o.maxDateCount > this.value.length) {
+            else if (!o.maxDateCount || o.maxDateCount > this.selectedDates.length) {
                 this.selectDate(event, dateMeta);
             }
         }
@@ -3751,7 +3749,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (!o.inline && o.focusOnSelect && this.isSingleSelection() && (!o.showTime || o.hideOnDateTimeSelect)) {
             hideSoon();
         }
-        if (!o.inline && this.isRangeSelection() && o.hideOnRangeSelection && this.value && this.value[1]) {
+        if (!o.inline && this.isRangeSelection() && o.hideOnRangeSelection && this.selectedDates[1]) {
             hideSoon();
         }
 
@@ -3787,28 +3785,15 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             this.updateModel(event, date);
         }
         else if (this.isMultipleSelection()) {
-            this.updateModel(event, this.value ? this.value.concat(date) : [date]);
+            this.updateModel(event, this.selectedDates.concat(date));
         }
         else if (this.isRangeSelection()) {
-            if (this.value && this.value.length) {
-                let startDate: Date = this.value[0];
-                let endDate: Date | null = this.value[1];
-
-                if (!endDate && date.getTime() >= startDate.getTime()) {
-                    endDate = date;
-                }
-                else {
-                    startDate = date;
-                    endDate = null;
-                }
-                this.updateModel(event, [startDate, endDate]);
-            }
-            else {
-                this.updateModel(event, [date, null]);
-            }
+            // the day ends an incomplete range unless it is before its start, otherwise it starts a new range
+            const [startDate, endDate] = this.selectedDates;
+            this.updateModel(event, startDate && !endDate && date.getTime() >= startDate.getTime() ? [startDate, date] : [date, null]);
         }
 
-        this.onDateSelected();
+        this.fireDateSelectEvent();
 
         // #14158 needed for float label
         PrimeFaces.updateFilledState(this.input, this.input.parent());
@@ -3842,7 +3827,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const currentTime = this.getTimeSource();
         const currentHour = currentTime.getHours();
         this.updateTime(event, currentHour >= 12 ? currentHour - 12 : currentHour + 12, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds());
-        this.onDateSelected();
+        this.fireDateSelectEvent();
         event.preventDefault();
     }
 
@@ -3881,16 +3866,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
 
         const newDateTime = this.getCurrentTime();
-        [
-            () => newDateTime.setHours(newValue),
-            () => newDateTime.setMinutes(newValue),
-            () => newDateTime.setSeconds(newValue),
-            () => newDateTime.setMilliseconds(newValue)
-        ][index]!();
+        newDateTime.setHours(time[0]!, time[1]!, time[2]!, time[3]!);
 
         this.value = newDateTime;
         this.input.val(this.getValueToRender());
-        this.onDateSelected();
+        this.fireDateSelectEvent();
     }
 
     /**
@@ -4014,15 +3994,6 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     }
 
     /**
-     * Escapes the HTML special characters of a value.
-     * @param value The value to escape, converted to a string.
-     * @returns The escaped text.
-     */
-    private escapeHTML(value: unknown): string {
-        return String(value).replace(/[&<>"'`=/]/g, (s) => ENTITY_MAP[s] ?? s);
-    }
-
-    /**
      * Sets the time of the date to 00:00.
      * @param value The date to modify in place.
      * @returns The given date.
@@ -4084,7 +4055,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * the value.
      * @param updateInput `false` to keep the text of the input, e.g. while the user is typing.
      */
-    private updateModel(event: JQuery.TriggeredEvent | null, value: unknown, updateInput: boolean = true): void {
+    private updateModel(event: JQuery.TriggeredEvent | null, value: DatePickerValue, updateInput: boolean = true): void {
         this.value = value === '' ? null : value;
         if (updateInput) {
             this.input.val(this.getValueToRender());
@@ -4105,7 +4076,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         // attempt to refocus the newly created version of the same element
         const label = el?.getAttribute('aria-label');
         if (label) {
-            const refocus = this.panel.find("[aria-label='" + PrimeFaces.escapeHTML(label) + "']");
+            const refocus = this.panel.find('[aria-label]').filter((_, element) => element.getAttribute('aria-label') === label);
             if (refocus.length) {
                 if (PrimeFaces.env.ios && el?.tagName === 'SELECT') {
                     // focus the calendar instead of reopening the native iOS picker after replacing its select

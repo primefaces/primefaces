@@ -15,10 +15,14 @@ export type Callback = ((this: HTMLElement, event: JQuery.TriggeredEvent, ui: an
 export interface InteractionOptions {
     /** Whether the interaction is disabled. */
     disabled: boolean;
-    /** Minimum distance in pixels the pointer has to move before the interaction starts. */
-    distance: number;
     /** The options of the subclass. */
     [option: string]: unknown;
+}
+
+/** The options of the interactions started with the pointer: draggable, sortable and resizable. */
+export interface PointerInteractionOptions extends InteractionOptions {
+    /** Minimum distance in pixels the pointer has to move before the interaction starts. */
+    distance: number;
 }
 
 /** Property set on a native pointerdown event once an (inner) interaction took it, so outer interactions ignore it. */
@@ -28,7 +32,7 @@ const HANDLED = '__pfInteractionHandled';
 const POINTER_EVENTS = ['pointermove', 'pointerup', 'pointercancel'] as const;
 
 /** The interaction whose pointer is down. Only one pointer interacts at a time, like with Touch Punch, which ignored multi-touch. */
-let activeInteraction: Interaction<InteractionOptions> | null = null;
+let activeInteraction: PointerInteraction<PointerInteractionOptions> | null = null;
 
 /**
  * Removes `undefined` values, so they don't override the defaults.
@@ -45,6 +49,15 @@ function defined<T extends object>(options: Partial<T> | undefined): Partial<T> 
         }
     }
     return result as Partial<T>;
+}
+
+/**
+ * The key of the jQuery data of an element under which its interaction is stored.
+ * @param name The name of the interaction, e.g. `sortable`.
+ * @returns The key, e.g. `pf-sortable`.
+ */
+export function dataKey(name: string): string {
+    return 'pf-' + name;
 }
 
 /**
@@ -93,40 +106,48 @@ export function cssPosition(jq: JQuery): Coordinates {
 }
 
 /**
+ * The offset of an element minus its CSS position, which changes when a container of the element scrolls.
+ * @param jq The element, e.g. the helper of a drag.
+ * @returns The difference.
+ */
+export function positionDelta(jq: JQuery): Coordinates {
+    const offset = offsetOf(jq);
+    const css = cssPosition(jq);
+    return { left: offset.left - css.left, top: offset.top - css.top };
+}
+
+/**
  * The bounds of the content box of an element in page coordinates.
  * @param jq The element.
  * @returns The bounds as `[left, top, right, bottom]`.
  */
 export function contentBox(jq: JQuery): [number, number, number, number] {
-    const el = jq[0] as HTMLElement;
     const offset = offsetOf(jq);
     const left = offset.left + num(jq.css('borderLeftWidth')) + num(jq.css('paddingLeft'));
     const top = offset.top + num(jq.css('borderTopWidth')) + num(jq.css('paddingTop'));
-    return [left, top, left + (jq.width() ?? el.clientWidth), top + (jq.height() ?? el.clientHeight)];
+    return [left, top, left + (jq.width() ?? 0), top + (jq.height() ?? 0)];
 }
 
 /**
- * The closest scrollable parent of an element, like `scrollParent()` of jQuery UI: a fixed element scrolls with the
- * window, an absolute element skips its static parents.
+ * The closest scrollable parent of an element, like `scrollParent()` of jQuery UI: an absolute element skips its
+ * static parents.
  * @param jq The element, e.g. the helper of a drag.
- * @returns The scrollable parent, `null` for the window.
+ * @returns The scrollable parent, `null` if there is none or the element is fixed (it scrolls with the window).
  */
 export function scrollParent(jq: JQuery): HTMLElement | null {
     const position = jq.css('position');
     if (position === 'fixed') {
         return null;
     }
-    const parent = jq.parents().filter((_, el) => {
+    return jq.parents().filter((_, el) => {
         const p = $(el);
         return !(position === 'absolute' && p.css('position') === 'static')
             && /(auto|scroll)/.test(p.css('overflow') + p.css('overflow-y') + p.css('overflow-x'));
-    })[0];
-    return parent && parent !== document.body && parent !== document.documentElement ? parent : null;
+    })[0] ?? null;
 }
 
 /**
- * Base of the interactions: options, `enable` / `disable` / `destroy`, the callbacks and events, and the pointer
- * handling that starts the interaction after the pointer moved the minimum distance.
+ * Base of the interactions: options, `enable` / `disable` / `destroy`, the callbacks and the events.
  * @typeParam O Type of the options of the interaction.
  */
 export abstract class Interaction<O extends InteractionOptions> {
@@ -141,43 +162,6 @@ export abstract class Interaction<O extends InteractionOptions> {
     protected readonly eventPrefix: string;
     /** Unique event namespace of this instance. */
     protected readonly namespace: string;
-    /** The pointerdown event of the pointer that is down. */
-    private startEvent: JQuery.TriggeredEvent | null = null;
-    /** The last event of the pointer that is down, for the position of an interaction cancelled by code. */
-    private lastEvent: JQuery.TriggeredEvent | null = null;
-    /** The id of the pointer that is down. */
-    private pointerId: number | null = null;
-    /** The element that captured the pointer while the interaction is in progress. */
-    private captureElement: Element | null = null;
-    /**
-     * Prevents the native drag of images and links, which would cancel the pointer events.
-     * @param e The native `dragstart` event.
-     */
-    private readonly preventNativeDrag = (e: Event): void => e.preventDefault();
-
-    /**
-     * Handles the pointermove, pointerup and pointercancel events on the document while the pointer is down. Events of
-     * other pointers (e.g. a second finger) are ignored and keep their default.
-     * @param nativeEvent The native pointer event.
-     */
-    private readonly onDocumentPointer = (nativeEvent: Event): void => {
-        // a jQuery event, like the handlers of the interactions get from jQuery (clientX, pageX, ... of the native event)
-        const e = ($.event as unknown as { fix(event: Event): JQuery.TriggeredEvent }).fix(nativeEvent);
-        if (!this.isOwnPointer(e)) {
-            return;
-        }
-        if (nativeEvent.type === 'pointermove') {
-            this.onPointerMove(e);
-        }
-        else if (nativeEvent.type === 'pointerup' || !this.started) {
-            this.end(e);
-        }
-        else {
-            this.abort(e);
-        }
-    };
-    /** Whether the pointer moved far enough and the interaction started. */
-    private started: boolean = false;
 
     /**
      * Sets up the options and destroys the interaction when the element is removed.
@@ -194,11 +178,7 @@ export abstract class Interaction<O extends InteractionOptions> {
         this.options = { ...defaults, ...defined(options) };
         this.namespace = '.pf' + name + Math.random().toString(36).slice(2);
         // destroyed with the element, like a jQuery UI widget
-        this.element.on('remove' + this.namespace, (e) => {
-            if (e.target === element) {
-                this.destroy();
-            }
-        });
+        this.element.on('remove' + this.namespace, () => this.destroy());
     }
 
     /**
@@ -233,7 +213,7 @@ export abstract class Interaction<O extends InteractionOptions> {
             this.setOption(key, value);
             return undefined;
         }
-        const values = key as Record<string, unknown>;
+        const values = defined(key) as Record<string, unknown>;
         for (const k of Object.keys(values)) {
             this.setOption(k, values[k]);
         }
@@ -250,15 +230,11 @@ export abstract class Interaction<O extends InteractionOptions> {
         this.setOption('disabled', true);
     }
 
-    /** Removes the interaction from the element, one in progress ends without a drop. */
+    /** Removes the interaction from the element. */
     destroy(): void {
-        if (this.started) {
-            this.abort(this.cancelEvent());
-        }
-        this.cleanupPointer();
         this.element.off(this.namespace).removeClass('ui-' + this.name);
         this.widget().removeClass('ui-' + this.name + '-disabled');
-        this.element.removeData('pf-' + this.name);
+        this.element.removeData(dataKey(this.name));
     }
 
     /**
@@ -290,17 +266,70 @@ export abstract class Interaction<O extends InteractionOptions> {
             // jQuery reads pageX, clientX, ... from the original event
             jqEvent.originalEvent = event.originalEvent;
         }
-        jqEvent.target = widget[0]!;
         widget.trigger(jqEvent, [ui]);
 
         const callback = this.options[type] as Callback;
         const result = typeof callback === 'function' ? callback.call(widget[0]!, jqEvent, ui) : undefined;
         return result !== false && !jqEvent.isDefaultPrevented();
     }
+}
 
-    // ===============
-    // === Pointer ===
-    // ===============
+/**
+ * Base of the interactions started with the pointer (draggable, sortable, resizable): starts the interaction after
+ * the pointer moved the minimum distance and follows that pointer until it is released.
+ * @typeParam O Type of the options of the interaction.
+ */
+export abstract class PointerInteraction<O extends PointerInteractionOptions> extends Interaction<O> {
+    /** Whether the interaction was aborted (pointercancel, cancelled or destroyed by code), it ends without a drop. */
+    protected aborted: boolean = false;
+    /** The pointerdown event of the pointer that is down. */
+    private startEvent: JQuery.TriggeredEvent | null = null;
+    /** The last event of the pointer that is down, for the position of an interaction cancelled by code. */
+    private lastEvent: JQuery.TriggeredEvent | null = null;
+    /** The id of the pointer that is down. */
+    private pointerId: number | null = null;
+    /** The element that captured the pointer while the interaction is in progress. */
+    private captureElement: Element | null = null;
+    /** The inline cursor of the body while the interaction sets its own, restored afterwards. */
+    private storedCursor: string | null = null;
+    /**
+     * Prevents the native drag of images and links, which would cancel the pointer events.
+     * @param e The native `dragstart` event.
+     */
+    private readonly preventNativeDrag = (e: Event): void => e.preventDefault();
+
+    /**
+     * Handles the pointermove, pointerup and pointercancel events on the document while the pointer is down. Events of
+     * other pointers (e.g. a second finger) are ignored and keep their default.
+     * @param nativeEvent The native pointer event.
+     */
+    private readonly onDocumentPointer = (nativeEvent: Event): void => {
+        // a jQuery event, like the handlers of the interactions get from jQuery (clientX, pageX, ... of the native event)
+        const e = ($.event as unknown as { fix(event: Event): JQuery.TriggeredEvent }).fix(nativeEvent);
+        if (!this.isOwnPointer(e)) {
+            return;
+        }
+        if (nativeEvent.type === 'pointermove') {
+            this.onPointerMove(e);
+        }
+        else if (nativeEvent.type === 'pointerup' || !this.started) {
+            this.end(e);
+        }
+        else {
+            this.abort(e);
+        }
+    };
+    /** Whether the pointer moved far enough and the interaction started. */
+    private started: boolean = false;
+
+    /** Removes the interaction from the element, one in progress ends without a drop. */
+    override destroy(): void {
+        if (this.started) {
+            this.abort(this.cancelEvent());
+        }
+        this.cleanupPointer();
+        super.destroy();
+    }
 
     /**
      * Starts listening for pointerdown on the element (or another target).
@@ -371,7 +400,7 @@ export abstract class Interaction<O extends InteractionOptions> {
         this.startEvent = e;
         this.lastEvent = e;
         this.pointerId = event.pointerId;
-        activeInteraction = this as unknown as Interaction<InteractionOptions>;
+        activeInteraction = this as unknown as PointerInteraction<PointerInteractionOptions>;
         // in the capture phase, so an event handler that stops the propagation can't swallow the end of the drag
         for (const type of POINTER_EVENTS) {
             document.addEventListener(type, this.onDocumentPointer, true);
@@ -393,10 +422,12 @@ export abstract class Interaction<O extends InteractionOptions> {
     }
 
     /**
-     * The browser took over the pointer (e.g. for scrolling), the interaction ends without a drop.
+     * The browser took over the pointer (e.g. for scrolling), or the interaction is cancelled or destroyed by code: it
+     * ends without a drop.
      * @param e The pointercancel event.
      */
     protected abort(e: JQuery.TriggeredEvent): void {
+        this.aborted = true;
         this.end(e);
     }
 
@@ -415,7 +446,7 @@ export abstract class Interaction<O extends InteractionOptions> {
         if (!this.started) {
             const start = this.startEvent!;
             const distance = Math.max(Math.abs((start.clientX ?? 0) - (e.clientX ?? 0)), Math.abs((start.clientY ?? 0) - (e.clientY ?? 0)));
-            if (distance < (this.options.distance ?? 1)) {
+            if (distance < this.options.distance) {
                 return;
             }
             window.getSelection()?.removeAllRanges();
@@ -470,6 +501,7 @@ export abstract class Interaction<O extends InteractionOptions> {
                 timer = window.setTimeout(release, 500);
             }
         }
+        this.aborted = false;
     }
 
     /** Stops listening for the pointer and releases it. */
@@ -482,7 +514,7 @@ export abstract class Interaction<O extends InteractionOptions> {
         if (this.captureElement?.hasPointerCapture(this.pointerId!)) {
             this.captureElement.releasePointerCapture(this.pointerId!);
         }
-        if (activeInteraction === (this as unknown as Interaction<InteractionOptions>)) {
+        if (activeInteraction === (this as unknown as PointerInteraction<PointerInteractionOptions>)) {
             activeInteraction = null;
         }
         this.captureElement = null;
@@ -507,11 +539,48 @@ export abstract class Interaction<O extends InteractionOptions> {
     }
 
     /**
+     * Creates the helper of a draggable or sortable from the `helper` and `appendTo` options: the dragged element, a
+     * clone of it without its id or the element of the helper function, appended if it is not in the document.
+     * @param event The pointerdown event.
+     * @param dragged The dragged element.
+     * @param args More arguments of the helper function after the event, e.g. the item of a sortable.
+     * @returns The helper.
+     */
+    protected createHelper(event: JQuery.TriggeredEvent, dragged: JQuery, ...args: unknown[]): JQuery {
+        const helperOption = this.options['helper'];
+        const appendTo = this.options['appendTo'];
+        const helper = typeof helperOption === 'function' ? $(helperOption.call(this.element[0], event, ...args) as Element)
+            : helperOption === 'clone' ? dragged.clone().removeAttr('id') : dragged;
+        if (!helper.parents('body').length) {
+            helper.appendTo(appendTo === 'parent' ? dragged.parent() : $(appendTo as string));
+        }
+        return helper as JQuery;
+    }
+
+    /**
+     * Sets the cursor of the body until {@link restoreCursor} is called, e.g. for the `cursor` option.
+     * @param cursor The CSS cursor.
+     */
+    protected setCursor(cursor: string): void {
+        this.storedCursor ??= document.body.style.cursor;
+        document.body.style.cursor = cursor;
+    }
+
+    /** Restores the inline cursor of the body that {@link setCursor} replaced. */
+    protected restoreCursor(): void {
+        if (this.storedCursor !== null) {
+            document.body.style.cursor = this.storedCursor;
+            this.storedCursor = null;
+        }
+    }
+
+    /**
      * Scrolls the container (or the window) when the pointer is near its edge, like the `scroll` option of jQuery UI:
      * an element scrolls when the pointer is closer than the sensitivity to an edge or beyond it, the window when the
      * pointer is close to the edge of the viewport.
      * @param event The pointermove event.
-     * @param container The scroll parent determined when the interaction started, `null` for the window.
+     * @param container The scroll parent determined when the interaction started, `null` for the window (also the
+     * body and the document element scroll with the window).
      * @param axis Only scrolls along the `x` or `y` axis.
      * @param sensitivity Distance in pixels from the edge at which the scrolling starts.
      * @param speed Pixels scrolled per pointer move.
@@ -519,6 +588,9 @@ export abstract class Interaction<O extends InteractionOptions> {
      */
     protected autoScroll(event: JQuery.TriggeredEvent, container: HTMLElement | null, axis: 'x' | 'y' | false = false,
             sensitivity: number = 20, speed: number = 20): boolean {
+        if (container === document.body || container === document.documentElement) {
+            container = null;
+        }
         let dx = 0;
         let dy = 0;
         if (container) {

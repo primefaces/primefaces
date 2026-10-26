@@ -10,7 +10,7 @@ export type KeyFilterTestFunction = (this: HTMLInputElement | HTMLTextAreaElemen
 export type KeyFilterMask = "pint" | "int" | "pnum" | "money" | "num" | "hex" | "email" | "alpha" | "alphanum";
 
 /**
- * The configuration for the {@link KeyFilter} widget. The options `testFunction`, `regEx`, `inputRegEx` and `mask` are
+ * The configuration for the {@link KeyFilter} widget. The options `regEx`, `inputRegEx`, `mask` and `testFunction` are
  * mutually exclusive.
  */
 export interface KeyFilterCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
@@ -86,7 +86,17 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
             input.off(namespace);
         });
 
-        if (this.cfg.inputRegEx) {
+        /**
+         * Creates the test for a single entered character from a regular expression.
+         * @param regEx The regular expression each entered character must match.
+         * @returns The test.
+         */
+        const matches = (regEx: RegExp): KeyFilterTestFunction => (character) => regEx.test(character);
+
+        if (this.cfg.regEx) {
+            this.bindCharacterFilter(input, matches(this.cfg.regEx), namespace);
+        }
+        else if (this.cfg.inputRegEx) {
             const inputRegEx = this.cfg.inputRegEx;
             // a value that does not match can't be restored
             const initialValue = String(input.val() ?? '');
@@ -101,11 +111,15 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
                 }
             });
         }
-        else {
-            const test = this.createCharacterTest();
-            if (test) {
-                this.bindCharacterFilter(input, test, namespace);
+        else if (this.cfg.mask) {
+            // an unknown mask does not filter
+            const mask = KeyFilter.masks[this.cfg.mask];
+            if (mask) {
+                this.bindCharacterFilter(input, matches(mask), namespace);
             }
+        }
+        else if (this.cfg.testFunction) {
+            this.bindCharacterFilter(input, this.cfg.testFunction, namespace);
         }
 
         // disable drop
@@ -118,18 +132,6 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
                 e.preventDefault();
             });
         }
-    }
-
-    /**
-     * Creates the test for a single entered character from the `regEx`, `testFunction` or `mask` option.
-     * @returns The test, or `null` if none of these options is set.
-     */
-    private createCharacterTest(): KeyFilterTestFunction | null {
-        const regEx = this.cfg.regEx || (this.cfg.mask ? KeyFilter.masks[this.cfg.mask] : null);
-        if (regEx) {
-            return (character) => regEx.test(character);
-        }
-        return this.cfg.testFunction || null;
     }
 
     /**

@@ -26,7 +26,7 @@ export function setupZIndex(): void {
         }
 
         let element = this.first();
-        while (element.length && element[0] as unknown !== document) {
+        while (element.length && element[0]!.nodeType !== Node.DOCUMENT_NODE) {
             // the z-index only applies to a positioned element; an explicit 0 of a nested element is ignored
             const position = element.css("position");
             if (position === "absolute" || position === "relative" || position === "fixed") {

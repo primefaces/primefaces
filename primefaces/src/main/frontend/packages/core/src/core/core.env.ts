@@ -59,11 +59,10 @@ export interface BrowserDetection {
 
 /**
  * Detects the browser and the platform from the user agent, formerly done by the jQuery Browser plugin (`$.browser`).
- * @param userAgent The user agent string, the one of the current browser by default.
  * @returns The detected browser and platform.
  */
-function detectBrowser(userAgent: string = window.navigator.userAgent): BrowserDetection {
-    const ua = userAgent.toLowerCase();
+function detectBrowser(): BrowserDetection {
+    const ua = window.navigator.userAgent.toLowerCase();
     const match = /(edg|edga|edgios)\/([\w.]+)/.exec(ua)
         || /(opr)[/]([\w.]+)/.exec(ua)
         || /(chrome)[ /]([\w.]+)/.exec(ua)
@@ -77,7 +76,8 @@ function detectBrowser(userAgent: string = window.navigator.userAgent): BrowserD
 
     const browser: BrowserDetection = {
         name,
-        version: name ? match[2] || match[4] || '0' : '',
+        // for Safari the version after "version/", not the WebKit version
+        version: name ? match[4] || match[2] || '0' : '',
         versionNumber: name ? parseInt(match[4] || match[2] || '0', 10) : 0,
         platform
     };

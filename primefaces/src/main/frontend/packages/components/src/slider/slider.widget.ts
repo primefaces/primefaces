@@ -22,6 +22,9 @@ export interface SliderEventData {
  */
 export type SliderCallback = (this: Slider | HTMLElement, event: JQuery.TriggeredEvent | null, data: SliderEventData) => void | boolean;
 
+/** The methods of the InputNumber / Spinner widgets the slider uses, they are not typed in this package. */
+type InputWidget = { getValue(): number; setValue(value: number): void };
+
 /**
  * The configuration for the {@link Slider} widget.
  */
@@ -66,8 +69,8 @@ export interface SliderCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
     /** The inputs storing the value of each handle. */
     input: JQuery = $();
-    /** The element displaying the value. */
-    output: JQuery | undefined;
+    /** The element displaying the value, `null` without display. */
+    output: JQuery | null = null;
     /** The handles. */
     handles: JQuery = $();
     /** The range between the handles, `null` without range. */
@@ -107,7 +110,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
 
         const inputIds = (this.cfg.input ?? '').split(',');
         this.input = $(inputIds.map((id) => PrimeFaces.escapeClientId(id)).join(','));
-        this.output = this.cfg.display ? $(PrimeFaces.escapeClientId(this.cfg.display)) : undefined;
+        this.output = this.cfg.display ? $(PrimeFaces.escapeClientId(this.cfg.display)) : null;
 
         const values = this.cfg.range === true ? (this.cfg.values ?? []) : [this.cfg.value];
         this.values = this.cfg.range === true
@@ -130,10 +133,9 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
         this.jq.children('.ui-slider-handle, .ui-slider-range').remove();
         this.jq.addClass('ui-slider').toggleClass('ui-slider-vertical', vertical).toggleClass('ui-slider-horizontal', !vertical);
 
-        this.range = this.cfg.range ? $('<div class="ui-slider-range"></div>').appendTo(this.jq) : null;
-        if (this.cfg.range === 'min' || this.cfg.range === 'max') {
-            this.range?.addClass('ui-slider-range-' + this.cfg.range);
-        }
+        this.range = this.cfg.range
+            ? $('<div class="ui-slider-range"></div>').addClass(this.cfg.range === true ? '' : 'ui-slider-range-' + this.cfg.range).appendTo(this.jq)
+            : null;
 
         this.handles = $(this.values.map((_, i) => $('<span class="ui-slider-handle" role="slider" tabindex="0"></span>')
             .attr({ 'aria-orientation': vertical ? 'vertical' : 'horizontal', 'aria-valuemin': this.min, 'aria-valuemax': this.max })
@@ -154,17 +156,16 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             // overlays of other widgets listen to on the document to hide
             .on('mousedown.slider', (e) => e.preventDefault())
             .on('pointermove.slider', (e) => {
-                if (this.dragIndex !== null) {
+                const pointer = e.originalEvent as PointerEvent | undefined;
+                // the pointerup got lost, e.g. the button was released over an iframe
+                if (pointer?.pointerType === 'mouse' && pointer.buttons === 0) {
+                    this.endSlide(e);
+                }
+                else if (this.dragIndex !== null) {
                     this.slide(e, this.dragIndex, this.valueAt(e), false);
                 }
             })
-            .on('pointerup.slider pointercancel.slider', (e) => {
-                if (this.dragIndex !== null) {
-                    const index = this.dragIndex;
-                    this.dragIndex = null;
-                    this.onSlideEnd(e, this.data(index));
-                }
-            });
+            .on('pointerup.slider pointercancel.slider', (e) => this.endSlide(e));
 
         this.handles
             .on('keydown.slider', (e) => this.onKeyDown(e))
@@ -193,7 +194,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             }
             else if (spinner.length) {
                 spinner.find('.ui-spinner-input').off('change.slider').on('change.slider', () => {
-                    const widget = PrimeFaces.getWidgetById(spinner.attr('id') ?? '') as unknown as { getValue(): number } | null;
+                    const widget = this.inputWidget(spinner);
                     if (widget) {
                         this.setHandleValue(index, widget.getValue());
                     }
@@ -265,9 +266,26 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             return;
         }
         this.dragIndex = index;
-        this.jq[0]?.setPointerCapture(event.pointerId);
+        try {
+            this.jq[0]?.setPointerCapture(event.pointerId);
+        }
+        catch {
+            // the pointer is not active anymore
+        }
         if (!onHandle.length) {
             this.slide(e, index, value, true);
+        }
+    }
+
+    /**
+     * Ends a slide with the pointer and fires `onSlideEnd`, if a handle is being dragged.
+     * @param e The `pointerup`, `pointercancel` or `pointermove` event that ended the slide.
+     */
+    private endSlide(e: JQuery.TriggeredEvent): void {
+        if (this.dragIndex !== null) {
+            const index = this.dragIndex;
+            this.dragIndex = null;
+            this.onSlideEnd(e, this.data(index));
         }
     }
 
@@ -445,7 +463,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      * @param data The data of the moved handle.
      * @returns `false` if the callback cancelled the slide.
      */
-    private onSlideStart(event: JQuery.TriggeredEvent | null, data: SliderEventData): boolean {
+    onSlideStart(event: JQuery.TriggeredEvent | null, data: SliderEventData): boolean {
         return this.callSlideCallback(this.cfg.onSlideStart, this.jq[0]!, 'slidestart', event, data);
     }
 
@@ -512,14 +530,23 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      * @param value The value of the handle.
      */
     private setInputValue(input: JQuery, value: number): void {
-        const holder = input.closest('.ui-inputnumber, .ui-spinner');
-        const widget = holder.length ? PrimeFaces.getWidgetById(holder.attr('id') ?? '') as unknown as { setValue(value: number): void } | null : null;
+        const widget = this.inputWidget(input);
         if (widget) {
             widget.setValue(value);
         }
         else {
             input.val(value);
         }
+    }
+
+    /**
+     * Finds the InputNumber / Spinner widget an input belongs to.
+     * @param input The input, or the InputNumber / Spinner wrapper of a range slider.
+     * @returns The widget, `null` for a plain input.
+     */
+    private inputWidget(input: JQuery): InputWidget | null {
+        const holder = input.closest('.ui-inputnumber, .ui-spinner');
+        return holder.length ? PrimeFaces.getWidgetById(holder.attr('id') ?? '') as unknown as InputWidget | null : null;
     }
 
     /**

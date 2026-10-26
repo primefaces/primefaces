@@ -21,10 +21,12 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
     /** The element that scrolls, it contains the children of the scroll panel. */
     content: JQuery = $();
 
+    /** The DOM element of the {@link content}. */
+    private contentElement!: HTMLElement;
     /** The tracks of the horizontal and the vertical bar. */
-    private tracks: Record<Axis, JQuery> = { x: $(), y: $() };
+    private tracks!: Record<Axis, HTMLElement>;
     /** The bars of the horizontal and the vertical axis, they can be dragged. */
-    private bars: Record<Axis, JQuery> = { x: $(), y: $() };
+    private bars!: Record<Axis, HTMLElement>;
     /** Observes the size of the panel and of the children of the content. */
     private resizeObserver: ResizeObserver | null = null;
     /** Observes added and removed children of the content, e.g. after an AJAX update. */
@@ -41,10 +43,11 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         super.init(cfg);
 
         this.content = this.jq.children('.ui-scrollpanel-content');
-        for (const axis of ['x', 'y'] as Axis[]) {
-            this.tracks[axis] = this.jq.children('.ui-scrollpanel-track-' + axis);
-            this.bars[axis] = this.tracks[axis].children('.ui-scrollpanel-bar');
-        }
+        this.contentElement = this.content[0]!;
+        const track = (axis: Axis) => this.jq.children('.ui-scrollpanel-track-' + axis)[0]!;
+        this.tracks = { x: track('x'), y: track('y') };
+        const bar = (axis: Axis) => this.tracks[axis].firstElementChild as HTMLElement;
+        this.bars = { x: bar('x'), y: bar('y') };
 
         this.bindEvents();
         this.observe();
@@ -59,10 +62,9 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         this.jq.on('pointerenter.scrollpanel', () => this.requestUpdate());
 
         for (const axis of ['x', 'y'] as Axis[]) {
-            this.bars[axis].on('pointerdown.scrollpanel', (e) => this.onBarPointerDown(e, axis));
-            this.tracks[axis]
-                // no text selection and no focus change; not on pointerdown, that would suppress the mousedown event
-                // the overlays of other widgets listen to on the document to hide
+            $(this.bars[axis]).on('pointerdown.scrollpanel', (e) => this.onBarPointerDown(e, axis));
+            $(this.tracks[axis])
+                // no text selection or focus change; not on pointerdown: overlays hide on mousedown on the document
                 .on('mousedown.scrollpanel', (e) => e.preventDefault())
                 .on('pointerdown.scrollpanel', (e) => this.onTrackPointerDown(e, axis))
                 // the tracks lie over the content, the wheel scrolls the content and not the page
@@ -75,11 +77,8 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param e The wheel event of a track.
      */
     private onTrackWheel(e: JQuery.TriggeredEvent): void {
-        const event = e.originalEvent as WheelEvent | undefined;
-        const content = this.content[0];
-        if (!event || !content) {
-            return;
-        }
+        const event = e.originalEvent as WheelEvent;
+        const content = this.contentElement;
         e.preventDefault();
         // the delta in lines or pages, like the browser scrolls
         const factor = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16
@@ -95,10 +94,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         this.resizeObserver?.disconnect();
         this.mutationObserver?.disconnect();
 
-        const content = this.content[0];
-        if (!content) {
-            return;
-        }
+        const content = this.contentElement;
         this.resizeObserver = new ResizeObserver(() => this.requestUpdate());
         this.resizeObserver.observe(content);
         for (const child of Array.from(content.children)) {
@@ -136,15 +132,15 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param axis The axis of the bar.
      */
     private onBarPointerDown(e: JQuery.TriggeredEvent, axis: Axis): void {
-        const event = e.originalEvent as PointerEvent | undefined;
-        const content = this.content[0];
-        const bar = this.bars[axis][0];
-        if (!event || !content || !bar || (event.pointerType === 'mouse' && event.button !== 0)) {
+        const event = e.originalEvent as PointerEvent;
+        if (event.pointerType === 'mouse' && event.button !== 0) {
             return;
         }
+        const content = this.contentElement;
+        const bar = this.bars[axis];
         e.stopPropagation();
         bar.setPointerCapture(event.pointerId);
-        this.bars[axis].addClass('ui-scrollpanel-bar-active');
+        bar.classList.add('ui-scrollpanel-bar-active');
 
         const startPointer = axis === 'x' ? event.clientX : event.clientY;
         const startScroll = axis === 'x' ? content.scrollLeft : content.scrollTop;
@@ -153,7 +149,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         const free = this.trackLength(axis) - this.barLength(axis);
         const ratio = free > 0 ? (scrollSize - clientSize) / free : 0;
 
-        this.bars[axis]
+        $(bar)
             .on('pointermove.scrollpanel-drag', (ev) => {
                 const pointer = (ev.originalEvent as PointerEvent);
                 const scroll = startScroll + ((axis === 'x' ? pointer.clientX : pointer.clientY) - startPointer) * ratio;
@@ -165,7 +161,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
                 }
             })
             .on('pointerup.scrollpanel-drag pointercancel.scrollpanel-drag', () => {
-                this.bars[axis].off('.scrollpanel-drag').removeClass('ui-scrollpanel-bar-active');
+                $(bar).off('.scrollpanel-drag').removeClass('ui-scrollpanel-bar-active');
             });
     }
 
@@ -175,13 +171,12 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param axis The axis of the track.
      */
     private onTrackPointerDown(e: JQuery.TriggeredEvent, axis: Axis): void {
-        const event = e.originalEvent as PointerEvent | undefined;
-        const content = this.content[0];
-        const bar = this.bars[axis][0];
-        if (!event || !content || !bar || (event.pointerType === 'mouse' && event.button !== 0)) {
+        const event = e.originalEvent as PointerEvent;
+        if (event.pointerType === 'mouse' && event.button !== 0) {
             return;
         }
-        const rect = bar.getBoundingClientRect();
+        const content = this.contentElement;
+        const rect = this.bars[axis].getBoundingClientRect();
         const before = axis === 'x' ? event.clientX < rect.left : event.clientY < rect.top;
         const page = axis === 'x' ? content.clientWidth : content.clientHeight;
         // a negative delta scrolls left / up, also in a right-to-left content (its scrollLeft runs from 0 to negative)
@@ -206,16 +201,12 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * positions it at the scroll position.
      */
     private update(): void {
-        const content = this.content[0];
-        if (!content) {
-            return;
-        }
         let scrollableContent = false;
         for (const axis of ['x', 'y'] as Axis[]) {
             const { scrollSize, clientSize } = this.sizes(axis);
             const scrollable = scrollSize > clientSize + 1;
             scrollableContent ||= scrollable;
-            this.tracks[axis].toggleClass('p-hidden', !scrollable);
+            this.tracks[axis].classList.toggle('p-hidden', !scrollable);
             this.jq.toggleClass('ui-scrollpanel-scrollable-' + axis, scrollable);
         }
         // focusable for keyboard scrolling only while there is something to scroll, no extra tab stop otherwise
@@ -232,7 +223,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param axis The axis of the bar.
      */
     private positionBar(axis: Axis): void {
-        const content = this.content[0]!;
+        const content = this.contentElement;
         const { scrollSize, clientSize } = this.sizes(axis);
         const trackLength = this.trackLength(axis);
         const barLength = Math.min(trackLength, Math.max(MIN_BAR_LENGTH, trackLength * clientSize / scrollSize));
@@ -244,7 +235,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         }
         const offset = (trackLength - barLength) * fraction;
 
-        this.bars[axis].css(axis === 'x'
+        $(this.bars[axis]).css(axis === 'x'
             ? { width: barLength + 'px', left: offset + 'px' }
             : { height: barLength + 'px', top: offset + 'px' });
     }
@@ -255,7 +246,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @returns The size of the whole content and of its visible part, in pixels.
      */
     private sizes(axis: Axis): { scrollSize: number, clientSize: number } {
-        const content = this.content[0]!;
+        const content = this.contentElement;
         return axis === 'x'
             ? { scrollSize: content.scrollWidth, clientSize: content.clientWidth }
             : { scrollSize: content.scrollHeight, clientSize: content.clientHeight };
@@ -267,8 +258,8 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @returns The length in pixels.
      */
     private trackLength(axis: Axis): number {
-        const track = this.tracks[axis][0];
-        return track ? (axis === 'x' ? track.clientWidth : track.clientHeight) : 0;
+        const track = this.tracks[axis];
+        return axis === 'x' ? track.clientWidth : track.clientHeight;
     }
 
     /**
@@ -277,8 +268,8 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @returns The length in pixels.
      */
     private barLength(axis: Axis): number {
-        const bar = this.bars[axis][0];
-        return bar ? (axis === 'x' ? bar.offsetWidth : bar.offsetHeight) : 0;
+        const bar = this.bars[axis];
+        return axis === 'x' ? bar.offsetWidth : bar.offsetHeight;
     }
 
     /**
@@ -295,7 +286,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param y Vertical scroll position in pixels.
      */
     scrollTo(x: number, y: number): void {
-        this.content[0]?.scrollTo(x, y);
+        this.contentElement.scrollTo(x, y);
     }
 
     /**
@@ -303,7 +294,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param x Horizontal scroll position in pixels.
      */
     scrollX(x: number): void {
-        this.content[0]?.scrollTo({ left: x });
+        this.contentElement.scrollTo({ left: x });
     }
 
     /**
@@ -311,7 +302,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * @param y Vertical scroll position in pixels.
      */
     scrollY(y: number): void {
-        this.content[0]?.scrollTo({ top: y });
+        this.contentElement.scrollTo({ top: y });
     }
 
     /**

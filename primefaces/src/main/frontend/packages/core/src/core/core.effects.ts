@@ -199,9 +199,8 @@ interface RunningEffect {
     /**
      * Finishes the effect: hides the element in `hide` mode, runs the cleanups, cancels the animations, calls the
      * `complete` callback and dequeues the next effect. Calling it again does nothing.
-     * @param stopped `true` when called by {@link Effects.stop}, which cleared the queue already, or when a new effect
-     * starts on the element while this one is still registered: the next effect is not dequeued, as that would remove
-     * the marker of an effect the `complete` callback just started.
+     * @param stopped `true` when the effect is stopped or replaced by a new effect on the element, then the next
+     * effect is not dequeued.
      */
     finish: (stopped?: boolean) => void;
 }
@@ -246,13 +245,10 @@ function resolveDuration(duration: PrimeFacesTypes.effects.Options["duration"]):
     return SPEEDS.normal!;
 }
 
-/** Whether the browser supports the CSS `linear()` easing function (older browsers throw in `Element.animate`). */
-let linearEasingSupported: boolean | undefined;
-
 /**
  * Converts the name of a jQuery easing function into a CSS easing function. CSS easing functions are returned
  * unchanged, jQuery easing functions from `$.easing` are sampled into a cached CSS `linear()` function and unknown
- * names fall back to `ease`. Without support for `linear()`, `swing` is a cubic Bézier curve and the others are `ease`.
+ * names fall back to `ease`.
  * @param easing The name of a jQuery easing function or a CSS easing function, defaults to `swing`.
  * @returns The CSS easing function for the Web Animations API.
  */
@@ -260,11 +256,6 @@ function resolveEasing(easing: string | null | undefined): string {
     const name = easing || "swing";
     if (CSS_EASING.test(name)) {
         return name;
-    }
-    linearEasingSupported ??= typeof CSS !== "undefined" && CSS.supports("animation-timing-function", "linear(0, 1)");
-    if (!linearEasingSupported) {
-        // swing is the sine curve of easeInOutSine
-        return name === "swing" ? "cubic-bezier(0.37, 0, 0.63, 1)" : "ease";
     }
 
     let cssEasing = easingCache[name];
@@ -1040,8 +1031,7 @@ export class Effects {
      * @returns The given elements, for chaining.
      */
     stop<T extends JQuery<any>>(element: T): T {
-        // clear the queue and finish the jQuery animations first, so finishing the running effect does not start the
-        // next one, and an effect its complete callback starts keeps running and queued
+        // clear the queue first, so finishing the running effect does not dequeue the next one
         element.stop(true, true);
         element.each((_, el) => {
             runningEffects.get(el)?.finish(true);
@@ -1080,12 +1070,11 @@ export class Effects {
      * @param el The element to animate.
      * @param effect The name of the effect.
      * @param options The options of the effect.
-     * @param next Dequeues the next effect of the `fx` queue, when the effect was queued.
+     * @param next Dequeues the next effect of the `fx` queue.
      */
-    private execute(el: HTMLElement, effect: string, options: PrimeFacesTypes.effects.Options, next?: () => void): void {
-        // an effect still running here was not stopped with stop() (e.g. jQuery's stop() cleared the queue): it jumps
-        // to its end first, so it does not hide the element or dequeue later; also an effect its complete callback
-        // starts, it would be overwritten in runningEffects below
+    private execute(el: HTMLElement, effect: string, options: PrimeFacesTypes.effects.Options, next: () => void): void {
+        // finish effects not stopped via stop() (e.g. jQuery's stop() cleared the queue), so they do not hide the
+        // element or dequeue later; in a loop, as their complete callback may start another one
         let previous: RunningEffect | undefined;
         while ((previous = runningEffects.get(el))) {
             previous.finish(true);
@@ -1101,7 +1090,7 @@ export class Effects {
         const done = (stopped: boolean = false) => {
             options.complete?.call(el);
             if (!stopped) {
-                next?.();
+                next();
             }
         };
 
@@ -1176,9 +1165,8 @@ export class Effects {
             }
             const animation = target.animate(keyframes, { duration: animationDuration, easing: animationEasing, fill: "both" });
             running.animations.push(animation);
-            // the finished promise resolves in the rendering update, which does not run in hidden tabs: finish the
-            // animation there; in a visible tab it may just have started later (busy main thread), so check again,
-            // but not forever (e.g. an offscreen iframe that does not render)
+            // the finished promise does not resolve without rendering: finish the animation in hidden tabs and after
+            // a generous timeout (e.g. an offscreen iframe), otherwise check again
             const started = performance.now();
             /** Finishes the animation if it can't finish by itself, otherwise checks again later. */
             const fallback = (): void => {

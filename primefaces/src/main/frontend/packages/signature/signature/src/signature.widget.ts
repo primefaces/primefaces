@@ -37,6 +37,9 @@ export interface SignatureCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 /** A point of a line as `[x, y]`, in pixels relative to the top left corner of the canvas. */
 type Point = [number, number];
 
+/** Color of the lines and of a typed signature, when the `color` attribute is not set. */
+const DEFAULT_COLOR = '#000';
+
 /**
  * __PrimeFaces Signature Widget__
  *
@@ -52,8 +55,8 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
     /** The hidden input with the PNG data URL, if `base64` is enabled. */
     inputBase64: JQuery = $();
 
-    /** The 2D rendering context of the canvas, `null` after the widget was destroyed. */
-    private ctx: CanvasRenderingContext2D | null = null;
+    /** The 2D rendering context of the canvas. */
+    private ctx!: CanvasRenderingContext2D;
     /** The drawn lines, each a list of points; empty for a typed signature or a drawn image. */
     private lines: Point[][] = [];
     /** The line currently drawn with the pointer, `null` while not drawing. */
@@ -92,21 +95,11 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
     }
 
-    /** Removes the canvas and releases its rendering context. */
-    override destroy(): void {
-        super.destroy();
-        this.canvas.remove();
-        this.ctx = null;
-    }
-
     /**
      * Renders the client-side parts of this widget: a canvas with the size of the widget and its accessibility
-     * attributes, filled with the background and the guideline. Replaces the canvas of a previous rendering.
+     * attributes, filled with the background and the guideline.
      */
     private render(): void {
-        this.jq.children('canvas').remove();
-        this.jq.addClass('ui-signature');
-
         this.canvas = $('<canvas></canvas>') as JQuery<HTMLCanvasElement>;
         this.canvas.attr({
             width: this.jq.width() ?? 0,
@@ -118,7 +111,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
             'aria-labelledby': this.cfg.ariaLabelledBy ?? null
         }).appendTo(this.jq);
 
-        this.ctx = this.canvas[0]!.getContext('2d');
+        this.ctx = this.canvas[0]!.getContext('2d')!;
         this.clearCanvas();
     }
 
@@ -148,8 +141,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
                 this.updateBase64();
             })
             .on('pointerdown.signature', (e) => this.onPointerDown(e))
-            // no text selection while drawing; not on pointerdown, that would suppress the mousedown event the overlays
-            // of other widgets listen to on the document to hide
+            // no text selection while drawing; not on pointerdown: overlays hide on mousedown on the document
             .on('mousedown.signature', (e) => e.preventDefault())
             .on('pointermove.signature', (e) => this.onPointerMove(e))
             .on('pointerup.signature pointercancel.signature', (e) => this.onPointerUp(e))
@@ -228,12 +220,10 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         const line = this.currentLine!;
         const last = line[line.length - 1]!;
         line.push(point);
-        if (this.ctx) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(last[0], last[1]);
-            this.ctx.lineTo(point[0], point[1]);
-            this.ctx.stroke();
-        }
+        this.ctx.beginPath();
+        this.ctx.moveTo(last[0], last[1]);
+        this.ctx.lineTo(point[0], point[1]);
+        this.ctx.stroke();
     }
 
     /**
@@ -288,14 +278,11 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
      */
     private clearCanvas(): void {
         const ctx = this.ctx;
-        if (!ctx) {
-            return;
-        }
         const width = this.canvas[0]!.width;
         const height = this.canvas[0]!.height;
 
         ctx.fillStyle = this.cfg.background || '#fff';
-        ctx.strokeStyle = this.cfg.color || '#000';
+        ctx.strokeStyle = this.cfg.color || DEFAULT_COLOR;
         ctx.lineWidth = this.thickness();
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -380,7 +367,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
             this.lines = [];
             const image = new Image();
             image.onload = () => {
-                this.ctx?.drawImage(image, 0, 0, image.width, image.height);
+                this.ctx.drawImage(image, 0, 0, image.width, image.height);
                 this.changed();
             };
             image.src = value;
@@ -399,9 +386,9 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
 
         for (const line of this.lines) {
-            this.ctx?.beginPath();
-            line.forEach(([x, y], i) => i === 0 ? this.ctx?.moveTo(x, y) : this.ctx?.lineTo(x, y));
-            this.ctx?.stroke();
+            this.ctx.beginPath();
+            line.forEach(([x, y], i) => i === 0 ? this.ctx.moveTo(x, y) : this.ctx.lineTo(x, y));
+            this.ctx.stroke();
         }
         this.changed();
     }
@@ -412,18 +399,14 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
      * @param text The text to draw as signature.
      */
     createSignatureFromText(text: string): void {
-        const canvas = this.canvas[0];
         const ctx = this.ctx;
-        if (!canvas || !ctx) {
-            return;
-        }
         const fontSize = this.cfg.fontSize || 40;
 
         this.clearCanvas();
         ctx.save();
-        ctx.fillStyle = this.cfg.color || 'black';
+        ctx.fillStyle = this.cfg.color || DEFAULT_COLOR;
         ctx.font = fontSize + 'px ' + (this.cfg.fontFamily || 'Brush Script MT, cursive');
-        ctx.fillText(text, 10, (canvas.height + fontSize) / 2);
+        ctx.fillText(text, 10, (this.canvas[0]!.height + fontSize) / 2);
         ctx.restore();
         this.lines = [];
         this.changed();

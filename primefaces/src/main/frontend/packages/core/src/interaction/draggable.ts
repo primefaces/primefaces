@@ -1,9 +1,10 @@
-import { contentBox, cssPosition, Interaction, num, offsetOf, type Callback, type Coordinates, type InteractionOptions, pageX, pageY, scrollParent } from "./interaction.js";
+import { contentBox, cssPosition, dataKey, num, offsetOf, type Callback, type Coordinates, pageX, pageY, PointerInteraction,
+    type PointerInteractionOptions, positionDelta, scrollParent } from "./interaction.js";
 import { DragDropManager, type DragSource } from "./droppable.js";
 import { Sortable } from "./sortable.js";
 
 /** The options of a draggable, see the jQuery UI draggable. */
-export interface DraggableOptions extends InteractionOptions {
+export interface DraggableOptions extends PointerInteractionOptions {
     /** Where the helper is appended while dragging, `parent` for the parent of the element. */
     appendTo: string | Element | JQuery;
     /** Restricts the movement to the `x` or `y` axis. */
@@ -105,7 +106,7 @@ interface SnapElement {
 /**
  * Makes an element draggable with the mouse, a pen or by touch.
  */
-export class Draggable extends Interaction<DraggableOptions> implements DragSource {
+export class Draggable extends PointerInteraction<DraggableOptions> implements DragSource {
     /** The element that moves with the pointer, from the start of the drag until the end of the revert animation. */
     helper: JQuery | null = null;
     /** The offset of the helper. */
@@ -129,12 +130,8 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
     private sortables: Sortable[] = [];
     /** The inline z-index and opacity of the element, restored after the drag. */
     private storedCss: Record<string, string> = {};
-    /** The inline cursor of the body, restored after the drag. */
-    private storedCursor: string | null = null;
     /** The scroll parent of the helper when the drag started, `null` for the window. */
     private scrollContainer: HTMLElement | null = null;
-    /** Whether the drag was aborted, it ends without a drop. */
-    private cancelled: boolean = false;
 
     /**
      * Makes the element draggable.
@@ -231,34 +228,18 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
     }
 
     /**
-     * Creates the helper according to the `helper` and `appendTo` options.
-     * @param event The pointerdown event.
-     * @returns The element itself, a clone or the element of the helper function, positioned.
-     */
-    private createHelper(event: JQuery.TriggeredEvent): JQuery {
-        const o = this.options;
-        const helper = typeof o.helper === 'function' ? $(o.helper.call(this.element[0]!, event))
-            : o.helper === 'clone' ? this.element.clone().removeAttr('id') : this.element;
-
-        if (!helper.parents('body').length) {
-            helper.appendTo(o.appendTo === 'parent' ? this.element.parent() : $(o.appendTo as string));
-        }
-        if (helper[0] !== this.element[0] && !/(fixed|absolute)/.test(helper.css('position'))) {
-            helper.css('position', 'absolute');
-        }
-        return helper as JQuery;
-    }
-
-    /**
      * Creates the helper and calls the `start` callback, then activates the droppables, like jQuery UI.
      * @param event The pointerdown event.
      * @returns `false` if the `start` callback cancelled the drag.
      */
     protected start(event: JQuery.TriggeredEvent): boolean {
         const o = this.options;
-        const helper = this.helper = this.createHelper(event);
+        const helper = this.helper = this.createHelper(event, this.element);
         const original = helper[0] === this.element[0];
 
+        if (!original && !/(fixed|absolute)/.test(helper.css('position'))) {
+            helper.css('position', 'absolute');
+        }
         if (original) {
             this.storedCss = { zIndex: this.element[0]!.style.zIndex, opacity: this.element[0]!.style.opacity };
             if (this.element.css('position') === 'static') {
@@ -286,8 +267,7 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
             this.stack();
         }
         if (o.cursor && o.cursor !== 'auto') {
-            this.storedCursor = document.body.style.cursor;
-            document.body.style.cursor = o.cursor;
+            this.setCursor(o.cursor);
         }
         // before the callback, which may e.g. hide the overflow of the container
         this.scrollContainer = scrollParent(helper);
@@ -301,7 +281,7 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
         // the callback may have changed the helper
         this.bounds = this.containment();
         this.snapElements = o.snap ? this.findSnapElements() : [];
-        this.sortables = o.connectToSortable ? $(o.connectToSortable).map((_, el) => $.data(el, 'pf-sortable') as Sortable | undefined).get() : [];
+        this.sortables = o.connectToSortable ? $(o.connectToSortable).map((_, el) => $.data(el, dataKey('sortable')) as Sortable | undefined).get() : [];
         DragDropManager.start(this, event);
         return true;
     }
@@ -317,7 +297,7 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
             this.autoScroll(event, this.scrollContainer, o.axis);
         }
         // the helper moves when its container scrolls, a fixed one stays when the window scrolls
-        this.delta = this.helperDelta();
+        this.delta = positionDelta(this.helper!);
         let left = pageX(event) - this.clickOffset.left;
         let top = pageY(event) - this.clickOffset.top;
 
@@ -372,26 +352,15 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
     }
 
     /**
-     * The offset of the helper minus its CSS position, which changes when a container of the helper scrolls.
-     * @returns The difference.
-     */
-    private helperDelta(): Coordinates {
-        const offset = offsetOf(this.helper!);
-        const css = cssPosition(this.helper!);
-        return { left: offset.left - css.left, top: offset.top - css.top };
-    }
-
-    /**
      * Drops the helper on the droppables and connected sortables, then reverts it if needed and calls `stop`.
      * @param event The pointerup or pointercancel event.
      */
     protected stop(event: JQuery.TriggeredEvent): void {
         const o = this.options;
-        let dropped = !this.cancelled && DragDropManager.drop(this, event);
-        for (const sortable of this.cancelled ? [] : this.sortables) {
+        let dropped = !this.aborted && DragDropManager.drop(this, event);
+        for (const sortable of this.aborted ? [] : this.sortables) {
             dropped = sortable.externalDrop(this, event) || dropped;
         }
-        this.cancelled = false;
 
         const revert = typeof o.revert === 'function' ? o.revert.call(this.element[0]!, dropped)
             : o.revert === true || (o.revert === 'invalid' && !dropped) || (o.revert === 'valid' && dropped);
@@ -410,20 +379,10 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
         }
     }
 
-    /**
-     * The browser took over the pointer, the drag ends without a drop.
-     * @param e The pointercancel event.
-     */
-    protected override abort(e: JQuery.TriggeredEvent): void {
-        this.cancelled = true;
-        this.end(e);
-    }
-
     /** Aborts the drag without a drop; outside of a drag (e.g. during the revert animation) it removes the helper. */
     cancel(): void {
         if (this.isActive()) {
-            this.cancelled = true;
-            this.end(this.cancelEvent());
+            this.abort(this.cancelEvent());
         }
         else {
             this.helper?.stop(true);
@@ -439,10 +398,7 @@ export class Draggable extends Interaction<DraggableOptions> implements DragSour
         if (DragDropManager.current === this) {
             DragDropManager.stop(this, event);
         }
-        if (this.storedCursor !== null) {
-            document.body.style.cursor = this.storedCursor;
-            this.storedCursor = null;
-        }
+        this.restoreCursor();
         if (this.helper) {
             this.helper.removeClass('ui-draggable-dragging');
             if (this.helper[0] !== this.element[0]) {

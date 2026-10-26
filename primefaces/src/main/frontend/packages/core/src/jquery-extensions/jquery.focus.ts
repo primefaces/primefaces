@@ -16,10 +16,10 @@ declare global {
  */
 export function setupFocusDelay(): void {
     const focus = $.fn.focus as (...args: unknown[]) => JQuery;
-    $.fn.focus = function(this: JQuery, delay?: unknown, callback?: (this: HTMLElement) => void): JQuery {
+    $.fn.focus = function(this: JQuery, ...args: unknown[]): JQuery {
+        const [delay, callback] = args as [unknown, ((this: HTMLElement) => void) | undefined];
         if (typeof delay !== "number") {
-            // eslint-disable-next-line prefer-rest-params
-            return focus.apply(this, Array.from(arguments));
+            return focus.apply(this, args);
         }
         return this.each(function() {
             const element = this;

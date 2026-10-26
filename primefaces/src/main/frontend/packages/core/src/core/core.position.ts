@@ -172,9 +172,6 @@ const R_POSITION = /^\w+/;
 /** Matches a percentage offset. */
 const R_PERCENT = /%$/;
 
-/** The width of the scrollbars in pixels, measured once by {@link scrollbarWidth}. */
-let cachedScrollbarWidth: number | undefined;
-
 /**
  * Converts the offsets of a `my` / `at` position into pixels, where percentages relate to the given size.
  * @param offsets The horizontal and vertical offset, e.g. `["+10", "-50%"]`.
@@ -246,33 +243,6 @@ function getDimensions(elem: JQuery<any>): Dimensions {
 }
 
 /**
- * Measures the width of the scrollbars of the browser with a temporary element appended to the body. The result is
- * cached.
- * @returns The width of a scrollbar in pixels, `0` for overlay scrollbars.
- */
-function scrollbarWidth(): number {
-    if (cachedScrollbarWidth !== undefined) {
-        return cachedScrollbarWidth;
-    }
-    const div = $("<div style='display:block;position:absolute;width:200px;height:200px;overflow:hidden;'>"
-        + "<div style='height:300px;width:auto;'></div></div>");
-    const innerDiv = div.children()[0] as HTMLElement;
-
-    $("body").append(div);
-    const w1 = innerDiv.offsetWidth;
-    div.css("overflow", "scroll");
-
-    let w2 = innerDiv.offsetWidth;
-    if (w1 === w2) {
-        w2 = div[0]!.clientWidth;
-    }
-
-    div.remove();
-
-    return (cachedScrollbarWidth = w1 - w2);
-}
-
-/**
  * Determines the space taken by the scrollbars of the container, which is added to the collision box of the element.
  * The window and the document have no scrollbars of their own in this sense.
  * @param within The container used for the collision detection.
@@ -284,8 +254,8 @@ function getScrollInfo(within: WithinInfo): { width: number; height: number } {
     const hasOverflowX = overflowX === "scroll" || (overflowX === "auto" && within.width < within.element[0].scrollWidth);
     const hasOverflowY = overflowY === "scroll" || (overflowY === "auto" && within.height < within.element[0].scrollHeight);
     return {
-        width: hasOverflowY ? scrollbarWidth() : 0,
-        height: hasOverflowX ? scrollbarWidth() : 0
+        width: hasOverflowY ? PrimeFaces.calculateScrollbarWidth() : 0,
+        height: hasOverflowX ? PrimeFaces.calculateScrollbarWidth() : 0
     };
 }
 
@@ -565,9 +535,9 @@ export function position<T extends JQuery<any>>(element: T, options: PrimeFacesT
     }
 
     const dimensions = getDimensions(target);
-    // force left top to allow flipping
     const my = parseAlignment(options.my);
-    const at = parseAlignment(isEvent(target[0]) ? "left top" : options.at);
+    // force left top for an event to allow flipping
+    const at =parseAlignment(isEvent(target[0]) ? "left top" : options.at);
     const targetWidth = dimensions.width;
     const targetHeight = dimensions.height;
     const targetOffset = dimensions.offset;

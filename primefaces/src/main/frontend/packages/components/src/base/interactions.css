@@ -1,33 +1,8 @@
 /*
- * Base rules of the generic ui-* classes and of the interactions (draggable, resizable, sortable), loaded in the vendor
- * layer. Taken from the jQuery UI base theme (core.css, draggable.css, resizable.css, sortable.css),
- * Copyright OpenJS Foundation and other contributors, released under the MIT license.
+ * Base rules of the interactions (draggable, resizable, sortable), loaded in the vendor layer. Taken from the jQuery UI
+ * base theme (draggable.css, resizable.css, sortable.css), Copyright OpenJS Foundation and other contributors, released
+ * under the MIT license. The hidden handles of a disabled resizable: base/helpers.css.
  */
-
-.ui-helper-reset {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    line-height: 1.3;
-    text-decoration: none;
-    font-size: 100%;
-    list-style: none;
-}
-.ui-state-disabled {
-    cursor: default !important;
-    pointer-events: none;
-}
-
-.ui-icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: -.25em;
-    position: relative;
-    text-indent: -99999px;
-    overflow: hidden;
-    background-repeat: no-repeat;
-}
 
 .ui-draggable-handle {
     touch-action: none;
@@ -37,13 +12,8 @@
 }
 .ui-resizable-handle {
     position: absolute;
-    font-size: 0.1px;
     display: block;
     touch-action: none;
-}
-.ui-resizable-disabled .ui-resizable-handle,
-.ui-resizable-autohide .ui-resizable-handle {
-    display: none;
 }
 .ui-resizable-n {
     cursor: n-resize;

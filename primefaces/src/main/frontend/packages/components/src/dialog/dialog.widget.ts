@@ -146,11 +146,6 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     icons: JQuery = $();
 
     /**
-     * The DOM element of the overlay that is put over iframes during a resize.
-     */
-    iframeFix?: JQuery = $();
-
-    /**
      * The native DOM element instance of the container element of this widget (same element as the
      * `jq` property).
      */
@@ -713,10 +708,6 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 const offset: JQuery.Coordinates = this.box.offset() ?? { left: 0, top: 0 };
                 this.box.data('offset', offset);
 
-                if(this.cfg.hasIframe) {
-                    this.iframeFix = $('<div style="position:absolute;background-color:transparent;width:100%;height:100%;top:0;left:0;"></div>').appendTo(this.content);
-                }
-
                 if (this.hasBehavior('resizeStart')) {
                     var ext = {
                         params: [
@@ -729,10 +720,6 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             },
             stop: (_, ui) => {
                 this.jq.removeClass('ui-overflow-hidden');
-
-                if(this.cfg.hasIframe) {
-                    this.iframeFix?.remove();
-                }
 
                 if (this.hasBehavior('resizeStop')) {
                     var ext = {

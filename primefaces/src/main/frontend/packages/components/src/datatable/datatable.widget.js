@@ -443,7 +443,6 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             if (dragdrop && dragdrop.helper) {
                 var item = dragdrop.item();
                 if(item.closest('.ui-datatable')[0] === this.jq[0]) {
-                    document.body.style.cursor = 'default';
                     dragdrop.cancel();
                 }
             }

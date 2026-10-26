@@ -55,8 +55,13 @@ export interface GalleriaCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 /** CSS transition used when the items or the thumbnails scroll to another item. */
 const TRANSITION = 'transform 500ms ease 0s';
 
+/** The options the server does not render when they have the default value. */
+type GalleriaDefaults = Pick<GalleriaCfg, "activeIndex" | "closeIcon" | "numVisible" | "showThumbnails"
+    | "showThumbnailNavigators" | "transitionInterval" | "thumbnailsPosition" | "verticalViewPortHeight"
+    | "indicatorsPosition">;
+
 /** Defaults of the options the server does not render when they have the default value. */
-const DEFAULTS: Partial<GalleriaCfg> = {
+const DEFAULTS: GalleriaDefaults = {
     activeIndex: 0,
     closeIcon: 'pi pi-times',
     numVisible: 3,
@@ -93,6 +98,9 @@ function translate(vertical: boolean, percent: number): string {
  * Galleria is a content gallery component.
  */
 export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+    /** The configuration, with the {@link DEFAULTS} applied by {@link init}. */
+    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & GalleriaDefaults;
+
     /** Index of the displayed item. */
     activeIndex: number = 0;
 
@@ -107,7 +115,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
     /** ID of the interval of the running slideshow, `undefined` when the slideshow is stopped. */
     private interval: number | undefined;
     /** The number of items. */
-    private itemCount: number = 0;
+    itemCount: number = 0;
     /** Whether the gallery is shown in fullscreen mode. */
     private visible: boolean = false;
 
@@ -139,7 +147,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
             return;
         }
 
-        this.activeIndex = this.cfg.activeIndex || 0;
+        this.activeIndex = this.cfg.activeIndex;
         const vertical = this.cfg.thumbnailsPosition === 'left' || this.cfg.thumbnailsPosition === 'right';
         /**
          * Builds the style class for a position of the thumbnails or indicators.
@@ -153,13 +161,13 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
             'ui-galleria-fullscreen': !!this.cfg.fullScreen,
             'ui-galleria-indicator-onitem': !!this.cfg.showIndicatorsOnItem,
             'ui-galleria-item-nav-onhover': !!this.cfg.showItemNavigatorsOnHover && !this.cfg.fullScreen
-        }, this.cfg.showThumbnails ? position('ui-galleria-thumbnails', this.cfg.thumbnailsPosition ?? 'bottom') : '',
-        this.cfg.showIndicators ? position('ui-galleria-indicators', this.cfg.indicatorsPosition ?? 'bottom') : ''));
+        }, this.cfg.showThumbnails ? position('ui-galleria-thumbnails', this.cfg.thumbnailsPosition) : '',
+        this.cfg.showIndicators ? position('ui-galleria-indicators', this.cfg.indicatorsPosition) : ''));
 
         if (this.cfg.fullScreen) {
             $('<button type="button" class="ui-galleria-close ui-galleria-link"></button>')
                 .attr('aria-label', PrimeFaces.getAriaLabel('close'))
-                .append($('<span class="ui-button-icon-left ui-galleria-close-icon"></span>').addClass(this.cfg.closeIcon || 'pi pi-times'))
+                .append($('<span class="ui-button-icon-left ui-galleria-close-icon"></span>').addClass(this.cfg.closeIcon))
                 .prependTo(this.jq)
                 .on('click.galleria', () => this.hide());
         }
@@ -180,7 +188,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-galleria');
 
         if (vertical) {
-            content.css('height', this.cfg.verticalViewPortHeight ?? '450px');
+            content.css('height', this.cfg.verticalViewPortHeight);
         }
         if (this.cfg.autoPlay) {
             this.startSlideShow();
@@ -232,7 +240,6 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
             return;
         }
         this.visible = true;
-        this.mask.addClass('ui-galleria-visible');
         this.transition?.show({
             onEnter: () => {
                 $(document.body).addClass('ui-overflow-hidden');
@@ -249,7 +256,6 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
             return;
         }
         this.visible = false;
-        this.mask.removeClass('ui-galleria-visible');
         this.transition?.hide({
             onExit: () => {
                 $(document.body).removeClass('ui-overflow-hidden');
@@ -292,12 +298,12 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
     startSlideShow(): void {
         this.stopSlideShow();
         this.interval = window.setInterval(() => {
-            this.setActiveIndex(this.cfg.circular && this.activeIndex === this.itemCount - 1 ? 0 : this.activeIndex + 1);
+            this.next();
             // without circular the slideshow ends at the last item
             if (!this.cfg.circular && this.activeIndex === this.itemCount - 1) {
                 this.stopSlideShow();
             }
-        }, this.cfg.transitionInterval || 4000);
+        }, this.cfg.transitionInterval);
     }
 
     /** Stops the slideshow, if it is running. */
@@ -345,8 +351,6 @@ class GalleriaItems {
     private readonly vertical: boolean;
     /** The container of the captions, scrolled along with the items. */
     private readonly caption: JQuery;
-    /** The number of items. */
-    private readonly count: number;
     /** The button to display the previous item, empty when `showItemNavigators` is disabled. */
     private readonly prevButton: JQuery;
     /** The button to display the next item, empty when `showItemNavigators` is disabled. */
@@ -367,7 +371,6 @@ class GalleriaItems {
         this.container = container;
         this.vertical = vertical;
         this.caption = container.nextAll('.ui-galleria-caption-items');
-        this.count = container.children('.ui-galleria-item').length;
 
         /**
          * Creates the button to display the previous / next item, with an ARIA label.
@@ -385,7 +388,7 @@ class GalleriaItems {
         let indicatorContainer = container.nextAll('.ui-galleria-indicators');
         if (!indicatorContainer.length && cfg.showIndicators) {
             indicatorContainer = $('<ul class="ui-galleria-indicators"></ul>')
-                .append(Array.from({ length: this.count }, () => '<li class="ui-galleria-indicator" tabindex="0"><button type="button" tabindex="-1" class="ui-galleria-link"></button></li>').join(''));
+                .append(Array.from({ length: galleria.itemCount }, () => '<li class="ui-galleria-indicator" tabindex="0"><button type="button" tabindex="-1" class="ui-galleria-link"></button></li>').join(''));
         }
 
         if (cfg.showCaption) {
@@ -410,15 +413,16 @@ class GalleriaItems {
      */
     private bindEvents(): void {
         const cfg = this.galleria.cfg;
-        const active = () => this.galleria.activeIndex;
 
         this.prevButton.on('click.galleria-item-nav', (e) => {
             e.preventDefault();
-            this.galleria.navigate(cfg.circular && active() === 0 ? this.count - 1 : Math.max(0, active() - 1));
+            this.galleria.stopSlideShow();
+            this.galleria.prev();
         });
         this.nextButton.on('click.galleria-item-nav', (e) => {
             e.preventDefault();
-            this.galleria.navigate(cfg.circular && active() === this.count - 1 ? 0 : active() + 1);
+            this.galleria.stopSlideShow();
+            this.galleria.next();
         });
 
         this.indicators.off('.galleria-indicator')
@@ -448,7 +452,7 @@ class GalleriaItems {
 
         if (cfg.showItemNavigators) {
             toggleDisabled(this.prevButton, !cfg.circular && active === 0);
-            toggleDisabled(this.nextButton, !cfg.circular && active === this.count - 1);
+            toggleDisabled(this.nextButton, !cfg.circular && active === this.galleria.itemCount - 1);
         }
         if (cfg.showIndicators) {
             this.indicators.removeClass('ui-state-highlight').eq(active).addClass('ui-state-highlight');
@@ -498,7 +502,7 @@ class GalleriaThumbnails {
         this.container = container;
         this.vertical = vertical;
         this.items = container.children('.ui-galleria-thumbnail-item');
-        this.numVisible = cfg.numVisible || 3;
+        this.numVisible = cfg.numVisible;
         // sorted by breakpoint, largest first
         this.responsiveOptions = (cfg.responsiveOptions ?? []).slice()
             .sort((a, b) => String(b.breakpoint).localeCompare(String(a.breakpoint), undefined, { numeric: true }));
@@ -593,8 +597,8 @@ class GalleriaThumbnails {
      */
     private navBackward(e: JQuery.TriggeredEvent): void {
         e.preventDefault();
-        const active = this.galleria.activeIndex;
-        this.galleria.navigate(this.galleria.cfg.circular && active === 0 ? this.items.length - 1 : Math.max(0, active - 1));
+        this.galleria.stopSlideShow();
+        this.galleria.prev();
     }
 
     /**
@@ -603,16 +607,16 @@ class GalleriaThumbnails {
      */
     private navForward(e: JQuery.TriggeredEvent): void {
         e.preventDefault();
-        const active = this.galleria.activeIndex;
-        this.galleria.navigate(this.galleria.cfg.circular && active === this.items.length - 1 ? 0 : Math.min(this.items.length - 1, active + 1));
+        this.galleria.stopSlideShow();
+        this.galleria.next();
     }
 
     /**
-     * Creates (or updates) the style element that sizes the thumbnails, so `numVisible` thumbnails fill the
-     * container, with a media query per responsive option.
+     * Creates the style element that sizes the thumbnails, so `numVisible` thumbnails fill the container, with a
+     * media query per responsive option.
      */
     private createStyle(): void {
-        this.style ??= document.body.appendChild(document.createElement('style'));
+        this.style = document.body.appendChild(document.createElement('style'));
         const selector = this.galleria.jqId + ' .ui-galleria-thumbnail-items .ui-galleria-thumbnail-item';
         let css = selector + ' { flex: 1 0 ' + (100 / this.numVisible) + '%; }';
         for (const option of this.responsiveOptions) {
@@ -629,7 +633,7 @@ class GalleriaThumbnails {
         if (!this.responsiveOptions.length) {
             return;
         }
-        let numVisible = this.galleria.cfg.numVisible || 3;
+        let numVisible = this.galleria.cfg.numVisible;
         for (const option of this.responsiveOptions) {
             if (parseInt(option.breakpoint, 10) >= window.innerWidth) {
                 numVisible = option.numVisible;
@@ -654,7 +658,7 @@ class GalleriaThumbnails {
             return;
         }
 
-        const count = this.items.length;
+        const count = this.galleria.itemCount;
         const median = this.medianIndex();
         if (active <= median || count <= this.numVisible) {
             this.totalShiftedItems = 0;
@@ -697,9 +701,9 @@ class GalleriaThumbnails {
         });
 
         if (cfg.showThumbnailNavigators) {
-            const fits = this.items.length <= this.numVisible;
+            const fits = this.galleria.itemCount <= this.numVisible;
             toggleDisabled(this.prevButton, (!cfg.circular && active === 0) || fits);
-            toggleDisabled(this.nextButton, (!cfg.circular && active === this.items.length - 1) || fits);
+            toggleDisabled(this.nextButton, (!cfg.circular && active === this.galleria.itemCount - 1) || fits);
         }
     }
 }

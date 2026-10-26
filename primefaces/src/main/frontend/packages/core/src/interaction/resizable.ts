@@ -1,7 +1,8 @@
-import { contentBox, cssPosition, Interaction, num, offsetOf, type Callback, type Coordinates, type InteractionOptions, type Size, pageX, pageY } from "./interaction.js";
+import { contentBox, cssPosition, num, offsetOf, type Callback, type Coordinates, pageX, pageY, PointerInteraction, type PointerInteractionOptions,
+    type Size } from "./interaction.js";
 
 /** The options of a resizable, see the jQuery UI resizable. */
-export interface ResizableOptions extends InteractionOptions {
+export interface ResizableOptions extends PointerInteractionOptions {
     /** Other elements resized together with the element. */
     alsoResize: string | Element | JQuery | false;
     /** Whether the element is animated to the new size after resizing a helper. */
@@ -85,7 +86,7 @@ const WRAPPED = /^(canvas|textarea|input|select|button|img)$/i;
 /**
  * Makes an element resizable with handles at its edges and corners.
  */
-export class Resizable extends Interaction<ResizableOptions> {
+export class Resizable extends PointerInteraction<ResizableOptions> {
     /** The element that is resized, a wrapper for elements that can't contain the handles. */
     readonly resizeElement: JQuery<HTMLElement>;
     /** The new size (content box). */
@@ -111,10 +112,6 @@ export class Resizable extends Interaction<ResizableOptions> {
     private ratio: number = 1;
     /** The elements of the `alsoResize` option with their size when the resizing started. */
     private alsoResizeSizes: { element: JQuery; size: Size }[] = [];
-    /** Whether the resizing was aborted, it ends with the original size. */
-    private aborted: boolean = false;
-    /** The inline cursor of the body, restored after the resizing. */
-    private storedCursor: string = '';
 
     /**
      * Makes the element resizable, wrapping it if it can't contain the handles.
@@ -283,8 +280,7 @@ export class Resizable extends Interaction<ResizableOptions> {
             return { element: jq, size: { width: jq.width() ?? 0, height: jq.height() ?? 0 } };
         }).get() : [];
 
-        this.storedCursor = document.body.style.cursor;
-        document.body.style.cursor = $(event.target).css('cursor');
+        this.setCursor($(event.target).css('cursor'));
         el.addClass('ui-resizable-resizing');
 
         this.trigger('start', event, this.ui());
@@ -327,7 +323,8 @@ export class Resizable extends Interaction<ResizableOptions> {
             height = os.height + Math.round((height - os.height) / gy) * gy;
         }
 
-        if (o.aspectRatio || (event.originalEvent as PointerEvent | undefined)?.shiftKey) {
+        const keepRatio = !!o.aspectRatio || !!(event.originalEvent as PointerEvent | undefined)?.shiftKey;
+        if (keepRatio) {
             if (axis === 'n' || axis === 's') {
                 width = height * this.ratio;
             }
@@ -338,9 +335,9 @@ export class Resizable extends Interaction<ResizableOptions> {
 
         // min / max, keeping the ratio
         const clamp = (value: number, min: number, max: number | null) => Math.max(min, max === null ? value : Math.min(max, value));
-        width = clamp(width, o.minWidth ?? 0, o.maxWidth);
-        height = clamp(height, o.minHeight ?? 0, o.maxHeight);
-        if (o.aspectRatio) {
+        width = clamp(width, o.minWidth, o.maxWidth);
+        height = clamp(height, o.minHeight, o.maxHeight);
+        if (keepRatio) {
             if (width / height > this.ratio) {
                 width = height * this.ratio;
             }
@@ -449,8 +446,7 @@ export class Resizable extends Interaction<ResizableOptions> {
         if (!this.helper) {
             this.apply();
         }
-        this.aborted = true;
-        this.end(e);
+        super.abort(e);
     }
 
     /**
@@ -462,7 +458,6 @@ export class Resizable extends Interaction<ResizableOptions> {
         const o = this.options;
         const helper = this.helper;
         const aborted = this.aborted;
-        this.aborted = false;
 
         if (helper && !o.animate && !aborted) {
             this.apply();
@@ -473,7 +468,7 @@ export class Resizable extends Interaction<ResizableOptions> {
         }
 
         this.resizeElement.removeClass('ui-resizable-resizing');
-        document.body.style.cursor = this.storedCursor;
+        this.restoreCursor();
         this.trigger('stop', event, this.ui());
 
         if (helper) {

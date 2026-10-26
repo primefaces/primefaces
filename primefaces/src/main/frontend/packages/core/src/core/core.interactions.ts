@@ -1,5 +1,6 @@
 import { Draggable, type DraggableOptions } from "../interaction/draggable.js";
 import { DragDropManager, Droppable, type DroppableOptions } from "../interaction/droppable.js";
+import { dataKey } from "../interaction/interaction.js";
 import { Resizable, type ResizableOptions } from "../interaction/resizable.js";
 import { Sortable, type SortableOptions } from "../interaction/sortable.js";
 
@@ -97,7 +98,7 @@ export class Interactions {
      */
     instance<K extends InteractionType>(element: JQuery<any> | Element | null | undefined, type: K): InteractionInstances[K] | undefined {
         const el = element instanceof Element ? element : element?.[0];
-        return el ? $.data(el, Interactions.key(type)) as InteractionInstances[K] | undefined : undefined;
+        return el ? $.data(el, dataKey(type)) as InteractionInstances[K] | undefined : undefined;
     }
 
     /**
@@ -143,7 +144,7 @@ export class Interactions {
      * @returns The given elements, for chaining.
      */
     private create<T extends JQuery<any>>(element: T, type: InteractionType, Constructor: InteractionConstructor, options?: object): T {
-        const key = Interactions.key(type);
+        const key = dataKey(type);
         element.each((_, el) => {
             const instance = $.data(el, key) as InstanceType<InteractionConstructor> | undefined;
             if (instance) {
@@ -172,15 +173,6 @@ export class Interactions {
             }
         });
         return element;
-    }
-
-    /**
-     * The key of the jQuery data of the elements under which the interaction is stored.
-     * @param type The type of the interaction.
-     * @returns The key, e.g. `pf-draggable`.
-     */
-    private static key(type: InteractionType): string {
-        return "pf-" + type;
     }
 }
 

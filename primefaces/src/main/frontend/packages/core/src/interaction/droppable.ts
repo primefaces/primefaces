@@ -67,7 +67,6 @@ export interface DroppableUi {
 /** The default options, the same as in jQuery UI. */
 const DEFAULTS: DroppableOptions = {
     disabled: false,
-    distance: 0,
     accept: '*',
     activeClass: false,
     classes: {},
@@ -118,12 +117,13 @@ export class Droppable extends Interaction<DroppableOptions> {
     }
 
     /**
-     * Sets an option, a new scope registers the droppable under that scope.
+     * Sets an option, a changed scope registers the droppable under that scope.
      * @param key The name of the option.
      * @param value The new value.
      */
     protected override setOption(key: string, value: unknown): void {
-        if (key === 'scope') {
+        // the same scope again (e.g. the options applied again in a drop callback) keeps the droppable in the drag
+        if (key === 'scope' && String(value) !== this.currentScope) {
             DragDropManager.remove(this, this.currentScope);
             super.setOption(key, value);
             this.currentScope = String(value);
@@ -131,32 +131,6 @@ export class Droppable extends Interaction<DroppableOptions> {
             return;
         }
         super.setOption(key, value);
-    }
-
-    /**
-     * Droppables don't react to the pointer themselves.
-     * @returns Always `false`.
-     */
-    protected capture(): boolean {
-        return false;
-    }
-
-    /**
-     * Droppables don't start an interaction.
-     * @returns Always `false`.
-     */
-    protected start(): boolean {
-        return false;
-    }
-
-    /** Droppables don't move. */
-    protected move(): void {
-        // droppables don't move
-    }
-
-    /** Droppables don't start an interaction, so they don't stop one. */
-    protected stop(): void {
-        // droppables don't stop an interaction
     }
 
     /**
@@ -245,13 +219,11 @@ export class Droppable extends Interaction<DroppableOptions> {
      * The helper was dropped on this droppable.
      * @param event The pointerup event.
      * @param source The dragged interaction.
-     * @returns `true` if the drop was accepted.
      */
-    dropItem(event: JQuery.TriggeredEvent, source: DragSource): boolean {
+    dropItem(event: JQuery.TriggeredEvent, source: DragSource): void {
         this.toggleClasses('hover', false);
         this.isOver = false;
         this.trigger('drop', event, this.ui(source));
-        return true;
     }
 
     /**
@@ -387,8 +359,9 @@ export const DragDropManager = {
         this.drag(source, event);
         let dropped = false;
         for (const droppable of this.active) {
-            if (droppable.isOver && droppable.intersects(source, event) && droppable.accepts(source.item())) {
-                dropped = droppable.dropItem(event, source) || dropped;
+            if (droppable.isOver) {
+                droppable.dropItem(event, source);
+                dropped = true;
             }
         }
         return dropped;

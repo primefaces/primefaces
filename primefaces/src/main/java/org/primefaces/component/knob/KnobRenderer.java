@@ -140,7 +140,7 @@ public class KnobRenderer extends CoreRenderer<Knob> {
     }
 
     /**
-     * Converts a width or height to a CSS length: numbers are pixels.
+     * Converts a width or height to a CSS length: values without a CSS length unit are pixels.
      *
      * @param size the width or height, a number or a CSS length like {@code 50%}
      * @return the CSS length, {@code null} if the size is not set
@@ -150,7 +150,7 @@ public class KnobRenderer extends CoreRenderer<Knob> {
             return null;
         }
         String length = size.toString().trim();
-        return length.matches("\\d+(\\.\\d+)?") ? length + "px" : length;
+        return endsWithLengthUnit(length) ? length : length + "px";
     }
 
     /**

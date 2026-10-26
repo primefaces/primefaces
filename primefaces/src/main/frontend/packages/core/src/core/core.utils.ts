@@ -4,6 +4,7 @@ import { env } from "./core.env.js";
 import { expressions } from "./core.expressions.js";
 import { position } from "./core.position.js";
 import type { BaseWidget, DynamicOverlayWidget } from "./core.widget.js";
+import { scrollParent as closestScrollParent } from "../interaction/interaction.js";
 
 /**
  * The class with various utilities needed by PrimeFaces.
@@ -614,28 +615,16 @@ export class Utils {
     /**
      * Finds the closest scrollable parent of an element, as the former jQuery UI `$.fn.scrollParent`.
      * @param jq The element whose scroll parent to find.
-     * @param includeHidden Whether parents with `overflow: hidden` count as scrollable.
      * @returns The closest scrollable parent, or the document if there is none or the element is fixed. `null` when
      * no element is given.
      * @since 17.0.0
      */
-    getScrollParent(jq: JQuery | undefined | null, includeHidden: boolean = false): JQuery<any> | null {
+    getScrollParent(jq: JQuery | undefined | null): JQuery<any> | null {
         if (!jq || !jq.length) {
             return null;
         }
-
-        const position = jq.css('position');
-        const excludeStaticParent = position === 'absolute';
-        const overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
-        const scrollParent = jq.parents().filter(function() {
-            const parent = $(this);
-            if (excludeStaticParent && parent.css('position') === 'static') {
-                return false;
-            }
-            return overflowRegex.test(parent.css('overflow') + parent.css('overflow-y') + parent.css('overflow-x'));
-        }).eq(0);
-
-        return position === 'fixed' || !scrollParent.length ? $(jq[0]!.ownerDocument || document) : scrollParent;
+        const parent = closestScrollParent(jq);
+        return parent ? $(parent) : $(jq[0]!.ownerDocument || document);
     }
 
     /**
@@ -857,11 +846,11 @@ export class Utils {
     isMetaKey(e: JQuery.TriggeredEvent): boolean | undefined {
         if (e.originalEvent instanceof KeyboardEvent || e.originalEvent instanceof MouseEvent || (window.TouchEvent && e.originalEvent instanceof TouchEvent)) {
             // original event returns the metaKey value at the time the event was generated
-            return env.browser?.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
+            return env.browser.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
         }
         else {
             // jQuery returns the real time value of the meta key
-            return env.browser?.mac ? e.metaKey : e.ctrlKey;
+            return env.browser.mac ? e.metaKey : e.ctrlKey;
         }
     }
 
