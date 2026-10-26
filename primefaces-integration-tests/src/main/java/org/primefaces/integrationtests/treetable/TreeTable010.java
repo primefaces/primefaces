@@ -99,11 +99,10 @@ public class TreeTable010 implements Serializable {
         CheckboxTreeNode<Document> shared = new CheckboxTreeNode<>(new Document("Shared", "10kb", "Folder"), root);
         shared.setExpanded(true);
         shared.setSelectable(false);
+        shared.setSelected(true, false);
 
         CheckboxTreeNode<Document> sharedApp = new CheckboxTreeNode<>("app", new Document("shared.app", "10kb", "Application"), shared);
         sharedApp.setSelected(true, false);
-        // adding a child derives the state of its parent, so select the parent afterwards
-        shared.setSelected(true, false);
     }
 
     public void showSelectedNodes() {

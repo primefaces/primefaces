@@ -185,6 +185,55 @@ class CheckboxTreeNodeTest {
     }
 
     @Test
+    void shouldUpdateSelectionStateIgnoringNonSelectableChildWhenNodesAreAdded() {
+        // #14798: like propagating the selection up, adding a node must not count non-selectable children
+        TreeNode work = root.getChildren().get(0).getChildren().get(0);
+        ((TreeNode<?>) work.getChildren().get(0)).setSelected(true);
+        ((TreeNode<?>) work.getChildren().get(1)).setSelected(true);
+        assertTrue(work.isSelected());
+
+        TreeNode unselectable = new CheckboxTreeNode("Unselectable");
+        unselectable.setSelectable(false);
+        work.getChildren().add(unselectable);
+
+        assertTrue(work.isSelected());
+        assertFalse(work.isPartialSelected());
+    }
+
+    @Test
+    void shouldKeepStateOfNonSelectableNodeWhenNodesAreAdded() {
+        // #14798: a non-selectable node selected by the model must stay selected when children are added
+        CheckboxTreeNode<?> shared = new CheckboxTreeNode<>("Shared", root);
+        shared.setSelectable(false);
+        shared.setSelected(true, false);
+
+        new CheckboxTreeNode<>("Unselected", shared);
+
+        assertTrue(shared.isSelected());
+    }
+
+    @Test
+    void shouldKeepStateWithoutSelectableChildrenWhenNodesAreAdded() {
+        // #14798: a node whose children are all non-selectable has nothing to derive its state from
+        TreeNode<?> movies = root.getChildren().get(2);
+        movies.getChildren().clear();
+
+        TreeNode unselectable = new CheckboxTreeNode("Unselectable");
+        unselectable.setSelectable(false);
+        unselectable.setSelected(true);
+        ((TreeNode) movies).getChildren().add(unselectable);
+        ((CheckboxTreeNode<?>) movies).setSelected(false, false);
+
+        TreeNode unselectable2 = new CheckboxTreeNode("Unselectable2");
+        unselectable2.setSelectable(false);
+        unselectable2.setSelected(true);
+        ((TreeNode) movies).getChildren().add(unselectable2);
+
+        assertFalse(movies.isSelected());
+        assertFalse(movies.isPartialSelected());
+    }
+
+    @Test
     void shouldUpdateSelectionStateWhenNodesAreRemoved() {
         TreeNode<?> work = root.getChildren().get(0).getChildren().get(0);
         assertEquals("Work", work.getData());
