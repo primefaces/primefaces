@@ -47,6 +47,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Interactive;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
@@ -63,6 +64,10 @@ public abstract class AbstractPrimePageTest {
     @BeforeEach
     public void beforeEach() {
         clearConsole();
+        // W3C "Release Actions": the WebDriver is reused across tests, so start each test with a fresh Actions pointer
+        if (getWebDriver() instanceof Interactive interactive) {
+            interactive.resetInputState();
+        }
     }
 
     protected void assertPresent(WebElement element) {

@@ -133,12 +133,7 @@ class MegaMenu004Test extends AbstractPrimePageTest {
         // Locate by index: an already open panel changes the root item's full text.
         WebElement item = roots().get(index);
         WebElement link = item.findElement(By.tagName("a"));
-        // Start outside the menu: the previous case can leave the pointer on this link, and Firefox fires
-        // no mouseenter for a move to where the pointer already is.
-        new Actions(PrimeSelenium.getWebDriver())
-                .moveToElement(PrimeSelenium.getWebDriver().findElement(By.id("form:outside")))
-                .moveToElement(link)
-                .perform();
+        new Actions(PrimeSelenium.getWebDriver()).moveToElement(link).perform();
         if (!auto) {
             link.click();
         }
