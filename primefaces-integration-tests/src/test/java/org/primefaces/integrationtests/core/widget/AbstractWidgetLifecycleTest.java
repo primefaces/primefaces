@@ -77,7 +77,12 @@ public abstract class AbstractWidgetLifecycleTest extends AbstractPrimePageTest 
         assertTrue(expected.similar(actual), "expected " + expected + " but was " + actual);
     }
 
+    /**
+     * Clicks the button and waits for the AJAX request. The minimal AJAX load animation is turned off first, otherwise the
+     * button stays disabled for 500ms after the request started and a second click right after the first would miss it.
+     */
     protected void ajaxClick(WebElement button) {
+        noAjaxMinLoadAnimation();
         PrimeSelenium.guardAjax(button).click();
     }
 
