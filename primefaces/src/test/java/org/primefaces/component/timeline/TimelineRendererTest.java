@@ -39,6 +39,7 @@ import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TimelineRendererTest {
@@ -76,5 +77,41 @@ class TimelineRendererTest {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         assertFalse(requestMap.containsKey("event"));
         assertFalse(requestMap.containsKey("group"));
+    }
+
+    /**
+     * An event or group without data is not put in the request map, so the timeline must not remove a request attribute
+     * of the same name which belongs to an outer scope either.
+     */
+    @Test
+    void encodeEndLeavesAnOuterVarAloneWhenThereIsNoData() throws Exception {
+        FacesContext context = new FacesContextMock(new CollectingResponseWriter());
+        UIViewRoot viewRoot = new UIViewRoot();
+        viewRoot.setLocale(Locale.ENGLISH);
+        context.setViewRoot(viewRoot);
+
+        TimelineModel<Object, Object> model = new TimelineModel<>();
+        model.addGroup(new TimelineGroup<>("group", null));
+        model.add(TimelineEvent.builder().group("group").startDate(LocalDateTime.now()).build());
+
+        Timeline timeline = new Timeline() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new TimelineRenderer();
+            }
+        };
+        timeline.setId("timeline");
+        timeline.setVar("event");
+        timeline.setVarGroup("group");
+        timeline.setValue(model);
+
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        requestMap.put("event", "outer event");
+        requestMap.put("group", "outer group");
+
+        timeline.encodeEnd(context);
+
+        assertEquals("outer event", requestMap.get("event"));
+        assertEquals("outer group", requestMap.get("group"));
     }
 }

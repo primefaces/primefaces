@@ -35,7 +35,6 @@ import org.primefaces.cdk.api.utils.ReflectionUtils;
 import org.primefaces.cdk.api.validator.PrimeValidator;
 import org.primefaces.cdk.spi.taglib.Tag;
 import org.primefaces.cdk.spi.taglib.TagType;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 import java.util.Arrays;
@@ -44,6 +43,7 @@ import java.util.stream.Collectors;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.RenderKit;
 import jakarta.faces.render.Renderer;
 
 import lombok.Getter;
@@ -82,8 +82,8 @@ public class TagInfo {
                 componentFamily = ((UIComponent) instance).getFamily();
 
                 if (LangUtils.isNotBlank(tag.getRendererType())) {
-                    // the render kit hands out PrimeFaces renderers wrapped, and we want to report the real class
-                    Renderer<?> renderer = ComponentUtils.getUnwrappedRenderer(context, componentFamily, tag.getRendererType());
+                    RenderKit renderKit = context.getRenderKit();
+                    Renderer<?> renderer = renderKit.getRenderer(componentFamily, tag.getRendererType());
                     rendererClass = renderer.getClass().getName();
                 }
 
