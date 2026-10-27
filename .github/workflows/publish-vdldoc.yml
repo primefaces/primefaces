@@ -50,8 +50,11 @@ jobs:
 
       - name: Check for changes
         id: check-changes
+        # Compare the staged content: vdldoc writes stylesheet.css with CRLF line endings,
+        # so git status reports it as modified even though git add normalizes it back.
         run: |
-          if [ -n "$(git status --porcelain docs/vdldoc/)" ]; then
+          git add docs/vdldoc/
+          if ! git diff --cached --quiet -- docs/vdldoc/; then
             echo "changes=true" >> $GITHUB_OUTPUT
           else
             echo "changes=false" >> $GITHUB_OUTPUT
@@ -60,6 +63,5 @@ jobs:
       - name: Commit and push changes
         if: steps.check-changes.outputs.changes == 'true'
         run: |
-          git add docs/vdldoc/
-          git diff --cached --quiet || git commit -m "Update VDL documentation [skip ci]"
+          git commit -m "Update VDL documentation [skip ci]"
           git push
