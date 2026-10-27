@@ -129,11 +129,14 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
             writer.writeAttribute("style", style, null);
         }
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", getStyleClassBuilder(context).add(Dialog.BOX_CLASS).add(component.getBoxStyleClass()).build(), null);
+        String boxStyleClass = getStyleClassBuilder(context).add(Dialog.BOX_CLASS).add(component.getBoxStyleClass()).build();
+        String boxStyle = component.getBoxStyle();
 
-        if (component.getBoxStyle() != null) {
-            writer.writeAttribute("style", component.getBoxStyle(), null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", boxStyleClass, null);
+
+        if (boxStyle != null) {
+            writer.writeAttribute("style", boxStyle, null);
         }
 
         if (component.isShowHeader()) {
@@ -222,13 +225,15 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
 
     protected void encodeContent(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String contentStyleClass = getStyleClassBuilder(context).add(Dialog.CONTENT_CLASS).add(component.getContentStyleClass()).build();
+        String contentStyle = component.getContentStyle();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", getStyleClassBuilder(context).add(Dialog.CONTENT_CLASS).add(component.getContentStyleClass()).build(), null);
+        writer.writeAttribute("class", contentStyleClass, null);
         writer.writeAttribute("id", component.getClientId(context) + "_content", null);
 
-        if (component.getContentStyle() != null) {
-            writer.writeAttribute("style", component.getContentStyle(), null);
+        if (contentStyle != null) {
+            writer.writeAttribute("style", contentStyle, null);
         }
 
         if (!component.isDynamic()) {
