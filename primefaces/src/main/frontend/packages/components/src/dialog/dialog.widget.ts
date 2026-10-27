@@ -310,12 +310,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Computes and applies the correct size for this dialog, according to the current configuration.
      */
     protected initSize(): void {
+        // without an explicit width/height the size is left to CSS, so boxStyle(Class) and contentStyle(Class) can size the dialog
         this.box.css({
-            'width': String(this.cfg.width),
+            'width': this.cfg.width === 'auto' ? '' : String(this.cfg.width),
             'height': 'auto'
         });
 
-        this.content.height(this.cfg.height ?? "auto");
+        if(this.cfg.height !== 'auto') {
+            this.content.height(this.cfg.height);
+        }
 
         if(this.cfg.fitViewport) {
             this.fitViewport();
@@ -948,7 +951,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected saveState(): void {
         this.state = {
-            width: this.box[0]?.style.width || this.box.width() || 0,
+            // an empty inline width is kept, so a CSS width (boxStyle/boxStyleClass) applies again after restoring
+            width: this.box[0] ? this.box[0].style.width : 0,
             height: this.box[0]?.style.height || this.box.height() || 0,
             contentWidth: this.content[0]?.style.width || this.content.width() || 0,
             contentHeight: this.content[0]?.style.height || this.content.height() || 0,
