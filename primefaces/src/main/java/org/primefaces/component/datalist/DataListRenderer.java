@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datalist;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = DataList.DEFAULT_RENDERER, componentFamily = DataList.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DataListRenderer extends DataRenderer<DataList> {
 
     private static final Logger LOGGER = Logger.getLogger(DataListRenderer.class.getName());

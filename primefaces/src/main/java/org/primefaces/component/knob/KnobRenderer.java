@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.knob;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -37,6 +38,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Knob.DEFAULT_RENDERER, componentFamily = Knob.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class KnobRenderer extends CoreRenderer<Knob> {
 
     public static final String RENDERER_TYPE = "org.primefaces.component.KnobRenderer";

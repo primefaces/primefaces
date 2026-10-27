@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.outputlabel;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
@@ -56,6 +57,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.metadata.ConstraintDescriptor;
 
 @FacesRenderer(rendererType = OutputLabel.DEFAULT_RENDERER, componentFamily = OutputLabel.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
     private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());

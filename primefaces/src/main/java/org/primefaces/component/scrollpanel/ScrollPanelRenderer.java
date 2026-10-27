@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.scrollpanel;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ScrollPanel.DEFAULT_RENDERER, componentFamily = ScrollPanel.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
 
     @Override

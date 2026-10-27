@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.imagecompare;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ImageCompare.DEFAULT_RENDERER, componentFamily = ImageCompare.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ImageCompareRenderer extends CoreRenderer<ImageCompare> {
 
     @Override

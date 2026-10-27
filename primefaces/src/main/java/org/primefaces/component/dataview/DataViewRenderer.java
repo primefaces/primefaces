@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -42,6 +43,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = DataView.DEFAULT_RENDERER, componentFamily = DataView.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DataViewRenderer extends DataRenderer<DataView> {
 
     private static final Logger LOGGER = Logger.getLogger(DataViewRenderer.class.getName());

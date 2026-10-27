@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.slider;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -40,6 +41,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Slider.DEFAULT_RENDERER, componentFamily = Slider.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SliderRenderer extends CoreRenderer<Slider> {
 
     @Override

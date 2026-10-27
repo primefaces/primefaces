@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.toggleswitch;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ToggleSwitch.DEFAULT_RENDERER, componentFamily = ToggleSwitch.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
 
     @Override

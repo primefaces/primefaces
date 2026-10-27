@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.avatargroup;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = AvatarGroup.DEFAULT_RENDERER, componentFamily = AvatarGroup.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AvatarGroupRenderer extends CoreRenderer<AvatarGroup> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.chronoline;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Chronoline.DEFAULT_RENDERER, componentFamily = Chronoline.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ChronolineRenderer extends CoreRenderer<Chronoline> {
 
     @Override

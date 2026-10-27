@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tabmenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TabMenu.DEFAULT_RENDERER, componentFamily = TabMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
 
     @Override

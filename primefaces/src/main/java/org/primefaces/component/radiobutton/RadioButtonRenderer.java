@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.radiobutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = RadioButton.DEFAULT_RENDERER, componentFamily = RadioButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class RadioButtonRenderer extends InputRenderer<RadioButton> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";

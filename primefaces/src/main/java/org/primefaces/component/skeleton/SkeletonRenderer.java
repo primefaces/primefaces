@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.skeleton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Skeleton.DEFAULT_RENDERER, componentFamily = Skeleton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SkeletonRenderer extends CoreRenderer<Skeleton> {
 
     @Override

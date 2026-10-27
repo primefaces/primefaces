@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectonelistbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -42,6 +43,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectOneListbox.DEFAULT_RENDERER, componentFamily = SelectOneListbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox> {
 
     @Override

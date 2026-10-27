@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.graphicimage;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
@@ -39,6 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = GraphicImage.DEFAULT_RENDERER, componentFamily = GraphicImage.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class GraphicImageRenderer extends CoreRenderer<GraphicImage> {
 
     @Override

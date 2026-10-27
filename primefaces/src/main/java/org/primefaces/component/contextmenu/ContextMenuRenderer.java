@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.contextmenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -38,6 +39,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ContextMenu.DEFAULT_RENDERER, componentFamily = ContextMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
     @Override

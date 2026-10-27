@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.checkbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -37,6 +38,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Checkbox.DEFAULT_RENDERER, componentFamily = Checkbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CheckboxRenderer extends InputRenderer<Checkbox> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.treetable;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
@@ -57,6 +58,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TreeTable.DEFAULT_RENDERER, componentFamily = TreeTable.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
     @Override

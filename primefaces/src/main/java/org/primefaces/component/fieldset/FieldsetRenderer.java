@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.fieldset;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
@@ -37,6 +38,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Fieldset.DEFAULT_RENDERER, componentFamily = Fieldset.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class FieldsetRenderer extends CoreRenderer<Fieldset> {
 
     @Override

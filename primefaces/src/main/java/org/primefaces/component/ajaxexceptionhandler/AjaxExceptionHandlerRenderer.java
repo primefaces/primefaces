@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -34,6 +35,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = AjaxExceptionHandler.DEFAULT_RENDERER, componentFamily = AjaxExceptionHandler.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AjaxExceptionHandlerRenderer extends CoreRenderer<AjaxExceptionHandler> {
 
     @Override

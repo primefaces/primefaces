@@ -24,6 +24,7 @@
 package org.primefaces.component.datascroller;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -41,6 +42,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = DataScroller.DEFAULT_RENDERER, componentFamily = DataScroller.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
 
     @Override

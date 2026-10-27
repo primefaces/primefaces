@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.captcha;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Captcha.DEFAULT_RENDERER, componentFamily = Captcha.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CaptchaRenderer extends CoreRenderer<Captcha> {
 
     private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());

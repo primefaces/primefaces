@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.commandbutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -43,6 +44,7 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = CommandButton.DEFAULT_RENDERER, componentFamily = CommandButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CommandButtonRenderer extends CoreRenderer<CommandButton> {
 
     private static final Logger LOGGER = Logger.getLogger(CommandButtonRenderer.class.getName());

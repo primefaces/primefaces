@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.chips;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -46,6 +47,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Chips.DEFAULT_RENDERER, componentFamily = Chips.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ChipsRenderer extends InputRenderer<Chips> {
 
     @Override

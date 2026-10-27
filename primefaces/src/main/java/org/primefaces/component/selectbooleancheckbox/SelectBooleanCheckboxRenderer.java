@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -37,6 +38,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = SelectBooleanCheckbox.DEFAULT_RENDERER, componentFamily = SelectBooleanCheckbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCheckbox> {
 
     @Override
