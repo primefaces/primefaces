@@ -46,7 +46,13 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -55,6 +61,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 public class TreeTableRenderer extends DataRenderer {
+
+    private static final Pattern WIDTH_PATTERN = Pattern.compile("(?i)(?:^|;)\\s*width\\s*:\\s*([^;]+)");
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -334,6 +342,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute("class", tt.getTableStyleClass(), null);
         }
 
+        encodeColgroup(context, tt);
         encodeThead(context, tt);
         encodeTfoot(context, tt);
         encodeTbody(context, tt, root, false);
@@ -345,6 +354,138 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         encodeFacet(context, tt, tt.getFacet("footer"), TreeTable.FOOTER_CLASS);
+    }
+
+    /**
+     * Renders a colgroup for tables with a header ColumnGroup. With a fixed table layout the width of a column
+     * is determined by the first header row only. As a ColumnGroup may use rowspan/colspan in its first row, the
+     * width defined on a leaf column of a later row would otherwise be ignored.
+     */
+    protected void encodeColgroup(FacesContext context, TreeTable tt) throws IOException {
+        if (tt.isScrollable() || tt.isResizableColumns()) {
+            return;
+        }
+
+        ColumnGroup group = tt.getColumnGroup("header");
+        if (group == null || !group.isRendered()) {
+            return;
+        }
+
+        int columnCount = tt.getColumns().size();
+        if (columnCount == 0) {
+            return;
+        }
+
+        List<String> widths = new ArrayList<>(columnCount);
+        for (int i = 0; i < columnCount; i++) {
+            widths.add(null);
+        }
+
+        collectColumnGroupWidths(group, widths);
+
+        boolean hasWidth = false;
+        for (int i = 0; i < widths.size(); i++) {
+            if (widths.get(i) != null) {
+                hasWidth = true;
+                break;
+            }
+        }
+        if (!hasWidth) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("colgroup", null);
+        for (int i = 0; i < widths.size(); i++) {
+            String width = widths.get(i);
+            writer.startElement("col", null);
+            if (width != null) {
+                writer.writeAttribute("style", "width:" + width, null);
+            }
+            writer.endElement("col");
+        }
+        writer.endElement("colgroup");
+    }
+
+    protected void collectColumnGroupWidths(ColumnGroup group, List<String> widths) {
+        Map<Integer, Integer> rowspans = new HashMap<>();
+        for (int i = 0; i < group.getChildCount(); i++) {
+            UIComponent child = group.getChildren().get(i);
+            if (!(child instanceof Row) || !child.isRendered()) {
+                continue;
+            }
+
+            Row row = (Row) child;
+            int col = 0;
+            for (int j = 0; j < row.getChildCount(); j++) {
+                UIComponent cell = row.getChildren().get(j);
+                if (!cell.isRendered()) {
+                    continue;
+                }
+
+                while (rowspans.getOrDefault(col, 0) > 0) {
+                    col++;
+                }
+
+                if (cell instanceof Columns) {
+                    List<DynamicColumn> dynamicColumns = ((Columns) cell).getDynamicColumns();
+                    for (int k = 0; k < dynamicColumns.size(); k++) {
+                        col = collectColumnGroupCellWidth(dynamicColumns.get(k), col, rowspans, widths);
+                    }
+                }
+                else if (cell instanceof UIColumn) {
+                    col = collectColumnGroupCellWidth((UIColumn) cell, col, rowspans, widths);
+                }
+                else {
+                    col++;
+                }
+            }
+
+            for (Iterator<Map.Entry<Integer, Integer>> it = rowspans.entrySet().iterator(); it.hasNext();) {
+                Map.Entry<Integer, Integer> entry = it.next();
+                int remaining = entry.getValue() - 1;
+                if (remaining <= 0) {
+                    it.remove();
+                }
+                else {
+                    entry.setValue(remaining);
+                }
+            }
+        }
+    }
+
+    protected int collectColumnGroupCellWidth(UIColumn column, int col, Map<Integer, Integer> rowspans, List<String> widths) {
+        int colspan = column.getColspan();
+        int rowspan = column.getRowspan();
+
+        if (colspan == 1 && col < widths.size() && widths.get(col) == null) {
+            widths.set(col, resolveColumnWidth(column));
+        }
+
+        if (rowspan > 1) {
+            for (int i = col; i < col + colspan; i++) {
+                rowspans.put(i, rowspan);
+            }
+        }
+
+        return col + colspan;
+    }
+
+    protected String resolveColumnWidth(UIColumn column) {
+        String width = column.getWidth();
+        if (LangUtils.isNotBlank(width)) {
+            return endsWithLengthUnit(width) ? width : width + "px";
+        }
+
+        String style = column.getStyle();
+        if (LangUtils.isNotBlank(style)) {
+            Matcher matcher = WIDTH_PATTERN.matcher(style);
+            if (matcher.find()) {
+                return matcher.group(1).trim();
+            }
+        }
+
+        return null;
     }
 
     protected void encodeThead(FacesContext context, TreeTable tt) throws IOException {
