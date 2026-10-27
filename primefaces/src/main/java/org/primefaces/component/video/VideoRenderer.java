@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.video;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -39,6 +40,7 @@ import org.apache.commons.io.FilenameUtils;
  * The HTML <video> element is used to embed sound content in documents.
  */
 @FacesRenderer(rendererType = Video.DEFAULT_RENDERER, componentFamily = Video.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class VideoRenderer extends CoreRenderer<Video> {
 
     @Override

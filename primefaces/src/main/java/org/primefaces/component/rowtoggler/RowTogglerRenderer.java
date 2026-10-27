@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.rowtoggler;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -34,6 +35,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = RowToggler.DEFAULT_RENDERER, componentFamily = RowToggler.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
 
     @Override

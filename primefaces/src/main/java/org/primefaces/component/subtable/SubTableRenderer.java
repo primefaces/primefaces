@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.subtable;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -40,6 +41,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = SubTable.DEFAULT_RENDERER, componentFamily = SubTable.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SubTableRenderer extends CoreRenderer<SubTable> {
 
     @Override

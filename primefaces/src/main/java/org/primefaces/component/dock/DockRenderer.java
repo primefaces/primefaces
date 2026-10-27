@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.dock;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -40,6 +41,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Dock.DEFAULT_RENDERER, componentFamily = Dock.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DockRenderer extends BaseMenuRenderer<Dock> {
 
     @Override

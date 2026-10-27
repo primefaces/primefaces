@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.growl;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.Constants;
@@ -39,6 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Growl.DEFAULT_RENDERER, componentFamily = Growl.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class GrowlRenderer extends UINotificationRenderer<Growl> {
 
     @Override

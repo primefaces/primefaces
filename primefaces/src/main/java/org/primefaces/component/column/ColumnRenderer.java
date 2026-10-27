@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.column;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.column.renderer.HelperColumnRenderer;
 import org.primefaces.component.column.renderer.PanelGridBodyColumnRenderer;
@@ -38,6 +39,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Column.DEFAULT_RENDERER, componentFamily = Column.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ColumnRenderer extends CoreRenderer<Column> {
 
     static final Map<String, HelperColumnRenderer> RENDERERS;

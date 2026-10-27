@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.schedule;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -53,6 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @FacesRenderer(rendererType = Schedule.DEFAULT_RENDERER, componentFamily = Schedule.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ScheduleRenderer extends CoreRenderer<Schedule> {
 
     @Override

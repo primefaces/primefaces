@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.hotkey;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.AgentUtils;
@@ -36,6 +37,7 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Hotkey.DEFAULT_RENDERER, componentFamily = Hotkey.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class HotkeyRenderer extends CoreRenderer<Hotkey> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -56,6 +57,7 @@ import jakarta.faces.render.FacesRenderer;
 import org.json.JSONObject;
 
 @FacesRenderer(rendererType = DatePicker.DEFAULT_RENDERER, componentFamily = DatePicker.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
 
     @Override

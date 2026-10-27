@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectonebutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -44,6 +45,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectOneButton.DEFAULT_RENDERER, componentFamily = SelectOneButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> {
 
     @Override

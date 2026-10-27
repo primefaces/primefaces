@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.staticmessage;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.messages.Messages;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = StaticMessage.DEFAULT_RENDERER, componentFamily = StaticMessage.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
 
     @Override

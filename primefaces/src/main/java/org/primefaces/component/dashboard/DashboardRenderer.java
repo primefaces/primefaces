@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.dashboard;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.dashboard.DashboardModel;
@@ -41,6 +42,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Dashboard.DEFAULT_RENDERER, componentFamily = Dashboard.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DashboardRenderer extends CoreRenderer<Dashboard> {
 
     @Override

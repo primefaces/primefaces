@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.sticky;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -34,6 +35,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Sticky.DEFAULT_RENDERER, componentFamily = Sticky.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class StickyRenderer extends CoreRenderer<Sticky> {
 
     @Override

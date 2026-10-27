@@ -24,6 +24,7 @@
 package org.primefaces.component.clock;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.Constants;
@@ -42,6 +43,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Clock.DEFAULT_RENDERER, componentFamily = Clock.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ClockRenderer extends CoreRenderer<Clock> {
 
     @Override

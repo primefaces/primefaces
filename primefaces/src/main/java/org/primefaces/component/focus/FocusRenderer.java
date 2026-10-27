@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.focus;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -39,6 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Focus.DEFAULT_RENDERER, componentFamily = Focus.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class FocusRenderer extends CoreRenderer<Focus> {
 
     private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<>();

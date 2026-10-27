@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -41,6 +42,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = FileUpload.DEFAULT_RENDERER, componentFamily = FileUpload.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
     @Override

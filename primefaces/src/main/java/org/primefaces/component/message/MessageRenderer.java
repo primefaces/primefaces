@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.message;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -43,6 +44,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Message.DEFAULT_RENDERER, componentFamily = Message.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MessageRenderer extends UINotificationRenderer<Message> {
 
     @Override

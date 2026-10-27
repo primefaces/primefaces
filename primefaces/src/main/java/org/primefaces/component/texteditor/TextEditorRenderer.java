@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.texteditor;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -47,6 +48,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TextEditor.DEFAULT_RENDERER, componentFamily = TextEditor.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TextEditorRenderer extends InputRenderer<TextEditor> {
 
     private static final Logger LOGGER = Logger.getLogger(TextEditorRenderer.class.getName());

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.autocomplete;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -51,6 +52,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = AutoComplete.DEFAULT_RENDERER, componentFamily = AutoComplete.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
     @Override

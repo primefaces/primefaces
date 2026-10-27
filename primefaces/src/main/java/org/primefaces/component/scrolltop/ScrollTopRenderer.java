@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.scrolltop;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ScrollTop.DEFAULT_RENDERER, componentFamily = ScrollTop.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ScrollTopRenderer extends CoreRenderer<ScrollTop> {
     @Override
     public void encodeEnd(FacesContext context, ScrollTop component) throws IOException {

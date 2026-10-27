@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.stack;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Stack.DEFAULT_RENDERER, componentFamily = Stack.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class StackRenderer extends BaseMenuRenderer<Stack> {
 
     @Override

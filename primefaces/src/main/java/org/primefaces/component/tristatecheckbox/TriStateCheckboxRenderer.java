@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tristatecheckbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TriStateCheckbox.DEFAULT_RENDERER, componentFamily = TriStateCheckbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
 
     @Override

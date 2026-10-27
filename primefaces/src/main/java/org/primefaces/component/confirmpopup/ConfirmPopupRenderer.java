@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.confirmpopup;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ConfirmPopup.DEFAULT_RENDERER, componentFamily = ConfirmPopup.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ConfirmPopupRenderer extends CoreRenderer<ConfirmPopup> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.photocam;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -38,6 +39,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.xml.bind.DatatypeConverter;
 
 @FacesRenderer(rendererType = PhotoCam.DEFAULT_RENDERER, componentFamily = PhotoCam.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PhotoCamRenderer extends CoreRenderer<PhotoCam> {
 
     @Override

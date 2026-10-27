@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.confirmdialog;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ConfirmDialog.DEFAULT_RENDERER, componentFamily = ConfirmDialog.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectmanybutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -44,6 +45,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectManyButton.DEFAULT_RENDERER, componentFamily = SelectManyButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButton> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.blockui;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -34,6 +35,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = BlockUI.DEFAULT_RENDERER, componentFamily = BlockUI.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class BlockUIRenderer extends CoreRenderer<BlockUI> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Calendar.DEFAULT_RENDERER, componentFamily = Calendar.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CalendarRenderer extends BaseCalendarRenderer<Calendar> {
 
     @Override

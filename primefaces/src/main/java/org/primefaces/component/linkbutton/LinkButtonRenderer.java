@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.linkbutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = LinkButton.DEFAULT_RENDERER, componentFamily = LinkButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
 
     @Override
