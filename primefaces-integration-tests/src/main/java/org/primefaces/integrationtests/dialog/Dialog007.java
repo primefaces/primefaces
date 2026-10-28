@@ -33,7 +33,7 @@ import lombok.Data;
 @Named
 @ViewScoped
 @Data
-public class Dialog005 implements Serializable {
+public class Dialog007 implements Serializable {
 
     private boolean rendered = true;
 

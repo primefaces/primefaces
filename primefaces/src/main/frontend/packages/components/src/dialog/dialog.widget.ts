@@ -889,14 +889,14 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             // create a minimize clone which is just the titlebar
             this.minimizeClone = this.jq.clone(true);
             // Cloned source markers must never remove the live overlays they originally tracked.
-            this.minimizeClone.find('.ui-overlay-placeholder').off('remove.pfOverlay');
+            this.minimizeClone.find('.p-overlay-placeholder').off('remove.pfOverlay');
             this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
             this.minimizeClone.addClass('p-dialog-minimized');
-            this.minimizeClone.children('.p-dialog-content').remove();
+            this.minimizeClone.find('.p-dialog-content').remove();
             this.minimizeClone.find('.p-dialog-footer').remove();
 
             if (this.cfg.resizable) {
-                this.minimizeClone.children('.p-resizable-handle').remove();
+                this.minimizeClone.find('.p-resizable-handle').remove();
             }
 
             if (animate) {
@@ -932,7 +932,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         zone.css('z-index', this.jq.css('z-index'));
         this.jq.hide();
         this.minimizeClone.appendTo(zone).css({'position':'static', 'height':'auto', 'width':'auto', 'float': 'left'});
-        var titlebar = this.minimizeClone.children('.p-dialog-titlebar');
+        var titlebar = this.minimizeClone.find('.p-dialog-titlebar');
         var minimizeIcon = titlebar.children('.p-dialog-titlebar-minimize');
         minimizeIcon.removeClass('p-state-hover');
         this.minimized = true;

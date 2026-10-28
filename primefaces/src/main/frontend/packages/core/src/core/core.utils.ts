@@ -169,7 +169,7 @@ export class Utils {
                 placeholders = new Map();
                 this.overlayPlaceholders.set(widget, placeholders);
             }
-            placeholders.set(overlayId, $('<span hidden class="ui-overlay-placeholder"></span>').insertBefore(overlay));
+            placeholders.set(overlayId, $('<span hidden class="p-overlay-placeholder"></span>').insertBefore(overlay));
 
             overlay.appendTo(appendTo);
         }

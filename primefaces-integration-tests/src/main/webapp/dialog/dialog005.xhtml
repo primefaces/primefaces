@@ -3,23 +3,28 @@
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
       xmlns:p="primefaces">
+
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
-    <h:head />
+    <h:head>
+        <style>
+            .box-wide {
+                width: 600px;
+            }
+        </style>
+    </h:head>
+
     <h:body>
+
         <h:form id="form">
-            <p:commandButton id="remove" value="Remove" action="#{dialog005.remove}" update="container" />
-            <p:commandButton id="refresh" value="Refresh container" update="container" />
-            <p:commandButton id="refreshDialog" value="Refresh dialog" update="dlg" />
-            <h:panelGroup id="container" layout="block">
-                <p:dialog id="dlg" widgetVar="relocatedDialog" header="Relocated dialog"
-                          minimizable="true" appendTo="@(body)" rendered="#{dialog005.rendered}">
-                    <p:selectOneMenu id="choice" widgetVar="dialogChoice">
-                        <f:selectItem itemLabel="One" itemValue="1" />
-                        <f:selectItem itemLabel="Two" itemValue="2" />
-                    </p:selectOneMenu>
-                </p:dialog>
-            </h:panelGroup>
+            <p:dialog header="Box and content style" id="dlg" widgetVar="dlg" maximizable="true"
+                      style="opacity: 0.99" styleClass="container-class"
+                      boxStyle="min-height: 100px" boxStyleClass="box-wide"
+                      contentStyle="padding: 7px" contentStyleClass="content-class">
+                <p class="m-0">Lorem ipsum dolor sit amet</p>
+            </p:dialog>
         </h:form>
+
     </h:body>
 </f:view>
+
 </html>
