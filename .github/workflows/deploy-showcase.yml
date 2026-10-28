@@ -16,6 +16,12 @@ permissions:
   contents: read
   packages: write
 
+# A newer push to the same branch cancels the older run. Otherwise both runs
+# deploy the same DigitalOcean app and the older deployment fails as SUPERSEDED.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
