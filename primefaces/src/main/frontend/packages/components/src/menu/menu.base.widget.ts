@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Menu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MenuCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface MenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Search expression for the element to which the menu overlay is appended.
      */
@@ -29,7 +29,7 @@ export interface MenuCfg extends PrimeType.widget.BaseWidgetCfg {
     /**
      * Describes how to align this menu.
      */
-    pos: JQueryUI.JQueryPositionOptions;
+    pos: PrimeFacesTypes.utils.PositionOptions;
     /**
      * The tab index of the menu.
      */
@@ -55,7 +55,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
     /**
      * Unbind callback for the hide overlay handler.
      */
-    hideOverlayHandler?: PrimeType.Unbindable;
+    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * `true` if a menu item was clicked and the mouse button is still pressed.
@@ -70,12 +70,12 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
     /**
      * Unbind callback for the resize handler.
      */
-    resizeHandler?: PrimeType.Unbindable;
+    resizeHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * Unbind callback for the scroll handler.
      */
-    scrollHandler?: PrimeType.Unbindable;
+    scrollHandler?: PrimeFacesTypes.Unbindable;
 
     /**
      * The tab index of the menu.
@@ -85,14 +85,14 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
     /**
      * Handler for CSS transitions used by this widget.
      */
-    transition?: PrimeType.CssTransitionHandler | null;
+    transition?: PrimeFacesTypes.CssTransitionHandler | null;
 
     /**
      * DOM element which triggers this menu.
      */
     trigger: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         
         this.tabIndex = this.cfg.tabIndex || "0";
@@ -168,7 +168,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
             at: this.cfg.at,
             of: this.trigger,
             collision: this.cfg.collision || "flip",
-            using: function(pos: { top: number; left: number }, directions: {horizontal: number; vertical: number;}) {
+            using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         };
@@ -207,7 +207,10 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
             (_, eventTarget) => {
                 const menuItemLink = '.ui-menuitem-link:not(.ui-submenu-link, .ui-state-disabled)';
 
-                if (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length) {
+                // the SlideMenu back link only navigates within the menu, it must not close the overlay
+                const isSlideMenuBackward = eventTarget.closest('.ui-slidemenu-backward').length > 0;
+
+                if (!isSlideMenuBackward && (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length)) {
                     this.itemMouseDown = true;
                 }
                 else if (!($menu.is(eventTarget) || $menu.has(eventTarget[0] ?? "").length > 0)) {
@@ -324,7 +327,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
     align(): void {
-        this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }).position(this.cfg.pos ?? {});
+        PrimeFaces.utils.position(this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }), this.cfg.pos ?? {});
     }
 
     /**

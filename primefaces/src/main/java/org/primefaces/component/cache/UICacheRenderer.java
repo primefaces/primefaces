@@ -24,6 +24,7 @@
 package org.primefaces.component.cache;
 
 import org.primefaces.cache.CacheProvider;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = UICache.DEFAULT_RENDERER, componentFamily = UICache.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class UICacheRenderer extends CoreRenderer<UICache> {
 
     private static final Logger LOGGER = Logger.getLogger(UICacheRenderer.class.getName());

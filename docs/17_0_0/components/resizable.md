@@ -113,6 +113,6 @@ function handleStop(event, ui) {
 | --- | --- | 
 .ui-resizable | Element that is resizable
 .ui-resizable-handle | Handle element
-.ui-resizable-handle-{handlekey} | Particular handle element identified by handlekey like e, s, ne
+.ui-resizable-{handlekey} | Particular handle element identified by handlekey like e, s, ne
 .ui-resizable-proxy | Proxy helper element for visual feedback
 

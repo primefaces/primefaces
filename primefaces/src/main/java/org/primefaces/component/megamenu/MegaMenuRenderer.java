@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.megamenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.divider.Divider;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -46,6 +47,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = MegaMenu.DEFAULT_RENDERER, componentFamily = MegaMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
     @Override

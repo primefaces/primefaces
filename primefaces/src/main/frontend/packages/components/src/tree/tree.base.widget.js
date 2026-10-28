@@ -43,7 +43,7 @@
  * @prop {boolean} cfg.cache `true` if the content of dynamically loaded nodes is cached for the next time the node is
  * expanded, or `false` to always fetch the content from the server.
  * @prop {boolean} cfg.disabled `true` is this widget is disabled, or `false` otherwise.
- * @prop {string} cfg.dragdropScope Optional scope for the dragging and dropping, passed to JQuery UI.
+ * @prop {string} cfg.dragdropScope Optional scope for the dragging and dropping, of the draggables and droppables.
  * @prop {boolean} cfg.draggable `true` if nodes are draggable, or `false` otherwise.
  * @prop {PrimeFaces.widget.BaseTree.DragMode} cfg.dragMode Defines parent-child relationship when a node is dragged.
  * @prop {boolean} cfg.dropCopyNode When enabled, the copy of the selected nodes can be dropped from a tree to another
@@ -432,14 +432,70 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * Removes all chilren of the given node from the list of currently selected nodes.
      * @protected
      * @param {string} rowKey Row key of a node to process.
+     * @param {string[]} [keptRowKeys] Row keys of non-selectable descendants which, together with their own
+     * descendants, keep their selection state.
      */
-    removeDescendantsFromSelection(rowKey) {
+    removeDescendantsFromSelection(rowKey, keptRowKeys) {
+        keptRowKeys = keptRowKeys || [];
         var newSelections = [];
         for(var i = 0; i < this.selections.length; i++) {
-            if(this.selections[i].indexOf(rowKey + '_') !== 0)
-                newSelections.push(this.selections[i]);
+            var selection = this.selections[i],
+            kept = selection.indexOf(rowKey + '_') !== 0;
+
+            for(var j = 0; !kept && j < keptRowKeys.length; j++) {
+                kept = selection === keptRowKeys[j] || selection.indexOf(keptRowKeys[j] + '_') === 0;
+            }
+
+            if(kept)
+                newSelections.push(selection);
         }
         this.selections = newSelections;
+    }
+
+    /**
+     * Checks whether the given node can be selected, i.e. whether its `TreeNode` is selectable.
+     * @protected
+     * @param {JQuery} node A node to check.
+     * @return {boolean} `true` if the node is selectable, `false` otherwise.
+     */
+    isSelectableNode(node) {
+        return node.children('.ui-treenode-content').hasClass('ui-tree-selectable');
+    }
+
+    /**
+     * Toggles the checkbox of the given child nodes and their descendants when the selection propagates down. A
+     * non-selectable node and its whole subtree are left untouched, just like
+     * `CheckboxTreeNode#propagateSelectionDown` does on the server side, see #14798.
+     * @protected
+     * @param {JQuery} children Child nodes to toggle.
+     * @param {boolean} checked `true` if the parent node was checked before it was toggled, `false` otherwise.
+     * @param {string[]} skippedRowKeys Collects the row keys of the skipped non-selectable nodes.
+     */
+    propagateCheckboxDown(children, checked, skippedRowKeys) {
+        var $this = this;
+        children.each(function() {
+            var child = $(this);
+            if(!$this.isSelectableNode(child)) {
+                skippedRowKeys.push($this.getRowKey(child));
+                return;
+            }
+
+            var checkbox = child.find('> .ui-treenode-content > .ui-chkbox');
+            if(checkbox.length) {
+                $this.toggleCheckboxState(checkbox, checked);
+            }
+            $this.propagateCheckboxDown($this.getChildNodes(child), checked, skippedRowKeys);
+        });
+    }
+
+    /**
+     * Finds the rendered child nodes of the given node.
+     * @protected
+     * @param {JQuery} node A node for which to find the children.
+     * @return {JQuery} The child nodes of the given node.
+     */
+    getChildNodes(node) {
+        throw "Unsupported Operation";
     }
 
     /**

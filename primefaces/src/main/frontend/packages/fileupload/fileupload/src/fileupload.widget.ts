@@ -14,7 +14,7 @@ declare global {
     // such as passing the data directly to the methods.
     namespace JQuery {
         interface jqXHR {
-            pfArgs?: PrimeType.ajax.PrimeFacesArgs;
+            pfArgs?: PrimeFacesTypes.ajax.PrimeFacesArgs;
         }
     }
     // In a similar manner, this widget also sets additional properties on the
@@ -38,7 +38,7 @@ declare global {
  * You can access this configuration via {@link FileUpload.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface FileUploadCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface FileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Regular expression for accepted file types.
      */
@@ -96,44 +96,44 @@ export interface FileUploadCfg extends PrimeType.widget.BaseWidgetCfg {
     /**
      * Callback invoked when an uploaded file is added.
      */
-    onAdd: PrimeType.widget.FileUpload.OnAddCallback;
+    onAdd: PrimeFacesTypes.widget.FileUpload.OnAddCallback;
 
     /**
      * Callback that is invoked when a file upload was
      * canceled.
      */
-    oncancel: PrimeType.widget.FileUpload.OnCancelCallback;
+    oncancel: PrimeFacesTypes.widget.FileUpload.OnCancelCallback;
 
     /**
      * Callback that is invoked after a file was
      * uploaded to the server successfully.
      */
-    oncomplete: PrimeType.widget.FileUpload.OnCompleteCallback;
+    oncomplete: PrimeFacesTypes.widget.FileUpload.OnCompleteCallback;
 
     /**
      * Callback that is invoked when a file could not be
      * uploaded to the server.
      */
-    onerror: PrimeType.widget.FileUpload.OnErrorCallback;
+    onerror: PrimeFacesTypes.widget.FileUpload.OnErrorCallback;
 
     /**
      * Callback that is invoked at the beginning of a file
      * upload, when a file is sent to the server.
      */
-    onstart: PrimeType.widget.FileUpload.OnStartCallback;
+    onstart: PrimeFacesTypes.widget.FileUpload.OnStartCallback;
 
     /**
      * Callback to execute before the files are sent.
      * If this callback returns false, the file upload request is not started.
      */
-    onupload: PrimeType.widget.FileUpload.OnUploadCallback;
+    onupload: PrimeFacesTypes.widget.FileUpload.OnUploadCallback;
 
     /**
      * Callback to execute when the files failed to validate, such as when the
      * file size exceed the configured limit. This callback is called once for
      * each invalid file.
      */
-    onvalidationfailure: PrimeType.widget.FileUpload.OnValidationFailureCallback;
+    onvalidationfailure: PrimeFacesTypes.widget.FileUpload.OnValidationFailureCallback;
 
     /**
      * Width for image previews in pixels.
@@ -289,7 +289,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      */
     static IMAGE_TYPES: RegExp = /([./])(gif|jpe?g|png)$/i;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         
         if (this.cfg.disabled) {
@@ -340,9 +340,9 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
             retryTimeout: this.cfg.retryTimeout,
             source: this.getId(),
             formData: () => this.createPostData(),
-            beforeSend: function(xhr: PrimeType.ajax.pfXHR, settings) {
+            beforeSend: function(xhr: PrimeFacesTypes.ajax.pfXHR, settings) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-                xhr.pfSettings = settings as PrimeType.ajax.PrimeFacesSettings;
+                xhr.pfSettings = settings as PrimeFacesTypes.ajax.PrimeFacesSettings;
                 xhr.pfArgs = {}; // default should be an empty object
 
                 const file = settings.files ? settings.files[0] : null;
@@ -1022,7 +1022,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      * Shows the given error message
      * @param msg Error message to show.
      */
-    private showMessage(msg: PrimeType.FacesMessage) {
+    private showMessage(msg: PrimeFacesTypes.FacesMessage) {
         this.messageList.append('<li><span class="ui-messages-error-summary">'
             + PrimeFaces.escapeHTML(msg.summary)
             + '</span><span class="ui-messages-error-detail">'

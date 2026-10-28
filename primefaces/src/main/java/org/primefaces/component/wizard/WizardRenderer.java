@@ -24,6 +24,7 @@
 package org.primefaces.component.wizard;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
@@ -47,6 +48,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Wizard.DEFAULT_RENDERER, componentFamily = Wizard.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class WizardRenderer extends CoreRenderer<Wizard> {
 
     @Override

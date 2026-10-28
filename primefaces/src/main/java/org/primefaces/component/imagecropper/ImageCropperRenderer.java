@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.imagecropper;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -65,6 +66,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 
 @FacesRenderer(rendererType = ImageCropper.DEFAULT_RENDERER, componentFamily = ImageCropper.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
 
     private static final Logger LOGGER = Logger.getLogger(ImageCropperRenderer.class.getName());

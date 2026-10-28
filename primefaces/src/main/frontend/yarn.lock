@@ -289,10 +289,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@melloware/coloris@npm:0.25.0":
-  version: 0.25.0
-  resolution: "@melloware/coloris@npm:0.25.0"
-  checksum: 10c0/15727dc98891ae8cca394c4300e4c7ba5015bdc5e1fb7bc411d6f726207ebb14c60de843ed58ef19dfe5bc001655ed38e45dd1ba7680f0c256ca035a417945da
+"@melloware/coloris@npm:0.25.1":
+  version: 0.25.1
+  resolution: "@melloware/coloris@npm:0.25.1"
+  checksum: 10c0/b09e29535ae2ec6975eef8148ff703de75de09d94bbbfc69914b3b4dd1bcc8f385326b18f4f55cde45293f2a56a056d98374d1c7e91befea4806901daf07dced
   languageName: node
   linkType: hard
 
@@ -309,8 +309,7 @@ __metadata:
     "@fullcalendar/moment": "npm:~5.11.5"
     "@fullcalendar/moment-timezone": "npm:~5.11.5"
     "@fullcalendar/timegrid": "npm:~5.11.5"
-    "@melloware/coloris": "npm:0.25.0"
-    "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
+    "@melloware/coloris": "npm:0.25.1"
     "@types/autosize": "npm:4.0.3"
     "@types/culori": "npm:4.0.1"
     "@types/downloadjs": "npm:1.4.6"
@@ -318,15 +317,11 @@ __metadata:
     "@types/inputmask": "npm:5.0.7"
     "@types/jquery": "npm:4.0.1"
     "@types/jquery-cropper": "npm:1.0.4"
-    "@types/jquery-mousewheel": "npm:3.1.12"
     "@types/jquery-touchswipe": "npm:1.6.0"
-    "@types/jqueryui": "npm:1.12.24"
     "@types/js-cookie": "npm:3.0.6"
-    "@types/jscrollpane": "npm:2.0.35"
     "@types/moment-jdateformatparser": "npm:1.2.0"
-    "@types/node": "npm:26.6.3"
+    "@types/node": "npm:26.6.5"
     "@types/pnpapi": "npm:0.0.5"
-    "@types/rangyinputs": "npm:1.2.5"
     "@types/raphael": "npm:2.3.10"
     "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
@@ -336,7 +331,7 @@ __metadata:
     autonumeric: "npm:4.10.10"
     autosize: "npm:6.0.1"
     blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
-    chart.js: "npm:4.5.1"
+    chart.js: "npm:4.6.1"
     chartjs-adapter-moment: "npm:1.0.1"
     chartjs-plugin-zoom: "npm:2.2.0"
     component-emitter: "npm:1.3.1"
@@ -348,41 +343,28 @@ __metadata:
     inputmask: "npm:5.0.10"
     jquery: "npm:4.0.0"
     jquery-cropper: "npm:1.0.2"
-    jquery-mousewheel: "npm:3.2.2"
     jquery-touchswipe: "npm:1.6.19"
-    jquery-ui: "npm:1.14.2"
     js-cookie: "npm:3.0.8"
-    jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:2.15.6"
     keycharm: "npm:0.4.0"
-    lucide-static: "npm:1.51.0"
+    lucide-static: "npm:1.62.0"
     moment: "npm:2.31.0"
     moment-jdateformatparser: "npm:1.2.1"
-    moment-timezone: "npm:0.6.4"
+    moment-timezone: "npm:0.6.5"
     primeicons: "npm:7.0.0"
-    primelocale: "npm:2.5.0"
+    primelocale: "npm:2.6.2"
     propagating-hammerjs: "npm:3.0.0"
     quill: "npm:2.0.3"
-    rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
     typescript: "npm:5.9.3"
-    uuid: "npm:14.0.2"
-    vis-data: "npm:8.0.5"
-    vis-timeline: "npm:8.5.4"
-    vis-util: "npm:6.0.2"
+    uuid: "npm:14.0.3"
+    vis-data: "npm:8.0.6"
+    vis-timeline: "npm:8.5.6"
+    vis-util: "npm:6.0.3"
     webcamjs: "patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch"
-    xss: "npm:1.0.15"
+    xss: "npm:1.0.17"
   languageName: unknown
   linkType: soft
-
-"@rwap/jquery-ui-touch-punch@npm:1.1.5":
-  version: 1.1.5
-  resolution: "@rwap/jquery-ui-touch-punch@npm:1.1.5"
-  dependencies:
-    jquery-ui: "npm:>=1.8"
-  checksum: 10c0/01b880bc0292afad65e55168da00b455865aa3fa1f5310343f06e9966d2c8f8aff2eaf786a599e86f8bca447f06533b27dfc57b645e29fdd3e928f57f69ae25f
-  languageName: node
-  linkType: hard
 
 "@types/autosize@npm:4.0.3":
   version: 4.0.3
@@ -428,15 +410,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jquery-mousewheel@npm:3.1.12":
-  version: 3.1.12
-  resolution: "@types/jquery-mousewheel@npm:3.1.12"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/d5a139197b7b0a8667806566ac5e2e2ed164691f2b32a88e762e5327484c1d0951a8c824fab979670d62b506e0f428079c61eea72346121d11ccbe879ba6f187
-  languageName: node
-  linkType: hard
-
 "@types/jquery-touchswipe@npm:1.6.0":
   version: 1.6.0
   resolution: "@types/jquery-touchswipe@npm:1.6.0"
@@ -453,28 +426,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jqueryui@npm:1.12.24":
-  version: 1.12.24
-  resolution: "@types/jqueryui@npm:1.12.24"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/95afc94bfa4cf31de6b34b7770de849ccb2b5c2c9d8e092e6b9d3a1e0b4ee913659ede75eeebcbf8cb00a59d73da0da648da2be15fea2b94dd8ddeb237027bcf
-  languageName: node
-  linkType: hard
-
 "@types/js-cookie@npm:3.0.6":
   version: 3.0.6
   resolution: "@types/js-cookie@npm:3.0.6"
   checksum: 10c0/173afaf5ea9d86c22395b9d2a00b6adb0006dcfef165d6dcb0395cdc32f5a5dcf9c3c60f97194119963a15849b8f85121e1ae730b03e40bc0c29b84396ba22f9
-  languageName: node
-  linkType: hard
-
-"@types/jscrollpane@npm:2.0.35":
-  version: 2.0.35
-  resolution: "@types/jscrollpane@npm:2.0.35"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/4fe938858184e4d14ba15604372d9e31aec7aa6e6e9ef906cae46ef50ba16077be0ee442d68a68fd0a2b18c343f0a3077252214571e94ec8fcc1ecc315c60c7a
   languageName: node
   linkType: hard
 
@@ -487,12 +442,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:26.6.3":
-  version: 26.6.3
-  resolution: "@types/node@npm:26.6.3"
+"@types/node@npm:26.6.5":
+  version: 26.6.5
+  resolution: "@types/node@npm:26.6.5"
   dependencies:
     undici-types: "npm:~8.9.0"
-  checksum: 10c0/51070287167d157d246a5ad83e6ead93aa310bbd9cc880ecd1f244a00c2a31491620f997fbbb6ba4ce164388694827999ec68c1d16c3fb64c1037056e64613c7
+  checksum: 10c0/4f791f69466ace7842c09e7bef96cb1ddbb65cf3db916ef7e84f0e2b2a17220b6b816dc7539d01520cadfb17ed7169b8214910900493e0a83be8bc7d124ec20a
   languageName: node
   linkType: hard
 
@@ -500,15 +455,6 @@ __metadata:
   version: 0.0.5
   resolution: "@types/pnpapi@npm:0.0.5"
   checksum: 10c0/2ade69b20d0ad5d16e6f709b1a40a8c43034ae5e8ca3b979a7fc7c26fbf0cc75791b7e8539f84e98c0e910b9c31d805fb420840e73482c6ed7bba9760ee938be
-  languageName: node
-  linkType: hard
-
-"@types/rangyinputs@npm:1.2.5":
-  version: 1.2.5
-  resolution: "@types/rangyinputs@npm:1.2.5"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/09900cd941b682aedd862beec752797e656bc5c0bdea3f96bd8862c150a34f3dd5454484754af2481477ea10f53b200ee351646a3d92390c13828f4a3db0e01e
   languageName: node
   linkType: hard
 
@@ -605,7 +551,7 @@ __metadata:
 
 "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch":
   version: 10.32.0
-  resolution: "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch::version=10.32.0&hash=c70680"
+  resolution: "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch::version=10.32.0&hash=4b3343"
   dependencies:
     blueimp-canvas-to-blob: "npm:3"
     blueimp-load-image: "npm:5"
@@ -619,7 +565,7 @@ __metadata:
       optional: true
     blueimp-tmpl:
       optional: true
-  checksum: 10c0/48a69c3a79c8f97cf53cefed6e1fee6c836db8f9ab89dfb0a74bb0eec328a9708eb70ee2e492395543bbc5204f0ffc5020c69cb0c2303853270658f18df18bfc
+  checksum: 10c0/1ec2bf07f384fc95f3ffd61e3781897c4aa37a54d3df4429dc7288aa0e6875a24805fce64206c2c8c19c322a01323375e0cf1d48ff323e5b032ead791adf0e24
   languageName: node
   linkType: hard
 
@@ -639,12 +585,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chart.js@npm:4.5.1":
-  version: 4.5.1
-  resolution: "chart.js@npm:4.5.1"
+"chart.js@npm:4.6.1":
+  version: 4.6.1
+  resolution: "chart.js@npm:4.6.1"
   dependencies:
     "@kurkle/color": "npm:^0.3.0"
-  checksum: 10c0/3f2a11dcaae9079e8e6b8ad077e2ae311f04996f9da14815730891e66215ee8b5f2c0eb70b5a156e5bde0f89a41bae13506dc6153e50fd22dcb282b21eec706f
+  checksum: 10c0/442e3f3958ddbb217b19ec9f57f997f59695d5543af246a8023f3d373bdca494d67ed4dd080600fef71b0894441cd36d7eaebb8e164b2686a97ceef43d91faa4
   languageName: node
   linkType: hard
 
@@ -853,28 +799,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery-mousewheel@npm:3.2.2":
-  version: 3.2.2
-  resolution: "jquery-mousewheel@npm:3.2.2"
-  dependencies:
-    jquery: "npm:>=1.2.6"
-  checksum: 10c0/a8b45ae7759ce14134284cb6a2f2446f16d43325550c2e25653de572ca3e197b471b8322afb11ec114ab3b0f26b7072a7b47de7ed6617e9417328a94eac30740
-  languageName: node
-  linkType: hard
-
 "jquery-touchswipe@npm:1.6.19":
   version: 1.6.19
   resolution: "jquery-touchswipe@npm:1.6.19"
   checksum: 10c0/0971402f8206629f3fc8a2d19c7514ccefe1441ea3f633daafe189ba43b74cc0c0dc8ed3df6e85a5655f7fe2d482adf5994f0c87d430a5e6ce39848db8fb32c7
-  languageName: node
-  linkType: hard
-
-"jquery-ui@npm:1.14.2":
-  version: 1.14.2
-  resolution: "jquery-ui@npm:1.14.2"
-  dependencies:
-    jquery: "npm:>=1.12.0 <5.0.0"
-  checksum: 10c0/83b65744c4f4f2e9fa12833feb76c964f9565ef8301ef4e224e93e6c867e10a45d7da3e93bc7bcaec5227a61e09a2a6d1ce0198d9c38de08e4ada3d53a628615
   languageName: node
   linkType: hard
 
@@ -889,24 +817,6 @@ __metadata:
   version: 3.0.8
   resolution: "js-cookie@npm:3.0.8"
   checksum: 10c0/421912a4a55535bda32b3059835864e1182c3af5b4516df00a060edc1fa5a53d38bb8d5a91d5d305e396206f4fd11e829f17850aa5aa8164118c04d8ebf1ff5d
-  languageName: node
-  linkType: hard
-
-"jscrollpane@npm:2.2.3-rc.2":
-  version: 2.2.3-rc.2
-  resolution: "jscrollpane@npm:2.2.3-rc.2"
-  dependencies:
-    jquery: "npm:^3.5.1"
-  checksum: 10c0/a7cad13cd54f1014c6e43790c9fafd8e0946ccc1bbd85501ec2903094ae9f5d64ded85be5ddf1415c5de60b4a76043311395677b7b2f887e0178c39dfde51414
-  languageName: node
-  linkType: hard
-
-"jscrollpane@patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch":
-  version: 2.2.3-rc.2
-  resolution: "jscrollpane@patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch::version=2.2.3-rc.2&hash=591506"
-  dependencies:
-    jquery: "npm:^3.5.1"
-  checksum: 10c0/0fcf06990b4c32b5bd82a0a53abf8fbcdf024678fdea67b68b56eafb9a8f736abcffebb009fb125d9d0620ba4df0abfce24d427d06c3305d53dc8f1cd6d31ecc
   languageName: node
   linkType: hard
 
@@ -945,10 +855,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-static@npm:1.51.0":
-  version: 1.51.0
-  resolution: "lucide-static@npm:1.51.0"
-  checksum: 10c0/c44672f5c7856479403b66333856c4d684e374a96ef4d34543ee24c460592b029325634b3c4ea7446027c0538137c1940c927e62ce53e741a997b8c9e0e33b96
+"lucide-static@npm:1.62.0":
+  version: 1.62.0
+  resolution: "lucide-static@npm:1.62.0"
+  checksum: 10c0/ec79d98163031c570a27713a90c44f44aabeaa2a03a910cd139e95d02dbad66dd5cdf53e258364be2dd4855c4d619ac3e1e1407c96fe0a8b57b5c5fb96486a01
   languageName: node
   linkType: hard
 
@@ -959,12 +869,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.6.4":
-  version: 0.6.4
-  resolution: "moment-timezone@npm:0.6.4"
+"moment-timezone@npm:0.6.5":
+  version: 0.6.5
+  resolution: "moment-timezone@npm:0.6.5"
   dependencies:
     moment: "npm:^2.29.4"
-  checksum: 10c0/10beaac82940adc57eda7f51dae48c41b01e9ad966842693b9c9f19f17a5d36faf1ce096fe6ab50cc73664f838e832a95092e5570e1a3f2f4e04138f7346c793
+  checksum: 10c0/f281355d79e1d67714d3bc4ef9d817758ea55fd5e5a1e9bf32832ec0abf0376727eb2062c28c6d1ee1767537bb4a4fbab327a50f122e67dc440ad5f95bfcea1a
   languageName: node
   linkType: hard
 
@@ -996,10 +906,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primelocale@npm:2.5.0":
-  version: 2.5.0
-  resolution: "primelocale@npm:2.5.0"
-  checksum: 10c0/2cd7fce0b0f466ef297bd4b4c10090cf946dd611131fe99f779accfb17df75bce36c4e2462aa2febb283466e87d4c498a90c5e2d0b7f9053113c8c0b5d34d2b8
+"primelocale@npm:2.6.2":
+  version: 2.6.2
+  resolution: "primelocale@npm:2.6.2"
+  checksum: 10c0/4f11f1c5ce189dfb5b8ec1a24aa4d234bc798fa1a1f096e12504e6f874d59fba263da08a66fb70ffc1c79688307aa6b32e7881fdb244a6ffb369edbcbc328bb6
   languageName: node
   linkType: hard
 
@@ -1032,13 +942,6 @@ __metadata:
     parchment: "npm:^3.0.0"
     quill-delta: "npm:^5.1.0"
   checksum: 10c0/9897468b3e2b0fbf9c91471deea745d7b6494f866cb8caace63267769b2c4c6128e49da0988c4ed64f1a91a171fbf91c84009b663b1256a3caca0755204bb6b5
-  languageName: node
-  linkType: hard
-
-"rangyinputs@npm:1.2.0":
-  version: 1.2.0
-  resolution: "rangyinputs@npm:1.2.0"
-  checksum: 10c0/ab8cf8edeec2e8578172792f70d9d2f36053a97509cf547c8969e7dc315ed318679ae84c051b1b1ea1e3436339f917809d45a941d954b44a8ebe4c3d79ae50ae
   languageName: node
   linkType: hard
 
@@ -1085,28 +988,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:14.0.2":
-  version: 14.0.2
-  resolution: "uuid@npm:14.0.2"
+"uuid@npm:14.0.3":
+  version: 14.0.3
+  resolution: "uuid@npm:14.0.3"
   bin:
     uuid: dist-node/bin/uuid
-  checksum: 10c0/88906237004db370b013129c8372a2149f6fa1aad7a5f78fa65ddf2ba0a8663097022300d81fa01f551efee9d6bbe8c7ab140dc6d49f1b03d289f855096990c9
+  checksum: 10c0/e56e610ae3bd1ca099244e01ee5eff502675ede4601d971b80fff993ad97236c80197340113f759e6ead501ee6a8d52648f6deef1332ce9f192c4720f4891f62
   languageName: node
   linkType: hard
 
-"vis-data@npm:8.0.5":
-  version: 8.0.5
-  resolution: "vis-data@npm:8.0.5"
+"vis-data@npm:8.0.6":
+  version: 8.0.6
+  resolution: "vis-data@npm:8.0.6"
   peerDependencies:
     uuid: ^3.4.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^13.0.0 || ^14.0.0
     vis-util: ">=6.0.0"
-  checksum: 10c0/5c30ad9aa1747c7a50ddc8b2ac46839b70f0f185bec53b4c05d09686b7661befb0cbe00a7c9b9176beb988c1cd3cf16e2cc8e73cdf0f77495e2aa4d59d2c1a4e
+  checksum: 10c0/fdeb2f29e0b7d7bfc7b3c63f77335a68df163859040496972f3743a835200d23da1a6318c66a33260ff07a81a6282f8bc11e187948d1b303e945f97b7160f541
   languageName: node
   linkType: hard
 
-"vis-timeline@npm:8.5.4":
-  version: 8.5.4
-  resolution: "vis-timeline@npm:8.5.4"
+"vis-timeline@npm:8.5.6":
+  version: 8.5.6
+  resolution: "vis-timeline@npm:8.5.6"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.0
     component-emitter: ^1.3.0
@@ -1117,17 +1020,17 @@ __metadata:
     vis-data: ">=8.0.0"
     vis-util: ">=6.0.0"
     xss: ^1.0.0
-  checksum: 10c0/3d65b43621ee82d2ac1d906f4b05435f3a47f3631b4846eb882ac340621459eb41eba6b6cfd7db7bfcf98e29f94d374436917460969dea483f1ee8d187e9edf9
+  checksum: 10c0/25d722c1f0195ffcc6cb9baec79558064f268cf10abb3c1734f7b65749849ab1fb95d4ed7ded015a15e08260178527f33789eb827376bb40f53cf5958882b726
   languageName: node
   linkType: hard
 
-"vis-util@npm:6.0.2":
-  version: 6.0.2
-  resolution: "vis-util@npm:6.0.2"
+"vis-util@npm:6.0.3":
+  version: 6.0.3
+  resolution: "vis-util@npm:6.0.3"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.0
     component-emitter: ^1.3.0 || ^2.0.0
-  checksum: 10c0/b2f69e69e419bf76acd653428c77c440aea742d8ac73399ef618236e2f5acfca9ec65ae6ab446c6f7fb7509a59b7d04e6409f9c3def0c40835f074d666421b1f
+  checksum: 10c0/c5365d5d420ca0efd631ecaebc3c1d820ebb9fc656c17c9260b452a8452b86d1f083ad7d3b8f4c6ad92c063f77ebf73e4cb1b245c0be1af8781528f572fbf8f9
   languageName: node
   linkType: hard
 
@@ -1145,14 +1048,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xss@npm:1.0.15":
-  version: 1.0.15
-  resolution: "xss@npm:1.0.15"
+"xss@npm:1.0.17":
+  version: 1.0.17
+  resolution: "xss@npm:1.0.17"
   dependencies:
     commander: "npm:^2.20.3"
     cssfilter: "npm:0.0.10"
   bin:
     xss: bin/xss
-  checksum: 10c0/9b31bee62a208f78e2b7bc8154e3ee87d980f4661dc4ab850ce6f4de7bc50eb152f0bdc13fa759ff8ab6d9bfdf8c0d79cf9f6f86249872b92181912309bccd08
+  checksum: 10c0/01b7356ce7a06302c070947db16ab640ed74a8638c1745fb03acb262e2e9ca05f580ba0ddfd061423251badacdf45709ab130ce0604b60924ce2f65b22eaf51c
   languageName: node
   linkType: hard

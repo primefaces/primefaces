@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.media;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
@@ -42,6 +43,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Media.DEFAULT_RENDERER, componentFamily = Media.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MediaRenderer extends CoreRenderer<Media> {
 
     @Override

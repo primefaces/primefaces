@@ -40,7 +40,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class MultiSelectListbox extends MultiSelectListboxBaseImpl {

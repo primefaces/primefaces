@@ -4,7 +4,7 @@
  * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface PanelMenuCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface PanelMenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Whether multiple accordion menu items are allowed to be expanded at the same time.
      */
@@ -71,7 +71,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     treeLinks: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.headers = this.jq.find('> .ui-panelmenu-panel > h3.ui-panelmenu-header:not(.ui-state-disabled)');
         this.menuContent = this.jq.find('> .ui-panelmenu-panel > .ui-panelmenu-content');

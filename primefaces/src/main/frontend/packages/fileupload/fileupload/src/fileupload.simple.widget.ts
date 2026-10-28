@@ -5,7 +5,7 @@
  * {@link SimpleFileUpload.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SimpleFileUploadCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface SimpleFileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Whether auto upload mode is enabled. If enabled, files are uploaded
      * immediately to the server, directly after the user chose a file. If
@@ -49,25 +49,25 @@ export interface SimpleFileUploadCfg extends PrimeType.widget.BaseWidgetCfg {
      * Client-side callback to invoke when the AJAX request to upload files
      * completes (either successfully or with an error).
      */
-    oncomplete: PrimeType.ajax.CallbackOncomplete;
+    oncomplete: PrimeFacesTypes.ajax.CallbackOncomplete;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
      * fails.
      */
-    onerror: PrimeType.ajax.CallbackOnerror;
+    onerror: PrimeFacesTypes.ajax.CallbackOnerror;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
      * is about to begin.
      */
-    onstart: PrimeType.widget.SimpleFileUpload.OnStartCallback;
+    onstart: PrimeFacesTypes.widget.SimpleFileUpload.OnStartCallback;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
      * succeeds.
      */
-    onsuccess: PrimeType.ajax.CallbackOnsuccess;
+    onsuccess: PrimeFacesTypes.ajax.CallbackOnsuccess;
 
     /**
      * List of components to process (include in the request) when files
@@ -118,7 +118,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
      */
     input: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         
         if (this.cfg.disabled) {
@@ -313,7 +313,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
             }
         }
 
-        const xhrOptions: PrimeType.ajax.PrimeFacesSettings = {
+        const xhrOptions: PrimeFacesTypes.ajax.PrimeFacesSettings = {
             url: PrimeFaces.ajax.Utils.getPostUrl(this.form),
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix ?? ""),
             source: this.getId(),
@@ -335,7 +335,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
         };
 
         const jqXhr = $.ajax(xhrOptions)
-            .fail(function(this: PrimeType.ajax.PrimeFacesSettings, xhr, status, errorThrown) {
+            .fail(function(this: PrimeFacesTypes.ajax.PrimeFacesSettings, xhr, status, errorThrown) {
                 var location = xhr.getResponseHeader("Location");
                 if (xhr.status === 401 && location) {
                     PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
@@ -353,7 +353,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
 
                 PrimeFaces.error('Request return with error:' + status + '.');
             })
-            .done(function(this: PrimeType.ajax.PrimeFacesSettings, data, status, xhr: PrimeType.ajax.pfXHR) {
+            .done(function(this: PrimeFacesTypes.ajax.PrimeFacesSettings, data, status, xhr: PrimeFacesTypes.ajax.pfXHR) {
                 PrimeFaces.debug('Response received successfully.');
                 try {
                     var parsed;
@@ -381,7 +381,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
 
                 PrimeFaces.debug('DOM is updated.');
             })
-            .always(function(this: PrimeType.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeType.ajax.pfXHR) {
+            .always(function(this: PrimeFacesTypes.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeFacesTypes.ajax.pfXHR) {
                 const pfArgs = typeof xhr === "string" ? undefined : xhr.pfArgs;
 
                 if($this.cfg.oncomplete) {

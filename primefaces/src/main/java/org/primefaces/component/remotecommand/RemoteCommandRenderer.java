@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.remotecommand;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -38,6 +39,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = RemoteCommand.DEFAULT_RENDERER, componentFamily = RemoteCommand.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class RemoteCommandRenderer extends CoreRenderer<RemoteCommand> {
 
     @Override

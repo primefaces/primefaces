@@ -92,6 +92,9 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
         assertTrue(element("form:select:0").isSelected());
         assertFalse(element("form:select:1").isSelected());
         assertEquals("false,A,0", element("form:values").getText());
+        if (keyboard) {
+            awaitFocusReturn();
+        }
         chooseB(keyboard);
         answer(popup, true);
         assertTrue(element("form:select:1").isSelected());
@@ -140,6 +143,13 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
         else {
             element("form:select").findElement(By.cssSelector("label[for='form:select:1']")).click();
         }
+    }
+
+    // Closing the dialog or popup refocuses option B about 100ms later (returnFocus). If that lands between
+    // sendKeys focusing option A and the key press, ARROW_RIGHT wraps from B back to the selected A and nothing changes.
+    private void awaitFocusReturn() {
+        new WebDriverWait(PrimeSelenium.getWebDriver(), Duration.ofSeconds(5))
+                .until(d -> "form:select".equals(d.switchTo().activeElement().getDomAttribute("name")));
     }
 
     private void answer(boolean popup, boolean yes) {

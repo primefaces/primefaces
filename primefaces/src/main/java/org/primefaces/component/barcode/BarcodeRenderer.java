@@ -24,6 +24,7 @@
 package org.primefaces.component.barcode;
 
 import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
@@ -42,6 +43,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Barcode.DEFAULT_RENDERER, componentFamily = Barcode.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class BarcodeRenderer extends CoreRenderer<Barcode> {
 
     private static final String SB_BUILD = BarcodeRenderer.class.getName() + "#build";

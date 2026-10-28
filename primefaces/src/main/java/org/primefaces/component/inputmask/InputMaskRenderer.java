@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.inputmask;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -39,6 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = InputMask.DEFAULT_RENDERER, componentFamily = InputMask.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class InputMaskRenderer extends InputRenderer<InputMask> {
 
     private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";

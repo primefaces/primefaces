@@ -55,7 +55,7 @@ export function toValidationDate(value: unknown): Date | undefined {
  * @param value Value to convert.
  * @returns List of converted values.
  */
-export function toMessageOrErrorList(value: unknown): (Error | PrimeType.BaseFacesMessage)[] {
+export function toMessageOrErrorList(value: unknown): (Error | PrimeFacesTypes.BaseFacesMessage)[] {
     // e.g. PrimeFaces.validator['primefaces.File'] may return an array of messages
     return Array.isArray(value) ?  value.map(v => toMessageOrError(v)): [toMessageOrError(value)];
 }
@@ -70,13 +70,13 @@ export function toMessageOrErrorList(value: unknown): (Error | PrimeType.BaseFac
  * @param value Value to convert.
  * @returns Converted value.
  */
-function toMessageOrError(value: unknown): Error | PrimeType.BaseFacesMessage {
+function toMessageOrError(value: unknown): Error | PrimeFacesTypes.BaseFacesMessage {
     if (value instanceof Error) {
         return value;
     }
     if (typeof value === "object" && value !== null) {
         if ("summary" in value || "detail" in value) {
-            const message = value as PrimeType.BaseFacesMessage;
+            const message = value as PrimeFacesTypes.BaseFacesMessage;
             if (typeof message.summary !== "string") {
                 message.summary = "";
             }

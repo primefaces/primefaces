@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.keyfilter;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -35,6 +36,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = KeyFilter.DEFAULT_RENDERER, componentFamily = KeyFilter.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class KeyFilterRenderer extends CoreRenderer<KeyFilter> {
 
     @Override

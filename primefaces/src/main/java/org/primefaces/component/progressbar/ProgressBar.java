@@ -36,7 +36,6 @@ import jakarta.faces.event.PhaseId;
 @FacesComponentInfo(description = "ProgressBar is a process status indicator component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class ProgressBar extends ProgressBarBaseImpl {

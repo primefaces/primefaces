@@ -116,10 +116,10 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
         if(targetStepIndex >= 0) {
             var stepToGo = this.cfg.steps[targetStepIndex];
             if (this.cfg.effect) {
-                this.content.hide($this.cfg.effect, {}, $this.cfg.effectDuration, function() {
+                PrimeFaces.effects.hide(this.content, $this.cfg.effect, { duration: $this.cfg.effectDuration, complete: function() {
                     $this.loadStep(stepToGo, "back");
-                    $this.content.show($this.cfg.effect, {}, $this.cfg.effectDuration);
-                });
+                    PrimeFaces.effects.show($this.content, $this.cfg.effect, { duration: $this.cfg.effectDuration });
+                } });
             } else {
                 this.loadStep(stepToGo, "back");
             }
@@ -142,10 +142,10 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
         if(targetStepIndex < this.cfg.steps.length) {
             var stepToGo = this.cfg.steps[targetStepIndex];
             if (this.cfg.effect) {
-                this.content.hide($this.cfg.effect, {}, $this.cfg.effectDuration, function() {
+                PrimeFaces.effects.hide(this.content, $this.cfg.effect, { duration: $this.cfg.effectDuration, complete: function() {
                     $this.loadStep(stepToGo, "next");
-                    $this.content.show($this.cfg.effect, {}, $this.cfg.effectDuration);
-                });
+                    PrimeFaces.effects.show($this.content, $this.cfg.effect, { duration: $this.cfg.effectDuration });
+                } });
             } else {
                 this.loadStep(stepToGo, "next");
             }

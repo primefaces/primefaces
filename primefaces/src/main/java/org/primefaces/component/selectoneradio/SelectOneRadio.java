@@ -37,7 +37,6 @@ import jakarta.faces.context.FacesContext;
 @FacesComponentInfo(description = "SelectOneRadio is an extended version of the standard SelectOneRadio.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectOneRadio extends SelectOneRadioBaseImpl {

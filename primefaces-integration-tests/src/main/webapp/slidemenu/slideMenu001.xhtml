@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="menuButton" type="button" icon="pi pi-bars"/>
+            <p:slideMenu id="menu" widgetVar="menu" overlay="true" trigger="menuButton" my="left top" at="left bottom"
+                         style="width:20em">
+                <p:submenu id="submenu" label="Submenu">
+                    <p:menuitem id="item1" value="Item 1" url="#"/>
+                    <p:menuitem id="item2" value="Item 2" url="#"/>
+                </p:submenu>
+                <p:menuitem id="item3" value="Item 3" url="#"/>
+            </p:slideMenu>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

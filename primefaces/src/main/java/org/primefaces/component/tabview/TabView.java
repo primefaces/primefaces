@@ -48,7 +48,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "TabView is a tabbed panel component featuring client side tabs, dynamic content loading with AJAX and transition effects.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")

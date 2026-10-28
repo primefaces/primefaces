@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.audio;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -39,6 +40,7 @@ import org.apache.commons.io.FilenameUtils;
  * The HTML <audio> element is used to embed sound content in documents.
  */
 @FacesRenderer(rendererType = Audio.DEFAULT_RENDERER, componentFamily = Audio.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AudioRenderer extends CoreRenderer<Audio> {
 
     @Override

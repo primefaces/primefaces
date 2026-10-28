@@ -354,7 +354,7 @@ body.ui-dialog-open {
     padding: var(--p-dialog-header-gap);
 }
 
-/* jQuery UI transfer effect while minimizing */
+/* transfer effect while minimizing */
 .ui-dialog-minimizing {
     border: 1px dashed var(--p-primary-color);
     border-radius: var(--p-dialog-border-radius);

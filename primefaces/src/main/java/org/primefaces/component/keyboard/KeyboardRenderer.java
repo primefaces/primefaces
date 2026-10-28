@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.keyboard;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Keyboard.DEFAULT_RENDERER, componentFamily = Keyboard.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class KeyboardRenderer extends InputRenderer<Keyboard> {
 
     @Override

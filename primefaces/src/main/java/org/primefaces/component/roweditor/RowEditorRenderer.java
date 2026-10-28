@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.roweditor;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = RowEditor.DEFAULT_RENDERER, componentFamily = RowEditor.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class RowEditorRenderer extends CoreRenderer<RowEditor> {
 
     @Override

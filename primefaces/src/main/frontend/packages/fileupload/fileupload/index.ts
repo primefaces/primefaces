@@ -5,14 +5,14 @@ import { FileUpload } from "./src/fileupload.widget.js";
 import { SimpleFileUpload } from "./src/fileupload.simple.widget.js";
 
 declare global {
-    namespace PrimeType.widget.SimpleFileUpload {
+    namespace PrimeFacesTypes.widget.SimpleFileUpload {
         /**
          * Callback that is invoked at the beginning of a file upload,
          * when a file is sent to the server. See also {@link FileUploadCfg.onstart | onstart}.
          */
         export type OnStartCallback = (this: SimpleFileUpload<SimpleFileUploadCfg>) => void;
     }
-    namespace PrimeType.widget.FileUpload {
+    namespace PrimeFacesTypes.widget.FileUpload {
         /**
          * Callback invoked when file was selected and is added to this
          * widget. See also {@link FileUploadCfg.onAdd | onAdd}.
@@ -42,7 +42,7 @@ declare global {
              * @param data Details about
              * the uploaded file or files.
              */
-            (this: FileUpload<FileUploadCfg>, pfArgs: PrimeType.ajax.PrimeFacesArgs, data: JQueryFileUpload.JQueryAjaxCallbackData) => void;
+            (this: FileUpload<FileUploadCfg>, pfArgs: PrimeFacesTypes.ajax.PrimeFacesArgs, data: JQueryFileUpload.JQueryAjaxCallbackData) => void;
 
         /**
          * Callback that is invoked when a file could not be uploaded to
@@ -55,7 +55,7 @@ declare global {
              * @param pfArgs The additional arguments
              * from the jQuery XHR request.
              */
-            (this: FileUpload<FileUploadCfg>, jqXHR: PrimeType.ajax.pfXHR, textStatus: string, pfArgs: PrimeType.ajax.PrimeFacesArgs) => void;
+            (this: FileUpload<FileUploadCfg>, jqXHR: PrimeFacesTypes.ajax.pfXHR, textStatus: string, pfArgs: PrimeFacesTypes.ajax.PrimeFacesArgs) => void;
 
         /**
          * Callback to execute before the files are sent.
@@ -102,13 +102,13 @@ declare global {
 }
 
 declare global {
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             FileUpload: typeof FileUpload;
             SimpleFileUpload: typeof SimpleFileUpload;
         }
     }
-    namespace PrimeType.widget {
+    namespace PrimeFacesTypes.widget {
         export type FileUploadCfg = import("./src/fileupload.widget.js").FileUploadCfg;
         export type SimpleFileUploadCfg = import("./src/fileupload.simple.widget.js").SimpleFileUploadCfg;
     }

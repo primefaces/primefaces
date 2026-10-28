@@ -20,9 +20,9 @@ What changed for applications compared to the legacy themes:
     such attributes, its close icon is `--p-tabs-close-icon` already.
   - renderers emit semantic icon classes (`p-icon p-close-icon p-panel-close-icon`) instead of the legacy jQuery UI
     icon classes (`ui-icon-triangle-1-e`, ...), widgets switch states (`aria-expanded`) instead of icon classes.
-- **Later, also breaking:** `ui-*` → `p-*` style classes, removal of jQuery UI (the options of `p:draggable` /
-  `p:droppable` / `p:resizable` mirror jQuery UI, effect attributes are reduced to a few CSS effects). `p:calendar` is
-  removed already in favor of `p:datePicker`.
+- **Later, also breaking:** `ui-*` → `p-*` style classes. jQuery UI is removed already (own effects, position,
+  slider and drag and drop / sorting / resizing interactions with compatible options), `p:calendar` is removed in favor
+  of `p:datePicker`.
 
 Each breaking core change gets its entry in the migration guide (`docs/migrationguide`) when it is implemented.
 
@@ -67,7 +67,7 @@ primefaces.behaviors`), so unlayered application CSS always wins, without `!impo
 A page renders:
 - `primefaces-<theme>:theme.css` (the `primefaces.THEME` context parameter, first in the head): the tokens of the theme.
   A custom theme is a `META-INF/resources/primefaces-<name>/theme.css` with the tokens (and the layer statement).
-- `primefaces:components.css`: icon set, jQuery UI CSS and the CSS of all components of `components.js`, the same for
+- `primefaces:components.css`: icon set, base interaction CSS and the CSS of all components of `components.js`, the same for
   every theme (stays cached when the theme changes).
 - the CSS of lazily loaded components with their JS, e.g. `primefaces:schedule/schedule.css` (FullCalendar + p:schedule),
   `texteditor/texteditor.css` (Quill), `timeline/timeline.css` (vis-timeline).
@@ -88,10 +88,10 @@ primefaces/src/main/frontend/
                                    metal (graphite / brushed aluminium, black metal in dark mode) and glass (Apple
                                    Liquid Glass style) are own presets, started from Aura
   themes/density/<theme>.css       compact / comfortable spacing of a preset (generated)
-  packages/components/index.css    components.css: layer order, icon set, jQuery UI CSS, then base -> shared -> components
+  packages/components/index.css    components.css: layer order, icon set, interaction CSS, then base -> shared -> components
                                    -> behaviors (alphabetical inside each group, see the comments there)
   packages/components/src/icons/lucide.css   the icon set: one --p-icon-* token per meaning (close, expanded, ...)
-  packages/components/src/base/*.css         ui-widget, ui-state-*, core helpers, grid (ui-g), jquery-ui helpers,
+  packages/components/src/base/*.css         ui-widget, ui-state-*, core helpers, grid (ui-g), interaction base rules,
                                              document (page, reduced motion, print), scrollbar, backdrop (Glass)
   packages/components/src/<widget>/*.css     one file per tag next to its widget (datatable/datatable.css,
                                              forms/selectonemenu.css, menu/tieredmenu.css, ...); building blocks of
@@ -282,7 +282,7 @@ pickList / orderList, tree, scrollable dataTable / treeTable bodies, dialog, sid
 var(--p-scrollbar-track-color)`, semantic tokens). The page and the application's own scroll areas keep the browser
 scrollbars; to opt in, use the same two declarations (e.g. on `:root`). The rule has zero specificity (`:where()`);
 `scrollbar-color` inherits into application content inside a dialog / sidebar; forced colors mode shows the system
-scrollbars. p:scrollPanel keeps its own scrollbars (`--p-scrollpanel-*`).
+scrollbars. p:scrollPanel draws its own bars over the natively scrolling content (`--p-scrollpanel-*`).
 
 ## Variants (style classes)
 
@@ -388,10 +388,10 @@ establish loopback connection"), Tomcat / Jetty do not start: set
 ## Third-party CSS
 
 The `index.css` files import the CSS of the libraries the components use into `@layer primefaces.vendor` (below the
-components): jQuery UI base (components.css), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
+components): the base rules of the interactions (components.css, `src/base/interactions.css`, derived from the jQuery
+UI base theme), Coloris (colorpicker), jsPlumb (diagram), cropperjs (imageCropper), Quill
 snow (textEditor), vis-timeline (timeline), FullCalendar 5 (schedule), PrimeIcons (primeicons/primeicons.css). The versions are the ones of `package.json`, the
-same the JavaScript uses. jScrollPane CSS is not needed (PrimeFaces patches the plugin to render `ui-scrollpanel-*`
-classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
+same the JavaScript uses.
 
 ## Known limitations
 
@@ -402,7 +402,7 @@ classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
   themes: its literal tokens are declared again in every scope, so a density or a `:root` override does not reach into
   scopes. Write literal tokens on `:root` (docs: "Custom theme").
 - `!important` is used only where the CSS has to beat inline styles of jQuery / the widgets (dialog maximize / minimize,
-  dataTable / treeTable reflow widths, jQuery UI datepicker width, knob font), for two structural rules (the header clone
+  dataTable / treeTable reflow widths), for two structural rules (the header clone
   of scrollable dataTables has no height, #12908; buttons are never underlined, also not by `a:hover` of the
   application) and for the user preferences (reduced motion, print). An `!important` in a cascade layer beats unlayered
   application CSS even with `!important`, so these can not be overridden; hiding uses the behaviors layer
@@ -411,7 +411,7 @@ classes, styled by `packages/scrollpanel/scrollpanel/src/scrollpanel.css`).
   backgrounds stay mostly opaque for that.
 - ColorPicker / Captcha read light or dark (`PrimeFaces.env.getThemeContrast(element)`) once when they are created; a
   later change of the color scheme does not switch them.
-- Canvas based components (chart, knob) take colors from JS options, not from CSS.
+- Canvas based components (chart) take colors from JS options, not from CSS.
 - Requires `light-dark()`, `color-mix()`, relative colors (`oklch(from ...)`), `:has()` and CSS nesting
   (Chrome 123, Firefox 128, Safari 18).
 - Contrast of the primary color (Aura, Lara, Nora, like PrimeUIX / PrimeReact): white text on the default primary
@@ -530,7 +530,8 @@ the icon / markup / jQuery UI changes, otherwise twice. Needed mechanism:
 
 State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) are CSS already (transitions with the
 `--p-*-transition-duration` tokens, keyframes) and respect `prefers-reduced-motion`. These still animate in JS
-(jQuery / jQuery UI, setting inline styles per frame, so a CSS transition on the same property would fight them):
+(jQuery animations set inline styles per frame and `PrimeFaces.effects` uses Web Animations, both override a CSS
+transition on the same property):
 - Show / hide of overlays (`fadeIn` / `fadeOut`): autoComplete, blockUI, columnToggler, growl, menus, panel / tree
   context parts, pickList, scrollTop, wizard, the overlays in `forms` → CSS enter/leave transitions with
   `@starting-style` + `transition-behavior: allow-discrete` (display / Popover API), the widget only toggles a class.
@@ -541,27 +542,19 @@ State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) 
 - Expand / collapse (`slideDown` / `slideUp` / `slideToggle`): accordion, fieldset, inplace, messages, notificationBar,
   panel, panelMenu / menu, tree → height transition with `interpolate-size: allow-keywords` (progressive) or the
   `grid-template-rows: 0fr → 1fr` technique.
-- Configurable effects (`showEffect` / `hideEffect` / `effect` with the 16 jQuery UI effects): dialog, tooltip,
+- Configurable effects (`showEffect` / `hideEffect` / `effect` with the 15 `PrimeFaces.effects`): dialog, tooltip,
   orderList / pickList, tabView, overlays in `forms` → a few CSS effects (fade, slide, scale) selected by class.
 - Scrolling (`animate({scrollTop})`): core, tabView navigator, slideMenu → `scrollTo({behavior: 'smooth'})` /
   `scroll-behavior`, slideMenu with a transform transition.
 - Value / special animations: progressBar value (`animate` width → CSS transition on width), clock hands, imageSwitch,
   mindmap, organigram zoom, stack → CSS transitions where the value is a style, otherwise Web Animations API.
-- Until then: `$.fx.off = matchMedia('(prefers-reduced-motion: reduce)').matches` (also disables the jQuery UI effects)
+- Until then: `$.fx.off = matchMedia('(prefers-reduced-motion: reduce)').matches` (also disables `PrimeFaces.effects`)
   would make the JS animations respect reduced motion with one line in the core.
 
-**Remove jQuery UI** (custom bundle `packages/jquery/jquery-plugins/src/jquery.ui.ts`; the datepicker + timepicker
-addon went with p:calendar)
-- `selectable` (unused), `jquery.color`, `$.ui.version` / `uiBackCompat`: remove.
-- Helpers: `:focusable` / `:tabbable`, `scrollParent()` → own small utils, `disableSelection()` → `user-select: none`.
-- `position()` (autocomplete, columnToggler, confirmPopup, dialog, overlays, menu, overlayPanel, tooltip) →
-  own positioning or Floating UI.
-- Effects (dialog, inplace, mindmap, notificationBar, orderList, pickList, tabView, tooltip, wizard) → CSS transitions /
-  Web Animations; reduce the effect attributes to a few (fade, slide, scale).
-- `slider`: p:slider → own implementation.
-- `sortable` (dashboard, dataTable, orderList, pickList), `draggable` / `droppable` (p:draggable / p:droppable,
-  dashboard, dataTable, dialog, log, tree, treeTable, organigram, diagram, timeline), `resizable` (p:resizable, dialog)
-  → own pointer events implementation (or SortableJS / interact.js); the public API of p:draggable / p:droppable /
-  p:resizable mirrors the jQuery UI options.
-- `jquery-ui-touch-punch` goes with the mouse widgets (pointer events support touch).
-- Afterwards: drop the jQuery UI CSS from the vendor layer and `packages/components/src/base/jquery-ui.css`.
+**jQuery UI is removed** (done): own `:focusable` / `:tabbable` selectors, `PrimeFaces.utils.position` /
+`getScrollParent`, `PrimeFaces.effects` (Web Animations API), slider, DatePicker / Galleria / Signature as TS widgets,
+and drag and drop / sorting / resizing with pointer events as `PrimeFaces.interactions` in `packages/core/src/interaction`
+(the options of p:draggable / p:droppable / p:resizable stay compatible, there are no jQuery plugins `$.fn.draggable`,
+... anymore). The base rules of the generic classes and of the
+interactions are in `packages/components/src/base/interactions.css` (vendor layer), the overrides in
+`packages/components/src/base/helpers.css`.

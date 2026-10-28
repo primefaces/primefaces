@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
@@ -50,6 +51,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectOneMenu.DEFAULT_RENDERER, componentFamily = SelectOneMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
     @Override

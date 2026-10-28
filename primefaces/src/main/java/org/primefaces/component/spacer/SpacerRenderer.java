@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.spacer;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Spacer.DEFAULT_RENDERER, componentFamily = Spacer.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SpacerRenderer extends CoreRenderer<Spacer> {
 
     @Override

@@ -100,7 +100,7 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
            this.jq.append(groupContainer);
 
            if(this.cfg.effect)
-               groupContainer.show(this.cfg.effect);
+               PrimeFaces.effects.show(groupContainer, this.cfg.effect);
            else
                groupContainer.show();
        }

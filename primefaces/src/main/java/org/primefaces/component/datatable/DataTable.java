@@ -104,7 +104,6 @@ import jakarta.faces.model.ListDataModel;
 @FacesComponentHandler(DataTableHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

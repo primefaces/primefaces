@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.button;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Button.DEFAULT_RENDERER, componentFamily = Button.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ButtonRenderer extends OutcomeTargetRenderer<Button> {
 
     private static final String SB_BUILD_ONCLICK = ButtonRenderer.class.getName() + "#buildOnclick";

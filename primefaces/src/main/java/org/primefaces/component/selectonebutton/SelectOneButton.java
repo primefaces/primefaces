@@ -34,7 +34,6 @@ import jakarta.faces.component.UINamingContainer;
 @FacesComponentInfo(description = "SelectOneButton is an input component to do a single select.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectOneButton extends SelectOneButtonBaseImpl implements Confirmable {

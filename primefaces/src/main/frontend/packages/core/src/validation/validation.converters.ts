@@ -1,6 +1,6 @@
 import { core } from "../core/core.js";
 
-class IntegerConverter implements PrimeType.validation.Converter<number> {
+class IntegerConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d+$/;
 
     private readonly MESSAGE_ID = 'jakarta.faces.converter.IntegerConverter.INTEGER';
@@ -24,7 +24,7 @@ class IntegerConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class LongConverter implements PrimeType.validation.Converter<number> {
+class LongConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d+$/;
     
     private readonly MESSAGE_ID = 'jakarta.faces.converter.LongConverter.LONG';
@@ -48,7 +48,7 @@ class LongConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class DoubleConverter implements PrimeType.validation.Converter<number> {
+class DoubleConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d*(\.\d+)?[d]?$/;
 
     private readonly MESSAGE_ID = 'jakarta.faces.converter.DoubleConverter.DOUBLE';
@@ -72,7 +72,7 @@ class DoubleConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class FloatConverter implements PrimeType.validation.Converter<number> {
+class FloatConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d+(\.\d+)?[f]?$/;
 
     private readonly MESSAGE_ID = 'jakarta.faces.converter.FloatConverter.FLOAT';
@@ -96,7 +96,7 @@ class FloatConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class ShortConverter implements PrimeType.validation.Converter<number> {
+class ShortConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d+$/;
     
     private readonly MESSAGE_ID = 'jakarta.faces.converter.ShortConverter.SHORT';
@@ -120,7 +120,7 @@ class ShortConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class BigIntegerConverter implements PrimeType.validation.Converter<number> {
+class BigIntegerConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d+$/;
 
     private readonly MESSAGE_ID = 'jakarta.faces.converter.BigIntegerConverter.BIGINTEGER';
@@ -144,7 +144,7 @@ class BigIntegerConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class BigDecimalConverter implements PrimeType.validation.Converter<number> {
+class BigDecimalConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^[-+]?\d+(\.\d+)?[d]?$/;
 
     private readonly MESSAGE_ID = 'jakarta.faces.converter.BigDecimalConverter.DECIMAL';
@@ -168,7 +168,7 @@ class BigDecimalConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class ByteConverter implements PrimeType.validation.Converter<number> {
+class ByteConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly regex = /^-?\d+$/;
 
     private readonly MESSAGE_ID = 'jakarta.faces.converter.ByteConverter.BYTE';
@@ -200,7 +200,7 @@ class ByteConverter implements PrimeType.validation.Converter<number> {
     }
 }
 
-class CharacterConverter implements PrimeType.validation.Converter<string> {
+class CharacterConverter implements PrimeFacesTypes.validation.Converter<string> {
     private readonly MESSAGE_ID = 'jakarta.faces.converter.CharacterConverter.CHARACTER';
 
     convert(element: JQuery, submittedValue: string | null): string | null {
@@ -223,7 +223,7 @@ class CharacterConverter implements PrimeType.validation.Converter<string> {
     }
 }
 
-class BooleanConverter implements PrimeType.validation.Converter<boolean> {
+class BooleanConverter implements PrimeFacesTypes.validation.Converter<boolean> {
     private readonly MESSAGE_ID = 'jakarta.faces.converter.BooleanConverter.BOOLEAN';
 
     convert(element: JQuery, submittedValue: string | null): boolean | null {
@@ -246,7 +246,7 @@ class BooleanConverter implements PrimeType.validation.Converter<boolean> {
     }
 }
 
-class DateTimeConverter implements PrimeType.validation.Converter<Date> {
+class DateTimeConverter implements PrimeFacesTypes.validation.Converter<Date> {
     private readonly DATE_ID = 'jakarta.faces.converter.DateTimeConverter.DATE';
     private readonly TIME_ID = 'jakarta.faces.converter.DateTimeConverter.TIME';
     private readonly DATETIME_ID = 'jakarta.faces.converter.DateTimeConverter.DATETIME';
@@ -323,7 +323,7 @@ class DateTimeConverter implements PrimeType.validation.Converter<Date> {
     }
 }
 
-class NumberConverter implements PrimeType.validation.Converter<number> {
+class NumberConverter implements PrimeFacesTypes.validation.Converter<number> {
     private readonly CURRENCY_ID = 'jakarta.faces.converter.NumberConverter.CURRENCY';
     private readonly NUMBER_ID = 'jakarta.faces.converter.NumberConverter.NUMBER';
     private readonly PERCENT_ID = 'jakarta.faces.converter.NumberConverter.PERCENT';

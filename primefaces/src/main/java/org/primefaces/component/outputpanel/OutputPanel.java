@@ -33,7 +33,6 @@ import jakarta.faces.context.FacesContext;
 @FacesComponentInfo(description = "OutputPanel is a container component with deferred loading and layout options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class OutputPanel extends OutputPanelBaseImpl {

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
@@ -55,6 +56,7 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = SplitButton.DEFAULT_RENDERER, componentFamily = SplitButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";

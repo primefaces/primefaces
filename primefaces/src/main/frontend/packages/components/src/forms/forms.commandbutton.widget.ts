@@ -5,7 +5,7 @@
  * note that this configuration is usually meant to be read-only and should not
  * be modified. 
  */
-export interface CommandButtonCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface CommandButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * When set to `true` this button is only enabled after successful client
      * side validation, otherwise classic behavior. Used together with
@@ -22,7 +22,7 @@ export interface CommandButtonCfg extends PrimeType.widget.BaseWidgetCfg {
  * @typeParam Cfg Type of the configuration object.
  */
 export class CommandButton<Cfg extends CommandButtonCfg = CommandButtonCfg> extends PrimeFaces.widget.BaseWidget {
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         PrimeFaces.skinButton(this.jq);
@@ -43,7 +43,7 @@ export class CommandButton<Cfg extends CommandButtonCfg = CommandButtonCfg> exte
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
 
         super.refresh(cfg);

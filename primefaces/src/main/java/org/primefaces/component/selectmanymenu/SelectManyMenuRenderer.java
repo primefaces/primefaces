@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectmanymenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
@@ -43,6 +44,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectManyMenu.DEFAULT_RENDERER, componentFamily = SelectManyMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
 
     @Override

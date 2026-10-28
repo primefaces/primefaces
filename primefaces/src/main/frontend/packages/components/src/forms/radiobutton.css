@@ -106,7 +106,7 @@
     }
 }
 
-/* readonly (the disabled cursor comes from jquery-ui core.css) */
+/* readonly (the disabled cursor comes from base/common.css) */
 .ui-selectoneradio.ui-state-readonly .ui-radiobutton-box {
     cursor: default;
 }

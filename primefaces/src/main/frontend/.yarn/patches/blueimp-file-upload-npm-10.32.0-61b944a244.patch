@@ -201,10 +201,32 @@ index 3e3b9a93b05df4e25ffb34b25772249a9a8ebaf5..5e1cec13cd4858348a3cf8bb905c322c
                // by replacing the clones with the originals:
                if (fileInputClones && fileInputClones.length) {
 diff --git a/js/vendor/jquery.ui.widget.js b/js/vendor/jquery.ui.widget.js
-index 78e6255728ec3c8233ba6bfc3cbd3b3eb543bd73..cbee75a79d3761a11294532a5d4ba45a1b69a8ae 100644
+index 78e6255728ec3c8233ba6bfc3cbd3b3eb543bd73..4625fd4d5c124f611daa47cd05c937c6b6e7d5f4 100644
 --- a/js/vendor/jquery.ui.widget.js
 +++ b/js/vendor/jquery.ui.widget.js
-@@ -87,7 +87,7 @@
+@@ -56,20 +56,7 @@
+   var widgetHasOwnProperty = Array.prototype.hasOwnProperty;
+   var widgetSlice = Array.prototype.slice;
+ 
+-  $.cleanData = (function (orig) {
+-    return function (elems) {
+-      var events, elem, i;
+-      // eslint-disable-next-line eqeqeq
+-      for (i = 0; (elem = elems[i]) != null; i++) {
+-        // Only trigger remove when necessary to save time
+-        events = $._data(elem, 'events');
+-        if (events && events.remove) {
+-          $(elem).triggerHandler('remove');
+-        }
+-      }
+-      orig(elems);
+-    };
+-  })($.cleanData);
++  // PrimeFaces triggers the remove event in $.cleanData already (jquery.pfextensions.js)
+ 
+   $.widget = function (name, base, prototype) {
+     var existingConstructor, constructor, basePrototype;
+@@ -87,7 +74,7 @@
        base = $.Widget;
      }
  
@@ -213,7 +235,7 @@ index 78e6255728ec3c8233ba6bfc3cbd3b3eb543bd73..cbee75a79d3761a11294532a5d4ba45a
        prototype = $.extend.apply(null, [{}].concat(prototype));
      }
  
-@@ -131,7 +131,7 @@
+@@ -131,7 +118,7 @@
      // inheriting from
      basePrototype.options = $.widget.extend({}, basePrototype.options);
      $.each(prototype, function (prop, value) {
@@ -222,7 +244,7 @@ index 78e6255728ec3c8233ba6bfc3cbd3b3eb543bd73..cbee75a79d3761a11294532a5d4ba45a
          proxiedPrototype[prop] = value;
          return;
        }
-@@ -273,7 +273,7 @@
+@@ -273,7 +260,7 @@
                );
              }
  
@@ -231,7 +253,7 @@ index 78e6255728ec3c8233ba6bfc3cbd3b3eb543bd73..cbee75a79d3761a11294532a5d4ba45a
                return $.error(
                  "no such method '" +
                    options +
-@@ -755,7 +755,7 @@
+@@ -755,7 +742,7 @@
  
        this.element.trigger(event, data);
        return !(

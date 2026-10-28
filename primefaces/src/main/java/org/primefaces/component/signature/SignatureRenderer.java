@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.signature;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Signature.DEFAULT_RENDERER, componentFamily = Signature.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SignatureRenderer extends InputRenderer<Signature> {
 
     @Override

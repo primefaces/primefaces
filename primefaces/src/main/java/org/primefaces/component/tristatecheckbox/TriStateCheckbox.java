@@ -34,7 +34,6 @@ import jakarta.faces.event.ValueChangeEvent;
 @FacesComponentInfo(description = "TriStateCheckbox is a checkbox with 3 states: true, false, and unselected.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class TriStateCheckbox extends TriStateCheckboxBaseImpl {

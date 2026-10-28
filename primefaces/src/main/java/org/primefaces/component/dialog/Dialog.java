@@ -43,7 +43,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "Dialog is a container component to display content in an overlay window.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Dialog extends DialogBaseImpl {

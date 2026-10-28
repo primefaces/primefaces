@@ -121,7 +121,7 @@
         }
     }
 
-    /* readonly (the disabled cursor comes from jquery-ui core.css) */
+    /* readonly (the disabled cursor comes from base/common.css) */
     .ui-chkbox-box.ui-chkbox-readonly,
     &.ui-state-readonly .ui-chkbox-box,
     .ui-state-readonly & .ui-chkbox-box {

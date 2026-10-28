@@ -103,7 +103,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
             x: 0,
             y: 0
         };
-        draggableNodes.draggable({
+        PrimeFaces.interactions.draggable(draggableNodes, {
             zIndex: 100,
             opacity: 0.7,
             cursor: "move",
@@ -127,7 +127,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
             }
         });
 
-        droppableNodes.droppable({
+        PrimeFaces.interactions.droppable(droppableNodes, {
             accept: ".ui-organigram-node.draggable",
             tolerance: "pointer",
             activeClass: "drag-active",

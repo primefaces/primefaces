@@ -31,7 +31,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponent(value = AjaxExceptionHandler.COMPONENT_TYPE, namespace = AjaxExceptionHandler.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 public class AjaxExceptionHandler extends AjaxExceptionHandlerBaseImpl {
 

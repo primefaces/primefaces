@@ -214,7 +214,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
         $(document).ready(function() {
             var triggerButton = $this.input.prev();
             if ($this.input.hasClass('ui-state-error')) {
-                triggerButton.addClass('ui-inputfield ui-state-error');
+                triggerButton.addClass('ui-state-error');
             }
         });
     }

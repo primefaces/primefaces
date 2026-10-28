@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.organigram;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.organigramnode.UIOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.renderkit.CoreRenderer;
@@ -44,6 +45,7 @@ import jakarta.faces.render.FacesRenderer;
  * Renderer for the {@link Organigram} component.
  */
 @FacesRenderer(rendererType = Organigram.DEFAULT_RENDERER, componentFamily = Organigram.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class OrganigramRenderer extends CoreRenderer<Organigram> {
 
     @Override

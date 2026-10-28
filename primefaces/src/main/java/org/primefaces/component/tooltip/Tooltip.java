@@ -33,7 +33,6 @@ import jakarta.faces.component.FacesComponent;
         "Tooltip goes beyond the legacy html title attribute by providing custom effects, events, html content and advance theme support.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Tooltip extends TooltipBaseImpl {

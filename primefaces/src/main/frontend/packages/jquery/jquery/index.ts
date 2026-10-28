@@ -1,7 +1,6 @@
 /// <reference types="jquery" preserve="true" />
 
 import jQuery from "jquery";
-import "../jquery-plugins/src/jquery.browser.js";
 
 declare global {
     interface Window {

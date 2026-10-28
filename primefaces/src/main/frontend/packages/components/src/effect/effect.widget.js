@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Effect Widget__
  * 
- * Effect component is based on the jQuery UI effects library.
+ * Effect component runs an effect of {@link PrimeFaces.effects} on an element.
  * 
  * @typedef {() => void} PrimeFaces.widget.Effect.EffectCallback Function that runs the effect when invoked. See also
  * {@link EffectCfg.fn}.
@@ -18,7 +18,6 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryUI.EffectOptions} cfg
  * 
  * @prop {string} cfg.source ID of the source element for the effect.
  * @prop {number} cfg.delay Delay between effect repetitions in milliseconds.
@@ -33,9 +32,16 @@ PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init(cfg) {
+        // a refresh does not run the destroy listeners: a run scheduled by the previous initialization is cancelled here
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = undefined;
+        }
         super.init(cfg);
 
         this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
+        // destroyed with the source
+        this.bindLifecycleTo(this.source);
         var _self = this;
 
         this.runner = function() {
@@ -47,14 +53,22 @@ PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
             _self.timeoutId = PrimeFaces.queueTask(_self.cfg.fn, _self.cfg.delay);
         };
 
+        var namespace = '.effect' + this.id;
         if(this.cfg.event == 'load') {
             this.runner.call();
-        } 
+        }
         else {
-            var namespace = '.effect' + this.id;
             var events = this.cfg.event.split(' ').map(function(e) { return e + namespace; }).join(' ');
             this.source.off(namespace).on(events, this.runner);
         }
+
+        // the source may stay when the effect is removed
+        this.addDestroyListener(function() {
+            if(_self.timeoutId) {
+                clearTimeout(_self.timeoutId);
+            }
+            _self.source.off(namespace);
+        });
     }
     
 }

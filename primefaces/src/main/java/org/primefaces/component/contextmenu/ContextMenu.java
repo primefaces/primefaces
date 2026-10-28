@@ -32,7 +32,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "ContextMenu provides an overlay menu displayed on mouse right-click event.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")

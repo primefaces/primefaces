@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.commandlink;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.context.PrimeRequestContext;
@@ -47,6 +48,7 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = CommandLink.DEFAULT_RENDERER, componentFamily = CommandLink.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
 
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";

@@ -29,7 +29,6 @@
         { "path": "./packages/inputmask/inputmask" },
         { "path": "./packages/inputnumber/inputnumber" },
         { "path": "./packages/jquery/jquery" },
-        { "path": "./packages/jquery/jquery-plugins" },
         { "path": "./packages/keyboard/keyboard" },
         { "path": "./packages/keyfilter/keyfilter" },
         { "path": "./packages/knob/knob" },

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.panelgrid;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
@@ -42,6 +43,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = PanelGrid.DEFAULT_RENDERER, componentFamily = PanelGrid.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
 
     @Override

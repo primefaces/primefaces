@@ -369,6 +369,26 @@
         border-radius: 0;
     }
 
+    /* fullScreen show / hide (the widget relies on these transitions) */
+    &.ui-galleria-enter {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    &.ui-galleria-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity var(--p-mask-transition-duration) var(--p-transition-easing-enter),
+            transform var(--p-mask-transition-duration) var(--p-transition-easing-enter);
+    }
+
+    &.ui-galleria-exit-active {
+        opacity: 0;
+        transform: scale(0.7);
+        transition: opacity var(--p-mask-transition-duration) var(--p-transition-easing-exit),
+            transform var(--p-mask-transition-duration) var(--p-transition-easing-exit);
+    }
+
     .ui-galleria-close {
         margin: var(--p-galleria-close-button-gutter);
         background: var(--p-galleria-close-button-background);

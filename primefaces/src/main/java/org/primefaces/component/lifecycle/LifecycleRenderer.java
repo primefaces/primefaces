@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.lifecycle;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -34,6 +35,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Lifecycle.DEFAULT_RENDERER, componentFamily = Lifecycle.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class LifecycleRenderer extends CoreRenderer<Lifecycle> {
 
     @Override

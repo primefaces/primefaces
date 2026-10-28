@@ -12,7 +12,7 @@ export interface AjaxStatusCfg extends BaseWidgetCfg {
      * Client-side callback for when the AJAX behavior completes, i.e. when the request finishes, irrespective of whether it
      * succeeded or failed.
      */
-    complete: PrimeType.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
+    complete: PrimeFacesTypes.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
 
     /**
      * Delay in milliseconds before displaying the AJAX status. Default is `0`, meaning immediate.
@@ -23,25 +23,25 @@ export interface AjaxStatusCfg extends BaseWidgetCfg {
      * Client-side callback
      * for when the AJAX behavior fails, i.e. when the request fails.
      */
-    error: PrimeType.widget.AjaxStatus.PfAjaxErrorCallback | faces.ajax.OnErrorCallback;
+    error: PrimeFacesTypes.widget.AjaxStatus.PfAjaxErrorCallback | faces.ajax.OnErrorCallback;
 
     /**
      * Client-side callback for when the AJAX behavior completes, i.e. when the request finishes, irrespective of whether it
      * succeeded or failed.
      */
-    facesComplete: PrimeType.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
+    facesComplete: PrimeFacesTypes.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
 
     /**
      * Client-side callback
      * for when the AJAX behavior starts, i.e. the request is about to be sent.
      */
-    start: PrimeType.widget.AjaxStatus.PfAjaxStartCallback | faces.ajax.OnEventCallback;
+    start: PrimeFacesTypes.widget.AjaxStatus.PfAjaxStartCallback | faces.ajax.OnEventCallback;
 
     /**
      * Client-side
      * callback for when the AJAX  behavior completes successfully, i.e. when the request succeeds.
      */
-    success: PrimeType.widget.AjaxStatus.PfAjaxSuccessCallback | faces.ajax.OnEventCallback;
+    success: PrimeFacesTypes.widget.AjaxStatus.PfAjaxSuccessCallback | faces.ajax.OnEventCallback;
 }
 
 /**
@@ -50,10 +50,10 @@ export interface AjaxStatusCfg extends BaseWidgetCfg {
  * AjaxStatus is a global notifier for AJAX requests.
  * 
  * For the callbacks that can be set via the `onstart`, `onsuccess`, `onerror` and `oncomplete` attributes, see
- * {@link PrimeType.widget.AjaxStatus.PfAjaxStartCallback PfAjaxStartCallback},
- * {@link PrimeType.widget.AjaxStatus.PfAjaxSuccessCallback PfAjaxSuccessCallback},
- * {@link PrimeType.widget.AjaxStatus.PfAjaxErrorCallback PfAjaxErrorCallback}, and
- * {@link PrimeType.widget.AjaxStatus.PfAjaxCompleteCallback PfAjaxCompleteCallback}.
+ * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxStartCallback PfAjaxStartCallback},
+ * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxSuccessCallback PfAjaxSuccessCallback},
+ * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxErrorCallback PfAjaxErrorCallback}, and
+ * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxCompleteCallback PfAjaxCompleteCallback}.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
@@ -62,7 +62,7 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
     private timeout: number | null | undefined = null;
     private facesListenersAdded: boolean = false;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.hasSuccessOrErrorFacet = false;
 
@@ -156,11 +156,11 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
      * @param args Arguments that are passed to the
      * event handler.
      */
-    trigger<Event extends PrimeType.widget.AjaxStatus.AjaxStatusEventType>(
+    trigger<Event extends PrimeFacesTypes.widget.AjaxStatus.AjaxStatusEventType>(
         event: Event, 
-        args: Parameters<PrimeType.widget.AjaxStatus.EventToCallbackMap[Event]>
+        args: Parameters<PrimeFacesTypes.widget.AjaxStatus.EventToCallbackMap[Event]>
     ): void {
-        var callback = this.cfg[event satisfies PrimeType.widget.AjaxStatus.AjaxStatusEventType];
+        var callback = this.cfg[event satisfies PrimeFacesTypes.widget.AjaxStatus.AjaxStatusEventType];
         if (callback) {
             // @ts-expect-error
             callback.apply(document, args);
@@ -201,7 +201,7 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
                 // Note: This won't work properly with success/error facets since redirect info isn't available beforehand
                 // Only check for redirect if PrimeFaces is used
                 if (args.length > 1) { // PrimeFaces passes 3 args, Jakarta Faces passes 1 arg
-                    const pfArgs = args[2] as PrimeType.ajax.PrimeFacesArgs | undefined;
+                    const pfArgs = args[2] as PrimeFacesTypes.ajax.PrimeFacesArgs | undefined;
                     if (!pfArgs || pfArgs.redirect) {
                         return;
                     }
@@ -224,7 +224,7 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
      * @param event One of the supported event
      * @return {string} The ID of the facet element for the given event
      */
-    private toFacetId(event: PrimeType.widget.AjaxStatus.AjaxStatusEventType): string {
+    private toFacetId(event: PrimeFacesTypes.widget.AjaxStatus.AjaxStatusEventType): string {
         return this.jqId + '_' + event;
     }
 

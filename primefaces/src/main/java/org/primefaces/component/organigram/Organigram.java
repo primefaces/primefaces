@@ -45,7 +45,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "Organigram is a component to display hierarchical organizational structures.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "organigram/organigram.js")
 @ResourceDependency(library = "primefaces", name = "organigram/organigram.css")

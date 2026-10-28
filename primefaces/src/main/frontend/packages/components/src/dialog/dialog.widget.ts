@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Dialog.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface DialogCfg extends PrimeType.widget.DynamicOverlayWidgetCfg, PrimeType.hook.dialog.SharedDialogOptions {
+export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg, PrimeFacesTypes.hook.dialog.SharedDialogOptions {
     /**
      * Whether the dialog is positioned absolutely.
      */
@@ -28,7 +28,7 @@ export interface DialogCfg extends PrimeType.widget.DynamicOverlayWidgetCfg, Pri
     /**
      * Optional handler for obtaining additional DOM elements which are allowed to be focused via tabbing.
      */
-    getModalTabbables: PrimeType.widget.Dialog.GetModalTabbablesHandler;
+    getModalTabbables: PrimeFacesTypes.widget.Dialog.GetModalTabbablesHandler;
 
     /**
      * Whether the dialog contents contain an {@link HTMLIFrameElement}. 
@@ -64,12 +64,12 @@ export interface DialogCfg extends PrimeType.widget.DynamicOverlayWidgetCfg, Pri
      * Client-side callback to invoke when the dialog is
      * closed.
      */
-    onHide: PrimeType.widget.Dialog.OnHideCallback;
+    onHide: PrimeFacesTypes.widget.Dialog.OnHideCallback;
 
     /**
      * Client-side callback to invoke when the dialog is opened.
      */
-    onShow: PrimeType.widget.Dialog.OnShowCallback;
+    onShow: PrimeFacesTypes.widget.Dialog.OnShowCallback;
 
     /**
      * Effect to use when showing the dialog
@@ -146,11 +146,6 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     icons: JQuery = $();
 
     /**
-     * The DOM element of the overlay that is put over iframes during a resize.
-     */
-    iframeFix?: JQuery = $();
-
-    /**
      * The native DOM element instance of the container element of this widget (same element as the
      * `jq` property).
      */
@@ -214,7 +209,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * The client-side state of the dialog such as its width
      * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
      */
-    state?: PrimeType.widget.Dialog.ClientState;
+    state?: PrimeFacesTypes.widget.Dialog.ClientState;
 
     /**
      * DOM element of the title bar container of this dialog.
@@ -226,7 +221,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     titleContainer?: JQuery;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.box = this.jq.children('.ui-dialog-box');
@@ -286,7 +281,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         this.positionInitialized = false;
         this.loaded = false;
 
@@ -310,12 +305,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Computes and applies the correct size for this dialog, according to the current configuration.
      */
     protected initSize(): void {
+        // without an explicit width/height the size is left to CSS, so boxStyle(Class) and contentStyle(Class) can size the dialog
         this.box.css({
-            'width': String(this.cfg.width),
+            'width': this.cfg.width === 'auto' ? '' : String(this.cfg.width),
             'height': 'auto'
         });
 
-        this.content.height(this.cfg.height ?? "auto");
+        if(this.cfg.height !== 'auto') {
+            this.content.height(this.cfg.height);
+        }
 
         if(this.cfg.fitViewport) {
             this.fitViewport();
@@ -431,13 +429,16 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
 
         if (this.cfg.showEffect) {
-            this.jq.show(this.cfg.showEffect, duration, 'normal', () => {
-                this.postShow();
+            PrimeFaces.effects.show(this.jq, this.cfg.showEffect, {
+                duration,
+                complete: () => {
+                    this.postShow();
+                }
             });
         }
         else {
             //display dialog
-            this.jq.show(duration);
+            this.jq.show(duration as JQuery.Duration | undefined);
 
             this.postShow();
         }
@@ -492,12 +493,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         this.lastOffset = [ this.box.css('top'), this.box.css('left') ];
 
         if (this.cfg.hideEffect) {
-            this.jq.hide(this.cfg.hideEffect, duration, 'normal', () => {
-                if(this.cfg.modal) {
-                    this.disableModality();
-                    this.unbindDismissibleMaskListener();
+            PrimeFaces.effects.hide(this.jq, this.cfg.hideEffect, {
+                duration,
+                complete: () => {
+                    if(this.cfg.modal) {
+                        this.disableModality();
+                        this.unbindDismissibleMaskListener();
+                    }
+                    this.onHide();
                 }
-                this.onHide();
             });
         }
         else {
@@ -665,7 +669,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected setupDraggable(): void {
         var $this = this;
 
-        this.box.draggable({
+        PrimeFaces.interactions.draggable(this.box, {
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
             containment : $this.jq,
@@ -696,7 +700,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Sets up all event listeners required to make this dialog resizable.
      */
     protected setupResizable(): void {
-        this.box.resizable({
+        PrimeFaces.interactions.resizable(this.box, {
             handles : 'n,s,e,w,ne,nw,se,sw',
             minWidth : this.cfg.minWidth,
             minHeight : this.cfg.minHeight,
@@ -706,10 +710,6 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 this.jq.addClass('ui-overflow-hidden');
                 const offset: JQuery.Coordinates = this.box.offset() ?? { left: 0, top: 0 };
                 this.box.data('offset', offset);
-
-                if(this.cfg.hasIframe) {
-                    this.iframeFix = $('<div style="position:absolute;background-color:transparent;width:100%;height:100%;top:0;left:0;"></div>').appendTo(this.content);
-                }
 
                 if (this.hasBehavior('resizeStart')) {
                     var ext = {
@@ -723,10 +723,6 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             },
             stop: (_, ui) => {
                 this.jq.removeClass('ui-overflow-hidden');
-
-                if(this.cfg.hasIframe) {
-                    this.iframeFix?.remove();
-                }
 
                 if (this.hasBehavior('resizeStop')) {
                     var ext = {
@@ -762,7 +758,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         if(/(center|left|top|right|bottom)/.test(this.cfg.position ?? "")) {
             this.cfg.position = this.cfg.position?.replace(',', ' ');
 
-            this.box.position({
+            PrimeFaces.utils.position(this.box, {
                         my: this.cfg.my,
                         at: this.cfg.position,
                         collision: 'fit',
@@ -904,13 +900,12 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             }
 
             if (animate) {
-                this.jq.transfer(
-                    {
-                        to: dockingZone,
-                        className: 'ui-dialog-minimizing',
-                        duration: 500,
-                    },
-                    () => this.dock(dockingZone));
+                PrimeFaces.effects.run(this.jq, 'transfer', {
+                    to: dockingZone,
+                    className: 'ui-dialog-minimizing',
+                    duration: 500,
+                    complete: () => this.dock(dockingZone)
+                });
             }
             else {
                 this.dock(dockingZone);
@@ -950,7 +945,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected saveState(): void {
         this.state = {
-            width: this.box[0]?.style.width || this.box.width() || 0,
+            // an empty inline width is kept, so a CSS width (boxStyle/boxStyleClass) applies again after restoring
+            width: this.box[0] ? this.box[0].style.width : 0,
             height: this.box[0]?.style.height || this.box.height() || 0,
             contentWidth: this.content[0]?.style.width || this.content.width() || 0,
             contentHeight: this.content[0]?.style.height || this.content.height() || 0,
@@ -987,7 +983,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * loaded.
      */
     protected loadContents(): void {
-        const options: PrimeType.ajax.Configuration = {
+        const options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -1131,7 +1127,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
      */
     yesButton: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
@@ -1251,7 +1247,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
      * Shows the given message in this confirmation dialog.
      * @param msg Message to show.
      */
-    showMessage(msg: Partial<PrimeType.hook.confirm.ConfirmMessage>): void {
+    showMessage(msg: Partial<PrimeFacesTypes.hook.confirm.ConfirmMessage>): void {
         // Execute any code specified to run before showing the message
         if (msg.beforeShow) {
             const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);

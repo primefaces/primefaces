@@ -111,7 +111,7 @@
                             <td class="colFirst"><a href="#backgroundColor"><code>backgroundColor</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
-                    </td><td class="colLast">Background color of the knob.</td>
+                    </td><td class="colLast">Color of the range arc (a CSS color or java.awt.Color), overrides the --p-knob-range-background token.</td>
                         </tr>
                         <tr id="binding" class="altColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -119,179 +119,173 @@
                                 (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">An EL expression referring to a server side UIComponent instance in a backing bean.Default is generated.</td>
                         </tr>
-                        <tr id="colorTheme" class="rowColor">
-                            <td class="colFirst"><a href="#colorTheme"><code>colorTheme</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Color theme for the knob.</td>
-                        </tr>
-                        <tr id="converter" class="altColor">
+                        <tr id="converter" class="rowColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.convert.Converter</code>)
                     </td><td class="colLast">EL expression resolves to a converter instance or literal converter ID defining a component converter.</td>
                         </tr>
-                        <tr id="converterMessage" class="rowColor">
+                        <tr id="converterMessage" class="altColor">
                             <td class="colFirst"><a href="#converterMessage"><code>converterMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="cursor" class="altColor">
+                        <tr id="cursor" class="rowColor">
                             <td class="colFirst"><a href="#cursor"><code>cursor</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Shows a cursor.Default is false.</td>
                         </tr>
-                        <tr id="disabled" class="rowColor">
+                        <tr id="disabled" class="altColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Disables the component.Default is false.</td>
                         </tr>
-                        <tr id="foregroundColor" class="altColor">
+                        <tr id="foregroundColor" class="rowColor">
                             <td class="colFirst"><a href="#foregroundColor"><code>foregroundColor</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
-                    </td><td class="colLast">Foreground color of the knob.</td>
+                    </td><td class="colLast">Color of the value arc (a CSS color or java.awt.Color), overrides the --p-knob-value-background token.</td>
                         </tr>
-                        <tr id="height" class="rowColor">
+                        <tr id="height" class="altColor">
                             <td class="colFirst"><a href="#height"><code>height</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
-                    </td><td class="colLast">Height of the knob.</td>
+                    </td><td class="colLast">Height of the knob, in pixels or a CSS length, the width follows if it is not set.</td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Unique identifier of the component in a namingContainer.Default is generated.</td>
                         </tr>
-                        <tr id="immediate" class="rowColor">
+                        <tr id="immediate" class="altColor">
                             <td class="colFirst"><a href="#immediate"><code>immediate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When set true, process validations logic is executed at apply request values phase for this component.Default is false.</td>
                         </tr>
-                        <tr id="labelTemplate" class="altColor">
+                        <tr id="labelTemplate" class="rowColor">
                             <td class="colFirst"><a href="#labelTemplate"><code>labelTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Template for the label.Default is {value}.</td>
                         </tr>
-                        <tr id="lineCap" class="rowColor">
+                        <tr id="lineCap" class="altColor">
                             <td class="colFirst"><a href="#lineCap"><code>lineCap</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Line cap style, valid values are "butt" and "round".Default is butt.</td>
                         </tr>
-                        <tr id="max" class="altColor">
+                        <tr id="max" class="rowColor">
                             <td class="colFirst"><a href="#max"><code>max</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Maximum value.Default is 100.</td>
                         </tr>
-                        <tr id="min" class="rowColor">
+                        <tr id="min" class="altColor">
                             <td class="colFirst"><a href="#min"><code>min</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Minimum value.Default is 0.</td>
                         </tr>
-                        <tr id="onchange" class="altColor">
+                        <tr id="onchange" class="rowColor">
                             <td class="colFirst"><a href="#onchange"><code>onchange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Client side callback to execute when value changes.</td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="required" class="altColor">
+                        <tr id="required" class="rowColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Marks component as required.Default is false.</td>
                         </tr>
-                        <tr id="requiredMessage" class="rowColor">
+                        <tr id="requiredMessage" class="altColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="showLabel" class="altColor">
+                        <tr id="showLabel" class="rowColor">
                             <td class="colFirst"><a href="#showLabel"><code>showLabel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Shows the label.Default is true.</td>
                         </tr>
-                        <tr id="step" class="rowColor">
+                        <tr id="step" class="altColor">
                             <td class="colFirst"><a href="#step"><code>step</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Step size.Default is 1.</td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style of the component.</td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the component.</td>
                         </tr>
-                        <tr id="submittedValue" class="altColor">
+                        <tr id="submittedValue" class="rowColor">
                             <td class="colFirst"><a href="#submittedValue"><code>submittedValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="thickness" class="rowColor">
+                        <tr id="thickness" class="altColor">
                             <td class="colFirst"><a href="#thickness"><code>thickness</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Float</code>)
-                    </td><td class="colLast">Thickness of the knob arc.</td>
+                    </td><td class="colLast">Thickness of the knob arc as a fraction of the radius, between 0 and 1 (default 0.35).</td>
                         </tr>
-                        <tr id="validator" class="altColor">
+                        <tr id="validator" class="rowColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">A method expression referring to a method validating the input.</td>
                         </tr>
-                        <tr id="validatorMessage" class="rowColor">
+                        <tr id="validatorMessage" class="altColor">
                             <td class="colFirst"><a href="#validatorMessage"><code>validatorMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="value" class="altColor">
+                        <tr id="value" class="rowColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Value of the component.</td>
                         </tr>
-                        <tr id="valueChangeListener" class="rowColor">
+                        <tr id="valueChangeListener" class="altColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">A method binding expression referring to a method for handling a valuchangeevent.</td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Name of the client side widget.Default is generated ('widget_' + componentClientId).</td>
                         </tr>
-                        <tr id="width" class="rowColor">
+                        <tr id="width" class="altColor">
                             <td class="colFirst"><a href="#width"><code>width</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
-                    </td><td class="colLast">Width of the knob.</td>
+                    </td><td class="colLast">Width of the knob, in pixels or a CSS length (e.g. 50%), the height follows if it is not set.</td>
                         </tr>
                     </tbody>
                 </table>

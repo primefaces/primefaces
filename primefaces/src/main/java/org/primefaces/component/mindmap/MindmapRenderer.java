@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.mindmap;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Mindmap.DEFAULT_RENDERER, componentFamily = Mindmap.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MindmapRenderer extends CoreRenderer<Mindmap> {
 
     @Override

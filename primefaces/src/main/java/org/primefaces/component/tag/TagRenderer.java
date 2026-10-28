@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tag;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Tag.DEFAULT_RENDERER, componentFamily = Tag.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TagRenderer extends CoreRenderer<Tag> {
 
     @Override

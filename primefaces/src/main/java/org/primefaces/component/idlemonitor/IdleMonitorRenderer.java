@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.idlemonitor;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = IdleMonitor.DEFAULT_RENDERER, componentFamily = IdleMonitor.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class IdleMonitorRenderer extends CoreRenderer<IdleMonitor> {
 
     @Override

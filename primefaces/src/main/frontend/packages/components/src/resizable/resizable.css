@@ -1,5 +1,5 @@
 /*
- * Resizable: p:resizable (jQuery UI resizable); handle structure (size, cursor) comes from jquery-ui resizable.css.
+ * Resizable: p:resizable; handle structure (size, cursor) comes from base/interactions.css.
  * Handles: div.ui-resizable-handle.ui-resizable-(n|s|e|w|ne|nw|se|sw), the default se handle also has
  * ui-icon ui-icon-gripsmall-diagonal-se. Helpers: ui-resizable-ghost (ghost="true"), div.ui-resizable-proxy (animate="true").
  * PrimeFaces only tokens: the resizable block of presets/*.css.

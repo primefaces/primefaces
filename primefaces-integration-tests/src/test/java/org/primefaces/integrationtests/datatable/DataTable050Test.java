@@ -81,7 +81,7 @@ class DataTable050Test extends AbstractPrimePageTest {
     }
 
     /**
-     * Drags the row at {@code fromIndex} onto the row at {@code toIndex}. jQuery UI sortable is driven by mouse events, so the drag has to be performed
+     * Drags the row at {@code fromIndex} onto the row at {@code toIndex}. The sortable is driven by pointer events, so the drag has to be performed
      * step by step: press, exceed the drag threshold, move over the target row and release there.
      *
      * @param page the page under test

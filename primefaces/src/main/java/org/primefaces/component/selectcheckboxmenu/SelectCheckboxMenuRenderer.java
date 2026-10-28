@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
@@ -51,6 +52,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectCheckboxMenu.DEFAULT_RENDERER, componentFamily = SelectCheckboxMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckboxMenu> {
 
     @Override

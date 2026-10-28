@@ -3,16 +3,36 @@
     xmlns="https://jakarta.ee/xml/ns/jakartaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"
-    version="4.0" bean-discovery-mode="all">
+    version="4.0" bean-discovery-mode="annotated">
+
+    <!-- Only classes annotated with a PrimeFaces CDK *Info stereotype (components, renderers, behaviors,
+         converters, validators) are discovered; see #15407.
+         The excludes below skip packages without such classes, so they are not even loaded while scanning.
+         Do not put components, renderers, behaviors, converters or validators into these packages. -->
 
     <scan>
-        <exclude name="org.primefaces.util.ExcelStylesManager"/>
-        <exclude name="org.primefaces.util.ExcelXmlStylesManager"/>
-        <exclude name="org.primefaces.util.ExcelStylesManager$Styles"/>
-        <exclude name="org.primefaces.util.HtmlSanitizer"/>
-
-        <exclude name="org.primefaces.cache.EHCacheProvider"/>
-        <exclude name="org.primefaces.cache.EHCache3Provider"/>
+        <exclude name="org.primefaces.*"/>
+        <exclude name="org.primefaces.application.**"/>
+        <exclude name="org.primefaces.cache.**"/>
+        <exclude name="org.primefaces.clientwindow.**"/>
+        <exclude name="org.primefaces.config.**"/>
+        <exclude name="org.primefaces.context.**"/>
+        <exclude name="org.primefaces.convert.**"/>
+        <exclude name="org.primefaces.csp.**"/>
+        <exclude name="org.primefaces.el.**"/>
+        <exclude name="org.primefaces.event.**"/>
+        <exclude name="org.primefaces.expression.**"/>
+        <exclude name="org.primefaces.facelets.**"/>
+        <exclude name="org.primefaces.metadata.**"/>
+        <exclude name="org.primefaces.model.**"/>
+        <exclude name="org.primefaces.renderkit.**"/>
+        <exclude name="org.primefaces.seo.**"/>
+        <exclude name="org.primefaces.shaded.**"/>
+        <exclude name="org.primefaces.util.**"/>
+        <exclude name="org.primefaces.validate.bean.**"/>
+        <exclude name="org.primefaces.virusscan.**"/>
+        <exclude name="org.primefaces.visit.**"/>
+        <exclude name="org.primefaces.webapp.**"/>
 
         <exclude name="org.primefaces.component.barcode.BarcodeHandler"/>
         <exclude name="org.primefaces.component.datatable.export.DataTableExcelExporter"/>
@@ -24,7 +44,5 @@
         <exclude name="org.primefaces.component.treetable.export.TreeTableExcelXExporter"/>
         <exclude name="org.primefaces.component.treetable.export.TreeTableExcelXStreamExporter"/>
         <exclude name="org.primefaces.component.treetable.export.TreeTablePDFExporter"/>
-
-        <exclude name="org.primefaces.model.timeline.TimelineEventComparator"/>
     </scan>
 </beans>
