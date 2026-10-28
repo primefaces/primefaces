@@ -32,12 +32,11 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "Menubar is a horizontal navigation component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Menubar extends MenubarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menubar";
 
-    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-widget ui-widget-content ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-widget ui-widget-content";
 }

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.orderlist;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -44,6 +45,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = OrderList.DEFAULT_RENDERER, componentFamily = OrderList.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class OrderListRenderer extends CoreRenderer<OrderList> {
 
     @Override
@@ -143,7 +145,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "true", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         //options generated at client side
         writer.endElement("select");

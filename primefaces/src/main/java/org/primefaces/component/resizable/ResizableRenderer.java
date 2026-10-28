@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.resizable;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -35,6 +36,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Resizable.DEFAULT_RENDERER, componentFamily = Resizable.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ResizableRenderer extends CoreRenderer<Resizable> {
 
     @Override

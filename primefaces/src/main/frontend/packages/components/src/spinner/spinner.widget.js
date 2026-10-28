@@ -205,9 +205,11 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
         .on('blur.spinner', function(e) {
             $this.format();
         })
-        .on('mousewheel.spinner', function(event, delta) {
-            if($this.cfg.modifyValueOnWheel && $this.input.is(':focus')) {
-                if(delta > 0)
+        .on('wheel.spinner', function(event) {
+            var delta = event.originalEvent.deltaY;
+            if($this.cfg.modifyValueOnWheel && $this.input.is(':focus') && delta) {
+                // wheel up (negative deltaY) increments
+                if(delta < 0)
                     $this.spin(1);
                 else
                     $this.spin(-1);

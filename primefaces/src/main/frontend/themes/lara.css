@@ -1,0 +1,8 @@
+/*
+ * Theme "lara" (primefaces.THEME = lara): the tokens of the preset and its density, built to primefaces-lara/theme.css.
+ * The CSS of the components (components.css, ...) is the same for every theme.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./presets/lara.css");
+@import url("./density/lara.css");

@@ -22,7 +22,7 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
      */
     items: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('> .ui-tabmenu-nav > li:not(.ui-state-disabled)');

@@ -589,7 +589,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
         //aria
         oldPanel.attr('aria-hidden', true);
-        oldPanel.addClass('ui-helper-hidden');
+        oldPanel.addClass('p-hidden');
         oldHeader.find('a').attr('aria-expanded', false);
         oldHeader.find('a').attr('aria-selected', false);
         if(hasOldActions) {
@@ -597,7 +597,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         }
 
         newPanel.attr('aria-hidden', false);
-        newPanel.removeClass('ui-helper-hidden');
+        newPanel.removeClass('p-hidden');
         newHeader.find('a').attr('aria-expanded', true);
         newHeader.find('a').attr('aria-selected', true);
         if(hasNewActions) {
@@ -605,20 +605,20 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         }
 
         if(this.cfg.effect && oldPanel.length) {
-            oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
+            PrimeFaces.effects.hide(oldPanel, this.cfg.effect, { duration: this.cfg.effectDuration, complete: function() {
                 oldHeader.removeClass('ui-tabs-selected ui-state-active');
                 if(hasOldActions) {
-                    oldActions.hide($this.cfg.effect, null, $this.cfg.effectDuration);
+                    PrimeFaces.effects.hide(oldActions, $this.cfg.effect, { duration: $this.cfg.effectDuration });
                 }
 
                 newHeader.addClass('ui-tabs-selected ui-state-active');
-                newPanel.show($this.cfg.effect, null, $this.cfg.effectDuration, function() {
+                PrimeFaces.effects.show(newPanel, $this.cfg.effect, { duration: $this.cfg.effectDuration, complete: function() {
                     $this.postTabShow(newPanel);
-                });
+                } });
                 if(hasNewActions) {
-                    newActions.show($this.cfg.effect, null, $this.cfg.effectDuration);
+                    PrimeFaces.effects.show(newActions, $this.cfg.effect, { duration: $this.cfg.effectDuration });
                 }
-            });
+            } });
         }
         else {
             oldHeader.removeClass('ui-tabs-selected ui-state-active');

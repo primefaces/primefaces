@@ -1,0 +1,8 @@
+/*
+ * Theme "metal" (primefaces.THEME = metal): the tokens of the preset and its density, built to primefaces-metal/theme.css.
+ * The CSS of the components (components.css, ...) is the same for every theme.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./presets/metal.css");
+@import url("./density/metal.css");

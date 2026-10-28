@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.inputnumber;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -47,6 +48,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = InputNumber.DEFAULT_RENDERER, componentFamily = InputNumber.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
     // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin

@@ -1,0 +1,33 @@
+/*
+ * Helpers and overrides of the base rules in base/interactions.css (vendor layer: draggable, resizable, sortable).
+ */
+/*
+ * p-hidden-accessible: visually hidden, but still focusable and read by screen readers (the native inputs behind the
+ * checkbox, radio, select, ... widgets). ui-helper-hidden-accessible: the jQuery UI name, only for application markup.
+ */
+.p-hidden-accessible,
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/* not in the vendor layer: the default se handle also carries .ui-icon, whose display (common.css) beats that layer */
+.ui-resizable-disabled .ui-resizable-handle {
+    display: none;
+}
+
+/* p:resizable: the resized content grows with the container. In :where(), so the display of every component wins */
+:where(.ui-resizable) {
+    display: flex;
+    flex-direction: column;
+
+    > .ui-widget-content {
+        flex-grow: 1;
+    }
+}

@@ -70,28 +70,32 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         assertEquals(componentsCss.getTagName(), "link");
         assertTrue(componentsCss.getDomAttribute("href").contains("components.css"));
 
+        // the CSS of p:datePicker (loaded with its script)
+        WebElement datePickerCss = headElements.get(4);
+        assertEquals(datePickerCss.getTagName(), "link");
+        assertTrue(datePickerCss.getDomAttribute("href").contains("datepicker/datepicker.css"));
+
         // Title
-        WebElement titleTag =  headElements.get(4);
+        WebElement titleTag =  headElements.get(5);
         assertEquals(titleTag.getTagName(), "title");
 
         // <f:facet name="last">
-        WebElement webMeta = headElements.get(5);
+        WebElement webMeta = headElements.get(6);
         assertEquals(webMeta.getTagName(), "meta");
         assertEquals(webMeta.getDomAttribute("name"), "mobile-web-app-capable");
         assertEquals(webMeta.getDomAttribute("content"), "yes");
 
         // Scripts in order
-        assertEquals(10, scriptElements.size());
+        assertEquals(9, scriptElements.size());
         assertTrue(scriptElements.get(0).getDomAttribute("src").contains("jquery/jquery.js"));
-        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("jquery/jquery-plugins.js"));
-        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("core.js"));
-        assertTrue(scriptElements.get(3).getDomAttribute("src").contains("components.js"));
-        assertTrue(scriptElements.get(4).getDomAttribute("src").contains("inputmask/inputmask.js"));
-        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("datepicker/datepicker.js"));
-        assertTrue(scriptElements.get(6).getDomAttribute("src").contains("locales/locale-de.js"));
-        assertTrue(scriptElements.get(7).getDomAttribute("src").contains("moment/moment.js"));
-        assertTrue(scriptElements.get(8).getDomAttribute("src").contains("locales/locale-en.js"));
-        assertTrue(scriptElements.get(9).getDomAttribute("src").contains("locales/locale-fr.js"));
+        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("core.js"));
+        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("components.js"));
+        assertTrue(scriptElements.get(3).getDomAttribute("src").contains("inputmask/inputmask.js"));
+        assertTrue(scriptElements.get(4).getDomAttribute("src").contains("datepicker/datepicker.js"));
+        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("locales/locale-de.js"));
+        assertTrue(scriptElements.get(6).getDomAttribute("src").contains("moment/moment.js"));
+        assertTrue(scriptElements.get(7).getDomAttribute("src").contains("locales/locale-en.js"));
+        assertTrue(scriptElements.get(8).getDomAttribute("src").contains("locales/locale-fr.js"));
         assertNoJavascriptErrors();
     }
 

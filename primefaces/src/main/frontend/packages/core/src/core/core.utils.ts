@@ -2,7 +2,9 @@ import { core } from "./core.js";
 import { ajax } from "./core.ajax.js";
 import { env } from "./core.env.js";
 import { expressions } from "./core.expressions.js";
+import { position } from "./core.position.js";
 import type { BaseWidget, DynamicOverlayWidget } from "./core.widget.js";
+import { scrollParent as closestScrollParent } from "../interaction/interaction.js";
 
 /**
  * The class with various utilities needed by PrimeFaces.
@@ -58,8 +60,8 @@ export class Utils {
      * @return The container DOM element to which the overlay is to be appended.
      */
     resolveDynamicOverlayContainer<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget): JQuery {
         return widget.cfg.appendTo
             ? expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.jq, widget.cfg.appendTo)
@@ -94,8 +96,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     cleanupDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         if (widget.cfg.appendTo) {
             var overlays = $("[id='" + overlayId + "']");
@@ -116,8 +118,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     removeDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery | null, overlayId: string, appendTo: JQuery): void {
         appendTo.children("[id='" +  overlayId + "']").not(overlay ?? (() => false)).remove();
     }
@@ -133,8 +135,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     appendDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         var elementParent = overlay.parent();
 
@@ -333,13 +335,16 @@ export class Utils {
         widget: BaseWidget,
         hideNamespace: string,
         overlay: JQuery,
-        resolveIgnoredElementsCallback: PrimeType.OverlayResolveIgnoredElementCallback | undefined | null,
-        hideCallback: PrimeType.OverlayHideCallback
-    ): PrimeType.Unbindable {
+        resolveIgnoredElementsCallback: PrimeFacesTypes.OverlayResolveIgnoredElementCallback | undefined | null,
+        hideCallback: PrimeFacesTypes.OverlayHideCallback
+    ): PrimeFacesTypes.Unbindable {
 
-        widget.addDestroyListener(() => {
+        const unbindHideHandler = () => {
             $(document).off(hideNamespace);
-        });
+        };
+
+        widget.addDestroyListener(unbindHideHandler);
+        widget.addRefreshListener(unbindHideHandler);
 
         $(document).off(hideNamespace).on(hideNamespace, (e) => {
             if (overlay.is(':hidden') || overlay.css('visibility') === 'hidden') {
@@ -365,9 +370,7 @@ export class Utils {
         });
 
         return {
-            unbind: () => {
-                $(document).off(hideNamespace);
-            }
+            unbind: unbindHideHandler
         };
     }
 
@@ -386,9 +389,9 @@ export class Utils {
         widget: BaseWidget,
         resizeNamespace: string,
         element: JQuery | undefined | null,
-        resizeCallback: PrimeType.ResizeCallback,
+        resizeCallback: PrimeFacesTypes.ResizeCallback,
         params?: string
-    ): PrimeType.Unbindable {
+    ): PrimeFacesTypes.Unbindable {
 
         const unbindResizeHandler = () => {
             $(window).off(resizeNamespace);
@@ -425,8 +428,8 @@ export class Utils {
     registerMutationObserver(
         widget: BaseWidget,
         element: JQuery | HTMLElement,
-        mutationCallback: PrimeType.MutationCallback,
-    ): PrimeType.Controllable {
+        mutationCallback: PrimeFacesTypes.MutationCallback,
+    ): PrimeFacesTypes.Controllable {
         const domElement = this.isJQuery(element) ? element.get(0) : element;
 
         if (domElement === undefined) {
@@ -506,8 +509,8 @@ export class Utils {
      * @return The overlay that was passed to this function.
      */
     registerDynamicOverlay<
-        Cfg extends PrimeType.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeType.widget.DynamicOverlayFeatureWidget<Cfg>
+        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
+        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
     >(widget: Widget, overlay: JQuery, overlayId: string): JQuery {
 
         if (widget.cfg.appendTo) {
@@ -540,10 +543,9 @@ export class Utils {
     registerScrollHandler(
         widget: BaseWidget,
         scrollNamespace: string,
-        scrollCallback: PrimeType.ScrollCallback,
-    ): PrimeType.Unbindable {
-        let widgetJq = widget.getJQ();
-        let scrollParent: JQuery<any> | null = (widgetJq && typeof widgetJq.scrollParent === 'function') ? widgetJq.scrollParent() : null;
+        scrollCallback: PrimeFacesTypes.ScrollCallback,
+    ): PrimeFacesTypes.Unbindable {
+        let scrollParent: JQuery<any> | null = this.getScrollParent(widget.getJQ());
 
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
             scrollParent = $(window);
@@ -584,31 +586,61 @@ export class Utils {
         widget: BaseWidget,
         scrollNamespace: string,
         element: JQuery | undefined,
-        scrollCallback: PrimeType.ScrollCallback
-    ): PrimeType.Unbindable {
+        scrollCallback: PrimeFacesTypes.ScrollCallback
+    ): PrimeFacesTypes.Unbindable {
         const scrollableParents = this.getScrollableParents((element ?? widget.getJQ()).get(0));
 
         const scrollHandler = (e: JQuery.TriggeredEvent) => {
             scrollCallback(e);
         };
 
+        const unbindScrollHandler = () => {
+            for (const scrollParent of scrollableParents) {
+                $(scrollParent).off(scrollNamespace, scrollHandler);
+            }
+        };
+
+        widget.addDestroyListener(unbindScrollHandler);
+        widget.addRefreshListener(unbindScrollHandler);
+
         for (const scrollParent of scrollableParents) {
-            var $scrollParent = $(scrollParent);
-
-            widget.addDestroyListener(() => {
-                $scrollParent.off(scrollNamespace, scrollHandler);
-            });
-
-            $scrollParent.off(scrollNamespace, scrollHandler).on(scrollNamespace, scrollHandler);
+            $(scrollParent).off(scrollNamespace, scrollHandler).on(scrollNamespace, scrollHandler);
         }
 
         return {
-            unbind: () => {
-                for (const scrollParent of scrollableParents) {
-                    $(scrollParent).off(scrollNamespace, scrollHandler);
-                }
-            }
+            unbind: unbindScrollHandler
         };
+    }
+
+    /**
+     * Finds the closest scrollable parent of an element, as the former jQuery UI `$.fn.scrollParent`.
+     * @param jq The element whose scroll parent to find.
+     * @returns The closest scrollable parent, or the document if there is none or the element is fixed. `null` when
+     * no element is given.
+     * @since 17.0.0
+     */
+    getScrollParent(jq: JQuery | undefined | null): JQuery<any> | null {
+        if (!jq || !jq.length) {
+            return null;
+        }
+        const parent = closestScrollParent(jq);
+        return parent ? $(parent) : $(jq[0]!.ownerDocument || document);
+    }
+
+    /**
+     * Positions an element relative to another element, a mouse event or the window, as the former jQuery UI
+     * `$.fn.position(options)`.
+     *
+     * ```js
+     * PrimeFaces.utils.position($('#panel'), { my: 'left top', at: 'left bottom', of: $('#button'), collision: 'flipfit' });
+     * ```
+     * @param element The elements to position.
+     * @param options The options for positioning, e.g. `my`, `at` and `of`.
+     * @returns The given elements, for chaining.
+     * @since 17.0.0
+     */
+    position<T extends JQuery<any>>(element: T, options: PrimeFacesTypes.utils.PositionOptions | null | undefined): T {
+        return position(element, options);
     }
 
     /**
@@ -670,8 +702,8 @@ export class Utils {
      * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
      */
     unbindScrollHandler(widget: BaseWidget, scrollNamespace: string): void {
-        var scrollParent = widget.getJQ().scrollParent();
-        if (this.isScrollParentWindow(scrollParent)) {
+        var scrollParent = this.getScrollParent(widget.getJQ());
+        if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
             $(window).off(scrollNamespace); // Unbind directly from window
         } else {
             scrollParent.off(scrollNamespace);
@@ -743,6 +775,70 @@ export class Utils {
     }
     
     /**
+     * Gets the selected text of a text input or textarea, formerly `$.fn.getSelection` of the rangyinputs plugin.
+     *
+     * ```js
+     * const selection = PrimeFaces.utils.getTextSelection($('#text'));
+     * if (selection) {
+     *     console.log(selection.start, selection.end, selection.text);
+     * }
+     * ```
+     * @param element The input or textarea, the first one of a jQuery instance.
+     * @returns The start and end of the selection (equal when only the caret is placed), its length and text, or
+     * `null` if there is no element or it doesn't support a text selection (e.g. `type="number"` or a checkbox).
+     * @since 17.0.0
+     */
+    getTextSelection(element: JQuery<any> | Element | null | undefined): PrimeFacesTypes.utils.TextSelection | null {
+        const el = this.toTextField(element);
+        if (!el || el.selectionStart === null || el.selectionEnd === null) {
+            return null;
+        }
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        return { start, end, length: end - start, text: el.value.substring(start, end) };
+    }
+
+    /**
+     * Selects the given range of the text of a text input or textarea, formerly `$.fn.setSelection` of the
+     * rangyinputs plugin. Does nothing if the element doesn't support a text selection.
+     * @param element The input or textarea, the first one of a jQuery instance.
+     * @param start The index of the first selected character.
+     * @param end The index after the last selected character, `start` (only places the caret) by default.
+     * @since 17.0.0
+     */
+    setTextSelection(element: JQuery<any> | Element | null | undefined, start: number, end: number = start): void {
+        const el = this.toTextField(element);
+        if (el && el.selectionStart !== null) {
+            el.setSelectionRange(start, end);
+        }
+    }
+
+    /**
+     * Replaces the selected text of a text input or textarea and places the caret after the inserted text, formerly
+     * `$.fn.replaceSelectedText` of the rangyinputs plugin. Does nothing if the element doesn't support a text
+     * selection.
+     * @param element The input or textarea, the first one of a jQuery instance.
+     * @param text The text to insert in place of the selection.
+     * @since 17.0.0
+     */
+    replaceTextSelection(element: JQuery<any> | Element | null | undefined, text: string): void {
+        const el = this.toTextField(element);
+        if (el && el.selectionStart !== null) {
+            el.setRangeText(text, el.selectionStart, el.selectionEnd ?? el.selectionStart, 'end');
+        }
+    }
+
+    /**
+     * Gets the text input or textarea of the given element.
+     * @param element An element, the first one of a jQuery instance.
+     * @returns The input or textarea, `null` if the element is neither of both.
+     */
+    private toTextField(element: JQuery<any> | Element | null | undefined): HTMLInputElement | HTMLTextAreaElement | null {
+        const el = element instanceof Element ? element : element?.[0];
+        return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement ? el : null;
+    }
+
+    /**
      * Is this CMD on MacOs or CTRL key on other OSes. 
      * @param e The key event that occurred.
      * @return `true` if the key is a meta key, `false` or `undefined` otherwise.
@@ -750,11 +846,11 @@ export class Utils {
     isMetaKey(e: JQuery.TriggeredEvent): boolean | undefined {
         if (e.originalEvent instanceof KeyboardEvent || e.originalEvent instanceof MouseEvent || (window.TouchEvent && e.originalEvent instanceof TouchEvent)) {
             // original event returns the metaKey value at the time the event was generated
-            return env.browser?.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
+            return env.browser.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
         }
         else {
             // jQuery returns the real time value of the meta key
-            return env.browser?.mac ? e.metaKey : e.ctrlKey;
+            return env.browser.mac ? e.metaKey : e.ctrlKey;
         }
     }
 
@@ -916,14 +1012,17 @@ export class Utils {
     enableAnimations(): void {
         $.fx.off = false;
         core.animationEnabled = true;
+        document.documentElement.removeAttribute('data-p-animations');
     }
 
     /**
-     * Disables CSS and jQuery animation.
+     * Disables CSS and jQuery animation. The theme shows entering content (messages, data view items, file upload
+     * rows) without fading it in (`data-p-animations="off"` on the html element).
      */
     disableAnimations(): void {
         $.fx.off = true;
         core.animationEnabled = false;
+        document.documentElement.setAttribute('data-p-animations', 'off');
     }
 
     /**
@@ -934,7 +1033,7 @@ export class Utils {
      * when the element gets shown and hidden. If the given element or className property is `undefined` or `null`,
      * this function returns `null`.
      */
-    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeType.CssTransitionHandler | null {
+    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFacesTypes.CssTransitionHandler | null {
         if (element && className != null) {
             const classNameStates = {
                'enter': className + '-enter',
@@ -944,10 +1043,10 @@ export class Utils {
                'exitActive': className + '-exit-active',
                'exitDone': className + '-exit-done'
             };
-            const callTransitionEvent = <K extends keyof PrimeType.CssTransitionCallback>(
-                callbacks: PrimeType.CssTransitionCallback | null | undefined,
+            const callTransitionEvent = <K extends keyof PrimeFacesTypes.CssTransitionCallback>(
+                callbacks: PrimeFacesTypes.CssTransitionCallback | null | undefined,
                 key: K,
-                param: ThisParameterType<Exclude<PrimeType.CssTransitionCallback[K], undefined>>
+                param: ThisParameterType<Exclude<PrimeFacesTypes.CssTransitionCallback[K], undefined>>
             ) => {
                 callbacks?.[key]?.call(param as any);
             };
@@ -1437,5 +1536,24 @@ export function globalUtilsSetup(): void {
     if (env.prefersReducedMotion) {
         utils.disableAnimations();
         core.warn("Animations are disabled because OS has requested prefers-reduced-motion: reduce")
+    }
+}
+
+declare global {
+    namespace PrimeFacesTypes.utils {
+        /**
+         * The selected text of a text input or textarea, see {@link Utils.getTextSelection}.
+         * @since 17.0.0
+         */
+        export interface TextSelection {
+            /** The index of the first selected character, or of the caret if nothing is selected. */
+            start: number;
+            /** The index after the last selected character, equal to `start` if nothing is selected. */
+            end: number;
+            /** The number of selected characters. */
+            length: number;
+            /** The selected text. */
+            text: string;
+        }
     }
 }

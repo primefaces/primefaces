@@ -50,7 +50,6 @@ import jakarta.faces.validator.ValidatorException;
 @FacesComponentInfo(description = "SelectOneMenu is an extended version of the standard Faces SelectOneMenu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SelectOneMenu extends SelectOneMenuBaseImpl {
@@ -61,7 +60,7 @@ public class SelectOneMenu extends SelectOneMenuBaseImpl {
     public static final String RTL_CLASS = "ui-selectonemenu-rtl";
     public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield";
     public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default";
-    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content p-hidden ui-input-overlay";
     public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
     public static final String RTL_PANEL_CLASS = "ui-selectonemenu-panel-rtl";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";

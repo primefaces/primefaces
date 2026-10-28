@@ -1,0 +1,236 @@
+/*
+ * Schedule: p:schedule (FullCalendar; PrimeFaces schedule tokens, toolbar buttons use the primary button tokens)
+ *
+ * The FullCalendar CSS is loaded in the vendor layer. FullCalendar 5 reads its colors from --fc-* custom properties,
+ * they are mapped to tokens on .fc; the remaining rules cover sizes, radius, focus and the header cells.
+ */
+.fc {
+    --fc-small-font-size: var(--p-schedule-small-font-size);
+    --fc-page-bg-color: var(--p-schedule-background);
+    --fc-neutral-bg-color: var(--p-schedule-neutral-background);
+    --fc-neutral-text-color: var(--p-schedule-neutral-color);
+    --fc-border-color: var(--p-schedule-border-color);
+    --fc-button-text-color: var(--p-button-primary-color);
+    --fc-button-bg-color: var(--p-button-primary-background);
+    --fc-button-border-color: var(--p-button-primary-border-color);
+    --fc-button-hover-bg-color: var(--p-button-primary-hover-background);
+    --fc-button-hover-border-color: var(--p-button-primary-hover-border-color);
+    --fc-button-active-bg-color: var(--p-button-primary-active-background);
+    --fc-button-active-border-color: var(--p-button-primary-active-border-color);
+    --fc-event-bg-color: var(--p-schedule-event-background);
+    --fc-event-border-color: var(--p-schedule-event-border-color);
+    --fc-event-text-color: var(--p-schedule-event-color);
+    --fc-event-selected-overlay-color: var(--p-schedule-event-selected-overlay);
+    --fc-more-link-bg-color: var(--p-schedule-more-link-background);
+    --fc-more-link-text-color: var(--p-schedule-more-link-color);
+    --fc-non-business-color: var(--p-schedule-non-business-background);
+    --fc-bg-event-color: var(--p-schedule-event-background);
+    --fc-highlight-color: var(--p-schedule-highlight-background);
+    --fc-today-bg-color: var(--p-schedule-today-background);
+    --fc-now-indicator-color: var(--p-schedule-now-indicator-color);
+    --fc-list-event-hover-bg-color: var(--p-schedule-list-event-hover-background);
+
+    background: var(--p-schedule-background);
+    color: var(--p-schedule-color);
+
+    a {
+        color: inherit;
+    }
+
+    .fc-toolbar {
+        &.fc-header-toolbar,
+        &.fc-footer-toolbar {
+            margin: var(--p-schedule-toolbar-margin);
+            gap: var(--p-schedule-toolbar-gap);
+        }
+
+        .fc-button {
+            padding: var(--p-button-padding-y) var(--p-button-padding-x);
+            font-size: var(--p-button-font-size);
+            font-weight: var(--p-button-label-font-weight);
+            line-height: var(--p-typography-line-height);
+            background: var(--p-button-primary-background);
+            color: var(--p-button-primary-color);
+            border: 1px solid var(--p-button-primary-border-color);
+            border-radius: var(--p-button-border-radius);
+            outline-color: transparent;
+            box-shadow: none;
+            transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),
+                border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration),
+                box-shadow var(--p-button-transition-duration);
+        }
+
+        .fc-button:not(:disabled):hover {
+            background: var(--p-button-primary-hover-background);
+            border-color: var(--p-button-primary-hover-border-color);
+            color: var(--p-button-primary-hover-color);
+        }
+
+        .fc-button:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .fc-button:focus-visible {
+            outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--p-button-primary-focus-ring-color);
+            outline-offset: var(--p-button-focus-ring-offset);
+            box-shadow: var(--p-button-primary-focus-ring-shadow);
+        }
+
+        .fc-button:not(:disabled):active,
+        .fc-button:not(:disabled).fc-button-active {
+            background: var(--p-button-primary-active-background);
+            border-color: var(--p-button-primary-active-border-color);
+            color: var(--p-button-primary-active-color);
+        }
+
+        .fc-button:disabled {
+            opacity: var(--p-disabled-opacity);
+        }
+
+        .fc-button .fc-icon {
+            font-size: var(--p-icon-size);
+        }
+
+        .fc-button-group > .fc-button:not(:first-child) {
+            border-start-start-radius: 0;
+            border-end-start-radius: 0;
+        }
+
+        .fc-button-group > .fc-button:not(:last-child) {
+            border-start-end-radius: 0;
+            border-end-end-radius: 0;
+        }
+    }
+
+    .fc-toolbar-title {
+        font-size: var(--p-schedule-title-font-size);
+        font-weight: var(--p-schedule-title-font-weight);
+    }
+
+    .fc-scrollgrid {
+        border-color: var(--p-schedule-border-color);
+    }
+
+    th {
+        background: var(--p-schedule-header-cell-background);
+        color: var(--p-schedule-header-cell-color);
+        border-color: var(--p-schedule-border-color);
+        font-weight: var(--p-schedule-header-cell-font-weight);
+    }
+
+    td {
+        border-color: var(--p-schedule-border-color);
+    }
+
+    .fc-col-header-cell-cushion {
+        padding: var(--p-schedule-header-cell-padding);
+    }
+
+    .fc-daygrid-day-number {
+        padding: var(--p-schedule-day-number-padding);
+        color: var(--p-schedule-day-number-color);
+    }
+
+    .fc-day-other .fc-daygrid-day-top {
+        opacity: var(--p-schedule-other-month-opacity);
+    }
+
+    .fc-daygrid-day.fc-day-today,
+    .fc-timegrid-col.fc-day-today {
+        background-color: var(--p-schedule-today-background);
+    }
+
+    .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+        color: var(--p-schedule-today-color);
+    }
+
+    /* events */
+    .fc-h-event,
+    .fc-v-event {
+        border-radius: var(--p-schedule-event-border-radius);
+    }
+
+    .fc-daygrid-event {
+        border-radius: var(--p-schedule-event-border-radius);
+    }
+
+    /* segments of an event spanning several days / columns are square where they continue */
+    .fc-daygrid-block-event:not(.fc-event-start) {
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+    }
+
+    .fc-daygrid-block-event:not(.fc-event-end) {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    .fc-v-event:not(.fc-event-start) {
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
+    }
+
+    .fc-v-event:not(.fc-event-end) {
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    .fc-daygrid-event-dot {
+        border-color: var(--p-schedule-event-dot-color);
+    }
+
+    .fc-daygrid-dot-event:hover,
+    .fc-daygrid-dot-event.fc-event-mirror {
+        background: var(--p-schedule-neutral-background);
+    }
+
+    /* list view */
+    .fc-list {
+        border-color: var(--p-schedule-border-color);
+    }
+
+    .fc-list-day-cushion,
+    .fc-list-sticky .fc-list-day > * {
+        background: var(--p-schedule-list-day-background);
+    }
+
+    .fc-list-event-dot {
+        border-color: var(--p-schedule-event-dot-color);
+    }
+
+    .fc-list-empty {
+        background: var(--p-schedule-neutral-background);
+        color: var(--p-schedule-neutral-color);
+    }
+
+    /* "more" popover */
+    .fc-popover {
+        background: var(--p-schedule-popover-background);
+        color: var(--p-schedule-popover-color);
+        border: 1px solid var(--p-schedule-popover-border-color);
+        border-radius: var(--p-schedule-popover-border-radius);
+        box-shadow: var(--p-schedule-popover-shadow);
+        overflow: hidden;
+
+        .fc-popover-header {
+            background: var(--p-schedule-popover-header-background);
+            padding: var(--p-schedule-popover-padding);
+        }
+
+        .fc-popover-body {
+            padding: var(--p-schedule-popover-padding);
+        }
+    }
+}
+
+/* tooltip of p:schedule (tooltip="true"), created by the widget without role (the p:mindmap tooltip has no role either) */
+.ui-tooltip:not([role], .ui-mindmap-tooltip) {
+    background: var(--p-schedule-tooltip-background);
+    color: var(--p-schedule-tooltip-color);
+    padding: var(--p-schedule-tooltip-padding);
+    font-size: var(--p-schedule-tooltip-font-size);
+    border: 0 none;
+    border-radius: var(--p-schedule-tooltip-border-radius);
+    box-shadow: var(--p-schedule-tooltip-shadow);
+}

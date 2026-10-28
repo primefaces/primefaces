@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.terminal;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.renderkit.CoreRenderer;
@@ -37,6 +38,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Terminal.DEFAULT_RENDERER, componentFamily = Terminal.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TerminalRenderer extends CoreRenderer<Terminal> {
 
     @Override

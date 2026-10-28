@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.message;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -43,6 +44,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Message.DEFAULT_RENDERER, componentFamily = Message.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MessageRenderer extends UINotificationRenderer<Message> {
 
     @Override
@@ -73,7 +75,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
         String style = component.getStyle();
         StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
                 .add("ui-message", component.getStyleClass())
-                .add("tooltip".equals(display), "ui-helper-hidden");
+                .add("tooltip".equals(display), "p-hidden");
 
         Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
@@ -101,7 +103,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
             if (shouldRender(component, msg, severityName)) {
 
                 styleClassBuilder.add("ui-message-" + severityName + " ui-widget");
-                styleClassBuilder.add(iconOnly, "ui-message-icon-only ui-helper-clearfix");
+                styleClassBuilder.add(iconOnly, "ui-message-icon-only");
 
                 writer.writeAttribute("class", styleClassBuilder.build(), null);
 

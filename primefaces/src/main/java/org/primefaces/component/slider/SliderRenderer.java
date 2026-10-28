@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.slider;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -39,6 +41,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Slider.DEFAULT_RENDERER, componentFamily = Slider.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SliderRenderer extends CoreRenderer<Slider> {
 
     @Override
@@ -96,7 +99,8 @@ public class SliderRenderer extends CoreRenderer<Slider> {
             }
 
             wb.attr("input", inputMin.getClientId(context) + "," + inputMax.getClientId(context))
-                    .append(",values:[").append(inputMinValue).append(",").append(inputMaxValue).append("]");
+                    .append(",values:[\"").append(EscapeUtils.forJavaScript(inputMinValue))
+                    .append("\",\"").append(EscapeUtils.forJavaScript(inputMaxValue)).append("\"]");
         }
         else {
             UIComponent input = getTarget(context, component, component.getFor());

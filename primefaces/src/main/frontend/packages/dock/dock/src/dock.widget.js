@@ -25,8 +25,8 @@ PrimeFaces.widget.Dock = class Dock extends PrimeFaces.widget.BaseWidget {
     init(cfg) {
         super.init(cfg);
 
-        this.items = $('.ui-dock ul li');
-        this.links = $(".ui-dock li a");
+        this.items = this.jq.find('ul li');
+        this.links = this.jq.find('li a');
 
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.preventScrolling();

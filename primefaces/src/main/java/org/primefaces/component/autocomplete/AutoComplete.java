@@ -60,7 +60,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentHandler(AutoCompleteHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class AutoComplete extends AutoCompleteBaseImpl {
@@ -72,7 +71,7 @@ public class AutoComplete extends AutoCompleteBaseImpl {
     public static final String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default";
     public static final String INPUT_WITH_DROPDOWN_CLASS = "ui-autocomplete-input ui-autocomplete-dd-input ui-inputfield ui-widget ui-state-default";
     public static final String DROPDOWN_CLASS = "ui-autocomplete-dropdown ui-button ui-widget ui-state-default ui-button-icon-only";
-    public static final String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content p-hidden ui-input-overlay";
     public static final String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget";
     public static final String TABLE_CLASS = "ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget";
     public static final String ITEM_CLASS = "ui-autocomplete-item ui-autocomplete-list-item";

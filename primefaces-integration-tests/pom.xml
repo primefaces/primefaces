@@ -23,7 +23,7 @@
         <webdriver.headless>false</webdriver.headless>
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
-        <primefaces.THEME>aura-light-emerald</primefaces.THEME>
+        <primefaces.THEME>aura</primefaces.THEME>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
 
@@ -32,7 +32,7 @@
         <!-- dependency versions -->
         <h2.version>2.5.252</h2.version>
         <hibernate-core.version>7.4.8.Final</hibernate-core.version>
-        <hibernate-validator.version>9.1.4.Final</hibernate-validator.version>
+        <hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
         <resteasy.version>7.0.5.Final</resteasy.version>
         <jakarta.version>11.0.0</jakarta.version>
         <weld.version>6.0.4.Final</weld.version>
@@ -46,11 +46,6 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces-themes</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -422,19 +417,31 @@
         <profile>
             <id>theme-aura</id>
             <properties>
-                <primefaces.THEME>aura-light-emerald</primefaces.THEME>
+                <primefaces.THEME>aura</primefaces.THEME>
             </properties>
         </profile>
         <profile>
-            <id>theme-nova</id>
+            <id>theme-lara</id>
             <properties>
-                <primefaces.THEME>nova-light</primefaces.THEME>
+                <primefaces.THEME>lara</primefaces.THEME>
             </properties>
         </profile>
         <profile>
-            <id>theme-saga</id>
+            <id>theme-nora</id>
             <properties>
-                <primefaces.THEME>saga-blue</primefaces.THEME>
+                <primefaces.THEME>nora</primefaces.THEME>
+            </properties>
+        </profile>
+        <profile>
+            <id>theme-metal</id>
+            <properties>
+                <primefaces.THEME>metal</primefaces.THEME>
+            </properties>
+        </profile>
+        <profile>
+            <id>theme-glass</id>
+            <properties>
+                <primefaces.THEME>glass</primefaces.THEME>
             </properties>
         </profile>
         <profile>

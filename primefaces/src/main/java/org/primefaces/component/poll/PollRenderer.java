@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.poll;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -36,6 +37,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Poll.DEFAULT_RENDERER, componentFamily = Poll.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PollRenderer extends CoreRenderer<Poll> {
 
     @Override

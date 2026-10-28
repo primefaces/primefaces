@@ -45,5 +45,8 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
   - `csp` - enabled Content Security Policy
   - `uploader-native` - FileUpload configured to use the native servlet implementation
   - `uploader-commons` - FileUpload configured to use the Apache commons-fileupload
-  - `theme-nova` - Nova theme
-  - `theme-saga` - Saga theme
+  - `theme-aura` - Aura theme (default)
+  - `theme-lara` - Lara theme
+  - `theme-nora` - Nora theme
+  - `theme-metal` - Metal theme
+  - `theme-glass` - Glass theme

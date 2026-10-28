@@ -1,0 +1,261 @@
+/*
+ * PanelMenu: p:panelMenu
+ *
+ * Markup: .ui-panelmenu > .ui-panelmenu-panel
+ *           > h3.ui-panelmenu-header (ui-state-active when expanded, ui-state-hover, ui-menuitem-outline when focused)
+ *             > span.ui-icon.ui-icon-triangle-1-e|s (toggle) + span.ui-icon (submenu icon, optional) + a (label)
+ *           + .ui-panelmenu-content (p-hidden when collapsed) > ul.ui-menu-list
+ *             > li.ui-menuitem > a.ui-menuitem-link (ui-state-hover) > span.ui-menuitem-icon + span.ui-menuitem-text
+ *               (ui-menuitem-outline on the text = keyboard / click focus)
+ *             > li.ui-menu-parent > a.ui-menuitem-link > span.ui-panelmenu-icon (toggle) + span.ui-icon + span.ui-menuitem-text
+ *               + ul.ui-menu-list (p-hidden when collapsed)
+ * Like PrimeUIX: separate bordered panels with a gap, the headers look like items.
+ */
+.ui-panelmenu {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--p-panelmenu-gap);
+
+    .ui-panelmenu-panel {
+        margin: 0;
+        background: var(--p-panelmenu-panel-background);
+        color: var(--p-panelmenu-panel-color);
+        border-style: solid;
+        border-width: var(--p-panelmenu-panel-border-width);
+        border-color: var(--p-panelmenu-panel-border-color);
+        border-radius: var(--p-panelmenu-panel-border-radius);
+        padding: var(--p-panelmenu-panel-padding);
+
+        &:first-child {
+            border-width: var(--p-panelmenu-panel-first-border-width);
+            border-start-start-radius: var(--p-panelmenu-panel-first-top-border-radius);
+            border-start-end-radius: var(--p-panelmenu-panel-first-top-border-radius);
+        }
+
+        &:last-child {
+            border-width: var(--p-panelmenu-panel-last-border-width);
+            border-end-start-radius: var(--p-panelmenu-panel-last-bottom-border-radius);
+            border-end-end-radius: var(--p-panelmenu-panel-last-bottom-border-radius);
+        }
+    }
+
+    .ui-panelmenu-header {
+        cursor: pointer;
+        position: relative;
+        margin: 0;
+
+        &.ui-state-disabled,
+        &.ui-state-disabled a {
+            cursor: default;
+        }
+    }
+
+    /* header: looks like an item */
+    h3.ui-panelmenu-header {
+        display: flex;
+        align-items: center;
+        gap: var(--p-panelmenu-item-gap);
+        padding: var(--p-panelmenu-item-padding);
+        background: transparent;
+        color: var(--p-panelmenu-item-color);
+        border: 0 none;
+        border-radius: var(--p-panelmenu-item-border-radius);
+        font-size: var(--p-panelmenu-item-label-font-size);
+        font-weight: var(--p-panelmenu-item-label-font-weight);
+        -webkit-user-select: none;
+        user-select: none;
+        /* also hides the ui-menuitem-outline the widget sets on every focus (click too), :focus-visible marks keyboard focus */
+        outline: 0 none;
+        transition: background var(--p-panelmenu-transition-duration), color var(--p-panelmenu-transition-duration),
+            outline-color var(--p-panelmenu-transition-duration), box-shadow var(--p-panelmenu-transition-duration);
+
+        a {
+            display: block;
+            flex: 1 1 auto;
+            padding: 0;
+            outline: 0 none;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .ui-icon {
+            color: var(--p-panelmenu-item-icon-color);
+            font-size: var(--p-panelmenu-item-icon-size);
+        }
+
+        /* toggle icon */
+        .ui-icon.ui-icon-triangle-1-e,
+        .ui-icon.ui-icon-triangle-1-s {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+            color: var(--p-panelmenu-submenu-icon-color);
+        }
+
+        .ui-icon.ui-icon-triangle-1-e::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-panelmenu-header-collapsed-icon) center / contain no-repeat;
+        }
+
+        .ui-icon.ui-icon-triangle-1-s::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-panelmenu-header-expanded-icon) center / contain no-repeat;
+        }
+
+        &:not(.ui-state-disabled):hover,
+        &.ui-state-hover,
+        &:not(.ui-state-disabled):focus-visible,
+        &:not(.ui-state-disabled):has(> a:focus-visible) {
+            background: var(--p-panelmenu-item-focus-background);
+            color: var(--p-panelmenu-item-focus-color);
+        }
+
+        &:not(.ui-state-disabled):hover .ui-icon,
+        &.ui-state-hover .ui-icon,
+        &:not(.ui-state-disabled):focus-visible .ui-icon,
+        &:not(.ui-state-disabled):has(> a:focus-visible) .ui-icon {
+            color: var(--p-panelmenu-item-icon-focus-color);
+        }
+
+        &:not(.ui-state-disabled):hover .ui-icon.ui-icon-triangle-1-e,
+        &:not(.ui-state-disabled):hover .ui-icon.ui-icon-triangle-1-s,
+        &.ui-state-hover .ui-icon.ui-icon-triangle-1-e,
+        &.ui-state-hover .ui-icon.ui-icon-triangle-1-s,
+        &:not(.ui-state-disabled):focus-visible .ui-icon.ui-icon-triangle-1-e,
+        &:not(.ui-state-disabled):has(> a:focus-visible) .ui-icon.ui-icon-triangle-1-e,
+        &:not(.ui-state-disabled):focus-visible .ui-icon.ui-icon-triangle-1-s,
+        &:not(.ui-state-disabled):has(> a:focus-visible) .ui-icon.ui-icon-triangle-1-s {
+            color: var(--p-panelmenu-submenu-icon-focus-color);
+        }
+    }
+
+    .ui-panelmenu-content {
+        position: relative;
+        overflow: auto;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        color: inherit;
+        border: 0 none;
+    }
+
+    .ui-menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .ui-menu-list {
+            padding: 0;
+            padding-inline-start: var(--p-panelmenu-submenu-indent);
+            margin: 0;
+        }
+    }
+
+    .ui-menuitem {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ui-menuitem-link {
+        outline: none;
+        text-decoration: none;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .ui-panelmenu-content .ui-menuitem-link {
+        display: flex;
+        align-items: center;
+        gap: var(--p-panelmenu-item-gap);
+        padding: var(--p-panelmenu-item-padding);
+        color: var(--p-panelmenu-item-color);
+        border: 0 none;
+        border-radius: var(--p-panelmenu-item-border-radius);
+        line-height: inherit;
+        -webkit-user-select: none;
+        user-select: none;
+        overflow: hidden;
+        outline-color: transparent;
+        transition: background var(--p-panelmenu-transition-duration), color var(--p-panelmenu-transition-duration),
+            outline-color var(--p-panelmenu-transition-duration), box-shadow var(--p-panelmenu-transition-duration);
+
+        > span.ui-icon {
+            color: var(--p-panelmenu-item-icon-color);
+            font-size: var(--p-panelmenu-item-icon-size);
+        }
+
+        /* submenu toggle icon */
+        > span.ui-icon.ui-panelmenu-icon {
+            color: var(--p-panelmenu-submenu-icon-color);
+
+            &.ui-icon-triangle-1-e,
+            &.ui-icon-triangle-1-s {
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+            }
+
+            &.ui-icon-triangle-1-e::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-panelmenu-submenu-collapsed-icon) center / contain no-repeat;
+            }
+
+            &.ui-icon-triangle-1-s::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-panelmenu-submenu-expanded-icon) center / contain no-repeat;
+            }
+        }
+
+        .ui-menuitem-text {
+            display: inline-block;
+            font-size: var(--p-panelmenu-item-label-font-size);
+            font-weight: var(--p-panelmenu-item-label-font-weight);
+        }
+
+        /* hover and focused item (the widget puts ui-menuitem-outline on the text of the focused item) */
+        &:not(.ui-state-disabled):hover,
+        &.ui-state-hover,
+        &:has(> .ui-menuitem-outline),
+        &:not(.ui-state-disabled):focus-visible {
+            background: var(--p-panelmenu-item-focus-background);
+            color: var(--p-panelmenu-item-focus-color);
+        }
+
+        .ui-menuitem-text.ui-menuitem-outline {
+            outline: 0 none;
+        }
+
+        &:not(.ui-state-disabled):hover span.ui-icon,
+        &.ui-state-hover span.ui-icon,
+        &:has(> .ui-menuitem-outline) span.ui-icon,
+        &:not(.ui-state-disabled):focus-visible span.ui-icon {
+            color: var(--p-panelmenu-item-icon-focus-color);
+        }
+
+        &:not(.ui-state-disabled):hover span.ui-icon.ui-panelmenu-icon,
+        &.ui-state-hover span.ui-icon.ui-panelmenu-icon,
+        &:has(> .ui-menuitem-outline) span.ui-icon.ui-panelmenu-icon,
+        &:not(.ui-state-disabled):focus-visible span.ui-icon.ui-panelmenu-icon {
+            color: var(--p-panelmenu-submenu-icon-focus-color);
+        }
+
+        &:not(.ui-state-disabled):hover .ui-menuitem-text,
+        &.ui-state-hover .ui-menuitem-text,
+        &:has(> .ui-menuitem-outline) .ui-menuitem-text,
+        &:not(.ui-state-disabled):focus-visible .ui-menuitem-text {
+            color: var(--p-panelmenu-item-focus-color);
+        }
+    }
+}

@@ -32,9 +32,9 @@ import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Signature.COMPONENT_TYPE, namespace = Signature.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Signature is used to draw a signature as an input.")
+@ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "signature/signature.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "signature/signature.js")
@@ -42,7 +42,7 @@ public class Signature extends SignatureBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
+    public static final String STYLE_CLASS = "ui-signature ui-inputfield ui-inputtextarea ui-widget ui-state-default";
     public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content";
 
     @Override

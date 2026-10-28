@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Callbacks;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Badge.DEFAULT_RENDERER, componentFamily = Badge.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class BadgeRenderer extends CoreRenderer<Badge> {
 
     @Override

@@ -32,6 +32,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,36 @@ public abstract class PrimeUIData extends UIDataPatch {
     public enum PropertyKeys {
         rowIndexVar,
         lazy,
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        try {
+            super.decode(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        try {
+            super.encodeEnd(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    /**
+     * Resets the row index, so that neither the var nor a row-prefixed client id outlives the phase which set it.
+     */
+    protected void resetIterationState() {
+        // guarded: while a row is set, the data model is already cached, so this never evaluates EL again
+        if (getRowIndex() != -1) {
+            setRowIndex(-1);
+        }
     }
 
     @Override

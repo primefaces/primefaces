@@ -18,7 +18,7 @@ export function registerCommonValidators(): void {
  * Client-side validator implementation for the Faces validator
  * `jakarta.faces.Length`.
  */
-class LengthValidator implements PrimeType.validation.Validator {
+class LengthValidator implements PrimeFacesTypes.validation.Validator {
     private readonly MINIMUM_MESSAGE_ID = 'jakarta.faces.validator.LengthValidator.MINIMUM';
     private readonly MAXIMUM_MESSAGE_ID = 'jakarta.faces.validator.LengthValidator.MAXIMUM';
 
@@ -46,7 +46,7 @@ class LengthValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Faces validator
  * `jakarta.faces.LongRange`.
  */
-class LongRangeValidator implements PrimeType.validation.Validator {
+class LongRangeValidator implements PrimeFacesTypes.validation.Validator {
     private readonly MINIMUM_MESSAGE_ID = 'jakarta.faces.validator.LongRangeValidator.MINIMUM';
     private readonly MAXIMUM_MESSAGE_ID = 'jakarta.faces.validator.LongRangeValidator.MAXIMUM';
     private readonly NOT_IN_RANGE_MESSAGE_ID = 'jakarta.faces.validator.LongRangeValidator.NOT_IN_RANGE';
@@ -82,7 +82,7 @@ class LongRangeValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Faces validator
  * `jakarta.faces.DoubleRange`.
  */
-class DoubleRangeValidator implements PrimeType.validation.Validator {
+class DoubleRangeValidator implements PrimeFacesTypes.validation.Validator {
     private readonly MINIMUM_MESSAGE_ID = 'jakarta.faces.validator.DoubleRangeValidator.MINIMUM';
     private readonly MAXIMUM_MESSAGE_ID = 'jakarta.faces.validator.DoubleRangeValidator.MAXIMUM';
     private readonly NOT_IN_RANGE_MESSAGE_ID = 'jakarta.faces.validator.DoubleRangeValidator.NOT_IN_RANGE';
@@ -118,7 +118,7 @@ class DoubleRangeValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Faces validator
  * `jakarta.faces.RegularExpression`.
  */
-class RegularExpressionValidator implements PrimeType.validation.Validator {
+class RegularExpressionValidator implements PrimeFacesTypes.validation.Validator {
     private readonly PATTERN_NOT_SET_MESSAGE_ID = 'jakarta.faces.validator.RegexValidator.PATTERN_NOT_SET';
     private readonly NOT_MATCHED_MESSAGE_ID = 'jakarta.faces.validator.RegexValidator.NOT_MATCHED';
 
@@ -144,7 +144,7 @@ class RegularExpressionValidator implements PrimeType.validation.Validator {
  * Client-side validator implementation for the Faces validator
  * `primefaces.File`.
  */
-class FileValidator implements PrimeType.validation.Validator {
+class FileValidator implements PrimeFacesTypes.validation.Validator {
     private readonly FILE_LIMIT_MESSAGE_ID = 'primefaces.FileValidator.FILE_LIMIT';
     private readonly ALLOW_TYPES_MESSAGE_ID = 'primefaces.FileValidator.ALLOW_TYPES';
     private readonly SIZE_LIMIT_MESSAGE_ID = 'primefaces.FileValidator.SIZE_LIMIT';
@@ -156,7 +156,7 @@ class FileValidator implements PrimeType.validation.Validator {
             const allowTypes = element.data('p-allowtypes');
             const sizeLimit = element.data('p-sizelimit');
             const vc = core.validation.ValidationContext;
-            const messages: PrimeType.BaseFacesMessage[] = [];
+            const messages: PrimeFacesTypes.BaseFacesMessage[] = [];
 
             let allowTypesRegExp = null;
             if (allowTypes) {

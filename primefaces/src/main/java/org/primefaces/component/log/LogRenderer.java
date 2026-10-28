@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.log;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Log.DEFAULT_RENDERER, componentFamily = Log.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class LogRenderer extends CoreRenderer<Log> {
 
     @Override

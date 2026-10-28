@@ -91,7 +91,7 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
 
        if(childItemsContainer.length) {
            var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer" style="display:none"></div>');
-           childItemsContainer.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('ui-helper-hidden');
+           childItemsContainer.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('p-hidden');
 
            if(this.cfg.showHeaders) {
                groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header">' + PrimeFaces.escapeHTML(item.children('span').text()) + '</div>');
@@ -100,7 +100,7 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
            this.jq.append(groupContainer);
 
            if(this.cfg.effect)
-               groupContainer.show(this.cfg.effect);
+               PrimeFaces.effects.show(groupContainer, this.cfg.effect);
            else
                groupContainer.show();
        }
@@ -156,7 +156,7 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
             }
             else if(ancestor.is('ul')) {
                 var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer" style="display:none"></div>');
-                ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('ui-helper-hidden');
+                ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('p-hidden');
 
                 if(this.cfg.showHeaders) {
                    groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>');

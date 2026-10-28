@@ -50,23 +50,34 @@ public class CheckboxTreeNodeChildren<T> extends DefaultTreeNodeChildren<T> {
     private void updateSelectionState(TreeNode<?> node) {
         boolean allChildrenSelected = true;
         boolean partialSelected = false;
+        boolean hasSelectableChild = false;
 
         for (int i = 0; i < node.getChildCount(); i++) {
             TreeNode childNode = node.getChildren().get(i);
 
+            // like CheckboxTreeNode#propagateSelectionUp, a non-selectable child doesn't count, see #14798
+            if (!childNode.isSelectable()) {
+                continue;
+            }
+
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
+            hasSelectableChild = true;
             allChildrenSelected = allChildrenSelected && childSelected;
             partialSelected = partialSelected || childSelected || childPartialSelected;
         }
 
-        ((CheckboxTreeNode) node).setSelected(allChildrenSelected, false);
+        // a non-selectable node, or one whose children are all non-selectable, keeps its state
+        boolean derive = node.isSelectable() && (hasSelectableChild || node.getChildCount() == 0);
+        if (derive) {
+            ((CheckboxTreeNode) node).setSelected(allChildrenSelected, false);
 
-        if (allChildrenSelected) {
-            node.setPartialSelected(false);
-        }
-        else {
-            node.setPartialSelected(partialSelected);
+            if (allChildrenSelected) {
+                node.setPartialSelected(false);
+            }
+            else {
+                node.setPartialSelected(partialSelected);
+            }
         }
 
         TreeNode parentNode = node.getParent();

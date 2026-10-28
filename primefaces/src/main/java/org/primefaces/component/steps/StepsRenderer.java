@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.steps;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Steps.DEFAULT_RENDERER, componentFamily = Steps.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class StepsRenderer extends BaseMenuRenderer<Steps> {
 
     @Override

@@ -260,9 +260,12 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
                 $this.isItemClicked = false;
             };
             $(document).on('click.' + this.id, this.documentClickListener);
-            this.addDestroyListener(function () {
+            var unbindDocumentClickListener = function () {
                 $(document).off('click.' + this.id);
-            });
+                this.documentClickListener = null;
+            };
+            this.addRefreshListener(unbindDocumentClickListener);
+            this.addDestroyListener(unbindDocumentClickListener);
         }
     }
 

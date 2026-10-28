@@ -16,7 +16,7 @@ export interface BaseWidgetCfg {
      * were defined for this widget. The key is the name of the behavior, the value is the callback function that is
      * invoked when the behavior is called.
      */
-    behaviors: Record<string, PrimeType.widget.Behavior>;
+    behaviors: Record<string, PrimeFacesTypes.widget.Behavior>;
 
     /**
      * `true` to block scrolling when a certain condition is satisfied, or `false` otherwise.
@@ -76,7 +76,7 @@ export interface BaseWidgetCfg {
      * usually specified via the `widgetPreConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      */
-    preConstruct: PrimeType.widget.PreConstructCallback;
+    preConstruct: PrimeFacesTypes.widget.PreConstructCallback;
 
     /**
      * An optional callback that is invoked
@@ -84,14 +84,14 @@ export interface BaseWidgetCfg {
      * usually specified via the `widgetPostConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      */
-    postConstruct: PrimeType.widget.PostConstructCallback;
+    postConstruct: PrimeFacesTypes.widget.PostConstructCallback;
 
     /**
      * An optional callback that is invoked after
      * this widget was refreshed after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method.
      * This is usually specified via the `widgetPostRefresh` attribute on the Faces component.
      */
-    postRefresh: PrimeType.widget.PostRefreshCallback;
+    postRefresh: PrimeFacesTypes.widget.PostRefreshCallback;
 
     /**
      * An optional callback that is invoked before
@@ -99,7 +99,7 @@ export interface BaseWidgetCfg {
      * called at the beginning of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the
      * `widgetPreDestroy` attribute on the Faces component.
      */
-    preDestroy: PrimeType.widget.PreDestroyCallback;
+    preDestroy: PrimeFacesTypes.widget.PreDestroyCallback;
 
     /**
      * Whether the widget supports touch devices (usually via pointer events etc.).
@@ -120,7 +120,7 @@ export interface BaseWidgetCfg {
  * that this configuration is usually meant to be read-only and should not be
  * modified.
  */
-export interface DynamicOverlayWidgetCfg extends BaseWidgetCfg, PrimeType.widget.DynamicOverlayFeatureWidgetCfg {
+export interface DynamicOverlayWidgetCfg extends BaseWidgetCfg, PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg {
 }
 
 /**
@@ -177,14 +177,14 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * This is partly because the value of a property is not transmitted from the server to the client when it equals
      * the default.
      */
-    cfg: PrimeType.widget.PartialWidgetCfg<Cfg> = { id: "", widgetVar: "" } as PrimeType.widget.PartialWidgetCfg<Cfg>;
+    cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> = { id: "", widgetVar: "" } as PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>;
 
     /**
      * Array of registered listeners invoked when this widget is destroyed. You should normally not use modify this
      * directly, use {@link addDestroyListener} instead.
      */
     // Need to use any as the type parameter as TypeScript does not have existential types / wildcards (DestroyListener<?>)
-    destroyListeners: PrimeType.widget.DestroyListener<any>[] = [];
+    destroyListeners: PrimeFacesTypes.widget.DestroyListener<any>[] = [];
 
     /**
      * The client-side ID of this widget, with all parent naming containers, such as
@@ -201,6 +201,12 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
     jq: JQuery = $();
 
     /**
+     * For a widget without own markup (e.g. `p:draggable` or `p:keyFilter`), the element it works on, see
+     * {@link bindLifecycleTo}. An element, not a jQuery instance, so {@link destroy} does not unbind its events.
+     */
+    private lifecycleElement: Element | null = null;
+
+    /**
      * A CSS selector for the container element (or elements, in case {@link id} is an array) of
      * this widget, This is usually an ID selector (that is properly escaped). You can select the container element or
      * elements like this: `$(widget.jqId)`.
@@ -212,7 +218,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * modify this directly, use {@link addRefreshListener} instead.
      */
     // Need to use any as the type parameter as TypeScript does not have existential types / wildcards (RefreshListener<?>)
-    refreshListeners: PrimeType.widget.RefreshListener<any>[] = [];
+    refreshListeners: PrimeFacesTypes.widget.RefreshListener<any>[] = [];
 
     /**
      * The name of the widget variables of this widget. The widget variable can be used to
@@ -251,7 +257,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @param cfg The widget configuration to be used for this widget instance. This widget configuration is usually
      * created on the server by the `jakarta.faces.render.Renderer` for this component.
      */
-    init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         this.cfg = cfg;
         this.id = cfg.id;
         if (Array.isArray(this.id)) {
@@ -267,17 +273,48 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
         this.destroyListeners = [];
         this.refreshListeners = [];
 
+        this.lifecycleElement = null;
+
         //remove script tag
         this.removeScriptElement(this.id);
 
         if (this.widgetVar) {
-            var $this = this;
-            this.jq.on("remove", function () {
-                if (!core.detachedWidgets.includes($this.widgetVar)) {
-                    core.detachedWidgets.push($this.widgetVar);
-                }
-            });
+            this.jq.on("remove", () => this.markDetached());
         }
+    }
+
+    /**
+     * Ties a widget without own markup (e.g. `p:draggable` or `p:keyFilter`) to the element it works on: the widget is
+     * detached when that element is removed, and destroyed after the AJAX update unless the update rendered it again
+     * (then it is bound to the new element). Call it in {@link init}. A widget removed while the element stays can't
+     * be detected, it has no element of its own.
+     * @param element The element the widget works on, e.g. the target of `p:draggable`.
+     */
+    protected bindLifecycleTo(element: JQuery<any> | Element | null | undefined): void {
+        const el = element instanceof Element ? element : element?.get(0);
+        if (!el || !this.widgetVar) {
+            return;
+        }
+        this.lifecycleElement = el;
+        // the element may stay when only the widget is refreshed
+        $(el).off(this.lifecycleNamespace()).on(this.lifecycleNamespace(), () => this.markDetached());
+    }
+
+    /**
+     * Marks this widget as detached, it is destroyed after the AJAX update unless it was rendered again.
+     */
+    private markDetached(): void {
+        if (!core.detachedWidgets.includes(this.widgetVar)) {
+            core.detachedWidgets.push(this.widgetVar);
+        }
+    }
+
+    /**
+     * The event namespace of the `remove` listener on the {@link lifecycleElement}.
+     * @returns The event type with the namespace of this widget.
+     */
+    private lifecycleNamespace(): string {
+        return "remove.pfwidget_" + String(this.widgetVar).replace(/\./g, "_");
     }
 
     /**
@@ -298,7 +335,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @param cfg The new widget configuration from the server.
      * @return {unknown} The value as returned by the `init` method, which is often `undefined`.
      */
-    refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): unknown {
+    refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): unknown {
         this.destroyListeners = [];
 
         if (this.refreshListeners) {
@@ -339,11 +376,22 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
         }
         this.destroyListeners = [];
 
+        if (this.lifecycleElement) {
+            // a widget without own markup only references elements of others (e.g. the scope of p:defaultCommand),
+            // which may stay: it removes its own listeners in its destroy listeners, unbinding all events would break
+            // the other widgets
+            $(this.lifecycleElement).off(this.lifecycleNamespace());
+            return;
+        }
+
         // Iterate through all stored variables within this widget. If any of them are jQuery objects, 
         // it is imperative to unbind their event listeners to avoid memory leaks in the DOM.
         for (var key in this) {
             var jq = this[key];
-            if (jq instanceof jQuery) {
+            // never strip the global targets which are shared with all other widgets, e.g. $(window) or $(document)
+            var element = jq instanceof jQuery ? (jq as unknown as JQuery<any>).get(0) : undefined;
+            if (jq instanceof jQuery && element !== window && element !== document
+                    && element !== document.documentElement && element !== document.body) {
                 // remove events on all descendants
                 (jq as unknown as JQuery).children().off();
                 // remove events from element
@@ -367,10 +415,15 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
     /**
      * Checks if this widget is detached, ie whether the HTML element of this widget is currently contained within
      * the DOM (the HTML body element). A widget may become detached during an AJAX update, and it may remain
-     * detached in case the update removed this component from the component tree.
+     * detached in case the update removed this component from the component tree. A widget without own markup (e.g.
+     * `p:draggable`) is detached when the element it works on was removed, see {@link bindLifecycleTo}.
      * @return `true` if this widget is currently detached, or `false` otherwise.
      */
     isDetached(): boolean {
+        if (this.lifecycleElement) {
+            // refreshed by the update, the widget is bound to the new element already
+            return !this.lifecycleElement.isConnected;
+        }
         const id = Array.isArray(this.id) ? this.id[0] : this.id;
         return id === undefined || document.getElementById(id) === null;
     }
@@ -462,7 +515,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @param fallbackToDomEvent Whether to fallback to the DOM event if no behavior is defined.
      * @since 7.0
      */
-    callBehavior(event: string, ext?: Partial<PrimeType.ajax.ConfigurationExtender>, fallbackToDomEvent = true): void {
+    callBehavior(event: string, ext?: Partial<PrimeFacesTypes.ajax.ConfigurationExtender>, fallbackToDomEvent = true): void {
         if (this.hasBehavior(event)) {
             this.cfg.behaviors?.[event]?.call(this, ext);
         }
@@ -492,7 +545,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @return The behavior with the given name, `undefined` if no such behavior exists, and `null` if this
      * widget does not have a behaviors map configured.
      */
-    getBehavior(name: string): PrimeType.widget.Behavior | null | undefined {
+    getBehavior(name: string): PrimeFacesTypes.widget.Behavior | null | undefined {
         return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
     }
 
@@ -513,7 +566,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @param listener A destroy listener to be registered.
      * @since 7.0
      */
-    addDestroyListener(listener: PrimeType.widget.DestroyListener<this>): void {
+    addDestroyListener(listener: PrimeFacesTypes.widget.DestroyListener<this>): void {
         if (!this.destroyListeners) {
             this.destroyListeners = [];
         }
@@ -537,7 +590,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @param listener A refresh listener to be registered.
      * @since 7.0.0
      */
-    addRefreshListener(listener: PrimeType.widget.RefreshListener<this>): void {
+    addRefreshListener(listener: PrimeFacesTypes.widget.RefreshListener<this>): void {
         if (!this.refreshListeners) {
             this.refreshListeners = [];
         }
@@ -581,7 +634,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @returns The label text - either from the widget configuration if specified,
      * or from the PrimeFaces global labels
      */
-    getLabel<K extends keyof PrimeType.Locale>(label: K): PrimeType.Locale[K] {
+    getLabel<K extends keyof PrimeFacesTypes.Locale>(label: K): PrimeFacesTypes.Locale[K] {
         if (this.cfg.labels && typeof this.cfg.labels[label] === "string") {
             return this.cfg.labels[label];
         }
@@ -594,7 +647,7 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @returns The ARIA label text - either from the widget configuration if specified, 
      * or from the PrimeFaces global ARIA labels
      */
-    getAriaLabel(label: keyof PrimeType.LocaleAria): string {
+    getAriaLabel(label: keyof PrimeFacesTypes.LocaleAria): string {
         if (this.cfg.labels && this.cfg.labels.aria && this.cfg.labels.aria[label]) {
             return this.cfg.labels.aria[label];
         }
@@ -614,10 +667,10 @@ export class BaseWidget<Cfg extends BaseWidgetCfg = BaseWidgetCfg> {
      * @param cfg The configuration of the context menu widget.
      */
     bindContextMenu?(
-        contextMenu: PrimeType.widget.ContextMenuLikeWidget,
+        contextMenu: PrimeFacesTypes.widget.ContextMenuLikeWidget,
         targetWidget: this,
         jqTargetId: string,
-        cfg: PrimeType.widget.PartialWidgetCfg<PrimeType.widget.ContextMenuLikeWidgetCfg>,
+        cfg: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg>,
     ): void;
 }
 
@@ -646,7 +699,7 @@ export class DynamicOverlayWidget<Cfg extends DynamicOverlayWidgetCfg = DynamicO
      * @param The ID of the overlay, usually the widget ID.
      * @param The DOM element that is the target of this overlay
      */
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>, overlay?: JQuery, overlayId?: string, target?: JQuery): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>, overlay?: JQuery, overlayId?: string, target?: JQuery): void {
         super.init(cfg);
 
         // do not bind overlay if widget disabled
@@ -674,7 +727,7 @@ export class DynamicOverlayWidget<Cfg extends DynamicOverlayWidgetCfg = DynamicO
         utils.registerDynamicOverlay(this, overlay, overlayId);
     }
 
-    override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         utils.removeModal(this, this.modalOverlay);
 
         this.appendTo = null;

@@ -1,0 +1,58 @@
+/*
+ * Knob: p:knob (an SVG drawn by the widget)
+ *
+ * The colors come from the --p-knob-* tokens; the foregroundColor / backgroundColor attributes set
+ * --p-knob-value-background / --p-knob-range-background inline. The width / height attributes set the size inline,
+ * the knob is a square by default (a circle centered in the box if both are set).
+ * Structure: div.ui-knob > input[type=hidden] + svg.ui-knob-svg[role=slider] > circle.ui-knob-range
+ *            + circle.ui-knob-value + text.ui-knob-label
+ * Supported classes: ui-state-disabled (on .ui-knob)
+ */
+.ui-knob {
+    display: inline-block;
+    width: 200px;
+    aspect-ratio: 1;
+    vertical-align: middle;
+
+    .ui-knob-svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        touch-action: none;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: var(--p-knob-focus-ring-width) var(--p-knob-focus-ring-style) var(--p-knob-focus-ring-color);
+            outline-offset: var(--p-knob-focus-ring-offset);
+            box-shadow: var(--p-knob-focus-ring-shadow);
+        }
+    }
+
+    .ui-knob-range {
+        fill: none;
+        stroke: var(--p-knob-range-background);
+    }
+
+    .ui-knob-value {
+        fill: none;
+        stroke: var(--p-knob-value-background);
+    }
+
+    .ui-knob-label {
+        fill: var(--p-knob-text-color);
+        font-family: var(--p-typography-font-family);
+        font-weight: var(--p-knob-text-font-weight);
+        text-anchor: middle;
+        dominant-baseline: central;
+        user-select: none;
+    }
+
+    &.ui-state-disabled {
+        opacity: var(--p-disabled-opacity);
+
+        .ui-knob-svg {
+            cursor: default;
+        }
+    }
+}

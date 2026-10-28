@@ -820,7 +820,7 @@ $('selector').tabs(); // And instantiate it */
 			var offset = {left: plugin._pos[0], top: plugin._pos[1]};
 			plugin._pos = null;
 			// determine sizing offscreen
-			inst._mainDiv.stop(true, true).
+			PrimeFaces.effects.stop(inst._mainDiv).
 				css({position: 'absolute', display: 'block', top: '-1000px', width: 'auto'});
 			plugin._updateKeypad(inst);
 			// and adjust position before showing
@@ -832,15 +832,9 @@ $('selector').tabs(); // And instantiate it */
 			var postProcess = function() {
 				plugin._keypadShowing = true;
 			};
-			if ($.effects && ($.effects[showAnim] || ($.effects.effect && $.effects.effect[showAnim]))) {
-				var data = inst._mainDiv.data(); // Update old effects data
-				for (var key in data) {
-					if (key.match(/^ec\.storage\./)) {
-						data[key] = inst._mainDiv.css(key.replace(/ec\.storage\./, ''));
-					}
-				}
-				inst._mainDiv.data(data).show(showAnim,
-					inst.options.showOptions || {}, duration, postProcess);
+			if (PrimeFaces.effects.exists(showAnim)) {
+				PrimeFaces.effects.show(inst._mainDiv, showAnim,
+					$.extend({}, inst.options.showOptions, {duration: duration, complete: postProcess}));
 			}
 			else {
 				inst._mainDiv[showAnim || 'show']((showAnim ? duration : 0), postProcess);
@@ -857,7 +851,7 @@ $('selector').tabs(); // And instantiate it */
 		_updateKeypad: function(inst) {
 			inst._mainDiv.empty().append(this._generateHTML(inst)).
 				removeClass().addClass(inst.options.keypadClass +
-					(inst.options.useThemeRoller ? ' ui-widget ui-widget-content ui-corner-all ui-shadow' : '') +
+					(inst.options.useThemeRoller ? ' ui-widget ui-widget-content ui-corner-all' : '') +
 					(inst.options.isRTL ? ' ' + this._rtlClass : '') + ' ' +
 					(inst._inline ? this._inlineClass : this._mainDivClass));
 			if (typeof inst.options.beforeShow === "function") {
@@ -928,11 +922,11 @@ $('selector').tabs(); // And instantiate it */
 				return;
 			}
 			if (this._keypadShowing) {
-				inst._mainDiv.stop(true, true);
+				PrimeFaces.effects.stop(inst._mainDiv);
 				duration = (typeof duration !== 'undefined' && duration !== null ? duration : inst.options.duration);
 				var showAnim = inst.options.showAnim;
-				if ($.effects && ($.effects[showAnim] || ($.effects.effect && $.effects.effect[showAnim]))) {
-					inst._mainDiv.hide(showAnim, inst.options.showOptions || {}, duration);
+				if (PrimeFaces.effects.exists(showAnim)) {
+					PrimeFaces.effects.hide(inst._mainDiv, showAnim, $.extend({}, inst.options.showOptions, {duration: duration}));
 				}
 				else {
 					inst._mainDiv[(showAnim === 'slideDown' ? 'slideUp' :

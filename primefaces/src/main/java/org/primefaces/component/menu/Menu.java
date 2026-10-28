@@ -32,15 +32,14 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "Menu is a navigation component with submenus and menuitems.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Menu extends MenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menu";
 
-    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-widget ui-widget-content ui-helper-clearfix";
-    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
+    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-widget ui-widget-content";
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content";
     public static final String CONTAINER_MAXHEIGHT_CLASS = "ui-menu-dynamic-maxheight";
     public static final String SUBMENU_TITLE_CLASS = "ui-widget-header";
     public static final String EXPANDED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";

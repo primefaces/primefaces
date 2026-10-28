@@ -1,0 +1,145 @@
+/*
+ * MultiSelectListbox: p:multiSelectListbox (PrimeFaces only, tokens in the multiselectlistbox block of presets/*.css, items use listbox tokens)
+ *
+ * Every level is a list container with an optional header (showHeaders); the list itself is a .ui-inputfield,
+ * its input look is reset. Items with children show a chevron.
+ * Supported classes: ui-state-disabled (on the root), items: ui-state-hover, ui-state-highlight (selected)
+ */
+.ui-multiselectlistbox {
+    /* contains the floated lists */
+    display: flow-root;
+
+    .ui-multiselectlistbox-listcontainer {
+        float: inline-start;
+        overflow: auto;
+        width: auto;
+        min-width: var(--p-multiselectlistbox-list-min-width);
+        margin: 0;
+        margin-inline-end: var(--p-multiselectlistbox-gap);
+        padding: 0;
+        background: var(--p-listbox-background);
+        color: var(--p-listbox-color);
+        border: 1px solid var(--p-listbox-border-color);
+        border-radius: var(--p-listbox-border-radius);
+        box-shadow: var(--p-listbox-shadow);
+
+        &:last-child {
+            margin-inline-end: 0;
+        }
+
+        .ui-multiselectlistbox-header {
+            padding: var(--p-multiselectlistbox-header-padding);
+            margin: 0;
+            border: 0 none;
+            border-bottom: 1px solid var(--p-multiselectlistbox-header-border-color);
+            border-start-start-radius: var(--p-listbox-border-radius);
+            border-start-end-radius: var(--p-listbox-border-radius);
+            background: var(--p-multiselectlistbox-header-background);
+            color: var(--p-multiselectlistbox-header-color);
+            font-size: var(--p-multiselectlistbox-header-font-size);
+            font-weight: var(--p-multiselectlistbox-header-font-weight);
+        }
+
+        .ui-multiselectlistbox-list,
+        .ui-multiselectlistbox-list:not(.ui-state-disabled):hover,
+        .ui-multiselectlistbox-list:not(.ui-state-disabled):focus {
+            width: 100%;
+            padding: var(--p-listbox-list-padding);
+            background: transparent;
+            color: inherit;
+            border: 0 none;
+            border-radius: 0;
+            outline: 0 none;
+            box-shadow: none;
+        }
+
+        .ui-multiselectlistbox-list .ui-multiselectlistbox-item {
+            display: flex;
+            align-items: center;
+            gap: var(--p-multiselectlistbox-gap);
+            padding: var(--p-listbox-option-padding);
+            margin: 0;
+            background: transparent;
+            color: var(--p-listbox-option-color);
+            font-size: var(--p-listbox-option-font-size);
+            font-weight: var(--p-listbox-option-font-weight);
+            border-radius: var(--p-listbox-option-border-radius);
+            transition: background var(--p-list-option-transition-duration), color var(--p-list-option-transition-duration),
+                border-color var(--p-list-option-transition-duration);
+
+            & + .ui-multiselectlistbox-item {
+                margin-top: var(--p-listbox-list-gap);
+            }
+
+            &.ui-state-hover {
+                background: var(--p-listbox-option-focus-background);
+                color: var(--p-listbox-option-focus-color);
+            }
+
+            &.ui-state-highlight {
+                background: var(--p-listbox-option-selected-background);
+                color: var(--p-listbox-option-selected-color);
+                font-weight: var(--p-listbox-option-selected-font-weight);
+            }
+        }
+    }
+
+    .ui-multiselectlistbox-list {
+        list-style-type: none;
+        margin: 0;
+    }
+
+    .ui-multiselectlistbox-header {
+        text-align: center;
+    }
+
+    .ui-multiselectlistbox-item {
+        cursor: pointer;
+        white-space: nowrap;
+        border: 0 none;
+
+        /* items with children: pi-chevron-right (pi-chevron-left in rtl) at the end */
+        &:has(> ul)::after {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-multiselectlistbox-submenu-icon) center / contain no-repeat;
+            margin-inline-start: auto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: var(--p-icon-size);
+            line-height: 1;
+            color: var(--p-multiselectlistbox-item-icon-color);
+        }
+
+        &:has(> ul):dir(rtl)::after {
+            scale: -1 1;
+        }
+
+        &.ui-state-highlight:has(> ul)::after {
+            color: inherit;
+        }
+    }
+
+    &.ui-state-disabled {
+        opacity: 1;
+
+        .ui-multiselectlistbox-item {
+            cursor: default;
+        }
+
+        .ui-multiselectlistbox-listcontainer {
+            background: var(--p-listbox-disabled-background);
+            color: var(--p-listbox-disabled-color);
+        }
+
+        .ui-multiselectlistbox-listcontainer .ui-multiselectlistbox-list .ui-multiselectlistbox-item {
+            color: var(--p-listbox-disabled-color);
+
+            /* a selected item keeps its selected colors (the disabled color would be unreadable on the selected background) */
+            &.ui-state-highlight {
+                color: var(--p-listbox-option-selected-color);
+            }
+        }
+    }
+}

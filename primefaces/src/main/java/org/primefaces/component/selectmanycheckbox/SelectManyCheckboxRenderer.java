@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -47,6 +48,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectManyCheckbox.DEFAULT_RENDERER, componentFamily = SelectManyCheckbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyCheckbox> {
 
     @Override
@@ -75,7 +77,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         if (custom) {
             writer.startElement("span", component);
             writer.writeAttribute("id", component.getClientId(context), "id");
-            writer.writeAttribute("class", "ui-helper-hidden", null);
+            writer.writeAttribute("class", "p-hidden", null);
             renderARIARequired(context, component);
             encodeCustomLayout(context, component);
             writer.endElement("span");
@@ -215,7 +217,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         String tabindex = component.getTabindex();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);

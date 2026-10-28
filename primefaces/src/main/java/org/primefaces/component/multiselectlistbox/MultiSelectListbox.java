@@ -40,14 +40,13 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class MultiSelectListbox extends MultiSelectListboxBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
-    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget";
     public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
     public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header";
     public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";

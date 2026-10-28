@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.slidemenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -37,6 +38,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = SlideMenu.DEFAULT_RENDERER, componentFamily = SlideMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SlideMenuRenderer extends TieredMenuRenderer {
 
     @Override

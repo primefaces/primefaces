@@ -53,9 +53,11 @@ public class Wizard extends WizardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 
-    public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles ui-helper-clearfix";
+    public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles";
     public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default";
     public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight";
+    public static final String CURRENT_STEP_CLASS = "ui-wizard-step-current";
+    public static final String COMPLETED_STEP_CLASS = "ui-wizard-step-completed";
     public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
     public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
 

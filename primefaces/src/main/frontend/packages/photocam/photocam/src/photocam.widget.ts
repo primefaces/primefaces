@@ -7,7 +7,7 @@ import Webcam from "webcamjs";
  * Please note that this configuration is usually meant to be read-only and should
  * not be modified.
  */
-export interface PhotoCamCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface PhotoCamCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Whether access to the camera should be requested automatically upon page load.
      */
@@ -36,7 +36,7 @@ export interface PhotoCamCfg extends PrimeType.widget.BaseWidgetCfg {
     /**
      * Custom error handler invoked when a snapshot could not be taken.
      */
-    onCameraError: PrimeType.widget.PhotoCam.CameraErrorCallback;
+    onCameraError: PrimeFacesTypes.widget.PhotoCam.CameraErrorCallback;
 
     /**
      * Height of the captured photo in pixels, defaults to height.
@@ -68,7 +68,7 @@ export interface PhotoCamCfg extends PrimeType.widget.BaseWidgetCfg {
  * Default error handler for webcam events
  * @param errorObj Error object containing message, stacktrace and so on.
  */
-const defaultErrorCallback: PrimeType.widget.PhotoCam.CameraErrorCallback = (errorObj) => {
+const defaultErrorCallback: PrimeFacesTypes.widget.PhotoCam.CameraErrorCallback = (errorObj) => {
     const message = errorObj instanceof Webcam.errors.WebcamError
         ? errorObj.message
         : `Could not access webcam: ${errorObj.name}: ${errorObj.message} ${errorObj.toString()}`;
@@ -91,7 +91,12 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
      */
     device: string = "";
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    /**
+     * The error hook registered with the Webcam library by this widget.
+     */
+    private errorHook: ((error: Error) => void) | null = null;
+
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.width = this.cfg.width||320;
         this.cfg.height = this.cfg.height||240;
@@ -107,6 +112,13 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
         if (this.cfg.autoStart) {
             this.attach();
         }
+    }
+
+    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+        // release the camera of the old element, so that it can be attached to the new one
+        this.detach();
+
+        super.refresh(cfg);
     }
 
     override destroy(): void {
@@ -134,7 +146,12 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
             });
 
             const errorCallback = this.cfg.onCameraError ?? defaultErrorCallback;
-            Webcam.on("error", error => errorCallback.call(this, error));
+            // remove only the own hook of a previous attach, Webcam is a singleton
+            if (this.errorHook) {
+                Webcam.off("error", this.errorHook);
+            }
+            this.errorHook = (error: Error) => errorCallback.call(this, error);
+            Webcam.on("error", this.errorHook);
 
             Webcam.attach(this.getId());
             this.attached = true;
@@ -158,7 +175,7 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
     capture(): void {
         if (this.attached) {
             Webcam.snap((data) => {
-                const options: PrimeType.ajax.Configuration = {
+                const options: PrimeFacesTypes.ajax.Configuration = {
                     source: this.getId(),
                     process: this.cfg.process ? this.getId() + ' ' + this.cfg.process : this.getId(),
                     update: this.cfg.update,

@@ -91,7 +91,6 @@ Currently, only the following components are implemented (partially):
 - AccordionPanel
 - AutoComplete
 - BlockUI
-- Calendar
 - CascadeSelect
 - Chips
 - ColorPicker
@@ -127,6 +126,7 @@ Currently, only the following components are implemented (partially):
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
+- SlideMenu
 - Slider
 - Spinner
 - TabView

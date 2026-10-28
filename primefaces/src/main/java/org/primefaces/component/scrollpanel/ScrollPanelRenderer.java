@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.scrollpanel;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ScrollPanel.DEFAULT_RENDERER, componentFamily = ScrollPanel.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
 
     @Override
@@ -58,8 +60,31 @@ public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderChildren(context, component);
+        if (nativeMode) {
+            renderChildren(context, component);
+        }
+        else {
+            // the content scrolls natively with hidden browser scrollbars, the widget positions the bars
+            writer.startElement("div", null);
+            writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, null);
+            renderChildren(context, component);
+            writer.endElement("div");
 
+            encodeTrack(context, ScrollPanel.SCROLL_PANEL_TRACK_Y_CLASS);
+            encodeTrack(context, ScrollPanel.SCROLL_PANEL_TRACK_X_CLASS);
+        }
+
+        writer.endElement("div");
+    }
+
+    protected void encodeTrack(FacesContext context, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("aria-hidden", "true", null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_BAR_CLASS, null);
+        writer.endElement("div");
         writer.endElement("div");
     }
 

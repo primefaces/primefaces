@@ -35,7 +35,7 @@ declare global {
      */
     const download: typeof downloadJs;
 
-    namespace PrimeType {
+    namespace PrimeFacesTypes {
         interface WindowExtensions {
             /**
              * The download() function is used to trigger a file download from JavaScript.

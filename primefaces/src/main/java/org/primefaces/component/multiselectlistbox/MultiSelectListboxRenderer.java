@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.multiselectlistbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -41,6 +42,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = MultiSelectListbox.DEFAULT_RENDERER, componentFamily = MultiSelectListbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectListbox> {
 
     @Override
@@ -141,7 +143,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectLis
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("ul", component);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
         encodeListItems(context, component, selectItems);
         writer.endElement("ul");
     }

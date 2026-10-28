@@ -149,9 +149,11 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
 
         //show and hide events for target
         if (this.cfg.showEvent === this.cfg.hideEvent) {
-            var event = this.cfg.showEvent;
+            // own namespace, as other overlay panels could use the same target
+            var namespace = '.ui-overlaypanel.' + this.id;
+            var event = this.cfg.showEvent.split(' ').map(function(e) { return e + namespace; }).join(' ');
 
-            this.target.on(event, function(e) {
+            this.target.off(event).on(event, function(e) {
                 $this.toggle();
             });
         }
@@ -405,24 +407,23 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
             this.targetZindex = this.targetElement.zIndex();
         }
 
-        this.jq.css({ 'left': '', 'top': '', 'transform-origin': 'center top' })
-            .position({
-                my: this.cfg.my
-                , at: this.cfg.at
-                , of: this.targetElement
-                , collision: this.cfg.collision
-                , using: function(pos, directions) {
-                    if (pos.top < -allowedNegativeValuesByParentOffset.top) {
-                        pos.top = -allowedNegativeValuesByParentOffset.top;
-                    }
-
-                    if (pos.left < -allowedNegativeValuesByParentOffset.left) {
-                        pos.left = -allowedNegativeValuesByParentOffset.left;
-                    }
-
-                    $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+        PrimeFaces.utils.position(this.jq.css({ 'left': '', 'top': '', 'transform-origin': 'center top' }), {
+            my: this.cfg.my
+            , at: this.cfg.at
+            , of: this.targetElement
+            , collision: this.cfg.collision
+            , using: function(pos, directions) {
+                if (pos.top < -allowedNegativeValuesByParentOffset.top) {
+                    pos.top = -allowedNegativeValuesByParentOffset.top;
                 }
-            });
+
+                if (pos.left < -allowedNegativeValuesByParentOffset.left) {
+                    pos.left = -allowedNegativeValuesByParentOffset.left;
+                }
+
+                $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+            }
+        });
 
         var widthOffset = this.jq.width() - this.content.width();
         this.jq.css('max-width', $(window).width() - widthOffset + 'px');

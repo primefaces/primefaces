@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.ajaxstatus;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = AjaxStatus.DEFAULT_RENDERER, componentFamily = AjaxStatus.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
 
     @Override

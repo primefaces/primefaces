@@ -1,0 +1,20 @@
+/*
+ * Hidden: p-hidden (set by the widgets on elements they show later, e.g. with fadeIn()) and
+ * ui-overlay-hidden (overlays that are rendered but not shown yet, e.g. measured or loaded by the dialog framework).
+ * In the behaviors layer, so they beat every display / visibility of the component CSS regardless of specificity
+ * (without !important, so application CSS still wins); inline styles of jQuery show() / fadeIn() win as well.
+ * ui-helper-hidden: the jQuery UI name, not rendered by the components anymore, only for application markup.
+ */
+.p-hidden,
+.ui-helper-hidden {
+    display: none;
+}
+
+/* also every child that sets a visibility of its own */
+.ui-overlay-hidden {
+    visibility: hidden;
+
+    * {
+        visibility: hidden;
+    }
+}

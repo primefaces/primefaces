@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.chips;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -46,6 +47,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Chips.DEFAULT_RENDERER, componentFamily = Chips.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ChipsRenderer extends InputRenderer<Chips> {
 
     @Override
@@ -191,7 +193,7 @@ public class ChipsRenderer extends InputRenderer<Chips> {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");

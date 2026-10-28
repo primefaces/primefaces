@@ -128,6 +128,24 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
     }
 
     /**
+     * @override
+     * @inheritdoc
+     */
+    destroy() {
+        super.destroy();
+
+        this.stopAutoplay();
+        if (this.documentResizeListener) {
+            $(window).off('resize', this.documentResizeListener);
+            this.documentResizeListener = null;
+        }
+        if (this.carouselStyle) {
+            this.carouselStyle.remove();
+            this.carouselStyle = null;
+        }
+    }
+
+    /**
      * Renders ARIA labels for the carousel navigation elements.
      * @private
      */

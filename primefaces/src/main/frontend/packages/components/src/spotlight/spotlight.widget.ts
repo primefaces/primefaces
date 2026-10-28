@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Spotlight.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SpotlightCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface SpotlightCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Whether the spotlight is initially turned on.
      */
@@ -29,7 +29,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
      */
     target: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
@@ -40,14 +40,18 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         if (this.cfg.active) {
             this.show();
         }
+
+        this.addDestroyListener(() => {
+            $(window).off('.spotlight' + this.id);
+        });
     }
 
     /**
      * Creates the mask overlay element for the spotlight effect and adds it to the DOM.
      */
     private createMasks(): void {
-        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
-            '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right ui-helper-hidden"></div>');
+        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top p-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom p-hidden"></div>' +
+            '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left p-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right p-hidden"></div>');
     }
 
     /**
@@ -124,7 +128,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         });
 
         const namespace = '.spotlight' + this.id;
-        $(window).on('resize' + namespace + ' scroll' + namespace, () => {
+        $(window).off(namespace).on('resize' + namespace + ' scroll' + namespace, () => {
             this.calculatePositions();
         });
     }

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datagrid;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = DataGrid.DEFAULT_RENDERER, componentFamily = DataGrid.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DataGridRenderer extends DataRenderer<DataGrid> {
 
     @Override

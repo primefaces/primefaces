@@ -39,8 +39,8 @@ import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Droppable.COMPONENT_TYPE, namespace = Droppable.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Droppable is a component that makes its child elements accept draggable elements.")
+@ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Droppable extends DroppableBaseImpl {

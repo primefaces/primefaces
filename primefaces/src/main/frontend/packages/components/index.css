@@ -1,58 +1,114 @@
-@import url("./src/core.css");
-@import url("./src/jquery/jquery.ui.css");
-@import url("./src/jquery/jquery.ui.pfextensions.css");
-@import url("./src/avatar/avatar.css");
-@import url("./src/avatargroup/avatargroup.css");
-@import url("./src/badge/badge.css");
-@import url("./src/card/card.css");
-@import url("./src/chip/chip.css");
-@import url("./src/chronoline/chronoline.css");
-@import url("./src/confirmpopup/confirmpopup.css");
-@import url("./src/tag/tag.css");
-@import url("./src/skeleton/skeleton.css");
-@import url("./src/accordion/accordion.css");
-@import url("./src/autocomplete/autocomplete.css");
-@import url("./src/blockui/blockui.css");
-@import url("./src/carousel/carousel.css");
-@import url("./src/columntoggler/columntoggler.css");
-@import url("./src/dashboard/dashboard.css");
-@import url("./src/datalist/datalist.css");
-@import url("./src/datagrid/datagrid.css");
-@import url("./src/datascroller/datascroller.css");
-@import url("./src/datatable/datatable.css");
-@import url("./src/dialog/dialog.css");
-@import url("./src/divider/divider.css");
-@import url("./src/fieldset/fieldset.css");
-@import url("./src/forms/forms.css");
-@import url("./src/forms/inputgroup.css");
-@import url("./src/grid/grid.css");
-@import url("./src/growl/growl.css");
-@import url("./src/inplace/inplace.css");
-@import url("./src/menu/menu.css");
-@import url("./src/messages/messages.css");
-@import url("./src/notificationbar/notificationbar.css");
-@import url("./src/orderlist/orderlist.css");
-@import url("./src/overlaypanel/overlaypanel.css");
-@import url("./src/panel/panel.css");
-@import url("./src/panelgrid/panelgrid.css");
-@import url("./src/paginator/paginator.css");
-@import url("./src/picklist/picklist.css");
-@import url("./src/progressbar/progressbar.css");
-@import url("./src/rating/rating.css");
-@import url("./src/scrolltop/scrolltop.css");
-@import url("./src/spinner/spinner.css");
-@import url("./src/splitter/splitter.css");
-@import url("./src/speeddial/speeddial.css");
-@import url("./src/tabview/tabview.css");
-@import url("./src/tagcloud/tagcloud.css");
-@import url("./src/toolbar/toolbar.css");
-@import url("./src/tooltip/tooltip.css");
-@import url("./src/tree/tree.css");
-@import url("./src/treetable/treetable.css");
-@import url("./src/wizard/wizard.css");
-@import url("./src/chips/chips.css");
-@import url("./src/sidebar/sidebar.css");
-@import url("./src/staticmessage/staticmessage.css");
-@import url("./src/dataview/dataview.css");
-@import url("./src/jquery/jquery.ui.datepicker.css");
-@import url("./src/toggleswitch/toggleswitch.css");
+/*
+ * components.css: the icon set, third-party CSS and the CSS of all components loaded with components.js.
+ * The tokens come from the theme (primefaces-<theme>/theme.css). Order: base -> shared building blocks -> components
+ * -> behaviors (alphabetical inside each group); later rules win on equal specificity, behaviors always.
+ *
+ * Cascade layers (lowest first): primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors.
+ * The statement is repeated in every stylesheet of PrimeFaces, so the order is the same whichever is loaded first.
+ * Application CSS is unlayered and always wins, without !important and regardless of specificity.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./src/icons/lucide.css");
+
+@import url("./src/base/interactions.css") layer(primefaces.vendor);
+
+/* base */
+@import url("./src/base/common.css") layer(primefaces.components);
+@import url("./src/base/core.css") layer(primefaces.components);
+@import url("./src/base/document.css") layer(primefaces.components);
+@import url("./src/base/grid.css") layer(primefaces.components);
+@import url("./src/base/helpers.css") layer(primefaces.components);
+@import url("./src/base/scrollbar.css") layer(primefaces.components);
+
+/* shared */
+@import url("./src/base/backdrop.css") layer(primefaces.components);
+@import url("./src/badge/badge.css") layer(primefaces.components);
+@import url("./src/forms/checkbox.css") layer(primefaces.components);
+@import url("./src/forms/inputfield.css") layer(primefaces.components);
+@import url("./src/forms/inputgroup.css") layer(primefaces.components);
+@import url("./src/menu/menu.base.css") layer(primefaces.components);
+@import url("./src/paginator/paginator.css") layer(primefaces.components);
+@import url("./src/forms/radiobutton.css") layer(primefaces.components);
+
+/* components */
+@import url("./src/accordion/accordion.css") layer(primefaces.components);
+@import url("../core/src/ajaxstatus/ajaxstatus.css") layer(primefaces.components);
+@import url("./src/autocomplete/autocomplete.css") layer(primefaces.components);
+@import url("./src/avatar/avatar.css") layer(primefaces.components);
+@import url("./src/blockui/blockui.css") layer(primefaces.components);
+@import url("./src/menu/breadcrumb.css") layer(primefaces.components);
+@import url("./src/forms/button.css") layer(primefaces.components);
+@import url("./src/card/card.css") layer(primefaces.components);
+@import url("./src/carousel/carousel.css") layer(primefaces.components);
+@import url("./src/forms/cascadeselect.css") layer(primefaces.components);
+@import url("./src/chip/chip.css") layer(primefaces.components);
+@import url("./src/chips/chips.css") layer(primefaces.components);
+@import url("./src/chronoline/chronoline.css") layer(primefaces.components);
+@import url("./src/columntoggler/columntoggler.css") layer(primefaces.components);
+@import url("./src/confirmpopup/confirmpopup.css") layer(primefaces.components);
+@import url("./src/menu/contextmenu.css") layer(primefaces.components);
+@import url("./src/dashboard/dashboard.css") layer(primefaces.components);
+@import url("./src/datagrid/datagrid.css") layer(primefaces.components);
+@import url("./src/datalist/datalist.css") layer(primefaces.components);
+@import url("./src/datascroller/datascroller.css") layer(primefaces.components);
+@import url("./src/datatable/datatable.css") layer(primefaces.components);
+@import url("./src/dataview/dataview.css") layer(primefaces.components);
+@import url("./src/dialog/dialog.css") layer(primefaces.components);
+@import url("./src/divider/divider.css") layer(primefaces.components);
+@import url("./src/fieldset/fieldset.css") layer(primefaces.components);
+@import url("./src/growl/growl.css") layer(primefaces.components);
+@import url("./src/inplace/inplace.css") layer(primefaces.components);
+@import url("./src/menu/megamenu.css") layer(primefaces.components);
+@import url("./src/menu/menu.css") layer(primefaces.components);
+@import url("./src/messages/message.css") layer(primefaces.components);
+@import url("./src/messages/messages.css") layer(primefaces.components);
+@import url("./src/forms/multiselectlistbox.css") layer(primefaces.components);
+@import url("./src/notificationbar/notificationbar.css") layer(primefaces.components);
+@import url("./src/orderlist/orderlist.css") layer(primefaces.components);
+@import url("./src/forms/outputlabel.css") layer(primefaces.components);
+@import url("./src/outputpanel/outputpanel.css") layer(primefaces.components);
+@import url("./src/overlaypanel/overlaypanel.css") layer(primefaces.components);
+@import url("./src/panel/panel.css") layer(primefaces.components);
+@import url("./src/panelgrid/panelgrid.css") layer(primefaces.components);
+@import url("./src/menu/panelmenu.css") layer(primefaces.components);
+@import url("./src/forms/password.css") layer(primefaces.components);
+@import url("./src/picklist/picklist.css") layer(primefaces.components);
+@import url("./src/progressbar/progressbar.css") layer(primefaces.components);
+@import url("./src/rating/rating.css") layer(primefaces.components);
+@import url("./src/scrolltop/scrolltop.css") layer(primefaces.components);
+@import url("./src/forms/selectbooleancheckbox.css") layer(primefaces.components);
+@import url("./src/forms/selectcheckboxmenu.css") layer(primefaces.components);
+@import url("./src/forms/selectmanycheckbox.css") layer(primefaces.components);
+@import url("./src/forms/selectonebutton.css") layer(primefaces.components);
+@import url("./src/forms/selectonelistbox.css") layer(primefaces.components);
+@import url("./src/forms/selectonemenu.css") layer(primefaces.components);
+@import url("./src/forms/selectoneradio.css") layer(primefaces.components);
+@import url("./src/sidebar/sidebar.css") layer(primefaces.components);
+@import url("./src/skeleton/skeleton.css") layer(primefaces.components);
+@import url("./src/menu/slidemenu.css") layer(primefaces.components);
+@import url("./src/slider/slider.css") layer(primefaces.components);
+@import url("./src/speeddial/speeddial.css") layer(primefaces.components);
+@import url("./src/spinner/spinner.css") layer(primefaces.components);
+@import url("./src/forms/splitbutton.css") layer(primefaces.components);
+@import url("./src/splitter/splitter.css") layer(primefaces.components);
+@import url("./src/spotlight/spotlight.css") layer(primefaces.components);
+@import url("./src/staticmessage/staticmessage.css") layer(primefaces.components);
+@import url("./src/menu/steps.css") layer(primefaces.components);
+@import url("./src/menu/tabmenu.css") layer(primefaces.components);
+@import url("./src/tabview/tabview.css") layer(primefaces.components);
+@import url("./src/tag/tag.css") layer(primefaces.components);
+@import url("./src/tagcloud/tagcloud.css") layer(primefaces.components);
+@import url("./src/menu/tieredmenu.css") layer(primefaces.components);
+@import url("./src/toggleswitch/toggleswitch.css") layer(primefaces.components);
+@import url("./src/toolbar/toolbar.css") layer(primefaces.components);
+@import url("./src/tooltip/tooltip.css") layer(primefaces.components);
+@import url("./src/tree/tree.css") layer(primefaces.components);
+@import url("./src/treetable/treetable.css") layer(primefaces.components);
+@import url("./src/wizard/wizard.css") layer(primefaces.components);
+
+/* behaviors */
+@import url("./src/base/hidden.css") layer(primefaces.behaviors);
+@import url("./src/dragdrop/dragdrop.css") layer(primefaces.behaviors);
+@import url("./src/resizable/resizable.css") layer(primefaces.behaviors);
+@import url("./src/sticky/sticky.css") layer(primefaces.behaviors);

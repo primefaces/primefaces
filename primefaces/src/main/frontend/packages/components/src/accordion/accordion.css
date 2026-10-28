@@ -1,42 +1,239 @@
-.ui-accordion .ui-accordion-header { cursor: pointer; position: relative; margin-top: 1px; min-height: 0; padding: .5em .5em .5em 2.2em;}
-.ui-accordion .ui-accordion-header .ui-icon { position: absolute; left: .5em; top: 50%; margin-top: -8px; }
-.ui-accordion .ui-accordion-content { padding: 1em 2.2em; border-top: 0; margin-top: -2px; position: relative; top: 1px; margin-bottom: 2px; overflow: auto; }
-.ui-accordion .ui-accordion-header.ui-state-disabled, .ui-accordion .ui-accordion-header.ui-state-disabled a { cursor: default; }
+/*
+ * Accordion: p:accordionPanel
+ *
+ * PF renders header/content pairs as siblings (no panel wrapper), so the PrimeUIX "panel" border
+ * (accordion.panel.border.*) is drawn by an ::after overlay on the last visible element of each pair:
+ * the header while collapsed, the content while expanded.
+ * States: ui-state-active, ui-state-hover, ui-state-disabled, ui-state-error, ui-accordion-rtl
+ */
+.ui-accordion {
+    .ui-accordion-header {
+        position: relative;
+        margin: 0;
+        padding: var(--p-accordion-header-padding);
+        font-size: var(--p-accordion-header-font-size);
+        font-weight: var(--p-accordion-header-font-weight);
+        color: var(--p-accordion-header-color);
+        background: var(--p-accordion-header-background);
+        border-style: solid;
+        border-width: var(--p-accordion-header-border-width);
+        border-color: var(--p-accordion-header-border-color);
+        border-radius: var(--p-accordion-header-border-radius);
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        outline: 0 none;
+        outline-color: transparent;
+        transition: background var(--p-accordion-transition-duration), color var(--p-accordion-transition-duration),
+            outline-color var(--p-accordion-transition-duration), box-shadow var(--p-accordion-transition-duration);
+    }
 
-/** RTL **/
-.ui-accordion.ui-accordion-rtl {
-    direction: rtl;
-}
+    .ui-accordion-header:not(.ui-state-active)::after,
+    .ui-accordion-content::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-style: solid;
+        border-width: var(--p-accordion-panel-border-width);
+        border-color: var(--p-accordion-panel-border-color);
+        border-radius: inherit;
+    }
 
-.ui-accordion.ui-accordion-rtl .ui-accordion-header .ui-icon {
-    right: 0.5em;
-    left: auto;
-}
+    .ui-accordion-header:first-child {
+        border-width: var(--p-accordion-header-first-border-width);
+        border-start-start-radius: var(--p-accordion-header-first-top-border-radius);
+        border-start-end-radius: var(--p-accordion-header-first-top-border-radius);
+    }
 
-.ui-accordion.ui-accordion-rtl .ui-accordion-header a {
-    padding: 0.5em 2.2em 0.5em 0.5em;
-}
+    > .ui-accordion-header:not(:has(~ .ui-accordion-header)) {
+        border-end-start-radius: var(--p-accordion-header-last-bottom-border-radius);
+        border-end-end-radius: var(--p-accordion-header-last-bottom-border-radius);
+    }
 
-.ui-tabs-outline {
-    outline: dotted thin;
-    z-index: 1;
-}
+    > .ui-accordion-header.ui-state-active:not(:has(~ .ui-accordion-header)) {
+        border-end-start-radius: var(--p-accordion-header-last-active-bottom-border-radius);
+        border-end-end-radius: var(--p-accordion-header-last-active-bottom-border-radius);
+    }
 
-.ui-accordion .ui-panel-titlebar-icon {
-    float: right;
-    cursor: pointer;
-}
+    .ui-accordion-header {
+        &.ui-state-hover,
+        &:not(.ui-state-active, .ui-state-disabled):hover {
+            background: var(--p-accordion-header-hover-background);
+            color: var(--p-accordion-header-hover-color);
+        }
 
-.ui-accordion .ui-panel-titlebar-icon,
-.ui-accordion .ui-panel-titlebar-icon:hover,
-.ui-accordion .ui-panel-titlebar-icon:focus {
-    margin:-1.5em 0em 0em 0.2em;
-}
+        &.ui-state-active {
+            background: var(--p-accordion-header-active-background);
+            color: var(--p-accordion-header-active-color);
 
-.ui-accordion .ui-panel-actions {
-    float: right;
-}
+            &:not(.ui-state-disabled):hover {
+                background: var(--p-accordion-header-active-hover-background);
+                color: var(--p-accordion-header-active-hover-color);
+            }
+        }
 
-.ui-accordion .ui-accordion-header .ui-panel-titlebar-icon .ui-icon {
-    position: inherit
+        &:not(.ui-state-disabled):focus-visible {
+            outline: var(--p-accordion-header-focus-ring-width) var(--p-accordion-header-focus-ring-style) var(--p-accordion-header-focus-ring-color);
+            outline-offset: var(--p-accordion-header-focus-ring-offset);
+            box-shadow: var(--p-accordion-header-focus-ring-shadow);
+        }
+
+        /* invalid: PrimeFaces tokens */
+        &.ui-state-error,
+        &.ui-state-error:hover,
+        &.ui-state-error.ui-state-active:hover {
+            border-color: var(--p-accordion-header-invalid-border-color);
+            background: var(--p-accordion-header-invalid-background);
+            color: var(--p-accordion-header-invalid-color);
+        }
+
+        &.ui-state-error::after,
+        &.ui-state-error + .ui-accordion-content,
+        &.ui-state-error + .ui-accordion-content::after {
+            border-color: var(--p-accordion-header-invalid-border-color);
+        }
+
+        /* toggle icon, at the end like PrimeUIX */
+        > .ui-icon {
+            float: right;
+            line-height: var(--p-typography-line-height);
+            color: var(--p-accordion-header-toggle-icon-color);
+            transition: color var(--p-accordion-transition-duration);
+        }
+
+        &.ui-state-hover > .ui-icon,
+        &:not(.ui-state-active, .ui-state-disabled):hover > .ui-icon {
+            color: var(--p-accordion-header-toggle-icon-hover-color);
+        }
+
+        &.ui-state-active {
+            > .ui-icon {
+                color: var(--p-accordion-header-toggle-icon-active-color);
+            }
+
+            &:not(.ui-state-disabled):hover > .ui-icon {
+                color: var(--p-accordion-header-toggle-icon-active-hover-color);
+            }
+        }
+
+        &.ui-state-error > .ui-icon {
+            color: inherit;
+        }
+
+        > .ui-icon {
+            &.ui-icon-triangle-1-s,
+            &.ui-icon-triangle-1-n {
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+            }
+
+            &.ui-icon-triangle-1-s::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-accordion-header-collapsed-icon) center / contain no-repeat;
+            }
+
+            &.ui-icon-triangle-1-n::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-accordion-header-expanded-icon) center / contain no-repeat;
+            }
+        }
+
+        /* options menu trigger: text/secondary rounded icon button like the PrimeUIX panel header buttons */
+        .ui-panel-titlebar-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--p-button-icon-only-width);
+            height: var(--p-button-icon-only-width);
+            margin: 0;
+            /* no token: vertically center the icon button on the header line */
+            margin-block: calc((var(--p-typography-line-height) * 1em - var(--p-button-icon-only-width)) / 2);
+            padding: 0;
+            background: transparent;
+            color: var(--p-button-text-secondary-color);
+            border: 0 none;
+            border-radius: 50%;
+            text-align: center;
+            text-decoration: none;
+            -webkit-user-select: none;
+            user-select: none;
+            outline-color: transparent;
+            transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration),
+                outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+
+            &:hover {
+                background: var(--p-button-text-secondary-hover-background);
+                color: var(--p-button-text-secondary-color);
+            }
+
+            &:active {
+                background: var(--p-button-text-secondary-active-background);
+            }
+
+            &:focus-visible {
+                outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--p-button-secondary-focus-ring-color);
+                outline-offset: var(--p-button-focus-ring-offset);
+                box-shadow: var(--p-button-secondary-focus-ring-shadow);
+            }
+
+            .ui-icon-gear {
+                font-style: normal;
+                font-weight: normal;
+                display: inline-block;
+                background: none;
+            }
+
+            .ui-icon-gear::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-accordion-header-menu-icon) center / contain no-repeat;
+            }
+        }
+    }
+
+    .ui-panel-titlebar-icon {
+        float: right;
+        cursor: pointer;
+    }
+
+    .ui-panel-actions {
+        float: right;
+    }
+
+    .ui-accordion-content {
+        position: relative;
+        margin: 0;
+        padding: var(--p-accordion-content-padding);
+        background: var(--p-accordion-content-background);
+        color: var(--p-accordion-content-color);
+        border-style: solid;
+        border-width: var(--p-accordion-content-border-width);
+        border-color: var(--p-accordion-content-border-color);
+        overflow: auto;
+
+        /* no token: the last content closes the rounded box opened by the first header */
+        &:last-of-type {
+            border-end-start-radius: var(--p-accordion-header-last-bottom-border-radius);
+            border-end-end-radius: var(--p-accordion-header-last-bottom-border-radius);
+        }
+    }
+
+    /* RTL: the floats (toggle icon, options menu, actions) move to the left (= end) edge */
+    &.ui-accordion-rtl {
+        direction: rtl;
+
+        .ui-accordion-header > .ui-icon,
+        .ui-panel-titlebar-icon,
+        .ui-panel-actions {
+            float: left;
+        }
+    }
 }

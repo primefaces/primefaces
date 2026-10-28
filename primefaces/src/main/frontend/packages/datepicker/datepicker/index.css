@@ -1,0 +1,10 @@
+/*
+ * datepicker/datepicker.css: loaded with datepicker/datepicker.js (p:datePicker).
+ *
+ * Cascade layers (lowest first): primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors.
+ * The statement is repeated in every stylesheet of PrimeFaces, so the order is the same whichever is loaded first.
+ * Application CSS is unlayered and always wins, without !important and regardless of specificity.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./src/datepicker.css") layer(primefaces.components);

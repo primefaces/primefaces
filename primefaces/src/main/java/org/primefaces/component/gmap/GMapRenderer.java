@@ -24,6 +24,7 @@
 package org.primefaces.component.gmap;
 
 import org.primefaces.behavior.ajax.AjaxBehavior;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -49,6 +50,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = GMap.DEFAULT_RENDERER, componentFamily = GMap.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class GMapRenderer extends CoreRenderer<GMap> {
 
     @Override

@@ -137,9 +137,13 @@ public class Schedule001Test extends AbstractPrimePageTest {
      * schedule markup via AJAX and FullCalendar repaints its events on a later tick. Clicking before that repaint
      * finishes does not fire the eventSelect AJAX, so guardAjax runs into "Timeout while waiting for AJAX complete!".
      * Wait until the AJAX queue is empty and the event is rendered and clickable before selecting it.
+     * Also wait until the widget's double-click window (500 ms after the previous event click) has passed: a second
+     * click on the same event inside it is handled as eventDblSelect, so no eventSelect AJAX is sent.
      */
     private void selectScheduleEvent(Schedule schedule) {
         waitForScheduledRenderedAndClickable();
+        PrimeSelenium.waitGui().until(d -> Boolean.TRUE.equals(PrimeSelenium.executeScript(
+                "return " + schedule.getWidgetByIdScript() + ".doubleClick == null;")));
         schedule.select("fc-daygrid-event");
     }
 

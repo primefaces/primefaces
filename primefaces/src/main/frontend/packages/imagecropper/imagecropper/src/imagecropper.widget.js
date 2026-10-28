@@ -88,6 +88,21 @@ PrimeFaces.widget.ImageCropper = class ImageCropper extends PrimeFaces.widget.De
     /**
      * @override
      * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        // release the window/document listeners of the previous cropper instance
+        if (this.cropper) {
+            this.cropper.destroy();
+            this.cropper = null;
+        }
+
+        super.refresh(cfg);
+    }
+
+    /**
+     * @override
+     * @inheritdoc
      */
     destroy() {
         super.destroy();

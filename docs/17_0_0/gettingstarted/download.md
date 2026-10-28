@@ -18,13 +18,3 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 ```
 
 
-
-### Additional themes
-
-```xml
-<dependency>
-    <groupId>org.primefaces</groupId>
-    <artifactId>primefaces-themes</artifactId>
-    <version>17.0.0</version>
-</dependency>
-```

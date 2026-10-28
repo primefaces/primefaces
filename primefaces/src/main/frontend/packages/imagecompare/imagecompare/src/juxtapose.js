@@ -365,6 +365,11 @@
 
       _onLoaded: function() {
 
+          // PrimeFaces: the slider was destroyed before the images were loaded
+          if (this.destroyed) {
+              return;
+          }
+
           if (this.imgBefore && this.imgBefore.loaded === true &&
               this.imgAfter && this.imgAfter.loaded === true) {
 
@@ -455,9 +460,11 @@
           }
 
           var self = this;
-          window.addEventListener("resize", function() {
+          // PrimeFaces: keep the listener, so it can be removed in destroy
+          this.resizeListener = function() {
               self.setWrapperDimensions();
-          });
+          };
+          window.addEventListener("resize", this.resizeListener);
 
 
           // Set up Javascript Events
@@ -546,6 +553,19 @@
 
           if (this.options.callback && typeof(this.options.callback) == 'function') {
               this.options.callback(this);
+          }
+      },
+
+      // PrimeFaces: release the global references of this slider
+      destroy: function() {
+          this.destroyed = true;
+          if (this.resizeListener) {
+              window.removeEventListener("resize", this.resizeListener);
+              this.resizeListener = null;
+          }
+          var idx = juxtapose.sliders.indexOf(this);
+          if (idx > -1) {
+              juxtapose.sliders.splice(idx, 1);
           }
       }
 

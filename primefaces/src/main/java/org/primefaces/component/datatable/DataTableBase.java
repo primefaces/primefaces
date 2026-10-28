@@ -92,6 +92,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    protected void resetIterationState() {
+        super.resetIterationState();
+
+        resetDynamicColumns();
+    }
+
     @Facet(description = "Empty message content of the datatable.")
     public abstract UIComponent getEmptyMessageFacet();
 

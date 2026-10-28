@@ -33,7 +33,6 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "log/log.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "log/log.js")
@@ -42,7 +41,7 @@ public class Log extends LogBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Log";
 
     public static final String CONTAINER_CLASS = "ui-log ui-widget ui-widget-content";
-    public static final String HEADER_CLASS = "ui-log-header ui-widget-header ui-helper-clearfix";
+    public static final String HEADER_CLASS = "ui-log-header ui-widget-header";
     public static final String CONTENT_CLASS = "ui-log-content";
     public static final String ITEMS_CLASS = "ui-log-items";
     public static final String CLEAR_BUTTON_CLASS = "ui-log-button ui-log-clear";

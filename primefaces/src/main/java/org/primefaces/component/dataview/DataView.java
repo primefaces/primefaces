@@ -47,7 +47,6 @@ import jakarta.faces.model.DataModel;
 @FacesComponentInfo(description = "DataView displays data in grid or list layout.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
@@ -58,7 +57,7 @@ public class DataView extends DataViewBaseImpl {
     public static final String DATAVIEW_CLASS = "ui-dataview ui-widget";
     public static final String LIST_LAYOUT_CLASS = "ui-dataview-list";
     public static final String GRID_LAYOUT_CLASS = "ui-dataview-grid";
-    public static final String HEADER_CLASS = "ui-dataview-header ui-widget-header ui-helper-clearfix";
+    public static final String HEADER_CLASS = "ui-dataview-header ui-widget-header";
     public static final String FOOTER_CLASS = "ui-dataview-footer ui-widget-header";
     public static final String CONTENT_CLASS = "ui-dataview-content ui-widget-content";
     public static final String BUTTON_CONTAINER_CLASS = "ui-dataview-layout-options ui-selectonebutton ui-buttonset";

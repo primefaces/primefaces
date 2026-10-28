@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectoneradio;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -46,6 +47,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectOneRadio.DEFAULT_RENDERER, componentFamily = SelectOneRadio.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
 
     @Override
@@ -229,7 +231,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
         if (addId) {
             writer.writeAttribute("id", component.getClientId(context), "id");
         }
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         Converter converter = component.getConverter();
         String name = component.getClientId(context);
@@ -272,7 +274,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);

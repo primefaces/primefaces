@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tooltip;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Tooltip.DEFAULT_RENDERER, componentFamily = Tooltip.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TooltipRenderer extends CoreRenderer<Tooltip> {
 
     @Override
@@ -68,7 +70,7 @@ public class TooltipRenderer extends CoreRenderer<Tooltip> {
             writer.endElement("div");
 
             writer.startElement("div", component);
-            writer.writeAttribute("class", "ui-tooltip-text ui-shadow", null);
+            writer.writeAttribute("class", "ui-tooltip-text", null);
 
             if (component.getChildCount() > 0) {
                 renderChildren(context, component);

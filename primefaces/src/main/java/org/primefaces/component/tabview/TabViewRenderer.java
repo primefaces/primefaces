@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tabview;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -41,6 +42,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TabView.DEFAULT_RENDERER, componentFamily = TabView.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TabViewRenderer extends CoreRenderer<TabView> {
 
     @Override

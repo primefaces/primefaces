@@ -31,13 +31,15 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponent(value = Knob.COMPONENT_TYPE, namespace = Knob.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Knob is a form component to define a number with a dial.")
 @ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "knob/knob.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "knob/knob.js")
 public class Knob extends KnobBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Knob";
+
+    public static final String STYLE_CLASS = "ui-knob";
 
 }

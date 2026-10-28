@@ -45,7 +45,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
         var _self = this;
 
         //make draggable
-        this.jq.draggable({handle:this.header});
+        PrimeFaces.interactions.draggable(this.jq, {handle:this.header});
         
         //z-index
         PrimeFaces.nextZindex(this.jq);
@@ -61,6 +61,18 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
 
         //attach
         PrimeFaces.logger = this;
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        // remove the old element, which was moved to body - an update of the log itself replaces it in place
+        // inside body, so it must not be removed by its id
+        this.jq.remove();
+        super.refresh(cfg);
     }
 
     /**
@@ -160,7 +172,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
         var visible = this.severity == severity || this.severity == 'all',
         style = visible ? 'display:block' : 'display:none';
 
-        var item = '<li class="ui-log-item ui-log-item-' + severity + ' ui-helper-clearfix" style="' + style + 
+        var item = '<li class="ui-log-item ui-log-item-' + severity + '" style="' + style + 
             '"><span class="ui-icon ' + icon + '"></span>' + new Date().toLocaleString() + ' : '  + PrimeFaces.escapeHTML(msg) + '</li>';
 
         this.itemsContainer.append(item);

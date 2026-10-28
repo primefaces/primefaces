@@ -363,7 +363,7 @@ public class HTML {
     public static final String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public static final String CHECKBOX_CLASS = "ui-chkbox ui-widget";
     public static final String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-state-default";
-    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden-accessible";
+    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "p-hidden-accessible";
     public static final String CHECKBOX_UNCHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-blank ui-c";
     public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
     public static final String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-minus ui-c";
@@ -371,7 +371,7 @@ public class HTML {
 
     public static final String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
     public static final String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-state-default";
-    public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
+    public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "p-hidden";
     public static final String RADIOBUTTON_UNCHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-blank ui-c";
     public static final String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-bullet ui-c";
 

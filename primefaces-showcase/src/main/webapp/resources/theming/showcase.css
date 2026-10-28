@@ -1,0 +1,135 @@
+/*
+ * The showcase on the PrimeFaces themes, loaded on every page (WEB-INF/template.xhtml, template-landing.xhtml).
+ *
+ * The showcase layout (layout.css) is styled with the variables of the legacy themes (--surface-a, --primary-color, ...).
+ * The themes only define --p-* tokens, so these variables are mapped to the tokens here: the topbar, menu
+ * and footer follow the preset, its color scheme and the configurator.
+ */
+:root {
+    --primary-color: var(--p-primary-color);
+    --primary-color-text: var(--p-primary-contrast-color);
+    --primary-600: var(--p-primary-600);
+    --text-color: var(--p-text-color);
+    --text-color-secondary: var(--p-text-muted-color);
+    --surface-ground: light-dark(var(--p-surface-50), var(--p-surface-950));
+    --ground-background: var(--surface-ground);
+    --surface-a: var(--p-content-background);
+    --surface-b: var(--surface-ground);
+    --surface-c: var(--p-content-hover-background);
+    --surface-d: var(--p-content-border-color);
+    --surface-e: var(--p-content-background);
+    --surface-f: var(--p-content-background);
+    --surface-border: var(--p-content-border-color);
+    --surface-hover: var(--p-content-hover-background);
+    --border-radius: var(--p-border-radius-md);
+    --font-family: var(--p-typography-font-family, "Inter var", Inter, ui-sans-serif, system-ui, sans-serif);
+}
+
+/* Glass paints its wallpaper (the page background of the preset) instead of the grid pattern and glow of the layout */
+html[data-preset="glass"] body {
+    background: var(--p-document-background);
+    background-color: var(--surface-ground);
+}
+
+/* jump links to the sections, sticky below the topbar; the link of the section in view is marked (scroll spy) */
+.demo-sections {
+    position: sticky;
+    top: var(--layout-topbar-height);
+    z-index: 800;
+    display: flex;
+    gap: .25rem;
+    /* a toolbar as wide as the cards below it (the page padding of the content sections on both sides) */
+    margin: 1.5rem var(--layout-page-padding-x) 0;
+    padding: .375rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: color-mix(in srgb, var(--p-content-background) 90%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--p-content-border-color);
+    border-radius: var(--p-content-border-radius);
+}
+
+.demo-sections a {
+    flex: none;
+    padding: .375rem .75rem;
+    border-radius: var(--p-border-radius-md);
+    color: var(--p-text-muted-color);
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.demo-sections a:hover {
+    color: var(--p-text-color);
+    background: var(--p-content-hover-background);
+}
+
+.demo-sections a.active {
+    color: var(--p-highlight-color);
+    background: var(--p-highlight-background);
+}
+
+.demo-sections a:focus-visible {
+    outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+    outline-offset: var(--p-focus-ring-offset);
+}
+
+.demo-section {
+    scroll-margin-top: calc(var(--layout-topbar-height) + 3.5rem);
+    padding-top: 2rem;
+}
+
+.theming-page .demo-section-title {
+    margin: 0;
+    font-size: 1.375rem;
+}
+
+/* building blocks of the sections */
+.theming-page h2 {
+    margin: 0 0 1rem;
+    font-size: 1.125rem;
+}
+
+.theming-page h3 {
+    margin: 1rem 0 .5rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--p-text-muted-color);
+}
+
+.theming-page .muted {
+    color: var(--p-text-muted-color);
+}
+
+.demo-card {
+    background: var(--p-content-background);
+    color: var(--p-content-color);
+    border: 1px solid var(--p-content-border-color);
+    border-radius: var(--p-content-border-radius);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: center;
+}
+
+.demo-severities .ui-button-text {
+    text-transform: capitalize;
+}
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+}
+
+.theming-page code {
+    font-size: .85em;
+    padding: .1rem .3rem;
+    border-radius: var(--p-border-radius-sm);
+    background: var(--p-content-hover-background);
+}

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.divider;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 
@@ -33,6 +34,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Divider.DEFAULT_RENDERER, componentFamily = Divider.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DividerRenderer extends CoreRenderer<Divider> {
 
     @Override

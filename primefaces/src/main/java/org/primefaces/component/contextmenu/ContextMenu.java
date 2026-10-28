@@ -32,7 +32,6 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "ContextMenu provides an overlay menu displayed on mouse right-click event.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
@@ -41,5 +40,5 @@ public class ContextMenu extends ContextMenuBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContextMenu";
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
+    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content";
 }

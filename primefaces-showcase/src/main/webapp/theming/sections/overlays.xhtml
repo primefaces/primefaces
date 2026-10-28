@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <h:form id="overlaysForm">
+        <p:growl id="growl" for="growl-key" showDetail="true"/>
+
+        <div class="demo-card">
+            <h2>Dialog / ConfirmDialog / ConfirmPopup</h2>
+            <div class="demo-row">
+                <p:commandButton type="button" value="Dialog" icon="pi pi-external-link" onclick="PF('dlgDemo').show()"/>
+                <p:commandButton value="Confirm" icon="pi pi-check" styleClass="ui-button-secondary"
+                                 action="#{themingOverlaysView.confirm}" update="growl" process="@this">
+                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
+                </p:commandButton>
+                <p:commandButton value="Delete" icon="pi pi-trash" styleClass="ui-button-danger"
+                                 action="#{themingOverlaysView.delete}" update="growl" process="@this">
+                    <p:confirm type="popup" header="Confirmation" message="Do you want to delete this record?" icon="pi pi-info-circle"/>
+                </p:commandButton>
+            </div>
+
+            <p:dialog widgetVar="dlgDemo" header="Edit profile" modal="true" responsive="true" width="420" maximizable="true">
+                <div style="display: flex; flex-direction: column; gap: .5rem">
+                    <p:outputLabel for="dlgName" value="Name"/>
+                    <p:inputText id="dlgName" value="#{themingOverlaysView.name}"/>
+                    <p:outputLabel for="dlgEmail" value="Email"/>
+                    <p:inputText id="dlgEmail" value="#{themingOverlaysView.email}"/>
+                </div>
+                <f:facet name="footer">
+                    <p:commandButton type="button" value="Cancel" styleClass="ui-button-flat" onclick="PF('dlgDemo').hide()"/>
+                    <p:commandButton type="button" value="Save" icon="pi pi-check" onclick="PF('dlgDemo').hide()"/>
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog global="true" responsive="true" width="350">
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" icon="pi pi-times"/>
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+            </p:confirmDialog>
+            <p:confirmPopup global="true">
+                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat ui-button-sm"/>
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes ui-button-sm"/>
+            </p:confirmPopup>
+        </div>
+
+        <div class="demo-card">
+            <h2>OverlayPanel / Sidebar / Tooltip</h2>
+            <div class="demo-row">
+                <p:commandButton id="opButton" type="button" value="OverlayPanel" icon="pi pi-window-maximize" styleClass="ui-button-outlined"/>
+                <p:commandButton type="button" value="Sidebar" icon="pi pi-arrow-left" styleClass="ui-button-outlined" onclick="PF('sbDemo').show()"/>
+                <p:commandButton id="ttButton" type="button" value="Tooltip" icon="pi pi-info-circle" styleClass="ui-button-outlined"/>
+                <p:tooltip for="ttButton" value="A tooltip" position="top"/>
+            </div>
+            <p:overlayPanel for="opButton" showCloseIcon="true" style="width: 18rem">
+                <h3 style="margin-top: 0">OverlayPanel</h3>
+                <p style="margin: 0">An overlay anchored to its target.</p>
+            </p:overlayPanel>
+            <p:sidebar widgetVar="sbDemo" position="right">
+                <h2>Sidebar</h2>
+                <p>A panel that slides in from an edge of the window.</p>
+            </p:sidebar>
+        </div>
+
+        <div class="demo-card">
+            <h2>Messages / Growl</h2>
+            <div class="demo-grid">
+                <p:staticMessage severity="info" summary="Info" detail="Message content"/>
+                <p:staticMessage severity="warn" summary="Warn" detail="Message content"/>
+                <p:staticMessage severity="error" summary="Error" detail="Message content"/>
+                <p:staticMessage severity="fatal" summary="Fatal" detail="Message content"/>
+            </div>
+            <h3>Growl (all severities)</h3>
+            <p:commandButton value="Show growl" icon="pi pi-bell" action="#{themingOverlaysView.showGrowl}" update="growl" process="@this"/>
+        </div>
+    </h:form>
+</ui:composition>

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.galleria;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.IterationStatus;
 import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
@@ -41,6 +42,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Galleria.DEFAULT_RENDERER, componentFamily = Galleria.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     @Override

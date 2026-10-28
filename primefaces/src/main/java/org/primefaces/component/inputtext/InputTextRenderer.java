@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.inputtext;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = InputText.DEFAULT_RENDERER, componentFamily = InputText.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class InputTextRenderer extends InputRenderer<InputText> {
 
     @Override

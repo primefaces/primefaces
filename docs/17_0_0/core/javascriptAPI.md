@@ -49,6 +49,48 @@ well:
 [PrimeFaces.utils.disableAnimations()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#disableAnimations) | Disables all CSS and jQuery animations.
 [PrimeFaces.utils.enableAnimations()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#enableAnimations) | Enables all CSS and jQuery animations.
 [PrimeFaces.utils.killswitch()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#killswitch) | Killswitch that stops all AJAX requests, running Pollers and IdleMonitors.
+[PrimeFaces.utils.position(element, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#position) | Positions an element relative to another element, a mouse event or the window, e.g. `PrimeFaces.utils.position($('#panel'), { my: 'left top', at: 'left bottom', of: $('#button'), collision: 'flipfit' })`. Replaces the jQuery UI `$.fn.position(options)`.
+[PrimeFaces.utils.getTextSelection(element)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#getTextSelection) | Gets the selection of a text input or textarea (`start`, `end`, `length`, `text`), `null` if the element doesn't support a text selection.
+[PrimeFaces.utils.setTextSelection(element, start, end)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#setTextSelection) | Selects a range of the text of a text input or textarea, or places the caret when `end` is omitted.
+[PrimeFaces.utils.replaceTextSelection(element, text)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#replaceTextSelection) | Replaces the selected text of a text input or textarea and places the caret after it.
+
+
+## PrimeFaces Effects (PrimeFaces.effects.*)
+
+[PrimeFaces.effects](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html) animates elements with effects (`blind`, `bounce`, `clip`, `drop`,
+`explode`, `fade`, `fold`, `highlight`, `puff`, `pulsate`, `scale`, `shake`, `size`, `slide`, `transfer`), see
+[Effect](../components/effect.md). It replaces the jQuery UI effects.
+
+| Method | Description |
+| --- | --- |
+[PrimeFaces.effects.run(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#run) | Runs an effect in the mode given by `options.mode` or in the default mode of the effect, e.g. `PrimeFaces.effects.run($('#msg'), 'pulsate', { times: 3 })`.
+[PrimeFaces.effects.show(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#show) | Shows an element with an effect, e.g. `PrimeFaces.effects.show($('#panel'), 'blind', { duration: 500 })`.
+[PrimeFaces.effects.hide(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#hide) | Hides an element with an effect.
+[PrimeFaces.effects.toggle(element, effect, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#toggle) | Shows a hidden or hides a visible element with an effect.
+[PrimeFaces.effects.stop(element)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#stop) | Finishes the running and queued effects of an element immediately.
+[PrimeFaces.effects.register(effect, mode, implementation)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.effects.html#register) | Registers a custom effect.
+
+
+## PrimeFaces Interactions (PrimeFaces.interactions.*)
+
+[PrimeFaces.interactions](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html) makes elements draggable,
+droppable, sortable and resizable with pointer events (mouse, pen and touch). It replaces the jQuery UI interactions,
+the options, callbacks, `ui` arguments, events and CSS classes stay compatible.
+
+| Method | Description |
+| --- | --- |
+[PrimeFaces.interactions.draggable(element, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#draggable) | Makes the elements draggable or updates their options, e.g. `PrimeFaces.interactions.draggable($('#panel'), { handle: '.header', containment: 'parent' })`.
+[PrimeFaces.interactions.droppable(element, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#droppable) | Makes the elements droppables or updates their options, e.g. `PrimeFaces.interactions.droppable($('#trash'), { accept: '.item', drop: fn })`.
+[PrimeFaces.interactions.sortable(element, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#sortable) | Makes the items of the elements sortable or updates their options, e.g. `PrimeFaces.interactions.sortable($('#list'), { items: 'li', update: fn })`.
+[PrimeFaces.interactions.resizable(element, options)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#resizable) | Makes the elements resizable or updates their options, e.g. `PrimeFaces.interactions.resizable($('#box'), { handles: 'e,s,se', minWidth: 100 })`.
+[PrimeFaces.interactions.instance(element, type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#instance) | Gets the interaction of the first element, e.g. `PrimeFaces.interactions.instance($('#list'), 'sortable').cancel()`.
+[PrimeFaces.interactions.enable(element, type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#enable) | Enables the interaction of the given type, e.g. `PrimeFaces.interactions.enable($('#list'), 'sortable')`.
+[PrimeFaces.interactions.disable(element, type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#disable) | Disables the interaction of the given type.
+[PrimeFaces.interactions.destroy(element, type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#destroy) | Removes the interaction of the given type.
+[PrimeFaces.interactions.dragDrop.current](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html#dragDrop) | The draggable or sortable that is dragged right now (formerly `$.ui.ddmanager.current`).
+
+The jQuery plugins `$(element).draggable(...)`, `droppable(...)`, `sortable(...)` and `resizable(...)` of jQuery UI
+do not exist anymore, see the migration guide.
 
 
 ## PrimeFaces Environment (PrimeFaces.env.*)
@@ -61,7 +103,7 @@ well:
 [PrimeFaces.env.touch](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#touch) | If the client supports touch
 [PrimeFaces.env.ios](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#ios) | If the client is iOS
 [PrimeFaces.env.android](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#android) | If the client is Android
-[PrimeFaces.env.browser](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#browser) | The browser name
+[PrimeFaces.env.browser](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#browser) | The detected browser and platform flags, e.g. `PrimeFaces.env.browser.safari` (formerly `$.browser`)
 [PrimeFaces.env.prefersReducedMotion](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#prefersReducedMotion) | If the client prefers reduced motion
 [PrimeFaces.env.preferredColorSchemeDark](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#preferredColorSchemeDark) | If the client prefers dark color scheme
 [PrimeFaces.env.preferredColorSchemeLight](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#preferredColorSchemeLight) | If the client prefers light color scheme

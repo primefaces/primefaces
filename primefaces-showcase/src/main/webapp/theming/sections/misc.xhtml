@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <ui:param name="img" value="#{request.contextPath}/resources/demo/images"/>
+    <h:form id="miscForm">
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Avatar</h2>
+                <div class="demo-row">
+                    <p:avatar label="P" size="large"/>
+                    <p:avatar icon="pi pi-user" size="large" shape="circle"/>
+                    <p:avatar size="large" shape="circle">
+                        <p:graphicImage name="demo/images/avatar/amyelsner.png"/>
+                    </p:avatar>
+                    <p:avatarGroup>
+                        <p:avatar shape="circle"><p:graphicImage name="demo/images/avatar/asiyajavayant.png"/></p:avatar>
+                        <p:avatar shape="circle"><p:graphicImage name="demo/images/avatar/onyamalimba.png"/></p:avatar>
+                        <p:avatar label="+2" shape="circle"/>
+                    </p:avatarGroup>
+                </div>
+            </div>
+
+            <div class="demo-card">
+                <h2>Badge</h2>
+                <div class="demo-row">
+                    <p:badge value="2"/>
+                    <p:badge value="8" severity="success"/>
+                    <p:badge value="4" severity="info"/>
+                    <p:badge value="12" severity="warning"/>
+                    <p:badge value="3" severity="danger"/>
+                    <p:badge value="5" size="large"/>
+                    <p:badge value="9"><i class="pi pi-bell" style="font-size: 1.5rem"/></p:badge>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Tag / Chip</h2>
+                <div class="demo-row">
+                    <p:tag value="Primary"/>
+                    <p:tag value="Secondary" severity="secondary"/>
+                    <p:tag value="Info" severity="info"/>
+                    <p:tag value="Success" severity="success"/>
+                    <p:tag value="Warning" severity="warning"/>
+                    <p:tag value="Danger" severity="danger"/>
+                    <p:tag value="Rounded" rounded="true"/>
+                </div>
+                <div class="demo-row" style="margin-top: .75rem">
+                    <p:chip label="Action"/>
+                    <p:chip label="Apple" icon="pi pi-apple"/>
+                    <p:chip label="Amy Elsner" image="#{img}/avatar/amyelsner.png" removable="true"/>
+                </div>
+            </div>
+
+            <div class="demo-card">
+                <h2>ProgressBar / Skeleton</h2>
+                <p:progressBar value="45" labelTemplate="{value}%" displayOnly="true"/>
+                <p:progressBar mode="indeterminate" style="height: .375rem; margin-top: 1rem"/>
+                <div class="demo-row" style="margin-top: 1rem">
+                    <p:skeleton shape="circle" size="3rem"/>
+                    <div style="flex: 1">
+                        <p:skeleton width="60%" styleClass="mb-2"/>
+                        <p:skeleton width="40%"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Galleria</h2>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" circular="true" showItemNavigators="true"
+                        showCaption="true" style="max-width: 40rem">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block"/>
+                <f:facet name="caption">
+                    <div style="font-weight: 600">#{photo.title}</div>
+                    <div>#{photo.alt}</div>
+                </f:facet>
+                <f:facet name="thumbnail">
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block"/>
+                </f:facet>
+            </p:galleria>
+        </div>
+    </h:form>
+</ui:composition>

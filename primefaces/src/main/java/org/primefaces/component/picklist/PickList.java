@@ -52,14 +52,13 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "PickList is a component to transfer items between two lists.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class PickList extends PickListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
 
-    public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-picklist ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
     public static final String LIST_WRAPPER_CLASS = "ui-picklist-list-wrapper";
     public static final String SOURCE_CLASS = LIST_CLASS + " ui-picklist-source";

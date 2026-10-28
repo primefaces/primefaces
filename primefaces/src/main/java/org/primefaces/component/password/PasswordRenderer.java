@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.password;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Password.DEFAULT_RENDERER, componentFamily = Password.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PasswordRenderer extends InputRenderer<Password> {
 
     @Override

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+    </h:head>
+    <h:body>
+        <!-- layering: a dropdown inside a toolbar over the following (positioned) content, a non modal dialog over the page -->
+        <h:form id="form">
+            <p:toolbar id="toolbar">
+                <p:toolbarGroup>
+                    <p:selectOneMenu id="select" widgetVar="select" value="#{theming015.city}">
+                        <f:selectItems value="#{theming015.cities}" />
+                    </p:selectOneMenu>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <div id="after" style="position: relative; height: 300px; padding: 1rem">
+                <p:commandButton id="pageButton" value="Page button" type="button" />
+            </div>
+
+            <p:dialog id="dialog" widgetVar="dialog" header="Non modal" modal="false" position="right,top" width="250">
+                Dialog content
+            </p:dialog>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

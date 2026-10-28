@@ -1,32 +1,102 @@
+/*
+ * Wizard: p:wizard
+ *
+ * ul.ui-wizard-step-titles (showStepStatus) is a segmented bar, the current step is li.ui-state-highlight.
+ * The navbar holds two PF buttons (.ui-wizard-nav-back left, .ui-wizard-nav-next right, styled by button.css).
+ * PrimeFaces tokens, see the wizard block of presets/*.css.
+ */
 .ui-wizard {
-	margin:0;
-	padding:0;
-}
+    display: flex;
+    flex-direction: column;
+    gap: var(--p-wizard-gap);
 
-.ui-wizard-content {
-	margin:3px 0;
-}
+    .ui-wizard-step-titles {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
 
-.ui-wizard-navbar {
-	text-align: right;
-}
+        .ui-wizard-step-title {
+            flex: 1 1 0;
+            margin: 0;
+            padding: var(--p-wizard-step-padding);
+            list-style-type: none;
+            font-size: var(--p-wizard-step-font-size);
+            font-weight: var(--p-wizard-step-font-weight);
+            text-align: center;
+            background: var(--p-wizard-step-background);
+            color: var(--p-wizard-step-color);
+            border: 1px solid var(--p-wizard-step-border-color);
+            border-inline-end-width: 0;
+            border-radius: 0;
+            transition: background var(--p-wizard-transition-duration), color var(--p-wizard-transition-duration),
+                border-color var(--p-wizard-transition-duration);
 
-.ui-wizard-nav-back, 
-.ui-wizard-nav-next {
-	cursor: pointer;
-}
+            &:first-child {
+                border-start-start-radius: var(--p-wizard-step-border-radius);
+                border-end-start-radius: var(--p-wizard-step-border-radius);
+            }
 
-.ui-wizard-nav-back {
-	float:left;
-}
+            &:last-child {
+                border-inline-end-width: 1px;
+                border-start-end-radius: var(--p-wizard-step-border-radius);
+                border-end-end-radius: var(--p-wizard-step-border-radius);
+            }
 
-.ui-wizard-nav-next {
-	float:right;
-}
+            &.ui-state-highlight {
+                background: var(--p-wizard-step-active-background);
+                color: var(--p-wizard-step-active-color);
+                border-color: var(--p-wizard-step-active-border-color);
+            }
+        }
+    }
 
-.ui-wizard-step-title {
-    font-size: 18px;
-    margin:0 3px 0 0;
-    padding:0.4em;
-    float:left;
+    .ui-wizard-content {
+        margin: 0;
+        padding: var(--p-wizard-content-padding);
+        background: var(--p-wizard-content-background);
+        color: var(--p-wizard-content-color);
+    }
+
+    .ui-wizard-navbar {
+        display: flex;
+        align-items: center;
+        gap: var(--p-wizard-gap);
+
+        .ui-wizard-nav-next {
+            margin-inline-start: auto;
+        }
+    }
+
+    .ui-icon-arrowthick-1-w,
+    .ui-icon-arrowthick-1-e {
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        background: none;
+    }
+
+    .ui-icon-arrowthick-1-w::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-wizard-back-icon) center / contain no-repeat;
+    }
+
+    .ui-icon-arrowthick-1-e::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-wizard-next-icon) center / contain no-repeat;
+    }
+
+    /* RTL: the back button is at the right, the next button at the left */
+    .ui-icon-arrowthick-1-w:dir(rtl)::before {
+        scale: -1 1;
+    }
+
+    .ui-icon-arrowthick-1-e:dir(rtl)::before {
+        scale: -1 1;
+    }
 }

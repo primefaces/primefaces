@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton id="btnUpdate" value="Update" process="@this" update="wrapper"/>
+            <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreWidget003.toggle}"/>
+            <p:commandButton id="btnUpdateTarget" value="Update target" process="@this" update="btnDefault"/>
+
+            <!-- the widgets without own markup are destroyed with the elements they work on, the form stays -->
+            <h:panelGroup id="wrapper" layout="block">
+                <h:panelGroup id="container" layout="block" rendered="#{coreWidget003.rendered}">
+                    <p:panel id="panel" header="Target" style="width: 200px">Content</p:panel>
+                    <p:draggable id="drag" for="panel"/>
+
+                    <p:outputPanel id="dropArea" layout="block" style="width: 200px; height: 60px; border: 1px solid">Drop here</p:outputPanel>
+                    <p:droppable id="drop" for="dropArea"/>
+
+                    <h:panelGroup id="resizeBox" layout="block" style="width: 100px; height: 50px; border: 1px solid"/>
+                    <p:resizable id="resize" for="resizeBox"/>
+
+                    <p:inputText id="input" value="#{coreWidget003.text}"/>
+                    <p:keyFilter id="keyFilter" for="input" mask="num"/>
+
+                    <p:commandButton id="btnDefault" value="Default" process="@this" type="button"
+                                     onclick="window.defaultCommandClicks = (window.defaultCommandClicks || 0) + 1;"/>
+                    <p:defaultCommand id="defaultCommand" target="btnDefault"/>
+
+                    <h:panelGroup id="effectSource" layout="block">
+                        Effect source
+                        <p:effect id="effect" event="click" type="pulsate"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

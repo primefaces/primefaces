@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.autocomplete;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -51,6 +52,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = AutoComplete.DEFAULT_RENDERER, componentFamily = AutoComplete.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
     @Override
@@ -298,7 +300,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
@@ -50,6 +51,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectOneMenu.DEFAULT_RENDERER, componentFamily = SelectOneMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
     @Override
@@ -155,7 +157,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
             //input for accessibility
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+            writer.writeAttribute("class", "p-hidden-accessible", null);
 
             writer.startElement("input", null);
             writer.writeAttribute("id", focusId, null);
@@ -177,7 +179,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
         //hidden select
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         encodeHiddenSelect(context, component, clientId, selectItems, values, submittedValues, converter);
 

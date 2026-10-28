@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tagcloud;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 import org.primefaces.renderkit.CoreRenderer;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TagCloud.DEFAULT_RENDERER, componentFamily = TagCloud.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TagCloudRenderer extends CoreRenderer<TagCloud> {
 
     @Override

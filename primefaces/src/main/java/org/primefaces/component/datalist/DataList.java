@@ -54,7 +54,6 @@ import jakarta.faces.model.DataModel;
         + "and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")

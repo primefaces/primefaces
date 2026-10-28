@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.panelmenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
@@ -39,6 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = PanelMenu.DEFAULT_RENDERER, componentFamily = PanelMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
     @Override

@@ -1,66 +1,103 @@
+/*
+ * PanelGrid: p:panelGrid (layout tabular | grid | flex | tailwind)
+ *
+ * PrimeFaces tokens (the panelgrid block of presets/*.css) that default to the PrimeUIX datatable cell tokens.
+ * tabular: table > thead.ui-panelgrid-header / tbody / tfoot.ui-panelgrid-footer with td.ui-panelgrid-cell
+ *          (header and footer cells also carry ui-widget-header)
+ * grid/flex/tailwind: div.ui-panelgrid-header.ui-widget-header, div.ui-panelgrid-content, div.ui-panelgrid-footer.ui-widget-header
+ * States: ui-noborder, ui-panelgrid-blank, ui-panelgrid-nopad (cell)
+ */
+
 .ui-panelgrid {
     border-collapse: collapse;
-}
 
-.ui-panelgrid .ui-panelgrid-header {
-    text-align: center;
-    padding: 4px 10px;
-}
-
-.ui-panelgrid .ui-panelgrid-footer {
-    text-align: left;
-    padding: 2px 5px;
-}
-
-.ui-panelgrid .ui-panelgrid-cell {
-    border-width: 1px;
-    border-style: solid;
-    border-color: inherit;
-    padding: 4px 10px;
-}
-
-.ui-panelgrid.ui-noborder .ui-panelgrid-cell {
-    border: 0px none;
-}
-
-.ui-panelgrid.ui-noborder .ui-widget-content,
-.ui-panelgrid.ui-noborder .ui-widget-header {
-    border: 0px none;
-}
-
-.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-content.ui-widget-content, 
-.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-header.ui-widget-header,
-.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-footer.ui-widget-header,
-.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-header > tr.ui-widget-header, 
-.ui-panelgrid.ui-panelgrid-blank tbody > tr.ui-widget-content,
-.ui-panelgrid.ui-panelgrid-blank tbody > tr.ui-widget-content > td.ui-panelgrid-cell,
-.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-footer > tr.ui-widget-footer {
-    background: none;
-    border: 0 none;
-}
-
-.ui-panelgrid .ui-panelgrid-cell.ui-panelgrid-nopad {
-   padding: 0;
-}
-
-/* Grid CSS */
-.ui-panelgrid .p-grid .ui-panelgrid-cell,
-.ui-panelgrid .grid .ui-panelgrid-cell,
-.ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
-    border: 0 none;
-}
-
-/* Responsive */
-@media (max-width: 640px) {       
-    .ui-panelgrid .ui-grid-responsive .ui-grid-row {
-        border-top: 1px solid #BCC7CF;
+    .ui-panelgrid-header {
+        text-align: center;
     }
-    
-    .ui-panelgrid .ui-grid-responsive .ui-grid-row:first-child {
-        border-top: 0 none;
+
+    .ui-panelgrid-footer {
+        text-align: start;
     }
-    
-    .ui-panelgrid.ui-noborder .ui-grid-responsive .ui-grid-row {
+
+    /* tabular cells */
+    .ui-panelgrid-cell {
+        padding: var(--p-panelgrid-cell-padding);
+        background: var(--p-panelgrid-cell-background);
+        color: var(--p-panelgrid-cell-color);
+        border: 1px solid var(--p-panelgrid-cell-border-color);
+    }
+
+    .ui-panelgrid-cell.ui-widget-header,
+    > div.ui-panelgrid-header,
+    > div.ui-panelgrid-footer {
+        padding: var(--p-panelgrid-header-cell-padding);
+        background: var(--p-panelgrid-header-cell-background);
+        color: var(--p-panelgrid-header-cell-color);
+        border: 1px solid var(--p-panelgrid-header-cell-border-color);
+        font-size: var(--p-panelgrid-header-cell-font-size);
+        font-weight: var(--p-panelgrid-header-cell-font-weight);
+    }
+
+    > div {
+        /* grid / flex / tailwind layouts: the content is one bordered box, header and footer are attached to it */
+        &.ui-panelgrid-content {
+            background: var(--p-panelgrid-cell-background);
+            color: var(--p-panelgrid-cell-color);
+            border: 1px solid var(--p-panelgrid-cell-border-color);
+        }
+
+        &.ui-panelgrid-header + div.ui-panelgrid-content,
+        &.ui-panelgrid-content + div.ui-panelgrid-footer {
+            border-top: 0 none;
+        }
+    }
+
+    &.ui-noborder .ui-widget-content,
+    &.ui-noborder .ui-widget-header,
+    &.ui-noborder .ui-panelgrid-cell,
+    &.ui-noborder .ui-panelgrid-cell.ui-widget-header,
+    &.ui-noborder > div.ui-panelgrid-header,
+    &.ui-noborder > div.ui-panelgrid-content,
+    &.ui-noborder > div.ui-panelgrid-footer,
+    .grid .ui-panelgrid-cell,
+    .p-grid .ui-panelgrid-cell,
+    .ui-grid-responsive .ui-panelgrid-cell {
         border: 0 none;
+    }
+
+    &.ui-panelgrid-blank .ui-panelgrid-content.ui-widget-content,
+    &.ui-panelgrid-blank .ui-panelgrid-header.ui-widget-header,
+    &.ui-panelgrid-blank .ui-panelgrid-footer.ui-widget-header,
+    &.ui-panelgrid-blank .ui-panelgrid-header > tr.ui-widget-header,
+    &.ui-panelgrid-blank .ui-panelgrid-footer > tr.ui-widget-header,
+    &.ui-panelgrid-blank tbody > tr.ui-widget-content,
+    &.ui-panelgrid-blank tbody > tr.ui-widget-content > td.ui-panelgrid-cell,
+    &.ui-panelgrid-blank .ui-panelgrid-cell,
+    &.ui-panelgrid-blank > div.ui-panelgrid-header,
+    &.ui-panelgrid-blank > div.ui-panelgrid-content,
+    &.ui-panelgrid-blank > div.ui-panelgrid-footer {
+        background: none;
+        border: 0 none;
+    }
+
+    .ui-panelgrid-cell.ui-panelgrid-nopad {
+        padding: 0;
+    }
+}
+
+/* responsive (legacy ui-grid) */
+@media (max-width: 640px) {
+    .ui-panelgrid {
+        .ui-grid-responsive .ui-grid-row {
+            border-top: 1px solid var(--p-panelgrid-cell-border-color);
+
+            &:first-child {
+                border-top: 0 none;
+            }
+        }
+
+        &.ui-noborder .ui-grid-responsive .ui-grid-row {
+            border: 0 none;
+        }
     }
 }

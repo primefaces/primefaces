@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.megamenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.divider.Divider;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -46,6 +47,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = MegaMenu.DEFAULT_RENDERER, componentFamily = MegaMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
     @Override
@@ -107,7 +109,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             if (element.isRendered()) {
                 if (element instanceof MenuItem item) {
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    writer.writeAttribute("class", Menu.MENUITEM_CLASS + (isSelectedRoot(component, item) ? " ui-menuitem-selected" : ""), null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeMenuItem(context, component, item, "-1");
                     writer.endElement("li");
@@ -122,6 +124,32 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
         }
     }
 
+    @Override
+    protected void encodeMenuItemContent(FacesContext context, MegaMenu component, MenuItem menuitem) throws IOException {
+        if (isSelectedRoot(component, menuitem)) {
+            context.getResponseWriter().writeAttribute("aria-current", "page", null);
+        }
+        super.encodeMenuItemContent(context, component, menuitem);
+    }
+
+    private boolean isSelectedRoot(MegaMenu component, MenuElement candidate) {
+        int activeIndex = component.getActiveIndex();
+        if (activeIndex < 0) {
+            return false;
+        }
+        List<MenuElement> elements = component.getElements();
+        int rootIndex = 0;
+        for (int i = 0; i < elements.size(); i++) {
+            MenuElement element = elements.get(i);
+            if (element.isRendered() && (element instanceof Submenu || element instanceof MenuItem item && !item.isDisabled())) {
+                if (rootIndex++ == activeIndex) {
+                    return element == candidate;
+                }
+            }
+        }
+        return false;
+    }
+
     protected void encodeRootSubmenu(FacesContext context, MegaMenu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isRtl = ComponentUtils.isRTL(context, component);
@@ -129,6 +157,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
         String style = submenu.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(Menu.TIERED_SUBMENU_CLASS)
+                .add(isSelectedRoot(component, submenu), "ui-menuitem-selected")
                 .add(submenu.getStyleClass())
                 .build();
 
@@ -146,6 +175,9 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
         writer.startElement("a", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        if (isSelectedRoot(component, submenu)) {
+            writer.writeAttribute("aria-current", "page", null);
+        }
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);

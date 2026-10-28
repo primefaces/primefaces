@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.rowtoggler;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -34,6 +35,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = RowToggler.DEFAULT_RENDERER, componentFamily = RowToggler.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
 
     @Override
@@ -69,7 +71,7 @@ public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
     protected void writeLabel(ResponseWriter writer, String label, boolean visible) throws IOException {
         writer.startElement("span", null);
         if (!visible) {
-            writer.writeAttribute("class", "ui-helper-hidden", null);
+            writer.writeAttribute("class", "p-hidden", null);
         }
         writer.writeText(label, null);
         writer.endElement("span");

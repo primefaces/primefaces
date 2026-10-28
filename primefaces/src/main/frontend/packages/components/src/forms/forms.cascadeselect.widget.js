@@ -364,7 +364,7 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
             });
         }
         else {
-            this.panel.css({left:'0px', top:'0px', 'transform-origin': 'center top'}).position({
+            PrimeFaces.utils.position(this.panel.css({left:'0px', top:'0px', 'transform-origin': 'center top'}), {
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.jq
@@ -387,7 +387,7 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
         subpanel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
         subitemWrapper.css({'overflow': 'scroll'});
 
-        subpanel.css({left:'0px', top:'0px'}).position({
+        PrimeFaces.utils.position(subpanel.css({left:'0px', top:'0px'}), {
                 my: 'left top'
                 ,at: 'right top'
                 ,of: parentPanel.children('.ui-cascadeselect-item-active:first') 

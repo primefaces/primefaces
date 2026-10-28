@@ -12,10 +12,10 @@
          <h:form id="form">
 
             <h:outputText value="Date:" />
-            <p:calendar id="calendar" yearRange="c-5:c+5" showOn="button" navigator="true" value="#{updateForm001.date}">
+            <p:datePicker id="calendar" showIcon="true" monthNavigator="true" yearNavigator="true" value="#{updateForm001.date}">
                 <p:ajax event="dateSelect" process="@this" update="@form" listener="#{updateForm001.dateSelect}" />
                 <p:ajax event="change" process="@this" update="@form" listener="#{updateForm001.dateSelect}" />
-            </p:calendar>
+            </p:datePicker>
             <br />
 
             <h:outputText value="Number 0:" />

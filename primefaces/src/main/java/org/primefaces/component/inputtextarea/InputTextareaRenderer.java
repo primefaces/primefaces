@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.inputtextarea;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -44,6 +45,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = InputTextarea.DEFAULT_RENDERER, componentFamily = InputTextarea.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
 
     private static final Pattern NEWLINE_NORMALIZE_PATTERN = Pattern.compile("\\r\\n?");

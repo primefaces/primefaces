@@ -1,67 +1,270 @@
+/*
+ * Growl: p:growl (PrimeUIX toast)
+ *
+ * Markup: .ui-growl > .ui-growl-item-container.ui-growl-<severity> > .ui-growl-item
+ *         > .ui-growl-icon-close.ui-icon-closethick + span.ui-growl-image + .ui-growl-message (> .ui-growl-title + p)
+ * Severity classes only switch the private --_* variables: ui-growl-info | -success | -warn | -error | -fatal
+ * States: ui-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css
+ * Variants: ui-growl-outlined | ui-growl-simple, on the .ui-growl container or any ancestor. p:growl has no styleClass
+ * and appends its container to the body, so today: on the body (all growls) or added to the widget container
+ * (PF('growl').jq.addClass('ui-growl-outlined')); a styleClass / variant attribute in the core would set it there.
+ */
 
 .ui-growl {
-	position:fixed;
-	top:20px;
-	right:20px;
-	width:301px;
+    position: fixed;
+    top: var(--p-growl-offset);
+    right: var(--p-growl-offset);
+    width: var(--p-toast-width);
+    max-width: calc(100dvw - 2 * var(--p-growl-offset));
+
+    .ui-growl-item-container {
+        --_bg: var(--p-toast-info-background);
+        --_border-color: var(--p-toast-info-border-color);
+        --_color: var(--p-toast-info-color);
+        --_detail-color: var(--p-toast-info-detail-color);
+        --_shadow: var(--p-toast-info-shadow);
+        --_close-hover-bg: var(--p-toast-info-close-button-hover-background);
+        --_close-focus-ring-color: var(--p-toast-info-close-button-focus-ring-color);
+        --_close-focus-ring-shadow: var(--p-toast-info-close-button-focus-ring-shadow);
+        --_outlined-color: var(--p-toast-info-outlined-color);
+        --_outlined-border-color: var(--p-toast-info-outlined-border-color);
+        --_simple-color: var(--p-toast-info-simple-color);
+
+        margin: 0 0 var(--p-growl-gap) 0;
+        background: var(--_bg);
+        border-width: var(--p-toast-border-width);
+        border-style: solid;
+        border-color: var(--_border-color);
+        color: var(--_color);
+        border-radius: var(--p-toast-border-radius);
+        box-shadow: var(--_shadow);
+        backdrop-filter: blur(var(--p-toast-blur));
+
+        &.ui-growl-success {
+            --_bg: var(--p-toast-success-background);
+            --_border-color: var(--p-toast-success-border-color);
+            --_color: var(--p-toast-success-color);
+            --_detail-color: var(--p-toast-success-detail-color);
+            --_shadow: var(--p-toast-success-shadow);
+            --_close-hover-bg: var(--p-toast-success-close-button-hover-background);
+            --_close-focus-ring-color: var(--p-toast-success-close-button-focus-ring-color);
+            --_close-focus-ring-shadow: var(--p-toast-success-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-toast-success-outlined-color);
+            --_outlined-border-color: var(--p-toast-success-outlined-border-color);
+            --_simple-color: var(--p-toast-success-simple-color);
+        }
+
+        &.ui-growl-warn {
+            --_bg: var(--p-toast-warn-background);
+            --_border-color: var(--p-toast-warn-border-color);
+            --_color: var(--p-toast-warn-color);
+            --_detail-color: var(--p-toast-warn-detail-color);
+            --_shadow: var(--p-toast-warn-shadow);
+            --_close-hover-bg: var(--p-toast-warn-close-button-hover-background);
+            --_close-focus-ring-color: var(--p-toast-warn-close-button-focus-ring-color);
+            --_close-focus-ring-shadow: var(--p-toast-warn-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-toast-warn-outlined-color);
+            --_outlined-border-color: var(--p-toast-warn-outlined-border-color);
+            --_simple-color: var(--p-toast-warn-simple-color);
+        }
+
+        &.ui-growl-error {
+            --_bg: var(--p-toast-error-background);
+            --_border-color: var(--p-toast-error-border-color);
+            --_color: var(--p-toast-error-color);
+            --_detail-color: var(--p-toast-error-detail-color);
+            --_shadow: var(--p-toast-error-shadow);
+            --_close-hover-bg: var(--p-toast-error-close-button-hover-background);
+            --_close-focus-ring-color: var(--p-toast-error-close-button-focus-ring-color);
+            --_close-focus-ring-shadow: var(--p-toast-error-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-toast-error-outlined-color);
+            --_outlined-border-color: var(--p-toast-error-outlined-border-color);
+            --_simple-color: var(--p-toast-error-simple-color);
+        }
+
+        &.ui-growl-fatal {
+            --_bg: var(--p-growl-fatal-background);
+            --_border-color: var(--p-growl-fatal-border-color);
+            --_color: var(--p-growl-fatal-color);
+            --_detail-color: var(--p-growl-fatal-detail-color);
+            --_shadow: var(--p-growl-fatal-shadow);
+            --_close-hover-bg: var(--p-growl-fatal-close-button-hover-background);
+            --_close-focus-ring-color: var(--p-growl-fatal-close-button-focus-ring-color);
+            --_close-focus-ring-shadow: var(--p-growl-fatal-close-button-focus-ring-shadow);
+            --_outlined-color: var(--p-growl-fatal-outlined-color);
+            --_outlined-border-color: var(--p-growl-fatal-outlined-border-color);
+            --_simple-color: var(--p-growl-fatal-simple-color);
+        }
+
+        .ui-growl-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--p-toast-content-gap);
+            padding: var(--p-toast-content-padding);
+        }
+
+        /* close icon (shown on hover by the widget) */
+        .ui-icon-closethick {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-flex; /* the inline display:none of the widget still hides it */
+            background: none;
+            position: absolute;
+            top: calc(var(--p-toast-content-gap) / 2);
+            inset-inline-end: calc(var(--p-toast-content-gap) / 2);
+            align-items: center;
+            justify-content: center;
+            width: var(--p-toast-close-button-width);
+            height: var(--p-toast-close-button-height);
+            font-size: var(--p-toast-close-icon-size);
+            border-radius: var(--p-toast-close-button-border-radius);
+            color: var(--_color);
+            outline-color: transparent;
+            transition: background var(--p-toast-transition-duration), color var(--p-toast-transition-duration),
+                outline-color var(--p-toast-transition-duration), box-shadow var(--p-toast-transition-duration);
+
+            &::before {
+                content: "\2003";
+                background: currentColor;
+                forced-color-adjust: none;
+                mask: var(--p-toast-close-icon) center / contain no-repeat;
+            }
+
+            &:hover {
+                background: var(--_close-hover-bg);
+            }
+
+            &:focus-visible {
+                outline: var(--p-toast-close-button-focus-ring-width) var(--p-toast-close-button-focus-ring-style) var(--_close-focus-ring-color);
+                outline-offset: var(--p-toast-close-button-focus-ring-offset);
+                box-shadow: var(--_close-focus-ring-shadow);
+            }
+        }
+
+        /* severity icon */
+        .ui-growl-image {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            background: none;
+            flex-shrink: 0;
+            width: var(--p-toast-icon-size);
+            height: var(--p-toast-icon-size);
+            /* centered on the first line of the title (the content is top aligned for multi line texts) */
+            margin: 0;
+            margin-block-start: calc((var(--p-typography-line-height) * var(--p-toast-summary-font-size) - var(--p-toast-icon-size)) / 2);
+            font-size: var(--p-toast-icon-size);
+            line-height: 1;
+            color: var(--_color);
+        }
+
+        &.ui-growl-info .ui-growl-image::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-toast-info-icon) center / contain no-repeat;
+        }
+
+        &.ui-growl-success .ui-growl-image::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-toast-success-icon) center / contain no-repeat;
+        }
+
+        &.ui-growl-warn .ui-growl-image::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-toast-warn-icon) center / contain no-repeat;
+        }
+
+        &.ui-growl-error .ui-growl-image::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-toast-error-icon) center / contain no-repeat;
+        }
+
+        &.ui-growl-fatal .ui-growl-image::before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-toast-fatal-icon) center / contain no-repeat;
+        }
+
+        .ui-icon {
+            color: var(--_color);
+        }
+
+        /* texts */
+        .ui-growl-message {
+            flex: 1 1 auto;
+            min-width: 0;
+            /* the close icon is positioned over the content: keep long texts clear of it */
+            padding-inline-end: var(--p-toast-close-button-width);
+            display: flex;
+            flex-direction: column;
+            gap: var(--p-toast-text-gap);
+            overflow-wrap: break-word;
+        }
+
+        .ui-growl-title {
+            font-size: var(--p-toast-summary-font-size);
+            font-weight: var(--p-toast-summary-font-weight);
+            line-height: var(--p-typography-line-height);
+        }
+
+        .ui-growl-message p {
+            font-size: var(--p-toast-detail-font-size);
+            font-weight: var(--p-toast-detail-font-weight);
+            color: var(--_detail-color);
+            text-wrap: pretty;
+        }
+    }
 }
+
+/*
+ * Variants. :is() gives (0,3,0) whether the class is on the container itself or on an ancestor, so the variant wins
+ * over the severity rules (same specificity, later), which switch the same private variables.
+ * outlined: overlay surface, colored border, summary and icon (like ui-message-outlined).
+ * simple: no border and no severity tint, colored summary and icon. The overlay background and shadow stay: the growl
+ * floats over arbitrary content and would be unreadable (and indistinguishable from it) without them.
+ */
+:is(.ui-growl-outlined.ui-growl, .ui-growl-outlined .ui-growl) .ui-growl-item-container {
+    --_bg: var(--p-toast-outlined-background);
+    --_border-color: var(--_outlined-border-color);
+    --_color: var(--_outlined-color);
+    --_detail-color: var(--p-toast-outlined-detail-color);
+    --_shadow: var(--p-toast-outlined-shadow);
+    --_close-hover-bg: var(--p-toast-outlined-close-button-hover-background);
+
+    border-width: var(--p-toast-outlined-border-width);
+}
+
+:is(.ui-growl-simple.ui-growl, .ui-growl-simple .ui-growl) .ui-growl-item-container {
+    --_bg: var(--p-toast-simple-background);
+    --_border-color: transparent;
+    --_color: var(--_simple-color);
+    --_detail-color: var(--p-toast-simple-detail-color);
+    --_shadow: var(--p-toast-simple-shadow);
+    --_close-hover-bg: var(--p-toast-simple-close-button-hover-background);
+}
+
 .ui-growl-item-container {
-	position:relative;
-	margin:0 0 10px 0;
-	opacity:0.85;
-	filter:alpha(opacity=85);
+    position: relative;
 }
-.ui-growl-item {
-	display:block;
-	padding:10px 15px;
-}
+
 .ui-growl-item p {
-	padding:0;
-	margin:0;
+    padding: 0;
+    margin: 0;
 }
+
 .ui-growl-icon-close {
-	position:absolute;
-	top:5px;
-	right:3px;
-	cursor:pointer;
+    position: absolute;
+    cursor: pointer;
 }
+
 .ui-growl-title {
-	font-weight:bold;
-	padding:0 0 7px 0;
-	display:block;
-}
-.ui-growl-image {
-	width:32px;
-	height:32px;
-	float:left;
-    margin:0;
-    padding:0;
     display: block;
-    background: url("../messages/messages.png") no-repeat;
-}
-
-.ui-growl-image-info {
-	background-position: 0 -264px;
-}
-
-.ui-growl-image-warn {
-	background-position: 0 -396px;
-}
-
-.ui-growl-image-error {
-	background-position: 0 0;
-}
-
-.ui-growl-image-fatal {
-	background-position: 0 -132px;
-}
-
-.ui-growl-message {
-	padding:0 0 5px 0;
-	width:220px;
-	float:right;
-}
-
-.ui-growl-message p {
-	font-weight: normal;
 }

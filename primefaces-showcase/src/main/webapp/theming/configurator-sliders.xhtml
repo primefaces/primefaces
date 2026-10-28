@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough">
+    <!--
+        Slider rows of the theme configurator (configurator.xhtml), one p:slider per numeric token.
+        Parameter: ranges, a list of [token, label, min, max, step, unit]. configurator.js sets the token on slide and
+        moves the slider (setValue) when the value changes elsewhere (reset, presets).
+        The ids are unique by the token; configurator.js gives the slider handle the id cfg-handle<token>,
+        aria-labelledby the label and the value with its unit as aria-valuetext (p:slider renders role="slider" and
+        the aria-value* attributes).
+    -->
+    <ui:repeat value="#{ranges}" var="range">
+        <div class="cfg-field" data-token="#{range[0]}" data-unit="#{range[5]}">
+            <label id="cfg-label#{range[0]}" title="#{range[0]}">#{range[1]}</label>
+            <h:inputHidden id="value" value="#{range[2]}"/>
+            <p:slider for="value" minValue="#{range[2]}" maxValue="#{range[3]}" step="#{range[4]}"
+                      onSlide="cfg.slide(this, ui.value)"/>
+            <output for="cfg-handle#{range[0]}"></output>
+        </div>
+    </ui:repeat>
+</ui:composition>

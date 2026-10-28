@@ -12,8 +12,7 @@ PrimeFaces is a JSF/Faces component library for Java web applications. It is a m
 
 | Module | Purpose |
 |---|---|
-| `primefaces` | Core library — Java Faces components + TypeScript/CSS frontend |
-| `primefaces-themes` | SASS theme compilation (Aura, Saga, Nova, Bootstrap4, etc.) via dart-sass |
+| `primefaces` | Core library — Java Faces components + TypeScript/CSS frontend, incl. the design token themes (`src/main/frontend/themes`, see its README) |
 | `primefaces-cdk` | Component Development Kit — annotation processor and Maven plugin for code generation |
 | `primefaces-showcase` | Demo WAR application |
 | `primefaces-selenium` | Reusable Selenium test framework (base classes for component testing) |
@@ -117,7 +116,7 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 - Faces impl: `mojarra-4.0`, `mojarra-4.1`, `myfaces-4.0`, `myfaces-4.1`
 - Browser: `chrome`, `firefox`, `safari` (`safari` forces serial execution and excludes tests tagged `SafariExclude`)
 - Options: `headless`, `parallel-execution`, `csp` (Content Security Policy), `client-state-saving`
-- Theme: `theme-aura` (CI default), `theme-saga`, `theme-nova`
+- Theme: `theme-aura` (default, CI), `theme-lara`, `theme-nora`, `theme-metal`, `theme-glass`
 - Screenshots on failure are only written when `screenshotDirectory` is configured; CI sets `SCREENSHOT_DIRECTORY=/tmp/pf_it/`
 
 ## Linting & Code Style
@@ -150,9 +149,14 @@ yarn tsc -b             # TypeScript type check only
 - TypeScript project references manage inter-package dependencies.
 - Packages share state via `window` globals (intentional pattern for JSF resource loading).
 - ESBuild plugins rewrite CSS image references to JSF EL resource expressions.
+- CSS: design tokens only (`var(--p-...)`, no literal colors), in cascade layers; the themes (token values per preset)
+  are in `themes/` and built to `primefaces-<theme>/theme.css`. Conventions and structure: `themes/README.md`;
+  `yarn run build:themes:check` enforces them (also part of `build:bundle`).
+- A widget in its own package (e.g. `packages/knob/knob`) keeps its CSS there (`index.css` -> `<package>/<name>.css`, added
+  as `@ResourceDependency` of the component), only the widgets of `components.js` go into `components.css`.
 - Set `NODE_ENV=production` for minified output; default is `development`.
 
-Key frontend dependencies: jQuery 4, jQuery UI 1.14, Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
+Key frontend dependencies: jQuery 4 (no jQuery UI: drag and drop, sorting and resizing are PrimeFaces' own pointer event interactions `PrimeFaces.interactions` in `packages/core/src/interaction`; widgets call them directly, there are no jQuery plugins `$.fn.draggable`, ... anymore), Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
 
 ## Code Generation (CDK)
 

@@ -92,7 +92,6 @@
     "@types/hammerjs": "^2.0.45",
     "@types/inputmask": "^5.0.7",
     "@types/jquery": "^3.5.29",
-    "@types/jqueryui": "^1.12.22",
     "@types/js-cookie": "^3.0.6",
     "@types/raphael": "^2.3.9",
     "autonumeric": "~4.10.5",

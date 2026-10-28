@@ -4,7 +4,7 @@
  * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface PanelMenuCfg extends PrimeType.widget.BaseWidgetCfg {
+export interface PanelMenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Whether multiple accordion menu items are allowed to be expanded at the same time.
      */
@@ -71,7 +71,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     treeLinks: JQuery = $();
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
         this.headers = this.jq.find('> .ui-panelmenu-panel > h3.ui-panelmenu-header:not(.ui-state-disabled)');
         this.menuContent = this.jq.find('> .ui-panelmenu-panel > .ui-panelmenu-content');
@@ -428,7 +428,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         var submenuLink = submenu.find('> .ui-menuitem-link');
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "true");
         submenuLink.find('> .ui-panelmenu-icon').addClass('ui-icon-triangle-1-s');
-        submenu.children('.ui-menu-list').removeClass('ui-helper-hidden').show();
+        submenu.children('.ui-menu-list').removeClass('p-hidden').show();
 
         if(!restoring) {
             this.updateExpandedNodes();
@@ -443,7 +443,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         var submenuLink = submenu.find('> .ui-menuitem-link');
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "false");
         submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-        submenu.children('.ui-menu-list').addClass('ui-helper-hidden').hide();
+        submenu.children('.ui-menu-list').addClass('p-hidden').hide();
 
         this.updateExpandedNodes();
     }
@@ -509,7 +509,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * Expanded nodes are determined as follows:
      * - Any panel header element (`this.headers`) that has the `ui-state-active` class is considered expanded;
      *   its associated content panel ID (the header's next sibling's `id` attribute) is added.
-     * - Any sub-menu panel (`.ui-menu-list`) that is visible (does not have `ui-helper-hidden`), whose parent
+     * - Any sub-menu panel (`.ui-menu-list`) that is visible (does not have `p-hidden`), whose parent
      *   is a menu parent node (`.ui-menu-parent`), will have that parent's `id` attribute added.
      */
     private updateExpandedNodes(): void {
@@ -517,7 +517,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
 
         // Find all active root panel headers and expanded submenus.
         const activeHeaders = this.headers.filter('.ui-state-active'),
-            activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)');
+            activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.p-hidden)');
 
         // Collect IDs of expanded panel headers.
         for (let j = 0; j < activeHeaders.length; j++) {
@@ -554,7 +554,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
             header.removeClass('ui-state-hover');
         });
 
-        $this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)').each(function() {
+        $this.jq.find('.ui-menu-parent > .ui-menu-list:not(.p-hidden)').each(function() {
             $this.collapseTreeItem($(this).parent());
         });
     }

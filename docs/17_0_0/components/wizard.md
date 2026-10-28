@@ -188,9 +188,38 @@ of structural css classes.
 .ui-wizard-content | Container element of content.
 .ui-wizard-step-titles | Container of step titles.
 .ui-wizard-step-title | Each step title.
+.ui-wizard-step-current | Current step title.
+.ui-wizard-step-completed | Step titles before the current step when `highlightCompletedSteps="true"`.
 .ui-wizard-navbar | Container of navigation controls.
 .ui-wizard-nav-back | Back navigation control.
 .ui-wizard-nav-next | Forward navigation control.
 
 As skinning style classes are global, see the main theming section for more information.
 
+With `highlightCompletedSteps="true"`, both the current step and previous steps retain
+`ui-state-highlight`. Use the additional state classes to style them differently:
+
+```css
+.ui-wizard .ui-wizard-step-completed {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.ui-wizard .ui-wizard-step-current {
+    font-weight: bold;
+}
+```
+
+The classes update on initial display, forward/back navigation, and AJAX refresh.
+Going back removes the completed state from steps at or after the current step.
+
+These are styling hooks; themes do not add a new visual treatment for them by
+default. Existing `ui-state-highlight` styling remains in use, so existing
+themes and selectors need no migration. To distinguish completed steps, opt in
+with CSS such as the example above. An explicit `ui-state-highlight` in a tab's
+`titleStyleClass` is retained during navigation and refresh.
+
+The initial state classes are rendered on the server. JavaScript updates the
+widget-managed classes after successful navigation; validation failures leave
+the current state unchanged. An unknown or unrendered current step is not
+assigned to the last visible step.

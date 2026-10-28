@@ -48,7 +48,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "TabView is a tabbed panel component featuring client side tabs, dynamic content loading with AJAX and transition effects.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
@@ -62,7 +61,7 @@ public class TabView extends TabViewBaseImpl {
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default ui-tabs-selected ui-state-active";
     public static final String PANELS_CLASS = "ui-tabs-panels";
     public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-helper-hidden";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content p-hidden";
     public static final String NAVIGATOR_SCROLLER_CLASS = "ui-tabs-navscroller";
     public static final String NAVIGATOR_LEFT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-left ui-state-default";
     public static final String NAVIGATOR_RIGHT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-right ui-state-default";

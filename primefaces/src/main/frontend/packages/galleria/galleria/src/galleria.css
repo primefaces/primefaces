@@ -1,3 +1,13 @@
+/*
+ * Galleria: p:galleria (inline and fullScreen)
+ *
+ * Supported classes: ui-galleria-indicators-{top|right|bottom|left}, ui-galleria-indicator-onitem,
+ *                    ui-galleria-thumbnails-{top|right|bottom|left}, ui-galleria-item-nav-onhover,
+ *                    ui-galleria-fullscreen, ui-galleria-mask (fullScreen)
+ *
+ * RTL (dir="rtl" on the galleria or an ancestor): navigators, close button and inset indicators use logical positions,
+ * the slides and thumbnails are mirrored (see below).
+ */
 .ui-galleria-content {
     display: flex;
     flex-direction: column;
@@ -19,7 +29,6 @@
 .ui-galleria-item-nav {
     position: absolute;
     top: 50%;
-    margin-top: -.5rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -28,15 +37,11 @@
 }
 
 .ui-galleria-item-prev {
-    left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    inset-inline-start: 0;
 }
 
 .ui-galleria-item-next {
-    right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    inset-inline-end: 0;
 }
 
 .ui-galleria-items {
@@ -56,19 +61,20 @@
     width: 100%;
 }
 
-.ui-galleria-item-nav-onhover .ui-galleria-item-nav {
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity .2s ease-in-out;
-}
+.ui-galleria-item-nav-onhover {
+    .ui-galleria-item-nav {
+        pointer-events: none;
+        opacity: 0;
+    }
 
-.ui-galleria-item-nav-onhover .ui-galleria-item-wrapper:hover .ui-galleria-item-nav {
-    pointer-events: all;
-    opacity: 1;
-}
+    .ui-galleria-item-wrapper:hover .ui-galleria-item-nav {
+        pointer-events: all;
+        opacity: 1;
 
-.ui-galleria-item-nav-onhover .ui-galleria-item-wrapper:hover .ui-galleria-item-nav.ui-disabled {
-    pointer-events: none;
+        &.ui-state-disabled {
+            pointer-events: none;
+        }
+    }
 }
 
 .ui-galleria-caption-items {
@@ -89,7 +95,7 @@
     width: 100%;
 }
 
-/* Thumbnails */
+/* thumbnails */
 .ui-galleria-thumbnail-wrapper {
     display: flex;
     flex-direction: column;
@@ -106,13 +112,12 @@
     align-items: center;
     overflow: hidden;
     position: relative;
-}
 
-.ui-galleria-thumbnail-prev span,
-.ui-galleria-thumbnail-next span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .ui-galleria-thumbnail-container {
@@ -135,63 +140,61 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    opacity: .5;
-}
+    opacity: 0.5;
 
-.ui-galleria-thumbnail-item:hover {
-    opacity: 1;
-    transition: opacity .3s;
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .ui-galleria-thumbnail-item-current {
     opacity: 1;
 }
 
-/* Positions */
-/* Thumbnails */
-.ui-galleria-thumbnails-left .ui-galleria-content,
-.ui-galleria-thumbnails-right .ui-galleria-content {
-    flex-direction: row;
+.ui-galleria-thumbnails-left,
+.ui-galleria-thumbnails-right {
+    .ui-galleria-content {
+        flex-direction: row;
+    }
+
+    .ui-galleria-item-wrapper {
+        flex-direction: row;
+    }
+
+    .ui-galleria-items {
+        flex-direction: column;
+    }
+
+    .ui-galleria-item {
+        align-items: stretch;
+    }
 }
 
-.ui-galleria-thumbnails-left .ui-galleria-item-wrapper,
-.ui-galleria-thumbnails-right .ui-galleria-item-wrapper {
-    flex-direction: row;
+.ui-galleria-thumbnails-left,
+.ui-galleria-thumbnails-top {
+    .ui-galleria-item-wrapper {
+        order: 2;
+    }
+
+    .ui-galleria-thumbnail-wrapper {
+        order: 1;
+    }
 }
 
-.ui-galleria-thumbnails-left .ui-galleria-items,
-.ui-galleria-thumbnails-right .ui-galleria-items {
-    flex-direction: column;
+.ui-galleria-thumbnails-left,
+.ui-galleria-thumbnails-right {
+    .ui-galleria-thumbnail-container {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .ui-galleria-thumbnail-items {
+        flex-direction: column;
+        height: 100%;
+    }
 }
 
-.ui-galleria-thumbnails-left .ui-galleria-item,
-.ui-galleria-thumbnails-right .ui-galleria-item {
-    align-items: stretch;
-}
-
-.ui-galleria-thumbnails-left .ui-galleria-item-wrapper,
-.ui-galleria-thumbnails-top .ui-galleria-item-wrapper {
-    order: 2;
-}
-
-.ui-galleria-thumbnails-left .ui-galleria-thumbnail-wrapper,
-.ui-galleria-thumbnails-top .ui-galleria-thumbnail-wrapper {
-    order: 1;
-}
-
-.ui-galleria-thumbnails-left .ui-galleria-thumbnail-container,
-.ui-galleria-thumbnails-right .ui-galleria-thumbnail-container {
-    flex-direction: column;
-    height: 100%;
-}
-
-.ui-galleria-thumbnails-left .ui-galleria-thumbnail-items,
-.ui-galleria-thumbnails-right .ui-galleria-thumbnail-items {
-    flex-direction: column;
-    height: 100%;
-}
-
-/* Indicators */
+/* indicators */
 .ui-galleria-indicators {
     display: flex;
     align-items: center;
@@ -206,61 +209,69 @@
     align-items: center;
 }
 
-.ui-galleria-indicators-left .ui-galleria-item-wrapper,
-.ui-galleria-indicators-right .ui-galleria-item-wrapper {
-    flex-direction: row;
-    align-items: center;
+.ui-galleria-indicators-left,
+.ui-galleria-indicators-right {
+    .ui-galleria-item-wrapper {
+        flex-direction: row;
+        align-items: center;
+    }
 }
 
-.ui-galleria-indicators-left .ui-galleria-item-container,
-.ui-galleria-indicators-top .ui-galleria-item-container {
-    order: 2;
+.ui-galleria-indicators-left,
+.ui-galleria-indicators-top {
+    .ui-galleria-item-container {
+        order: 2;
+    }
+
+    .ui-galleria-indicators {
+        order: 1;
+    }
 }
 
-.ui-galleria-indicators-left .ui-galleria-indicators,
-.ui-galleria-indicators-top .ui-galleria-indicators {
-    order: 1;
+.ui-galleria-indicators-left,
+.ui-galleria-indicators-right {
+    .ui-galleria-indicators {
+        flex-direction: column;
+    }
 }
 
-.ui-galleria-indicators-left .ui-galleria-indicators,
-.ui-galleria-indicators-right .ui-galleria-indicators {
-    flex-direction: column;
+.ui-galleria-indicator-onitem {
+    .ui-galleria-indicators {
+        position: absolute;
+        display: flex;
+        z-index: 1;
+    }
+
+    &.ui-galleria-indicators-top .ui-galleria-indicators {
+        top: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    &.ui-galleria-indicators-right .ui-galleria-indicators {
+        inset-inline-end: 0;
+        top: 0;
+        height: 100%;
+        align-items: flex-end;
+    }
+
+    &.ui-galleria-indicators-bottom .ui-galleria-indicators {
+        bottom: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        align-items: flex-end;
+    }
+
+    &.ui-galleria-indicators-left .ui-galleria-indicators {
+        inset-inline-start: 0;
+        top: 0;
+        height: 100%;
+        align-items: flex-start;
+    }
 }
 
-.ui-galleria-indicator-onitem .ui-galleria-indicators {
-    position: absolute;
-    display: flex;
-}
-
-.ui-galleria-indicator-onitem.ui-galleria-indicators-top .ui-galleria-indicators {
-    top: 0;
-    left: 0;
-    width: 100%;
-    align-items: flex-start;
-}
-
-.ui-galleria-indicator-onitem.ui-galleria-indicators-right .ui-galleria-indicators {
-    right: 0;
-    top: 0;
-    height: 100%;
-    align-items: flex-end;
-}
-
-.ui-galleria-indicator-onitem.ui-galleria-indicators-bottom .ui-galleria-indicators {
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    align-items: flex-end;
-}
-
-.ui-galleria-indicator-onitem.ui-galleria-indicators-left .ui-galleria-indicators {
-    left: 0;
-    top: 0;
-    height: 100%;
-    align-items: flex-start;
-}
-
-/* FullScreen */
+/* fullScreen: PrimeFaces keeps a dark backdrop (PrimeUIX uses the generic mask) */
 .ui-galleria-mask {
     position: fixed;
     top: 0;
@@ -273,78 +284,357 @@
     pointer-events: none;
     background-color: transparent;
     transition-property: background-color;
-}
+    transition-duration: var(--p-mask-transition-duration);
 
-.ui-galleria-mask.ui-widget-overlay {
-    pointer-events: auto;
+    &.ui-widget-overlay {
+        pointer-events: auto;
+        background-color: var(--p-galleria-mask-background);
+        color: var(--p-galleria-mask-color);
+
+        &.ui-galleria-mask-leave {
+            background-color: transparent;
+        }
+    }
+
+    .ui-galleria-item-nav {
+        position: fixed;
+        top: 50%;
+    }
 }
 
 .ui-galleria-close {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-.ui-galleria-mask .ui-galleria-item-nav {
-    position: fixed;
-    top: 50%;
-    margin-top: -.5rem;
-}
-
-/* Animation */
-.ui-galleria-enter {
-    opacity: 0;
-    transform: scale(0.7);
-}
-
-.ui-galleria-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: all 150ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.ui-galleria-enter-done {
-    transform: none;
-}
-
-.ui-galleria-exit {
-    opacity: 1;
-}
-
-.ui-galleria-exit-active {
-    opacity: 0;
-    transform: scale(0.7);
-    transition: all 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-.ui-galleria-enter-active .ui-galleria-item-nav {
-    opacity: 0;
-}
-
-.ui-galleria-mask.ui-galleria-mask-leave {
-    background-color: transparent;
-}
-
-/* Keyboard Support */
+/* keyboard support: only the visible thumbnails are focusable */
 .ui-items-hidden .ui-galleria-thumbnail-item {
     visibility: hidden;
+
+    &.ui-galleria-thumbnail-item-active {
+        visibility: visible;
+    }
 }
 
-.ui-items-hidden .ui-galleria-thumbnail-item.ui-galleria-thumbnail-item-active {
-    visibility: visible;
+/*
+ * RTL: the widget slides the items, captions and thumbnails with a negative translate, so these strips keep the LTR
+ * layout and are mirrored as a whole; each item is mirrored back (and gets its RTL direction back).
+ */
+.ui-galleria-items:dir(rtl),
+.ui-galleria-caption-items:dir(rtl),
+.ui-galleria-thumbnail-container:dir(rtl) {
+    direction: ltr;
+    scale: -1 1;
 }
 
-/* Clear Button */
+.ui-galleria-item:dir(rtl),
+.ui-galleria-caption-item:dir(rtl),
+.ui-galleria-thumbnail-item:dir(rtl) {
+    direction: rtl;
+    scale: -1 1;
+}
+
+/* button reset of all galleria buttons (navigators, indicators, close) */
 .ui-galleria-link {
-    text-align: left;
+    text-align: start;
     background-color: transparent;
     margin: 0;
     padding: 0;
     border: none;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
+}
+
+.ui-galleria {
+    border: var(--p-galleria-border-width) solid var(--p-galleria-border-color);
+    border-radius: var(--p-galleria-border-radius);
+    overflow: hidden;
+    outline-color: transparent;
+
+    /* the root is focusable (keyboard navigation of the items) */
+    &:focus-visible {
+        outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+        outline-offset: var(--p-focus-ring-offset);
+        box-shadow: var(--p-focus-ring-shadow);
+    }
+
+    &.ui-galleria-fullscreen {
+        border: 0 none;
+        border-radius: 0;
+    }
+
+    /* fullScreen show / hide (the widget relies on these transitions) */
+    &.ui-galleria-enter {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    &.ui-galleria-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity var(--p-mask-transition-duration) var(--p-transition-easing-enter),
+            transform var(--p-mask-transition-duration) var(--p-transition-easing-enter);
+    }
+
+    &.ui-galleria-exit-active {
+        opacity: 0;
+        transform: scale(0.7);
+        transition: opacity var(--p-mask-transition-duration) var(--p-transition-easing-exit),
+            transform var(--p-mask-transition-duration) var(--p-transition-easing-exit);
+    }
+
+    .ui-galleria-close {
+        margin: var(--p-galleria-close-button-gutter);
+        background: var(--p-galleria-close-button-background);
+        color: var(--p-galleria-close-button-color);
+        width: var(--p-galleria-close-button-size);
+        height: var(--p-galleria-close-button-size);
+        border-radius: var(--p-galleria-close-button-border-radius);
+        outline-color: transparent;
+        transition: background var(--p-galleria-transition-duration), color var(--p-galleria-transition-duration),
+            outline-color var(--p-galleria-transition-duration), box-shadow var(--p-galleria-transition-duration);
+
+        .ui-galleria-close-icon {
+            font-size: var(--p-galleria-close-button-icon-size);
+        }
+
+        &:hover {
+            background: var(--p-galleria-close-button-hover-background);
+            color: var(--p-galleria-close-button-hover-color);
+        }
+
+        &:focus-visible {
+            outline: var(--p-galleria-close-button-focus-ring-width) var(--p-galleria-close-button-focus-ring-style) var(--p-galleria-close-button-focus-ring-color);
+            outline-offset: var(--p-galleria-close-button-focus-ring-offset);
+            box-shadow: var(--p-galleria-close-button-focus-ring-shadow);
+        }
+    }
+
+    .ui-galleria-item-nav {
+        background: var(--p-galleria-nav-button-background);
+        color: var(--p-galleria-nav-button-color);
+        width: var(--p-galleria-nav-button-size);
+        height: var(--p-galleria-nav-button-size);
+        margin: calc(-1 * var(--p-galleria-nav-button-size) / 2) var(--p-galleria-nav-button-gutter) 0 var(--p-galleria-nav-button-gutter);
+        border-radius: var(--p-galleria-nav-button-prev-border-radius);
+        outline-color: transparent;
+        transition: background var(--p-galleria-transition-duration), color var(--p-galleria-transition-duration),
+            outline-color var(--p-galleria-transition-duration), box-shadow var(--p-galleria-transition-duration),
+            opacity var(--p-galleria-transition-duration) var(--p-transition-easing);
+
+        &.ui-galleria-item-next {
+            border-radius: var(--p-galleria-nav-button-next-border-radius);
+        }
+
+        /* RTL: prev sits on the right, next on the left */
+        &.ui-galleria-item-prev:dir(rtl) {
+            border-radius: var(--p-galleria-nav-button-next-border-radius);
+        }
+
+        &.ui-galleria-item-next:dir(rtl) {
+            border-radius: var(--p-galleria-nav-button-prev-border-radius);
+        }
+
+        .ui-galleria-item-prev-icon,
+        .ui-galleria-item-next-icon {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            font-size: var(--p-galleria-nav-icon-size);
+        }
+
+        .ui-galleria-item-prev-icon:before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-galleria-prev-icon) center / contain no-repeat;
+        }
+
+        .ui-galleria-item-next-icon:before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-galleria-next-icon) center / contain no-repeat;
+        }
+
+        .ui-galleria-item-prev-icon:dir(rtl):before,
+        .ui-galleria-item-next-icon:dir(rtl):before {
+            scale: -1 1;
+        }
+
+        &:not(.ui-state-disabled):hover {
+            background: var(--p-galleria-nav-button-hover-background);
+            color: var(--p-galleria-nav-button-hover-color);
+        }
+
+        &:not(.ui-state-disabled):focus-visible {
+            outline: var(--p-galleria-nav-button-focus-ring-width) var(--p-galleria-nav-button-focus-ring-style) var(--p-galleria-nav-button-focus-ring-color);
+            outline-offset: var(--p-galleria-nav-button-focus-ring-offset);
+            box-shadow: var(--p-galleria-nav-button-focus-ring-shadow);
+        }
+    }
+
+    .ui-galleria-caption-item {
+        background: var(--p-galleria-caption-background);
+        color: var(--p-galleria-caption-color);
+        padding: var(--p-galleria-caption-padding);
+    }
+
+    .ui-galleria-indicators {
+        padding: var(--p-galleria-indicator-list-padding);
+        gap: var(--p-galleria-indicator-list-gap);
+
+        .ui-galleria-indicator {
+            margin: 0;
+            background: transparent;
+            border: 0 none;
+
+            button {
+                background-color: var(--p-galleria-indicator-button-background);
+                width: var(--p-galleria-indicator-button-width);
+                height: var(--p-galleria-indicator-button-height);
+                border-radius: var(--p-galleria-indicator-button-border-radius);
+                outline-color: transparent;
+                transition: background var(--p-galleria-transition-duration), color var(--p-galleria-transition-duration),
+                    outline-color var(--p-galleria-transition-duration), box-shadow var(--p-galleria-transition-duration);
+
+                &:hover {
+                    background: var(--p-galleria-indicator-button-hover-background);
+                }
+            }
+        }
+
+        /* the li is focusable (tabindex 0), the button is not */
+        .ui-galleria-indicator {
+            outline-color: transparent;
+
+            &:focus-visible button,
+            button:focus-visible {
+                outline: var(--p-galleria-indicator-button-focus-ring-width) var(--p-galleria-indicator-button-focus-ring-style) var(--p-galleria-indicator-button-focus-ring-color);
+                outline-offset: var(--p-galleria-indicator-button-focus-ring-offset);
+                box-shadow: var(--p-galleria-indicator-button-focus-ring-shadow);
+            }
+
+            &:focus-visible {
+                outline: 0 none;
+            }
+
+            &.ui-state-highlight button {
+                background: var(--p-galleria-indicator-button-active-background);
+            }
+        }
+    }
+
+    /* indicators on the item (inset) */
+    &.ui-galleria-indicator-onitem .ui-galleria-indicators {
+        background: var(--p-galleria-inset-indicator-list-background);
+
+        .ui-galleria-indicator button {
+            background: var(--p-galleria-inset-indicator-button-background);
+
+            &:hover {
+                background: var(--p-galleria-inset-indicator-button-hover-background);
+            }
+        }
+
+        .ui-galleria-indicator.ui-state-highlight button {
+            background: var(--p-galleria-inset-indicator-button-active-background);
+        }
+    }
+
+    .ui-galleria-thumbnail-item {
+        transition: opacity var(--p-galleria-transition-duration);
+    }
+
+    .ui-galleria-thumbnail-container {
+        background: var(--p-galleria-thumbnails-content-background);
+        padding: var(--p-galleria-thumbnails-content-padding);
+
+        .ui-galleria-thumbnail-prev,
+        .ui-galleria-thumbnail-next {
+            margin: var(--p-galleria-thumbnail-nav-button-gutter);
+            background-color: transparent;
+            color: var(--p-galleria-thumbnail-nav-button-color);
+            width: var(--p-galleria-thumbnail-nav-button-size);
+            height: var(--p-galleria-thumbnail-nav-button-size);
+            border-radius: var(--p-galleria-thumbnail-nav-button-border-radius);
+            outline-color: transparent;
+            transition: background var(--p-galleria-transition-duration), color var(--p-galleria-transition-duration),
+                outline-color var(--p-galleria-transition-duration), box-shadow var(--p-galleria-transition-duration);
+
+            &:not(.ui-state-disabled):hover {
+                background: var(--p-galleria-thumbnail-nav-button-hover-background);
+                color: var(--p-galleria-thumbnail-nav-button-hover-color);
+            }
+
+            &:focus-visible {
+                outline: var(--p-galleria-thumbnail-nav-button-focus-ring-width) var(--p-galleria-thumbnail-nav-button-focus-ring-style) var(--p-galleria-thumbnail-nav-button-focus-ring-color);
+                outline-offset: var(--p-galleria-thumbnail-nav-button-focus-ring-offset);
+                box-shadow: var(--p-galleria-thumbnail-nav-button-focus-ring-shadow);
+            }
+        }
+
+        .ui-icon-circle-triangle-e,
+        .ui-icon-circle-triangle-s,
+        .ui-icon-circle-triangle-w,
+        .ui-icon-circle-triangle-n {
+            font-style: normal;
+            font-weight: normal;
+            display: inline-block;
+            font-size: var(--p-galleria-thumbnail-nav-button-icon-size);
+        }
+
+        .ui-icon-circle-triangle-e:before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-galleria-thumbnail-next-icon) center / contain no-repeat;
+        }
+
+        .ui-icon-circle-triangle-s:before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-galleria-thumbnail-down-icon) center / contain no-repeat;
+        }
+
+        .ui-icon-circle-triangle-w:before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-galleria-thumbnail-prev-icon) center / contain no-repeat;
+        }
+
+        .ui-icon-circle-triangle-n:before {
+            content: "\2003";
+            background: currentColor;
+            forced-color-adjust: none;
+            mask: var(--p-galleria-thumbnail-up-icon) center / contain no-repeat;
+        }
+
+        .ui-galleria-thumbnail-item-content {
+            margin: var(--p-galleria-thumbnail-item-gutter) 0;
+            outline-color: transparent;
+            transition: background var(--p-galleria-transition-duration), color var(--p-galleria-transition-duration),
+                outline-color var(--p-galleria-transition-duration), box-shadow var(--p-galleria-transition-duration);
+        }
+    }
+
+    &.ui-galleria-thumbnails-left .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content,
+    &.ui-galleria-thumbnails-right .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content {
+        margin: var(--p-galleria-thumbnail-item-gutter);
+    }
+
+    .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content:focus-visible,
+    .ui-galleria-link:focus-visible {
+        outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+        outline-offset: var(--p-focus-ring-offset);
+        box-shadow: var(--p-focus-ring-shadow);
+    }
 }

@@ -34,14 +34,13 @@ import jakarta.faces.context.FacesContext;
 @FacesComponentInfo(description = "OverlayPanel is a generic container component that is displayed as a popup.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class OverlayPanel extends OverlayPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 
-    public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-shadow ui-hidden-container";
+    public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-hidden-container";
     public static final String CONTENT_CLASS = "ui-overlaypanel-content";
 
     public OverlayPanelRenderer getRenderer() {

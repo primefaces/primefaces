@@ -1,0 +1,12 @@
+/*
+ * Spotlight: p:spotlight
+ * Markup: four div.ui-widget-overlay.ui-spotlight.ui-spotlight-(top|bottom|left|right) appended to body,
+ * positioned around the target by the widget (inline top/left/width/height/z-index).
+ * PrimeFaces only tokens: the spotlight block of presets/*.css.
+ */
+.ui-spotlight.ui-widget-overlay {
+    position: fixed;
+    background: var(--p-spotlight-mask-background);
+    color: var(--p-spotlight-mask-color);
+    transition: background var(--p-spotlight-transition-duration);
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+        <style>
+            .field { margin-bottom: 1rem; }
+        </style>
+    </h:head>
+    <h:body>
+        <!-- invalid states of the form fields: server side (required, ajax update) and client side validation -->
+        <h:form id="form">
+            <div class="field">
+                <p:outputLabel id="textLabel" for="text" value="Text" />
+                <p:inputText id="text" value="#{theming014.text}" required="true" />
+                <p:message id="textMessage" for="text" />
+            </div>
+            <div class="field"><p:password id="password" value="#{theming014.password}" required="true" toggleMask="true" /></div>
+            <div class="field"><p:inputNumber id="number" value="#{theming014.number}" required="true" /></div>
+            <div class="field"><p:inputTextarea id="textarea" value="#{theming014.textarea}" required="true" /></div>
+            <div class="field"><p:inputMask id="mask" value="#{theming014.mask}" mask="99-999" required="true" /></div>
+            <div class="field">
+                <p:autoComplete id="autocomplete" value="#{theming014.autocomplete}" completeMethod="#{theming014.complete}" required="true" />
+            </div>
+            <div class="field"><p:datePicker id="date" value="#{theming014.date}" required="true" /></div>
+            <div class="field"><p:spinner id="spinner" value="#{theming014.spinner}" required="true" /></div>
+            <div class="field"><p:chips id="chips" value="#{theming014.chips}" required="true" /></div>
+            <div class="field">
+                <p:selectOneMenu id="select" value="#{theming014.select}" required="true">
+                    <f:selectItem itemLabel="Select" noSelectionOption="true" />
+                    <f:selectItems value="#{theming014.cities}" />
+                </p:selectOneMenu>
+            </div>
+            <div class="field">
+                <p:selectCheckboxMenu id="multiselect" value="#{theming014.multiselect}" required="true">
+                    <f:selectItems value="#{theming014.cities}" />
+                </p:selectCheckboxMenu>
+            </div>
+            <div class="field">
+                <p:selectOneRadio id="radio" value="#{theming014.radio}" required="true">
+                    <f:selectItems value="#{theming014.cities}" />
+                </p:selectOneRadio>
+            </div>
+            <div class="field">
+                <p:selectManyCheckbox id="checkboxes" value="#{theming014.checkboxes}" required="true">
+                    <f:selectItems value="#{theming014.cities}" />
+                </p:selectManyCheckbox>
+            </div>
+
+            <!-- p:message display="tooltip" (needs the global tooltip), an invalid readonly selectOneRadio -->
+            <p:tooltip />
+            <div class="field">
+                <p:inputText id="tooltipText" value="#{theming014.tooltipText}" required="true" />
+                <p:message id="tooltipMessage" for="tooltipText" display="tooltip" />
+            </div>
+            <div class="field">
+                <p:selectOneRadio id="readonlyRadio" value="#{theming014.readonlyRadio}" readonly="true">
+                    <f:selectItems value="#{theming014.cities}" />
+                </p:selectOneRadio>
+            </div>
+
+            <p:commandButton id="submit" value="Submit" process="@form" update="@form" validateClient="false" />
+            <p:commandButton id="submitClient" value="Submit (client)" process="@form" update="@form" validateClient="true" />
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

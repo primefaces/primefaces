@@ -258,7 +258,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             this.bindEditEvents();
             // ensure DOM memory is cleaned up by releasing document event handlers
             this.addDestroyListener(function () {
-                $(document).off(namespace);
+                $(document).off('.datatable' + this.id);
                 $(document).off('mouseup.datatable-cell-blur' + this.id);
             });
         }
@@ -439,11 +439,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // #5582: destroy any current draggable items
         if (this.cfg.draggableColumns || this.cfg.draggableRows) {
-            var dragdrop = $.ui.ddmanager.current;
+            var dragdrop = PrimeFaces.interactions.dragDrop.current;
             if (dragdrop && dragdrop.helper) {
-                var item = dragdrop.currentItem || dragdrop.element;
+                var item = dragdrop.item();
                 if(item.closest('.ui-datatable')[0] === this.jq[0]) {
-                    document.body.style.cursor = 'default';
                     dragdrop.cancel();
                 }
             }
@@ -856,7 +855,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // helper function to reset the state of the whole table
         function resetFocusable(resetFirstCell) {
-            var selector = resetFirstCell ? "td:not(.ui-helper-hidden)" : 'td[tabindex="'+cellTabIndex+'"]';
+            var selector = resetFirstCell ? "td:not(.p-hidden)" : 'td[tabindex="'+cellTabIndex+'"]';
             // default all cells to not focusable
             var focusableCells = $this.getTbody().find(selector);
             focusableCells.attr("tabindex", "-1");
@@ -906,11 +905,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowDown":
-                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find('td[tabindex="-1"], td.ui-helper-hidden').eq(cell.index());
+                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find('td[tabindex="-1"], td.p-hidden').eq(cell.index());
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowUp":
-                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find('td[tabindex="-1"], td.ui-helper-hidden').eq(cell.index());
+                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find('td[tabindex="-1"], td.p-hidden').eq(cell.index());
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "Home":
@@ -1829,12 +1828,19 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             if (!thead.data("resizeTimer")) {
                 thead.data("resizeTimer", true);
                 const thiz = this;
+                const resizeNamespace = 'resize.' + this.id + '_autolayout';
                 var resizeTimer;
-    
-                $(window).on('resize', function() {
+
+                $(window).off(resizeNamespace).on(resizeNamespace, function() {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(thiz.resetColumnsWidth.bind(thiz), 100);
                 });
+                const unbindResize = () => {
+                    clearTimeout(resizeTimer);
+                    $(window).off(resizeNamespace);
+                };
+                this.addRefreshListener(unbindResize);
+                this.addDestroyListener(unbindResize);
             }
         }
 
@@ -2605,7 +2611,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var $this = this;
 
         // remove all indicator numbers first
-        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('ui-helper-hidden');
+        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('p-hidden');
 
         // add 1,2,3 etc to columns if more than 1 column is sorted
         var sortMeta =  $this.sortMeta;
@@ -2614,7 +2620,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 var id = $(this).attr("id");
                 for (var i = 0; i < sortMeta.length; i++) {
                     if (sortMeta[i].col == id) {
-                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('ui-helper-hidden');
+                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('p-hidden');
                     }
                 }
             });
@@ -3410,7 +3416,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         labels = toggler.children('span'),
         expandIconClasses = toggler.attr('data-expand-icon').split(' '),
         collapseIconClasses = toggler.attr('data-collapse-icon').split(' '),
-        expanded = iconOnly ? collapseIconClasses.every(it => toggler.hasClass(it)) : toggler.children('span').eq(0).hasClass('ui-helper-hidden'),
+        expanded = iconOnly ? collapseIconClasses.every(it => toggler.hasClass(it)) : toggler.children('span').eq(0).hasClass('p-hidden'),
         $this = this;
 
         //Run toggle expansion if row is not being toggled already to prevent conflicts
@@ -3423,8 +3429,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     this.updateExpansionAria(toggler);
                 }
                 else {
-                    labels.eq(0).removeClass('ui-helper-hidden');
-                    labels.eq(1).addClass('ui-helper-hidden');
+                    labels.eq(0).removeClass('p-hidden');
+                    labels.eq(1).addClass('p-hidden');
                 }
 
                 this.collapseRow(row);
@@ -3443,8 +3449,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     this.updateExpansionAria(toggler);
                 }
                 else {
-                    labels.eq(0).addClass('ui-helper-hidden');
-                    labels.eq(1).removeClass('ui-helper-hidden');
+                    labels.eq(0).addClass('p-hidden');
+                    labels.eq(1).removeClass('p-hidden');
                 }
 
                 this.loadExpandedRowContent(row);
@@ -3584,8 +3590,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     }
                     else {
                         var labels = toggler.children('span');
-                        labels.eq(0).removeClass('ui-helper-hidden');
-                        labels.eq(1).addClass('ui-helper-hidden');
+                        labels.eq(0).removeClass('p-hidden');
+                        labels.eq(1).addClass('p-hidden');
                     }
                     break;
                 }
@@ -3726,13 +3732,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                             // ignore clicks inside input overlays like calendar popups etc
                             var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
                             // and menus - in case smth like menubutton is inside the table
-                            ignoredOverlay += ', .ui-datepicker-buttonpane, .ui-menuitem, .ui-menuitem-link';
+                            ignoredOverlay += ', .ui-menuitem, .ui-menuitem-link';
                             // and blockers
                             ignoredOverlay += ', .ui-blockui, .blockUI';
                             if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
-                                return;
-
-                            if($.datepicker && ($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length))
                                 return;
 
                             if($this.cfg.saveOnCellBlur)
@@ -3751,7 +3754,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     switchToRowEdit(row) {
         // #1499 disable rowReorder while editing
         if (this.cfg.draggableRows) {
-            this.tbody.sortable("disable");
+            PrimeFaces.interactions.disable(this.tbody, "sortable");
         }
 
         if(this.cfg.rowEditMode === "lazy") {
@@ -3990,7 +3993,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                                 if(focusIndex < 0 || focusIndex === inputs.length || 
                                    parent.hasClass('ui-inputnumber') ||
                                    parent.hasClass('ui-selectonemenu') ||
-                                   parent.hasClass('ui-helper-hidden-accessible')) {
+                                   parent.hasClass('p-hidden-accessible')) {
                                     $this.tabCell(cell, !shiftKey);
                                 } else {
                                     inputs.eq(focusIndex).trigger('focus');
@@ -4288,7 +4291,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
                             // #1499 enable rowReorder when done editing
                             if (this.cfg.draggableRows && $('tr.ui-row-editing').length === 0) {
-                                this.tbody.sortable("enable");
+                                PrimeFaces.interactions.enable(this.tbody, "sortable");
                             }
 
                             // #258 must reflow after editing
@@ -4548,7 +4551,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             $this.autosizeColumnWidth($(this).parent());
         });
 
-        resizers.draggable({
+        PrimeFaces.interactions.draggable(resizers, {
             axis: 'x',
             start: function(event, ui) {
                 ui.helper.data('originalposition', ui.helper.offset());
@@ -4695,7 +4698,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Finds the group resizer element for the given drag event data.
      * @protected
-     * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Data for the drag event.
      * @return {JQuery|null} The resizer DOM element.
      */
     findGroupResizer(ui) {
@@ -4731,7 +4734,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * Resizes this DataTable, row, or columns in response to a drag event of a resizer element.
      * @protected
      * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
-     * @param {JQueryUI.DraggableEventUIParams} ui Data for the drag event.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Data for the drag event.
      */
     resize(event, ui) {
         var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null,
@@ -4902,9 +4905,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.dragIndicatorTop = $('<span class="ui-icon ui-icon-arrowthick-1-s" style="position:absolute"></span>').hide().appendTo(this.jq);
         this.dragIndicatorBottom = $('<span class="ui-icon ui-icon-arrowthick-1-n" style="position:absolute"></span>').hide().appendTo(this.jq);
 
-        var $this = this;
+        var $this = this,
+            columns = $(this.jqId + ' thead th.ui-draggable-column');
 
-        $(this.jqId + ' thead th.ui-draggable-column').draggable({
+        PrimeFaces.interactions.draggable(columns, {
             appendTo: 'body',
             opacity: 0.75,
             cursor: 'move',
@@ -4971,7 +4975,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
                 return helper.get(0);
             }
-        }).droppable({
+        });
+
+        PrimeFaces.interactions.droppable(columns, {
             hoverClass:'ui-state-highlight',
             tolerance:'pointer',
             scope: this.id,
@@ -5064,9 +5070,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         // GitHub #5013 Frozen Columns should not be draggable/droppable
         if($this.cfg.frozenColumns) {
             var frozenHeaders = this.frozenThead.find('.ui-frozen-column');
-            frozenHeaders.draggable('disable');
-            frozenHeaders.droppable('disable');
-            frozenHeaders.disableSelection();
+            PrimeFaces.interactions.disable(frozenHeaders, 'draggable');
+            PrimeFaces.interactions.disable(frozenHeaders, 'droppable');
+            frozenHeaders.on('selectstart', function(e) {
+                e.preventDefault();
+            });
         }
     }
 
@@ -5086,14 +5094,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Makes the rows of this DataTable draggable via JQueryUI.
+     * Makes the rows of this DataTable draggable.
      * @private
      */
     makeRowsDraggable() {
         var $this = this,
         draggableHandle = this.cfg.rowDragSelector||'td,span:not(.ui-c)';
 
-        this.tbody.sortable({
+        PrimeFaces.interactions.sortable(this.tbody, {
             placeholder: 'ui-datatable-rowordering ui-state-active',
             cursor: 'move',
             handle: draggableHandle,
@@ -5328,13 +5336,13 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 tableOffset = table.offset();
 
             if (scrollTop + fixedElementsHeight > tableOffset.top) {
-                if (!$this.stickyContainer.hasClass('ui-shadow ui-sticky')) {
+                if (!$this.stickyContainer.hasClass('ui-sticky')) {
                     $this.stickyContainer.css({ 'z-index': PrimeFaces.utils.nextStickyZindex() });
                 }
                 $this.stickyContainer.css({
                     position: 'fixed',
                     top: fixedElementsHeight
-                }).addClass('ui-shadow ui-sticky');
+                }).addClass('ui-sticky');
 
                 if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = (scrollTop + fixedElementsHeight) - tableOffset.top;
@@ -5349,7 +5357,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 $this.stickyContainer.css({
                     position: 'absolute',
                     top: tableOffset.top
-                }).removeClass('ui-shadow ui-sticky');
+                }).removeClass('ui-sticky');
 
                 if ($this.stickyContainer.is(':hidden')) {
                     $this.stickyContainer.css({ 'z-index': PrimeFaces.utils.nextStickyZindex() });
@@ -5655,7 +5663,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @return {number} The computed `colspan` value.
      */
     calculateColspan(visibleOnly = false) {
-        var headerSelector = '> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)';
+        var headerSelector = '> tr:first th:not(.p-hidden):not(.ui-grouped-column)';
         if (visibleOnly) {
             headerSelector += ':visible';
         }
@@ -5833,11 +5841,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     var columnIndex = column.data('ci') || j;
 
                     var header = this.headers.eq(columnIndex);
-                    if(header.hasClass('ui-helper-hidden')) {
-                        column.addClass('ui-helper-hidden');
+                    if(header.hasClass('p-hidden')) {
+                        column.addClass('p-hidden');
                     }
                     else {
-                        column.removeClass('ui-helper-hidden');
+                        column.removeClass('p-hidden');
                     }
                 }
             }

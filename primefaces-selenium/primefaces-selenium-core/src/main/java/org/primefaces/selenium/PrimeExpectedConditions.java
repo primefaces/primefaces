@@ -46,7 +46,7 @@ public final class PrimeExpectedConditions {
     }
 
     public static ExpectedCondition<Boolean> validationFailed() {
-        return script("return (!window.pfselenium || pfselenium.validationFailed === false);");
+        return script("return !!window.pfselenium && pfselenium.validationFailed === true;");
     }
 
     public static ExpectedCondition<Boolean> notNavigating() {

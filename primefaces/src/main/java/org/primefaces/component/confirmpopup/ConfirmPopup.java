@@ -32,16 +32,15 @@ import jakarta.faces.component.FacesComponent;
 @FacesComponentInfo(description = "ConfirmPopup is a popup component used to display confirmation messages.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class ConfirmPopup extends ConfirmPopupBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmPopup";
 
-    public static final String STYLE_CLASS = "ui-confirm-popup ui-widget ui-shadow ui-hidden-container";
+    public static final String STYLE_CLASS = "ui-confirm-popup ui-widget ui-hidden-container";
     public static final String CONTENT_CLASS = "ui-confirm-popup-content ui-widget-content";
     public static final String ICON_CLASS = "ui-confirm-popup-icon";
     public static final String MESSAGE_CLASS = "ui-confirm-popup-message";
-    public static final String FOOTER_CLASS = "ui-confirm-popup-footer ui-widget-content ui-helper-clearfix";
+    public static final String FOOTER_CLASS = "ui-confirm-popup-footer ui-widget-content";
 }

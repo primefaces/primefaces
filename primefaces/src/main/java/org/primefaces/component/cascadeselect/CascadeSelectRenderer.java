@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.cascadeselect;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -45,6 +46,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = CascadeSelect.DEFAULT_RENDERER, componentFamily = CascadeSelect.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
 
     @Override
@@ -98,7 +100,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         String inputId = component.getInputClientId();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);

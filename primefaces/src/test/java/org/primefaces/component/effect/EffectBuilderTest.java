@@ -33,14 +33,14 @@ class EffectBuilderTest {
     void buildHighlightEffectWithNoOptions() {
         String effect = new EffectBuilder("highlight", "id", true).atSpeed(1000).build();
 
-        assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
+        assertEquals("PrimeFaces.effects.run($(PrimeFaces.escapeClientId('id')),'highlight',{duration:1000});", effect);
     }
 
     @Test
     void buildHighlightEffectWithAnOption() {
         String effect = new EffectBuilder("highlight", "id", false).withOption("startcolor", "'#FFFFFF'").atSpeed(5000).build();
 
-        assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
+        assertEquals("PrimeFaces.effects.run($(PrimeFaces.escapeClientId('id')),'highlight',{startcolor:'#FFFFFF',duration:5000,queue:false});", effect);
     }
 
     @Test
@@ -52,7 +52,7 @@ class EffectBuilderTest {
                 .atSpeed(1000)
                 .build();
 
-        assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true)"
-                + ".effect('highlight',{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000'},1000);", effect);
+        assertEquals("PrimeFaces.effects.run($(PrimeFaces.escapeClientId('id')),'highlight',"
+                + "{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000',duration:1000,queue:false});", effect);
     }
 }

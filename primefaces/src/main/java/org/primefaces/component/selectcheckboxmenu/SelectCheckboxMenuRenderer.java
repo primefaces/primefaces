@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
@@ -51,6 +52,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectCheckboxMenu.DEFAULT_RENDERER, componentFamily = SelectCheckboxMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckboxMenu> {
 
     @Override
@@ -121,7 +123,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         Object submittedValues = getSubmittedValues(component);
 
         writer.startElement("div", component);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         int idx = -1;
         for (int i = 0; i < selectItems.size(); i++) {
@@ -726,7 +728,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         String tabindex = component.isDisabled() ? "-1" : Objects.toString(component.getTabindex(), "0");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.startElement("input", component);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);

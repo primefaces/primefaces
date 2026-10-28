@@ -6,7 +6,7 @@ PrimeFaces is an open source Jakarta Faces component suite with various extensio
 - Automatic XSS and CSRF prevention.
 - Pluggable HTML sanitizing via OWASP.
 - Built-in responsiveness & accessibility.
-- [Theming Framework](/core/themes.md) with 9+ built-in themes and support for visual theme designer tool.
+- [Theming](/core/theming.md) based on design tokens: 5 built-in themes, light and dark mode, customizable with plain CSS.
 - Premium themes and layouts.
 - Extensive documentation.
 - Large, vibrant and active user community.

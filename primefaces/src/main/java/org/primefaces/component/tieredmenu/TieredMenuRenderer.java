@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tieredmenu;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -45,6 +46,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = TieredMenu.DEFAULT_RENDERER, componentFamily = TieredMenu.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
 
     @Override

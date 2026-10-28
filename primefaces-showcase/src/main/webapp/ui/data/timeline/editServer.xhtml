@@ -103,14 +103,14 @@
                             </p:selectOneMenu>
 
                             <h:outputText value="From"/>
-                            <p:calendar value="#{editServerTimelineView.event.startDate}"
-                                        rendered="#{not empty editServerTimelineView.event}"
-                                        pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>
+                            <p:datePicker value="#{editServerTimelineView.event.startDate}"
+                                          rendered="#{not empty editServerTimelineView.event}"
+                                          pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>
 
                             <h:outputText value="Until"/>
-                            <p:calendar value="#{editServerTimelineView.event.endDate}"
-                                        rendered="#{not empty editServerTimelineView.event}"
-                                        pattern="dd/MM/yyyy HH:mm" label="Until"/>
+                            <p:datePicker value="#{editServerTimelineView.event.endDate}"
+                                          rendered="#{not empty editServerTimelineView.event}"
+                                          pattern="dd/MM/yyyy HH:mm" label="Until"/>
 
                             <h:outputText value="Phone"/>
                             <p:inputMask value="#{editServerTimelineView.event.data.phone}" mask="(9999) 999-999"

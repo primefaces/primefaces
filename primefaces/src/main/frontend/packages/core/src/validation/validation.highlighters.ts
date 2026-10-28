@@ -6,7 +6,7 @@ export class ValidationHighlighter {
     /**
      * A map between a widget type and the corresponding highlight handler for that type.
      */
-    types: Record<string, PrimeType.validation.Highlighter> = {};
+    types: Record<string, PrimeFacesTypes.validation.Highlighter> = {};
 
     /**
      * When an element is invalid due to a validation error, the user needs to be informed. This method highlights
@@ -49,7 +49,7 @@ export class ValidationHighlighter {
     }
 };
 
-class DefaultHighlighter implements PrimeType.validation.Highlighter {
+class DefaultHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         validationHighlighter.highlightLabel(element);
         validationHighlighter.applyStateCssClasses(element, false);
@@ -61,7 +61,7 @@ class DefaultHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class BooleanCheckBoxHighlighter implements PrimeType.validation.Highlighter {
+class BooleanCheckBoxHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         validationHighlighter.highlightLabel(element);
         validationHighlighter.applyStateCssClasses(element.parent().next(), false);
@@ -73,7 +73,7 @@ class BooleanCheckBoxHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class ManyCheckBoxHighlighter implements PrimeType.validation.Highlighter {
+class ManyCheckBoxHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         const custom = element.hasClass('ui-chkbox-clone');
         let chkboxes: JQuery;
@@ -111,7 +111,7 @@ class ManyCheckBoxHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class ListBoxHighlighter implements PrimeType.validation.Highlighter {
+class ListBoxHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         validationHighlighter.applyStateCssClasses(element.closest('.ui-inputfield'), false);
         validationHighlighter.highlightLabel(element.closest('.ui-inputfield'));
@@ -123,7 +123,7 @@ class ListBoxHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class OneMenuHighlighter implements PrimeType.validation.Highlighter {
+class OneMenuHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
         validationHighlighter.applyStateCssClasses(siblings, false);
@@ -139,11 +139,11 @@ class OneMenuHighlighter implements PrimeType.validation.Highlighter {
     }
 
     private getFocusElement(element: JQuery): JQuery {
-        return element.closest('.ui-selectonemenu').find('.ui-helper-hidden-accessible > input');
+        return element.closest('.ui-selectonemenu').find('.p-hidden-accessible > input');
     }
 }
 
-class SpinnerHighlighter implements PrimeType.validation.Highlighter {
+class SpinnerHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         validationHighlighter.applyStateCssClasses(element.parent(), false);
         validationHighlighter.highlightLabel(element.parent());
@@ -155,7 +155,7 @@ class SpinnerHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class OneRadioHighlighter implements PrimeType.validation.Highlighter {
+class OneRadioHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         var container = element.closest('.ui-selectoneradio'),
         radios = container.find('div.ui-radiobutton-box');
@@ -177,7 +177,7 @@ class OneRadioHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class BooleanButtonHighlighter implements PrimeType.validation.Highlighter {
+class BooleanButtonHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         validationHighlighter.applyStateCssClasses(element.parent().parent(), false);
     }
@@ -187,7 +187,7 @@ class BooleanButtonHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class ToggleSwitchHighlighter implements PrimeType.validation.Highlighter {
+class ToggleSwitchHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         validationHighlighter.applyStateCssClasses(element.parent().next(), false);
     }
@@ -197,7 +197,7 @@ class ToggleSwitchHighlighter implements PrimeType.validation.Highlighter {
     }
 }
 
-class InputNumberHighlighter implements PrimeType.validation.Highlighter {
+class InputNumberHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
         const orginalInput = element.prev('input');
         validationHighlighter.highlightLabel(orginalInput);

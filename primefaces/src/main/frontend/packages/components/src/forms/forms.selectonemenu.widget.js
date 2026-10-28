@@ -166,7 +166,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 if (eltLabeledBy) {
                     var $this = this;
                     this.labeledBy = $(eltLabeledBy);
-                    this.labeledBy.on('click', function (e) {
+                    this.labeledBy.off('click.selectonemenu').on('click.selectonemenu', function (e) {
                         $this.keyboardTarget.focus();
                     });
                 }
@@ -1138,7 +1138,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             });
         }
         else {
-            this.panel.css({left:'0px', top:'0px', 'transform-origin': 'center top'}).position({
+            PrimeFaces.utils.position(this.panel.css({left:'0px', top:'0px', 'transform-origin': 'center top'}), {
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.jq

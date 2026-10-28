@@ -1,0 +1,134 @@
+/*
+ * Document level defaults and user preferences: native controls, text selection, reduced motion, print.
+ */
+:root {
+    /* native checkboxes, radios, ranges, progress of the application in the primary color */
+    accent-color: var(--p-primary-color);
+}
+
+::selection {
+    background: var(--p-highlight-background);
+    color: var(--p-highlight-color);
+}
+
+/* WCAG 2.2 target size: small icon controls get an invisible 24px hit area (centered), the layout stays the same */
+:where(.ui-chips-token-icon, .ui-autocomplete-token-icon, .ui-selectcheckboxmenu-token-icon, .ui-password-icon,
+    .ui-chip-remove-icon, .ui-breadcrumb-home-icon)::after {
+    content: "";
+    position: absolute;
+    inset: calc(50% - 12px);
+}
+
+:where(.ui-chip-remove-icon, .ui-breadcrumb-home-icon) {
+    position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-p-scope] {
+        --p-transition-duration: 0s;
+    }
+
+    /* fixed durations (keyframes, speed dial, dock); 0.01ms instead of none so animation events still fire
+       (the autofill detection of the input fields listens to animationstart) */
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/*
+ * PrimeFaces.utils.disableAnimations() (also called by PrimeFaces Selenium): content that fades in when it is inserted
+ * appears at once. These animations start at opacity 0, so the content would be invisible in its first frame.
+ * Also on scopes, which re-declare the tokens.
+ */
+:root[data-p-animations="off"],
+:root[data-p-animations="off"] [data-p-scope] {
+    --p-message-enter-duration: 0s;
+    --p-dataview-content-enter-duration: 0s;
+    --p-fileupload-transition-duration: 0s;
+}
+
+/*
+ * Page background: transparent in most presets (the page keeps its own background), a wallpaper in translucent presets
+ * (Glass), which need something colorful behind their glass. Application CSS (unlayered) wins.
+ */
+:root {
+    background: var(--p-document-background);
+}
+
+@media print {
+    /* light on paper, also over an application color-scheme: dark (a layered !important beats unlayered CSS) */
+    :root {
+        color-scheme: light !important;
+    }
+
+    *,
+    ::before,
+    ::after {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /*
+     * Browsers drop backgrounds when printing (unless the user enables background graphics) but keep the text color:
+     * white text on a primary button would vanish, checked boxes / switches / selections would lose their state. These
+     * small elements print their background (inherited by their parts); large areas stay ink saving.
+     */
+    .ui-button,
+    .ui-badge,
+    .ui-tag,
+    .ui-chip,
+    .ui-chkbox-box,
+    .ui-radiobutton-box,
+    .ui-toggleswitch,
+    .ui-slider,
+    .ui-progressbar,
+    .ui-state-highlight,
+    .ui-state-active {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* scrollable tables print all rows */
+    .ui-datatable-scrollable-body,
+    .ui-treetable-scrollable-body,
+    .ui-datatable-virtualscroll .ui-datatable-scrollable-body {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    tr,
+    .ui-panel,
+    .ui-card,
+    .ui-fieldset {
+        break-inside: avoid;
+    }
+
+    /* overlays, and the fixed helpers browsers would repeat on every page: the sticky header clone of a dataTable,
+       p:log, p:stack, p:dock */
+    .ui-growl,
+    .ui-tooltip,
+    .ui-scrolltop,
+    .ui-blockui,
+    .ui-widget-overlay,
+    .ui-ajax-status,
+    .ui-paginator,
+    .ui-datatable-sticky,
+    .ui-log,
+    .ui-stack,
+    .ui-dock {
+        display: none !important;
+    }
+
+    /* a pinned p:sticky target prints in its place (the widget sets position fixed inline) */
+    .ui-sticky {
+        position: static !important;
+        width: auto !important;
+    }
+}

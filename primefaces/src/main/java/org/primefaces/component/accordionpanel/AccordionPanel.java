@@ -52,7 +52,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentHandler(AccordionPanelHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class AccordionPanel extends AccordionPanelBaseImpl {
@@ -66,7 +65,7 @@ public class AccordionPanel extends AccordionPanelBaseImpl {
     public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-s";
     public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-n";
     public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content ui-helper-hidden";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content p-hidden";
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");

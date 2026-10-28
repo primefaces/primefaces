@@ -63,6 +63,9 @@
     bindPanelEvents() {
         var $this = this;
 
+        // beforeShow is also invoked when the keypad renders on init, so drop handlers from a previous call
+        this.unbindPanelEvents();
+
         //Hide overlay on resize/scroll
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', null, function() {
             if (PrimeFaces.hideOverlaysOnViewportChange === true) {

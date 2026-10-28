@@ -73,7 +73,7 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
         this.configureLocale();
 
         if(this.cfg.tooltip) {
-            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow"></div>').appendTo(document.body);
+            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content"></div>').appendTo(document.body);
             this.addDestroyListener(function(){this.tip.remove();});
             this.addRefreshListener(function(){this.tip.remove();});
         }
@@ -90,6 +90,31 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
 
         // must be done after FullCalendar is built
         this.setupTitlebarHandlers();
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        if (this.calendar) {
+            this.calendar.destroy();
+        }
+
+        super.refresh(cfg);
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy() {
+        super.destroy();
+
+        if (this.calendar) {
+            this.calendar.destroy();
+        }
     }
 
     /**
@@ -308,7 +333,8 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
      */
     setupTitlebarHandlers() {
         var $this = this;
-        $('.fc-prev-button, .fc-next-button, .fc-today-button').on('click.' + this.id, function() {
+        // only the own buttons, the ones of other schedules on the page are not replaced by an update of this one
+        this.jq.find('.fc-prev-button, .fc-next-button, .fc-today-button').off('click.' + this.id).on('click.' + this.id, function() {
             $this.callBehavior('viewChange');
         });
     }

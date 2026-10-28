@@ -413,6 +413,8 @@ class SimpleDateFormat {
  * @prop {import("raphael").RaphaelElement[]} hour_sign The drawn elements for the hour signs (1-12).
  * @prop {import("raphael").RaphaelElement} hour_hand The drawn element for the hour hand.
  * @prop {number} interval The set-interval timer ID for the ticking of the clock.
+ * @prop {number} [syncInterval] The set-interval timer ID for syncing the clock with the server when `autoSync` is
+ * set to `true`.
  * @prop {import("raphael").RaphaelElement} minute_hand The drawn element for the minute hand.
  * @prop {import("raphael").RaphaelElement} pin The drawn element for the pin at the center of the clock.
  * @prop {import("raphael").RaphaelElement} second_hand The drawn element for the second hand.
@@ -463,7 +465,7 @@ PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
         }
 
         if(!this.isClient() && this.cfg.autoSync) {
-            setInterval(function() {
+            this.syncInterval = setInterval(function() {
                 $this.sync();
             }, this.cfg.syncInterval);
         }
@@ -476,8 +478,20 @@ PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
      */
     refresh(cfg) {
         clearInterval(this.interval);
+        clearInterval(this.syncInterval);
 
         super.refresh(cfg);
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy() {
+        super.destroy();
+
+        clearInterval(this.interval);
+        clearInterval(this.syncInterval);
     }
 
     /**

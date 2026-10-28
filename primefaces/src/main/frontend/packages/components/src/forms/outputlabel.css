@@ -1,0 +1,33 @@
+/*
+ * OutputLabel: p:outputLabel (PrimeUIX: label)
+ *
+ * Supported classes: ui-state-error (invalid target), ui-outputlabel-rtl, ui-state-disabled
+ * Children: .ui-outputlabel-label (text), .ui-outputlabel-rfi (required field indicator "*")
+ */
+.ui-outputlabel {
+    color: var(--p-label-text-color);
+    font-size: var(--p-label-font-size);
+    font-weight: var(--p-label-font-weight);
+
+    .ui-outputlabel-label {
+        overflow: hidden;
+    }
+
+    &.ui-state-error {
+        color: var(--p-label-invalid-color);
+    }
+
+    &.ui-state-disabled {
+        opacity: var(--p-label-disabled-opacity);
+    }
+
+    .ui-outputlabel-rfi {
+        margin-left: var(--p-label-required-indicator-gap);
+        color: var(--p-label-required-indicator-color);
+    }
+}
+
+.ui-outputlabel-rtl .ui-outputlabel-rfi {
+    margin-left: 0;
+    margin-right: var(--p-label-required-indicator-gap);
+}

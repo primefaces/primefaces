@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.rating;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Rating.DEFAULT_RENDERER, componentFamily = Rating.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class RatingRenderer extends InputRenderer<Rating> {
 
     @Override
@@ -90,7 +92,10 @@ public class RatingRenderer extends InputRenderer<Rating> {
         boolean disabled = rating.isDisabled();
         boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
-        String styleClass = createStyleClass(rating, Rating.CONTAINER_CLASS);
+        String styleClass = getStyleClassBuilder(context)
+                .add(createStyleClass(rating, Rating.CONTAINER_CLASS))
+                .add(readonly, "ui-state-readonly")
+                .build();
 
         writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");
@@ -130,7 +135,7 @@ public class RatingRenderer extends InputRenderer<Rating> {
 
         //input for accessibility
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);

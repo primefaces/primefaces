@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -38,6 +39,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = SelectBooleanButton.DEFAULT_RENDERER, componentFamily = SelectBooleanButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButton> {
 
     @Override
@@ -86,7 +88,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButt
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
 
         // input
         writer.startElement("input", null);

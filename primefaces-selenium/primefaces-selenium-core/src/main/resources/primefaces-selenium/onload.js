@@ -49,7 +49,7 @@ window.addEventListener("unload", function() {
 
 document.addEventListener("click", function(event){
     window.pfselenium.validationFailed = false;
-});
+}, true);
 
 if (window.PrimeFaces && PrimeFaces.validation) {
     var originalValidate = PrimeFaces.validation.validate;
@@ -57,7 +57,7 @@ if (window.PrimeFaces && PrimeFaces.validation) {
     PrimeFaces.validation.validate = function() {
         var success = originalValidate.apply(this, arguments);
 
-        window.pfselenium.validationFailed = !success;
+        window.pfselenium.validationFailed = !success.valid;
 
         return success;
     };

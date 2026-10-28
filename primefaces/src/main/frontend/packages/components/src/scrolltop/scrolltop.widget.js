@@ -69,5 +69,10 @@ PrimeFaces.widget.ScrollTop = class ScrollTop extends PrimeFaces.widget.BaseWidg
                 });
             }
         });
+
+        var scrollElement = this.scrollElement;
+        this.addDestroyListener(function() {
+            scrollElement.off(scrollNS);
+        });
     }
 }

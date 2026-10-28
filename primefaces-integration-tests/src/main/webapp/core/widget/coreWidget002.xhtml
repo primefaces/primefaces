@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton id="btnUpdate" value="Update" process="@this" update="wrapper"/>
+            <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreWidget002.toggle}"/>
+
+            <!-- outside of the updated area: only the keyFilter is rendered again -->
+            <p:inputText id="filtered" value="#{coreWidget002.filtered}"/>
+
+            <h:panelGroup id="wrapper" layout="block">
+                <h:panelGroup id="container" layout="block" rendered="#{coreWidget002.rendered}">
+                    <p:keyFilter id="keyFilter" for="filtered" regEx="/[0-9]/"/>
+
+                    <p:datePicker id="datePickerBody" value="#{coreWidget002.date1}" appendTo="@(body)"/>
+                    <p:datePicker id="datePicker" value="#{coreWidget002.date2}" showIcon="true"/>
+
+                    <h:inputText id="sliderInput" value="#{coreWidget002.slider}"/>
+                    <p:slider id="slider" for="sliderInput" style="width: 200px"/>
+
+                    <p:knob id="knob" value="#{coreWidget002.knob}" width="100"/>
+
+                    <p:signature id="signature" value="#{coreWidget002.signature}" style="width: 300px; height: 100px"/>
+
+                    <p:spinner id="spinner" value="#{coreWidget002.spinner}"/>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

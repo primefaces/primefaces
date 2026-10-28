@@ -27,7 +27,7 @@ export interface TieredMenuCfg extends MenuCfg {
     /**
      * Event to toggle the submenus.
      */
-    toggleEvent: PrimeType.widget.TieredMenu.ToggleEvent;
+    toggleEvent: PrimeFacesTypes.widget.TieredMenu.ToggleEvent;
 }
 
 /**
@@ -86,7 +86,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
      */
     timeoutId?: number;
 
-    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';
@@ -479,9 +479,8 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
             collision: 'flipfit'
         };
 
-        submenu.css('z-index', PrimeFaces.nextZindex())
-            .show()
-            .position(pos);
+        submenu.css('z-index', PrimeFaces.nextZindex()).show();
+        PrimeFaces.utils.position(submenu, pos);
 
         //avoid queuing multiple runs
         if (this.timeoutId) {
@@ -489,9 +488,8 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         }
 
         this.timeoutId = PrimeFaces.queueTask(function() {
-            submenu.css('z-index', PrimeFaces.nextZindex())
-                .show()
-                .position(pos);
+            submenu.css('z-index', PrimeFaces.nextZindex()).show();
+            PrimeFaces.utils.position(submenu, pos);
             var $link = menuitem.children('a.ui-menuitem-link');
             $link.attr('aria-expanded', 'true');
             if (focus) {

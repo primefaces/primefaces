@@ -1,90 +1,277 @@
+/*
+ * Paginator (shared): the paginator of p:dataTable, p:treeTable, p:dataView, p:dataGrid, p:dataList, ...
+ *
+ * Markup: .ui-paginator > (left content | .ui-paginator-center-content | right content), template elements in the center.
+ * Page links are also .ui-button.ui-button-flat, so their rules are written to beat button.css by specificity.
+ * Rows per page / jump to page dropdowns are native <select>s, jump to page input is a .ui-inputfield.
+ * States (set by the widget): ui-state-hover, ui-state-focus, ui-state-active (current page), ui-state-disabled
+ */
 .ui-paginator {
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:space-between;
-    margin:0px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--p-paginator-gap);
+    margin: 0;
     text-align: center;
-    padding:2px;
+    background: var(--p-paginator-background);
+    color: var(--p-paginator-color);
+    border: 1px solid var(--p-content-border-color);
+    border-width: 0;
+    border-radius: var(--p-paginator-border-radius);
+    padding: var(--p-paginator-padding);
 }
 
+/* flat: the alternatives have different specificity */
 .ui-paginator-center-content,
 .ui-paginator.ui-paginator-top .ui-paginator-top-left-content,
 .ui-paginator.ui-paginator-top .ui-paginator-top-right-content,
 .ui-paginator.ui-paginator-bottom .ui-paginator-bottom-left-content,
 .ui-paginator.ui-paginator-bottom .ui-paginator-bottom-right-content {
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    margin:0px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--p-paginator-gap);
+    margin: 0;
     text-align: center;
     min-width: 5em;
 }
 
-.ui-paginator.ui-paginator-top {
-    border-bottom:0px none;
+/* empty left/right facets must not take space, otherwise the page links are pushed off center or wrap */
+.ui-paginator.ui-paginator-top .ui-paginator-top-left-content:empty,
+.ui-paginator.ui-paginator-top .ui-paginator-top-right-content:empty,
+.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-left-content:empty,
+.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-right-content:empty {
+    min-width: 0;
 }
 
-.ui-paginator.ui-paginator-bottom {
-    border-top:0px none;
+.ui-paginator-center-content {
+    justify-content: center;
 }
 
-.ui-paginator .ui-paginator-page,
-.ui-paginator .ui-paginator-pages,
-.ui-paginator .ui-paginator-next,
-.ui-paginator .ui-paginator-last,
-.ui-paginator .ui-paginator-first,
-.ui-paginator .ui-paginator-prev,
-.ui-paginator .ui-paginator-current {
-	display: inline-block;
-	padding: 2px 6px;
-	margin-left: 1px;
-	margin-right: 1px;
-	text-decoration: none;
-	outline: none;
-}
+.ui-paginator {
+    &.ui-paginator-top .ui-paginator-top-right-content,
+    &.ui-paginator-bottom .ui-paginator-bottom-right-content {
+        justify-content: flex-end;
+    }
 
-.ui-paginator .ui-paginator-page,
-.ui-paginator .ui-paginator-next,
-.ui-paginator .ui-paginator-last,
-.ui-paginator .ui-paginator-first,
-.ui-paginator .ui-paginator-prev{
-    cursor: pointer;
-}
+    .ui-paginator-page,
+    .ui-paginator-pages,
+    .ui-paginator-next,
+    .ui-paginator-last,
+    .ui-paginator-first,
+    .ui-paginator-prev,
+    .ui-paginator-current {
+        text-decoration: none;
+    }
 
-.ui-paginator .ui-paginator-current,
-.ui-paginator .ui-paginator-rpp-options {
-	margin-left: 1em;
-	margin-right: 1em;
-    background-image: none;
-}
+    .ui-paginator-page,
+    .ui-paginator-next,
+    .ui-paginator-last,
+    .ui-paginator-first,
+    .ui-paginator-prev {
+        cursor: pointer;
+    }
 
-.ui-paginator .ui-paginator-next .ui-icon,
-.ui-paginator .ui-paginator-prev .ui-icon,
-.ui-paginator .ui-paginator-first .ui-icon,
-.ui-paginator .ui-paginator-last .ui-icon {
-	height: auto;
-	overflow: inherit;
-}
+    /* first / prev / next / last */
+    .ui-paginator-first,
+    .ui-paginator-prev,
+    .ui-paginator-next,
+    .ui-paginator-last {
+        font-style: normal;
+        font-weight: normal;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        -webkit-user-select: none;
+        user-select: none;
+        background: var(--p-paginator-nav-button-background);
+        color: var(--p-paginator-nav-button-color);
+        min-width: var(--p-paginator-nav-button-width);
+        height: var(--p-paginator-nav-button-height);
+        margin: 0;
+        border: 0 none;
+        padding: 0;
+        border-radius: var(--p-paginator-nav-button-border-radius);
+        outline-color: transparent;
+        transition: background var(--p-paginator-transition-duration), color var(--p-paginator-transition-duration),
+            outline-color var(--p-paginator-transition-duration), box-shadow var(--p-paginator-transition-duration);
 
-.ui-paginator .ui-paginator-jtp-select option,
-.ui-paginator .ui-paginator-rpp-options option {
-    background-image: none;
-    border:0 none;
-    box-shadow:none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-}
+        &.ui-state-hover,
+        &:not(.ui-state-disabled):hover {
+            background: var(--p-paginator-nav-button-hover-background);
+            color: var(--p-paginator-nav-button-hover-color);
+        }
 
-.ui-paginator .ui-paginator-jtp-input {
-    /* fit the live page count: one ch per digit plus room for padding and the number spinner */
-    width: calc(var(--p-jtp-digits, 3) * 1ch + 2.5rem);
-    text-align: center;
-}
+        &.ui-state-focus,
+        &:focus-visible {
+            outline: var(--p-paginator-nav-button-focus-ring-width) var(--p-paginator-nav-button-focus-ring-style) var(--p-paginator-nav-button-focus-ring-color);
+            outline-offset: var(--p-paginator-nav-button-focus-ring-offset);
+            box-shadow: var(--p-paginator-nav-button-focus-ring-shadow);
+        }
 
-/* Responsive */
-@media (max-width: 640px) {
-    .ui-paginator .ui-paginator-pages {
-        display: none;
+        &:dir(rtl) {
+            transform: rotate(180deg);
+        }
+    }
+
+    .ui-paginator-first::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-paginator-first-icon) center / contain no-repeat;
+    }
+
+    .ui-paginator-prev::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-paginator-prev-icon) center / contain no-repeat;
+    }
+
+    .ui-paginator-next::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-paginator-next-icon) center / contain no-repeat;
+    }
+
+    .ui-paginator-last::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--p-paginator-last-icon) center / contain no-repeat;
+    }
+
+    /* current page report */
+    .ui-paginator-current {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        color: var(--p-paginator-current-page-report-color);
+        font-size: var(--p-paginator-current-page-report-font-size);
+        font-weight: var(--p-paginator-current-page-report-font-weight);
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* page links */
+    .ui-paginator-pages {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--p-paginator-gap);
+        margin: 0;
+        padding: 0;
+    }
+
+    .ui-paginator-pages .ui-paginator-page {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0 none;
+        min-width: var(--p-paginator-nav-button-width);
+        width: unset;
+        height: var(--p-paginator-nav-button-height);
+        background: var(--p-paginator-nav-button-background);
+        color: var(--p-paginator-nav-button-color);
+        /* native <button>s (no .ui-widget) do not inherit the page font */
+        font-family: inherit;
+        font-size: var(--p-paginator-nav-button-font-size);
+        font-weight: var(--p-paginator-nav-button-font-weight);
+        /* equal width digits: the links do not shift when the page numbers change */
+        font-variant-numeric: tabular-nums;
+        margin: 0;
+        border-radius: var(--p-paginator-nav-button-border-radius);
+        box-shadow: none;
+        outline-color: transparent;
+        transition: background var(--p-paginator-transition-duration), color var(--p-paginator-transition-duration),
+            outline-color var(--p-paginator-transition-duration), box-shadow var(--p-paginator-transition-duration);
+
+        &.ui-state-hover,
+        &:not(.ui-state-disabled, .ui-state-active):hover,
+        &:not(.ui-state-disabled, .ui-state-active):active {
+            background: var(--p-paginator-nav-button-hover-background);
+            color: var(--p-paginator-nav-button-hover-color);
+        }
+
+        &.ui-state-active {
+            background: var(--p-paginator-nav-button-selected-background);
+            color: var(--p-paginator-nav-button-selected-color);
+        }
+
+        &.ui-state-focus,
+        &:focus-visible {
+            outline: var(--p-paginator-nav-button-focus-ring-width) var(--p-paginator-nav-button-focus-ring-style) var(--p-paginator-nav-button-focus-ring-color);
+            outline-offset: var(--p-paginator-nav-button-focus-ring-offset);
+            box-shadow: var(--p-paginator-nav-button-focus-ring-shadow);
+        }
+    }
+
+    /* rows per page / jump to page dropdowns (native selects, skinned like p:selectOneMenu) */
+    .ui-paginator-rpp-options,
+    .ui-paginator-jtp-select {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0;
+        font-family: inherit;
+        font-size: var(--p-select-font-size);
+        font-weight: var(--p-select-font-weight);
+        line-height: var(--p-typography-line-height);
+        padding-block: var(--p-select-padding-y);
+        padding-inline: var(--p-select-padding-x);
+        color: var(--p-select-color);
+        background: var(--p-select-background);
+        border: 1px solid var(--p-select-border-color);
+        border-radius: var(--p-select-border-radius);
+        box-shadow: var(--p-select-shadow);
+        cursor: pointer;
+        outline-color: transparent;
+        transition: background var(--p-select-transition-duration), color var(--p-select-transition-duration),
+            border-color var(--p-select-transition-duration), outline-color var(--p-select-transition-duration),
+            box-shadow var(--p-select-transition-duration);
+
+        &.ui-state-hover,
+        &:not(:disabled, .ui-state-disabled):hover {
+            border-color: var(--p-select-hover-border-color);
+        }
+
+        &.ui-state-focus,
+        &:focus-visible {
+            border-color: var(--p-select-focus-border-color);
+            outline: var(--p-select-focus-ring-width) var(--p-select-focus-ring-style) var(--p-select-focus-ring-color);
+            outline-offset: var(--p-select-focus-ring-offset);
+            box-shadow: var(--p-select-focus-ring-shadow);
+        }
+
+        &:disabled,
+        &.ui-state-disabled {
+            background: var(--p-select-disabled-background);
+            color: var(--p-select-disabled-color);
+            cursor: default;
+        }
+
+        option {
+            background: var(--p-select-overlay-background);
+            color: var(--p-select-option-color);
+            border: 0 none;
+            box-shadow: none;
+        }
+    }
+
+    .ui-paginator-jtp-input {
+        /* fit the live page count (--p-jtp-digits is written inline by the renderer): one ch per digit plus padding and spinner room */
+        width: calc(var(--p-jtp-digits, 3) * 1ch + 2.5rem);
+        margin: 0;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* after the display of .ui-paginator-pages (same specificity) */
+    @media (max-width: 640px) {
+        .ui-paginator-pages {
+            display: none;
+        }
     }
 }

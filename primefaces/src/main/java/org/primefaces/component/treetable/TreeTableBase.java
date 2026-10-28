@@ -89,6 +89,13 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    protected void resetIterationState() {
+        super.resetIterationState();
+
+        resetDynamicColumns();
+    }
+
     @Facet(description = "Header content of the treetable.")
     public abstract UIComponent getHeaderFacet();
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.picklist;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.InputRenderer;
@@ -45,6 +46,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = PickList.DEFAULT_RENDERER, componentFamily = PickList.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PickListRenderer extends InputRenderer<PickList> {
 
     @Override
@@ -248,7 +250,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "p-hidden", null);
 
         //items generated on client side
         writer.endElement("select");
@@ -385,7 +387,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);

@@ -22,7 +22,7 @@ Showing and hiding the dialog is easy using the client side api.
 ## Effects
 There are various effect options to be used when displaying and closing the dialog. Use _showEffect_
 and _hideEffect_ options to apply these effects; blind, bounce, clip, drop, explode, fade, fold,
-highlight, puff, pulsate, scale, shake, size, slide and transfer.
+highlight, puff, pulsate, scale, shake, size and slide.
 
 ```xhtml
 <p:dialog showEffect="fade" hideEffect="explode" ...>
@@ -144,12 +144,16 @@ If you’d like to add custom actions to a dialog titlebar, use actions facet wi
 ```
 
 ## Skinning
-Dialog resides in a main container element which _styleClass_ option apply. Following is the list of
+Dialog resides in a main container element which _style_ and _styleClass_ options apply. This container is the
+scrollable layer covering the viewport, the visible dialog is the box inside it which _boxStyle_ and _boxStyleClass_
+options apply, and the dialog body is the content which _contentStyle_ and _contentStyleClass_ options apply. So use
+_boxStyleClass_ to size the dialog with utility classes, e.g. `boxStyleClass="w-full"`. Following is the list of
 structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-dialog | Container element of dialog
+| .ui-dialog | Container element of dialog, the scrollable layer
+| .ui-dialog-box | Visible dialog box
 | .ui-dialog-titlebar | Title bar
 | .ui-dialog-title-dialog | Header text
 | .ui-dialog-titlebar-close | Close icon
@@ -202,7 +206,7 @@ function hideModal() {
     <!-- Main Page content -->
     <main>
         <h:form>
-            <p:calendar />
+            <p:datePicker />
             <div>
                 <p:commandButton value="Open Dialog" type="button" onclick="PF('modalDlg').show()" />
             </div>

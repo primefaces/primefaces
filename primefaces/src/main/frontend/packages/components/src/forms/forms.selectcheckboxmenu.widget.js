@@ -127,7 +127,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
         this.triggers = this.jq;
         this.disabled = this.jq.hasClass('ui-state-disabled');
         //get the hidden checkboxes except that ones in overlay panel
-        this.inputs = this.jq.children('div.ui-helper-hidden:not(.ui-input-overlay)').children(':checkbox');
+        this.inputs = this.jq.children('div.p-hidden:not(.ui-input-overlay)').children(':checkbox');
         this.panelId = this.jqId + '_panel';
         this.labelId = this.id + '_label';
         this.panel = $(this.panelId);
@@ -198,7 +198,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
         this.header = this.panel.children('.ui-selectcheckboxmenu-header');
         this.toggler = this.header.children('.ui-chkbox');
         this.togglerBox = this.toggler.children('.ui-chkbox-box');
-        this.selectAllTogglerCheckbox = this.toggler.find('> div.ui-helper-hidden-accessible > input');
+        this.selectAllTogglerCheckbox = this.toggler.find('> div.p-hidden-accessible > input');
         this.filterInputWrapper = this.header.children('.ui-selectcheckboxmenu-filter-container');
         this.filterInput = this.filterInputWrapper.children('.ui-inputtext');
         this.closer = this.header.children('.ui-selectcheckboxmenu-close');
@@ -315,7 +315,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
             itemClass = checked ? itemClass + ' ui-selectcheckboxmenu-checked' : itemClass + ' ui-selectcheckboxmenu-unchecked';
 
             var item = $('<li class="' + itemClass + '"></li>');
-            item.append('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox"></input></div>' +
+            item.append('<div class="ui-chkbox ui-widget"><div class="p-hidden-accessible"><input type="checkbox"></input></div>' +
                 '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
 
             var uuid = PrimeFaces.uuid();
@@ -340,7 +340,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
                 item.attr('data-item-value', input.val());
             }
 
-            item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input')
+            item.find('> .ui-chkbox > .p-hidden-accessible > input')
                 .prop('checked', checked)
                 .attr('class', 'ui-selectcheckboxmenu-item-input')
                 .attr('role', 'option')
@@ -761,7 +761,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
         }
 
         //".ui-chkbox" is a grandchild when columns are used!
-        var itemKeyInputs = this.items.find('div.ui-chkbox > div.ui-helper-hidden-accessible > input');
+        var itemKeyInputs = this.items.find('div.ui-chkbox > div.p-hidden-accessible > input');
         this.bindCheckboxKeyEvents(itemKeyInputs);
         itemKeyInputs.on('change.selectCheckboxMenu', function(e) {
             var input = $(this),
@@ -1240,9 +1240,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
      * Align the overlay panel with the available checkbox options so that is is positioned next to the the button.
      */
     alignPanel() {
-        var fixedPosition = this.panel.css('position') == 'fixed',
-            positionOffset = fixedPosition ? '-' + $(window).scrollLeft() + ' -' + $(window).scrollTop() : null,
-            panelStyle = this.panel.attr('style');
+        var panelStyle = this.panel.attr('style');
 
         this.panel.css({
             'left': '',
@@ -1258,11 +1256,10 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
             });
         }
         else {
-            this.panel.position({
+            PrimeFaces.utils.position(this.panel, {
                 my: 'left top'
                 , at: 'left bottom'
                 , of: this.jq
-                , offset: positionOffset
                 , collision: 'flipfit'
                 , using: function(pos, directions) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);

@@ -1,38 +1,69 @@
-.ui-datagrid .ui-paginator {
-	text-align: center;
+/*
+ * DataGrid: p:dataGrid
+ *
+ * No own PrimeUIX component: styled with the dataview tokens (+ PrimeFaces dataview tokens).
+ */
+.ui-datagrid {
+    .ui-datagrid-header {
+        text-align: center;
+        background: var(--p-dataview-header-background);
+        color: var(--p-dataview-header-color);
+        padding: var(--p-dataview-header-padding);
+        font-weight: var(--p-dataview-header-font-weight);
+        border: 1px solid var(--p-dataview-header-border-color);
+        border-width: var(--p-dataview-header-border-width);
+        border-radius: var(--p-dataview-header-border-radius);
+    }
+
+    .ui-datagrid-footer {
+        text-align: center;
+        background: var(--p-dataview-footer-background);
+        color: var(--p-dataview-footer-color);
+        padding: var(--p-dataview-footer-padding);
+        font-weight: var(--p-dataview-footer-font-weight);
+        border: 1px solid var(--p-dataview-footer-border-color);
+        border-width: var(--p-dataview-footer-border-width);
+        border-radius: var(--p-dataview-footer-border-radius);
+    }
+
+    .ui-datagrid-content {
+        border: 1px solid var(--p-dataview-content-border-color);
+        border-width: var(--p-dataview-content-border-width);
+        border-radius: var(--p-dataview-content-border-radius);
+        background: var(--p-dataview-content-background);
+        color: var(--p-dataview-content-color);
+        padding: var(--p-dataview-content-padding);
+
+        &.ui-datagrid-content-empty {
+            padding: var(--p-dataview-empty-message-padding);
+            color: var(--p-dataview-empty-message-color);
+        }
+    }
+
+    .ui-paginator {
+        text-align: center;
+        padding: var(--p-paginator-padding);
+
+        &.ui-paginator-top {
+            border-style: solid;
+            border-color: var(--p-dataview-paginator-top-border-color);
+            border-width: var(--p-dataview-paginator-top-border-width);
+            border-radius: 0;
+        }
+
+        &.ui-paginator-bottom {
+            border-style: solid;
+            border-color: var(--p-dataview-paginator-bottom-border-color);
+            border-width: var(--p-dataview-paginator-bottom-border-width);
+            border-radius: 0;
+        }
+    }
+}
+
+.ui-datagrid-data {
+    width: 100%;
 }
 
 .ui-datagrid-column {
-	padding: 3px;
-}
-
-.ui-datagrid-content-empty {
-    padding: 4px 10px;
-}
-
-.ui-datagrid .ui-datagrid-header,
-.ui-datagrid .ui-datagrid-footer {
-    text-align:center;
-    padding:4px 10px;
-}
-
-.ui-datagrid .ui-datagrid-header {
-    border-bottom: 0px none;
-}
-
-.ui-datagrid .ui-datagrid-footer {
-    border-top: 0px none;
-}
-
-.ui-datagrid .ui-paginator-top {
-    border-bottom: 0px none;
-}
-
-.ui-datagrid .ui-paginator-bottom {
-    border-top: 0px none;
-}
-
-/** Table Layout **/
-.ui-datagrid-data {
-	width: 100%;
+    padding: var(--p-dataview-grid-column-padding);
 }

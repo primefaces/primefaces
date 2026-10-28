@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -42,6 +43,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = DataView.DEFAULT_RENDERER, componentFamily = DataView.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DataViewRenderer extends DataRenderer<DataView> {
 
     private static final Logger LOGGER = Logger.getLogger(DataViewRenderer.class.getName());
@@ -212,7 +214,7 @@ public class DataViewRenderer extends DataRenderer<DataView> {
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", layout, null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("class", "p-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
 
         if (isActive) {

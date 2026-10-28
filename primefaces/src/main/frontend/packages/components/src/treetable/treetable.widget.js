@@ -701,7 +701,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                                         'position': 'fixed',
                                         'top': '0px'
                                     })
-                                    .addClass('ui-shadow ui-sticky');
+                                    .addClass('ui-sticky');
 
                 if($this.cfg.resizableColumns) {
                     $this.relativeHeight = scrollTop - tableOffset.top;
@@ -717,7 +717,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                                         'position': 'absolute',
                                         'top': tableOffset.top + 'px'
                                     })
-                                    .removeClass('ui-shadow ui-sticky');
+                                    .removeClass('ui-sticky');
 
                 if($this.stickyContainer.is(':hidden')) {
                     $this.stickyContainer.show();
@@ -816,13 +816,10 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                     // ignore clicks inside input overlays like calendar popups etc
                     var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
                     // and menus - in case smth like menubutton is inside the table
-                    ignoredOverlay += ', .ui-datepicker-buttonpane, .ui-menuitem, .ui-menuitem-link';
+                    ignoredOverlay += ', .ui-menuitem, .ui-menuitem-link';
                     // and blockers
                     ignoredOverlay += ', .ui-blockui, .blockUI';
                     if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
-                        return;
-
-                    if($.datepicker && ($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length))
                         return;
 
                     if($this.cfg.saveOnCellBlur)
@@ -1264,10 +1261,29 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.selectNode(node, true);
 
         //propagate down
+        var skippedKeys = [];
         if (this.cfg.propagateSelectionDown) {
-            var descendants = this.getDescendants(node);
+            var descendants = this.getDescendants(node),
+            skippedKey = null;
+
             for (var i = 0; i < descendants.length; i++) {
-                var descendant = descendants[i];
+                var descendant = descendants[i],
+                descendantKey = descendant.attr('data-rk');
+
+                // descendants are in depth-first order, so everything below a skipped node is still skipped
+                if (skippedKey && descendantKey.indexOf(skippedKey + '_') === 0) {
+                    continue;
+                }
+                skippedKey = null;
+
+                // a non-selectable node and its subtree are never changed by the propagation, neither selected nor
+                // unselected, just like CheckboxTreeNode#propagateSelectionDown does on the server side, see #14798
+                if (!descendant.hasClass('ui-treetable-selectable-node')) {
+                    skippedKey = descendantKey;
+                    skippedKeys.push(descendantKey);
+                    continue;
+                }
+
                 if (selected)
                     this.unselectNode(descendant, true);
                 else
@@ -1276,7 +1292,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         }
 
         if(selected) {
-           this.removeDescendantsFromSelection(node.data('rk'));
+           this.removeDescendantsFromSelection(node.data('rk'), skippedKeys);
         }
 
         //propagate up
@@ -1349,9 +1365,19 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} node A node that was selected or unselected.
      */
     propagateUp(node) {
+        // a non-selectable node must never be selected by the propagation either, see #14798
+        if (!node.hasClass('ui-treetable-selectable-node')) {
+            var parentNode = this.getParent(node);
+            if (parentNode) {
+                this.propagateUp(parentNode);
+            }
+            return;
+        }
+
         var children = this.getChildren(node),
         allSelected = true,
         partialSelected = false,
+        hasSelectableChild = false,
         checkbox = this.cfg.nativeElements ? node.find('> td:first-child > :checkbox') :
                             node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
 
@@ -1359,11 +1385,21 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             var child = children[i],
             childSelected = child.hasClass('ui-state-highlight');
 
+            // a non-selectable child can never be selected via its checkbox, so it must not keep its parent from
+            // being fully selected, see #14798
+            if (!child.hasClass('ui-treetable-selectable-node')) {
+                continue;
+            }
+
+            hasSelectableChild = true;
             allSelected = allSelected&&childSelected;
             partialSelected = partialSelected||childSelected||child.hasClass('ui-treetable-partialselected');
         }
 
-        if(allSelected) {
+        if(!hasSelectableChild) {
+            // without any selectable child there is nothing to derive the state of the node from, so it is kept
+        }
+        else if(allSelected) {
             node.removeClass('ui-treetable-partialselected');
             this.selectNode(node, true);
         }
@@ -1409,10 +1445,23 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * Removes all children of the given row from the list of currently selected rows.
      * @private
      * @param {string} rowKey A row with children that were unselected.
+     * @param {string[]} [keptRowKeys] Row keys of non-selectable descendants which, together with their own
+     * descendants, keep their selection state.
      */
-    removeDescendantsFromSelection(rowKey) {
+    removeDescendantsFromSelection(rowKey, keptRowKeys) {
+        keptRowKeys = keptRowKeys || [];
         this.selections = $.grep(this.selections, function(value) {
-            return value.indexOf(rowKey + '_') !== 0;
+            if (value.indexOf(rowKey + '_') !== 0) {
+                return true;
+            }
+
+            for (var i = 0; i < keptRowKeys.length; i++) {
+                if (value === keptRowKeys[i] || value.indexOf(keptRowKeys[i] + '_') === 0) {
+                    return true;
+                }
+            }
+
+            return false;
         });
     }
 
@@ -1869,7 +1918,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {number} An estimate in pixels for the width of the native scrollbar.
      */
     getScrollbarWidth() {
-        return PrimeFaces.env.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+        return PrimeFaces.calculateScrollbarWidth();
     }
 
     /**
@@ -1896,7 +1945,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Sets up the JQuery UI draggable with the appropriate event listeners for resizing columns.
+     * Sets up the draggable with the appropriate event listeners for resizing columns.
      * @private
      */
     setupResizableColumns() {
@@ -1910,7 +1959,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
         $this = this;
 
-        resizers.draggable({
+        PrimeFaces.interactions.draggable(resizers, {
             axis: 'x',
             start: function() {
                 if($this.cfg.liveResize) {
@@ -1977,7 +2026,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * Callback for when a row was resized. Adjust the column widths.
      * @private
      * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
-     * @param {JQueryUI.DraggableEventUIParams} ui Details about the resize.
+     * @param {PrimeFacesTypes.interactions.DraggableUi} ui Details about the resize.
      */
     resize(event, ui) {
         var columnHeader = ui.helper.parent(),
@@ -2000,8 +2049,9 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         }
 
         const tableWidthChange = change > 0 ? -change : change;
-        const scrollbarWidth = this.getScrollbarWidth();
-        if(newWidth > scrollbarWidth && nextColumnWidth > scrollbarWidth || (expandMode && newWidth > scrollbarWidth)) {
+        // the minimum width of a column, like in the DataTable (it was the scrollbar width, which is 0 for overlay scrollbars)
+        const minWidth = parseInt(columnHeader.css('min-width')) || 15;
+        if(newWidth > minWidth && nextColumnWidth > minWidth || (expandMode && newWidth > minWidth)) {
             if (expandMode) {
                 table.width(table.width() + tableWidthChange);
                 setTimeout(function () {
@@ -2649,7 +2699,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         var $this = this;
 
         // remove all indicator numbers first
-        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('ui-helper-hidden');
+        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('p-hidden');
 
         // add 1,2,3 etc to columns if more than 1 column is sorted
         var sortMeta =  $this.sortMeta;
@@ -2658,7 +2708,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 var id = $(this).attr("id");
                 for (var i = 0; i < sortMeta.length; i++) {
                     if (sortMeta[i].col == id) {
-                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('ui-helper-hidden');
+                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('p-hidden');
                     }
                 }
             });

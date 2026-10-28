@@ -75,7 +75,6 @@ import jakarta.faces.event.PostRestoreStateEvent;
 @FacesComponentHandler(TreeTableHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
@@ -108,12 +107,12 @@ public class TreeTable extends TreeTableBaseImpl {
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
-    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge ui-helper-hidden";
+    public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge p-hidden";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
-    public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
+    public static final String HIDDEN_COLUMN_CLASS = "p-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";

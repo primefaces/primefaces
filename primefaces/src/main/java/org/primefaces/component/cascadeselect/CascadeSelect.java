@@ -38,7 +38,6 @@ import jakarta.faces.render.Renderer;
 @FacesComponentInfo(description = "CascadeSelect displays a nested structure of options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class CascadeSelect extends CascadeSelectBaseImpl {
@@ -47,7 +46,7 @@ public class CascadeSelect extends CascadeSelectBaseImpl {
 
     public static final String STYLE_CLASS = "ui-cascadeselect ui-widget ui-state-default";
     public static final String LABEL_CLASS = "ui-cascadeselect-label ui-inputfield";
-    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content p-hidden ui-input-overlay";
     public static final String ITEMS_WRAPPER_CLASS = "ui-cascadeselect-items-wrapper";
     public static final String PANEL_ITEMS_CLASS = "ui-cascadeselect-panel ui-cascadeselect-items";
     public static final String TRIGGER_CLASS = "ui-cascadeselect-trigger";

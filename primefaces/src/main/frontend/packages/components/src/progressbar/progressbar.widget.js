@@ -39,6 +39,11 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
         this.setValue(this.cfg.initialValue || 0, 0);
 
         this.enableARIA();
+
+        // a running poll survives a refresh (same widget instance), but must stop when the widget is gone
+        this.addDestroyListener(function() {
+            clearInterval(this.progressPoll);
+        });
     }
 
     /**
@@ -92,7 +97,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
         const styles = isTransparent ?
             {
                 value: { 'background-color': 'transparent' },
-                label: { 'text-align': 'left', 'color': getComputedStyle(document.documentElement).getPropertyValue('--text-color') }
+                label: { 'text-align': 'left', 'color': 'var(--p-text-color)' }
             } :
             {
                 value: { 'background-color': '' },
@@ -135,6 +140,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
 
             $this.callBehavior('start');
 
+            clearInterval(this.progressPoll);
             this.progressPoll = setInterval(function () {
                 var options = {
                     source: $this.id,

@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
+    <h:form id="panelsForm">
+        <div class="demo-card">
+            <h2>Toolbar</h2>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton type="button" value="New" icon="pi pi-plus"/>
+                    <p:commandButton type="button" value="Upload" icon="pi pi-upload" styleClass="ui-button-success"/>
+                    <p:commandButton type="button" icon="pi pi-trash" styleClass="ui-button-danger ui-button-outlined" title="Delete"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:inputText placeholder="Search"/>
+                    <p:commandButton type="button" icon="pi pi-search" styleClass="ui-button-secondary" title="Search"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Accordion</h2>
+                <p:accordionPanel>
+                    <p:tab title="Header I"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></p:tab>
+                    <p:tab title="Header II"><p>Sed ut perspiciatis unde omnis iste natus error.</p></p:tab>
+                    <p:tab title="Disabled" disabled="true"><p>Not reachable.</p></p:tab>
+                </p:accordionPanel>
+            </div>
+
+            <div class="demo-card">
+                <h2>TabView</h2>
+                <p:tabView>
+                    <p:tab>
+                        <f:facet name="title"><i class="pi pi-calendar" style="margin-inline-end: .5rem"></i>Icon</f:facet>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </p:tab>
+                    <p:tab title="Closable" closable="true"><p>Click the x to close this tab.</p></p:tab>
+                    <p:tab title="Disabled" disabled="true"><p>Not reachable.</p></p:tab>
+                </p:tabView>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h2>Panel</h2>
+                <p:panel header="Header" footer="Footer" toggleable="true" closable="true">
+                    <p style="margin: 0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:panel>
+            </div>
+
+            <div class="demo-card">
+                <h2>Fieldset</h2>
+                <p:fieldset legend="Toggleable" toggleable="true">
+                    <p style="margin: 0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </p:fieldset>
+            </div>
+
+            <div class="demo-card">
+                <h2>Card</h2>
+                <p:card>
+                    <f:facet name="title">Title</f:facet>
+                    <f:facet name="subtitle">Subtitle</f:facet>
+                    <p style="margin: 0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <f:facet name="footer">
+                        <p:commandButton type="button" value="Save" icon="pi pi-check" styleClass="ui-button-sm"/>
+                    </f:facet>
+                </p:card>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Divider / Splitter</h2>
+            <p:divider align="center"><b>Divider</b></p:divider>
+            <p:splitter style="height: 10rem">
+                <p:splitterPanel styleClass="demo-row" style="justify-content: center">Panel 1</p:splitterPanel>
+                <p:splitterPanel styleClass="demo-row" style="justify-content: center">Panel 2</p:splitterPanel>
+            </p:splitter>
+        </div>
+    </h:form>
+</ui:composition>

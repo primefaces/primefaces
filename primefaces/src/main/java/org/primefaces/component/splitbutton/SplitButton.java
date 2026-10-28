@@ -45,7 +45,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "SplitButton displays a default command and additional ones in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class SplitButton extends SplitButtonBaseImpl {
@@ -58,7 +57,7 @@ public class SplitButton extends SplitButtonBaseImpl {
     public static final String MENU_ICON_BUTTON_CLASS = "ui-splitbutton-menubutton ui-button ui-widget ui-state-default ui-button-icon-only";
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";
-    public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
+    public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content";
     public static final String LIST_WRAPPER_CLASS = "ui-splitbuttonmenu-list-wrapper";
 
     private String confirmationScript;

@@ -12,6 +12,8 @@
  * slider.updateSlider("80%", true);
  * ```
  * 
+ * @prop {juxtapose.JXSlider | null} [slider] The image slider instance of this widget.
+ * 
  * @interface {PrimeFaces.widget.ImageCompareCfg} cfg The configuration for the {@link  ImageCompare| ImageCompare widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -32,7 +34,7 @@ PrimeFaces.widget.ImageCompare = class ImageCompare extends PrimeFaces.widget.Ba
         super.init(cfg);
         this.cfg.showFullLinks = false;
 
-        new juxtapose.JXSlider("[id='"+this.cfg.id+"']",
+        this.slider = new juxtapose.JXSlider("[id='"+this.cfg.id+"']",
             [
                 {
                     src: this.cfg.leftimage,
@@ -55,4 +57,34 @@ PrimeFaces.widget.ImageCompare = class ImageCompare extends PrimeFaces.widget.Ba
 
     }
     
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        this.destroySlider();
+        super.refresh(cfg);
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy() {
+        super.destroy();
+        this.destroySlider();
+    }
+
+    /**
+     * Releases the global listeners and references of the slider.
+     * @private
+     */
+    destroySlider() {
+        if (this.slider) {
+            this.slider.destroy();
+            this.slider = null;
+        }
+    }
+
 }

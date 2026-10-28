@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -37,6 +38,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Splitter.DEFAULT_RENDERER, componentFamily = Splitter.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SplitterRenderer extends CoreRenderer<Splitter> {
 
     @Override

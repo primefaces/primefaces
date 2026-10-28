@@ -58,6 +58,9 @@ PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh(cfg) {
+        // an update of this widget itself renders the new element in place, inside of the blocker in the body,
+        // so move it out to keep it when the blocker is removed
+        this.blocker.children(this.jqId).appendTo(document.body);
         this._cleanup();
         super.refresh(cfg);
     }
@@ -255,7 +258,7 @@ PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
                 currentContent = this.jq;
 
             // create a specific blocker for this target
-            var currentBlocker = $('<div id="' + widgetId + '_' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+            var currentBlocker = $('<div id="' + widgetId + '_' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay p-hidden"></div>');
 
             // style the blocker
             if (this.cfg.styleClass) {

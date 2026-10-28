@@ -40,7 +40,6 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentInfo(description = "Splitter is utilized to separate and resize panels.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Splitter extends SplitterBaseImpl {

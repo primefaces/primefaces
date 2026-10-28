@@ -27,50 +27,67 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.showcase.domain.Country;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named
 @SessionScoped
 public class App implements Serializable {
 
-    @Inject private Themes themes;
+    /**
+     * The themes of PrimeFaces. The theme configurator (theming/configurator.xhtml) switches with ?theme=...,
+     * the choice is kept in the session; color scheme, density, primary color and input style are set on the client.
+     */
+    public static final List<String> PRESETS = List.of("aura", "lara", "nora", "metal", "glass");
 
-    private String theme = "aura-light-emerald";
-    private boolean darkMode = false;
-    private String inputStyle = "outlined";
+    // default preset of the showcase (for now: Glass)
+    private String theme = "glass";
     private Country locale = new Country(0, Locale.US);
+    // text direction chosen in the theme configurator (?dir=ltr|rtl); null: the direction of the locale
+    private String direction;
 
+    /**
+     * The current preset (primefaces.THEME in web.xml); a valid ?theme= request parameter switches it.
+     *
+     * @return aura, lara, nora, metal or glass
+     */
     public String getTheme() {
+        String requested = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("theme");
+        if (requested != null && PRESETS.contains(requested)) {
+            theme = requested;
+        }
         return theme;
     }
 
-    public boolean isDarkMode() {
-        return darkMode;
-    }
-
-    public void setDarkMode(boolean darkMode) {
-        this.darkMode = darkMode;
-    }
-
     public void setTheme(String theme) {
-        this.theme = theme;
+        if (PRESETS.contains(theme)) {
+            this.theme = theme;
+        }
     }
 
-    public String getInputStyle() {
-        return inputStyle;
+    /**
+     * The text direction (primefaces.DIR in web.xml, dir of the html element): a valid ?dir= request parameter sets it,
+     * without a choice it follows the locale.
+     *
+     * @return ltr or rtl
+     */
+    public String getDir() {
+        String requested = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("dir");
+        if ("ltr".equals(requested) || "rtl".equals(requested)) {
+            direction = requested;
+        }
+        if (direction != null) {
+            return direction;
+        }
+        return locale.isRtl() ? "rtl" : "ltr";
     }
 
-    public void setInputStyle(String inputStyle) {
-        this.inputStyle = inputStyle;
-    }
-
-    public String getInputStyleClass() {
-        return "filled".equals(this.inputStyle) ? "ui-input-filled" : "";
+    public List<String> getPresets() {
+        return PRESETS;
     }
 
     public Country getLocale() {
@@ -79,29 +96,6 @@ public class App implements Serializable {
 
     public void setLocale(Country locale) {
         this.locale = locale;
-    }
-
-    public void changeTheme(Themes.Theme theme) {
-        this.theme = theme.getId();
-        this.darkMode = theme.isDark();
-    }
-
-    public String getThemeName() {
-        for (Themes.Theme theme : themes.getThemes()) {
-            if (theme.getId().equals(this.getTheme())) {
-                return theme.getName();
-            }
-        }
-        return null;
-    }
-
-    public String getThemeImage() {
-        for (Themes.Theme theme : themes.getThemes()) {
-            if (theme.getId().equals(this.getTheme())) {
-                return theme.getImage();
-            }
-        }
-        return null;
     }
 
     public String getPrimeFacesVersion() {
