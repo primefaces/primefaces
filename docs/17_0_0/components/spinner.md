@@ -57,6 +57,23 @@ request is done to update the outputtext with new value whenever a spinner butto
 <h:outputText id="display" value="#{spinnerBean.number}" />
 ```
 
+## Icons
+The button icons are icon tokens of the theme (see [Theming](/core/theming.md?id=icons)): `--p-inputnumber-increment-icon`
+and `--p-inputnumber-decrement-icon` for the default `stacked` layout, `--p-icon-plus` and `--p-icon-minus` for the
+`horizontal`, `horizontal-after` and `vertical` layouts. Set them in `:root, [data-p-scope]` for all spinners or on a style class for
+some:
+
+```css
+.custom-icons-spinner {
+    --p-inputnumber-increment-icon: var(--p-icon-plus);
+    --p-inputnumber-decrement-icon: var(--p-icon-minus);
+}
+```
+
+They are rendered as `<span class="p-icon p-up-icon p-spinner-increment-icon p-c">` and
+`<span class="p-icon p-down-icon p-spinner-decrement-icon p-c">` (`p-plus-icon` / `p-minus-icon` for the other
+layouts); the former `upIcon` / `downIcon` attributes are gone.
+
 ## Client Side API
 Widget: _PrimeFaces.widget.Spinner_
 
@@ -75,11 +92,11 @@ structural style classes:
 
 | Class | Applies |
 | --- | --- |
-.ui-spinner | Main container element of spinner
-.ui-spinner-input | Input field
-.ui-spinner-button | Spinner buttons
-.ui-spinner-button-up | Increment button
-.ui-spinner-button-down | Decrement button
+.p-spinner | Main container element of spinner
+.p-spinner-input | Input field
+.p-spinner-button | Spinner buttons
+.p-spinner-up | Increment button
+.p-spinner-down | Decrement button
 
 ### Text alignment
 The PrimeFlex 3.0.0 classes `text-left`, `text-center` and `text-right` are supported to align the text of the Spinner input field.

@@ -23,7 +23,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <div class="ui-fluid formgrid grid">
+                <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Basic"/>
                         <p:selectOneMenu id="option" value="#{selectOneMenuView.selectedOption}">
@@ -139,8 +139,8 @@
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="selectOneMenuIcon" value="Icons" />
-                        <h:panelGroup styleClass="ui-inputgroup">
-                            <h:panelGroup id="icon" styleClass="ui-inputgroup-addon">
+                        <h:panelGroup styleClass="p-inputgroup">
+                            <h:panelGroup id="icon" styleClass="p-inputgroup-addon">
                                 <i class="pi pi-#{selectOneMenuView.icon}"/>
                             </h:panelGroup>
                             <p:selectOneMenu id="selectOneMenuIcon" value="#{selectOneMenuView.icon}" var="item">
@@ -178,7 +178,7 @@
                 nothing left to announce.
             </p>
             <h:form>
-                <div class="ui-fluid formgrid grid">
+                <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Empty Item Label"/>
                         <p:selectOneMenu id="emptyItem" value="#{selectOneMenuView.emptyItem}">

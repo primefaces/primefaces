@@ -196,13 +196,13 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         ResponseWriter writer = context.getResponseWriter();
         String buttonClass = SplitButton.MENU_ICON_BUTTON_CLASS;
         if (component.isDisabled()) {
-            buttonClass += " ui-state-disabled";
+            buttonClass += " p-state-disabled";
         }
         if ("small".equals(component.getSize())) {
-            buttonClass += " ui-button-sm";
+            buttonClass += " p-button-sm";
         }
         else if ("large".equals(component.getSize())) {
-            buttonClass += " ui-button-lg";
+            buttonClass += " p-button-lg";
         }
 
         writer.startElement("button", component);
@@ -220,7 +220,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", SplitButton.MENU_ICON_CLASS, null);
         writer.endElement("span");
 
         //text
@@ -363,7 +363,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
             String styleClass = menuitem.getStyleClass();
             styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
-            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            styleClass = disabled ? styleClass + " p-state-disabled" : styleClass;
 
             writer.writeAttribute("class", styleClass, null);
 
@@ -432,10 +432,10 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         String id = component.getClientId(context) + "_filter";
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-splitbuttonmenu-filter-container", null);
+        writer.writeAttribute("class", "p-splitbuttonmenu-filter-container", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", "ui-splitbuttonmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default", null);
+        writer.writeAttribute("class", "p-splitbuttonmenu-filter p-inputfield p-inputtext p-widget p-state-default", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
@@ -446,7 +446,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-search", id);
+        writer.writeAttribute("class", SplitButton.FILTER_ICON_CLASS, id);
         writer.endElement("span");
 
         writer.endElement("input");

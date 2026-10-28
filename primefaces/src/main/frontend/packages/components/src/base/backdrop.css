@@ -11,23 +11,23 @@
  * translucency belongs to the controls layer above the content (Apple HIG).
  * Zero specificity (:where), so component rules and application CSS win.
  */
-:where(.ui-sidebar, .ui-overlaypanel, .ui-confirm-popup, .ui-input-overlay, .ui-selectonemenu-panel,
-    .ui-selectcheckboxmenu-panel, .ui-autocomplete-panel,
-    .ui-cascadeselect-items-wrapper > .ui-cascadeselect-items,
-    .ui-menu-dynamic, .ui-menu-child, .ui-contextmenu, .ui-tooltip-text, .ui-growl-item-container, .ui-password-panel,
-    .ui-columntoggler) {
+:where(.p-sidebar, .p-overlaypanel, .p-confirm-popup, .p-input-overlay, .p-selectonemenu-panel,
+    .p-selectcheckboxmenu-panel, .p-autocomplete-panel,
+    .p-cascadeselect-items-wrapper > .p-cascadeselect-items,
+    .p-menu-dynamic, .p-menu-child, .p-contextmenu, .p-tooltip-text, .p-growl-item-container, .p-password-panel,
+    .p-columntoggler) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
 /*
- * dialog box and toolbar: the filter is on a ::before behind the element, not on the element. .ui-dialog is the
+ * dialog box and toolbar: the filter is on a ::before behind the element, not on the element. .p-dialog is the
  * transparent full viewport container (a filter there blurs the whole page, also for a non-modal dialog), and a filter
  * on the box or the toolbar makes it the stacking context and containing block of its descendants: the dropdowns inside
  * a toolbar would be painted under the content that follows it.
  * Toolbar only (not menubar / megamenu): an element with a backdrop filter is the backdrop root of its descendants, the
  * submenus would only blur what lies inside the bar.
  */
-:where(.ui-dialog-box, .ui-toolbar)::before {
+:where(.p-dialog-box, .p-toolbar)::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -36,29 +36,29 @@
 }
 
 /* behind the box: the dialog container is a stacking context (z-index of the widget), the box background paints over it */
-:where(.ui-dialog-box)::before {
+:where(.p-dialog-box)::before {
     z-index: -1;
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
 /* no stacking context on the toolbar: the ::before comes first in the positioned layer, the positioned children follow */
-:where(.ui-toolbar) {
+:where(.p-toolbar) {
     position: relative;
 }
 
-:where(.ui-toolbar) > * {
+:where(.p-toolbar) > * {
     position: relative;
 }
 
-:where(.ui-toolbar)::before {
+:where(.p-toolbar)::before {
     backdrop-filter: var(--p-navigation-backdrop-filter);
 }
 
-:where(.ui-button) {
+:where(.p-button) {
     backdrop-filter: var(--p-button-backdrop-filter);
 }
 
 /* modal mask: blurs the page behind a modal dialog / sidebar / blockUI */
-:where(.ui-widget-overlay, .ui-dialog-mask) {
+:where(.p-widget-overlay, .p-dialog-mask) {
     backdrop-filter: var(--p-mask-backdrop-filter);
 }

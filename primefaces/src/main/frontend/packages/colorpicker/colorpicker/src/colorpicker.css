@@ -1,9 +1,9 @@
 /*
- * ColorPicker: p:colorPicker (Coloris), mode="popup" (input .ui-colorpicker.ui-inputfield inside .clr-field)
- * and mode="inline" (div .ui-colorpicker with an inline .clr-picker).
+ * ColorPicker: p:colorPicker (Coloris), mode="popup" (input .p-colorpicker.p-inputfield inside .clr-field)
+ * and mode="inline" (div .p-colorpicker with an inline .clr-picker).
  *
  * coloris.css is in the vendor layer; these rules adjust it and apply the tokens.
- * Supported classes: clr-rtl, ui-state-error, clr-dark (set by the widget, the tokens already follow the color scheme),
+ * Supported classes: clr-rtl, p-state-error, clr-dark (set by the widget, the tokens already follow the color scheme),
  *                    .thumbnail (swatch only)
  */
 .clr-field {
@@ -12,12 +12,12 @@
     max-width: 100%;
 
     /* the popup input leaves room for the swatch */
-    .ui-colorpicker.ui-inputfield {
+    .p-colorpicker.p-inputfield {
         padding-inline-end: calc(var(--p-colorpicker-swatch-width) + var(--p-form-field-padding-x));
     }
 
     /* swatch of the popup input: Coloris paints the selected color as currentColor (inherited from .clr-field); also with
-       ui-state-error, whose color would win over the vendor layer */
+       p-state-error, whose color would win over the vendor layer */
     button {
         color: inherit;
         width: var(--p-colorpicker-swatch-width);
@@ -35,8 +35,8 @@
         border-radius: var(--_radius) 0 0 var(--_radius);
     }
 
-    /* the widget copies ui-state-error of the input to the swatch */
-    button.ui-state-error {
+    /* the widget copies p-state-error of the input to the swatch */
+    button.p-state-error {
         border-width: 1px;
         border-style: solid;
         border-color: var(--p-form-field-invalid-border-color);
@@ -48,7 +48,7 @@
     width: auto;
 }
 
-.ui-float-label .clr-field.clr-rtl + label {
+.p-float-label .clr-field.clr-rtl + label {
     left: unset;
     margin-left: unset;
     margin-right: var(--p-floatlabel-position-x);
@@ -61,11 +61,11 @@
     border-radius: var(--p-colorpicker-preview-border-radius);
 }
 
-.ui-fluid .clr-field {
+.p-fluid .clr-field {
     display: block;
     width: auto;
 
-    .ui-colorpicker.ui-inputfield {
+    .p-colorpicker.p-inputfield {
         width: 100%;
     }
 }

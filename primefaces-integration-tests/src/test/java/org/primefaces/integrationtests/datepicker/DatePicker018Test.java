@@ -49,7 +49,7 @@ class DatePicker018Test extends AbstractDatePickerTest {
         DatePicker datePicker = page.datepicker;
         assertEquals("2026-06-05 15:00:00", page.selectedValue.getText());
         WebElement panel = datePicker.showPanel();
-        WebElement minuteInput = panel.findElement(By.cssSelector(".ui-minute-picker input"));
+        WebElement minuteInput = panel.findElement(By.cssSelector(".p-minute-picker input"));
         assertEquals("00", minuteInput.getAttribute("value"));
         assertEquals("0", page.dateSelectCount.getText());
 
@@ -65,7 +65,7 @@ class DatePicker018Test extends AbstractDatePickerTest {
         assertEquals("1", page.dateSelectCount.getText());
 
         panel = datePicker.showPanel();
-        minuteInput = panel.findElement(By.cssSelector(".ui-minute-picker input"));
+        minuteInput = panel.findElement(By.cssSelector(".p-minute-picker input"));
         assertEquals("05", minuteInput.getAttribute("value"));
         assertConfiguration(datePicker.getWidgetConfiguration());
     }

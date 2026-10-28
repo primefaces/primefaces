@@ -35,7 +35,7 @@ public class PageLinkRenderer {
 
     public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
+        String styleClass = disabled ? linkClass + " p-state-disabled" : linkClass;
         String tabindex = (disabled) ? "-1" : "0";
 
         writer.startElement("button", null);

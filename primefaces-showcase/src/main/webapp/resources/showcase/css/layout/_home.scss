@@ -938,11 +938,6 @@
         box-sizing: border-box;
     }
 
-    .p-select, .p-dropdown {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
     .p-button {
         width: 100%;
         justify-content: center;
@@ -1095,28 +1090,6 @@
 /* ── DataTable card: p:dataTable ─────────────────────────────── */
 .ldeck-table .ldeck-datatable {
     font-size: .875rem;
-
-    .p-datatable-thead > tr > th {
-        padding: .5rem .875rem;
-        font-size: .72rem;
-        font-weight: 700;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        background: transparent;
-        border-top: none;
-        border-color: var(--surface-d);
-    }
-
-    .p-datatable-tbody > tr > td {
-        padding: .55rem .875rem;
-        border-color: color-mix(in srgb, var(--surface-d) 55%, transparent);
-    }
-
-    .p-datatable-tbody > tr:last-child > td { border-bottom: none; }
-
-    .p-datatable-tbody > tr.p-row-odd { background: transparent; }
-
-    .p-datatable-wrapper { overflow: visible; }
 }
 
 .ldeck-col-name  { font-weight: 600; }

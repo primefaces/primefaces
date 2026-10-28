@@ -106,6 +106,6 @@ To only display the text without the tooltip value use globalTooltip with global
 
 
 ## Skinning
-Tooltip has only _.ui-tooltip_ as a style class and is styled with global skinning selectors, see main
+Tooltip has only _.p-tooltip_ as a style class and is styled with global skinning selectors, see main
 skinning section for more information.
 

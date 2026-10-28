@@ -99,8 +99,8 @@ App = {
             $this.configurator.removeClass('layout-config-active');
         });
 
-        this.filterPanel.off('click.showcase', '.ui-autocomplete-item')
-            .on('click.showcase', '.ui-autocomplete-item', function(e) {
+        this.filterPanel.off('click.showcase', '.p-autocomplete-item')
+            .on('click.showcase', '.p-autocomplete-item', function(e) {
                 if (!$this.isLinkClicked) {
                     $this.isLinkClicked = true;
 

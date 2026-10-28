@@ -35,7 +35,7 @@ public class Video extends VideoBaseImpl {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.VideoRenderer";
     public static final String COMPONENT_TYPE = "org.primefaces.component.Video";
 
-    public static final String CONTAINER_CLASS = "ui-media ui-video";
+    public static final String CONTAINER_CLASS = "p-media p-video";
 
     public Video() {
         setRendererType(DEFAULT_RENDERER);

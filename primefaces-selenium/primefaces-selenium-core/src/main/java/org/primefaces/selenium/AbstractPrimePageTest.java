@@ -177,7 +177,7 @@ public abstract class AbstractPrimePageTest {
     }
 
     protected void assertClickableOrLoading(WebElement element) {
-        if (!PrimeSelenium.hasCssClass(element, "ui-state-loading") && !PrimeSelenium.isElementClickable(element)) {
+        if (!PrimeSelenium.hasCssClass(element, "p-state-loading") && !PrimeSelenium.isElementClickable(element)) {
             Assertions.fail("Element should be clickable or loading!");
         }
     }

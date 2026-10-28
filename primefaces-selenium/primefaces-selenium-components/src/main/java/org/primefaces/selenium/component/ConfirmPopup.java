@@ -35,16 +35,16 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class ConfirmPopup extends AbstractComponent {
 
-    @FindBy(className = "ui-confirm-popup-icon")
+    @FindBy(className = "p-confirm-popup-icon")
     private WebElement icon;
 
-    @FindBy(className = "ui-confirm-popup-message")
+    @FindBy(className = "p-confirm-popup-message")
     private WebElement message;
 
-    @FindBy(className = "ui-confirm-popup-yes")
+    @FindBy(className = "p-confirm-popup-yes")
     private CommandButton yesButton;
 
-    @FindBy(className = "ui-confirm-popup-no")
+    @FindBy(className = "p-confirm-popup-no")
     private CommandButton noButton;
 
     public WebElement getMessage() {

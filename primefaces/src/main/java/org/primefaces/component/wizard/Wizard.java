@@ -53,13 +53,15 @@ public class Wizard extends WizardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 
-    public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles";
-    public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default";
-    public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight";
-    public static final String CURRENT_STEP_CLASS = "ui-wizard-step-current";
-    public static final String COMPLETED_STEP_CLASS = "ui-wizard-step-completed";
-    public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
-    public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
+    public static final String STEP_STATUS_CLASS = "p-wizard-step-titles";
+    public static final String STEP_CLASS = "p-wizard-step-title p-state-default";
+    public static final String ACTIVE_STEP_CLASS = "p-wizard-step-title p-state-default p-state-highlight";
+    public static final String CURRENT_STEP_CLASS = "p-wizard-step-current";
+    public static final String COMPLETED_STEP_CLASS = "p-wizard-step-completed";
+    public static final String BACK_BUTTON_CLASS = "p-wizard-nav-back";
+    public static final String NEXT_BUTTON_CLASS = "p-wizard-nav-next";
+    public static final String BACK_ICON_CLASS = "p-button-icon-left p-icon p-arrow-left-icon p-wizard-back-icon p-c";
+    public static final String NEXT_ICON_CLASS = "p-button-icon-right p-icon p-arrow-right-icon p-wizard-next-icon p-c";
 
     @Override
     public void processDecodes(FacesContext context) {

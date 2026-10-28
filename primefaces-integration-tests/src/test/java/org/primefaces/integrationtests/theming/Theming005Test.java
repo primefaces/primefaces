@@ -51,7 +51,7 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(1)
-    @DisplayName("Theming: ui-selectonemenu-sm / -lg change the label padding and font size")
+    @DisplayName("Theming: p-selectonemenu-sm / -lg change the label padding and font size")
     void selectOneMenuSizes(Page page) {
         // Arrange
         setColorScheme("light");
@@ -82,7 +82,7 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(2)
-    @DisplayName("Theming: ui-chkbox-sm / -lg and ui-radiobutton-sm / -lg change the box size")
+    @DisplayName("Theming: p-chkbox-sm / -lg and p-radiobutton-sm / -lg change the box size")
     void checkboxRadioSizes(Page page) {
         // Arrange
         setColorScheme("light");
@@ -109,7 +109,7 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(3)
-    @DisplayName("Theming: ui-badge-sm is smaller, ui-badge-contrast / ui-tag-contrast use the contrast tokens")
+    @DisplayName("Theming: p-badge-sm is smaller, p-badge-contrast / p-tag-contrast use the contrast tokens")
     void badgeAndContrast(Page page) {
         // Arrange
         setColorScheme("light");
@@ -137,11 +137,11 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(4)
-    @DisplayName("Theming: ui-message-outlined (border, no background) and ui-message-simple (no border, no background)")
+    @DisplayName("Theming: p-message-outlined (border, no background) and p-message-simple (no border, no background)")
     void messageVariants(Page page) {
         // Arrange
         setColorScheme("light");
-        assertTrue(PrimeSelenium.hasCssClass(page.messageOutlined, "ui-message-warn"), "p:message has no warn message");
+        assertTrue(PrimeSelenium.hasCssClass(page.messageOutlined, "p-message-warn"), "p:message has no warn message");
 
         // Assert: outlined
         assertEquals(TRANSPARENT, computedStyle(page.messageOutlined, "background-color"), "outlined message has a background");
@@ -160,11 +160,11 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(5)
-    @DisplayName("Theming: ui-float-label-in puts the active label inside the field at the top")
+    @DisplayName("Theming: p-float-label-in puts the active label inside the field at the top")
     void floatLabelIn(Page page) {
         // Arrange
         setColorScheme("light");
-        assertTrue(PrimeSelenium.hasCssClass(page.floatIn, "ui-state-filled"), "input is not filled on page load");
+        assertTrue(PrimeSelenium.hasCssClass(page.floatIn, "p-state-filled"), "input is not filled on page load");
 
         // Act
         Map<String, Object> input = rect(page.floatIn);
@@ -186,11 +186,11 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(6)
-    @DisplayName("Theming: ui-float-label-on puts the active label vertically centered on the top border")
+    @DisplayName("Theming: p-float-label-on puts the active label vertically centered on the top border")
     void floatLabelOn(Page page) {
         // Arrange
         setColorScheme("light");
-        assertTrue(PrimeSelenium.hasCssClass(page.floatOn, "ui-state-filled"), "input is not filled on page load");
+        assertTrue(PrimeSelenium.hasCssClass(page.floatOn, "p-state-filled"), "input is not filled on page load");
 
         // Act
         Map<String, Object> input = rect(page.floatOn);
@@ -212,7 +212,7 @@ class Theming005Test extends AbstractThemingTest {
 
     @Test
     @Order(7)
-    @DisplayName("Theming: p:blockUI without content shows a spinner, ui-blockui-light has the light mask background")
+    @DisplayName("Theming: p:blockUI without content shows a spinner, p-blockui-light has the light mask background")
     void blockUI(Page page) {
         // Arrange
         setColorScheme("light");
@@ -272,31 +272,31 @@ class Theming005Test extends AbstractThemingTest {
         @FindBy(id = "form:selectLg")
         WebElement selectLg;
 
-        @FindBy(css = "[id='form:selectDefault'] .ui-selectonemenu-label")
+        @FindBy(css = "[id='form:selectDefault'] .p-selectonemenu-label")
         WebElement selectDefaultLabel;
 
-        @FindBy(css = "[id='form:selectSm'] .ui-selectonemenu-label")
+        @FindBy(css = "[id='form:selectSm'] .p-selectonemenu-label")
         WebElement selectSmLabel;
 
-        @FindBy(css = "[id='form:selectLg'] .ui-selectonemenu-label")
+        @FindBy(css = "[id='form:selectLg'] .p-selectonemenu-label")
         WebElement selectLgLabel;
 
-        @FindBy(css = "[id='form:checkboxDefault'] .ui-chkbox-box")
+        @FindBy(css = "[id='form:checkboxDefault'] .p-chkbox-box")
         WebElement checkboxDefaultBox;
 
-        @FindBy(css = "[id='form:checkboxSm'] .ui-chkbox-box")
+        @FindBy(css = "[id='form:checkboxSm'] .p-chkbox-box")
         WebElement checkboxSmBox;
 
-        @FindBy(css = "[id='form:checkboxLg'] .ui-chkbox-box")
+        @FindBy(css = "[id='form:checkboxLg'] .p-chkbox-box")
         WebElement checkboxLgBox;
 
-        @FindBy(css = "[id='form:radioDefault'] .ui-radiobutton-box")
+        @FindBy(css = "[id='form:radioDefault'] .p-radiobutton-box")
         WebElement radioDefaultBox;
 
-        @FindBy(css = "[id='form:radioSm'] .ui-radiobutton-box")
+        @FindBy(css = "[id='form:radioSm'] .p-radiobutton-box")
         WebElement radioSmBox;
 
-        @FindBy(css = "[id='form:radioLg'] .ui-radiobutton-box")
+        @FindBy(css = "[id='form:radioLg'] .p-radiobutton-box")
         WebElement radioLgBox;
 
         @FindBy(id = "form:badgeDefault")

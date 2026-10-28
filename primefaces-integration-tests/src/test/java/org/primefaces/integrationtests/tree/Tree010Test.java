@@ -128,7 +128,7 @@ class Tree010Test extends AbstractTreeTest {
     void dynamicCollapsedPreselectedUnselectableNodeKeepsSelection(Page page) {
         // Arrange - the children of the collapsed "Backup" are not rendered
         TreeNode backup = page.dynamicTree.getChildren().get(2);
-        assertTrue(page.dynamicTree.findElements(By.cssSelector(".ui-treenode[data-rowkey='2_0']")).isEmpty());
+        assertTrue(page.dynamicTree.findElements(By.cssSelector(".p-treenode[data-rowkey='2_0']")).isEmpty());
 
         // Act
         backup.select();

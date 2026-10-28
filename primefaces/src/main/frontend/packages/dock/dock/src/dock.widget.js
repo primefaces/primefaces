@@ -58,8 +58,8 @@ PrimeFaces.widget.Dock = class Dock extends PrimeFaces.widget.BaseWidget {
         if (this.cfg.animate) {
             this.links.on("click.dock", function (e) {
                 var item = $(this);
-                item.addClass('ui-dock-bounce').delay($this.cfg.animationDuration).queue(function () {
-                    item.removeClass('ui-dock-bounce');
+                item.addClass('p-dock-bounce').delay($this.cfg.animationDuration).queue(function () {
+                    item.removeClass('p-dock-bounce');
                     item.dequeue();
                 });
             });

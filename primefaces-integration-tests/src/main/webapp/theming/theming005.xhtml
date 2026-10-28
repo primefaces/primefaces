@@ -16,50 +16,50 @@
                 <f:selectItem itemLabel="One" itemValue="One" />
                 <f:selectItem itemLabel="Two" itemValue="Two" />
             </p:selectOneMenu>
-            <p:selectOneMenu id="selectSm" value="#{theming005.text}" styleClass="ui-selectonemenu-sm">
+            <p:selectOneMenu id="selectSm" value="#{theming005.text}" styleClass="p-selectonemenu-sm">
                 <f:selectItem itemLabel="One" itemValue="One" />
                 <f:selectItem itemLabel="Two" itemValue="Two" />
             </p:selectOneMenu>
-            <p:selectOneMenu id="selectLg" value="#{theming005.text}" styleClass="ui-selectonemenu-lg">
+            <p:selectOneMenu id="selectLg" value="#{theming005.text}" styleClass="p-selectonemenu-lg">
                 <f:selectItem itemLabel="One" itemValue="One" />
                 <f:selectItem itemLabel="Two" itemValue="Two" />
             </p:selectOneMenu>
 
             <p:selectBooleanCheckbox id="checkboxDefault" value="#{theming005.checked}" />
-            <p:selectBooleanCheckbox id="checkboxSm" value="#{theming005.checked}" styleClass="ui-chkbox-sm" />
-            <p:selectBooleanCheckbox id="checkboxLg" value="#{theming005.checked}" styleClass="ui-chkbox-lg" />
+            <p:selectBooleanCheckbox id="checkboxSm" value="#{theming005.checked}" styleClass="p-chkbox-sm" />
+            <p:selectBooleanCheckbox id="checkboxLg" value="#{theming005.checked}" styleClass="p-chkbox-lg" />
 
             <p:selectOneRadio id="radioDefault" value="#{theming005.text}">
                 <f:selectItem itemLabel="One" itemValue="One" />
             </p:selectOneRadio>
-            <p:selectOneRadio id="radioSm" value="#{theming005.text}" styleClass="ui-radiobutton-sm">
+            <p:selectOneRadio id="radioSm" value="#{theming005.text}" styleClass="p-radiobutton-sm">
                 <f:selectItem itemLabel="One" itemValue="One" />
             </p:selectOneRadio>
-            <p:selectOneRadio id="radioLg" value="#{theming005.text}" styleClass="ui-radiobutton-lg">
+            <p:selectOneRadio id="radioLg" value="#{theming005.text}" styleClass="p-radiobutton-lg">
                 <f:selectItem itemLabel="One" itemValue="One" />
             </p:selectOneRadio>
 
             <p:badge id="badgeDefault" value="12" />
-            <p:badge id="badgeSm" value="12" styleClass="ui-badge-sm" />
+            <p:badge id="badgeSm" value="12" styleClass="p-badge-sm" />
 
             <!-- message variants -->
             <p:inputText id="messageInput" />
-            <p:message id="messageOutlined" for="messageInput" styleClass="ui-message-outlined" />
-            <p:staticMessage id="staticSimple" severity="error" summary="Error" detail="Error detail" styleClass="ui-message-simple" />
+            <p:message id="messageOutlined" for="messageInput" styleClass="p-message-outlined" />
+            <p:staticMessage id="staticSimple" severity="error" summary="Error" detail="Error detail" styleClass="p-message-simple" />
 
             <!-- contrast severity -->
-            <p:tag id="tagContrast" value="Contrast" styleClass="ui-tag-contrast" />
-            <p:badge id="badgeContrast" value="3" styleClass="ui-badge-contrast" />
+            <p:tag id="tagContrast" value="Contrast" styleClass="p-tag-contrast" />
+            <p:badge id="badgeContrast" value="3" styleClass="p-badge-contrast" />
 
             <!-- float label variants (filled on page load) -->
             <div style="margin-top: 2rem">
-                <span class="ui-float-label ui-float-label-in">
+                <span class="p-float-label p-float-label-in">
                     <p:inputText id="floatIn" value="#{theming005.filled}" />
                     <p:outputLabel id="floatInLabel" for="@previous" value="In label" />
                 </span>
             </div>
             <div style="margin-top: 2rem">
-                <span class="ui-float-label ui-float-label-on">
+                <span class="p-float-label p-float-label-on">
                     <p:inputText id="floatOn" value="#{theming005.filled}" />
                     <p:outputLabel id="floatOnLabel" for="@previous" value="On label" />
                 </span>
@@ -67,7 +67,7 @@
 
             <!-- blockUI without content: light mask and default mask, both with the spinner -->
             <p:panel id="lightTarget" header="Light">Content</p:panel>
-            <p:blockUI id="blockLight" widgetVar="blockLight" block="lightTarget" styleClass="ui-blockui-light" />
+            <p:blockUI id="blockLight" widgetVar="blockLight" block="lightTarget" styleClass="p-blockui-light" />
             <p:panel id="defaultTarget" header="Default">Content</p:panel>
             <p:blockUI id="blockDefault" widgetVar="blockDefault" block="defaultTarget" />
         </h:form>

@@ -1,11 +1,11 @@
 /*
- * InputField (shared): every .ui-inputfield (p:inputText, p:inputTextarea, p:password, ...)
+ * InputField (shared): every .p-inputfield (p:inputText, p:inputTextarea, p:password, ...)
  *
- * Supported classes: ui-state-hover, ui-state-focus, ui-state-error (invalid), ui-state-disabled,
- *                    ui-input-filled (on the field or a parent), ui-inputtext-sm, ui-inputtext-lg
- * Also: placeholders, .field / .p-field small.ui-state-error, .ui-float-label (+ ui-float-label-in / ui-float-label-on),
- *       .ui-input-icon-left / -right, p:inputTextarea autoResize, p:inputNumber / p:inputMask (plain .ui-inputfield),
- *       .ui-sr-only
+ * Supported classes: p-state-hover, p-state-focus, p-state-error (invalid), p-state-disabled,
+ *                    p-input-filled (on the field or a parent), p-inputtext-sm, p-inputtext-lg
+ * Also: placeholders, .field / .p-field small.p-state-error, .p-float-label (+ p-float-label-in / p-float-label-on),
+ *       .p-input-icon-left / -right, p:inputTextarea autoResize, p:inputNumber / p:inputMask (plain .p-inputfield),
+ *       .p-sr-only
  */
 
 /* autofill detection (animationstart), see https://github.com/primefaces/primefaces/issues/12444 */
@@ -22,7 +22,7 @@ input:-webkit-autofill {
 }
 
 /* visually hidden, still available for assistive technology */
-.ui-sr-only {
+.p-sr-only {
     border: 0;
     clip: rect(1px, 1px, 1px, 1px);
     clip-path: inset(50%);
@@ -41,7 +41,7 @@ textarea::placeholder {
     opacity: 1;
 }
 
-.ui-inputfield {
+.p-inputfield {
     font-family: inherit;
     font-size: var(--p-inputtext-font-size);
     font-weight: var(--p-inputtext-font-weight);
@@ -65,13 +65,13 @@ textarea::placeholder {
         color: var(--p-inputtext-placeholder-color);
     }
 
-    &:not(:disabled, .ui-state-disabled):hover,
-    &.ui-state-hover {
+    &:not(:disabled, .p-state-disabled):hover,
+    &.p-state-hover {
         border-color: var(--p-inputtext-hover-border-color);
     }
 
-    &:not(:disabled, .ui-state-disabled):focus,
-    &.ui-state-focus {
+    &:not(:disabled, .p-state-disabled):focus,
+    &.p-state-focus {
         border-color: var(--p-inputtext-focus-border-color);
         outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
         outline-offset: var(--p-inputtext-focus-ring-offset);
@@ -79,48 +79,48 @@ textarea::placeholder {
     }
 
     /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
-    &.ui-state-error,
-    &.ui-state-error:is(:hover, :focus, .ui-state-hover, .ui-state-focus) {
+    &.p-state-error,
+    &.p-state-error:is(:hover, :focus, .p-state-hover, .p-state-focus) {
         border-color: var(--p-inputtext-invalid-border-color);
     }
 
-    &.ui-state-error {
+    &.p-state-error {
         &::placeholder {
             color: var(--p-inputtext-invalid-placeholder-color);
         }
     }
 
     /* filled: both alternatives have the same specificity */
-    .ui-input-filled &,
-    &.ui-input-filled {
+    .p-input-filled &,
+    &.p-input-filled {
         background: var(--p-inputtext-filled-background);
 
-        &:not(:disabled, .ui-state-disabled):hover,
-        &.ui-state-hover {
+        &:not(:disabled, .p-state-disabled):hover,
+        &.p-state-hover {
             background: var(--p-inputtext-filled-hover-background);
         }
 
         &:focus,
-        &.ui-state-focus {
+        &.p-state-focus {
             background: var(--p-inputtext-filled-focus-background);
         }
     }
 
     /* after filled (same specificity): a disabled filled field shows the disabled background, like PrimeUIX */
     &:disabled,
-    &.ui-state-disabled {
+    &.p-state-disabled {
         background: var(--p-inputtext-disabled-background);
         color: var(--p-inputtext-disabled-color);
         opacity: 1;
     }
 
-    &.ui-inputtext-sm {
+    &.p-inputtext-sm {
         font-size: var(--p-inputtext-sm-font-size);
         padding-block: var(--p-inputtext-sm-padding-y);
         padding-inline: var(--p-inputtext-sm-padding-x);
     }
 
-    &.ui-inputtext-lg {
+    &.p-inputtext-lg {
         font-size: var(--p-inputtext-lg-font-size);
         padding-block: var(--p-inputtext-lg-padding-y);
         padding-inline: var(--p-inputtext-lg-padding-x);
@@ -128,10 +128,10 @@ textarea::placeholder {
 }
 
 /*
- * p:inputTextarea: the .ui-inputfield rules above read the inputtext tokens, a textarea points them to its own
+ * p:inputTextarea: the .p-inputfield rules above read the inputtext tokens, a textarea points them to its own
  * textarea tokens (same defaults), so overriding a --p-textarea-* token styles every state of the textarea
  */
-.ui-inputtextarea {
+.p-inputtextarea {
     --p-inputtext-font-size: var(--p-textarea-font-size);
     --p-inputtext-font-weight: var(--p-textarea-font-weight);
     --p-inputtext-background: var(--p-textarea-background);
@@ -168,43 +168,43 @@ textarea::placeholder {
 }
 
 /* p:inputTextarea autoResize */
-.ui-inputtextarea-resizable {
+.p-inputtextarea-resizable {
     overflow: hidden;
     resize: none;
 }
 
 /* p:inputNumber: digits of equal width, the value does not jump while typing */
-.ui-inputnumber > .ui-inputfield {
+.p-inputnumber > .p-inputfield {
     font-variant-numeric: tabular-nums;
 }
 
-/* fluid: InputText, InputNumber, InputTextarea, InputMask and any other .ui-inputfield (e.g. p:keyboard) */
-.ui-fluid {
-    .ui-inputfield,
-    .ui-inputtext,
-    .ui-inputnumber,
-    .ui-inputtextarea,
-    .ui-inputmask {
+/* fluid: InputText, InputNumber, InputTextarea, InputMask and any other .p-inputfield (e.g. p:keyboard) */
+.p-fluid {
+    .p-inputfield,
+    .p-inputtext,
+    .p-inputnumber,
+    .p-inputtextarea,
+    .p-inputmask {
         width: 100%;
     }
 
-    .ui-inputtext[size],
-    .ui-inputfield[size] {
+    .p-inputtext[size],
+    .p-inputfield[size] {
         width: auto;
     }
 }
 
 /* validation message below a field */
-.p-field small.ui-state-error,
-.field small.ui-state-error {
+.p-field small.p-state-error,
+.field small.p-state-error {
     color: var(--p-message-error-simple-color);
 }
 
-.ui-float-label {
+.p-float-label {
     display: block;
     position: relative;
 
-    .ui-outputlabel {
+    .p-outputlabel {
         display: block;
         min-height: 100%;
         max-width: 95%;
@@ -229,7 +229,7 @@ textarea::placeholder {
         transition-duration: var(--p-floatlabel-transition-duration);
     }
 
-    > label.ui-outputlabel-rtl {
+    > label.p-outputlabel-rtl {
         left: 0;
         right: var(--p-floatlabel-position-x);
     }
@@ -240,15 +240,15 @@ textarea::placeholder {
     }
 
     > input:focus ~ label,
-    > input.ui-state-filled ~ label,
+    > input.p-state-filled ~ label,
     > textarea:focus ~ label,
-    > textarea.ui-state-filled ~ label,
-    > .ui-inputwrapper-focus ~ label,
-    > .ui-selectcheckboxmenu.ui-state-focus ~ label,
-    > :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])) ~ label,
-    > .ui-inputwrapper-filled ~ label,
-    > :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-        .ui-selectcheckboxmenu:has(> .p-hidden > :checked)) ~ label,
+    > textarea.p-state-filled ~ label,
+    > .p-inputwrapper-focus ~ label,
+    > .p-selectcheckboxmenu.p-state-focus ~ label,
+    > :where(.p-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])) ~ label,
+    > .p-inputwrapper-filled ~ label,
+    > :where(.p-autocomplete-multiple:has(.p-autocomplete-token), .p-chips:has(.p-chips-token),
+        .p-selectcheckboxmenu:has(> .p-hidden > :checked)) ~ label,
     > input:-webkit-autofill ~ label,
     > textarea:-webkit-autofill ~ label {
         top: var(--p-floatlabel-over-active-top);
@@ -257,26 +257,26 @@ textarea::placeholder {
         font-weight: var(--p-floatlabel-active-font-weight);
     }
 
-    > input.ui-state-filled ~ label,
-    > textarea.ui-state-filled ~ label,
-    > .ui-inputwrapper-filled ~ label,
-    > :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-        .ui-selectcheckboxmenu:has(> .p-hidden > :checked)) ~ label {
+    > input.p-state-filled ~ label,
+    > textarea.p-state-filled ~ label,
+    > .p-inputwrapper-filled ~ label,
+    > :where(.p-autocomplete-multiple:has(.p-autocomplete-token), .p-chips:has(.p-chips-token),
+        .p-selectcheckboxmenu:has(> .p-hidden > :checked)) ~ label {
         color: var(--p-floatlabel-active-color);
     }
 
     > input:focus ~ label,
     > textarea:focus ~ label,
-    > .ui-inputwrapper-focus ~ label,
-    > .ui-selectcheckboxmenu.ui-state-focus ~ label,
-    > :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])) ~ label,
+    > .p-inputwrapper-focus ~ label,
+    > .p-selectcheckboxmenu.p-state-focus ~ label,
+    > :where(.p-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])) ~ label,
     > input:-webkit-autofill ~ label,
     > textarea:-webkit-autofill ~ label {
         color: var(--p-floatlabel-focus-color);
     }
 
-    > .ui-state-error ~ label,
-    > .ui-state-error:is(:focus, .ui-inputwrapper-focus) ~ label {
+    > .p-state-error ~ label,
+    > .p-state-error:is(:focus, .p-inputwrapper-focus) ~ label {
         color: var(--p-floatlabel-invalid-color);
     }
 
@@ -284,38 +284,38 @@ textarea::placeholder {
      * variant "in" (PrimeUIX FloatLabel variant="in" / IftaLabel): the label sits inside the field at the top, the field
      * gets more space above the text. Colors and the active font come from the rules above.
      */
-    &.ui-float-label-in {
+    &.p-float-label-in {
         /* the box of the field: plain input / textarea, or the input of a wrapper (p:password, p:inputNumber, p:datePicker, ...) */
-        > .ui-inputfield,
-        > * > .ui-inputfield {
+        > .p-inputfield,
+        > * > .p-inputfield {
             padding-block-start: var(--p-floatlabel-in-input-padding-top);
             padding-block-end: var(--p-floatlabel-in-input-padding-bottom);
         }
 
         /* components whose own label / input rule is more specific than the one above */
-        > :is(.ui-selectonemenu, .ui-cascadeselect, .ui-autocomplete) > .ui-inputfield {
+        > :is(.p-selectonemenu, .p-cascadeselect, .p-autocomplete) > .p-inputfield {
             padding-block-start: var(--p-floatlabel-in-input-padding-top);
             padding-block-end: var(--p-floatlabel-in-input-padding-bottom);
         }
 
         /* chips containers: half of the padding is on the container, the other half on the chips / input token */
-        > .ui-chips > .ui-chips-container {
+        > .p-chips > .p-chips-container {
             padding-block-start: calc(var(--p-floatlabel-in-input-padding-top) - var(--p-inputchips-padding-y) / 2);
             padding-block-end: calc(var(--p-floatlabel-in-input-padding-bottom) - var(--p-inputchips-padding-y) / 2);
         }
 
-        > .ui-autocomplete > .ui-autocomplete-multiple-container {
+        > .p-autocomplete > .p-autocomplete-multiple-container {
             padding-block-start: calc(var(--p-floatlabel-in-input-padding-top) - var(--p-autocomplete-padding-y) / 2);
             padding-block-end: calc(var(--p-floatlabel-in-input-padding-bottom) - var(--p-autocomplete-padding-y) / 2);
         }
 
         /* selectCheckboxMenu: label container (single), token container like the chips (multiple) */
-        > .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container {
+        > .p-selectcheckboxmenu .p-selectcheckboxmenu-label-container {
             padding-block-start: var(--p-floatlabel-in-input-padding-top);
             padding-block-end: var(--p-floatlabel-in-input-padding-bottom);
         }
 
-        > .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
+        > .p-selectcheckboxmenu .p-selectcheckboxmenu-multiple-container.p-inputfield {
             min-height: calc(var(--p-floatlabel-in-input-padding-top) + var(--p-floatlabel-in-input-padding-bottom)
                 + var(--p-typography-line-height) * var(--p-multiselect-font-size));
             padding-block-start: calc(var(--p-floatlabel-in-input-padding-top) - var(--p-multiselect-padding-y) / 2);
@@ -327,27 +327,27 @@ textarea::placeholder {
             top: var(--p-floatlabel-in-input-padding-top);
         }
 
-        > :is(input:focus, input.ui-state-filled, textarea:focus, textarea.ui-state-filled, .ui-inputwrapper-focus,
-            .ui-selectcheckboxmenu.ui-state-focus,
-            :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])),
-            .ui-inputwrapper-filled, input:-webkit-autofill, textarea:-webkit-autofill,
-            :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-                .ui-selectcheckboxmenu:has(> .p-hidden > :checked))) ~ label {
+        > :is(input:focus, input.p-state-filled, textarea:focus, textarea.p-state-filled, .p-inputwrapper-focus,
+            .p-selectcheckboxmenu.p-state-focus,
+            :where(.p-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])),
+            .p-inputwrapper-filled, input:-webkit-autofill, textarea:-webkit-autofill,
+            :where(.p-autocomplete-multiple:has(.p-autocomplete-token), .p-chips:has(.p-chips-token),
+                .p-selectcheckboxmenu:has(> .p-hidden > :checked))) ~ label {
             top: var(--p-floatlabel-in-active-top);
             margin-top: 0;
         }
     }
 
     /* variant "on" (PrimeUIX FloatLabel variant="on"): the active label sits on the top border, on a background */
-    &.ui-float-label-on {
-        > :is(input:focus, input.ui-state-filled, textarea:focus, textarea.ui-state-filled, .ui-inputwrapper-focus,
-            .ui-selectcheckboxmenu.ui-state-focus,
-            :where(.ui-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])),
-            .ui-inputwrapper-filled, input:-webkit-autofill, textarea:-webkit-autofill,
-            :where(.ui-autocomplete-multiple:has(.ui-autocomplete-token), .ui-chips:has(.ui-chips-token),
-                .ui-selectcheckboxmenu:has(> .p-hidden > :checked))) ~ label {
+    &.p-float-label-on {
+        > :is(input:focus, input.p-state-filled, textarea:focus, textarea.p-state-filled, .p-inputwrapper-focus,
+            .p-selectcheckboxmenu.p-state-focus,
+            :where(.p-selectcheckboxmenu:has(> .p-hidden-accessible > [aria-expanded="true"])),
+            .p-inputwrapper-filled, input:-webkit-autofill, textarea:-webkit-autofill,
+            :where(.p-autocomplete-multiple:has(.p-autocomplete-token), .p-chips:has(.p-chips-token),
+                .p-selectcheckboxmenu:has(> .p-hidden > :checked))) ~ label {
             top: 0;
-            /* .ui-outputlabel spans the field height (min-height: 100%); on the border only the text gets the background */
+            /* .p-outputlabel spans the field height (min-height: 100%); on the border only the text gets the background */
             min-height: 0;
             margin-top: 0;
             translate: 0 -50%;
@@ -364,23 +364,23 @@ textarea::placeholder {
  * ring encloses input and button, like a field with the icon inside (password, colorPicker); the input keeps its focus
  * border. The --p-inputtext-* tokens are the ones of the component (autocomplete.css remaps them).
  */
-.ui-autocomplete.ui-autocomplete-dd,
-.ui-calendar.ui-trigger-calendar {
+.p-autocomplete.p-autocomplete-dd,
+.p-calendar.p-trigger-calendar {
     border-radius: var(--p-inputtext-border-radius);
     /* the ring follows the wrapper: it wraps input and button, also as a stretched flex / grid item */
     width: fit-content;
     max-width: 100%;
 
-    .ui-fluid & {
+    .p-fluid & {
         width: 100%;
     }
 
-    &:has(> .ui-inputfield:not(:disabled, .ui-state-disabled):is(:focus-within, .ui-state-focus)) {
+    &:has(> .p-inputfield:not(:disabled, .p-state-disabled):is(:focus-within, .p-state-focus)) {
         outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
         outline-offset: var(--p-inputtext-focus-ring-offset);
         box-shadow: var(--p-inputtext-focus-ring-shadow);
 
-        > .ui-inputfield {
+        > .p-inputfield {
             outline: 0 none;
             box-shadow: none;
         }
@@ -388,15 +388,15 @@ textarea::placeholder {
 }
 
 /* input with icon */
-.ui-input-icon-left,
-.ui-input-icon-right {
+.p-input-icon-left,
+.p-input-icon-right {
     position: relative;
     display: inline-block;
     /* the icon is positioned at the edge of the wrapper: it wraps its input, also as a stretched flex / grid item */
     width: fit-content;
     max-width: 100%;
 
-    .ui-fluid & {
+    .p-fluid & {
         display: block;
         width: auto;
     }
@@ -414,24 +414,24 @@ textarea::placeholder {
  * physical sides on purpose: the class names the side, the renderers swap the class for RTL (p:password toggleMask),
  * and dir="rtl" is often only written on the input, so logical sides of the wrapper / icon would resolve LTR
  */
-.ui-input-icon-left {
+.p-input-icon-left {
     > i:first-of-type {
         left: var(--p-form-field-padding-x);
         color: var(--p-iconfield-icon-color);
     }
 
-    > .ui-inputfield {
+    > .p-inputfield {
         padding-left: calc(var(--p-form-field-padding-x) * 2 + var(--p-icon-size));
     }
 }
 
-.ui-input-icon-right {
+.p-input-icon-right {
     > i:last-of-type {
         right: var(--p-form-field-padding-x);
         color: var(--p-iconfield-icon-color);
     }
 
-    > .ui-inputfield {
+    > .p-inputfield {
         padding-right: calc(var(--p-form-field-padding-x) * 2 + var(--p-icon-size));
     }
 }

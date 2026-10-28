@@ -34,8 +34,8 @@ the message, default severity is _alert_ and the other option is _info_.
 ## Global
 Creating a confirmDialog for a specific action is a repetitive task. To solve this global confirmDialog,
 which is a singleton, has been introduced. Trigger components need to have p:confirm behavior to
-use the confirm dialog. The component that triggers the actual command in the dialog must have the _ui-confirmdialog-yes_
-style class. Similarly, the component to cancel the command must have the _ui-confirm-dialog-no_ style class.
+use the confirm dialog. The component that triggers the actual command in the dialog must have the _p-confirmdialog-yes_
+style class. Similarly, the component to cancel the command must have the _p-confirmdialog-no_ style class.
 At the moment p:confirm is supported by p:commandButton, p:commandLink and p:menuitem.
 
 ```xhtml
@@ -44,8 +44,8 @@ At the moment p:confirm is supported by p:commandButton, p:commandLink and p:men
     <p:confirm header="Confirmation" message="Sure?" icon="pi pi-exclamation-triangle"/>
 </p:commandButton>
 <p:confirmDialog global="true">
-    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+    <p:commandButton value="Yes" type="button" styleClass="p-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="p-confirmdialog-no" icon="pi pi-times"/>
 </p:confirmDialog>
 ```
 ## Client Side API
@@ -63,9 +63,9 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-dialog | Container element of dialog
-| .ui-dialog-titlebar | Title bar
-| .ui-dialog-title | Header text
-| .ui-dialog-titlebar-close | Close icon
-| .ui-dialog-content | Dialog body
-| .ui-dialog-buttonpane | Footer button panel
+| .p-dialog | Container element of dialog
+| .p-dialog-titlebar | Title bar
+| .p-dialog-title | Header text
+| .p-dialog-titlebar-close | Close icon
+| .p-dialog-content | Dialog body
+| .p-dialog-buttonpane | Footer button panel

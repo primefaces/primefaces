@@ -40,7 +40,7 @@ public class InputNumber extends InputNumberBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputNumber";
 
-    public static final String STYLE_CLASS = "ui-inputnumber ui-widget";
+    public static final String STYLE_CLASS = "p-inputnumber p-widget";
 
     @Override
     public String getInputClientId() {

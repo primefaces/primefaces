@@ -491,11 +491,11 @@ public class DatePicker011Test extends AbstractDatePickerTest {
 
     private void assertCalendarDate(DatePicker datePicker, String styleClass, String day) {
         List<WebElement> days = datePicker.getPanel().findElements(
-                    By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) " + styleClass));
+                    By.cssSelector(".p-datepicker-calendar td:not(.p-datepicker-other-month) " + styleClass));
         assertEquals(1, days.size(), days.toString());
         assertEquals(day, days.get(0).getText());
         if (".tst-disabled".equals(styleClass)) {
-            assertTrue(days.get(0).getAttribute("class").contains("ui-state-disabled"));
+            assertTrue(days.get(0).getAttribute("class").contains("p-state-disabled"));
         }
     }
 

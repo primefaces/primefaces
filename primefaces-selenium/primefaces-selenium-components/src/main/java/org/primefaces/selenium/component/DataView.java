@@ -39,22 +39,22 @@ public abstract class DataView extends AbstractPageableData {
 
     public enum Layout { LIST, GRID };
 
-    @FindBy(className = "ui-dataview")
+    @FindBy(className = "p-dataview")
     private WebElement webElement;
 
-    @FindBy(className = "ui-dataview-header")
+    @FindBy(className = "p-dataview-header")
     private WebElement header;
 
-    @FindBy(className = "ui-dataview-content")
+    @FindBy(className = "p-dataview-content")
     private WebElement content;
 
     @Override
     public List<WebElement> getRowsWebElement() {
         if (getActiveLayout() == Layout.LIST) {
-            return content.findElements(By.className("ui-dataview-row"));
+            return content.findElements(By.className("p-dataview-row"));
         }
         else {
-            return content.findElements(By.className("ui-dataview-column"));
+            return content.findElements(By.className("p-dataview-column"));
         }
     }
 
@@ -63,11 +63,11 @@ public abstract class DataView extends AbstractPageableData {
     }
 
     public WebElement getLayoutOptionsWebElement() {
-        return header.findElement(By.className("ui-dataview-layout-options"));
+        return header.findElement(By.className("p-dataview-layout-options"));
     }
 
     public Layout getActiveLayout() {
-        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
+        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("p-button"));
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
             if ("true".equals(layoutButtonInputHidden.getDomProperty("checked"))) {
@@ -84,7 +84,7 @@ public abstract class DataView extends AbstractPageableData {
     }
 
     public void setActiveLayout(Layout layout) {
-        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
+        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("p-button"));
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
             if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getDomProperty("value"))) {

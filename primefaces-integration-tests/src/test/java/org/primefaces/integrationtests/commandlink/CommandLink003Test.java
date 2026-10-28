@@ -50,11 +50,11 @@ class CommandLink003Test extends AbstractPrimePageTest {
 
         // Assert
         // tolerant approach for slow CI infrastructure
-        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(link, "ui-state-loading"));
+        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(link, "p-state-loading"));
 
         // Wait out min Ajax loading animation
         PrimeSelenium.wait(1000);
-        assertFalse(PrimeSelenium.hasCssClass(link, "ui-state-loading"));
+        assertFalse(PrimeSelenium.hasCssClass(link, "p-state-loading"));
     }
 
     @Test
@@ -69,7 +69,7 @@ class CommandLink003Test extends AbstractPrimePageTest {
         page.link.click();
 
         // Assert
-        assertFalse(PrimeSelenium.hasCssClass(link, "ui-state-loading"));
+        assertFalse(PrimeSelenium.hasCssClass(link, "p-state-loading"));
     }
 
     public static class Page extends AbstractPrimePage {

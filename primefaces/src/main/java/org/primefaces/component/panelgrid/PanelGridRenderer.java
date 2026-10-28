@@ -164,7 +164,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass + " ui-widget-header", null);
+            writer.writeAttribute("class", styleClass + " p-widget-header", null);
             facet.encodeAll(context);
             writer.endElement("div");
         }
@@ -566,12 +566,12 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
 
             if (columns > 0) {
                 writer.startElement("tr", null);
-                writer.writeAttribute("class", "ui-widget-header", null);
+                writer.writeAttribute("class", "p-widget-header", null);
 
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
-                writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
+                writer.writeAttribute("class", PanelGrid.CELL_CLASS + " p-widget-header", null);
 
                 facet.encodeAll(context);
 
@@ -581,13 +581,13 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             else {
                 context.getAttributes().put(Constants.HELPER_RENDERER, "panelGridFacet");
                 if (facet instanceof Row row1) {
-                    encodeRow(context, row1, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
+                    encodeRow(context, row1, "columnheader", "p-widget-header", PanelGrid.CELL_CLASS + " p-widget-header");
                 }
                 else if (facet instanceof UIPanel) {
                     for (UIComponent child : facet.getChildren()) {
                         if (child.isRendered()) {
                             if (child instanceof Row row) {
-                                encodeRow(context, row, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
+                                encodeRow(context, row, "columnheader", "p-widget-header", PanelGrid.CELL_CLASS + " p-widget-header");
                             }
                             else {
                                 facet.encodeAll(context);
@@ -609,7 +609,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass + " ui-widget-header", null);
+            writer.writeAttribute("class", styleClass + " p-widget-header", null);
             facet.encodeAll(context);
             writer.endElement("div");
         }

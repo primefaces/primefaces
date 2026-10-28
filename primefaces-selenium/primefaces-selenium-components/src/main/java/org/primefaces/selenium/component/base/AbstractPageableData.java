@@ -36,7 +36,7 @@ import org.openqa.selenium.support.ui.Select;
 
 public abstract class AbstractPageableData extends AbstractComponent {
 
-    @FindBy(className = "ui-paginator")
+    @FindBy(className = "p-paginator")
     private WebElement paginator;
 
     public abstract List<WebElement> getRowsWebElement();

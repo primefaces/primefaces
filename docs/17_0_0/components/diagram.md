@@ -51,7 +51,7 @@ model, 2 connections are made, first one being A to B and second one from A to C
 ## Elements
 Elements are the main part of diagram. Styling is done with css and positioning can be done using
 model. An element should have at least width and height defined to be displayed on page. They can
-be styled globally using .ui-diagram-element style class or individually using the styleClass
+be styled globally using .p-diagram-element style class or individually using the styleClass
 property on DiagramElement class.
 
 An element that is draggable will always sync its position with the model on the server side.

@@ -142,9 +142,9 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
      * @private
      */
     bindGlobal() {
-        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
+        this.jq = $('<div class="p-tooltip p-tooltip-global p-widget p-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
             .appendTo('body');
-        this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text"></div>');
+        this.jq.append('<div class="p-tooltip-arrow"></div><div class="p-tooltip-text"></div>');
 
         this.jq.addClass(this.cfg.styleClass);
 
@@ -171,22 +171,22 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                     element.data('tooltip', title).removeAttr('title');
                 }
 
-                var arrow = $this.jq.children('.ui-tooltip-arrow');
+                var arrow = $this.jq.children('.p-tooltip-arrow');
 
-                if (element.hasClass('ui-state-error')) {
-                    $this.jq.children('.ui-tooltip-text').addClass('ui-state-error');
-                    arrow.addClass('ui-state-error');
+                if (element.hasClass('p-state-error')) {
+                    $this.jq.children('.p-tooltip-text').addClass('p-state-error');
+                    arrow.addClass('p-state-error');
                 }
                 else {
-                    arrow.removeClass('ui-state-error');
+                    arrow.removeClass('p-state-error');
                 }
 
                 var text = element.data('tooltip');
                 if (text) {
                     if ($this.cfg.escape)
-                        $this.jq.children('.ui-tooltip-text').text(text);
+                        $this.jq.children('.p-tooltip-text').text(text);
                     else
-                        $this.jq.children('.ui-tooltip-text').html(text);
+                        $this.jq.children('.p-tooltip-text').html(text);
 
                     $this.clearTimeout();
                     $this.timeout = PrimeFaces.queueTask(function() {
@@ -240,7 +240,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                         $this.mouseEvent = e;
                     }
 
-                    if (PrimeFaces.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                    if (PrimeFaces.trim($this.jq.children('.p-tooltip-text').html()) !== '') {
                         $this.target = $(this);
                         $this.show();
                     }
@@ -265,7 +265,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                         $this.mouseEvent = e;
                     }
 
-                    if (PrimeFaces.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                    if (PrimeFaces.trim($this.jq.children('.p-tooltip-text').html()) !== '') {
                         $this.target = $(this);
                         $this.show();
                     }
@@ -279,12 +279,12 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
 
         this.jq.appendTo(document.body);
 
-        if (PrimeFaces.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
+        if (PrimeFaces.trim(this.jq.children('.p-tooltip-text').html()) === '') {
             var text = this.target.attr('title');
             if (this.cfg.escape)
-                this.jq.children('.ui-tooltip-text').text(text);
+                this.jq.children('.p-tooltip-text').text(text);
             else
-                this.jq.children('.ui-tooltip-text').html(text);
+                this.jq.children('.p-tooltip-text').html(text);
         }
 
         this.target.removeAttr('title');
@@ -372,8 +372,8 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         // Split the configPosition into an array of strings e.g. "left center"
         configPosition = configPosition.split(' ');
 
-        // Initialize the tooltipClass with 'ui-tooltip-'
-        var tooltipClass = 'ui-tooltip-';
+        // Initialize the tooltipClass with 'p-tooltip-'
+        var tooltipClass = 'p-tooltip-';
         for (var i = 0; i < configPosition.length; i++) {
             var pos = configPosition[i];
             if (pos === "right" || pos === "left") {
@@ -386,7 +386,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
             }
         }
         
-        this.jq.removeClass('ui-tooltip-left ui-tooltip-right ui-tooltip-top ui-tooltip-bottom')
+        this.jq.removeClass('p-tooltip-left p-tooltip-right p-tooltip-top p-tooltip-bottom')
                .addClass(tooltipClass)
                .css({
                    left: position['left'] + 'px',
@@ -553,7 +553,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
             if ($this.globalTitle) {
                 $this.globalTitle = null;
                 $this.target = null;
-                $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
+                $this.jq.children('.p-tooltip-text').removeClass('p-state-error');
             }
 
             this.unbindEscapeKey();

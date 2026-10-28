@@ -6,7 +6,7 @@ SelectBooleanButton is used to select a binary decision with a toggle button.
 SelectBooleanButton usage is similar to selectBooleanCheckbox.
 
 ```xhtml
-<p:selectBooleanButton id="value2" value="#{bean.value}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" />
+<p:selectBooleanButton id="value2" value="#{bean.value}" onLabel="Yes" offLabel="No" onIcon="pi pi-check" offIcon="pi pi-times" />
 ```
 ```java
 public class Bean {
@@ -31,5 +31,5 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectbooleanbutton | Main container element.
+.p-selectbooleanbutton | Main container element.
 

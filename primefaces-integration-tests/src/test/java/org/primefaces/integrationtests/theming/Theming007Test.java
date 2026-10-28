@@ -48,7 +48,7 @@ class Theming007Test extends AbstractThemingTest {
     void chips(Page page) {
         // Arrange
         setColorScheme("light");
-        assertFalse(page.chips.findElements(By.cssSelector(".ui-chips-token")).isEmpty(), "chips have no tokens");
+        assertFalse(page.chips.findElements(By.cssSelector(".p-chips-token")).isEmpty(), "chips have no tokens");
 
         // Assert
         assertActive("Chips", page.chips, page.chipsLabel, page.emptyChipsLabel);
@@ -61,7 +61,7 @@ class Theming007Test extends AbstractThemingTest {
     void autoComplete(Page page) {
         // Arrange
         setColorScheme("light");
-        assertFalse(page.autoComplete.findElements(By.cssSelector(".ui-autocomplete-token")).isEmpty(), "autoComplete has no tokens");
+        assertFalse(page.autoComplete.findElements(By.cssSelector(".p-autocomplete-token")).isEmpty(), "autoComplete has no tokens");
 
         // Assert
         assertActive("AutoComplete multiple", page.autoComplete, page.autoCompleteLabel, page.emptyChipsLabel);
@@ -74,7 +74,7 @@ class Theming007Test extends AbstractThemingTest {
     void empty(Page page) {
         // Arrange
         setColorScheme("light");
-        assertTrue(page.emptyChips.findElements(By.cssSelector(".ui-chips-token")).isEmpty(), "empty chips have tokens");
+        assertTrue(page.emptyChips.findElements(By.cssSelector(".p-chips-token")).isEmpty(), "empty chips have tokens");
 
         // Assert: the control case, the label keeps the normal font size
         assertTokenValue("Empty chips label", page.emptyChipsLabel, "font-size", "--p-floatlabel-font-size");

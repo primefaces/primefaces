@@ -107,16 +107,16 @@ class DatePicker012Test extends AbstractDatePickerTest {
 
     private void assertNoDisablebCalendarDates(DatePicker datePicker) {
         List<WebElement> days = datePicker.getPanel().findElements(
-                    By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
+                    By.cssSelector(".p-datepicker-calendar td:not(.p-datepicker-other-month) .tst-disabled"));
         assertTrue(days.isEmpty(), days.toString());
     }
 
     private void assertDisabledCalendarDate(DatePicker datePicker, String day) {
         List<WebElement> days = datePicker.getPanel().findElements(
-                    By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
+                    By.cssSelector(".p-datepicker-calendar td:not(.p-datepicker-other-month) .tst-disabled"));
         assertEquals(1, days.size(), days.toString());
         assertEquals(day, days.get(0).getText());
-        assertTrue(days.get(0).getAttribute("class").contains("ui-state-disabled"));
+        assertTrue(days.get(0).getAttribute("class").contains("p-state-disabled"));
     }
 
     private void assertConfiguration(JSONObject cfg) {

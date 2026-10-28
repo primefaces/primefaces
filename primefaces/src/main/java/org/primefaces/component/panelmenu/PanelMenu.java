@@ -38,20 +38,18 @@ public class PanelMenu extends PanelMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PanelMenu";
 
-    public static final String CONTAINER_CLASS = "ui-panelmenu ui-widget";
-    public static final String INACTIVE_HEADER_CLASS = "ui-widget ui-panelmenu-header ui-state-default";
-    public static final String ACTIVE_HEADER_CLASS = "ui-widget ui-panelmenu-header ui-state-default ui-state-active";
-    public static final String INACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
-    public static final String INACTIVE_ROOT_SUBMENU_CONTENT = "ui-panelmenu-content ui-widget-content p-hidden";
-    public static final String ACTIVE_ROOT_SUBMENU_CONTENT = "ui-panelmenu-content ui-widget-content";
-    public static final String MENUITEM_CLASS = "ui-menuitem ui-widget";
-    public static final String DESCENDANT_SUBMENU_CLASS = "ui-widget ui-menuitem ui-menu-parent";
-    public static final String DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS = "ui-panelmenu-icon ui-icon ui-icon-triangle-1-s";
-    public static final String DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS = "ui-panelmenu-icon ui-icon ui-icon-triangle-1-e";
-    public static final String DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS = "ui-menu-list";
-    public static final String DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS = "ui-menu-list p-hidden";
-    public static final String PANEL_CLASS = "ui-panelmenu-panel";
-    public static final String MENUITEM_LINK_WITH_ICON_CLASS = "ui-menuitem-link ui-menuitem-link-hasicon";
+    public static final String CONTAINER_CLASS = "p-panelmenu p-widget";
+    public static final String INACTIVE_HEADER_CLASS = "p-widget p-panelmenu-header p-state-default";
+    public static final String ACTIVE_HEADER_CLASS = "p-widget p-panelmenu-header p-state-default p-state-active";
+    public static final String TAB_HEADER_ICON_CLASS = "p-icon p-toggle-icon p-panelmenu-header-icon";
+    public static final String INACTIVE_ROOT_SUBMENU_CONTENT = "p-panelmenu-content p-widget-content p-hidden";
+    public static final String ACTIVE_ROOT_SUBMENU_CONTENT = "p-panelmenu-content p-widget-content";
+    public static final String MENUITEM_CLASS = "p-menuitem p-widget";
+    public static final String DESCENDANT_SUBMENU_CLASS = "p-widget p-menuitem p-menu-parent";
+    public static final String DESCENDANT_SUBMENU_ICON_CLASS = "p-panelmenu-icon p-icon p-toggle-icon p-panelmenu-submenu-icon";
+    public static final String DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS = "p-menu-list";
+    public static final String DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS = "p-menu-list p-hidden";
+    public static final String PANEL_CLASS = "p-panelmenu-panel";
+    public static final String MENUITEM_LINK_WITH_ICON_CLASS = "p-menuitem-link p-menuitem-link-hasicon";
 
 }

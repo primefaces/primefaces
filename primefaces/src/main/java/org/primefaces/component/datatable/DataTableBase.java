@@ -262,7 +262,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     @Property(defaultValue = "regular", description = "Size of the table content, valid values are \"small\", \"regular\" and \"large\".")
     public abstract String getSize();
 
-    @Property(implicitDefaultValue = "td,span:not(.ui-c)", description = "Defines the element used to reorder rows using dragdrop.")
+    @Property(implicitDefaultValue = "td,span:not(.p-c)", description = "Defines the element used to reorder rows using dragdrop.")
     public abstract String getRowDragSelector();
 
     @Property(description = "Method expression to execute after dragging row.")

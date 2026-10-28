@@ -86,7 +86,7 @@ PrimeFaces.widget.Diagram = class Diagram extends PrimeFaces.widget.DeferredWidg
                 $this.initEndPoints();
                 $this.initConnections();
 
-                $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
+                $this.canvas.draggable($this.jq.children('.p-diagram-draggable'), {
                     containment: $this.cfg.containment,
                     stop: function(p) {
                     	$this.onUpdateElementPosition({

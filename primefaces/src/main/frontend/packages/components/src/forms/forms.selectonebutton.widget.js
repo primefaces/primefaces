@@ -40,10 +40,10 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
         if(this.cfg.custom) {
             // For facet layout, buttons are within jq. For referenced layout, search in parent container
             if (this.facet) {
-                this.buttons = this.jq.find('[role="radio"]:not(.ui-state-disabled)');
+                this.buttons = this.jq.find('[role="radio"]:not(.p-state-disabled)');
             }
             else {
-                this.buttons = this.jq.parent().find('[role="radio"]:not(.ui-state-disabled)');
+                this.buttons = this.jq.parent().find('[role="radio"]:not(.p-state-disabled)');
             }
 
             //update button state
@@ -51,7 +51,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
                 const original = this.inputs.eq(i);
 
                 if(original.is(':checked')) {
-                    this.buttons.eq(i).addClass('ui-state-active').attr('aria-checked', 'true');
+                    this.buttons.eq(i).addClass('p-state-active').attr('aria-checked', 'true');
                 }
 
                 if(original.is(':disabled')) {
@@ -61,7 +61,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
         }
         //regular layout
         else {
-            this.buttons = this.jq.children('div:not(.ui-state-disabled)');
+            this.buttons = this.jq.children('div:not(.p-state-disabled)');
         }
 
         this.bindEvents();
@@ -75,12 +75,12 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      * @private
      */
     bindEvents() {
-        this.buttons.filter(':not(.ui-state-disabled)').off('mouseover.selectOneButton mouseout.selectOneButton click.selectOneButton')
+        this.buttons.filter(':not(.p-state-disabled)').off('mouseover.selectOneButton mouseout.selectOneButton click.selectOneButton')
         .on('mouseover.selectOneButton', function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         })
         .on('mouseout.selectOneButton', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click.selectOneButton', (e) => {
             // clicks on the native radio itself (e.g. fired by keyboard activation) are handled by the change listener
@@ -95,10 +95,10 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
         /* keyboard interaction and focus are handled by the native radio inputs */
         this.inputs.off('focus.selectOneButton blur.selectOneButton change.selectOneButton')
         .on('focus.selectOneButton', (e) => {
-            $(e.currentTarget).closest('.ui-button').addClass('ui-state-focus');
+            $(e.currentTarget).closest('.p-button').addClass('p-state-focus');
         })
         .on('blur.selectOneButton', (e) => {
-            $(e.currentTarget).closest('.ui-button').removeClass('ui-state-focus');
+            $(e.currentTarget).closest('.p-button').removeClass('p-state-focus');
         })
         .on('change.selectOneButton', (e) => {
             if (e.currentTarget.checked) {
@@ -106,7 +106,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
                 const button = this.buttons.eq(index);
                 if (this.cfg.confirmation) {
                     this.inputs.each((i, input) => {
-                        input.checked = this.buttons.eq(i).hasClass('ui-state-active');
+                        input.checked = this.buttons.eq(i).hasClass('p-state-active');
                     });
                 }
                 this.confirmChange(() => this.select(button));
@@ -122,7 +122,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      */
     handleButtonInteraction(target, e) {
         const button = $(target);
-        const isActive = button.hasClass('ui-state-active');
+        const isActive = button.hasClass('p-state-active');
 
         button.find(':radio').trigger('focus');
 
@@ -160,8 +160,8 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      * @param {JQuery} button A button of this widget to select.
      */
     select(button) {
-        const active = this.buttons.filter('.ui-state-active');
-        active.removeClass('ui-state-active ui-state-hover');
+        const active = this.buttons.filter('.p-state-active');
+        active.removeClass('p-state-active p-state-hover');
 
         if (this.cfg.custom) {
             active.attr('aria-checked', 'false');
@@ -177,7 +177,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
             button.find(':radio').prop('checked', true);
         }
 
-        button.addClass('ui-state-active');
+        button.addClass('p-state-active');
 
         this.triggerChange();
     }
@@ -188,7 +188,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      */
     unselect(button) {
         if(this.cfg.unselectable) {
-            button.removeClass('ui-state-active ui-state-hover');
+            button.removeClass('p-state-active p-state-hover');
 
             if (this.cfg.custom) {
                 button.attr('aria-checked', 'false');
@@ -227,7 +227,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
             for(let i = 0; i < this.buttons.length; i++) {
                 const button = this.buttons.eq(i);
                 this.enable(i);
-                button.removeClass('ui-state-active');
+                button.removeClass('p-state-active');
                 if (i < this.inputs.length) {
                     this.inputs.eq(i).prop('checked', false);
                 }
@@ -243,14 +243,14 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      */
     disable(index) {
         if (index === null || index === undefined) {
-            this.buttons.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                    .addClass('ui-state-disabled').attr('disabled', 'disabled');
+            this.buttons.removeClass('p-state-hover p-state-focus p-state-active')
+                    .addClass('p-state-disabled').attr('disabled', 'disabled');
             this.inputs.attr('disabled', 'disabled');
         }
         else {
             const button = this.buttons.eq(index);
-            button.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                    .addClass('ui-state-disabled').attr('disabled', 'disabled');
+            button.removeClass('p-state-hover p-state-focus p-state-active')
+                    .addClass('p-state-disabled').attr('disabled', 'disabled');
             this.inputs.eq(index).attr('disabled', 'disabled');
         }
     }
@@ -261,12 +261,12 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      */
     enable(index) {
         if (index === null || index === undefined) {
-            this.buttons.removeClass('ui-state-disabled').removeAttr('disabled');
+            this.buttons.removeClass('p-state-disabled').removeAttr('disabled');
             this.inputs.removeAttr('disabled');
         }
         else {
             const button = this.buttons.eq(index);
-            button.removeClass('ui-state-disabled').removeAttr('disabled');
+            button.removeClass('p-state-disabled').removeAttr('disabled');
             this.inputs.eq(index).removeAttr('disabled');
         }
     }

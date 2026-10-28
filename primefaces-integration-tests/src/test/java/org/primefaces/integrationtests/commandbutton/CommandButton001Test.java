@@ -50,11 +50,11 @@ public class CommandButton001Test extends AbstractPrimePageTest {
 
         // Assert
         // we use an approach which should be more tolerant when CI-infrastructure is slow
-        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(button, "ui-state-loading"));
+        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(button, "p-state-loading"));
 
         // Wait out min Ajax loading animation
         PrimeSelenium.wait(1000);
-        assertFalse(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
+        assertFalse(PrimeSelenium.hasCssClass(button, "p-state-loading"));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        assertFalse(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
+        assertFalse(PrimeSelenium.hasCssClass(button, "p-state-loading"));
     }
 
     public static class Page extends AbstractPrimePage {

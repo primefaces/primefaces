@@ -105,12 +105,12 @@ structural style classes
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-galleria | Container element for galleria.
-| .ui-galleria-header | Header section.
-| .ui-galleria-footer | Footer section.
-| .ui-galleria-item-wrapper | Item wrapper element. It contains item container and indicators.
-| .ui-galleria-item-container | Container of the item wrapper. It contains navigation buttons, items and caption content.
-| .ui-galleria-indicators | Container of the indicators. It contains indicator items.
-| .ui-galleria-thumbnail-content | Thumbnail content element.
-| .ui-galleria-thumbnail-container | Container of the thumbnail content. It contains navigation buttons and thumbnail items.
-| .ui-galleria-caption | Content of the item caption.
+| .p-galleria | Container element for galleria.
+| .p-galleria-header | Header section.
+| .p-galleria-footer | Footer section.
+| .p-galleria-item-wrapper | Item wrapper element. It contains item container and indicators.
+| .p-galleria-item-container | Container of the item wrapper. It contains navigation buttons, items and caption content.
+| .p-galleria-indicators | Container of the indicators. It contains indicator items.
+| .p-galleria-thumbnail-wrapper | Thumbnail wrapper element. It contains the thumbnail container.
+| .p-galleria-thumbnail-container | Container of the thumbnail content. It contains navigation buttons and thumbnail items.
+| .p-galleria-caption-items | Content of the item caption.

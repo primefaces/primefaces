@@ -145,7 +145,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup group) {
                 writer.startElement("div", null);
-                writer.writeAttribute("class", "ui-selectmanycheckbox-responsive-group", null);
+                writer.writeAttribute("class", "p-selectmanycheckbox-responsive-group", null);
                 encodeGroupLabel(context, component, group);
                 writer.endElement("div");
 
@@ -251,7 +251,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
 
         writer.startElement("label", null);
         if (disabled) {
-            writer.writeAttribute("class", "ui-state-disabled", null);
+            writer.writeAttribute("class", "p-state-disabled", null);
         }
 
         writer.writeAttribute("for", containerClientId, null);
@@ -274,7 +274,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-selectmanycheckbox-item-group", null);
+        writer.writeAttribute("class", "p-selectmanycheckbox-item-group", null);
 
         if (group.isEscape()) {
             writer.writeText(group.getLabel(), null);
@@ -289,8 +289,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
     protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox component, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = createStyleClass(component, null, HTML.CHECKBOX_BOX_CLASS);
-        boxClass = checked ? boxClass + " ui-state-active" : boxClass;
-        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = checked ? boxClass + " p-state-active" : boxClass;
+        boxClass = disabled ? boxClass + " p-state-disabled" : boxClass;
 
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 

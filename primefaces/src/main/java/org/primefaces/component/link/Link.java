@@ -43,8 +43,8 @@ public class Link extends LinkBaseImpl {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.Link";
 
-    public static final String STYLE_CLASS = "ui-link ui-widget";
-    public static final String DISABLED_STYLE_CLASS = "ui-link ui-widget ui-state-disabled";
+    public static final String STYLE_CLASS = "p-link p-widget";
+    public static final String DISABLED_STYLE_CLASS = "p-link p-widget p-state-disabled";
 
     @Override
     public Map<String, List<String>> getParams() {

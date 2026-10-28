@@ -90,7 +90,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : PanelMenu.PANEL_CLASS + " " + styleClass;
         boolean expanded = submenu.isExpanded();
         String headerClass = expanded ? PanelMenu.ACTIVE_HEADER_CLASS : PanelMenu.INACTIVE_HEADER_CLASS;
-        String headerIconClass = expanded ? PanelMenu.ACTIVE_TAB_HEADER_ICON_CLASS : PanelMenu.INACTIVE_TAB_HEADER_ICON_CLASS;
         String contentClass = expanded ? PanelMenu.ACTIVE_ROOT_SUBMENU_CONTENT : PanelMenu.INACTIVE_ROOT_SUBMENU_CONTENT;
         boolean hasIcon = (icon != null);
 
@@ -105,17 +104,18 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "tab", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
         writer.writeAttribute("tabindex", "0", null);
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", headerIconClass, null);
+        writer.writeAttribute("class", PanelMenu.TAB_HEADER_ICON_CLASS, null);
         writer.endElement("span");
 
         //user icon
         if (hasIcon) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-icon " + icon, null);
+            writer.writeAttribute("class", "p-submenu-icon " + icon, null);
             writer.endElement("span");
         }
 
@@ -178,7 +178,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? PanelMenu.DESCENDANT_SUBMENU_CLASS : PanelMenu.DESCENDANT_SUBMENU_CLASS + " " + styleClass;
         boolean expanded = submenu.isExpanded();
-        String toggleIconClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS;
         String listClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS;
         boolean hasIcon = (icon != null);
         String linkClass = (hasIcon) ? PanelMenu.MENUITEM_LINK_WITH_ICON_CLASS : PanelMenu.MENUITEM_LINK_CLASS;
@@ -197,19 +196,20 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
         //toggle icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", toggleIconClass, null);
+        writer.writeAttribute("class", PanelMenu.DESCENDANT_SUBMENU_ICON_CLASS, null);
         writer.endElement("span");
 
         //user icon
         if (hasIcon) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-icon " + icon, null);
+            writer.writeAttribute("class", "p-submenu-icon " + icon, null);
             writer.endElement("span");
         }
 
         //submenu label
         writer.startElement("span", null);
         writer.writeAttribute("class", PanelMenu.MENUITEM_TEXT_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
         writer.writeText(submenu.getLabel(), null);
         writer.endElement("span");
 

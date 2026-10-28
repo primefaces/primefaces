@@ -123,8 +123,8 @@ class DatePicker017Test extends AbstractDatePickerTest {
 
     protected void incrementTimeSegment(WebElement panel) {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement picker = panel.findElement(By.className("ui-second-picker"));
-        picker.findElement(By.className("ui-picker-up")).click();
+        WebElement picker = panel.findElement(By.className("p-second-picker"));
+        picker.findElement(By.className("p-picker-up")).click();
     }
 
     public static class Page extends AbstractPrimePage {

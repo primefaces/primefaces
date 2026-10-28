@@ -90,20 +90,20 @@ the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-selectcheckboxmenu | Main container element.
-.ui-selectcheckboxmenu-label-container | Label container.
-.ui-selectcheckboxmenu-label | Label.
-.ui-selectcheckboxmenu-trigger | Dropdown icon.
-.ui-selectcheckboxmenu-panel | Overlay panel.
-.ui-selectcheckboxmenu-header | Header in overlay panel.
-.ui-selectcheckboxmenu-footer | Footer in overlay panel.
-.ui-selectcheckboxmenu-filter-container | Container for filter in overlay panel header.
-.ui-selectcheckboxmenu-filter | Filter in overlay panel header.
-.ui-selectcheckboxmenu-close | Closer in overlay panel header.
-.ui-selectcheckboxmenu-items-wrapper | Wrapper for option list container.
-.ui-selectcheckboxmenu-items | Option list container.
-.ui-selectcheckboxmenu-item-group | Each option group in the collection.
-.ui-selectcheckboxmenu-item | Each options in the collection.
-.ui-chkbox | Container of a checkbox.
-.ui-chkbox-box | Container of checkbox icon.
-.ui-chkbox-icon | Checkbox icon.
+.p-selectcheckboxmenu | Main container element.
+.p-selectcheckboxmenu-label-container | Label container.
+.p-selectcheckboxmenu-label | Label.
+.p-selectcheckboxmenu-trigger | Dropdown icon.
+.p-selectcheckboxmenu-panel | Overlay panel.
+.p-selectcheckboxmenu-header | Header in overlay panel.
+.p-selectcheckboxmenu-footer | Footer in overlay panel.
+.p-selectcheckboxmenu-filter-container | Container for filter in overlay panel header.
+.p-selectcheckboxmenu-filter | Filter in overlay panel header.
+.p-selectcheckboxmenu-close | Closer in overlay panel header.
+.p-selectcheckboxmenu-items-wrapper | Wrapper for option list container.
+.p-selectcheckboxmenu-items | Option list container.
+.p-selectcheckboxmenu-item-group | Each option group in the collection.
+.p-selectcheckboxmenu-item | Each options in the collection.
+.p-chkbox | Container of a checkbox.
+.p-chkbox-box | Container of checkbox icon.
+.p-chkbox-icon | Checkbox icon.

@@ -167,7 +167,7 @@ function onAddFile(file, callback) {
 
 ### Empty Facet
 
-The empty-facet is rendered when no files are added yet. It's rendered in `div` classed `ui-fileupload-empty`.
+The empty-facet is rendered when no files are added yet. It's rendered in `div` classed `p-fileupload-empty`.
 
 ```xhtml
 <p:fileUpload ...>
@@ -227,7 +227,7 @@ FileLimit restricts the number of maximum files that can be uploaded.
 
 ## Custom Drop Zone
 The `dropZone` attribute allows you to specify a component that will serve as a custom drop zone for file uploads. 
-When a file is dragged over the specified component, the `ui-state-drag` CSS class is automatically added to the target element and removed when the file is no longer being dragged. This allows you to apply custom styling to indicate when files are being dragged over the drop zone.
+When a file is dragged over the specified component, the `p-state-drag` CSS class is automatically added to the target element and removed when the file is no longer being dragged. This allows you to apply custom styling to indicate when files are being dragged over the drop zone.
 
 
 ## Size Limit
@@ -247,14 +247,19 @@ structural style classes
 
 | Class | Applies |
 | --- | --- |
-| .ui-fileupload | Main container element
-| .ui-fileupload-buttonbar | Button bar
-| .ui-fileupload-choose | Browse button
-| .ui-fileupload-upload | Upload button
-| .ui-fileupload-cancel | Cancel button
-| .ui-fileupload-content | Content container
-| .ui-state-drag | Added to main container element when file is dragged over this component
-| .ui-fileupload-withdropzone | Added to main container element if a custom drop zone is set
+| .p-fileupload | Main container element
+| .p-fileupload-buttonbar | Button bar
+| .p-fileupload-choose | Browse button
+| .p-fileupload-upload | Upload button
+| .p-fileupload-cancel | Cancel button
+| .p-fileupload-content | Content container
+| .p-state-drag | Added to main container element when file is dragged over this component
+| .p-fileupload-withdropzone | Added to main container element if a custom drop zone is set
+
+The icons of the choose, upload and cancel buttons and of the drag overlay are icon tokens of the theme (see
+[Theming](/core/theming.md?id=icons)): `--p-fileupload-choose-icon`, `--p-fileupload-upload-icon`,
+`--p-fileupload-cancel-icon` and `--p-fileupload-drag-overlay-icon`, rendered as e.g.
+`<span class="p-icon p-plus-icon p-fileupload-choose-icon">`.
 
 ## Browser Compatibility
 Advanced uploader is implemented with HTML5 and provides far more features compared to single version.

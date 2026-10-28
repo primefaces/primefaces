@@ -39,15 +39,16 @@ import jakarta.faces.event.PhaseId;
 public class DataScroller extends DataScrollerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
-    public static final String CONTAINER_CLASS = "ui-datascroller ui-widget";
-    public static final String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
-    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header";
-    public static final String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
-    public static final String LIST_CLASS = "ui-datascroller-list";
-    public static final String ITEM_CLASS = "ui-datascroller-item";
-    public static final String LOADER_CLASS = "ui-datascroller-loader";
-    public static final String LOADING_CLASS = "ui-datascroller-loading";
-    public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datascroller-virtualscroll-wrapper";
+    public static final String CONTAINER_CLASS = "p-datascroller p-widget";
+    public static final String INLINE_CONTAINER_CLASS = "p-datascroller p-datascroller-inline p-widget";
+    public static final String HEADER_CLASS = "p-datascroller-header p-widget-header";
+    public static final String CONTENT_CLASS = "p-datascroller-content p-widget-content";
+    public static final String LIST_CLASS = "p-datascroller-list";
+    public static final String ITEM_CLASS = "p-datascroller-item";
+    public static final String LOADER_CLASS = "p-datascroller-loader";
+    public static final String LOADING_CLASS = "p-datascroller-loading";
+    public static final String LOADING_ICON_CLASS = "p-datascroller-loading-default p-icon p-loading-icon p-datascroller-loading-icon";
+    public static final String VIRTUALSCROLL_WRAPPER_CLASS = "p-datascroller-virtualscroll-wrapper";
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();

@@ -180,12 +180,11 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-menu | Container element of menu
-.ui-menu-list | List container
-.ui-menuitem | Each menu item
-.ui-menuitem-link | Anchor element in a link item
-.ui-menuitem-text | Text element in an item
-.ui-menu-sliding | Container of ipod like sliding menu
+.p-menu | Container element of menu
+.p-menu-list | List container
+.p-menuitem | Each menu item
+.p-menuitem-link | Anchor element in a link item
+.p-menuitem-text | Text element in an item
 
 As skinning style classes are global, see the main theming section for more information.
 

@@ -48,14 +48,14 @@ class WizardRendererTest {
                 tab.setId(id);
                 tab.setRendered(!"hidden".equals(id));
                 if ("third".equals(id)) {
-                    tab.setTitleStyleClass("custom ui-state-highlight");
+                    tab.setTitleStyleClass("custom p-state-highlight");
                 }
                 wizard.getChildren().add(tab);
             }
             new WizardRenderer().encodeStepStatus(context, wizard);
             String html = writer.toString();
-            assertEquals(currentCount, html.split("ui-wizard-step-current", -1).length - 1);
-            assertEquals(completedCount, html.split("ui-wizard-step-completed", -1).length - 1);
+            assertEquals(currentCount, html.split("p-wizard-step-current", -1).length - 1);
+            assertEquals(completedCount, html.split("p-wizard-step-completed", -1).length - 1);
             assertTrue(html.contains("data-pf-user-highlight"));
             assertTrue(html.contains("custom"));
         }

@@ -99,7 +99,7 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
         this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
         if(this.cursorNode) {
-            this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + CSS.escape(this.cursorNode.data('rowkey')) + '"]');
+            this.cursorNode = this.jq.find('.p-treenode[data-rowkey="' + CSS.escape(this.cursorNode.data('rowkey')) + '"]');
         }
 
         if(this.isCheckboxSelection() && this.cfg.propagateUp) {
@@ -116,7 +116,7 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
      */
     bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
-        var nodeContentSelector = targetId + ' .ui-tree-selectable',
+        var nodeContentSelector = targetId + ' .p-tree-selectable',
         nodeEvent = cfg.nodeType ? cfg.event + '.treenode.' + cfg.nodeType : cfg.event + '.treenode',
         containerEvent = cfg.event + '.tree' + this.id;
         nodeEvent = nodeEvent + this.id;
@@ -124,7 +124,7 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
         $(document).off(nodeEvent, nodeContentSelector).on(nodeEvent, nodeContentSelector, null, function(e) {
             var nodeContent = $(this);
 
-            if($(e.target).is(':not(.ui-tree-toggler)') && (cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType)) {
+            if($(e.target).is(':not(.p-tree-toggler)') && (cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType)) {
                 var isContextMenuDelayed = targetWidget.nodeRightClick(e, nodeContent, function(){
                     menuWidget.show(e);
                 });
@@ -186,12 +186,12 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
                                 this.showNodeChildren(node);
 
                                 if(this.cfg.draggable) {
-                                    this.makeDraggable(nodeChildrenContainer.find('.ui-treenode-content'));
+                                    this.makeDraggable(nodeChildrenContainer.find('.p-treenode-content'));
                                 }
 
                                 if(this.cfg.droppable) {
-                                    this.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
-                                    this.makeDropNodes(nodeChildrenContainer.find('div.ui-treenode-droppable'));
+                                    this.makeDropPoints(nodeChildrenContainer.find('li.p-tree-droppoint'));
+                                    this.makeDropNodes(nodeChildrenContainer.find('div.p-treenode-droppable'));
                                 }
                             }
                         });
@@ -459,7 +459,7 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * @return {boolean} `true` if the node is selectable, `false` otherwise.
      */
     isSelectableNode(node) {
-        return node.children('.ui-treenode-content').hasClass('ui-tree-selectable');
+        return node.children('.p-treenode-content').hasClass('p-tree-selectable');
     }
 
     /**
@@ -480,7 +480,7 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
                 return;
             }
 
-            var checkbox = child.find('> .ui-treenode-content > .ui-chkbox');
+            var checkbox = child.find('> .p-treenode-content > .p-chkbox');
             if(checkbox.length) {
                 $this.toggleCheckboxState(checkbox, checked);
             }
@@ -505,9 +505,9 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} nodeContent Content of the clicked node.
      */
     nodeClick(event, nodeContent) {
-        if($(event.target).is(':not(.ui-tree-toggler)')) {
+        if($(event.target).is(':not(.p-tree-toggler)')) {
             var node = nodeContent.parent(),
-            selectable = nodeContent.hasClass('ui-tree-selectable');
+            selectable = nodeContent.hasClass('p-tree-selectable');
 
             if(this.cfg.onNodeClick) {
                 var retVal = this.cfg.onNodeClick.call(this, node, event);
@@ -535,7 +535,7 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
 
                         if(this.isMultipleSelection() && shiftKey && this.cursorNode && (this.cursorNode.parent().is(node.parent()))) {
                             var parentList = node.parent(),
-                            treenodes = parentList.children('li.ui-treenode'),
+                            treenodes = parentList.children('li.p-treenode'),
                             currentNodeIndex = treenodes.index(node),
                             cursorNodeIndex = treenodes.index(this.cursorNode),
                             startIndex = (currentNodeIndex > cursorNodeIndex) ? cursorNodeIndex : currentNodeIndex,
@@ -577,9 +577,9 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
     nodeRightClick(event, nodeContent, fnShowMenu) {
         PrimeFaces.clearSelection();
 
-        if($(event.target).is(':not(.ui-tree-toggler)')) {
+        if($(event.target).is(':not(.p-tree-toggler)')) {
             var node = nodeContent.parent(),
-            selectable = nodeContent.hasClass('ui-tree-selectable');
+            selectable = nodeContent.hasClass('p-tree-selectable');
 
             if(selectable && this.cfg.selectionMode) {
                 var selected = this.isNodeSelected(node);
@@ -681,16 +681,16 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} checkbox Checkbox of a node to check partially.
      */
     partialCheck(checkbox) {
-        var box = checkbox.children('.ui-chkbox-box'),
-        icon = box.children('.ui-chkbox-icon'),
-        treeNode = checkbox.closest('.ui-treenode'),
+        var box = checkbox.children('.p-chkbox-box'),
+        icon = box.children('.p-chkbox-icon'),
+        treeNode = checkbox.closest('.p-treenode'),
         rowKey = this.getRowKey(treeNode);
 
-        box.removeClass('ui-state-active');
-        treeNode.find('> .ui-treenode-content').removeClass('ui-state-highlight')
-                .find('> .ui-treenode-label').removeClass('ui-state-highlight');
-        icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
-        treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
+        box.removeClass('p-state-active');
+        treeNode.find('> .p-treenode-content').removeClass('p-state-highlight')
+                .find('> .p-treenode-label').removeClass('p-state-highlight');
+        icon.removeClass('p-checkbox-checked-icon').addClass('p-checkbox-indeterminate-icon');
+        treeNode.removeClass('p-treenode-selected p-treenode-unselected').addClass('p-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
 
         this.removeFromSelection(rowKey);
     }
@@ -701,14 +701,14 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} checkbox Checkbox of a node to check.
      */
     check(checkbox) {
-        var box = checkbox.children('.ui-chkbox-box'),
-        icon = box.children('.ui-chkbox-icon'),
-        treeNode = checkbox.closest('.ui-treenode'),
+        var box = checkbox.children('.p-chkbox-box'),
+        icon = box.children('.p-chkbox-icon'),
+        treeNode = checkbox.closest('.p-treenode'),
         rowKey = this.getRowKey(treeNode);
 
-        box.addClass('ui-state-active');
-        icon.removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
-        treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
+        box.addClass('p-state-active');
+        icon.removeClass('p-checkbox-indeterminate-icon').addClass('p-checkbox-checked-icon');
+        treeNode.removeClass('p-treenode-hasselected p-treenode-unselected').addClass('p-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
 
         this.addToSelection(rowKey);
     }
@@ -719,14 +719,14 @@ PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} checkbox Checkbox of a node to uncheck.
      */
     uncheck(checkbox) {
-        var box = checkbox.children('.ui-chkbox-box'),
-        icon = box.children('.ui-chkbox-icon'),
-        treeNode = checkbox.closest('.ui-treenode'),
+        var box = checkbox.children('.p-chkbox-box'),
+        icon = box.children('.p-chkbox-icon'),
+        treeNode = checkbox.closest('.p-treenode'),
         rowKey = this.getRowKey(treeNode);
 
-        box.removeClass('ui-state-active');
-        icon.removeClass('ui-icon-minus ui-icon-check').addClass('ui-icon-blank');
-        treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
+        box.removeClass('p-state-active');
+        icon.removeClass('p-checkbox-indeterminate-icon p-checkbox-checked-icon');
+        treeNode.removeClass('p-treenode-hasselected p-treenode-selected').addClass('p-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
 
         this.removeFromSelection(rowKey);
     }

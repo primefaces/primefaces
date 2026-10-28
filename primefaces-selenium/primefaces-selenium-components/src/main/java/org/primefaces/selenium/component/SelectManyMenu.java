@@ -48,7 +48,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     @FindByParentPartialId("_input")
     private WebElement input;
 
-    @FindBy(css = ".ui-selectlistbox-listcontainer .ui-selectlistbox-list")
+    @FindBy(css = ".p-selectlistbox-listcontainer .p-selectlistbox-list")
     private WebElement selectlistbox;
 
     @FindByParentPartialId(value = "_filter", searchFromRoot = true)
@@ -134,7 +134,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
         try {
             for (WebElement element : getSelectlistbox().findElements(By.tagName("li"))) {
                 if (element.getText().equalsIgnoreCase(label)) {
-                    if (PrimeSelenium.hasCssClass(element, "ui-state-highlight")) {
+                    if (PrimeSelenium.hasCssClass(element, "p-state-highlight")) {
                         return true;
                     }
                 }
@@ -150,7 +150,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
         JSONObject widgetConfiguration = getWidgetConfiguration();
 
         if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
-            return getSelectlistbox().findElements(By.cssSelector("li.ui-selectlistbox-item")).stream()
+            return getSelectlistbox().findElements(By.cssSelector("li.p-selectlistbox-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
@@ -174,7 +174,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
         List<String> selectedLabels = new ArrayList<>();
 
         for (WebElement element : getSelectlistbox().findElements(By.tagName("li"))) {
-            if (PrimeSelenium.hasCssClass(element, "ui-state-highlight")) {
+            if (PrimeSelenium.hasCssClass(element, "p-state-highlight")) {
                 selectedLabels.add(element.getText());
             }
         }

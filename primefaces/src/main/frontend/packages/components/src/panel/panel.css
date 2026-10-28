@@ -4,16 +4,16 @@
  * Like the PrimeUIX panel the border, radius and background sit on the root; header, content and footer only
  * add their paddings (the content/footer tokens have no top padding, they follow the header).
  * Header icons (closer, toggler, options menu) are text/secondary rounded icon buttons like in PrimeUIX.
- * States: ui-panel-collapsed, ui-panel-collapsed-h, ui-panel-titlebar-toggleable
+ * States: p-panel-collapsed, p-panel-collapsed-h, p-panel-titlebar-toggleable
  */
 
-.ui-panel {
+.p-panel {
     background: var(--p-panel-background);
     color: var(--p-panel-color);
     border: 1px solid var(--p-panel-border-color);
     border-radius: var(--p-panel-border-radius);
 
-    .ui-panel-titlebar {
+    .p-panel-titlebar {
         display: flex;
         align-items: center;
         padding: var(--p-panel-header-padding);
@@ -26,16 +26,16 @@
         border-radius: var(--p-panel-header-border-radius);
 
         /* header with icon buttons: smaller padding so the header keeps its height (PrimeUIX .p-panel-toggleable) */
-        &:has(> .ui-panel-titlebar-icon) {
+        &:has(> .p-panel-titlebar-icon) {
             padding: var(--p-panel-toggleable-header-padding);
         }
     }
 
-    .ui-panel-titlebar-toggleable {
+    .p-panel-titlebar-toggleable {
         cursor: pointer;
     }
 
-    .ui-panel-title {
+    .p-panel-title {
         margin: 0;
         margin-inline-end: auto;
         font-size: var(--p-panel-title-font-size);
@@ -43,13 +43,13 @@
         text-wrap: balance;
     }
 
-    .ui-panel-titlebar {
+    .p-panel-titlebar {
         /* keep the visual order of the former right floats: actions, menu, toggler, closer */
-        > .ui-panel-actions {
+        > .p-panel-actions {
             order: 1;
         }
 
-        > .ui-panel-titlebar-icon {
+        > .p-panel-titlebar-icon {
             &[id$="_menu"] {
                 order: 2;
             }
@@ -63,7 +63,7 @@
             }
         }
 
-        .ui-panel-titlebar-icon {
+        .p-panel-titlebar-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -99,51 +99,29 @@
                 box-shadow: var(--p-button-secondary-focus-ring-shadow);
             }
 
-            .ui-icon-closethick,
-            .ui-icon-minusthick,
-            .ui-icon-plusthick,
-            .ui-icon-gear {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
+            .p-panel-close-icon {
+                --_icon: var(--p-panel-close-icon);
             }
 
-            .ui-icon-closethick::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-panel-close-icon) center / contain no-repeat;
+            .p-panel-toggle-icon {
+                --_icon: var(--p-panel-toggle-expanded-icon);
             }
 
-            .ui-icon-minusthick::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-panel-toggle-expanded-icon) center / contain no-repeat;
+            &[aria-expanded="false"] .p-panel-toggle-icon {
+                --_icon: var(--p-panel-toggle-collapsed-icon);
             }
 
-            .ui-icon-plusthick::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-panel-toggle-collapsed-icon) center / contain no-repeat;
-            }
-
-            .ui-icon-gear::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-panel-menu-icon) center / contain no-repeat;
+            .p-panel-menu-icon {
+                --_icon: var(--p-panel-menu-icon);
             }
         }
     }
 
-    .ui-panel-titlebar-icon {
+    .p-panel-titlebar-icon {
         cursor: pointer;
     }
 
-    .ui-panel-content {
+    .p-panel-content {
         padding: var(--p-panel-content-padding);
         background: transparent;
         color: inherit;
@@ -151,11 +129,11 @@
     }
 
     /* no header: the content token has no top padding, use the header spacing instead */
-    > .ui-panel-content:first-child {
+    > .p-panel-content:first-child {
         padding-top: var(--p-panel-header-padding);
     }
 
-    .ui-panel-footer {
+    .p-panel-footer {
         margin: 0;
         padding: var(--p-panel-footer-padding);
         background: transparent;
@@ -165,22 +143,22 @@
     }
 
     /* collapsed: the header is the only visible part and closes the rounded box
-       (rendered collapsed = the content has an inline display:none, ui-panel-collapsed is only set by the widget) */
-    &.ui-panel-collapsed .ui-panel-titlebar,
-    &:not(:has(> .ui-panel-footer)):has(> .ui-panel-content[style*="display:none"]) > .ui-panel-titlebar {
+       (rendered collapsed = the content has an inline display:none, p-panel-collapsed is only set by the widget) */
+    &.p-panel-collapsed .p-panel-titlebar,
+    &:not(:has(> .p-panel-footer)):has(> .p-panel-content[style*="display:none"]) > .p-panel-titlebar {
         border-end-start-radius: var(--p-panel-border-radius);
         border-end-end-radius: var(--p-panel-border-radius);
     }
 
     /* collapsed horizontally (slid to the left): only the toggler is left */
-    &.ui-panel-collapsed-h {
+    &.p-panel-collapsed-h {
         width: 42px;
 
-        .ui-panel-title {
+        .p-panel-title {
             display: none;
         }
 
-        .ui-panel-titlebar {
+        .p-panel-titlebar {
             position: relative;
             justify-content: center;
             padding-inline: 0;

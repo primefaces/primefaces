@@ -38,6 +38,6 @@ public class SelectManyButton extends SelectManyButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyButton";
 
-    public static final String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget";
+    public static final String STYLE_CLASS = "p-selectmanybutton p-buttonset p-widget";
 
 }

@@ -33,7 +33,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         super.init(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
-        if (!$(document.body).children('.ui-spotlight').length) {
+        if (!$(document.body).children('.p-spotlight').length) {
             this.createMasks();
         }
 
@@ -50,8 +50,8 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
      * Creates the mask overlay element for the spotlight effect and adds it to the DOM.
      */
     private createMasks(): void {
-        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top p-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom p-hidden"></div>' +
-            '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left p-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right p-hidden"></div>');
+        $(document.body).append('<div class="p-widget-overlay p-spotlight p-spotlight-top p-hidden"></div><div class="p-widget-overlay p-spotlight p-spotlight-bottom p-hidden"></div>' +
+            '<div class="p-widget-overlay p-spotlight p-spotlight-left p-hidden"></div><div class="p-widget-overlay p-spotlight p-spotlight-right p-hidden"></div>');
     }
 
     /**
@@ -64,7 +64,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
             'role': 'dialog'
             , 'aria-modal': true
         });
-        $(document.body).children('div.ui-spotlight').show();
+        $(document.body).children('div.p-spotlight').show();
 
         this.bindEvents();
     }
@@ -78,7 +78,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         const offset = PrimeFaces.utils.calculateRelativeOffset(this.target);
         const zIndex = PrimeFaces.nextZindex();
 
-        documentBody.children('div.ui-spotlight-top').css({
+        documentBody.children('div.p-spotlight-top').css({
             'left': '0px',
             'top': '0px',
             'width': documentBody.width() + 'px',
@@ -87,7 +87,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         });
 
         const bottomTop = offset.top + (this.target.outerHeight() ?? 0);
-        documentBody.children('div.ui-spotlight-bottom').css({
+        documentBody.children('div.p-spotlight-bottom').css({
             'left': '0px',
             'top': bottomTop + 'px',
             'width': documentBody.width() + 'px',
@@ -95,7 +95,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
             'z-index': zIndex
         });
 
-        documentBody.children('div.ui-spotlight-left').css({
+        documentBody.children('div.p-spotlight-left').css({
             'left': '0px',
             'top': offset.top + 'px',
             'width': offset.left + 'px',
@@ -104,7 +104,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
         });
 
         const rightLeft = offset.left + (this.target.outerWidth() ?? 0);
-        documentBody.children('div.ui-spotlight-right').css({
+        documentBody.children('div.p-spotlight-right').css({
             'left': rightLeft + 'px',
             'top': offset.top + 'px',
             'width': ((documentBody.width() ?? 0) - rightLeft) + 'px',
@@ -149,7 +149,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
      * Turns of the spotlight so that the entire page is visible normally again.
      */
     hide(): void {
-        $(document.body).children('.ui-spotlight').hide();
+        $(document.body).children('.p-spotlight').hide();
         this.unbindEvents();
         this.target.css('z-index', String(this.target.zIndex()));
         this.target.attr({

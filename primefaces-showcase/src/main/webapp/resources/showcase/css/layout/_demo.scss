@@ -97,53 +97,6 @@
     margin-left: 0.5rem;
 }
 
-.p-multiselect-representative-option {
-    display: inline-block;
-    vertical-align: middle;
-
-    img {
-        vertical-align: middle;
-        width: 24px;
-    }
-
-    span {
-        margin-top: 0.125rem;
-    }
-}
-
-.p-column-filter {
-    width: 100%;
-}
-
-.country-item {
-    display: flex;
-    align-items: center;
-
-    img.flag {
-        width: 18px;
-        margin-right: 0.5rem;
-    }
-}
-
-.image-text {
-    vertical-align: middle;
-    margin-left: 0.5rem;
-}
-
-.p-multiselect-representative-option {
-    display: inline-block;
-    vertical-align: middle;
-
-    img {
-        vertical-align: middle;
-        width: 24px;
-    }
-
-    span {
-        margin-top: 0.125rem;
-    }
-}
-
 .p-column-filter {
     width: 100%;
 }
@@ -200,7 +153,7 @@
             -ms-flex: 1 1 0;
         }
 
-        .ui-rating {
+        .p-rating {
             margin: 0 0 0.5rem 0;
         }
 
@@ -216,7 +169,7 @@
             @include mixins.flex-direction-column();
         }
 
-        .ui-button {
+        .p-button {
             margin-bottom: 0.5rem;
         }
     }
@@ -241,7 +194,7 @@
             margin: 2rem 0;
         }
 
-        .ui-rating {
+        .p-rating {
             margin: 0 0 1rem 0;
         }
 
@@ -292,7 +245,7 @@
 }
 
 .crud-demo {
-    .ui-datatable {
+    .p-datatable {
         margin-top: 1rem;
     }
 
@@ -303,13 +256,13 @@
             0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
-    .ui-dialog .product-image {
+    .p-dialog .product-image {
         width: 250px;
         margin: 0 auto 2rem auto;
         display: block;
     }
 
-    .ui-dialog-footer .ui-button {
+    .p-dialog-footer .p-button {
         min-width: 6rem;
     }
 
@@ -320,7 +273,7 @@
         @include mixins.flex-wrap(wrap);
     }
 
-    .edit-button.ui-button {
+    .edit-button.p-button {
         margin-right: 0.5rem;
     }
 
@@ -329,20 +282,20 @@
     }
 
     .products-table {
-        > .ui-datatable-tablewrapper > table > thead > tr > th:nth-child(1) {
+        > .p-datatable-tablewrapper > table > thead > tr > th:nth-child(1) {
             width: 1rem;
         }
 
-        .ui-rating {
+        .p-rating {
             display: inline-block;
         }
     }
 }
 
 @media (max-width: 640px) {
-    .products-table > .ui-datatable-tablewrapper > table > thead > tr > th:nth-child(2),
-    .products-table > .ui-datatable-tablewrapper > table > tbody > tr > td:nth-child(2) {
-        .ui-column-title {
+    .products-table > .p-datatable-tablewrapper > table > thead > tr > th:nth-child(2),
+    .products-table > .p-datatable-tablewrapper > table > tbody > tr > td:nth-child(2) {
+        .p-column-title {
             display: none !important;
         }
     }
@@ -369,7 +322,7 @@
 }
 
 .manymenu-advanced {
-    &.ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td {
+    &.p-selectmanymenu .p-selectlistbox-listcontainer .p-selectlistbox-list .p-selectlistbox-item > td {
         &:nth-child(2) {
             width: 1rem;
             padding: 0;

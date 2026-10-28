@@ -38,16 +38,16 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
         super.init(cfg, this.panel, cfg.id + '_panel');
 
         this.input = $(this.jqId + '_input');
-        this.label = this.jq.children('.ui-cascadeselect-label');
-        this.triggers = this.jq.children('.ui-cascadeselect-trigger').add(this.label);
-        this.itemsWrapper = this.panel.children('.ui-cascadeselect-items-wrapper');
-        this.items = this.itemsWrapper.find('li.ui-cascadeselect-item');
-        this.contents = this.items.children('.ui-cascadeselect-item-content');
-        this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
+        this.label = this.jq.children('.p-cascadeselect-label');
+        this.triggers = this.jq.children('.p-cascadeselect-trigger').add(this.label);
+        this.itemsWrapper = this.panel.children('.p-cascadeselect-items-wrapper');
+        this.items = this.itemsWrapper.find('li.p-cascadeselect-item');
+        this.contents = this.items.children('.p-cascadeselect-item-content');
+        this.cfg.disabled = this.jq.hasClass('p-state-disabled');
 
         if (!this.cfg.disabled) {
             this.bindEvents();
-            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'p-connected-overlay');
         }
     }
 
@@ -72,16 +72,16 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
 
         this.input.off('focus.cascadeselect blur.cascadeselect keydown.cascadeselect')
             .on('focus.cascadeselect', function() {
-                $this.jq.addClass('ui-state-focus');
+                $this.jq.addClass('p-state-focus');
             })
             .on('blur.cascadeselect', function(){
-                $this.jq.removeClass('ui-state-focus');
+                $this.jq.removeClass('p-state-focus');
             })
             .on('keydown.cascadeselect', function(e) {
                 switch(e.key) {
                     case 'ArrowDown':
                         if ($this.panel.is(':visible')) {
-                            $this.panel.find('.ui-cascadeselect-item:first > .ui-cascadeselect-item-content').focus();
+                            $this.panel.find('.p-cascadeselect-item:first > .p-cascadeselect-item-content').focus();
                         }
                         else if (e.altKey) {
                             $this.show();
@@ -108,19 +108,21 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
         this.contents.off('click.cascadeselect keydown.cascadeselect')
             .on('click.cascadeselect', function(e) {
                 var item = $(this).parent();
-                var subpanel = item.children('.ui-cascadeselect-panel');
+                var subpanel = item.children('.p-cascadeselect-panel');
 
                 $this.deactivateItems(item);
-                item.addClass('ui-cascadeselect-item-active ui-state-highlight');
+                item.addClass('p-cascadeselect-item-active p-state-highlight');
 
                 if (subpanel.length > 0) {
-                    var parentPanel = item.closest('.ui-cascadeselect-panel');
+                    var parentPanel = item.closest('.p-cascadeselect-panel');
                     $this.alignSubPanel(subpanel, parentPanel);
                     subpanel.show();
                 }
                 else {
                     $this.input.val(item.attr('data-value'));
-                    $this.label.text(item.attr('data-label'));
+                    $this.label.text(item.attr('data-label')).removeClass('p-cascadeselect-label-placeholder');
+                    $this.panel.find('.p-cascadeselect-item.p-state-active').removeClass('p-state-active');
+                    item.addClass('p-state-active');
                     $this.callBehavior('itemSelect');
                     $this.hide();
                     e.stopPropagation();
@@ -133,42 +135,42 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
                     case 'ArrowDown':
                         var nextItem = item.next();
                         if (nextItem) {
-                            nextItem.children('.ui-cascadeselect-item-content').focus();
+                            nextItem.children('.p-cascadeselect-item-content').focus();
                         }
                         break;
 
                     case 'ArrowUp':
                         var prevItem = item.prev();
                         if (prevItem) {
-                            prevItem.children('.ui-cascadeselect-item-content').focus();
+                            prevItem.children('.p-cascadeselect-item-content').focus();
                         }
                         break;
 
                     case 'ArrowRight':
-                        if (item.hasClass('ui-cascadeselect-item-group')) {
-                            if (item.hasClass('ui-cascadeselect-item-active')) {
-                                item.find('> .ui-cascadeselect-panel > .ui-cascadeselect-item:first > .ui-cascadeselect-item-content').focus();
+                        if (item.hasClass('p-cascadeselect-item-group')) {
+                            if (item.hasClass('p-cascadeselect-item-active')) {
+                                item.find('> .p-cascadeselect-panel > .p-cascadeselect-item:first > .p-cascadeselect-item-content').focus();
                             }
                             else {
-                                item.children('.ui-cascadeselect-item-content').trigger('click.cascadeselect');
+                                item.children('.p-cascadeselect-item-content').trigger('click.cascadeselect');
                             }
                         }
                         break;
 
                     case 'ArrowLeft':
                         $this.hideGroup(item);
-                        $this.hideGroup(item.siblings('.ui-cascadeselect-item-active'));
+                        $this.hideGroup(item.siblings('.p-cascadeselect-item-active'));
 
-                        var parentItem = item.parent().closest('.ui-cascadeselect-item');
+                        var parentItem = item.parent().closest('.p-cascadeselect-item');
                         if (parentItem) {
-                            parentItem.children('.ui-cascadeselect-item-content').focus();
+                            parentItem.children('.p-cascadeselect-item-content').focus();
                         }
                         break;
 
                     case 'Enter':
                     case 'NumpadEnter':
-                        item.children('.ui-cascadeselect-item-content').trigger('click.cascadeselect');
-                        if (!item.hasClass('ui-cascadeselect-item-group')) {
+                        item.children('.p-cascadeselect-item-content').trigger('click.cascadeselect');
+                        if (!item.hasClass('p-cascadeselect-item-group')) {
                             $this.input.trigger('focus.cascadeselect');
                         }
                         break;
@@ -197,7 +199,7 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
     disable() {
         if (!this.cfg.disabled) {
             this.cfg.disabled = true;
-            this.jq.addClass('ui-state-disabled');
+            this.jq.addClass('p-state-disabled');
             this.input.attr('disabled', 'disabled');
             this.unbindEvents();
         }
@@ -209,7 +211,7 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
     enable() {
         if (this.cfg.disabled) {
             this.cfg.disabled = false;
-            this.jq.removeClass('ui-state-disabled');
+            this.jq.removeClass('p-state-disabled');
             this.input.removeAttr('disabled');
             this.bindEvents();
         }
@@ -222,10 +224,10 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
      */
     deactivateItems(item) {
         var parentItem = item.parent().parent();
-        var siblings = item.siblings('.ui-cascadeselect-item-active');
+        var siblings = item.siblings('.p-cascadeselect-item-active');
 
         this.hideGroup(siblings);
-        this.hideGroup(siblings.find('.ui-cascadeselect-item-active'));
+        this.hideGroup(siblings.find('.p-cascadeselect-item-active'));
 
         if (!parentItem.is(this.itemsWrapper)) {
             this.deactivateItems(parentItem);
@@ -316,7 +318,7 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
      * @param {JQuery} item Dom element of the cascadeselect.
      */
     hideGroup(item) {
-        item.removeClass('ui-cascadeselect-item-active ui-state-highlight').children('.ui-cascadeselect-panel').hide();
+        item.removeClass('p-cascadeselect-item-active p-state-highlight').children('.p-cascadeselect-panel').hide();
     }
 
     /**
@@ -383,14 +385,14 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
      * @param {JQuery} parentPanel Parent panel element of the sub panel element.
      */
     alignSubPanel(subpanel, parentPanel) {
-        var subitemWrapper = subpanel.children('.ui-cascadeselect-items-wrapper');
+        var subitemWrapper = subpanel.children('.p-cascadeselect-items-wrapper');
         subpanel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
         subitemWrapper.css({'overflow': 'scroll'});
 
         PrimeFaces.utils.position(subpanel.css({left:'0px', top:'0px'}), {
                 my: 'left top'
                 ,at: 'right top'
-                ,of: parentPanel.children('.ui-cascadeselect-item-active:first') 
+                ,of: parentPanel.children('.p-cascadeselect-item-active:first') 
                 ,collision: 'flipfit'
             });
 

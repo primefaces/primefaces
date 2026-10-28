@@ -310,13 +310,13 @@ Following is the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-autocomplete | Container element. |
-| .ui-autocomplete-input | Input field. |
-| .ui-autocomplete-panel | Container of suggestions list. |
-| .ui-autocomplete-items | List of items |
-| .ui-autocomplete-item | Each item in the list. |
-| .ui-autocomplete-query | Highlighted part in suggestions. |
-| .ui-state-loading | Container element; while search queries are executed. |
+| .p-autocomplete | Container element. |
+| .p-autocomplete-input | Input field. |
+| .p-autocomplete-panel | Container of suggestions list. |
+| .p-autocomplete-items | List of items |
+| .p-autocomplete-item | Each item in the list. |
+| .p-autocomplete-query | Highlighted part in suggestions. |
+| .p-state-loading | Container element; while search queries are executed. |
 
 As skinning style classes are global, see the main theming section for more information.
 

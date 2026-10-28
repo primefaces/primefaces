@@ -134,7 +134,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         // Assert: rendered once
         assertSameState(initialState, globalState());
         assertEquals(1L, count("[id='form:knob'] svg"));
-        assertEquals(1L, count("[id='form:slider'] .ui-slider-handle"));
+        assertEquals(1L, count("[id='form:slider'] .p-slider-handle"));
         assertEquals(1L, count("[id='form:signature'] canvas"));
         assertEquals(1L, (Long) PrimeSelenium.executeScript(
                     "return jQuery._data(document.getElementById('form:spinner_input'), 'events').wheel.length;"));
@@ -172,7 +172,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         @FindBy(css = "[id='form:knob'] svg")
         WebElement knobSvg;
 
-        @FindBy(css = "[id='form:slider'] .ui-slider-handle")
+        @FindBy(css = "[id='form:slider'] .p-slider-handle")
         WebElement sliderHandle;
 
         @FindBy(id = "form:sliderInput")

@@ -58,7 +58,7 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-overlaypanel | Main container element of panel
+.p-overlaypanel | Main container element of panel
 
 As skinning style classes are global, see the main theming section for more information.
 

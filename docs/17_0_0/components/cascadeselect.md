@@ -94,10 +94,15 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-cascadeselect	| Container element.
-.ui-cascadeselect-label | Element to display label of selected option.
-.ui-cascadeselect-trigger | Icon element.
-.ui-cascadeselect-panel | Panel element.
-.ui-cascadeselect-items-wrapper | Wrapper element of items list.
-.ui-cascadeselect-items | List element of items.
-.ui-cascadeselect-item | An item in the list.
+.p-cascadeselect	| Container element.
+.p-cascadeselect-label | Element to display label of selected option.
+.p-cascadeselect-label-placeholder | Added to the label while it shows the placeholder.
+.p-cascadeselect-trigger | Trigger element of the dropdown icon.
+.p-cascadeselect-panel | Panel element.
+.p-cascadeselect-items-wrapper | Wrapper element of items list.
+.p-cascadeselect-items | List element of items.
+.p-cascadeselect-item | An item in the list. `p-state-highlight` while expanded / focused, `p-state-active` when selected.
+
+All colors, sizes and icons are tokens of the theme (`--p-cascadeselect-*`, see [Theming](/core/theming.md)); the dropdown
+and group icons are `--p-cascadeselect-dropdown-icon` and `--p-cascadeselect-group-icon`
+(`<span class="p-icon p-dropdown-icon p-cascadeselect-dropdown-icon">`).

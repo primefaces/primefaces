@@ -128,7 +128,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
 
     /**
      * Like with jQuery UI, the wrapper of a wrapped element gets the state classes, triggers the events and is `this`
-     * in the callbacks, while `ui-resizable` stays on the element itself.
+     * in the callbacks, while `p-resizable` stays on the element itself.
      * @returns The element that is resized.
      */
     protected override widget(): JQuery<HTMLElement> {
@@ -153,8 +153,8 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
         if (this.isActive()) {
             this.abort(this.cancelEvent());
         }
-        this.resizeElement.children('.ui-resizable-handle').remove();
-        this.resizeElement.off(this.namespace).removeClass('ui-resizable ui-resizable-resizing');
+        this.resizeElement.children('.p-resizable-handle').remove();
+        this.resizeElement.off(this.namespace).removeClass('p-resizable p-resizable-resizing');
         if (this.resizeElement[0] !== this.element[0]) {
             const wrapper = this.resizeElement;
             this.element.css({ position: wrapper.css('position'), width: wrapper.outerWidth() ?? '', height: wrapper.outerHeight() ?? '',
@@ -170,7 +170,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
      */
     private wrap(): JQuery<HTMLElement> {
         const el = this.element;
-        const wrapper = $('<div class="ui-wrapper" style="overflow: hidden;"></div>').css({
+        const wrapper = $('<div class="p-wrapper" style="overflow: hidden;"></div>').css({
             position: el.css('position') === 'static' ? 'relative' : el.css('position'),
             width: el.outerWidth() ?? 0,
             height: el.outerHeight() ?? 0,
@@ -198,12 +198,12 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
         }
     }
 
-    /** Creates the handles of the `handles` option, the `se` handle with the grip icon. */
+    /** Creates the handles of the `handles` option, the CSS draws the grip on the `se` handle. */
     private createHandles(): void {
         const handles = this.options.handles === 'all' ? 'n,e,s,w,se,sw,ne,nw' : this.options.handles;
-        this.resizeElement.children('.ui-resizable-handle').remove();
+        this.resizeElement.children('.p-resizable-handle').remove();
         for (const dir of handles.split(',').map((h) => h.trim()).filter((h) => h)) {
-            $('<div class="ui-resizable-handle"></div>').addClass('ui-resizable-' + dir).toggleClass('ui-icon ui-icon-gripsmall-diagonal-se', dir === 'se')
+            $('<div class="p-resizable-handle"></div>').addClass('p-resizable-' + dir)
                 .attr('data-axis', dir).css('z-index', 90).appendTo(this.resizeElement);
         }
     }
@@ -230,7 +230,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
      * @returns Whether the resizing can start.
      */
     protected capture(event: JQuery.TriggeredEvent): boolean {
-        const handle = $(event.target).closest('.ui-resizable-handle');
+        const handle = $(event.target).closest('.p-resizable-handle');
         if (!handle.length || handle.parent()[0] !== this.resizeElement[0]) {
             return false;
         }
@@ -260,7 +260,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
         this.ratio = typeof o.aspectRatio === 'number' ? o.aspectRatio : (this.originalSize.width / this.originalSize.height) || 1;
 
         if (o.helper || o.ghost || o.animate) {
-            this.helper = $('<div style="overflow: hidden;"></div>').addClass(o.helper || 'ui-resizable-helper').css({
+            this.helper = $('<div style="overflow: hidden;"></div>').addClass(o.helper || 'p-resizable-helper').css({
                 position: 'absolute',
                 left: this.originalOffset.left,
                 top: this.originalOffset.top,
@@ -269,7 +269,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
                 zIndex: 1000
             }).appendTo(document.body);
             if (o.ghost) {
-                el.clone().removeAttr('id').addClass('ui-resizable-ghost')
+                el.clone().removeAttr('id').addClass('p-resizable-ghost')
                     .css({ display: 'block', position: 'relative', margin: 0, left: 0, top: 0, width: '100%', height: '100%' })
                     .appendTo(this.helper);
             }
@@ -281,7 +281,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
         }).get() : [];
 
         this.setCursor($(event.target).css('cursor'));
-        el.addClass('ui-resizable-resizing');
+        el.addClass('p-resizable-resizing');
 
         this.trigger('start', event, this.ui());
         return true;
@@ -467,7 +467,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
             helper.width(this.size.width).height(this.size.height);
         }
 
-        this.resizeElement.removeClass('ui-resizable-resizing');
+        this.resizeElement.removeClass('p-resizable-resizing');
         this.restoreCursor();
         this.trigger('stop', event, this.ui());
 

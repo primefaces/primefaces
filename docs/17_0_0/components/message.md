@@ -47,10 +47,10 @@ Full list of CSS selectors of message is as follows;
 
 | Class | Applies |
 | --- | --- |
-ui-message-{severity} | Container element of the message
-ui-message-{severity}-summary | Summary text
-ui-message-{severity}-detail | Detail text
-ui-message-{severity}-icon | Icon of the message
+p-message-{severity} | Container element of the message
+p-message-{severity}-summary | Summary text
+p-message-{severity}-detail | Detail text
+p-message-{severity}-icon | Icon of the message (token `--p-message-{severity}-icon`)
 
 {severity} can be `info`, `warn`, `error` and `fatal`.
 

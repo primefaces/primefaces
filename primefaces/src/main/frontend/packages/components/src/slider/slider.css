@@ -1,17 +1,17 @@
 /*
  * Slider: p:slider
  *
- * Supported classes: ui-slider-horizontal, ui-slider-vertical, ui-state-disabled, ui-slider-animate (while the
- *                    handle moves to a clicked / set value), range (two handles + .ui-slider-range), range="min" / "max"
+ * Supported classes: p-slider-horizontal, p-slider-vertical, p-state-disabled, p-slider-animate (while the
+ *                    handle moves to a clicked / set value), range (two handles + .p-slider-range), range="min" / "max"
  */
-.ui-slider {
+.p-slider {
     position: relative;
     text-align: start;
     background: var(--p-slider-track-background);
     border: 0 none;
     border-radius: var(--p-slider-track-border-radius);
 
-    .ui-slider-handle {
+    .p-slider-handle {
         position: absolute;
         z-index: 2;
         cursor: grab;
@@ -52,61 +52,61 @@
         }
     }
 
-    &.ui-state-disabled .ui-slider-handle {
+    &.p-state-disabled .p-slider-handle {
         cursor: default;
     }
 
-    &:not(.ui-state-disabled) .ui-slider-handle:hover {
+    &:not(.p-state-disabled) .p-slider-handle:hover {
         background: var(--p-slider-handle-hover-background);
     }
 
-    &:not(.ui-state-disabled) .ui-slider-handle:hover::before {
+    &:not(.p-state-disabled) .p-slider-handle:hover::before {
         background: var(--p-slider-handle-content-hover-background);
     }
 
-    &.ui-slider-horizontal {
+    &.p-slider-horizontal {
         height: var(--p-slider-track-size);
         touch-action: pan-y;
 
-        .ui-slider-range {
+        .p-slider-range {
             top: 0;
             height: 100%;
         }
 
-        .ui-slider-range-min {
+        .p-slider-range-min {
             left: 0;
         }
 
-        .ui-slider-range-max {
+        .p-slider-range-max {
             right: 0;
         }
 
-        .ui-slider-handle {
+        .p-slider-handle {
             top: calc(var(--p-slider-track-size) / 2 - var(--p-slider-handle-height) / 2);
             margin-left: calc(-1 * var(--p-slider-handle-width) / 2);
         }
     }
 
-    &.ui-slider-vertical {
+    &.p-slider-vertical {
         width: var(--p-slider-track-size);
         height: 100px;
         touch-action: pan-x;
 
-        .ui-slider-range {
+        .p-slider-range {
             left: 0;
             width: 100%;
         }
 
-        .ui-slider-range-min {
+        .p-slider-range-min {
             bottom: 0;
         }
 
-        .ui-slider-range-max {
+        .p-slider-range-max {
             top: 0;
         }
 
         /* the vertical handle is positioned with bottom, so the centering offset goes to margin-bottom */
-        .ui-slider-handle {
+        .p-slider-handle {
             left: calc(var(--p-slider-track-size) / 2 - var(--p-slider-handle-width) / 2);
             margin-left: 0;
             margin-top: 0;
@@ -114,7 +114,7 @@
         }
     }
 
-    .ui-slider-range {
+    .p-slider-range {
         position: absolute;
         z-index: 1;
         display: block;
@@ -125,15 +125,15 @@
 }
 
 /* moves the handle / range to a clicked or set value; keeps the transitions of the handle states */
-.ui-slider.ui-slider-animate {
-    .ui-slider-handle,
-    .ui-slider-range {
+.p-slider.p-slider-animate {
+    .p-slider-handle,
+    .p-slider-range {
         transition-property: left, bottom, width, height, background, color, border-color, box-shadow, outline-color;
         transition-duration: var(--p-slider-transition-duration);
     }
 }
 
 /* p:slider below its display input; no token for the old inline spacing */
-.ui-inputtext + .ui-slider {
+.p-inputtext + .p-slider {
     margin-bottom: var(--p-form-field-padding-y);
 }

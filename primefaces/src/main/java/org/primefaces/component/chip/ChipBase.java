@@ -64,7 +64,4 @@ public abstract class ChipBase extends UIComponentBase implements Widget, StyleA
 
     @Property(description = "Whether to display a remove icon.", defaultValue = "false")
     public abstract boolean isRemovable();
-
-    @Property(description = "Icon of the remove element.", defaultValue = "pi pi-times-circle")
-    public abstract String getRemoveIcon();
 }

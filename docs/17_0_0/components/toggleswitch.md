@@ -34,9 +34,9 @@ Following is the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-toggleswitch | Main container element.
-.ui-toggleswitch-checked | Main container element when checked.
-.ui-toggleswitch-slider | Background element where the handle slides.
+.p-toggleswitch | Main container element.
+.p-toggleswitch-checked | Main container element when checked.
+.p-toggleswitch-slider | Background element where the handle slides.
 
 As skinning style classes are global, see the main theming section for more information.
 
@@ -51,9 +51,9 @@ Attach `p:confirm` to ask before changing the value. Cancelling leaves the selec
 </p:toggleSwitch>
 
 <p:confirmDialog global="true">
-    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+    <p:commandButton value="Yes" type="button" styleClass="p-confirmdialog-yes" />
+    <p:commandButton value="No" type="button" styleClass="p-confirmdialog-no" />
 </p:confirmDialog>
 ```
 
-For a confirmation popup, use `type="popup"` on `p:confirm` and a global `p:confirmPopup` with `ui-confirm-popup-yes` and `ui-confirm-popup-no` buttons.
+For a confirmation popup, use `type="popup"` on `p:confirm` and a global `p:confirmPopup` with `p-confirm-popup-yes` and `p-confirm-popup-no` buttons.

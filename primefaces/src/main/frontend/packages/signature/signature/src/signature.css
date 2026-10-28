@@ -1,11 +1,11 @@
 /*
- * Signature: p:signature (a canvas inside a .ui-inputfield.ui-inputtextarea)
+ * Signature: p:signature (a canvas inside a .p-inputfield.p-inputtextarea)
  *
  * Border, hover, focus, invalid and disabled come from forms/inputfield.css; the canvas itself is painted by the widget
  * (background / color / guideline attributes of the component), so only the frame is themed.
- * Supported classes: ui-state-error, ui-state-disabled, readonly (ui-widget-content)
+ * Supported classes: p-state-error, p-state-disabled, readonly (p-widget-content)
  */
-.ui-signature {
+.p-signature {
     display: inline-block;
     border-width: 1px;
     border-style: solid;
@@ -20,11 +20,11 @@
         border-radius: calc(var(--p-signature-border-radius) - 1px);
     }
 
-    &.ui-state-disabled canvas {
+    &.p-state-disabled canvas {
         cursor: default;
     }
 }
 
-.ui-inputfield.ui-signature {
+.p-inputfield.p-signature {
     padding: 0;
 }

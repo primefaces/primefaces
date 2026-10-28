@@ -26,11 +26,11 @@ messages. Following growl will display the messages for 5 seconds and then fade-
 
 ## Positioning
 Growl is positioned at top right corner by default, position can be controlled with a CSS selector
-called _ui-growl_. With the below setting growl will be located at top left corner.
+called _p-growl_. With the below setting growl will be located at top left corner.
 
 
 ```css
-.ui-growl {
+.p-growl {
     left:20px;
 }
 ```
@@ -72,16 +72,18 @@ Following is the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-growl | Main container element of growl
-.ui-growl-item-container | Container of messages
-.ui-growl-item | Container of a message
-.ui-growl-message | Text message container
-.ui-growl-title | Summary of the message
-.ui-growl-message | p Detail of the message
-.ui-growl-image | Severity icon
-.ui-growl-image-info | Info severity icon
-.ui-growl-image-warn | Warning severity icon
-.ui-growl-image-error | Error severity icon
-.ui-growl-image-fatal | Fatal severity icon
+.p-growl | Main container element of growl
+.p-growl-item-container | Container of messages
+.p-growl-item | Container of a message
+.p-growl-message | Text message container
+.p-growl-title | Summary of the message
+.p-growl-message p | Detail of the message
+.p-growl-image | Severity icon
+.p-growl-image-info | Info severity icon
+.p-growl-image-warn | Warning severity icon
+.p-growl-image-error | Error severity icon
+.p-growl-image-fatal | Fatal severity icon
+.p-growl-{severity}-icon | Severity icon (token `--p-toast-{severity}-icon`)
+.p-growl-close-icon | Close icon (token `--p-toast-close-icon`)
 
 As skinning style classes are global, see the main theming section for more information.

@@ -139,15 +139,15 @@ public abstract class CascadeSelect extends AbstractInputComponent {
     }
 
     public WebElement getLabel() {
-        return findElement(By.className("ui-cascadeselect-label"));
+        return findElement(By.className("p-cascadeselect-label"));
     }
 
     public List<WebElement> getItems() {
-        return getPanel().findElements(By.className("ui-cascadeselect-item"));
+        return getPanel().findElements(By.className("p-cascadeselect-item"));
     }
 
     public List<WebElement> getLeafItems() {
-        return getItems().stream().filter(i -> !PrimeSelenium.hasCssClass(i, "ui-cascadeselect-item-group")).collect(Collectors.toList());
+        return getItems().stream().filter(i -> !PrimeSelenium.hasCssClass(i, "p-cascadeselect-item-group")).collect(Collectors.toList());
     }
 
     public WebElement getPanel() {
@@ -155,7 +155,7 @@ public abstract class CascadeSelect extends AbstractInputComponent {
     }
 
     protected void click(WebElement element) {
-        if (!PrimeSelenium.hasCssClass(element, "ui-cascadeselect-item-group") && (isOnchangeAjaxified() || isItemSelectAjaxified())) {
+        if (!PrimeSelenium.hasCssClass(element, "p-cascadeselect-item-group") && (isOnchangeAjaxified() || isItemSelectAjaxified())) {
             PrimeSelenium.guardAjax(element).click();
         }
         else {

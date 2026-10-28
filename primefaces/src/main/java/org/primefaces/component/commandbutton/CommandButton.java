@@ -72,14 +72,14 @@ public class CommandButton extends CommandButtonBaseImpl implements DialogReturn
         }
 
         if (isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
+            styleClass = styleClass + " p-state-disabled";
         }
 
         if ("small".equals(getSize())) {
-            styleClass = styleClass + " ui-button-sm";
+            styleClass = styleClass + " p-button-sm";
         }
         else if ("large".equals(getSize())) {
-            styleClass = styleClass + " ui-button-lg";
+            styleClass = styleClass + " p-button-lg";
         }
 
         String userStyleClass = getStyleClass();

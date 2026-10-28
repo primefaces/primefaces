@@ -86,7 +86,7 @@ closed menu once it is selected. If a `placeholder` is set, the placeholder is t
 announced instead.
 
 The text can be changed application-wide via the locale settings (see the
-[Localization](../core/localization.md) section):
+[Localization](/core/localization.md) section):
 
 ```javascript
 PrimeFaces.locales['en_US'].aria.nullLabel = 'Empty';
@@ -100,11 +100,11 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectonemenu | Main container.
-.ui-selectonemenu-label | Label of the component.
-.ui-selectonemenu-trigger | Container of dropdown icon.
-.ui-selectonemenu-items | Items list.
-.ui-selectonemenu-items | Each item in the list.
-.ui-selectonemenu-rtl | When RTL direction is set
-.ui-selectonemenu-footer | Style applied to footer facet
+.p-selectonemenu | Main container.
+.p-selectonemenu-label | Label of the component.
+.p-selectonemenu-trigger | Container of dropdown icon.
+.p-selectonemenu-items | Items list.
+.p-selectonemenu-item | Each item in the list.
+.p-selectonemenu-rtl | When RTL direction is set
+.p-selectonemenu-footer | Style applied to footer facet
 

@@ -83,11 +83,11 @@ public class PickListRenderer extends InputRenderer<PickList> {
         String labelDisplay = component.getLabelDisplay();
         boolean vertical = component.getOrientation().equals("vertical");
         if (vertical) {
-            styleClass += " ui-picklist-vertical";
+            styleClass += " p-picklist-vertical";
         }
 
         if (component.isResponsive()) {
-            styleClass += " ui-picklist-responsive";
+            styleClass += " p-picklist-responsive";
         }
 
         writer.startElement("div", component);
@@ -203,7 +203,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", "p-button-icon-left " + icon + " p-c", null);
         writer.endElement("span");
 
         //text
@@ -353,7 +353,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
     protected void encodeFilter(FacesContext context, PickList picklist, String name, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
+        String styleClass = PickList.FILTER_CLASS + (isSource ? " p-source-filter-input" : " p-target-filter-input");
         String placeholder = isSource ? picklist.getSourceFilterPlaceholder() : picklist.getTargetFilterPlaceholder();
         String ariaLabel = LangUtils.isNotBlank(placeholder) ? placeholder : null;
 
@@ -376,7 +376,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
         writer.endElement("input");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-search", null);
+        writer.writeAttribute("class", PickList.FILTER_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");

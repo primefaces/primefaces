@@ -224,15 +224,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.box = this.jq.children('.ui-dialog-box');
-        this.content = this.box.children('.ui-dialog-content');
-        this.titlebar = this.box.children('.ui-dialog-titlebar');
-        this.footer = this.box.find('.ui-dialog-footer');
-		this.icons = this.titlebar.find('.ui-dialog-titlebar-icon');
-        this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
-        this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
-        this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
-        this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
+        this.box = this.jq.children('.p-dialog-box');
+        this.content = this.box.children('.p-dialog-content');
+        this.titlebar = this.box.children('.p-dialog-titlebar');
+        this.footer = this.box.find('.p-dialog-footer');
+		this.icons = this.titlebar.find('.p-dialog-titlebar-icon');
+        this.closeIcon = this.titlebar.children('.p-dialog-titlebar-close');
+        this.minimizeIcon = this.titlebar.children('.p-dialog-titlebar-minimize');
+        this.maximizeIcon = this.titlebar.children('.p-dialog-titlebar-maximize');
+        this.cfg.absolutePositioned = this.jq.hasClass('p-dialog-absolute');
         this.jqEl = this.jq[0];
 
         this.positionInitialized = false;
@@ -265,8 +265,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
 
         //docking zone
-        if($(document.body).children('.ui-dialog-docking-zone').length === 0) {
-            $(document.body).append('<div class="ui-dialog-docking-zone"></div>');
+        if($(document.body).children('.p-dialog-docking-zone').length === 0) {
+            $(document.body).append('<div class="p-dialog-docking-zone"></div>');
         }
 
         //aria
@@ -288,7 +288,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         $(document).off('keydown.dialog_' + cfg.id);
 
         if(this.minimized) {
-            var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+            var dockingZone = $(document.body).children('.p-dialog-docking-zone');
             if(dockingZone.length && dockingZone.children(this.jqId).length) {
                 this.removeMinimize();
                 dockingZone.children(this.jqId).remove();
@@ -386,7 +386,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             return;
         }
 
-        $('body').addClass('ui-dialog-open');
+        $('body').addClass('p-dialog-open');
         
         // Remember the focused element before we opened the dialog
         // so we can return focus to it once we close the dialog.
@@ -513,9 +513,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             this.onHide(duration);
         }
 
-        var otherDialogs = $(".ui-dialog:visible").length > 0;
+        var otherDialogs = $(".p-dialog:visible").length > 0;
         if (!otherDialogs) {
-            $('body').removeClass('ui-dialog-open');
+            $('body').removeClass('p-dialog-open');
         }
     }
 
@@ -539,7 +539,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         const el = this.focusedElementBeforeDialogOpened;
         if (el instanceof HTMLElement || el instanceof SVGElement) {
             // #11860 do not return focus to caller if other dialogs are still open
-            const otherDialogs = $(".ui-dialog:visible").length > 0;
+            const otherDialogs = $(".p-dialog:visible").length > 0;
             if (otherDialogs) {
                 return;
             }
@@ -562,13 +562,13 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         });
 
         this.icons.on('mouseover', function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         }).on('mouseout', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on('focus', function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         }).on('blur', function() {
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
         });
 
         PrimeFaces.skinCloseAction(this.closeIcon);
@@ -617,7 +617,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 if(!e.isDefaultPrevented() && e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
                     var currentZIndex = parseInt($this.jq.css('z-index'));
-                    var highestZIndex = Math.max(...$('.ui-dialog:visible').map(function() {
+                    var highestZIndex = Math.max(...$('.p-dialog:visible').map(function() {
                         return parseInt($(this).css('z-index')) || 0;
                     }).get());
                     if (currentZIndex === highestZIndex) {
@@ -642,7 +642,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected bindDismissibleMaskListener(): void {
         if (this.cfg.dismissibleMask && this.cfg.modal) {
             var $this = this;
-            $(".ui-dialog.ui-widget.ui-hidden-container:visible").on('click.mask_' + this.id, function (e) {
+            $(".p-dialog.p-widget.p-hidden-container:visible").on('click.mask_' + this.id, function (e) {
                 if (!e.isDefaultPrevented() && $(e.target).is(this)) {
                     $this.hide();
                     e.preventDefault();
@@ -659,7 +659,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected unbindDismissibleMaskListener(): void {
         if (this.cfg.dismissibleMask && this.cfg.modal) {
-            $(".ui-dialog.ui-widget.ui-hidden-container").off('click.mask_' + this.id);
+            $(".p-dialog.p-widget.p-hidden-container").off('click.mask_' + this.id);
         }
     }
 
@@ -670,11 +670,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         var $this = this;
 
         PrimeFaces.interactions.draggable(this.box, {
-            cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
-            handle: '.ui-dialog-titlebar',
+            cancel: '.p-dialog-content, .p-dialog-titlebar-close',
+            handle: '.p-dialog-titlebar',
             containment : $this.jq,
             start: function( event, ui ) {
-                $this.jq.addClass('ui-overflow-hidden');
+                $this.jq.addClass('p-overflow-hidden');
             },
             drag: function( event, ui ) {
                 if ($this.cfg.absolutePositioned && $(window).scrollTop() > $this.box.offset().top) {
@@ -682,7 +682,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 }
             },
             stop: function( event, ui ) {
-                $this.jq.removeClass('ui-overflow-hidden');
+                $this.jq.removeClass('p-overflow-hidden');
                 if($this.hasBehavior('move')) {
                     var ext = {
                         params: [
@@ -707,7 +707,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             alsoResize : this.content,
             containment : this.jq,
             start: (_, ui) => {
-                this.jq.addClass('ui-overflow-hidden');
+                this.jq.addClass('p-overflow-hidden');
                 const offset: JQuery.Coordinates = this.box.offset() ?? { left: 0, top: 0 };
                 this.box.data('offset', offset);
 
@@ -722,7 +722,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 }
             },
             stop: (_, ui) => {
-                this.jq.removeClass('ui-overflow-hidden');
+                this.jq.removeClass('p-overflow-hidden');
 
                 if (this.hasBehavior('resizeStop')) {
                     var ext = {
@@ -736,7 +736,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             }
         });
 
-        this.resizers = this.box.children('.ui-resizable-handle');
+        this.resizers = this.box.children('.p-resizable-handle');
     }
     
     /**
@@ -834,10 +834,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
 
         if(this.maximized) {
-            this.jq.removeClass('ui-dialog-maximized');
+            this.jq.removeClass('p-dialog-maximized');
             this.restoreState();
 
-            this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
             this.maximized = false;
 
             this.callBehavior('restoreMaximize');
@@ -845,7 +844,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         else {
             this.saveState();
 
-            this.jq.addClass('ui-dialog-maximized').css({
+            this.jq.addClass('p-dialog-maximized').css({
                 'width': String(($(window).width() ?? 0) - 6),
                 'height': String($(window).height()),
             }).offset({
@@ -860,7 +859,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 height: String((this.box.height() ?? 0) - (this.titlebar.outerHeight() ?? 0) - contentPadding)
             });
 
-            this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
+            this.maximizeIcon.removeClass('p-state-hover');
             this.maximized = true;
 
             this.callBehavior('maximize');
@@ -873,7 +872,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     toggleMinimize(): void {
         var animate = true,
-        dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+        dockingZone = $(document.body).children('.p-dialog-docking-zone');
 
         if(this.maximized) {
             this.toggleMaximize();
@@ -891,18 +890,18 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             // create a minimize clone which is just the titlebar
             this.minimizeClone = this.jq.clone(true);
             this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
-            this.minimizeClone.addClass('ui-dialog-minimized');
-            this.minimizeClone.children('.ui-dialog-content').remove();
-            this.minimizeClone.find('.ui-dialog-footer').remove();
+            this.minimizeClone.addClass('p-dialog-minimized');
+            this.minimizeClone.children('.p-dialog-content').remove();
+            this.minimizeClone.find('.p-dialog-footer').remove();
 
             if (this.cfg.resizable) {
-                this.minimizeClone.children('.ui-resizable-handle').remove();
+                this.minimizeClone.children('.p-resizable-handle').remove();
             }
 
             if (animate) {
                 PrimeFaces.effects.run(this.jq, 'transfer', {
                     to: dockingZone,
-                    className: 'ui-dialog-minimizing',
+                    className: 'p-dialog-minimizing',
                     duration: 500,
                     complete: () => this.dock(dockingZone)
                 });
@@ -932,9 +931,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         zone.css('z-index', this.jq.css('z-index'));
         this.jq.hide();
         this.minimizeClone.appendTo(zone).css({'position':'static', 'height':'auto', 'width':'auto', 'float': 'left'});
-        var titlebar = this.minimizeClone.children('.ui-dialog-titlebar');
-        var minimizeIcon = titlebar.children('.ui-dialog-titlebar-minimize');
-        minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+        var titlebar = this.minimizeClone.children('.p-dialog-titlebar');
+        var minimizeIcon = titlebar.children('.p-dialog-titlebar-minimize');
+        minimizeIcon.removeClass('p-state-hover');
         this.minimized = true;
         this.callBehavior('minimize');
     }
@@ -1033,7 +1032,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             this.jq.attr('aria-labelledby', title);
         }
 
-        this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
+        this.titlebar.children('a.p-dialog-titlebar-icon').attr('role', 'button');
     }
 
     /**
@@ -1053,7 +1052,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
 
         // internal function to handle resize or scrolling
         function handleResize() {
-            if ($this.isVisible() && !$this.box.hasClass("ui-resizable-resizing")) {
+            if ($this.isVisible() && !$this.box.hasClass("p-resizable-resizing")) {
                 if ($this.cfg.fitViewport) {
                     $this.fitViewport();
                 }
@@ -1138,27 +1137,27 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
 
         super.init(cfg);
 
-        this.title = this.titlebar.children('.ui-dialog-title');
-        this.message = this.content.children('.ui-confirm-dialog-message');
-        this.icon = this.content.children('.ui-confirm-dialog-severity');
+        this.title = this.titlebar.children('.p-dialog-title');
+        this.message = this.content.children('.p-confirm-dialog-message');
+        this.icon = this.content.children('.p-confirm-dialog-severity');
 
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
             
             this.title.data('p-text', this.title.text());
             this.message.data('p-text', this.message.text());
-            this.icon.data('p-icon', this.icon.removeClass('ui-icon ui-confirm-dialog-severity').attr('class') ?? "");
-            this.yesButton = this.jq.find('.ui-confirmdialog-yes');
-            this.noButton = this.jq.find('.ui-confirmdialog-no');
-            this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
-            this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
-            this.yesButton.data('p-icon', this.yesButton.children('.ui-icon').attr('class') ?? "");
-            this.noButton.data('p-icon', this.noButton.children('.ui-icon').attr('class') ?? "");
+            this.icon.data('p-icon', this.icon.removeClass('p-confirm-dialog-severity').attr('class') ?? "");
+            this.yesButton = this.jq.find('.p-confirmdialog-yes');
+            this.noButton = this.jq.find('.p-confirmdialog-no');
+            this.yesButton.data('p-text', this.yesButton.children('.p-button-text').text());
+            this.noButton.data('p-text', this.noButton.children('.p-button-text').text());
+            this.yesButton.data('p-icon', this.yesButton.children('.p-button-icon-left, .p-button-icon-right').attr('class') ?? "");
+            this.noButton.data('p-icon', this.noButton.children('.p-button-icon-left, .p-button-icon-right').attr('class') ?? "");
 
-            this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
+            this.jq.on('click.p-confirmdialog', '.p-confirmdialog-yes, .p-confirmdialog-no', null, function(e) {
                 const el = $(this);
 
-                if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
+                if(el.hasClass('p-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     const source = PrimeFaces.confirmSource;
                     const id = source.get(0) ?? document.createElement("div");
                     const js = source.data('pfconfirmcommand');
@@ -1206,7 +1205,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
                     PrimeFaces.confirmDialog?.hide();
                     PrimeFaces.confirmSource = null;
                 }
-                else if(el.hasClass('ui-confirmdialog-no')) {
+                else if(el.hasClass('p-confirmdialog-no')) {
                     PrimeFaces.confirmDialog?.hide();
                     PrimeFaces.confirmSource = null;
                 }
@@ -1232,14 +1231,14 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
                 this.message.text(this.message.data('p-text'));
             }
             if (this.icon.data('p-icon')) {
-                this.icon.attr('class', 'ui-icon ui-confirm-dialog-severity ' + this.icon.data('p-icon'));
+                this.icon.attr('class', 'p-confirm-dialog-severity ' + this.icon.data('p-icon'));
             }
             this.yesButton.removeClass(this.yesButton.data('p-class'));
             this.noButton.removeClass(this.noButton.data('p-class'));
-            this.yesButton.children('.ui-button-text').text(this.yesButton.data('p-text'));
-            this.noButton.children('.ui-button-text').text(this.noButton.data('p-text'));
-            this.yesButton.children('.ui-icon').attr('class', this.yesButton.data('p-icon'));
-            this.noButton.children('.ui-icon').attr('class', this.noButton.data('p-icon'));
+            this.yesButton.children('.p-button-text').text(this.yesButton.data('p-text'));
+            this.noButton.children('.p-button-text').text(this.noButton.data('p-text'));
+            this.yesButton.children('.p-button-icon-left, .p-button-icon-right').attr('class', this.yesButton.data('p-icon'));
+            this.noButton.children('.p-button-icon-left, .p-button-icon-right').attr('class', this.noButton.data('p-icon'));
         }
     }
 
@@ -1256,10 +1255,12 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
             }
         }
 
-        // Set icon if provided, or hide it otherwise
-        var iconClass = msg.icon || this.icon.data('p-icon');
-        if (iconClass) {
-            this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + iconClass);
+        // Set icon if provided (an icon font class), the severity icon of the dialog otherwise, or hide it
+        if (msg.icon) {
+            this.icon.removeClass().addClass('p-confirm-dialog-severity ' + msg.icon);
+            this.icon.show();
+        } else if (this.icon.data('p-icon')) {
+            this.icon.removeClass().addClass('p-confirm-dialog-severity ' + this.icon.data('p-icon'));
             this.icon.show();
         } else {
             this.icon.hide();
@@ -1267,22 +1268,22 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
 
         // Set labels and classes for yes and no buttons if provided
         if (msg.yesButtonLabel) {
-            this.yesButton.children('.ui-button-text').text(msg.yesButtonLabel);
+            this.yesButton.children('.p-button-text').text(msg.yesButtonLabel);
         }
         if (msg.yesButtonClass) {
             this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
         }
         if (msg.yesButtonIcon) {
-            PrimeFaces.utils.replaceIcon(this.yesButton.children('.ui-icon'), msg.yesButtonIcon);
+            PrimeFaces.utils.replaceIcon(this.yesButton.children('.p-button-icon-left, .p-button-icon-right'), msg.yesButtonIcon);
         }
         if (msg.noButtonLabel) {
-            this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
+            this.noButton.children('.p-button-text').text(msg.noButtonLabel);
         }
         if (msg.noButtonClass) {
             this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
         }
         if (msg.noButtonIcon) {
-            PrimeFaces.utils.replaceIcon(this.noButton.children('.ui-icon'), msg.noButtonIcon);
+            PrimeFaces.utils.replaceIcon(this.noButton.children('.p-button-icon-left, .p-button-icon-right'), msg.noButtonIcon);
         }
 
         // Set title, message content, and escape HTML if necessary
@@ -1324,7 +1325,7 @@ export interface DynamicDialogCfg extends DialogCfg {
  */
 export class DynamicDialog<Cfg extends DynamicDialogCfg = DynamicDialogCfg> extends Dialog<Cfg> {
     override show(): void {
-        if(this.jq.hasClass('ui-overlay-visible')) {
+        if(this.jq.hasClass('p-overlay-visible')) {
             return;
         }
 
@@ -1337,7 +1338,7 @@ export class DynamicDialog<Cfg extends DynamicDialogCfg = DynamicDialogCfg> exte
 
     protected override _show(): void {
         //replace visibility hidden with display none for effect support, toggle marker class
-        this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
+        this.jq.removeClass('p-overlay-hidden').addClass('p-overlay-visible').css({
             'display':'none'
             ,'visibility':'visible'
         });

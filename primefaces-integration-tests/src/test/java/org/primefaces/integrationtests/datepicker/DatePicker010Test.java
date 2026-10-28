@@ -53,15 +53,15 @@ class DatePicker010Test extends AbstractDatePickerTest {
         // Assert (some days of june active)
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        assertEquals(10, panel.findElements(By.cssSelector("a.ui-state-default")).size());
-        assertEquals(20 + 5, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(10, panel.findElements(By.cssSelector("a.p-state-default")).size());
+        assertEquals(20 + 5, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
 
         // Act - previous month
-        panel.findElement(By.className("ui-datepicker-prev")).click();
+        panel.findElement(By.className("p-datepicker-prev")).click();
 
         // Assert (some days of May active)
-        assertEquals(26 + 11, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
-        assertEquals(5, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
+        assertEquals(26 + 11, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(5, panel.findElements(By.cssSelector("td > a.p-state-default")).size());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }

@@ -59,7 +59,7 @@ class Theming016Test extends AbstractThemingTest {
         open(preset);
         WebDriver.Window window = PrimeSelenium.getWebDriver().manage().window();
         Dimension size = window.getSize();
-        List<WebElement> buttons = PrimeSelenium.getWebDriver().findElements(By.cssSelector("[id='form:fluidButtons'] > .ui-button"));
+        List<WebElement> buttons = PrimeSelenium.getWebDriver().findElements(By.cssSelector("[id='form:fluidButtons'] > .p-button"));
         WebElement header = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:reflow'] thead th"));
         assertEquals(buttons.get(0).getLocation().getY(), buttons.get(1).getLocation().getY(), preset + ": wide viewport, one row");
         assertTrue(header.isDisplayed(), preset + ": wide viewport, the table header is shown");
@@ -92,7 +92,7 @@ class Theming016Test extends AbstractThemingTest {
         // Arrange
         open(preset);
         WebElement input = PrimeSelenium.getWebDriver().findElement(By.id("form:rtlPassword"));
-        WebElement icon = input.findElement(By.xpath("following-sibling::*[contains(@class, 'ui-password-icon')]"));
+        WebElement icon = input.findElement(By.xpath("following-sibling::*[contains(@class, 'p-password-icon')]"));
 
         // Assert
         int inputLeft = input.getLocation().getX();
@@ -108,7 +108,7 @@ class Theming016Test extends AbstractThemingTest {
     @ParameterizedTest
     @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
     @Order(3)
-    @DisplayName("Theming: ui-toggleswitch-sm on a scope / density element keeps a valid size (no var() cycle)")
+    @DisplayName("Theming: p-toggleswitch-sm on a scope / density element keeps a valid size (no var() cycle)")
     void toggleSwitchSize(String preset) {
         // Arrange
         open(preset);
@@ -172,7 +172,7 @@ class Theming016Test extends AbstractThemingTest {
         HasCdp cdp = cdp();
         Assumptions.assumeTrue(cdp != null, "the browser cannot emulate prefers-reduced-motion (no Chrome DevTools Protocol)");
         open(preset);
-        WebElement value = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:progress'] .ui-progressbar-value"));
+        WebElement value = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:progress'] .p-progressbar-value"));
 
         try {
             // Act

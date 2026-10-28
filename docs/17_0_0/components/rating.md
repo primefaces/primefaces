@@ -52,7 +52,7 @@ of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-rating | Main container element.
-.ui-rating-cancel | Cancel icon
-.ui-rating | Default star
-.ui-rating-on | Active star
+.p-rating | Main container element.
+.p-rating-cancel | Cancel icon
+.p-rating-star | Default star
+.p-rating-star-on | Active star

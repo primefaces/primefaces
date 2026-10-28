@@ -69,7 +69,7 @@
                     color: var(--primary-color);
                 }
 
-                .ui-tag {
+                .p-tag {
                     padding-top:.125rem;
                     padding-bottom: .125rem;
                     margin-left: .5rem;
@@ -125,16 +125,16 @@
 }
 
 .layout-sidebar-filter-panel {
-    &.ui-autocomplete-panel {
+    &.p-autocomplete-panel {
         padding: 0.5rem 0;
 
-        .ui-autocomplete-table {
-            .ui-widget-header td {
+        .p-autocomplete-table {
+            .p-widget-header td {
                 border: 1px solid transparent;
                 padding: 3px 5px;
             }
 
-            .ui-autocomplete-item.ui-autocomplete-row {
+            .p-autocomplete-item.p-autocomplete-row {
                 > td {
                     border: 1px solid transparent;
                     padding: 0;
@@ -145,7 +145,7 @@
                         padding: 0.5rem 1rem;
                         color: var(--text-color);
 
-                        .ui-tag {
+                        .p-tag {
                             padding-top:.125rem;
                             padding-bottom: .125rem;
                             margin-left: .5rem;
@@ -153,7 +153,7 @@
                     }
                 }
 
-                &.ui-state-highlight {
+                &.p-state-highlight {
                     > td {
                         a {
                             background: var(--primary-color);

@@ -41,7 +41,7 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class SelectOneRadio extends AbstractComponent {
 
-    @FindBy(css = ".ui-radiobutton")
+    @FindBy(css = ".p-radiobutton")
     private List<WebElement> radioButtons;
 
     public List<WebElement> getRadioButtons() {
@@ -56,7 +56,7 @@ public abstract class SelectOneRadio extends AbstractComponent {
 
     public WebElement getRadioButtonBox(int index) {
         WebElement radiobutton = getRadioButton(index);
-        return radiobutton.findElement(By.className("ui-radiobutton-box"));
+        return radiobutton.findElement(By.className("p-radiobutton-box"));
     }
 
     public void select(int index) {
@@ -67,7 +67,7 @@ public abstract class SelectOneRadio extends AbstractComponent {
         }
 
         WebElement radiobutton = getRadioButton(index);
-        WebElement box = radiobutton.findElement(By.className("ui-radiobutton-box"));
+        WebElement box = radiobutton.findElement(By.className("p-radiobutton-box"));
         WebElement input = radiobutton.findElement(By.tagName("input"));
         if (isAjaxified(input, "onchange")) {
             PrimeSelenium.guardAjax(box).click();
@@ -125,13 +125,13 @@ public abstract class SelectOneRadio extends AbstractComponent {
         for (WebElement radiobutton : getRadioButtons()) {
             WebElement input = radiobutton.findElement(By.tagName("input"));
             WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getDomAttribute("id") + "']"));
-            WebElement box = radiobutton.findElement(By.className("ui-radiobutton-box"));
+            WebElement box = radiobutton.findElement(By.className("p-radiobutton-box"));
 
             SelectItem item = new SelectItem();
             item.setIndex(idx);
             item.setLabel(label.getText());
             item.setValue(input.getDomProperty("value"));
-            item.setSelected(PrimeSelenium.hasCssClass(box, "ui-state-active"));
+            item.setSelected(PrimeSelenium.hasCssClass(box, "p-state-active"));
             items.add(item);
 
             idx++;

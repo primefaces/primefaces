@@ -56,8 +56,8 @@ PrimeFaces.widget.Splitter = class Splitter extends PrimeFaces.widget.BaseWidget
     init(cfg) {
         super.init(cfg);
 
-        this.panels = this.jq.children('.ui-splitter-panel');
-        this.gutters = this.jq.children('.ui-splitter-gutter');
+        this.panels = this.jq.children('.p-splitter-panel');
+        this.gutters = this.jq.children('.p-splitter-gutter');
         this.horizontal = this.cfg.layout === 'horizontal';
         this.vertical = !this.horizontal;
         this.panelSizes = [];
@@ -86,7 +86,7 @@ PrimeFaces.widget.Splitter = class Splitter extends PrimeFaces.widget.BaseWidget
 
                 panel.style.flexBasis = `calc(${panelSize}% - ${($this.panels.length - 1) * $this.cfg.gutterSize}px)`;
 
-                $this.gutters.eq(i).find('.ui-splitter-gutter-handle')
+                $this.gutters.eq(i).find('.p-splitter-gutter-handle')
                     .attr('aria-valuenow', panelSize.toString())
                     .attr('aria-valuetext', panelSize.toFixed(0) + '%');
                 $this.prevPanelSize = panelSize;
@@ -271,13 +271,13 @@ PrimeFaces.widget.Splitter = class Splitter extends PrimeFaces.widget.BaseWidget
      */
     onResizeStart(event, isKeyDown) {
         this.gutterElement = $(event.currentTarget || event.target.parentElement);
-        this.gutterHandle = this.gutterElement.find('.ui-splitter-gutter-handle')
+        this.gutterHandle = this.gutterElement.find('.p-splitter-gutter-handle')
         this.size = this.horizontal ? this.jq.width() : this.jq.height();
         this.prevPanelElement = this.gutterElement.prev();
         this.nextPanelElement = this.gutterElement.next();
         this.prevPanelIndex = this.panels.index(this.prevPanelElement);
-        this.gutterElement.addClass('ui-splitter-gutter-resizing');
-        this.jq.addClass('ui-splitter-resizing');
+        this.gutterElement.addClass('p-splitter-gutter-resizing');
+        this.jq.addClass('p-splitter-resizing');
         if (isKeyDown) {
             this.prevPanelSize = this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true);
             this.nextPanelSize = this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true);
@@ -330,8 +330,8 @@ PrimeFaces.widget.Splitter = class Splitter extends PrimeFaces.widget.BaseWidget
             this.saveState();
         }
 
-        this.gutterElement.removeClass('ui-splitter-gutter-resizing');
-        this.jq.removeClass('ui-splitter-resizing');
+        this.gutterElement.removeClass('p-splitter-gutter-resizing');
+        this.jq.removeClass('p-splitter-resizing');
 
         //Call user onResizeEnd callback
         if (this.cfg.onResizeEnd) {

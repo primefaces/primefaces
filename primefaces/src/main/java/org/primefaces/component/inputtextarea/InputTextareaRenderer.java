@@ -181,7 +181,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
         String styleClass = createStyleClass(component, InputTextarea.STYLE_CLASS) ;
 
         if (component.isAutoResize()) {
-            styleClass = styleClass + " ui-inputtextarea-resizable";
+            styleClass = styleClass + " p-inputtextarea-resizable";
         }
 
         return styleClass;

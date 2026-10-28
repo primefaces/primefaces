@@ -211,7 +211,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
         // the revert started by the cancel
         this.helper?.stop(true, true);
         this.externalOut();
-        this.handleElements().removeClass('ui-sortable-handle');
+        this.handleElements().removeClass('p-sortable-handle');
         super.destroy();
     }
 
@@ -224,7 +224,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
     protected override setOption(key: string, value: unknown): void {
         const handles = key === 'handle' || key === 'items';
         if (handles) {
-            this.handleElements().removeClass('ui-sortable-handle');
+            this.handleElements().removeClass('p-sortable-handle');
         }
         super.setOption(key, value);
         if (handles) {
@@ -237,7 +237,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
      * @returns The items, without the placeholder and the helper.
      */
     getItems(): JQuery {
-        return this.element.find(this.options.items).not('.ui-sortable-placeholder, .ui-sortable-helper');
+        return this.element.find(this.options.items).not('.p-sortable-placeholder, .p-sortable-helper');
     }
 
     /**
@@ -251,7 +251,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
 
     /** Marks the handles, which disables touch scrolling on them (CSS). */
     private updateHandles(): void {
-        this.handleElements().addClass('ui-sortable-handle');
+        this.handleElements().addClass('p-sortable-handle');
     }
 
     /** Updates the CSS classes of the items, e.g. after items were added. */
@@ -321,8 +321,8 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
     private createPlaceholder(item: JQuery): JQuery {
         const o = this.options;
         const nodeName = item[0]!.nodeName.toLowerCase();
-        const placeholder = $(document.createElement(nodeName)).addClass((o.placeholder || item[0]!.className) + ' ui-sortable-placeholder')
-            .removeClass('ui-sortable-helper');
+        const placeholder = $(document.createElement(nodeName)).addClass((o.placeholder || item[0]!.className) + ' p-sortable-placeholder')
+            .removeClass('p-sortable-helper');
 
         if (nodeName === 'tr') {
             item.children().each((_, cell) => {
@@ -381,7 +381,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
             }
             item.hide();
         }
-        helper.css('position', 'absolute').addClass('ui-sortable-helper');
+        helper.css('position', 'absolute').addClass('p-sortable-helper');
         helper.offset(itemOffset);
         this.offset = itemOffset;
         this.position = cssPosition(helper);
@@ -695,7 +695,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
         this.trigger('beforeStop', event, this.ui());
 
         if (this.helper && this.helper[0] === item[0]) {
-            item.attr('style', this.storedStyle).removeClass('ui-sortable-helper');
+            item.attr('style', this.storedStyle).removeClass('p-sortable-helper');
             if (!this.storedStyle) {
                 item.removeAttr('style');
             }
@@ -785,8 +785,8 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
             return false;
         }
         const original = source.helper?.[0] === source.item()[0];
-        const item = (original ? source.item() : source.item().clone().removeAttr('id').removeClass('ui-draggable'))
-            .removeClass('ui-draggable-dragging').css({ left: '', top: '', position: '' });
+        const item = (original ? source.item() : source.item().clone().removeAttr('id').removeClass('p-draggable'))
+            .removeClass('p-draggable-dragging').css({ left: '', top: '', position: '' });
         item.insertBefore(this.external.placeholder);
         this.externalOut();
 

@@ -89,19 +89,19 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         this.cfg.transferOnDblclick = this.cfg.transferOnDblclick !== false;
         this.cfg.transferOnCheckboxClick = this.cfg.transferOnCheckboxClick || false;
 
-        this.sourceList = this.jq.find('ul.ui-picklist-source');
-        this.targetList = this.jq.find('ul.ui-picklist-target');
+        this.sourceList = this.jq.find('ul.p-picklist-source');
+        this.targetList = this.jq.find('ul.p-picklist-target');
         this.sourceInput = $(this.jqId + '_source');
         this.targetInput = $(this.jqId + '_target');
-        this.items = this.jq.find('.ui-picklist-item:not(.ui-state-disabled)');
+        this.items = this.jq.find('.p-picklist-item:not(.p-state-disabled)');
         if(this.cfg.showCheckbox) {
-            this.checkboxes = this.items.find('div.ui-chkbox > div.ui-chkbox-box');
+            this.checkboxes = this.items.find('div.p-chkbox > div.p-chkbox-box');
         }
         this.focusedItem = null;
         this.ariaRegion = $(this.jqId + '_ariaRegion');
 
-        var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
-            targetCaption = this.targetList.prev('.ui-picklist-caption'),
+        var sourceCaption = this.sourceList.prev('.p-picklist-caption'),
+            targetCaption = this.targetList.prev('.p-picklist-caption'),
             captionText = null;
 
         if(sourceCaption.length) {
@@ -128,9 +128,9 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         this.bindButtonEvents();
 
         if(this.cfg.disabled) {
-            $(this.jqId + ' li.ui-picklist-item').addClass('ui-state-disabled');
-            $(this.jqId + ' button').attr('disabled', 'disabled').addClass('ui-state-disabled');
-            $(this.jqId + ' .ui-picklist-filter-container').addClass('ui-state-disabled').children('input').attr('disabled', 'disabled');
+            $(this.jqId + ' li.p-picklist-item').addClass('p-state-disabled');
+            $(this.jqId + ' button').attr('disabled', 'disabled').addClass('p-state-disabled');
+            $(this.jqId + ' .p-picklist-filter-container').addClass('p-state-disabled').children('input').attr('disabled', 'disabled');
         }
         else {
             this.bindDragDopEvents();
@@ -162,12 +162,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
         //Sortable lists
         PrimeFaces.interactions.sortable($(this.jqId + ' ul'), {
-            cancel: '.ui-state-disabled,.ui-chkbox-box',
-            connectWith: this.jqId + ' .ui-picklist-list',
+            cancel: '.p-state-disabled,.p-chkbox-box',
+            connectWith: this.jqId + ' .p-picklist-list',
             disabled: dragDropDisabled, 
             revert: 1,
             helper: 'clone',
-            placeholder: "ui-picklist-item ui-state-highlight",
+            placeholder: "p-picklist-item p-state-highlight",
             forcePlaceholderSize: true,
             update: function(event, ui) {
                 $this.unselectItem(ui.item);
@@ -179,15 +179,15 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 }
             },
             receive: function(event, ui) {
-                var parentList = ui.item.parents('ul.ui-picklist-list:first');
+                var parentList = ui.item.parents('ul.p-picklist-list:first');
                 var item = ui.item;
 
                 if ($this.cfg.transferOnCheckboxClick) {
-                    if (parentList.hasClass('ui-picklist-source')) {
-                        $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                    if (parentList.hasClass('p-picklist-source')) {
+                        $this.unselectCheckbox(item.find('div.p-chkbox-box'));
                     }
                     else {
-                        $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                        $this.selectCheckbox(item.find('div.p-chkbox-box'));
                     }
                 }
 
@@ -222,13 +222,13 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var $this = this;
 
         this.items.on('mouseover.pickList', function(e) {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         })
         .on('mouseout.pickList', function(e) {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('mousedown.pickList', function(e) {
-            var item = $(this).closest('li.ui-picklist-item');
+            var item = $(this).closest('li.p-picklist-item');
             $this.focusedItem = item;
         })
         .on('click.pickList', function(e) {
@@ -247,7 +247,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     $this.unselectAll();
                 }
 
-                if(metaKey && item.hasClass('ui-state-highlight')) {
+                if(metaKey && item.hasClass('p-state-highlight')) {
                     $this.unselectItem(item, true);
                 }
                 else {
@@ -265,7 +265,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
 
                     for(var i = startIndex ; i < endIndex; i++) {
-                        var it = parentList.children('li.ui-picklist-item').eq(i);
+                        var it = parentList.children('li.p-picklist-item').eq(i);
 
                         if(it.is(':visible')) {
                             if(i === (endIndex - 1))
@@ -291,7 +291,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.items.on('dblclick.pickList', function() {
                 var item = $(this);
 
-                if ($(this).parent().hasClass('ui-picklist-source')) {
+                if ($(this).parent().hasClass('p-picklist-source')) {
                     $this.transfer(item, $this.sourceList, $this.targetList, 'dblclick');
                 }
                 else {
@@ -308,21 +308,21 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
         if(this.cfg.showCheckbox) {
             this.checkboxes.off().on('mouseenter.pickList', function(e) {
-                $(this).addClass('ui-state-hover');
+                $(this).addClass('p-state-hover');
             })
             .on('mouseleave.pickList', function(e) {
-                $(this).removeClass('ui-state-hover');
+                $(this).removeClass('p-state-hover');
             })
             .on('mousedown.pickList', function(e) {
-                var item = $(this).closest('li.ui-picklist-item');
+                var item = $(this).closest('li.p-picklist-item');
                 $this.focusedItem = item;
             })
             .on('click.pickList', function(e) {
                 $this.checkboxClick = true;
 
-                var item = $(this).closest('li.ui-picklist-item');
+                var item = $(this).closest('li.p-picklist-item');
                 if ($this.cfg.transferOnCheckboxClick) {
-                    if (item.parent().hasClass('ui-picklist-source')) {
+                    if (item.parent().hasClass('p-picklist-source')) {
                         $this.transfer(item, $this.sourceList, $this.targetList, 'checkbox', function() {
                             $this.unselectItem(item);
                         });
@@ -334,7 +334,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     }
                 }
                 else {
-                    if (item.hasClass('ui-state-highlight')) {
+                    if (item.hasClass('p-state-highlight')) {
                         $this.unselectItem(item, true);
                     }
                     else {
@@ -352,24 +352,24 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      */
     bindKeyEvents() {
         var $this = this,
-            listSelector = 'ul.ui-picklist-source, ul.ui-picklist-target';
+            listSelector = 'ul.p-picklist-source, ul.p-picklist-target';
 
         this.jq.off('focus.pickList blur.pickList keydown.pickList', listSelector).on('focus.pickList', listSelector, null, function(e) {
             var list = $(this),
-                activeItem = $this.focusedItem||list.children('.ui-state-highlight:visible:first');
+                activeItem = $this.focusedItem||list.children('.p-state-highlight:visible:first');
             if(activeItem.length) {
                 $this.focusedItem = activeItem;
             }
             else {
-                $this.focusedItem = list.children('.ui-picklist-item:visible:first');
+                $this.focusedItem = list.children('.p-picklist-item:visible:first');
             }
 
-            list.children('.ui-picklist-outline').removeClass('ui-picklist-outline');
+            list.children('.p-picklist-outline').removeClass('p-picklist-outline');
 
             PrimeFaces.queueTask(function() {
                 if ($this.focusedItem) {
                     PrimeFaces.scrollInView(list, $this.focusedItem);
-                    $this.focusedItem.addClass('ui-picklist-outline');
+                    $this.focusedItem.addClass('p-picklist-outline');
                     $this.updateAriaRegion();
                 }
             }, 100);
@@ -390,11 +390,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 case 'ArrowUp':
                     $this.removeOutline();
 
-                    if(!$this.focusedItem.hasClass('ui-state-highlight')) {
+                    if(!$this.focusedItem.hasClass('p-state-highlight')) {
                         $this.selectItem($this.focusedItem);
                     }
                     else {
-                        var prevItem = $this.focusedItem.prevAll('.ui-picklist-item:visible:first');
+                        var prevItem = $this.focusedItem.prevAll('.p-picklist-item:visible:first');
                         if(prevItem.length) {
                             $this.unselectAll();
                             $this.selectItem(prevItem);
@@ -410,11 +410,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 case 'ArrowDown':
                     $this.removeOutline();
 
-                    if(!$this.focusedItem.hasClass('ui-state-highlight')) {
+                    if(!$this.focusedItem.hasClass('p-state-highlight')) {
                         $this.selectItem($this.focusedItem);
                     }
                     else {
-                        var nextItem = $this.focusedItem.nextAll('.ui-picklist-item:visible:first');
+                        var nextItem = $this.focusedItem.nextAll('.p-picklist-item:visible:first');
                         if(nextItem.length) {
                             $this.unselectAll();
                             $this.selectItem(nextItem);
@@ -430,7 +430,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 case 'Enter':
                 case 'NumpadEnter':
                 case 'Space':
-                    if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
+                    if($this.focusedItem && $this.focusedItem.hasClass('p-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
                         $this.focusedItem = null;
                     }
@@ -440,7 +440,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     // #3304 find first item matching the character typed
                     if (PrimeFaces.utils.isPrintableKey(e)) {
                         var keyChar = e.key.toLowerCase();
-                        list.children('.ui-picklist-item').each(function() {
+                        list.children('.p-picklist-item').each(function() {
                             var item = $(this),
                                 itemLabel = item.attr('data-item-label');
                             if (itemLabel && itemLabel.toLowerCase().indexOf(keyChar) === 0) {
@@ -464,21 +464,21 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @private
      */
     removeOutline() {
-        if(this.focusedItem && this.focusedItem.hasClass('ui-picklist-outline')) {
-            this.focusedItem.removeClass('ui-picklist-outline');
+        if(this.focusedItem && this.focusedItem.hasClass('p-picklist-outline')) {
+            this.focusedItem.removeClass('p-picklist-outline');
         }
     }
 
     /**
      * Select the given pick list item in the source or target list.
-     * @param {JQuery} item A picklist item to select, with the class `ui-picklist-item`.
+     * @param {JQuery} item A picklist item to select, with the class `p-picklist-item`.
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
     selectItem(item, silent) {
-        item.addClass('ui-state-highlight');
+        item.addClass('p-state-highlight');
 
         if(this.cfg.showCheckbox && !this.cfg.transferOnCheckboxClick) {
-            this.selectCheckbox(item.find('div.ui-chkbox-box'));
+            this.selectCheckbox(item.find('div.p-chkbox-box'));
         }
 
         if(silent) {
@@ -490,19 +490,19 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
     /**
      * Unselect the given pick list item in the source or target list.
-     * @param {JQuery} item A picklist item to unselect, with the class `ui-picklist-item`.
+     * @param {JQuery} item A picklist item to unselect, with the class `p-picklist-item`.
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
     unselectItem(item, silent) {
-        item.removeClass('ui-state-hover');
-        item.removeClass('ui-state-highlight');
+        item.removeClass('p-state-hover');
+        item.removeClass('p-state-highlight');
 
         if(this.cfg.showCheckbox) {
-            var chkbox = item.find('div.ui-chkbox-box');
-            chkbox.removeClass('ui-state-hover');
+            var chkbox = item.find('div.p-chkbox-box');
+            chkbox.removeClass('p-state-hover');
 
             if (!this.cfg.transferOnCheckboxClick) {
-                this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                this.unselectCheckbox(item.find('div.p-chkbox-box'));
             }
         }
 
@@ -517,7 +517,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * Unselects all items in the source and target list.
      */
     unselectAll() {
-        var selectedItems = this.items.filter('.ui-state-highlight');
+        var selectedItems = this.items.filter('.p-state-highlight');
         for(var i = 0; i < selectedItems.length; i++) {
             this.unselectItem(selectedItems.eq(i));
         }
@@ -529,7 +529,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} chkbox The hidden checkbox of a pick list item that was selected.
      */
     selectCheckbox(chkbox) {
-        chkbox.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+        chkbox.addClass('p-state-active').children('span.p-chkbox-icon').addClass('p-checkbox-checked-icon');
     }
 
     /**
@@ -538,7 +538,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} chkbox The hidden checkbox of a pick list item that was unselected.
      */
     unselectCheckbox(chkbox) {
-        chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+        chkbox.removeClass('p-state-active').children('span.p-chkbox-icon').removeClass('p-checkbox-checked-icon');
     }
 
     /**
@@ -550,7 +550,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      */
     generateItems(list, input) {
         var $this = this;
-        list.children('.ui-picklist-item').each(function() {
+        list.children('.p-picklist-item').each(function() {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
             itemLabel = item.attr('data-item-label') ? PrimeFaces.escapeHTML(item.attr('data-item-label')) : '',
@@ -572,33 +572,33 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var $this = this;
 
         //visuals
-        PrimeFaces.skinButton(this.jq.find('.ui-button'));
+        PrimeFaces.skinButton(this.jq.find('.p-button'));
         
         //events
-        var moveToTarget = $(this.jqId + ' .ui-picklist-button-add');
+        var moveToTarget = $(this.jqId + ' .p-picklist-button-add');
         var moveToTargetAria = $this.getAriaLabel('moveToTarget');
-        moveToTarget.attr('title', moveToTargetAria).find('.ui-button-text').text(moveToTargetAria);
+        moveToTarget.attr('title', moveToTargetAria).find('.p-button-text').text(moveToTargetAria);
         moveToTarget.on("click", function() {
             $this.add();
         });
 
-        var moveAllToTarget = $(this.jqId + ' .ui-picklist-button-add-all');
+        var moveAllToTarget = $(this.jqId + ' .p-picklist-button-add-all');
         var moveAllToTargetAria = $this.getAriaLabel('moveAllToTarget');
-        moveAllToTarget.attr('title', moveAllToTargetAria).find('.ui-button-text').text(moveAllToTargetAria);
+        moveAllToTarget.attr('title', moveAllToTargetAria).find('.p-button-text').text(moveAllToTargetAria);
         moveAllToTarget.on("click", function() {
             $this.addAll();
         });
 
-        var moveToSource = $(this.jqId + ' .ui-picklist-button-remove');
+        var moveToSource = $(this.jqId + ' .p-picklist-button-remove');
         var moveToSourceAria = $this.getAriaLabel('moveToSource');
-        moveToSource.attr('title', moveToSourceAria).find('.ui-button-text').text(moveToSourceAria);
+        moveToSource.attr('title', moveToSourceAria).find('.p-button-text').text(moveToSourceAria);
         moveToSource.on("click", function() {
             $this.remove();
         });
         
-        var moveAllToSource = $(this.jqId + ' .ui-picklist-button-remove-all');
+        var moveAllToSource = $(this.jqId + ' .p-picklist-button-remove-all');
         var moveAllToSourceAria = $this.getAriaLabel('moveAllToSource');
-        moveAllToSource.attr('title', moveAllToSourceAria).find('.ui-button-text').text(moveAllToSourceAria);
+        moveAllToSource.attr('title', moveAllToSourceAria).find('.p-button-text').text(moveAllToSourceAria);
         moveAllToSource.on("click", function() {
             $this.removeAll();
         });
@@ -609,46 +609,46 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var moveBottomAria = $this.getAriaLabel('moveBottom');
 
         if(this.cfg.showSourceControls) {
-            var moveUpSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up');
-            moveUpSource.attr('title', moveUpAria).find('.ui-button-text').text(moveUpAria);
+            var moveUpSource = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-up');
+            moveUpSource.attr('title', moveUpAria).find('.p-button-text').text(moveUpAria);
             moveUpSource.on("click", function() {
                 $this.moveUp($this.sourceList);
             });
-            var moveTopSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top');
-            moveTopSource.attr('title', moveTopAria).find('.ui-button-text').text(moveTopAria);
+            var moveTopSource = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-top');
+            moveTopSource.attr('title', moveTopAria).find('.p-button-text').text(moveTopAria);
             moveTopSource.on("click", function() {
                 $this.moveTop($this.sourceList);
             });
-            var moveDownSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down');
-            moveDownSource.attr('title', moveDownAria).find('.ui-button-text').text(moveDownAria);
+            var moveDownSource = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-down');
+            moveDownSource.attr('title', moveDownAria).find('.p-button-text').text(moveDownAria);
             moveDownSource.on("click", function() {
                 $this.moveDown($this.sourceList);
             });
-            var moveBottomSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom');
-            moveBottomSource.attr('title', moveBottomAria).find('.ui-button-text').text(moveBottomAria);
+            var moveBottomSource = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-bottom');
+            moveBottomSource.attr('title', moveBottomAria).find('.p-button-text').text(moveBottomAria);
             moveBottomSource.on("click", function() {
                 $this.moveBottom($this.sourceList);
             });
         }
 
         if(this.cfg.showTargetControls) {
-            var moveUpTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up');
-            moveUpTarget.attr('title', moveUpAria).find('.ui-button-text').text(moveUpAria);
+            var moveUpTarget = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-up');
+            moveUpTarget.attr('title', moveUpAria).find('.p-button-text').text(moveUpAria);
             moveUpTarget.on("click", function() {
                 $this.moveUp($this.targetList);
             });
-            var moveTopTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top');
-            moveTopTarget.attr('title', moveTopAria).find('.ui-button-text').text(moveTopAria);
+            var moveTopTarget = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-top');
+            moveTopTarget.attr('title', moveTopAria).find('.p-button-text').text(moveTopAria);
             moveTopTarget.on("click", function() {
                 $this.moveTop($this.targetList);
             });
-            var moveDownTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down');
-            moveDownTarget.attr('title', moveDownAria).find('.ui-button-text').text(moveDownAria);
+            var moveDownTarget = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-down');
+            moveDownTarget.attr('title', moveDownAria).find('.p-button-text').text(moveDownAria);
             moveDownTarget.on("click", function() {
                 $this.moveDown($this.targetList);
             });
-            var moveBottomTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom');
-            moveBottomTarget.attr('title', moveBottomAria).find('.ui-button-text').text(moveBottomAria);
+            var moveBottomTarget = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-bottom');
+            moveBottomTarget.attr('title', moveBottomAria).find('.p-button-text').text(moveBottomAria);
             moveBottomTarget.on("click", function() {
                 $this.moveBottom($this.targetList);
             });
@@ -749,7 +749,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     filter(value, list, animate) {
         var normalize = this.cfg.filterNormalize,
             filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize),
-            items = list.children('li.ui-picklist-item'),
+            items = list.children('li.p-picklist-item'),
             animated = animate || this.isAnimated();
 
         list.removeAttr('role');
@@ -831,14 +831,14 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @return {JQuery} The list to which the given filter input applies.
      */
     getFilteredList(filter) {
-        return filter.hasClass('ui-source-filter-input') ? this.sourceList : this.targetList;
+        return filter.hasClass('p-source-filter-input') ? this.sourceList : this.targetList;
     }
 
     /**
      * Adds all selected items in the source list by transferring them to the target list.
      */
     add() {
-        var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight');
+        var items = this.sourceList.children('li.p-picklist-item.p-state-highlight');
 
         this.transfer(items, this.sourceList, this.targetList, 'command');
     }
@@ -847,7 +847,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * Adds all items to the target list by transferring all items from the source list to the target list.
      */
     addAll() {
-        var items = this.sourceList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
+        var items = this.sourceList.children('li.p-picklist-item:visible:not(.p-state-disabled)');
 
         this.transfer(items, this.sourceList, this.targetList, 'command');
     }
@@ -856,7 +856,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * Removes all selected items in the target list by transferring them to the source list.
      */
     remove() {
-        var items = this.targetList.children('li.ui-picklist-item.ui-state-highlight');
+        var items = this.targetList.children('li.p-picklist-item.p-state-highlight');
 
         this.transfer(items, this.targetList, this.sourceList, 'command');
     }
@@ -865,7 +865,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * Removes all items in the target list by transferring all items from the target list to the source list.
      */
     removeAll() {
-        var items = this.targetList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
+        var items = this.targetList.children('li.p-picklist-item:visible:not(.p-state-disabled)');
 
         this.transfer(items, this.targetList, this.sourceList, 'command');
     }
@@ -877,7 +877,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     moveUp(list) {
         var $this = this,
         animated = $this.isAnimated(),
-        items = list.children('.ui-state-highlight'),
+        items = list.children('.p-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
 
@@ -921,7 +921,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     moveTop(list) {
         var $this = this,
         animated = $this.isAnimated(),
-        items = list.children('.ui-state-highlight'),
+        items = list.children('.p-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
 
@@ -963,7 +963,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     moveDown(list) {
         var $this = this,
         animated = $this.isAnimated(),
-        items = list.children('.ui-state-highlight'),
+        items = list.children('.p-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
 
@@ -1005,7 +1005,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     moveBottom(list) {
         var $this = this,
         animated = $this.isAnimated(),
-        items = list.children('.ui-state-highlight'),
+        items = list.children('.p-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
 
@@ -1075,11 +1075,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 $this.unselectItem(item);
 
                 if ($this.cfg.transferOnCheckboxClick) {
-                    if (from.hasClass('ui-picklist-source')) {
-                        $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                    if (from.hasClass('p-picklist-source')) {
+                        $this.selectCheckbox(item.find('div.p-chkbox-box'));
                     }
                     else {
-                        $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                        $this.unselectCheckbox(item.find('div.p-chkbox-box'));
                     }
                 }
 
@@ -1109,11 +1109,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     $this.unselectItem(item);
 
                     if ($this.cfg.transferOnCheckboxClick) {
-                        if (from.hasClass('ui-picklist-source')) {
-                            $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                        if (from.hasClass('p-picklist-source')) {
+                            $this.selectCheckbox(item.find('div.p-chkbox-box'));
                         }
                         else {
-                            $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                            $this.unselectCheckbox(item.find('div.p-chkbox-box'));
                         }
                     }
                 });
@@ -1153,7 +1153,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         }
 
         if(this.hasBehavior('transfer')) {
-            var isAdd = from.hasClass('ui-picklist-source');
+            var isAdd = from.hasClass('p-picklist-source');
 
             var options = {
                 params: [
@@ -1188,7 +1188,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @return {PrimeFaces.widget.PickList.ListName} Whether the element represents the source or target list.
      */
     getListName(element){
-        return element.parent().hasClass("ui-picklist-source") ? "source" : "target";
+        return element.parent().hasClass("p-picklist-source") ? "source" : "target";
     }
 
     /**
@@ -1271,7 +1271,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         this.sourceList.attr('tabindex', tabindex);
         this.targetList.attr('tabindex', tabindex);
         $(this.jqId + ' button').attr('tabindex', tabindex);
-        $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
+        $(this.jqId + ' .p-picklist-filter-container > input').attr('tabindex', tabindex);
     }
 
     /**
@@ -1288,17 +1288,17 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @private
      */
     updateButtonsState() {
-        var addButton = $(this.jqId + ' .ui-picklist-button-add');
-        var sourceListButtons = $(this.jqId + ' .ui-picklist-source-controls .ui-button');
-        var sourceSelectedItems = this.sourceList.find('li.ui-state-highlight');
+        var addButton = $(this.jqId + ' .p-picklist-button-add');
+        var sourceListButtons = $(this.jqId + ' .p-picklist-source-controls .p-button');
+        var sourceSelectedItems = this.sourceList.find('li.p-state-highlight');
         if (sourceSelectedItems.length) {
             this.enableButton(addButton);
             
             // Handle move-up and move-down buttons separately
-            var sourceMoveUpButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up');
-            var sourceMoveDownButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down');
-            var sourceMoveTopButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top');
-            var sourceMoveBottomButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom');
+            var sourceMoveUpButton = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-up');
+            var sourceMoveDownButton = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-down');
+            var sourceMoveTopButton = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-top');
+            var sourceMoveBottomButton = $(this.jqId + ' .p-picklist-source-controls .p-picklist-button-move-bottom');
             
             // Get first and last selected items
             var firstSelectedItem = sourceSelectedItems.first();
@@ -1329,17 +1329,17 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.disableButton(sourceListButtons);
         }
 
-        var removeButton = $(this.jqId + ' .ui-picklist-button-remove');
-        var targetListButtons = $(this.jqId + ' .ui-picklist-target-controls .ui-button');
-        var targetSelectedItems = this.targetList.find('li.ui-state-highlight');
+        var removeButton = $(this.jqId + ' .p-picklist-button-remove');
+        var targetListButtons = $(this.jqId + ' .p-picklist-target-controls .p-button');
+        var targetSelectedItems = this.targetList.find('li.p-state-highlight');
         if (targetSelectedItems.length) {
             this.enableButton(removeButton);
             
             // Handle move-up and move-down buttons separately
-            var targetMoveUpButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up');
-            var targetMoveDownButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down');
-            var targetMoveTopButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top');
-            var targetMoveBottomButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom');
+            var targetMoveUpButton = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-up');
+            var targetMoveDownButton = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-down');
+            var targetMoveTopButton = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-top');
+            var targetMoveBottomButton = $(this.jqId + ' .p-picklist-target-controls .p-picklist-button-move-bottom');
             
             // Get first and last selected items
             var firstSelectedItem = targetSelectedItems.first();
@@ -1370,8 +1370,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.disableButton(targetListButtons);
         }
 
-        var addAllButton = $(this.jqId + ' .ui-picklist-button-add-all');
-        if (this.sourceList.find('li.ui-picklist-item:not(.ui-state-disabled)').length) {
+        var addAllButton = $(this.jqId + ' .p-picklist-button-add-all');
+        if (this.sourceList.find('li.p-picklist-item:not(.p-state-disabled)').length) {
             this.enableButton(addAllButton);
             this.sourceList.attr('tabindex', this.getTabIndex());
         }
@@ -1380,8 +1380,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.sourceList.attr('tabindex', '-1');
         }
 
-        var removeAllButton = $(this.jqId + ' .ui-picklist-button-remove-all');
-        if (this.targetList.find('li.ui-picklist-item:not(.ui-state-disabled)').length) {
+        var removeAllButton = $(this.jqId + ' .p-picklist-button-remove-all');
+        if (this.targetList.find('li.p-picklist-item:not(.p-state-disabled)').length) {
             this.enableButton(removeAllButton);
             this.targetList.attr('tabindex', this.getTabIndex());
         }
@@ -1413,11 +1413,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} button A button to disable.
      */
     disableButton(button) {
-        if (button.hasClass('ui-state-focus')) {
+        if (button.hasClass('p-state-focus')) {
             button.trigger("blur");
         }
 
-        button.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        button.attr('disabled', 'disabled').addClass('p-state-disabled');
         button.attr('tabindex', '-1');
     }
 
@@ -1427,7 +1427,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @param {JQuery} button A button to enable.
      */
     enableButton(button) {
-        button.prop('disabled', false).removeClass('ui-state-disabled');
+        button.prop('disabled', false).removeClass('p-state-disabled');
         button.attr('tabindex', this.getTabIndex());
     }
 

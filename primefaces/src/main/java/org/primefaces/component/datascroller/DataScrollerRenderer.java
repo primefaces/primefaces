@@ -116,7 +116,7 @@ public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
         }
         else {
             writer.startElement("div", null);
-            writer.writeAttribute("class", DataScroller.LOADING_CLASS + "-default", null);
+            writer.writeAttribute("class", DataScroller.LOADING_ICON_CLASS, null);
             writer.endElement("div");
         }
         writer.endElement("div");

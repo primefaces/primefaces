@@ -39,8 +39,10 @@ public class MenuButton extends MenuButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MenuButton";
 
-    public static final String CONTAINER_CLASS = "ui-menubutton ui-widget";
-    public static final String ICON_CLASS = "ui-icon-triangle-1-s";
+    public static final String CONTAINER_CLASS = "p-menubutton p-widget";
+    public static final String ICON_CLASS = "p-icon p-dropdown-icon p-button-dropdown-icon p-c";
+    public static final String ICON_LEFT_CLASS = "p-button-icon-left";
+    public static final String ICON_RIGHT_CLASS = "p-button-icon-right";
 
     @Override
     public void processDecodes(FacesContext context) {

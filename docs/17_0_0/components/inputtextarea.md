@@ -71,10 +71,10 @@ list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-inputtextarea | Textarea element.
-.ui-inputfield | Textarea element.
-.ui-autocomplete-panel | Overlay for suggestions.
-.ui-autocomplete-items | Suggestions container.
-.ui-autocomplete-item | Each suggestion.
+.p-inputtextarea | Textarea element.
+.p-inputfield | Textarea element.
+.p-autocomplete-panel | Overlay for suggestions.
+.p-autocomplete-items | Suggestions container.
+.p-autocomplete-item | Each suggestion.
 
 As skinning style classes are global, see the main theming section for more information.

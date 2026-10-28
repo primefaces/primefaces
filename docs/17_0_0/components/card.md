@@ -22,7 +22,7 @@ Card provides `header`, `title`, `subtitle` and `footer` facets to place content
 
     <f:facet name="footer">
         <p:commandButton icon="pi pi-check" value="Save"/>
-        <p:commandButton icon="pi pi-times" value="Cancel" class="ui-secondary-button" style="margin-left: .5em"/>
+        <p:commandButton icon="pi pi-times" value="Cancel" styleClass="p-button-secondary" style="margin-left: .5em"/>
     </f:facet>
 </p:card>
 ```
@@ -34,8 +34,8 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-| .ui-card | Container element.
-| .ui-card-title | Title element.
-| .ui-card-subtitle | Subtitle element.
-| .ui-card-content | Content of the card.
-| .ui-card-footer | Footer of the card.
+| .p-card | Container element.
+| .p-card-title | Title element.
+| .p-card-subtitle | Subtitle element.
+| .p-card-content | Content of the card.
+| .p-card-footer | Footer of the card.

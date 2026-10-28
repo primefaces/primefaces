@@ -3,17 +3,17 @@
  *
  * jsPlumb (jsplumbtoolkit-defaults.css) is bundled in the vendor layer; connectors and endpoints get their
  * paint style from the DiagramModel, the theme only styles the elements and the label overlays.
- * Supported classes: ui-diagram-draggable
+ * Supported classes: p-diagram-draggable
  */
 
-.ui-diagram {
+.p-diagram {
     position: relative;
     overflow: auto;
     background: var(--p-diagram-background);
     color: var(--p-diagram-color);
 }
 
-.ui-diagram-element {
+.p-diagram-element {
     position: absolute;
     background: var(--p-diagram-element-background);
     color: var(--p-diagram-element-color);
@@ -24,7 +24,7 @@
     transition: border-color var(--p-diagram-element-transition-duration), box-shadow var(--p-diagram-element-transition-duration);
 }
 
-.ui-diagram-draggable {
+.p-diagram-draggable {
     cursor: move;
 
     &:hover {
@@ -32,7 +32,7 @@
     }
 }
 
-.ui-diagram .jtk-overlay {
+.p-diagram .jtk-overlay {
     background: var(--p-diagram-overlay-background);
     color: var(--p-diagram-overlay-color);
     border: 1px solid var(--p-diagram-overlay-border-color);
@@ -42,7 +42,7 @@
 }
 
 /* arrow overlays are SVG, not labels */
-.ui-diagram svg.jtk-overlay {
+.p-diagram svg.jtk-overlay {
     background: transparent;
     border: 0 none;
     padding: 0;

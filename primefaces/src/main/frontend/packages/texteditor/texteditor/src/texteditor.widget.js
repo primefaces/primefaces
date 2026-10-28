@@ -27,7 +27,7 @@ PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.Deferr
      * button.
      * @type {string}
      */
-    static toolbarTemplate = '<div class="ui-editor-toolbar">' +
+    static toolbarTemplate = '<div class="p-editor-toolbar">' +
                 '<span class="ql-formats">' +
                     '<select class="ql-font"></select>' +
                     '<select class="ql-size"></select>' +
@@ -86,7 +86,7 @@ PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.Deferr
 
         if (this.disabled) {
             this.input.attr("disabled", "disabled");
-            this.jq.addClass("ui-state-disabled");
+            this.jq.addClass("p-state-disabled");
             this.cfg.readOnly = true;
         }
 
@@ -106,7 +106,7 @@ PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.Deferr
         this.toolbar = $(this.jqId + '_toolbar');
         if(!this.toolbar.length && this.cfg.toolbarVisible) {
             this.jq.prepend(TextEditor.toolbarTemplate);
-            this.toolbar = this.jq.children('.ui-editor-toolbar')
+            this.toolbar = this.jq.children('.p-editor-toolbar')
             this.toolbar.attr('id', this.id + '_toolbar');
         }
 

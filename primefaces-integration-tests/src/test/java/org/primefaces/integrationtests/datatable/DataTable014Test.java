@@ -53,8 +53,8 @@ class DataTable014Test extends AbstractDataTableTest {
         int dataTableWidth = dataTable.getSize().getWidth();
         int dataTableLocationX = dataTable.getLocation().getX();
 
-        WebElement dataTableSticky = dataTable.findElement(By.className("ui-datatable-sticky"));
-        WebElement dataTableWrapper = dataTable.findElement(By.className("ui-datatable-tablewrapper"));
+        WebElement dataTableSticky = dataTable.findElement(By.className("p-datatable-sticky"));
+        WebElement dataTableWrapper = dataTable.findElement(By.className("p-datatable-tablewrapper"));
         assertNotNull(dataTableSticky);
         assertNotNull(dataTableWrapper);
 
@@ -62,10 +62,10 @@ class DataTable014Test extends AbstractDataTableTest {
         JavascriptExecutor js = (JavascriptExecutor) getWebDriver();
         int scrollDown = 2000;
         js.executeScript("window.scrollBy(0," + scrollDown + ")");
-        TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with assigning ui-sticky
+        TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with assigning p-sticky
 
         // Assert
-        assertTrue(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
+        assertTrue(PrimeSelenium.hasCssClass(dataTableSticky, "p-sticky"));
         assertEquals(dataTableWidth, dataTableSticky.getSize().getWidth());
         assertEquals(dataTableWidth, dataTableWrapper.getSize().getWidth());
         assertEquals(dataTableLocationX, dataTableWrapper.getLocation().getX());
@@ -76,10 +76,10 @@ class DataTable014Test extends AbstractDataTableTest {
 
         // Act
         js.executeScript("window.scrollTo(0,0)");
-        TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with removing ui-sticky
+        TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with removing p-sticky
 
         // Assert
-        assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
+        assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "p-sticky"));
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }

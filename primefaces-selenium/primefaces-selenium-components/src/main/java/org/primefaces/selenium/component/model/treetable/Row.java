@@ -39,15 +39,15 @@ public class Row extends org.primefaces.selenium.component.model.datatable.Row {
 
     @Override
     public WebElement getToggler() {
-        return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
+        return getCell(0).getWebElement().findElement(By.className("p-treetable-toggler"));
     }
 
     public int getLevel() {
         String cssClasses = getWebElement().getDomAttribute("class");
-        Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("ui-node-level")).findFirst();
+        Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("p-node-level")).findFirst();
         if (levelClassOpt.isPresent()) {
             String levelClass = levelClassOpt.get();
-            return Integer.parseInt(levelClass.replace("ui-node-level-", ""));
+            return Integer.parseInt(levelClass.replace("p-node-level-", ""));
         }
         else {
             return -1;

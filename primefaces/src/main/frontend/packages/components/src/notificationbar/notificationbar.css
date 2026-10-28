@@ -1,11 +1,11 @@
 /*
  * NotificationBar: p:notificationBar (position top | bottom, set inline by the widget)
  *
- * A page wide neutral content bar (PrimeFaces tokens); an element with the class ui-notificationbar-close inside
+ * A page wide neutral content bar (PrimeFaces tokens); an element with the class p-notificationbar-close inside
  * the bar is styled like the message close button.
  */
 
-.ui-notificationbar {
+.p-notificationbar {
     display: none;
     position: fixed;
     left: 0;
@@ -18,7 +18,7 @@
     border-block: 1px solid var(--p-notificationbar-border-color);
     box-shadow: var(--p-notificationbar-shadow);
 
-    .ui-notificationbar-close {
+    .p-notificationbar-close {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -45,14 +45,13 @@
             box-shadow: var(--p-notificationbar-close-button-focus-ring-shadow);
         }
 
-        .ui-icon,
         .pi {
             font-size: var(--p-message-close-icon-size);
         }
     }
 }
 
-.ui-notificationbar-close {
+.p-notificationbar-close {
     position: absolute;
     cursor: pointer;
 }

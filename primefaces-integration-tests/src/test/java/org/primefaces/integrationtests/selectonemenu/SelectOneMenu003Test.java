@@ -53,7 +53,7 @@ class SelectOneMenu003Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
         assertNull(options.get(2).getAttribute("disabled"));
         assertEquals("true", options.get(3).getAttribute("disabled"));
 
@@ -71,7 +71,7 @@ class SelectOneMenu003Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
         assertEquals("Wii U", options.get(4).getText());
         assertEquals("Nintendo Switch", options.get(5).getText());
 

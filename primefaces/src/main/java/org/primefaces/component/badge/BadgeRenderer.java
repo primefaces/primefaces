@@ -100,7 +100,7 @@ public class BadgeRenderer extends CoreRenderer<Badge> {
                     .add(model.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
                     .add(valueEmpty && iconEmpty, Badge.DOT_CLASS)
-                    .add(!model.isVisible(), "ui-state-hidden")
+                    .add(!model.isVisible(), "p-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)

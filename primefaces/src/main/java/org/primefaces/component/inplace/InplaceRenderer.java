@@ -67,7 +67,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
         boolean withPassword = !shouldRenderFacet && isPassword(component.getChildren().get(0));
         String styleClass = getStyleClassBuilder(context)
                 .add(Inplace.CONTAINER_CLASS, component.getStyleClass())
-                .add(withPassword, "p-password")
+                .add(withPassword, "p-inplace-password")
                 .build();
         String mode = component.getMode();
 
@@ -204,13 +204,13 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
         writer.writeAttribute("id", component.getClientId(context) + "_editor", null);
         writer.writeAttribute("class", Inplace.EDITOR_CLASS, null);
 
-        encodeButton(context, component.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS, "ui-icon-check");
-        encodeButton(context, component.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS, "ui-icon-close");
+        encodeButton(context, component.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS, Inplace.SAVE_ICON_CLASS);
+        encodeButton(context, component.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS, Inplace.CANCEL_ICON_CLASS);
 
         writer.endElement("span");
     }
 
-    protected void encodeButton(FacesContext context, String title, String styleClass, String icon) throws IOException {
+    protected void encodeButton(FacesContext context, String title, String styleClass, String iconClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("button", null);
@@ -220,13 +220,13 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
 
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
+        writer.write("p-button");
         writer.endElement("span");
 
         writer.endElement("button");

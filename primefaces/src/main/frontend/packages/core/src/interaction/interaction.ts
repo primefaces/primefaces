@@ -1,7 +1,7 @@
 /*
  * Drag and drop, sorting and resizing with pointer events, replacing the jQuery UI interactions. The options, the
- * callbacks, the `ui` arguments, the events and the CSS classes are compatible with jQuery UI as far as PrimeFaces uses
- * them.
+ * callbacks, the `ui` arguments and the events are compatible with jQuery UI as far as PrimeFaces uses them; the CSS
+ * classes have the `p-` prefix (`p-draggable`, `p-sortable-helper`, ...).
  */
 
 /** A position in pixels, e.g. an offset in page coordinates or a CSS `left` / `top`. */
@@ -182,7 +182,7 @@ export abstract class Interaction<O extends InteractionOptions> {
     }
 
     /**
-     * The element that gets the state classes like `ui-resizable-disabled`, triggers the events and is `this` in the
+     * The element that gets the state classes like `p-resizable-disabled`, triggers the events and is `this` in the
      * callbacks, like the widget element of jQuery UI.
      * @returns The element of the interaction.
      */
@@ -192,8 +192,8 @@ export abstract class Interaction<O extends InteractionOptions> {
 
     /** Adds the classes of the interaction, called by the subclass once its elements are set up. */
     protected addClasses(): void {
-        this.element.addClass('ui-' + this.name);
-        this.widget().toggleClass('ui-' + this.name + '-disabled', !!this.options.disabled);
+        this.element.addClass('p-' + this.name);
+        this.widget().toggleClass('p-' + this.name + '-disabled', !!this.options.disabled);
     }
 
     /**
@@ -232,20 +232,20 @@ export abstract class Interaction<O extends InteractionOptions> {
 
     /** Removes the interaction from the element. */
     destroy(): void {
-        this.element.off(this.namespace).removeClass('ui-' + this.name);
-        this.widget().removeClass('ui-' + this.name + '-disabled');
+        this.element.off(this.namespace).removeClass('p-' + this.name);
+        this.widget().removeClass('p-' + this.name + '-disabled');
         this.element.removeData(dataKey(this.name));
     }
 
     /**
-     * Sets an option and updates the `ui-*-disabled` class.
+     * Sets an option and updates the `p-*-disabled` class.
      * @param key The name of the option.
      * @param value The new value.
      */
     protected setOption(key: string, value: unknown): void {
         (this.options as Record<string, unknown>)[key] = value;
         if (key === 'disabled') {
-            this.widget().toggleClass('ui-' + this.name + '-disabled', !!value);
+            this.widget().toggleClass('p-' + this.name + '-disabled', !!value);
         }
     }
 

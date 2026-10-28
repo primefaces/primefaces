@@ -7,7 +7,7 @@
 
     <ui:define name="head">
         <style>
-            body .ui-inputfield.ui-state-drag {
+            body .p-inputfield.p-state-drag {
                 background: #ffffd6;
             }
         </style>
@@ -100,7 +100,7 @@
             <p>Per default, the FileUpload itself is the drop zone. In addition FileUpload supports a custom dropZone.</p>
 
             <h:form id="dropZone" enctype="multipart/form-data">
-                <div class="ui-fluid">
+                <div class="p-fluid">
                     <div class="field">
                         <p:inputTextarea id="customDropZone" widgetVar="textarea"
                                          rows="5" value="#{fileUploadView.dropZoneText}"/>
@@ -169,18 +169,18 @@
                 <p:outputPanel id="tooltipsPanel">
                     <p:tooltip id="uploaderChooseFileBeforeUploadToolTip"
                                widgetVar="chooseWV" position="top"
-                               for="@(#tooltips\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-choose)"
+                               for="@(#tooltips\:uploader1 > .p-fileupload-buttonbar > .p-fileupload-choose)"
                                value="Choose button tooltip"/>
 
                     <p:tooltip id="uploaderUploadButtonToolTip"
                                position="right"
-                               for="@(#tooltips\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-upload)"
+                               for="@(#tooltips\:uploader1 > .p-fileupload-buttonbar > .p-fileupload-upload)"
                                value="Upload button tooltip" showEffect="clip"
                                hideEffect="explode"/>
 
                     <p:tooltip id="uploaderCancelButtonToolTip"
                                position="bottom"
-                               for="@(#tooltips\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-cancel)"
+                               for="@(#tooltips\:uploader1 > .p-fileupload-buttonbar > .p-fileupload-cancel)"
                                value="Cancel button tooltip"/>
                 </p:outputPanel>
 

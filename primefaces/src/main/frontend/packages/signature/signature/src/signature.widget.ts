@@ -133,11 +133,11 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
         }
 
         this.canvas.off('.signature')
-            .on('mouseenter.signature', () => this.jq.addClass('ui-state-hover'))
-            .on('mouseleave.signature', () => this.jq.removeClass('ui-state-hover'))
-            .on('focus.signature', () => this.jq.addClass('ui-state-focus'))
+            .on('mouseenter.signature', () => this.jq.addClass('p-state-hover'))
+            .on('mouseleave.signature', () => this.jq.removeClass('p-state-hover'))
+            .on('focus.signature', () => this.jq.addClass('p-state-focus'))
             .on('blur.signature', () => {
-                this.jq.removeClass('ui-state-hover ui-state-focus');
+                this.jq.removeClass('p-state-hover p-state-focus');
                 this.updateBase64();
             })
             .on('pointerdown.signature', (e) => this.onPointerDown(e))
@@ -153,7 +153,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
      * @returns `true` if the signature is readonly or disabled.
      */
     private isDisabled(): boolean {
-        return !!this.cfg.readonly || this.jq.hasClass('ui-state-disabled');
+        return !!this.cfg.readonly || this.jq.hasClass('p-state-disabled');
     }
 
     /**

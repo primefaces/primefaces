@@ -162,7 +162,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
      * @private
      */
     setupAutoComplete() {
-        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content p-hidden"></div>',
+        var panelMarkup = '<div id="' + this.id + '_panel" class="p-autocomplete-panel p-widget-content p-hidden"></div>',
         $this = this;
 
         this.panel = $(panelMarkup).appendTo(document.body);
@@ -204,7 +204,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
 
         }).on("keydown", function(e) {
             var overlayVisible = $this.panel.is(':visible');
-            var highlightedItem = $this.items.filter('.ui-state-highlight')
+            var highlightedItem = $this.items.filter('.p-state-highlight')
 
             switch(e.key) {
                 case 'ArrowUp':
@@ -213,8 +213,8 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
                         var prev = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.prev();
 
                         if(prev.length == 1) {
-                            highlightedItem.removeClass('ui-state-highlight');
-                            prev.addClass('ui-state-highlight');
+                            highlightedItem.removeClass('p-state-highlight');
+                            prev.addClass('p-state-highlight');
 
                             if($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, prev);
@@ -234,8 +234,8 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
                         var next = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.next();
 
                         if(next.length == 1) {
-                            highlightedItem.removeClass('ui-state-highlight');
-                            next.addClass('ui-state-highlight');
+                            highlightedItem.removeClass('p-state-highlight');
+                            next.addClass('p-state-highlight');
 
                             if($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, next);
@@ -251,7 +251,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
 
                 case 'Enter':
                     if(overlayVisible) {
-                        $this.items.filter('.ui-state-highlight').trigger('click');
+                        $this.items.filter('.p-state-highlight').trigger('click');
 
                         e.preventDefault();
                     }
@@ -278,7 +278,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
                     $this.clearTimeout();
 
                     if(overlayVisible) {
-                        $this.items.filter('.ui-state-highlight').trigger('click');
+                        $this.items.filter('.p-state-highlight').trigger('click');
                         $this.hide();
                     }
                 break;
@@ -286,7 +286,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
         });
 
         //hide panel when outside is clicked
-        $(document.body).on('mousedown.ui-inputtextarea'+this.id, function (e) {
+        $(document.body).on('mousedown.p-inputtextarea'+this.id, function (e) {
             if($this.panel.is(":hidden")) {
                 return;
             }
@@ -303,7 +303,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
             }
         });
         var cleanup = function() {
-             $(document.body).off('mousedown.ui-inputtextarea'+this.id);
+             $(document.body).off('mousedown.p-inputtextarea'+this.id);
              this.panel.remove();
         };
         this.addRefreshListener(cleanup);
@@ -317,7 +317,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
         //dialog support
         this.setupDialogSupport();
 
-        if (!this.jq.hasClass('ui-state-disabled')) {
+        if (!this.jq.hasClass('p-state-disabled')) {
             this.jq.data('primefaces-overlay-target', true);
         }
     }
@@ -333,9 +333,9 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
         this.items.on('mouseover', function() {
             var item = $(this);
 
-            if(!item.hasClass('ui-state-highlight')) {
-                $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-                item.addClass('ui-state-highlight');
+            if(!item.hasClass('p-state-highlight')) {
+                $this.items.filter('.p-state-highlight').removeClass('p-state-highlight');
+                item.addClass('p-state-highlight');
             }
         })
         .on('click', function(event) {
@@ -418,13 +418,13 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
                         widget: $this,
                         handle: function(content) {
                             this.panel.html(content);
-                            this.items = $this.panel.find('.ui-autocomplete-item');
+                            this.items = $this.panel.find('.p-autocomplete-item');
 
                             this.bindDynamicEvents();
 
                             if(this.items.length > 0) {
                                 //highlight first item
-                                this.items.eq(0).addClass('ui-state-highlight');
+                                this.items.eq(0).addClass('p-state-highlight');
 
                                 //adjust height
                                 if(this.cfg.scrollHeight && this.panel.height() > this.cfg.scrollHeight) {
@@ -564,7 +564,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
      * @private
      */
     setupDialogSupport() {
-        var dialog = this.jq.parents('.ui-dialog:first');
+        var dialog = this.jq.parents('.p-dialog:first');
 
         if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.panel.css('position', 'fixed');

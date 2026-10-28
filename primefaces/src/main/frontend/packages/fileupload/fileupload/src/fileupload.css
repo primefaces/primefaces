@@ -2,13 +2,30 @@
  * FileUpload: p:fileUpload (advanced and simple mode), PrimeUIX fileupload tokens + PrimeFaces fileupload tokens
  * (structure based on the blueimp jQuery File Upload UI CSS, MIT)
  *
- * Advanced: .ui-fileupload > .ui-fileupload-drag-overlay + .ui-fileupload-buttonbar (span.ui-fileupload-choose > input,
- *           upload / cancel buttons) + .ui-fileupload-content > .ui-fileupload-empty + .ui-fileupload-files
- *           > .ui-fileupload-row > div.ui-fileupload-preview + .ui-fileupload-filename + div (size) + .ui-fileupload-progress + div (cancel)
- * The legacy progress bar (browsers without upload progress, .ui-progressbar-value-legacy) is a primary stripe.
- * Supported classes: ui-state-drag (drag overlay), ui-fileupload-withdropzone, ui-fileupload-simple, ui-fileupload-icon-only
+ * Advanced: .p-fileupload > .p-fileupload-drag-overlay + .p-fileupload-buttonbar (span.p-fileupload-choose > input,
+ *           upload / cancel buttons) + .p-fileupload-content > .p-fileupload-empty + .p-fileupload-files
+ *           > .p-fileupload-row > div.p-fileupload-preview + .p-fileupload-filename + div (size) + .p-fileupload-progress + div (cancel)
+ * The legacy progress bar (browsers without upload progress, .p-progressbar-value-legacy) is a primary stripe.
+ * Supported classes: p-state-drag (drag overlay), p-fileupload-withdropzone, p-fileupload-simple, p-fileupload-icon-only
  */
-@keyframes ui-fileupload-fade-in {
+/* icons of the buttons (choose, upload, cancel, cancel of a row) and the drag overlay, advanced and simple mode */
+.p-fileupload-choose-icon {
+    --_icon: var(--p-fileupload-choose-icon);
+}
+
+.p-fileupload-upload-icon {
+    --_icon: var(--p-fileupload-upload-icon);
+}
+
+.p-fileupload-cancel-icon {
+    --_icon: var(--p-fileupload-cancel-icon);
+}
+
+.p-fileupload-drag-overlay-icon {
+    --_icon: var(--p-fileupload-drag-overlay-icon);
+}
+
+@keyframes p-fileupload-fade-in {
     from {
         opacity: 0;
     }
@@ -19,7 +36,7 @@
 }
 
 /* advanced mode: the root is the frame (like PrimeUIX), the header draws its own (bottom) border inside it */
-.ui-fileupload {
+.p-fileupload {
     position: relative;
     background: var(--p-fileupload-background);
     color: var(--p-fileupload-color);
@@ -27,7 +44,7 @@
     border-radius: var(--p-fileupload-border-radius);
 
     /* covers the frame too */
-    .ui-fileupload-drag-overlay {
+    .p-fileupload-drag-overlay {
         display: none;
         position: absolute;
         inset: -1px;
@@ -38,18 +55,18 @@
         border-radius: var(--p-fileupload-border-radius);
         border: 1px dashed var(--p-fileupload-drag-overlay-border-color);
 
-        .ui-fileupload-drag-overlay-content i {
+        .p-fileupload-drag-overlay-content .p-icon {
             color: var(--p-fileupload-drag-overlay-color);
             font-size: var(--p-fileupload-drag-overlay-icon-size);
         }
     }
 
-    &.ui-state-drag .ui-fileupload-drag-overlay {
+    &.p-state-drag .p-fileupload-drag-overlay {
         display: flex;
-        animation: ui-fileupload-fade-in var(--p-fileupload-transition-duration) ease-in-out both;
+        animation: p-fileupload-fade-in var(--p-fileupload-transition-duration) ease-in-out both;
     }
 
-    .ui-fileupload-buttonbar {
+    .p-fileupload-buttonbar {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -62,16 +79,16 @@
         padding: var(--p-fileupload-header-padding);
         border-radius: var(--p-fileupload-header-border-radius);
 
-        .ui-button {
+        .p-button {
             margin: 0;
         }
 
-        .ui-button.ui-state-disabled:not(.ui-fileupload-choose) {
+        .p-button.p-state-disabled:not(.p-fileupload-choose) {
             display: none;
         }
     }
 
-    .ui-fileupload-content {
+    .p-fileupload-content {
         display: flex;
         flex-direction: column;
         gap: var(--p-fileupload-content-gap);
@@ -81,74 +98,67 @@
         color: var(--p-fileupload-color);
         padding: var(--p-fileupload-content-padding);
 
-        .ui-fileupload-empty {
+        .p-fileupload-empty {
             color: var(--p-fileupload-empty-color);
         }
 
-        .ui-fileupload-files {
+        .p-fileupload-files {
             width: 100%;
         }
 
-        .ui-fileupload-files:empty {
+        .p-fileupload-files:empty {
             display: none;
         }
 
-        .ui-fileupload-files .ui-fileupload-row > div {
+        .p-fileupload-files .p-fileupload-row > div {
             padding: var(--p-fileupload-file-padding);
             border-bottom: 1px solid var(--p-fileupload-file-border-color);
         }
 
-        .ui-fileupload-files .ui-fileupload-row:last-child > div {
+        .p-fileupload-files .p-fileupload-row:last-child > div {
             border-bottom: 0 none;
         }
 
-        .ui-fileupload-files .ui-fileupload-row > div:last-child {
+        .p-fileupload-files .p-fileupload-row > div:last-child {
             text-align: end;
         }
 
         /* the widget draws the preview into a canvas */
-        .ui-fileupload-preview img,
-        .ui-fileupload-preview canvas {
+        .p-fileupload-preview img,
+        .p-fileupload-preview canvas {
             border-radius: var(--p-fileupload-file-thumbnail-border-radius);
         }
 
-        .ui-fileupload-filename {
+        .p-fileupload-filename {
             color: var(--p-fileupload-file-name-color);
             font-size: var(--p-fileupload-file-name-font-size);
             font-weight: var(--p-fileupload-file-name-font-weight);
         }
 
         /* the cell after the file name holds the formatted file size */
-        .ui-fileupload-filename + div {
+        .p-fileupload-filename + div {
             color: var(--p-fileupload-file-size-color);
             font-size: var(--p-fileupload-file-size-font-size);
             font-weight: var(--p-fileupload-file-size-font-weight);
             white-space: nowrap;
         }
 
-        .ui-progressbar {
+        .p-progressbar {
             width: var(--p-fileupload-progress-width);
             height: var(--p-fileupload-progressbar-height);
         }
 
-        .ui-progressbar .ui-progressbar-value-legacy {
+        .p-progressbar .p-progressbar-value-legacy {
             background: var(--p-primary-color);
-        }
-
-        .ui-fileupload-cancel .ui-icon-close::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-fileupload-cancel-icon) center / contain no-repeat;
         }
     }
 
-    .ui-fileupload-messages {
+    .p-fileupload-messages {
         margin: 0;
     }
 }
 
-.ui-fileupload-buttonbar .ui-fileupload-choose {
+.p-fileupload-buttonbar .p-fileupload-choose {
     input {
         position: absolute;
         top: 0;
@@ -160,12 +170,12 @@
         cursor: pointer;
     }
 
-    &.ui-state-disabled input {
+    &.p-state-disabled input {
         cursor: default;
     }
 }
 
-.ui-fileupload-choose {
+.p-fileupload-choose {
     position: relative;
     overflow: hidden;
     outline: none;
@@ -176,15 +186,15 @@
     }
 }
 
-.ui-fileupload-content .ui-progressbar {
+.p-fileupload-content .p-progressbar {
     margin: 0;
 
-    .ui-progressbar-value {
+    .p-progressbar-value {
         height: 100%;
     }
 }
 
-.ui-fileupload-files {
+.p-fileupload-files {
     border-collapse: collapse;
     display: table;
 
@@ -198,7 +208,7 @@
     }
 }
 
-.ui-fileupload-row {
+.p-fileupload-row {
     display: table-row;
 
     > div {
@@ -206,33 +216,25 @@
         vertical-align: middle;
     }
 
-    > .ui-fileupload-filename {
+    > .p-fileupload-filename {
         word-break: break-all;
         word-wrap: break-word;
     }
 
     /* separator the widget prepends to every row after the first one, only shown in the stacked (small screen) layout */
-    > .ui-widget-content {
+    > .p-widget-content {
         display: none;
     }
 }
 
-.ui-fileupload .ui-fileupload-content .ui-fileupload-cancel .ui-icon,
-.ui-fileupload-simple .ui-icon-plusthick {
-    font-style: normal;
-    font-weight: normal;
-    display: inline-block;
-    background: none;
-}
-
-.ui-fileupload-simple {
+.p-fileupload-simple {
     position: relative;
     overflow: visible;
     display: inline-flex;
     align-items: center;
     gap: var(--p-fileupload-basic-gap);
 
-    .ui-button {
+    .p-button {
         overflow: hidden;
     }
 
@@ -251,50 +253,43 @@
         display: block;
     }
 
-    .ui-fileupload-filename {
+    .p-fileupload-filename {
         color: var(--p-fileupload-file-name-color);
-    }
-
-    .ui-icon-plusthick::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-fileupload-choose-icon) center / contain no-repeat;
     }
 }
 
-.ui-fluid {
-    .ui-fileupload .ui-button {
+.p-fluid {
+    .p-fileupload .p-button {
         width: auto;
     }
 
-    .ui-fileupload-content .ui-button-icon-only {
+    .p-fileupload-content .p-button-icon-only {
         width: var(--p-button-icon-only-width);
     }
 }
 
 @media (max-width: 640px) {
-    .ui-fileupload-files,
-    .ui-fileupload-files > div,
-    .ui-fileupload-row,
-    .ui-fileupload-row > div {
+    .p-fileupload-files,
+    .p-fileupload-files > div,
+    .p-fileupload-row,
+    .p-fileupload-row > div {
         display: block;
     }
 
-    .ui-fileupload-buttonbar .ui-button .ui-button-text {
+    .p-fileupload-buttonbar .p-button .p-button-text {
         display: none;
     }
 
-    .ui-fileupload-row > .ui-widget-content {
+    .p-fileupload-row > .p-widget-content {
         display: block;
         border-bottom: 0;
     }
 
-    .ui-fileupload .ui-fileupload-content .ui-progressbar {
+    .p-fileupload .p-fileupload-content .p-progressbar {
         width: 100%;
     }
 
-    .ui-fileupload .ui-fileupload-content .ui-fileupload-files .ui-fileupload-row > div {
+    .p-fileupload .p-fileupload-content .p-fileupload-files .p-fileupload-row > div {
         border-bottom: 0 none;
         padding-bottom: 0;
 

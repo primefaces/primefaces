@@ -49,19 +49,19 @@ public class Dialog extends DialogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dialog";
 
-    public static final String DIALOG_CLASS = "ui-dialog ui-widget ui-hidden-container";
-    public static final String BOX_CLASS = "ui-dialog-box ui-widget-content";
-    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header";
-    public static final String TITLE_CLASS = "ui-dialog-title";
-    public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-close";
-    public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
-    public static final String TITLE_BAR_MINIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-minimize";
-    public static final String MINIMIZE_ICON_CLASS = "ui-icon ui-icon-minus";
-    public static final String TITLE_BAR_MAXIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-maximize";
-    public static final String MAXIMIZE_ICON_CLASS = "ui-icon ui-icon-extlink";
-    public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
-    public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
-    public static final String DIALOG_ACTIONS_CLASS = "ui-dialog-actions";
+    public static final String DIALOG_CLASS = "p-dialog p-widget p-hidden-container";
+    public static final String BOX_CLASS = "p-dialog-box p-widget-content";
+    public static final String TITLE_BAR_CLASS = "p-dialog-titlebar p-widget-header";
+    public static final String TITLE_CLASS = "p-dialog-title";
+    public static final String TITLE_BAR_CLOSE_CLASS = "p-dialog-titlebar-icon p-dialog-titlebar-close";
+    public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-dialog-close-icon";
+    public static final String TITLE_BAR_MINIMIZE_CLASS = "p-dialog-titlebar-icon p-dialog-titlebar-minimize";
+    public static final String MINIMIZE_ICON_CLASS = "p-icon p-minimize-icon p-dialog-minimize-icon";
+    public static final String TITLE_BAR_MAXIMIZE_CLASS = "p-dialog-titlebar-icon p-dialog-titlebar-maximize";
+    public static final String MAXIMIZE_ICON_CLASS = "p-icon p-maximize-icon p-dialog-maximize-icon";
+    public static final String CONTENT_CLASS = "p-dialog-content p-widget-content";
+    public static final String FOOTER_CLASS = "p-dialog-footer p-widget-content";
+    public static final String DIALOG_ACTIONS_CLASS = "p-dialog-actions";
 
     @Override
     public void queueEvent(FacesEvent event) {

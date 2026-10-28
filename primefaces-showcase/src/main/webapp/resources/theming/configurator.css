@@ -123,7 +123,7 @@
     width: 100%;
 }
 
-.cfg-seg > .ui-button {
+.cfg-seg > .p-button {
     flex: 1 1 0;
     min-width: 0;
     justify-content: center;
@@ -132,7 +132,7 @@
     text-transform: capitalize;
 }
 
-.cfg-seg > .ui-button .ui-icon {
+.cfg-seg > .p-button .p-button-icon-left {
     font-size: 12px;
 }
 
@@ -193,7 +193,7 @@
 }
 
 /* p:slider: room for the handle, which overhangs the ends of the track */
-.cfg-field .ui-slider {
+.cfg-field .p-slider {
     margin-inline: .5rem;
 }
 
@@ -252,7 +252,7 @@
 }
 
 /* the palette button at the right edge, vertically centered */
-.cfg-toggle.ui-button {
+.cfg-toggle.p-button {
     position: fixed;
     right: 0;
     /* centered without transform: a transformed layer is rasterized at sub-pixel positions, the edge at the window
@@ -275,11 +275,11 @@
     clip-path: inset(-2rem 0 -2rem -2rem);
 }
 
-.cfg-toggle .ui-icon {
+.cfg-toggle .pi {
     font-size: 1.25rem;
 }
 
-:root.cfg-open .cfg-toggle.ui-button {
+:root.cfg-open .cfg-toggle.p-button {
     visibility: hidden;
 }
 

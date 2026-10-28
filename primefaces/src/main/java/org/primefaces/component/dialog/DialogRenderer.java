@@ -108,7 +108,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         styleClass = styleClass == null ? Dialog.DIALOG_CLASS : Dialog.DIALOG_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, component)) {
-            styleClass += " ui-dialog-rtl";
+            styleClass += " p-dialog-rtl";
         }
 
         if ("absolute".equals(positionType)) {
@@ -116,11 +116,11 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
                 throw new IllegalArgumentException("blockScroll=true cannot be used when positionType=absolute");
             }
 
-            styleClass += " ui-dialog-absolute";
+            styleClass += " p-dialog-absolute";
         }
 
         if (component.isFitViewport()) {
-            styleClass += " ui-dialog-fitviewport";
+            styleClass += " p-dialog-fitviewport";
         }
 
         writer.startElement("div", null);

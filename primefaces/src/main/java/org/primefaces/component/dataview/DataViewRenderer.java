@@ -187,11 +187,8 @@ public class DataViewRenderer extends DataRenderer<DataView> {
         writer.writeAttribute("class", containerClass, null);
 
         if (hasLayoutOptions(context, component)) {
-            String listIcon = component.getListIcon() != null ? component.getListIcon() : "ui-icon-grip-dotted-horizontal";
-            encodeButton(context, component, "list", listIcon, !isGridLayout);
-
-            String gridIcon = component.getGridIcon() != null ? component.getGridIcon() : "ui-icon-grip-dotted-vertical";
-            encodeButton(context, component, "grid", gridIcon, isGridLayout);
+            encodeButton(context, component, "list", DataView.LIST_LAYOUT_ICON_CLASS, !isGridLayout);
+            encodeButton(context, component, "grid", DataView.GRID_LAYOUT_ICON_CLASS, isGridLayout);
         }
 
         writer.endElement("div");
@@ -201,7 +198,7 @@ public class DataViewRenderer extends DataRenderer<DataView> {
     protected void encodeButton(FacesContext context, DataView component, String layout, String icon, boolean isActive) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String buttonClass = isActive ? DataView.BUTTON_CLASS + " ui-state-active" : DataView.BUTTON_CLASS;
+        String buttonClass = isActive ? DataView.BUTTON_CLASS + " p-state-active" : DataView.BUTTON_CLASS;
 
         //button
         writer.startElement("div", null);
@@ -225,14 +222,14 @@ public class DataViewRenderer extends DataRenderer<DataView> {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", icon, null);
 
         writer.endElement("span");
 
         //label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
+        writer.write("p-button");
 
         writer.endElement("span");
 

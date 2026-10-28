@@ -25,7 +25,7 @@ export class StaticMessage<Cfg extends StaticMessageCfg = StaticMessageCfg> exte
      * Bind behavior events.
      */
     bindEvents(): void {
-        const closer = $('.ui-messages-close', this.jq);
+        const closer = $('.p-messages-close', this.jq);
 
         closer.on('click.staticmessage', () => {
             if (this.hasBehavior('close')) {

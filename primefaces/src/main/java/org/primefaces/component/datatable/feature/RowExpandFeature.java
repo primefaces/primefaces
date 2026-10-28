@@ -78,7 +78,7 @@ public class RowExpandFeature implements DataTableFeature {
         if (rowExpansion != null && rowExpansion.isRendered()) {
             String styleClass = PrimeRequestContext.getCurrentInstance(context).getStyleClassBuilder()
                 .add(DataTable.EXPANDED_ROW_CONTENT_CLASS)
-                .add("ui-widget-content")
+                .add("p-widget-content")
                 .add(rowExpansion.getStyleClass())
                 .build();
 

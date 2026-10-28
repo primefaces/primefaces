@@ -68,7 +68,7 @@ int getStrength() | Returns strength of the tag between 1 and 5.
 _org.primefaces.model.tagcloud.DefaultTagCloudItem_ is provided as the default implementation.
 
 ## Skinning
-TagCloud resides in a container element that _style_ and _styleClass_ attributes apply. _.ui-tagcloud_
-applies to main container and _.ui-tagcloud-strength-[1,5]_ applies to each tag. As skinning style
+TagCloud resides in a container element that _style_ and _styleClass_ attributes apply. _.p-tagcloud_
+applies to main container and _.p-tagcloud-strength-[1,5]_ applies to each tag. As skinning style
 classes are global, see the main theming section for more information.
 

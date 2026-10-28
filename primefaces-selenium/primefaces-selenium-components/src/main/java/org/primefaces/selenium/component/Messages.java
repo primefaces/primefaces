@@ -40,7 +40,7 @@ import org.openqa.selenium.WebElement;
  */
 public abstract class Messages extends AbstractComponent {
     public WebElement getCloseButton(String severity) {
-        return findElement(By.cssSelector(".ui-messages-" + severity + " > .ui-messages-close"));
+        return findElement(By.cssSelector(".p-messages-" + severity + " > .p-messages-close"));
     }
 
     public boolean isEmpty() {
@@ -64,9 +64,9 @@ public abstract class Messages extends AbstractComponent {
             for (WebElement message : messageSeverity.findElements(By.cssSelector("li"))) {
                 Msg msg = new Msg();
                 msg.setSeverity(severity);
-                msg.setSummary(message.findElement(By.className("ui-messages-" + Severity.toName(severity) + "-summary")).getText());
+                msg.setSummary(message.findElement(By.className("p-messages-" + Severity.toName(severity) + "-summary")).getText());
                 try {
-                    msg.setDetail(message.findElement(By.className("ui-messages-" + Severity.toName(severity) + "-detail")).getText());
+                    msg.setDetail(message.findElement(By.className("p-messages-" + Severity.toName(severity) + "-detail")).getText());
                 }
                 catch (NoSuchElementException e) {
                     // ignore, it's optional

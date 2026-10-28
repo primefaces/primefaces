@@ -80,7 +80,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
     */
     _cleanup() {
         if (this.input) {
-            this.input.removeClass('ui-colorpicker');
+            this.input.removeClass('p-colorpicker');
             this.input.parent().find('button').remove();
             Coloris.removeInstance('.' + this.cfg.instance);
         }
@@ -120,7 +120,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
             }
             else {
                 colorisFieldsBound = true;
-                settings.el = '.ui-colorpicker';
+                settings.el = '.p-colorpicker';
             }
         }
         else {
@@ -133,7 +133,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
             Coloris.init();
             Coloris(settings);
             if (wrapFields) {
-                Coloris.wrap('.ui-colorpicker');
+                Coloris.wrap('.p-colorpicker');
             }
             if ($this.cfg.inline) {
                 Coloris.updatePosition();
@@ -213,8 +213,8 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
         // add error styling to thumbnail button if necessary
         $(document).ready(function() {
             var triggerButton = $this.input.prev();
-            if ($this.input.hasClass('ui-state-error')) {
-                triggerButton.addClass('ui-state-error');
+            if ($this.input.hasClass('p-state-error')) {
+                triggerButton.addClass('p-state-error');
             }
         });
     }
@@ -274,7 +274,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
             if ($this.hasFloatLabel) {
                 var container = $this.input.parent();
                 PrimeFaces.queueTask(function() {
-                    container.removeClass('ui-inputwrapper-focus');
+                    container.removeClass('p-inputwrapper-focus');
                     PrimeFaces.utils.updateFloatLabel(container, $this.input, $this.hasFloatLabel);
                 });
             }
@@ -282,7 +282,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
 
         if ($this.hasFloatLabel) {
             $this.input.on('focus.colorpicker', function() {
-                $this.input.parent().addClass('ui-inputwrapper-focus');
+                $this.input.parent().addClass('p-inputwrapper-focus');
             });
         }
     }
@@ -292,7 +292,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
      * @private
      */
     setupDialogSupport() {
-        var dialog = this.input[0].closest('.ui-dialog, .ui-sidebar');
+        var dialog = this.input[0].closest('.p-dialog, .p-sidebar');
         if (dialog) {
             this.cfg.parent = PrimeFaces.escapeClientId(dialog.id);
         }

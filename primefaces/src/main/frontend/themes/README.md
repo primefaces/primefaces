@@ -13,16 +13,16 @@ What changed for applications compared to the legacy themes:
 - **Customization with tokens:** application CSS that overrides PrimeFaces styles by selector and specificity may need
   adjustments; colors, radius, density, icons etc. are CSS variables. There is no SASS / theme designer anymore.
 - **Icons:** the icons a component draws itself come from icon tokens (`--p-icon-*`, `--p-<component>-...-icon`), not
-  from PrimeIcons / Font Awesome classes. Planned in the core (see below):
+  from PrimeIcons / Font Awesome classes ([#15278](https://github.com/primefaces/primefaces/issues/15278)):
   - the JSF attributes for these icons are removed without replacement (e.g. `p:panel closeIcon / collapsedIcon /
     expandedIcon / menuIcon`, `p:rowToggler expandIcon / collapseIcon`, `p:spinner upIcon / downIcon`,
-    `p:chip removeIcon`, `p:breadCrumb homeIcon`, ...; full list below). Configure them in CSS. p:tabView has no
-    such attributes, its close icon is `--p-tabs-close-icon` already.
+    `p:chip removeIcon`, `p:breadCrumb homeIcon`, ...; full list in the migration guide). Configure them in CSS.
   - renderers emit semantic icon classes (`p-icon p-close-icon p-panel-close-icon`) instead of the legacy jQuery UI
     icon classes (`ui-icon-triangle-1-e`, ...), widgets switch states (`aria-expanded`) instead of icon classes.
-- **Later, also breaking:** `ui-*` → `p-*` style classes. jQuery UI is removed already (own effects, position,
-  slider and drag and drop / sorting / resizing interactions with compatible options), `p:calendar` is removed in favor
-  of `p:datePicker`.
+- **Style classes:** the former jQuery UI style classes `ui-*` are `p-*` now (except the Grid CSS `ui-g` / `ui-grid` and
+  the classes the jQuery keypad of p:keyboard renders; the datePicker panel is `p-datepicker-panel`).
+  jQuery UI is removed already (own effects, position, slider and drag and drop / sorting / resizing interactions with
+  compatible options), `p:calendar` is removed in favor of `p:datePicker`.
 
 Each breaking core change gets its entry in the migration guide (`docs/migrationguide`) when it is implemented.
 
@@ -91,8 +91,8 @@ primefaces/src/main/frontend/
   packages/components/index.css    components.css: layer order, icon set, interaction CSS, then base -> shared -> components
                                    -> behaviors (alphabetical inside each group, see the comments there)
   packages/components/src/icons/lucide.css   the icon set: one --p-icon-* token per meaning (close, expanded, ...)
-  packages/components/src/base/*.css         ui-widget, ui-state-*, core helpers, grid (ui-g), interaction base rules,
-                                             document (page, reduced motion, print), scrollbar, backdrop (Glass)
+  packages/components/src/base/*.css         p-widget, p-state-*, core helpers, grid (ui-g), interaction base rules,
+                                             document (page, reduced motion / transparency, print), scrollbar, backdrop (Glass)
   packages/components/src/<widget>/*.css     one file per tag next to its widget (datatable/datatable.css,
                                              forms/selectonemenu.css, menu/tieredmenu.css, ...); building blocks of
                                              several components: forms/inputfield.css, forms/checkbox.css,
@@ -201,9 +201,18 @@ The build (`yarn run build:bundle`, run by Maven through `frontend-maven-plugin`
 
 ## Icons
 
-The icons the components draw themselves (toggle, close, sort, dropdown, pagination, ...) are SVGs, not an icon font:
-the CSS of a component shows a token as mask of a `::before`, the color is `currentColor` and the size the font size.
-There are no JSF attributes for them, they are configured with CSS only, on two levels:
+The icons the components draw themselves (toggle, close, sort, dropdown, pagination, ...) are SVGs, not an icon font.
+The renderers emit semantic classes: `<span class="p-icon p-close-icon p-panel-close-icon">`
+(generic, meaning, component + control: the PrimeFaces component name, also where the token block is named
+after PrimeUIX, e.g. `p-growl-close-icon` for `--p-toast-close-icon`). `.p-icon` (base/common.css) shows `--_icon`
+as mask of a `::before`, the color is `currentColor` and the size the font size; the component CSS maps its class to
+the token once
+(`.p-panel-close-icon { --_icon: var(--p-panel-close-icon); }`). Icons that change with the state have one class
+(`p-panel-toggle-icon`), the CSS picks the token by the state of the component (`aria-expanded`,
+`p-state-active`, ...); the widgets do not swap icon classes. Exceptions: the checkbox icon carries the state as
+`p-checkbox-checked-icon` / `p-checkbox-indeterminate-icon` / `p-checkbox-crossed-icon` (tree / treeTable selection
+read it), the dataTable / treeTable sort icon as `p-datatable-sort-asc-icon` / `-desc-icon` (the widget reads the
+sort order from it, `aria-sort` is only set on one column). There are no JSF attributes for these icons, they are configured with CSS only, on two levels:
 
 ```css
 /* the icon set: one token per meaning, packages/components/src/icons/lucide.css (Lucide, ISC) */
@@ -231,8 +240,8 @@ Overriding (application CSS is unlayered and always wins):
   uses it (the theme resource), not the one that declares it.
 - Directional icons are mirrored in RTL (`scale: -1 1`), so one icon per direction is enough.
 - A complete other icon set is a CSS file with all `--p-icon-*` tokens, included after the theme.
-- Planned: semantic icon classes in the markup with the same names as the tokens (`.p-panel-close-icon`), for full
-  control per icon via CSS (see "Planned (PrimeFaces core)").
+- Full control per icon (font icon, size, color of one icon) with the classes: `.p-panel-close-icon::before { mask: none;
+  background: none; content: "\f00d"; font-family: "Font Awesome 6 Free"; }`, `.p-close-icon` for every close icon.
 - In the source, `url("lucide-static/icons/x.svg")` refers to the npm package and is inlined by `build/scripts/bundle.mjs`;
   `?fill` fills an outline icon (selected rating star).
 
@@ -244,7 +253,7 @@ PrimeFaces tokens (PrimeUIX has durations only), in the semantic block of the pr
 --p-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);       /* something moves within the page */
 --p-transition-easing-enter: cubic-bezier(0, 0, 0.2, 1);   /* something appears / slides in (decelerates) */
 --p-transition-easing-exit: cubic-bezier(0.4, 0, 1, 1);    /* something disappears / slides out (accelerates) */
---p-overlay-enter-duration: 0.12s;                         /* connected overlays (.ui-connected-overlay-*) */
+--p-overlay-enter-duration: 0.12s;                         /* connected overlays (.p-connected-overlay-*) */
 --p-overlay-leave-duration: 0.1s;
 ```
 
@@ -254,7 +263,7 @@ on literal curves (`cubic-bezier()`, `ease*`) and literal durations in transitio
 allowed), so new transitions use the tokens.
 
 Content that a widget inserts by ajax can animate in with CSS only: a keyframe animation runs when an element is
-inserted (`@keyframes ui-enter` in `base/common.css`, offset by `--_enter-offset`; also on page load). Used where new
+inserted (`@keyframes p-enter` in `base/common.css`, offset by `--_enter-offset`; also on page load). Used where new
 content is the point: new messages of p:messages / p:message (`--p-message-enter-duration` / `-offset`, also from the client
 side validation), the items of p:dataView on a layout switch and paging and the loaded items of p:dataScroller (not
 with virtual scrolling) (`--p-dataview-content-enter-duration` / `-offset`). Deliberately not: dataTable / treeTable rows
@@ -265,6 +274,8 @@ nodes (static nodes would not animate, `animate="true"` slides with jQuery alrea
 
 `packages/components/src/base/document.css`:
 - `prefers-reduced-motion`: `--p-transition-duration: 0s`, animations and transitions reduced to a minimum.
+- `prefers-reduced-transparency`: all `--p-*-backdrop-filter` tokens `none` and `--p-toast-blur: 0px` (no blur behind
+  floating layers).
 - Native controls of the application (checkbox, radio, range, progress) use the primary color (`accent-color`), text
   selection the highlight colors.
 - Print: light colors, no shadows, scrollable tables print all rows, overlays / growl / paginator hidden. Small state
@@ -291,19 +302,19 @@ Variants other UI frameworks have, done in CSS only: the application selects the
 
 | Class | On | Effect |
 |---|---|---|
-| `ui-selectonemenu-sm` / `-lg`, `ui-selectcheckboxmenu-sm` / `-lg`, `ui-cascadeselect-sm` / `-lg` | the component (`styleClass`) | small / large field (like `ui-inputtext-sm` / `ui-button-sm`) |
-| `ui-toggleswitch-sm` / `-lg` | p:toggleSwitch (`styleClass`) or any ancestor | small / large switch (0.8x / 1.25x of the switch tokens) |
-| `ui-chkbox-sm` / `-lg`, `ui-radiobutton-sm` / `-lg` | the checkbox / radio or any ancestor (e.g. `p:selectManyCheckbox`) | small / large boxes |
-| `ui-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
-| `ui-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
-| `ui-listbox-checkmark`, `ui-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
-| `ui-message-outlined`, `ui-message-simple`, `ui-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
-| `ui-growl-outlined`, `ui-growl-simple` | the growl container (`div.ui-growl`, appended to the body) or an ancestor (`h:body`); p:growl has no `styleClass` yet, so per growl: `PF('growl').jq.addClass(...)` | outlined (overlay background, colored border and title) / simple (no border, no severity tint, colored title; keeps the overlay background and shadow, as the growl floats over content) |
+| `p-selectonemenu-sm` / `-lg`, `p-selectcheckboxmenu-sm` / `-lg`, `p-cascadeselect-sm` / `-lg` | the component (`styleClass`) | small / large field (like `p-inputtext-sm` / `p-button-sm`) |
+| `p-toggleswitch-sm` / `-lg` | p:toggleSwitch (`styleClass`) or any ancestor | small / large switch (0.8x / 1.25x of the switch tokens) |
+| `p-chkbox-sm` / `-lg`, `p-radiobutton-sm` / `-lg` | the checkbox / radio or any ancestor (e.g. `p:selectManyCheckbox`) | small / large boxes |
+| `p-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
+| `p-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
+| `p-listbox-checkmark`, `p-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
+| `p-message-outlined`, `p-message-simple`, `p-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
+| `p-growl-outlined`, `p-growl-simple` | the growl container (`div.p-growl`, appended to the body) or an ancestor (`h:body`); p:growl has no `styleClass` yet, so per growl: `PF('growl').jq.addClass(...)` | outlined (overlay background, colored border and title) / simple (no border, no severity tint, colored title; keeps the overlay background and shadow, as the growl floats over content) |
 | `severity="secondary"` / `"contrast"` | p:staticMessage | additional severities |
-| `ui-tag-contrast`, `ui-badge-contrast` | p:tag, p:badge | contrast severity (also with `outlined` / `rounded`) |
-| `ui-float-label-in`, `ui-float-label-on` | the `span.ui-float-label` | label inside the field at the top (IftaLabel) / label on the border |
-| `ui-blockui-light` | p:blockUI | light loading mask with a spinner (default: modal mask) |
-| `ui-ajaxstatus-bar` | an element in the start facet of p:ajaxStatus (or p:ajaxStatus with a start facet) | indeterminate progress bar at the top of the viewport |
+| `p-tag-contrast`, `p-badge-contrast` | p:tag, p:badge | contrast severity (also with `outlined` / `rounded`) |
+| `p-float-label-in`, `p-float-label-on` | the `span.p-float-label` | label inside the field at the top (IftaLabel) / label on the border |
+| `p-blockui-light` | p:blockUI | light loading mask with a spinner (default: modal mask) |
+| `p-ajaxstatus-bar` | an element in the start facet of p:ajaxStatus (or p:ajaxStatus with a start facet) | indeterminate progress bar at the top of the viewport |
 
 Without a class: p:blockUI without content shows a centered spinner, p:commandLink shows a spinner while its ajax
 request runs, all loading spinners use `--p-icon-loading` and one animation.
@@ -312,7 +323,7 @@ TODO (core): attributes for these variants, as PrimeReact has them; the renderer
 the CSS stays as it is and the classes keep working:
 - [ ] `size="small|large"` on selectOneMenu, selectCheckboxMenu, cascadeSelect, selectBooleanCheckbox,
       selectManyCheckbox, triStateCheckbox, selectOneRadio / radioButton; `size="small"` added to badge (has
-      large / xlarge). For consistency also on the fields and buttons that use `ui-inputtext-sm` / `ui-button-sm` today
+      large / xlarge). For consistency also on the fields and buttons that use `p-inputtext-sm` / `p-button-sm` today
       (inputText, inputTextarea, password, inputNumber, inputMask, autoComplete, datePicker, chips, commandButton,
       button, linkButton, splitButton, menuButton).
 - [ ] `checkmark="true"` on selectOneMenu, selectOneListbox, selectManyMenu (instead of `panelStyleClass` / `styleClass`).
@@ -320,17 +331,17 @@ the CSS stays as it is and the classes keep working:
 - [ ] `variant="outlined|simple"` and `size="small|large"` on message, messages, staticMessage; document
       `severity="secondary|contrast"` of staticMessage.
 - [ ] `styleClass` and `variant="outlined|simple"` on growl (it has no styleClass, the widget builds the container).
-- [ ] `size="small|large"` on toggleSwitch (today `ui-toggleswitch-sm` / `-lg`).
+- [ ] `size="small|large"` on toggleSwitch (today `p-toggleswitch-sm` / `-lg`).
 - [ ] `severity="contrast"` on tag and badge (their renderers only accept a fixed list of severities).
 - [ ] Float label as component: `p:floatLabel variant="over|in|on"` (PrimeReact FloatLabel / IftaLabel) instead of
-      the plain `span.ui-float-label`, incl. the focus / filled state for every field (selectCheckboxMenu has none).
-- [ ] `p:blockUI variant="light"` (or `mask="light"`) instead of `ui-blockui-light`.
-- [ ] `p:ajaxStatus mode="bar"` (progress bar at the top of the viewport) instead of `ui-ajaxstatus-bar` in a facet.
+      the plain `span.p-float-label`, incl. the focus / filled state for every field (selectCheckboxMenu has none).
+- [ ] `p:blockUI variant="light"` (or `mask="light"`) instead of `p-blockui-light`.
+- [ ] `p:ajaxStatus mode="bar"` (progress bar at the top of the viewport) instead of `p-ajaxstatus-bar` in a facet.
 
 ## Responsive components
 
 Paginator (page links), dataTable / treeTable reflow, fileUpload (stacked layout), steps (titles), responsive pickList /
-orderList (stacked) and full width selectOneButton / selectManyButton in `.ui-fluid` react to the viewport
+orderList (stacked) and full width selectOneButton / selectManyButton in `.p-fluid` react to the viewport
 (`@media (max-width: 640px)`), like overlays, sidebars and the legacy `ui-g` grid. No container queries: inline-size
 containment takes the width of an element from its parent only, so a component inside a shrink-to-fit parent (a dialog
 without width, an inline-flex / auto table cell, a flex item without width) collapses to zero width.
@@ -424,57 +435,15 @@ same the JavaScript uses.
 
 ## Planned (PrimeFaces core)
 
-The theming is done without changing the markup of the components. These steps follow in the core:
-
-**Icons** ([primefaces/primefaces#15278](https://github.com/primefaces/primefaces/issues/15278))
-- Today the theme picks the icon from the legacy jQuery UI classes the renderers emit (`ui-icon-triangle-1-e` /
-  `-1-s`, `ui-icon-closethick`, ...). The widgets will only switch the state (`aria-expanded`, `ui-state-active`)
-  instead of swapping icon classes; the CSS selects the icon token by state.
-- Renderers emit semantic icon classes instead, named exactly like the icon tokens without `--`: a generic class, the
-  meaning and the component specific one.
-  ```html
-  <span class="p-icon p-close-icon p-panel-close-icon"></span>
-  ```
-  The theme maps each class to its token once (`.p-panel-close-icon { --p-icon: var(--p-panel-close-icon); }`), so
-  there are two ways to customize, with one naming scheme:
-  ```css
-  /* a different image: tokens (one line, scoped overrides possible, cross the Shadow DOM) */
-  :root { --p-icon-close: url("/myapp/icons/close.svg"); }          /* every close icon */
-  :root { --p-panel-close-icon: url("/myapp/icons/x.svg"); }        /* panel only */
-
-  /* full control (font icon, size, color of just this icon): the class, application CSS is unlayered and wins */
-  .p-panel-close-icon::before {
-      mask: none;
-      background: none;
-      content: "\f00d";
-      font-family: "Font Awesome 6 Free";
-  }
-  ```
-  The icon classes are new, so they start as `p-*` right away (no `ui-*` → `p-*` migration for them).
-- JSF attributes for icons the component draws itself are removed (breaking, no deprecation phase), they are
-  configured with the icon tokens only:
-  - remove: `breadCrumb homeIcon`, `chip removeIcon`, `datePicker triggerButtonIcon`, `galleria closeIcon`,
-    `menuButton buttonIcon`, `panel closeIcon / collapsedIcon / expandedIcon / menuIcon`,
-    `rowToggler expandIcon / collapseIcon`, `spinner upIcon / downIcon`, `dataView gridIcon / listIcon`,
-    `triStateCheckbox stateOneIcon / stateTwoIcon / stateThreeIcon`
-  - keep (content, chosen per instance): `icon` of buttons and menu items, `expandedIcon / collapsedIcon` of tree and
-    organigram nodes (node type icons), `selectBooleanButton onIcon / offIcon`
-  - to decide: `speedDial showIcon / hideIcon`, `fileUpload chooseIcon / uploadIcon / cancelIcon`,
-    `toggleSwitch onIcon / offIcon`
-- Components whose attribute default is a PrimeIcons class (e.g. chip, spinner) render that class, so the theme can not
-  replace those icons until their renderers emit neutral markup.
+These steps follow in the core:
 
 **Other**
-- `RatingRenderer` never renders `ui-state-readonly`, so the readonly styles of `packages/components/src/rating/rating.css` do not apply.
-- p:cascadeSelect without value and placeholder renders only `span.ui-cascadeselect-label-empty` (no
-  `ui-cascadeselect-label ui-inputfield`): the widget looks the label up by `.ui-cascadeselect-label`, so a selected item
-  is not shown and the empty label is no click trigger. Render both classes (the theme sizes the empty label already).
+- `RatingRenderer` never renders `p-state-readonly`, so the readonly styles of `packages/components/src/rating/rating.css` do not apply.
 - Visual regression references exist for Windows only; take the linux ones from the screenshot artifact of a CI run.
 - RTL: toggleSwitch and galleria have no `*-rtl` class, they mirror only with a `dir` attribute (on them or an
   ancestor); galleria swipe and arrow keys are not mirrored (JS reads physical directions).
-- Later: migration of the `ui-*` classes to `p-*`, and Lit components (the tokens cross the Shadow DOM).
+- Later: Lit components (the tokens cross the Shadow DOM).
 - Overlays: Popover API (top layer, no z-index management) and CSS anchor positioning instead of JS positioning.
-- [primefaces/primefaces#15014](https://github.com/primefaces/primefaces/issues/15014)
 
 **Modern look and feel**
 
@@ -490,8 +459,6 @@ other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0
   - selectOneMenu / selectCheckboxMenu / cascadeSelect: loading state of the dropdown icon for lazy options
   - consistent `loading` state for all buttons (commandButton, splitButton, menuButton, linkButton), not only ajax
   - a token themed spinner component (PrimeUIX progressspinner)
-  - the core renders `pi pi-spin pi-spinner` for loading icons: the theme replaces the glyph (PrimeIcons is in the
-    vendor layer, so the component CSS wins over its `.pi-spin` animation); neutral markup removes the PrimeIcons classes
 - Variants as attributes instead of style classes: see the TODO list in "Variants (style classes)". p:message /
   p:messages / p:growl cannot show secondary / contrast, their severity comes from the FacesMessage.
 - Responsive menubar / megamenu (mobile button with a collapsible menu).
@@ -535,7 +502,7 @@ transition on the same property):
   context parts, pickList, scrollTop, wizard, the overlays in `forms` → CSS enter/leave transitions with
   `@starting-style` + `transition-behavior: allow-discrete` (display / Popover API), the widget only toggles a class.
   Some overlays already work like that: autoComplete, confirmPopup, cascadeSelect, password and selectCheckboxMenu
-  toggle the `.ui-connected-overlay-enter/exit(-active|-done)` classes, animated in `packages/components/src/base/core.css` with
+  toggle the `.p-connected-overlay-enter/exit(-active|-done)` classes, animated in `packages/components/src/base/core.css` with
   `--p-overlay-enter/leave-duration` and `--p-transition-easing-enter/exit`.
 - The migrated animations use the motion tokens above (`--p-transition-easing*`, durations).
 - Expand / collapse (`slideDown` / `slideUp` / `slideToggle`): accordion, fieldset, inplace, messages, notificationBar,

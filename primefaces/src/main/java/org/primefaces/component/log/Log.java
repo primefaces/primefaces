@@ -40,14 +40,14 @@ public class Log extends LogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Log";
 
-    public static final String CONTAINER_CLASS = "ui-log ui-widget ui-widget-content";
-    public static final String HEADER_CLASS = "ui-log-header ui-widget-header";
-    public static final String CONTENT_CLASS = "ui-log-content";
-    public static final String ITEMS_CLASS = "ui-log-items";
-    public static final String CLEAR_BUTTON_CLASS = "ui-log-button ui-log-clear";
-    public static final String ALL_BUTTON_CLASS = "ui-log-button ui-log-all";
-    public static final String INFO_BUTTON_CLASS = "ui-log-button ui-log-info";
-    public static final String DEBUG_BUTTON_CLASS = "ui-log-button ui-log-debug";
-    public static final String WARN_BUTTON_CLASS = "ui-log-button ui-log-warn";
-    public static final String ERROR_BUTTON_CLASS = "ui-log-button ui-log-error";
+    public static final String CONTAINER_CLASS = "p-log p-widget p-widget-content";
+    public static final String HEADER_CLASS = "p-log-header p-widget-header";
+    public static final String CONTENT_CLASS = "p-log-content";
+    public static final String ITEMS_CLASS = "p-log-items";
+    public static final String CLEAR_BUTTON_CLASS = "p-log-button p-log-clear";
+    public static final String ALL_BUTTON_CLASS = "p-log-button p-log-all";
+    public static final String INFO_BUTTON_CLASS = "p-log-button p-log-info";
+    public static final String DEBUG_BUTTON_CLASS = "p-log-button p-log-debug";
+    public static final String WARN_BUTTON_CLASS = "p-log-button p-log-warn";
+    public static final String ERROR_BUTTON_CLASS = "p-log-button p-log-error";
 }

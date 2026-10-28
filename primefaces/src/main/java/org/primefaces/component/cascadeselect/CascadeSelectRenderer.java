@@ -72,8 +72,8 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(CascadeSelect.STYLE_CLASS)
-                .add(component.isDisabled(), "ui-state-disabled")
-                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.isDisabled(), "p-state-disabled")
+                .add(component.isReadonly(), "p-state-readonly")
                 .add(component.getStyleClass())
                 .build();
 
@@ -128,16 +128,17 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
             itemLabel = foundItem.getLabel();
         }
 
-        String placeholder = LangUtils.isNotBlank(itemLabel) ? itemLabel : component.getPlaceholder();
+        boolean showPlaceholder = LangUtils.isBlank(itemLabel);
+        String label = showPlaceholder ? component.getPlaceholder() : itemLabel;
         String styleClass = getStyleClassBuilder(context)
-                .add(placeholder != null, CascadeSelect.LABEL_CLASS)
-                .add(placeholder == null, CascadeSelect.LABEL_EMPTY_CLASS)
+                .add(CascadeSelect.LABEL_CLASS)
+                .add(showPlaceholder, CascadeSelect.LABEL_PLACEHOLDER_CLASS)
                 .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
-        if (LangUtils.isNotBlank(placeholder)) {
-            writer.writeText(placeholder, null);
+        if (LangUtils.isNotBlank(label)) {
+            writer.writeText(label, null);
         }
         writer.endElement("span");
     }
@@ -195,6 +196,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
             UIComponent contentFacet = component.getContentFacet();
             Converter converter = ComponentUtils.getConverter(context, component);
             String var = component.getVar();
+            String valueToRender = ComponentUtils.getValueToRender(context, component);
 
             for (SelectItem selectItem : selectItems) {
                 boolean isGroup = selectItem instanceof SelectItemGroup;
@@ -204,6 +206,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
                 String itemStyleClass = getStyleClassBuilder(context)
                         .add(CascadeSelect.ITEM_CLASS)
                         .add(isGroup, CascadeSelect.ITEM_GROUP_CLASS)
+                        .add(!isGroup && valueToRender != null && valueToRender.equals(itemValueAsString), "p-state-active")
                         .build();
 
                 if (var != null) {

@@ -71,7 +71,7 @@ class DataTable004Test extends AbstractDataTableTest {
 
         // Assert (select row after update still selected)
         assertMessage(page, "Selected ProgrammingLanguage", languages.get(4).getName());
-        PrimeSelenium.hasCssClass(dataTable.getRow(4).getWebElement(), "ui-state-highlight");
+        PrimeSelenium.hasCssClass(dataTable.getRow(4).getWebElement(), "p-state-highlight");
         assertEquals("true", dataTable.getRow(4).getWebElement().getAttribute("aria-selected"));
 
         // Act - unselect row
@@ -163,19 +163,19 @@ class DataTable004Test extends AbstractDataTableTest {
         for (int row = 0; row < 5; row++) {
             // Act & Assert
             if (row % 2 == 0) {
-                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
+                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "p-datatable-selectable"));
 
                 PrimeSelenium.guardAjax(dataTable.getCell(row, 0).getWebElement()).click();
 
-                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
+                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "p-state-highlight"));
                 assertMessage(page, "ProgrammingLanguage Selected", languages.get(row).getName());
             }
             else {
-                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
+                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "p-datatable-selectable"));
 
                 dataTable.getCell(row, 0).getWebElement().click(); // nothing happens
 
-                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
+                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "p-state-highlight"));
                 assertMessage(page, "ProgrammingLanguage Selected", languages.get(row - 1).getName()); // still the row we selected before
             }
         }

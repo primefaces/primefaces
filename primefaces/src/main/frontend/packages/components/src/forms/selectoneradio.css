@@ -1,11 +1,11 @@
 /*
  * SelectOneRadio: p:selectOneRadio (layouts lineDirection, pageDirection, grid, responsive), p:radioButton (custom layout)
- * The radio box itself (.ui-radiobutton) is in forms/radiobutton.css.
+ * The radio box itself (.p-radiobutton) is in forms/radiobutton.css.
  *
- * Markup: .ui-selectoneradio.ui-grid-responsive > .ui-g (or .grid) > .ui-g-* > .ui-radiobutton + label
- * Supported classes on .ui-selectoneradio: ui-state-readonly, layout-line-direction
+ * Markup: .p-selectoneradio.ui-grid-responsive > .ui-g (or .grid) > .ui-g-* > .p-radiobutton + label
+ * Supported classes on .p-selectoneradio: p-state-readonly, layout-line-direction
  */
-.ui-selectoneradio {
+.p-selectoneradio {
     label {
         display: inline-block;
         vertical-align: middle;
@@ -17,8 +17,8 @@
         padding-inline-start: var(--p-radiobutton-label-gap);
     }
 
-    label.ui-state-disabled,
-    &.ui-state-readonly label {
+    label.p-state-disabled,
+    &.p-state-readonly label {
         cursor: default;
     }
 
@@ -47,19 +47,19 @@
 
 /* readonly: no hover feedback (wins over the states of forms/radiobutton.css by specificity); an invalid box keeps its
    invalid border */
-.ui-selectoneradio.ui-state-readonly .ui-radiobutton .ui-radiobutton-box {
-    &:not(.ui-state-error):hover {
+.p-selectoneradio.p-state-readonly .p-radiobutton .p-radiobutton-box {
+    &:not(.p-state-error):hover {
         border-color: var(--p-radiobutton-border-color);
     }
 
-    &.ui-state-active:not(.ui-state-error):hover {
+    &.p-state-active:not(.p-state-error):hover {
         border-color: var(--p-radiobutton-checked-border-color);
     }
 
-    &.ui-state-active:hover {
+    &.p-state-active:hover {
         background: var(--p-radiobutton-checked-background);
 
-        .ui-icon-bullet {
+        .p-radiobutton-icon {
             background: var(--p-radiobutton-icon-checked-color);
         }
     }

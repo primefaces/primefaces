@@ -59,7 +59,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         // Assert
         assertDialog(page, true);
         assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
+        assertEquals("p-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
     }
 
     @Test
@@ -101,7 +101,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertFalse(dialog.isVisible());
         page.confirm.click();
         assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
+        assertEquals("p-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         dialog.getNoButton().click();
@@ -120,7 +120,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         page.confirm.click();
         assertTrue(dialog.isVisible());
         assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
+        assertEquals("p-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         PrimeSelenium.guardAjax(dialog.getYesButton()).click();
@@ -139,7 +139,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertFalse(dialog.isVisible());
         page.delete.click();
         assertEquals("Do you want to delete this record?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
+        assertEquals("p-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         dialog.getNoButton().click();
@@ -158,7 +158,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertFalse(dialog.isVisible());
         page.delete.click();
         assertEquals("Do you want to delete this record?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
+        assertEquals("p-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         PrimeSelenium.guardAjax(dialog.getYesButton()).click();
@@ -216,7 +216,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         // Assert
         assertDialog(page, true);
         assertEquals("Do you like cats?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity ui-icon-alert", dialog.getIcon().getDomAttribute("class"));
+        assertEquals("p-confirm-dialog-severity p-icon p-warn-icon p-dialog-warn-icon", dialog.getIcon().getDomAttribute("class"));
         assertConfiguration(dialog.getWidgetConfiguration());
     }
 
