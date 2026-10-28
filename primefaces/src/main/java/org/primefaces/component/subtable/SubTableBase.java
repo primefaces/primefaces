@@ -27,8 +27,11 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 
+import java.io.IOException;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIData;
+import jakarta.faces.context.FacesContext;
 
 @FacesComponentBase
 public abstract class SubTableBase extends UIData {
@@ -48,6 +51,35 @@ public abstract class SubTableBase extends UIData {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        try {
+            super.decode(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        try {
+            super.encodeEnd(context);
+        }
+        finally {
+            resetIterationState();
+        }
+    }
+
+    /**
+     * Resets the row index, so that neither the var nor a row-prefixed client id outlives the phase which set it.
+     */
+    protected void resetIterationState() {
+        if (getRowIndex() != -1) {
+            setRowIndex(-1);
+        }
     }
 
     @Override

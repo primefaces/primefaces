@@ -326,7 +326,8 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         fsw.write("{id: \"" + EscapeUtils.forJavaScriptBlock(group.getId()) + "\"");
 
         Object data = group.getData();
-        if (LangUtils.isNotBlank(component.getVarGroup()) && data != null) {
+        boolean varGroupPut = LangUtils.isNotBlank(component.getVarGroup()) && data != null;
+        if (varGroupPut) {
             context.getExternalContext().getRequestMap().put(component.getVarGroup(), data);
         }
         if (FacetUtils.shouldRenderFacet(groupFacet)) {
@@ -338,6 +339,10 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         else if (data != null) {
             groupsContent.put(group.getId(), EscapeUtils.forJavaScript(data.toString()));
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
+        }
+
+        if (varGroupPut) {
+            context.getExternalContext().getRequestMap().remove(component.getVarGroup());
         }
 
         if (group.getTreeLevel() != null) {
@@ -483,7 +488,8 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         }
 
         Object data = event.getData();
-        if (LangUtils.isNotBlank(component.getVar()) && data != null) {
+        boolean varPut = LangUtils.isNotBlank(component.getVar()) && data != null;
+        if (varPut) {
             context.getExternalContext().getRequestMap().put(component.getVar(), data);
         }
 
@@ -514,6 +520,10 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         }
         else if (data != null) {
             fsw.write(data.toString());
+        }
+
+        if (varPut) {
+            context.getExternalContext().getRequestMap().remove(component.getVar());
         }
 
         fsw.write("\"");
