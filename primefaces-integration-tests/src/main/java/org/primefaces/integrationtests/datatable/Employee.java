@@ -27,7 +27,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,9 +47,13 @@ public class Employee implements Serializable {
     private String lastName;
     private LocalDate birthDate;
     private Integer salary;
+    private Boolean active;
+    private LocalDate reviewDate;
     private Role role;
     private LocalDateTime lastLoginDateTime;
     private Date lastLoginDate;
+    private LocalTime checkInTime;
+    private List<String> skills;
 
     public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

@@ -15,7 +15,7 @@
     .ui-selectcheckboxmenu-panel, .ui-autocomplete-panel,
     .ui-cascadeselect-items-wrapper > .ui-cascadeselect-items,
     .ui-menu-dynamic, .ui-menu-child, .ui-contextmenu, .ui-tooltip-text, .ui-growl-item-container, .ui-password-panel,
-    .ui-columntoggler) {
+    .ui-columntoggler, .ui-column-filter-mode-menu) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
