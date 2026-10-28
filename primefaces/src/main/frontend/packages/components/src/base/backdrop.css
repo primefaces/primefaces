@@ -15,7 +15,7 @@
     .p-selectcheckboxmenu-panel, .p-autocomplete-panel,
     .p-cascadeselect-items-wrapper > .p-cascadeselect-items,
     .p-menu-dynamic, .p-menu-child, .p-contextmenu, .p-tooltip-text, .p-growl-item-container, .p-password-panel,
-    .p-columntoggler, .p-dialog-docked) {
+    .p-columntoggler, .p-column-filter-mode-menu, .p-dialog-docked) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
