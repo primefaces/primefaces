@@ -36,12 +36,12 @@ import lombok.Data;
 @Named
 @ViewScoped
 public class TabView007 implements Serializable {
-    private boolean isFirstTabRendered;
+    private boolean firstTabRendered;
 
     public List<String> getTabs() {
         List<String> tabs = new ArrayList<>(3);
 
-        if (isFirstTabRendered) {
+        if (firstTabRendered) {
             tabs.add("tab1");
         }
 

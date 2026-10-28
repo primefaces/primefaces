@@ -34,5 +34,5 @@ import lombok.Data;
 @Named
 @ViewScoped
 public class TabView006 implements Serializable {
-    private boolean isFirstTabRendered;
+    private boolean firstTabRendered;
 }

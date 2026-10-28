@@ -546,8 +546,8 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
 
         //update state
-        var key = newPanel.data('key');
-        this.stateHolder.val(key !== undefined && key !== null ? key : newPanel.data('index'));
+        var key = newPanel.attr('data-key');
+        this.stateHolder.val(key !== undefined ? key : newPanel.data('index'));
         this.cfg.selected = index;
 
         if(shouldLoad) {

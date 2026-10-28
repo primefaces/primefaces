@@ -153,18 +153,24 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        if ("bottom".equals(orientation)) {
-            encodeFooter(context, component);
-            encodeContents(context, component);
-            encodeHeaders(context, component);
-        }
-        else {
-            encodeHeaders(context, component);
-            encodeContents(context, component);
-            encodeFooter(context, component);
-        }
+        component.startEncodeActive();
+        try {
+            if ("bottom".equals(orientation)) {
+                encodeFooter(context, component);
+                encodeContents(context, component);
+                encodeHeaders(context, component);
+            }
+            else {
+                encodeHeaders(context, component);
+                encodeContents(context, component);
+                encodeFooter(context, component);
+            }
 
-        encodeStateHolder(context, component, clientId + "_active", component.resolveActive());
+            encodeStateHolder(context, component, clientId + "_active", component.resolveActive());
+        }
+        finally {
+            component.endEncodeActive();
+        }
 
         if (component.isScrollable()) {
             String scrollParam = clientId + "_scrollState";

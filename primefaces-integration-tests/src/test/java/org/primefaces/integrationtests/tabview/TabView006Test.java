@@ -30,6 +30,7 @@ import org.primefaces.selenium.component.TabView;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,12 +56,29 @@ class TabView006Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @DisplayName("TabView: the tab selected by the user stays selected when a preceding tab is added (static tabs)")
+    void selectedTabStaysSelectedWhenTabsChange(Page page) {
+        // Arrange - select the last tab on the client
+        page.tab3Header.click();
+
+        // Act - render an additional tab in front of the selected one, submitting the key of the selected tab
+        page.toggle.click();
+
+        // Assert - the tab selected by the user is still selected, although its index changed
+        assertEquals("Tab 3", page.tabView.getSelectedTab().getTitle());
+        assertNoJavascriptErrors();
+    }
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:toggle")
         SelectBooleanCheckbox toggle;
 
         @FindBy(id = "form:tabview")
         TabView tabView;
+
+        @FindBy(css = "[id='form:tabview'] .ui-tabs-header[data-key='tab3'] > a")
+        WebElement tab3Header;
 
         @Override
         public String getLocation() {

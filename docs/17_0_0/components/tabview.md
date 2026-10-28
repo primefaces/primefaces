@@ -79,6 +79,10 @@ indexes shift as soon as tabs are added or removed, whereas a key always refers 
 </p:tabView>
 ```
 
+When _active_ is bound to a bean property, the active tab is written back to it: a `String` property receives the key
+of the tab (or its index, if the tab defines no key), an `int` / `Integer` property receives the index. Bind a `String`
+property when using keys.
+
 The _activeIndex_ attribute is deprecated in favor of _active_ and will be removed in a future version.
 
 ## Orientations

@@ -13,10 +13,10 @@
 
         <h:form id="form">
             <p:selectBooleanCheckbox id="toggle" value="#{tabView006.firstTabRendered}">
-                <p:ajax process="@this" update="tabview"/>
+                <p:ajax process="@this tabview" update="tabview"/>
             </p:selectBooleanCheckbox>
 
-            <p:tabView id="tabview" multiViewState="true" active="tab2">
+            <p:tabView id="tabview" active="tab2">
                 <p:tab key="tab1" title="Tab 1" rendered="#{tabView006.firstTabRendered}">
                     Dummy-Content 1
                 </p:tab>
