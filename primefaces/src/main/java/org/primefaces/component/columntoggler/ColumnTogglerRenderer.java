@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.columntoggler;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UITable;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ColumnToggler.DEFAULT_RENDERER, componentFamily = ColumnToggler.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
 
     @Override

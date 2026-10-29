@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.spotlight;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -34,6 +35,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Spotlight.DEFAULT_RENDERER, componentFamily = Spotlight.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SpotlightRenderer extends CoreRenderer<Spotlight> {
 
     @Override

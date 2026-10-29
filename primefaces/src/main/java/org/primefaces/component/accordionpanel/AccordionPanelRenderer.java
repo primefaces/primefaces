@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.accordionpanel;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
@@ -46,6 +47,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = AccordionPanel.DEFAULT_RENDERER, componentFamily = AccordionPanel.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
     private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActive";

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.diagram;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -44,6 +45,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Diagram.DEFAULT_RENDERER, componentFamily = Diagram.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DiagramRenderer extends CoreRenderer<Diagram> {
 
     private static final String SB_DIAGRAM = CoreRenderer.class.getName() + "#diagram";

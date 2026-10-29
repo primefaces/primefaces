@@ -28,12 +28,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import jakarta.enterprise.inject.Stereotype;
+
 /**
  * Provides a description for a Faces component.
  *
  * <p>Use this annotation to document the purpose and functionality of
  * a component class. The description can be used for taglib, documentation
  * or other metadata purposes.</p>
+ *
+ * <p>It is also a CDI {@link Stereotype}, so the annotated class is discovered
+ * in a bean archive with {@code bean-discovery-mode="annotated"}.</p>
  *
  * <p>Example:</p>
  * <pre>{@code
@@ -46,6 +51,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
+@Stereotype
 public @interface FacesComponentInfo {
 
     /**

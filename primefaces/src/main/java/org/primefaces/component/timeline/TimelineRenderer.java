@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.timeline;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
@@ -54,6 +55,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Timeline.DEFAULT_RENDERER, componentFamily = Timeline.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TimelineRenderer extends CoreRenderer<Timeline> {
 
     @Override

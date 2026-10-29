@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.picklist;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.InputRenderer;
@@ -45,6 +46,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = PickList.DEFAULT_RENDERER, componentFamily = PickList.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class PickListRenderer extends InputRenderer<PickList> {
 
     @Override

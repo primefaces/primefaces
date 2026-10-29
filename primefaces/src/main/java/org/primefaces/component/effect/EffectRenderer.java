@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.effect;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -35,6 +36,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Effect.DEFAULT_RENDERER, componentFamily = Effect.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class EffectRenderer extends CoreRenderer<Effect> {
 
     @Override

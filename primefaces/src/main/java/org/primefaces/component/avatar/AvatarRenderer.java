@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
@@ -40,6 +41,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Avatar.DEFAULT_RENDERER, componentFamily = Avatar.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class AvatarRenderer extends CoreRenderer<Avatar> {
 
     private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]", Pattern.UNICODE_CHARACTER_CLASS);

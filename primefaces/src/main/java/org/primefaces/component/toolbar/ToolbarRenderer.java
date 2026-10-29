@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Toolbar.DEFAULT_RENDERER, componentFamily = Toolbar.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ToolbarRenderer extends CoreRenderer<Toolbar> {
 
     @Override

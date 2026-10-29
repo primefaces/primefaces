@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.outputpanel;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -36,6 +37,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = OutputPanel.DEFAULT_RENDERER, componentFamily = OutputPanel.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
 
     private static final String BLOCK = "div";

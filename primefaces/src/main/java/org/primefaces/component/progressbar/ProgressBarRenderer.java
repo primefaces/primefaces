@@ -24,6 +24,7 @@
 package org.primefaces.component.progressbar;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = ProgressBar.DEFAULT_RENDERER, componentFamily = ProgressBar.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
 
     @Override

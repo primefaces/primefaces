@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.carousel;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -38,6 +39,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Carousel.DEFAULT_RENDERER, componentFamily = Carousel.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     @Override

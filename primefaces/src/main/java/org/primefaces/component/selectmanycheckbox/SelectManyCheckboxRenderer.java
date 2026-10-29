@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -47,6 +48,7 @@ import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = SelectManyCheckbox.DEFAULT_RENDERER, componentFamily = SelectManyCheckbox.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyCheckbox> {
 
     @Override

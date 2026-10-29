@@ -24,6 +24,7 @@
 package org.primefaces.component.tree;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UITree;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.TreeNode;
@@ -55,6 +56,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Tree.DEFAULT_RENDERER, componentFamily = Tree.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class TreeRenderer extends CoreRenderer<Tree> {
 
     private static final String SB_DECODE_SELECTION = TreeRenderer.class.getName() + "#decodeSelection";

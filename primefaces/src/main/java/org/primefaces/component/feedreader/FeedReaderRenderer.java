@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.feedreader;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.feedreader.FeedItem;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
@@ -36,6 +37,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = FeedReader.DEFAULT_RENDERER, componentFamily = FeedReader.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class FeedReaderRenderer extends CoreRenderer<FeedReader> {
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.card;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
@@ -35,6 +36,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Card.DEFAULT_RENDERER, componentFamily = Card.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class CardRenderer extends CoreRenderer<Card> {
 
     @Override

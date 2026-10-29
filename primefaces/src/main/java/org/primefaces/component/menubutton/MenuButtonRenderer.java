@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.menubutton;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -42,6 +43,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 @FacesRenderer(rendererType = MenuButton.DEFAULT_RENDERER, componentFamily = MenuButton.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class MenuButtonRenderer extends TieredMenuRenderer {
 
     @Override

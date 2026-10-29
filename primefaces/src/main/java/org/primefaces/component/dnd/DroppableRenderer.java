@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.dnd;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -34,6 +35,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Droppable.DEFAULT_RENDERER, componentFamily = Droppable.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class DroppableRenderer extends CoreRenderer<Droppable> {
 
     @Override

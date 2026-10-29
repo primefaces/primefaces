@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.inplace;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.password.Password;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -40,6 +41,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = Inplace.DEFAULT_RENDERER, componentFamily = Inplace.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class InplaceRenderer extends CoreRenderer<Inplace> {
 
     @Override

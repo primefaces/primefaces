@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.headerrow;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
@@ -39,6 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = HeaderRow.DEFAULT_RENDERER, componentFamily = HeaderRow.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class HeaderRowRenderer extends CoreRenderer<HeaderRow> {
 
     @Override

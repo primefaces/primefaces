@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -45,6 +46,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
 @FacesRenderer(rendererType = BreadCrumb.DEFAULT_RENDERER, componentFamily = BreadCrumb.COMPONENT_FAMILY)
+@FacesRendererInfo
 public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
 
     @Override
