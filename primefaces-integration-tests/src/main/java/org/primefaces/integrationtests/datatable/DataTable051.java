@@ -28,6 +28,7 @@ import org.primefaces.integrationtests.jpa.entity.CountryJpaEntity;
 import org.primefaces.integrationtests.jpa.entity.CountryJpaEntity.Continent;
 import org.primefaces.integrationtests.jpa.service.CountryJpaService;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,6 +49,7 @@ import lombok.Data;
 @Data
 public class DataTable051 implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final LazyDataModelCallTracker lazyDataModelCallTracker = new LazyDataModelCallTracker();

@@ -91,6 +91,19 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
             implicitDefaultValue = "startsWith")
     public abstract String getFilterMatchMode();
 
+    @Property(description = "The filter value's type, enabling the end user to pick the filter match mode (comparator) at runtime from"
+            + " a dropdown rendered next to the filter input. A comma separated list whose entries are concatenated in order;"
+            + " each entry is a shorthand keyword, the \"shortcuts\" token, or a single match mode. Keywords: \"numeric\""
+            + " (=, !=, <, >, <=, >=, between, in list, is null), \"text\" (contains, starts with, ends with, equals, is empty,"
+            + " is null, matches regex, in list), \"date\"/\"time\"/\"datetime\" (equals, before, after, between, is empty),"
+            + " \"boolean\" (true, false, is null), \"enum\" (is, is any of, is empty) or \"array\" (contains,"
+            + " contains any/all/none, is empty). Add \"shortcuts\" to a date/time/datetime column for the relative"
+            + " predicates - today, this week, last N days, ... and last/next N minutes/hours - which are opt-in because"
+            + " there are up to 22 of them, e.g., \"date,shortcuts\"; individual ones can be added instead, e.g."
+            + " \"date,today,thisWeek\". When not set, the type is auto-derived from the column's Java type; set to"
+            + " \"none\" to opt a column out of the dropdown entirely and keep a plain filter input fixed to filterMatchMode.")
+    public abstract String getFilterValueType();
+
     @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",
             defaultValue = "bottom")
     public abstract String getFilterPosition();
@@ -166,7 +179,7 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     public abstract boolean isSelectRow();
 
     @Property(description = "Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified."
-            + " Only necessary when the column header is not human readable (e.g. empty header or icon-only header).")
+            + " Only necessary when the column header is not human readable (e.g., empty header or icon-only header).")
     public abstract String getAriaHeaderText();
 
     @Property(description = "Custom pluggable exportFunction.")

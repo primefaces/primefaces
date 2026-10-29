@@ -23,6 +23,30 @@
         border-start-end-radius: var(--p-content-border-radius);
     }
 
+    /* built-in "Clear Filters" button (see DataTable#clearFiltersButton), rendered ahead of any header facet
+       content the developer declares - a small trailing margin keeps it from sitting flush against it */
+    .ui-datatable-clear-filters-button {
+        margin-inline-end: .5rem;
+        vertical-align: middle;
+        flex: 0 0 auto;
+    }
+
+    /* only applied (see DataTableRenderer#encodeMarkup) when both the button above and a header facet are
+       present - puts them on one row instead of the button's own block-level line sitting above whatever the
+       facet renders. The facet's own top-level element (whatever the developer declared) is always this flex
+       row's last/only other child, so it's the one stretched to fill the remaining width - if it lays its own
+       content out with e.g., `justify-content: space-between`, that still ends up pinned to this row's far edges. */
+    .ui-datatable-header-with-clear-filters {
+        display: flex;
+        align-items: center;
+        text-align: start;
+
+        > :last-child {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+    }
+
     .ui-datatable-footer {
         background: var(--p-datatable-footer-background);
         color: var(--p-datatable-footer-color);
@@ -190,6 +214,75 @@
         }
     }
 
+    /* Stacked header layout, switched on per header row by datatable.widget.js#alignColumnHeaderRow() as soon as
+       one of that row's cells can no longer fit its title and its icons on a single line. Header cells lay their
+       content out inline, so without this each column breaks wherever its own title happens to run out of room: a
+       long title pushes that column's icons - and with them its filter input - a line lower than its neighbours',
+       leaving the header ragged even though every cell holds the same three pieces. Stacked, the title takes a row
+       of its own (wrapping within it as needed), the sort/filter-match-mode icons the next and the filter input the
+       last; the widget then equalizes the title heights so those icon and filter rows line up across all columns.
+       `vertical-align` has to come along: the browser default centres a cell's content in the row, which would
+       re-stagger exactly the cells that hold fewer than the full three rows. */
+    thead th.ui-column-header-stacked {
+        vertical-align: top;
+
+        > .ui-column-title {
+            display: block;
+        }
+    }
+
+    /* filter match-mode picker (icon + overlay menu). Sits next to the sort icons in the
+       header rather than as a dropdown competing with the value input for space in a narrow column. */
+    .ui-column-filter-mode-icon {
+        display: inline-flex;
+        /* Real horizontal padding, with NO negative horizontal margin to cancel it. This button sits inside the
+           sortable <th>, so a click landing beside the glyph falls through to the header's own sort handler and
+           sorts the column instead of opening the match-mode menu. The padding turns those pixels into dead
+           space owned by this button, which both makes the glyph easy to hit and puts visible separation between
+           it and the sort icon before it. Cancelling the padding with negative margins (as a first attempt did)
+           looks tidy but achieves neither: the gap stays as tight as before AND the button ends up overlapping
+           the sort icon, stealing its clicks. Only the vertical margin is negative, cancelling the vertical
+           padding so the taller hit area does not grow the header row.
+
+           The padding is asymmetric on purpose. After it sits this column's active-mode badge, which belongs
+           with this icon (it shows which mode is applied, and clicking it opens this very menu), so it is kept
+           close; before it sits the sort icon, an unrelated control, so that gap is the wider of the two. Losing
+           hit area on the badge side costs nothing, because the badge forwards its own clicks here anyway. */
+        margin: -6px 0;
+        padding-block: 3px;
+        padding-inline: 8px 3px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        vertical-align: middle;
+        font-size: 1rem;
+        color: inherit;
+
+        &.ui-column-filter-mode-icon-active {
+            color: var(--p-primary-color);
+        }
+    }
+
+    /* badge beside the trigger icon carrying the active match mode's own symbol (see MatchMode#symbol()) - lets a
+       reader tell which kind of filter is applied to a column without opening the menu, and (see
+       datatable.widget.js#bindFilterMatchModeMenu) opens that same menu when clicked. Kept in sync with the
+       selected mode by datatable.widget.js#updateFilterMatchModeIconState(). */
+    .ui-column-filter-mode-active-icon {
+        display: inline-flex;
+        /* no margin of its own: the trigger's own 3px trailing padding is the whole gap, which reads as "these two
+           belong together" against the wider gap to the sort icon - see .ui-column-filter-mode-icon */
+        margin-inline-start: 0;
+        vertical-align: middle;
+        font-size: .875rem;
+        font-weight: 700;
+        color: var(--p-primary-color);
+        cursor: pointer;
+
+        &.p-hidden {
+            display: none;
+        }
+    }
+
     .ui-column-filter {
         display: block;
         box-sizing: border-box;
@@ -206,6 +299,34 @@
 
     .ui-column-customfilter {
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
+    }
+
+    /* hidden while a value-less match mode (e.g., "is empty") is selected - the mode is the whole predicate */
+    .ui-column-filter.p-hidden {
+        display: none;
+    }
+
+    .ui-column-filter-date,
+    .ui-column-filter-date-range {
+        /* without an explicit display, these fall back to a plain <span>'s "inline" default, which some browsers'
+           WebDriver isDisplayed() checks fail to report as visible despite being rendered - match .ui-column-filter's
+           own block layout instead, which doesn't have that problem */
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        margin: var(--p-datatable-column-filter-gap) auto auto auto;
+
+        /* the shadow DatePicker's own rendered <input> has no width of its own outside a ".ui-fluid" form - it
+           defaults to the browser's native text-input width (~270px), overflowing straight past this wrapper (and
+           the column itself) on anything narrower. Force it down to the wrapper's own 100%. */
+        input {
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        &.p-hidden {
+            display: none;
+        }
     }
 
     /* focusable for the keyboard row navigation: ring inside on keyboard focus, the table would clip an outer one */
@@ -763,6 +884,85 @@
 
 .ui-datatable-summary {
     display: none;
+}
+
+/* filter match-mode menu: relocated to document.body at runtime (see datatable.widget.js#bindFilterMatchModeMenu)
+   so scrollable/frozen headers' `overflow: hidden` doesn't clip it - position/z-index are set at show-time by the
+   widget. Not scoped under `.ui-datatable` (unlike the trigger icon, which stays put) since it no longer lives
+   there; an explicit background/border/shadow is set rather than relying on the cascade to reach a relocated
+   element. Deliberately no max-height/overflow-y: the longest presets (date/datetime) run to 28-32 items, and the
+   menu should always open in full - the page scrolls around it instead, same as any other tall absolute overlay. */
+.ui-column-filter-mode-menu {
+    position: absolute;
+    min-width: 10rem;
+    padding: var(--p-menu-list-padding);
+    margin: 0;
+    list-style: none;
+    /* a dropdown panel like the column toggler, so the overlay-select tokens rather than the --p-menu-* ones
+       (an inline p:menu's own background, translucent in the Glass preset) - see also base/backdrop.css */
+    background: var(--p-overlay-select-background);
+    color: var(--p-overlay-select-color);
+    border: 1px solid var(--p-overlay-select-border-color);
+    border-radius: var(--p-overlay-select-border-radius);
+    box-shadow: var(--p-overlay-select-shadow);
+
+    &.p-hidden {
+        display: none;
+    }
+
+    .ui-menuitem-link {
+        display: flex;
+        align-items: center;
+        gap: var(--p-menu-item-gap);
+        padding: var(--p-menu-item-padding);
+        border-radius: var(--p-menu-item-border-radius);
+        white-space: nowrap;
+        color: var(--p-menu-item-color);
+        text-decoration: none;
+    }
+
+    /* first "column" of a menu row: the mode's own symbol (see MatchMode#symbol()), or - for the "Clear" action
+       row - the pi-filter-slash icon (see DataTable#CLEAR_FILTER_ICON_CLASS) */
+    .ui-column-filter-mode-menuitem-icon {
+        flex: 0 0 auto;
+        width: 1rem;
+        text-align: center;
+        font-size: .875rem;
+        font-weight: 700;
+        color: var(--p-menu-item-icon-color);
+    }
+
+    /* second "column" of a menu row: the mode's label text */
+    .ui-column-filter-mode-menuitem-label {
+        flex: 1 1 auto;
+    }
+
+    .ui-menuitem:hover .ui-menuitem-link,
+    .ui-menuitem-link:focus-visible {
+        background: var(--p-menu-item-focus-background);
+        color: var(--p-menu-item-focus-color);
+
+        .ui-column-filter-mode-menuitem-icon {
+            color: var(--p-menu-item-icon-focus-color);
+        }
+    }
+
+    .ui-menuitem.ui-state-active .ui-menuitem-link {
+        background: var(--p-menu-item-focus-background);
+        color: var(--p-menu-item-focus-color);
+        font-weight: 700;
+
+        .ui-column-filter-mode-menuitem-icon {
+            color: inherit;
+        }
+    }
+
+    /* the "clear this column's filter" action row - always the first item, visually separated from the
+       selectable modes below it, since it's an action rather than one more mode to pick */
+    .ui-column-filter-mode-menuitem-clear {
+        border-bottom: 1px solid var(--p-menu-separator-border-color);
+        margin-bottom: .25rem;
+    }
 }
 
 .ui-datatable-scrollable-body {
