@@ -199,7 +199,7 @@ mvn verify -f primefaces-integration-tests/pom.xml \
 # Single method
 ... -Dit.test=DataTable001Test#basicAndPaginator
 
-# Live app for manual debugging (Jetty), then open http://localhost:8080/integrationtests/
+# Live app for manual debugging (Jetty), then open http://localhost:8080/
 mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 ```
 

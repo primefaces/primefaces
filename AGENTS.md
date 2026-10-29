@@ -109,7 +109,7 @@ mvn verify -f primefaces-integration-tests/pom.xml -Pintegration-tests,parallel-
 
 # Run integration tests as a live web app for manual debugging
 mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
-# Then open http://localhost:8080/integrationtests/
+# Then open http://localhost:8080/
 ```
 
 **Integration test profiles:**
