@@ -235,5 +235,6 @@
   - [TreeNode](/components/treenode.md)
   - [TreeTable](/components/treetable.md)
   - [TriStateCheckbox](/components/tristatecheckbox.md)
+  - [TriStateManyCheckbox](/components/tristatemanycheckbox.md)
   - [Video](/components/video.md)
   - [Wizard](/components/wizard.md)

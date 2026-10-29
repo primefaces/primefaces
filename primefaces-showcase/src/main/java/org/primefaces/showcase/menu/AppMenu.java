@@ -142,6 +142,7 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("TextEditor", "/ui/input/textEditor"));
         formMenuItems.add(new MenuItem("ToggleSwitch", "/ui/input/toggleSwitch"));
         formMenuItems.add(new MenuItem("TriStateCheckbox", "/ui/input/triStateCheckbox"));
+        formMenuItems.add(new MenuItem("TriStateManyCheckbox", "/ui/input/triStateManyCheckbox", "New"));
         menuCategories.add(new MenuCategory("Form", formMenuItems));
         //FORM CATEGORY END
 

@@ -3810,6 +3810,12 @@
         --p-treetable-row-cancel-icon: var(--p-icon-close);
     }
 
+    /* tristatemanycheckbox */
+    :root, [data-p-scope] {
+        --p-tristatemanycheckbox-gap: 1rem;
+        --p-tristatemanycheckbox-row-gap: 0.5rem;
+    }
+
     /* widget */
     :root, [data-p-scope] {
         --p-widget-content-background: var(--p-content-background);

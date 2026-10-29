@@ -107,7 +107,7 @@ primefaces/src/main/frontend/
                                              imagecropper, inputotp, inputphone, keyboard, knob, lifecycle, log,
                                              mindmap, organigram,
                                              schedule, scrollpanel, signature, stack, terminal, texteditor,
-                                             timeline) with their third-party CSS
+                                             timeline, tristatemanycheckbox) with their third-party CSS
   build/scripts/bundle.mjs                   esbuild: bundles the index.css files and the themes, inlines the icons
   build/scripts/themes/check.mjs             conventions check, runs before the build (see below)
   build/scripts/themes/generate-density.mjs  generates themes/density/*.css from the presets (--check: up to date)

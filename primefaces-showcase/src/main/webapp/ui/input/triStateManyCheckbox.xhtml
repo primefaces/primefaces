@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TriStateManyCheckbox
+    </ui:define>
+
+    <ui:define name="description">
+        TriStateManyCheckbox is a group of checkboxes with three states each. The value is a Map of the item values to their
+        states: "0" (unchecked), "1" (checked) and "2" (crossed), or objects with a converter.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tristatemanycheckbox"/>
+    <ui:param name="widgetLink" value="TriStateManyCheckbox"/>
+    <ui:param name="tagName" value="triStateManyCheckbox"/>
+
+    <ui:define name="implementation">
+        <p:growl showDetail="true">
+            <p:autoUpdate/>
+        </p:growl>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Basic</h5>
+                <p class="mt-0">A click, Space or Enter moves an item to the next state, the arrow keys move forward and back.</p>
+                <p:triStateManyCheckbox id="basic" value="#{triStateManyCheckboxView.basic}">
+                    <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                    <p:ajax update="basicValue"/>
+                </p:triStateManyCheckbox>
+                <p class="mb-0">Value: <h:outputText id="basicValue" value="#{triStateManyCheckboxView.basic}"/></p>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Vertical with Titles</h5>
+                <p:triStateManyCheckbox value="#{triStateManyCheckboxView.vertical}" layout="pageDirection"
+                                        stateOneTitle="Don't care" stateTwoTitle="Love it" stateThreeTitle="Hate it">
+                    <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                </p:triStateManyCheckbox>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Ajax and Custom Icons</h5>
+                <p class="mt-0">The <i>change</i> event fires when the state of an item changes.</p>
+                <p:triStateManyCheckbox value="#{triStateManyCheckboxView.ajax}"
+                                        stateOneIcon="pi pi-circle" stateTwoIcon="pi pi-heart-fill" stateThreeIcon="pi pi-ban">
+                    <f:selectItem itemLabel="Cheese" itemValue="Cheese"/>
+                    <f:selectItem itemLabel="Olives" itemValue="Olives"/>
+                    <p:ajax event="change" listener="#{triStateManyCheckboxView.onChange}"/>
+                </p:triStateManyCheckbox>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Converter</h5>
+                <p class="mt-0">The converter turns the states into objects of the model, here an enum.</p>
+                <p:triStateManyCheckbox value="#{triStateManyCheckboxView.converted}"
+                                        converter="#{triStateManyCheckboxView.preferenceConverter}">
+                    <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                    <p:ajax update="convertedValue"/>
+                </p:triStateManyCheckbox>
+                <p class="mb-0">Value: <h:outputText id="convertedValue" value="#{triStateManyCheckboxView.converted}"/></p>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Sizes</h5>
+                <div class="flex flex-column gap-3">
+                    <p:triStateManyCheckbox value="#{triStateManyCheckboxView.basic}" styleClass="p-chkbox-sm">
+                        <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                    </p:triStateManyCheckbox>
+                    <p:triStateManyCheckbox value="#{triStateManyCheckboxView.basic}" styleClass="p-chkbox-lg">
+                        <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                    </p:triStateManyCheckbox>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Disabled and Readonly</h5>
+                <div class="flex flex-column gap-3">
+                    <p:triStateManyCheckbox value="#{triStateManyCheckboxView.basic}" disabled="true">
+                        <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                    </p:triStateManyCheckbox>
+                    <p:triStateManyCheckbox value="#{triStateManyCheckboxView.basic}" readonly="true">
+                        <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                    </p:triStateManyCheckbox>
+                    <p:triStateManyCheckbox value="#{triStateManyCheckboxView.basic}">
+                        <f:selectItems value="#{triStateManyCheckboxView.toppings}" var="topping" itemDisabled="#{topping eq 'Cheese'}"/>
+                    </p:triStateManyCheckbox>
+                </div>
+            </div>
+        </h:form>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Validation</h5>
+                <p class="mt-0">Required: at least one item must not be unchecked.</p>
+                <div class="flex flex-wrap align-items-start gap-3">
+                    <div>
+                        <p:triStateManyCheckbox id="required" value="#{triStateManyCheckboxView.required}" required="true"
+                                                label="Toppings">
+                            <f:selectItems value="#{triStateManyCheckboxView.toppings}"/>
+                        </p:triStateManyCheckbox>
+                        <p:message for="required"/>
+                    </div>
+                    <p:commandButton value="Submit" action="#{triStateManyCheckboxView.submit}" update="@form"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

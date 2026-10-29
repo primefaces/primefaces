@@ -138,6 +138,7 @@ Currently, only the following components are implemented (partially):
 - Tree
 - TreeTable
 - TriStateCheckbox
+- TriStateManyCheckbox
 
 ## Usage
 
