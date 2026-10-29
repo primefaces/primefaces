@@ -117,6 +117,11 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
             defaultValue = "false")
     public abstract boolean isFilterNormalize();
 
+    @Property(description = "When enabled, the option that gets the focus while navigating with the keyboard is selected."
+            + " When disabled, keyboard navigation and filtering only highlight an option, which is selected with enter, tab or click.",
+            defaultValue = "true")
+    public abstract boolean isSelectOnFocus();
+
     @Property(description = "Maximum number of characters that may be entered in this field.",
             defaultValue = "Integer.MAX_VALUE")
     public abstract int getMaxlength();

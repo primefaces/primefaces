@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu015.value}" filter="true" filterMatchMode="contains"
+                             selectOnFocus="false">
+                <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true" />
+                <f:selectItems value="#{selectOneMenu015.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}" />
+                <p:ajax event="change" listener="#{selectOneMenu015.onChange}" />
+            </p:selectOneMenu>
+
+            <p:commandButton id="button" update="@form" value="Submit" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

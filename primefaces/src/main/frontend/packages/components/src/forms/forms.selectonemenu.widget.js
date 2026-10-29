@@ -82,6 +82,8 @@
  * @prop {string} cfg.label Text of the label for the input.
  * @prop {string} cfg.labelTemplate Displays label of the element in a custom template. Valid placeholder is `{0}`,
  * which is replaced with the value of the currently selected item.
+ * @prop {boolean} cfg.selectOnFocus `true` if the option that gets the focus while navigating with the keyboard is
+ * selected, or `false` if it is only highlighted until it is selected with enter, tab or click.
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
  * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
@@ -117,6 +119,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         this.cfg.dynamic = !!this.cfg.dynamic;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
+        this.cfg.selectOnFocus = this.cfg.selectOnFocus !== false;
         this.isDynamicLoaded = false;
         this.isTabbing = false;
         this.searchValue = '';
@@ -554,15 +557,19 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * Highlight the given selectable option.
      * @private
      * @param {JQuery} item Option to highlight.
+     * @param {boolean} [keepLabel] `true` to keep the label of the selected option, or `false` to show the label of the
+     * highlighted option.
      */
-    highlightItem(item) {
+    highlightItem(item, keepLabel) {
         this.items.attr('aria-selected', false);
         this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
 
         if(item.length > 0) {
             item.addClass('ui-state-highlight');
             item.attr('aria-selected', true);
-            this.setLabel(item.data('label'));
+            if(!keepLabel) {
+                this.setLabel(item.data('label'));
+            }
         }
     }
 
@@ -704,12 +711,18 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 if ($this.panel.is(':hidden')) {
                     $this.callHandleMethod(function() {
                         var highlightItem = $this.items.eq(matchIndex);
-                        $this.selectItem(highlightItem);
+                        if ($this.cfg.selectOnFocus) {
+                            $this.selectItem(highlightItem);
+                        }
+                        else {
+                            $this.highlightItem(highlightItem, true);
+                            $this.show();
+                        }
                     }, e);
                 }
                 else {
                     var highlightItem = $this.items.eq(matchIndex);
-                    $this.highlightItem(highlightItem);
+                    $this.highlightItem(highlightItem, !$this.cfg.selectOnFocus);
                     PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                 }
             } else {
@@ -740,10 +753,16 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                             // select next item after the current selection
                             if (currentIndex > selectedIndex) {
                                 if ($this.panel.is(':hidden')) {
-                                    $this.selectItem(currentItem);
+                                    if ($this.cfg.selectOnFocus) {
+                                        $this.selectItem(currentItem);
+                                    }
+                                    else {
+                                        $this.highlightItem(currentItem, true);
+                                        $this.show();
+                                    }
                                 }
                                 else {
-                                    $this.highlightItem(currentItem);
+                                    $this.highlightItem(currentItem, !$this.cfg.selectOnFocus);
                                     PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
                                 }
                                 return false;
@@ -857,7 +876,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             }
         }
     
-        if(event.altKey) {
+        if(event.altKey || (isHidden && !this.cfg.selectOnFocus)) {
             this.show();
         }
         else if(next.length === 1) {
@@ -865,7 +884,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 this.selectItem(next);
             }
             else {
-                this.highlightItem(next);
+                this.highlightItem(next, !this.cfg.selectOnFocus);
                 PrimeFaces.scrollInView(this.itemsWrapper, next);
             }
             this.changeAriaValue(next);
@@ -901,12 +920,15 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             }
         }
 
-        if(prev.length === 1) {
+        if(isHidden && !this.cfg.selectOnFocus) {
+            this.show();
+        }
+        else if(prev.length === 1) {
             if(this.panel.is(':hidden')) {
                 this.selectItem(prev);
             }
             else {
-                this.highlightItem(prev);
+                this.highlightItem(prev, !this.cfg.selectOnFocus);
                 PrimeFaces.scrollInView(this.itemsWrapper, prev);
             }
             this.changeAriaValue(prev);
@@ -1408,7 +1430,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
         if(firstVisibleItem.length) {
-            this.highlightItem(firstVisibleItem);
+            this.highlightItem(firstVisibleItem, !this.cfg.selectOnFocus);
             PrimeFaces.scrollInView(this.itemsWrapper, firstVisibleItem);
         }
 
