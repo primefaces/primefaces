@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" widgetVar="dtWidget" value="#{dataTable059.progLanguages}" var="lang" paginator="true" rows="3">
+
+                <p:columns id="cols" value="#{dataTable059.columns}" var="column" columnIndexVar="colIndex"
+                           headerText="#{colIndex}:#{column.header}">
+                    <h:outputText value="#{colIndex}:#{lang[column.property]}"/>
+                </p:columns>
+
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
