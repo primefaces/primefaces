@@ -90,7 +90,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         encodeInput(context, component, valueToRender);
         encodeLabel(context, component, selectItems, valueToRender);
         encodeTrigger(context);
-        encodePanel(context, component, selectItems);
+        encodePanel(context, component, selectItems, valueToRender);
 
         writer.endElement("div");
     }
@@ -158,7 +158,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, CascadeSelect component, List<SelectItem> itemList) throws IOException {
+    protected void encodePanel(FacesContext context, CascadeSelect component, List<SelectItem> itemList, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String panelId = component.getPanelClientId();
         SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
@@ -169,13 +169,14 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.startElement("div", null);
         writer.writeAttribute("class", CascadeSelect.ITEMS_WRAPPER_CLASS, null);
 
-        encodeList(context, component, items, false);
+        encodeList(context, component, items, false, valueToRender);
 
         writer.endElement("div");
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, CascadeSelect component, SelectItem[] items, boolean isSublist) throws IOException {
+    protected void encodeList(FacesContext context, CascadeSelect component, SelectItem[] items, boolean isSublist, String valueToRender)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = isSublist ? CascadeSelect.PANEL_ITEMS_CLASS + " " + CascadeSelect.SUBLIST_CLASS : CascadeSelect.PANEL_ITEMS_CLASS;
 
@@ -185,18 +186,18 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.writeAttribute("aria-orientation", "horizontal", null);
         renderARIARequired(context, component);
 
-        encodeListItems(context, component, items);
+        encodeListItems(context, component, items, valueToRender);
 
         writer.endElement("ul");
     }
 
-    protected void encodeListItems(FacesContext context, CascadeSelect component, SelectItem[] selectItems) throws IOException {
+    protected void encodeListItems(FacesContext context, CascadeSelect component, SelectItem[] selectItems, String valueToRender)
+            throws IOException {
         if (selectItems != null && selectItems.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
             UIComponent contentFacet = component.getContentFacet();
             Converter converter = ComponentUtils.getConverter(context, component);
             String var = component.getVar();
-            String valueToRender = ComponentUtils.getValueToRender(context, component);
 
             for (SelectItem selectItem : selectItems) {
                 boolean isGroup = selectItem instanceof SelectItemGroup;
@@ -245,7 +246,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
                     SelectItem[] groupItems = group.getSelectItems();
 
                     if (groupItems != null && groupItems.length > 0) {
-                        encodeList(context, component, group.getSelectItems(), true);
+                        encodeList(context, component, groupItems, true, valueToRender);
                     }
                 }
 

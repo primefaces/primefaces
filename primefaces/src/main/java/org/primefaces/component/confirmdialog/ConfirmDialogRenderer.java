@@ -138,8 +138,11 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = component.getMessage();
         UIComponent messageFacet = component.getMessageFacet();
-        // the "alert" severity is drawn with the warn icon (--p-dialog-warn-icon)
-        String severity = "alert".equals(component.getSeverity()) ? "warn" : component.getSeverity();
+        // the dialog has icons for info, error and fatal; "alert" and any other severity get the warn icon (--p-dialog-warn-icon)
+        String severity = component.getSeverity();
+        if (!"info".equals(severity) && !"error".equals(severity) && !"fatal".equals(severity)) {
+            severity = "warn";
+        }
         String severityIcon = "p-icon p-" + severity + "-icon p-dialog-" + severity + "-icon " + ConfirmDialog.SEVERITY_ICON_CLASS;
 
         writer.startElement("div", null);

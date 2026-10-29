@@ -203,7 +203,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", "p-button-icon-left " + icon + " p-c", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
         writer.endElement("span");
 
         //text
