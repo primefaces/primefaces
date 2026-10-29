@@ -73,6 +73,7 @@
   - [BreadCrumb](/components/breadcrumb.md)
   - [Button](/components/button.md)
   - [Cache](/components/cache.md)
+  - [Callback](/components/callback.md)
   - [Captcha](/components/captcha.md)
   - [Card](/components/card.md)
   - [Carousel](/components/carousel.md)

@@ -24,3 +24,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
     * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.
     * [TriStateManyCheckbox](/components/tristatemanycheckbox.md): group of checkboxes with three states each, the value is a Map of the item values to their states (moved from PrimeFaces Extensions).
+    * [Callback](/components/callback.md): client behavior that executes JavaScript on an event of a component instead of an AJAX request (moved from PrimeFaces Extensions as `pe:javascript`).

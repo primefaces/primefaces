@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Callback</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Callback executes JavaScript on an event of a component instead of an AJAX request. Like <b>p:ajax</b> it is
+        attached to an event of the component, the JavaScript gets <i>source</i>, <i>event</i>, <i>params</i> and
+        <i>ext</i>. Returning <i>false</i> stops the following behaviors of the event, e.g. a <b>p:ajax</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/callback"/>
+    <ui:param name="tagName" value="callback"/>
+
+    <ui:define name="implementation">
+        <p:growl id="growl" showDetail="true"/>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Basic</h5>
+                <p:selectOneMenu id="city" widgetVar="cityMenu" styleClass="mr-3">
+                    <f:selectItem itemLabel="Berlin" itemValue="Berlin"/>
+                    <f:selectItem itemLabel="Paris" itemValue="Paris"/>
+                    <f:selectItem itemLabel="Rome" itemValue="Rome"/>
+                    <p:callback event="change"
+                                execute="document.getElementById('basicOutput').textContent = event + ' of ' + source + ': ' + PF('cityMenu').getSelectedValue();"/>
+                </p:selectOneMenu>
+                <span id="basicOutput"></span>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Event Parameters</h5>
+                <p class="mt-0">The <i>slideEnd</i> event passes the value of the slider in <i>params</i>.</p>
+                <p:inputText id="sliderInput" styleClass="mb-3"/>
+                <p:slider for="sliderInput" styleClass="w-20rem">
+                    <p:callback event="slideEnd"
+                                execute="document.getElementById('sliderOutput').textContent = 'Slide ended at ' + params[0].value;"/>
+                </p:slider>
+                <p id="sliderOutput" class="mb-0"></p>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Before p:ajax</h5>
+                <p class="mt-0">The AJAX request is only sent if the callback does not return <i>false</i>.</p>
+                <p:toggleSwitch value="#{callbackView.active}">
+                    <p:callback event="change" execute="return confirm('Send the AJAX request?');"/>
+                    <p:ajax listener="#{callbackView.onChange}" update="growl"/>
+                </p:toggleSwitch>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

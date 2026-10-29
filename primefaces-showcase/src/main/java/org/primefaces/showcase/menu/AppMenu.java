@@ -61,6 +61,7 @@ public class AppMenu {
         ajaxMenuItems.add(new MenuItem("Validation", "/ui/ajax/validation"));
         ajaxMenuItems.add(new MenuItem("RemoteCommand", "/ui/ajax/remoteCommand"));
         ajaxMenuItems.add(new MenuItem("Observer", "/ui/ajax/observer"));
+        ajaxMenuItems.add(new MenuItem("Callback", "/ui/ajax/callback", "New"));
         ajaxMenuItems.add(new MenuItem("Poll", "/ui/ajax/poll"));
         ajaxMenuItems.add(new MenuItem("Fragment", "/ui/ajax/fragment"));
         ajaxMenuItems.add(new MenuItem("Status", "/ui/ajax/status"));
