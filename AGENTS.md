@@ -82,7 +82,7 @@ requested task.
 mvn clean install
 
 # Fast build — skips tests, javadoc/sources, checkstyle, license and VDL steps
-# (`quick` and `minify` are declared in primefaces/pom.xml, so they only affect that module)
+# (`quick` applies to all modules, primefaces/pom.xml adds its own skips; `minify` only affects that module)
 mvn clean install -Pquick
 
 # Parallel + minified production build
@@ -109,8 +109,16 @@ mvn verify -f primefaces-integration-tests/pom.xml -Pintegration-tests,parallel-
 
 # Run integration tests as a live web app for manual debugging
 mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
-# Then open http://localhost:8080/
+# Then open http://localhost:8080/ (a directory listing, e.g. http://localhost:8080/datatable/dataTable001.xhtml)
 ```
+
+**Showcase** (manual testing):
+- Start: `mvn -B -f primefaces-showcase/pom.xml clean jetty:run -Pnon-ee,mojarra-4.0`, URL `http://localhost:8080/`
+  (same port as the integration tests' `jetty:run`, so only one of them can run).
+- It is often already running: check `curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/index.xhtml` (200/302 =
+  up; the integration tests have no `index.xhtml`, so they answer 404) before starting it, never stop a running one. Poll every 2s for at most 2 minutes, then read the jetty log instead of waiting.
+- XHTML in `src/main/webapp` is served from source (just reload); Java classes and the PrimeFaces jar need a restart (no
+  automatic redeployment). Changes in `primefaces/` need `mvn -B -o install -Pquick -f primefaces/pom.xml` first.
 
 **Integration test profiles:**
 - Faces impl: `mojarra-4.0`, `mojarra-4.1`, `myfaces-4.0`, `myfaces-4.1`
@@ -129,13 +137,13 @@ mvn validate
 - Rules: `conf/checkstyle.xml` (main), `conf/checkstyle-tests.xml` (tests)
 - Max line length: 160 characters; indentation: 4 spaces (no tabs)
 - MIT license header required in all source files (`conf/header.txt`), enforced by `license-maven-plugin`
-- No compilation warnings allowed (`showWarnings`/`showDeprecation` are on); all sources must be in English
+- Don't introduce compilation warnings (`showWarnings`/`showDeprecation` are on, but the build does not fail on them); all sources must be in English
 
 ## Frontend (TypeScript/JavaScript)
 
 **Location:** `primefaces/src/main/frontend/`
 
-**Toolchain:** Yarn 4 + ESBuild + TypeScript — Node.js and Yarn are downloaded automatically by `frontend-maven-plugin` during the Maven build (versions pinned in `primefaces/pom.xml`: Node v22.21.1, Yarn v1.22.22).
+**Toolchain:** Yarn 4 (Plug'n'Play, checked in as `.yarn/releases/yarn-4.9.2.cjs`) + ESBuild + TypeScript — Node.js and Yarn are downloaded automatically by `frontend-maven-plugin` during the Maven build (pinned in `primefaces/pom.xml`: Node v22.21.1, Yarn v1.22.22, which hands over to Yarn 4 via `yarnPath` in `.yarnrc.yml`).
 
 ```bash
 # From primefaces/src/main/frontend/
@@ -154,13 +162,14 @@ yarn tsc -b             # TypeScript type check only
   `yarn run build:themes:check` enforces them (also part of `build:bundle`).
 - A widget in its own package (e.g. `packages/knob/knob`) keeps its CSS there (`index.css` -> `<package>/<name>.css`, added
   as `@ResourceDependency` of the component), only the widgets of `components.js` go into `components.css`.
-- Set `NODE_ENV=production` for minified output; default is `development`.
+- Minified output unless `NODE_ENV=development`: the Maven build passes `development` by default and `production` with
+  `-Pminify`; running `yarn run build:bundle` directly without `NODE_ENV` builds minified.
 
 Key frontend dependencies: jQuery 4 (no jQuery UI: drag and drop, sorting and resizing are PrimeFaces' own pointer event interactions `PrimeFaces.interactions` in `packages/core/src/interaction`; widgets call them directly, there are no jQuery plugins `$.fn.draggable`, ... anymore), Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
 
 ## Code Generation (CDK)
 
-The `primefaces-cdk` annotation processor runs at compile time to generate `*Impl` classes and taglib XMLs from annotations on component classes (annotations live in `primefaces-cdk/primefaces-cdk-api`):
+The `primefaces-cdk` annotation processor runs at compile time to generate `*Impl` classes from annotations on component classes; the taglib XML is generated afterwards from the compiled classes by the CDK Maven plugin (goal `generate-taglib`, phase `process-classes`). The annotations live in `primefaces-cdk/primefaces-cdk-api`:
 - `@FacesComponentBase`, `@FacesBehaviorBase`, `@FacesConverterBase`, `@FacesValidatorBase` — mark base classes
 - `@Property`, `@Facet` — declare component attributes and facets
 
@@ -176,6 +185,6 @@ Do not edit generated `*Impl` files directly; edit the annotated base class inst
 
 ## CI
 
-- **Build CI:** `.github/workflows/build.yml` (push/PR) — builds on Java 17 and 25, then runs the integration tests headless in Chrome with `theme-aura,csp` across Java 17/21/25 × Mojarra/MyFaces 4.0/4.1
+- **Build CI:** `.github/workflows/build.yml` (push/PR) — builds on Java 17 and 25, then runs the integration tests headless in Chrome with `theme-aura,csp` with Mojarra and MyFaces: 4.0 on Java 17, 4.1 on Java 21, both on Java 25
 - **Nightly integration tests:** `.github/workflows/nightly.yml` (daily at 06:00 UTC, broader matrix over Java versions, Faces impls, browsers, and theme combinations), plus `nightly-safari.yml` and `nightly-file.upload.yml`
 - **Publishing:** `publish-snapshot.yml`, `publish-vdldoc.yml`, `deploy-showcase.yml`, `release.yml`
