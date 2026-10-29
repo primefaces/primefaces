@@ -73,11 +73,11 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
 
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
-        this.headers = this.jq.find('> .ui-panelmenu-panel > h3.ui-panelmenu-header:not(.ui-state-disabled)');
-        this.menuContent = this.jq.find('> .ui-panelmenu-panel > .ui-panelmenu-content');
-        this.menuitemLinks = this.menuContent.find('.ui-menuitem-link:not(.ui-state-disabled)');
-        this.menuText = this.menuitemLinks.find('.ui-menuitem-text');
-        this.treeLinks = this.menuContent.find('.ui-menu-parent > .ui-menuitem-link:not(.ui-state-disabled)');
+        this.headers = this.jq.find('> .p-panelmenu-panel > h3.p-panelmenu-header:not(.p-state-disabled)');
+        this.menuContent = this.jq.find('> .p-panelmenu-panel > .p-panelmenu-content');
+        this.menuitemLinks = this.menuContent.find('.p-menuitem-link:not(.p-state-disabled)');
+        this.menuText = this.menuitemLinks.find('.p-menuitem-text');
+        this.treeLinks = this.menuContent.find('.p-menu-parent > .p-menuitem-link:not(.p-state-disabled)');
 
         //keyboard support
         this.focusedItem = null;
@@ -85,7 +85,6 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
 
         //ScreenReader support
         this.menuText.attr('role', 'menuitem');
-        this.treeLinks.find('> .ui-menuitem-text').attr('aria-expanded', "false");
 
         this.bindEvents();
 
@@ -105,13 +104,13 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
 
         this.headers.on("mouseover", function() {
             var element = $(this);
-            if(!element.hasClass('ui-state-active')) {
-                element.addClass('ui-state-hover');
+            if(!element.hasClass('p-state-active')) {
+                element.addClass('p-state-hover');
             }
         }).on("mouseout", function() {
             var element = $(this);
-            if(!element.hasClass('ui-state-active')) {
-                element.removeClass('ui-state-hover');
+            if(!element.hasClass('p-state-active')) {
+                element.removeClass('p-state-hover');
             }
         }).on("click", function(e) {
             var header = $(this);
@@ -120,7 +119,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
                 $this.collapseActiveSibling(header);
             }
 
-            if (header.hasClass('ui-state-active'))
+            if (header.hasClass('p-state-active'))
                 $this.collapseRootSubmenu($(this));
             else
                 $this.expandRootSubmenu($(this), false);
@@ -131,12 +130,12 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         });
 
         this.menuitemLinks.on("mouseover", function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         }).on("mouseout", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on("click", function(e) {
             var currentLink = $(this);
-            $this.focusItem(currentLink.closest('.ui-menuitem'));
+            $this.focusItem(currentLink.closest('.p-menuitem'));
             PrimeFaces.utils.openLink(e, currentLink);
         });
 
@@ -163,10 +162,10 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         var $this = this;
 
         this.headers.on('focus.panelmenu', function(){
-            $(this).addClass('ui-menuitem-outline');
+            $(this).addClass('p-menuitem-outline');
         })
         .on('blur.panelmenu', function(){
-            $(this).removeClass('ui-menuitem-outline ui-state-hover');
+            $(this).removeClass('p-menuitem-outline p-state-hover');
         })
         .on('keydown.panelmenu', function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {
@@ -194,13 +193,13 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
             switch("code" in e ? e.code : e.key) {
                 case 'ArrowLeft':
                     if($this.isExpanded($this.focusedItem)) {
-                        $this.focusedItem.children('.ui-menuitem-link').trigger('click');
+                        $this.focusedItem.children('.p-menuitem-link').trigger('click');
                     }
                     else {
-                        var parentListOfItem = $this.focusedItem.closest('ul.ui-menu-list');
+                        var parentListOfItem = $this.focusedItem.closest('ul.p-menu-list');
 
-                        if(parentListOfItem.parent().is(':not(.ui-panelmenu-content)')) {
-                            $this.focusItem(parentListOfItem.closest('li.ui-menuitem'));
+                        if(parentListOfItem.parent().is(':not(.p-panelmenu-content)')) {
+                            $this.focusItem(parentListOfItem.closest('li.p-menuitem'));
                         }
                     }
 
@@ -208,8 +207,8 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
                 break;
 
                 case 'ArrowRight':
-                    if($this.focusedItem.hasClass('ui-menu-parent') && !$this.isExpanded($this.focusedItem)) {
-                        $this.focusedItem.children('.ui-menuitem-link').trigger('click');
+                    if($this.focusedItem.hasClass('p-menu-parent') && !$this.isExpanded($this.focusedItem)) {
+                        $this.focusedItem.children('.p-menuitem-link').trigger('click');
                     }
                     e.preventDefault();
                 break;
@@ -218,7 +217,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
                     var prevItem = $this.focusedItem.prev();
 
                     if(prevItem.length) {
-                        itemToFocus = prevItem.find('li.ui-menuitem:visible:last');
+                        itemToFocus = prevItem.find('li.p-menuitem:visible:last');
                         if(!itemToFocus.length) {
                             itemToFocus = prevItem;
                         }
@@ -257,7 +256,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
                 case 'Enter':
                 case 'NumpadEnter':
                 case 'Space':
-                    var currentLink = $this.focusedItem.children('.ui-menuitem-link');
+                    var currentLink = $this.focusedItem.children('.p-menuitem-link');
                     PrimeFaces.queueTask(function(){
                         currentLink.trigger('click');
                     });
@@ -283,7 +282,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         var clickNS = 'click.' + this.id;
         //remove focusedItem when document is clicked
         $(document.body).off(clickNS).on(clickNS, function(event) {
-            if(!$(event.target).closest('.ui-panelmenu').length) {
+            if(!$(event.target).closest('.p-panelmenu').length) {
                $this.removeFocusedItem();
             }
         });
@@ -306,7 +305,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @param animate Whether to animate the collapse.
      */
     private collapseActiveSibling(header: JQuery, animate = true): void {
-        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0), animate);
+        this.collapseRootSubmenu(header.parent().siblings().children('.p-panelmenu-header.p-state-active').eq(0), animate);
     }
 
     /**
@@ -334,10 +333,10 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     /**
      * Finds the first child menu item of the given content element.
      * @param content Some content element of this panel menu.
-     * @return The first child menu item of the given content, with the class `.ui-menuitem`.
+     * @return The first child menu item of the given content, with the class `.p-menuitem`.
      */
     private getFirstItemOfContent(content: JQuery): JQuery {
-        return content.find('> .ui-menu-list > .ui-menuitem:visible:first-child');
+        return content.find('> .p-menu-list > .p-menuitem:visible:first-child');
     }
 
     /**
@@ -346,7 +345,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @return The displayed text of the given menu item, not including the text of sub menu items.
      */
     getItemText(item: JQuery): JQuery {
-        return item.find('> .ui-menuitem-link > span.ui-menuitem-text');
+        return item.find('> .p-menuitem-link > span.p-menuitem-text');
     }
 
     /**
@@ -355,7 +354,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     focusItem(item: JQuery): void {
         this.removeFocusedItem();
-        this.getItemText(item).addClass('ui-menuitem-outline').trigger('focus');
+        this.getItemText(item).addClass('p-menuitem-outline').trigger('focus');
         this.focusedItem = item;
     }
 
@@ -364,7 +363,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     private removeFocusedItem(): void {
         if(this.focusedItem) {
-            this.getItemText(this.focusedItem).removeClass('ui-menuitem-outline');
+            this.getItemText(this.focusedItem).removeClass('p-menuitem-outline');
             this.focusedItem = null;
         }
     }
@@ -375,7 +374,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @return `true` if the given menu item is expanded (children are shown), or `false` otherwise. 
      */
     isExpanded(item: JQuery): boolean {
-        return item.children('ul.ui-menu-list').is(':visible');
+        return item.children('ul.p-menu-list').is(':visible');
     }
 
     /**
@@ -386,10 +385,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     collapseRootSubmenu(header: JQuery, animate = true): void {
         var panel = header.next();
 
-        header.attr('aria-expanded', "false").removeClass('ui-state-active').addClass('ui-state-hover')
-            .children('.ui-icon')
-            .first() //Index of the Active/Inactive header icon
-            .removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        header.attr('aria-expanded', "false").removeClass('p-state-active').addClass('p-state-hover');
 
         panel.attr('aria-hidden', "true").slideUp(animate ? 400 : 0, 'easeInOutCirc');
 
@@ -404,10 +400,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     expandRootSubmenu(header: JQuery, restoring?: boolean): void {
         var panel = header.next();
 
-        header.attr('aria-expanded', "true").addClass('ui-state-active').removeClass('ui-state-hover')
-                .children('.ui-icon')
-                .first() //Index of the Active/Inactive header icon
-                .removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+        header.attr('aria-expanded', "true").addClass('p-state-active').removeClass('p-state-hover');
 
         if(restoring) {
             panel.attr('aria-hidden', "false").show();
@@ -425,10 +418,8 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @param restoring Whether this method was called from `restoreState`.
      */
     expandTreeItem(submenu: JQuery, restoring?: boolean): void {
-        var submenuLink = submenu.find('> .ui-menuitem-link');
-        submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "true");
-        submenuLink.find('> .ui-panelmenu-icon').addClass('ui-icon-triangle-1-s');
-        submenu.children('.ui-menu-list').removeClass('p-hidden').show();
+        submenu.find('> .p-menuitem-link > .p-menuitem-text').attr('aria-expanded', "true");
+        submenu.children('.p-menu-list').removeClass('p-hidden').show();
 
         if(!restoring) {
             this.updateExpandedNodes();
@@ -440,10 +431,8 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @param submenu A sub menu tree item to collapse.
      */
     collapseTreeItem(submenu: JQuery): void {
-        var submenuLink = submenu.find('> .ui-menuitem-link');
-        submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "false");
-        submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-        submenu.children('.ui-menu-list').addClass('p-hidden').hide();
+        submenu.find('> .p-menuitem-link > .p-menuitem-text').attr('aria-expanded', "false");
+        submenu.children('.p-menu-list').addClass('p-hidden').hide();
 
         this.updateExpandedNodes();
     }
@@ -488,10 +477,10 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
 
         for (const expandedNode of this.expandedNodes) {
             const element = $(PrimeFaces.escapeClientId(expandedNode));
-            if (element.is('div.ui-panelmenu-content')) {
+            if (element.is('div.p-panelmenu-content')) {
                 this.expandRootSubmenu(element.prev(), true);
             }
-            else if (element.is('li.ui-menu-parent')) {
+            else if (element.is('li.p-menu-parent')) {
                 this.expandTreeItem(element, true);
             }
         }
@@ -507,17 +496,17 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * the method persists the state via {@link saveState}.
      *
      * Expanded nodes are determined as follows:
-     * - Any panel header element (`this.headers`) that has the `ui-state-active` class is considered expanded;
+     * - Any panel header element (`this.headers`) that has the `p-state-active` class is considered expanded;
      *   its associated content panel ID (the header's next sibling's `id` attribute) is added.
-     * - Any sub-menu panel (`.ui-menu-list`) that is visible (does not have `p-hidden`), whose parent
-     *   is a menu parent node (`.ui-menu-parent`), will have that parent's `id` attribute added.
+     * - Any sub-menu panel (`.p-menu-list`) that is visible (does not have `p-hidden`), whose parent
+     *   is a menu parent node (`.p-menu-parent`), will have that parent's `id` attribute added.
      */
     private updateExpandedNodes(): void {
         this.expandedNodes = [];
 
         // Find all active root panel headers and expanded submenus.
-        const activeHeaders = this.headers.filter('.ui-state-active'),
-            activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.p-hidden)');
+        const activeHeaders = this.headers.filter('.p-state-active'),
+            activeTreeSubmenus = this.jq.find('.p-menu-parent > .p-menu-list:not(.p-hidden)');
 
         // Collect IDs of expanded panel headers.
         for (let j = 0; j < activeHeaders.length; j++) {
@@ -547,14 +536,14 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     collapseAll(): void {
         let $this = this;
-        $this.headers.filter('.ui-state-active').each(function() {
+        $this.headers.filter('.p-state-active').each(function() {
             const header = $(this);
             $this.collapseActiveSibling(header, false);
             $this.collapseRootSubmenu(header, false);
-            header.removeClass('ui-state-hover');
+            header.removeClass('p-state-hover');
         });
 
-        $this.jq.find('.ui-menu-parent > .ui-menu-list:not(.p-hidden)').each(function() {
+        $this.jq.find('.p-menu-parent > .p-menu-list:not(.p-hidden)').each(function() {
             $this.collapseTreeItem($(this).parent());
         });
     }
@@ -564,7 +553,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     expandAll(): void {
         let $this = this;
-        $this.headers.filter(':not(.ui-state-active)').each(function() {
+        $this.headers.filter(':not(.p-state-active)').each(function() {
             const header = $(this);
             if (!$this.cfg.multiple) {
                 $this.collapseActiveSibling(header);
@@ -572,9 +561,9 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
             $this.expandRootSubmenu(header, false);
         });
 
-        $this.jq.find('.ui-menu-parent').each(function() {
+        $this.jq.find('.p-menu-parent').each(function() {
             const submenu = $(this);
-            const submenuList = submenu.children('.ui-menu-list');
+            const submenuList = submenu.children('.p-menu-list');
             if (!submenuList.is(':visible')) {
                 $this.expandTreeItem(submenu, false);
             }

@@ -39,5 +39,5 @@ public class Tooltip extends TooltipBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tooltip";
 
-    public static final String CONTAINER_CLASS = "ui-tooltip ui-widget";
+    public static final String CONTAINER_CLASS = "p-tooltip p-widget";
 }

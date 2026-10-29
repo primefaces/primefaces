@@ -29,7 +29,6 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -91,9 +90,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
                     .attr("collapsed", component.isCollapsed())
                     .attr("toggleOrientation", component.getToggleOrientation())
                     .attr("toggleableHeader", component.isToggleableHeader())
-                    .attr("multiViewState", component.isMultiViewState(), false)
-                    .attr("collapsedIcon", iconOrDefault(component.getCollapsedIcon(), Panel.DEFAULT_COLLAPSED_ICON), Panel.DEFAULT_COLLAPSED_ICON)
-                    .attr("expandedIcon", iconOrDefault(component.getExpandedIcon(), Panel.DEFAULT_EXPANDED_ICON), Panel.DEFAULT_EXPANDED_ICON);
+                    .attr("multiViewState", component.isMultiViewState(), false);
         }
 
         if (component.isClosable()) {
@@ -214,19 +211,16 @@ public class PanelRenderer extends CoreRenderer<Panel> {
 
         //Options
         if (component.isClosable()) {
-            String icon = iconOrDefault(component.getCloseIcon(), Panel.DEFAULT_CLOSE_ICON);
-            encodeIcon(context, component, icon, clientId + "_closer", component.getCloseTitle(), null);
+            encodeIcon(context, component, Panel.CLOSE_ICON_CLASS, clientId + "_closer", component.getCloseTitle(), null, null);
         }
 
         if (component.isToggleable()) {
-            String icon = component.isCollapsed()
-                    ? iconOrDefault(component.getCollapsedIcon(), Panel.DEFAULT_COLLAPSED_ICON)
-                    : iconOrDefault(component.getExpandedIcon(), Panel.DEFAULT_EXPANDED_ICON);
-            encodeIcon(context, component, icon, clientId + "_toggler", component.getToggleTitle(), null);
+            encodeIcon(context, component, Panel.TOGGLE_ICON_CLASS, clientId + "_toggler", component.getToggleTitle(), null,
+                    !component.isCollapsed());
         }
 
         if (optionsMenu != null) {
-            encodeIcon(context, component, iconOrDefault(component.getMenuIcon(), Panel.DEFAULT_MENU_ICON), clientId + "_menu", component.getMenuTitle(), null);
+            encodeIcon(context, component, Panel.MENU_ICON_CLASS, clientId + "_menu", component.getMenuTitle(), null, null);
         }
 
         //Actions
@@ -280,11 +274,8 @@ public class PanelRenderer extends CoreRenderer<Panel> {
         writer.endElement("div");
     }
 
-    private static String iconOrDefault(String icon, String defaultIcon) {
-        return LangUtils.isBlank(icon) ? defaultIcon : icon;
-    }
-
-    protected void encodeIcon(FacesContext context, Panel component, String iconClass, String id, String title, String ariaLabel) throws IOException {
+    protected void encodeIcon(FacesContext context, Panel component, String iconClass, String id, String title, String ariaLabel,
+            Boolean expanded) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
@@ -300,11 +291,12 @@ public class PanelRenderer extends CoreRenderer<Panel> {
         if (ariaLabel != null) {
             writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         }
-
-        String styleClass = iconClass.matches("(?:.*\\s)?ui-icon-.*") ? "ui-icon " + iconClass : iconClass;
+        if (expanded != null) {
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
 
         writer.endElement("a");

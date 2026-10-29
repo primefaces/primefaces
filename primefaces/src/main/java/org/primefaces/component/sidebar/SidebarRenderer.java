@@ -60,7 +60,7 @@ public class SidebarRenderer extends CoreRenderer<Sidebar> {
         String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Sidebar.STYLE_CLASS : Sidebar.STYLE_CLASS + " " + styleClass;
         styleClass = component.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
-        styleClass += " ui-sidebar-" + component.getPosition();
+        styleClass += " p-sidebar-" + component.getPosition();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), null);

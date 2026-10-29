@@ -46,11 +46,11 @@ public class Splitter extends SplitterBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Splitter";
 
-    public static final String STYLE_CLASS = "ui-splitter ui-widget";
-    public static final String LAYOUT_VERTICAL_CLASS = "ui-splitter-vertical";
-    public static final String LAYOUT_HORIZONTAL_CLASS = "ui-splitter-horizontal";
-    public static final String GUTTER_CLASS = "ui-splitter-gutter";
-    public static final String GUTTER_HANDLE_CLASS = "ui-splitter-gutter-handle";
+    public static final String STYLE_CLASS = "p-splitter p-widget";
+    public static final String LAYOUT_VERTICAL_CLASS = "p-splitter-vertical";
+    public static final String LAYOUT_HORIZONTAL_CLASS = "p-splitter-horizontal";
+    public static final String GUTTER_CLASS = "p-splitter-gutter";
+    public static final String GUTTER_HANDLE_CLASS = "p-splitter-gutter-handle";
 
 
     @Override

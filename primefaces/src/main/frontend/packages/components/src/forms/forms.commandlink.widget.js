@@ -45,7 +45,7 @@ PrimeFaces.widget.CommandLink = class CommandLink extends PrimeFaces.widget.Base
         var $this = this;
         $this.ajaxCount = 0;
         this.jq.on('click.commandlink', function(e, xhr, settings) {
-            if ($this.jq.hasClass('ui-state-disabled')) {
+            if ($this.jq.hasClass('p-state-disabled')) {
                 e.preventDefault();
             }
         });
@@ -59,7 +59,7 @@ PrimeFaces.widget.CommandLink = class CommandLink extends PrimeFaces.widget.Base
                     if ($this.ajaxCount > 1) {
                         return;
                     }
-                    $this.jq.addClass('ui-state-loading');
+                    $this.jq.addClass('p-state-loading');
                     $this.ajaxStart = Date.now();
                     $this.disable();
                 }
@@ -88,7 +88,7 @@ PrimeFaces.widget.CommandLink = class CommandLink extends PrimeFaces.widget.Base
      * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
      */
     endAjaxDisabled(widget) {
-        widget.jq.removeClass('ui-state-loading');
+        widget.jq.removeClass('p-state-loading');
 
         if (!widget.cfg.disabledAttr) {
             widget.enable();
@@ -99,8 +99,8 @@ PrimeFaces.widget.CommandLink = class CommandLink extends PrimeFaces.widget.Base
      * Disables this link so that the user cannot click the link anymore.
      */
     disable() {
-        this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                .addClass('ui-state-disabled')
+        this.jq.removeClass('p-state-hover p-state-focus p-state-active')
+                .addClass('p-state-disabled')
                 .attr('tabindex', '-1');
     }
 
@@ -108,7 +108,7 @@ PrimeFaces.widget.CommandLink = class CommandLink extends PrimeFaces.widget.Base
      * Enables this link so that the user can click the link.
      */
     enable() {
-        this.jq.removeClass('ui-state-disabled')
+        this.jq.removeClass('p-state-disabled')
                 .attr('tabindex', this.tabIndex);
     }
 

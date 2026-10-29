@@ -17,28 +17,28 @@
             ['glass', 'Glass', 'Apple Liquid Glass style: translucent overlays, menus and bars that blur the page behind them, capsule buttons.']]}"/>
 
     <h:form id="cfgForm">
-        <button type="button" id="cfgToggle" class="cfg-toggle ui-button ui-widget ui-button-icon-only" aria-controls="cfgPanel"
+        <button type="button" id="cfgToggle" class="cfg-toggle p-button p-widget p-button-icon-only" aria-controls="cfgPanel"
                 aria-expanded="false" title="Theme configurator" onclick="cfg.toggle()">
-            <span class="ui-button-icon-left ui-icon ui-c pi pi-palette"></span>
-            <span class="ui-button-text ui-c">Theme</span>
+            <span class="p-button-icon-left p-c pi pi-palette"></span>
+            <span class="p-button-text p-c">Theme</span>
         </button>
 
         <aside id="cfgPanel" class="cfg" aria-label="Theme configurator" tabindex="-1">
             <div class="cfg-header">
                 <h2>Theme</h2>
-                <p:commandButton type="button" value="Reset" icon="pi pi-refresh" styleClass="ui-button-flat ui-button-secondary ui-button-sm"
+                <p:commandButton type="button" value="Reset" icon="pi pi-refresh" styleClass="p-button-flat p-button-secondary p-button-sm"
                                  onclick="cfg.resetAll()" title="Reset color scheme, density, primary color and tokens"/>
-                <p:commandButton type="button" icon="pi pi-times" styleClass="cfg-close ui-button-flat ui-button-secondary ui-button-sm"
+                <p:commandButton type="button" icon="pi pi-times" styleClass="cfg-close p-button-flat p-button-secondary p-button-sm"
                                  onclick="cfg.toggle(false)" title="Close" pt:aria-label="Close"/>
             </div>
 
             <details class="cfg-group" open="open">
                 <summary>Preset <span class="cfg-hint">primefaces.THEME</span></summary>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Preset">
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Preset">
                     <ui:repeat value="#{presets}" var="p">
-                        <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only #{app.theme eq p[0] ? 'ui-state-active' : ''}"
+                        <button type="button" class="p-button p-widget p-state-default p-button-text-only #{app.theme eq p[0] ? 'p-state-active' : ''}"
                                 aria-pressed="#{app.theme eq p[0]}" onclick="cfg.preset('#{p[0]}')">
-                            <span class="ui-button-text ui-c">#{p[1]}</span>
+                            <span class="p-button-text p-c">#{p[1]}</span>
                         </button>
                     </ui:repeat>
                 </div>
@@ -47,44 +47,44 @@
                 </ui:repeat>
 
                 <div class="cfg-label">Color scheme <span class="cfg-hint">color-scheme</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Color scheme">
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-icon-left" data-cfg-scheme="light" onclick="cfg.scheme('light')">
-                        <span class="ui-button-icon-left ui-icon ui-c pi pi-sun"></span><span class="ui-button-text ui-c">Light</span>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Color scheme">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-icon-left" data-cfg-scheme="light" onclick="cfg.scheme('light')">
+                        <span class="p-button-icon-left p-c pi pi-sun"></span><span class="p-button-text p-c">Light</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-icon-left" data-cfg-scheme="dark" onclick="cfg.scheme('dark')">
-                        <span class="ui-button-icon-left ui-icon ui-c pi pi-moon"></span><span class="ui-button-text ui-c">Dark</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-icon-left" data-cfg-scheme="dark" onclick="cfg.scheme('dark')">
+                        <span class="p-button-icon-left p-c pi pi-moon"></span><span class="p-button-text p-c">Dark</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-icon-left" data-cfg-scheme="system" onclick="cfg.scheme('system')">
-                        <span class="ui-button-icon-left ui-icon ui-c pi pi-desktop"></span><span class="ui-button-text ui-c">System</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-icon-left" data-cfg-scheme="system" onclick="cfg.scheme('system')">
+                        <span class="p-button-icon-left p-c pi pi-desktop"></span><span class="p-button-text p-c">System</span>
                     </button>
                 </div>
 
-                <div class="cfg-label">Input style <span class="cfg-hint">ui-input-filled</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Input style">
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-input="outlined" onclick="cfg.input('outlined')">
-                        <span class="ui-button-text ui-c">Outlined</span>
+                <div class="cfg-label">Input style <span class="cfg-hint">p-input-filled</span></div>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Input style">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-input="outlined" onclick="cfg.input('outlined')">
+                        <span class="p-button-text p-c">Outlined</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-input="filled" onclick="cfg.input('filled')">
-                        <span class="ui-button-text ui-c">Filled</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-input="filled" onclick="cfg.input('filled')">
+                        <span class="p-button-text p-c">Filled</span>
                     </button>
                 </div>
 
                 <div class="cfg-label">Density <span class="cfg-hint">data-p-density</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Density">
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Density">
                     <ui:repeat value="#{[['normal', 'Normal'], ['compact', 'Compact'], ['comfortable', 'Comfortable']]}" var="d">
-                        <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-density="#{d[0]}" onclick="cfg.density('#{d[0]}')">
-                            <span class="ui-button-text ui-c">#{d[1]}</span>
+                        <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-density="#{d[0]}" onclick="cfg.density('#{d[0]}')">
+                            <span class="p-button-text p-c">#{d[1]}</span>
                         </button>
                     </ui:repeat>
                 </div>
 
                 <div class="cfg-label">Direction <span class="cfg-hint">primefaces.DIR</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Direction">
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-dir="ltr" onclick="cfg.dir('ltr')">
-                        <span class="ui-button-text ui-c">LTR</span>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Direction">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-dir="ltr" onclick="cfg.dir('ltr')">
+                        <span class="p-button-text p-c">LTR</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-dir="rtl" onclick="cfg.dir('rtl')">
-                        <span class="ui-button-text ui-c">RTL</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-dir="rtl" onclick="cfg.dir('rtl')">
+                        <span class="p-button-text p-c">RTL</span>
                     </button>
                 </div>
             </details>
@@ -101,7 +101,7 @@
                 <div class="cfg-field">
                     <label for="cfgPrimary">Custom</label>
                     <input type="color" id="cfgPrimary" oninput="cfg.primary(this.value, true)"/>
-                    <p:commandButton type="button" value="Theme" styleClass="ui-button-flat ui-button-sm" onclick="cfg.primary(null)"
+                    <p:commandButton type="button" value="Theme" styleClass="p-button-flat p-button-sm" onclick="cfg.primary(null)"
                                      title="Primary color of the preset"/>
                 </div>
                 <div class="cfg-field">
@@ -120,41 +120,41 @@
             <details class="cfg-group" open="open">
                 <summary>Shape and motion</summary>
                 <div class="cfg-label">Button shape <span class="cfg-hint">--p-button-border-radius</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Button shape">
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-shape="theme" onclick="cfg.buttonShape('theme')">
-                        <span class="ui-button-text ui-c">Theme</span>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Button shape">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-shape="theme" onclick="cfg.buttonShape('theme')">
+                        <span class="p-button-text p-c">Theme</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-shape="pill" onclick="cfg.buttonShape('pill')">
-                        <span class="ui-button-text ui-c">Pill</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-shape="pill" onclick="cfg.buttonShape('pill')">
+                        <span class="p-button-text p-c">Pill</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-shape="square" onclick="cfg.buttonShape('square')">
-                        <span class="ui-button-text ui-c">Square</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-shape="square" onclick="cfg.buttonShape('square')">
+                        <span class="p-button-text p-c">Square</span>
                     </button>
                 </div>
 
                 <div class="cfg-label">Shadows <span class="cfg-hint">--p-*-shadow</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Shadows">
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-shadow="none" onclick="cfg.shadows('none')">
-                        <span class="ui-button-text ui-c">None</span>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Shadows">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-shadow="none" onclick="cfg.shadows('none')">
+                        <span class="p-button-text p-c">None</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-shadow="theme" onclick="cfg.shadows('theme')">
-                        <span class="ui-button-text ui-c">Theme</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-shadow="theme" onclick="cfg.shadows('theme')">
+                        <span class="p-button-text p-c">Theme</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-shadow="deep" onclick="cfg.shadows('deep')">
-                        <span class="ui-button-text ui-c">Deep</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-shadow="deep" onclick="cfg.shadows('deep')">
+                        <span class="p-button-text p-c">Deep</span>
                     </button>
                 </div>
 
                 <div class="cfg-label">Animations <span class="cfg-hint">--p-transition-duration</span></div>
-                <div class="cfg-seg ui-selectonebutton ui-buttonset ui-widget" role="group" aria-label="Animations">
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-motion="normal" onclick="cfg.motion('normal')">
-                        <span class="ui-button-text ui-c">Normal</span>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Animations">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-motion="normal" onclick="cfg.motion('normal')">
+                        <span class="p-button-text p-c">Normal</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-motion="slow" onclick="cfg.motion('slow')">
-                        <span class="ui-button-text ui-c">Slow</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-motion="slow" onclick="cfg.motion('slow')">
+                        <span class="p-button-text p-c">Slow</span>
                     </button>
-                    <button type="button" class="ui-button ui-widget ui-state-default ui-button-text-only" data-cfg-motion="off" onclick="cfg.motion('off')">
-                        <span class="ui-button-text ui-c">Off</span>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-motion="off" onclick="cfg.motion('off')">
+                        <span class="p-button-text p-c">Off</span>
                     </button>
                 </div>
             </details>
@@ -162,10 +162,10 @@
             <details class="cfg-group" open="open">
                 <summary>Border radius <span class="cfg-hint">--p-border-radius-*</span></summary>
                 <div class="cfg-chips">
-                    <p:commandButton type="button" value="Sharp" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius([0, 0, 0, 0])"/>
-                    <p:commandButton type="button" value="Theme" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius(null)"/>
-                    <p:commandButton type="button" value="Soft" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius([6, 10, 14, 20])"/>
-                    <p:commandButton type="button" value="Round" styleClass="ui-button-flat ui-button-sm" onclick="cfg.radius([10, 16, 22, 28])"/>
+                    <p:commandButton type="button" value="Sharp" styleClass="p-button-flat p-button-sm" onclick="cfg.radius([0, 0, 0, 0])"/>
+                    <p:commandButton type="button" value="Theme" styleClass="p-button-flat p-button-sm" onclick="cfg.radius(null)"/>
+                    <p:commandButton type="button" value="Soft" styleClass="p-button-flat p-button-sm" onclick="cfg.radius([6, 10, 14, 20])"/>
+                    <p:commandButton type="button" value="Round" styleClass="p-button-flat p-button-sm" onclick="cfg.radius([10, 16, 22, 28])"/>
                 </div>
                 <ui:include src="/theming/configurator-sliders.xhtml">
                     <ui:param name="ranges" value="#{[['--p-border-radius-sm', 'sm', 0, 32, 1, 'px'], ['--p-border-radius-md', 'md', 0, 32, 1, 'px'], ['--p-border-radius-lg', 'lg', 0, 32, 1, 'px'], ['--p-border-radius-xl', 'xl', 0, 40, 1, 'px']]}"/>
@@ -207,7 +207,7 @@
                 <summary>CSS</summary>
                 <div class="cfg-note">Only the tokens that differ from the preset.</div>
                 <pre id="cfgSnippet" class="cfg-snippet"></pre>
-                <p:commandButton type="button" value="Copy" icon="pi pi-copy" styleClass="ui-button-sm ui-button-outlined" onclick="cfg.copy(this)"/>
+                <p:commandButton type="button" value="Copy" icon="pi pi-copy" styleClass="p-button-sm p-button-outlined" onclick="cfg.copy(this)"/>
             </details>
         </aside>
     </h:form>

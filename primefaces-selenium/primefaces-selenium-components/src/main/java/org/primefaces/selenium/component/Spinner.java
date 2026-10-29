@@ -39,10 +39,10 @@ public abstract class Spinner extends InputText {
     @FindByParentPartialId("_input")
     private WebElement input;
 
-    @FindBy(css = ".ui-spinner-up")
+    @FindBy(css = ".p-spinner-up")
     private WebElement buttonUp;
 
-    @FindBy(css = ".ui-spinner-down")
+    @FindBy(css = ".p-spinner-down")
     private WebElement buttonDown;
 
     @Override

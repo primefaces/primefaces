@@ -85,7 +85,7 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectoneradio | Main container element.
-.ui-radiobutton | Container of a radio button.
-.ui-radiobutton-box | Container of radio button icon.
-.ui-radiobutton-icon | Radio button icon.
+.p-selectoneradio | Main container element.
+.p-radiobutton | Container of a radio button.
+.p-radiobutton-box | Container of radio button icon.
+.p-radiobutton-icon | Radio button icon.

@@ -58,40 +58,41 @@ public class PickList extends PickListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
 
-    public static final String CONTAINER_CLASS = "ui-picklist ui-widget";
-    public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
-    public static final String LIST_WRAPPER_CLASS = "ui-picklist-list-wrapper";
-    public static final String SOURCE_CLASS = LIST_CLASS + " ui-picklist-source";
-    public static final String TARGET_CLASS = LIST_CLASS + " ui-picklist-target";
-    public static final String BUTTONS_CLASS = "ui-picklist-buttons";
-    public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
-    public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
-    public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
-    public static final String ITEM_CLASS = "ui-picklist-item";
-    public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
-    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header";
-    public static final String ADD_BUTTON_CLASS = "ui-picklist-button-add";
-    public static final String ADD_ALL_BUTTON_CLASS = "ui-picklist-button-add-all";
-    public static final String REMOVE_BUTTON_CLASS = "ui-picklist-button-remove";
-    public static final String REMOVE_ALL_BUTTON_CLASS = "ui-picklist-button-remove-all";
-    public static final String ADD_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-e";
-    public static final String ADD_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-e";
-    public static final String REMOVE_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-w";
-    public static final String REMOVE_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-w";
-    public static final String VERTICAL_ADD_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
-    public static final String VERTICAL_ADD_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String VERTICAL_REMOVE_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
-    public static final String VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
-    public static final String MOVE_UP_BUTTON_CLASS = "ui-picklist-button-move-up";
-    public static final String MOVE_DOWN_BUTTON_CLASS = "ui-picklist-button-move-down";
-    public static final String MOVE_TOP_BUTTON_CLASS = "ui-picklist-button-move-top";
-    public static final String MOVE_BOTTOM_BUTTON_CLASS = "ui-picklist-button-move-bottom";
-    public static final String MOVE_UP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
-    public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
-    public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
-    public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
-    public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
+    public static final String CONTAINER_CLASS = "p-picklist p-widget";
+    public static final String LIST_CLASS = "p-widget-content p-picklist-list";
+    public static final String LIST_WRAPPER_CLASS = "p-picklist-list-wrapper";
+    public static final String SOURCE_CLASS = LIST_CLASS + " p-picklist-source";
+    public static final String TARGET_CLASS = LIST_CLASS + " p-picklist-target";
+    public static final String BUTTONS_CLASS = "p-picklist-buttons";
+    public static final String BUTTONS_CELL_CLASS = "p-picklist-buttons-cell";
+    public static final String SOURCE_CONTROLS = "p-picklist-source-controls p-picklist-buttons";
+    public static final String TARGET_CONTROLS = "p-picklist-target-controls p-picklist-buttons";
+    public static final String ITEM_CLASS = "p-picklist-item";
+    public static final String ITEM_DISABLED_CLASS = "p-state-disabled";
+    public static final String CAPTION_CLASS = "p-picklist-caption p-widget-header";
+    public static final String ADD_BUTTON_CLASS = "p-picklist-button-add";
+    public static final String ADD_ALL_BUTTON_CLASS = "p-picklist-button-add-all";
+    public static final String REMOVE_BUTTON_CLASS = "p-picklist-button-remove";
+    public static final String REMOVE_ALL_BUTTON_CLASS = "p-picklist-button-remove-all";
+    public static final String ADD_BUTTON_ICON_CLASS = "p-icon p-next-icon p-picklist-move-to-target-icon";
+    public static final String ADD_ALL_BUTTON_ICON_CLASS = "p-icon p-last-icon p-picklist-move-all-to-target-icon";
+    public static final String REMOVE_BUTTON_ICON_CLASS = "p-icon p-prev-icon p-picklist-move-to-source-icon";
+    public static final String REMOVE_ALL_BUTTON_ICON_CLASS = "p-icon p-first-icon p-picklist-move-all-to-source-icon";
+    public static final String VERTICAL_ADD_BUTTON_ICON_CLASS = "p-icon p-down-icon p-picklist-move-to-target-vertical-icon";
+    public static final String VERTICAL_ADD_ALL_BUTTON_ICON_CLASS = "p-icon p-bottom-icon p-picklist-move-all-to-target-vertical-icon";
+    public static final String VERTICAL_REMOVE_BUTTON_ICON_CLASS = "p-icon p-up-icon p-picklist-move-to-source-vertical-icon";
+    public static final String VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS = "p-icon p-top-icon p-picklist-move-all-to-source-vertical-icon";
+    public static final String MOVE_UP_BUTTON_CLASS = "p-picklist-button-move-up";
+    public static final String MOVE_DOWN_BUTTON_CLASS = "p-picklist-button-move-down";
+    public static final String MOVE_TOP_BUTTON_CLASS = "p-picklist-button-move-top";
+    public static final String MOVE_BOTTOM_BUTTON_CLASS = "p-picklist-button-move-bottom";
+    public static final String MOVE_UP_BUTTON_ICON_CLASS = "p-icon p-up-icon p-picklist-move-up-icon";
+    public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "p-icon p-down-icon p-picklist-move-down-icon";
+    public static final String MOVE_TOP_BUTTON_ICON_CLASS = "p-icon p-top-icon p-picklist-move-top-icon";
+    public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "p-icon p-bottom-icon p-picklist-move-bottom-icon";
+    public static final String FILTER_CLASS = "p-picklist-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String FILTER_CONTAINER = "p-picklist-filter-container";
+    public static final String FILTER_ICON_CLASS = "p-icon p-search-icon p-picklist-filter-icon";
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
@@ -159,7 +160,7 @@ public class PickList extends PickListBaseImpl {
     }
 
     /**
-     * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed.
+     * Prohibits client-side manipulation of disabled entries, when CSS style-class p-state-disabled is removed.
      *
      * @param facesContext The current FacesContext.
      * @param label The label to be used in the error message.

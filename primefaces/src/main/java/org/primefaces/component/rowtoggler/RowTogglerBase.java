@@ -50,14 +50,6 @@ public abstract class RowTogglerBase extends UIComponentBase {
     @Property(description = "Collapse text to display instead of icon.")
     public abstract String getCollapseLabel();
 
-    @Property(description = "Icon to expand rowExpansion",
-            defaultValue = "ui-icon-circle-triangle-e")
-    public abstract String getExpandIcon();
-
-    @Property(description = "Icon to collapse rowExpansion",
-            defaultValue = "ui-icon-circle-triangle-s")
-    public abstract String getCollapseIcon();
-
     @Property(description = "Position of the element in the tabbing order.",
             defaultValue = "0")
     public abstract String getTabindex();

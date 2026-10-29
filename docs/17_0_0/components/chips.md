@@ -39,8 +39,8 @@ Following is the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-chips | Container element.
-| .ui-chips-container | List element.
-| .ui-chips-token | A list item.
-| .ui-chips-input-token | List item containing the input.
-| .ui-chips-token-icon | Close icon of a token.
+| .p-chips | Container element.
+| .p-chips-container | List element.
+| .p-chips-token | A list item.
+| .p-chips-input-token | List item containing the input.
+| .p-chips-token-icon | Close icon of a token.

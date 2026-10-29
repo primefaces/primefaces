@@ -495,7 +495,7 @@ declare global {
 
             /**
              * Optional icon that is shown to the left of the confirm dialog. When not given, defaults to
-             * `ui-icon-alert`. Must be a style class of some icon font.
+             * the severity icon of the confirm dialog. Must be a style class of some icon font.
              */
             icon?: string;
 
@@ -924,7 +924,7 @@ declare global {
              * <partial-response>
              *    <changes>
              *       <update id="content:msgs"><![CDATA[
-             *           <span id="content:msgs" class="ui-growl-pl">...</span>
+             *           <span id="content:msgs" class="p-growl-pl">...</span>
              *           <script id="content:msgs_s" type="text/javascript">...</script>
              *       ]]></update>
              *       <update id="content:jakarta.faces.ViewState:0"><![CDATA[3644438980748093603:2519460806875181703]]></update>

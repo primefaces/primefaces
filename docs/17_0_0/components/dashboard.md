@@ -163,16 +163,16 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-dashboard | Container element of dashboard
-| .ui-dashboard-column | Each column in dashboard
-| .ui-dashboard-active | In responsive mode highlights which components are allowed to be dropped upon
-| .ui-dashboard-hover | In responsive mode change styling of the active drop zone when hovering
-| div.ui-state-hover | Placeholder (in legacy mode)
+| .p-dashboard | Container element of dashboard
+| .p-dashboard-column | Each column in dashboard
+| .p-dashboard-active | In responsive mode highlights which components are allowed to be dropped upon
+| .p-dashboard-hover | In responsive mode change styling of the active drop zone when hovering
+| div.p-state-hover | Placeholder (in legacy mode)
 
 As skinning style classes are global, see the main theming section for more information. Here is an
 example based on a different theme;
 
-**Tips**: Provide a column width using _ui-dashboard-column_ style class otherwise empty columns might
+**Tips**: Provide a column width using _p-dashboard-column_ style class otherwise empty columns might
     not receive new widgets.
 
 ## Dashboard Model API

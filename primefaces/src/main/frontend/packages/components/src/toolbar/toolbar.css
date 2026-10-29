@@ -2,7 +2,7 @@
  * Toolbar: p:toolbar (p:toolbarGroup align="left" | "right")
  */
 
-.ui-toolbar {
+.p-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -15,19 +15,19 @@
     border-radius: var(--p-toolbar-border-radius);
     font-weight: inherit;
 
-    .ui-toolbar-group-left,
-    .ui-toolbar-group-right {
+    .p-toolbar-group-left,
+    .p-toolbar-group-right {
         gap: var(--p-toolbar-gap);
     }
 
     /* a group alone on the right side stays on the right */
-    .ui-toolbar-group-right {
+    .p-toolbar-group-right {
         margin-inline-start: auto;
     }
 }
 
-.ui-toolbar-group-left,
-.ui-toolbar-group-right {
+.p-toolbar-group-left,
+.p-toolbar-group-right {
     display: flex;
     align-items: center;
     flex-wrap: wrap;

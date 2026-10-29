@@ -56,22 +56,23 @@ public class SelectOneMenu extends SelectOneMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
-    public static final String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default";
-    public static final String RTL_CLASS = "ui-selectonemenu-rtl";
-    public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield";
-    public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default";
-    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content p-hidden ui-input-overlay";
-    public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
-    public static final String RTL_PANEL_CLASS = "ui-selectonemenu-panel-rtl";
-    public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
-    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget";
-    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget";
-    public static final String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group";
-    public static final String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item";
-    public static final String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
-    public static final String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
-    public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
-    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    public static final String STYLE_CLASS = "p-selectonemenu p-widget p-state-default";
+    public static final String RTL_CLASS = "p-selectonemenu-rtl";
+    public static final String LABEL_CLASS = "p-selectonemenu-label p-inputfield";
+    public static final String TRIGGER_CLASS = "p-selectonemenu-trigger p-state-default";
+    public static final String TRIGGER_ICON_CLASS = "p-icon p-dropdown-icon p-selectonemenu-dropdown-icon p-c";
+    public static final String PANEL_CLASS = "p-selectonemenu-panel p-widget p-widget-content p-hidden p-input-overlay";
+    public static final String FOOTER_CLASS = "p-selectonemenu-footer";
+    public static final String RTL_PANEL_CLASS = "p-selectonemenu-panel-rtl";
+    public static final String ITEMS_WRAPPER_CLASS = "p-selectonemenu-items-wrapper";
+    public static final String LIST_CLASS = "p-selectonemenu-items p-selectonemenu-list p-widget-content p-widget";
+    public static final String TABLE_CLASS = "p-selectonemenu-items p-selectonemenu-table p-widget-content p-widget";
+    public static final String ITEM_GROUP_CLASS = "p-selectonemenu-item-group";
+    public static final String ITEM_CLASS = "p-selectonemenu-item p-selectonemenu-list-item";
+    public static final String ROW_CLASS = "p-selectonemenu-item p-selectonemenu-row p-widget-content";
+    public static final String FILTER_CONTAINER_CLASS = "p-selectonemenu-filter-container";
+    public static final String FILTER_CLASS = "p-selectonemenu-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String FILTER_ICON_CLASS = "p-icon p-search-icon p-selectonemenu-filter-icon";
 
     public boolean isDynamicLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");

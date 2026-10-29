@@ -290,7 +290,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(table.isStickyHeader(), DataTable.STICKY_HEADER_CLASS)
                 .add(ComponentUtils.isRTL(context, table), DataTable.RTL_CLASS)
                 .add(table.isReflow(), DataTable.REFLOW_CLASS)
-                .add(hasFrozenColumns, "ui-datatable-frozencolumn")
+                .add(hasFrozenColumns, "p-datatable-frozencolumn")
                 .add(table.isStripedRows(), DataTable.STRIPED_ROWS_CLASS)
                 .add(table.isShowGridlines(), DataTable.GRIDLINES_CLASS)
                 .add("small".equals(table.getSize()), DataTable.SMALL_SIZE_CLASS)
@@ -301,7 +301,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         if (summary != null) {
             writer.startElement("span", null);
             writer.writeAttribute("id", clientId + "_summary", null);
-            writer.writeAttribute("class", "ui-datatable-summary", null);
+            writer.writeAttribute("class", "p-datatable-summary", null);
             writer.writeText(summary, null);
             writer.endElement("span");
         }
@@ -435,7 +435,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             }
 
             writer.startElement("table", null);
-            writer.writeAttribute("class", "ui-datatable-fs", null);
+            writer.writeAttribute("class", "p-datatable-fs", null);
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
 
@@ -478,9 +478,9 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", "ui-datatable-frozenlayout-left", null);
+        writer.writeAttribute("class", "p-datatable-frozenlayout-left", null);
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-datatable-frozen-container", null);
+        writer.writeAttribute("class", "p-datatable-frozen-container", null);
         encodeScrollAreaStart(context, component, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
         encodeThead(context, component, columnStart, columnEnd, clientId + "_frozenThead", "frozenHeader");
         encodeFrozenRows(context, component, columnStart, columnEnd);
@@ -506,9 +506,9 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", "ui-datatable-frozenlayout-right", null);
+        writer.writeAttribute("class", "p-datatable-frozenlayout-right", null);
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
+        writer.writeAttribute("class", "p-datatable-scrollable-container", null);
 
         encodeScrollAreaStart(context, component, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
         encodeThead(context, component, columnStart, columnEnd, clientId + "_scrollableThead", "scrollableHeader");
@@ -663,13 +663,13 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
-                .add(responsivePriority > 0, "ui-column-p-", responsivePriority)
+                .add(responsivePriority > 0, "p-column-p-", responsivePriority)
                 .build();
 
         if (sortable) {
             sortMeta = table.getSortByAsMap().get(column.getColumnKey());
             if (sortMeta.isActive()) {
-                columnClass += " ui-state-active";
+                columnClass += " p-state-active";
             }
         }
 
@@ -917,7 +917,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(DataTable.COLUMN_FOOTER_CLASS)
                 .add(column.getStyleClass())
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
-                .add(responsivePriority > 0, "ui-column-p-", responsivePriority)
+                .add(responsivePriority > 0, "p-column-p-", responsivePriority)
                 .build();
 
         writer.startElement("td", null);
@@ -1249,7 +1249,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
                 .add(allowSelection, DataTable.SELECTABLE_ROW_CLASS)
-                .add(selected, "ui-state-highlight")
+                .add(selected, "p-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
                 .add(expanded, DataTable.EXPANDED_ROW_CLASS)
@@ -1329,7 +1329,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
-                .add(responsivePriority > 0, "ui-column-p-", responsivePriority)
+                .add(responsivePriority > 0, "p-column-p-", responsivePriority)
                 .build();
 
         int colspan = column.getColspan();
@@ -1513,11 +1513,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             encodeNativeRadio(context, component, checked, disabled);
         }
         else {
-            String iconClass = checked ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS : HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
             String boxClass = getStyleClassBuilder(context)
                         .add(HTML.RADIOBUTTON_BOX_CLASS)
-                        .add(disabled, "ui-state-disabled")
-                        .add(checked, "ui-state-active")
+                        .add(disabled, "p-state-disabled")
+                        .add(checked, "p-state-active")
                         .build();
 
             writer.startElement("div", null);
@@ -1532,7 +1531,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.writeAttribute("class", boxClass, null);
 
             writer.startElement("span", null);
-            writer.writeAttribute("class", iconClass, null);
+            writer.writeAttribute("class", HTML.RADIOBUTTON_ICON_CLASS, null);
             writer.endElement("span");
 
             writer.endElement("div");
@@ -1568,8 +1567,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             String ariaRowLabel = component.getAriaRowLabel();
             String boxClass = getStyleClassBuilder(context)
                         .add(HTML.CHECKBOX_BOX_CLASS)
-                        .add(disabled, "ui-state-disabled")
-                        .add(checked, "ui-state-active")
+                        .add(disabled, "p-state-disabled")
+                        .add(checked, "p-state-active")
                         .build();
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
             String rowKey = isHeaderCheckbox ? "head" : component.getRowKey();
@@ -1695,14 +1694,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.startElement("label", null);
             writer.writeAttribute("id", reflowId + "_label", null);
             writer.writeAttribute("for", reflowId, null);
-            writer.writeAttribute("class", "ui-reflow-label", null);
+            writer.writeAttribute("class", "p-reflow-label", null);
             writer.writeText(MessageFactory.getMessage(context, DataTable.SORT_LABEL), null);
             writer.endElement("label");
 
             writer.startElement("select", null);
             writer.writeAttribute("id", reflowId, null);
             writer.writeAttribute("name", reflowId, null);
-            writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
+            writer.writeAttribute("class", "p-reflow-dropdown p-state-default", null);
             writer.writeAttribute("autocomplete", "off", null);
 
             for (Map.Entry<SortMeta, String> header : headers.entrySet()) {

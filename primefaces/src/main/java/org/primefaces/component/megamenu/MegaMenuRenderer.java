@@ -109,7 +109,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             if (element.isRendered()) {
                 if (element instanceof MenuItem item) {
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS + (isSelectedRoot(component, item) ? " ui-menuitem-selected" : ""), null);
+                    writer.writeAttribute("class", Menu.MENUITEM_CLASS + (isSelectedRoot(component, item) ? " p-menuitem-selected" : ""), null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeMenuItem(context, component, item, "-1");
                     writer.endElement("li");
@@ -157,7 +157,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
         String style = submenu.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(Menu.TIERED_SUBMENU_CLASS)
-                .add(isSelectedRoot(component, submenu), "ui-menuitem-selected")
+                .add(isSelectedRoot(component, submenu), "p-menuitem-selected")
                 .add(submenu.getStyleClass())
                 .build();
 

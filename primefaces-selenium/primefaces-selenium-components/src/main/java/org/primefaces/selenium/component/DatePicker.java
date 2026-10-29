@@ -97,7 +97,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Next Month link
      */
     public WebElement getNextMonthLink() {
-        WebElement link = showPanel().findElement(By.className("ui-datepicker-next"));
+        WebElement link = showPanel().findElement(By.className("p-datepicker-next"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isViewChangeAjaxified()) {
             link = PrimeSelenium.guardAjax(link);
@@ -111,7 +111,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Previous Month link
      */
     public WebElement getPreviousMonthLink() {
-        WebElement link = showPanel().findElement(By.className("ui-datepicker-prev"));
+        WebElement link = showPanel().findElement(By.className("p-datepicker-prev"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isViewChangeAjaxified()) {
             link = PrimeSelenium.guardAjax(link);
@@ -141,7 +141,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Clear button
      */
     public WebElement getClearButton() {
-        WebElement button = showPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
+        WebElement button = showPanel().findElement(By.className("p-datepicker-buttonbar")).findElement(By.className("p-clear-button"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         return button;
     }
@@ -152,7 +152,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Today button
      */
     public WebElement getTodayButton() {
-        WebElement button = showPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
+        WebElement button = showPanel().findElement(By.className("p-datepicker-buttonbar")).findElement(By.className("p-today-button"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         return button;
     }
@@ -303,7 +303,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * Open the month select dropdown.
      */
     public void toggleMonthDropdown() {
-        WebElement monthDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-month"));
+        WebElement monthDropDown = showPanel().findElement(By.cssSelector("select.p-datepicker-month"));
         monthDropDown.click();
     }
 
@@ -313,7 +313,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param month the month to select
      */
     public void selectMonthDropdown(int month) {
-        Select monthDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-month")));
+        Select monthDropDown = new Select(showPanel().findElement(By.cssSelector("select.p-datepicker-month")));
         monthDropDown.selectByValue(Integer.toString(month));
     }
 
@@ -325,11 +325,11 @@ public abstract class DatePicker extends AbstractInputComponent {
     public void selectYear(int year) {
         WebElement panel = showPanel();
         try {
-            WebElement yearInput = panel.findElement(By.cssSelector("input.ui-datepicker-year"));
+            WebElement yearInput = panel.findElement(By.cssSelector("input.p-datepicker-year"));
             yearInput.sendKeys(Integer.toString(year));
         }
         catch (NoSuchElementException e) {
-            Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
+            Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.p-datepicker-year")));
             yearDropDown.selectByValue(Integer.toString(year));
         }
     }
@@ -340,7 +340,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param count the number of years to increment
      */
     public void incrementYear(int count) {
-        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.p-datepicker-year"));
         for (int i = 0; i <  count; i++) {
             yearInput.sendKeys(Keys.ARROW_UP);
         }
@@ -352,7 +352,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param count the number of years to decrement
      */
     public void decrementYear(int count) {
-        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.p-datepicker-year"));
         for (int i = 0; i <  count; i++) {
             yearInput.sendKeys(Keys.ARROW_DOWN);
         }

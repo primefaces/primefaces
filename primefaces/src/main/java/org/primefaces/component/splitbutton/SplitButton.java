@@ -51,14 +51,16 @@ public class SplitButton extends SplitButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitButton";
 
-    public static final String STYLE_CLASS = "ui-splitbutton ui-buttonset ui-widget";
-    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-left";
-    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-right";
-    public static final String MENU_ICON_BUTTON_CLASS = "ui-splitbutton-menubutton ui-button ui-widget ui-state-default ui-button-icon-only";
-    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
-    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";
-    public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content";
-    public static final String LIST_WRAPPER_CLASS = "ui-splitbuttonmenu-list-wrapper";
+    public static final String STYLE_CLASS = "p-splitbutton p-buttonset p-widget";
+    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "p-button p-widget p-state-default p-button-text-icon-left";
+    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "p-button p-widget p-state-default p-button-text-icon-right";
+    public static final String MENU_ICON_BUTTON_CLASS = "p-splitbutton-menubutton p-button p-widget p-state-default p-button-icon-only";
+    public static final String MENU_ICON_CLASS = "p-button-icon-left p-icon p-dropdown-icon p-splitbutton-dropdown-icon p-c";
+    public static final String FILTER_ICON_CLASS = "p-icon p-search-icon p-splitbutton-filter-icon";
+    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "p-button p-widget p-state-default p-button-text-only";
+    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "p-button p-widget p-state-default p-button-icon-only";
+    public static final String SPLITBUTTON_CONTAINER_CLASS = "p-menu p-splitbuttonmenu p-menu-dynamic p-widget p-widget-content";
+    public static final String LIST_WRAPPER_CLASS = "p-splitbuttonmenu-list-wrapper";
 
     private String confirmationScript;
 
@@ -92,14 +94,14 @@ public class SplitButton extends SplitButtonBaseImpl {
         }
 
         if (isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
+            styleClass = styleClass + " p-state-disabled";
         }
 
         if ("small".equals(getSize())) {
-            styleClass = styleClass + " ui-button-sm";
+            styleClass = styleClass + " p-button-sm";
         }
         else if ("large".equals(getSize())) {
-            styleClass = styleClass + " ui-button-lg";
+            styleClass = styleClass + " p-button-lg";
         }
 
         return styleClass;

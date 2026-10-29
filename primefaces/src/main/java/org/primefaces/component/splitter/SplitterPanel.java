@@ -33,8 +33,8 @@ import jakarta.faces.component.UIComponent;
 public class SplitterPanel extends SplitterPanelBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitterPanel";
 
-    public static final String STYLE_CLASS = "ui-splitter-panel";
-    public static final String NESTED_CLASS = "ui-splitter-panel-nested";
+    public static final String STYLE_CLASS = "p-splitter-panel";
+    public static final String NESTED_CLASS = "p-splitter-panel-nested";
 
     public boolean isNested() {
         boolean isNested = false;

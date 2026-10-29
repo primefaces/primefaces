@@ -87,7 +87,7 @@ class TabView008Test extends AbstractPrimePageTest {
         @FindBy(id = "form:activeIndexBinding")
         TabView activeIndexBinding;
 
-        @FindBy(css = "[id='form:activeIndexBinding'] .ui-tabs-header[data-index='2'] > a")
+        @FindBy(css = "[id='form:activeIndexBinding'] .p-tabs-header[data-index='2'] > a")
         WebElement activeIndexBindingTab3;
 
         @FindBy(id = "form:activeIndexValue")
@@ -96,7 +96,7 @@ class TabView008Test extends AbstractPrimePageTest {
         @FindBy(id = "form:activeBinding")
         TabView activeBinding;
 
-        @FindBy(css = "[id='form:activeBinding'] .ui-tabs-header[data-key='tab3'] > a")
+        @FindBy(css = "[id='form:activeBinding'] .p-tabs-header[data-key='tab3'] > a")
         WebElement activeBindingTab3;
 
         @FindBy(id = "form:activeValue")
@@ -105,7 +105,7 @@ class TabView008Test extends AbstractPrimePageTest {
         @FindBy(id = "form:programmatic")
         TabView programmatic;
 
-        @FindBy(css = "[id='form:programmatic'] .ui-tabs-header[data-index='1'] > a")
+        @FindBy(css = "[id='form:programmatic'] .p-tabs-header[data-index='1'] > a")
         WebElement programmaticTab2;
 
         @FindBy(id = "form:submit")

@@ -82,7 +82,7 @@ public abstract class SlideMenu extends AbstractComponent {
      * @return the back link element
      */
     public WebElement getBackward() {
-        return findElement(By.cssSelector(".ui-slidemenu-backward a.ui-menuitem-link"));
+        return findElement(By.cssSelector(".p-slidemenu-backward a.p-menuitem-link"));
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class SlideMenu extends AbstractComponent {
     public List<WebElement> getMenuitems() {
         WebElement list = PrimeSelenium.executeScript("var w = " + getWidgetByIdScript() + ";"
                 + "return (w.stack.length ? w.stack[w.stack.length - 1] : w.rootList)[0];");
-        return list.findElements(By.cssSelector(":scope > li.ui-menuitem"));
+        return list.findElements(By.cssSelector(":scope > li.p-menuitem"));
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class SlideMenu extends AbstractComponent {
         WebElement elt = findMenuitemByValue(value);
         WebElement link = elt.findElement(By.xpath("./a"));
 
-        if (PrimeSelenium.hasCssClass(elt, "ui-menu-parent")) {
+        if (PrimeSelenium.hasCssClass(elt, "p-menu-parent")) {
             link.click();
             waitForSlide();
         }

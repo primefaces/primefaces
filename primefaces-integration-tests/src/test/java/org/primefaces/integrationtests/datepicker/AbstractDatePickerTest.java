@@ -40,9 +40,9 @@ public class AbstractDatePickerTest extends AbstractPrimePageTest {
     protected void assertDate(WebElement panel, String month, String year) {
         assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement title = panel.findElement(By.className("ui-datepicker-title"));
-        WebElement monthElement = title.findElement(By.className("ui-datepicker-month"));
-        WebElement yearElement = title.findElement(By.className("ui-datepicker-year"));
+        WebElement title = panel.findElement(By.className("p-datepicker-title"));
+        WebElement monthElement = title.findElement(By.className("p-datepicker-month"));
+        WebElement yearElement = title.findElement(By.className("p-datepicker-year"));
         assertEquals(month.toUpperCase(), monthElement.getText().toUpperCase(Locale.ROOT));
         assertEquals(year, yearElement.getText());
     }
@@ -54,22 +54,22 @@ public class AbstractDatePickerTest extends AbstractPrimePageTest {
     protected void assertTime(WebElement panel, String hours, String minutes, String seconds, String milliseconds) {
         assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement timePicker = panel.findElement(By.className("ui-timepicker"));
+        WebElement timePicker = panel.findElement(By.className("p-timepicker"));
         if (hours != null) {
             assertEquals(Integer.parseInt(hours),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-hour-picker > span")).getText()));
+                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-hour-picker > span")).getText()));
         }
         if (minutes != null) {
             assertEquals(Integer.parseInt(minutes),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-minute-picker > span")).getText()));
+                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-minute-picker > span")).getText()));
         }
         if (seconds != null) {
             assertEquals(Integer.parseInt(seconds),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-second-picker > span")).getText()));
+                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-second-picker > span")).getText()));
         }
         if (milliseconds != null) {
             assertEquals(Integer.parseInt(milliseconds),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.ui-millisecond-picker > span")).getText()));
+                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-millisecond-picker > span")).getText()));
         }
     }
 }

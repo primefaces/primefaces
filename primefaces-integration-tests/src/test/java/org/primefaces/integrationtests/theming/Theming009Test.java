@@ -64,8 +64,8 @@ class Theming009Test extends AbstractThemingTest {
         assertTokenValue("Empty label", page.emptyLabel, "font-size", "--p-floatlabel-font-size");
         String inactiveSize = computedStyle(page.emptyLabel, "font-size");
 
-        // Act: the widget sets ui-state-focus on focus
-        PrimeSelenium.executeScript("arguments[0].classList.add('ui-state-focus');", page.empty);
+        // Act: the widget sets p-state-focus on focus
+        PrimeSelenium.executeScript("arguments[0].classList.add('p-state-focus');", page.empty);
 
         // Assert
         assertTokenValue("Focused label", page.emptyLabel, "font-size", "--p-floatlabel-active-font-size");
@@ -74,7 +74,7 @@ class Theming009Test extends AbstractThemingTest {
         assertAbove("Focused", page.emptyLabel, page.empty);
 
         // Act
-        PrimeSelenium.executeScript("arguments[0].classList.remove('ui-state-focus');", page.empty);
+        PrimeSelenium.executeScript("arguments[0].classList.remove('p-state-focus');", page.empty);
         assertNoJavascriptErrors();
     }
 
@@ -86,7 +86,7 @@ class Theming009Test extends AbstractThemingTest {
         setColorScheme("light");
         assertTokenValue("Empty label", page.emptyLabel, "font-size", "--p-floatlabel-font-size");
 
-        // Act: the widget marks the open panel on its hidden focus input, the root loses ui-state-focus to the panel
+        // Act: the widget marks the open panel on its hidden focus input, the root loses p-state-focus to the panel
         PrimeSelenium.executeScript("document.getElementById('form:empty_focus').setAttribute('aria-expanded', 'true');");
 
         // Assert

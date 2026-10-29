@@ -17,10 +17,10 @@ Initially stack will be rendered in collapsed mode;
 
 ## Location
 Stack is a fixed positioned element and location can be change via css. There’s one important css
-selector for stack called _.ui-stack._ Override this style to change the location of stack.
+selector for stack called _.p-stack._ Override this style to change the location of stack.
 
 ```css
-.ui-stack {
+.p-stack {
     bottom: 28px;
     right: 40px;
 }
@@ -33,7 +33,7 @@ section for more information and an example.
 
 | Class | Applies | 
 | --- | --- | 
-.ui-stack | Main container element of stack
-.ui-stack ul li | Each item in stack
-.ui-stack ul li img | Icon of a stack item
-.ui-stack ul li span | Label of a stack item
+.p-stack | Main container element of stack
+.p-stack ul li | Each item in stack
+.p-stack ul li img | Icon of a stack item
+.p-stack ul li span | Label of a stack item

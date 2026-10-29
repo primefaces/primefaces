@@ -90,7 +90,7 @@
                 <h5>Data Iteration</h5>
                 <p:dataTable id="basicDT" var="product" value="#{dtSelectionView.products1}">
                     <p:column style="width:32px;text-align: center">
-                        <p:commandButton update=":form:productDetail" styleClass="ui-button-flat"
+                        <p:commandButton update=":form:productDetail" styleClass="p-button-flat"
                                          oncomplete="PF('productOP').show('#{component.clientId}')"
                                          icon="pi pi-search" title="View">
                             <f:setPropertyActionListener value="#{product}"

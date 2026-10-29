@@ -58,19 +58,20 @@ public class TabView extends TabViewBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabView";
 
-    public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-hidden-container";
-    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-widget-header";
-    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default";
-    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default ui-tabs-selected ui-state-active";
-    public static final String PANELS_CLASS = "ui-tabs-panels";
-    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content p-hidden";
-    public static final String NAVIGATOR_SCROLLER_CLASS = "ui-tabs-navscroller";
-    public static final String NAVIGATOR_LEFT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-left ui-state-default";
-    public static final String NAVIGATOR_RIGHT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-right ui-state-default";
-    public static final String NAVIGATOR_LEFT_ICON_CLASS = "ui-icon ui-icon-carat-1-w";
-    public static final String NAVIGATOR_RIGHT_ICON_CLASS = "ui-icon ui-icon-carat-1-e";
-    public static final String SCROLLABLE_TABS_CLASS = "ui-tabs-scrollable";
+    public static final String CONTAINER_CLASS = "p-tabs p-widget p-widget-content p-hidden-container";
+    public static final String NAVIGATOR_CLASS = "p-tabs-nav p-widget-header";
+    public static final String INACTIVE_TAB_HEADER_CLASS = "p-tabs-header p-state-default";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "p-tabs-header p-state-default p-tabs-selected p-state-active";
+    public static final String PANELS_CLASS = "p-tabs-panels";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "p-tabs-panel p-widget-content";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "p-tabs-panel p-widget-content p-hidden";
+    public static final String NAVIGATOR_SCROLLER_CLASS = "p-tabs-navscroller";
+    public static final String NAVIGATOR_LEFT_CLASS = "p-tabs-navscroller-btn p-tabs-navscroller-btn-left p-state-default";
+    public static final String NAVIGATOR_RIGHT_CLASS = "p-tabs-navscroller-btn p-tabs-navscroller-btn-right p-state-default";
+    public static final String NAVIGATOR_LEFT_ICON_CLASS = "p-icon p-prev-icon p-tabs-prev-icon";
+    public static final String NAVIGATOR_RIGHT_ICON_CLASS = "p-icon p-next-icon p-tabs-next-icon";
+    public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-tabs-close-icon";
+    public static final String SCROLLABLE_TABS_CLASS = "p-tabs-scrollable";
 
     // active tab index and key/index of the active tab, resolved once per encode, see TabViewRenderer#encodeMarkup
     private Integer encodeActiveIndex;

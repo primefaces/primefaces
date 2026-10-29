@@ -1,74 +1,60 @@
 /*
  * Inplace: p:inplace
  *
- * States of .ui-inplace-display: ui-state-highlight (hover, set by the widget), ui-state-focus
- * Editor mode: .ui-inplace-content followed by the save / cancel buttons (.ui-inplace-editor)
+ * States of .p-inplace-display: p-state-highlight (hover, set by the widget), p-state-focus
+ * Editor mode: .p-inplace-content followed by the save / cancel buttons (.p-inplace-editor)
  */
 
-.ui-inplace {
-    &.p-password .p-masked::before {
+.p-inplace {
+    &.p-inplace-password .p-masked::before {
         content: '\2022\2022\2022\2022\2022\2022';
     }
 
-    /* a disabled inplace renders .ui-inplace-display-disabled instead of .ui-inplace-display */
-    .ui-inplace-display,
-    .ui-inplace-display-disabled {
+    /* a disabled inplace renders .p-inplace-display-disabled instead of .p-inplace-display */
+    .p-inplace-display,
+    .p-inplace-display-disabled {
         display: inline-block;
         border: 0 none;
         padding: var(--p-inplace-padding);
         border-radius: var(--p-inplace-border-radius);
     }
 
-    .ui-inplace-display {
+    .p-inplace-display {
         cursor: pointer;
         outline-color: transparent;
         transition: background var(--p-inplace-transition-duration), color var(--p-inplace-transition-duration),
             outline-color var(--p-inplace-transition-duration), box-shadow var(--p-inplace-transition-duration);
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-inplace-display-hover-background);
             color: var(--p-inplace-display-hover-color);
         }
 
-        &.ui-state-focus {
+        &.p-state-focus {
             outline: var(--p-inplace-focus-ring-width) var(--p-inplace-focus-ring-style) var(--p-inplace-focus-ring-color);
             outline-offset: var(--p-inplace-focus-ring-offset);
             box-shadow: var(--p-inplace-focus-ring-shadow);
         }
     }
 
-    .ui-inplace-display-disabled {
+    .p-inplace-display-disabled {
         cursor: default;
         opacity: var(--p-disabled-opacity);
     }
 
-    .ui-inplace-save .ui-icon,
-    .ui-inplace-cancel .ui-icon {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
+    .p-inplace-save-icon {
+        --_icon: var(--p-inplace-save-icon);
     }
 
-    .ui-inplace-save .ui-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-inplace-save-icon) center / contain no-repeat;
+    .p-inplace-cancel-icon {
+        --_icon: var(--p-inplace-cancel-icon);
     }
 
-    .ui-inplace-cancel .ui-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-inplace-cancel-icon) center / contain no-repeat;
-    }
-
-    .ui-inplace-editor {
+    .p-inplace-editor {
         margin-inline-start: var(--p-inplace-editor-gap);
     }
 
-    .ui-inplace-cancel {
+    .p-inplace-cancel {
         margin-inline-start: var(--p-inplace-editor-button-gap);
     }
 }

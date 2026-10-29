@@ -177,7 +177,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
         boolean disabled = option.isDisabled() || component.isDisabled();
-        String itemClass = disabled ? SelectOneListbox.ITEM_CLASS + " ui-state-disabled" : SelectOneListbox.ITEM_CLASS;
+        String itemClass = disabled ? SelectOneListbox.ITEM_CLASS + " p-state-disabled" : SelectOneListbox.ITEM_CLASS;
         int currentIndex = index + 1;
         String id = component.getClientId(context) + "_option" + currentIndex;
 
@@ -198,7 +198,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         }
 
         if (selected) {
-            itemClass = itemClass + " ui-state-highlight";
+            itemClass = itemClass + " p-state-highlight";
         }
 
         if (customContent) {
@@ -320,7 +320,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         ResponseWriter writer = context.getResponseWriter();
         String id = component.getClientId(context) + "_filter";
         boolean disabled = component.isDisabled();
-        String filterClass = disabled ? SelectOneListbox.FILTER_CLASS + " ui-state-disabled" : SelectOneListbox.FILTER_CLASS;
+        String filterClass = disabled ? SelectOneListbox.FILTER_CLASS + " p-state-disabled" : SelectOneListbox.FILTER_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneListbox.FILTER_CONTAINER_CLASS, null);

@@ -45,21 +45,23 @@ public class Carousel extends CarouselBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Carousel";
 
-    public static final String STYLE_CLASS = "ui-carousel ui-widget";
-    public static final String CONTENT_CLASS = "ui-carousel-content";
-    public static final String CONTAINER_CLASS = "ui-carousel-container";
-    public static final String INDICATORS_CONTENT_CLASS = "ui-carousel-indicators ui-reset";
-    public static final String HORIZONTAL_CLASS = "ui-carousel-horizontal";
-    public static final String VERTICAL_CLASS = "ui-carousel-vertical";
-    public static final String HEADER_CLASS = "ui-carousel-header";
-    public static final String FOOTER_CLASS = "ui-carousel-footer";
-    public static final String PREV_BUTTON_CLASS = "ui-carousel-prev ui-link";
-    public static final String PREV_BUTTON_ICON_CLASS = "ui-carousel-prev-icon pi";
-    public static final String NEXT_BUTTON_CLASS = "ui-carousel-next ui-link";
-    public static final String NEXT_BUTTON_ICON_CLASS = "ui-carousel-next-icon pi";
-    public static final String ITEMS_CONTENT_CLASS = "ui-carousel-items-content";
-    public static final String ITEMS_CONTAINER_CLASS = "ui-carousel-items-container ui-items-hidden";
-    public static final String ITEM_CLASS = "ui-carousel-item";
+    public static final String STYLE_CLASS = "p-carousel p-widget";
+    public static final String CONTENT_CLASS = "p-carousel-content";
+    public static final String CONTAINER_CLASS = "p-carousel-container";
+    public static final String INDICATORS_CONTENT_CLASS = "p-carousel-indicators p-reset";
+    public static final String HORIZONTAL_CLASS = "p-carousel-horizontal";
+    public static final String VERTICAL_CLASS = "p-carousel-vertical";
+    public static final String HEADER_CLASS = "p-carousel-header";
+    public static final String FOOTER_CLASS = "p-carousel-footer";
+    public static final String PREV_BUTTON_CLASS = "p-carousel-prev p-link";
+    public static final String PREV_BUTTON_ICON_CLASS = "p-icon p-prev-icon p-carousel-prev-icon";
+    public static final String PREV_BUTTON_VERTICAL_ICON_CLASS = "p-icon p-up-icon p-carousel-prev-vertical-icon";
+    public static final String NEXT_BUTTON_CLASS = "p-carousel-next p-link";
+    public static final String NEXT_BUTTON_ICON_CLASS = "p-icon p-next-icon p-carousel-next-icon";
+    public static final String NEXT_BUTTON_VERTICAL_ICON_CLASS = "p-icon p-down-icon p-carousel-next-vertical-icon";
+    public static final String ITEMS_CONTENT_CLASS = "p-carousel-items-content";
+    public static final String ITEMS_CONTAINER_CLASS = "p-carousel-items-container p-items-hidden";
+    public static final String ITEM_CLASS = "p-carousel-item";
 
     @Override
     public void queueEvent(FacesEvent event) {

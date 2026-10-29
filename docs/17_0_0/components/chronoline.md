@@ -124,17 +124,17 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-| ui-chronoline | Container element.
-| ui-chronoline-left | Container element when alignment is left.
-| ui-chronoline-right | Container element when alignment is right.
-| ui-chronoline-top | Container element when alignment is top.
-| ui-chronoline-bottom | Container element when alignment is bottom.
-| ui-chronoline-alternate | Container element when alignment is alternating.
-| ui-chronoline-vertical | Container element of a vertical timeline.
-| ui-chronoline-horizontal | Container element of a horizontal timeline.
-| ui-chronoline-event | Event element.
-| ui-chronoline-event-opposite | Opposite of an event content.
-| ui-chronoline-event-content | Event content.
-| ui-chronoline-event-separator | Separator element of an event.
-| ui-chronoline-event-marker | Marker element of an event.
-| ui-chronoline-event-connector | Connector element of an event.
+| p-chronoline | Container element.
+| p-chronoline-left | Container element when alignment is left.
+| p-chronoline-right | Container element when alignment is right.
+| p-chronoline-top | Container element when alignment is top.
+| p-chronoline-bottom | Container element when alignment is bottom.
+| p-chronoline-alternate | Container element when alignment is alternating.
+| p-chronoline-vertical | Container element of a vertical timeline.
+| p-chronoline-horizontal | Container element of a horizontal timeline.
+| p-chronoline-event | Event element.
+| p-chronoline-event-opposite | Opposite of an event content.
+| p-chronoline-event-content | Event content.
+| p-chronoline-event-separator | Separator element of an event.
+| p-chronoline-event-marker | Marker element of an event.
+| p-chronoline-event-connector | Connector element of an event.

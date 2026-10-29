@@ -55,14 +55,14 @@ public class DataGrid extends DataGridBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
 
-    public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
-    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header";
-    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header";
-    public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content";
-    public static final String TABLE_CLASS = "ui-datagrid-data";
-    public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
-    public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
-    public static final String COLUMN_CLASS = "ui-datagrid-column";
+    public static final String DATAGRID_CLASS = "p-datagrid p-widget";
+    public static final String HEADER_CLASS = "p-datagrid-header p-widget-header";
+    public static final String FOOTER_CLASS = "p-datagrid-footer p-widget-header";
+    public static final String EMPTY_CONTENT_CLASS = "p-datagrid-content p-datagrid-content-empty p-widget-content";
+    public static final String TABLE_CLASS = "p-datagrid-data";
+    public static final String TABLE_ROW_CLASS = "p-datagrid-row";
+    public static final String GRID_CONTENT_CLASS = "p-datagrid-content p-widget-content";
+    public static final String COLUMN_CLASS = "p-datagrid-column";
 
     public void loadLazyData() {
         // duplicate of DataView#loadLazyData

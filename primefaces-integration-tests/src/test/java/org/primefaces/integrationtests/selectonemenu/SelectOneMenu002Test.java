@@ -69,9 +69,9 @@ class SelectOneMenu002Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getInput().findElements(By.tagName("option"));
         assertEquals(11, options.size());
         // panel-content
-        optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
+        optgroups = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item-group"));
         assertEquals(2, optgroups.size());
-        options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
         assertEquals(11, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
@@ -88,11 +88,11 @@ class SelectOneMenu002Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert - part 1
-        List<WebElement> optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
+        List<WebElement> optgroups = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item-group"));
         assertEquals("German Cars", optgroups.get(0).getText());
         assertEquals("American <Cars>", optgroups.get(1).getText());
 
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
         assertEquals("Mercedes", options.get(2).getText());
         assertEquals("Chry<sler", options.get(4).getText());
         assertEquals("GitHub \"9336\" Quoted", options.get(8).getText());

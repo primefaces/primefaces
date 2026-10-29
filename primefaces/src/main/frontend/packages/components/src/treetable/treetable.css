@@ -1,15 +1,15 @@
 /*
  * TreeTable: p:treeTable
  *
- * Supported classes: ui-treetable-gridlines, ui-treetable-sm, ui-treetable-lg, ui-treetable-scrollable,
- *                    ui-treetable-resizable, ui-treetable-reflow, ui-treetable-checkbox-all
- * States (set by the widget): th.ui-state-hover / ui-state-active (sorted) / ui-state-focus,
- *                             tr.ui-state-hover / ui-state-highlight (selected) / ui-treetable-partialselected / ui-row-editing,
- *                             td.ui-cell-editing
+ * Supported classes: p-treetable-gridlines, p-treetable-sm, p-treetable-lg, p-treetable-scrollable,
+ *                    p-treetable-resizable, p-treetable-reflow, p-treetable-checkbox-all
+ * States (set by the widget): th.p-state-hover / p-state-active (sorted) / p-state-focus,
+ *                             tr.p-state-hover / p-state-highlight (selected) / p-treetable-partialselected / p-row-editing,
+ *                             td.p-cell-editing
  */
-.ui-treetable {
+.p-treetable {
     /* header / footer facets */
-    .ui-treetable-header {
+    .p-treetable-header {
         background: var(--p-treetable-header-background);
         color: var(--p-treetable-header-color);
         border: 1px solid var(--p-treetable-header-border-color);
@@ -19,7 +19,7 @@
         text-align: start;
     }
 
-    .ui-treetable-footer {
+    .p-treetable-footer {
         background: var(--p-treetable-footer-background);
         color: var(--p-treetable-footer-color);
         border: 1px solid var(--p-treetable-footer-border-color);
@@ -29,17 +29,17 @@
         text-align: start;
     }
 
-    .ui-paginator {
+    .p-paginator {
         padding: var(--p-paginator-padding);
 
-        &.ui-paginator-top {
+        &.p-paginator-top {
             border-style: solid;
             border-color: var(--p-treetable-paginator-top-border-color);
             border-width: var(--p-treetable-paginator-top-border-width);
             border-radius: 0;
         }
 
-        &.ui-paginator-bottom {
+        &.p-paginator-bottom {
             border-style: solid;
             border-color: var(--p-treetable-paginator-bottom-border-color);
             border-width: var(--p-treetable-paginator-bottom-border-width);
@@ -76,52 +76,36 @@
             border-color var(--p-treetable-transition-duration), outline-color var(--p-treetable-transition-duration),
             box-shadow var(--p-treetable-transition-duration);
 
-        .ui-column-title {
+        .p-column-title {
             font-weight: var(--p-treetable-column-title-font-weight);
             font-size: var(--p-treetable-column-title-font-size);
             vertical-align: middle;
         }
 
-        .ui-sortable-column-icon {
+        .p-sortable-column-icon {
             display: inline-block;
+            vertical-align: middle;
             margin: 0;
             margin-inline-start: var(--p-treetable-header-cell-gap);
             color: var(--p-treetable-sort-icon-color);
             font-size: var(--p-treetable-sort-icon-size);
             transition: color var(--p-treetable-transition-duration);
 
-            &.ui-icon-carat-2-n-s,
-            &.ui-icon-triangle-1-n,
-            &.ui-icon-triangle-1-s {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                vertical-align: middle;
+            /* the sort order is the state class of the icon (the widget reads it, aria-sort is on one column only) */
+            &.p-treetable-sort-icon {
+                --_icon: var(--p-treetable-sort-icon);
             }
 
-            &.ui-icon-carat-2-n-s::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-treetable-sort-icon) center / contain no-repeat;
+            &.p-treetable-sort-asc-icon {
+                --_icon: var(--p-treetable-sort-asc-icon);
             }
 
-            &.ui-icon-triangle-1-n::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-treetable-sort-asc-icon) center / contain no-repeat;
-            }
-
-            &.ui-icon-triangle-1-s::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-treetable-sort-desc-icon) center / contain no-repeat;
+            &.p-treetable-sort-desc-icon {
+                --_icon: var(--p-treetable-sort-desc-icon);
             }
         }
 
-        .ui-sortable-column-badge {
+        .p-sortable-column-badge {
             border-radius: var(--p-badge-border-radius);
             padding: var(--p-badge-padding);
             height: var(--p-badge-height);
@@ -136,44 +120,44 @@
             vertical-align: middle;
         }
 
-        &.ui-sortable-column.ui-state-focus,
-        &.ui-sortable-column:focus-visible {
+        &.p-sortable-column.p-state-focus,
+        &.p-sortable-column:focus-visible {
             outline: var(--p-treetable-header-cell-focus-ring-width) var(--p-treetable-header-cell-focus-ring-style) var(--p-treetable-header-cell-focus-ring-color);
             outline-offset: var(--p-treetable-header-cell-focus-ring-offset);
             box-shadow: var(--p-treetable-header-cell-focus-ring-shadow);
         }
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-treetable-header-cell-hover-background);
             color: var(--p-treetable-header-cell-hover-color);
 
-            .ui-sortable-column-icon {
+            .p-sortable-column-icon {
                 color: var(--p-treetable-sort-icon-hover-color);
             }
         }
     }
 
     /* sorted column (PrimeUIX has no separate hover look for it) */
-    thead th.ui-state-active {
+    thead th.p-state-active {
         &,
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-treetable-header-cell-selected-background);
             color: var(--p-treetable-header-cell-selected-color);
         }
 
-        .ui-sortable-column-icon {
+        .p-sortable-column-icon {
             color: var(--p-treetable-header-cell-selected-color);
         }
     }
 
-    .ui-sortable-column {
+    .p-sortable-column {
         cursor: pointer;
         -webkit-user-select: none;
         user-select: none;
     }
 
     /* multiple sort number badges */
-    .ui-sortable-column-badge {
+    .p-sortable-column-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -184,7 +168,7 @@
         }
     }
 
-    .ui-column-filter {
+    .p-column-filter {
         display: block;
         box-sizing: border-box;
         width: 100%;
@@ -192,22 +176,22 @@
     }
 
     /* the default filter is the input itself; components of a filter facet fill the column like in p:dataTable */
-    .ui-column-customfilter {
+    .p-column-customfilter {
         margin: var(--p-treetable-column-filter-gap) auto auto auto;
 
-        .ui-inputfield,
-        .ui-selectonemenu {
+        .p-inputfield,
+        .p-selectonemenu {
             width: 100%;
             max-width: 100%;
         }
     }
 
-    .ui-treetable-data tr.ui-state-hover {
+    .p-treetable-data tr.p-state-hover {
         cursor: pointer;
     }
 
     /* rows */
-    .ui-treetable-data > tr {
+    .p-treetable-data > tr {
         background: var(--p-treetable-row-background);
         color: var(--p-treetable-row-color);
         outline-color: transparent;
@@ -230,12 +214,12 @@
             box-shadow: var(--p-treetable-row-focus-ring-shadow);
         }
 
-        &.ui-treetable-empty-message > td {
+        &.p-treetable-empty-message > td {
             color: var(--p-treetable-empty-message-color);
         }
 
         /* node toggler (action icon) */
-        > td .ui-treetable-toggler {
+        > td .p-treetable-toggler {
             margin: 0;
             margin-inline-end: var(--p-treetable-body-cell-gap);
             width: var(--p-treetable-node-toggle-button-size);
@@ -264,73 +248,53 @@
                 box-shadow: var(--p-treetable-node-toggle-button-focus-ring-shadow);
             }
 
-            &.ui-icon-triangle-1-e::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-treetable-toggle-collapsed-icon) center / contain no-repeat;
+            &.p-treetable-toggle-icon {
+                --_icon: var(--p-treetable-toggle-expanded-icon);
             }
+        }
 
-            &.ui-icon-triangle-1-s::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-treetable-toggle-expanded-icon) center / contain no-repeat;
-            }
+        /* the state is aria-expanded of the row */
+        &[aria-expanded="false"] > td > .p-treetable-toggle-icon {
+            --_icon: var(--p-treetable-toggle-collapsed-icon);
 
-            &.ui-icon-triangle-1-e:dir(rtl) {
+            &:dir(rtl) {
                 transform: rotate(180deg);
             }
         }
 
-        > td .ui-treetable-toggler.ui-icon-triangle-1-e,
-        > td .ui-treetable-toggler.ui-icon-triangle-1-s,
-        > td .ui-chkbox.ui-selection .ui-icon-minus {
-            font-style: normal;
-            font-weight: normal;
-        }
-
-        > td .ui-chkbox.ui-selection {
+        > td .p-chkbox.p-selection {
             vertical-align: middle;
             margin: 0;
             margin-inline-end: var(--p-treetable-body-cell-gap);
         }
 
-        /* partially selected node */
-        > td .ui-chkbox.ui-selection .ui-icon-minus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-checkbox-indeterminate-icon) center / contain no-repeat;
-        }
-
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-treetable-row-hover-background);
             color: var(--p-treetable-row-hover-color);
         }
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-treetable-row-selected-background);
             color: var(--p-treetable-row-selected-color);
             cursor: default;
 
-            .ui-treetable-toggler {
+            .p-treetable-toggler {
                 color: inherit;
             }
 
-            .ui-treetable-toggler:hover {
+            .p-treetable-toggler:hover {
                 background: var(--p-treetable-node-toggle-button-selected-hover-background);
                 color: var(--p-treetable-node-toggle-button-selected-hover-color);
             }
         }
 
-        &.ui-state-highlight > td,
-        &:has(+ tr.ui-state-highlight) > td {
+        &.p-state-highlight > td,
+        &:has(+ tr.p-state-highlight) > td {
             border-bottom-color: var(--p-treetable-body-cell-selected-border-color);
         }
     }
 
-    .ui-treetable-toggler {
+    .p-treetable-toggler {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -338,79 +302,79 @@
         cursor: pointer;
     }
 
-    .ui-treetable-indent {
+    .p-treetable-indent {
         display: inline-block;
         vertical-align: middle;
         width: var(--p-treetable-node-indent);
         height: var(--p-treetable-node-indent);
     }
 
-    .ui-chkbox.ui-selection {
+    .p-chkbox.p-selection {
         display: none;
     }
 
-    .ui-treetable-selectable-node .ui-chkbox.ui-selection {
+    .p-treetable-selectable-node .p-chkbox.p-selection {
         display: inline-flex;
     }
 
-    &.ui-treetable-checkbox-all .ui-chkbox.ui-selection {
+    &.p-treetable-checkbox-all .p-chkbox.p-selection {
         display: inline-flex;
     }
 
     /* in-cell editing */
-    .ui-editable-column .ui-cell-editor {
+    .p-editable-column .p-cell-editor {
         display: inline-block;
         vertical-align: middle;
     }
 
-    .ui-cell-editor-input {
+    .p-cell-editor-input {
         display: none;
     }
 
-    .ui-row-editing {
-        .ui-cell-editor .ui-cell-editor-output {
+    .p-row-editing {
+        .p-cell-editor .p-cell-editor-output {
             display: none;
         }
 
-        .ui-cell-editor .ui-cell-editor-input {
+        .p-cell-editor .p-cell-editor-input {
             display: block;
         }
 
-        .ui-row-editor .ui-row-editor-pencil {
+        .p-row-editor .p-row-editor-pencil {
             display: none;
         }
 
-        .ui-row-editor .ui-row-editor-check,
-        .ui-row-editor .ui-row-editor-close {
+        .p-row-editor .p-row-editor-check,
+        .p-row-editor .p-row-editor-close {
             display: inline-flex;
         }
     }
 
-    .ui-row-editor {
+    .p-row-editor {
         span {
             cursor: pointer;
         }
 
-        .ui-row-editor-pencil {
+        .p-row-editor-pencil {
             display: inline-flex;
         }
 
-        .ui-row-editor-check,
-        .ui-row-editor-close {
+        .p-row-editor-check,
+        .p-row-editor-close {
             display: none;
         }
     }
 
-    .ui-treetable-data tr.ui-row-editing td.ui-editable-column,
-    .ui-treetable-data td.ui-cell-editing {
+    .p-treetable-data tr.p-row-editing td.p-editable-column,
+    .p-treetable-data td.p-cell-editing {
         padding-top: 0;
         padding-bottom: 0;
         margin-top: 0;
         margin-bottom: 0;
     }
 
-    /* row editor: a.ui-row-editor-pencil / -check / -close > span.ui-icon (action icons) */
-    .ui-row-editor {
+    /* row editor: a.p-row-editor-pencil / -check / -close > span.p-icon (action icons) */
+    .p-row-editor {
         display: inline-flex;
         align-items: center;
         vertical-align: middle;
@@ -422,8 +386,8 @@
         }
     }
 
-    .ui-treetable-data > tr {
-        .ui-row-editor .ui-icon {
+    .p-treetable-data > tr {
+        .p-row-editor .p-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -442,60 +406,44 @@
                 outline-color var(--p-treetable-transition-duration), box-shadow var(--p-treetable-transition-duration);
         }
 
-        .ui-row-editor .ui-icon:hover {
+        .p-row-editor .p-icon:hover {
             background: var(--p-treetable-node-toggle-button-hover-background);
             color: var(--p-treetable-node-toggle-button-hover-color);
             border-color: transparent;
         }
 
-        .ui-row-editor .ui-icon:focus-visible,
-        .ui-row-editor a:focus-visible .ui-icon {
+        .p-row-editor .p-icon:focus-visible,
+        .p-row-editor a:focus-visible .p-icon {
             outline: var(--p-treetable-node-toggle-button-focus-ring-width) var(--p-treetable-node-toggle-button-focus-ring-style) var(--p-treetable-node-toggle-button-focus-ring-color);
             outline-offset: var(--p-treetable-node-toggle-button-focus-ring-offset);
             box-shadow: var(--p-treetable-node-toggle-button-focus-ring-shadow);
         }
 
-        .ui-row-editor a:focus-visible {
+        .p-row-editor a:focus-visible {
             outline: 0 none;
         }
 
-        .ui-row-editor .ui-icon.ui-icon-pencil,
-        .ui-row-editor .ui-icon.ui-icon-check,
-        .ui-row-editor .ui-icon.ui-icon-close {
-            font-style: normal;
-            font-weight: normal;
+        .p-row-editor .p-treetable-row-edit-icon {
+            --_icon: var(--p-treetable-row-edit-icon);
         }
 
-        .ui-row-editor .ui-icon.ui-icon-pencil::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-treetable-row-edit-icon) center / contain no-repeat;
-        }
-
-        .ui-row-editor .ui-row-editor-check {
+        .p-row-editor .p-row-editor-check {
             margin-inline-end: var(--p-treetable-body-cell-gap);
         }
 
-        .ui-row-editor .ui-icon.ui-icon-check::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-treetable-row-save-icon) center / contain no-repeat;
+        .p-row-editor .p-treetable-row-save-icon {
+            --_icon: var(--p-treetable-row-save-icon);
         }
 
-        .ui-row-editor .ui-icon.ui-icon-close::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-treetable-row-cancel-icon) center / contain no-repeat;
+        .p-row-editor .p-treetable-row-cancel-icon {
+            --_icon: var(--p-treetable-row-cancel-icon);
         }
 
-        &.ui-state-highlight .ui-row-editor .ui-icon {
+        &.p-state-highlight .p-row-editor .p-icon {
             color: var(--p-treetable-row-selected-color);
         }
 
-        &.ui-state-highlight .ui-row-editor .ui-icon:hover {
+        &.p-state-highlight .p-row-editor .p-icon:hover {
             background: var(--p-treetable-node-toggle-button-selected-hover-background);
             color: var(--p-treetable-node-toggle-button-selected-hover-color);
         }
@@ -514,21 +462,21 @@
         box-sizing: content-box;
     }
 
-    &.ui-treetable-scrollable {
-        .ui-treetable-scrollable-theadclone tr th > * {
+    &.p-treetable-scrollable {
+        .p-treetable-scrollable-theadclone tr th > * {
             display: none;
         }
     }
 
-    .ui-treetable-scrollable-header {
+    .p-treetable-scrollable-header {
         background: var(--p-treetable-header-cell-background);
     }
 
-    .ui-treetable-scrollable-footer {
+    .p-treetable-scrollable-footer {
         background: var(--p-treetable-footer-cell-background);
     }
 
-    .ui-column-resizer {
+    .p-column-resizer {
         position: absolute;
         top: 0;
         inset-inline-end: 0;
@@ -541,7 +489,7 @@
         box-sizing: border-box;
     }
 
-    .ui-column-resizer-helper {
+    .p-column-resizer-helper {
         width: var(--p-treetable-resize-indicator-width);
         position: absolute;
         z-index: 10;
@@ -550,8 +498,8 @@
     }
 
     /* sizes */
-    &.ui-treetable-sm {
-        .ui-treetable-header {
+    &.p-treetable-sm {
+        .p-treetable-header {
             padding: var(--p-treetable-header-sm-padding);
         }
 
@@ -559,7 +507,7 @@
             padding: var(--p-treetable-header-cell-sm-padding);
         }
 
-        .ui-treetable-data > tr > td {
+        .p-treetable-data > tr > td {
             padding: var(--p-treetable-body-cell-sm-padding);
         }
 
@@ -567,13 +515,13 @@
             padding: var(--p-treetable-footer-cell-sm-padding);
         }
 
-        .ui-treetable-footer {
+        .p-treetable-footer {
             padding: var(--p-treetable-footer-sm-padding);
         }
     }
 
-    &.ui-treetable-lg {
-        .ui-treetable-header {
+    &.p-treetable-lg {
+        .p-treetable-header {
             padding: var(--p-treetable-header-lg-padding);
         }
 
@@ -581,7 +529,7 @@
             padding: var(--p-treetable-header-cell-lg-padding);
         }
 
-        .ui-treetable-data > tr > td {
+        .p-treetable-data > tr > td {
             padding: var(--p-treetable-body-cell-lg-padding);
         }
 
@@ -589,43 +537,43 @@
             padding: var(--p-treetable-footer-cell-lg-padding);
         }
 
-        .ui-treetable-footer {
+        .p-treetable-footer {
             padding: var(--p-treetable-footer-lg-padding);
         }
     }
 
-    &.ui-treetable-sm .ui-treetable-scrollable-theadclone > tr > th,
-    &.ui-treetable-lg .ui-treetable-scrollable-theadclone > tr > th {
+    &.p-treetable-sm .p-treetable-scrollable-theadclone > tr > th,
+    &.p-treetable-lg .p-treetable-scrollable-theadclone > tr > th {
         padding-top: 0;
         padding-bottom: 0;
     }
 
-    &.ui-treetable-gridlines {
-        .ui-treetable-header {
+    &.p-treetable-gridlines {
+        .p-treetable-header {
             border-width: 1px 1px 0 1px;
         }
 
-        .ui-treetable-footer {
+        .p-treetable-footer {
             border-width: 0 1px 1px 1px;
         }
 
-        .ui-paginator {
-            &.ui-paginator-top {
+        .p-paginator {
+            &.p-paginator-top {
                 border-width: 1px 1px 0 1px;
             }
 
-            &.ui-paginator-bottom {
+            &.p-paginator-bottom {
                 border-width: 0 1px 1px 1px;
             }
         }
 
         thead > tr > th,
-        .ui-treetable-data > tr > td,
+        .p-treetable-data > tr > td,
         tfoot > tr > td {
             border-width: 1px;
         }
 
-        .ui-treetable-scrollable-theadclone > tr > th {
+        .p-treetable-scrollable-theadclone > tr > th {
             padding-top: 0;
             padding-bottom: 0;
             border-bottom: 0 none;
@@ -634,22 +582,22 @@
     }
 }
 
-.ui-treetable-scrollable-body {
+.p-treetable-scrollable-body {
     overflow: auto;
 }
 
-.ui-treetable-scrollable-header,
-.ui-treetable-scrollable-footer {
+.p-treetable-scrollable-header,
+.p-treetable-scrollable-footer {
     overflow: hidden;
     border: 0 none;
 }
 
-.ui-treetable-scrollable .ui-treetable-scrollable-header,
-.ui-treetable-scrollable .ui-treetable-scrollable-footer {
+.p-treetable-scrollable .p-treetable-scrollable-header,
+.p-treetable-scrollable .p-treetable-scrollable-footer {
     position: relative;
 }
 
-.ui-treetable-scrollable-theadclone {
+.p-treetable-scrollable-theadclone {
     height: 0;
 
     tr {
@@ -657,7 +605,7 @@
     }
 
     th {
-        &.ui-state-default {
+        &.p-state-default {
             height: 0;
             border-bottom-width: 0;
             border-top-width: 0;
@@ -673,31 +621,31 @@
     }
 }
 
-.ui-treetable-resizable {
+.p-treetable-resizable {
     padding-bottom: 1px; /* fix for webkit overflow */
     overflow: auto;
 
-    th.ui-resizable-column {
+    th.p-resizable-column {
         background-clip: padding-box;
         position: relative;
     }
 }
 
-.ui-treetable-reflow {
-    .ui-treetable-data td .ui-column-title {
+.p-treetable-reflow {
+    .p-treetable-data td .p-column-title {
         display: none;
     }
 }
 
 @media (max-width: 640px) {
-    .ui-treetable-reflow thead th,
-    .ui-treetable-reflow tfoot td {
+    .p-treetable-reflow thead th,
+    .p-treetable-reflow tfoot td {
         display: none;
     }
 
     /* keep column filters usable in reflow mode: stack the filterable header cells instead of hiding the whole thead */
-    .ui-treetable-reflow {
-        thead th.ui-filter-column {
+    .p-treetable-reflow {
+        thead th.p-filter-column {
             box-sizing: border-box;
             display: block;
             float: inline-start;
@@ -706,21 +654,21 @@
             border: 0 none;
             text-align: start;
 
-            .ui-column-title {
+            .p-column-title {
                 display: block;
                 font-weight: var(--p-treetable-reflow-title-font-weight);
                 margin: 0 0 var(--p-treetable-reflow-gap) 0;
                 padding: 0;
             }
 
-            .ui-sortable-column-icon,
-            .ui-sortable-column-badge,
-            .ui-column-resizer {
+            .p-sortable-column-icon,
+            .p-sortable-column-badge,
+            .p-column-resizer {
                 display: none;
             }
 
-            .ui-column-filter,
-            .ui-column-customfilter {
+            .p-column-filter,
+            .p-column-customfilter {
                 display: block;
                 box-sizing: border-box;
                 width: 100% !important;
@@ -728,7 +676,7 @@
             }
         }
 
-        .ui-treetable-data {
+        .p-treetable-data {
             td {
                 text-align: start;
                 display: block;
@@ -739,16 +687,16 @@
                 clear: inline-start;
             }
 
-            &.ui-widget-content {
+            &.p-widget-content {
                 border: 0 none;
             }
 
-            tr.ui-widget-content {
+            tr.p-widget-content {
                 border-left: 0 none;
                 border-right: 0 none;
             }
 
-            td .ui-column-title {
+            td .p-column-title {
                 display: inline-block;
                 min-width: 30%;
                 margin: 0;

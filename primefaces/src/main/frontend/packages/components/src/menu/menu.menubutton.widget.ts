@@ -62,7 +62,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
         
         this.bindButtonEvents();
         PrimeFaces.utils.registerDynamicOverlay(this, this.getMenuElement(), this.id + '_menu');
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.getMenuElement(), 'ui-connected-overlay');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.getMenuElement(), 'p-connected-overlay');
         
         //dialog support
         this.setupDialogSupport();
@@ -81,7 +81,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
      */
     override getMenuElement(): JQuery {
         if (!this.menu) {
-            this.menu = this.jq.children('.ui-menu');
+            this.menu = this.jq.children('.p-menu');
         }
         return this.menu;
     }
@@ -102,9 +102,9 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
         this.timeoutId = PrimeFaces.queueTask(function() {
             submenu.css('z-index', PrimeFaces.nextZindex()).show();
             PrimeFaces.utils.position(submenu, pos);
-            var $link = menuitem.children('a.ui-menuitem-link');
+            var $link = menuitem.children('a.p-menuitem-link');
             $link.attr('aria-expanded', 'true');
-            submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            submenu.find('a.p-menuitem-link:focusable:first').trigger('focus');
         }, this.cfg.delay);
     }
 
@@ -116,37 +116,37 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
 
         //button visuals
         this.trigger.on('mouseover.menubutton', () => {
-            if (!this.trigger.hasClass('ui-state-focus')) {
-                this.trigger.addClass('ui-state-hover');
+            if (!this.trigger.hasClass('p-state-focus')) {
+                this.trigger.addClass('p-state-hover');
             }
         }).on('mouseout.menubutton', () => {
-            this.trigger.removeClass('ui-state-hover');
-            if (!this.trigger.hasClass('ui-state-focus')) {
-                this.trigger.removeClass('ui-state-active');
+            this.trigger.removeClass('p-state-hover');
+            if (!this.trigger.hasClass('p-state-focus')) {
+                this.trigger.removeClass('p-state-active');
             }
         }).on('mousedown.menubutton', function() {
             if (!$this.cfg.disabled) {
-                $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
+                $(this).removeClass('p-state-focus p-state-hover').addClass('p-state-active');
             }
         }).on('mouseup.menubutton', function() {
             if ($this.cfg.disabled) {
                 return;
             }
             var el = $(this);
-            el.removeClass('ui-state-active');
+            el.removeClass('p-state-active');
 
             if ($this.menu?.is(':visible')) {
-                el.addClass('ui-state-hover');
+                el.addClass('p-state-hover');
                 $this.hide();
             }
             else {
-                el.addClass('ui-state-focus');
+                el.addClass('p-state-focus');
                 $this.show();
             }
         }).on('focus.menubutton', function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         }).on('blur.menubutton', function() {
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
         });
 
         //mark button and descandants of button as a trigger for a primefaces overlay
@@ -204,7 +204,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
                     $this.bindPanelEvents();
                     $this.resetFocus(true);
                     $this.trigger.attr('aria-expanded', 'true');
-                    $this.menu?.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+                    $this.menu?.find('a.p-menuitem-link:focusable:first').trigger('focus');
                 }
             });
         }

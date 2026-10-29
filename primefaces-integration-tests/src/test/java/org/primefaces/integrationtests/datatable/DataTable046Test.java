@@ -53,7 +53,7 @@ class DataTable046Test extends AbstractDataTableTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
-        page.getWebDriver().findElement(By.className("ui-button-text-only")).click();
+        page.getWebDriver().findElement(By.className("p-button-text-only")).click();
 
         // Assert
         assertMessage(page.messages, "Success", "Button Clicked!");

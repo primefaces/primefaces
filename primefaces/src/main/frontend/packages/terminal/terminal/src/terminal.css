@@ -1,11 +1,11 @@
 /*
  * Terminal: p:terminal
  *
- * Markup: .ui-terminal > div (welcome), .ui-terminal-content > div* (command: span + span.ui-terminal-command,
- *         response: div, autocomplete: div.ui-terminal-autocomplete), div > span.ui-terminal-prompt + input.ui-terminal-input
+ * Markup: .p-terminal > div (welcome), .p-terminal-content > div* (command: span + span.p-terminal-command,
+ *         response: div, autocomplete: div.p-terminal-autocomplete), div > span.p-terminal-prompt + input.p-terminal-input
  */
 
-.ui-terminal {
+.p-terminal {
     overflow: auto;
     height: var(--p-terminal-height);
     background: var(--p-terminal-background);
@@ -16,16 +16,16 @@
     font-size: var(--p-terminal-font-size);
     font-weight: var(--p-terminal-font-weight);
 
-    .ui-terminal-prompt {
+    .p-terminal-prompt {
         margin-inline-end: var(--p-terminal-prompt-gap);
     }
 
-    .ui-terminal-command {
+    .p-terminal-command {
         margin: 0;
         margin-inline-start: var(--p-terminal-prompt-gap);
     }
 
-    .ui-terminal-input {
+    .p-terminal-input {
         border: 0 none;
         background-color: transparent;
         color: inherit;
@@ -40,11 +40,11 @@
         border-radius: 0;
     }
 
-    .ui-terminal-content > div > div {
+    .p-terminal-content > div > div {
         margin: var(--p-terminal-command-response-margin);
     }
 
-    .ui-terminal-autocomplete a {
+    .p-terminal-autocomplete a {
         color: var(--p-primary-color);
         text-decoration: none;
 

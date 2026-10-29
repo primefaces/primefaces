@@ -85,12 +85,6 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     @Property(description = "Layout of the spinner buttons.", defaultValue = "stacked")
     public abstract String getButtons();
 
-    @Property(description = "Icon for the up/increment button.")
-    public abstract String getUpIcon();
-
-    @Property(description = "Icon for the down/decrement button.")
-    public abstract String getDownIcon();
-
     @Property(description = "CSS class for the up/increment button.")
     public abstract String getUpButtonStyleClass();
 

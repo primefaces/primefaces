@@ -49,12 +49,12 @@ import jakarta.faces.event.FacesEvent;
 public class Chips extends ChipsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
-    public static final String STYLE_CLASS = "ui-chips ui-widget";
-    public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default";
-    public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active";
-    public static final String TOKEN_LABEL_CLASS = "ui-chips-token-label";
-    public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
-    public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
+    public static final String STYLE_CLASS = "p-chips p-widget";
+    public static final String CONTAINER_CLASS = "p-chips-container p-inputfield p-state-default";
+    public static final String TOKEN_DISPLAY_CLASS = "p-chips-token p-state-active";
+    public static final String TOKEN_LABEL_CLASS = "p-chips-token-label";
+    public static final String TOKEN_CLOSE_ICON_CLASS = "p-chips-token-icon p-icon p-clear-icon p-chips-chip-remove-icon";
+    public static final String TOKEN_INPUT_CLASS = "p-chips-input-token";
 
     private static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
             ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect);

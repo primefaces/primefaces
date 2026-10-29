@@ -57,18 +57,18 @@ class DatePicker016Test extends AbstractDatePickerTest {
 
         // Assert Panel
         assertNotNull(panel);
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("16")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("17")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("18")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("21")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("22")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("15")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("23")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("24")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "ui-state-active"));
-        assertEquals(7, panel.findElements(By.className("ui-state-active")).size());
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("16")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("17")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("18")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("21")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("22")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("15")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("23")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("24")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "p-state-active"));
+        assertEquals(7, panel.findElements(By.className("p-state-active")).size());
 
         // Assert Submit Value
         page.button.click();
@@ -92,10 +92,10 @@ class DatePicker016Test extends AbstractDatePickerTest {
         datePicker.showPanel();
 
         // Assert Panel
-        assertEquals(7, panel.findElements(By.className("ui-state-active")).size());
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("8")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("9")), "ui-state-active"));
+        assertEquals(7, panel.findElements(By.className("p-state-active")).size());
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("8")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("9")), "p-state-active"));
 
         // Assert Submit Value
         page.button.click();

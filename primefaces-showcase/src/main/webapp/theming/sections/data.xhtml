@@ -38,14 +38,14 @@
         <div class="demo-card">
             <h2>DataView</h2>
             <p:dataView var="product" value="#{themingDataView.products}" rows="3" paginator="true" layout="grid"
-                        paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink}" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                        paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink}">
                 <f:facet name="header">Products</f:facet>
                 <p:dataViewGridItem>
                     <div class="demo-grid-item">
                         <p:graphicImage name="images/product/#{product.image}" library="demo"/>
                         <div class="demo-item-name">#{product.name}</div>
                         <div class="muted">#{product.category}</div>
-                        <p:commandButton type="button" value="Add" icon="pi pi-shopping-cart" styleClass="ui-button-sm"/>
+                        <p:commandButton type="button" value="Add" icon="pi pi-shopping-cart" styleClass="p-button-sm"/>
                     </div>
                 </p:dataViewGridItem>
                 <p:dataViewListItem>

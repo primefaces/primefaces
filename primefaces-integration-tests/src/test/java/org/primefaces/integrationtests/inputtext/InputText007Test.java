@@ -60,7 +60,7 @@ class InputText007Test extends AbstractPrimePageTest {
         Msg msg = messages.getAllMessages().get(0);
         assertEquals(Severity.ERROR, msg.getSeverity());
         assertEquals("Custom validator failed!", msg.getSummary());
-        assertCss(validator, "ui-state-error", "ui-inputtext");
+        assertCss(validator, "p-state-error", "p-inputtext");
     }
 
     @Test
@@ -101,7 +101,7 @@ class InputText007Test extends AbstractPrimePageTest {
         Msg msg = messages.getAllMessages().get(0);
         assertEquals(Severity.ERROR, msg.getSeverity());
         assertEquals("Custom converter failed!", msg.getSummary());
-        assertCss(converter, "ui-state-error", "ui-inputtext");
+        assertCss(converter, "p-state-error", "p-inputtext");
     }
 
     @Test

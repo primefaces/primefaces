@@ -45,7 +45,7 @@ public abstract class Carousel extends AbstractComponent {
      * @return the list of item elements
      */
     public List<WebElement> getItems() {
-        return findElements(By.cssSelector(".ui-carousel-item:not(.ui-carousel-item-cloned)"));
+        return findElements(By.cssSelector(".p-carousel-item:not(.p-carousel-item-cloned)"));
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Carousel extends AbstractComponent {
      * @return the list of active item elements
      */
     public List<WebElement> getActiveItems() {
-        return findElements(By.cssSelector(".ui-carousel-item-active:not(.ui-carousel-item-cloned)"));
+        return findElements(By.cssSelector(".p-carousel-item-active:not(.p-carousel-item-cloned)"));
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class Carousel extends AbstractComponent {
      * @return the list of cloned item elements
      */
     public List<WebElement> getClonedItems() {
-        return findElements(By.cssSelector(".ui-carousel-item-cloned"));
+        return findElements(By.cssSelector(".p-carousel-item-cloned"));
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class Carousel extends AbstractComponent {
      * @return the list of indicator {@code li} elements
      */
     public List<WebElement> getIndicators() {
-        return findElements(By.cssSelector("ul.ui-carousel-indicators li.ui-carousel-indicator"));
+        return findElements(By.cssSelector("ul.p-carousel-indicators li.p-carousel-indicator"));
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class Carousel extends AbstractComponent {
     public int getPage() {
         List<WebElement> indicators = getIndicators();
         for (int i = 0; i < indicators.size(); i++) {
-            if (PrimeSelenium.hasCssClass(indicators.get(i), "ui-state-highlight")) {
+            if (PrimeSelenium.hasCssClass(indicators.get(i), "p-state-highlight")) {
                 return i;
             }
         }
@@ -119,7 +119,7 @@ public abstract class Carousel extends AbstractComponent {
      * @return true if the next button is disabled
      */
     public boolean isForwardDisabled() {
-        return PrimeSelenium.hasCssClass(getNextButton(), "ui-state-disabled");
+        return PrimeSelenium.hasCssClass(getNextButton(), "p-state-disabled");
     }
 
     /**
@@ -128,15 +128,15 @@ public abstract class Carousel extends AbstractComponent {
      * @return true if the previous button is disabled
      */
     public boolean isBackwardDisabled() {
-        return PrimeSelenium.hasCssClass(getPrevButton(), "ui-state-disabled");
+        return PrimeSelenium.hasCssClass(getPrevButton(), "p-state-disabled");
     }
 
     public WebElement getPrevButton() {
-        return findElement(By.cssSelector(".ui-carousel-prev"));
+        return findElement(By.cssSelector(".p-carousel-prev"));
     }
 
     public WebElement getNextButton() {
-        return findElement(By.cssSelector(".ui-carousel-next"));
+        return findElement(By.cssSelector(".p-carousel-next"));
     }
 
     /**

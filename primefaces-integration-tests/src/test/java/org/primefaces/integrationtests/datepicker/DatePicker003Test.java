@@ -50,22 +50,22 @@ class DatePicker003Test extends AbstractDatePickerTest {
         // Assert (all days of august active)
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        assertEquals(31, panel.findElements(By.cssSelector("a.ui-state-default")).size());
+        assertEquals(31, panel.findElements(By.cssSelector("a.p-state-default")).size());
 
         // Act - previous month
-        panel.findElement(By.className("ui-datepicker-prev")).click();
+        panel.findElement(By.className("p-datepicker-prev")).click();
 
         // Assert
-        assertEquals(23, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
-        assertEquals(12, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
+        assertEquals(23, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(12, panel.findElements(By.cssSelector("td > a.p-state-default")).size());
 
         // Act - next month
-        panel.findElement(By.className("ui-datepicker-next")).click();
-        panel.findElement(By.className("ui-datepicker-next")).click();
+        panel.findElement(By.className("p-datepicker-next")).click();
+        panel.findElement(By.className("p-datepicker-next")).click();
 
         // Assert
-        assertEquals(15, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
-        assertEquals(20, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
+        assertEquals(15, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(20, panel.findElements(By.cssSelector("td > a.p-state-default")).size());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }

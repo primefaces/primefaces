@@ -278,12 +278,12 @@ export class Validation {
 
         if (widget) {
             if (this.validate($source, process, update, false, false, false, false, false).valid) {
-                widget.jq.addClass('ui-state-csv-valid');
-                widget.jq.removeClass('ui-state-csv-invalid');
+                widget.jq.addClass('p-state-csv-valid');
+                widget.jq.removeClass('p-state-csv-invalid');
                 widget.enable?.();
             } else {
-                widget.jq.addClass('ui-state-csv-invalid');
-                widget.jq.removeClass('ui-state-csv-valid');
+                widget.jq.addClass('p-state-csv-invalid');
+                widget.jq.removeClass('p-state-csv-valid');
                 widget.disable?.();
             }
         } else {
@@ -323,7 +323,7 @@ export class Validation {
                     : $(core.escapeClientId(messageComponentId));
             }
             else {
-                const messageComponents = element.closest('form').find('div.ui-message');
+                const messageComponents = element.closest('form').find('div.p-message');
                 messageComponent = this.Utils.findTargetMessageComponent(clientId, messageComponents);
 
                 if (messageComponent) {
@@ -388,7 +388,7 @@ export class Validation {
             }
         }
 
-        if (element.parent().hasClass('ui-inputnumber')) {
+        if (element.parent().hasClass('p-inputnumber')) {
             element = element.parent().children('input:hidden');
         }
 
@@ -900,7 +900,7 @@ export class ValidationUtils {
     /**
      * For a given ID of a component, finds the DOM element with the message for that component.
      * @param clientId ID of a component for which to find the ui message.
-     * @param messageComponents A JQuery instance with a list of `ui-message`s, or `null` if no
+     * @param messageComponents A JQuery instance with a list of `p-message`s, or `null` if no
      * such element exists.
      * @returns The DOM element with the messages for the given component, or `null` when no such
      * element could be found.

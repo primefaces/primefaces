@@ -54,5 +54,5 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectmanymenu | Main container element.
-.ui-selectlistbox-item | Each item in list.
+.p-selectmanymenu | Main container element.
+.p-selectlistbox-item | Each item in list.

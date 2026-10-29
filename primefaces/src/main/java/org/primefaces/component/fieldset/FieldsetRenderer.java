@@ -74,7 +74,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
 
         String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
         if (component.isCollapsed()) {
-            styleClass = styleClass + " ui-hidden-container";
+            styleClass = styleClass + " p-hidden-container";
         }
         if (component.getStyleClass() != null) {
             styleClass = styleClass + " " + component.getStyleClass();
@@ -150,11 +150,11 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
 
             if (component.isToggleable()) {
                 writer.writeAttribute("tabindex", component.getTabindex(), null);
-
-                String togglerClass = component.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
+                writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
+                writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!component.isCollapsed()), null);
 
                 writer.startElement("span", null);
-                writer.writeAttribute("class", togglerClass, null);
+                writer.writeAttribute("class", Fieldset.TOGGLER_CLASS, null);
                 writer.endElement("span");
             }
 

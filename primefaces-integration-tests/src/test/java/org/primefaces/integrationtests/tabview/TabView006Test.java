@@ -77,7 +77,7 @@ class TabView006Test extends AbstractPrimePageTest {
         @FindBy(id = "form:tabview")
         TabView tabView;
 
-        @FindBy(css = "[id='form:tabview'] .ui-tabs-header[data-key='tab3'] > a")
+        @FindBy(css = "[id='form:tabview'] .p-tabs-header[data-key='tab3'] > a")
         WebElement tab3Header;
 
         @Override

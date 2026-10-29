@@ -20,10 +20,10 @@ PrimeFaces.widget.TagCloud = class TagCloud extends PrimeFaces.widget.BaseWidget
         var _self = this;
 
         this.jq.find('a').on("mouseover", function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         })
         .on("mouseout", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on("click", function(e) {
             var link = $(this);

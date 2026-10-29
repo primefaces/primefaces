@@ -73,8 +73,8 @@ a list of ResponsiveOption objects whose breakpoint defines the max-width to app
                 <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
                 <div class="p-mt-5">
                     <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
-                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
-                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                    <p:commandButton type="button" icon="pi pi-star" styleClass="p-button-success rounded-button p-mr-2" />
+                    <p:commandButton type="button" icon="pi pi-cog" styleClass="p-button-help rounded-button" />
                 </div>
             </div>
         </div>
@@ -168,8 +168,8 @@ Default layout of the Carousel is horizontal, other possible option is the verti
                 <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
                 <div class="p-mt-5">
                     <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
-                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
-                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                    <p:commandButton type="button" icon="pi pi-star" styleClass="p-button-success rounded-button p-mr-2" />
+                    <p:commandButton type="button" icon="pi pi-cog" styleClass="p-button-help rounded-button" />
                 </div>
             </div>
         </div>
@@ -257,14 +257,18 @@ Following is the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-carousel | Main container.
-| .ui-carousel-header | Header container.
-| .ui-carousel-footer | Footer container.
-| .ui-carousel-content | Main content container. It contains the container of the viewport.
-| .ui-carousel-container | Container of the viewport. It contains navigation buttons and viewport.
-| .ui-carousel-items-content | Viewport.
-| .ui-carousel-item | Content items in the item container.
-| .ui-carousel-indicators | Container of the indicators.
-| .ui-carousel-indicator | Indicator element.
+| .p-carousel | Main container.
+| .p-carousel-header | Header container.
+| .p-carousel-footer | Footer container.
+| .p-carousel-content | Main content container. It contains the container of the viewport.
+| .p-carousel-container | Container of the viewport. It contains navigation buttons and viewport.
+| .p-carousel-items-content | Viewport.
+| .p-carousel-item | Content items in the item container.
+| .p-carousel-indicators | Container of the indicators.
+| .p-carousel-indicator | Indicator element.
+
+The icons of the navigation buttons are icon tokens of the theme (see [Theming](/core/theming.md?id=icons)):
+`--p-carousel-prev-icon` / `--p-carousel-next-icon`, for the vertical orientation `--p-carousel-prev-vertical-icon` /
+`--p-carousel-next-vertical-icon` (`<span class="p-icon p-prev-icon p-carousel-prev-icon">`).
 
 As skinning style classes are global, see the main theming section for more information.

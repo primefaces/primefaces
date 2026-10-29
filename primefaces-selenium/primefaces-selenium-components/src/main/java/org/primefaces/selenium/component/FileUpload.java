@@ -138,7 +138,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's upload button
      */
     public WebElement getAdvancedUploadButton() {
-        WebElement element = findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-upload"));
+        WebElement element = findElement(By.cssSelector(".p-fileupload-buttonbar button.p-fileupload-upload"));
 
         WebElement guarded = Guard.custom(
             element,
@@ -155,7 +155,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's cancel button
      */
     public WebElement getAdvancedCancelButton() {
-        return findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-cancel"));
+        return findElement(By.cssSelector(".p-fileupload-buttonbar button.p-fileupload-cancel"));
     }
 
     /**
@@ -165,10 +165,10 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's cancel button
      */
     public WebElement getAdvancedCancelButton(String fileName) {
-        for (WebElement row : findElements(By.cssSelector(".ui-fileupload-files .ui-fileupload-row"))) {
-            WebElement fn = row.findElement(By.cssSelector(".ui-fileupload-filename"));
+        for (WebElement row : findElements(By.cssSelector(".p-fileupload-files .p-fileupload-row"))) {
+            WebElement fn = row.findElement(By.cssSelector(".p-fileupload-filename"));
             if (fn.getText().contains(fileName)) {
-                return row.findElement(By.cssSelector("button.ui-fileupload-cancel"));
+                return row.findElement(By.cssSelector("button.p-fileupload-cancel"));
             }
         }
         throw new NoSuchElementException("cancel button for " + fileName + " not found");
@@ -180,7 +180,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's value
      */
     public String getFilename() {
-        return findElement(By.className("ui-fileupload-filename")).getText();
+        return findElement(By.className("p-fileupload-filename")).getText();
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's values
      */
     public List<String> getWidgetValues() {
-        return findElements(By.className("ui-fileupload-filename")).stream()
+        return findElements(By.className("p-fileupload-filename")).stream()
                 .map(e -> e.getText()).collect(Collectors.toList());
     }
 
@@ -199,7 +199,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's error messages
      */
     public List<String> getWidgetErrorMessages() {
-        return findElements(By.className("ui-messages-error-summary")).stream()
+        return findElements(By.className("p-messages-error-summary")).stream()
                 .map(e -> e.getText()).collect(Collectors.toList());
     }
 

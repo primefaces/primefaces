@@ -33,7 +33,7 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class StaticMessage extends AbstractMessage {
 
-    @FindBy(css = ".ui-messages-close")
+    @FindBy(css = ".p-messages-close")
     private WebElement closeButton;
 
     public WebElement getCloseButton() {

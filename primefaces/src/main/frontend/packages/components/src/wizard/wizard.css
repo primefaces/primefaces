@@ -1,23 +1,23 @@
 /*
  * Wizard: p:wizard
  *
- * ul.ui-wizard-step-titles (showStepStatus) is a segmented bar, the current step is li.ui-state-highlight.
- * The navbar holds two PF buttons (.ui-wizard-nav-back left, .ui-wizard-nav-next right, styled by button.css).
+ * ul.p-wizard-step-titles (showStepStatus) is a segmented bar, the current step is li.p-state-highlight.
+ * The navbar holds two PF buttons (.p-wizard-nav-back left, .p-wizard-nav-next right, styled by button.css).
  * PrimeFaces tokens, see the wizard block of presets/*.css.
  */
-.ui-wizard {
+.p-wizard {
     display: flex;
     flex-direction: column;
     gap: var(--p-wizard-gap);
 
-    .ui-wizard-step-titles {
+    .p-wizard-step-titles {
         display: flex;
         flex-wrap: wrap;
         margin: 0;
         padding: 0;
         list-style-type: none;
 
-        .ui-wizard-step-title {
+        .p-wizard-step-title {
             flex: 1 1 0;
             margin: 0;
             padding: var(--p-wizard-step-padding);
@@ -44,7 +44,7 @@
                 border-end-end-radius: var(--p-wizard-step-border-radius);
             }
 
-            &.ui-state-highlight {
+            &.p-state-highlight {
                 background: var(--p-wizard-step-active-background);
                 color: var(--p-wizard-step-active-color);
                 border-color: var(--p-wizard-step-active-border-color);
@@ -52,51 +52,34 @@
         }
     }
 
-    .ui-wizard-content {
+    .p-wizard-content {
         margin: 0;
         padding: var(--p-wizard-content-padding);
         background: var(--p-wizard-content-background);
         color: var(--p-wizard-content-color);
     }
 
-    .ui-wizard-navbar {
+    .p-wizard-navbar {
         display: flex;
         align-items: center;
         gap: var(--p-wizard-gap);
 
-        .ui-wizard-nav-next {
+        .p-wizard-nav-next {
             margin-inline-start: auto;
         }
     }
 
-    .ui-icon-arrowthick-1-w,
-    .ui-icon-arrowthick-1-e {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
+    .p-wizard-back-icon {
+        --_icon: var(--p-wizard-back-icon);
     }
 
-    .ui-icon-arrowthick-1-w::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-wizard-back-icon) center / contain no-repeat;
-    }
-
-    .ui-icon-arrowthick-1-e::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-wizard-next-icon) center / contain no-repeat;
+    .p-wizard-next-icon {
+        --_icon: var(--p-wizard-next-icon);
     }
 
     /* RTL: the back button is at the right, the next button at the left */
-    .ui-icon-arrowthick-1-w:dir(rtl)::before {
-        scale: -1 1;
-    }
-
-    .ui-icon-arrowthick-1-e:dir(rtl)::before {
+    .p-wizard-back-icon:dir(rtl),
+    .p-wizard-next-icon:dir(rtl) {
         scale: -1 1;
     }
 }

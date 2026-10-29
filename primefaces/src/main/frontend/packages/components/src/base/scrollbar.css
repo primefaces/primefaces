@@ -10,16 +10,16 @@
  */
 :where(
     /* overlays and dropdown lists */
-    .ui-autocomplete-panel, .ui-selectonemenu-items-wrapper, .ui-selectcheckboxmenu-items-wrapper,
-    .ui-splitbuttonmenu-list-wrapper, .ui-columntoggler, .ui-menu-dynamic-maxheight, .ui-slidemenu-content,
+    .p-autocomplete-panel, .p-selectonemenu-items-wrapper, .p-selectcheckboxmenu-items-wrapper,
+    .p-splitbuttonmenu-list-wrapper, .p-columntoggler, .p-menu-dynamic-maxheight, .p-slidemenu-content,
     /* lists */
-    .ui-selectlistbox-listcontainer, .ui-multiselectlistbox-listcontainer, .ui-picklist-list, .ui-orderlist-list,
-    .ui-tree-container, .ui-log-content, .ui-terminal, textarea.ui-inputfield,
+    .p-selectlistbox-listcontainer, .p-multiselectlistbox-listcontainer, .p-picklist-list, .p-orderlist-list,
+    .p-tree-container, .p-log-content, .p-terminal, textarea.p-inputfield,
     /* data */
-    .ui-datatable-tablewrapper, .ui-datatable-scrollable-body, .ui-treetable-scrollable-body,
-    .ui-datascroller-inline .ui-datascroller-content, .ui-carousel-content,
+    .p-datatable-tablewrapper, .p-datatable-scrollable-body, .p-treetable-scrollable-body,
+    .p-datascroller-inline .p-datascroller-content, .p-carousel-content,
     /* panels, dialogs, navigation */
-    .ui-dialog, .ui-dialog-content, .ui-sidebar, .ui-accordion-content, .ui-panelmenu-content, .ui-tabmenu-nav
+    .p-dialog, .p-dialog-content, .p-sidebar, .p-accordion-content, .p-panelmenu-content, .p-tabmenu-nav
 ) {
     scrollbar-width: var(--p-scrollbar-width);
     scrollbar-color: var(--p-scrollbar-thumb-color) var(--p-scrollbar-track-color);

@@ -98,7 +98,7 @@ class DataTable021Test extends AbstractDataTableTest {
         for (int cnt = 0; cnt < 2; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
-            WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+            WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
             PrimeSelenium.guardAjax(removeButton).click();
 
             // Assert - one row less than before
@@ -126,7 +126,7 @@ class DataTable021Test extends AbstractDataTableTest {
         for (int cnt = 0; cnt < 2; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
-            WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+            WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("p-button"));
             PrimeSelenium.guardAjax(removeButton).click();
 
             // Assert - one row less than before
@@ -145,7 +145,7 @@ class DataTable021Test extends AbstractDataTableTest {
         int rows = dataTable.getRows().size();
 
         // Act
-        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -163,7 +163,7 @@ class DataTable021Test extends AbstractDataTableTest {
         int rows = dataTable.getRows().size();
 
         // Act
-        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -182,7 +182,7 @@ class DataTable021Test extends AbstractDataTableTest {
         int rows = dataTable.getRows().size();
 
         // Act
-        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -201,7 +201,7 @@ class DataTable021Test extends AbstractDataTableTest {
         int rows = dataTable.getRows().size();
 
         // Act
-        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -247,7 +247,7 @@ class DataTable021Test extends AbstractDataTableTest {
         int rows = dataTable.getRows().size();
 
         // Act - remove one row
-        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -255,7 +255,7 @@ class DataTable021Test extends AbstractDataTableTest {
 
         // Act - remove another row
         rows = dataTable.getRows().size();
-        removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -304,7 +304,7 @@ class DataTable021Test extends AbstractDataTableTest {
         int rows = dataTable.getRows().size();
 
         // Act - remove one row
-        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before
@@ -312,7 +312,7 @@ class DataTable021Test extends AbstractDataTableTest {
 
         // Act - remove another row
         rows = dataTable.getRows().size();
-        removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
+        removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(removeButton).click();
 
         // Assert - one row less than before

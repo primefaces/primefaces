@@ -38,6 +38,6 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-terminal | Main container element.
-.ui-terminal-content | Content display of previous commands with responses.
-.ui-terminal-prompt | Prompt text.
+.p-terminal | Main container element.
+.p-terminal-content | Content display of previous commands with responses.
+.p-terminal-prompt | Prompt text.

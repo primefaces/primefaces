@@ -4,10 +4,10 @@
  * PF renders header/content pairs as siblings (no panel wrapper), so the PrimeUIX "panel" border
  * (accordion.panel.border.*) is drawn by an ::after overlay on the last visible element of each pair:
  * the header while collapsed, the content while expanded.
- * States: ui-state-active, ui-state-hover, ui-state-disabled, ui-state-error, ui-accordion-rtl
+ * States: p-state-active, p-state-hover, p-state-disabled, p-state-error, p-accordion-rtl
  */
-.ui-accordion {
-    .ui-accordion-header {
+.p-accordion {
+    .p-accordion-header {
         position: relative;
         margin: 0;
         padding: var(--p-accordion-header-padding);
@@ -28,8 +28,8 @@
             outline-color var(--p-accordion-transition-duration), box-shadow var(--p-accordion-transition-duration);
     }
 
-    .ui-accordion-header:not(.ui-state-active)::after,
-    .ui-accordion-content::after {
+    .p-accordion-header:not(.p-state-active)::after,
+    .p-accordion-content::after {
         content: "";
         position: absolute;
         inset: 0;
@@ -40,113 +40,97 @@
         border-radius: inherit;
     }
 
-    .ui-accordion-header:first-child {
+    .p-accordion-header:first-child {
         border-width: var(--p-accordion-header-first-border-width);
         border-start-start-radius: var(--p-accordion-header-first-top-border-radius);
         border-start-end-radius: var(--p-accordion-header-first-top-border-radius);
     }
 
-    > .ui-accordion-header:not(:has(~ .ui-accordion-header)) {
+    > .p-accordion-header:not(:has(~ .p-accordion-header)) {
         border-end-start-radius: var(--p-accordion-header-last-bottom-border-radius);
         border-end-end-radius: var(--p-accordion-header-last-bottom-border-radius);
     }
 
-    > .ui-accordion-header.ui-state-active:not(:has(~ .ui-accordion-header)) {
+    > .p-accordion-header.p-state-active:not(:has(~ .p-accordion-header)) {
         border-end-start-radius: var(--p-accordion-header-last-active-bottom-border-radius);
         border-end-end-radius: var(--p-accordion-header-last-active-bottom-border-radius);
     }
 
-    .ui-accordion-header {
-        &.ui-state-hover,
-        &:not(.ui-state-active, .ui-state-disabled):hover {
+    .p-accordion-header {
+        &.p-state-hover,
+        &:not(.p-state-active, .p-state-disabled):hover {
             background: var(--p-accordion-header-hover-background);
             color: var(--p-accordion-header-hover-color);
         }
 
-        &.ui-state-active {
+        &.p-state-active {
             background: var(--p-accordion-header-active-background);
             color: var(--p-accordion-header-active-color);
 
-            &:not(.ui-state-disabled):hover {
+            &:not(.p-state-disabled):hover {
                 background: var(--p-accordion-header-active-hover-background);
                 color: var(--p-accordion-header-active-hover-color);
             }
         }
 
-        &:not(.ui-state-disabled):focus-visible {
+        &:not(.p-state-disabled):focus-visible {
             outline: var(--p-accordion-header-focus-ring-width) var(--p-accordion-header-focus-ring-style) var(--p-accordion-header-focus-ring-color);
             outline-offset: var(--p-accordion-header-focus-ring-offset);
             box-shadow: var(--p-accordion-header-focus-ring-shadow);
         }
 
         /* invalid: PrimeFaces tokens */
-        &.ui-state-error,
-        &.ui-state-error:hover,
-        &.ui-state-error.ui-state-active:hover {
+        &.p-state-error,
+        &.p-state-error:hover,
+        &.p-state-error.p-state-active:hover {
             border-color: var(--p-accordion-header-invalid-border-color);
             background: var(--p-accordion-header-invalid-background);
             color: var(--p-accordion-header-invalid-color);
         }
 
-        &.ui-state-error::after,
-        &.ui-state-error + .ui-accordion-content,
-        &.ui-state-error + .ui-accordion-content::after {
+        &.p-state-error::after,
+        &.p-state-error + .p-accordion-content,
+        &.p-state-error + .p-accordion-content::after {
             border-color: var(--p-accordion-header-invalid-border-color);
         }
 
         /* toggle icon, at the end like PrimeUIX */
-        > .ui-icon {
+        > .p-accordion-toggler {
             float: right;
             line-height: var(--p-typography-line-height);
             color: var(--p-accordion-header-toggle-icon-color);
             transition: color var(--p-accordion-transition-duration);
         }
 
-        &.ui-state-hover > .ui-icon,
-        &:not(.ui-state-active, .ui-state-disabled):hover > .ui-icon {
+        &.p-state-hover > .p-accordion-toggler,
+        &:not(.p-state-active, .p-state-disabled):hover > .p-accordion-toggler {
             color: var(--p-accordion-header-toggle-icon-hover-color);
         }
 
-        &.ui-state-active {
-            > .ui-icon {
+        &.p-state-active {
+            > .p-accordion-toggler {
                 color: var(--p-accordion-header-toggle-icon-active-color);
             }
 
-            &:not(.ui-state-disabled):hover > .ui-icon {
+            &:not(.p-state-disabled):hover > .p-accordion-toggler {
                 color: var(--p-accordion-header-toggle-icon-active-hover-color);
             }
         }
 
-        &.ui-state-error > .ui-icon {
+        &.p-state-error > .p-accordion-toggler {
             color: inherit;
         }
 
-        > .ui-icon {
-            &.ui-icon-triangle-1-s,
-            &.ui-icon-triangle-1-n {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
-            }
+        .p-accordion-header-icon {
+            --_icon: var(--p-accordion-header-collapsed-icon);
+        }
 
-            &.ui-icon-triangle-1-s::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-accordion-header-collapsed-icon) center / contain no-repeat;
-            }
-
-            &.ui-icon-triangle-1-n::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-accordion-header-expanded-icon) center / contain no-repeat;
-            }
+        &[aria-expanded="true"] .p-accordion-header-icon {
+            --_icon: var(--p-accordion-header-expanded-icon);
         }
 
         /* options menu trigger: text/secondary rounded icon button like the PrimeUIX panel header buttons */
-        .ui-panel-titlebar-icon {
+        .p-panel-titlebar-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -183,32 +167,22 @@
                 box-shadow: var(--p-button-secondary-focus-ring-shadow);
             }
 
-            .ui-icon-gear {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
-            }
-
-            .ui-icon-gear::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-accordion-header-menu-icon) center / contain no-repeat;
+            .p-accordion-header-menu-icon {
+                --_icon: var(--p-accordion-header-menu-icon);
             }
         }
     }
 
-    .ui-panel-titlebar-icon {
+    .p-panel-titlebar-icon {
         float: right;
         cursor: pointer;
     }
 
-    .ui-panel-actions {
+    .p-panel-actions {
         float: right;
     }
 
-    .ui-accordion-content {
+    .p-accordion-content {
         position: relative;
         margin: 0;
         padding: var(--p-accordion-content-padding);
@@ -227,12 +201,12 @@
     }
 
     /* RTL: the floats (toggle icon, options menu, actions) move to the left (= end) edge */
-    &.ui-accordion-rtl {
+    &.p-accordion-rtl {
         direction: rtl;
 
-        .ui-accordion-header > .ui-icon,
-        .ui-panel-titlebar-icon,
-        .ui-panel-actions {
+        .p-accordion-header > .p-accordion-toggler,
+        .p-panel-titlebar-icon,
+        .p-panel-actions {
             float: left;
         }
     }

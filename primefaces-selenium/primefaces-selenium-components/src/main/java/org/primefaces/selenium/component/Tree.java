@@ -36,17 +36,17 @@ import org.openqa.selenium.By;
  */
 public abstract class Tree extends AbstractComponent {
 
-    public static final String CONTAINER_CLASS = "ui-tree";
-    public static final String ROOT_NODES_CLASS = "ui-tree-container";
-    public static final String TREE_NODE_CLASS = "ui-treenode";
-    public static final String PARENT_NODE_CLASS = "ui-treenode-parent";
-    public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
-    public static final String NODE_CONTENT_CLASS = "ui-treenode-content";
-    public static final String LEAF_NODE_CLASS = "ui-treenode-leaf";
-    public static final String SELECTED_NODE_CLASS = "ui-treenode-selected";
-    public static final String PARTIAL_SELECTED_NODE_CLASS = "ui-treenode-hasselected";
+    public static final String CONTAINER_CLASS = "p-tree";
+    public static final String ROOT_NODES_CLASS = "p-tree-container";
+    public static final String TREE_NODE_CLASS = "p-treenode";
+    public static final String PARENT_NODE_CLASS = "p-treenode-parent";
+    public static final String CHILDREN_NODES_CLASS = "p-treenode-children";
+    public static final String NODE_CONTENT_CLASS = "p-treenode-content";
+    public static final String LEAF_NODE_CLASS = "p-treenode-leaf";
+    public static final String SELECTED_NODE_CLASS = "p-treenode-selected";
+    public static final String PARTIAL_SELECTED_NODE_CLASS = "p-treenode-hasselected";
 
-    public static final String CHILD_SELECTOR = ".ui-tree-container>.ui-treenode";
+    public static final String CHILD_SELECTOR = ".p-tree-container>.p-treenode";
 
     public List<TreeNode> getChildren() {
         return findElements(By.cssSelector(CHILD_SELECTOR)).stream()

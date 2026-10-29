@@ -1,12 +1,12 @@
 /*
  * Tag: p:tag
  *
- * Markup: span.ui-tag > span.ui-tag-icon?, span.ui-tag-value
- * Supported classes: ui-tag-success | -info | -warning | -danger | -secondary | -help, ui-tag-rounded, ui-tag-outlined,
- *                    ui-tag-contrast (styleClass only, the severity attribute does not know it)
+ * Markup: span.p-tag > span.p-tag-icon?, span.p-tag-value
+ * Supported classes: p-tag-success | -info | -warning | -danger | -secondary | -help, p-tag-rounded, p-tag-outlined,
+ *                    p-tag-contrast (styleClass only, the severity attribute does not know it)
  */
 
-.ui-tag {
+.p-tag {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -18,107 +18,107 @@
     padding: var(--p-tag-padding);
     border-radius: var(--p-tag-border-radius);
 
-    .ui-tag-icon,
-    .ui-tag-value {
+    .p-tag-icon,
+    .p-tag-value {
         line-height: var(--p-typography-line-height);
     }
 
-    /* tag used as plain styleClass (e.g. <span class="ui-tag">) */
-    &:not(.ui-widget) {
+    /* tag used as plain styleClass (e.g. <span class="p-tag">) */
+    &:not(.p-widget) {
         display: inline-block;
         text-align: center;
         line-height: 1;
     }
 
-    &.ui-tag-success {
+    &.p-tag-success {
         background: var(--p-tag-success-background);
         color: var(--p-tag-success-color);
     }
 
-    &.ui-tag-info {
+    &.p-tag-info {
         background: var(--p-tag-info-background);
         color: var(--p-tag-info-color);
     }
 
-    &.ui-tag-warning {
+    &.p-tag-warning {
         background: var(--p-tag-warn-background);
         color: var(--p-tag-warn-color);
     }
 
-    &.ui-tag-danger {
+    &.p-tag-danger {
         background: var(--p-tag-danger-background);
         color: var(--p-tag-danger-color);
     }
 
-    &.ui-tag-secondary {
+    &.p-tag-secondary {
         background: var(--p-tag-secondary-background);
         color: var(--p-tag-secondary-color);
     }
 
-    &.ui-tag-help {
+    &.p-tag-help {
         background: var(--p-tag-help-background);
         color: var(--p-tag-help-color);
     }
 
-    &.ui-tag-contrast {
+    &.p-tag-contrast {
         background: var(--p-tag-contrast-background);
         color: var(--p-tag-contrast-color);
     }
 
     /* outlined (outlined="true"): the border is an inset shadow, so outlined and filled tags have the same size */
-    &.ui-tag-outlined {
+    &.p-tag-outlined {
         --_border-color: var(--p-tag-outlined-primary-border-color);
         background: var(--p-tag-outlined-background);
         color: var(--p-tag-outlined-primary-color);
         box-shadow: inset 0 0 0 var(--p-tag-outlined-border-width) var(--_border-color);
 
-        &.ui-tag-success {
+        &.p-tag-success {
             --_border-color: var(--p-tag-outlined-success-border-color);
             color: var(--p-tag-outlined-success-color);
         }
 
-        &.ui-tag-info {
+        &.p-tag-info {
             --_border-color: var(--p-tag-outlined-info-border-color);
             color: var(--p-tag-outlined-info-color);
         }
 
-        &.ui-tag-warning {
+        &.p-tag-warning {
             --_border-color: var(--p-tag-outlined-warn-border-color);
             color: var(--p-tag-outlined-warn-color);
         }
 
-        &.ui-tag-danger {
+        &.p-tag-danger {
             --_border-color: var(--p-tag-outlined-danger-border-color);
             color: var(--p-tag-outlined-danger-color);
         }
 
-        &.ui-tag-secondary {
+        &.p-tag-secondary {
             --_border-color: var(--p-tag-outlined-secondary-border-color);
             color: var(--p-tag-outlined-secondary-color);
         }
 
-        &.ui-tag-help {
+        &.p-tag-help {
             --_border-color: var(--p-tag-outlined-help-border-color);
             color: var(--p-tag-outlined-help-color);
         }
 
-        &.ui-tag-contrast {
+        &.p-tag-contrast {
             --_border-color: var(--p-tag-outlined-contrast-border-color);
             color: var(--p-tag-outlined-contrast-color);
         }
     }
 
-    &.ui-tag-rounded {
+    &.p-tag-rounded {
         border-radius: var(--p-tag-rounded-border-radius);
     }
 
-    .ui-tag-icon {
+    .p-tag-icon {
         margin: 0;
         font-size: var(--p-tag-icon-size);
     }
 
     /* inline-block variant has no flex gap */
-    &:not(.ui-widget) .ui-tag-icon {
+    &:not(.p-widget) .p-tag-icon {
         margin-inline-end: var(--p-tag-gap);
     }
 }

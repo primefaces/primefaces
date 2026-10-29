@@ -87,6 +87,9 @@
         --p-icon-edit: url("lucide-static/icons/pencil.svg");
         --p-icon-trash: url("lucide-static/icons/trash-2.svg");
         --p-icon-file: url("lucide-static/icons/file-text.svg");
+        --p-icon-upload: url("lucide-static/icons/upload.svg");
+        --p-icon-list: url("lucide-static/icons/list.svg");
+        --p-icon-grid: url("lucide-static/icons/layout-grid.svg");
         --p-icon-options: url("lucide-static/icons/settings.svg");
         --p-icon-home: url("lucide-static/icons/house.svg");
         --p-icon-calendar: url("lucide-static/icons/calendar.svg");

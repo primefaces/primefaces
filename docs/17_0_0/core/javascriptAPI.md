@@ -75,7 +75,8 @@ well:
 
 [PrimeFaces.interactions](../jsdocs/modules/src_PrimeFaces.PrimeFaces.interactions.html) makes elements draggable,
 droppable, sortable and resizable with pointer events (mouse, pen and touch). It replaces the jQuery UI interactions,
-the options, callbacks, `ui` arguments, events and CSS classes stay compatible.
+the options, callbacks, `ui` arguments and events stay compatible, the CSS classes have the `p-` prefix
+(`p-draggable-dragging`, `p-sortable-placeholder`, ...).
 
 | Method | Description |
 | --- | --- |

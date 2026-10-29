@@ -20,6 +20,10 @@ available to get notified when a chip is hidden.
 <p:chip label="text" removable="true"></p:chip>
 ```
 
+The remove icon is rendered as `<span class="p-icon p-close-icon p-chip-remove-icon">` and shows
+the icon token `--p-chip-remove-icon` (default `--p-icon-clear`, see [Theming](/core/theming.md?id=icons)); the former
+`removeIcon` attribute is gone.
+
 ## Templating
 Content can easily be customized with the default slot instead of using the built-in modes.
 
@@ -36,7 +40,7 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-chip | Container element.
-|.ui-chip-image | Container element in image mode.
-|.ui-chip-text | Text of the chip.
-|.pi-chip-remove-icon | Remove icon.
+|.p-chip | Container element.
+|.p-chip-image | Container element in image mode.
+|.p-chip-text | Text of the chip.
+|.p-chip-remove-icon | Remove icon.

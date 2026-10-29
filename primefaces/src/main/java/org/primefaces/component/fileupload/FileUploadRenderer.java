@@ -147,9 +147,9 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CONTENT_CLASS, null);
-        writer.startElement("i", null);
-        writer.writeAttribute("class", "pi pi-upload", null);
-        writer.endElement("i");
+        writer.startElement("span", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_ICON_CLASS, null);
+        writer.endElement("span");
         writer.endElement("div");
 
         writer.endElement("div");
@@ -165,12 +165,12 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
             StyleClassBuilder uploadCssClassBuilder = getStyleClassBuilder(context)
                     .add(FileUpload.UPLOAD_BUTTON_CLASS)
                     .add(component.getUploadButtonStyleClass());
-            encodeButton(context, component.getUploadLabel(), uploadCssClassBuilder, component.getUploadIcon(), component.getUploadButtonTitle());
+            encodeButton(context, component.getUploadLabel(), uploadCssClassBuilder, FileUpload.UPLOAD_ICON_CLASS, component.getUploadButtonTitle());
 
             StyleClassBuilder cancelCssClassBuilder = getStyleClassBuilder(context)
                     .add(FileUpload.CANCEL_BUTTON_CLASS)
                     .add(component.getCancelButtonStyleClass());
-            encodeButton(context, component.getCancelLabel(), cancelCssClassBuilder, component.getCancelIcon(), component.getCancelButtonTitle());
+            encodeButton(context, component.getCancelLabel(), cancelCssClassBuilder, FileUpload.CANCEL_ICON_CLASS, component.getCancelButtonTitle());
         }
 
         UIComponent headerFacet = component.getHeaderFacet();
@@ -227,7 +227,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
             String buttonClass = getStyleClassBuilder(context)
                     .add(HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
                     .add(component.getChooseButtonStyleClass())
-                    .add(component.isDisabled(), "ui-state-disabled")
+                    .add(component.isDisabled(), "p-state-disabled")
                     .build();
 
             writer.startElement("span", component);
@@ -247,7 +247,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
             //button icon
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + component.getChooseIcon(), null);
+            writer.writeAttribute("class", FileUpload.CHOOSE_ICON_CLASS, null);
             writer.endElement("span");
 
             //text
@@ -288,7 +288,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
                 .add(FileUpload.CHOOSE_BUTTON_CLASS)
                 .add(isValueBlank(label), FileUpload.BUTTON_ICON_ONLY)
                 .add(component.getChooseButtonStyleClass())
-                .add(disabled, "ui-state-disabled")
+                .add(disabled, "p-state-disabled")
                 .build();
 
         writer.startElement("span", null);
@@ -303,7 +303,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
         //button icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + component.getChooseIcon(), null);
+        writer.writeAttribute("class", FileUpload.CHOOSE_ICON_CLASS, null);
         writer.endElement("span");
 
         //text
@@ -397,7 +397,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
     protected void encodeButton(FacesContext context, String label, StyleClassBuilder styleClassBuilder, String icon, String title) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String cssClass = styleClassBuilder.add(HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
-                .add("ui-state-disabled")
+                .add("p-state-disabled")
                 .add(isValueBlank(label), FileUpload.BUTTON_ICON_ONLY)
                 .build();
 
@@ -411,9 +411,8 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
         }
 
         //button icon
-        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS;
         writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass + " " + icon, null);
+        writer.writeAttribute("class", icon, null);
         writer.endElement("span");
 
         //text

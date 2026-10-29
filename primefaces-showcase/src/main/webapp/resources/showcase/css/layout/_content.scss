@@ -129,7 +129,7 @@
                   font-size: 1.25rem;
                 }
 
-                a:not(.ui-button):not(.ui-button a):not(.ui-linkbutton a) {
+                a:not(.p-button):not(.p-button a):not(.p-linkbutton a) {
                     @include mixins.navlink();
                 }
             }
@@ -168,7 +168,7 @@
                 line-height: 1.5;
             }
 
-            a:not(.ui-button):not(.ui-button a):not(.ui-linkbutton a) {
+            a:not(.p-button):not(.p-button a):not(.p-linkbutton a) {
                 @include mixins.navlink();
             }
 
@@ -190,18 +190,18 @@
                 margin: 0 2px;
             }
 
-            .ui-tabs {
+            .p-tabs {
                 background: transparent;
                 border: 0 none;
     
-                .ui-tabs-nav {
+                .p-tabs-nav {
                     background-color: transparent;
 
                     &:before {
                         border-bottom: 1px solid var(--surface-d) !important;
                     }
     
-                    li.ui-tabs-header {
+                    li.p-tabs-header {
                         background-color: transparent;
                         border-bottom-width: 1px;
 
@@ -209,7 +209,7 @@
                             text-decoration: none;
                         }
 
-                        &.ui-state-hover {
+                        &.p-state-hover {
                             border-color: transparent;
                             border-bottom-color: var(--primary-color);
                             border-radius: 0;
@@ -219,7 +219,7 @@
                             }
                         }
 
-                        &.ui-state-active {
+                        &.p-state-active {
                             border-color: transparent;
                             border-bottom-color: var(--primary-color);
                             border-radius: 0;
@@ -231,10 +231,10 @@
                     }
                 }
     
-                .ui-tabs-panels {
+                .p-tabs-panels {
                     background: transparent;
     
-                    .ui-tabs-panel {
+                    .p-tabs-panel {
                         padding: 0;
                     }
                 }

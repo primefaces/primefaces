@@ -85,7 +85,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         int selectItemsSize = selectItems.size();
         String style = component.getStyle();
         String styleClass = createStyleClass(component, SelectOneButton.STYLE_CLASS);
-        styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
+        styleClass = styleClass + " p-buttonset-" + selectItemsSize;
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
@@ -150,10 +150,10 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
 
         String styleClass = getStyleClassBuilder(context)
                 .add(HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS)
-                .add(selected, "ui-state-active")
-                .add(disabled, "ui-state-disabled")
-                .add("small".equals(component.getSize()), "ui-button-sm")
-                .add("large".equals(component.getSize()), "ui-button-lg")
+                .add(selected, "p-state-active")
+                .add(disabled, "p-state-disabled")
+                .add("small".equals(component.getSize()), "p-button-sm")
+                .add("large".equals(component.getSize()), "p-button-lg")
                 .build();
 
         //button

@@ -65,10 +65,10 @@ public class OrganigramView implements Serializable {
     <p:organigramNode type="root" style="border-radius: 10px;">
         <h:outputText value="#{node.data}" />
     </p:organigramNode>
-    <p:organigramNode type="division" styleClass="division" icon="ui-icon-suitcase" iconPos="left">
+    <p:organigramNode type="division" styleClass="division" icon="pi pi-briefcase" iconPos="left">
         <h:outputText value="#{node.data}" />
     </p:organigramNode>
-    <p:organigramNode type="employee" styleClass="employee" icon="ui-icon-person">
+    <p:organigramNode type="employee" styleClass="employee" icon="pi pi-user">
         <h:outputText value="#{node.data}" />
     </p:organigramNode>
 </p:organigram>

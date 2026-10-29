@@ -71,7 +71,7 @@ public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
         String styleClass = getStyleClassBuilder(context)
                 .add(ProgressBar.CONTAINER_CLASS, component.getStyleClass())
                 .add("determinate".equals(mode), ProgressBar.DETERMINATE_CLASS, ProgressBar.INDETERMINATE_CLASS)
-                .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isDisabled(), "p-state-disabled")
                 .add("info".equals(severity), ProgressBar.SEVERITY_INFO_CLASS)
                 .add("success".equals(severity), ProgressBar.SEVERITY_SUCCESS_CLASS)
                 .add("warning".equals(severity), ProgressBar.SEVERITY_WARNING_CLASS)

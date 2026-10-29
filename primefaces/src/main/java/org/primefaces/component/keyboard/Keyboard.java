@@ -40,5 +40,5 @@ public class Keyboard extends KeyboardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Keyboard";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-keyboard-input ui-widget ui-state-default";
+    public static final String STYLE_CLASS = "p-inputfield p-keyboard-input p-widget p-state-default";
 }

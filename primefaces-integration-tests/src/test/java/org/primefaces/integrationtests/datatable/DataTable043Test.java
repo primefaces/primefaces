@@ -88,7 +88,7 @@ class DataTable043Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
         PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
 
         // Act

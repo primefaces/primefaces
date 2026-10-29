@@ -163,11 +163,11 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-datagrid | Main container element
-| .ui-datagrid-content | Content container.
-| .ui-datagrid-data | Table element containing data
-| .ui-datagrid-row | A row in grid
-| .ui-datagrid-column | A column in grid
+| .p-datagrid | Main container element
+| .p-datagrid-content | Content container.
+| .p-datagrid-data | Table element containing data
+| .p-datagrid-row | A row in grid
+| .p-datagrid-column | A column in grid
 
 As skinning style classes are global, see the main theming section for more information.
 

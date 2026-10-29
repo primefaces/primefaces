@@ -39,7 +39,7 @@ public class PanelGridFacetColumnRenderer extends CoreRenderer implements Helper
         ResponseWriter writer = context.getResponseWriter();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        String defaultStyleClass = PanelGrid.CELL_CLASS + " ui-widget-header";
+        String defaultStyleClass = PanelGrid.CELL_CLASS + " p-widget-header";
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("td", null);

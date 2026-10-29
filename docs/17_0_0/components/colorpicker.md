@@ -122,7 +122,7 @@ the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-colorpicker | Container element.
+| .p-colorpicker | Container element.
 | .clr-picker | Color picker panel.
 | .clr-gradient | Background of gradient.
 | .clr-color | Current color display.

@@ -1,12 +1,12 @@
 /*
  * ConfirmPopup: p:confirmPopup
  *
- * Markup: .ui-confirm-popup > .ui-confirm-popup-content (> .ui-confirm-popup-icon, .ui-confirm-popup-message), .ui-confirm-popup-footer
+ * Markup: .p-confirm-popup > .p-confirm-popup-content (> .p-confirm-popup-icon, .p-confirm-popup-message), .p-confirm-popup-footer
  * The arrow is drawn with ::before (border) and ::after (background); --overlayArrowLeft is set by the PF JavaScript.
- * States: ui-confirm-popup-flipped (shown above the target)
+ * States: p-confirm-popup-flipped (shown above the target)
  */
 
-.ui-confirm-popup {
+.p-confirm-popup {
     position: absolute;
     display: none;
     margin-top: var(--p-confirmpopup-gutter);
@@ -16,12 +16,12 @@
     border-radius: var(--p-confirmpopup-border-radius);
     box-shadow: var(--p-confirmpopup-shadow);
 
-    &.ui-confirm-popup-flipped {
+    &.p-confirm-popup-flipped {
         margin-top: 0;
         margin-bottom: var(--p-confirmpopup-gutter);
     }
 
-    .ui-confirm-popup-content {
+    .p-confirm-popup-content {
         display: flex;
         align-items: center;
         background: transparent;
@@ -31,20 +31,20 @@
         padding: var(--p-confirmpopup-content-padding);
     }
 
-    .ui-confirm-popup-icon {
+    .p-confirm-popup-icon {
         flex-shrink: 0;
         font-size: var(--p-confirmpopup-icon-size);
         color: var(--p-confirmpopup-icon-color);
     }
 
-    .ui-confirm-popup-message {
+    .p-confirm-popup-message {
         margin: 0;
         color: var(--p-confirmpopup-message-color);
         font-size: var(--p-confirmpopup-message-font-size);
         font-weight: var(--p-confirmpopup-message-font-weight);
     }
 
-    .ui-confirm-popup-footer {
+    .p-confirm-popup-footer {
         background: transparent;
         color: inherit;
         border: 0 none;
@@ -90,7 +90,7 @@
         border-bottom-color: var(--p-confirmpopup-border-color);
     }
 
-    &.ui-confirm-popup-flipped {
+    &.p-confirm-popup-flipped {
         &::after,
         &::before {
             bottom: auto;

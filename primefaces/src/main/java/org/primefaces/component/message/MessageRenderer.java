@@ -74,7 +74,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
         boolean iconOnly = "icon".equals(display);
         String style = component.getStyle();
         StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
-                .add("ui-message", component.getStyleClass())
+                .add("p-message", component.getStyleClass())
                 .add("tooltip".equals(display), "p-hidden");
 
         Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
@@ -102,8 +102,8 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
 
             if (shouldRender(component, msg, severityName)) {
 
-                styleClassBuilder.add("ui-message-" + severityName + " ui-widget");
-                styleClassBuilder.add(iconOnly, "ui-message-icon-only");
+                styleClassBuilder.add("p-message-" + severityName + " p-widget");
+                styleClassBuilder.add(iconOnly, "p-message-icon-only");
 
                 writer.writeAttribute("class", styleClassBuilder.build(), null);
 
@@ -146,7 +146,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
     protected void encodeText(FacesContext context, Message component, String text, String severity) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-message-" + severity, null);
+        writer.writeAttribute("class", "p-message-" + severity, null);
         writer.writeAttribute("id", component.getClientId(context) + '_' + severity, null);
 
         if (component.isEscape()) {
@@ -161,7 +161,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
 
     protected void encodeIcon(ResponseWriter writer, String severity, String title, boolean iconOnly) throws IOException {
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-message-" + severity + "-icon", null);
+        writer.writeAttribute("class", "p-icon p-" + severity + "-icon p-message-" + severity + "-icon", null);
         if (iconOnly) {
             writer.writeAttribute("title", title, null);
         }

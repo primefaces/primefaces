@@ -7,7 +7,7 @@ Layout of MegaMenu is grid based and root items require columns as children.
 
 ```xhtml
 <p:megaMenu>
-    <p:submenu label="TV" icon="ui-icon-check">
+    <p:submenu label="TV" icon="pi pi-check">
         <p:column>
             <p:submenu label="TV.1">
                 <p:menuitem value="TV.1.1" url="#" />
@@ -77,7 +77,7 @@ MegaMenu supports `start` and `end` facets to control UI output or add logos or 
     </f:facet>
     <p:menuitem label="Logout" action="#{bean.logout}"/>
     <f:facet name="end">
-       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="p-button-info"/>
     </f:facet>
 <p:megaMenu>
 ```
@@ -89,7 +89,7 @@ current section. Rendered disabled links and separators do not count towards thi
 index. By default, no root item is highlighted; negative or out-of-range values
 also leave no item selected.
 
-The selected root is rendered with `ui-menuitem-selected` and its link has
+The selected root is rendered with `p-menuitem-selected` and its link has
 `aria-current="page"`. Its underline persists when another item is hovered,
 focused, or opened, and when the menu is dismissed. Hover styling and open
 submenus remain temporary. Keyboard focus defaults to the selected root. To change the current section, update `activeIndex`
@@ -101,11 +101,11 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-megamenu | Container element of menubar.
-.ui-menu-list | List container
-.ui-menuitem | Each menu item
-.ui-menuitem-link | Anchor element in a link item
-.ui-menuitem-text | Text element in an item
+.p-megamenu | Container element of menubar.
+.p-menu-list | List container
+.p-menuitem | Each menu item
+.p-menuitem-link | Anchor element in a link item
+.p-menuitem-text | Text element in an item
 
 As skinning style classes are global, see the main theming section for more information.
 

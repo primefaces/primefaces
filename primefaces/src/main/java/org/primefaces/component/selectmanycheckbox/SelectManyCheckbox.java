@@ -38,6 +38,6 @@ public class SelectManyCheckbox extends SelectManyCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyCheckbox";
 
-    public static final String STYLE_CLASS = "ui-selectmanycheckbox ui-widget";
+    public static final String STYLE_CLASS = "p-selectmanycheckbox p-widget";
 
 }

@@ -177,14 +177,32 @@ The rest of this section is about the second kind.
 
 ### How they are drawn
 
-Every component icon is an SVG image in a token. The component shows it as a mask:
+Every component icon is an SVG image in a token. The components render a semantic icon element:
+
+```html
+<span class="p-icon p-close-icon p-panel-close-icon"></span>
+```
+
+- `p-icon`: every icon a component draws.
+- `p-close-icon`: the meaning (close, dropdown, search, prev / next, toggle, sort, info / warn / error, ...).
+- `p-panel-close-icon`: the icon of one component, named after the component and its control (usually the token name
+  without `--`; where the token block has another name, the class keeps the component name, e.g. `p-growl-close-icon`
+  for `--p-toast-close-icon`, `p-selectonemenu-dropdown-icon` for `--p-select-dropdown-icon`). Icons that change with
+  the state (expanded / collapsed, minimized / maximized, ...) have one class (`p-panel-toggle-icon`); the state is an
+  attribute or class of the component (e.g. `aria-expanded` of the toggler), not another icon class. Exceptions: the checkbox
+  icon (`p-checkbox-checked-icon` / `p-checkbox-indeterminate-icon` / `p-checkbox-crossed-icon`) and the sort icon of
+  dataTable / treeTable (`p-datatable-sort-asc-icon` / `p-datatable-sort-desc-icon`) carry their state as a class.
+
+The theme shows the token as a mask of the `::before`:
 
 ```css
-.ui-panel .ui-icon-closethick::before {
+.p-icon::before {
     content: "\2003";                                        /* 1em wide */
     background: currentColor;                                /* the color */
-    mask: var(--p-panel-close-icon) center / contain no-repeat;   /* the shape */
+    mask: var(--_icon) center / contain no-repeat;           /* the shape */
 }
+
+.p-panel-close-icon { --_icon: var(--p-panel-close-icon); }
 ```
 
 So:
@@ -228,6 +246,7 @@ The icon set (default: [Lucide](https://lucide.dev), ISC license):
 | `--p-icon-edit` / `-trash` | row edit / delete | `--p-icon-options` | menu, options |
 | `--p-icon-calendar` | date picker | `--p-icon-home` | breadcrumb home |
 | `--p-icon-file` | file upload | `--p-icon-star` / `-star-filled` | rating |
+| `--p-icon-list` / `-grid` | dataView layout | `--p-icon-upload` | file upload, drop zone |
 | `--p-icon-info` / `-success` / `-warn` / `-error` / `-fatal` | message severities | | |
 
 ### Overriding icons
@@ -283,7 +302,7 @@ Good to know:
 - **High contrast mode** (Windows forced colors): the icons are drawn in the forced text color and stay visible.
 - **Loading icons** rotate (one animation for all spinners); with `prefers-reduced-motion` they stand still.
 - **Hiding an icon:** do not set the token to `none` (without a mask the whole 1em box is painted); hide the element
-  with CSS instead, e.g. `.my-panel .ui-panel-titlebar-icon { display: none; }`.
+  with CSS instead, e.g. `.my-panel .p-panel-titlebar-icon { display: none; }`.
 
 ### Another icon set
 
@@ -306,10 +325,11 @@ tokens reference the set, so they follow automatically:
 
 ### Font icons instead of SVG
 
-The tokens take images. To draw a component icon with an icon font, override the `::before` of the icon element:
+The tokens take images. To draw a component icon with an icon font, override the `::before` of the icon class (all close
+icons: `.p-close-icon`, one component: `.p-panel-close-icon`):
 
 ```css
-.ui-panel .ui-icon-closethick::before {
+.p-panel-close-icon::before {
     mask: none;
     background: none;
     content: "\f00d";
@@ -318,17 +338,15 @@ The tokens take images. To draw a component icon with an icon font, override the
 }
 ```
 
-!> The selectors of the icon elements are the legacy jQuery UI icon classes (`ui-icon-closethick`, ...) for now. They
-will be replaced by semantic icon classes named like the tokens (`p-panel-close-icon`), see the
-[migration guide](../migrationguide/migrationguide.md) when they are done.
-Prefer the tokens; they keep working.
+Prefer the tokens where an image is enough; the classes are for everything else (font icons, size or color of just
+one icon).
 
 ### Icon attributes of the components
 
-Attributes that set an icon a component draws itself (e.g. `p:panel closeIcon`, `p:rowToggler expandIcon`,
-`p:spinner upIcon`, `p:chip removeIcon`) will be removed without replacement (planned, breaking): use the icon tokens.
-Attributes that set content chosen per instance stay, e.g. `icon` of buttons and menu items or the node icons of
-`p:tree`.
+Components have no attributes for the icons they draw themselves (e.g. the former `p:panel closeIcon`,
+`p:rowToggler expandIcon`, `p:spinner upIcon`, `p:chip removeIcon`): use the icon tokens or classes. Attributes that set
+content chosen per instance stay, e.g. `icon` of buttons and menu items, the node icons of `p:tree` or `showIcon` / `hideIcon`
+of `p:speedDial` (without `showIcon` it draws the theme icon `--p-speeddial-show-icon`).
 
 ## Motion
 
@@ -350,6 +368,8 @@ Transitions use duration and easing tokens, which can be overridden like any oth
 The theme respects the preferences of the user without configuration:
 
 - **Reduced motion** (`prefers-reduced-motion`): transitions and CSS animations are reduced to a minimum.
+- **Reduced transparency** (`prefers-reduced-transparency`): no blur behind floating layers (the backdrop filters of Glass
+  and the blur of growl are off).
 - **Print**: light colors, no shadows, scrollable tables print all rows, overlays, growl and paginators are hidden.
 - **High contrast mode** (Windows forced colors): icons stay visible, focus rings are outlines and are kept.
 - **Target size**: small icon controls (chip remove, password toggle, breadcrumb home, ...) get a 24px hit area
@@ -365,28 +385,28 @@ Some variants are selected with a style class (`styleClass`, `panelStyleClass`):
 
 | Class | On | Effect |
 |---|---|---|
-| `ui-selectonemenu-sm` / `-lg`, `ui-selectcheckboxmenu-sm` / `-lg`, `ui-cascadeselect-sm` / `-lg` | the component (`styleClass`) | small / large field (like `ui-inputtext-sm` / `ui-button-sm`) |
-| `ui-chkbox-sm` / `-lg`, `ui-radiobutton-sm` / `-lg` | the checkbox / radio or any ancestor (e.g. `p:selectManyCheckbox`) | small / large boxes |
-| `ui-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
-| `ui-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
-| `ui-listbox-checkmark`, `ui-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
-| `ui-message-outlined`, `ui-message-simple`, `ui-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
+| `p-selectonemenu-sm` / `-lg`, `p-selectcheckboxmenu-sm` / `-lg`, `p-cascadeselect-sm` / `-lg` | the component (`styleClass`) | small / large field (like `p-inputtext-sm` / `p-button-sm`) |
+| `p-chkbox-sm` / `-lg`, `p-radiobutton-sm` / `-lg` | the checkbox / radio or any ancestor (e.g. `p:selectManyCheckbox`) | small / large boxes |
+| `p-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
+| `p-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
+| `p-listbox-checkmark`, `p-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
+| `p-message-outlined`, `p-message-simple`, `p-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
 | `severity="secondary"` / `"contrast"` | p:staticMessage | additional severities |
-| `ui-tag-contrast`, `ui-badge-contrast` | p:tag, p:badge | contrast severity (also with `outlined` / `rounded`) |
-| `ui-float-label-in`, `ui-float-label-on` | the `span.ui-float-label` | label inside the field at the top / label on the border |
-| `ui-blockui-light` | p:blockUI | light loading mask with a spinner (default: modal mask) |
-| `ui-ajaxstatus-bar` | an element in the start facet of p:ajaxStatus | indeterminate progress bar at the top of the viewport |
+| `p-tag-contrast`, `p-badge-contrast` | p:tag, p:badge | contrast severity (also with `outlined` / `rounded`) |
+| `p-float-label-in`, `p-float-label-on` | the `span.p-float-label` | label inside the field at the top / label on the border |
+| `p-blockui-light` | p:blockUI | light loading mask with a spinner (default: modal mask) |
+| `p-ajaxstatus-bar` | an element in the start facet of p:ajaxStatus | indeterminate progress bar at the top of the viewport |
 
 ```xml
-<p:selectOneMenu value="#{bean.city}" styleClass="ui-selectonemenu-sm" panelStyleClass="ui-select-checkmark">
+<p:selectOneMenu value="#{bean.city}" styleClass="p-selectonemenu-sm" panelStyleClass="p-select-checkmark">
     <f:selectItems value="#{bean.cities}"/>
 </p:selectOneMenu>
 
-<p:messages styleClass="ui-message-outlined ui-message-sm"/>
+<p:messages styleClass="p-message-outlined p-message-sm"/>
 
 <p:ajaxStatus>
     <f:facet name="start">
-        <div class="ui-ajaxstatus-bar"/>
+        <div class="p-ajaxstatus-bar"/>
     </f:facet>
 </p:ajaxStatus>
 ```
@@ -502,7 +522,7 @@ without `!important`:
 
 ```css
 /* wins over the theme, although the selector is simple */
-.ui-button {
+.p-button {
     text-transform: uppercase;
 }
 ```
@@ -576,11 +596,11 @@ layer:
 ```
 
 - Icons drawn by the components come from icon tokens, not from PrimeIcons or Font Awesome classes.
-- Canvas based components (p:chart, p:knob) take their colors from their JavaScript options, not from the tokens.
+- Canvas based components (p:chart) take their colors from their JavaScript options, not from the tokens.
 - The browser requirements are higher, see [Browser requirements](#browser-requirements).
 
 Further breaking changes in the components (icon attributes, `ui-*` to `p-*` style classes, ...) are listed in the
-[migration guide](../migrationguide/migrationguide.md) when they are done.
+[migration guide](../migrationguide/17_0_0.md).
 
 ## Browser requirements
 

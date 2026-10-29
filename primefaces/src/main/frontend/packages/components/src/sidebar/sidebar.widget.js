@@ -45,10 +45,10 @@ PrimeFaces.widget.Sidebar = class Sidebar extends PrimeFaces.widget.DynamicOverl
         this.cfg.showCloseIcon = (this.cfg.showCloseIcon === true || this.cfg.showCloseIcon === undefined);
         this.cfg.baseZIndex = this.cfg.baseZIndex||0;
 
-        this.content = this.jq.children('.ui-sidebar-content');
+        this.content = this.jq.children('.p-sidebar-content');
 
         if(this.cfg.showCloseIcon) {
-            this.closeIcon = this.jq.children('.ui-sidebar-close');
+            this.closeIcon = this.jq.children('.p-sidebar-close');
         }
 
         //aria
@@ -81,13 +81,13 @@ PrimeFaces.widget.Sidebar = class Sidebar extends PrimeFaces.widget.DynamicOverl
 
         if(this.cfg.showCloseIcon) {
             this.closeIcon.off('mouseover mouseout focus blur click').on('mouseover', function() {
-                $(this).addClass('ui-state-hover');
+                $(this).addClass('p-state-hover');
             }).on('mouseout', function() {
-                $(this).removeClass('ui-state-hover');
+                $(this).removeClass('p-state-hover');
             }).on('focus', function() {
-                $(this).addClass('ui-state-focus');
+                $(this).addClass('p-state-focus');
             }).on('blur', function() {
-                $(this).removeClass('ui-state-focus');
+                $(this).removeClass('p-state-focus');
             }).on('click', function(e) {
                 $this.hide();
                 e.preventDefault();
@@ -117,7 +117,7 @@ PrimeFaces.widget.Sidebar = class Sidebar extends PrimeFaces.widget.DynamicOverl
      * @private
      */
     _show() {
-        this.jq.addClass('ui-sidebar-active');
+        this.jq.addClass('p-sidebar-active');
         this.jq.attr({
             'aria-hidden': 'false',
             'aria-modal': String(this.cfg.modal)
@@ -154,7 +154,7 @@ PrimeFaces.widget.Sidebar = class Sidebar extends PrimeFaces.widget.DynamicOverl
             return;
         }
 
-        this.jq.removeClass('ui-sidebar-active');
+        this.jq.removeClass('p-sidebar-active');
         this.jq.attr({
             'aria-hidden': 'true',
             'aria-modal': 'false'
@@ -171,7 +171,7 @@ PrimeFaces.widget.Sidebar = class Sidebar extends PrimeFaces.widget.DynamicOverl
      * @return {boolean} `true` if this sideplay is visible, or `false` otherwise.
      */
     isVisible() {
-        return this.jq.hasClass('ui-sidebar-active');
+        return this.jq.hasClass('p-sidebar-active');
     }
 
     /**

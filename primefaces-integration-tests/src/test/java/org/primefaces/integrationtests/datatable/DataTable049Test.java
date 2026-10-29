@@ -405,7 +405,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertFalse(expectedId.isEmpty(), "row[1] must have an ID after filter");
 
         // Act — normal AJAX button click (NOT a partialUpdate=false request)
-        WebElement btn = dataTable.getRow(1).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement btn = dataTable.getRow(1).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(btn).click();
 
         // Assert — bean must have received the item that was visually in row[1]
@@ -430,7 +430,7 @@ class DataTable049Test extends AbstractDataTableTest {
         String expectedId = dataTable.getRow(0).getCell(0).getText();
         assertFalse(expectedId.isEmpty());
 
-        WebElement btn = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement btn = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(btn).click();
 
         assertEquals(expectedId, page.selectedOutput.getText(),
@@ -453,7 +453,7 @@ class DataTable049Test extends AbstractDataTableTest {
         String expectedId = dataTable.getRow(0).getCell(0).getText();
         assertFalse(expectedId.isEmpty());
 
-        WebElement btn = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement btn = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(btn).click();
 
         assertEquals(expectedId, page.selectedOutput.getText(),
@@ -476,7 +476,7 @@ class DataTable049Test extends AbstractDataTableTest {
         String expectedId = dataTable.getRow(0).getCell(0).getText();
         assertFalse(expectedId.isEmpty(), "row[0] must have an ID after filter");
 
-        WebElement btn = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
+        WebElement btn = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("p-button"));
         PrimeSelenium.guardAjax(btn).click();
 
         assertEquals(expectedId, page.selectedOutput.getText(),

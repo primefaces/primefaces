@@ -27,7 +27,7 @@ PanelGrid provides facets for header and footer content.
     <h:outputLabel for="surname" value="Surname: *" />
     <p:inputText id="surname" value="#{bean.surname}" label="Surname"/>
     <f:facet name="footer">
-        <p:commandButton type="button" value="Save" icon="ui-icon-check" />
+        <p:commandButton type="button" value="Save" icon="pi pi-check" />
     </f:facet>
 </p:panelGrid>
 ```
@@ -57,15 +57,15 @@ should be defined manually.
 **Note** that this approach does not support grid layout.
 
 ## Blank Mode
-To remove borders add ui-noborder style class to the component using styleClass attribute and to
-remove borders plus background color, apply ui-panelgrid-blank style.
+To remove borders add p-noborder style class to the component using styleClass attribute and to
+remove borders plus background color, apply p-panelgrid-blank style.
 
 ## Responsive
 PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS.
 However, you may find your labels not lining up in horizontal forms.  You can use the following CSS to address this:
 ```xml
 <style type="text/css">
-   .customPanelGrid .ui-panelgrid-content {
+   .customPanelGrid .p-panelgrid-content {
             align-items: center;
     }
 </style>
@@ -227,10 +227,10 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-panelgrid | Main container element of panelGrid.
-.ui-panelgrid-header | Header.
-.ui-panelgrid-footer | Footer.
-.ui-panelgrid-even | Even numbered rows.
-.ui-panelgrid-odd | Odd numbered rows.
+.p-panelgrid | Main container element of panelGrid.
+.p-panelgrid-header | Header.
+.p-panelgrid-footer | Footer.
+.p-panelgrid-even | Even numbered rows.
+.p-panelgrid-odd | Odd numbered rows.
 
 As skinning style classes are global, see the main theming section for more information.

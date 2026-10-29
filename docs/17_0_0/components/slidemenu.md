@@ -8,15 +8,15 @@ will be displayed with a slide animation.
 
 ```xhtml
 <p:slideMenu>
-    <p:submenu label="Ajax Menuitems" icon="ui-icon-refresh">
-        <p:menuitem value="Save" action="#{buttonBean.save}" update="messages" icon="ui-icon-disk" />
-        <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w" />
+    <p:submenu label="Ajax Menuitems" icon="pi pi-refresh">
+        <p:menuitem value="Save" action="#{buttonBean.save}" update="messages" icon="pi pi-save" />
+        <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="pi pi-refresh" />
     </p:submenu>
-    <p:submenu label="Non-Ajax Menuitem" icon="ui-icon-newwin">
-        <p:menuitem value="Delete" action="#{buttonBean.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+    <p:submenu label="Non-Ajax Menuitem" icon="pi pi-window-maximize">
+        <p:menuitem value="Delete" action="#{buttonBean.delete}" update="messages" ajax="false" icon="pi pi-times"/>
     </p:submenu>
     <p:divider />
-    <p:submenu label="Navigations" icon="ui-icon-extlink">
+    <p:submenu label="Navigations" icon="pi pi-external-link">
         <p:submenu label="Prime Links">
             <p:menuitem value="Prime" url="http://www.prime.com.tr" />
             <p:menuitem value="PrimeFaces" url="http://www.primefaces.org" />
@@ -52,14 +52,14 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-menu .ui-slidemenu | Container element of menu.
-.ui-slidemenu-wrapper | Wrapper element for content.
-.ui-slidemenu-content | Content container.
-.ui-slidemenu-backward | Back navigator.
-.ui-menu-list | List container
-.ui-menuitem | Each menu item
-.ui-menuitem-link | Anchor element in a link item
-.ui-menuitem-text | Text element in an item
+.p-menu .p-slidemenu | Container element of menu.
+.p-slidemenu-wrapper | Wrapper element for content.
+.p-slidemenu-content | Content container.
+.p-slidemenu-backward | Back navigator.
+.p-menu-list | List container
+.p-menuitem | Each menu item
+.p-menuitem-link | Anchor element in a link item
+.p-menuitem-text | Text element in an item
 
 As skinning style classes are global, see the main theming section for more information.
 

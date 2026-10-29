@@ -30,7 +30,7 @@ Without an attached `p:outputLabel`, the `label` attribute is rendered as `aria-
 </p:selectOneButton>
 ```
 
-Keyboard focus lands on the hidden radio inputs; the widget reflects it by adding the `ui-state-focus` class to the
+Keyboard focus lands on the hidden radio inputs; the widget reflects it by adding the `p-state-focus` class to the
 corresponding button container.
 
 ## Custom Layout
@@ -111,9 +111,9 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectonebutton | Main container element.
-.ui-button | Container element of an option.
-.ui-button-text | Visible label element of an option.
+.p-selectonebutton | Main container element.
+.p-button | Container element of an option.
+.p-button-text | Visible label element of an option.
 
 ## Confirmation
 
@@ -128,9 +128,9 @@ Attach `p:confirm` to ask before changing the value. Cancelling leaves the selec
 </p:selectOneButton>
 
 <p:confirmDialog global="true">
-    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+    <p:commandButton value="Yes" type="button" styleClass="p-confirmdialog-yes" />
+    <p:commandButton value="No" type="button" styleClass="p-confirmdialog-no" />
 </p:confirmDialog>
 ```
 
-For a confirmation popup, use `type="popup"` on `p:confirm` and a global `p:confirmPopup` with `ui-confirm-popup-yes` and `ui-confirm-popup-no` buttons.
+For a confirmation popup, use `type="popup"` on `p:confirm` and a global `p:confirmPopup` with `p-confirm-popup-yes` and `p-confirm-popup-no` buttons.

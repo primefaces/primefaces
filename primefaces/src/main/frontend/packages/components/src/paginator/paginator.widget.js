@@ -69,17 +69,17 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         super.init(cfg);
 
         //elements
-        this.navigator = this.jq.children('.ui-paginator-center-content');
-        this.pagesContainer = this.navigator.children('.ui-paginator-pages');
-        this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
-        this.rppSelect = this.navigator.children('.ui-paginator-rpp-options');
-        this.jtpSelect = this.navigator.children('.ui-paginator-jtp-select');
-        this.jtpInput = this.navigator.children('.ui-paginator-jtp-input');
-        this.firstLink = this.navigator.children('.ui-paginator-first');
-        this.prevLink  = this.navigator.children('.ui-paginator-prev');
-        this.nextLink  = this.navigator.children('.ui-paginator-next');
-        this.endLink   = this.navigator.children('.ui-paginator-last');
-        this.currentReport = this.navigator.children('.ui-paginator-current');
+        this.navigator = this.jq.children('.p-paginator-center-content');
+        this.pagesContainer = this.navigator.children('.p-paginator-pages');
+        this.pageLinks = this.pagesContainer.children('.p-paginator-page');
+        this.rppSelect = this.navigator.children('.p-paginator-rpp-options');
+        this.jtpSelect = this.navigator.children('.p-paginator-jtp-select');
+        this.jtpInput = this.navigator.children('.p-paginator-jtp-input');
+        this.firstLink = this.navigator.children('.p-paginator-first');
+        this.prevLink  = this.navigator.children('.p-paginator-prev');
+        this.nextLink  = this.navigator.children('.p-paginator-next');
+        this.endLink   = this.navigator.children('.p-paginator-last');
+        this.currentReport = this.navigator.children('.p-paginator-current');
 
         //metadata
         this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
@@ -119,23 +119,23 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         var $this = this;
 
         //visuals for first,prev,next,last buttons
-        this.navigator.children('button.ui-state-default').on('mouseover.paginator', function(){
+        this.navigator.children('button.p-state-default').on('mouseover.paginator', function(){
             var item = $(this);
-            if(!item.hasClass('ui-state-disabled')) {
-                item.addClass('ui-state-hover');
+            if(!item.hasClass('p-state-disabled')) {
+                item.addClass('p-state-hover');
             }
         })
         .on('mouseout.paginator', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('focus.paginator', function() {
             var item = $(this);
-            if(!item.hasClass('ui-state-disabled')) {
-                item.addClass('ui-state-focus');
+            if(!item.hasClass('p-state-disabled')) {
+                item.addClass('p-state-focus');
             }
         })
         .on('blur.paginator', function() {
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
         })
         .on('keydown.paginator', function(e) {
             if(e.key === 'Enter') {
@@ -150,7 +150,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         //records per page selection
         PrimeFaces.skinSelect(this.rppSelect);
         this.rppSelect.on('change', function(e) {
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 $this.setRowsPerPage($(this).val());
             }
         });
@@ -158,7 +158,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         //jump to page dropdown
         PrimeFaces.skinSelect(this.jtpSelect);
         this.jtpSelect.on('change', function(e) {
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 $this.setPage($this.parseLocalizedInt($(this).val()));
             }
         });
@@ -166,7 +166,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         //jump to page input
         PrimeFaces.skinInput(this.jtpInput);
         this.jtpInput.on('change', function(e) {
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 var page = $this.parseLocalizedInt($(this).val());
                 if (isNaN(page) || page > $this.cfg.pageCount || page < 1) {
                     // restore old value if invalid
@@ -182,7 +182,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         this.firstLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 $this.setPage(0);
             }
 
@@ -193,7 +193,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         this.prevLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 $this.setPage($this.cfg.page - 1);
             }
 
@@ -204,7 +204,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         this.nextLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 $this.setPage($this.cfg.page + 1);
             }
 
@@ -215,7 +215,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         this.endLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
-            if(!$(this).hasClass("ui-state-disabled")){
+            if(!$(this).hasClass("p-state-disabled")){
                 $this.setPage($this.cfg.pageCount - 1);
             }
 
@@ -229,14 +229,14 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
      */
     bindPageLinkEvents(){
         var $this = this,
-        pageLinks = this.pagesContainer.children('.ui-paginator-page');
+        pageLinks = this.pagesContainer.children('.p-paginator-page');
 
         pageLinks.each(function() {
             var link = $(this),
             pageNumber = $this.parseLocalizedInt(link.text());
 
             link.attr('aria-label', $this.ariaPageLabel.replace('{page}', (pageNumber)));
-            if (link.hasClass('ui-state-active')) {
+            if (link.hasClass('p-state-active')) {
                 link.attr('aria-current', 'page');
             }
         });
@@ -245,7 +245,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
             var link = $(this),
             pageNumber = $this.parseLocalizedInt(link.text());
 
-            if(!link.hasClass('ui-state-disabled')&&!link.hasClass('ui-state-active')) {
+            if(!link.hasClass('p-state-disabled')&&!link.hasClass('p-state-active')) {
                 $this.setPage(pageNumber - 1);
             }
 
@@ -253,18 +253,18 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         })
         .on('mouseover.paginator', function() {
             var item = $(this);
-            if(!item.hasClass('ui-state-disabled')&&!item.hasClass('ui-state-active')) {
-                item.addClass('ui-state-hover');
+            if(!item.hasClass('p-state-disabled')&&!item.hasClass('p-state-active')) {
+                item.addClass('p-state-hover');
             }
         })
         .on('mouseout.paginator', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('focus.paginator', function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         })
         .on('blur.paginator', function() {
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
         })
         .on('keydown.paginator', function(e) {
             if(e.key === 'Enter') {
@@ -301,11 +301,11 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
     * @private
     */
    unbindEvents() {
-        var buttons = this.navigator.children('button.ui-state-default');
+        var buttons = this.navigator.children('button.p-state-default');
         if (buttons.length > 0) {
             buttons.off();
         }
-        var pageLinks = this.pagesContainer.children('.ui-paginator-page');
+        var pageLinks = this.pagesContainer.children('.p-paginator-page');
         if (pageLinks.length > 0) {
             pageLinks.off();
         }
@@ -352,7 +352,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
 
         //rows per page dropdown
         if(this.cfg.prevRows !== this.cfg.rows) {
-            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + CSS.escape(this.cfg.rows) + '"]').prop('selected', true);
+            this.rppSelect.filter(':not(.p-state-focus)').children('option').filter('option[value="' + CSS.escape(this.cfg.rows) + '"]').prop('selected', true);
             this.cfg.prevRows = this.cfg.rows;
         }
 
@@ -388,7 +388,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         focusedElement = $(document.activeElement),
         focusContainer;
 
-        if(focusedElement.hasClass('ui-paginator-page')) {
+        if(focusedElement.hasClass('p-paginator-page')) {
             var pagesContainerIndex = this.pagesContainer.index(focusedElement.parent());
             if(pagesContainerIndex >= 0) {
                 focusContainer = this.pagesContainer.eq(pagesContainerIndex);
@@ -410,12 +410,12 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         //update dom
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
-            var styleClass = 'ui-paginator-page ui-button ui-button-flat ui-state-default',
+            var styleClass = 'p-paginator-page p-button p-button-flat p-state-default',
             ariaLabel = this.ariaPageLabel.replace('{page}', (i+1)),
             ariaCurrentPage = '';
 
             if(this.cfg.page == i) {
-                styleClass += ' ui-state-active';
+                styleClass += ' p-state-active';
                 ariaCurrentPage = 'aria-current="page"';
             }
 
@@ -423,7 +423,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         }
 
         if(focusContainer) {
-            focusContainer.children().filter('.ui-state-active').trigger('focus');
+            focusContainer.children().filter('.p-state-active').trigger('focus');
         }
 
         this.bindPageLinkEvents();
@@ -557,8 +557,8 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
      * @param {JQuery} element Element to disabled.
      */
     disableElement(element) {
-        element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
-        element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
+        element.removeClass('p-state-hover p-state-focus p-state-active').addClass('p-state-disabled').attr('tabindex', -1);
+        element.removeClass('p-state-hover p-state-focus p-state-active').addClass('p-state-disabled').attr('tabindex', -1);
     }
 
     /**
@@ -567,7 +567,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
      * @param {JQuery} element Element to disabled.
      */
     enableElement(element) {
-        element.removeClass('ui-state-disabled').attr('tabindex', 0);
+        element.removeClass('p-state-disabled').attr('tabindex', 0);
     }
 
     /**

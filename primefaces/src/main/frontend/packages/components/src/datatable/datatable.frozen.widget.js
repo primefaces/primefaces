@@ -39,15 +39,15 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @inheritdoc
      */
     setupScrolling() {
-        this.scrollLayout = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right');
-        this.frozenLayout = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-left');
-        this.scrollContainer = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right > .ui-datatable-scrollable-container');
-        this.frozenContainer = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-left > .ui-datatable-frozen-container');
-        this.scrollHeader = this.scrollContainer.children('.ui-datatable-scrollable-header');
-        this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
-        this.scrollBody = this.scrollContainer.children('.ui-datatable-scrollable-body');
-        this.scrollFooter = this.scrollContainer.children('.ui-datatable-scrollable-footer');
-        this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
+        this.scrollLayout = this.jq.find('> table > tbody > tr > td.p-datatable-frozenlayout-right');
+        this.frozenLayout = this.jq.find('> table > tbody > tr > td.p-datatable-frozenlayout-left');
+        this.scrollContainer = this.jq.find('> table > tbody > tr > td.p-datatable-frozenlayout-right > .p-datatable-scrollable-container');
+        this.frozenContainer = this.jq.find('> table > tbody > tr > td.p-datatable-frozenlayout-left > .p-datatable-frozen-container');
+        this.scrollHeader = this.scrollContainer.children('.p-datatable-scrollable-header');
+        this.scrollHeaderBox = this.scrollHeader.children('div.p-datatable-scrollable-header-box');
+        this.scrollBody = this.scrollContainer.children('.p-datatable-scrollable-body');
+        this.scrollFooter = this.scrollContainer.children('.p-datatable-scrollable-footer');
+        this.scrollFooterBox = this.scrollFooter.children('div.p-datatable-scrollable-footer-box');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
         this.scrollHeaderTable = this.scrollHeaderBox.children('table');
         this.scrollBodyTable = this.cfg.virtualScroll ? this.scrollBody.children('div').children('table') : this.scrollBody.children('table');
@@ -56,20 +56,20 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         this.scrollTbody = this.tbody.eq(isFrozenColumnsRight ? 0 : 1);
         this.scrollTfoot = this.tfoot.eq(isFrozenColumnsRight ? 0 : 1);
         this.scrollFooterTable = this.scrollFooterBox.children('table');
-        this.scrollFooterCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
-        this.frozenHeader = this.frozenContainer.children('.ui-datatable-scrollable-header');
-        this.frozenBody = this.frozenContainer.children('.ui-datatable-scrollable-body');
+        this.scrollFooterCols = this.scrollFooter.find('> .p-datatable-scrollable-footer-box > table > tfoot > tr > td');
+        this.frozenHeader = this.frozenContainer.children('.p-datatable-scrollable-header');
+        this.frozenBody = this.frozenContainer.children('.p-datatable-scrollable-body');
         this.frozenBodyTable = this.cfg.virtualScroll ? this.frozenBody.children('div').children('table') : this.frozenBody.children('table');
         this.frozenThead = this.thead.eq(isFrozenColumnsRight ? 1 : 0);
         this.frozenTbody = this.tbody.eq(isFrozenColumnsRight ? 1 : 0);
         this.frozenTfoot = this.tfoot.eq(isFrozenColumnsRight ? 1 : 0);
-        this.frozenFooter = this.frozenContainer.children('.ui-datatable-scrollable-footer');
-        this.frozenFooterTable = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table');
-        this.frozenFooterCols = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
+        this.frozenFooter = this.frozenContainer.children('.p-datatable-scrollable-footer');
+        this.frozenFooterTable = this.frozenFooter.find('> .p-datatable-scrollable-footer-box > table');
+        this.frozenFooterCols = this.frozenFooter.find('> .p-datatable-scrollable-footer-box > table > tfoot > tr > td');
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
         this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
 
-        this.frozenThead.find('> tr > th').addClass('ui-frozen-column');
+        this.frozenThead.find('> tr > th').addClass('p-frozen-column');
 
         var $this = this,
         scrollBarWidth = this.getScrollbarWidth() + 'px';
@@ -120,7 +120,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         this.restoreScrollState();
 
         if(this.cfg.virtualScroll) {
-            var row = this.scrollTbody.children('tr.ui-widget-content');
+            var row = this.scrollTbody.children('tr.p-widget-content');
             if(row) {
                 this.rowHeight = row.outerHeight();
                 this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
@@ -229,8 +229,8 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      */
     adjustScrollHeight() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        headerChilden = this.jq.children('.ui-datatable-header'),
-        footerChilden = this.jq.children('.ui-datatable-footer'),
+        headerChilden = this.jq.children('.p-datatable-header'),
+        footerChilden = this.jq.children('.p-datatable-footer'),
         tableHeaderHeight = (headerChilden.length > 0) ? headerChilden.outerHeight(true) : 0,
         tableFooterHeight = (footerChilden.length > 0) ? footerChilden.outerHeight(true) : 0,
         scrollersHeight = (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight()),
@@ -273,7 +273,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         var $this = this,
         headerWidth = width + this.frozenLayout.width();
 
-        this.jq.children('.ui-widget-header').each(function() {
+        this.jq.children('.p-widget-header').each(function() {
             $this.setOuterWidth($(this), headerWidth);
         });
     }
@@ -292,7 +292,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
                 this._fixColumnWidths(this.frozenHeader, this.frozenFooterCols, this.frozenColgroup);
             }
             else {
-                this.jq.find('> .ui-datatable-tablewrapper > table > thead > tr > th').each(function() {
+                this.jq.find('> .p-datatable-tablewrapper > table > thead > tr > th').each(function() {
                     var col = $(this),
                     widthInfo = $this.getColumnWidthInfo(col);
 
@@ -313,7 +313,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
     _fixColumnWidths(header, footerCols) {
         var $this = this;
 
-        header.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
+        header.find('> .p-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
             var headerCol = $(this),
             colIndex = headerCol.index(),
             widthInfo = $this.getColumnWidthInfo(headerCol);
@@ -354,7 +354,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
             frozenRow = this.copyRow(row),
             scrollableRow = this.copyRow(row);
 
-            if(row.hasClass('ui-datatable-empty-message')) {
+            if(row.hasClass('p-datatable-empty-message')) {
                 var colspan = columns.attr('colspan'),
                 cloneColumns = columns.clone();
 
@@ -425,15 +425,15 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
                         var row = $(this),
                         twinRow = $this.getTwinRow(row);
 
-                        row.addClass('ui-state-hover');
-                        twinRow.addClass('ui-state-hover');
+                        row.addClass('p-state-hover');
+                        twinRow.addClass('p-state-hover');
                     })
                     .on('mouseleave.datatable', selector, null, function() {
                         var row = $(this),
                         twinRow = $this.getTwinRow(row);
 
-                        row.removeClass('ui-state-hover');
-                        twinRow.removeClass('ui-state-hover');
+                        row.removeClass('p-state-hover');
+                        twinRow.removeClass('p-state-hover');
                     });
     }
 
@@ -485,7 +485,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         this.updateColspan(expansionRow);
         expansionRow.show();
 
-        twinRow.after('<tr class="ui-expanded-row-content ui-widget-content"><td></td></tr>');
+        twinRow.after('<tr class="p-expanded-row-content p-widget-content"><td></td></tr>');
         twinRow.next().children('td').attr('colspan', this.updateColspan(twinRow)).height(expansionRow.children('td').height());
     }
 
@@ -506,7 +506,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @return {JQuery}
      */
     getExpandedRows() {
-        return this.frozenTbody.children('.ui-expanded-row');
+        return this.frozenTbody.children('.p-expanded-row');
     }
 
     /**
@@ -548,8 +548,8 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @param {number} index
      */
     invalidateRow(index) {
-        this.frozenTbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
-        this.scrollTbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.frozenTbody.children('tr').eq(index).addClass('p-widget-content p-row-editing p-state-error');
+        this.scrollTbody.children('tr').eq(index).addClass('p-widget-content p-row-editing p-state-error');
     }
 
     /**
@@ -560,7 +560,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @return {JQuery}
      */
     getRowEditors(row) {
-        return row.find('div.ui-cell-editor').add(this.getTwinRow(row).find('div.ui-cell-editor'));
+        return row.find('div.p-cell-editor').add(this.getTwinRow(row).find('div.p-cell-editor'));
     }
 
     /**
@@ -604,20 +604,20 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @inheritdoc
      */
     addResizers() {
-        var frozenColumns = this.frozenThead.find('> tr > th.ui-resizable-column'),
-        scrollableColumns = this.scrollThead.find('> tr > th.ui-resizable-column');
+        var frozenColumns = this.frozenThead.find('> tr > th.p-resizable-column'),
+        scrollableColumns = this.scrollThead.find('> tr > th.p-resizable-column');
 
-        frozenColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>');
-        scrollableColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>')
+        frozenColumns.prepend('<span class="p-column-resizer">&nbsp;</span>');
+        scrollableColumns.prepend('<span class="p-column-resizer">&nbsp;</span>')
 
         if(this.cfg.resizeMode === 'fit') {
-            frozenColumns.filter(':last-child').addClass('ui-frozen-column-last');
-            scrollableColumns.filter(':last-child').children('span.ui-column-resizer').hide();
+            frozenColumns.filter(':last-child').addClass('p-frozen-column-last');
+            scrollableColumns.filter(':last-child').children('span.p-column-resizer').hide();
         }
 
         if(this.hasColumnGroup) {
-            this.frozenGroupResizers = this.frozenThead.find('> tr:first > th > .ui-column-resizer');
-            this.scrollGroupResizers = this.scrollThead.find('> tr:first > th > .ui-column-resizer');
+            this.frozenGroupResizers = this.frozenThead.find('> tr:first > th > .p-column-resizer');
+            this.scrollGroupResizers = this.scrollThead.find('> tr:first > th > .p-column-resizer');
         }
     }
 
@@ -650,7 +650,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         var nextColumnHeader = columnHeader.next();
 
         var colIndex = columnHeader.index(),
-        lastFrozen = columnHeader.hasClass('ui-frozen-column-last');
+        lastFrozen = columnHeader.hasClass('p-frozen-column-last');
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
@@ -667,7 +667,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         minWidth = (minWidth == 0) ? 15 : minWidth;
         var shouldChange = (expandMode && newWidth > minWidth) || (lastFrozen ? (newWidth > minWidth) : (newWidth > minWidth && nextColumnWidth > minWidth));
         if(shouldChange) {
-            var frozenColumn = columnHeader.hasClass('ui-frozen-column'),
+            var frozenColumn = columnHeader.hasClass('p-frozen-column'),
             theadClone = frozenColumn ? this.frozenTheadClone : this.scrollTheadClone,
             originalTable = frozenColumn ? this.frozenThead.parent() : this.scrollThead.parent(),
             cloneTable = theadClone.parent(),
@@ -757,7 +757,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @inheritdoc
      */
     addGhostRow() {
-        this._addGhostRow(this.frozenTbody, this.frozenThead, this.frozenTheadClone, this.frozenFooter.find('table'), 'ui-frozen-column');
+        this._addGhostRow(this.frozenTbody, this.frozenThead, this.frozenTheadClone, this.frozenFooter.find('table'), 'p-frozen-column');
         this._addGhostRow(this.scrollTbody, this.scrollThead, this.scrollTheadClone, this.scrollFooterTable);
     }
 
@@ -774,7 +774,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
         var dataColumns = body.find('tr:first').children('td'),
         dataColumnsCount = dataColumns.length,
         columnMarkup = '',
-        columnStyleClass = columnClass ? 'ui-resizable-column ' + columnClass : 'ui-resizable-column';
+        columnStyleClass = columnClass ? 'p-resizable-column ' + columnClass : 'p-resizable-column';
 
         for(var i = 0; i < dataColumnsCount; i++) {
             columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;width:' + dataColumns.eq(i).width() + 'px" class="' + columnStyleClass + '"></th>';
@@ -805,7 +805,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      */
     highlightFocusedRow() {
         super.highlightFocusedRow();
-        this.getTwinRow(this.focusedRow).addClass('ui-state-hover');
+        this.getTwinRow(this.focusedRow).addClass('p-state-hover');
     }
 
     /**
@@ -815,7 +815,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      */
     unhighlightFocusedRow() {
         super.unhighlightFocusedRow();
-        this.getTwinRow(this.focusedRow).removeClass('ui-state-hover');
+        this.getTwinRow(this.focusedRow).removeClass('p-state-hover');
     }
 
     /**
@@ -881,8 +881,8 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
             }
         }
 
-        scrollRows.children('td.ui-duplicated-column').remove();
-        frozenRows.children('td.ui-duplicated-column').remove();
+        scrollRows.children('td.p-duplicated-column').remove();
+        frozenRows.children('td.p-duplicated-column').remove();
     }
 
     /**

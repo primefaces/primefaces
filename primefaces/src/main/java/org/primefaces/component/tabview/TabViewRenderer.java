@@ -138,10 +138,10 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         String orientation = component.getOrientation();
         String styleClass = getStyleClassBuilder(context)
                 .add(TabView.CONTAINER_CLASS)
-                .add("ui-tabs-" + orientation)
+                .add("p-tabs-" + orientation)
                 .add(component.isScrollable(), TabView.SCROLLABLE_TABS_CLASS)
                 .add(component.getStyleClass())
-                .add(ComponentUtils.isRTL(context, component), "ui-tabs-rtl")
+                .add(ComponentUtils.isRTL(context, component), "p-tabs-rtl")
                 .build();
 
         writer.startElement("div", component);
@@ -191,7 +191,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         if (FacetUtils.shouldRenderFacet(footerFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-tabs-footer", null);
+            writer.writeAttribute("class", "p-tabs-footer", null);
             footerFacet.encodeAll(context);
             writer.endElement("div");
         }
@@ -228,7 +228,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         UIComponent actionsFacet = component.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("li", null);
-            writer.writeAttribute("class", "ui-tabs-actions ui-tabs-actions-global", null);
+            writer.writeAttribute("class", "p-tabs-actions p-tabs-actions-global", null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(withActiveFacet.get()), null);
             actionsFacet.encodeAll(context);
             writer.endElement("li");
@@ -247,7 +247,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(active, TabView.ACTIVE_TAB_HEADER_CLASS, TabView.INACTIVE_TAB_HEADER_CLASS)
-                .add(tab.isDisabled(), "ui-state-disabled")
+                .add(tab.isDisabled(), "p-state-disabled")
                 .add(tab.getTitleStyleClass())
                 .build();
         UIComponent titleFacet = tab.getTitleFacet();
@@ -297,7 +297,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         //closable
         if (tab.isClosable()) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+            writer.writeAttribute("class", TabView.CLOSE_ICON_CLASS, null);
             writer.endElement("span");
         }
 
@@ -305,7 +305,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             withFacet = true;
             writer.startElement("li", null);
-            writer.writeAttribute("class", "ui-tabs-actions", null);
+            writer.writeAttribute("class", "p-tabs-actions", null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");

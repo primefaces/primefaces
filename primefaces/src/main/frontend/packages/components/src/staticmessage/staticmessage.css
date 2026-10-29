@@ -1,19 +1,19 @@
 /*
  * StaticMessage: p:staticMessage
  *
- * Markup: .ui-message.ui-staticmessage.ui-message-<severity>(.ui-message-icon-only)
- *         > a.ui-messages-close (closable) + span.ui-message-<severity>-icon (or the custom icon classes)
- *         + span.ui-message-<severity>-summary + span.ui-message-<severity>-detail
- * Severities: info | success | warn | error | fatal | secondary | contrast (passed through as ui-message-<severity>),
- * variants / sizes (styleClass): ui-message-outlined | -simple | -sm | -lg (message.css).
- * Colors, icons and texts come from message.css (it shares the ui-message-* classes); this file adds the block layout
+ * Markup: .p-message.p-staticmessage.p-message-<severity>(.p-message-icon-only)
+ *         > a.p-messages-close (closable) + span.p-message-<severity>-icon.p-message-<severity>-icon (or the custom icon classes)
+ *         + span.p-message-<severity>-summary + span.p-message-<severity>-detail
+ * Severities: info | success | warn | error | fatal | secondary | contrast (passed through as p-message-<severity>),
+ * variants / sizes (styleClass): p-message-outlined | -simple | -sm | -lg (message.css).
+ * Colors, icons and texts come from message.css (it shares the p-message-* classes); this file adds the block layout
  * and the close button. Tokens: PrimeUIX message + the message block of presets/*.css
  */
 
-.ui-staticmessage {
+.p-staticmessage {
     position: relative;
 
-    .ui-messages-close {
+    .p-messages-close {
         position: absolute;
         cursor: pointer;
         top: -.75rem;
@@ -27,12 +27,12 @@
     }
 }
 
-.ui-message.ui-staticmessage {
+.p-message.p-staticmessage {
     display: flex;
     align-items: center;
     gap: var(--p-message-content-gap);
 
-    &.ui-message-icon-only {
+    &.p-message-icon-only {
         display: inline-flex;
     }
 
@@ -44,7 +44,7 @@
     }
 
     /* close button: a round badge on the top end corner, carrying the message colors */
-    .ui-messages-close {
+    .p-messages-close {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -68,27 +68,17 @@
             box-shadow: var(--_close-focus-ring-shadow);
         }
 
-        .ui-icon-close {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
+        .p-message-close-icon {
+            --_icon: var(--p-message-close-icon);
             color: inherit;
             font-size: var(--_close-icon-size);
-        }
-
-        .ui-icon-close::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-message-close-icon) center / contain no-repeat;
         }
     }
 
     /* outlined / simple have no background, a badge on the corner would be see-through: inline button at the end
        (like p:messages), background / shadow are already transparent / none through the private variables */
-    &.ui-message-outlined .ui-messages-close,
-    &.ui-message-simple .ui-messages-close {
+    &.p-message-outlined .p-messages-close,
+    &.p-message-simple .p-messages-close {
         position: static;
         order: 1;
         flex-shrink: 0;

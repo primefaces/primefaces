@@ -39,6 +39,6 @@ public class TextEditor extends TextEditorBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TextEditor";
 
-    public static final String EDITOR_CLASS = "ui-texteditor";
+    public static final String EDITOR_CLASS = "p-texteditor";
 
 }

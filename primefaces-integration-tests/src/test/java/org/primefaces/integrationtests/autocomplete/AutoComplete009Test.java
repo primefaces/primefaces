@@ -66,7 +66,7 @@ class AutoComplete009Test extends AbstractPrimePageTest {
         // Arrange
         page.autoComplete.setValueWithoutTab("b");
         page.autoComplete.wait4Panel();
-        page.autoComplete.getPanel().findElement(By.cssSelector(".ui-autocomplete-item")).click();
+        page.autoComplete.getPanel().findElement(By.cssSelector(".p-autocomplete-item")).click();
 
         // Act
         page.button.click();

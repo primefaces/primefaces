@@ -32,7 +32,7 @@ export class Menubar<Cfg extends MenubarCfg = MenubarCfg> extends TieredMenu<Cfg
     override showSubmenu(menuitem: JQuery, submenu: JQuery, focus?: boolean): void {
         let pos: PrimeFacesTypes.utils.PositionOptions | null = null;
 
-        if (menuitem.parent().hasClass('ui-menu-child')) {
+        if (menuitem.parent().hasClass('p-menu-child')) {
             pos = {
                 my: this.isRTL ? 'right top' : 'left top',
                 at: this.isRTL ? 'left top' : 'right top',
@@ -57,10 +57,10 @@ export class Menubar<Cfg extends MenubarCfg = MenubarCfg> extends TieredMenu<Cfg
         this.timeoutId = PrimeFaces.queueTask(function() {
             submenu.css('z-index', PrimeFaces.nextZindex()).show();
             PrimeFaces.utils.position(submenu, pos);
-            var $link = menuitem.children('a.ui-menuitem-link');
+            var $link = menuitem.children('a.p-menuitem-link');
             $link.attr('aria-expanded', 'true');
             if (focus) {
-                submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+                submenu.find('a.p-menuitem-link:focusable:first').trigger('focus');
             }
         }, this.cfg.showDelay);
     }

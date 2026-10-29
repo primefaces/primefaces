@@ -128,7 +128,7 @@ class Theming008Test extends AbstractThemingTest {
 
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(css = "[id='form:toggleSwitch'] .ui-toggleswitch-handler")
+        @FindBy(css = "[id='form:toggleSwitch'] .p-toggleswitch-handler")
         WebElement handle;
 
         @Override

@@ -109,15 +109,15 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
         });
 
         const svg = this.createSvgElement('svg', {
-            class: 'ui-knob-svg',
+            class: 'p-knob-svg',
             viewBox: '0 0 100 100',
             role: 'slider',
             'aria-valuemin': this.min,
             'aria-valuemax': this.max
         });
-        svg.appendChild(circle('ui-knob-range'));
+        svg.appendChild(circle('p-knob-range'));
         // pathLength 100: the dash is the value in percent; rotated, so it starts at the top and runs clockwise
-        this.valueCircle = circle('ui-knob-value');
+        this.valueCircle = circle('p-knob-value');
         this.valueCircle.setAttribute('pathLength', '100');
         this.valueCircle.setAttribute('transform', 'rotate(-90 50 50)');
         this.valueCircle.setAttribute('stroke-linecap', this.cfg.lineCap === 'round' ? 'round' : 'butt');
@@ -127,7 +127,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
             // the font size fits the longest of min and max into the circle
             const digits = Math.max(String(Math.abs(this.max)).length, String(Math.abs(this.min)).length, 2) + 2;
             this.label = this.createSvgElement('text', {
-                class: 'ui-knob-label',
+                class: 'p-knob-label',
                 x: 50,
                 y: 50,
                 'font-size': Math.floor(100 / digits),
@@ -350,7 +350,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
      */
     private setDisabled(disabled: boolean): void {
         this.disabled = disabled;
-        this.jq.toggleClass('ui-state-disabled', disabled);
+        this.jq.toggleClass('p-state-disabled', disabled);
         this.svg.attr({ tabindex: disabled ? null : 0, 'aria-disabled': disabled ? 'true' : null });
         this.input.prop('disabled', disabled);
     }

@@ -87,7 +87,7 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget, Styl
     @Property(description = "Style class of the mask element.")
     public abstract String getMaskStyleClass();
 
-    @Property(defaultValue = "pi pi-plus", description = "Icon of the button when speed dial is closed.")
+    @Property(description = "Icon of the button when speed dial is closed, e.g. pi pi-share-alt. Default: the icon token --p-speeddial-show-icon of the theme.")
     public abstract String getShowIcon();
 
     @Property(description = "Icon of the button when speed dial is opened.")
