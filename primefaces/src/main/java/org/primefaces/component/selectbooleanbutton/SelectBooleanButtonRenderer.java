@@ -74,7 +74,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButt
         boolean hasIcon = icon != null;
         String title = component.getTitle();
         String style = component.getStyle();
-        String styleClass = "ui-selectbooleanbutton " + component.resolveStyleClass(checked, disabled);
+        String styleClass = "p-selectbooleanbutton " + component.resolveStyleClass(checked, disabled);
 
         // button
         writer.startElement("div", null);

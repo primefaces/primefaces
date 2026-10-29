@@ -59,7 +59,7 @@ public class ScrollTopRenderer extends CoreRenderer<ScrollTop> {
         writer.writeAttribute("style", style, "style");
 
         writer.startElement("span", component);
-        writer.writeAttribute("class", ScrollTop.ICON_CLASS + " " + component.getIcon(), null);
+        writer.writeAttribute("class", ScrollTop.ICON_CLASS, null);
         writer.endElement("span");
         writer.endElement("a");
     }

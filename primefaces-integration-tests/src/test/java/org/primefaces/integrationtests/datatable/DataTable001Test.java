@@ -183,7 +183,7 @@ class DataTable001Test extends AbstractDataTableTest {
         DataTable dataTable = getDataTable();
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
         PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
 
         // Act
@@ -262,7 +262,7 @@ class DataTable001Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Assert
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
         assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         assertEquals(3, dataTable.getRows().size());
 
@@ -280,7 +280,7 @@ class DataTable001Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(getButtonResetTable()).click();
 
         // Assert
-        selectRowsPerPage = new Select(getDataTable().getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
+        selectRowsPerPage = new Select(getDataTable().getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
         assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         assertEquals(3, getDataTable().getRows().size());
         assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter

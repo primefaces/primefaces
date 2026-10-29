@@ -1,12 +1,12 @@
 /*
  * Badge (shared): p:badge (standalone and as wrapper = overlay badge) and the badge attribute of other components
  *
- * Markup: span.ui-badge > span.ui-badge-icon? span.ui-badge-label?, wrapper div.ui-overlay-badge
- * Supported classes: ui-badge-secondary | -success | -info | -warning | -danger | -help,
- *                    ui-badge-lg, ui-badge-xl, ui-badge-dot, ui-badge-no-gutter, ui-state-hidden
- * styleClass only (the severity / size attributes do not know them): ui-badge-contrast, ui-badge-sm
+ * Markup: span.p-badge > span.p-badge-icon? span.p-badge-label?, wrapper div.p-overlay-badge
+ * Supported classes: p-badge-secondary | -success | -info | -warning | -danger | -help,
+ *                    p-badge-lg, p-badge-xl, p-badge-dot, p-badge-no-gutter, p-state-hidden
+ * styleClass only (the severity / size attributes do not know them): p-badge-contrast, p-badge-sm
  */
-.ui-badge {
+.p-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -23,81 +23,81 @@
     text-align: center;
     white-space: nowrap;
 
-    /* badge used as plain styleClass (e.g. <span class="ui-badge">) */
-    &:not(.ui-widget) {
+    /* badge used as plain styleClass (e.g. <span class="p-badge">) */
+    &:not(.p-widget) {
         display: inline-block;
         border-radius: 50%;
     }
 
-    /* after :not(.ui-widget) (same specificity) */
-    &.ui-state-hidden {
+    /* after :not(.p-widget) (same specificity) */
+    &.p-state-hidden {
         display: none;
     }
 
     /* the icon follows the badge font size (lg / xl) instead of the global icon size */
-    .ui-badge-icon {
+    .p-badge-icon {
         font-size: inherit;
         line-height: 1;
         margin: 0;
     }
 
-    &.ui-badge-secondary {
+    &.p-badge-secondary {
         background: var(--p-badge-secondary-background);
         color: var(--p-badge-secondary-color);
     }
 
-    &.ui-badge-success {
+    &.p-badge-success {
         background: var(--p-badge-success-background);
         color: var(--p-badge-success-color);
     }
 
-    &.ui-badge-info {
+    &.p-badge-info {
         background: var(--p-badge-info-background);
         color: var(--p-badge-info-color);
     }
 
-    &.ui-badge-warning {
+    &.p-badge-warning {
         background: var(--p-badge-warn-background);
         color: var(--p-badge-warn-color);
     }
 
-    &.ui-badge-danger {
+    &.p-badge-danger {
         background: var(--p-badge-danger-background);
         color: var(--p-badge-danger-color);
     }
 
-    &.ui-badge-help {
+    &.p-badge-help {
         background: var(--p-badge-help-background);
         color: var(--p-badge-help-color);
     }
 
-    &.ui-badge-contrast {
+    &.p-badge-contrast {
         background: var(--p-badge-contrast-background);
         color: var(--p-badge-contrast-color);
     }
 
-    &.ui-badge-sm {
+    &.p-badge-sm {
         font-size: var(--p-badge-sm-font-size);
         min-width: var(--p-badge-sm-min-width);
         height: var(--p-badge-sm-height);
         line-height: var(--p-badge-sm-height);
     }
 
-    &.ui-badge-lg {
+    &.p-badge-lg {
         font-size: var(--p-badge-lg-font-size);
         min-width: var(--p-badge-lg-min-width);
         height: var(--p-badge-lg-height);
         line-height: var(--p-badge-lg-height);
     }
 
-    &.ui-badge-xl {
+    &.p-badge-xl {
         font-size: var(--p-badge-xl-font-size);
         min-width: var(--p-badge-xl-min-width);
         height: var(--p-badge-xl-height);
         line-height: var(--p-badge-xl-height);
     }
 
-    &.ui-badge-dot {
+    &.p-badge-dot {
         width: var(--p-badge-dot-size);
         min-width: var(--p-badge-dot-size);
         height: var(--p-badge-dot-size);
@@ -105,18 +105,18 @@
         padding: 0;
     }
 
-    &.ui-badge-no-gutter {
+    &.p-badge-no-gutter {
         padding: 0;
         border-radius: 50%;
     }
 }
 
-.ui-overlay-badge {
+.p-overlay-badge {
     position: relative;
     display: inline-block;
     cursor: pointer;
 
-    .ui-badge {
+    .p-badge {
         position: absolute;
         top: 0;
         right: 0;

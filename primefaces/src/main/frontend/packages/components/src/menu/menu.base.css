@@ -1,17 +1,17 @@
 /*
  * Menu family (shared part): p:menu, p:menubar, p:megaMenu, p:tieredMenu, p:slideMenu, p:contextMenu, p:menuButton
- * (and the p:splitButton menu). They all share .ui-menu, .ui-menu-list, .ui-menuitem, .ui-menuitem-link markup.
+ * (and the p:splitButton menu). They all share .p-menu, .p-menu-list, .p-menuitem, .p-menuitem-link markup.
  * This file styles that common markup; the tag specific rules are in menu/menu.css (p:menu toggleable),
  * megamenu.css, slidemenu.css, tieredmenu.css and contextmenu.css (bundled after this file).
- * The .ui-menubar rules stay here too: p:megaMenu also renders .ui-menubar, so they style both p:menubar and p:megaMenu
+ * The .p-menubar rules stay here too: p:megaMenu also renders .p-menubar, so they style both p:menubar and p:megaMenu
  * and must come before megamenu.css (so p:menubar has no file of its own in components/).
  *
  * The component classes only switch the private --_* variables, the visual rules exist once:
- *   .ui-menu (menu, slidemenu, menubutton) -> menu tokens
- *   .ui-tieredmenu -> tieredmenu, .ui-contextmenu -> contextmenu, .ui-menubar -> menubar, .ui-megamenu -> megamenu
- * State classes set by the widgets: ui-state-hover / ui-state-focus (keyboard + mouse), ui-menuitem-active (open submenu).
+ *   .p-menu (menu, slidemenu, menubutton) -> menu tokens
+ *   .p-tieredmenu -> tieredmenu, .p-contextmenu -> contextmenu, .p-menubar -> menubar, .p-megamenu -> megamenu
+ * State classes set by the widgets: p-state-hover / p-state-focus (keyboard + mouse), p-menuitem-active (open submenu).
  */
-.ui-menu {
+.p-menu {
     --_bg: var(--p-menu-background);
     --_border-color: var(--p-menu-border-color);
     --_border-radius: var(--p-menu-border-radius);
@@ -44,7 +44,7 @@
     --_submenu-label-font-size: var(--p-menu-submenu-label-font-size);
     --_submenu-label-font-weight: var(--p-menu-submenu-label-font-weight);
     --_submenu-label-padding: var(--p-menu-submenu-label-padding);
-    /* overlay submenus (.ui-menu-child) */
+    /* overlay submenus (.p-menu-child) */
     --_submenu-background: var(--p-menu-background);
     --_submenu-border-color: var(--p-menu-border-color);
     --_submenu-border-radius: var(--p-menu-border-radius);
@@ -67,12 +67,12 @@
     border-radius: var(--_border-radius);
 
     /* PrimeUIX min-width, only without an inline width (style="width: ..." or the width the slidemenu widget writes) */
-    &:not(.ui-menubar):not([style*="width"]) {
+    &:not(.p-menubar):not([style*="width"]) {
         min-width: 12.5rem;
     }
 
     /* overlay menus */
-    &.ui-menu-dynamic {
+    &.p-menu-dynamic {
         position: absolute;
         display: none;
         z-index: 100000;
@@ -80,20 +80,20 @@
         box-shadow: var(--_shadow);
     }
 
-    &.ui-menu-dynamic-maxheight {
+    &.p-menu-dynamic-maxheight {
         overflow-y: auto;
     }
 
-    .ui-menu-list .ui-widget-header {
+    .p-menu-list .p-widget-header {
         clear: both;
     }
 
-    .ui-menuitem {
+    .p-menuitem {
         clear: both;
         padding: 0;
     }
 
-    .ui-menuitem-link {
+    .p-menuitem-link {
         display: flex;
         align-items: center;
         outline: none;
@@ -101,12 +101,12 @@
         cursor: pointer;
     }
 
-    .ui-menuitem-link .ui-menuitem-icon,
-    .ui-submenu-icon {
+    .p-menuitem-link .p-menuitem-icon,
+    .p-submenu-icon {
         display: inline-block;
     }
 
-    .ui-widget-header {
+    .p-widget-header {
         h1,
         h2,
         h3,
@@ -118,11 +118,11 @@
         }
     }
 
-    .ui-menu-parent {
+    .p-menu-parent {
         position: relative;
 
         /* min-width only without an inline width (the slidemenu widget writes one on its lists) */
-        .ui-menu-child {
+        .p-menu-child {
             display: none;
             width: auto;
             position: absolute;
@@ -138,19 +138,19 @@
         }
     }
 
-    .ui-menu-list {
+    .p-menu-list {
         list-style: none;
         padding: var(--_list-padding);
         margin: 0;
 
         /* submenu header content (p:menu): [toggle icon] [submenu icon] label */
-        .ui-widget-header h3 {
+        .p-widget-header h3 {
             display: flex;
             align-items: center;
             gap: var(--_item-gap);
         }
 
-        .ui-widget-header .ui-icon {
+        .p-widget-header .p-submenu-icon {
             position: static;
             float: none;
             margin: 0;
@@ -159,7 +159,7 @@
     }
 
     /* submenu headers */
-    .ui-menu-list .ui-widget-header {
+    .p-menu-list .p-widget-header {
         margin: 0;
         width: 100%;
         background: var(--_submenu-label-background);
@@ -178,17 +178,17 @@
             float: none;
         }
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--_item-focus-background);
             color: var(--_item-focus-color);
 
-            .ui-icon {
+            .p-submenu-icon {
                 color: var(--_item-icon-focus-color);
             }
         }
     }
 
-    .ui-menu-list .ui-menuitem {
+    .p-menu-list .p-menuitem {
         margin: 0;
         width: 100%;
         border: 0 none;
@@ -197,7 +197,7 @@
         transition: background var(--_transition-duration), color var(--_transition-duration);
 
         /* link = PrimeUIX item link: flex row, icon / label / submenu icon separated by the item gap */
-        .ui-menuitem-link {
+        .p-menuitem-link {
             padding: var(--_item-padding);
             width: 100%;
             gap: var(--_item-gap);
@@ -209,7 +209,7 @@
             transition: background var(--_transition-duration), color var(--_transition-duration);
 
             /* margin 0: the gap separates the parts */
-            .ui-menuitem-icon {
+            .p-menuitem-icon {
                 margin: 0;
                 float: none;
                 flex-shrink: 0;
@@ -217,16 +217,16 @@
                 font-size: var(--_item-icon-size);
             }
 
-            .ui-menuitem-text {
+            .p-menuitem-text {
                 float: none;
                 color: var(--_item-color);
                 font-size: var(--_item-label-font-size);
                 font-weight: var(--_item-label-font-weight);
             }
 
-            &:not(.ui-state-disabled):hover,
-            &.ui-state-hover,
-            &.ui-state-focus,
+            &:not(.p-state-disabled):hover,
+            &.p-state-hover,
+            &.p-state-focus,
             &:focus-visible {
                 background: var(--_item-focus-background);
             }
@@ -236,98 +236,84 @@
                 outline: 0 none;
             }
 
-            &:not(.ui-state-disabled):hover .ui-icon,
-            &.ui-state-hover .ui-icon,
-            &.ui-state-focus .ui-icon,
-            &:focus-visible .ui-icon {
+            &:not(.p-state-disabled):hover .p-menuitem-icon,
+            &.p-state-hover .p-menuitem-icon,
+            &.p-state-focus .p-menuitem-icon,
+            &:focus-visible .p-menuitem-icon {
                 color: var(--_item-icon-focus-color);
             }
 
-            &:not(.ui-state-disabled):hover .ui-menuitem-text,
-            &.ui-state-hover .ui-menuitem-text,
-            &.ui-state-focus .ui-menuitem-text,
-            &:focus-visible .ui-menuitem-text {
+            &:not(.p-state-disabled):hover .p-menuitem-text,
+            &.p-state-hover .p-menuitem-text,
+            &.p-state-focus .p-menuitem-text,
+            &:focus-visible .p-menuitem-text {
                 color: var(--_item-focus-color);
             }
 
-            /* submenu indicators */
-            .ui-icon-triangle-1-w:first-child,
-            .ui-icon-triangle-1-e:last-child,
-            .ui-icon-triangle-1-s:last-child,
-            .ui-icon-triangle-1-s:first-child {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
+            /* submenu indicators: vertical submenus, menubar root items */
+            .p-menu-submenu-icon,
+            .p-menubar-submenu-icon {
                 margin: 0;
-                flex-shrink: 0;
                 font-size: var(--_submenu-icon-size);
                 color: var(--_submenu-icon-color);
             }
 
-            .ui-icon-triangle-1-w:first-child::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-menu-submenu-icon) center / contain no-repeat;
-                scale: -1 1;
-            }
+            .p-menu-submenu-icon {
+                --_icon: var(--p-menu-submenu-icon);
 
-            /* pushed to the end, like the PrimeUIX submenu icon (margin-inline-start: auto); RTL: see .ui-menu-rtl */
-            .ui-icon-triangle-1-e:last-child {
-                margin-inline-start: auto;
+                /* pushed to the end, like the PrimeUIX submenu icon (margin-inline-start: auto); RTL: see .p-menu-rtl */
+                &:last-child {
+                    margin-inline-start: auto;
+                }
 
-                &::before {
-                    content: "\2003";
-                    background: currentColor;
-                    forced-color-adjust: none;
-                    mask: var(--p-menu-submenu-icon) center / contain no-repeat;
+                /* RTL (rendered RTL in .p-menu-rtl: the icon comes first; or dir="rtl" only): the icon points to the start.
+                   Not a bare :first-child: in LTR a submenu without label and icon has the indicator as only child */
+                &:dir(rtl),
+                &:first-child:where(.p-menu-rtl *) {
+                    scale: -1 1;
                 }
             }
 
-            .ui-icon-triangle-1-s:last-child::before,
-            .ui-icon-triangle-1-s:first-child::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-menubar-submenu-icon) center / contain no-repeat;
+            .p-menubar-submenu-icon {
+                --_icon: var(--p-menubar-submenu-icon);
             }
 
-            &:not(.ui-state-disabled):hover [class*="ui-icon-triangle-1-"],
-            &.ui-state-hover [class*="ui-icon-triangle-1-"],
-            &.ui-state-focus [class*="ui-icon-triangle-1-"] {
+            &:not(.p-state-disabled):hover :is(.p-menu-submenu-icon, .p-menubar-submenu-icon),
+            &.p-state-hover :is(.p-menu-submenu-icon, .p-menubar-submenu-icon),
+            &.p-state-focus :is(.p-menu-submenu-icon, .p-menubar-submenu-icon) {
                 color: var(--_submenu-icon-focus-color);
             }
         }
 
         /* item (li) hover, used by the tiered menus */
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--_item-focus-background);
             color: var(--_item-focus-color);
 
-            > .ui-menuitem-link {
+            > .p-menuitem-link {
                 color: var(--_item-focus-color);
 
-                .ui-icon {
+                .p-menuitem-icon,
+                .p-icon {
                     color: var(--_item-icon-focus-color);
                 }
             }
         }
 
         /* item with an open submenu */
-        &.ui-menuitem-active > .ui-menuitem-link {
+        &.p-menuitem-active > .p-menuitem-link {
             background: var(--_item-active-background);
 
-            .ui-menuitem-text {
+            .p-menuitem-text {
                 color: var(--_item-active-color);
             }
 
-            .ui-menuitem-icon,
-            .ui-icon {
+            .p-menuitem-icon {
                 color: var(--_item-icon-active-color);
             }
 
-            [class*="ui-icon-triangle-1-"] {
+            .p-menu-submenu-icon,
+            .p-menubar-submenu-icon {
                 color: var(--_submenu-icon-active-color);
             }
         }
@@ -339,12 +325,12 @@
      * which writes an inline "display: block" that would drop a display: flex of the list. Same visual result.
      * Must come after the item / header "margin: 0" rules (same specificity).
      */
-    .ui-menu-list > :not(:first-child) {
+    .p-menu-list > :not(:first-child) {
         margin-top: var(--_list-gap);
     }
 
     /* overlay submenus */
-    .ui-menu-list .ui-menu-child {
+    .p-menu-list .p-menu-child {
         background: var(--_submenu-background);
         padding: var(--_submenu-padding);
         border-radius: var(--_submenu-border-radius);
@@ -353,7 +339,7 @@
     }
 
     /* separators (p:divider inside menus) */
-    .ui-divider.ui-widget.ui-divider-vertical {
+    .p-divider.p-widget.p-divider-vertical {
         display: inline-flex;
         vertical-align: middle;
         margin: var(--p-menu-list-gap) 0;
@@ -363,7 +349,7 @@
         }
     }
 
-    .ui-divider.ui-widget.ui-divider-horizontal {
+    .p-divider.p-widget.p-divider-horizontal {
         margin: 0;
 
         &::before {
@@ -377,27 +363,27 @@
     }
 
     /*
-     * RTL (.ui-menu-rtl: p:menubar, p:megaMenu, p:tieredMenu): an explicit rtl direction, so the menubar root row starts
+     * RTL (.p-menu-rtl: p:menubar, p:megaMenu, p:tieredMenu): an explicit rtl direction, so the menubar root row starts
      * at the right and the facets / submenu icons use the logical margins, independent of the page direction.
      * The renderers write the link content in reversed order for RTL ([submenu icon] label [icon], label [icon]),
      * row-reverse restores the visual order (icon at the right edge), flex-end keeps it at the right edge.
      */
-    &.ui-menu-rtl {
+    &.p-menu-rtl {
         direction: rtl;
 
-        .ui-menu-list .ui-menuitem .ui-menuitem-link {
+        .p-menu-list .p-menuitem .p-menuitem-link {
             flex-direction: row-reverse;
             justify-content: flex-end;
 
             /* submenu icon (pointing left) pushed to the left end, like the PrimeUIX submenu icon :dir(rtl) */
-            .ui-icon-triangle-1-w:first-child {
+            .p-menu-submenu-icon:first-child {
                 margin-inline-start: auto;
             }
         }
     }
 
-    /* menubar tokens: they also hit p:megaMenu (it carries .ui-menubar), menu/megamenu.css overrides all of them */
-    &.ui-menubar {
+    /* menubar tokens: they also hit p:megaMenu (it carries .p-menubar), menu/megamenu.css overrides all of them */
+    &.p-menubar {
         --_bg: var(--p-menubar-background);
         --_border-color: var(--p-menubar-border-color);
         --_border-radius: var(--p-menubar-border-radius);
@@ -442,7 +428,7 @@
          * root list: a flex row with the menubar gap like the PrimeUIX menubar / megamenu root list, no list padding
          * (only the bar padding). The vertical megamenu turns it into a column (megamenu.css).
          */
-        > .ui-menu-list {
+        > .p-menu-list {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
@@ -451,64 +437,64 @@
         }
 
         /* margin 0: no list gap margin in the row (the flex gap separates the items) */
-        > .ui-menu-list > .ui-menuitem {
+        > .p-menu-list > .p-menuitem {
             width: auto;
             margin: 0;
 
-            > .ui-menuitem-link {
+            > .p-menuitem-link {
                 padding: var(--_base-item-padding);
                 border-radius: var(--_base-item-border-radius);
             }
 
             /* facets (PrimeUIX start / end): start before the items, options and end pushed to the end of the row */
-            &.ui-menubar-start,
-            &.ui-menubar-options,
-            &.ui-menubar-end {
+            &.p-menubar-start,
+            &.p-menubar-options,
+            &.p-menubar-end {
                 display: flex;
                 align-items: center;
             }
 
-            &.ui-menubar-options,
-            &.ui-menubar-end {
+            &.p-menubar-options,
+            &.p-menubar-end {
                 margin-inline-start: auto;
             }
 
-            &.ui-menubar-options + .ui-menubar-end {
+            &.p-menubar-options + .p-menubar-end {
                 margin-inline-start: 0;
             }
         }
     }
 }
 
-.ui-menu-list {
+.p-menu-list {
     position: static;
 }
 
 /* menubar (p:menubar and p:megaMenu) */
-.ui-menubar {
+.p-menubar {
     width: auto;
 
-    .ui-menuitem {
+    .p-menuitem {
         clear: none;
     }
 
-    .ui-menu-child {
+    .p-menu-child {
         top: 25px;
         left: 0;
     }
 
-    .ui-widget-header {
+    .p-widget-header {
         clear: none;
     }
 }
 
 /* keyboard focus outline used by the panelmenu / tabmenu widgets */
-.ui-menuitem-outline {
+.p-menuitem-outline {
     outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
     outline-offset: var(--p-focus-ring-offset);
     z-index: 1;
 }
 
-.ui-fluid .ui-menu {
+.p-fluid .p-menu {
     width: 100%;
 }

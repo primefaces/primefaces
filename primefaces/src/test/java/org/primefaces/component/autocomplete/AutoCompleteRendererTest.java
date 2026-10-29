@@ -62,12 +62,12 @@ class AutoCompleteRendererTest {
         FacesContext context = new FacesContextMock(writer);
 
         AutoComplete autoComplete = autoComplete();
-        autoComplete.setAdvancedStyleClass("ui-table-gridlines ui-table-sm");
+        autoComplete.setAdvancedStyleClass("p-table-gridlines p-table-sm");
 
         new AutoCompleteRenderer().encodeSuggestionsAsTable(context, autoComplete, suggestions(), null);
 
         String html = writer.toString();
-        assertTrue(html.contains("class=\"" + AutoComplete.TABLE_CLASS + " ui-table-gridlines ui-table-sm\""), html);
+        assertTrue(html.contains("class=\"" + AutoComplete.TABLE_CLASS + " p-table-gridlines p-table-sm\""), html);
     }
 
     @Test

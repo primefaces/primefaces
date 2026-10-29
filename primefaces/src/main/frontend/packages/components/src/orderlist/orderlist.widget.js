@@ -26,11 +26,11 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
     init(cfg) {
         super.init(cfg);
 
-        this.list = this.jq.find('.ui-orderlist-list');
-        this.items = this.list.children('.ui-orderlist-item');
+        this.list = this.jq.find('.p-orderlist-list');
+        this.items = this.list.children('.p-orderlist-item');
         this.input = $(this.jqId + '_values');
         this.cfg.effect = this.cfg.effect||'fade';
-        this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
+        this.cfg.disabled = this.jq.hasClass('p-state-disabled');
         var $this = this;
 
         if(!this.cfg.disabled) {
@@ -41,7 +41,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
             //Enable dnd
             PrimeFaces.interactions.sortable(this.list, {
                 revert: 1,
-                placeholder: "ui-orderlist-item ui-state-highlight",
+                placeholder: "p-orderlist-item p-state-highlight",
                 forcePlaceholderSize: true,
                 start: function(event, ui) {
                     PrimeFaces.clearSelection();
@@ -62,7 +62,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
     generateItems() {
         var $this = this;
 
-        this.list.children('.ui-orderlist-item').each(function() {
+        this.list.children('.p-orderlist-item').each(function() {
             var item = $(this),
             itemValue = item.data('item-value'),
             option = $('<option selected="selected"></option>');
@@ -101,31 +101,31 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
         this.items.on('mouseover.orderList', function(e) {
             var element = $(this);
 
-            if(!element.hasClass('ui-state-highlight'))
-                $(this).addClass('ui-state-hover');
+            if(!element.hasClass('p-state-highlight'))
+                $(this).addClass('p-state-hover');
         })
         .on('mouseout.orderList', function(e) {
             var element = $(this);
 
-            if(!element.hasClass('ui-state-highlight'))
-                $(this).removeClass('ui-state-hover');
+            if(!element.hasClass('p-state-highlight'))
+                $(this).removeClass('p-state-hover');
         })
         .on('mousedown.orderList', function(e) {
             var element = $(this),
             metaKey = (e.metaKey||e.ctrlKey);
 
             if(!metaKey) {
-                element.removeClass('ui-state-hover').addClass('ui-state-highlight')
-                .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+                element.removeClass('p-state-hover').addClass('p-state-highlight')
+                .siblings('.p-state-highlight').removeClass('p-state-highlight');
 
                 $this.fireItemSelectEvent(element, e);
             }
-            else if(element.hasClass('ui-state-highlight')) {
-                element.removeClass('ui-state-highlight');
+            else if(element.hasClass('p-state-highlight')) {
+                element.removeClass('p-state-highlight');
                 $this.fireItemUnselectEvent(element);
             }
             else {
-                element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+                element.removeClass('p-state-hover').addClass('p-state-highlight');
                 $this.fireItemSelectEvent(element, e);
             }
         });
@@ -138,12 +138,12 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
     setupButtons() {
         var $this = this;
 
-        PrimeFaces.skinButton(this.jq.find('.ui-button'));
+        PrimeFaces.skinButton(this.jq.find('.p-button'));
 
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-up').on("click", function() {$this.moveUp($this.sourceList);});
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-top').on("click", function() {$this.moveTop($this.sourceList);});
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-down').on("click", function() {$this.moveDown($this.sourceList);});
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').on("click", function() {$this.moveBottom($this.sourceList);});
+        this.jq.find(' .p-orderlist-controls .p-orderlist-button-move-up').on("click", function() {$this.moveUp($this.sourceList);});
+        this.jq.find(' .p-orderlist-controls .p-orderlist-button-move-top').on("click", function() {$this.moveTop($this.sourceList);});
+        this.jq.find(' .p-orderlist-controls .p-orderlist-button-move-down').on("click", function() {$this.moveDown($this.sourceList);});
+        this.jq.find(' .p-orderlist-controls .p-orderlist-button-move-bottom').on("click", function() {$this.moveBottom($this.sourceList);});
     }
 
     /**
@@ -154,7 +154,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      * @param {PrimeFacesTypes.interactions.SortableUi} ui The details about the sorting.
      */
     onDragDrop(event, ui) {
-        ui.item.removeClass('ui-state-highlight');
+        ui.item.removeClass('p-state-highlight');
         this.saveState();
         this.fireReorderEvent();
     }
@@ -175,7 +175,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      */
     moveUp() {
         var $this = this,
-        selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
+        selectedItems = $this.list.children('.p-orderlist-item.p-state-highlight'),
         itemsToMoveCount = selectedItems.length,
         movedItemsCount = 0,
         hasFirstChild = selectedItems.is(':first-child');
@@ -210,7 +210,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      */
     moveTop() {
         var $this = this,
-        selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
+        selectedItems = $this.list.children('.p-orderlist-item.p-state-highlight'),
         itemsToMoveCount = selectedItems.length,
         movedItemsCount = 0,
         hasFirstChild = selectedItems.is(':first-child'),
@@ -226,7 +226,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
 
             if(!item.is(':first-child')) {
                 PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: 'fast', complete: function() {
-                    PrimeFaces.effects.show(item.insertBefore($this.list.children('.ui-orderlist-item').eq(currentIndex)), $this.cfg.effect, { duration: 'fast', complete: function(){
+                    PrimeFaces.effects.show(item.insertBefore($this.list.children('.p-orderlist-item').eq(currentIndex)), $this.cfg.effect, { duration: 'fast', complete: function(){
                         movedItemsCount++;
 
                         if(itemsToMoveCount === movedItemsCount) {
@@ -247,7 +247,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      */
     moveDown() {
         var $this = this,
-        selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
+        selectedItems = $($this.list.children('.p-orderlist-item.p-state-highlight').get().reverse()),
         itemsToMoveCount = selectedItems.length,
         movedItemsCount = 0,
         hasFirstChild = selectedItems.is(':last-child');
@@ -282,7 +282,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
      */
     moveBottom() {
         var $this = this,
-        selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
+        selectedItems = $($this.list.children('.p-orderlist-item.p-state-highlight').get().reverse()),
         itemsToMoveCount = selectedItems.length,
         movedItemsCount = 0,
         hasFirstChild = selectedItems.is(':last-child'),
@@ -299,7 +299,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
 
             if(!item.is(':last-child')) {
                 PrimeFaces.effects.hide(item, $this.cfg.effect, { duration: 'fast', complete: function() {
-                    PrimeFaces.effects.show(item.insertAfter($this.list.children('.ui-orderlist-item').eq(currentIndex)), $this.cfg.effect, { duration: 'fast', complete: function() {
+                    PrimeFaces.effects.show(item.insertAfter($this.list.children('.p-orderlist-item').eq(currentIndex)), $this.cfg.effect, { duration: 'fast', complete: function() {
                         movedItemsCount++;
 
                         if(itemsToMoveCount === movedItemsCount) {

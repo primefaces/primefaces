@@ -42,7 +42,7 @@
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 
         this.cfg.beforeShow = function(div, inst) {
-            PrimeFaces.nextZindex($(div).addClass('ui-input-overlay'));
+            PrimeFaces.nextZindex($(div).addClass('p-input-overlay'));
             $this.bindPanelEvents();
         };
 

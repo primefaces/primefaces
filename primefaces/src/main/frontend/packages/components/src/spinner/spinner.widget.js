@@ -39,9 +39,9 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
     init(cfg) {
         super.init(cfg);
 
-        this.input = this.jq.children('.ui-spinner-input');
-        this.upButton = this.jq.children('button.ui-spinner-up');
-        this.downButton = this.jq.children('button.ui-spinner-down');
+        this.input = this.jq.children('.p-spinner-input');
+        this.upButton = this.jq.children('button.p-spinner-up');
+        this.downButton = this.jq.children('button.p-spinner-down');
         this.cfg.step = this.cfg.step || 1;
         if (this.cfg.thousandSeparator == undefined) {
           this.cfg.thousandSeparator = '';
@@ -90,12 +90,12 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
     bindEvents() {
         var $this = this;
 
-        this.jq.children('.ui-spinner-button')
+        this.jq.children('.p-spinner-button')
             .on('mouseover.spinner', function() {
-                $(this).addClass('ui-state-hover');
+                $(this).addClass('p-state-hover');
             })
             .on('mouseout.spinner', function() {
-                $(this).removeClass('ui-state-hover ui-state-active');
+                $(this).removeClass('p-state-hover p-state-active');
 
                 if($this.timer) {
                     clearInterval($this.timer);
@@ -103,7 +103,7 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
             })
             .on('mouseup.spinner', function() {
                 clearInterval($this.timer);
-                $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+                $(this).removeClass('p-state-active').addClass('p-state-hover');
                 $this.input.trigger('change');
             })
             .on('mousedown.spinner', function(e) {
@@ -112,9 +112,9 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
                     return;
                 }
                 var element = $(this),
-                dir = element.hasClass('ui-spinner-up') ? 1 : -1;
+                dir = element.hasClass('p-spinner-up') ? 1 : -1;
 
-                element.removeClass('ui-state-hover').addClass('ui-state-active');
+                element.removeClass('p-state-hover').addClass('p-state-active');
 
                 $this.repeat(null, dir);
         });

@@ -1,8 +1,8 @@
 /*
  * Shared styling for all components (counterpart of the PrimeUIX base style).
  *
- * Generic jQuery UI style classes (ui-widget-header/content, ui-state-*, ui-corner-*, ui-shadow) are wrapped in
- * :where(), so they have zero specificity: they style plain markup (e.g. <div class="ui-widget-content">) but every
+ * Generic style classes (p-widget-header/content, p-state-*) are wrapped in
+ * :where(), so they have zero specificity: they style plain markup (e.g. <div class="p-widget-content">) but every
  * component rule wins, independent of the file order.
  */
 *,
@@ -11,156 +11,116 @@
     box-sizing: border-box;
 }
 
-.ui-widget {
+.p-widget {
     font-family: var(--p-typography-font-family);
     font-size: var(--p-typography-font-size);
     font-weight: var(--p-typography-font-weight);
     line-height: var(--p-typography-line-height);
     text-decoration: none;
 
-    /* nested widget (= :where(.ui-widget) .ui-widget, specificity of one class): component rules with their own
-       font size token (e.g. .ui-badge inside a panel or toolbar) must still win */
-    :where(.ui-widget) & {
+    /* nested widget (= :where(.p-widget) .p-widget, specificity of one class): component rules with their own
+       font size token (e.g. .p-badge inside a panel or toolbar) must still win */
+    :where(.p-widget) & {
         font-size: inherit;
     }
 }
 
-:where(.ui-widget-content) {
+:where(.p-widget-content) {
     background: var(--p-widget-content-background);
     color: var(--p-widget-content-color);
     border-color: var(--p-widget-content-border-color);
 }
 
-:where(.ui-widget-header) {
+:where(.p-widget-header) {
     background: var(--p-widget-header-background);
     color: var(--p-widget-header-color);
     border-color: var(--p-widget-header-border-color);
     font-weight: var(--p-widget-header-font-weight);
 }
 
-:where(.ui-state-hover) {
+:where(.p-state-hover) {
     background: var(--p-widget-hover-background);
     color: var(--p-widget-hover-color);
 }
 
-:where(.ui-state-active) {
+:where(.p-state-active) {
     background: var(--p-widget-active-background);
     color: var(--p-widget-active-color);
 }
 
-:where(.ui-state-highlight) {
+:where(.p-state-highlight) {
     background: var(--p-widget-highlight-background);
     color: var(--p-widget-highlight-color);
 }
 
-:where(.ui-state-highlight a, .ui-state-active a) {
+:where(.p-state-highlight a, .p-state-active a) {
     color: inherit;
 }
 
-/* only text and border: ui-state-error is also set on labels and inputs, which keep their own background */
-:where(.ui-state-error) {
+/* only text and border: p-state-error is also set on labels and inputs, which keep their own background */
+:where(.p-state-error) {
     color: var(--p-widget-error-color);
     border-color: var(--p-widget-error-border-color);
 }
 
-:where(.ui-state-error-text) {
+:where(.p-state-error-text) {
     color: var(--p-widget-error-color);
 }
 
-.ui-state-disabled {
+.p-state-disabled {
     opacity: var(--p-disabled-opacity);
     cursor: default !important;
     pointer-events: none;
 
-    .ui-state-disabled {
+    .p-state-disabled {
         opacity: 1;
     }
 }
 
-:where(.ui-priority-primary) {
+:where(.p-priority-primary) {
     font-weight: 600;
 }
 
-:where(.ui-priority-secondary) {
+:where(.p-priority-secondary) {
     opacity: var(--p-disabled-opacity);
     font-weight: var(--p-typography-font-weight);
 }
 
-:where(.ui-corner-all) {
-    border-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-top) {
-    border-top-left-radius: var(--p-widget-border-radius);
-    border-top-right-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-bottom) {
-    border-bottom-left-radius: var(--p-widget-border-radius);
-    border-bottom-right-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-left) {
-    border-top-left-radius: var(--p-widget-border-radius);
-    border-bottom-left-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-right) {
-    border-top-right-radius: var(--p-widget-border-radius);
-    border-bottom-right-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-tl) {
-    border-top-left-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-tr) {
-    border-top-right-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-bl) {
-    border-bottom-left-radius: var(--p-widget-border-radius);
-}
-
-:where(.ui-corner-br) {
-    border-bottom-right-radius: var(--p-widget-border-radius);
-}
-
-/* only for application markup: the components do not render ui-shadow, they style their own shadow with their tokens */
-:where(.ui-shadow) {
-    box-shadow: var(--p-widget-shadow);
-}
-
-.ui-icon,
-.pi {
+/* icons the application sets (icon="pi pi-check", Font Awesome, ...): the icon size of the theme, by their slot class */
+.pi,
+.p-button-icon-left,
+.p-button-icon-right,
+.p-menuitem-icon,
+.p-submenu-icon,
+.p-treenode-icon {
     font-size: var(--p-icon-size);
 }
 
-/* font icons; no-repeat for an icon with a background image */
-.ui-icon {
+/*
+ * Icons the components draw themselves: <span class="p-icon p-close-icon p-panel-close-icon">. The generic class draws
+ * the SVG of --_icon as mask in the text color, the component CSS maps its class (and state) to the icon token once:
+ * .p-panel-close-icon { --_icon: var(--p-panel-close-icon); }. The meaning class (p-close-icon) is a hook for
+ * application CSS only. Without --_icon (e.g. an unchecked checkbox) nothing is drawn.
+ */
+.p-icon {
     display: inline-block;
-    vertical-align: baseline;
-    margin: 0;
-    position: static;
-    text-indent: 0;
-    overflow: visible;
+    flex-shrink: 0;
+    font-size: var(--p-icon-size);
+    font-style: normal;
+    font-weight: normal;
     line-height: 1;
-    background-repeat: no-repeat;
+    vertical-align: baseline;
+
+    /* inline: not transformable, RTL rules mirror the icon element (scale: -1 1), not the ::before */
+    &::before {
+        content: "\2003";
+        background: currentColor;
+        forced-color-adjust: none;
+        mask: var(--_icon, linear-gradient(transparent, transparent)) center / contain no-repeat;
+    }
 }
 
-/* only for application markup: the components do not render ui-helper-reset */
-.ui-helper-reset {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    line-height: normal;
-    text-decoration: none;
-    font-size: 100%;
-    list-style: none;
-}
-
-.ui-widget-overlay {
+.p-widget-overlay {
     background: var(--p-mask-background);
     color: var(--p-mask-color);
 }
@@ -171,7 +131,7 @@
  */
 :where(select,
 input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
-    .ui-widget, .ui-inputfield)) {
+    .p-widget, .p-inputfield)) {
     color: var(--p-form-field-color);
     background: var(--p-form-field-background);
     padding: var(--p-form-field-padding-y) var(--p-form-field-padding-x);
@@ -188,13 +148,13 @@ input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [
 
 :where(select:hover,
 input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
-    .ui-widget, .ui-inputfield):hover) {
+    .p-widget, .p-inputfield):hover) {
     border-color: var(--p-form-field-hover-border-color);
 }
 
 :where(select:focus,
 input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
-    .ui-widget, .ui-inputfield):focus) {
+    .p-widget, .p-inputfield):focus) {
     border-color: var(--p-form-field-focus-border-color);
     outline: var(--p-form-field-focus-ring-width) var(--p-form-field-focus-ring-style) var(--p-form-field-focus-ring-color);
     outline-offset: var(--p-form-field-focus-ring-offset);
@@ -206,7 +166,7 @@ input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [
  * inserted, so it fades in (and slides by --_enter-offset) with CSS only; also on page load, reduced motion:
  * base/document.css
  */
-@keyframes ui-enter {
+@keyframes p-enter {
     from {
         opacity: 0;
         translate: 0 var(--_enter-offset, 0);

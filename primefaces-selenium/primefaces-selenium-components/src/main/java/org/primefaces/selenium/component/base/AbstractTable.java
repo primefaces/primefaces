@@ -87,7 +87,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     public void sort(String headerText) {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
-            PrimeSelenium.guardAjax(cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
+            PrimeSelenium.guardAjax(cell.get().getWebElement().findElement(By.className("p-sortable-column-icon"))).click();
         }
         else {
             System.err.println("Header Cell '" + headerText + "' not found.");
@@ -102,7 +102,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     public void sort(int index) {
         HeaderCell cell = getHeader().getCell(index);
         if (cell != null) {
-            PrimeSelenium.guardAjax(cell.getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
+            PrimeSelenium.guardAjax(cell.getWebElement().findElement(By.className("p-sortable-column-icon"))).click();
         }
         else {
             System.err.println("Header Cell '" + index + "' not found.");
@@ -190,7 +190,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     }
 
     public WebElement getFrozenHeaderWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-left")).findElement(By.tagName("thead"));
+        return findElement(By.className("p-datatable-frozenlayout-left")).findElement(By.tagName("thead"));
     }
 
     public Header getFrozenHeader() {
@@ -202,7 +202,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     }
 
     public WebElement getScrollableHeaderWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-right")).findElement(By.tagName("thead"));
+        return findElement(By.className("p-datatable-frozenlayout-right")).findElement(By.tagName("thead"));
     }
 
     public Header getScrollableHeader() {
@@ -214,11 +214,11 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     }
 
     public WebElement getFrozenBodyWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-left")).findElement(By.tagName("tbody"));
+        return findElement(By.className("p-datatable-frozenlayout-left")).findElement(By.tagName("tbody"));
     }
 
     public WebElement getScrollableBodyWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-right")).findElement(By.tagName("tbody"));
+        return findElement(By.className("p-datatable-frozenlayout-right")).findElement(By.tagName("tbody"));
     }
 
     public Body getFrozenBody() {

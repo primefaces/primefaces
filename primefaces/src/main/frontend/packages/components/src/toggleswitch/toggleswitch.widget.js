@@ -25,8 +25,8 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
     init(cfg) {
         super.init(cfg);
 
-        this.slider = this.jq.children('.ui-toggleswitch-slider');
-        this.handler = this.slider.children('.ui-toggleswitch-handler');
+        this.slider = this.jq.children('.p-toggleswitch-slider');
+        this.handler = this.slider.children('.p-toggleswitch-handler');
         this.input = $(this.jqId + '_input');
 
         if(!this.input.is(':disabled')) {
@@ -69,10 +69,10 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
         });
 
         this.input.off('focus.toggleSwitch').on('focus.toggleSwitch', function(e) {
-            $this.jq.addClass('ui-toggleswitch-focus');
+            $this.jq.addClass('p-toggleswitch-focus');
         })
         .off('blur.toggleSwitch').on('blur.toggleSwitch', function(e) {
-            $this.jq.removeClass('ui-toggleswitch-focus');
+            $this.jq.removeClass('p-toggleswitch-focus');
         })
         .off('keydown.toggleSwitch').on('keydown.toggleSwitch', function(e) {
             if(e.key === ' ') {
@@ -141,7 +141,7 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
         if (!silent) {
             this.input.trigger('change');
         }
-        this.jq.addClass('ui-toggleswitch-checked');
+        this.jq.addClass('p-toggleswitch-checked');
     }
 
     /**
@@ -153,7 +153,7 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
         if (!silent) {
             this.input.trigger('change');
         }
-        this.jq.removeClass('ui-toggleswitch-checked');
+        this.jq.removeClass('p-toggleswitch-checked');
     }
 
     /**

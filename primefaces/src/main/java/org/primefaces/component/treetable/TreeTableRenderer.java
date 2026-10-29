@@ -199,7 +199,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
                 .add(component.isResizableColumns(), TreeTable.RESIZABLE_CONTAINER_CLASS, TreeTable.CONTAINER_CLASS)
                 .add(scrollable, TreeTable.SCROLLABLE_CONTAINER_CLASS)
                 .add(component.getStyleClass())
-                .add(component.isShowUnselectableCheckbox(), "ui-treetable-checkbox-all")
+                .add(component.isShowUnselectableCheckbox(), "p-treetable-checkbox-all")
                 .add(component.isShowGridlines(), TreeTable.GRIDLINES_CLASS)
                 .add(component.isStripedRows(), TreeTable.STRIPED_ROWS_CLASS)
                 .add("small".equals(component.getSize()), TreeTable.SMALL_SIZE_CLASS)
@@ -481,7 +481,6 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         String rowKey = treeNode.getRowKey();
         String parentRowKey = treeNode.getParent() != null ? treeNode.getParent().getRowKey() : null;
         component.setRowKey(root, rowKey);
-        String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
         int level = rowKey.split(UITree.SEPARATOR).length;
         int depth = level - 1;
         boolean selectionEnabled = component.isSelectionEnabled();
@@ -496,7 +495,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
                 .add(selected, TreeTable.SELECTED_ROW_CLASS, TreeTable.ROW_CLASS)
                 .add(selectable, TreeTable.SELECTABLE_NODE_CLASS)
                 .add(treeNode.getType())
-                .add(true, "ui-node-level-", level)
+                .add(true, "p-node-level-", level)
                 .add(partialSelected, TreeTable.PARTIAL_SELECTED_CLASS)
                 .add(component.getRowStyleClass())
                 .add(component.isEditingRow(), TreeTable.EDITING_ROW_CLASS)
@@ -542,8 +541,8 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
                 if (responsivePriority > 0) {
                     columnStyleClass = (columnStyleClass == null)
-                            ? "ui-column-p-" + responsivePriority
-                            : columnStyleClass + " ui-column-p-" + responsivePriority;
+                            ? "p-column-p-" + responsivePriority
+                            : columnStyleClass + " p-column-p-" + responsivePriority;
                 }
 
                 if (column.getCellEditor() != null) {
@@ -580,7 +579,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
                     }
 
                     writer.startElement("span", null);
-                    writer.writeAttribute("class", icon, null);
+                    writer.writeAttribute("class", TreeTable.TOGGLER_CLASS, null);
                     if (treeNode.isLeaf()) {
                         writer.writeAttribute("style", "visibility:hidden", null);
                     }
@@ -654,13 +653,13 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         if (sortable) {
             sortMeta = component.getSortByAsMap().get(column.getColumnKey());
             if (sortMeta.isActive()) {
-                columnClass += " ui-state-active";
+                columnClass += " p-state-active";
             }
         }
 
         int responsivePriority = column.getResponsivePriority();
         if (responsivePriority > 0) {
-            columnClass = columnClass + " ui-column-p-" + responsivePriority;
+            columnClass = columnClass + " p-column-p-" + responsivePriority;
         }
 
         if (width != null) {
@@ -717,7 +716,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         boolean sortable = component.isColumnSortable(context, column);
         String title = column.getTitle();
         String titlestyleClass = getStyleClassBuilder(context)
-                .add("ui-column-title")
+                .add("p-column-title")
                 .add(isColumnAriaHeaderTextDefined(context, column), "p-hidden-accessible")
                 .build();
         writer.startElement("span", null);
@@ -955,7 +954,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
         int responsivePriority = column.getResponsivePriority();
         if (responsivePriority > 0) {
-            columnStyleClass = columnStyleClass + " ui-column-p-" + responsivePriority;
+            columnStyleClass = columnStyleClass + " p-column-p-" + responsivePriority;
         }
 
         writer.startElement("td", null);
@@ -1019,7 +1018,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         }
 
         if (partialSelected) {
-            writer.writeAttribute("class", "ui-treetable-indeterminate", null);
+            writer.writeAttribute("class", "p-treetable-indeterminate", null);
         }
 
         writer.endElement("input");

@@ -91,10 +91,10 @@ public class KnobRenderer extends CoreRenderer<Knob> {
         String styleClass = getStyleClassBuilder(context)
                 .add(Knob.STYLE_CLASS)
                 .add(component.getStyleClass())
-                .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isDisabled(), "p-state-disabled")
                 .build();
 
-        // the knob is a square: the missing one of width and height follows the other (aspect-ratio of .ui-knob)
+        // the knob is a square: the missing one of width and height follows the other (aspect-ratio of .p-knob)
         String width = toCssLength(component.getWidth());
         String height = toCssLength(component.getHeight());
         String style = getStyleBuilder(context)

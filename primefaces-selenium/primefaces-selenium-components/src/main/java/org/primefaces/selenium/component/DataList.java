@@ -37,12 +37,12 @@ import org.openqa.selenium.support.FindBy;
 @Deprecated
 public abstract class DataList extends AbstractPageableData {
 
-    @FindBy(className = "ui-datalist-content")
+    @FindBy(className = "p-datalist-content")
     private WebElement content;
 
     @Override
     public List<WebElement> getRowsWebElement() {
-        return content.findElements(By.className("ui-datalist-item"));
+        return content.findElements(By.className("p-datalist-item"));
     }
 
     public WebElement getRowWebElement(int index) {

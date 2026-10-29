@@ -49,7 +49,7 @@ public class Mindmap extends MindmapBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Mindmap";
 
-    public static final String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content";
+    public static final String STYLE_CLASS = "p-mindmap p-widget p-widget-content";
 
     private MindmapNode selectedNode;
 

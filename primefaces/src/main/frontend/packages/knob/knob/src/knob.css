@@ -4,17 +4,17 @@
  * The colors come from the --p-knob-* tokens; the foregroundColor / backgroundColor attributes set
  * --p-knob-value-background / --p-knob-range-background inline. The width / height attributes set the size inline,
  * the knob is a square by default (a circle centered in the box if both are set).
- * Structure: div.ui-knob > input[type=hidden] + svg.ui-knob-svg[role=slider] > circle.ui-knob-range
- *            + circle.ui-knob-value + text.ui-knob-label
- * Supported classes: ui-state-disabled (on .ui-knob)
+ * Structure: div.p-knob > input[type=hidden] + svg.p-knob-svg[role=slider] > circle.p-knob-range
+ *            + circle.p-knob-value + text.p-knob-label
+ * Supported classes: p-state-disabled (on .p-knob)
  */
-.ui-knob {
+.p-knob {
     display: inline-block;
     width: 200px;
     aspect-ratio: 1;
     vertical-align: middle;
 
-    .ui-knob-svg {
+    .p-knob-svg {
         display: block;
         width: 100%;
         height: 100%;
@@ -29,17 +29,17 @@
         }
     }
 
-    .ui-knob-range {
+    .p-knob-range {
         fill: none;
         stroke: var(--p-knob-range-background);
     }
 
-    .ui-knob-value {
+    .p-knob-value {
         fill: none;
         stroke: var(--p-knob-value-background);
     }
 
-    .ui-knob-label {
+    .p-knob-label {
         fill: var(--p-knob-text-color);
         font-family: var(--p-typography-font-family);
         font-weight: var(--p-knob-text-font-weight);
@@ -48,10 +48,10 @@
         user-select: none;
     }
 
-    &.ui-state-disabled {
+    &.p-state-disabled {
         opacity: var(--p-disabled-opacity);
 
-        .ui-knob-svg {
+        .p-knob-svg {
             cursor: default;
         }
     }

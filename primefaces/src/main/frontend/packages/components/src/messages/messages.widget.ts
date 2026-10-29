@@ -23,7 +23,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
 
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
-        this.closer = $('.ui-messages-close');
+        this.closer = $('.p-messages-close');
         PrimeFaces.skinCloseAction(this.closer);
     }
 
@@ -34,7 +34,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
     appendMessage(msg: PrimeFacesTypes.FacesMessage): void {
         const closeLabel = this.getAriaLabel('close');
 
-        let severityContainer =  this.jq.children('div.ui-messages-' + msg.severity);
+        let severityContainer =  this.jq.children('div.p-messages-' + msg.severity);
         if (severityContainer.length === 0) {
             /*
              * jQuery's append() returns the container it was called on, not the appended element. Create the
@@ -42,18 +42,18 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
              * Otherwise the message below would be added to the <ul> of every severity box in this widget.
              */
             severityContainer = $(
-                 '<div class="ui-messages-' + msg.severity + '">' +
-                    (this.cfg.closable ? '<a href="#" class="ui-messages-close" role="button" aria-label="' + closeLabel + '">' +
-                        '<span class="ui-icon ui-icon-close"></span>' +
+                 '<div class="p-messages-' + msg.severity + '">' +
+                    (this.cfg.closable ? '<a href="#" class="p-messages-close" role="button" aria-label="' + closeLabel + '">' +
+                        '<span class="p-icon p-close-icon p-messages-close-icon"></span>' +
                     '</a>' : '') +
-                    '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
+                    '<span class="p-messages-' + msg.severity + '-icon p-icon p-' + msg.severity + '-icon"></span>' +
                     '<ul>' +
 
                     '</ul>' +
                 '</div>').appendTo(this.jq);
 
             // bind via JS instead of an inline onclick, which a Content Security Policy would block
-            severityContainer.children('.ui-messages-close').on('click', function(e) {
+            severityContainer.children('.p-messages-close').on('click', function(e) {
                 e.preventDefault();
                 $(this).parent().slideUp();
             });
@@ -61,8 +61,8 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
 
         severityContainer.find('ul').append(
             '<li>' +
-                '<span class="ui-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
-                '<span class="ui-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
+                '<span class="p-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
+                '<span class="p-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
             '</li>');
     }
 
@@ -98,17 +98,17 @@ export function registerMessageRenderHookForMessagesWidget(): void {
             for (const container of containers) {
                 const $container = $(container);
 
-                if ($container.is('div.ui-messages')) {
+                if ($container.is('div.p-messages')) {
                     messagesComponents = messagesComponents.add($container);
                 }
                 else {
-                    messagesComponents = messagesComponents.add($container.find('div.ui-messages'));
+                    messagesComponents = messagesComponents.add($container.find('div.p-messages'));
                 }
             }
 
             // filter out by severity
             messagesComponents = messagesComponents.filter((_, el) => {
-                if ($(el).is('.ui-fileupload-messages')) {
+                if ($(el).is('.p-fileupload-messages')) {
                     return false;
                 }
                 return $(el).data('severity').indexOf('error') !== -1;

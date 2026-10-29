@@ -40,8 +40,8 @@ public class OverlayPanel extends OverlayPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 
-    public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-hidden-container";
-    public static final String CONTENT_CLASS = "ui-overlaypanel-content";
+    public static final String STYLE_CLASS = "p-overlaypanel p-widget p-widget-content p-hidden-container";
+    public static final String CONTENT_CLASS = "p-overlaypanel-content";
 
     public OverlayPanelRenderer getRenderer() {
         return (OverlayPanelRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());

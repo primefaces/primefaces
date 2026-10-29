@@ -137,8 +137,8 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
 
         if (this.cfg.skinSimple) {
             this.input = $(this.jqId + '_input');
-            this.button = this.jq.children('.ui-button');
-            this.display = this.jq.children('.ui-fileupload-filename');
+            this.button = this.jq.children('.p-button');
+            this.display = this.jq.children('.p-fileupload-filename');
 
             if (!this.input.prop('disabled')) {
                 this.bindEvents();
@@ -159,20 +159,20 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
         this.button?.on('mouseover.fileupload', function(){
             var el = $(this);
             if (!el.prop('disabled')) {
-                el.addClass('ui-state-hover');
+                el.addClass('p-state-hover');
             }
         })
         .on('mouseout.fileupload', function() {
-            $(this).removeClass('ui-state-active ui-state-hover');
+            $(this).removeClass('p-state-active p-state-hover');
         })
         .on('mousedown.fileupload', function() {
             var el = $(this);
             if (!el.prop('disabled')) {
-                el.addClass('ui-state-active').removeClass('ui-state-hover');
+                el.addClass('p-state-active').removeClass('p-state-hover');
             }
         })
         .on('mouseup.fileupload', function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+            $(this).removeClass('p-state-active').addClass('p-state-hover');
         });
 
         this.input.on('change.fileupload', () => {
@@ -203,10 +203,10 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
             }
         })
         .on('focus.fileupload', () => {
-            this.button?.addClass('ui-state-focus');
+            this.button?.addClass('p-state-focus');
         })
         .on('blur.fileupload', () => {
-            this.button?.removeClass('ui-state-focus');
+            this.button?.removeClass('p-state-focus');
         });
     }
 
@@ -227,10 +227,10 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
             });
 
             this.dropZone.on("dragenter" + namespace + " dragover" + namespace, () => {
-                this.dropZone.addClass('ui-state-drag');
+                this.dropZone.addClass('p-state-drag');
             });
             this.dropZone.on("dragleave" + namespace + " drop" + namespace, () => {
-                this.dropZone.removeClass('ui-state-drag');
+                this.dropZone.removeClass('p-state-drag');
             });
 
             this.dropZone.on("drop" + namespace, (event) => {

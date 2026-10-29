@@ -38,20 +38,20 @@ public class Badge extends BadgeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Badge";
 
-    public static final String STYLE_CLASS = "ui-badge ui-widget";
-    public static final String OVERLAY_CLASS = "ui-overlay-badge";
-    public static final String NO_GUTTER_CLASS = "ui-badge-no-gutter";
-    public static final String DOT_CLASS = "ui-badge-dot";
-    public static final String SIZE_LARGE_CLASS = "ui-badge-lg";
-    public static final String SIZE_XLARGE_CLASS = "ui-badge-xl";
-    public static final String SEVERITY_INFO_CLASS = "ui-badge-info";
-    public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
-    public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
-    public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
-    public static final String SEVERITY_SECONDARY_CLASS = "ui-badge-secondary";
-    public static final String SEVERITY_HELP_CLASS = "ui-badge-help";
-    public static final String LABEL_CLASS = "ui-badge-label";
-    public static final String ICON_CLASS = "ui-badge-icon";
+    public static final String STYLE_CLASS = "p-badge p-widget";
+    public static final String OVERLAY_CLASS = "p-overlay-badge";
+    public static final String NO_GUTTER_CLASS = "p-badge-no-gutter";
+    public static final String DOT_CLASS = "p-badge-dot";
+    public static final String SIZE_LARGE_CLASS = "p-badge-lg";
+    public static final String SIZE_XLARGE_CLASS = "p-badge-xl";
+    public static final String SEVERITY_INFO_CLASS = "p-badge-info";
+    public static final String SEVERITY_SUCCESS_CLASS = "p-badge-success";
+    public static final String SEVERITY_WARNING_CLASS = "p-badge-warning";
+    public static final String SEVERITY_DANGER_CLASS = "p-badge-danger";
+    public static final String SEVERITY_SECONDARY_CLASS = "p-badge-secondary";
+    public static final String SEVERITY_HELP_CLASS = "p-badge-help";
+    public static final String LABEL_CLASS = "p-badge-label";
+    public static final String ICON_CLASS = "p-badge-icon";
 
     public BadgeRenderer getRenderer() {
         return (BadgeRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());

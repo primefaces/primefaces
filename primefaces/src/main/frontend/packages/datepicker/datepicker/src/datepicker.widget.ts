@@ -177,8 +177,6 @@ export interface DatePickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     hideOnRangeSelection: boolean;
     /** `12` or `24`. */
     hourFormat: string;
-    /** Icon of the trigger button. */
-    icon: string;
     /** Whether the date picker is displayed inline instead of an overlay. */
     inline: boolean;
     /** Whether invalid input is kept. */
@@ -335,7 +333,7 @@ const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWid
     autoDetectDisplay: true,
     autoMonthFormat: true,
     buttonTabindex: '',
-    clearButtonStyleClass: 'ui-priority-secondary',
+    clearButtonStyleClass: 'p-priority-secondary',
     dateFormat: 'mm/dd/yy',
     dateStyleClasses: null,
     dateTemplate: null,
@@ -354,7 +352,6 @@ const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWid
     hideOnDateTimeSelect: false,
     hideOnRangeSelection: false,
     hourFormat: '24',
-    icon: 'ui-icon ui-icon-calendar',
     inline: false,
     keepInvalid: false,
     lazyModel: false,
@@ -397,7 +394,7 @@ const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWid
     timeOnly: false,
     timeSeparator: ':',
     timeZone: null,
-    todayButtonStyleClass: 'ui-priority-secondary',
+    todayButtonStyleClass: 'p-priority-secondary',
     touchUI: false,
     userLocale: null,
     valid: true,
@@ -584,10 +581,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             }
         }
 
-        this.options.panelStyleClass = (this.options.panelStyleClass || '') + ' p-datepicker-panel';
         this.options.viewDate = this.options.selectionMode === 'range' ? (this.viewDateOption ?? null) : this.options.defaultDate;
 
-        this.input.addClass('hasDatepicker'); // needed for ui-float-label
+        this.input.addClass('hasDatepicker'); // needed for p-float-label
         this.setInitValues();
         this.renderDatePicker();
         this.updateResponsiveness();
@@ -819,8 +815,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         };
 
         if (lazy) {
-            if (!this.panel.parent().is('div.ui-state-disabled')) {
-                this.panel.wrap("<div class='ui-state-disabled ui-datepicker-disabled'/>");
+            if (!this.panel.parent().is('div.p-state-disabled')) {
+                this.panel.wrap("<div class='p-state-disabled p-datepicker-disabled'/>");
             }
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -846,7 +842,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                         this.options.dateStyleClasses = dateStyleClasses;
                         this.setDisabledDates(disabledDates);
                         this.setEnabledDates(enabledDates);
-                        if (this.panel.parent().is('div.ui-state-disabled')) {
+                        if (this.panel.parent().is('div.p-state-disabled')) {
                             this.panel.unwrap();
                         }
 
@@ -2001,7 +1997,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (o.showIcon && !o.inline) {
             this.triggerButton?.remove();
             this.renderTriggerButton();
-            this.jq.append(this.triggerButton!).addClass('ui-trigger-calendar');
+            this.jq.append(this.triggerButton!).addClass('p-trigger-calendar');
         }
 
         this.panel.remove();
@@ -2027,7 +2023,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.bindEvents();
         this.bindPanelEvents();
 
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'p-connected-overlay');
 
         this.bindTriggerButton();
 
@@ -2045,7 +2041,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (this.isYearNavigator()) {
             let year = this.viewDate.getFullYear();
             let month = this.viewDate.getMonth();
-            this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year').each((_, yearElt) => {
+            this.panel.find('.p-datepicker-header > .p-datepicker-title > .p-datepicker-year').each((_, yearElt) => {
                 $(yearElt).val(year);
                 month = month + 1;
                 if (month === 12) {
@@ -2057,7 +2053,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         if (this.options.monthNavigator && this.options.view !== 'month') {
             let month = this.viewDate.getMonth();
-            this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month').each((_, monthElt) => {
+            this.panel.find('.p-datepicker-header > .p-datepicker-title > .p-datepicker-month').each((_, monthElt) => {
                 $(monthElt).val(month);
                 month = month === 11 ? 0 : month + 1;
             });
@@ -2073,10 +2069,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private renderTriggerButton(): void {
         const aria = ' aria-haspopup="dialog" aria-expanded="false" aria-controls="' + this.id + '_panel" ';
-        this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-button-icon-only'
-            + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">'
-            + '<span class="ui-button-icon-left ' + this.options.icon + '"></span>'
-            + '<span class="ui-button-text">ui-button</span>'
+        this.triggerButton = $('<button type="button" ' + aria + ' class="p-datepicker-trigger p-button p-widget p-state-default p-button-icon-only'
+            + (this.options.disabled ? ' p-state-disabled' : '') + '" tabindex="0">'
+            + '<span class="p-button-icon-left p-icon p-calendar-icon p-datepicker-dropdown-icon"></span>'
+            + '<span class="p-button-text">p-button</span>'
             + '</button>');
     }
 
@@ -2087,18 +2083,18 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     private renderDatePickerPanel(): void {
         const o = this.options;
         const classes = this.getClassesToAdd({
-            'ui-datepicker-inline': o.inline,
-            'ui-input-overlay': !o.inline,
-            'ui-state-disabled': o.disabled,
-            'ui-state-error': o.inline && !o.valid,
-            'ui-datepicker-timeonly': o.timeOnly,
-            'ui-datepicker-multiple-month': o.numberOfMonths > 1,
-            'ui-datepicker-monthpicker': o.view === 'month',
-            'ui-datepicker-touch-ui': o.touchUI
+            'p-datepicker-inline': o.inline,
+            'p-input-overlay': !o.inline,
+            'p-state-disabled': o.disabled,
+            'p-state-error': o.inline && !o.valid,
+            'p-datepicker-timeonly': o.timeOnly,
+            'p-datepicker-multiple-month': o.numberOfMonths > 1,
+            'p-datepicker-monthpicker': o.view === 'month',
+            'p-datepicker-touch-ui': o.touchUI
         });
 
         this.panel = $('<div id="' + this.id + '_panel" role="dialog" aria-modal="true" aria-label="' + o.locale.chooseDate + '"'
-            + ' class="ui-datepicker ui-widget ui-widget-content' + classes + '"></div>');
+            + ' class="p-datepicker-panel p-widget p-widget-content' + classes + '"></div>');
         this.panel[0]!.innerHTML = this.renderPanelElements();
         this.panel.css({
             'display': o.inline ? 'block' : 'none',
@@ -2124,7 +2120,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const o = this.options;
         let html = '';
 
-        this.panel.toggleClass('ui-state-disabled', o.disabled);
+        this.panel.toggleClass('p-state-disabled', o.disabled);
 
         if (!o.timeOnly) {
             if (o.view === 'date' || o.view === 'week') {
@@ -2163,12 +2159,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             months += this.renderMonthViewMonth(i);
         }
 
-        return '<div class="ui-datepicker-header ui-widget-header">'
+        return '<div class="p-datepicker-header p-widget-header">'
             + this.renderNavigator('prev', this.options.locale.prevYear)
             + this.renderNavigator('next', this.options.locale.nextYear)
-            + '<div class="ui-datepicker-title">' + this.renderTitleYearElement(this.viewDate.getFullYear(), 0) + '</div>'
+            + '<div class="p-datepicker-title">' + this.renderTitleYearElement(this.viewDate.getFullYear(), 0) + '</div>'
             + '</div>'
-            + '<div class="ui-monthpicker">' + months + '</div>';
+            + '<div class="p-monthpicker">' + months + '</div>';
     }
 
     /**
@@ -2177,13 +2173,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private renderTimePicker(): string {
         const o = this.options;
-        return '<div class="ui-timepicker ui-widget-header' + (o.timeInput ? ' ui-timepicker-timeinput' : '') + '">'
+        return '<div class="p-timepicker p-widget-header' + (o.timeInput ? ' p-timepicker-timeinput' : '') + '">'
             + this.renderHourPicker()
-            + this.renderTimeElements('ui-divider', '<span>:</span>', -1)
+            + this.renderTimeElements('p-divider', '<span>:</span>', -1)
             + this.renderMinutePicker()
-            + (o.showSeconds ? this.renderTimeElements('ui-divider', '<span>:</span>', -1) : '')
+            + (o.showSeconds ? this.renderTimeElements('p-divider', '<span>:</span>', -1) : '')
             + this.renderSecondPicker()
-            + (o.showMilliseconds ? this.renderTimeElements('ui-divider', '<span>.</span>', -1) : '')
+            + (o.showMilliseconds ? this.renderTimeElements('p-divider', '<span>.</span>', -1) : '')
             + this.renderMillisecondPicker()
             + this.renderAmPmPicker()
             + '</div>';
@@ -2199,7 +2195,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const grid = o.flex ? 'grid' : 'ui-g';
         const today = o.flex ? 'col-6 text-left' : 'ui-g-6';
         const clear = o.flex ? 'col-6 text-right' : 'ui-g-6';
-        let todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-button-text-only ' + o.todayButtonStyleClass;
+        let todayStyleClass = 'p-today-button p-button p-widget p-state-default p-button-text-only ' + o.todayButtonStyleClass;
         // only use date at 00:00 for comparison without time
         const now = o.showTime ? this.getNow() : this.truncateDate(this.getNow());
 
@@ -2207,14 +2203,14 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             todayStyleClass += ' p-hidden';
         }
 
-        return '<div class="ui-datepicker-buttonbar ui-widget-header">'
+        return '<div class="p-datepicker-buttonbar p-widget-header">'
             + '<div class="' + grid + '">'
             + '<div class="' + today + '">'
-            + '<button type="button" class="' + todayStyleClass + '"><span class="ui-button-text">' + (o.showTime ? o.locale.now : o.locale.today) + '</span></button>'
+            + '<button type="button" class="' + todayStyleClass + '"><span class="p-button-text">' + (o.showTime ? o.locale.now : o.locale.today) + '</span></button>'
             + '</div>'
             + '<div class="' + clear + '">'
-            + '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-button-text-only ' + o.clearButtonStyleClass + '">'
-            + '<span class="ui-button-text">' + o.locale.clear + '</span></button>'
+            + '<button type="button" class="p-clear-button p-button p-widget p-state-default p-button-text-only ' + o.clearButtonStyleClass + '">'
+            + '<span class="p-button-text">' + o.locale.clear + '</span></button>'
             + '</div>'
             + '</div>'
             + '</div>';
@@ -2232,11 +2228,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const compareDate = new Date(this.viewDate.getFullYear(), index, 1);
         const disabled = !!((this.minDate && this.minDate > compareDate) || (this.maxDate && this.maxDate < compareDate));
         const monthClass = this.getClassesToAdd({
-            'ui-state-active': this.isMonthSelected(index),
-            'ui-state-disabled': disabled
+            'p-state-active': this.isMonthSelected(index),
+            'p-state-disabled': disabled
         });
 
-        return '<a role="button" tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
+        return '<a role="button" tabindex="0" class="p-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
     }
 
     /**
@@ -2251,8 +2247,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const backwardNavigator = index === 0 ? this.renderNavigator('prev', o.locale.prevMonth) : '';
         const forwardNavigator = o.numberOfMonths === 1 || index === o.numberOfMonths - 1 ? this.renderNavigator('next', o.locale.nextMonth) : '';
 
-        return '<div class="ui-datepicker-group ui-widget-content">'
-            + '<div class="ui-datepicker-header ui-widget-header">'
+        return '<div class="p-datepicker-group p-widget-content">'
+            + '<div class="p-datepicker-header p-widget-header">'
             + backwardNavigator
             + forwardNavigator
             + this.renderTitle(monthMetadata)
@@ -2268,8 +2264,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * @returns The HTML of the button.
      */
     private renderNavigator(type: 'prev' | 'next', ariaLabel: string): string {
-        return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-' + type + '" tabindex="0">'
-            + '<span class="ui-icon ui-icon-circle-triangle-' + (type === 'prev' ? 'w' : 'e') + '"></span>'
+        return '<button type="button" aria-label="' + ariaLabel + '" class="p-datepicker-' + type + '" tabindex="0">'
+            + '<span class="p-icon p-' + type + '-icon p-datepicker-' + type + '-icon"></span>'
             + '</button>';
     }
 
@@ -2284,9 +2280,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const o = this.options;
         if (o.monthNavigator && o.view !== 'month' && index === 0) {
             const monthNames = o.showLongMonthNames ? o.locale.monthNames : o.locale.monthNamesShort;
-            return '<select class="ui-datepicker-month" tabindex="0" aria-label="' + o.locale.month + '">' + this.renderTitleOptions('month', monthNames, month) + '</select>';
+            return '<select class="p-datepicker-month" tabindex="0" aria-label="' + o.locale.month + '">' + this.renderTitleOptions('month', monthNames, month) + '</select>';
         }
-        return '<span class="ui-datepicker-month">' + PrimeFaces.escapeHTML(o.locale.monthNames[month] ?? '') + '</span>';
+        return '<span class="p-datepicker-month">' + PrimeFaces.escapeHTML(o.locale.monthNames[month] ?? '') + '</span>';
     }
 
     /**
@@ -2299,7 +2295,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     private renderTitleYearElement(year: number, index: number): string {
         const o = this.options;
         if (!this.isYearNavigator() || index !== 0) {
-            return '<span class="ui-datepicker-year">' + year + '</span>';
+            return '<span class="p-datepicker-year">' + year + '</span>';
         }
 
         this.updateYearNavigator();
@@ -2310,7 +2306,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const maxYear = this.maxDate ? Math.min(this.maxDate.getFullYear(), yearEnd) : yearEnd;
 
         if (this.isYearNavigatorInput()) {
-            return '<input class="ui-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + o.locale.year + '" type="number" min="'
+            return '<input class="p-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + o.locale.year + '" type="number" min="'
                 + minYear + '" max="' + maxYear + '" step="1" value="' + year + '"></input>';
         }
 
@@ -2318,7 +2314,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         for (let i = yearStart; i <= yearEnd; i++) {
             yearOptions.push(i);
         }
-        return '<select class="ui-datepicker-year" tabindex="0" aria-label="' + o.locale.year + '">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
+        return '<select class="p-datepicker-year" tabindex="0" aria-label="' + o.locale.year + '">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
     }
 
     /**
@@ -2359,7 +2355,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const month = this.renderTitleMonthElement(monthMetadata.month, monthMetadata.index);
         const year = this.renderTitleYearElement(monthMetadata.year, monthMetadata.index);
         const content = this.options.locale.showMonthAfterYear ? year + '&#xa0;' + month : month + '&#xa0;' + year;
-        return '<div class="ui-datepicker-title">' + content + '</div>';
+        return '<div class="p-datepicker-title">' + content + '</div>';
     }
 
     /**
@@ -2466,8 +2462,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (o.showWeek && o.weekCalculator) {
             const firstDate = weekDates[0]!;
             const lastDate = weekDates[6]!;
-            const cellClass = firstDate.otherMonth && lastDate.otherMonth && !o.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
-            html += '<td aria-colindex="1" class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' + o.weekCalculator(firstDate) + '</span></td>';
+            const cellClass = firstDate.otherMonth && lastDate.otherMonth && !o.showOtherMonths ? ' p-datepicker-other-month-hidden' : '';
+            html += '<td aria-colindex="1" class="p-datepicker-weeknumber' + cellClass + '"><span class="p-state-disabled">' + o.weekCalculator(firstDate) + '</span></td>';
         }
 
         const saturdayIndex = this.getSaturdayIndex();
@@ -2477,16 +2473,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             const selected = this.isSelected(date);
             const hidden = !!date.otherMonth && !o.showOtherMonths;
             const cellClass = this.getClassesToAdd({
-                'ui-datepicker-other-month': !!date.otherMonth,
-                'ui-datepicker-today': !!date.today,
-                'ui-datepicker-week-end': i === sundayIndex || i === saturdayIndex,
-                'ui-datepicker-other-month-hidden': hidden
+                'p-datepicker-other-month': !!date.otherMonth,
+                'p-datepicker-today': !!date.today,
+                'p-datepicker-week-end': i === sundayIndex || i === saturdayIndex,
+                'p-datepicker-other-month-hidden': hidden
             }).trim();
             const dateClass = this.getClassesToAdd({
-                'ui-state-default': true,
-                'ui-state-active': selected,
-                'ui-state-disabled': disabled,
-                'ui-state-highlight': !!date.today
+                'p-state-default': true,
+                'p-state-active': selected,
+                'p-state-disabled': disabled,
+                'p-state-highlight': !!date.today
             }).trim();
             const dateLabel = PrimeFaces.escapeHTML(this.formatDate(new Date(date.year, date.month, date.day), o.dateFormat));
 
@@ -2533,8 +2529,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * @returns The HTML of the grid.
      */
     private renderDateViewGrid(monthMetadata: MonthMeta, weekDaysMin: string[], weekDays: string[]): string {
-        return '<div class="ui-datepicker-calendar-container">'
-            + '<table class="ui-datepicker-calendar" role="grid">'
+        return '<div class="p-datepicker-calendar-container">'
+            + '<table class="p-datepicker-calendar" role="grid">'
             + '<thead><tr>' + this.renderDayNames(weekDaysMin, weekDays) + '</tr></thead>'
             + '<tbody>' + monthMetadata.dates.map((week) => '<tr>' + this.renderWeek(week) + '</tr>').join('') + '</tbody>'
             + '</table>'
@@ -2560,7 +2556,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private renderTimeInput(value: string | number, min: number, max: number, label: string, size: number): string {
         return '<input type="number" min="' + min + '" max="' + max + '" value="' + value + '" aria-label="' + label + '" size="' + size
-            + '" maxlength="' + size + '" tabindex="0" class="ui-inputfield"></input>';
+            + '" maxlength="' + size + '" tabindex="0" class="p-inputfield"></input>';
     }
 
     /**
@@ -2583,7 +2579,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
 
         const display = pad0(hour);
-        return this.renderTimeElements('ui-hour-picker', o.timeInput ? this.renderTimeInput(display, 0, maxHour, o.locale.hourText, 2) : '<span>' + display + '</span>', 0);
+        return this.renderTimeElements('p-hour-picker', o.timeInput ? this.renderTimeInput(display, 0, maxHour, o.locale.hourText, 2) : '<span>' + display + '</span>', 0);
     }
 
     /**
@@ -2593,7 +2589,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     private renderMinutePicker(): string {
         const o = this.options;
         const display = pad0(this.getTimeSource().getMinutes());
-        return this.renderTimeElements('ui-minute-picker', o.timeInput ? this.renderTimeInput(display, 0, 59, o.locale.minuteText, 2) : '<span>' + display + '</span>', 1);
+        return this.renderTimeElements('p-minute-picker', o.timeInput ? this.renderTimeInput(display, 0, 59, o.locale.minuteText, 2) : '<span>' + display + '</span>', 1);
     }
 
     /**
@@ -2606,7 +2602,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return '';
         }
         const display = pad0(this.getTimeSource().getSeconds());
-        return this.renderTimeElements('ui-second-picker', o.timeInput ? this.renderTimeInput(display, 0, 59, o.locale.secondText, 2) : '<span>' + display + '</span>', 2);
+        return this.renderTimeElements('p-second-picker', o.timeInput ? this.renderTimeInput(display, 0, 59, o.locale.secondText, 2) : '<span>' + display + '</span>', 2);
     }
 
     /**
@@ -2619,7 +2615,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return '';
         }
         const display = pad0(this.getTimeSource().getMilliseconds(), 3);
-        return this.renderTimeElements('ui-millisecond-picker', o.timeInput ? this.renderTimeInput(display, 0, 999, o.locale.millisecondText, 3) : '<span>' + display + '</span>', 3);
+        return this.renderTimeElements('p-millisecond-picker', o.timeInput ? this.renderTimeInput(display, 0, 999, o.locale.millisecondText, 3) : '<span>' + display + '</span>', 3);
     }
 
     /**
@@ -2632,12 +2628,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return '';
         }
         const display = this.getTimeSource().getHours() > 11 ? o.locale.pm : o.locale.am;
-        return this.renderTimeElements('ui-ampm-picker', '<span>' + display + '</span>', 4);
+        return this.renderTimeElements('p-ampm-picker', '<span>' + display + '</span>', 4);
     }
 
     /**
      * Renders an element of the time picker with an up and a down button around the given content.
-     * @param containerClass Style class of the element, e.g. `ui-hour-picker`.
+     * @param containerClass Style class of the element, e.g. `p-hour-picker`.
      * @param text The HTML content between the buttons.
      * @param type Type of the element, stored as `data-type` and used for the button labels: 0 = hour, 1 = minute, 2 =
      * second, 3 = millisecond, 4 = AM / PM, -1 = divider.
@@ -2647,13 +2643,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const locale = this.options.locale;
         const upLabels = [locale.nextHour, locale.nextMinute, locale.nextSecond, locale.nextMillisecond, locale.am];
         const downLabels = [locale.prevHour, locale.prevMinute, locale.prevSecond, locale.prevMillisecond, locale.pm];
-        const button = (direction: 'up' | 'down', label: string | undefined, icon: string) =>
-            '<button type="button" aria-label="' + (label ?? '') + '" class="ui-picker-' + direction + '" tabindex="0"><span class="ui-icon ' + icon + '"></span></button>';
+        const button = (direction: 'up' | 'down', label: string | undefined, iconClass: string) =>
+            '<button type="button" aria-label="' + (label ?? '') + '" class="p-picker-' + direction + '" tabindex="0"><span class="p-icon ' + iconClass + '"></span></button>';
 
         return '<div class="' + containerClass + '" data-type="' + type + '">'
-            + button('up', upLabels[type], 'ui-icon-carat-1-n')
+            + button('up', upLabels[type], 'p-up-icon p-datepicker-increment-icon')
             + text
-            + button('down', downLabels[type], 'ui-icon-carat-1-s')
+            + button('down', downLabels[type], 'p-down-icon p-datepicker-decrement-icon')
             + '</div>';
     }
 
@@ -2731,11 +2727,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         const $this = this;
         const panel = this.panel.off('.datePicker');
-        const header = '.ui-datepicker-header';
-        const yearSelector = header + ' > .ui-datepicker-title > .ui-datepicker-year';
+        const header = '.p-datepicker-header';
+        const yearSelector = header + ' > .p-datepicker-title > .p-datepicker-year';
         const dateMeta = (element: Element) => {
             const dayEl = $(element);
-            const calendarIndex = dayEl.closest('.ui-datepicker-group').index();
+            const calendarIndex = dayEl.closest('.p-datepicker-group').index();
             const weekIndex = dayEl.closest('tr').index();
             const dayIndex = dayEl.closest('td').index() - (this.options.showWeek ? 1 : 0);
             return this.monthsMetadata[calendarIndex]?.dates[weekIndex]?.[dayIndex];
@@ -2753,9 +2749,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 this.hideOverlay();
             }
         })
-        .on('click.datePicker', header + ' > .ui-datepicker-prev', (e) => this.navBackward(e))
-        .on('click.datePicker', header + ' > .ui-datepicker-next', (e) => this.navForward(e))
-        .on('change.datePicker', header + ' > .ui-datepicker-title > .ui-datepicker-month', (e) => this.onMonthDropdownChange(e))
+        .on('click.datePicker', header + ' > .p-datepicker-prev', (e) => this.navBackward(e))
+        .on('click.datePicker', header + ' > .p-datepicker-next', (e) => this.navForward(e))
+        .on('change.datePicker', header + ' > .p-datepicker-title > .p-datepicker-month', (e) => this.onMonthDropdownChange(e))
         .on('change.datePicker', yearSelector, (e) => this.onYearInputChange(e));
 
         if (this.isYearNavigatorInput()) {
@@ -2763,7 +2759,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 .on('keyup.datePicker', yearSelector, (e) => this.onTimeInputKeyUp(e));
         }
 
-        const monthSelector = '.ui-monthpicker > .ui-monthpicker-month';
+        const monthSelector = '.p-monthpicker > .p-monthpicker-month';
         panel.on('click.datePicker', monthSelector, function(e) {
             $this.onDateSelect(e, { year: $this.viewDate.getFullYear(), month: $(this).index(), day: 1, selectable: true });
             e.preventDefault();
@@ -2772,11 +2768,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             $this.onMonthKeyDown(e, $(this).index());
         });
 
-        const timeSelector = '.ui-hour-picker > button, .ui-minute-picker > button, .ui-second-picker > button, .ui-millisecond-picker > button';
+        const timeSelector = '.p-hour-picker > button, .p-minute-picker > button, .p-second-picker > button, .p-millisecond-picker > button';
         panel.on('mousedown.datePicker keydown.datePicker', timeSelector, function(e) {
             const button = $(this);
             if (!e.key || PrimeFaces.utils.isActionKey(e)) {
-                $this.onTimePickerElementMouseDown(e, parseInt(button.parent().data('type'), 10), button.hasClass('ui-picker-up') ? 1 : -1);
+                $this.onTimePickerElementMouseDown(e, parseInt(button.parent().data('type'), 10), button.hasClass('p-picker-up') ? 1 : -1);
             }
         })
         .on('mouseup.datePicker keyup.datePicker', timeSelector, (e) => this.onTimePickerElementMouseUp(e))
@@ -2786,10 +2782,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 this.onTimePickerElementMouseUp(e);
             }
         })
-        .on('click.datePicker', '.ui-ampm-picker > button', (e) => this.toggleAmPm(e));
+        .on('click.datePicker', '.p-ampm-picker > button', (e) => this.toggleAmPm(e));
 
         if (this.options.timeInput) {
-            for (const [unit, picker] of [['hour', 'ui-hour-picker'], ['minute', 'ui-minute-picker'], ['second', 'ui-second-picker'], ['millisecond', 'ui-millisecond-picker']] as const) {
+            for (const [unit, picker] of [['hour', 'p-hour-picker'], ['minute', 'p-minute-picker'], ['second', 'p-second-picker'], ['millisecond', 'p-millisecond-picker']] as const) {
                 const selector = '.' + picker + ' input';
                 panel.on('focus.datePicker', selector, function() {
                     $this.oldTime[unit] = (this as HTMLInputElement).value;
@@ -2802,10 +2798,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             }
         }
 
-        panel.on('click.datePicker', '.ui-datepicker-buttonbar .ui-today-button', (e) => this.onTodayButtonClick(e))
-            .on('click.datePicker', '.ui-datepicker-buttonbar .ui-clear-button', (e) => this.onClearButtonClick(e));
+        panel.on('click.datePicker', '.p-datepicker-buttonbar .p-today-button', (e) => this.onTodayButtonClick(e))
+            .on('click.datePicker', '.p-datepicker-buttonbar .p-clear-button', (e) => this.onClearButtonClick(e));
 
-        const dateSelector = '.ui-datepicker-calendar td a';
+        const dateSelector = '.p-datepicker-calendar td a';
         panel.on('click.datePicker', dateSelector, function(e) {
             const meta = dateMeta(this);
             if (meta) {
@@ -2826,16 +2822,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     private bindPanelEvents(): void {
         if (this.options.view === 'week') {
             // highlight the whole week
-            this.panel.find('.ui-datepicker-calendar tr')
+            this.panel.find('.p-datepicker-calendar tr')
                 .on('mousemove', function() {
-                    $(this).find('td a').addClass('ui-state-hover');
+                    $(this).find('td a').addClass('p-state-hover');
                 })
                 .on('mouseleave', function() {
-                    $(this).find('td a').removeClass('ui-state-hover');
+                    $(this).find('td a').removeClass('p-state-hover');
                 });
 
             // highlight the active week
-            this.panel.find('.ui-state-active').closest('tr').find('td a').addClass('ui-state-active');
+            this.panel.find('.p-state-active').closest('tr').find('td a').addClass('p-state-active');
         }
     }
 
@@ -3088,8 +3084,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             this.datepickerFocus = true;
             this.showOverlay();
         }
-        this.input.addClass('ui-state-focus');
-        this.jq.addClass('ui-inputwrapper-focus');
+        this.input.addClass('p-state-focus');
+        this.jq.addClass('p-inputwrapper-focus');
         this.valueOnFocus = this.getDate();
     }
 
@@ -3099,8 +3095,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * @param event The blur event, if any.
      */
     private onInputBlur(event?: JQuery.TriggeredEvent): void {
-        this.input.removeClass('ui-state-focus');
-        this.jq.removeClass('ui-inputwrapper-focus');
+        this.input.removeClass('p-state-focus');
+        this.jq.removeClass('p-inputwrapper-focus');
 
         // #12754 if mask is used, fire the change event
         if (this.options.mask && this.valueOnFocus !== this.getDate()) {
@@ -3262,19 +3258,19 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             return;
         }
 
-        const navPrev = this.panel.find('.ui-datepicker-header > .ui-datepicker-prev');
-        const navNext = this.panel.find('.ui-datepicker-header > .ui-datepicker-next');
+        const navPrev = this.panel.find('.p-datepicker-header > .p-datepicker-prev');
+        const navNext = this.panel.find('.p-datepicker-header > .p-datepicker-next');
 
         if (this.options.disabled) {
-            navPrev.addClass('ui-state-disabled');
-            navNext.addClass('ui-state-disabled');
+            navPrev.addClass('p-state-disabled');
+            navNext.addClass('p-state-disabled');
             return;
         }
 
         if (this.minDate) {
             const firstDayOfMonth = new Date(newViewDate.getTime());
             firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
-            navPrev.toggleClass('ui-state-disabled', this.minDate > this.truncateDate(firstDayOfMonth));
+            navPrev.toggleClass('p-state-disabled', this.minDate > this.truncateDate(firstDayOfMonth));
         }
 
         // check last day of month at 23:59:59
@@ -3282,7 +3278,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             const lastDayOfMonth = new Date(newViewDate.getTime());
             lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
             this.truncateDate(lastDayOfMonth).setSeconds(-1);
-            navNext.toggleClass('ui-state-disabled', this.maxDate < lastDayOfMonth);
+            navNext.toggleClass('p-state-disabled', this.maxDate < lastDayOfMonth);
         }
     }
 
@@ -3376,16 +3372,16 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     focusOverlay(): void {
         let focused: JQuery | null = null;
         if (this.options.view === 'month') {
-            focused = this.panel.find('a.ui-monthpicker-month');
+            focused = this.panel.find('a.p-monthpicker-month');
         }
         if (this.options.view === 'date' || this.options.view === 'week') {
             // focus first selected day or today
-            focused = this.panel.find('a.ui-state-active');
+            focused = this.panel.find('a.p-state-active');
             if (focused.length === 0) {
-                focused = this.panel.find('.ui-datepicker-today a');
+                focused = this.panel.find('.p-datepicker-today a');
             }
             if (focused.length === 0) {
-                focused = this.panel.find('a.ui-state-default');
+                focused = this.panel.find('a.p-state-default');
             }
             if (focused.length === 0) {
                 focused = this.panel.find(':button, :input');
@@ -3396,7 +3392,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             PrimeFaces.queueTask(() => { target.first().trigger('focus'); }, 1);
         }
 
-        this.input.attr('aria-expanded', 'true').removeClass('ui-state-focus');
+        this.input.attr('aria-expanded', 'true').removeClass('p-state-focus');
         this.triggerButton?.attr('aria-expanded', 'true');
     }
 
@@ -3412,8 +3408,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         // #14158 needed for float label
         const parent = this.input.parent();
-        if (parent.is("div, span:not('.ui-float-label')")) {
-            parent.addClass('ui-inputwrapper-focus');
+        if (parent.is("div, span:not('.p-float-label')")) {
+            parent.addClass('p-inputwrapper-focus');
         }
 
         this.transition.show({
@@ -3489,7 +3485,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.documentClickListener = (event) => {
             if (!this.datepickerClick) {
                 if (this.options.timeInput) {
-                    this.panel.find('.ui-hour-picker input, .ui-minute-picker input, .ui-second-picker input, .ui-millisecond-picker input')
+                    this.panel.find('.p-hour-picker input, .p-minute-picker input, .p-second-picker input, .p-millisecond-picker input')
                         .filter(':focus').first().trigger('blur');
                 }
 
@@ -3673,10 +3669,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (this.mask) {
             return;
         }
-        this.mask = $('<div class="ui-widget-overlay ui-datepicker-mask ui-datepicker-mask-scrollblocker"></div>')
+        this.mask = $('<div class="p-widget-overlay p-datepicker-mask p-datepicker-mask-scrollblocker"></div>')
             .css('z-index', String(parseInt(this.panel.css('z-index'), 10) - 1))
             .on('click.datePicker-mask', () => this.disableModality());
-        $(document.body).append(this.mask).addClass('ui-overflow-hidden');
+        $(document.body).append(this.mask).addClass('p-overflow-hidden');
     }
 
     /**
@@ -3689,8 +3685,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         }
         this.mask.off('click.datePicker-mask').remove();
         this.mask = null;
-        if (!$(document.body).children('.ui-datepicker-mask-scrollblocker').length) {
-            $(document.body).removeClass('ui-overflow-hidden');
+        if (!$(document.body).children('.p-datepicker-mask-scrollblocker').length) {
+            $(document.body).removeClass('p-overflow-hidden');
         }
     }
 

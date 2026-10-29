@@ -29,7 +29,7 @@ you can define it with handle option. Following panel is dragged using it’s he
 <p:panel id="pnl" header="Draggable Panel">
     <h:outputText value="I can only be dragged using my header" />
 </p:panel>
-<p:draggable for="pnl" handle="div.ui-panel-titlebar"/>
+<p:draggable for="pnl" handle="div.p-panel-titlebar"/>
 ```
 
 ### Drag Axis
@@ -202,7 +202,7 @@ public class TableBean {
                 <p:panel id="pnl" header="#{car.model}" style="text-align:center">
                     <p:graphicImage value="/images/cars/#{car.manufacturer}.jpg" />
                 </p:panel>
-                <p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                <p:draggable for="pnl" revert="true" handle=".p-panel-titlebar" stack=".p-panel"/>
             </p:column>
         </p:dataGrid>
     </p:fieldset>
@@ -225,7 +225,7 @@ public class TableBean {
             </p:dataTable>
         </p:outputPanel>
     </p:fieldset>
-    <p:droppable for="selectedCars" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop"/>
+    <p:droppable for="selectedCars" tolerance="pointer" activeStyleClass="p-state-highlight" datasource="availableCars" onDrop="handleDrop"/>
         <p:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />
     </p:droppable>
 </h:form>

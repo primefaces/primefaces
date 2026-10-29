@@ -1,10 +1,10 @@
 /*
  * TagCloud: p:tagCloud (PrimeFaces tagcloud tokens: content tokens for the container, tag tokens for the links)
  *
- * Supported classes: ui-tagcloud-strength-1 .. ui-tagcloud-strength-5
+ * Supported classes: p-tagcloud-strength-1 .. p-tagcloud-strength-5
  */
 
-.ui-tagcloud {
+.p-tagcloud {
     width: 250px;
     border: 1px solid var(--p-tagcloud-border-color);
     background: var(--p-tagcloud-background);
@@ -41,7 +41,7 @@
             outline-color var(--p-tagcloud-transition-duration), box-shadow var(--p-tagcloud-transition-duration);
 
         &:hover,
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-tagcloud-item-hover-background);
             color: var(--p-tagcloud-item-hover-color);
         }
@@ -54,22 +54,22 @@
     }
 }
 
-.ui-tagcloud-strength-1 {
+.p-tagcloud-strength-1 {
     font-size: var(--p-tagcloud-strength-1-font-size);
 }
 
-.ui-tagcloud-strength-2 {
+.p-tagcloud-strength-2 {
     font-size: var(--p-tagcloud-strength-2-font-size);
 }
 
-.ui-tagcloud-strength-3 {
+.p-tagcloud-strength-3 {
     font-size: var(--p-tagcloud-strength-3-font-size);
 }
 
-.ui-tagcloud-strength-4 {
+.p-tagcloud-strength-4 {
     font-size: var(--p-tagcloud-strength-4-font-size);
 }
 
-.ui-tagcloud-strength-5 {
+.p-tagcloud-strength-5 {
     font-size: var(--p-tagcloud-strength-5-font-size);
 }

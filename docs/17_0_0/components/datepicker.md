@@ -172,6 +172,22 @@ Widget: _PrimeFaces.widget.DatePicker_
 | disable() | - | void | Disables DatePicker.
 | enable() | - | void | Enables DatePicker.
 
+## Icons
+The icons of the trigger button, the month navigators and the time picker buttons are icon tokens of the theme (see
+[Theming](/core/theming.md?id=icons)): `--p-datepicker-dropdown-icon`, `--p-datepicker-prev-icon`,
+`--p-datepicker-next-icon`, `--p-datepicker-increment-icon` and `--p-datepicker-decrement-icon`. Set them in `:root, [data-p-scope]`
+for all date pickers or on a style class for some (the panel is appended to the body by default, so prefer `:root, [data-p-scope]`):
+
+```css
+:root, [data-p-scope] {
+    --p-datepicker-dropdown-icon: var(--p-icon-edit);
+}
+```
+
+The icons are rendered as `<span class="p-icon p-calendar-icon p-datepicker-dropdown-icon">` (`p-prev-icon
+p-datepicker-prev-icon`, `p-next-icon p-datepicker-next-icon`, `p-up-icon p-datepicker-increment-icon`, `p-down-icon
+p-datepicker-decrement-icon`).
+
 ## Skinning
 DatePicker resides in a container element which _style_ and _styleClass_ options apply.
 
@@ -179,22 +195,23 @@ Following is the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-datepicker | Main container
-| .ui-datepicker-header | Header container
-| .ui-datepicker-prev | Previous month navigator
-| .ui-datepicker-next | Next month navigator
-| .ui-datepicker-title | Title
-| .ui-datepicker-month | Month display
-| .ui-datepicker-year | Year Display
-| .ui-datepicker-table | Date table
-| .ui-datepicker-week-end | Label of weekends
-| .ui-datepicker-today | Today on the calendar
-| .ui-datepicker-other-month | Dates belonging to other months
-| .ui-datepicker td | Each cell date
-| .ui-datepicker-buttonbar | Button panel
-| .ui-today-button | Today button
-| .ui-clear-button | Close button
-| .ui-datepicker-trigger | Trigger button
+| .p-datepicker | Container of the input and the trigger (style, styleClass)
+| .p-datepicker-panel | Overlay panel (inline: the calendar itself)
+| .p-datepicker-header | Header container
+| .p-datepicker-prev | Previous month navigator
+| .p-datepicker-next | Next month navigator
+| .p-datepicker-title | Title
+| .p-datepicker-month | Month display
+| .p-datepicker-year | Year Display
+| .p-datepicker-calendar | Date table
+| .p-datepicker-week-end | Label of weekends
+| .p-datepicker-today | Today on the calendar
+| .p-datepicker-other-month | Dates belonging to other months
+| .p-datepicker-panel td | Each cell date
+| .p-datepicker-buttonbar | Button panel
+| .p-today-button | Today button
+| .p-clear-button | Close button
+| .p-datepicker-trigger | Trigger button
 
 As skinning style classes are global, see the main theming section for more information.
 

@@ -44,20 +44,15 @@ public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
         DataTable parentTable = component.getParentTable(context);
         String rowKey = parentTable.getRowKey(parentTable.getRowData());
         boolean expanded = parentTable.isExpandedRow() || parentTable.getExpandedRowKeys().contains(rowKey);
-        String expandIcon = component.getExpandIcon();
-        String collapseIcon = component.getCollapseIcon();
-        String icon = "ui-icon " + (expanded ? collapseIcon : expandIcon);
         String expandLabel = component.getExpandLabel();
         String collapseLabel = component.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
-        String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
+        String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + DataTable.ROW_TOGGLER_ICON_CLASS : DataTable.ROW_TOGGLER_CLASS;
 
         writer.startElement("div", component);
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", component.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
-        writer.writeAttribute("data-expand-icon", expandIcon, null);
-        writer.writeAttribute("data-collapse-icon", collapseIcon, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
 
         if (!iconOnly) {

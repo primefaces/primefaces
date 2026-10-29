@@ -10,7 +10,7 @@
  * const widget = PF("MyDashboardWidget");
  * 
  * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
- * PrimeFaces.interactions.sortable(widget.jq.find(".ui-dashboard-column"), { revert: true });
+ * PrimeFaces.interactions.sortable(widget.jq.find(".p-dashboard-column"), { revert: true });
  * ```
  * 
  * @interface {PrimeFaces.widget.DashboardCfg} cfg The configuration for the {@link  Dashboard| Dashboard widget}.
@@ -45,8 +45,8 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
         if (this.cfg.disabled) {
             return;
         }
-        this.cfg.draggable = this.jqId + ' .ui-dashboard-panel';
-        this.cfg.panels = this.jqId + ' .ui-panel';
+        this.cfg.draggable = this.jqId + ' .p-dashboard-panel';
+        this.cfg.panels = this.jqId + ' .p-panel';
         this.bindDraggable();
         this.bindDroppable();
     }
@@ -60,7 +60,7 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
         PrimeFaces.interactions.draggable($(this.cfg.panels), {
             scope: this.cfg.scope || 'dashboard',
             revert: true,
-            handle: '.ui-panel-titlebar',
+            handle: '.p-panel-titlebar',
             zIndex: 9999,
             opacity: 0.7
         });
@@ -77,8 +77,8 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
             scope: this.cfg.scope || 'dashboard',
             tolerance: 'pointer',
             classes: {
-                'ui-droppable-active': 'ui-dashboard-active',
-                'ui-droppable-hover': 'ui-dashboard-hover'
+                'p-droppable-active': 'p-dashboard-active',
+                'p-droppable-hover': 'p-dashboard-hover'
             },
             drop: function(event, ui) {
                 $this.swapPanels($(this).get(0), $(ui.draggable).get(0));
@@ -107,11 +107,11 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
       * @private
       */
     renderSortable() {
-        this.cfg.connectWith = this.jqId + ' .ui-dashboard-column';
-        this.cfg.placeholder = 'ui-state-hover';
+        this.cfg.connectWith = this.jqId + ' .p-dashboard-column';
+        this.cfg.placeholder = 'p-state-hover';
         this.cfg.forcePlaceholderSize = true;
         this.cfg.revert = false;
-        this.cfg.handle = '.ui-panel-titlebar';
+        this.cfg.handle = '.p-panel-titlebar';
         this.bindSortableEvents();
         PrimeFaces.interactions.sortable($(this.cfg.connectWith), this.cfg);
     }
@@ -177,14 +177,14 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
      * Disables this dashboard so that it cannot be modified.
      */
     disable() {
-        this.jq.addClass('ui-state-disabled');
+        this.jq.addClass('p-state-disabled');
     }
 
     /**
      * Enables this dashboard so that it can be modified.
      */
     enable() {
-        this.jq.removeClass('ui-state-disabled');
+        this.jq.removeClass('p-state-disabled');
     }
 
 }

@@ -200,7 +200,7 @@ class DataTable002Test extends AbstractDataTableTest {
         dataTable.sort("First Appeared");
         SelectCheckboxMenu filterType = getFilterType();
         filterType.togglePanel();
-        List<WebElement> filterTypeCheckboxes = filterType.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
+        List<WebElement> filterTypeCheckboxes = filterType.getPanel().findElements(By.cssSelector(".p-chkbox-box"));
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(1)).click();
 
         // Assert
@@ -312,12 +312,12 @@ class DataTable002Test extends AbstractDataTableTest {
         // Act & Assert
         for (int row = 5; row > 1; row--) {
             assertEquals(row, getDataTable().getRows().size());
-            PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
+            PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("p-button"))).click();
             assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
         }
 
         // Act & Assert - delete last row on page 8
-        PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("p-button"))).click();
         assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         assertEquals(10, getDataTable().getRows().size());
 
@@ -329,7 +329,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
 
         // Act & Assert - delete first row on page 7
-        PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("p-button"))).click();
         assertEquals(1, getMessages().getAllMessages().size());
         assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
         assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());

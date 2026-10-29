@@ -28,8 +28,8 @@ export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.Ba
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.items = this.jq.find('.ui-steps-item');
-        this.enabledItems = this.items.filter(".ui-state-default:not(.ui-state-disabled)");
+        this.items = this.jq.find('.p-steps-item');
+        this.enabledItems = this.items.filter(".p-state-default:not(.p-state-disabled)");
 
         this.bindEvents();
     }
@@ -40,11 +40,11 @@ export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.Ba
     private bindEvents(): void {
         this.enabledItems.on('mouseover', function(_) {
             const element = $(this);
-            element.addClass('ui-state-highlight');
+            element.addClass('p-state-highlight');
         })
         .on('mouseout', function(_) {
             const element = $(this);
-            element.removeClass('ui-state-highlight');
+            element.removeClass('p-state-highlight');
         });
     }
 }

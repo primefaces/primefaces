@@ -1,15 +1,15 @@
 /*
  * SelectOneListbox / SelectManyMenu: p:selectOneListbox, p:selectManyMenu (PrimeUIX: listbox)
  *
- * The container is also a .ui-inputfield, so it overrides the field look of forms/inputfield.css.
- * Supported classes: ui-state-error, ui-state-disabled, ui-input-filled (on a parent), .ui-fluid (on a parent),
- *                    ui-listbox-striped, ui-listbox-checkmark (styleClass)
- * Items: ui-state-hover, ui-state-highlight (selected), ui-listbox-outline (keyboard focus)
+ * The container is also a .p-inputfield, so it overrides the field look of forms/inputfield.css.
+ * Supported classes: p-state-error, p-state-disabled, p-input-filled (on a parent), .p-fluid (on a parent),
+ *                    p-listbox-striped, p-listbox-checkmark (styleClass)
+ * Items: p-state-hover, p-state-highlight (selected), p-listbox-outline (keyboard focus)
  * Variants: filter, showCheckbox (p:selectManyMenu), custom content (table with p:column children)
- * Table (p:column children, advancedStyleClass): ui-table-gridlines, ui-table-striped, ui-table-sm, ui-table-lg
+ * Table (p:column children, advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm, p-table-lg
  */
-.ui-selectonelistbox,
-.ui-selectmanymenu {
+.p-selectonelistbox,
+.p-selectmanymenu {
     padding: 0;
     width: auto;
     /* layout value, no token: a minimum width for empty lists */
@@ -24,28 +24,28 @@
         outline-color var(--p-listbox-transition-duration);
 
     /* invalid: also wins over the hover / focus border of forms/inputfield.css (same specificity, later) */
-    &.ui-state-error,
-    &.ui-state-error:is(:hover, :focus, .ui-state-hover, .ui-state-focus) {
+    &.p-state-error,
+    &.p-state-error:is(:hover, :focus, .p-state-hover, .p-state-focus) {
         border-color: var(--p-listbox-invalid-border-color);
     }
 
-    &.ui-state-disabled {
+    &.p-state-disabled {
         opacity: 1;
         background: var(--p-listbox-disabled-background);
         color: var(--p-listbox-disabled-color);
 
-        .ui-selectlistbox-listcontainer {
+        .p-selectlistbox-listcontainer {
             overflow: hidden;
         }
 
-        .ui-selectlistbox-item {
+        .p-selectlistbox-item {
             cursor: default;
             color: var(--p-listbox-disabled-color);
         }
     }
 
     /* filter header */
-    .ui-selectlistbox-filter-container {
+    .p-selectlistbox-filter-container {
         display: flex;
         align-items: center;
         padding: var(--p-listbox-list-header-padding);
@@ -56,64 +56,54 @@
         border-start-start-radius: var(--p-listbox-border-radius);
         border-start-end-radius: var(--p-listbox-border-radius);
 
-        .ui-selectlistbox-filter.ui-inputfield {
+        .p-selectlistbox-filter.p-inputfield {
             padding-block: var(--p-form-field-padding-y);
             padding-inline: var(--p-form-field-padding-x);
             padding-inline-start: calc(2 * var(--p-form-field-padding-x) + var(--p-icon-size));
         }
 
         /*
-         * pi-search. No insets: the absolute icon stays at its static position, i.e. at the start of the container's
-         * content box and vertically centered by the flex container, so the header padding does not need to be known.
+         * No insets: the absolute icon stays at its static position, i.e. at the start of the container's content box
+         * and vertically centered by the flex container, so the header padding does not need to be known.
          */
-        .ui-icon {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
+        .p-selectlistbox-filter-icon {
+            --_icon: var(--p-listbox-filter-icon);
             margin: 0;
             margin-inline-start: var(--p-form-field-padding-x);
             color: var(--p-form-field-icon-color);
         }
-
-        .ui-icon::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-listbox-filter-icon) center / contain no-repeat;
-        }
     }
 
     /* list */
-    .ui-selectlistbox-listcontainer {
+    .p-selectlistbox-listcontainer {
         overflow: auto;
         padding: var(--p-listbox-list-padding);
         line-height: var(--p-typography-line-height);
         border: 0 none;
 
-        ul.ui-selectlistbox-list {
+        ul.p-selectlistbox-list {
             display: flex;
             flex-direction: column;
             gap: var(--p-listbox-list-gap);
         }
     }
 
-    .ui-selectlistbox-list {
+    .p-selectlistbox-list {
         list-style-type: none;
         margin: 0;
         padding: 0;
     }
 
-    table.ui-selectlistbox-list {
+    table.p-selectlistbox-list {
         border-collapse: collapse;
         width: 100%;
     }
 
-    .ui-selectlistbox-item {
+    .p-selectlistbox-item {
         cursor: pointer;
     }
 
-    .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item {
+    .p-selectlistbox-listcontainer .p-selectlistbox-list .p-selectlistbox-item {
         border: 0 none;
         margin: 0;
         padding: var(--p-listbox-option-padding);
@@ -126,24 +116,24 @@
             border-color var(--p-list-option-transition-duration), box-shadow var(--p-list-option-transition-duration),
             outline-color var(--p-list-option-transition-duration);
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-listbox-option-focus-background);
             color: var(--p-listbox-option-focus-color);
         }
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-listbox-option-selected-background);
             color: var(--p-listbox-option-selected-color);
             font-weight: var(--p-listbox-option-selected-font-weight);
         }
 
-        &.ui-state-highlight.ui-state-hover {
+        &.p-state-highlight.p-state-hover {
             background: var(--p-listbox-option-selected-focus-background);
             color: var(--p-listbox-option-selected-focus-color);
         }
 
         /* no listbox token for the checkbox gap, the multiselect option gap is used */
-        .ui-chkbox {
+        .p-chkbox {
             margin-inline-end: var(--p-multiselect-option-gap);
             vertical-align: middle;
         }
@@ -153,37 +143,37 @@
         }
     }
 
-    /* striped (styleClass="ui-listbox-striped"): every second option, the states keep their own background */
-    &.ui-listbox-striped .ui-selectlistbox-listcontainer .ui-selectlistbox-list
-        .ui-selectlistbox-item:nth-child(even of .ui-selectlistbox-item):not(.ui-state-hover, .ui-state-highlight, .ui-listbox-outline) {
+    /* striped (styleClass="p-listbox-striped"): every second option, the states keep their own background */
+    &.p-listbox-striped .p-selectlistbox-listcontainer .p-selectlistbox-list
+        .p-selectlistbox-item:nth-child(even of .p-selectlistbox-item):not(.p-state-hover, .p-state-highlight, .p-listbox-outline) {
         background: var(--p-listbox-option-striped-background);
     }
 
-    /* table variants (advancedStyleClass on the table of p:column children): ui-table-gridlines, ui-table-striped,
-       ui-table-sm / -lg */
-    table.ui-selectlistbox-list.ui-table-gridlines > tbody > tr.ui-selectlistbox-item > td {
+    /* table variants (advancedStyleClass on the table of p:column children): p-table-gridlines, p-table-striped,
+       p-table-sm / -lg */
+    table.p-selectlistbox-list.p-table-gridlines > tbody > tr.p-selectlistbox-item > td {
         border: 1px solid var(--p-datatable-body-cell-border-color);
     }
 
-    table.ui-selectlistbox-list.ui-table-striped > tbody
-        > tr.ui-selectlistbox-item:nth-child(even of .ui-selectlistbox-item):not(.ui-state-hover, .ui-state-highlight, .ui-listbox-outline) {
+    table.p-selectlistbox-list.p-table-striped > tbody
+        > tr.p-selectlistbox-item:nth-child(even of .p-selectlistbox-item):not(.p-state-hover, .p-state-highlight, .p-listbox-outline) {
         background: var(--p-datatable-row-striped-background);
     }
 
-    table.ui-selectlistbox-list.ui-table-sm > tbody > tr.ui-selectlistbox-item > td {
+    table.p-selectlistbox-list.p-table-sm > tbody > tr.p-selectlistbox-item > td {
         padding: var(--p-datatable-body-cell-sm-padding);
     }
 
-    table.ui-selectlistbox-list.ui-table-lg > tbody > tr.ui-selectlistbox-item > td {
+    table.p-selectlistbox-list.p-table-lg > tbody > tr.p-selectlistbox-item > td {
         padding: var(--p-datatable-body-cell-lg-padding);
     }
 
     /*
-     * checkmark (styleClass="ui-listbox-checkmark"): a check in front of the selected option(s), the others keep the
+     * checkmark (styleClass="p-listbox-checkmark"): a check in front of the selected option(s), the others keep the
      * space of the icon (PrimeUIX blank icon); the selected background stays. List items only, not the table of
      * p:column children.
      */
-    &.ui-listbox-checkmark .ui-selectlistbox-listcontainer .ui-selectlistbox-list li.ui-selectlistbox-item {
+    &.p-listbox-checkmark .p-selectlistbox-listcontainer .p-selectlistbox-list li.p-selectlistbox-item {
         display: flex;
         align-items: center;
 
@@ -200,67 +190,67 @@
             mask: var(--p-listbox-checkmark-icon) center / contain no-repeat;
         }
 
-        &.ui-state-highlight::before {
+        &.p-state-highlight::before {
             background: currentColor;
         }
     }
 
     /* keyboard focus */
-    .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-listbox-outline {
+    .p-selectlistbox-listcontainer .p-selectlistbox-list .p-listbox-outline {
         outline: 0 none;
         background: var(--p-listbox-option-focus-background);
         color: var(--p-listbox-option-focus-color);
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-listbox-option-selected-focus-background);
             color: var(--p-listbox-option-selected-focus-color);
         }
     }
 
     /* an option reached with tab (tabindex on the item) */
-    .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item:focus-visible {
+    .p-selectlistbox-listcontainer .p-selectlistbox-list .p-selectlistbox-item:focus-visible {
         outline: 0 none;
         background: var(--p-listbox-option-focus-background);
         color: var(--p-listbox-option-focus-color);
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-listbox-option-selected-focus-background);
             color: var(--p-listbox-option-selected-focus-color);
         }
     }
 }
 
-.ui-selectmanymenu .ui-selectlistbox-chkbox {
+.p-selectmanymenu .p-selectlistbox-chkbox {
     width: var(--p-checkbox-width);
 }
 
-.ui-selectlistbox-filter.ui-inputfield {
+.p-selectlistbox-filter.p-inputfield {
     width: 100%;
     box-shadow: none;
 }
 
-.ui-selectlistbox-filter-container {
+.p-selectlistbox-filter-container {
     position: relative;
 
-    .ui-icon {
+    .p-selectlistbox-filter-icon {
         position: absolute;
     }
 }
 
-.ui-listbox-outline {
+.p-listbox-outline {
     outline: 0 none;
     z-index: 1;
 }
 
 /* filled variant: a listbox keeps its own background */
-.ui-input-filled .ui-selectonelistbox.ui-inputfield,
-.ui-input-filled .ui-selectmanymenu.ui-inputfield,
-.ui-input-filled .ui-selectonelistbox.ui-inputfield:hover,
-.ui-input-filled .ui-selectmanymenu.ui-inputfield:hover {
+.p-input-filled .p-selectonelistbox.p-inputfield,
+.p-input-filled .p-selectmanymenu.p-inputfield,
+.p-input-filled .p-selectonelistbox.p-inputfield:hover,
+.p-input-filled .p-selectmanymenu.p-inputfield:hover {
     background: var(--p-listbox-background);
 }
 
-.ui-fluid .ui-selectonelistbox,
-.ui-fluid .ui-selectmanymenu {
+.p-fluid .p-selectonelistbox,
+.p-fluid .p-selectmanymenu {
     width: 100%;
 }

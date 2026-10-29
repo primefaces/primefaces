@@ -64,6 +64,6 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-skeleton | Container element.
-|.ui-skeleton-circle | Container element of a determinate progressbar.
-|.ui-skeleton-animation-none | Container element of an indeterminate progressbar.
+|.p-skeleton | Container element.
+|.p-skeleton-circle | Container element of a determinate progressbar.
+|.p-skeleton-animation-none | Container element of an indeterminate progressbar.

@@ -62,12 +62,12 @@ class SelectOneListboxRendererTest {
         FacesContext context = new FacesContextMock(writer);
 
         SelectOneListbox listbox = selectOneListbox();
-        listbox.setAdvancedStyleClass("ui-table-gridlines");
+        listbox.setAdvancedStyleClass("p-table-gridlines");
 
         new SelectOneListboxRenderer().encodeList(context, listbox, selectItems());
 
         String html = writer.toString();
-        assertTrue(html.contains("class=\"" + SelectOneListbox.LIST_CLASS + " ui-table-gridlines\""), html);
+        assertTrue(html.contains("class=\"" + SelectOneListbox.LIST_CLASS + " p-table-gridlines\""), html);
     }
 
     @Test

@@ -107,7 +107,7 @@ class DataTable057Test extends AbstractPrimePageTest {
     }
 
     private List<String> headerTexts(DataTable dataTable) {
-        return dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th")).stream().map(WebElement::getText).toList();
+        return dataTable.findElements(By.cssSelector(".p-datatable-scrollable-header th")).stream().map(WebElement::getText).toList();
     }
 
     private List<String> rowValues(DataTable dataTable, int rowIndex) {
@@ -127,14 +127,14 @@ class DataTable057Test extends AbstractPrimePageTest {
      * @param toIndex index of the column to drop it on
      */
     private void dragColumnOnto(Page page, DataTable dataTable, int fromIndex, int toIndex) {
-        List<WebElement> headers = dataTable.findElements(By.cssSelector(".ui-datatable-scrollable-header th"));
+        List<WebElement> headers = dataTable.findElements(By.cssSelector(".p-datatable-scrollable-header th"));
         WebElement source = headers.get(fromIndex);
         WebElement target = headers.get(toIndex);
 
         // grab the column title, not the header itself: the draggable cancels on ':input', which would be hit when the
         // pointer lands in the center of a header carrying a filter input
         new Actions(page.getWebDriver())
-                .moveToElement(source.findElement(By.cssSelector(".ui-column-title")))
+                .moveToElement(source.findElement(By.cssSelector(".p-column-title")))
                 .clickAndHold()
                 .moveByOffset(10, 0)
                 .moveToElement(target)

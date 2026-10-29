@@ -1,14 +1,15 @@
 /*
- * Checkbox (shared): the generic .ui-chkbox used by p:selectBooleanCheckbox, p:selectManyCheckbox, p:triStateCheckbox,
+ * Checkbox (shared): the generic .p-chkbox used by p:selectBooleanCheckbox, p:selectManyCheckbox, p:triStateCheckbox,
  * row selection of p:dataTable / p:treeTable, p:selectCheckboxMenu, ...
  *
- * Supported classes on .ui-chkbox-box: ui-state-hover, ui-state-focus, ui-state-active (checked),
- *                                      ui-state-error (invalid), ui-state-disabled, ui-chkbox-readonly,
- *                                      ui-input-filled (on a parent), ui-state-readonly (on a parent)
- * Sizes: ui-chkbox-sm, ui-chkbox-lg (on the .ui-chkbox or a parent)
- * Icons: ui-icon-check (checked), ui-icon-minus (partially checked), ui-icon-closethick (tri state "false")
+ * Supported classes on .p-chkbox-box: p-state-hover, p-state-focus, p-state-active (checked),
+ *                                      p-state-error (invalid), p-state-disabled, p-chkbox-readonly,
+ *                                      p-input-filled (on a parent), p-state-readonly (on a parent)
+ * Sizes: p-chkbox-sm, p-chkbox-lg (on the .p-chkbox or a parent)
+ * Icons (.p-chkbox-icon.p-icon.p-checkbox-icon): p-checkbox-checked-icon, p-checkbox-indeterminate-icon (partially checked),
+ *        p-checkbox-crossed-icon (tri state "false"), none (unchecked)
  */
-.ui-chkbox {
+.p-chkbox {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -17,7 +18,7 @@
     width: auto;
     height: auto;
 
-    .ui-chkbox-box {
+    .p-chkbox-box {
         display: inline-block;
         cursor: pointer;
         position: relative;
@@ -34,52 +35,52 @@
         transition: background var(--p-checkbox-transition-duration), border-color var(--p-checkbox-transition-duration),
             box-shadow var(--p-checkbox-transition-duration), outline-color var(--p-checkbox-transition-duration);
 
-        /* readonly (ui-state-readonly on the box or a parent, ui-chkbox-readonly): no hover feedback, also not from the
-           ui-state-hover the widgets set on mouseenter */
-        &.ui-state-hover:not(.ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *),
-        &:not(.ui-state-disabled, .ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *):hover {
+        /* readonly (p-state-readonly on the box or a parent, p-chkbox-readonly): no hover feedback, also not from the
+           p-state-hover the widgets set on mouseenter */
+        &.p-state-hover:not(.p-chkbox-readonly, .p-state-readonly, .p-state-readonly *),
+        &:not(.p-state-disabled, .p-chkbox-readonly, .p-state-readonly, .p-state-readonly *):hover {
             border-color: var(--p-checkbox-hover-border-color);
         }
 
-        &.ui-state-focus {
+        &.p-state-focus {
             border-color: var(--p-checkbox-focus-border-color);
             outline: var(--p-checkbox-focus-ring-width) var(--p-checkbox-focus-ring-style) var(--p-checkbox-focus-ring-color);
             outline-offset: var(--p-checkbox-focus-ring-offset);
             box-shadow: var(--p-checkbox-focus-ring-shadow);
         }
 
-        &.ui-state-active {
+        &.p-state-active {
             border-color: var(--p-checkbox-checked-border-color);
             background: var(--p-checkbox-checked-background);
             color: var(--p-checkbox-icon-checked-color);
 
-            &.ui-state-hover:not(.ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *),
-            &:not(.ui-state-disabled, .ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *):hover {
+            &.p-state-hover:not(.p-chkbox-readonly, .p-state-readonly, .p-state-readonly *),
+            &:not(.p-state-disabled, .p-chkbox-readonly, .p-state-readonly, .p-state-readonly *):hover {
                 border-color: var(--p-checkbox-checked-hover-border-color);
                 background: var(--p-checkbox-checked-hover-background);
                 color: var(--p-checkbox-icon-checked-hover-color);
             }
 
-            &.ui-state-focus {
+            &.p-state-focus {
                 border-color: var(--p-checkbox-checked-focus-border-color);
             }
         }
 
         /* invalid: the border also wins over hover, focus and checked (same or higher specificity, later), the focus ring stays */
-        &.ui-state-error,
-        &.ui-state-error:is(:hover, .ui-state-hover, .ui-state-focus),
-        &.ui-state-error.ui-state-active:is(:hover, .ui-state-hover, .ui-state-focus) {
+        &.p-state-error,
+        &.p-state-error:is(:hover, .p-state-hover, .p-state-focus),
+        &.p-state-error.p-state-active:is(:hover, .p-state-hover, .p-state-focus) {
             border-color: var(--p-checkbox-invalid-border-color);
         }
 
-        &.ui-state-disabled {
+        &.p-state-disabled {
             opacity: 1;
             background: var(--p-checkbox-disabled-background);
             border-color: var(--p-checkbox-checked-disabled-border-color);
             color: var(--p-checkbox-icon-disabled-color);
         }
 
-        .ui-chkbox-icon {
+        .p-chkbox-icon {
             overflow: visible;
             position: absolute;
             left: 50%;
@@ -89,46 +90,28 @@
             margin-left: calc(-1 * var(--p-checkbox-icon-size) / 2);
             margin-top: calc(-1 * var(--p-checkbox-icon-size) / 2);
 
-            &.ui-icon-check,
-            &.ui-icon-minus,
-            &.ui-icon-closethick {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
+            &.p-checkbox-checked-icon {
+                --_icon: var(--p-checkbox-checked-icon);
             }
 
-            &.ui-icon-check::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-checkbox-checked-icon) center / contain no-repeat;
+            &.p-checkbox-indeterminate-icon {
+                --_icon: var(--p-checkbox-indeterminate-icon);
             }
 
-            &.ui-icon-minus::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-checkbox-indeterminate-icon) center / contain no-repeat;
-            }
-
-            &.ui-icon-closethick::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-checkbox-crossed-icon) center / contain no-repeat;
+            &.p-checkbox-crossed-icon {
+                --_icon: var(--p-checkbox-crossed-icon);
             }
         }
     }
 
     /* readonly (the disabled cursor comes from base/common.css) */
-    .ui-chkbox-box.ui-chkbox-readonly,
-    &.ui-state-readonly .ui-chkbox-box,
-    .ui-state-readonly & .ui-chkbox-box {
+    .p-chkbox-box.p-chkbox-readonly,
+    &.p-state-readonly .p-chkbox-box,
+    .p-state-readonly & .p-chkbox-box {
         cursor: default;
     }
 
-    .ui-chkbox-label {
+    .p-chkbox-label {
         display: inline-block;
         vertical-align: middle;
         cursor: pointer;
@@ -138,47 +121,47 @@
         outline: 0 none;
         z-index: 1;
 
-        &.ui-chkbox-readonly {
+        &.p-chkbox-readonly {
             cursor: default;
         }
     }
 }
 
 /* filled */
-.ui-input-filled .ui-chkbox .ui-chkbox-box {
+.p-input-filled .p-chkbox .p-chkbox-box {
     background: var(--p-checkbox-filled-background);
 
     /* no token: checkbox has no filled hover background, use the form field one */
-    &.ui-state-hover:not(.ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *),
-    &:not(.ui-state-disabled, .ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *):hover {
+    &.p-state-hover:not(.p-chkbox-readonly, .p-state-readonly, .p-state-readonly *),
+    &:not(.p-state-disabled, .p-chkbox-readonly, .p-state-readonly, .p-state-readonly *):hover {
         background: var(--p-form-field-filled-hover-background);
     }
 
-    &.ui-state-active {
+    &.p-state-active {
         background: var(--p-checkbox-checked-background);
 
-        &.ui-state-hover:not(.ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *),
-        &:not(.ui-state-disabled, .ui-chkbox-readonly, .ui-state-readonly, .ui-state-readonly *):hover {
+        &.p-state-hover:not(.p-chkbox-readonly, .p-state-readonly, .p-state-readonly *),
+        &:not(.p-state-disabled, .p-chkbox-readonly, .p-state-readonly, .p-state-readonly *):hover {
             background: var(--p-checkbox-checked-hover-background);
         }
     }
 
-    &.ui-state-disabled {
+    &.p-state-disabled {
         background: var(--p-checkbox-disabled-background);
     }
 }
 
 /*
- * sizes: ui-chkbox-sm / ui-chkbox-lg on the .ui-chkbox (p:selectBooleanCheckbox styleClass) or on any parent
+ * sizes: p-chkbox-sm / p-chkbox-lg on the .p-chkbox (p:selectBooleanCheckbox styleClass) or on any parent
  * (p:selectManyCheckbox / p:triStateCheckbox styleClass, a wrapper): the size tokens replace the base ones
  */
-.ui-chkbox-sm {
+.p-chkbox-sm {
     --p-checkbox-width: var(--p-checkbox-sm-width);
     --p-checkbox-height: var(--p-checkbox-sm-height);
     --p-checkbox-icon-size: var(--p-checkbox-icon-sm-size);
 }
 
-.ui-chkbox-lg {
+.p-chkbox-lg {
     --p-checkbox-width: var(--p-checkbox-lg-width);
     --p-checkbox-height: var(--p-checkbox-lg-height);
     --p-checkbox-icon-size: var(--p-checkbox-icon-lg-size);
@@ -189,6 +172,6 @@
  * (Nora: primary, Metal: graphite), a rim in the selection text color keeps it visible. The doubled class wins over the
  * hover / focus rules above.
  */
-.ui-state-highlight .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-active {
+.p-state-highlight .p-chkbox .p-chkbox-box.p-state-active.p-state-active {
     border-color: var(--p-highlight-color);
 }

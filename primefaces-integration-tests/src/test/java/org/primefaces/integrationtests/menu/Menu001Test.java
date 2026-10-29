@@ -54,7 +54,7 @@ class Menu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(page.input, page.getWebDriver().switchTo().activeElement());
-        assertTrue(first.getAttribute("class").contains("ui-state-hover"));
+        assertTrue(first.getAttribute("class").contains("p-state-hover"));
         assertNoJavascriptErrors();
     }
 
@@ -114,7 +114,7 @@ class Menu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(page.input, page.getWebDriver().switchTo().activeElement());
-        assertFalse(disabled.getAttribute("class").contains("ui-state-hover"));
+        assertFalse(disabled.getAttribute("class").contains("p-state-hover"));
         assertNoJavascriptErrors();
     }
 

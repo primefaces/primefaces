@@ -15,8 +15,8 @@ export class ValidationHighlighter {
      */
     highlightLabel(forElement: JQuery): void {
         var label = $("label[for='" + forElement.attr('id') + "']");
-        if (label.hasClass('ui-outputlabel')) {
-            label.addClass('ui-state-error');
+        if (label.hasClass('p-outputlabel')) {
+            label.addClass('p-state-error');
         }
     }
 
@@ -27,24 +27,24 @@ export class ValidationHighlighter {
      */
     unhighlightLabel(forElement: JQuery): void {
         var label = $("label[for='" + forElement.attr('id') + "']");
-        if (label.hasClass('ui-outputlabel')) {
-            label.removeClass('ui-state-error');
+        if (label.hasClass('p-outputlabel')) {
+            label.removeClass('p-state-error');
         }
     }
 
     /**
-     * Applies ui-state-XXX - css-classes to an element (component).
+     * Applies p-state-XXX - css-classes to an element (component).
      * @param element Element to which apply the css-classes.
      * @param valid Is the input of the element valid?
      */
     applyStateCssClasses(element: JQuery, valid: boolean): void {
         if (valid) {
-            element.removeClass('ui-state-error');
-            element.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+            element.removeClass('p-state-error');
+            element.removeClass('p-state-csv-invalid').addClass('p-state-csv-valid');
         }
         else {
-            element.addClass('ui-state-error');
-            element.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+            element.addClass('p-state-error');
+            element.addClass('p-state-csv-invalid').removeClass('p-state-csv-valid');
         }
     }
 };
@@ -75,16 +75,16 @@ class BooleanCheckBoxHighlighter implements PrimeFacesTypes.validation.Highlight
 
 class ManyCheckBoxHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
-        const custom = element.hasClass('ui-chkbox-clone');
+        const custom = element.hasClass('p-chkbox-clone');
         let chkboxes: JQuery;
         
         if(custom) {
-            const groupedInputs = $('input[name="' + CSS.escape(element.attr('name') ?? "") + '"].ui-chkbox-clone');
+            const groupedInputs = $('input[name="' + CSS.escape(element.attr('name') ?? "") + '"].p-chkbox-clone');
             chkboxes = groupedInputs.parent().next();
         }
         else {
-            const container = element.closest('.ui-selectmanycheckbox');
-            chkboxes = container.find('div.ui-chkbox-box');
+            const container = element.closest('.p-selectmanycheckbox');
+            chkboxes = container.find('div.p-chkbox-box');
         }
 
         for(let i = 0; i < chkboxes.length; i++) {
@@ -93,16 +93,16 @@ class ManyCheckBoxHighlighter implements PrimeFacesTypes.validation.Highlighter 
     }
 
     unhighlight(element: JQuery): void {
-        const custom = element.hasClass('ui-chkbox-clone');
+        const custom = element.hasClass('p-chkbox-clone');
         let chkboxes: JQuery;
         
         if(custom) {
-            const groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+            const groupedInputs = $('input[name="' + element.attr('name') + '"].p-chkbox-clone');
             chkboxes = groupedInputs.parent().next();
         }
         else {
-            const container = element.closest('.ui-selectmanycheckbox');
-            chkboxes = container.find('div.ui-chkbox-box');
+            const container = element.closest('.p-selectmanycheckbox');
+            chkboxes = container.find('div.p-chkbox-box');
         }
 
         for(let i = 0; i < chkboxes.length; i++) {
@@ -113,33 +113,33 @@ class ManyCheckBoxHighlighter implements PrimeFacesTypes.validation.Highlighter 
 
 class ListBoxHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
-        validationHighlighter.applyStateCssClasses(element.closest('.ui-inputfield'), false);
-        validationHighlighter.highlightLabel(element.closest('.ui-inputfield'));
+        validationHighlighter.applyStateCssClasses(element.closest('.p-inputfield'), false);
+        validationHighlighter.highlightLabel(element.closest('.p-inputfield'));
     }
 
     unhighlight(element: JQuery): void {
-        validationHighlighter.applyStateCssClasses(element.closest('.ui-inputfield'), true);
-        validationHighlighter.unhighlightLabel(element.closest('.ui-inputfield'));
+        validationHighlighter.applyStateCssClasses(element.closest('.p-inputfield'), true);
+        validationHighlighter.unhighlightLabel(element.closest('.p-inputfield'));
     }
 }
 
 class OneMenuHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
-        var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
+        var siblings = element.parent().siblings('.p-selectonemenu-trigger');
         validationHighlighter.applyStateCssClasses(siblings, false);
         validationHighlighter.applyStateCssClasses(siblings.parent(), false);
         validationHighlighter.highlightLabel(this.getFocusElement(element));
     }
 
     unhighlight(element: JQuery): void {
-        var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
+        var siblings = element.parent().siblings('.p-selectonemenu-trigger');
         validationHighlighter.applyStateCssClasses(siblings, true);
         validationHighlighter.applyStateCssClasses(siblings.parent(), true);
         validationHighlighter.unhighlightLabel(this.getFocusElement(element));
     }
 
     private getFocusElement(element: JQuery): JQuery {
-        return element.closest('.ui-selectonemenu').find('.p-hidden-accessible > input');
+        return element.closest('.p-selectonemenu').find('.p-hidden-accessible > input');
     }
 }
 
@@ -157,8 +157,8 @@ class SpinnerHighlighter implements PrimeFacesTypes.validation.Highlighter {
 
 class OneRadioHighlighter implements PrimeFacesTypes.validation.Highlighter {
     highlight(element: JQuery): void {
-        var container = element.closest('.ui-selectoneradio'),
-        radios = container.find('div.ui-radiobutton-box');
+        var container = element.closest('.p-selectoneradio'),
+        radios = container.find('div.p-radiobutton-box');
 
         for(var i = 0; i < radios.length; i++) {
             validationHighlighter.applyStateCssClasses(radios.eq(i), false);
@@ -167,8 +167,8 @@ class OneRadioHighlighter implements PrimeFacesTypes.validation.Highlighter {
     }
 
     unhighlight(element: JQuery): void {
-        var container = element.closest('.ui-selectoneradio'),
-        radios = container.find('div.ui-radiobutton-box');
+        var container = element.closest('.p-selectoneradio'),
+        radios = container.find('div.p-radiobutton-box');
 
         for(var i = 0; i < radios.length; i++) {
             validationHighlighter.applyStateCssClasses(radios.eq(i), true);
@@ -203,9 +203,9 @@ class InputNumberHighlighter implements PrimeFacesTypes.validation.Highlighter {
         validationHighlighter.highlightLabel(orginalInput);
 
         // see #3706
-        orginalInput.parent().addClass('ui-state-error');
+        orginalInput.parent().addClass('p-state-error');
         validationHighlighter.applyStateCssClasses(orginalInput, false);
-        // orginalInput.parent().addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid'); // makes visual no sense
+        // orginalInput.parent().addClass('p-state-csv-invalid').removeClass('p-state-csv-valid'); // makes visual no sense
     }
 
     unhighlight(element: JQuery): void {
@@ -213,9 +213,9 @@ class InputNumberHighlighter implements PrimeFacesTypes.validation.Highlighter {
         validationHighlighter.unhighlightLabel(orginalInput);
 
         // see #3706
-        orginalInput.parent().removeClass('ui-state-error');
+        orginalInput.parent().removeClass('p-state-error');
         validationHighlighter.applyStateCssClasses(orginalInput, true);
-        // orginalInput.parent().removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid'); // makes visual no sense
+        // orginalInput.parent().removeClass('p-state-csv-invalid').addClass('p-state-csv-valid'); // makes visual no sense
     }
 }
 

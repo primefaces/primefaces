@@ -40,21 +40,20 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentBase
 public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTLAware {
 
-    public static final String LIST_CLASS = "ui-menu-list";
-    public static final String MENU_RTL_CLASS = "ui-menu-rtl";
-    public static final String MENUITEM_CLASS = "ui-menuitem ui-widget";
-    public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link";
-    public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
-    public static final String MENUITEM_ICON_CLASS = "ui-menuitem-icon ui-icon";
-    public static final String TIERED_SUBMENU_CLASS = "ui-widget ui-menuitem ui-menu-parent";
-    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-menu-child";
-    public static final String SUBMENU_RIGHT_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String SUBMENU_LEFT_ICON_CLASS = "ui-icon ui-icon-triangle-1-w";
-    public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
-    public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link";
-    public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget";
-    public static final String START_CLASS = "ui-menuitem ui-menubar-start ui-widget";
-    public static final String END_CLASS = "ui-menuitem ui-menubar-end ui-widget";
+    public static final String LIST_CLASS = "p-menu-list";
+    public static final String MENU_RTL_CLASS = "p-menu-rtl";
+    public static final String MENUITEM_CLASS = "p-menuitem p-widget";
+    public static final String MENUITEM_LINK_CLASS = "p-menuitem-link";
+    public static final String MENUITEM_TEXT_CLASS = "p-menuitem-text";
+    public static final String MENUITEM_ICON_CLASS = "p-menuitem-icon";
+    public static final String TIERED_SUBMENU_CLASS = "p-widget p-menuitem p-menu-parent";
+    public static final String TIERED_CHILD_SUBMENU_CLASS = "p-widget-content p-menu-list p-menu-child";
+    public static final String SUBMENU_ICON_CLASS = "p-icon p-next-icon p-menu-submenu-icon";
+    public static final String MENUBAR_SUBMENU_ICON_CLASS = "p-icon p-dropdown-icon p-menubar-submenu-icon";
+    public static final String SUBMENU_LINK_CLASS = "p-menuitem-link p-submenu-link";
+    public static final String OPTIONS_CLASS = "p-menuitem p-menubar-options p-widget";
+    public static final String START_CLASS = "p-menuitem p-menubar-start p-widget";
+    public static final String END_CLASS = "p-menuitem p-menubar-end p-widget";
 
     @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
     public abstract String getTabindex();

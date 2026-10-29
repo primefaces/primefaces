@@ -100,14 +100,9 @@ public class ChipRenderer extends CoreRenderer<Chip> {
         }
 
         if (component.isRemovable()) {
-            String removeIconStyleClass = getStyleClassBuilder(context)
-                    .add(Chip.REMOVE_ICON_CLASS)
-                    .add(component.getRemoveIcon())
-                    .build();
-
             writer.startElement("span", component);
             writer.writeAttribute("tabindex", "0", null);
-            writer.writeAttribute("class", removeIconStyleClass, null);
+            writer.writeAttribute("class", Chip.REMOVE_ICON_CLASS, null);
             writer.endElement("span");
         }
     }

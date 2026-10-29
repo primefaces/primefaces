@@ -178,7 +178,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
                 .add(AutoComplete.STYLE_CLASS)
                 .add(component.getStyleClass())
                 .add(isDropdown, AutoComplete.DROPDOWN_SYLE_CLASS)
-                .add(disabled, "ui-state-disabled")
+                .add(disabled, "p-state-disabled")
                 .build();
 
         writer.startElement("span", null);
@@ -326,7 +326,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         String dropdownClass = AutoComplete.DROPDOWN_CLASS;
         boolean disabled = component.isDisabled() || component.isReadonly();
         if (disabled) {
-            dropdownClass += " ui-state-disabled";
+            dropdownClass += " p-state-disabled";
         }
 
         writer.startElement("button", component);
@@ -344,11 +344,11 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-icon-primary ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", AutoComplete.DROPDOWN_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-text", null);
+        writer.writeAttribute("class", "p-button-text", null);
         writer.write("&nbsp;");
         writer.endElement("span");
 
@@ -406,7 +406,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
                 .add(AutoComplete.MULTIPLE_STYLE_CLASS)
                 .add(component.getStyleClass())
                 .add(isDropdown, AutoComplete.DROPDOWN_SYLE_CLASS)
-                .add(disabled, "ui-state-disabled")
+                .add(disabled, "p-state-disabled")
                 .build();
 
         String listClass = isDropdown ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
@@ -537,7 +537,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         if (FacetUtils.shouldRenderFacet(footer)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-autocomplete-footer", null);
+            writer.writeAttribute("class", "p-autocomplete-footer", null);
             footer.encodeAll(context);
             writer.endElement("div");
         }
@@ -584,7 +584,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
                 String headerText = column.getHeaderText();
                 UIComponent headerFacet = column.getFacet("header");
-                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                String styleClass = column.getStyleClass() == null ? "p-state-default" : "p-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);

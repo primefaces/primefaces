@@ -43,7 +43,7 @@ public abstract class BlockUI extends AbstractComponent {
      * @return a List<WebElement> containing at least one element
      */
     public List<WebElement> getOverlays() {
-        return getWebDriver().findElements(By.className("ui-blockui"));
+        return getWebDriver().findElements(By.className("p-blockui"));
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class BlockUI extends AbstractComponent {
      * @return a List<WebElement> containing at least one element
      */
     public List<WebElement> getContents() {
-        return getWebDriver().findElements(By.className("ui-blockui-content"));
+        return getWebDriver().findElements(By.className("p-blockui-content"));
     }
 
     /**

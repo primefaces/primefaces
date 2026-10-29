@@ -102,25 +102,25 @@ class Theming010Test extends AbstractThemingTest {
     }
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(css = "[id='form:tabMenu'] .ui-tabmenuitem:nth-child(2)")
+        @FindBy(css = "[id='form:tabMenu'] .p-tabmenuitem:nth-child(2)")
         WebElement secondTab;
 
-        @FindBy(css = "[id='form:tabMenu'] .ui-tabmenuitem:nth-child(2) > a")
+        @FindBy(css = "[id='form:tabMenu'] .p-tabmenuitem:nth-child(2) > a")
         WebElement secondTabLink;
 
-        @FindBy(css = "[id='form:panelMenu'] .ui-panelmenu-content .ui-menuitem-link")
+        @FindBy(css = "[id='form:panelMenu'] .p-panelmenu-content .p-menuitem-link")
         WebElement panelMenuLink;
 
-        @FindBy(css = "[id='form:toggleLtr'] .ui-toggleswitch-slider")
+        @FindBy(css = "[id='form:toggleLtr'] .p-toggleswitch-slider")
         WebElement ltrSlider;
 
-        @FindBy(css = "[id='form:toggleLtr'] .ui-toggleswitch-handler")
+        @FindBy(css = "[id='form:toggleLtr'] .p-toggleswitch-handler")
         WebElement ltrHandle;
 
-        @FindBy(css = "[id='form:toggleRtl'] .ui-toggleswitch-slider")
+        @FindBy(css = "[id='form:toggleRtl'] .p-toggleswitch-slider")
         WebElement rtlSlider;
 
-        @FindBy(css = "[id='form:toggleRtl'] .ui-toggleswitch-handler")
+        @FindBy(css = "[id='form:toggleRtl'] .p-toggleswitch-handler")
         WebElement rtlHandle;
 
         @Override

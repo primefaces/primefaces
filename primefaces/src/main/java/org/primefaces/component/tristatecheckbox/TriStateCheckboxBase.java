@@ -44,15 +44,6 @@ public abstract class TriStateCheckboxBase extends AbstractPrimeHtmlInputText im
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Icon for state one.")
-    public abstract String getStateOneIcon();
-
-    @Property(description = "Icon for state two.")
-    public abstract String getStateTwoIcon();
-
-    @Property(description = "Icon for state three.")
-    public abstract String getStateThreeIcon();
-
     @Property(description = "Label for the checkbox item.")
     public abstract String getItemLabel();
 

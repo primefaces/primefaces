@@ -67,9 +67,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements Widget, Sty
     @Property(description = "Title attribute of the cancel button.")
     public abstract String getCancelButtonTitle();
 
-    @Property(defaultValue = "pi pi-times", description = "Icon of the cancel button.")
-    public abstract String getCancelIcon();
-
     @Property(defaultValue = "Cancel", description = "Label of the cancel button.")
     public abstract String getCancelLabel();
 
@@ -78,9 +75,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements Widget, Sty
 
     @Property(description = "Title attribute of the choose button.")
     public abstract String getChooseButtonTitle();
-
-    @Property(defaultValue = "pi pi-plus", description = "Icon of the choose button.")
-    public abstract String getChooseIcon();
 
     @Property(defaultValue = "false", description = "Disables the component.")
     public abstract boolean isDisabled();
@@ -169,9 +163,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements Widget, Sty
 
     @Property(description = "Title attribute of the upload button.")
     public abstract String getUploadButtonTitle();
-
-    @Property(defaultValue = "pi pi-upload", description = "Icon of the upload button.")
-    public abstract String getUploadIcon();
 
     @Property(defaultValue = "Upload", description = "Label of the upload button.")
     public abstract String getUploadLabel();

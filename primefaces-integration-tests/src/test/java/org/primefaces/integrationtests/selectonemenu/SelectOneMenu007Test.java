@@ -85,9 +85,9 @@ class SelectOneMenu007Test extends AbstractPrimePageTest {
 
     private void assertItems(Page page, int itemCount, int groupCount) {
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        List<WebElement> groups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
+        List<WebElement> groups = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item-group"));
         assertEquals(groupCount, groups.size());
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
         assertEquals(itemCount, options.size());
     }
 

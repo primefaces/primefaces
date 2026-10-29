@@ -59,7 +59,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(popup.isVisible());
         assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
-        assertEquals("ui-confirm-popup-icon pi pi-exclamation-triangle", popup.getIcon().getAttribute("class"));
+        assertEquals("p-confirm-popup-icon pi pi-exclamation-triangle", popup.getIcon().getAttribute("class"));
         assertConfiguration(popup.getWidgetConfiguration());
     }
 
@@ -91,8 +91,8 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("No", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-no ui-button-flat");
-        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
+                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat");
+        assertCss(noButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-times");
 
         // Act
         noButton.click();
@@ -113,8 +113,8 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-yes ui-state-focus");
-        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
+        assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-yes p-state-focus");
+        assertCss(yesButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-check");
 
         // Act
         PrimeSelenium.guardAjax(yesButton).click();
@@ -136,8 +136,8 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-no ui-button-flat bg-green-600 text-white");
-        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
+                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat bg-green-600 text-white");
+        assertCss(noButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-heart");
 
         // Act
         noButton.click();
@@ -166,7 +166,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(popup.isVisible());
         assertTrue(page.messages.isEmpty());
-        assertCss(popup.getIcon(), "ui-confirm-popup-icon pi pi-question-circle");
+        assertCss(popup.getIcon(), "p-confirm-popup-icon pi pi-question-circle");
         assertConfiguration(popup.getWidgetConfiguration());
     }
 
@@ -181,8 +181,8 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
         assertCss(yesButton,
-                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-yes bg-red-600 text-white ui-state-focus");
-        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
+                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-yes bg-red-600 text-white p-state-focus");
+        assertCss(yesButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-trash");
 
         // Act
         PrimeSelenium.guardAjax(yesButton).click();

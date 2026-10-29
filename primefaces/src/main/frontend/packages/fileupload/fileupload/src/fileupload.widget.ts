@@ -297,14 +297,14 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
         }
 
         this.form = this.jq.closest('form');
-        this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
+        this.buttonBar = this.jq.children('.p-fileupload-buttonbar');
         this.dragoverCount = 0;
-        this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
-        this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
-        this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
-        this.content = this.jq.children('.ui-fileupload-content');
-        this.emptyFacet = this.content.find('> .ui-fileupload-empty');
-        this.filesFacet = this.content.find('> div.ui-fileupload-files > div');
+        this.chooseButton = this.buttonBar.children('.p-fileupload-choose');
+        this.uploadButton = this.buttonBar.children('.p-fileupload-upload');
+        this.cancelButton = this.buttonBar.children('.p-fileupload-cancel');
+        this.content = this.jq.children('.p-fileupload-content');
+        this.emptyFacet = this.content.find('> .p-fileupload-empty');
+        this.filesFacet = this.content.find('> div.p-fileupload-files > div');
         this.files = [];
         this.fileAddIndex = 0;
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
@@ -362,7 +362,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                 }
             },
             add: (_, data) => {
-                this.chooseButton.removeClass('ui-state-hover ui-state-focus');
+                this.chooseButton.removeClass('p-state-hover p-state-focus');
 
                 if(this.fileAddIndex === 0) {
                     this.clearMessages();
@@ -478,8 +478,8 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                 if(!window.FormData) {
                     for (const file of data.files) {
                         if(file.row) {
-                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
-                                    .addClass('ui-progressbar-value-legacy')
+                            file.row.children('.p-fileupload-progress').find('> .p-progressbar > .p-progressbar-value')
+                                    .addClass('p-progressbar-value-legacy')
                                     .css({
                                         width: '100%',
                                         display: 'block'
@@ -551,9 +551,9 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
 
                     for (const file of data.files) {
                         if (file.row) {
-                            var fileuploadProgress = file.row.children(".ui-fileupload-progress").find("> .ui-progressbar");
+                            var fileuploadProgress = file.row.children(".p-fileupload-progress").find("> .p-progressbar");
                             fileuploadProgress.attr("aria-valuenow", progress);
-                            fileuploadProgress.find("> .ui-progressbar-value").css({
+                            fileuploadProgress.find("> .p-progressbar-value").css({
                                 width: progress + "%",
                                 display: "block"
                             });
@@ -635,22 +635,22 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
             this.filesFacet.parent().show();
         }
 
-        const row = $('<div class="ui-fileupload-row"></div>')
-                .append('<div class="ui-fileupload-preview"></td>')
-                .append('<div class="ui-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
+        const row = $('<div class="p-fileupload-row"></div>')
+                .append('<div class="p-fileupload-preview"></td>')
+                .append('<div class="p-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
                 .append('<div>' + PrimeFaces.utils.formatBytes(file.size) + '</div>')
-                .append('<div class="ui-fileupload-progress"></div>')
-                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
+                .append('<div class="p-fileupload-progress"></div>')
+                .append('<div><button class="p-fileupload-cancel p-button p-widget p-state-default p-button-icon-only"><span class="p-button-icon-left p-icon p-close-icon p-fileupload-cancel-icon"></span><span class="p-button-text">p-button</span></button></div>')
                 .appendTo(this.filesFacet);
 
-        if(this.filesFacet.children('.ui-fileupload-row').length > 1) {
-            $('<div class="ui-widget-content"></div>').prependTo(row);
+        if(this.filesFacet.children('.p-fileupload-row').length > 1) {
+            $('<div class="p-widget-content"></div>').prependTo(row);
         }
 
         //preview
         if(window.File && window.FileReader && FileUpload.IMAGE_TYPES.test(file.name)) {
             const imageCanvas = $(document.createElement("canvas"))
-                                    .appendTo(row.children('div.ui-fileupload-preview'));
+                                    .appendTo(row.children('div.p-fileupload-preview'));
             const context = imageCanvas.get(0)?.getContext('2d');
             const winURL = window.URL||window.webkitURL;
             const url = winURL.createObjectURL(file);
@@ -678,8 +678,8 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
         }
 
         //progress
-        row.children('div.ui-fileupload-progress')
-                .append('<div class="ui-progressbar ui-widget ui-widget-content" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header" style="display: none; width: 0%;"></div></div>');
+        row.children('div.p-fileupload-progress')
+                .append('<div class="p-progressbar p-widget p-widget-content" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="p-progressbar-value p-widget-header" style="display: none; width: 0%;"></div></div>');
 
         file.row = row;
         file.row.data('fileId', this.fileId++);
@@ -724,26 +724,26 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
         this.chooseButton.on('mouseover.fileupload', function(){
             var el = $(this);
             if(!el.prop('disabled')) {
-                el.addClass('ui-state-hover');
+                el.addClass('p-state-hover');
             }
         })
         .on('mouseout.fileupload', function() {
-            $(this).removeClass('ui-state-active ui-state-hover');
+            $(this).removeClass('p-state-active p-state-hover');
         })
         .on('mouseup.fileupload', function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+            $(this).removeClass('p-state-active').addClass('p-state-hover');
         })
         .on('focus.fileupload', function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         })
         .on('blur.fileupload', function() {
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
             isChooseButtonClick = false;
         })
         .on('mousedown.fileupload', function() {
             var el = $(this);
             if(!el.prop('disabled')) {
-                el.addClass('ui-state-active').removeClass('ui-state-hover');
+                el.addClass('p-state-active').removeClass('p-state-hover');
             }
         })
         .on('click.fileupload', (e) => {
@@ -802,30 +802,30 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
             e.preventDefault();
         });
 
-        this.rowCancelActionSelector = this.jqId + " .ui-fileupload-files .ui-fileupload-cancel";
+        this.rowCancelActionSelector = this.jqId + " .p-fileupload-files .p-fileupload-cancel";
 
         const namespace = '.fileupload' + this.id;
         $(document).off(namespace, this.rowCancelActionSelector)
                 .on('mouseover'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-hover');
+                    $(this).addClass('p-state-hover');
                 })
                 .on('mouseout'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    $(this).removeClass('ui-state-hover ui-state-active');
+                    $(this).removeClass('p-state-hover p-state-active');
                 })
                 .on('mousedown'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-active').removeClass('ui-state-hover');
+                    $(this).addClass('p-state-active').removeClass('p-state-hover');
                 })
                 .on('mouseup'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-hover').removeClass('ui-state-active');
+                    $(this).addClass('p-state-hover').removeClass('p-state-active');
                 })
                 .on('focus'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-focus');
+                    $(this).addClass('p-state-focus');
                 })
                 .on('blur'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    $(this).removeClass('ui-state-focus');
+                    $(this).removeClass('p-state-focus');
                 })
                 .on('click'+namespace, this.rowCancelActionSelector, null, function(e) {
-                    const row = $(this).closest('.ui-fileupload-row');
+                    const row = $(this).closest('.p-fileupload-row');
                     const removedFile = $.grep($this.files, function (value) {
                          return (value.row?.data('fileId') === row.data('fileId'));
                     });
@@ -863,17 +863,17 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                     .on('dragenter.fucdropzone', function(e){
                         e.preventDefault();
                         $this.dragoverCount++;
-                        $this.dropZone?.addClass('ui-state-drag');
+                        $this.dropZone?.addClass('p-state-drag');
                     })
                     .on('dragleave.fucdropzone', function(e){
                         $this.dragoverCount--;
                         if ($this.dragoverCount === 0) {
-                            $this.dropZone?.removeClass('ui-state-drag');
+                            $this.dropZone?.removeClass('p-state-drag');
                         }
                     })
                     .on('drop.fucdropzone dragdrop.fucdropzone', function(e){
                         $this.dragoverCount = 0;
-                        $this.dropZone?.removeClass('ui-state-drag');
+                        $this.dropZone?.removeClass('p-state-drag');
                     });
         }
     }
@@ -962,7 +962,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      */
     private removeFileRow(row: JQuery): void {
         if(row) {
-            this.disableButton(row.find('> div:last-child').children('.ui-fileupload-cancel'));
+            this.disableButton(row.find('> div:last-child').children('.p-fileupload-cancel'));
 
             row.fadeOut(function() {
                 $(this).remove();
@@ -999,15 +999,15 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      * Displays the current error messages on this widget.
      */
     private renderMessages(): void {
-        var markup = '<div class="ui-messages ui-widget p-hidden ui-fileupload-messages"><div class="ui-messages-error">' +
-                '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
-                '<span class="ui-messages-error-icon"></span>' +
+        var markup = '<div class="p-messages p-widget p-hidden p-fileupload-messages"><div class="p-messages-error">' +
+                '<a class="p-messages-close" href="#"><span class="p-icon p-close-icon p-messages-close-icon"></span></a>' +
+                '<span class="p-messages-error-icon p-icon p-error-icon"></span>' +
                 '<ul></ul>' +
                 '</div></div>';
 
         this.messageContainer = $(markup).prependTo(this.content);
-        this.messageList = this.messageContainer.find('> .ui-messages-error > ul');
-        this.clearMessageLink = this.messageContainer.find('> .ui-messages-error > a.ui-messages-close');
+        this.messageList = this.messageContainer.find('> .p-messages-error > ul');
+        this.clearMessageLink = this.messageContainer.find('> .p-messages-error > a.p-messages-close');
     }
 
     /**
@@ -1023,9 +1023,9 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      * @param msg Error message to show.
      */
     private showMessage(msg: PrimeFacesTypes.FacesMessage) {
-        this.messageList.append('<li><span class="ui-messages-error-summary">'
+        this.messageList.append('<li><span class="p-messages-error-summary">'
             + PrimeFaces.escapeHTML(msg.summary)
-            + '</span><span class="ui-messages-error-detail">'
+            + '</span><span class="p-messages-error-detail">'
             + PrimeFaces.escapeHTML(msg.detail)
             + '</span></li>');
         this.messageContainer.show();
@@ -1037,7 +1037,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      * @param btn Button to disabled.
      */
     disableButton(btn: JQuery): void {
-        btn.prop('disabled', true).attr('aria-disabled', "true").addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
+        btn.prop('disabled', true).attr('aria-disabled', "true").addClass('p-state-disabled').removeClass('p-state-hover p-state-active p-state-focus');
     }
 
     /**
@@ -1045,7 +1045,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      * @param {JQuery} btn Button to enable.
      */
     enableButton(btn: JQuery): void {
-        btn.prop('disabled', false).attr('aria-disabled', "false").removeClass('ui-state-disabled');
+        btn.prop('disabled', false).attr('aria-disabled', "false").removeClass('p-state-disabled');
     }
 
     /**

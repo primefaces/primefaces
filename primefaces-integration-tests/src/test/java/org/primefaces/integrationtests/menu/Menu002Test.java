@@ -117,21 +117,27 @@ class Menu002Test extends AbstractPrimePageTest {
     }
 
     private void assertExpanded(WebElement header) {
+        // the toggle icon follows aria-expanded
         assertEquals("true", header.getAttribute("aria-expanded"));
-        assertTrue(header.findElement(By.cssSelector("h3 > .ui-icon")).getAttribute("class").contains("ui-icon-triangle-1-s"),
-                "Header should display the expanded icon");
+        assertToggleIcon(header, "--p-menu-toggle-expanded-icon");
         assertTrue(getFirstChild(header).isDisplayed(), "Children of an expanded submenu should be visible");
     }
 
     private void assertCollapsed(WebElement header) {
         assertEquals("false", header.getAttribute("aria-expanded"));
-        assertTrue(header.findElement(By.cssSelector("h3 > .ui-icon")).getAttribute("class").contains("ui-icon-triangle-1-e"),
-                "Header should display the collapsed icon");
+        assertToggleIcon(header, "--p-menu-toggle-collapsed-icon");
         assertFalse(getFirstChild(header).isDisplayed(), "Children of a collapsed submenu should be hidden");
     }
 
+    private void assertToggleIcon(WebElement header, String token) {
+        WebElement icon = header.findElement(By.cssSelector("h3 > .p-menu-toggle-icon"));
+        assertTrue(icon.isDisplayed(), "Header should display the toggle icon");
+        String script = "return getComputedStyle(arguments[0]).getPropertyValue(arguments[1]).trim();";
+        assertEquals((String) PrimeSelenium.executeScript(script, icon, token), (String) PrimeSelenium.executeScript(script, icon, "--_icon"));
+    }
+
     private WebElement getFirstChild(WebElement header) {
-        return header.findElement(By.xpath("following-sibling::li[contains(@class, 'ui-submenu-child')][1]"));
+        return header.findElement(By.xpath("following-sibling::li[contains(@class, 'p-submenu-child')][1]"));
     }
 
     private void clearMenuState() {
@@ -147,7 +153,7 @@ class Menu002Test extends AbstractPrimePageTest {
         WebElement model;
 
         WebElement getHeader(WebElement menuElement, int index) {
-            List<WebElement> headers = menuElement.findElements(By.cssSelector("ul.ui-menu-list > li.ui-widget-header"));
+            List<WebElement> headers = menuElement.findElements(By.cssSelector("ul.p-menu-list > li.p-widget-header"));
             return headers.get(index);
         }
 

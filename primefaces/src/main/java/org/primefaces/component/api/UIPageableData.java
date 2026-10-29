@@ -38,25 +38,29 @@ import jakarta.faces.context.FacesContext;
  */
 public abstract class UIPageableData extends PrimeUIData implements Pageable, TouchAware {
 
-    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
-    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
-    public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages";
-    public static final String PAGINATOR_CENTER_CONTENT_CLASS = "ui-paginator-center-content";
-    public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "ui-paginator-top-left-content";
-    public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
-    public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
-    public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "ui-paginator-bottom-right-content";
-    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default";
-    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default ui-state-active";
-    public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default";
-    public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label p-hidden";
-    public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default";
-    public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
-    public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default";
-    public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default";
-    public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default";
-    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default";
+    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "p-paginator p-paginator-top p-widget-header";
+    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "p-paginator p-paginator-bottom p-widget-header";
+    public static final String PAGINATOR_PAGES_CLASS = "p-paginator-pages";
+    public static final String PAGINATOR_CENTER_CONTENT_CLASS = "p-paginator-center-content";
+    public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "p-paginator-top-left-content";
+    public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "p-paginator-top-right-content";
+    public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "p-paginator-bottom-left-content";
+    public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "p-paginator-bottom-right-content";
+    public static final String PAGINATOR_PAGE_CLASS = "p-paginator-page p-button p-button-flat p-state-default";
+    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "p-paginator-page p-button p-button-flat p-state-default p-state-active";
+    public static final String PAGINATOR_CURRENT_CLASS = "p-paginator-current";
+    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "p-paginator-rpp-options p-widget p-state-default";
+    public static final String PAGINATOR_RPP_LABEL_CLASS = "p-paginator-rpp-label p-hidden";
+    public static final String PAGINATOR_JTP_SELECT_CLASS = "p-paginator-jtp-select p-widget p-state-default";
+    public static final String PAGINATOR_JTP_INPUT_CLASS = "p-paginator-jtp-input " + InputText.STYLE_CLASS;
+    public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "p-paginator-first p-state-default";
+    public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "p-paginator-prev p-state-default";
+    public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "p-paginator-next p-state-default";
+    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "p-paginator-last p-state-default";
+    public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "p-icon p-first-icon p-paginator-first-icon";
+    public static final String PAGINATOR_PREV_PAGE_ICON_CLASS = "p-icon p-prev-icon p-paginator-prev-icon";
+    public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "p-icon p-next-icon p-paginator-next-icon";
+    public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "p-icon p-last-icon p-paginator-last-icon";
     public static final String EMPTY_MESSAGE = "primefaces.data.EMPTY_MESSAGE";
 
     public enum PropertyKeys {

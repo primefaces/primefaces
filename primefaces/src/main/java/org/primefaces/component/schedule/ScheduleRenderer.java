@@ -294,7 +294,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
         String styleClass = getStyleClassBuilder(context)
-                .add("ui-widget")
+                .add("p-widget")
                 .add(component.getStyleClass())
                 .build();
         writer.writeAttribute("class", styleClass, "class");

@@ -57,8 +57,8 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = getStyleClassBuilder(context)
-                .add("ui-message ui-staticmessage ui-widget ui-message-" + severity)
-                .add(iconOnly, "ui-message-icon-only")
+                .add("p-message p-staticmessage p-widget p-message-" + severity)
+                .add(iconOnly, "p-message-icon-only")
                 .add(component.getStyleClass())
                 .build();
 
@@ -91,7 +91,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
 
     protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-message-" + severity, null);
+        writer.writeAttribute("class", "p-message-" + severity, null);
 
         if (text != null) {
             if (escape) {
@@ -110,7 +110,9 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         String severity = component.getSeverity();
         String icon = component.getIcon();
         if (LangUtils.isEmpty(icon)) {
-            icon = "ui-message-" + severity + "-icon";
+            // secondary and contrast show the info icon (--p-message-secondary-icon: var(--p-icon-info))
+            String meaning = "secondary".equals(severity) || "contrast".equals(severity) ? "info" : severity;
+            icon = "p-icon p-" + meaning + "-icon p-message-" + severity + "-icon";
         }
         writer.startElement("span", null);
         writer.writeAttribute("class", icon, null);
@@ -129,7 +131,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
+        writer.writeAttribute("class", StaticMessage.CLOSE_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("a");

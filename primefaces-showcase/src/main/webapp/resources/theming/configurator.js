@@ -51,7 +51,7 @@
         if (primary) { root.style.setProperty('--p-primary-base', primary); }
         // "normal" is the page default: no attribute
         if (density && density !== 'normal') { root.setAttribute('data-p-density', density); }
-        root.classList.toggle('ui-input-filled', read(KEYS.input) === 'filled');
+        root.classList.toggle('p-input-filled', read(KEYS.input) === 'filled');
         Object.keys(tokens).forEach(function (name) { root.style.setProperty(name, tokens[name]); });
         syncDark();
     })();
@@ -158,7 +158,7 @@
 
     function markSegment(attr, value) {
         document.querySelectorAll('[' + attr + ']').forEach(function (b) {
-            b.classList.toggle('ui-state-active', b.getAttribute(attr) === value);
+            b.classList.toggle('p-state-active', b.getAttribute(attr) === value);
             b.setAttribute('aria-pressed', b.getAttribute(attr) === value);
         });
     }
@@ -168,7 +168,7 @@
         var shadow = tokens['--p-card-shadow'];
         var motion = tokens['--p-transition-duration'];
         markSegment('data-cfg-scheme', root.style.colorScheme || 'system');
-        markSegment('data-cfg-input', root.classList.contains('ui-input-filled') ? 'filled' : 'outlined');
+        markSegment('data-cfg-input', root.classList.contains('p-input-filled') ? 'filled' : 'outlined');
         markSegment('data-cfg-density', root.getAttribute('data-p-density') || 'normal');
         markSegment('data-cfg-dir', root.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr');
         markSegment('data-cfg-shape', shape === SHAPES.pill ? 'pill' : shape === SHAPES.square ? 'square' : 'theme');
@@ -179,7 +179,7 @@
     // p:slider renders role slider and the aria-value* of its handle: labelled by the label of the row, the token value
     // (with its unit) as text
     function labelHandle(widget, token, value) {
-        var handle = widget.jq.children('.ui-slider-handle')[0];
+        var handle = widget.jq.children('.p-slider-handle')[0];
         if (!handle) {
             return;
         }
@@ -195,7 +195,7 @@
                 return;
             }
             var value = tokens[r[0]] || defaults[r[0]];
-            var slider = field.querySelector('.ui-slider');
+            var slider = field.querySelector('.p-slider');
             var widget = slider ? PrimeFaces.getWidgetById(slider.id) : null;
             if (widget && widget !== sliding) {
                 widget.setValue(toUnit(value, r[1]));
@@ -330,7 +330,7 @@
             refresh();
         },
         input: function (value) {
-            root.classList.toggle('ui-input-filled', value === 'filled');
+            root.classList.toggle('p-input-filled', value === 'filled');
             write(KEYS.input, value === 'filled' ? value : null);
             refresh();
         },
@@ -408,7 +408,7 @@
             write(KEYS.primary, null);
             root.removeAttribute('data-p-density');
             write(KEYS.density, null);
-            root.classList.remove('ui-input-filled');
+            root.classList.remove('p-input-filled');
             write(KEYS.input, null);
             applyMotion();
             cfg.scheme('system');
@@ -438,7 +438,7 @@
         copy: function (button) {
             var text = snippet();
             var done = function () {
-                var label = button.querySelector('.ui-button-text');
+                var label = button.querySelector('.p-button-text');
                 label.textContent = 'Copied';
                 setTimeout(function () { label.textContent = 'Copy'; }, 1500);
             };
@@ -460,7 +460,7 @@
 
     // closes on a click outside of the panel (the page itself stays usable while it is open)
     document.addEventListener('pointerdown', function (e) {
-        if (root.classList.contains('cfg-open') && !e.target.closest('#cfgPanel, #cfgToggle, .ui-colorpicker-container')) {
+        if (root.classList.contains('cfg-open') && !e.target.closest('#cfgPanel, #cfgToggle, .clr-picker')) {
             if (cfg.toggle(false)) {
                 // the click itself may blur the toggle button again: keep it unless the click focused another element
                 setTimeout(function () {

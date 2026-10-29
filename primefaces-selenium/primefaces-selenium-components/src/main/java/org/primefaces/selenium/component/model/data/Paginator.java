@@ -50,7 +50,7 @@ public class Paginator {
 
     public List<Page> getPages() {
         if (pages == null) {
-            pages = webElement.findElements(By.className("ui-paginator-page")).stream().map(pageElt -> {
+            pages = webElement.findElements(By.className("p-paginator-page")).stream().map(pageElt -> {
                 int number = Integer.parseInt(pageElt.getText());
                 return new Page(number, pageElt);
             }).collect(Collectors.toList());
@@ -65,7 +65,7 @@ public class Paginator {
     public Page getActivePage() {
         List<Page> pages = getPages();
         for (Page page : pages) {
-            if (PrimeSelenium.hasCssClass(page.getWebElement(), "ui-state-active")) {
+            if (PrimeSelenium.hasCssClass(page.getWebElement(), "p-state-active")) {
                 return page;
             }
         }

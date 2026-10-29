@@ -53,7 +53,7 @@ public abstract class TreeTable extends AbstractTable<Row> {
 
     public boolean isEmpty() {
         try {
-            findElement(By.className("ui-treetable-empty-message"));
+            findElement(By.className("p-treetable-empty-message"));
             return true;
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {

@@ -55,7 +55,7 @@ class Messages001Test extends AbstractPrimePageTest {
         assertEquals(1, messages.getAllMessages().size());
         assertTrue(messages.getMessage(0).getSummary().contains("not be null")); //Mojarra and MyFaces have slightly different messages
         assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
-        assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal2, "ui-state-error"));
+        assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal2, "p-state-error"));
 
         // Act
         page.inputTextVal2.setValue("test123");
@@ -86,7 +86,7 @@ class Messages001Test extends AbstractPrimePageTest {
         assertEquals(1, messages.getAllMessages().size());
         assertEquals("Action 2", messages.getMessage(0).getSummary());
         assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
-        assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
+        assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal1, "p-state-error"));
 
         // Act
         page.buttonAction1.click();
@@ -96,7 +96,7 @@ class Messages001Test extends AbstractPrimePageTest {
         assertEquals(1, messages.getAllMessages().size());
         assertEquals("Action 1", messages.getMessage(0).getSummary());
         assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
-        assertFalse(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
+        assertFalse(PrimeSelenium.hasCssClass(page.inputTextVal1, "p-state-error"));
 
         assertNoJavascriptErrors();
     }

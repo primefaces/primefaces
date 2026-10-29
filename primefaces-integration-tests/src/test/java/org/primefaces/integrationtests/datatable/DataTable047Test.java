@@ -71,17 +71,17 @@ class DataTable047Test extends AbstractDataTableTest {
         Assertions.assertNotNull(button);
 
         // Assert
-        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-header")).getSize().getWidth());
-        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-body")).getSize().getWidth());
-        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-footer")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("p-datatable-scrollable-header")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("p-datatable-scrollable-body")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("p-datatable-scrollable-footer")).getSize().getWidth());
 
         // Act
         button.click();
 
         // Assert
-        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-header")).getSize().getWidth());
-        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-body")).getSize().getWidth());
-        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-footer")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("p-datatable-scrollable-header")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("p-datatable-scrollable-body")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("p-datatable-scrollable-footer")).getSize().getWidth());
     }
 
     @Test
@@ -196,10 +196,10 @@ class DataTable047Test extends AbstractDataTableTest {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
-        @FindBy(className = "ui-datatable-frozenlayout-left")
+        @FindBy(className = "p-datatable-frozenlayout-left")
         WebElement frozenTableContainer;
 
-        @FindBy(className = "ui-datatable-frozenlayout-right")
+        @FindBy(className = "p-datatable-frozenlayout-right")
         WebElement scrollableTableContainer;
 
         @FindBy(id = "form:frozenColumnToggleButton")

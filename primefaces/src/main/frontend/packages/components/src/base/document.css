@@ -12,14 +12,14 @@
 }
 
 /* WCAG 2.2 target size: small icon controls get an invisible 24px hit area (centered), the layout stays the same */
-:where(.ui-chips-token-icon, .ui-autocomplete-token-icon, .ui-selectcheckboxmenu-token-icon, .ui-password-icon,
-    .ui-chip-remove-icon, .ui-breadcrumb-home-icon)::after {
+:where(.p-chips-token-icon, .p-autocomplete-token-icon, .p-selectcheckboxmenu-token-icon, .p-password-icon,
+    .p-chip-remove-icon, .p-breadcrumb-home-icon)::after {
     content: "";
     position: absolute;
     inset: calc(50% - 12px);
 }
 
-:where(.ui-chip-remove-icon, .ui-breadcrumb-home-icon) {
+:where(.p-chip-remove-icon, .p-breadcrumb-home-icon) {
     position: relative;
 }
 
@@ -38,6 +38,18 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* reduced transparency: no blur behind floating layers (Glass, growl) */
+@media (prefers-reduced-transparency: reduce) {
+    :root,
+    [data-p-scope] {
+        --p-overlay-backdrop-filter: none;
+        --p-navigation-backdrop-filter: none;
+        --p-button-backdrop-filter: none;
+        --p-mask-backdrop-filter: none;
+        --p-toast-blur: 0px;
     }
 }
 
@@ -79,55 +91,55 @@
      * white text on a primary button would vanish, checked boxes / switches / selections would lose their state. These
      * small elements print their background (inherited by their parts); large areas stay ink saving.
      */
-    .ui-button,
-    .ui-badge,
-    .ui-tag,
-    .ui-chip,
-    .ui-chkbox-box,
-    .ui-radiobutton-box,
-    .ui-toggleswitch,
-    .ui-slider,
-    .ui-progressbar,
-    .ui-state-highlight,
-    .ui-state-active {
+    .p-button,
+    .p-badge,
+    .p-tag,
+    .p-chip,
+    .p-chkbox-box,
+    .p-radiobutton-box,
+    .p-toggleswitch,
+    .p-slider,
+    .p-progressbar,
+    .p-state-highlight,
+    .p-state-active {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
 
     /* scrollable tables print all rows */
-    .ui-datatable-scrollable-body,
-    .ui-treetable-scrollable-body,
-    .ui-datatable-virtualscroll .ui-datatable-scrollable-body {
+    .p-datatable-scrollable-body,
+    .p-treetable-scrollable-body,
+    .p-datatable-virtualscroll .p-datatable-scrollable-body {
         height: auto !important;
         max-height: none !important;
         overflow: visible !important;
     }
 
     tr,
-    .ui-panel,
-    .ui-card,
-    .ui-fieldset {
+    .p-panel,
+    .p-card,
+    .p-fieldset {
         break-inside: avoid;
     }
 
     /* overlays, and the fixed helpers browsers would repeat on every page: the sticky header clone of a dataTable,
        p:log, p:stack, p:dock */
-    .ui-growl,
-    .ui-tooltip,
-    .ui-scrolltop,
-    .ui-blockui,
-    .ui-widget-overlay,
-    .ui-ajax-status,
-    .ui-paginator,
-    .ui-datatable-sticky,
-    .ui-log,
-    .ui-stack,
-    .ui-dock {
+    .p-growl,
+    .p-tooltip,
+    .p-scrolltop,
+    .p-blockui,
+    .p-widget-overlay,
+    .p-ajax-status,
+    .p-paginator,
+    .p-datatable-sticky,
+    .p-log,
+    .p-stack,
+    .p-dock {
         display: none !important;
     }
 
     /* a pinned p:sticky target prints in its place (the widget sets position fixed inline) */
-    .ui-sticky {
+    .p-sticky {
         position: static !important;
         width: auto !important;
     }

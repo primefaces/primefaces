@@ -20,7 +20,7 @@ Parameters in URI are defined with nested <f:param /> tags.
 ## Icons
 Icons for button are defined via css and _icon_ attribute, if you use title instead of value, only icon
 will be displayed and title text will be displayed as tooltip on mouseover. You can also use icons
-from PrimeFaces themes such ui-icon-check.
+from an icon library such as PrimeIcons (`pi pi-check`).
 
 ```xhtml
 <p:button outcome="target" icon="star" value="With Icon"/>
@@ -37,6 +37,6 @@ see the main theming section for more information. Following is the list of stru
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-button | Button element
-| .ui-button-text-only | Button element when icon is not used
-| .ui-button-text | Label of button
+| .p-button | Button element
+| .p-button-text-only | Button element when icon is not used
+| .p-button-text | Label of button

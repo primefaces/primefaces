@@ -98,12 +98,12 @@ the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-inplace | Main container element.
-.ui-inplace-disabled | Main container element when disabled.
-.ui-inplace-display | Display element.
-.ui-inplace-content | Inline content.
-.ui-inplace-editor | Editor controls container.
-.ui-inplace-save | Save button.
-.ui-inplace-cancel | Cancel button.
+.p-inplace | Main container element.
+.p-inplace-display-disabled | Display element when disabled.
+.p-inplace-display | Display element.
+.p-inplace-content | Inline content.
+.p-inplace-editor | Editor controls container.
+.p-inplace-save | Save button.
+.p-inplace-cancel | Cancel button.
 
 As skinning style classes are global, see the main theming section for more information.

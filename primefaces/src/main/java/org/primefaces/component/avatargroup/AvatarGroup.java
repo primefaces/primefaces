@@ -34,5 +34,5 @@ import jakarta.faces.component.FacesComponent;
 public class AvatarGroup extends AvatarGroupBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AvatarGroup";
 
-    public static final String STYLE_CLASS = "ui-avatar-group ui-widget";
+    public static final String STYLE_CLASS = "p-avatar-group p-widget";
 }

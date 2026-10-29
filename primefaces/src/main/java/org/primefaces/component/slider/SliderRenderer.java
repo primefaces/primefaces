@@ -61,7 +61,7 @@ public class SliderRenderer extends CoreRenderer<Slider> {
 
         String styleClass = getStyleClassBuilder(context)
                 .add(component.getStyleClass())
-                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.isReadonly(), "p-state-readonly")
                 .build();
 
         writer.startElement("div", component);

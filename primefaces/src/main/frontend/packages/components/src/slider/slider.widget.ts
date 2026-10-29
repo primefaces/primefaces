@@ -84,7 +84,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     private max: number = 100;
     /** The step size, always positive. */
     private step: number = 1;
-    /** Whether the slider is readonly (style class `ui-state-readonly`), so the user cannot move the handles. */
+    /** Whether the slider is readonly (style class `p-state-readonly`), so the user cannot move the handles. */
     private readonlyState: boolean = false;
     /** Index of the handle dragged with the pointer, `null` while not dragging. */
     private dragIndex: number | null = null;
@@ -117,7 +117,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             ? [this.align(values[0]), this.align(values[1] ?? values[0])]
             : [this.align(values[0])];
 
-        this.readonlyState = this.jq.hasClass('ui-state-readonly');
+        this.readonlyState = this.jq.hasClass('p-state-readonly');
 
         this.renderSlider();
         this.bindEvents();
@@ -130,14 +130,14 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      */
     private renderSlider(): void {
         const vertical = this.cfg.orientation === 'vertical';
-        this.jq.children('.ui-slider-handle, .ui-slider-range').remove();
-        this.jq.addClass('ui-slider').toggleClass('ui-slider-vertical', vertical).toggleClass('ui-slider-horizontal', !vertical);
+        this.jq.children('.p-slider-handle, .p-slider-range').remove();
+        this.jq.addClass('p-slider').toggleClass('p-slider-vertical', vertical).toggleClass('p-slider-horizontal', !vertical);
 
         this.range = this.cfg.range
-            ? $('<div class="ui-slider-range"></div>').addClass(this.cfg.range === true ? '' : 'ui-slider-range-' + this.cfg.range).appendTo(this.jq)
+            ? $('<div class="p-slider-range"></div>').addClass(this.cfg.range === true ? '' : 'p-slider-range-' + this.cfg.range).appendTo(this.jq)
             : null;
 
-        this.handles = $(this.values.map((_, i) => $('<span class="ui-slider-handle" role="slider" tabindex="0"></span>')
+        this.handles = $(this.values.map((_, i) => $('<span class="p-slider-handle" role="slider" tabindex="0"></span>')
             .attr({ 'aria-orientation': vertical ? 'vertical' : 'horizontal', 'aria-valuemin': this.min, 'aria-valuemax': this.max })
             .attr('aria-readonly', this.readonlyState ? 'true' : null)
             .data('index', i)[0]!)).appendTo(this.jq);
@@ -185,15 +185,15 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     private bindInputEvents(): void {
         // each input moves its own handle; the inputs of a range slider may be the InputNumber / Spinner wrappers
         this.input.each((index, input) => {
-            const inputNumber = $(input).closest('.ui-inputnumber');
-            const spinner = $(input).closest('.ui-spinner');
+            const inputNumber = $(input).closest('.p-inputnumber');
+            const spinner = $(input).closest('.p-spinner');
             if (inputNumber.length) {
                 inputNumber.find('input:hidden').off('input.slider').on('input.slider', (e) => {
                     this.setHandleValue(index, String($(e.target).val()));
                 });
             }
             else if (spinner.length) {
-                spinner.find('.ui-spinner-input').off('change.slider').on('change.slider', () => {
+                spinner.find('.p-spinner-input').off('change.slider').on('change.slider', () => {
                     const widget = this.inputWidget(spinner);
                     if (widget) {
                         this.setHandleValue(index, widget.getValue());
@@ -238,7 +238,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
 
         this.clickOffset = 0;
         const value = this.valueAt(e);
-        const onHandle = $(e.target).closest('.ui-slider-handle');
+        const onHandle = $(e.target).closest('.p-slider-handle');
 
         // drag the grabbed handle, otherwise the closest one
         let index = onHandle.length ? Number(onHandle.data('index')) : 0;
@@ -373,7 +373,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
         const span = this.max - this.min;
         const percents = this.values.map((value) => span ? (value - this.min) / span * 100 : 0);
 
-        this.jq.toggleClass('ui-slider-animate', animate && !!this.cfg.animate);
+        this.jq.toggleClass('p-slider-animate', animate && !!this.cfg.animate);
         this.handles.each((i, handle) => {
             $(handle).css(vertical ? 'bottom' : 'left', percents[i] + '%').attr('aria-valuenow', this.values[i]!);
         });
@@ -514,7 +514,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
 
         this.input.each((_, input) => {
             // the input of an InputNumber / Spinner; the inputs of a range slider are their wrappers
-            if ($(input).closest('.ui-inputnumber, .ui-spinner').length) {
+            if ($(input).closest('.p-inputnumber, .p-spinner').length) {
                 ($(input).is('input') ? $(input) : $(input).find('input').not('[type="hidden"]').first()).trigger('change');
             }
         });
@@ -545,7 +545,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      * @returns The widget, `null` for a plain input.
      */
     private inputWidget(input: JQuery): InputWidget | null {
-        const holder = input.closest('.ui-inputnumber, .ui-spinner');
+        const holder = input.closest('.p-inputnumber, .p-spinner');
         return holder.length ? PrimeFaces.getWidgetById(holder.attr('id') ?? '') as unknown as InputWidget | null : null;
     }
 
@@ -612,13 +612,13 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Enables or disables the slider: updates the configuration, the style class `ui-state-disabled` and the
+     * Enables or disables the slider: updates the configuration, the style class `p-state-disabled` and the
      * `aria-disabled` attribute of the handles.
      * @param disabled `true` to disable, `false` to enable the slider.
      */
     private setDisabled(disabled: boolean): void {
         this.cfg.disabled = disabled;
-        this.jq.toggleClass('ui-state-disabled', disabled);
+        this.jq.toggleClass('p-state-disabled', disabled);
         this.handles.attr('aria-disabled', String(disabled));
     }
 }

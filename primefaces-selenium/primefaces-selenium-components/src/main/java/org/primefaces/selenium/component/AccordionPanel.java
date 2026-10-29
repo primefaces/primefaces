@@ -41,10 +41,10 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class AccordionPanel extends AbstractComponent {
 
-    @FindBy(css = ".ui-accordion-header")
+    @FindBy(css = ".p-accordion-header")
     private List<WebElement> headers;
 
-    @FindBy(css = ".ui-accordion-content")
+    @FindBy(css = ".p-accordion-content")
     private List<WebElement> contents;
 
     private List<Tab> tabs = null;
@@ -126,7 +126,7 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public List<Tab> getSelectedTabs() {
         return getTabs().stream()
-                    .filter(tab -> tab.getHeader().getDomAttribute("class").contains("ui-state-active"))
+                    .filter(tab -> tab.getHeader().getDomAttribute("class").contains("p-state-active"))
                     .collect(Collectors.toList());
     }
 }

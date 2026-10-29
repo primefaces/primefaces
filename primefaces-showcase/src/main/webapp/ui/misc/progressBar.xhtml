@@ -55,7 +55,7 @@
 
                 <h5 class="mt-0">Client ProgressBar</h5>
                 <p:commandButton value="Start" id="start" type="button" onclick="start()" widgetVar="startButton1" styleClass="mr-2" />
-                <p:commandButton value="Cancel" id="cancel" type="button" onclick="cancel()" styleClass="ui-button-outlined" />
+                <p:commandButton value="Cancel" id="cancel" type="button" onclick="cancel()" styleClass="p-button-outlined" />
 
                 <p:progressBar id="progressBarClient" widgetVar="pbClient" style="width:300px" styleClass="mt-3"/>
 
@@ -63,7 +63,7 @@
                 <p:commandButton value="Start" type="button"
                                  onclick="PF('pbAjax').start();PF('startButton2').disable()" widgetVar="startButton2" styleClass="mr-2"/>
                 <p:commandButton value="Cancel" action="#{progressBarView.cancel}"
-                                 oncomplete="PF('pbAjax').cancel();PF('startButton2').enable()" styleClass="ui-button-outlined"/>
+                                 oncomplete="PF('pbAjax').cancel();PF('startButton2').enable()" styleClass="p-button-outlined"/>
 
                 <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarView.progress1}"
                                labelTemplate="{value}%" styleClass="mt-3" global="false">
@@ -78,7 +78,7 @@
                                  onclick="PF('pbAjaxLong').start();PF('startButton3').disable()"
                                  widgetVar="startButton3" actionListener="#{progressBarView.longRunning}" styleClass="mr-2"/>
                 <p:commandButton value="Cancel" action="#{progressBarView.cancel}" onclick="PF('pbAjaxLong').cancel();"
-                                 oncomplete="PF('startButton3').enable()" styleClass="ui-button-outlined" async="true" />
+                                 oncomplete="PF('startButton3').enable()" styleClass="p-button-outlined" async="true" />
 
                 <p:progressBar widgetVar="pbAjaxLong" ajax="true" value="#{progressBarView.progress2}"
                                labelTemplate="{value}%" styleClass="mt-3" global="false" interval="500">

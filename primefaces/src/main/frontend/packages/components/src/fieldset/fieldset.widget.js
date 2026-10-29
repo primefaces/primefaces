@@ -31,13 +31,13 @@ PrimeFaces.widget.Fieldset = class Fieldset extends PrimeFaces.widget.BaseWidget
     init(cfg) {
         super.init(cfg);
 
-        this.legend = this.jq.children('.ui-fieldset-legend');
+        this.legend = this.jq.children('.p-fieldset-legend');
 
         var $this = this;
 
         if(this.cfg.toggleable) {
-            this.content = this.jq.children('.ui-fieldset-content');
-            this.toggler = this.legend.children('.ui-fieldset-toggler');
+            this.content = this.jq.children('.p-fieldset-content');
+            this.toggler = this.legend.children('.p-fieldset-toggler');
             this.stateHolder = $(this.jqId + '_collapsed');
 
             //Add clickable legend state behavior
@@ -45,22 +45,22 @@ PrimeFaces.widget.Fieldset = class Fieldset extends PrimeFaces.widget.BaseWidget
                 $this.toggle(e);
             })
             .on('mouseover', function() {
-                $this.legend.toggleClass('ui-state-hover');
+                $this.legend.toggleClass('p-state-hover');
             })
             .on('mouseout', function() {
-                $this.legend.toggleClass('ui-state-hover');
+                $this.legend.toggleClass('p-state-hover');
             })
             .on('mousedown', function() {
-                $this.legend.toggleClass('ui-state-active');
+                $this.legend.toggleClass('p-state-active');
             })
             .on('mouseup', function() {
-                $this.legend.toggleClass('ui-state-active');
+                $this.legend.toggleClass('p-state-active');
             })
             .on('focus', function() {
-                $this.legend.toggleClass('ui-state-focus');
+                $this.legend.toggleClass('p-state-focus');
             })
             .on('blur', function() {
-                $this.legend.toggleClass('ui-state-focus');
+                $this.legend.toggleClass('p-state-focus');
             })
             .on('keydown', function(e) {
                 if(e.key === 'Enter') {
@@ -111,12 +111,7 @@ PrimeFaces.widget.Fieldset = class Fieldset extends PrimeFaces.widget.BaseWidget
      * @param {boolean} collapsed If this fieldset is now collapsed or expanded.
      */
     updateToggleState(collapsed) {
-        if(collapsed) {
-            this.toggler.removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
-        }
-        else {
-            this.toggler.removeClass('ui-icon-minusthick').addClass('ui-icon-plusthick');
-        }
+        this.legend.attr('aria-expanded', collapsed);
 
         this.cfg.collapsed = !collapsed;
 

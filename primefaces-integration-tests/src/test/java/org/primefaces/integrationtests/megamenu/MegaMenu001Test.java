@@ -75,18 +75,18 @@ class MegaMenu001Test extends AbstractPrimePageTest {
         MegaMenu megamenu = page.megamenu;
 
         // Assert - horizontal layout
-        assertTrue(PrimeSelenium.hasCssClass(megamenu.getRoot(), "ui-megamenu"));
+        assertTrue(PrimeSelenium.hasCssClass(megamenu.getRoot(), "p-megamenu"));
         assertFalse(megamenu.isVertical());
 
         // Assert - mega panels render as a table of columns (one <td> per p:column), even while collapsed
         WebElement videos = megamenu.findElement(By.id("form:videos"));
-        assertEquals(2, videos.findElements(By.cssSelector("ul.ui-menu-child td")).size());
+        assertEquals(2, videos.findElements(By.cssSelector("ul.p-menu-child td")).size());
 
         WebElement users = megamenu.findElement(By.id("form:users"));
-        assertEquals(3, users.findElements(By.cssSelector("ul.ui-menu-child td")).size());
+        assertEquals(3, users.findElements(By.cssSelector("ul.p-menu-child td")).size());
 
         // Assert - column group titles render as non-clickable headers
-        WebElement title = users.findElement(By.cssSelector("li.ui-widget-header"));
+        WebElement title = users.findElement(By.cssSelector("li.p-widget-header"));
         assertEquals("User 1", title.getAttribute("textContent").trim());
 
         assertConfiguration(megamenu.getWidgetConfiguration());

@@ -117,7 +117,7 @@ html[data-preset="glass"] body {
     align-items: center;
 }
 
-.demo-severities .ui-button-text {
+.demo-severities .p-button-text {
     text-transform: capitalize;
 }
 

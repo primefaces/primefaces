@@ -26,8 +26,6 @@
  * @prop {boolean} cfg.closable Whether panel is closable.
  * @prop {number} cfg.closeSpeed Speed of closing effect in milliseconds
  * @prop {boolean} cfg.collapsed Whether the panel is initially collapsed.
- * @prop {string} [cfg.collapsedIcon] Icon displayed when panel is collapsed.
- * @prop {string} [cfg.expandedIcon] Icon displayed when panel is expanded.
  * @prop {boolean} cfg.hasMenu Whether this panel has a toggleable menu in the panel header. 
  * @prop {boolean} cfg.toggleable Whether the panel can be toggled (expanded and collapsed).
  * @prop {boolean} cfg.toggleableHeader Defines if the panel is toggleable by clicking on the whole panel header.
@@ -44,8 +42,8 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      */
     init(cfg) {
         super.init(cfg);
-        this.header = this.jq.children('div.ui-panel-titlebar');
-        this.title = this.header.children('span.ui-panel-title');
+        this.header = this.jq.children('div.p-panel-titlebar');
+        this.title = this.header.children('span.p-panel-title');
         this.content = $(this.jqId + '_content');
 
         this.bindEvents();
@@ -85,10 +83,10 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
         }
 
         //visuals for action items
-        this.header.find('.ui-panel-titlebar-icon').on('mouseover.panel',function() {
-            $(this).addClass('ui-state-hover');
+        this.header.find('.p-panel-titlebar-icon').on('mouseover.panel',function() {
+            $(this).addClass('p-state-hover');
         }).on('mouseout.panel',function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on('click.panel', function(e) {
             var href = $(this).attr('href');
             if(!href || href == '#') {
@@ -117,7 +115,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      */
     expand() {
         this.header.attr('aria-expanded', true);
-        this.toggleState(false, this.cfg.collapsedIcon || 'ui-icon-plusthick', this.cfg.expandedIcon || 'ui-icon-minusthick');
+        this.toggleState(false);
 
         if(this.cfg.toggleOrientation === 'vertical')
             this.slideDown();
@@ -130,7 +128,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      */
     collapse() {
         this.header.attr('aria-expanded', false);
-        this.toggleState(true, this.cfg.expandedIcon || 'ui-icon-minusthick', this.cfg.collapsedIcon || 'ui-icon-plusthick');
+        this.toggleState(true);
 
         if(this.cfg.toggleOrientation === 'vertical')
             this.slideUp();
@@ -145,7 +143,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
     slideUp() {
         var $this = this;
         this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            $this.jq.addClass('ui-panel-collapsed');
+            $this.jq.addClass('p-panel-collapsed');
         });
     }
 
@@ -154,7 +152,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      * @private
      */
     slideDown() {
-        this.jq.removeClass('ui-panel-collapsed');
+        this.jq.removeClass('p-panel-collapsed');
         this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
     }
 
@@ -175,7 +173,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
             width: '42px'
         }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             $this.toggler.show();
-            $this.jq.addClass('ui-panel-collapsed-h');
+            $this.jq.addClass('p-panel-collapsed-h');
         });
     }
 
@@ -192,7 +190,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
         this.jq.animate({
             width: expandWidth
         }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            $this.jq.removeClass('ui-panel-collapsed-h');
+            $this.jq.removeClass('p-panel-collapsed-h');
             $this.title.show();
             $this.toggler.show();
 
@@ -208,11 +206,9 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      * Toggles the expansion state of this panel.
      * @private
      * @param {boolean} collapsed Whether the panel is now to be collapsed.
-     * @param {string} removeIcon Icon for closing this panel. 
-     * @param {string} addIcon Icon for opening this panel.
      */
-    toggleState(collapsed, removeIcon, addIcon) {
-        this.toggler.children('span').removeClass(removeIcon).addClass(addIcon).toggleClass('ui-icon', /(^|\s)ui-icon-/.test(addIcon));
+    toggleState(collapsed) {
+        this.toggler.attr('aria-expanded', !collapsed);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
         this.toggler.attr('aria-label', collapsed ? this.getAriaLabel('collapseRow') : this.getAriaLabel('expandRow'));

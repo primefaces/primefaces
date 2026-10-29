@@ -26,7 +26,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="productForm">
-                <p:dataView id="availableProducts" var="product" value="#{dndProductsView.products}" rows="9" layout="grid" gridIcon="pi pi-th-large" >
+                <p:dataView id="availableProducts" var="product" value="#{dndProductsView.products}" rows="9" layout="grid" >
                     <p:dataViewGridItem>
                         <p:panel id="pnl" header="#{product.name}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
@@ -34,7 +34,7 @@
                             </h:panelGrid>
                         </p:panel>
     
-                        <p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                        <p:draggable for="pnl" revert="true" handle=".p-panel-titlebar" stack=".p-panel"/>
                     </p:dataViewGridItem>
                 </p:dataView>
                 
@@ -71,7 +71,7 @@
                     </p:outputPanel>
                 </p:fieldset>
 
-                <p:droppable for="selectedProducts" tolerance="pointer" activeStyleClass="ui-state-highlight"
+                <p:droppable for="selectedProducts" tolerance="pointer" activeStyleClass="p-state-highlight"
                              datasource="availableProducts" onDrop="handleDrop">
                     <p:ajax listener="#{dndProductsView.onProductDrop}" update="dropArea availableProducts"/>
                 </p:droppable>

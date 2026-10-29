@@ -62,12 +62,12 @@ class SelectOneMenuRendererTest {
         FacesContext context = new FacesContextMock(writer);
 
         SelectOneMenu menu = selectOneMenu();
-        menu.setAdvancedStyleClass("ui-table-striped ui-table-lg");
+        menu.setAdvancedStyleClass("p-table-striped p-table-lg");
 
         new SelectOneMenuRenderer().encodePanelContent(context, menu, selectItems());
 
         String html = writer.toString();
-        assertTrue(html.contains("class=\"" + SelectOneMenu.TABLE_CLASS + " ui-table-striped ui-table-lg\""), html);
+        assertTrue(html.contains("class=\"" + SelectOneMenu.TABLE_CLASS + " p-table-striped p-table-lg\""), html);
     }
 
     @Test

@@ -78,7 +78,7 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
     public abstract String getVar();
 
     @Property(description = "Style class of the table element rendered in advanced layout, when columns are used."
-            + " Themes provide \"ui-table-gridlines\", \"ui-table-striped\", \"ui-table-sm\" and \"ui-table-lg\".")
+            + " Themes provide \"p-table-gridlines\", \"p-table-striped\", \"p-table-sm\" and \"p-table-lg\".")
     public abstract String getAdvancedStyleClass();
 
     @Property(description = "Displays an input filter for the list.",

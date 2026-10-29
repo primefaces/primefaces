@@ -13,20 +13,20 @@ body {
   .taglib-component {
     padding-top: 1rem;
 
-    .ui-tabs .ui-tabs-panels .ui-tabs-panel {
+    .p-tabs .p-tabs-panels .p-tabs-panel {
       padding: 0.5rem 0;
     }
 
-    .ui-datatable thead th {
+    .p-datatable thead th {
       padding: 0.6rem 0.6rem;
     }
 
-    .ui-datatable .ui-datatable-data > tr > td {
+    .p-datatable .p-datatable-data > tr > td {
       padding: 0.6rem 0.6rem;
       font-size: 0.9rem;
     }
 
-    .ui-datatable thead th .ui-column-title {
+    .p-datatable thead th .p-column-title {
       font-size: 1.0rem;
     }
 

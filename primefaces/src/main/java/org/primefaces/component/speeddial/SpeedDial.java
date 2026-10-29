@@ -38,12 +38,13 @@ public class SpeedDial extends SpeedDialBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SpeedDial";
 
-    public static final String CONTAINER_CLASS = "ui-speeddial ui-widget";
-    public static final String MASK_CLASS = "ui-speeddial-mask";
-    public static final String BUTTON_CLASS = "ui-speeddial-button rounded-button";
-    public static final String LIST_CLASS = "ui-speeddial-list";
-    public static final String ITEM_CLASS = "ui-speeddial-item";
-    public static final String ITEM_BUTTON_CLASS = "ui-speeddial-action";
-    public static final String ITEM_ICON_CLASS = "ui-speeddial-action-icon";
+    public static final String CONTAINER_CLASS = "p-speeddial p-widget";
+    public static final String MASK_CLASS = "p-speeddial-mask";
+    public static final String BUTTON_CLASS = "p-speeddial-button rounded-button";
+    public static final String LIST_CLASS = "p-speeddial-list";
+    public static final String ITEM_CLASS = "p-speeddial-item";
+    public static final String ITEM_BUTTON_CLASS = "p-speeddial-action";
+    public static final String ITEM_ICON_CLASS = "p-speeddial-action-icon";
+    public static final String SHOW_ICON_CLASS = "p-icon p-plus-icon p-speeddial-show-icon";
 
 }

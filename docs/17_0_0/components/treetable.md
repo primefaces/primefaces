@@ -112,16 +112,23 @@ sorting section for an example usage of _sortFunction_.
 Similar to DataTable, TreeTable supports row and cell based editing. Refer to datatable for more
 information.
 
+## Icons
+The icons the tree table draws itself are icon tokens of the theme (see [Theming](/core/theming.md?id=icons)): the node
+toggler `<span class="p-treetable-toggler p-icon p-toggle-icon p-treetable-toggle-icon">` (`--p-treetable-toggle-collapsed-icon`
+/ `--p-treetable-toggle-expanded-icon`, the state is `aria-expanded` of the row), the sort icon
+`p-icon p-sort-icon p-treetable-sort-icon` (state classes `p-treetable-sort-asc-icon` / `p-treetable-sort-desc-icon`) and
+the row editor icons `p-treetable-row-edit-icon`, `p-treetable-row-save-icon`, `p-treetable-row-cancel-icon`.
+
 ## Skinning
 TreeTable content resides in a container element which style and styleClass attributes apply.
 Following is the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-treetable | Main container element.
-.ui-treetable-header | Header of treetable.
-.ui-treetable-data | Body element of the table containing data
-.ui-treetable-gridlines | Main container element; when showGridlines is enabled.
-.ui-treetable-striped | Main container element; when stripedRows is enabled.
+.p-treetable | Main container element.
+.p-treetable-header | Header of treetable.
+.p-treetable-data | Body element of the table containing data
+.p-treetable-gridlines | Main container element; when showGridlines is enabled.
+.p-treetable-striped | Main container element; when stripedRows is enabled.
 
 As skinning style classes are global, see the main theming section for more information.

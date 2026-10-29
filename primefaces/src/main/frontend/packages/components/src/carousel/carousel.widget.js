@@ -56,15 +56,15 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
      */
     init(cfg) {
         super.init(cfg);
-        this.content = this.jq.children('.ui-carousel-content');
-        this.container = this.content.children('.ui-carousel-container');
-        this.itemsContent = this.container.children('.ui-carousel-items-content');
-        this.indicatorsContainer = this.content.children('.ui-carousel-indicators');
-        this.itemsContainer = this.itemsContent.children('.ui-carousel-items-container');
-        this.items = this.itemsContainer.children('.ui-carousel-item');
+        this.content = this.jq.children('.p-carousel-content');
+        this.container = this.content.children('.p-carousel-container');
+        this.itemsContent = this.container.children('.p-carousel-items-content');
+        this.indicatorsContainer = this.content.children('.p-carousel-indicators');
+        this.itemsContainer = this.itemsContent.children('.p-carousel-items-container');
+        this.items = this.itemsContainer.children('.p-carousel-item');
         this.itemsCount = this.items.length;
-        this.prevNav = this.container.children('.ui-carousel-prev');
-        this.nextNav = this.container.children('.ui-carousel-next');
+        this.prevNav = this.container.children('.p-carousel-prev');
+        this.nextNav = this.container.children('.p-carousel-next');
 
         this.cfg.page = this.cfg.page || 0;
         this.cfg.numVisible = this.cfg.numVisible || 1;
@@ -162,7 +162,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
     bindEvents() {
         var $this = this;
 
-        var indicatorSelector = '.ui-carousel-indicator';
+        var indicatorSelector = '.p-carousel-indicator';
         this.indicatorsContainer.off('click.indicator', indicatorSelector).on('click.indicator', indicatorSelector, null, function (e) {
             var index = $(this).index();
             $this.onIndicatorClick(e, index);
@@ -334,7 +334,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
         }
 
         if (this.itemsContainer) {
-            this.itemsContainer.removeClass('ui-items-hidden');
+            this.itemsContainer.removeClass('p-items-hidden');
             this.changePosition(totalShiftedItems);
             this.itemsContainer.get(0).style.transition = 'transform 500ms ease 0s';
         }
@@ -511,7 +511,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
      */
     onTransitionEnd() {
         if (this.itemsContainer) {
-            this.itemsContainer.addClass('ui-items-hidden');
+            this.itemsContainer.addClass('p-items-hidden');
             this.itemsContainer.get(0).style.transition = '';
 
             if ((this.page === 0 || this.page === (this.totalIndicators - 1)) && this.isCircular) {
@@ -572,7 +572,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
             document.body.appendChild(this.carouselStyle);
         }
 
-        var innerHTML = 'div[id*="' + this.id + '"] .ui-carousel-item {flex: 1 0 ' + (100/ this.numVisible) + '%}';
+        var innerHTML = 'div[id*="' + this.id + '"] .p-carousel-item {flex: 1 0 ' + (100/ this.numVisible) + '%}';
 
         if (this.cfg.responsiveOptions) {
             var _responsiveOptions = this.cfg.responsiveOptions;
@@ -608,7 +608,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
                 var res = _responsiveOptions[i];
 
                 innerHTML += '@media screen and (max-width: ' + res.breakpoint + ') '
-                    + '{div[id*="' + this.id + '"] .ui-carousel-item '
+                    + '{div[id*="' + this.id + '"] .p-carousel-item '
                     + '{flex: 1 0 ' + (100/ res.numVisible) + '%}}'
             }
         }
@@ -621,7 +621,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
      * @private
      */
     cloneItems() {
-        this.itemsContainer.children('.ui-carousel-item-cloned').remove();
+        this.itemsContainer.children('.p-carousel-item-cloned').remove();
 
         var clonedElements = this.items.slice(-1 * this.numVisible).clone();
         var cloneSize = clonedElements.length;
@@ -647,14 +647,14 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
      * @param {number} length length of the clones
      */
     styleClone(element, index, length) {
-        element.removeClass('ui-carousel-item-start ui-carousel-item-end');
-        element.addClass('ui-carousel-item-cloned ui-carousel-item-active');
+        element.removeClass('p-carousel-item-start p-carousel-item-end');
+        element.addClass('p-carousel-item-cloned p-carousel-item-active');
         element.prop('inert', true);
         if (index === 0) {
-            element.addClass('ui-carousel-item-start');
+            element.addClass('p-carousel-item-start');
         }
         if (index + 1 === length) {
-            element.addClass('ui-carousel-item-end');
+            element.addClass('p-carousel-item-end');
         }
         element.find('*').removeAttr('id');
     }
@@ -664,8 +664,8 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
      * @private
      */
     styleActiveItems() {
-        var items = this.itemsContainer.children(':not(.ui-carousel-item-cloned)');
-        items.removeClass('ui-carousel-item-active ui-carousel-item-start ui-carousel-item-end');
+        var items = this.itemsContainer.children(':not(.p-carousel-item-cloned)');
+        items.removeClass('p-carousel-item-active p-carousel-item-start p-carousel-item-end');
 
         var firstIndex = this.firstIndex(),
             lastIndex = this.lastIndex();
@@ -673,15 +673,15 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
         for (var i = 0; i < items.length; i++) {
             items.eq(i).prop('inert', i < firstIndex || i > lastIndex);
             if (firstIndex <= i && lastIndex >= i) {
-                items.eq(i).addClass('ui-carousel-item-active');
+                items.eq(i).addClass('p-carousel-item-active');
             }
 
             if (firstIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-start');
+                items.eq(i).addClass('p-carousel-item-start');
             }
 
             if (lastIndex === i) {
-                items.eq(i).addClass('ui-carousel-item-end');
+                items.eq(i).addClass('p-carousel-item-end');
             }
         }
     }
@@ -696,7 +696,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
 
         if (this.cfg.paginator) {
             for (var i = 0; i < this.totalIndicators; i++) {
-                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button" aria-label="' + this.ariaPageLabel.replace('{page}', (i+1)) + '"></button></li>';
+                indicatorsHtml += '<li class="p-carousel-indicator ' + (this.page === i ? 'p-state-highlight' : '') + '"><button class="p-link" type="button" aria-label="' + this.ariaPageLabel.replace('{page}', (i+1)) + '"></button></li>';
             }
         }
         

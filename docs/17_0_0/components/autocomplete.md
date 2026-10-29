@@ -310,23 +310,23 @@ Following is the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-autocomplete | Container element. |
-| .ui-autocomplete-input | Input field. |
-| .ui-autocomplete-panel | Container of suggestions list. |
-| .ui-autocomplete-items | List of items |
-| .ui-autocomplete-item | Each item in the list. |
-| .ui-autocomplete-query | Highlighted part in suggestions. |
-| .ui-state-loading | Container element; while search queries are executed. |
+| .p-autocomplete | Container element. |
+| .p-autocomplete-input | Input field. |
+| .p-autocomplete-panel | Container of suggestions list. |
+| .p-autocomplete-items | List of items |
+| .p-autocomplete-item | Each item in the list. |
+| .p-autocomplete-query | Highlighted part in suggestions. |
+| .p-state-loading | Container element; while search queries are executed. |
 
 When columns are used, the suggestions are rendered as a table and the _advancedStyleClass_ attribute
 applies to that table element. Themes provide the following generic modifier classes for it;
 
 | Class | Applies |
 | --- | --- |
-| .ui-table-gridlines | Displays cell borders. |
-| .ui-table-striped | Displays striped rows to visually separate content. |
-| .ui-table-sm | Renders the cells with reduced padding. |
-| .ui-table-lg | Renders the cells with increased padding. |
+| .p-table-gridlines | Displays cell borders. |
+| .p-table-striped | Displays striped rows to visually separate content. |
+| .p-table-sm | Renders the cells with reduced padding. |
+| .p-table-lg | Renders the cells with increased padding. |
 
 As skinning style classes are global, see the main theming section for more information.
 

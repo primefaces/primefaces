@@ -265,7 +265,7 @@ Following is a basic filtering datatable with these options demonstrated:
 
     <p:column field="manufacturer" headerText="Manufacturer" filterMatchMode="exact">
         <f:facet name="filter">
-            <p:selectOneMenu onchange="PF('carsTable').filter()" styleClass="ui-custom-filter">
+            <p:selectOneMenu onchange="PF('carsTable').filter()" styleClass="p-custom-filter">
                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                 <f:selectItems value="#{carBean.manufacturerOptions}" />
             </p:selectOneMenu>
@@ -741,6 +741,26 @@ attribute which is evaluated before rendering of each row so value expressions a
 Additionally, rowExpandMode attribute defines if multiple rows can be expanded at the same time
 or not, valid values are "single" and "multiple" (default).
 
+The expand / collapse icon is an icon token of the theme (see [Theming](/core/theming.md?id=icons)):
+`--p-datatable-row-toggle-collapsed-icon` and `--p-datatable-row-toggle-expanded-icon`. Set them in `:root, [data-p-scope]` for all
+tables or on a style class for some:
+
+```css
+.custom-icons-table {
+    --p-datatable-row-toggle-collapsed-icon: var(--p-icon-plus);
+    --p-datatable-row-toggle-expanded-icon: var(--p-icon-minus);
+}
+```
+
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}" styleClass="custom-icons-table">
+    <p:column>
+        <p:rowToggler />
+    </p:column>
+    ...
+</p:dataTable>
+```
+
 
 ## Editing
 
@@ -1127,7 +1147,7 @@ Visibility of columns can be toggled using the column toggler helper component.
 <p:dataTable var="car" value="#{tableBean.cars}">
     <f:facet name="header">
         List of Cars
-        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-calculator" />
         <p:columnToggler datasource="cars" trigger="toggler" />
     </f:facet>
     <p:column headerText="Model">
@@ -1279,6 +1299,17 @@ Class: `org.primefaces.component.datatable.DataTable`
 | expandRow(String rowKey) | void | Expands a row
 | collapseRow(String rowKey) | void | Collapse a row
 
+## Icons
+The icons the table draws itself are icon tokens of the theme (see [Theming](/core/theming.md?id=icons)) and are
+rendered with semantic classes:
+
+| Icon | Classes | State |
+| --- | --- | --- |
+| Sort | `p-icon p-sort-icon p-datatable-sort-icon` | `p-datatable-sort-asc-icon` / `p-datatable-sort-desc-icon` on the icon
+| Row toggler (the toggler itself), row group toggler | `p-icon p-toggle-icon p-datatable-row-toggle-icon` | `aria-expanded` of the toggler
+| Row editor | `p-icon p-edit-icon p-datatable-row-edit-icon`, `p-check-icon p-datatable-row-save-icon`, `p-close-icon p-datatable-row-cancel-icon` | -
+| Column reorder indicators | `p-icon p-arrow-down-icon p-datatable-column-reorder-top-icon`, `p-arrow-up-icon p-datatable-column-reorder-bottom-icon` | -
+
 ## Skinning
 DataTable resides in a main container element which `style` and `styleClass` options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
@@ -1287,26 +1318,26 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-datatable | Main container element
-| .ui-datatable-data | Table body
-| .ui-datatable-empty-message | Empty message row
-| .ui-datatable-header | Table header
-| .ui-datatable-footer | Table footer
-| .ui-sortable-column | Sortable columns
-| .ui-sortable-column-icon | Icon of a sortable icon
-| .ui-expanded-row-content | Content of an expanded row
-| .ui-row-toggler | Row toggler for row expansion
-| .ui-editable-column | Columns with a cell editor
-| .ui-cell-editor | Container of input and output controls of an editable cell
-| .ui-cell-editor-input | Container of input control of an editable cell
-| .ui-cell-editor-output | Container of output control of an editable cell
-| .ui-datatable-even | Even numbered rows
-| .ui-datatable-odd | Odd numbered rows
-| .ui-datatable-scrollable | Main container element of a scrollable table.
-| .ui-datatable-scrollable-header | Header wrapper of a scrollable table.
-| .ui-datatable-scrollable-header-box | Header container of a scrollable table.
-| .ui-datatable-scrollable-body | Body container of a scrollable table.
-| .ui-datatable-scrollable-footer | Footer wrapper of a scrollable table.
-| .ui-datatable-scrollable-footer-box | Footer container of a scrollable table.
-| .ui-datatable-resizable | Main container element of a resizable table.
-| .ui-datatable-frozencolumn | Frozen columns. 
+| .p-datatable | Main container element
+| .p-datatable-data | Table body
+| .p-datatable-empty-message | Empty message row
+| .p-datatable-header | Table header
+| .p-datatable-footer | Table footer
+| .p-sortable-column | Sortable columns
+| .p-sortable-column-icon | Icon of a sortable icon
+| .p-expanded-row-content | Content of an expanded row
+| .p-row-toggler | Row toggler for row expansion
+| .p-editable-column | Columns with a cell editor
+| .p-cell-editor | Container of input and output controls of an editable cell
+| .p-cell-editor-input | Container of input control of an editable cell
+| .p-cell-editor-output | Container of output control of an editable cell
+| .p-datatable-even | Even numbered rows
+| .p-datatable-odd | Odd numbered rows
+| .p-datatable-scrollable | Main container element of a scrollable table.
+| .p-datatable-scrollable-header | Header wrapper of a scrollable table.
+| .p-datatable-scrollable-header-box | Header container of a scrollable table.
+| .p-datatable-scrollable-body | Body container of a scrollable table.
+| .p-datatable-scrollable-footer | Footer wrapper of a scrollable table.
+| .p-datatable-scrollable-footer-box | Footer container of a scrollable table.
+| .p-datatable-resizable | Main container element of a resizable table.
+| .p-datatable-frozencolumn | Frozen columns. 

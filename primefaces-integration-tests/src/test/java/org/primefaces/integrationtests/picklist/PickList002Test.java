@@ -81,7 +81,7 @@ class PickList002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("PickList: GitHub #2127 prevent client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed.")
+    @DisplayName("PickList: GitHub #2127 prevent client-side manipulation of disabled entries, when CSS style-class p-state-disabled is removed.")
     void preventDisabledTargetValue(final Page page) {
         // Arrange
         final String[] valuesToPick = new String[] {"Paris"};

@@ -68,7 +68,7 @@ Tailwind's reset can end up above the theme and break the components.
 ## Token mapping
 
 Save this as `src/main/tailwind/primefaces.css`. `@theme inline` makes the utilities use `var(--p-...)` directly, so
-they follow the preset, a [scoped primary color](/core/theming.md#scoped-overrides) and light / dark mode at runtime.
+they follow the preset, a [scoped primary color](/core/theming.md?id=scoped-overrides) and light / dark mode at runtime.
 The semantic colors switch between light and dark by themselves, no `dark:` needed.
 
 The names follow [tailwindcss-primeui](https://github.com/primefaces/tailwindcss-primeui) of PrimeReact and PrimeVue,
@@ -198,7 +198,7 @@ still works.
 ## Dark mode
 
 PrimeFaces switches light / dark with `color-scheme` (the tokens use `light-dark()`), see
-[Light and dark mode](/core/theming.md#light-and-dark-mode). The mapped utilities follow by themselves.
+[Light and dark mode](/core/theming.md?id=light-and-dark-mode). The mapped utilities follow by themselves.
 
 Tailwind's `dark:` variant reacts to `prefers-color-scheme` only. For fixed Tailwind palette colors that must change
 with the mode of your application, bind it to the attribute your application sets together with `color-scheme`:
@@ -256,7 +256,7 @@ The renderer writes `grid-cols-*` / `col-span-*` in Java, so they are in no Face
 ```
 
 Each cell must be one component, e.g. `p:column`: Facelets merges consecutive plain HTML into a single child, which
-becomes a single cell. Remove the panel look with `styleClass="ui-panelgrid-blank"`, the padding of the grid and its
+becomes a single cell. Remove the panel look with `styleClass="p-panelgrid-blank"`, the padding of the grid and its
 cells with `contentStyleClass="p-0 *:p-0"`.
 
 ### Utilities on components

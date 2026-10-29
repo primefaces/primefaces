@@ -115,7 +115,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
                 .add(GridLayoutUtils.getResponsiveClass(flex))
                 .add(component.getStyleClass())
                 .add(SelectOneRadio.STYLE_CLASS)
-                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.isReadonly(), "p-state-readonly")
                 .build();
         String labelledBy = component.getAriaLabelledBy();
 
@@ -199,7 +199,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
             String styleClass = getStyleClassBuilder(context)
                     .add(component.getStyleClass())
                     .add(SelectOneRadio.STYLE_CLASS)
-                    .add(component.isReadonly(), "ui-state-readonly")
+                    .add(component.isReadonly(), "p-state-readonly")
                     .build();
             String labelledBy = component.getAriaLabelledBy();
             writer.startElement("span", component);
@@ -310,7 +310,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
         writer.startElement("label", null);
         writer.writeAttribute("for", containerClientId, null);
         if (disabled) {
-            writer.writeAttribute("class", "ui-state-disabled", null);
+            writer.writeAttribute("class", "p-state-disabled", null);
         }
 
         if (option.getDescription() != null) {
@@ -332,15 +332,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
     protected void encodeOptionOutput(FacesContext context, SelectOneRadio component, boolean selected, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = createStyleClass(component, null, HTML.RADIOBUTTON_BOX_CLASS);
-        boxClass = selected ? boxClass + " ui-state-active" : boxClass;
-        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        String iconClass = selected ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS : HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
+        boxClass = selected ? boxClass + " p-state-active" : boxClass;
+        boxClass = disabled ? boxClass + " p-state-disabled" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
+        writer.writeAttribute("class", HTML.RADIOBUTTON_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");

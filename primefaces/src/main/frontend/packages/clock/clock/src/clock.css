@@ -1,12 +1,12 @@
 /*
- * Clock: p:clock (digital: span.ui-clock, analog: div.ui-analog-clock with a raphael SVG)
+ * Clock: p:clock (digital: span.p-clock, analog: div.p-analog-clock with a raphael SVG)
  *
  * No PrimeUIX counterpart, tokens in the clock block of presets/*.css.
  * Analog: raphael writes fill/stroke as SVG presentation attributes, CSS properties override them.
  * SVG children in drawing order: circle (face), 12 paths (hour marks), 3 paths (hour, minute, second hand), circle (pin).
  */
 
-.ui-clock {
+.p-clock {
     display: inline-block;
     background: var(--p-clock-background);
     color: var(--p-clock-color);
@@ -18,7 +18,7 @@
     font-variant-numeric: tabular-nums;
 }
 
-.ui-analog-clock svg {
+.p-analog-clock svg {
     display: block;
 
     > circle:first-of-type {

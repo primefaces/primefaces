@@ -52,11 +52,11 @@ _style_ and _styleClass_ options apply to the fieldset. Following is the list of
 
 | Class | Applies |
 | --- | --- |
-| .ui-fieldset | Main container
-| .ui-fieldset-toggleable | Main container when fieldset is toggleable
-| .ui-fieldset .ui-fieldset-legend | Legend of fieldset
-| .ui-fieldset-toggleable .ui-fieldset-legend | Legend of fieldset when fieldset is toggleable
-| .ui-fieldset .ui-fieldset-toggler | Toggle icon on fieldset
+| .p-fieldset | Main container
+| .p-fieldset-toggleable | Main container when fieldset is toggleable
+| .p-fieldset .p-fieldset-legend | Legend of fieldset
+| .p-fieldset-toggleable .p-fieldset-legend | Legend of fieldset when fieldset is toggleable
+| .p-fieldset .p-fieldset-toggler | Toggle icon on fieldset
 
 As skinning style classes are global, see the main theming section for more information.
 

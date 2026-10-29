@@ -2,7 +2,7 @@
  * Divider: p:divider (layout horizontal | vertical, type solid | dashed | dotted, align left | center | right | top | bottom)
  */
 
-.ui-divider-horizontal {
+.p-divider-horizontal {
     display: flex;
     width: 100%;
     position: relative;
@@ -17,24 +17,24 @@
         content: "";
     }
 
-    &.ui-divider-left {
+    &.p-divider-left {
         justify-content: flex-start;
     }
 
-    &.ui-divider-right {
+    &.p-divider-right {
         justify-content: flex-end;
     }
 
-    &.ui-divider-center {
+    &.p-divider-center {
         justify-content: center;
     }
 }
 
-.ui-divider-content {
+.p-divider-content {
     z-index: 1;
 }
 
-.ui-divider-vertical {
+.p-divider-vertical {
     min-height: 100%;
     display: flex;
     position: relative;
@@ -49,56 +49,56 @@
         content: "";
     }
 
-    &.ui-divider-top {
+    &.p-divider-top {
         align-items: flex-start;
     }
 
-    &.ui-divider-center {
+    &.p-divider-center {
         align-items: center;
     }
 
-    &.ui-divider-bottom {
+    &.p-divider-bottom {
         align-items: flex-end;
     }
 }
 
-.ui-divider {
-    &.ui-divider-solid {
-        &.ui-divider-horizontal::before {
+.p-divider {
+    &.p-divider-solid {
+        &.p-divider-horizontal::before {
             border-top-style: solid;
         }
 
-        &.ui-divider-vertical::before {
+        &.p-divider-vertical::before {
             border-left-style: solid;
         }
     }
 
-    &.ui-divider-dashed {
-        &.ui-divider-horizontal::before {
+    &.p-divider-dashed {
+        &.p-divider-horizontal::before {
             border-top-style: dashed;
         }
 
-        &.ui-divider-vertical::before {
+        &.p-divider-vertical::before {
             border-left-style: dashed;
         }
     }
 
-    &.ui-divider-dotted {
-        &.ui-divider-horizontal::before {
+    &.p-divider-dotted {
+        &.p-divider-horizontal::before {
             border-top-style: dotted;
         }
 
-        &.ui-divider-vertical::before {
+        &.p-divider-vertical::before {
             border-left-style: dotted;
         }
     }
 
-    .ui-divider-content {
+    .p-divider-content {
         background-color: var(--p-divider-content-background);
         color: var(--p-divider-content-color);
     }
 
-    &.ui-divider-horizontal {
+    &.p-divider-horizontal {
         margin: var(--p-divider-horizontal-margin);
         padding: var(--p-divider-horizontal-padding);
 
@@ -107,12 +107,12 @@
             border-top-color: var(--p-divider-border-color);
         }
 
-        .ui-divider-content {
+        .p-divider-content {
             padding: var(--p-divider-horizontal-content-padding);
         }
     }
 
-    &.ui-divider-vertical {
+    &.p-divider-vertical {
         margin: var(--p-divider-vertical-margin);
         padding: var(--p-divider-vertical-padding);
 
@@ -121,7 +121,7 @@
             border-left-color: var(--p-divider-border-color);
         }
 
-        .ui-divider-content {
+        .p-divider-content {
             padding: var(--p-divider-vertical-content-padding);
         }
     }

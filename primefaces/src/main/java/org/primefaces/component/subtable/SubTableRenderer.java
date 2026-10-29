@@ -63,7 +63,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
 
         if (FacetUtils.shouldRenderFacet(header)) {
             writer.startElement("tr", null);
-            writer.writeAttribute("class", "ui-widget-header", null);
+            writer.writeAttribute("class", "p-widget-header", null);
 
             writer.startElement("td", null);
             writer.writeAttribute("class", DataTable.SUBTABLE_HEADER, null);
@@ -79,7 +79,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
         if (group != null && group.isRendered()) {
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered() && child instanceof Row headerRow) {
-                    String styleClass = "ui-widget-header";
+                    String styleClass = "p-widget-header";
                     if (LangUtils.isNotBlank(headerRow.getStyleClass())) {
                         styleClass = styleClass + " " + headerRow.getStyleClass();
                     }
@@ -151,7 +151,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
 
         if (FacetUtils.shouldRenderFacet(footer)) {
             writer.startElement("tr", null);
-            writer.writeAttribute("class", "ui-widget-header", null);
+            writer.writeAttribute("class", "p-widget-header", null);
 
             writer.startElement("td", null);
             writer.writeAttribute("class", DataTable.SUBTABLE_FOOTER, null);
@@ -171,7 +171,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
 
         for (UIComponent child : group.getChildren()) {
             if (child.isRendered() && child instanceof Row footerRow) {
-                String styleClass = "ui-widget-header";
+                String styleClass = "p-widget-header";
                 if (LangUtils.isNotBlank(footerRow.getStyleClass())) {
                     styleClass = styleClass + " " + footerRow.getStyleClass();
                 }

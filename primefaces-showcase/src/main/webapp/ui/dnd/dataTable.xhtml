@@ -29,7 +29,7 @@
                 <h5 class="mt-0">Available Products</h5>
                 <p:dataTable id="availableProducts" var="product" value="#{dndProductsView.products}">
                         <p:column style="width:20px">
-                            <h:outputText id="dragIcon" styleClass="ui-icon pi pi-plus"/>
+                            <h:outputText id="dragIcon" styleClass="pi pi-plus"/>
                             <p:draggable for="dragIcon" revert="true" helper="clone"/>
                         </p:column>
 
@@ -83,7 +83,7 @@
                     </p:outputPanel>
                 </p:fieldset>
 
-                <p:droppable for="selectedProducts" tolerance="touch" activeStyleClass="ui-state-highlight"
+                <p:droppable for="selectedProducts" tolerance="touch" activeStyleClass="p-state-highlight"
                              datasource="availableProducts" onDrop="handleDrop">
                     <p:ajax listener="#{dndProductsView.onProductDrop}" update="dropArea availableProducts"/>
                 </p:droppable>

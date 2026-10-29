@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
@@ -43,6 +44,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-selection")
@@ -66,12 +68,12 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelections(page.messages, "1,3");
         int cnt = 0;
         for (Row row : dataTable.getRows()) {
-            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("ui-chkbox-icon"));
+            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("p-chkbox-icon"));
             if (cnt == 0 || cnt == 2) {
-                assertCss(checkboxIcon, "ui-icon-check");
+                assertCss(checkboxIcon, "p-checkbox-checked-icon");
             }
             else {
-                assertCss(checkboxIcon, "ui-icon-blank");
+                assertFalse(PrimeSelenium.hasCssClass(checkboxIcon, "p-checkbox-checked-icon"));
             }
             cnt++;
         }
@@ -84,8 +86,8 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("ProgrammingLanguages unselected via backing bean"));
         for (Row row : dataTable.getRows()) {
-            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("ui-chkbox-icon"));
-            assertCss(checkboxIcon, "ui-icon-blank");
+            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("p-chkbox-icon"));
+            assertFalse(PrimeSelenium.hasCssClass(checkboxIcon, "p-checkbox-checked-icon"));
         }
 
         // Act
@@ -134,9 +136,9 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert - row 0 and 2 on page 1 still selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
 
         // Act
         page.submit.click();
@@ -154,19 +156,19 @@ class DataTable006Test extends AbstractDataTableTest {
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
         assertEquals("true",
-                dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+                dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("false",
-                dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+                dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("true",
-                dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+                dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         dataTable.selectPage(2);
 
         assertEquals("false",
-                dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+                dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("true",
-                dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+                dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("false",
-                dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+                dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
     }
 
     @Test
@@ -473,9 +475,9 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert - selections on page 1 should still be preserved
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
 
         // Act - submit to verify selections are still intact
         page.submit.click();
@@ -516,9 +518,9 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert - selections on page 1 should still be preserved
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
 
         // Act - submit to verify selections are still intact
         page.submit.click();
@@ -557,8 +559,8 @@ class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - all rows on page 2 are selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
 
         // Act - go back to page 1 and unselect one item (row 2)
         dataTable.selectPage(1);
@@ -574,8 +576,8 @@ class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - items on page 2 should still be selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertSelections(page.messages, "1,3,4,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
@@ -616,9 +618,9 @@ class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - all rows on page 2 should still be selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertSelections(page.messages,
                 "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
@@ -645,8 +647,8 @@ class DataTable006Test extends AbstractDataTableTest {
 
     private void assertSelectAllCheckbox(DataTable datatable, boolean checked) {
         WebElement selectAllCheckBox = datatable.getSelectAllCheckBox();
-        WebElement icon = selectAllCheckBox.findElement(By.className("ui-chkbox-icon"));
-        assertCss(icon, checked ? "ui-icon-check" : "ui-icon-blank");
+        WebElement icon = selectAllCheckBox.findElement(By.className("p-chkbox-icon"));
+        assertEquals(checked, PrimeSelenium.hasCssClass(icon, "p-checkbox-checked-icon"));
     }
 
     private void assertSelections(Messages messages, String selections) {

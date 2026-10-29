@@ -36,19 +36,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AbstractTableTest extends AbstractPrimePageTest {
 
     protected void assertHeaderSorted(WebElement header, String sortDirection, int sortPriority) {
-        String directionClass = null;
+        String direction = null;
         switch (sortDirection) {
             case "ASC":
-                directionClass = "ui-icon-triangle-1-n";
+                direction = "asc";
                 break;
             case "DESC":
-                directionClass = "ui-icon-triangle-1-s";
+                direction = "desc";
                 break;
             default:
                 break;
         }
-        assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
-        WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
+        // state class of the sort icon: p-datatable-sort-asc-icon / p-treetable-sort-desc-icon / ...
+        WebElement sortIcon = header.findElement(By.className("p-sortable-column-icon"));
+        assertTrue(PrimeSelenium.hasCssClass(sortIcon, "p-datatable-sort-" + direction + "-icon")
+                || PrimeSelenium.hasCssClass(sortIcon, "p-treetable-sort-" + direction + "-icon"));
+        WebElement badge = header.findElement(By.className("p-sortable-column-badge"));
         if (sortPriority > 0) {
             assertEquals(sortPriority, Integer.parseInt(badge.getText()));
         }

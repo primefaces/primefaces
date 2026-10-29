@@ -1,9 +1,9 @@
 /*
  * PickList: p:pickList (PrimeUIX picklist + listbox tokens, caption uses the panel header tokens)
  *
- * Supported classes: ui-picklist-vertical, ui-picklist-responsive, ui-picklist-outline (keyboard focused item), ui-state-disabled
+ * Supported classes: p-picklist-vertical, p-picklist-responsive, p-picklist-outline (keyboard focused item), p-state-disabled
  */
-.ui-picklist {
+.p-picklist {
     display: table;
 
     > div {
@@ -12,7 +12,7 @@
         vertical-align: top;
     }
 
-    .ui-picklist-buttons {
+    .p-picklist-buttons {
         height: 200px;
         vertical-align: middle;
         padding: 0 var(--p-picklist-gap);
@@ -21,92 +21,71 @@
             pointer-events: auto;
         }
 
-        .ui-button {
+        .p-button {
             margin-bottom: var(--p-picklist-controls-gap);
         }
 
-        .ui-icon-arrow-1-n::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-up-icon) center / contain no-repeat;
+        .p-picklist-move-up-icon {
+            --_icon: var(--p-picklist-move-up-icon);
         }
 
-        .ui-icon-arrowstop-1-n::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-top-icon) center / contain no-repeat;
+        .p-picklist-move-top-icon {
+            --_icon: var(--p-picklist-move-top-icon);
         }
 
-        .ui-icon-arrow-1-s::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-down-icon) center / contain no-repeat;
+        .p-picklist-move-down-icon {
+            --_icon: var(--p-picklist-move-down-icon);
         }
 
-        .ui-icon-arrowstop-1-s::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-bottom-icon) center / contain no-repeat;
+        .p-picklist-move-bottom-icon {
+            --_icon: var(--p-picklist-move-bottom-icon);
         }
 
-        .ui-icon-arrow-1-e::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-to-target-icon) center / contain no-repeat;
+        .p-picklist-move-to-target-icon {
+            --_icon: var(--p-picklist-move-to-target-icon);
         }
 
-        .ui-icon-arrowstop-1-e::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-all-to-target-icon) center / contain no-repeat;
+        .p-picklist-move-all-to-target-icon {
+            --_icon: var(--p-picklist-move-all-to-target-icon);
         }
 
-        .ui-icon-arrow-1-w::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-to-source-icon) center / contain no-repeat;
+        .p-picklist-move-to-source-icon {
+            --_icon: var(--p-picklist-move-to-source-icon);
         }
 
-        .ui-icon-arrowstop-1-w::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-move-all-to-source-icon) center / contain no-repeat;
+        .p-picklist-move-all-to-source-icon {
+            --_icon: var(--p-picklist-move-all-to-source-icon);
         }
-    }
 
-    .ui-picklist-buttons .ui-icon-arrow-1-n,
-    .ui-picklist-buttons .ui-icon-arrowstop-1-n,
-    .ui-picklist-buttons .ui-icon-arrow-1-s,
-    .ui-picklist-buttons .ui-icon-arrowstop-1-s,
-    .ui-picklist-buttons .ui-icon-arrow-1-e,
-    .ui-picklist-buttons .ui-icon-arrowstop-1-e,
-    .ui-picklist-buttons .ui-icon-arrow-1-w,
-    .ui-picklist-buttons .ui-icon-arrowstop-1-w,
-    .ui-picklist-filter-container .ui-icon {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
+        /* orientation="vertical": the buttons between the lists point down / up */
+        .p-picklist-move-to-target-vertical-icon {
+            --_icon: var(--p-picklist-move-to-target-vertical-icon);
+        }
+
+        .p-picklist-move-all-to-target-vertical-icon {
+            --_icon: var(--p-picklist-move-all-to-target-vertical-icon);
+        }
+
+        .p-picklist-move-to-source-vertical-icon {
+            --_icon: var(--p-picklist-move-to-source-vertical-icon);
+        }
+
+        .p-picklist-move-all-to-source-vertical-icon {
+            --_icon: var(--p-picklist-move-all-to-source-vertical-icon);
+        }
     }
 
     /* flex: the (hidden) label of the icon only buttons is a block and would add a second line otherwise */
-    .ui-button {
+    .p-button {
         display: flex;
     }
 
-    .ui-button-text-icon-left {
+    .p-button-text-icon-left {
         width: 100%;
     }
 
     /* the caption background is layered over the list background, as it is transparent in some presets */
-    .ui-picklist-caption {
+    .p-picklist-caption {
         text-align: center;
         background: linear-gradient(var(--p-picklist-caption-background), var(--p-picklist-caption-background)), var(--p-listbox-background);
         border: 1px solid var(--p-picklist-caption-border-color);
@@ -122,41 +101,35 @@
         border-collapse: collapse;
     }
 
-    .ui-picklist-filter {
+    .p-picklist-filter {
         width: 100%;
         box-sizing: border-box;
     }
 
     /* search icon inside the filter input, at the start */
-    .ui-picklist-filter-container {
+    .p-picklist-filter-container {
         position: relative;
         margin: 0;
         padding: 0;
 
-        .ui-picklist-filter {
+        .p-picklist-filter {
             padding-block: var(--p-inputtext-padding-y);
             padding-inline: var(--p-inputtext-padding-x);
             padding-inline-start: calc(2 * var(--p-inputtext-padding-x) + var(--p-icon-size));
             margin-bottom: var(--p-picklist-controls-gap);
         }
 
-        .ui-icon {
+        .p-picklist-filter-icon {
+            --_icon: var(--p-picklist-filter-icon);
             position: absolute;
             inset-inline-start: var(--p-inputtext-padding-x);
             top: 50%;
             margin-top: calc(-1 * var(--p-icon-size) / 2 - var(--p-picklist-controls-gap) / 2);
             color: var(--p-form-field-icon-color);
         }
-
-        .ui-icon::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-picklist-filter-icon) center / contain no-repeat;
-        }
     }
 
-    .ui-picklist-list {
+    .p-picklist-list {
         list-style-type: none;
         margin: 0;
         overflow: auto;
@@ -174,16 +147,16 @@
         }
     }
 
-    .ui-picklist-caption + .ui-picklist-list {
+    .p-picklist-caption + .p-picklist-list {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
 
-    .ui-picklist-item {
+    .p-picklist-item {
         cursor: pointer;
     }
 
-    .ui-picklist-list .ui-picklist-item {
+    .p-picklist-list .p-picklist-item {
         padding: var(--p-listbox-option-padding);
         border: 0 none;
         margin: 0;
@@ -194,51 +167,51 @@
         transition: background var(--p-listbox-transition-duration), color var(--p-listbox-transition-duration),
             border-color var(--p-listbox-transition-duration), box-shadow var(--p-listbox-transition-duration);
 
-        + .ui-picklist-item {
+        + .p-picklist-item {
             margin-top: var(--p-listbox-list-gap);
         }
 
-        &:not(.ui-state-highlight, .ui-state-disabled):hover,
-        &.ui-state-hover {
+        &:not(.p-state-highlight, .p-state-disabled):hover,
+        &.p-state-hover {
             background: var(--p-listbox-option-focus-background);
             color: var(--p-listbox-option-focus-color);
         }
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-listbox-option-selected-background);
             color: var(--p-listbox-option-selected-color);
             font-weight: var(--p-listbox-option-selected-font-weight);
         }
 
-        &.ui-state-highlight.ui-sortable-placeholder {
+        &.p-state-highlight.p-sortable-placeholder {
             background: var(--p-listbox-option-selected-focus-background);
         }
 
         /* keyboard focus */
-        &.ui-picklist-outline {
+        &.p-picklist-outline {
             outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
             outline-offset: calc(-1 * var(--p-focus-ring-width));
             box-shadow: var(--p-focus-ring-shadow);
         }
 
-        .ui-chkbox {
+        .p-chkbox {
             margin-inline-end: var(--p-listbox-checkmark-gutter-end);
         }
     }
 
-    &.ui-picklist-vertical {
+    &.p-picklist-vertical {
         > div {
             float: none;
             display: table-row;
             vertical-align: top;
         }
 
-        .ui-picklist-buttons {
+        .p-picklist-buttons {
             text-align: center;
             height: auto;
             padding: var(--p-picklist-controls-gap) 0;
 
-            .ui-button {
+            .p-button {
                 display: inline-flex;
                 margin: 0;
                 margin-inline-end: var(--p-picklist-controls-gap);
@@ -251,35 +224,35 @@
      * the table had (lists 45% / buttons 10%; lists 35% next to reorder controls, which share the rest like auto table
      * columns), and a block in the vertical layout (its table rows were full width already). Same layout as the table.
      */
-    &.ui-picklist-responsive {
+    &.p-picklist-responsive {
         width: 100%;
 
         * {
             box-sizing: border-box;
         }
 
-        .ui-picklist-buttons button {
+        .p-picklist-buttons button {
             width: 100%;
         }
 
-        .ui-picklist-list {
+        .p-picklist-list {
             width: auto;
         }
     }
 
-    &.ui-picklist-responsive:not(.ui-picklist-vertical) {
+    &.p-picklist-responsive:not(.p-picklist-vertical) {
         display: grid;
         grid-template-columns: 45% 10% 45%;
 
-        &:has(> .ui-picklist-source-controls) {
+        &:has(> .p-picklist-source-controls) {
             grid-template-columns: auto 35% 10% 45%;
         }
 
-        &:has(> .ui-picklist-target-controls) {
+        &:has(> .p-picklist-target-controls) {
             grid-template-columns: 45% 10% 35% auto;
         }
 
-        &:has(> .ui-picklist-source-controls):has(> .ui-picklist-target-controls) {
+        &:has(> .p-picklist-source-controls):has(> .p-picklist-target-controls) {
             grid-template-columns: auto 35% 10% 35% auto;
         }
 
@@ -288,7 +261,7 @@
         }
 
         /* buttons centered on the row height, like in the middle aligned table cell */
-        > .ui-picklist-buttons {
+        > .p-picklist-buttons {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -296,7 +269,7 @@
         }
     }
 
-    &.ui-picklist-responsive.ui-picklist-vertical {
+    &.p-picklist-responsive.p-picklist-vertical {
         display: block;
 
         > div {
@@ -304,24 +277,24 @@
         }
 
         /* table rows have no padding: keep the table layout (:where, so the narrow layout below still sets it) */
-        > :where(.ui-picklist-buttons) {
+        > :where(.p-picklist-buttons) {
             padding: 0;
         }
     }
 }
 
-.ui-picklist-list.ui-picklist-source,
-.ui-picklist-list.ui-picklist-target {
+.p-picklist-list.p-picklist-source,
+.p-picklist-list.p-picklist-target {
     outline: none;
 }
 
-.ui-picklist-outline {
+.p-picklist-outline {
     z-index: 1;
 }
 
 /* narrow viewport: lists and buttons stacked */
 @media (max-width: 640px) {
-    .ui-picklist.ui-picklist-responsive {
+    .p-picklist.p-picklist-responsive {
         > div {
             grid-column: 1 / -1;
         }
@@ -331,7 +304,7 @@
         }
 
         /* the buttons are in a row between the lists: the arrows point down / up */
-        .ui-picklist-buttons {
+        .p-picklist-buttons {
             text-align: center;
             height: auto;
             padding: var(--p-picklist-controls-gap) 0;
@@ -341,48 +314,36 @@
                 width: 20%;
             }
 
-            .ui-button {
+            .p-button {
                 margin-top: var(--p-picklist-controls-gap);
                 margin-inline-end: var(--p-picklist-controls-gap);
             }
 
-            .ui-button:last-child {
+            .p-button:last-child {
                 margin-inline-end: 0;
             }
 
-            .ui-button .ui-icon-arrow-1-e::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-picklist-move-to-target-vertical-icon) center / contain no-repeat;
+            .p-button .p-picklist-move-to-target-icon {
+                --_icon: var(--p-picklist-move-to-target-vertical-icon);
             }
 
-            .ui-button .ui-icon-arrowstop-1-e::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-picklist-move-all-to-target-vertical-icon) center / contain no-repeat;
+            .p-button .p-picklist-move-all-to-target-icon {
+                --_icon: var(--p-picklist-move-all-to-target-vertical-icon);
             }
 
-            .ui-button .ui-icon-arrow-1-w::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-picklist-move-to-source-vertical-icon) center / contain no-repeat;
+            .p-button .p-picklist-move-to-source-icon {
+                --_icon: var(--p-picklist-move-to-source-vertical-icon);
             }
 
-            .ui-button .ui-icon-arrowstop-1-w::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-picklist-move-all-to-source-vertical-icon) center / contain no-repeat;
+            .p-button .p-picklist-move-all-to-source-icon {
+                --_icon: var(--p-picklist-move-all-to-source-vertical-icon);
             }
         }
     }
 }
 
 /* the lists are focusable (keyboard selection) */
-.ui-picklist .ui-picklist-list:focus-visible {
+.p-picklist .p-picklist-list:focus-visible {
     outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
     outline-offset: calc(-1 * var(--p-focus-ring-width));
     box-shadow: var(--p-focus-ring-shadow);

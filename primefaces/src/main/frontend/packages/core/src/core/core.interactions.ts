@@ -24,8 +24,8 @@ type InteractionConstructor = new (element: HTMLElement, options?: object) => { 
 
 /**
  * The interactions of PrimeFaces: drag and drop, sorting and resizing with pointer events (mouse, pen and touch). They
- * replace the interactions of jQuery UI, their options, callbacks, `ui` arguments, events and CSS classes are
- * compatible with jQuery UI as far as PrimeFaces uses them.
+ * replace the interactions of jQuery UI, their options, callbacks, `ui` arguments and events are compatible with jQuery
+ * UI as far as PrimeFaces uses them; the CSS classes have the `p-` prefix (`p-draggable-dragging`, ...).
  *
  * ```js
  * PrimeFaces.interactions.draggable($('#panel'), { handle: '.header', containment: 'parent' });

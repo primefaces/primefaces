@@ -342,7 +342,7 @@ public final class PrimeSelenium {
      */
     public static boolean isElementEnabled(WebElement element) {
         try {
-            return element.isEnabled() && !hasCssClass(element, "ui-state-disabled");
+            return element.isEnabled() && !hasCssClass(element, "p-state-disabled");
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
@@ -358,7 +358,7 @@ public final class PrimeSelenium {
     public static boolean isElementClickable(WebElement element) {
         return isElementDisplayed(element) &&
                     isElementEnabled(element) &&
-                    !hasCssClass(element, "ui-state-disabled") &&
+                    !hasCssClass(element, "p-state-disabled") &&
                     !Boolean.parseBoolean(element.getDomAttribute("aria-busy"));
     }
 

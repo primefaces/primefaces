@@ -123,8 +123,8 @@ is the list of structural style classes.
 
 | Class | Applies |
 | --- | --- |
-.ui-tabs | Main tabview container element
-.ui-tabs-{orientation} | Orientation specific (top, bottom, righ, left) container.
-.ui-tabs-nav | Main container of tab headers
-.ui-tabs-panel | Each tab container
-.ui-tabs-scrollable | Container element of a scrollable tabview.
+.p-tabs | Main tabview container element
+.p-tabs-{orientation} | Orientation specific (top, bottom, righ, left) container.
+.p-tabs-nav | Main container of tab headers
+.p-tabs-panel | Each tab container
+.p-tabs-scrollable | Container element of a scrollable tabview.

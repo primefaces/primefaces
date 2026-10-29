@@ -12,20 +12,20 @@
         <h:form id="form">
             <!-- float labels of fields with values on page load, without any interaction -->
             <div style="margin-top: 2rem">
-                <span class="ui-float-label">
+                <span class="p-float-label">
                     <p:chips id="chips" value="#{theming007.chips}" />
                     <p:outputLabel id="chipsLabel" for="@previous" value="Chips" />
                 </span>
             </div>
             <div style="margin-top: 2rem">
-                <span class="ui-float-label">
+                <span class="p-float-label">
                     <p:autoComplete id="autoComplete" value="#{theming007.autoComplete}" multiple="true"
                                     completeMethod="#{theming007.complete}" />
                     <p:outputLabel id="autoCompleteLabel" for="@previous" value="AutoComplete" />
                 </span>
             </div>
             <div style="margin-top: 2rem">
-                <span class="ui-float-label">
+                <span class="p-float-label">
                     <p:chips id="emptyChips" value="#{theming007.emptyChips}" />
                     <p:outputLabel id="emptyChipsLabel" for="@previous" value="Empty chips" />
                 </span>

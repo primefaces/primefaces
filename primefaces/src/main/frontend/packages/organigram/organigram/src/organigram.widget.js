@@ -55,7 +55,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
     setupSelection() {
         var widget = this;
 
-        var selectableNodes = this.target.find(".ui-organigram-node.selectable");
+        var selectableNodes = this.target.find(".p-organigram-node.selectable");
         selectableNodes.on("click", function() {
             widget.selectNode(widget, $(this), "select");
         });
@@ -69,12 +69,12 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
      * Selects the given organigram node.
      * @private
      * @param {PrimeFaces.widget.Organigram} widget This widget instance.
-     * @param {JQuery} node The node to select, with the class `.ui-organigram-node`.
+     * @param {JQuery} node The node to select, with the class `.p-organigram-node`.
      * @param {string} event Name of the event that triggered the selection, usually `select` or `contextmenu`.
      */
     selectNode(widget, node, event) {
         if (!node.hasClass("selected")) {
-            widget.target.find(".ui-organigram-node.selected").removeClass("selected");
+            widget.target.find(".p-organigram-node.selected").removeClass("selected");
             node.addClass("selected");
 
             if (widget.hasBehavior(event)) {
@@ -95,7 +95,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
     setupDragAndDrop() {
         var widget = this;
 
-        var nodes = this.target.find(".ui-organigram-node");
+        var nodes = this.target.find(".p-organigram-node");
         var draggableNodes = nodes.filter(".draggable");
         var droppableNodes = nodes.filter(".droppable");
 
@@ -128,7 +128,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
         });
 
         PrimeFaces.interactions.droppable(droppableNodes, {
-            accept: ".ui-organigram-node.draggable",
+            accept: ".p-organigram-node.draggable",
             tolerance: "pointer",
             activeClass: "drag-active",
             hoverClass: "drop-hover",
@@ -256,13 +256,13 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
                 this.zoom(this.zoomFactor);
             }
 
-            var zoomIn = $("<tr><td><div class='control zoom-in' title='Zoom In'>&nbsp;</div></td></tr>").appendTo(controlsTable);
+            var zoomIn = $("<tr><td><div class='control zoom-in p-icon p-zoom-in-icon p-organigram-zoom-in-icon' title='Zoom In'>&nbsp;</div></td></tr>").appendTo(controlsTable);
             zoomIn.on("click", function() {
                 widget.zoomFactor += 0.1;
                 widget.zoom(widget.zoomFactor);
             });
 
-            var zoomOut = $("<tr><td><div class='control zoom-out' title='Zoom Out'>&nbsp;</div></td></tr>").appendTo(controlsTable);
+            var zoomOut = $("<tr><td><div class='control zoom-out p-icon p-zoom-out-icon p-organigram-zoom-out-icon' title='Zoom Out'>&nbsp;</div></td></tr>").appendTo(controlsTable);
             zoomOut.on("click", function() {
                 widget.zoomFactor -= 0.1;
                 widget.zoom(widget.zoomFactor);
@@ -315,7 +315,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
         node.attr("style", nodeSource.attr("style"));
 
         // styling
-        node.addClass("ui-organigram-node");
+        node.addClass("p-organigram-node");
         node.addClass("level-" + level);
 
         // set metadata
@@ -324,9 +324,9 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
         node.attr("data-parent-rowkey", parentRowKey);
 
         // top icons
-        var topIconContainer = $("<div class='ui-organigram-icon-container'></div>").appendTo(node);
+        var topIconContainer = $("<div class='p-organigram-icon-container'></div>").appendTo(node);
         if (nodeSource.data("icon")) {
-            var icon = $("<div class='ui-organigram-icon ui-icon'></div>").appendTo(topIconContainer);
+            var icon = $("<div class='p-organigram-icon'></div>").appendTo(topIconContainer);
             icon.addClass(nodeSource.data("icon"));
 
             var iconPos = nodeSource.data("icon-pos");
@@ -339,7 +339,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
         node.append(nodeContent);
 
         // bottom icons
-        var bottomIconContainer = $("<div class='ui-organigram-icon-container'></div>").appendTo(node);
+        var bottomIconContainer = $("<div class='p-organigram-icon-container'></div>").appendTo(node);
 
         // we don't need to render a table in the last level as it can't have further childs
         if (isLastLevel) {
@@ -363,22 +363,10 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
             this.drawLines(childNodeCount, table);
             this.drawChildNodes(nodeSource.data("rowkey"), leafChildNodes, nonLeafChildNodes, table, level);
 
-            // handle initial collapsed state
+            // handle initial collapsed state (the expander icon already matches it, see addExpander)
             if (nodeSource.hasClass("collapsed")) {
-                var collapsedIcon = "ui-icon-plusthick";
-                if (nodeSource.data("collapsed-icon")) {
-                    collapsedIcon = nodeSource.data("collapsed-icon");
-                }
-                var expandedIcon = "ui-icon-minusthick";
-                if (nodeSource.data("expanded-icon")) {
-                    expandedIcon = nodeSource.data("expanded-icon");
-                }
-
                 // hide childs
                 row.nextAll("tr").hide();
-
-                // switch expander icons
-                node.find(".expander").removeClass(expandedIcon).addClass(collapsedIcon);
             }
             else {
                 if (!nodeSource.hasClass("expanded")) {
@@ -399,17 +387,20 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
 
         if (node.hasClass("collapsible")) {
 
-            var collapsedIcon = nodeSource.data("collapsed-icon") ? nodeSource.data("collapsed-icon") : "ui-icon-plusthick";
-            var expandedIcon = nodeSource.data("expanded-icon") ? nodeSource.data("expanded-icon") : "ui-icon-minusthick";
+            // the icons of the node (collapsedIcon / expandedIcon) are switched, the default toggle icon is the same for
+            // both states: its CSS follows the collapsed class of the node
+            var defaultIcon = "p-icon p-toggle-icon p-organigram-toggle-icon";
+            var collapsedIcon = nodeSource.data("collapsed-icon") ? nodeSource.data("collapsed-icon") : defaultIcon;
+            var expandedIcon = nodeSource.data("expanded-icon") ? nodeSource.data("expanded-icon") : defaultIcon;
             var initialIcon = node.hasClass("collapsed") ? collapsedIcon : expandedIcon;
 
             var widget = this;
-            var expander = $("<div class='expander ui-icon " + initialIcon + "'>&nbsp;</div>").appendTo(bottomIconContainer);
+            var expander = $("<div class='expander " + initialIcon + "'>&nbsp;</div>").appendTo(bottomIconContainer);
 
             expander.on("click", function (e) {
                 // reinit dom references - they are lost sometimes
                 var expander = $(this);
-                var node = expander.closest(".ui-organigram-node");
+                var node = expander.closest(".p-organigram-node");
                 var row = node.closest("tr");
 
                 if (node.hasClass("collapsed")) {
@@ -535,7 +526,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg
      */
     bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
-        var selector = targetId + " .ui-organigram-node.selectable",
+        var selector = targetId + " .p-organigram-node.selectable",
         event = cfg.event + ".organigram" + this.id;
 
         if (cfg.nodeType) {
@@ -555,7 +546,7 @@ PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWi
      * Scrolls the organigram to the currently selected node, so that the node is in view.
      */
     scrollToSelection() {
-        var selection = this.target.find(".ui-organigram-node.selected");
+        var selection = this.target.find(".p-organigram-node.selected");
         if (selection.length > 0) {
             var offset = selection.offset();
             this.target.animate({

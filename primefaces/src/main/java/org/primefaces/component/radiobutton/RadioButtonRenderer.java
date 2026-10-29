@@ -92,7 +92,7 @@ public class RadioButtonRenderer extends InputRenderer<RadioButton> {
         writer.writeAttribute("id", id + "_clone", null);
         writer.writeAttribute("name", name + "_clone", null);
         writer.writeAttribute("type", "radio", null);
-        writer.writeAttribute("class", "ui-radio-clone", null);
+        writer.writeAttribute("class", "p-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
 
         renderAccessibilityAttributes(context, radio, disabled, radio.isReadonly());
@@ -134,13 +134,13 @@ public class RadioButtonRenderer extends InputRenderer<RadioButton> {
     protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = createStyleClass(selectOneRadio, null, HTML.RADIOBUTTON_BOX_CLASS) ;
-        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = disabled ? boxClass + " p-state-disabled" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS, null);
+        writer.writeAttribute("class", HTML.RADIOBUTTON_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");

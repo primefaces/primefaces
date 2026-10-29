@@ -66,12 +66,6 @@ public abstract class DataViewBase extends UIPageableData
     @Property(defaultValue = "list", description = "Layout of the items, valid values are \"list\" and \"grid\".")
     public abstract String getLayout();
 
-    @Property(description = "Icon to display for grid layout toggle button.")
-    public abstract String getGridIcon();
-
-    @Property(description = "Icon to display for list layout toggle button.")
-    public abstract String getListIcon();
-
     @Property(description = "Inline style of each row (grid-cell) in grid layout.")
     public abstract String getGridRowStyle();
 

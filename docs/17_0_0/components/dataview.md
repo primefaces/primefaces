@@ -62,7 +62,7 @@ DataView requires a value along with p:dataViewGridItem and p:dataViewListItem c
                 <h:outputText value="#{car.brand}" />
 
                 <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
-                    <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
+                    <h:outputText styleClass="pi pi-search" style="margin:0 auto;" />
                     <f:setPropertyActionListener value="#{car}" target="#{dataViewBean.selectedCar}" />
                 </p:commandLink>
             </h:panelGrid>
@@ -87,7 +87,7 @@ DataView requires a value along with p:dataViewGridItem and p:dataViewListItem c
             </p:outputPanel>
 
             <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
-                <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
+                <h:outputText styleClass="pi pi-search" style="margin:0 auto;" />
                 <f:setPropertyActionListener value="#{car}" target="#{dataViewBean.selectedCar}" />
             </p:commandLink>
         </h:panelGrid>
@@ -178,9 +178,9 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-dataview | Main container element
-| .ui-dataview-header | Header container.
-| .ui-dataview-content | Content container.
+| .p-dataview | Main container element
+| .p-dataview-header | Header container.
+| .p-dataview-content | Content container.
 
 As skinning style classes are global, see the main theming section for more information.
 

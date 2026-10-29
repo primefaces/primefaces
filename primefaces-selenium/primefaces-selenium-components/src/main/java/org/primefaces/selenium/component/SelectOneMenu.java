@@ -102,7 +102,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             toggleDropdown();
         }
 
-        for (WebElement element : getItems().findElements(By.cssSelector("li.ui-selectonemenu-item"))) {
+        for (WebElement element : getItems().findElements(By.cssSelector("li.p-selectonemenu-item"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 break;
@@ -123,7 +123,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             toggleDropdown();
         }
 
-        for (WebElement element : getItems().findElements(By.cssSelector("li.ui-selectonemenu-item"))) {
+        for (WebElement element : getItems().findElements(By.cssSelector("li.p-selectonemenu-item"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 break;
@@ -164,7 +164,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
             show(); //listElt.isDisplayed only works when panel is visible
 
-            return getItems().findElements(By.cssSelector("li.ui-selectonemenu-item")).stream()
+            return getItems().findElements(By.cssSelector("li.p-selectonemenu-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());

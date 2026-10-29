@@ -141,15 +141,15 @@ class DatePicker015Test extends AbstractDatePickerTest {
     protected void assertAmPm(WebElement panel, String ampm) {
         assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement timePicker = panel.findElement(By.className("ui-timepicker"));
-        assertDateEquals(ampm, timePicker.findElement(By.cssSelector("div.ui-ampm-picker > span")).getText());
+        WebElement timePicker = panel.findElement(By.className("p-timepicker"));
+        assertDateEquals(ampm, timePicker.findElement(By.cssSelector("div.p-ampm-picker > span")).getText());
     }
 
     protected void toggleAmPm(WebElement panel) {
         assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement amPmPicker = panel.findElement(By.className("ui-ampm-picker"));
-        amPmPicker.findElement(By.className("ui-picker-down")).click();
+        WebElement amPmPicker = panel.findElement(By.className("p-ampm-picker"));
+        amPmPicker.findElement(By.className("p-picker-down")).click();
     }
 
     protected void assertDateEquals(String expected, String actual) {

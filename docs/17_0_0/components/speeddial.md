@@ -131,6 +131,17 @@ SpeedDial has 4 types; `linear`, `circle`, `semi-circle` and `quarter-circle`.
 Specifies the opening direction of actions. For the **linear** and **semi-circle** types; `up`, `down`, `left` and `right`.
 For the **quarter-circle** type; `up-left`, `up-right`, `down-left` and `down-right`.
 
+## Icons
+Without `showIcon` the button shows the icon token `--p-speeddial-show-icon` of the theme (default `--p-icon-plus`, see
+[Theming](/core/theming.md?id=icons)), rotated when the actions are open (`rotateAnimation`). `showIcon` and `hideIcon` set
+icons of an icon library per instance, like the `icon` of a button:
+
+```xhtml
+<p:speedDial showIcon="pi pi-bars" hideIcon="pi pi-times">
+    //menuitems
+</p:speedDial>
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.SpeedDial_
 
@@ -145,8 +156,8 @@ structural style classes:
 
 | Class | Applies |
 | --- | --- |
-.ui-speeddial | Container element.
-.ui-speeddial-button | Button element of speeddial.
-.ui-speeddial-mask | Mask element of speeddial.
-.ui-speeddial-list | List of the actions.
-.ui-speeddial-item | Each action item of list.
+.p-speeddial | Container element.
+.p-speeddial-button | Button element of speeddial.
+.p-speeddial-mask | Mask element of speeddial.
+.p-speeddial-list | List of the actions.
+.p-speeddial-item | Each action item of list.

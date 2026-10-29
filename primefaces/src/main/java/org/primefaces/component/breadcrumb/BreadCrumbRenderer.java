@@ -70,11 +70,9 @@ public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
-            String icon = component.getHomeIcon();
             String iconStyleClass = getStyleClassBuilder(context)
-                        .add("ui-breadcrumb-home-icon")
-                        .add(icon)
-                        .add(isOnlyHomeIcon && component.isLastItemDisabled(), "ui-state-disabled")
+                        .add(BreadCrumb.HOME_ICON_CLASS)
+                        .add(isOnlyHomeIcon && component.isLastItemDisabled(), "p-state-disabled")
                         .build();
             MenuItem home = ((MenuItem) menuElements.get(0));
             home.setStyleClass(iconStyleClass);
@@ -169,7 +167,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
         String styleClass = getStyleClassBuilder(context)
                     .add(BreadCrumb.MENUITEM_LINK_CLASS)
                     .add(menuItem.getStyleClass())
-                    .add("ui-state-disabled")
+                    .add("p-state-disabled")
                     .build();
 
         writer.startElement("span", null); // outer span

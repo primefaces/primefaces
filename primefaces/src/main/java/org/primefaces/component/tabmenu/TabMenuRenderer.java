@@ -55,7 +55,7 @@ public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
         String clientId = component.getClientId(context);
         String styleClass = getStyleClassBuilder(context)
                 .add(TabMenu.CONTAINER_CLASS)
-                .add("ui-tabs-" + component.getOrientation())
+                .add("p-tabs-" + component.getOrientation())
                 .add(component.getStyleClass())
                 .build();
         int activeIndex = component.getActiveIndex();
@@ -95,9 +95,9 @@ public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
         String containerStyleClass = getStyleClassBuilder(context)
                 .add(item.getContainerStyleClass())
                 .add(active, TabMenu.ACTIVE_TAB_HEADER_CLASS, TabMenu.INACTIVE_TAB_HEADER_CLASS)
-                .add(item.isDisabled(), "ui-state-disabled", "ui-state-default")
-                .add(item.getIcon() != null, "ui-tabmenuitem-hasicon")
-                .add(item.getBadge() != null, "ui-overlay-badge")
+                .add(item.isDisabled(), "p-state-disabled", "p-state-default")
+                .add(item.getIcon() != null, "p-tabmenuitem-hasicon")
+                .add(item.getBadge() != null, "p-overlay-badge")
                 .build();
 
         //header container

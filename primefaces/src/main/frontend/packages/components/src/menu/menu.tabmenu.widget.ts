@@ -25,7 +25,7 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.items = this.jq.find('> .ui-tabmenu-nav > li:not(.ui-state-disabled)');
+        this.items = this.jq.find('> .p-tabmenu-nav > li:not(.p-state-disabled)');
 
         this.bindEvents();
         this.bindKeyEvents();
@@ -37,12 +37,12 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
     private bindEvents(): void {
         this.items.on('mouseover.tabmenu', function() {
             const element = $(this);
-                if(!element.hasClass('ui-state-active')) {
-                    element.addClass('ui-state-hover');
+                if(!element.hasClass('p-state-active')) {
+                    element.addClass('p-state-hover');
                 }
             })
             .on('mouseout.tabmenu', function() {
-                $(this).removeClass('ui-state-hover');
+                $(this).removeClass('p-state-hover');
             });
     }
 
@@ -54,10 +54,10 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
         this.items.attr('tabindex', 0);
 
         this.items.on('focus.tabmenu', function() {
-            $(this).addClass('ui-menuitem-outline');
+            $(this).addClass('p-menuitem-outline');
         })
         .on('blur.tabmenu', function() {
-            $(this).removeClass('ui-menuitem-outline');
+            $(this).removeClass('p-menuitem-outline');
         })
         .on('keydown.tabmenu', function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {

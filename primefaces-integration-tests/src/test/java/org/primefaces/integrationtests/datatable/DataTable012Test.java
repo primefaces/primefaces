@@ -87,7 +87,7 @@ class DataTable012Test extends AbstractDataTableTest {
 
         // Act - descending
         PrimeSelenium.guardAjax(Objects.requireNonNull(dataTable.getHeader().getCell("Name").orElse(null)).getWebElement()
-                    .findElement(By.className("ui-column-title"))).click();
+                    .findElement(By.className("p-column-title"))).click();
 
         // Assert - descending
         Collections.reverse(langsSorted);

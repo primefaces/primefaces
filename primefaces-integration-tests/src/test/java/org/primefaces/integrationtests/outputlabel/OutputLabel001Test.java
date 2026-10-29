@@ -237,7 +237,7 @@ class OutputLabel001Test extends AbstractPrimePageTest {
 
     private boolean hasAriaHiddenRequiredIndicator(OutputLabel label) {
         try {
-            WebElement indicator = label.findElement(By.className("ui-outputlabel-rfi"));
+            WebElement indicator = label.findElement(By.className("p-outputlabel-rfi"));
             return "true".equals(indicator.getDomAttribute("aria-hidden"));
         }
         catch (NoSuchElementException e) {

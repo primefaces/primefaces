@@ -75,10 +75,10 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCh
 
         String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
-                .add("ui-selectbooleancheckbox")
+                .add("p-selectbooleancheckbox")
                 .add(HTML.CHECKBOX_CLASS)
                 .add(component.getStyleClass())
-                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.isReadonly(), "p-state-readonly")
                 .build();
 
         writer.startElement("div", component);
@@ -132,7 +132,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCh
         String styleClass = createStyleClass(component, null, HTML.CHECKBOX_BOX_CLASS);
         styleClass = getStyleClassBuilder(context)
                 .add(styleClass)
-                .add(checked, "ui-state-active")
+                .add(checked, "p-state-active")
                 .build();
 
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
@@ -155,7 +155,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCh
 
             writer.startElement("span", null);
             String styleClass = HTML.CHECKBOX_LABEL_CLASS;
-            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            styleClass = disabled ? styleClass + " p-state-disabled" : styleClass;
             writer.writeAttribute("class", styleClass, null);
 
             if (component.isEscape()) {

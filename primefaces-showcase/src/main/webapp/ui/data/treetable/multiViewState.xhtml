@@ -28,7 +28,7 @@
                                  update="@form" styleClass="mb-3" />
 
                 <p:treeTable widgetVar="treeTable" value="#{ttMultiViewStateView.root}" var="document"
-                                styleClass="ui-fluid" multiViewState="true">
+                                styleClass="p-fluid" multiViewState="true">
                     <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains"
                               sortBy="#{document.name}">
                         <h:outputText value="#{document.name}"/>

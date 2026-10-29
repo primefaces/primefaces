@@ -42,7 +42,7 @@ class InputText002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("InputText: Test floating label empty field does not have class 'ui-state-filled' but has 'ui-state-hover' ")
+    @DisplayName("InputText: Test floating label empty field does not have class 'p-state-filled' but has 'p-state-hover' ")
     void emptyField(Page page) {
         // Arrange
         InputText inputText = page.inputtext;
@@ -55,14 +55,14 @@ class InputText002Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
         assertEquals("FillMe*", inputText.getAssignedLabelText());
         assertEquals("", inputText.getValue());
-        assertCss(inputText, "ui-inputfield", "ui-inputtext", "ui-state-hover", "ui-state-focus");
+        assertCss(inputText, "p-inputfield", "p-inputtext", "p-state-hover", "p-state-focus");
 
         assertEquals(0, messages.getAllMessages().size());
     }
 
     @Test
     @Order(2)
-    @DisplayName("InputText: Test input with data has class 'ui-state-filled'")
+    @DisplayName("InputText: Test input with data has class 'p-state-filled'")
     void filledField(Page page) {
         // Arrange
         InputText inputText = page.inputtext;
@@ -76,7 +76,7 @@ class InputText002Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
         assertEquals("FillMe*", inputText.getAssignedLabelText());
         assertEquals("filled", inputText.getValue());
-        assertCss(inputText, "ui-inputfield", "ui-inputtext", "ui-state-filled");
+        assertCss(inputText, "p-inputfield", "p-inputtext", "p-state-filled");
         assertEquals(0, messages.getAllMessages().size());
     }
 
@@ -98,7 +98,7 @@ class InputText002Test extends AbstractPrimePageTest {
         assertEquals(1, messages.getAllMessages().size());
         Msg msg = messages.getAllMessages().get(0);
         assertEquals(Severity.ERROR, msg.getSeverity());
-        assertCss(inputText, "ui-state-error", "ui-inputtext");
+        assertCss(inputText, "p-state-error", "p-inputtext");
         assertEquals("InputText is required!", msg.getSummary());
         assertEquals("InputText is required!", msg.getDetail());
     }

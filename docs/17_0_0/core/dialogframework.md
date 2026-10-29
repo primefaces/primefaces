@@ -182,7 +182,7 @@ The trigger component needs to have _dialogReturn_ ajax behavior event to hook-i
         <p:dataTable var="car" value="#{tableBean.cars}">
             //columns
             <p:column headerText="Select">
-                <p:commandButton icon="ui-icon-search" action="#{tableBean.selectCarFromDialog(car)}" />
+                <p:commandButton icon="pi pi-search" action="#{tableBean.selectCarFromDialog(car)}" />
             </p:column>
         </p:dataTable>
     </h:body>

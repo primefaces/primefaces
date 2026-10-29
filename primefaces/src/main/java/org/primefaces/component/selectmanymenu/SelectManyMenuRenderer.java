@@ -183,7 +183,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
         boolean disabled = option.isDisabled() || component.isDisabled();
-        String itemClass = disabled ? SelectManyMenu.ITEM_CLASS + " ui-state-disabled" : SelectManyMenu.ITEM_CLASS;
+        String itemClass = disabled ? SelectManyMenu.ITEM_CLASS + " p-state-disabled" : SelectManyMenu.ITEM_CLASS;
 
         Object valuesArray;
         Object itemValue;
@@ -202,7 +202,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         }
 
         if (selected) {
-            itemClass = itemClass + " ui-state-highlight";
+            itemClass = itemClass + " p-state-highlight";
         }
 
         if (customContent) {
@@ -330,7 +330,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         ResponseWriter writer = context.getResponseWriter();
         String id = component.getClientId(context) + "_filter";
         boolean disabled = component.isDisabled();
-        String filterClass = disabled ? SelectManyMenu.FILTER_CLASS + " ui-state-disabled" : SelectManyMenu.FILTER_CLASS;
+        String filterClass = disabled ? SelectManyMenu.FILTER_CLASS + " p-state-disabled" : SelectManyMenu.FILTER_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectManyMenu.FILTER_CONTAINER_CLASS, null);

@@ -62,12 +62,12 @@ class SelectManyMenuRendererTest {
         FacesContext context = new FacesContextMock(writer);
 
         SelectManyMenu menu = selectManyMenu();
-        menu.setAdvancedStyleClass("ui-table-striped");
+        menu.setAdvancedStyleClass("p-table-striped");
 
         new SelectManyMenuRenderer().encodeList(context, menu, selectItems());
 
         String html = writer.toString();
-        assertTrue(html.contains("class=\"" + SelectManyMenu.LIST_CLASS + " ui-table-striped\""), html);
+        assertTrue(html.contains("class=\"" + SelectManyMenu.LIST_CLASS + " p-table-striped\""), html);
     }
 
     @Test

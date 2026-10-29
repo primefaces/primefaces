@@ -226,10 +226,10 @@ class Theming003Test extends AbstractThemingTest {
         @FindBy(id = "form:inputNormal")
         WebElement inputNormal;
 
-        @FindBy(css = "[id='form:dialog'] .ui-dialog-titlebar-close .ui-icon-closethick")
+        @FindBy(css = "[id='form:dialog'] .p-dialog-titlebar-close .p-dialog-close-icon")
         WebElement dialogCloseIcon;
 
-        @FindBy(css = "[id='form:messages'] .ui-messages-close .ui-icon-close")
+        @FindBy(css = "[id='form:messages'] .p-messages-close .p-messages-close-icon")
         WebElement messagesCloseIcon;
 
         @Override

@@ -39,15 +39,15 @@ public class Steps extends StepsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Steps";
 
-    public static final String CONTAINER_CLASS = "ui-steps ui-widget";
-    public static final String READONLY_CONTAINER_CLASS = "ui-steps ui-steps-readonly ui-widget";
-    public static final String INACTIVE_ITEM_CLASS = "ui-steps-item ui-state-default ui-state-disabled";
-    public static final String ACTIVE_ITEM_CLASS = "ui-steps-item ui-state-highlight";
-    public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default";
-    public static final String EXECUTABLE_ITEM_CLASS = "ui-steps-item-executable";
-    public static final String STEP_NUMBER_CLASS = "ui-steps-number";
-    public static final String STEP_NUMBER_ICON_CLASS = "ui-steps-number-icon";
-    public static final String STEP_TITLE_CLASS = "ui-steps-title";
+    public static final String CONTAINER_CLASS = "p-steps p-widget";
+    public static final String READONLY_CONTAINER_CLASS = "p-steps p-steps-readonly p-widget";
+    public static final String INACTIVE_ITEM_CLASS = "p-steps-item p-state-default p-state-disabled";
+    public static final String ACTIVE_ITEM_CLASS = "p-steps-item p-state-highlight";
+    public static final String VISITED_ITEM_CLASS = "p-steps-item p-state-default";
+    public static final String EXECUTABLE_ITEM_CLASS = "p-steps-item-executable";
+    public static final String STEP_NUMBER_CLASS = "p-steps-number";
+    public static final String STEP_NUMBER_ICON_CLASS = "p-steps-number-icon";
+    public static final String STEP_TITLE_CLASS = "p-steps-title";
 
     @Override
     public void processDecodes(FacesContext context) {

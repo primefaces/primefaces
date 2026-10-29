@@ -79,8 +79,8 @@ public class SignatureRenderer extends InputRenderer<Signature> {
                 .add(Signature.STYLE_CLASS)
                 .add(component.getStyleClass())
                 .add(component.isReadonly(), Signature.READONLY_STYLE_CLASS)
-                .add(component.isDisabled(), "ui-state-disabled")
-                .add(!component.isValid(), "ui-state-error")
+                .add(component.isDisabled(), "p-state-disabled")
+                .add(!component.isValid(), "p-state-error")
                 .build();
 
         writer.startElement("div", null);

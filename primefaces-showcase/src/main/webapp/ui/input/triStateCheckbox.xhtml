@@ -5,6 +5,16 @@
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style>
+            /* the state icons are tokens: here for one checkbox, in :root for all */
+            .custom-icons-tristate {
+                --p-checkbox-checked-icon: var(--p-icon-plus);
+                --p-checkbox-crossed-icon: var(--p-icon-minus);
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="title">
         TriStateCheckbox
     </ui:define>
@@ -31,7 +41,7 @@
                 </p:triStateCheckbox>
 
                 <h5>Custom Icons and Label</h5>
-                <p:triStateCheckbox value="#{triStateCheckboxView.value3}" stateTwoIcon="pi pi-plus" stateThreeIcon="pi pi-minus" itemLabel="Custom Icons"/>
+                <p:triStateCheckbox value="#{triStateCheckboxView.value3}" styleClass="custom-icons-tristate" itemLabel="Custom Icons"/>
             </h:form>
         </div>
     </ui:define>
