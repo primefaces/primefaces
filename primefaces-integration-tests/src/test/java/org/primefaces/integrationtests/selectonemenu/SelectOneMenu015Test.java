@@ -31,12 +31,15 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,8 +52,8 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false arrow keys only highlight options")
-    void arrowKeys(Page page) {
+    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false arrow down only focuses options")
+    void arrowDown(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         assertEquals("Lewis", selectOneMenu.getSelectedLabel());
@@ -60,14 +63,16 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(selectOneMenu.getPanel()));
 
         // Assert - the panel opens without changing the value
-        assertHighlighted(selectOneMenu, "Lewis");
+        assertNotFocused(selectOneMenu, "Lewis");
+        assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
 
         // Act - arrow key in the open panel
         selectOneMenu.getFilterInput().sendKeys(Keys.ARROW_DOWN);
 
-        // Assert - the next option is highlighted, the label still shows the selected option
-        assertHighlighted(selectOneMenu, "Max");
+        // Assert - the next option gets the focus, the selected option keeps its highlight and the label
+        assertFocused(selectOneMenu, "Max");
+        assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
 
         // Act
@@ -75,13 +80,41 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(selectOneMenu.getPanel()));
 
         // Assert
+        assertNoFocusedItem(selectOneMenu);
+        assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false filter only highlights, enter selects")
+    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false arrow up only focuses options")
+    void arrowUp(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Act - arrow key on the closed menu
+        selectOneMenu.getLabel().sendKeys(Keys.ARROW_UP);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(selectOneMenu.getPanel()));
+
+        // Assert - the panel opens without changing the value
+        assertNotFocused(selectOneMenu, "Lewis");
+        assertSelected(selectOneMenu, "Lewis");
+        assertUnchanged(page);
+
+        // Act - arrow key in the open panel
+        selectOneMenu.getFilterInput().sendKeys(Keys.ARROW_UP);
+
+        // Assert
+        assertFocused(selectOneMenu, "Select a driver");
+        assertSelected(selectOneMenu, "Lewis");
+        assertUnchanged(page);
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false filter only focuses, enter selects")
     void filter(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
@@ -91,20 +124,23 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
         ComponentUtils.sendKeys(selectOneMenu.getFilterInput(), "Char");
 
         // Assert
-        assertHighlighted(selectOneMenu, "Charles");
+        assertFocused(selectOneMenu, "Charles");
+        assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
 
         // Act
         PrimeSelenium.guardAjax(selectOneMenu.getFilterInput()).sendKeys(Keys.ENTER);
 
         // Assert
+        assertNotFocused(selectOneMenu, "Charles");
+        assertSelected(selectOneMenu, "Charles");
         assertChanged(page, "Charles", "3");
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
-    @Order(3)
-    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false typing only highlights, tab selects")
+    @Order(4)
+    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false typing only focuses, tab selects")
     void typeAhead(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
@@ -113,20 +149,65 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
         selectOneMenu.getLabel().sendKeys("m");
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(selectOneMenu.getPanel()));
 
-        // Assert - the panel opens with the match highlighted, without changing the value
-        assertHighlighted(selectOneMenu, "Max");
+        // Assert - the panel opens with the match focused, without changing the value
+        assertFocused(selectOneMenu, "Max");
+        assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
 
         // Act
         PrimeSelenium.guardAjax(selectOneMenu.getFilterInput()).sendKeys(Keys.TAB);
 
         // Assert
+        assertNotFocused(selectOneMenu, "Max");
+        assertSelected(selectOneMenu, "Max");
         assertChanged(page, "Max", "2");
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
-    private void assertHighlighted(SelectOneMenu selectOneMenu, String label) {
-        assertEquals(label, selectOneMenu.getItems().findElement(By.cssSelector("li.ui-state-highlight")).getText());
+    @Test
+    @Order(5)
+    @DisplayName("SelectOneMenu: GitHub #14107 selectOnFocus=false click outside keeps the selected option")
+    void clickOutside(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        selectOneMenu.getLabel().sendKeys(Keys.ARROW_DOWN);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(selectOneMenu.getPanel()));
+        selectOneMenu.getFilterInput().sendKeys(Keys.ARROW_DOWN);
+        assertFocused(selectOneMenu, "Max");
+
+        // Act
+        page.outside.click();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(selectOneMenu.getPanel()));
+
+        // Assert
+        assertNotFocused(selectOneMenu, "Lewis");
+        assertSelected(selectOneMenu, "Lewis");
+        assertUnchanged(page);
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    private void assertFocused(SelectOneMenu selectOneMenu, String label) {
+        WebElement focused = selectOneMenu.getItems().findElement(By.cssSelector("li.p-state-focus"));
+        assertEquals(label, focused.getDomAttribute("data-label"));
+        assertEquals(focused.getDomAttribute("id"), selectOneMenu.getLabel().getDomAttribute("aria-activedescendant"));
+    }
+
+    private void assertNotFocused(SelectOneMenu selectOneMenu, String activeLabel) {
+        assertNoFocusedItem(selectOneMenu);
+        String activeId = selectOneMenu.getLabel().getDomAttribute("aria-activedescendant");
+        assertEquals(activeLabel, selectOneMenu.getItems().findElement(By.id(activeId)).getDomAttribute("data-label"));
+    }
+
+    private void assertNoFocusedItem(SelectOneMenu selectOneMenu) {
+        assertTrue(selectOneMenu.getItems().findElements(By.cssSelector("li.p-state-focus")).isEmpty());
+    }
+
+    private void assertSelected(SelectOneMenu selectOneMenu, String label) {
+        WebElement selected = selectOneMenu.getItems().findElement(By.cssSelector("li.p-state-highlight"));
+        assertEquals(label, selected.getDomAttribute("data-label"));
+        List<WebElement> ariaSelected = selectOneMenu.getItems().findElements(By.cssSelector("li[aria-selected='true']"));
+        assertEquals(1, ariaSelected.size());
+        assertEquals(selected.getDomAttribute("id"), ariaSelected.get(0).getDomAttribute("id"));
     }
 
     private void assertUnchanged(Page page) {
@@ -156,6 +237,9 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:selectonemenu")
         SelectOneMenu selectOneMenu;
+
+        @FindBy(id = "outside")
+        WebElement outside;
 
         @Override
         public String getLocation() {

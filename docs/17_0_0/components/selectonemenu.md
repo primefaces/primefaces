@@ -67,9 +67,10 @@ function customFilter(itemLabel, filterValue) {
 ## Keyboard Navigation
 By default the option that gets the focus while navigating with the keyboard is selected: with a closed overlay, the arrow
 keys and typing the first letters of an option change the value right away, and with an open overlay the label shows the
-highlighted option. Set `selectOnFocus` to `false` to only highlight options while navigating and filtering. The arrow
-keys and typing then open the overlay, the label keeps showing the selected option, and the value only changes when an
-option is selected with `enter`, `tab` or a click. `escape` closes the overlay without changing the value.
+highlighted option. Set `selectOnFocus` to `false` to only move the focus while navigating and filtering. The arrow
+keys and typing then open the overlay, and the focused option gets the `p-state-focus` style class. The selected option
+keeps its highlight, `aria-selected` and the label, and the value only changes when an option is selected with `enter`,
+`tab` or a click. `escape` and a click outside close the overlay without changing the value.
 
 ```xhtml
 <p:selectOneMenu value="#{bean.selectedOption}" filter="true" selectOnFocus="false">

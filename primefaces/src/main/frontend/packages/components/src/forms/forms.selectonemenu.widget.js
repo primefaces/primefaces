@@ -83,7 +83,7 @@
  * @prop {string} cfg.labelTemplate Displays label of the element in a custom template. Valid placeholder is `{0}`,
  * which is replaced with the value of the currently selected item.
  * @prop {boolean} cfg.selectOnFocus `true` if the option that gets the focus while navigating with the keyboard is
- * selected, or `false` if it is only highlighted until it is selected with enter, tab or click.
+ * selected, or `false` if it only gets the focus until it is selected with enter, tab or click.
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
  * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
@@ -557,19 +557,49 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * Highlight the given selectable option.
      * @private
      * @param {JQuery} item Option to highlight.
-     * @param {boolean} [keepLabel] `true` to keep the label of the selected option, or `false` to show the label of the
-     * highlighted option.
      */
-    highlightItem(item, keepLabel) {
+    highlightItem(item) {
         this.items.attr('aria-selected', false);
-        this.items.filter('.p-state-highlight').removeClass('p-state-highlight');
+        this.items.filter('.p-state-highlight, .p-state-focus').removeClass('p-state-highlight p-state-focus');
 
         if(item.length > 0) {
             item.addClass('p-state-highlight');
             item.attr('aria-selected', true);
-            if(!keepLabel) {
-                this.setLabel(item.data('label'));
-            }
+            this.setLabel(item.data('label'));
+        }
+    }
+
+    /**
+     * Moves the focus to the given option while navigating with the keyboard or filtering. With `selectOnFocus` the
+     * option is highlighted as the selected one. Otherwise it only gets the focus, and the selected option keeps its
+     * highlight, `aria-selected` and the label until an option is selected.
+     * @private
+     * @param {JQuery} item Option to focus.
+     */
+    focusItem(item) {
+        if(this.cfg.selectOnFocus) {
+            this.highlightItem(item);
+        }
+        else {
+            this.items.filter('.p-state-focus').removeClass('p-state-focus');
+            item.addClass('p-state-focus');
+        }
+    }
+
+    /**
+     * Callback for an option found by typing on the closed menu. Selects the option with `selectOnFocus`, otherwise
+     * brings up the overlay panel with the option focused.
+     * @private
+     * @param {JQuery} item The option that was found.
+     */
+    focusOrSelectItem(item) {
+        if(this.cfg.selectOnFocus) {
+            this.selectItem(item);
+        }
+        else {
+            this.focusItem(item);
+            this.changeAriaValue(item);
+            this.show();
         }
     }
 
@@ -710,19 +740,13 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 var matchIndex = matchedOptions[0].index;
                 if ($this.panel.is(':hidden')) {
                     $this.callHandleMethod(function() {
-                        var highlightItem = $this.items.eq(matchIndex);
-                        if ($this.cfg.selectOnFocus) {
-                            $this.selectItem(highlightItem);
-                        }
-                        else {
-                            $this.highlightItem(highlightItem, true);
-                            $this.show();
-                        }
+                        $this.focusOrSelectItem($this.items.eq(matchIndex));
                     }, e);
                 }
                 else {
                     var highlightItem = $this.items.eq(matchIndex);
-                    $this.highlightItem(highlightItem, !$this.cfg.selectOnFocus);
+                    $this.focusItem(highlightItem);
+                    $this.changeAriaValue(highlightItem);
                     PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                 }
             } else {
@@ -733,13 +757,14 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 if (matchedOptions.length) {
                     $this.callHandleMethod(function() {
                         var selectedIndex = -1;
+                        var activeItem = $this.getActiveItem();
 
                         // is current selection one of our matches?
                         matchedOptions.each(function() {
                             var option = $(this);
                             var currentIndex = option[0].index;
                             var currentItem = $this.items.eq(currentIndex);
-                            if (currentItem.hasClass('p-state-highlight')) {
+                            if (currentItem.is(activeItem)) {
                                 selectedIndex = currentIndex;
                                 return false;
                             }
@@ -753,16 +778,11 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                             // select next item after the current selection
                             if (currentIndex > selectedIndex) {
                                 if ($this.panel.is(':hidden')) {
-                                    if ($this.cfg.selectOnFocus) {
-                                        $this.selectItem(currentItem);
-                                    }
-                                    else {
-                                        $this.highlightItem(currentItem, true);
-                                        $this.show();
-                                    }
+                                    $this.focusOrSelectItem(currentItem);
                                 }
                                 else {
-                                    $this.highlightItem(currentItem, !$this.cfg.selectOnFocus);
+                                    $this.focusItem(currentItem);
+                                    $this.changeAriaValue(currentItem);
                                     PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
                                 }
                                 return false;
@@ -884,7 +904,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 this.selectItem(next);
             }
             else {
-                this.highlightItem(next, !this.cfg.selectOnFocus);
+                this.focusItem(next);
                 PrimeFaces.scrollInView(this.itemsWrapper, next);
             }
             this.changeAriaValue(next);
@@ -928,7 +948,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 this.selectItem(prev);
             }
             else {
-                this.highlightItem(prev, !this.cfg.selectOnFocus);
+                this.focusItem(prev);
                 PrimeFaces.scrollInView(this.itemsWrapper, prev);
             }
             this.changeAriaValue(prev);
@@ -1059,6 +1079,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
             this.searchValue = '';
+            this.items.filter('.p-state-focus').removeClass('p-state-focus');
 
             this.transition.hide({
                 onExit: function() {
@@ -1303,11 +1324,13 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     }
 
     /**
-     * Finds the element for the currently select option of this select one menu.
-     * @return {JQuery} The DOM element that represents the currently selected option.
+     * Finds the element for the currently active option of this select one menu: the option that got the focus while
+     * navigating when `selectOnFocus` is disabled, otherwise the selected option.
+     * @return {JQuery} The DOM element that represents the currently active option.
      */
     getActiveItem() {
-        return this.items.filter('.p-state-highlight');
+        var focusedItem = this.items.filter('.p-state-focus');
+        return focusedItem.length ? focusedItem : this.items.filter('.p-state-highlight');
     }
 
     /**
@@ -1430,7 +1453,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         var firstVisibleItem = this.items.filter(':visible:not(.p-state-disabled):first');
         if(firstVisibleItem.length) {
-            this.highlightItem(firstVisibleItem, !this.cfg.selectOnFocus);
+            this.focusItem(firstVisibleItem);
+            this.changeAriaValue(firstVisibleItem);
             PrimeFaces.scrollInView(this.itemsWrapper, firstVisibleItem);
         }
 
