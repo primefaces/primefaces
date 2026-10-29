@@ -364,6 +364,17 @@
     </build>
 
     <profiles>
+        <!-- Quick build for developers which skips many build steps for speed (primefaces/pom.xml adds its own skips) -->
+        <profile>
+            <id>quick</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+                <maven.source.skip>true</maven.source.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <license.skip>true</license.skip>
+            </properties>
+        </profile>
         <profile>
             <id>release</id>
             <properties>
