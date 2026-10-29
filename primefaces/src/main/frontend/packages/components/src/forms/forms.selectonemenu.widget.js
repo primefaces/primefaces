@@ -1008,6 +1008,9 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         var $this = this;
 
         if (this.transition) {
+            //value before panel is shown, set before the transition as items are clickable during the fade-in
+            this.preShowValue = this.options.filter(':selected');
+
             this.transition.show({
                 onEnter: function() {
                     PrimeFaces.nextZindex($this.panel);
@@ -1016,8 +1019,6 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 onEntered: function() {
                     $this.bindPanelEvents();
 
-                    //value before panel is shown
-                    $this.preShowValue = $this.options.filter(':selected');
                     $this.keyboardTarget.attr('aria-expanded', true);
 
                     PrimeFaces.scrollInView($this.itemsWrapper, $this.getActiveItem());
