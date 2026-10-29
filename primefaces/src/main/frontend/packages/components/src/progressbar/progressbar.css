@@ -84,18 +84,12 @@
     }
 }
 
+/*
+ * the bars span the track and move / grow by transform (translateX = left edge, scaleX = width, both in % of the
+ * track): unlike left / right this runs on the compositor, without style, layout and paint in every frame
+ */
 .p-progressbar-indeterminate .p-progressbar-value {
-    &::before {
-        content: '';
-        position: absolute;
-        background-color: inherit;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        will-change: left, right;
-        animation: p-progressbar-indeterminate-anim 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-    }
-
+    &::before,
     &::after {
         content: '';
         position: absolute;
@@ -103,7 +97,18 @@
         top: 0;
         left: 0;
         bottom: 0;
-        will-change: left, right;
+        width: 100%;
+        transform-origin: left center;
+        /* no bar before the animation starts (the delay of ::after) */
+        transform: scaleX(0);
+        will-change: transform;
+    }
+
+    &::before {
+        animation: p-progressbar-indeterminate-anim 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+    }
+
+    &::after {
         animation: p-progressbar-indeterminate-anim-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
         animation-delay: 1.15s;
     }
@@ -112,7 +117,7 @@
        bar shows that something is going on */
     @media (prefers-reduced-motion: reduce) {
         &::before {
-            right: 0;
+            transform: none;
             animation: none;
             opacity: 0.5;
         }
@@ -123,32 +128,28 @@
     }
 }
 
+/* left -35% -> 100%, width 35% -> 90% */
 @keyframes p-progressbar-indeterminate-anim {
     0% {
-        left: -35%;
-        right: 100%;
+        transform: translateX(-35%) scaleX(0.35);
     }
     60% {
-        left: 100%;
-        right: -90%;
+        transform: translateX(100%) scaleX(0.9);
     }
     100% {
-        left: 100%;
-        right: -90%;
+        transform: translateX(100%) scaleX(0.9);
     }
 }
 
+/* left -200% -> 107%, width 200% -> 1% */
 @keyframes p-progressbar-indeterminate-anim-short {
     0% {
-        left: -200%;
-        right: 100%;
+        transform: translateX(-200%) scaleX(2);
     }
     60% {
-        left: 107%;
-        right: -8%;
+        transform: translateX(107%) scaleX(0.01);
     }
     100% {
-        left: 107%;
-        right: -8%;
+        transform: translateX(107%) scaleX(0.01);
     }
 }
