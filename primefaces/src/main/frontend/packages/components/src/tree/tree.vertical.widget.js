@@ -32,7 +32,6 @@
  * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseTreeCfg} cfg
  *
- * @prop {string} cfg.collapsedIcon Named of the icon for collapsed nodes.
  * @prop {boolean} cfg.controlled Whether drag & drop operations of this tree table are controlled.
  * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} cfg.dropRestrict Defines parent-child restrictions when a node is
  * dropped.
@@ -50,9 +49,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     init(cfg) {
         super.init(cfg);
 
-        this.container = this.jq.children('.ui-tree-container');
-        this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
-        this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
+        this.container = this.jq.children('.p-tree-container');
+        this.cfg.rtl = this.jq.hasClass('p-tree-rtl');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
 
         if(!this.cfg.disabled) {
@@ -75,15 +73,15 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     bindEvents() {
         var $this = this,
-        togglerSelector = '.ui-tree-toggler',
-        nodeContentSelector = '.ui-treenode-content';
+        togglerSelector = '.p-tree-toggler',
+        nodeContentSelector = '.p-treenode-content';
 
         this.jq.off('click.tree-toggle', togglerSelector)
                     .on('click.tree-toggle', togglerSelector, null, function(e) {
                         var toggleIcon = $(this),
                         node = toggleIcon.closest('li');
 
-                        if(toggleIcon.hasClass($this.cfg.collapsedIcon))
+                        if(node.attr('aria-expanded') !== 'true')
                             $this.expandNode(node);
                         else
                             $this.collapseNode(node);
@@ -92,22 +90,22 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         if(this.cfg.highlight && this.cfg.selectionMode) {
             this.jq.off('mouseenter.tree mouseleave.tree', nodeContentSelector)
                         .on('mouseleave.tree', nodeContentSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
+                            $(this).removeClass('p-state-hover');
                         })
                         .on('mouseenter.tree', nodeContentSelector, null, function() {
-                            $(this).addClass('ui-state-hover');
+                            $(this).addClass('p-state-hover');
                         });
         }
 
         if(this.isCheckboxSelection()) {
-            var checkboxSelector = '.ui-chkbox-box:not(.ui-state-disabled)';
+            var checkboxSelector = '.p-chkbox-box:not(.p-state-disabled)';
 
             this.jq.off('mouseleave.tree-checkbox mouseenter.tree-checkbox', checkboxSelector)
                         .on('mouseleave.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
+                            $(this).removeClass('p-state-hover');
                         })
                         .on('mouseenter.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).addClass('ui-state-hover');
+                            $(this).addClass('p-state-hover');
                         });
         }
 
@@ -125,7 +123,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             }
             var filterEventName = this.cfg.filterEvent + '.tree-filter';
             
-            this.filterInput = this.jq.find('.ui-tree-filter');
+            this.filterInput = this.jq.find('.p-tree-filter');
             PrimeFaces.skinInput(this.filterInput);
 
             this.filterInput.on(filterEventName, function(e) {
@@ -157,17 +155,17 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         pressTab = false;
 
         this.jq.on('mousedown.tree', function(e) {
-            if($(e.target).is(':not(:input:enabled):not(.ui-treenode-label)')) {
+            if($(e.target).is(':not(:input:enabled):not(.p-treenode-label)')) {
                 e.preventDefault();
             }
         });
-        this.jq.children('.ui-tree-container').on('focus.tree', function() {
+        this.jq.children('.p-tree-container').on('focus.tree', function() {
             if(!$this.focusedNode && !pressTab) {
                 $this.focusNode($this.getFirstNode());
             }
         });
 
-        this.jq.off('keydown.tree blur.tree', '.ui-treenode-content').on('keydown.tree', '.ui-treenode-content', null, function(e) {
+        this.jq.off('keydown.tree blur.tree', '.p-treenode-content').on('keydown.tree', '.p-treenode-content', null, function(e) {
             if(!$this.focusedNode) {
                 return;
             }
@@ -198,7 +196,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 break;
 
                 case 'ArrowRight':
-                    if(!$this.focusedNode.hasClass('ui-treenode-leaf')) {
+                    if(!$this.focusedNode.hasClass('p-treenode-leaf')) {
                         var rowkey = $this.focusedNode.data('rowkey').toString(),
                         keyLength = rowkey.length;
 
@@ -224,7 +222,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                     prevNode = $this.previousNode($this.focusedNode);
 
                     if(prevNode.length) {
-                        nodeToFocus = prevNode.find('li.ui-treenode:visible:not(.ui-tree-droppoint)').last();
+                        nodeToFocus = prevNode.find('li.p-treenode:visible:not(.p-tree-droppoint)').last();
                         if(!nodeToFocus.length) {
                             nodeToFocus = prevNode;
                         }
@@ -242,7 +240,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
 
                 case 'ArrowDown':
                     var nodeToFocus = null,
-                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:not(.ui-tree-droppoint)").first();
+                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:not(.p-tree-droppoint)").first();
 
                     if(firstVisibleChildNode.length) {
                         nodeToFocus = firstVisibleChildNode;
@@ -269,7 +267,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 case 'NumpadEnter':
                 case 'Space':
                     if($this.cfg.selectionMode) {
-                        var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
+                        var selectable = $this.focusedNode.children('.p-treenode-content').hasClass('p-tree-selectable');
 
                         if($this.cfg.onNodeClick) {
                             var retVal = $this.cfg.onNodeClick.call($this, $this.focusedNode, e);
@@ -313,9 +311,9 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 break;
             }
         })
-        .on('blur.tree', '.ui-treenode-content', null, function(e) {
+        .on('blur.tree', '.p-treenode-content', null, function(e) {
             if($this.focusedNode) {
-                $this.getNodeContent($this.focusedNode).removeClass('ui-treenode-outline');
+                $this.getNodeContent($this.focusedNode).removeClass('p-treenode-outline');
                 $this.focusedNode = null;
             }
         });
@@ -340,7 +338,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     previousNode(node) {
         var prevNode = node.prev();
-        if (prevNode.length && (prevNode.hasClass("ui-tree-droppoint") || prevNode.hasClass("ui-treenode-hidden"))) {
+        if (prevNode.length && (prevNode.hasClass("p-tree-droppoint") || prevNode.hasClass("p-treenode-hidden"))) {
             prevNode = prevNode.prev();
         }
         return prevNode;
@@ -354,7 +352,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     nextNode(node) {
         var nextNode = node.next();
-        if (nextNode.length && (nextNode.hasClass("ui-tree-droppoint") || nextNode.hasClass("ui-treenode-hidden"))) {
+        if (nextNode.length && (nextNode.hasClass("p-tree-droppoint") || nextNode.hasClass("p-treenode-hidden"))) {
             nextNode = nextNode.next();
         }
         return nextNode;
@@ -373,7 +371,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         if(nextOfParent.length) {
             nodeToFocus = nextOfParent;
         }
-        else if(node.hasClass('ui-treenode-leaf') && node.closest('ul').parent('li').length == 0){
+        else if(node.hasClass('p-treenode-leaf') && node.closest('ul').parent('li').length == 0){
             nodeToFocus = node;
         }
         else {
@@ -394,17 +392,15 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     collapseNode(node) {
         var _self = this,
-        nodeContent = node.find('> .ui-treenode-content'),
-        toggleIcon = nodeContent.find('> .ui-tree-toggler'),
+        nodeContent = node.find('> .p-treenode-content'),
+        toggleIcon = nodeContent.find('> .p-tree-toggler'),
         nodeType = node.data('nodetype'),
-        nodeIcon = toggleIcon.nextAll('span.ui-treenode-icon'),
+        nodeIcon = toggleIcon.nextAll('span.p-treenode-icon'),
         iconState = this.cfg.iconStates[nodeType],
-        childrenContainer = node.children('.ui-treenode-children');
+        childrenContainer = node.children('.p-treenode-children');
 
         //aria
         node.attr('aria-expanded', false);
-
-        toggleIcon.removeClass('ui-icon-triangle-1-s').addClass(_self.cfg.collapsedIcon);
 
         if(iconState) {
             nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
@@ -445,7 +441,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @return {JQuery}
      */
     getNodeChildrenContainer(node) {
-        return node.children('.ui-treenode-children');
+        return node.children('.p-treenode-children');
     }
 
     /**
@@ -455,26 +451,24 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {JQuery} node
      */
     showNodeChildren(node) {
-        var nodeContent = node.find('> .ui-treenode-content'),
-        toggleIcon = nodeContent.find('> .ui-tree-toggler'),
+        var nodeContent = node.find('> .p-treenode-content'),
+        toggleIcon = nodeContent.find('> .p-tree-toggler'),
         nodeType = node.data('nodetype'),
-        nodeIcon = toggleIcon.nextAll('span.ui-treenode-icon'),
+        nodeIcon = toggleIcon.nextAll('span.p-treenode-icon'),
         iconState = this.cfg.iconStates[nodeType];
 
         //aria
         node.attr('aria-expanded', true);
-
-        toggleIcon.removeClass(this.cfg.collapsedIcon).addClass('ui-icon-triangle-1-s');
 
         if(iconState) {
             nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
         }
 
         if(this.cfg.animate) {
-            node.children('.ui-treenode-children').slideDown('fast');
+            node.children('.p-treenode-children').slideDown('fast');
         }
         else {
-            node.children('.ui-treenode-children').show();
+            node.children('.p-treenode-children').show();
         }
     }
 
@@ -484,8 +478,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     unselectAllNodes() {
         this.selections = [];
-        this.jq.find('.ui-treenode-content.ui-state-highlight').each(function() {
-            $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected');
+        this.jq.find('.p-treenode-content.p-state-highlight').each(function() {
+            $(this).removeClass('p-state-highlight').closest('.p-treenode').attr('aria-selected', false).removeClass('p-treenode-selected').addClass('p-treenode-unselected');
         });
     }
 
@@ -496,8 +490,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {boolean} [silent]
      */
     selectNode(node, silent) {
-        node.attr('aria-selected', true).removeClass('ui-treenode-unselected').addClass('ui-treenode-selected')
-            .find('> .ui-treenode-content').addClass('ui-state-highlight');
+        node.attr('aria-selected', true).removeClass('p-treenode-unselected').addClass('p-treenode-selected')
+            .find('> .p-treenode-content').addClass('p-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
         this.writeSelections();
@@ -515,8 +509,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
     unselectNode(node, silent) {
         var rowKey = this.getRowKey(node);
 
-        node.attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected')
-            .find('> .ui-treenode-content').removeClass('ui-state-highlight');
+        node.attr('aria-selected', false).removeClass('p-treenode-selected').addClass('p-treenode-unselected')
+            .find('> .p-treenode-content').removeClass('p-state-highlight');
 
         this.removeFromSelection(rowKey);
         this.writeSelections();
@@ -533,8 +527,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     toggleCheckboxNode(node) {
         var $this = this,
-        checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
-        checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
+        checkbox = node.find('> .p-treenode-content > .p-chkbox'),
+        checked = checkbox.find('> .p-chkbox-box > .p-chkbox-icon').hasClass('p-checkbox-checked-icon');
 
         if(this.cfg.propagateDown) {
             var skippedRowKeys = [];
@@ -542,17 +536,17 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
 
             // a non-selectable child can never be selected via its checkbox, so it must not keep its parent from
             // being fully selected, see #14798
-            var children = node.find('> .ui-treenode-children > .ui-treenode').filter(function() {
+            var children = node.find('> .p-treenode-children > .p-treenode').filter(function() {
                 return $this.isSelectableNode($(this));
             });
             if(checked) {
-                if(children.filter('.ui-treenode-unselected').length === children.length)
+                if(children.filter('.p-treenode-unselected').length === children.length)
                     $this.uncheck(checkbox);
                 else
                     $this.partialCheck(checkbox);
             }
             else {
-                if(children.filter('.ui-treenode-selected').length === children.length)
+                if(children.filter('.p-treenode-selected').length === children.length)
                     $this.check(checkbox);
                 else
                     $this.partialCheck(checkbox);
@@ -566,10 +560,10 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         }
 
         if(this.cfg.propagateUp) {
-            node.parents('li.ui-treenode-parent').each(function() {
+            node.parents('li.p-treenode-parent').each(function() {
                 var parentNode = $(this),
-                parentsCheckbox = parentNode.find('> .ui-treenode-content > .ui-chkbox'),
-                children = parentNode.find('> .ui-treenode-children > .ui-treenode').filter(function() {
+                parentsCheckbox = parentNode.find('> .p-treenode-content > .p-chkbox'),
+                children = parentNode.find('> .p-treenode-children > .p-treenode').filter(function() {
                     return $this.isSelectableNode($(this));
                 });
 
@@ -580,13 +574,13 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 }
 
                 if(checked) {
-                    if(children.filter('.ui-treenode-unselected').length === children.length)
+                    if(children.filter('.p-treenode-unselected').length === children.length)
                         $this.uncheck(parentsCheckbox);
                     else
                         $this.partialCheck(parentsCheckbox);
                 }
                 else {
-                    if(children.filter('.ui-treenode-selected').length === children.length)
+                    if(children.filter('.p-treenode-selected').length === children.length)
                         $this.check(parentsCheckbox);
                     else
                         $this.partialCheck(parentsCheckbox);
@@ -610,7 +604,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @return {JQuery}
      */
     getChildNodes(node) {
-        return node.find('> .ui-treenode-children > .ui-treenode:not(.ui-treenode-hidden)');
+        return node.find('> .p-treenode-children > .p-treenode:not(.p-treenode-hidden)');
     }
 
     /**
@@ -619,13 +613,13 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @inheritdoc
      */
     preselectCheckbox() {
-        this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
+        this.jq.find('.p-chkbox-icon').not('.p-checkbox-checked-icon').each(function() {
             var icon = $(this),
             node = icon.closest('li');
 
-            if(node.children('.ui-treenode-children').find('.ui-chkbox-icon.ui-icon-check').length > 0) {
-                node.addClass('ui-treenode-hasselected');
-                icon.removeClass('ui-icon-blank').addClass('ui-icon-minus');
+            if(node.children('.p-treenode-children').find('.p-chkbox-icon.p-checkbox-checked-icon').length > 0) {
+                node.addClass('p-treenode-hasselected');
+                icon.addClass('p-checkbox-indeterminate-icon');
             }
         });
     }
@@ -638,7 +632,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     check(checkbox) {
         super.check(checkbox);
-        checkbox.parent().addClass('ui-state-highlight');
+        checkbox.parent().addClass('p-state-highlight');
     }
 
     /**
@@ -649,7 +643,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     uncheck(checkbox) {
         super.uncheck(checkbox);
-        checkbox.parent().removeClass('ui-state-highlight');
+        checkbox.parent().removeClass('p-state-highlight');
     }
 
     /**
@@ -657,7 +651,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @private
      */
     initDraggable() {
-        this.makeDraggable(this.jq.find('.ui-treenode-content'));
+        this.makeDraggable(this.jq.find('.p-treenode-content'));
     }
 
     /**
@@ -665,8 +659,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @private
      */
     initDroppable() {
-        this.makeDropPoints(this.jq.find('li.ui-tree-droppoint'));
-        this.makeDropNodes(this.jq.find('.ui-treenode-droppable'));
+        this.makeDropPoints(this.jq.find('li.p-tree-droppoint'));
+        this.makeDropNodes(this.jq.find('.p-treenode-droppable'));
         this.initDropScrollers();
     }
 
@@ -686,7 +680,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                     source = PF($(element.data('dragsourceid')).data('widget')),
                     height = 20;
 
-                    if(source.cfg.multipleDrag && element.hasClass('ui-treenode-content') && element.hasClass('ui-state-highlight')) {
+                    if(source.cfg.multipleDrag && element.hasClass('p-treenode-content') && element.hasClass('p-state-highlight')) {
                         source.draggedSourceKeys = $this.findSelectedParentKeys(source.selections.slice());
                         height = 20 * (source.draggedSourceKeys.length || 1);
                     }
@@ -695,7 +689,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 }
             },
             helper: function() {
-                var el = $('<div class="ui-tree-draghelper ui-state-highlight"></div>');
+                var el = $('<div class="p-tree-draghelper p-state-highlight"></div>');
                 el.width($this.jq.width());
                 return el;
             },
@@ -721,15 +715,15 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         dragdropScope = this.cfg.dragdropScope||this.id;
 
         PrimeFaces.interactions.droppable(elements, {
-            hoverClass: 'ui-state-hover',
-            accept: '.ui-treenode-content',
+            hoverClass: 'p-state-hover',
+            accept: '.p-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
             drop: function(event, ui) {
                 var dragSource = PF($(ui.draggable.data('dragsourceid')).data('widget')),
                 dropSource = $this,
                 dropPoint = $(this),
-                dropNode = dropPoint.closest('li.ui-treenode-parent'),
+                dropNode = dropPoint.closest('li.p-treenode-parent'),
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
@@ -753,7 +747,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 for(var i = (draggedNodes.length - 1); i >= 0; i--) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
-                    dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
+                    dragNode = draggedNode.is('li.p-treenode') ? draggedNode : draggedNode.closest('li.p-treenode'),
                     dragNode = (isDroppedNodeCopy) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
 
@@ -786,7 +780,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                     return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
                 
-                var dndIndex = dropPoint.prevAll('li.ui-treenode').length;
+                var dndIndex = dropPoint.prevAll('li.p-treenode').length;
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
                     $this.fireDragDropEvent({
@@ -821,11 +815,11 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {boolean} transfer Whether a transfer should occur, i.e. whether the node was not dropped on itself.
      */
     onDropPoint(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer) {
-        var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
-        oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
+        var dragNodeDropPoint = targetDragNode.next('li.p-tree-droppoint'),
+        oldParentNode = targetDragNode.parent().closest('li.p-treenode-parent');
 
         ui.helper.remove();
-        dropPoint.removeClass('ui-state-hover');
+        dropPoint.removeClass('p-state-hover');
 
         var validDrop = this.validateDropPoint(dragNode, dropPoint);
         if(!validDrop) {
@@ -850,7 +844,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             dragNodeDropPoint.insertAfter(targetDragNode);
         }
 
-        if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
+        if(oldParentNode.length && (oldParentNode.find('> ul.p-treenode-children > li.p-treenode').length === 0)) {
             this.makeLeaf(oldParentNode);
         }
 
@@ -876,20 +870,20 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         dragdropScope = this.cfg.dragdropScope||this.id;
 
         PrimeFaces.interactions.droppable(elements, {
-            accept: '.ui-treenode-content',
+            accept: '.p-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
             over: function(event, ui) {
-                $(this).children('.ui-treenode-content').addClass('ui-state-hover');
+                $(this).children('.p-treenode-content').addClass('p-state-hover');
             },
             out: function(event, ui) {
-                $(this).children('.ui-treenode-content').removeClass('ui-state-hover');
+                $(this).children('.p-treenode-content').removeClass('p-state-hover');
             },
             drop: function(event, ui) {
                 var dragSource = PF($(ui.draggable.data('dragsourceid')).data('widget')),
                 dropSource = $this,
                 droppable = $(this),
-                dropNode = droppable.closest('li.ui-treenode'),
+                dropNode = droppable.closest('li.p-treenode'),
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
@@ -914,12 +908,12 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 for(var i = 0; i < draggedNodes.length; i++) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
-                    dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
+                    dragNode = draggedNode.is('li.p-treenode') ? draggedNode : draggedNode.closest('li.p-treenode'),
                     dragNode = (isDroppedNodeCopy) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
 
                     if(i === 0) {
-                        dndIndex = dropNode.find('>.ui-treenode-children>li.ui-treenode').length;
+                        dndIndex = dropNode.find('>.p-treenode-children>li.p-treenode').length;
                     }
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
@@ -985,12 +979,12 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {boolean} transfer Whether a transfer should occur.
      */
     onDropNode(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer) {
-        var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
-        oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
-        childrenContainer = dropNode.children('.ui-treenode-children');
+        var dragNodeDropPoint = targetDragNode.next('li.p-tree-droppoint'),
+        oldParentNode = targetDragNode.parent().closest('li.p-treenode-parent'),
+        childrenContainer = dropNode.children('.p-treenode-children');
 
         ui.helper.remove();
-        droppable.children('.ui-treenode-content').removeClass('ui-state-hover');
+        droppable.children('.p-treenode-content').removeClass('p-state-hover');
 
         var validDrop = this.validateDropNode(dragNode, dropNode, oldParentNode);
         if(!validDrop) {
@@ -1001,14 +995,14 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             return;
         }
 
-        if(childrenContainer.children('li.ui-treenode').length === 0) {
+        if(childrenContainer.children('li.p-treenode').length === 0) {
             this.makeParent(dropNode);
         }
 
         targetDragNode.hide();
         childrenContainer.append(targetDragNode);
 
-        if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
+        if(oldParentNode.length && (oldParentNode.find('> ul.p-treenode-children > li.p-treenode').length === 0)) {
             this.makeLeaf(oldParentNode);
         }
 
@@ -1066,14 +1060,14 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
-        this.jq.prepend('<div class="ui-tree-scroller ui-tree-scrollertop"></div>').append('<div class="ui-tree-scroller ui-tree-scrollerbottom"></div>');
+        this.jq.prepend('<div class="p-tree-scroller p-tree-scrollertop"></div>').append('<div class="p-tree-scroller p-tree-scrollerbottom"></div>');
 
-        PrimeFaces.interactions.droppable(this.jq.children('div.ui-tree-scroller'), {
-            accept: '.ui-treenode-content',
+        PrimeFaces.interactions.droppable(this.jq.children('div.p-tree-scroller'), {
+            accept: '.p-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
             over: function() {
-                var step = $(this).hasClass('ui-tree-scrollertop') ? -10 : 10;
+                var step = $(this).hasClass('p-tree-scrollertop') ? -10 : 10;
 
                 $this.scrollInterval = setInterval(function() {
                     $this.scroll(step);
@@ -1100,19 +1094,19 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     updateDragDropBindings(node) {
         //self droppoint
-        node.after('<li class="ui-tree-droppoint ui-droppable"></li>');
-        this.makeDropPoints(node.next('li.ui-tree-droppoint'));
+        node.after('<li class="p-tree-droppoint p-droppable"></li>');
+        this.makeDropPoints(node.next('li.p-tree-droppoint'));
 
         //descendant droppoints
-        var subtreeDropPoints = node.find('li.ui-tree-droppoint');
-        if(subtreeDropPoints.hasClass('ui-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
+        var subtreeDropPoints = node.find('li.p-tree-droppoint');
+        if(subtreeDropPoints.hasClass('p-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
             PrimeFaces.interactions.destroy(subtreeDropPoints, 'droppable');
         }
         this.makeDropPoints(subtreeDropPoints);
 
         //descendant drop node contents
-        var subtreeDropNodeContents = node.find('.ui-treenode-content');
-        if(subtreeDropNodeContents.hasClass('ui-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
+        var subtreeDropNodeContents = node.find('.p-treenode-content');
+        if(subtreeDropNodeContents.hasClass('p-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
             PrimeFaces.interactions.destroy(subtreeDropNodeContents, 'droppable');
         }
         this.makeDropNodes(subtreeDropNodeContents);
@@ -1138,9 +1132,9 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         if(dragMode === 'self') {
             targetDragNode = dragNode;
         } else if(dragMode === 'parent') {
-            targetDragNode = dragNode.parent().closest('li.ui-treenode');
+            targetDragNode = dragNode.parent().closest('li.p-treenode');
         } else if(dragMode === 'ancestor') {
-            targetDragNode = dragNode.parent().parents('li.ui-treenode:last');
+            targetDragNode = dragNode.parent().parents('li.p-treenode:last');
         }
 
         if(targetDragNode.length === 0) {
@@ -1169,7 +1163,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @private
      */
     updateRowKeys() {
-        var children = this.jq.find('> ul.ui-tree-container > li.ui-treenode');
+        var children = this.jq.find('> ul.p-tree-container > li.p-treenode');
         this.updateChildrenRowKeys(children, null);
     }
 
@@ -1192,8 +1186,8 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 'data-rowkey' : newRowKey
             });
 
-            if(childNode.hasClass('ui-treenode-parent')) {
-                $this.updateChildrenRowKeys(childNode.find('> ul.ui-treenode-children > li.ui-treenode'), newRowKey);
+            if(childNode.hasClass('p-treenode-parent')) {
+                $this.updateChildrenRowKeys(childNode.find('> ul.p-treenode-children > li.p-treenode'), newRowKey);
             }
         });
     }
@@ -1260,9 +1254,9 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {JQuery} node A new leaf node to convert.
      */
     makeLeaf(node) {
-        node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf');
-        node.find('> .ui-treenode-content > .ui-tree-toggler').addClass('ui-treenode-leaf-icon').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-s');
-        node.children('.ui-treenode-children').hide().children().remove();
+        node.removeClass('p-treenode-parent').addClass('p-treenode-leaf').attr('aria-expanded', false);
+        node.find('> .p-treenode-content > .p-tree-toggler').addClass('p-treenode-leaf-icon').removeClass('p-tree-toggler p-icon p-toggle-icon p-tree-toggle-icon');
+        node.children('.p-treenode-children').hide().children().remove();
     }
 
     /**
@@ -1271,11 +1265,11 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {JQuery} node A new parent node to convert.
      */
     makeParent(node) {
-        node.removeClass('ui-treenode-leaf').addClass('ui-treenode-parent');
-        node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon);
-        node.children('.ui-treenode-children').append('<li class="ui-tree-droppoint ui-droppable"></li>');
+        node.removeClass('p-treenode-leaf').addClass('p-treenode-parent');
+        node.find('> .p-treenode-content > span.p-treenode-leaf-icon').removeClass('p-treenode-leaf-icon').addClass('p-tree-toggler p-icon p-toggle-icon p-tree-toggle-icon');
+        node.children('.p-treenode-children').append('<li class="p-tree-droppoint p-droppable"></li>');
 
-        this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
+        this.makeDropPoints(node.find('> ul.p-treenode-children > li.p-tree-droppoint'));
     }
 
     /**
@@ -1326,17 +1320,17 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         var $this = this;
 
         if(this.isCheckboxSelection()) {
-            var checkbox = node.find('> .ui-treenode-content > .ui-chkbox');
+            var checkbox = node.find('> .p-treenode-content > .p-chkbox');
 
             this.toggleCheckboxState(checkbox, true);
 
-            node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
+            node.children('.p-treenode-children').find('.p-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), true);
             });
         }
         else {
-            node.find('.ui-treenode-content.ui-state-highlight').each(function() {
-                $(this).removeClass('ui-state-highlight').closest('li.ui-treenode').attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected');
+            node.find('.p-treenode-content.p-state-highlight').each(function() {
+                $(this).removeClass('p-state-highlight').closest('li.p-treenode').attr('aria-selected', false).removeClass('p-treenode-selected').addClass('p-treenode-unselected');
             });
         }
     }
@@ -1347,19 +1341,19 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @param {JQuery} node Node to which to limit the update.
      */
     propagateDNDCheckbox(node) {
-        var checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
-        children = node.find('> .ui-treenode-children > .ui-treenode');
+        var checkbox = node.find('> .p-treenode-content > .p-chkbox'),
+        children = node.find('> .p-treenode-children > .p-treenode');
 
         if(children.length) {
-            if(children.filter('.ui-treenode-unselected').length === children.length)
+            if(children.filter('.p-treenode-unselected').length === children.length)
                 this.uncheck(checkbox);
-            else if(children.filter('.ui-treenode-selected').length === children.length)
+            else if(children.filter('.p-treenode-selected').length === children.length)
                 this.check(checkbox);
             else
                 this.partialCheck(checkbox);
         }
 
-        var parent = node.parent().closest('.ui-treenode-parent');
+        var parent = node.parent().closest('.p-treenode-parent');
         if(parent.length) {
             this.propagateDNDCheckbox(parent);
         }
@@ -1422,7 +1416,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @return {JQuery} The first node of this tree.
      */
     getFirstNode() {
-        return this.jq.find("> ul.ui-tree-container > li.ui-treenode").first();
+        return this.jq.find("> ul.p-tree-container > li.p-treenode").first();
     }
 
     /**
@@ -1431,7 +1425,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      * @return {JQuery} The element with the content for the given node.
      */
     getNodeContent(node) {
-        return node.find('> .ui-treenode-content');
+        return node.find('> .p-treenode-content');
     }
 
     /**
@@ -1442,10 +1436,10 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
      */
     focusNode(node) {
         if(this.focusedNode) {
-            this.getNodeContent(this.focusedNode).removeClass('ui-treenode-outline');
+            this.getNodeContent(this.focusedNode).removeClass('p-treenode-outline');
         }
 
-        this.getNodeContent(node).addClass('ui-treenode-outline').trigger('focus');
+        this.getNodeContent(node).addClass('p-treenode-outline').trigger('focus');
         this.focusedNode = node;
     }
 
@@ -1474,14 +1468,14 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
             },
             oncomplete: function() {
                 if ($this.cfg.filterMode === 'contains') {
-                    var notLeafNodes = $this.container.find('li.ui-treenode:not(.ui-treenode-leaf):visible');
+                    var notLeafNodes = $this.container.find('li.p-treenode:not(.p-treenode-leaf):visible');
                     for(var i = 0; i < notLeafNodes.length; i++) {
                         var node = notLeafNodes.eq(i),
-                        hasChildNodes = node.children('.ui-treenode-children:empty').length;
+                        hasChildNodes = node.children('.p-treenode-children:empty').length;
 
                         if(hasChildNodes) {
-                            node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf')
-                                .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon).addClass('ui-treenode-leaf-icon');
+                            node.removeClass('p-treenode-parent').addClass('p-treenode-leaf')
+                                .find('> .p-treenode-content > .p-tree-toggler').removeClass('p-tree-toggler p-icon p-toggle-icon p-tree-toggle-icon').addClass('p-treenode-leaf-icon');
                         }
                     }
                 }

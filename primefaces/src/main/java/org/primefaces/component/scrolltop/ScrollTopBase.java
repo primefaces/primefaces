@@ -54,10 +54,6 @@ public abstract class ScrollTopBase extends UIComponentBase implements Widget, S
             defaultValue = "400")
     public abstract String getThreshold();
 
-    @Property(description = "Icon to display.",
-            defaultValue = "pi pi-chevron-up")
-    public abstract String getIcon();
-
     @Property(description = "Defines the scrolling behavior, \"smooth\" adds an animation and \"auto\" scrolls with a jump.",
             defaultValue = "smooth")
     public abstract String getBehavior();

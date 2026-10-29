@@ -40,7 +40,7 @@ public class SelectBooleanButton extends SelectBooleanButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 
-    public static final String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
+    public static final String STYLE_CLASS = "p-selectbooleanbutton p-widget";
 
     @Override
     public String getInputClientId() {
@@ -64,22 +64,22 @@ public class SelectBooleanButton extends SelectBooleanButtonBaseImpl {
         }
 
         if (disabled) {
-            styleClass = styleClass + " ui-state-disabled";
+            styleClass = styleClass + " p-state-disabled";
         }
 
         if (checked) {
-            styleClass = styleClass + " ui-state-active";
+            styleClass = styleClass + " p-state-active";
         }
 
         if (!isValid()) {
-            styleClass = styleClass + " ui-state-error";
+            styleClass = styleClass + " p-state-error";
         }
 
         if ("small".equals(getSize())) {
-            styleClass = styleClass + " ui-button-sm";
+            styleClass = styleClass + " p-button-sm";
         }
         else if ("large".equals(getSize())) {
-            styleClass = styleClass + " ui-button-lg";
+            styleClass = styleClass + " p-button-lg";
         }
 
         String userStyleClass = getStyleClass();

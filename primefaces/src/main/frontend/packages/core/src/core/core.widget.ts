@@ -821,7 +821,7 @@ export class DeferredWidget<Cfg extends DeferredWidgetCfg = DeferredWidgetCfg> e
             this.postRender();
         }
         else if (this.jq[0]) {
-            var container = this.jq[0].closest('.ui-hidden-container');
+            var container = this.jq[0].closest('.p-hidden-container');
             if (container instanceof HTMLElement) {
                 var $container = $(container);
                 if ($container.length) {
@@ -889,10 +889,10 @@ export class DeferredWidget<Cfg extends DeferredWidgetCfg = DeferredWidgetCfg> e
         core.addDeferredRender(widgetId, container.attr('id') ?? "", callback);
 
         if (container.is(':hidden')) {
-            var parentContainer = this.jq.closest('.ui-hidden-container');
+            var parentContainer = this.jq.closest('.p-hidden-container');
 
             if (parentContainer.length) {
-                this.addDeferredRender(widgetId, container.parent().closest('.ui-hidden-container'), callback);
+                this.addDeferredRender(widgetId, container.parent().closest('.p-hidden-container'), callback);
             }
         }
     }

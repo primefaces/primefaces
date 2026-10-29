@@ -93,10 +93,10 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         this.cfg.showDelay = this.cfg.showDelay || 0;
         this.cfg.hideDelay = this.cfg.hideDelay || 0;
         this.tabIndex = this.cfg.tabIndex || "0";
-        this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
-        this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
-        this.isRTL = this.jq.hasClass('ui-menu-rtl');
-        this.isVertical = this.jq.find('ul.ui-menu-list').attr('aria-orientation') === 'vertical';
+        this.links = this.jq.find('a.p-menuitem-link:not(.p-state-disabled)');
+        this.rootLinks = this.jq.find('> ul.p-menu-list > .p-menuitem > .p-menuitem-link');
+        this.isRTL = this.jq.hasClass('p-menu-rtl');
+        this.isVertical = this.jq.find('ul.p-menu-list').attr('aria-orientation') === 'vertical';
         this.isHorizontal = !this.isVertical;
 
         this.bindEvents();
@@ -135,7 +135,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         var firstLink = this.links.filter(':not([disabled])').first();
         firstLink.attr("tabindex", $this.tabIndex);
         this.resetFocus(true);
-        firstLink.removeClass('ui-state-hover ui-state-active');
+        firstLink.removeClass('p-state-hover p-state-active');
 
         // Build event string based on toggle mode
         var focusOnClick = this.cfg.toggleEvent === 'click';
@@ -184,7 +184,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         this.rootLinks.on("click.tieredHover", function() {
             var link = $(this),
                 menuitem = link.parent(),
-                submenu = menuitem.children('ul.ui-menu-child');
+                submenu = menuitem.children('ul.p-menu-child');
 
             $this.itemClick = true;
 
@@ -201,7 +201,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
             }
         });
 
-        this.links.filter('.ui-submenu-link').on("click", function(e) {
+        this.links.filter('.p-submenu-link').on("click", function(e) {
             $this.itemClick = true;
             e.preventDefault();
         });
@@ -217,10 +217,10 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
     protected bindClickModeEvents(): void {
         var $this = this;
 
-        this.links.filter('.ui-submenu-link').on('click.tieredClick', function(e) {
+        this.links.filter('.p-submenu-link').on('click.tieredClick', function(e) {
             var link = $(this),
                 menuitem = link.parent(),
-                submenu = menuitem.children('ul.ui-menu-child');
+                submenu = menuitem.children('ul.p-menu-child');
 
             $this.itemClick = true;
 
@@ -252,12 +252,12 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
 
             // menubar is horizontal and is only one we care about if this is a root link
             if ($this.isHorizontal) {
-                isRootLink = !menuitem.closest('ul').hasClass('ui-menu-child')
+                isRootLink = !menuitem.closest('ul').hasClass('p-menu-child')
             }
 
             // Helper function to navigate to a menu item
             function navigateTo(item: JQuery) {
-                if (item.length && item.children('a.ui-menuitem-link').length) {
+                if (item.length && item.children('a.p-menuitem-link').length) {
                     $this.deactivate(menuitem);
                     $this.activate(item, true, false);
                 }
@@ -265,7 +265,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
 
             // Helper function to close the submenu if its open
             function closeSubmenu() {
-                var submenu = $('.ui-submenu-link[aria-expanded="true"]').last().parent();
+                var submenu = $('.p-submenu-link[aria-expanded="true"]').last().parent();
                 if (submenu.length === 1) {
                     $this.deactivate(menuitem);
                     $this.deactivate(submenu);
@@ -275,7 +275,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
 
             // Helper function to open the submenu if its open
             function openSubmenu() {
-                if (menuitem.hasClass('ui-menu-parent')) {
+                if (menuitem.hasClass('p-menu-parent')) {
                     $this.activate(menuitem);
                 }
             }
@@ -296,16 +296,16 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
             switch ("code" in e ? e.code : e.key) {
                 case 'Home':
                 case 'PageUp':
-                    navigateTo(menuitem.prevAll('.ui-menuitem:last'));
+                    navigateTo(menuitem.prevAll('.p-menuitem:last'));
                     e.preventDefault();
                     break;
                 case 'End':
                 case 'PageDown':
-                    navigateTo(menuitem.nextAll('.ui-menuitem:last'));
+                    navigateTo(menuitem.nextAll('.p-menuitem:last'));
                     e.preventDefault();
                     break;
                 case 'ArrowUp':
-                    var navigatedTo = menuitem.prevAll('.ui-menuitem:first');
+                    var navigatedTo = menuitem.prevAll('.p-menuitem:first');
                     if ((isRootLink || navigatedTo.length === 0) && !$this.isVertical) {
                         closeSubmenu();
                     }
@@ -319,13 +319,13 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
                         openSubmenu();
                     }
                     else {
-                        navigateTo(menuitem.nextAll('.ui-menuitem:first'));
+                        navigateTo(menuitem.nextAll('.p-menuitem:first'));
                     }
                     e.preventDefault();
                     break;
                 case 'ArrowRight':
                     if (isRootLink) {
-                        navigateTo(menuitem.nextAll('.ui-menuitem:first'));
+                        navigateTo(menuitem.nextAll('.p-menuitem:first'));
                     }
                     else if ($this.isRTL) {
                         closeSubmenu();
@@ -337,7 +337,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
                     break;
                 case 'ArrowLeft':
                     if (isRootLink) {
-                        navigateTo(menuitem.prevAll('.ui-menuitem:first'));
+                        navigateTo(menuitem.prevAll('.p-menuitem:first'));
                     }
                     else if ($this.isRTL) {
                         openSubmenu();
@@ -350,7 +350,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
                 case 'Space':
                 case 'Enter':
                 case 'NumpadEnter':
-                    if (menuitem.hasClass('ui-menu-parent')) {
+                    if (menuitem.hasClass('p-menu-parent')) {
                         $this.activate(menuitem);
                     } else {
                         link.trigger('click');
@@ -404,19 +404,19 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
     deactivate(menuitem: JQuery, animate?: boolean): void {
         var $this = this;
         this.activeitem = null;
-        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
-        var $link = menuitem.children('a.ui-menuitem-link');
+        menuitem.removeClass('p-menuitem-active p-menuitem-highlight');
+        var $link = menuitem.children('a.p-menuitem-link');
         this.unfocus($link);
 
-        var activeSibling = menuitem.siblings('.ui-menuitem-active');
+        var activeSibling = menuitem.siblings('.p-menuitem-active');
         if (activeSibling.length) {
-            activeSibling.find('li.ui-menuitem-active').each(function() {
+            activeSibling.find('li.p-menuitem-active').each(function() {
                 $this.deactivate($(this));
             });
             $this.deactivate(activeSibling);
         }
 
-        var submenu = menuitem.children('ul.ui-menu-child');
+        var submenu = menuitem.children('ul.p-menu-child');
         if (submenu.length > 0) {
             $link.attr('aria-expanded', 'false');
             if (animate)
@@ -437,17 +437,17 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         this.highlight(menuitem);
 
         // if this is a root menu item.
-        if (menuitem.parent().is('ul.ui-menu-list:not(.ui-menu-child)')) {
+        if (menuitem.parent().is('ul.p-menu-list:not(.p-menu-child)')) {
             this.lastFocusedItem = menuitem;
         }
 
         // focus the menu item when activated
         if (focus) {
-            this.focus(menuitem.children('a.ui-menuitem-link'));
+            this.focus(menuitem.children('a.p-menuitem-link'));
         }
 
         if (showSubMenu) {
-            var submenu = menuitem.children('ul.ui-menu-child');
+            var submenu = menuitem.children('ul.p-menu-child');
             if (submenu.length == 1) {
                 this.showSubmenu(menuitem, submenu, focus);
             }
@@ -461,8 +461,8 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
      */
     highlight(menuitem: JQuery): void {
         this.activeitem = menuitem;
-        menuitem.addClass('ui-menuitem-active ui-menuitem-highlight');
-        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
+        menuitem.addClass('p-menuitem-active p-menuitem-highlight');
+        menuitem.children('a.p-menuitem-link').addClass('p-state-hover');
     }
 
     /**
@@ -490,10 +490,10 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         this.timeoutId = PrimeFaces.queueTask(function() {
             submenu.css('z-index', PrimeFaces.nextZindex()).show();
             PrimeFaces.utils.position(submenu, pos);
-            var $link = menuitem.children('a.ui-menuitem-link');
+            var $link = menuitem.children('a.p-menuitem-link');
             $link.attr('aria-expanded', 'true');
             if (focus) {
-                submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+                submenu.find('a.p-menuitem-link:focusable:first').trigger('focus');
             }
         }, this.cfg.showDelay);
     }
@@ -506,14 +506,14 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         var $this = this;
         this.active = false;
 
-        this.jq.find('li.ui-menuitem-active').each(function() {
+        this.jq.find('li.p-menuitem-active').each(function() {
             $this.deactivate($(this), true);
         });
         this.resetFocus(!this.lastFocusedItem);
         if (this.lastFocusedItem) {
-            this.lastFocusedItem.children('a.ui-menuitem-link').attr('tabindex', $this.tabIndex);
+            this.lastFocusedItem.children('a.p-menuitem-link').attr('tabindex', $this.tabIndex);
         }
-        this.links.removeClass('ui-state-active ui-state-hover');
+        this.links.removeClass('p-state-active p-state-hover');
     }
 
     /**

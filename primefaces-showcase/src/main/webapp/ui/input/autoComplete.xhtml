@@ -19,7 +19,7 @@
     <ui:param name="tagName" value="autoComplete"/>
 
     <ui:define name="implementation">
-        <div class="card ui-fluid ">
+        <div class="card p-fluid ">
             <h:form>
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
@@ -156,7 +156,7 @@
                                         completeMethod="#{autoCompleteView.completeText}"
                                         maxResults="10">
                             <f:facet name="footer">
-                                <div class="ui-fluid" style="padding:0.5rem 1rem 1rem 1rem">
+                                <div class="p-fluid" style="padding:0.5rem 1rem 1rem 1rem">
                                     <p:button value="Add new" onclick="alert('This could open a dialog')"/>
                                 </div>
                             </f:facet>

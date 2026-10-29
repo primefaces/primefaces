@@ -35,7 +35,7 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class Sidebar extends AbstractComponent {
 
-    @FindBy(className = "ui-sidebar-content")
+    @FindBy(className = "p-sidebar-content")
     private WebElement content;
 
     public WebElement getContent() {

@@ -52,7 +52,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
                 const input = this.inputs.eq(i);
 
                 if(input.is(':checked')) {
-                    this.buttons.eq(i).addClass('ui-state-active');
+                    this.buttons.eq(i).addClass('p-state-active');
                 }
 
                 if(input.is(':disabled')) {
@@ -62,7 +62,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
         }
         //regular layout
         else {
-            this.buttons = this.jq.children('div:not(.ui-state-disabled)');
+            this.buttons = this.jq.children('div:not(.p-state-disabled)');
         }
 
         this.bindEvents();
@@ -92,15 +92,15 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
      */
     bindCustomLayoutEvents() {
         // Custom layout event handling
-        this.buttons.filter(':not(.ui-state-disabled)').off('mouseover.selectManyButton mouseout.selectManyButton click.selectManyButton')
+        this.buttons.filter(':not(.p-state-disabled)').off('mouseover.selectManyButton mouseout.selectManyButton click.selectManyButton')
         .on('mouseover.selectManyButton', function() {
             const button = $(this);
-            if(!button.hasClass('ui-state-active')) {
-                button.addClass('ui-state-hover');
+            if(!button.hasClass('p-state-active')) {
+                button.addClass('p-state-hover');
             }
         })
         .on('mouseout.selectManyButton', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click.selectManyButton', (e) => {
             this.handleButtonInteraction(e.currentTarget, e);
@@ -111,10 +111,10 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
         /* For keyboard accessibility on buttons */
         this.buttons.off('focus.selectManyButton blur.selectManyButton keydown.selectManyButton')
         .on('focus.selectManyButton', function(){
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         })
         .on('blur.selectManyButton', function(){
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
         })
         .on('keydown.selectManyButton', (e) => {
             if (PrimeFaces.utils.isActionKey(e)) {
@@ -132,21 +132,21 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
         // Regular layout event handling
         this.buttons.on('mouseover', function() {
             const button = $(this);
-            if(!button.hasClass('ui-state-active')) {
-                button.addClass('ui-state-hover');
+            if(!button.hasClass('p-state-active')) {
+                button.addClass('p-state-hover');
             }
         })
         .on('mouseout', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click', function(e) {
             const button = $(this);
             const input = button.children(':checkbox');
 
-            if(button.hasClass('ui-state-active'))
-                button.addClass('ui-state-hover');
+            if(button.hasClass('p-state-active'))
+                button.addClass('p-state-hover');
             else
-                button.removeClass('ui-state-hover');
+                button.removeClass('p-state-hover');
             
             input.trigger('focus').trigger('click');
         });
@@ -162,14 +162,14 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
             const input = $(e.currentTarget);
             const button = this.getButtonForInput(input);
             if (button) {
-                button.addClass('ui-state-focus');
+                button.addClass('p-state-focus');
             }
         })
         .on('blur', (e) => {
             const input = $(e.currentTarget);
             const button = this.getButtonForInput(input);
             if (button) {
-                button.removeClass('ui-state-focus');
+                button.removeClass('p-state-focus');
             }
         })
         .on('change', (e) => {
@@ -177,9 +177,9 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
             const button = this.getButtonForInput(input);
             if (button) {
                 if(input.prop('checked'))
-                    button.addClass('ui-state-active');
+                    button.addClass('p-state-active');
                 else
-                    button.removeClass('ui-state-active');
+                    button.removeClass('p-state-active');
             }
 
             this.triggerChange();
@@ -228,7 +228,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
      */
     handleButtonInteraction(target, e) {
         const button = $(target);
-        const isActive = button.hasClass('ui-state-active');
+        const isActive = button.hasClass('p-state-active');
 
         if(isActive) {
             this.unselect(button);
@@ -247,7 +247,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
             const index = this.buttons.index(button);
             if (index >= 0) {
                 this.inputs.eq(index).prop('checked', true);
-                button.addClass('ui-state-active');
+                button.addClass('p-state-active');
             }
         }
         else {
@@ -266,7 +266,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
             const index = this.buttons.index(button);
             if (index >= 0) {
                 this.inputs.eq(index).prop('checked', false);
-                button.removeClass('ui-state-active ui-state-hover');
+                button.removeClass('p-state-active p-state-hover');
             }
         }
         else {
@@ -298,7 +298,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
             for(let i = 0; i < this.buttons.length; i++) {
                 const button = this.buttons.eq(i);
                 this.enable(i);
-                button.removeClass('ui-state-active');
+                button.removeClass('p-state-active');
                 if (i < this.inputs.length) {
                     this.inputs.eq(i).prop('checked', false);
                 }
@@ -315,7 +315,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
     enable(index) {
         if (index === null || index === undefined) {
             if (this.cfg.custom) {
-                this.buttons.removeClass('ui-state-disabled').removeAttr('disabled');
+                this.buttons.removeClass('p-state-disabled').removeAttr('disabled');
                 this.inputs.removeAttr('disabled');
             }
             else {
@@ -325,7 +325,7 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
         }
         else {
             const button = this.buttons.eq(index);
-            button.removeClass('ui-state-disabled').removeAttr('disabled');
+            button.removeClass('p-state-disabled').removeAttr('disabled');
             const input = this.inputs.eq(index);
             input.removeAttr('disabled');
         }
@@ -338,8 +338,8 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
     disable(index) {
         if (index === null || index === undefined) {
             if (this.cfg.custom) {
-                this.buttons.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                        .addClass('ui-state-disabled').attr('disabled', 'disabled');
+                this.buttons.removeClass('p-state-hover p-state-focus p-state-active')
+                        .addClass('p-state-disabled').attr('disabled', 'disabled');
                 this.inputs.attr('disabled', 'disabled');
             }
             else {
@@ -349,8 +349,8 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
         }
         else {
             const button = this.buttons.eq(index);
-            button.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                    .addClass('ui-state-disabled').attr('disabled', 'disabled');
+            button.removeClass('p-state-hover p-state-focus p-state-active')
+                    .addClass('p-state-disabled').attr('disabled', 'disabled');
             const input = this.inputs.eq(index);
             input.attr('disabled', 'disabled');
         }

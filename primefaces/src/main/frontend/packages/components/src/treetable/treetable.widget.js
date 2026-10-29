@@ -193,7 +193,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      */
     bindEvents() {
         var $this = this,
-        togglerSelector = '> tr > td:first-child > .ui-treetable-toggler';
+        togglerSelector = '> tr > td:first-child > .p-treetable-toggler';
 
         //expand and collapse
         this.tbody.off('click.treeTable-toggle', togglerSelector)
@@ -204,7 +204,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                         if(!node.data('processing')) {
                             node.data('processing', true);
 
-                            if(toggler.hasClass('ui-icon-triangle-1-e'))
+                            if(node.attr('aria-expanded') !== 'true')
                                 $this.expandNode(node);
                             else
                                 $this.collapseNode(node);
@@ -237,7 +237,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
 
         //double click
         if (this.hasBehavior('dblselect')) {
-            var rowSelector = '> tr.ui-treetable-selectable-node';
+            var rowSelector = '> tr.p-treetable-selectable-node';
             this.tbody.off('dblclick.treeTable', rowSelector).on('dblclick.treeTable', rowSelector, null, function(e) {
                 $this.onRowDblclick(e, $(this));
             });
@@ -250,11 +250,11 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      */
     setupFiltering() {
         var $this = this,
-        filterColumns = this.thead.find('> tr > th.ui-filter-column');
+        filterColumns = this.thead.find('> tr > th.p-filter-column');
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        filterColumns.children('.ui-column-filter').each(function() {
+        filterColumns.children('.p-column-filter').each(function() {
             var filter = $(this);
 
             if(filter.is("input[type='search']")) {
@@ -270,7 +270,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         filterColumns.each(function() {
             var filterColumn = $(this);
             var filter = filterColumn.find(':input');
-            var title = filterColumn.find('.ui-column-title')
+            var title = filterColumn.find('.p-column-title')
 
             if (filter && title) {
                 filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
@@ -295,12 +295,12 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             }
         };
 
-        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
+        var standardFilters = this.thead.find('> tr > th.p-filter-column > .p-column-filter:not(:disabled):not([readonly])');
         resetInputFields(standardFilters);
 
-        var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
+        var customFilters = this.thead.find('> tr > th.p-filter-column > .p-column-customfilter');
         customFilters.each(function() {
-            var widgetElement = $(this).find('.ui-widget');
+            var widgetElement = $(this).find('.p-widget');
             if (widgetElement.length > 0) {
                 resetWidget(widgetElement);
             } else {
@@ -496,39 +496,39 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      */
     bindSelectionEvents() {
         var $this = this,
-        rowSelector = '> tr.ui-treetable-selectable-node';
+        rowSelector = '> tr.p-treetable-selectable-node';
 
         this.tbody.off('mouseenter.treeTable mouseleave.treeTable click.treeTable', rowSelector)
                     .on('mouseenter.treeTable', rowSelector, null, function(e) {
-                        $(this).addClass('ui-state-hover');
+                        $(this).addClass('p-state-hover');
                     })
                     .on('mouseleave.treeTable', rowSelector, null, function(e) {
-                        $(this).removeClass('ui-state-hover');
+                        $(this).removeClass('p-state-hover');
                     })
                     .on('click.treeTable', rowSelector, null, function(e) {
                         $this.onRowClick(e, $(this));
                     });
 
         if(this.isCheckboxSelection()) {
-           var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first-child :checkbox':
-                    '> tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
+           var checkboxSelector =  this.cfg.nativeElements ? '> tr.p-treetable-selectable-node > td:first-child :checkbox':
+                    '> tr.p-treetable-selectable-node > td:first-child div.p-chkbox-box';
 
                 this.tbody.off('click.treeTable-checkbox mouseenter.treeTable-checkbox mouseleave.treeTable-checkbox', checkboxSelector)
                         .on('mouseenter.treeTable-checkbox', checkboxSelector, null, function(e) {
-                            $(this).addClass('ui-state-hover');
+                            $(this).addClass('p-state-hover');
                         })
                         .on('mouseleave.treeTable-checkbox', checkboxSelector, null, function(e) {
-                            $(this).removeClass('ui-state-hover');
+                            $(this).removeClass('p-state-hover');
                         })
                         .on('click.treeTable-checkbox', checkboxSelector, null, function(e) {
-                            var node = $(this).closest('tr.ui-treetable-selectable-node');
+                            var node = $(this).closest('tr.p-treetable-selectable-node');
                             $this.toggleCheckboxNode(node);
                         });
 
 
                 //initial partial selected visuals
                 if(this.cfg.nativeElements) {
-                    this.indeterminateNodes(this.tbody.children('tr.ui-treetable-partialselected'));
+                    this.indeterminateNodes(this.tbody.children('tr.p-treetable-partialselected'));
                 }
         }
     }
@@ -555,16 +555,16 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.otherMessage = this.getAriaLabel('datatable.sort.ASC');
         }
 
-        this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
+        this.sortableColumns = this.thead.find('> tr > th.p-sortable-column');
 
         this.sortableColumns.each(function() {
             var columnHeader = $(this),
             columnHeaderId = columnHeader.attr('id'),
-            sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
+            sortIcon = columnHeader.children('span.p-sortable-column-icon'),
             sortOrder = null,
             ariaLabel = columnHeader.attr('aria-label');
 
-            if (sortIcon.hasClass('ui-icon-triangle-1-n')) {
+            if (sortIcon.hasClass('p-treetable-sort-asc-icon')) {
                 sortOrder = TreeTable.SORT_ORDER.ASCENDING;
                 columnHeader.attr('aria-label', $this.getSortMessage(ariaLabel, this.descMessage));
                 if (!hasAriaSort) {
@@ -572,7 +572,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                     hasAriaSort = true;
                 }
             }
-            else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
+            else if (sortIcon.hasClass('p-treetable-sort-desc-icon')) {
                 sortOrder = TreeTable.SORT_ORDER.DESCENDING;
                 columnHeader.attr('aria-label', $this.getSortMessage(ariaLabel, this.otherMessage));
                 if (!hasAriaSort) {
@@ -602,10 +602,10 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         });
 
         this.sortableColumns.on('mouseenter.treeTable', function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         })
         .on('mouseleave.treeTable', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click.treeTable', function(e, metaKeyOn) {
             if(!$this.shouldSort(e, this)) {
@@ -645,7 +645,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg
      */
     bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
-        var targetSelector = targetId + ' .ui-treetable-data > ' + (cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + cfg.nodeType : 'tr.ui-treetable-selectable-node');
+        var targetSelector = targetId + ' .p-treetable-data > ' + (cfg.nodeType ? 'tr.p-treetable-selectable-node.' + cfg.nodeType : 'tr.p-treetable-selectable-node');
         var targetEvent = cfg.event + '.treetable' + this.id;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
@@ -673,7 +673,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         orginTableContent = this.jq.children('table'),
         $this = this;
 
-        this.stickyContainer = $('<div class="ui-treetable ui-treetable-sticky ui-widget"><table></table></div>');
+        this.stickyContainer = $('<div class="p-treetable p-treetable-sticky p-widget"><table></table></div>');
         this.clone = this.thead.clone(false);
         this.stickyContainer.children('table').append(this.thead);
         table.append(this.clone);
@@ -701,7 +701,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                                         'position': 'fixed',
                                         'top': '0px'
                                     })
-                                    .addClass('ui-sticky');
+                                    .addClass('p-sticky');
 
                 if($this.cfg.resizableColumns) {
                     $this.relativeHeight = scrollTop - tableOffset.top;
@@ -717,7 +717,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                                         'position': 'absolute',
                                         'top': tableOffset.top + 'px'
                                     })
-                                    .removeClass('ui-sticky');
+                                    .removeClass('p-sticky');
 
                 if($this.stickyContainer.is(':hidden')) {
                     $this.stickyContainer.show();
@@ -750,7 +750,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         }, { delay: null });
 
         //filter support
-        this.clone.find('.ui-column-filter').prop('disabled', true);
+        this.clone.find('.p-column-filter').prop('disabled', true);
     }
 
     /**
@@ -763,20 +763,21 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
 
         if(this.cfg.editMode === 'row') {
-            var rowEditorSelector = '> tr > td > div.ui-row-editor';
+            // the links, not their icons: a click on the padding of a link counts too
+            var rowEditorSelector = '> tr > td > div.p-row-editor > a';
             this.tbody.off('click.treetable', rowEditorSelector)
                         .on('click.treetable', rowEditorSelector, null, function(e) {
-                            var element = $(e.target),
+                            var element = $(this),
                             row = element.closest('tr');
 
-                            if(element.hasClass('ui-icon-pencil')) {
+                            // tr.p-row-editing swaps pencil and check / close (treetable.css)
+                            if(element.hasClass('p-row-editor-pencil')) {
                                 $this.switchToRowEdit(row);
-                                element.hide().siblings().show();
                             }
-                            else if(element.hasClass('ui-icon-check')) {
+                            else if(element.hasClass('p-row-editor-check')) {
                                 $this.saveRowEdit(row);
                             }
-                            else if(element.hasClass('ui-icon-close')) {
+                            else if(element.hasClass('p-row-editor-close')) {
                                 $this.cancelRowEdit(row);
                             }
 
@@ -784,16 +785,16 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                         });
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = '> tr > td.ui-editable-column';
+            var cellSelector = '> tr > td.p-editable-column';
             var editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.treetable-cell click.treetable-cell' : 'click.treetable-cell';
 
             this.tbody.off(editEvent, cellSelector)
                 .on(editEvent, cellSelector, null, function(e) {
-                    if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
+                    if(!$(e.target).is('span.p-treetable-toggler.p-c')) {
                         var item = $(this);
-                        var cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
+                        var cell = item.hasClass('p-editable-column') ? item : item.closest('.p-editable-column');
 
-                        if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
+                        if(!cell.hasClass('p-cell-editing') && e.type === $this.cfg.editInitEvent) {
                             $this.showCellEditor($(this));
                         }
                      }
@@ -814,11 +815,11 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                         return;
 
                     // ignore clicks inside input overlays like calendar popups etc
-                    var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
+                    var ignoredOverlay = '.p-input-overlay, .p-editor-popup, #keypad-div, .clr-picker';
                     // and menus - in case smth like menubutton is inside the table
-                    ignoredOverlay += ', .ui-menuitem, .ui-menuitem-link';
+                    ignoredOverlay += ', .p-menuitem, .p-menuitem-link';
                     // and blockers
-                    ignoredOverlay += ', .ui-blockui, .blockUI';
+                    ignoredOverlay += ', .p-blockui, .blockUI';
                     if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
                         return;
 
@@ -857,27 +858,27 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                             this.tbody.html(content);
 
                             if(!multi) {
-                                columnHeader.siblings().filter('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
-                                                .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                                columnHeader.siblings().filter('.p-state-active').removeData('sortorder').removeClass('p-state-active')
+                                                .find('.p-sortable-column-icon').removeClass('p-treetable-sort-asc-icon p-treetable-sort-desc-icon');
                             }
 
-                            columnHeader.addClass('ui-state-active').data('sortorder', order);
-                            var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
+                            columnHeader.addClass('p-state-active').data('sortorder', order);
+                            var sortIcon = columnHeader.find('.p-sortable-column-icon'),
                             ariaLabel = columnHeader.attr('aria-label');
 
                             if (order === TreeTable.SORT_ORDER.DESCENDING) {
-                                sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                                sortIcon.removeClass('p-treetable-sort-asc-icon').addClass('p-treetable-sort-desc-icon');
                                 columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
                                 $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
                             } else if (order === TreeTable.SORT_ORDER.ASCENDING) {
-                                sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                                sortIcon.removeClass('p-treetable-sort-desc-icon').addClass('p-treetable-sort-asc-icon');
                                 columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                                 $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                             } else {
-                                sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
-                                columnHeader.removeClass('ui-state-active').attr('aria-sort', 'other')
+                                sortIcon.removeClass('p-treetable-sort-asc-icon p-treetable-sort-desc-icon');
+                                columnHeader.removeClass('p-state-active').attr('aria-sort', 'other')
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                                 $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
@@ -932,9 +933,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                             else
                                 node.after(content);
 
-                            node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                             node.attr('aria-expanded', true);
-                            $this.indeterminateNodes($this.tbody.children('tr.ui-treetable-partialselected'));
+                            $this.indeterminateNodes($this.tbody.children('tr.p-treetable-partialselected'));
 
                             if(this.cfg.scrollable) {
                                 this.alignScrollBody();
@@ -979,7 +979,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             }
         }
 
-        node.attr('aria-expanded', false).find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+        node.attr('aria-expanded', false);
         node.data('processing', false);
 
         if(this.cfg.scrollable) {
@@ -1024,8 +1024,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} node The node that was clicked.
      */
     onRowClick(event, node) {
-        if($(event.target).is('td,span:not(.ui-c)')) {
-            var selected = node.hasClass('ui-state-highlight'),
+        if($(event.target).is('td,span:not(.p-c)')) {
+            var selected = node.hasClass('p-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey||PrimeFaces.env.isTouchable(this.cfg),
             shiftKey = event.shiftKey;
 
@@ -1064,7 +1064,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} node The node that was clicked.
      */
     onRowDblclick(event, node) {
-        var selected = node.hasClass('ui-state-highlight'),
+        var selected = node.hasClass('p-state-highlight'),
             nodeKey = node.attr('data-rk');
 
         if (this.isCheckboxSelection()) {
@@ -1096,7 +1096,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {boolean} true to hide the native browser context menu, false to display it
      */
     onRowRightClick(event, node, fnShowMenu) {
-        var selected = node.hasClass('ui-state-highlight'),
+        var selected = node.hasClass('p-state-highlight'),
             nodeKey = node.attr('data-rk');
 
         if (this.isCheckboxSelection()) {
@@ -1156,15 +1156,15 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     selectNode(node, silent) {
         var nodeKey = node.attr('data-rk');
 
-        node.removeClass('ui-treetable-partialselected').addClass('ui-state-highlight').attr('aria-selected', true);
+        node.removeClass('p-treetable-partialselected').addClass('p-state-highlight').attr('aria-selected', true);
         this.addToSelection(nodeKey);
         this.writeSelections();
 
         if(this.isCheckboxSelection()) {
             if(this.cfg.nativeElements)
-                node.find('> td:first-child > :checkbox').prop('checked', true).prop('indeterminate', false).addClass('ui-state-active');
+                node.find('> td:first-child > :checkbox').prop('checked', true).prop('indeterminate', false).addClass('p-state-active');
             else
-                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
+                node.find('> td:first-child > div.p-chkbox > div.p-chkbox-box').addClass('p-state-active').children('span.p-chkbox-icon').removeClass('p-checkbox-indeterminate-icon').addClass('p-checkbox-checked-icon');
         }
 
         if(!silent) {
@@ -1180,15 +1180,15 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     unselectNode(node, silent) {
         var nodeKey = node.attr('data-rk');
 
-        node.removeClass('ui-state-highlight ui-treetable-partialselected').attr('aria-selected', false);
+        node.removeClass('p-state-highlight p-treetable-partialselected').attr('aria-selected', false);
         this.removeSelection(nodeKey);
         this.writeSelections();
 
         if(this.isCheckboxSelection()) {
             if(this.cfg.nativeElements)
-                node.find('> td:first-child > :checkbox').prop('checked', false).prop('indeterminate', false).removeClass('ui-state-active');
+                node.find('> td:first-child > :checkbox').prop('checked', false).prop('indeterminate', false).removeClass('p-state-active');
             else
-                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus');
+                node.find('> td:first-child > div.p-chkbox > div.p-chkbox-box').removeClass('p-state-active').children('span.p-chkbox-icon').removeClass('p-checkbox-checked-icon p-checkbox-indeterminate-icon');
         }
 
         if(!silent) {
@@ -1200,7 +1200,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * Unselects all selected rows. The {@link TreeTableCfg.selectionMode} must not be set to `checkbox`.
      */
     unselectAllNodes() {
-        var selectedNodes = this.tbody.children('tr.ui-state-highlight');
+        var selectedNodes = this.tbody.children('tr.p-state-highlight');
         for(var i = 0; i < selectedNodes.length; i++) {
             this.unselectNode(selectedNodes.eq(i), true);
         }
@@ -1251,7 +1251,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} node A row to toggle, must be a TR element.
      */
     toggleCheckboxNode(node) {
-        var selected = node.hasClass('ui-state-highlight'),
+        var selected = node.hasClass('p-state-highlight'),
         rowKey = node.data('rk');
 
         //toggle itself
@@ -1278,7 +1278,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
 
                 // a non-selectable node and its subtree are never changed by the propagation, neither selected nor
                 // unselected, just like CheckboxTreeNode#propagateSelectionDown does on the server side, see #14798
-                if (!descendant.hasClass('ui-treetable-selectable-node')) {
+                if (!descendant.hasClass('p-treetable-selectable-node')) {
                     skippedKey = descendantKey;
                     skippedKeys.push(descendantKey);
                     continue;
@@ -1366,7 +1366,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      */
     propagateUp(node) {
         // a non-selectable node must never be selected by the propagation either, see #14798
-        if (!node.hasClass('ui-treetable-selectable-node')) {
+        if (!node.hasClass('p-treetable-selectable-node')) {
             var parentNode = this.getParent(node);
             if (parentNode) {
                 this.propagateUp(parentNode);
@@ -1379,47 +1379,47 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         partialSelected = false,
         hasSelectableChild = false,
         checkbox = this.cfg.nativeElements ? node.find('> td:first-child > :checkbox') :
-                            node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
+                            node.find('> td:first-child > div.p-chkbox > div.p-chkbox-box > span.p-chkbox-icon');
 
         for(var i = 0; i < children.length; i++) {
             var child = children[i],
-            childSelected = child.hasClass('ui-state-highlight');
+            childSelected = child.hasClass('p-state-highlight');
 
             // a non-selectable child can never be selected via its checkbox, so it must not keep its parent from
             // being fully selected, see #14798
-            if (!child.hasClass('ui-treetable-selectable-node')) {
+            if (!child.hasClass('p-treetable-selectable-node')) {
                 continue;
             }
 
             hasSelectableChild = true;
             allSelected = allSelected&&childSelected;
-            partialSelected = partialSelected||childSelected||child.hasClass('ui-treetable-partialselected');
+            partialSelected = partialSelected||childSelected||child.hasClass('p-treetable-partialselected');
         }
 
         if(!hasSelectableChild) {
             // without any selectable child there is nothing to derive the state of the node from, so it is kept
         }
         else if(allSelected) {
-            node.removeClass('ui-treetable-partialselected');
+            node.removeClass('p-treetable-partialselected');
             this.selectNode(node, true);
         }
         else if(partialSelected) {
-            node.removeClass('ui-state-highlight').addClass('ui-treetable-partialselected');
+            node.removeClass('p-state-highlight').addClass('p-treetable-partialselected');
 
             if(this.cfg.nativeElements)
-                checkbox.prop('indeterminate', true).removeClass('ui-state-active');
+                checkbox.prop('indeterminate', true).removeClass('p-state-active');
             else
-                checkbox.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus').closest('.ui-chkbox-box').removeClass('ui-state-active');
+                checkbox.removeClass('p-checkbox-checked-icon').addClass('p-checkbox-indeterminate-icon').closest('.p-chkbox-box').removeClass('p-state-active');
 
             this.removeSelection(node.attr('data-rk'));
         }
         else {
-            node.removeClass('ui-state-highlight ui-treetable-partialselected');
+            node.removeClass('p-state-highlight p-treetable-partialselected');
 
             if(this.cfg.nativeElements)
-                checkbox.prop('indeterminate', false).prop('checked', false).removeClass('ui-state-active');
+                checkbox.prop('indeterminate', false).prop('checked', false).removeClass('p-state-active');
             else
-                checkbox.addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus').closest('.ui-chkbox-box').removeClass('ui-state-active');
+                checkbox.removeClass('p-checkbox-checked-icon p-checkbox-indeterminate-icon').closest('.p-chkbox-box').removeClass('p-state-active');
 
             this.removeSelection(node.attr('data-rk'));
         }
@@ -1544,9 +1544,9 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 {name: this.id + '_instantSelection', value: nodeKey}
             ];
             
-            var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first-child :checkbox':
-                    '> tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
-            var checkboxes = this.tbody.find(checkboxSelector).addClass('ui-state-disabled');
+            var checkboxSelector =  this.cfg.nativeElements ? '> tr.p-treetable-selectable-node > td:first-child :checkbox':
+                    '> tr.p-treetable-selectable-node > td:first-child div.p-chkbox-box';
+            var checkboxes = this.tbody.find(checkboxSelector).addClass('p-state-disabled');
 
             options.oncomplete = function(xhr, status, args, data) {
                 if(args.descendantRowKeys && args.descendantRowKeys !== '') {
@@ -1557,7 +1557,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                     $this.writeSelections();
                 }
                 
-                checkboxes.removeClass('ui-state-disabled');
+                checkboxes.removeClass('p-state-disabled');
             }
 
             if(this.hasBehavior('select')) {
@@ -1594,12 +1594,12 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @private
      */
     setupScrolling() {
-        this.scrollHeader = this.jq.children('div.ui-treetable-scrollable-header');
-        this.scrollBody = this.jq.children('div.ui-treetable-scrollable-body');
-        this.scrollFooter = this.jq.children('div.ui-treetable-scrollable-footer');
+        this.scrollHeader = this.jq.children('div.p-treetable-scrollable-header');
+        this.scrollBody = this.jq.children('div.p-treetable-scrollable-body');
+        this.scrollFooter = this.jq.children('div.p-treetable-scrollable-footer');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
-        this.scrollHeaderBox = this.scrollHeader.children('div.ui-treetable-scrollable-header-box');
-        this.scrollFooterBox = this.scrollFooter.children('div.ui-treetable-scrollable-footer-box');
+        this.scrollHeaderBox = this.scrollHeader.children('div.p-treetable-scrollable-header-box');
+        this.scrollFooterBox = this.scrollFooter.children('div.p-treetable-scrollable-footer-box');
         this.headerTable = this.scrollHeaderBox.children('table');
         this.bodyTable = this.scrollBody.children('table');
         this.footerTable = this.scrollFooterBox.children('table');
@@ -1679,10 +1679,10 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         clone.find('th').each(function() {
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
-            header.children().not('.ui-column-title').remove();
-            header.children('.ui-column-title').children().remove();
+            header.children().not('.p-column-title').remove();
+            header.children('.p-column-title').children().remove();
         });
-        clone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(table);
+        clone.removeAttr('id').addClass('p-treetable-scrollable-theadclone').height(0).prependTo(table);
 
         return clone;
     }
@@ -1839,8 +1839,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      */
     adjustScrollHeight() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        tableHeaderHeight = this.jq.children('.ui-treetable-header').outerHeight(true),
-        tableFooterHeight = this.jq.children('.ui-treetable-footer').outerHeight(true),
+        tableHeaderHeight = this.jq.children('.p-treetable-header').outerHeight(true),
+        tableFooterHeight = this.jq.children('.p-treetable-footer').outerHeight(true),
         scrollersHeight = (this.scrollHeader.outerHeight(true) + this.scrollFooter.outerHeight(true)),
         height = (relativeHeight - (scrollersHeight + tableHeaderHeight + tableFooterHeight));
 
@@ -1891,7 +1891,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      */
     setScrollWidth(width) {
         var $this = this;
-        this.jq.children('.ui-widget-header').each(function() {
+        this.jq.children('.p-widget-header').each(function() {
             $this.setOuterWidth($(this), width);
         });
         this.scrollHeader.width(width);
@@ -1952,11 +1952,11 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         this.fixColumnWidths();
 
         if(!this.cfg.liveResize) {
-            this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
+            this.resizerHelper = $('<div class="p-column-resizer-helper p-state-highlight"></div>').appendTo(this.jq);
         }
 
-        this.thead.find('> tr > th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');
-        var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
+        this.thead.find('> tr > th.p-resizable-column:not(:last-child)').prepend('<span class="p-column-resizer">&nbsp;</span>');
+        var resizers = this.thead.find('> tr > th > span.p-column-resizer'),
         $this = this;
 
         PrimeFaces.interactions.draggable(resizers, {
@@ -2131,11 +2131,11 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} row A row for which to show the editors.
      */
     showRowEditors(row) {
-        row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
+        row.addClass('p-state-highlight p-row-editing').children('td.p-editable-column').each(function() {
             var column = $(this);
 
-            column.find('.ui-cell-editor-output').hide();
-            column.find('.ui-cell-editor-input').show();
+            column.find('.p-cell-editor-output').hide();
+            column.find('.p-cell-editor-input').show();
         });
     }
 
@@ -2164,7 +2164,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     doRowEditRequest(rowEditor, action) {
         var row = rowEditor.closest('tr'),
         rowKey = row.data('rk'),
-        expanded = row.hasClass('ui-expanded-row'),
+        expanded = row.hasClass('p-expanded-row'),
         $this = this,
         options = {
             source: this.id,
@@ -2229,7 +2229,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {string} rowKey the rowKey.
      */
     invalidateRow(rowKey) {
-        this.tbody.children('tr').filter('[data-rk="'+ rowKey +'"]').addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.tbody.children('tr').filter('[data-rk="'+ rowKey +'"]').addClass('p-widget-content p-row-editing p-state-error');
     }
 
     /**
@@ -2239,7 +2239,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {JQuery} All cell editors of the given row.
      */
     getRowEditors(row) {
-        return row.find('div.ui-cell-editor');
+        return row.find('div.p-cell-editor');
     }
 
     /**
@@ -2248,7 +2248,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} row A row to collapse.
      */
     collapseRow(row) {
-        row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').remove();
+        row.removeClass('p-expanded-row').next('.p-expanded-row-content').remove();
     }
 
     /**
@@ -2263,14 +2263,14 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
 
             //remove contextmenu selection highlight
             if(this.contextMenuCell) {
-                this.contextMenuCell.parent().removeClass('ui-state-highlight');
+                this.contextMenuCell.parent().removeClass('p-state-highlight');
             }
         }
         else {
             cell = this.contextMenuCell;
         }
 
-        var editorInput = cell.find('> .ui-cell-editor > .ui-cell-editor-input');
+        var editorInput = cell.find('> .p-cell-editor > .p-cell-editor-input');
         if(editorInput.length !== 0 && editorInput.children().length === 0 && this.cfg.editMode === 'cell') {
             // for lazy cellEditMode
             this.cellEditInit(cell);
@@ -2305,13 +2305,13 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
 
         this.currentCell = cell;
 
-        var cellEditor = cell.children('div.ui-cell-editor'),
-        displayContainer = cellEditor.children('div.ui-cell-editor-output'),
-        inputContainer = cellEditor.children('div.ui-cell-editor-input'),
+        var cellEditor = cell.children('div.p-cell-editor'),
+        displayContainer = cellEditor.children('div.p-cell-editor-output'),
+        inputContainer = cellEditor.children('div.p-cell-editor-input'),
         inputs = inputContainer.find(':input:enabled'),
         multi = inputs.length > 1;
 
-        cell.addClass('ui-state-highlight ui-cell-editing');
+        cell.addClass('p-state-highlight p-cell-editing');
         displayContainer.hide();
         inputContainer.show();
         inputs.eq(0).trigger('focus').trigger('select');
@@ -2379,10 +2379,10 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {boolean} forward `true` to move to the next cell, or `false` to move to the previous cell.
      */
     tabCell(cell, forward) {
-        var targetCell = forward ? cell.nextAll('td.ui-editable-column:first') : cell.prevAll('td.ui-editable-column:first');
+        var targetCell = forward ? cell.nextAll('td.p-editable-column:first') : cell.prevAll('td.p-editable-column:first');
         if(targetCell.length == 0) {
             var tabRow = forward ? cell.parent().next() : cell.parent().prev();
-            targetCell = forward ? tabRow.children('td.ui-editable-column:first') : tabRow.children('td.ui-editable-column:last');
+            targetCell = forward ? tabRow.children('td.p-editable-column:first') : tabRow.children('td.p-editable-column:last');
         }
 
         this.showCellEditor(targetCell);
@@ -2394,7 +2394,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} cell A cell with an inline editor to save.
      */
     saveCell(cell) {
-        var inputs = cell.find('div.ui-cell-editor-input :input:enabled'),
+        var inputs = cell.find('div.p-cell-editor-input :input:enabled'),
         changed = false,
         $this = this;
 
@@ -2427,11 +2427,11 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} cell The cell with an activate inline editor to hide.
      */
     viewMode(cell) {
-        var cellEditor = cell.children('div.ui-cell-editor'),
-        editableContainer = cellEditor.children('div.ui-cell-editor-input'),
-        displayContainer = cellEditor.children('div.ui-cell-editor-output');
+        var cellEditor = cell.children('div.p-cell-editor'),
+        editableContainer = cellEditor.children('div.p-cell-editor-input'),
+        displayContainer = cellEditor.children('div.p-cell-editor-output');
 
-        cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
+        cell.removeClass('p-cell-editing p-state-error p-state-highlight');
         displayContainer.show();
         editableContainer.hide();
         cell.removeData('old-value').removeData('multi-edit');
@@ -2448,7 +2448,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} cell The cell with an inline editor to be saved.
      */
     doCellEditRequest(cell) {
-        var cellEditor = cell.children('.ui-cell-editor'),
+        var cellEditor = cell.children('.p-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
         cellInfo = this.getCellMeta(cell),
         $this = this;
@@ -2464,7 +2464,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            cellEditor.children('.ui-cell-editor-output').html(content);
+                            cellEditor.children('.p-cell-editor-output').html(content);
                         }
                     });
 
@@ -2472,7 +2472,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             },
             oncomplete: function(xhr, status, args, data) {
                 if(args.validationFailed)
-                    cell.addClass('ui-state-error');
+                    cell.addClass('p-state-error');
                 else
                     $this.viewMode(cell);
             }
@@ -2493,7 +2493,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} cell The cell for which editing should be canceled.
      */
     doCellEditCancelRequest(cell) {
-        var cellEditor = cell.children('.ui-cell-editor'),
+        var cellEditor = cell.children('.p-cell-editor'),
         cellIndex = cell.index(),
         cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
         $this = this;
@@ -2511,7 +2511,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            cellEditor.children('.ui-cell-editor-input').html(content);
+                            cellEditor.children('.p-cell-editor-input').html(content);
                         }
                     });
 
@@ -2538,7 +2538,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} cell The cell for which inline editing should be activated.
      */
     cellEditInit(cell) {
-        var cellEditor = cell.children('.ui-cell-editor'),
+        var cellEditor = cell.children('.p-cell-editor'),
         cellInfo = this.getCellMeta(cell),
         $this = this;
 
@@ -2554,7 +2554,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            cellEditor.children('.ui-cell-editor-input').html(content);
+                            cellEditor.children('.p-cell-editor-input').html(content);
                         }
                     });
 
@@ -2611,8 +2611,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         const hasHorizontalScroll = el.scrollWidth > el.clientWidth;
         const hasVerticalScroll   = el.scrollHeight > el.clientHeight;
 
-        el.classList.toggle('ui-scrollable-x', hasHorizontalScroll);
-        el.classList.toggle('ui-scrollable-y', hasVerticalScroll);
+        el.classList.toggle('p-scrollable-x', hasHorizontalScroll);
+        el.classList.toggle('p-scrollable-y', hasVerticalScroll);
     }
 
     /**
@@ -2628,7 +2628,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         }
 
         var target = $(event.target);
-        if(target.closest('.ui-column-customfilter', column).length) {
+        if(target.closest('.p-column-customfilter', column).length) {
             return false;
         }
 
@@ -2640,7 +2640,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {boolean} Whether there is any data displayed currently.
      */
     isEmpty() {
-        return this.tbody.children('tr.ui-treetable-empty-message').length === 1;
+        return this.tbody.children('tr.p-treetable-empty-message').length === 1;
     }
 
     /**
@@ -2699,7 +2699,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
         var $this = this;
 
         // remove all indicator numbers first
-        $this.sortableColumns.find('.ui-sortable-column-badge').text('').addClass('p-hidden');
+        $this.sortableColumns.find('.p-sortable-column-badge').text('').addClass('p-hidden');
 
         // add 1,2,3 etc to columns if more than 1 column is sorted
         var sortMeta =  $this.sortMeta;
@@ -2708,7 +2708,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 var id = $(this).attr("id");
                 for (var i = 0; i < sortMeta.length; i++) {
                     if (sortMeta[i].col == id) {
-                        $(this).find('.ui-sortable-column-badge').text(i + 1).removeClass('p-hidden');
+                        $(this).find('.p-sortable-column-badge').text(i + 1).removeClass('p-hidden');
                     }
                 }
             });

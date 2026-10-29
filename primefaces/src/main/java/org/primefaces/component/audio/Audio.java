@@ -35,7 +35,7 @@ public class Audio extends AudioBaseImpl {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AudioRenderer";
     public static final String COMPONENT_TYPE = "org.primefaces.component.Audio";
 
-    public static final String CONTAINER_CLASS = "ui-media ui-audio";
+    public static final String CONTAINER_CLASS = "p-media p-audio";
 
     public Audio() {
         setRendererType(DEFAULT_RENDERER);

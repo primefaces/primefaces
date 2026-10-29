@@ -39,8 +39,8 @@ public class OutputPanel extends OutputPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputPanel";
 
-    public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
-    public static final String LOADING_CLASS = "ui-outputpanel-loading ui-icon pi pi-spin pi-spinner";
+    public static final String CONTAINER_CLASS = "p-outputpanel p-widget";
+    public static final String LOADING_CLASS = "p-outputpanel-loading p-icon p-loading-icon p-outputpanel-loading-icon";
 
     public boolean isContentLoadRequest(FacesContext context) {
         String clientId = getClientId(context);

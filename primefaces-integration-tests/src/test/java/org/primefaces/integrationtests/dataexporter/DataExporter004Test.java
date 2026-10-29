@@ -90,7 +90,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
     @DisplayName("TreeTable Exporter: GitHub #13590 selectionOnly must export the selected nodes, not the root node")
     void exportSelectionOnly(Page page) {
         // Arrange - checking "Cloud" selects it and its child "backup-1.zip"
-        PrimeSelenium.guardAjax(row(page, "1").findElement(By.cssSelector("div.ui-chkbox-box"))).click();
+        PrimeSelenium.guardAjax(row(page, "1").findElement(By.cssSelector("div.p-chkbox-box"))).click();
 
         // Act
         page.exportSelectionOnly.click();

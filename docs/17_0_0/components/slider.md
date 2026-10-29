@@ -108,16 +108,16 @@ handy to specify the dimensions of the slider. Following is the list of structur
 
 | Class | Applies | 
 | --- | --- | 
-.ui-slider | Main container element
-.ui-slider-horizontal | Main container element of horizontal slider
-.ui-slider-vertical | Main container element of vertical slider
-.ui-slider-handle | Slider handle
-.ui-slider-range | Range between the handles of a range slider
-.ui-slider-range-min | Range from the minimum to the handle (range="min")
-.ui-slider-range-max | Range from the handle to the maximum (range="max")
-.ui-slider-animate | Main container element while the handles move animated
-.ui-state-disabled | Main container element of a disabled slider
-.ui-state-readonly | Main container element of a readonly slider
+.p-slider | Main container element
+.p-slider-horizontal | Main container element of horizontal slider
+.p-slider-vertical | Main container element of vertical slider
+.p-slider-handle | Slider handle
+.p-slider-range | Range between the handles of a range slider
+.p-slider-range-min | Range from the minimum to the handle (range="min")
+.p-slider-range-max | Range from the handle to the maximum (range="max")
+.p-slider-animate | Main container element while the handles move animated
+.p-state-disabled | Main container element of a disabled slider
+.p-state-readonly | Main container element of a readonly slider
 
 As skinning style classes are global, see the main theming section for more information.
 

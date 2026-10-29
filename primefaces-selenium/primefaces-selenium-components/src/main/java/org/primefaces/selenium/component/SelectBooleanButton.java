@@ -40,7 +40,7 @@ public abstract class SelectBooleanButton extends AbstractToggleComponent {
      * @return the label text of the button
      */
     public String getLabel() {
-        WebElement label = findElement(By.className("ui-button-text"));
+        WebElement label = findElement(By.className("p-button-text"));
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }

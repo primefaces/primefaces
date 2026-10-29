@@ -38,5 +38,5 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectonelistbox | Main container element.
-.ui-selectlistbox-item | Each item in list.
+.p-selectonelistbox | Main container element.
+.p-selectlistbox-item | Each item in list.

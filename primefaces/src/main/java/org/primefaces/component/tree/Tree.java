@@ -62,28 +62,26 @@ public class Tree extends TreeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
-    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
-    public static final String FILTER_CONTAINER = "ui-tree-filter-container";
-    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content";
-    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content";
-    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content";
-    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "ui-tree ui-tree-horizontal ui-tree-rtl ui-widget ui-widget-content";
-    public static final String ROOT_NODES_CLASS = "ui-tree-container";
-    public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
-    public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
-    public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
-    public static final String NODE_CONTENT_CLASS_V = "ui-treenode-content";
-    public static final String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
-    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default";
-    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default";
-    public static final String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
-    public static final String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
-    public static final String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
-    public static final String EXPANDED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-minus";
-    public static final String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
-    public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
-    public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
-    public static final String NODE_LABEL_CLASS = "ui-treenode-label";
+    public static final String FILTER_CLASS = "p-tree-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String FILTER_CONTAINER = "p-tree-filter-container";
+    public static final String CONTAINER_CLASS = "p-tree p-widget p-widget-content";
+    public static final String CONTAINER_RTL_CLASS = "p-tree p-tree-rtl p-widget p-widget-content";
+    public static final String HORIZONTAL_CONTAINER_CLASS = "p-tree p-tree-horizontal p-widget p-widget-content";
+    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "p-tree p-tree-horizontal p-tree-rtl p-widget p-widget-content";
+    public static final String ROOT_NODES_CLASS = "p-tree-container";
+    public static final String PARENT_NODE_CLASS = "p-treenode p-treenode-parent";
+    public static final String LEAF_NODE_CLASS = "p-treenode p-treenode-leaf";
+    public static final String CHILDREN_NODES_CLASS = "p-treenode-children";
+    public static final String NODE_CONTENT_CLASS_V = "p-treenode-content";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_V = "p-treenode-content p-tree-selectable";
+    public static final String NODE_CONTENT_CLASS_H = "p-treenode-content p-state-default";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "p-treenode-content p-tree-selectable p-state-default";
+    public static final String TOGGLER_CLASS_V = "p-tree-toggler p-icon p-toggle-icon p-tree-toggle-icon";
+    public static final String TOGGLER_CLASS_H = "p-tree-toggler p-icon p-toggle-icon p-tree-horizontal-toggle-icon";
+    public static final String FILTER_ICON_CLASS = "p-icon p-search-icon p-tree-filter-icon";
+    public static final String LEAF_ICON_CLASS = "p-treenode-leaf-icon";
+    public static final String NODE_ICON_CLASS = "p-treenode-icon";
+    public static final String NODE_LABEL_CLASS = "p-treenode-label";
 
     private Map<String, UITreeNode> nodes;
     private TreeNode<?> dragNode;

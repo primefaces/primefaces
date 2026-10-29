@@ -145,21 +145,9 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
                                 boolean disabled, boolean readonly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = createStyleClass(component, null, HTML.CHECKBOX_BOX_CLASS) ;
-        styleClass = value != null ? styleClass + " ui-state-active" : styleClass;
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = readonly ? styleClass + " ui-chkbox-readonly" : styleClass;
-
-        //if stateIcon is defined use it instead of default icons.
-        String stateOneIconClass
-                = component.getStateOneIcon() != null ? TriStateCheckbox.UI_ICON + component.getStateOneIcon() : "";
-        String stateTwoIconClass
-                = component.getStateTwoIcon() != null ? TriStateCheckbox.UI_ICON + component.getStateTwoIcon()
-                                                     : TriStateCheckbox.UI_ICON + "ui-icon-check";
-        String stateThreeIconClass
-                = component.getStateThreeIcon() != null ? TriStateCheckbox.UI_ICON + component.getStateThreeIcon()
-                                                       : TriStateCheckbox.UI_ICON + "ui-icon-closethick";
-
-        String statesIconsClasses = "[\"" + stateOneIconClass + "\",\"" + stateTwoIconClass + "\",\"" + stateThreeIconClass + "\"]";
+        styleClass = value != null ? styleClass + " p-state-active" : styleClass;
+        styleClass = disabled ? styleClass + " p-state-disabled" : styleClass;
+        styleClass = readonly ? styleClass + " p-chkbox-readonly" : styleClass;
 
         String stateOneTitle = component.getStateOneTitle() == null ? "" : component.getStateOneTitle();
         String stateTwoTitle = component.getStateTwoTitle() == null ? "" : component.getStateTwoTitle();
@@ -173,24 +161,22 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
                 + EscapeUtils.forJavaScript(stateThreeTitle)
                 + "\"]}";
 
-        String iconClass = "ui-chkbox-icon ui-c"; //HTML.CHECKBOX_ICON_CLASS;
+        String iconClass = HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
         String activeTitle = "";
         if (value == null) {
-            iconClass = iconClass + " " + stateOneIconClass;
             activeTitle = stateOneTitle;
         }
         else if (Boolean.TRUE.equals(value)) {
-            iconClass = iconClass + " " + stateTwoIconClass;
+            iconClass = HTML.CHECKBOX_CHECKED_ICON_CLASS;
             activeTitle = stateTwoTitle;
         }
         else if (Boolean.FALSE.equals(value)) {
-            iconClass = iconClass + " " + stateThreeIconClass;
+            iconClass = TriStateCheckbox.CROSSED_ICON_CLASS;
             activeTitle = stateThreeTitle;
         }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("data-iconstates", statesIconsClasses, null);
         if (LangUtils.isNotBlank(stateOneTitle) || LangUtils.isNotBlank(stateTwoTitle) || LangUtils.isNotBlank(stateThreeTitle)) {
             writer.writeAttribute("title", activeTitle, null);
             writer.writeAttribute("data-titlestates", statesTitles, null);
@@ -209,8 +195,8 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
 
             writer.startElement("span", null);
             String styleClass = HTML.CHECKBOX_LABEL_CLASS;
-            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
-            styleClass = readonly ? styleClass + " ui-chkbox-readonly" : styleClass;
+            styleClass = disabled ? styleClass + " p-state-disabled" : styleClass;
+            styleClass = readonly ? styleClass + " p-chkbox-readonly" : styleClass;
             writer.writeAttribute("class", styleClass, null);
 
             if (component.isEscape()) {

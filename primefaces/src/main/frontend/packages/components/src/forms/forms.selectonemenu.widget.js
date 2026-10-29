@@ -102,15 +102,15 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         if (this.cfg.editable) {
             this.focusInput = $(this.jqId + '_focus');
         }
-        this.label = this.jq.find('.ui-selectonemenu-label');
-        this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
+        this.label = this.jq.find('.p-selectonemenu-label');
+        this.menuIcon = this.jq.children('.p-selectonemenu-trigger');
 
         this.keyboardTarget = this.cfg.editable ? this.focusInput : this.label;
 
         this.panel = $(this.panelId);
-        this.disabled = this.jq.hasClass('ui-state-disabled');
+        this.disabled = this.jq.hasClass('p-state-disabled');
         this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
-        this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
+        this.itemsWrapper = this.panel.children('.p-selectonemenu-items-wrapper');
         this.options = this.input.find('option');
         this.cfg.effect = this.cfg.effect||'fade';
 
@@ -139,7 +139,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         }
 
         //triggers
-        this.triggers = this.cfg.editable ? this.jq.find('.ui-selectonemenu-trigger') : this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+        this.triggers = this.cfg.editable ? this.jq.find('.p-selectonemenu-trigger') : this.jq.find('.p-selectonemenu-trigger, .p-selectonemenu-label');
 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
@@ -148,7 +148,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             this.bindEvents();
 
             PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
-            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'p-connected-overlay');
         }
 
         // float label
@@ -184,16 +184,16 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @private
      */
     initContents() {
-        this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
-        this.items = this.itemsContainer.find('.ui-selectonemenu-item');
-        this.optGroupsSize = this.itemsContainer.find('li.ui-selectonemenu-item-group').length;
+        this.itemsContainer = this.itemsWrapper.children('.p-selectonemenu-items');
+        this.items = this.itemsContainer.find('.p-selectonemenu-item');
+        this.optGroupsSize = this.itemsContainer.find('li.p-selectonemenu-item-group').length;
 
         var $this = this,
         selectedOption = this.options.filter(':selected'),
         highlightedItem = this.selectItemFromOption(selectedOption);
 
         //disable options
-        $this.items.filter('[disabled]').addClass('ui-state-disabled');
+        $this.items.filter('[disabled]').addClass('p-state-disabled');
 
         //activate selected
         if(this.cfg.editable) {
@@ -205,7 +205,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             }
             //custom input
             else {
-                this.items.eq(0).addClass('ui-state-highlight');
+                this.items.eq(0).addClass('p-state-highlight');
                 this.customInput = true;
                 this.customInputVal = customInputVal;
             }
@@ -248,9 +248,9 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 // 'true' -> always calculate min-width
                 var calculateMinWidth = true;
 
-                // 'auto' -> only calculate it without a ui-fluid parent
+                // 'auto' -> only calculate it without a p-fluid parent
                 if (this.cfg.autoWidth == 'auto') {
-                    var hasFluidParent = this.jq[0].closest('.ui-fluid') != undefined;
+                    var hasFluidParent = this.jq[0].closest('.p-fluid') != undefined;
                     calculateMinWidth = !hasFluidParent;
                 }
 
@@ -316,14 +316,14 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         //Triggers
         this.triggers.on("mouseenter", function() {
-            if(!$this.jq.hasClass('ui-state-focus')) {
-                $this.jq.addClass('ui-state-hover');
-                $this.menuIcon.addClass('ui-state-hover');
+            if(!$this.jq.hasClass('p-state-focus')) {
+                $this.jq.addClass('p-state-hover');
+                $this.menuIcon.addClass('p-state-hover');
             }
         })
         .on("mouseleave", function() {
-            $this.jq.removeClass('ui-state-hover');
-            $this.menuIcon.removeClass('ui-state-hover');
+            $this.jq.removeClass('p-state-hover');
+            $this.menuIcon.removeClass('p-state-hover');
         })
         .on("click", function(e) {
             if($this.panel.is(":hidden")) {
@@ -336,37 +336,37 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 $this.changeAriaValue($this.getActiveItem());
             }
 
-            $this.jq.removeClass('ui-state-hover');
-            $this.menuIcon.removeClass('ui-state-hover');
+            $this.jq.removeClass('p-state-hover');
+            $this.menuIcon.removeClass('p-state-hover');
             if ($this.focusInput) {
-                $this.focusInput.trigger('focus.ui-selectonemenu')
+                $this.focusInput.trigger('focus.p-selectonemenu')
             }
-            else if ($(e.currentTarget).hasClass('ui-selectonemenu-trigger')) {
-                $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+            else if ($(e.currentTarget).hasClass('p-selectonemenu-trigger')) {
+                $this.keyboardTarget.trigger('focus.p-selectonemenu');
             }
             e.preventDefault();
             e.stopPropagation();
         });
         
-        this.input.off('focus.ui-selectonemenu').on('focus.ui-selectonemenu', function() {
-            $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+        this.input.off('focus.p-selectonemenu').on('focus.p-selectonemenu', function() {
+            $this.keyboardTarget.trigger('focus.p-selectonemenu');
         });
 
-        this.keyboardTarget.on('focus.ui-selectonemenu', function(e) {
-            $this.jq.addClass('ui-state-focus');
-            $this.menuIcon.addClass('ui-state-focus');
+        this.keyboardTarget.on('focus.p-selectonemenu', function(e) {
+            $this.jq.addClass('p-state-focus');
+            $this.menuIcon.addClass('p-state-focus');
             if(!$this.cfg.dynamic && !$this.items) {
                 $this.callHandleMethod($this.handleTabKey(), e);
             }
             if ($this.hasFloatLabel) {
-                $this.jq.addClass('ui-inputwrapper-focus');
+                $this.jq.addClass('p-inputwrapper-focus');
             }
         })
-        .on('blur.ui-selectonemenu', function(){
-            $this.jq.removeClass('ui-state-focus');
-            $this.menuIcon.removeClass('ui-state-focus');
+        .on('blur.p-selectonemenu', function(){
+            $this.jq.removeClass('p-state-focus');
+            $this.menuIcon.removeClass('p-state-focus');
             if ($this.hasFloatLabel) {
-                $this.jq.removeClass('ui-inputwrapper-focus');
+                $this.jq.removeClass('p-inputwrapper-focus');
             }
             $this.callBehavior('blur');
         });
@@ -395,7 +395,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         if(this.cfg.filter) {
             this.cfg.initialHeight = this.itemsWrapper.height();
             this.setupFilterMatcher();
-            this.filterInput = this.panel.find('> div.ui-selectonemenu-filter-container > input.ui-selectonemenu-filter');
+            this.filterInput = this.panel.find('> div.p-selectonemenu-filter-container > input.p-selectonemenu-filter');
             PrimeFaces.skinInput(this.filterInput);
 
             this.bindFilterEvents();
@@ -411,8 +411,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             return;
         }
         var $this = this;
-        this.panel.addClass('ui-input-overlay-panel');
-        this.jq.addClass('ui-inputwrapper');
+        this.panel.addClass('p-input-overlay-panel');
+        this.jq.addClass('p-inputwrapper');
 
         this.updateFloatLabel(this.input);
 
@@ -424,9 +424,9 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             this.label.on('input', function(e) {
                 $this.updateFloatLabel($(this));
             }).on('focus', function() {
-                $this.jq.addClass('ui-inputwrapper-focus');
+                $this.jq.addClass('p-inputwrapper-focus');
             }).on('blur', function() {
-                $this.jq.removeClass('ui-inputwrapper-focus');
+                $this.jq.removeClass('p-inputwrapper-focus');
                 $this.updateFloatLabel($(this));
             });
         }
@@ -443,14 +443,14 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         }
 
         //Items
-        this.items.filter(':not(.ui-state-disabled)').on('mouseover.selectonemenu', function() {
+        this.items.filter(':not(.p-state-disabled)').on('mouseover.selectonemenu', function() {
             var el = $(this);
 
-            if(!el.hasClass('ui-state-highlight'))
-                $(this).addClass('ui-state-hover');
+            if(!el.hasClass('p-state-highlight'))
+                $(this).addClass('p-state-hover');
         })
         .on('mouseout.selectonemenu', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click.selectonemenu', function() {
             $this.revert();
@@ -545,8 +545,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     revert() {
         if(this.cfg.editable && this.customInput) {
             this.setLabel(this.customInputVal);
-            this.items.filter('.ui-state-active').removeClass('ui-state-active');
-            this.items.eq(0).addClass('ui-state-active');
+            this.items.filter('.p-state-active').removeClass('p-state-active');
+            this.items.eq(0).addClass('p-state-active');
         }
         else {
             this.highlightItem(this.selectItemFromOption(this.preShowValue));
@@ -562,10 +562,10 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      */
     highlightItem(item, keepLabel) {
         this.items.attr('aria-selected', false);
-        this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
+        this.items.filter('.p-state-highlight').removeClass('p-state-highlight');
 
         if(item.length > 0) {
-            item.addClass('ui-state-highlight');
+            item.addClass('p-state-highlight');
             item.attr('aria-selected', true);
             if(!keepLabel) {
                 this.setLabel(item.data('label'));
@@ -657,7 +657,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     bindKeyEvents() {
         var $this = this;
 
-        this.keyboardTarget.on('keydown.ui-selectonemenu', function(e) {
+        this.keyboardTarget.on('keydown.p-selectonemenu', function(e) {
             switch (e.code) {
                 case 'ArrowUp':
                 case 'ArrowLeft':
@@ -686,7 +686,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                     $this.handleSpaceKey(e);
                     break;
             }
-        }).on('keyup.ui-selectonemenu', function(e) {
+        }).on('keyup.p-selectonemenu', function(e) {
             if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
@@ -739,7 +739,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                             var option = $(this);
                             var currentIndex = option[0].index;
                             var currentItem = $this.items.eq(currentIndex);
-                            if (currentItem.hasClass('ui-state-highlight')) {
+                            if (currentItem.hasClass('p-state-highlight')) {
                                 selectedIndex = currentIndex;
                                 return false;
                             }
@@ -804,7 +804,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     bindFilterEvents() {
         var $this = this;
 
-        this.filterInput.on('keyup.ui-selectonemenu', function(e) {
+        this.filterInput.on('keyup.p-selectonemenu', function(e) {
             if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
@@ -814,7 +814,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 $this.filter($(this).val());
             }
         })
-        .on('keydown.ui-selectonemenu',function(e) {
+        .on('keydown.p-selectonemenu',function(e) {
 
             switch(e.code) {
                 case 'ArrowUp':
@@ -843,7 +843,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 default:
                 break;
             }
-        }).on('input.ui-selectonemenu paste.ui-selectonemenu drop.ui-selectonemenu', function(e) {
+        }).on('input.p-selectonemenu paste.p-selectonemenu drop.p-selectonemenu', function(e) {
             if (e.type === 'paste' || e.type === 'drop') {                
                 PrimeFaces.queueTask(() => $this.filter($this.filterInput.val()), 10);
             }
@@ -864,7 +864,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         
         // Create a selector for the next valid option
         // If panel is hidden, select the first option, otherwise select the first visible option
-        var selector = '[role="option"]:not(.ui-state-disabled)' + (isHidden ? ':first' : ':visible:first');
+        var selector = '[role="option"]:not(.p-state-disabled)' + (isHidden ? ':first' : ':visible:first');
         
         // Try to find the next valid option after the active item
         var next = activeItem.nextAll(selector);
@@ -907,7 +907,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         
         // Create a selector for the next valid option
         // If panel is hidden, select the first option, otherwise select the first visible option
-        var selector = '[role="option"]:not(.ui-state-disabled)' + (isHidden ? ':first' : ':visible:first');
+        var selector = '[role="option"]:not(.p-state-disabled)' + (isHidden ? ':first' : ':visible:first');
         
         // Try to find the previous valid option after the active item
         var prev = activeItem.prevAll(selector);
@@ -960,7 +960,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     handleSpaceKey(event) {
         var target = $(event.target);
 
-        if(target.is('input') && target.hasClass('ui-selectonemenu-filter')) {
+        if(target.is('input') && target.hasClass('p-selectonemenu-filter')) {
             return;
         }
 
@@ -1010,8 +1010,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     handleLabelChange(event) {
         this.customInput = true;
         this.customInputVal = $(event.target).val();
-        this.items.filter('.ui-state-active').removeClass('ui-state-active');
-        this.items.eq(0).addClass('ui-state-active');
+        this.items.filter('.p-state-active').removeClass('p-state-active');
+        this.items.eq(0).addClass('p-state-active');
     }
 
     /**
@@ -1072,7 +1072,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                     if (!$this.isTabbing) {
                         var activeElement = $(document.activeElement);
                         if ($this.jq.has(activeElement).length || $this.panel.has(activeElement).length) {
-                            $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+                            $this.keyboardTarget.trigger('focus.p-selectonemenu');
                         }
                     }
                     $this.isTabbing = false;
@@ -1120,7 +1120,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     disable() {
     	if (!this.disabled) {
 	        this.disabled = true;
-	        this.jq.addClass('ui-state-disabled');
+	        this.jq.addClass('p-state-disabled');
 	        this.input.attr('disabled', 'disabled');
 	        if(this.cfg.editable) {
 	            this.label.attr('disabled', 'disabled');
@@ -1135,7 +1135,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     enable() {
     	if (this.disabled) {
 	        this.disabled = false;
-	        this.jq.removeClass('ui-state-disabled');
+	        this.jq.removeClass('p-state-disabled');
 	        this.input.removeAttr('disabled');
 	        if(this.cfg.editable) {
 	            this.label.removeAttr('disabled');
@@ -1212,7 +1212,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 }
             }
             else {
-                this.label.removeClass('ui-state-disabled');
+                this.label.removeClass('p-state-disabled');
 
                 var option = null;
                 if (this.items) {
@@ -1307,7 +1307,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @return {JQuery} The DOM element that represents the currently selected option.
      */
     getActiveItem() {
-        return this.items.filter('.ui-state-highlight');
+        return this.items.filter('.p-state-highlight');
     }
 
     /**
@@ -1372,7 +1372,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
-            this.itemsContainer.find('li.ui-selectonemenu-item-group').show();
+            this.itemsContainer.find('li.p-selectonemenu-item-group').show();
         }
         else {
             var hide = [];
@@ -1382,14 +1382,14 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 var option = this.options.eq(i),
                 item = this.items.eq(i);
 
-                if(item.hasClass('ui-noselection-option')) {
+                if(item.hasClass('p-noselection-option')) {
                     hide.push(item);
                 } else {
                     var itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize);
                     if(this.filterMatcher(itemLabel, filterValue)) {
                         show.push(item);
                     } else {
-                        if(item.is('.ui-selectonemenu-item-group-children')) {
+                        if(item.is('.p-selectonemenu-item-group-children')) {
                             itemLabel = PrimeFaces.toSearchable(option.parent().attr('label'), lowercase, normalize);
                             if (this.filterMatcher(itemLabel, filterValue)) {
                                 show.push(item);
@@ -1407,17 +1407,17 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             show = [];
 
             //Toggle groups
-            var groups = this.itemsContainer.find('li.ui-selectonemenu-item-group');
+            var groups = this.itemsContainer.find('li.p-selectonemenu-item-group');
             for(var g = 0; g < groups.length; g++) {
                 var group = groups.eq(g);
 
                 if(g === (groups.length - 1)) {
-                    if(group.nextAll().filter('.ui-selectonemenu-item-group-children:visible').length === 0)
+                    if(group.nextAll().filter('.p-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);
                 }
-                else if(group.nextUntil('li.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0) {
+                else if(group.nextUntil('li.p-selectonemenu-item-group').filter('.p-selectonemenu-item-group-children:visible').length === 0) {
                     hide.push(group);
                 } else {
                     show.push(group);
@@ -1428,7 +1428,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             $.each(show, function(i, o) { o.show(); });
         }
 
-        var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
+        var firstVisibleItem = this.items.filter(':visible:not(.p-state-disabled):first');
         if(firstVisibleItem.length) {
             this.highlightItem(firstVisibleItem, !this.cfg.selectOnFocus);
             PrimeFaces.scrollInView(this.itemsWrapper, firstVisibleItem);
@@ -1570,13 +1570,13 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      */
     setQuerying(state) {
         if (state && !this.querying) {
-            this.jq.addClass('ui-state-loading');
-            this.menuIcon.prepend('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
+            this.jq.addClass('p-state-loading');
+            this.menuIcon.prepend('<span class="p-icon-loading p-icon p-loading-icon p-ajaxstatus-loading-icon"></span>');
                 
         }
         else if (!state && this.querying) {
-            this.jq.removeClass('ui-state-loading');
-            this.menuIcon.find('.ui-icon-loading').remove();
+            this.jq.removeClass('p-state-loading');
+            this.menuIcon.find('.p-icon-loading').remove();
         }
         this.querying = state;
     }
@@ -1589,7 +1589,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      */
     renderPanelContentFromHiddenSelect(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget" role="listbox">';
+             var panelContent = '<div id="' + this.id + '_items" class="p-selectonemenu-items p-widget-content p-widget" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
              panelContent += '</div>';
 
@@ -1618,7 +1618,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         var hasOptgroup = opts.filter("optgroup").length > 0;
 
         if (!hasOptgroup && !isGrouped) {
-            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
+            content += '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget">';
             content += opts.map(function(index, element) {
                 return $this.renderSelectItem(element, isGrouped);
             }).get().join('');
@@ -1630,7 +1630,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             opts.each(function(index, element) {
                 if (element.tagName === "OPTGROUP") {
                     if (pendingOptions.length > 0) {
-                        content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
+                        content += '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget">';
                         pendingOptions.forEach(function(opt) {
                             content += $this.renderSelectItem(opt, false);
                         });
@@ -1643,7 +1643,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 }
             });
             if (pendingOptions.length > 0) {
-                content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
+                content += '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget">';
                 pendingOptions.forEach(function(opt) {
                     content += $this.renderSelectItem(opt, false);
                 });
@@ -1677,12 +1677,12 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
             label = label === "&nbsp;" ? " " : label;
         }
 
-        var cssClass = isOptgroup ? "ui-selectonemenu-item-group" : 
-                       "ui-selectonemenu-item ui-selectonemenu-list-item" + 
-                       (isGrouped ? " ui-selectonemenu-item-group-children" : "") +
-                       ($item.data("noselection-option") ? " ui-noselection-option" : "");
+        var cssClass = isOptgroup ? "p-selectonemenu-item-group" : 
+                       "p-selectonemenu-item p-selectonemenu-list-item" + 
+                       (isGrouped ? " p-selectonemenu-item-group-children" : "") +
+                       ($item.data("noselection-option") ? " p-noselection-option" : "");
 
-        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget" aria-labelledby="' + id + '">' : '';
+        var content = isOptgroup ? '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget" aria-labelledby="' + id + '">' : '';
         
         content += '<li id="' + id + '" class="' + cssClass + '" tabindex="-1" role="' + (isOptgroup ? "presentation" : "option") + '"';
         
@@ -1743,7 +1743,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @return {string} The markup for the screen reader only text of an item without a label.
      */
     renderEmptyItemLabel() {
-        return '<span class="ui-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
+        return '<span class="p-sr-only">' + PrimeFaces.escapeHTML(this.getEmptyItemLabel()) + '</span>';
     }
 
     /**
@@ -1752,10 +1752,10 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      */
     updatePlaceholderClass(add) {
         if (add) {
-            this.label.addClass('ui-selectonemenu-label-placeholder');
+            this.label.addClass('p-selectonemenu-label-placeholder');
         }
         else {
-            this.label.removeClass('ui-selectonemenu-label-placeholder');
+            this.label.removeClass('p-selectonemenu-label-placeholder');
         }
     }
 

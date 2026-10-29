@@ -51,7 +51,7 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
         //bind events if not disabled
         if (this.disabled) {
             this.input.attr("disabled", "disabled");
-            this.input.addClass("ui-state-disabled");
+            this.input.addClass("p-state-disabled");
             this.hiddenInput.attr("disabled", "disabled");
         }
 

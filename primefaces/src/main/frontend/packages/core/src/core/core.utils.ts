@@ -28,7 +28,7 @@ export class Utils {
      */
     resolveAppendTo(widget: DynamicOverlayWidget, target: JQuery, overlay: JQuery): string | null | undefined {
         if (widget && target && target[0]) {
-            var dialog = target[0].closest('.ui-dialog');
+            var dialog = target[0].closest('.p-dialog');
 
             if (dialog && overlay && overlay.length) {
                 var $dialog = $(dialog);
@@ -180,7 +180,7 @@ export class Utils {
         }
 
         var modalId = id + '_modal';
-        var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
+        var modalOverlay = $('<div id="' + modalId + '" class="p-widget-overlay p-dialog-mask"></div>');
         modalOverlay.appendTo($(document.body));
         modalOverlay.css('z-index' , String(zIndex));
 
@@ -715,14 +715,14 @@ export class Utils {
      * {@link enableScrolling}.
      */
     preventScrolling(): void {
-        $(document.body).addClass('ui-overflow-hidden');
+        $(document.body).addClass('p-overflow-hidden');
     }
 
     /**
      * Enables scrolling again if previously disabled via {@link preventScrolling}.
      */
     enableScrolling(): void {
-        $(document.body).removeClass('ui-overflow-hidden');
+        $(document.body).removeClass('p-overflow-hidden');
     }
 
     /**
@@ -960,7 +960,7 @@ export class Utils {
         if (input.is(':disabled')) {
             input.prop('disabled', false);
         }
-        jq.removeClass('ui-state-disabled');
+        jq.removeClass('p-state-disabled');
     }
 
     /**
@@ -976,7 +976,7 @@ export class Utils {
         if (!input.is(':disabled')) {
             input.prop('disabled', true);
         }
-        jq.addClass('ui-state-disabled');
+        jq.addClass('p-state-disabled');
     }
 
     /**
@@ -986,7 +986,7 @@ export class Utils {
      */
     enableButton(jq: JQuery): void {
         if (jq) {
-            jq.removeClass('ui-state-disabled')
+            jq.removeClass('p-state-disabled')
               .prop( "disabled", false)
               .removeAttr('aria-disabled');
         }
@@ -999,8 +999,8 @@ export class Utils {
      */
     disableButton(jq: JQuery): void {
         if (jq) {
-            jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
-              .addClass('ui-state-disabled')
+            jq.removeClass('p-state-hover p-state-focus p-state-active')
+              .addClass('p-state-disabled')
               .attr('disabled', 'disabled')
               .attr('aria-disabled', 'true');
         }
@@ -1267,7 +1267,7 @@ export class Utils {
         if (!jq || !jq.parent()) {
             return false;
         }
-        return jq.parent().hasClass('ui-float-label');
+        return jq.parent().hasClass('p-float-label');
     }
 
     /**
@@ -1306,10 +1306,10 @@ export class Utils {
         }
 
         if (isEmpty) {
-            element.removeClass('ui-inputwrapper-filled');
+            element.removeClass('p-inputwrapper-filled');
         }
         else {
-            element.addClass('ui-inputwrapper-filled');
+            element.addClass('p-inputwrapper-filled');
         }
 
         return undefined;
@@ -1379,10 +1379,10 @@ export class Utils {
      */
     nextStickyZindex(): number {
         // Get the z-index of the highest visible sticky, or use PrimeFaces.nextZindex() + 1 if none found
-        var highestStickyZIndex = this.roundTowardsZero($('.ui-sticky:visible').last().zIndex()) || parseInt(core.nextZindex()) + 1;
+        var highestStickyZIndex = this.roundTowardsZero($('.p-sticky:visible').last().zIndex()) || parseInt(core.nextZindex()) + 1;
 
         // GitHub #9295 Adjust z-index based on overlays
-        var overlays = $('.ui-widget-overlay:visible');
+        var overlays = $('.p-widget-overlay:visible');
         if (overlays.length) {
             for (const overlay of overlays) {
                 var overlayZIndex = this.roundTowardsZero($(overlay).zIndex()) - 1;
@@ -1459,7 +1459,7 @@ export class Utils {
         const classes = jq.attr('class')?.split(' ') ?? [];
 
         // Find the index of the target class
-        const targetIndex = classes.indexOf('ui-c');
+        const targetIndex = classes.indexOf('p-c');
 
         // If the target class is found, remove all classes after it and add the new class
         if (targetIndex !== -1) {

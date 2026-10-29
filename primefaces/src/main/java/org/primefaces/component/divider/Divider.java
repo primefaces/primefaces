@@ -34,16 +34,16 @@ import jakarta.faces.component.FacesComponent;
 public class Divider extends DividerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
 
-    public static final String STYLE_CLASS = "ui-divider ui-widget";
-    public static final String CONTENT_CLASS = "ui-divider-content";
-    public static final String HORIZONTAL_CLASS = "ui-divider-horizontal";
-    public static final String VERTICAL_CLASS = "ui-divider-vertical";
-    public static final String SOLID_CLASS = "ui-divider-solid";
-    public static final String DASHED_CLASS = "ui-divider-dashed";
-    public static final String DOTTED_CLASS = "ui-divider-dotted";
-    public static final String ALIGN_LEFT_CLASS = "ui-divider-left";
-    public static final String ALIGN_CENTER_CLASS = "ui-divider-center";
-    public static final String ALIGN_RIGHT_CLASS = "ui-divider-right";
-    public static final String ALIGN_TOP_CLASS = "ui-divider-top";
-    public static final String ALIGN_BOTTOM_CLASS = "ui-divider-bottom";
+    public static final String STYLE_CLASS = "p-divider p-widget";
+    public static final String CONTENT_CLASS = "p-divider-content";
+    public static final String HORIZONTAL_CLASS = "p-divider-horizontal";
+    public static final String VERTICAL_CLASS = "p-divider-vertical";
+    public static final String SOLID_CLASS = "p-divider-solid";
+    public static final String DASHED_CLASS = "p-divider-dashed";
+    public static final String DOTTED_CLASS = "p-divider-dotted";
+    public static final String ALIGN_LEFT_CLASS = "p-divider-left";
+    public static final String ALIGN_CENTER_CLASS = "p-divider-center";
+    public static final String ALIGN_RIGHT_CLASS = "p-divider-right";
+    public static final String ALIGN_TOP_CLASS = "p-divider-top";
+    public static final String ALIGN_BOTTOM_CLASS = "p-divider-bottom";
 }

@@ -41,8 +41,8 @@ public class CommandLink extends CommandLinkBaseImpl implements DialogReturnAwar
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
-    public static final String STYLE_CLASS = "ui-commandlink ui-widget";
-    public static final String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
+    public static final String STYLE_CLASS = "p-commandlink p-widget";
+    public static final String DISABLED_STYLE_CLASS = "p-commandlink p-widget p-state-disabled";
 
     private String confirmationScript;
 

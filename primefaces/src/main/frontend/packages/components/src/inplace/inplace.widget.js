@@ -66,9 +66,9 @@ PrimeFaces.widget.Inplace = class Inplace extends PrimeFaces.widget.BaseWidget {
                          $this.show();
                     }
                 }).on("mouseover", function(){
-                    $(this).toggleClass("ui-state-highlight");
+                    $(this).toggleClass("p-state-highlight");
                 }).on("mouseout", function(){
-                    $(this).toggleClass("ui-state-highlight");
+                    $(this).toggleClass("p-state-highlight");
                 });
                 if (this.display.attr("tabindex") >= 0) {
                     this.display.on("keydown", function(e){
@@ -77,9 +77,9 @@ PrimeFaces.widget.Inplace = class Inplace extends PrimeFaces.widget.BaseWidget {
                             e.preventDefault();
                         }
                     }).on("focus", function(){
-                        $(this).toggleClass("ui-state-focus");
+                        $(this).toggleClass("p-state-focus");
                     }).on("blur", function(){
-                        $(this).toggleClass("ui-state-focus");
+                        $(this).toggleClass("p-state-focus");
                     });
                 }
             }
@@ -92,8 +92,8 @@ PrimeFaces.widget.Inplace = class Inplace extends PrimeFaces.widget.BaseWidget {
 
                 this.editor = $(this.jqId + '_editor');
 
-                var saveButton = this.editor.children('.ui-inplace-save'),
-                    cancelButton = this.editor.children('.ui-inplace-cancel');
+                var saveButton = this.editor.children('.p-inplace-save'),
+                    cancelButton = this.editor.children('.p-inplace-cancel');
 
                 PrimeFaces.skinButton(saveButton).skinButton(cancelButton);
 

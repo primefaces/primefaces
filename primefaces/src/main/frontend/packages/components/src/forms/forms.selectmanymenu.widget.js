@@ -30,9 +30,9 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         super.init(cfg);
         this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 
-        this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
+        this.allItems.filter('.p-state-highlight').find('> .p-chkbox > .p-chkbox-box').addClass('p-state-active');
         // Checkbox is inside TD element when using custom content
-        this.allItems.filter('.ui-state-highlight').find('> td > .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
+        this.allItems.filter('.p-state-highlight').find('> td > .p-chkbox > .p-chkbox-box').addClass('p-state-active');
     }
 
     /**
@@ -60,7 +60,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
                         $this.unselectAll();
                     }
 
-                    if ((metaKey || $this.cfg.showCheckbox) && item.hasClass('ui-state-highlight')) {
+                    if ((metaKey || $this.cfg.showCheckbox) && item.hasClass('p-state-highlight')) {
                         $this.unselectItem(item);
                     }
                     else {
@@ -81,7 +81,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
                         for (var i = startIndex; i < endIndex; i++) {
                             var it = $this.allItems.eq(i);
 
-                            if (it.is(':visible') && !it.hasClass('ui-state-disabled')) {
+                            if (it.is(':visible') && !it.hasClass('p-state-disabled')) {
                                 $this.selectItem(it);
                             }
                         }
@@ -101,19 +101,19 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
             });
 
             if (this.cfg.showCheckbox) {
-                this.checkboxes = this.jq.find('.ui-selectlistbox-item:not(.ui-state-disabled) div.ui-chkbox > div.ui-chkbox-box');
+                this.checkboxes = this.jq.find('.p-selectlistbox-item:not(.p-state-disabled) div.p-chkbox > div.p-chkbox-box');
 
                 this.checkboxes.on('mouseenter.selectManyMenu', function(e) {
-                    $(this).addClass('ui-state-hover');
+                    $(this).addClass('p-state-hover');
                 })
                     .on('mouseleave.selectManyMenu', function(e) {
-                        $(this).removeClass('ui-state-hover');
+                        $(this).removeClass('p-state-hover');
                     })
                     .on('click.selectManyMenu', function(e) {
                         $this.checkboxClick = true;
 
-                        var item = $(this).closest('.ui-selectlistbox-item');
-                        if (item.hasClass('ui-state-highlight'))
+                        var item = $(this).closest('.p-selectlistbox-item');
+                        if (item.hasClass('p-state-highlight'))
                             $this.unselectItem(item);
                         else
                             $this.selectItem(item);
@@ -143,7 +143,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
                     $this.unselectAll();
                 }
 
-                if ((metaKey || $this.cfg.showCheckbox) && item.hasClass('ui-state-highlight')) {
+                if ((metaKey || $this.cfg.showCheckbox) && item.hasClass('p-state-highlight')) {
                     $this.unselectItem(item);
                 }
                 else {
@@ -164,7 +164,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
             case 'ArrowDown':
                 if (!event.shiftKey) {
                     var newItem = event.key === 'ArrowDown' ? item.next() : item.prev();
-                    if (!newItem.hasClass('ui-selectlistbox-item')) {
+                    if (!newItem.hasClass('p-selectlistbox-item')) {
                         return;
                     }
                     $this.focus(newItem);
@@ -208,20 +208,19 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
             var item = filteredItems.eq(i);
             var itemNative = item[0];
 
-            itemNative.classList.add('ui-state-highlight');
-            itemNative.classList.remove('ui-state-hover');
+            itemNative.classList.add('p-state-highlight');
+            itemNative.classList.remove('p-state-hover');
             itemNative.setAttribute('aria-selected', 'true');
 
             if (this.cfg.showCheckbox) {
-                var checkbox = item.find('div.ui-chkbox').children('div.ui-chkbox-box');
+                var checkbox = item.find('div.p-chkbox').children('div.p-chkbox-box');
 
                 var checkboxNative = checkbox[0];
-                checkboxNative.classList.remove('ui-state-hover');
-                checkboxNative.classList.add('ui-state-active');
+                checkboxNative.classList.remove('p-state-hover');
+                checkboxNative.classList.add('p-state-active');
 
-                var checkboxIconNative = checkbox.children('span.ui-chkbox-icon')[0];
-                checkboxIconNative.classList.remove('ui-icon-blank');
-                checkboxIconNative.classList.add('ui-icon-check');
+                var checkboxIconNative = checkbox.children('span.p-chkbox-icon')[0];
+                checkboxIconNative.classList.add('p-checkbox-checked-icon');
             }
         }
 
@@ -246,18 +245,17 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
             var item = filteredItems.eq(i);
             var itemNative = item[0];
 
-            itemNative.classList.remove('ui-state-highlight');
+            itemNative.classList.remove('p-state-highlight');
             itemNative.setAttribute('aria-selected', 'false');
 
             if (this.cfg.showCheckbox) {
-                var checkbox = item.find('div.ui-chkbox').children('div.ui-chkbox-box');
+                var checkbox = item.find('div.p-chkbox').children('div.p-chkbox-box');
 
                 var checkboxNative = checkbox[0];
-                checkboxNative.classList.remove('ui-state-active');
+                checkboxNative.classList.remove('p-state-active');
 
-                var checkboxIconNative = checkbox.children('span.ui-chkbox-icon')[0];
-                checkboxIconNative.classList.add('ui-icon-blank');
-                checkboxIconNative.classList.remove('ui-icon-check');
+                var checkboxIconNative = checkbox.children('span.p-chkbox-icon')[0];
+                checkboxIconNative.classList.remove('p-checkbox-checked-icon');
             }
         }
 
@@ -275,7 +273,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         super.selectItem(item);
 
         if (this.cfg.showCheckbox) {
-            this.selectCheckbox(item.find('div.ui-chkbox-box'));
+            this.selectCheckbox(item.find('div.p-chkbox-box'));
         }
     }
 
@@ -288,7 +286,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         super.unselectItem(item);
 
         if (this.cfg.showCheckbox) {
-            this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+            this.unselectCheckbox(item.find('div.p-chkbox-box'));
         }
     }
 
@@ -297,7 +295,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
      * @param {JQuery} chkbox A CHECKBOX element to select.
      */
     selectCheckbox(chkbox) {
-        chkbox.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+        chkbox.addClass('p-state-active').children('span.p-chkbox-icon').addClass('p-checkbox-checked-icon');
     }
 
     /**
@@ -305,6 +303,6 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
      * @param {JQuery} chkbox A CHECKBOX element to unselect.
      */
     unselectCheckbox(chkbox) {
-        chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+        chkbox.removeClass('p-state-active').children('span.p-chkbox-icon').removeClass('p-checkbox-checked-icon');
     }
 }

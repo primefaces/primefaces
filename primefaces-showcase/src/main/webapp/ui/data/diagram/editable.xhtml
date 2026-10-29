@@ -8,7 +8,7 @@
 
     <ui:define name="head">
         <style>
-            .ui-diagram-element {
+            .p-diagram-element {
                 border: 0.1em dotted #E5E4E2;
                 background-color: #EFEEEC;
                 width: 10em;
@@ -18,7 +18,7 @@
                 user-select: none;
             }
 
-            .ui-diagram-element:hover {
+            .p-diagram-element:hover {
                 background-color: #C7C6C4;
             }
         </style>
@@ -43,7 +43,7 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
-                <p:diagram value="#{diagramEditableView.model}" style="height:600px" styleClass="ui-widget-content"
+                <p:diagram value="#{diagramEditableView.model}" style="height:600px" styleClass="p-widget-content"
                            var="el">
                     <f:facet name="element">
                         <h:outputText value="#{el.data.name}" style="display:block;margin-top:1em;"/>

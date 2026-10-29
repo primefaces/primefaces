@@ -3,8 +3,8 @@
  *
  * No own PrimeUIX component: styled with the dataview tokens (+ PrimeFaces dataview tokens).
  */
-.ui-datagrid {
-    .ui-datagrid-header {
+.p-datagrid {
+    .p-datagrid-header {
         text-align: center;
         background: var(--p-dataview-header-background);
         color: var(--p-dataview-header-color);
@@ -15,7 +15,7 @@
         border-radius: var(--p-dataview-header-border-radius);
     }
 
-    .ui-datagrid-footer {
+    .p-datagrid-footer {
         text-align: center;
         background: var(--p-dataview-footer-background);
         color: var(--p-dataview-footer-color);
@@ -26,7 +26,7 @@
         border-radius: var(--p-dataview-footer-border-radius);
     }
 
-    .ui-datagrid-content {
+    .p-datagrid-content {
         border: 1px solid var(--p-dataview-content-border-color);
         border-width: var(--p-dataview-content-border-width);
         border-radius: var(--p-dataview-content-border-radius);
@@ -34,24 +34,24 @@
         color: var(--p-dataview-content-color);
         padding: var(--p-dataview-content-padding);
 
-        &.ui-datagrid-content-empty {
+        &.p-datagrid-content-empty {
             padding: var(--p-dataview-empty-message-padding);
             color: var(--p-dataview-empty-message-color);
         }
     }
 
-    .ui-paginator {
+    .p-paginator {
         text-align: center;
         padding: var(--p-paginator-padding);
 
-        &.ui-paginator-top {
+        &.p-paginator-top {
             border-style: solid;
             border-color: var(--p-dataview-paginator-top-border-color);
             border-width: var(--p-dataview-paginator-top-border-width);
             border-radius: 0;
         }
 
-        &.ui-paginator-bottom {
+        &.p-paginator-bottom {
             border-style: solid;
             border-color: var(--p-dataview-paginator-bottom-border-color);
             border-width: var(--p-dataview-paginator-bottom-border-width);
@@ -60,10 +60,10 @@
     }
 }
 
-.ui-datagrid-data {
+.p-datagrid-data {
     width: 100%;
 }
 
-.ui-datagrid-column {
+.p-datagrid-column {
     padding: var(--p-dataview-grid-column-padding);
 }

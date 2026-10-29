@@ -159,16 +159,16 @@ CSS skinning to visualize expanded/closed folder icons.
 
 ```xhtml
 <p:tree value="#{bean.root}" var="doc">
-    <p:treeNode expandedIcon="ui-icon ui-icon-folder-open" collapsedIcon="ui-icon ui-icon-folder-collapsed">
+    <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
         <h:outputText value="#{doc.name}"/>
     </p:treeNode>
-    <p:treeNode type="document" icon="ui-icon ui-icon-document">
+    <p:treeNode type="document" icon="pi pi-file">
         <h:outputText value="#{doc.name}" />
     </p:treeNode>
-    <p:treeNode type="picture" icon="ui-icon ui-icon-image">
+    <p:treeNode type="picture" icon="pi pi-image">
         <h:outputText value="#{doc.name}" />
     </p:treeNode>
-    <p:treeNode type="mp3" icon="ui-icon ui-icon-video">
+    <p:treeNode type="mp3" icon="pi pi-video">
         <h:outputText value="#{doc.name}" />
     </p:treeNode>
 </p:tree>
@@ -347,8 +347,8 @@ that selection must be enabled in tree component for context menu integration.
 
 ```xhtml
 <p:contextMenu for="tree">
-    <p:menuitem value="View" update="messages" action="#{bean.view}" icon="ui-icon-search" />
-    <p:menuitem value="View" update="tree" action="#{bean.delete}" icon="ui-icon-close" />
+    <p:menuitem value="View" update="messages" action="#{bean.view}" icon="pi pi-search" />
+    <p:menuitem value="View" update="tree" action="#{bean.delete}" icon="pi pi-times" />
 </p:contextMenu>
 <p:tree id="tree" value="#{bean.root}" var="node" selectionMode="single" selection="#{bean.selectedNode}">
     <p:treeNode>
@@ -357,22 +357,38 @@ that selection must be enabled in tree component for context menu integration.
 </p:tree>
 ```
 
+## Icons
+The toggle and filter icons are icon tokens of the theme (see [Theming](/core/theming.md?id=icons)), the node icons
+(`icon`, `expandedIcon`, `collapsedIcon` of `p:treeNode`) are set by the application:
+
+```css
+.custom-icons-tree {
+    --p-tree-toggle-collapsed-icon: var(--p-icon-plus);
+    --p-tree-toggle-expanded-icon: var(--p-icon-minus);
+}
+```
+
+The toggler is rendered as `<span class="p-tree-toggler p-icon p-toggle-icon p-tree-toggle-icon">`, its state is
+`aria-expanded` of the node (`li`); horizontal: `p-tree-horizontal-toggle-icon` (`--p-tree-horizontal-toggle-collapsed-icon`
+/ `--p-tree-horizontal-toggle-expanded-icon`), the state is the `p-treenode-collapsed` class of the node. The filter
+icon is `p-icon p-search-icon p-tree-filter-icon` (`--p-tree-filter-icon`).
+
 ## Skinning
 Tree resides in a container element which `style` and `styleClass` options apply. Following is the list of
 structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-tree | Main container
-.ui-tree-container | Root node container.
-.ui-treenode | Tree node
-.ui-treenode-content | Tree node content
-.ui-treenode-icon | Tree node icon
-.ui-tree-toggler | Toggle icon
-.ui-treenode-label | Tree node label
-.ui-treenode-parent | Nodes with children
-.ui-treenode-leaf | Nodes without children
+.p-tree | Main container
+.p-tree-container | Root node container.
+.p-treenode | Tree node
+.p-treenode-content | Tree node content
+.p-treenode-icon | Tree node icon
+.p-tree-toggler | Toggle icon
+.p-treenode-label | Tree node label
+.p-treenode-parent | Nodes with children
+.p-treenode-leaf | Nodes without children
 
 As skinning style classes are global, see the main theming section for more information.
 
-To remove border and padding add `ui-noborder` style class to the component using the `styleClass` attribute.
+To remove border and padding add `p-noborder` style class to the component using the `styleClass` attribute.

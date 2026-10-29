@@ -69,7 +69,7 @@ class DataView002Test extends AbstractDataTableTest {
         WebElement firstRowElt = dataView.getRowWebElement(0);
         assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(0).getId().toString()));
         assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(0).getName()));
-        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
+        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "p-dataview-row"));
 
         Paginator paginator = dataView.getPaginator();
         assertNotNull(paginator);
@@ -112,12 +112,12 @@ class DataView002Test extends AbstractDataTableTest {
         // Act & Assert
         for (int row = 3; row > 1; row--) {
             assertEquals(row, dataView.getRowsWebElement().size());
-            PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
+            PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("p-button"))).click();
             assertEquals(9, dataView.getPaginator().getActivePage().getNumber());
         }
 
         // Act - delete last row on page 9
-        PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
+        PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("p-button"))).click();
 
         // Assert
         assertEquals(8, dataView.getPaginator().getActivePage().getNumber());

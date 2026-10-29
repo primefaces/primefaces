@@ -68,7 +68,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return the cancel icon
      */
     public WebElement getCancelIcon() {
-        return findElement(By.className("ui-rating-cancel"));
+        return findElement(By.className("p-rating-cancel"));
     }
 
     /**

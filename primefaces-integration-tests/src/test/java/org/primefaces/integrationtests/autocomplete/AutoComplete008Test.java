@@ -50,7 +50,7 @@ class AutoComplete008Test extends AbstractPrimePageTest {
         autoComplete.setValueWithoutTab("1");
         autoComplete.wait4Panel();
 
-        List<WebElement> rows = autoComplete.getPanel().findElements(By.cssSelector("tr.ui-autocomplete-item"));
+        List<WebElement> rows = autoComplete.getPanel().findElements(By.cssSelector("tr.p-autocomplete-item"));
         assertEquals(4, rows.size());
         WebElement moreTextRow = rows.get(3);
 
@@ -67,7 +67,7 @@ class AutoComplete008Test extends AbstractPrimePageTest {
         // Assert - aria-activedescendant and live region point at the moreText row
         assertEquals("form:autocomplete_moretext", autoComplete.getInput().getAttribute("aria-activedescendant"));
         assertEquals("More results available",
-                autoComplete.findElement(By.className("ui-autocomplete-status")).getAttribute("textContent"));
+                autoComplete.findElement(By.className("p-autocomplete-status")).getAttribute("textContent"));
         assertNoJavascriptErrors();
     }
 

@@ -77,11 +77,11 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
 
                 if (component.getChildCount() == 1 && "right".equals(group.getAlign())) {
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", "ui-toolbar-group-left", null);
+                    writer.writeAttribute("class", "p-toolbar-group-left", null);
                     writer.endElement("div");
                 }
 
-                String defaultGroupClass = "ui-toolbar-group-" + group.getAlign();
+                String defaultGroupClass = "p-toolbar-group-" + group.getAlign();
                 String groupClass = group.getStyleClass();
                 String groupStyle = group.getStyle();
                 groupClass = groupClass == null ? defaultGroupClass : defaultGroupClass + " " + groupClass;
@@ -106,7 +106,7 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
         UIComponent facet = component.getFacet(facetName);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
+        writer.writeAttribute("class", "p-toolbar-group-" + facetName, null);
         if (FacetUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
@@ -171,7 +171,7 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-toolbar-placeholder", "styleClass");
+        writer.writeAttribute("class", "p-toolbar-placeholder", "styleClass");
         writer.endElement("div");
     }
 }

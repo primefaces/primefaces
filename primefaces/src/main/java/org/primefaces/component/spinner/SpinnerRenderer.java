@@ -126,7 +126,7 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
         String styleClass = getStyleClassBuilder(context)
                 .add(createStyleClass(component, Spinner.CONTAINER_CLASS))
                 .add(Spinner.BUTTONS_CLASS_PREFIX + getButtonsClassSuffix(component))
-                .add(ComponentUtils.isRTL(context, component), "ui-spinner-rtl")
+                .add(ComponentUtils.isRTL(context, component), "p-spinner-rtl")
                 .build();
 
         writer.startElement("span", null);
@@ -143,12 +143,8 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
         String downButtonClass = getButtonClass(context, Spinner.DOWN_BUTTON_CLASS, component.getDownButtonStyleClass(), valid);
 
         boolean stacked = SpinnerBase.BUTTONS_STACKED.equals(component.getButtons());
-        String upIconClass = getIconClass(context,
-                component.getUpIcon(),
-                stacked ? Spinner.STACKED_UP_ICON_CLASS : Spinner.HORIZONTAL_UP_ICON_CLASS);
-        String downIconClass = getIconClass(context,
-                component.getDownIcon(),
-                stacked ? Spinner.STACKED_DOWN_ICON_CLASS : Spinner.HORIZONTAL_DOWN_ICON_CLASS);
+        String upIconClass = stacked ? Spinner.STACKED_UP_ICON_CLASS : Spinner.HORIZONTAL_UP_ICON_CLASS;
+        String downIconClass = stacked ? Spinner.STACKED_DOWN_ICON_CLASS : Spinner.HORIZONTAL_DOWN_ICON_CLASS;
 
         encodeButton(context, component, "increase", upButtonClass, upIconClass);
         encodeButton(context, component, "decrease", downButtonClass, downIconClass);
@@ -173,14 +169,7 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
         return getStyleClassBuilder(context)
                 .add(fixedStyleClass)
                 .add(styleClass)
-                .add(!valid, "ui-state-error")
-                .build();
-    }
-
-    protected String getIconClass(FacesContext context, String custom, String fallback) {
-        return getStyleClassBuilder(context)
-                .add(Spinner.ICON_BASE_CLASS)
-                .addOrElse(custom, fallback)
+                .add(!valid, "p-state-error")
                 .build();
     }
 
@@ -225,7 +214,7 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-text", null);
+        writer.writeAttribute("class", "p-button-text", null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);

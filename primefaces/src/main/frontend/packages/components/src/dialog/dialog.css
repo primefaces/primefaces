@@ -1,15 +1,15 @@
 /*
- * Dialog: p:dialog, p:confirmDialog, PrimeFaces.showMessageInDialog (ui-message-dialog), Dialog Framework
+ * Dialog: p:dialog, p:confirmDialog, PrimeFaces.showMessageInDialog (p-message-dialog), Dialog Framework
  *
- * Markup: .ui-dialog (fixed full-viewport container) > .ui-dialog-box > .ui-dialog-titlebar, .ui-dialog-content, .ui-dialog-footer
- * States: ui-dialog-absolute, ui-dialog-fitviewport, ui-overflow-hidden, ui-resizable, ui-dialog-rtl,
- *         ui-dialog-maximized, ui-dialog-minimized (docked clone), ui-confirm-dialog, ui-message-dialog
+ * Markup: .p-dialog (fixed full-viewport container) > .p-dialog-box > .p-dialog-titlebar, .p-dialog-content, .p-dialog-footer
+ * States: p-dialog-absolute, p-dialog-fitviewport, p-overflow-hidden, p-resizable, p-dialog-rtl,
+ *         p-dialog-maximized, p-dialog-minimized (docked clone), p-confirm-dialog, p-message-dialog
  */
-body.ui-dialog-open {
+body.p-dialog-open {
     position: relative;
 }
 
-.ui-dialog {
+.p-dialog {
     display: none;
     position: fixed;
     top: 0;
@@ -27,30 +27,30 @@ body.ui-dialog-open {
         pointer-events: none;
     }
 
-    &.ui-dialog-absolute {
+    &.p-dialog-absolute {
         position: absolute;
     }
 
     /* dialog framework: hidden by visibility until shown */
-    &.ui-overlay-hidden {
+    &.p-overlay-hidden {
         display: block;
     }
 
-    .ui-dialog-titlebar {
+    .p-dialog-titlebar {
         position: relative;
     }
 
-    .ui-dialog-content {
+    .p-dialog-content {
         position: relative;
         overflow: auto;
     }
 
-    .ui-dialog-box .ui-dialog-content.ui-df-content {
+    .p-dialog-box .p-dialog-content.p-df-content {
         overflow: hidden;
         padding: 0;
     }
 
-    .ui-resizable-se {
+    .p-resizable-se {
         position: absolute;
         width: 9px;
         height: 9px;
@@ -58,23 +58,23 @@ body.ui-dialog-open {
         bottom: -5px;
     }
 
-    .ui-dialog-titlebar-close,
-    .ui-dialog-titlebar-minimize,
-    .ui-dialog-titlebar-maximize {
+    .p-dialog-titlebar-close,
+    .p-dialog-titlebar-minimize,
+    .p-dialog-titlebar-maximize {
         cursor: pointer;
     }
 
-    &.ui-overflow-hidden,
-    &.ui-dialog-absolute,
-    &.ui-dialog-fitviewport {
+    &.p-overflow-hidden,
+    &.p-dialog-absolute,
+    &.p-dialog-fitviewport {
         overflow-y: hidden;
     }
 
-    &.ui-dialog-absolute .ui-dialog-box {
+    &.p-dialog-absolute .p-dialog-box {
         position: absolute;
     }
 
-    .ui-dialog-box {
+    .p-dialog-box {
         position: relative;
         display: inline-flex;
         pointer-events: auto;
@@ -87,7 +87,7 @@ body.ui-dialog-open {
         box-shadow: var(--p-dialog-shadow);
 
         /* header: flex row like PrimeUIX; the icons are rendered close, maximize, minimize, actions and are reordered */
-        .ui-dialog-titlebar {
+        .p-dialog-titlebar {
             display: flex;
             align-items: center;
             flex-shrink: 0;
@@ -98,7 +98,7 @@ body.ui-dialog-open {
             border-radius: 0;
             padding: var(--p-dialog-header-padding);
 
-            .ui-dialog-title {
+            .p-dialog-title {
                 flex: 1 1 auto;
                 font-size: var(--p-dialog-title-font-size);
                 font-weight: var(--p-dialog-title-font-weight);
@@ -107,27 +107,27 @@ body.ui-dialog-open {
                 text-overflow: ellipsis;
             }
 
-            .ui-dialog-actions {
+            .p-dialog-actions {
                 order: 1;
                 display: inline-flex;
                 align-items: center;
                 margin-inline-start: var(--p-dialog-header-gap);
             }
 
-            > .ui-dialog-titlebar-minimize {
+            > .p-dialog-titlebar-minimize {
                 order: 2;
             }
 
-            > .ui-dialog-titlebar-maximize {
+            > .p-dialog-titlebar-maximize {
                 order: 3;
             }
 
-            > .ui-dialog-titlebar-close {
+            > .p-dialog-titlebar-close {
                 order: 4;
             }
 
             /* header icons: rounded text secondary icon-only button like PrimeUIX */
-            .ui-dialog-titlebar-icon {
+            .p-dialog-titlebar-icon {
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
@@ -149,16 +149,16 @@ body.ui-dialog-open {
                     outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
             }
 
-            .ui-dialog-titlebar-icon:hover {
+            .p-dialog-titlebar-icon:hover {
                 background: var(--p-button-text-secondary-hover-background);
                 color: var(--p-button-text-secondary-color);
             }
 
-            .ui-dialog-titlebar-icon:active {
+            .p-dialog-titlebar-icon:active {
                 background: var(--p-button-text-secondary-active-background);
             }
 
-            .ui-dialog-titlebar-icon:focus-visible {
+            .p-dialog-titlebar-icon:focus-visible {
                 outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--p-button-secondary-focus-ring-color);
                 outline-offset: var(--p-button-focus-ring-offset);
                 box-shadow: var(--p-button-secondary-focus-ring-shadow);
@@ -166,56 +166,30 @@ body.ui-dialog-open {
         }
     }
 
-    .ui-dialog-titlebar .ui-dialog-titlebar-icon {
-        .ui-icon-closethick,
-        .ui-icon-minus,
-        .ui-icon-plus,
-        .ui-icon-extlink,
-        .ui-icon-newwin {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
-        }
-
-        .ui-icon-closethick::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-dialog-close-icon) center / contain no-repeat;
-        }
-
-        .ui-icon-minus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-dialog-minimize-icon) center / contain no-repeat;
-        }
-
-        .ui-icon-plus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-dialog-unminimize-icon) center / contain no-repeat;
-        }
-
-        .ui-icon-extlink::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-dialog-maximize-icon) center / contain no-repeat;
-        }
-
-        .ui-icon-newwin::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-dialog-unmaximize-icon) center / contain no-repeat;
-        }
+    .p-dialog-close-icon {
+        --_icon: var(--p-dialog-close-icon);
     }
 
-    .ui-dialog-box {
-        .ui-dialog-content {
+    .p-dialog-minimize-icon {
+        --_icon: var(--p-dialog-minimize-icon);
+    }
+
+    .p-dialog-maximize-icon {
+        --_icon: var(--p-dialog-maximize-icon);
+    }
+
+    /* the docked clone shows the restore icon of minimize, the maximized dialog the restore icon of maximize (only its
+       own titlebar, not the one of a dialog nested in its content) */
+    &.p-dialog-minimized .p-dialog-minimize-icon {
+        --_icon: var(--p-dialog-unminimize-icon);
+    }
+
+    &.p-dialog-maximized > .p-dialog-box > .p-dialog-titlebar .p-dialog-maximize-icon {
+        --_icon: var(--p-dialog-unmaximize-icon);
+    }
+
+    .p-dialog-box {
+        .p-dialog-content {
             flex-grow: 1;
             background: transparent;
             color: var(--p-dialog-color);
@@ -224,7 +198,7 @@ body.ui-dialog-open {
         }
 
         /* footer (p:dialog footer facet, p:confirmDialog button pane) */
-        .ui-dialog-footer {
+        .p-dialog-footer {
             flex-shrink: 0;
             background: transparent;
             color: var(--p-dialog-color);
@@ -242,10 +216,10 @@ body.ui-dialog-open {
     }
 
     /* maximized: the widget sizes the container to the window, the box follows it (!important beats the inline size) */
-    &.ui-dialog-maximized {
+    &.p-dialog-maximized {
         padding: 0;
 
-        .ui-dialog-box {
+        .p-dialog-box {
             width: 100% !important;
             height: 100% !important;
             top: 0 !important;
@@ -254,12 +228,12 @@ body.ui-dialog-open {
         }
     }
 
-    /* minimized: a clone of the dialog (title bar only) docked into .ui-dialog-docking-zone */
-    &.ui-dialog-minimized {
+    /* minimized: a clone of the dialog (title bar only) docked into .p-dialog-docking-zone */
+    &.p-dialog-minimized {
         padding: 0;
         overflow: visible;
 
-        .ui-dialog-box {
+        .p-dialog-box {
             width: auto !important;
             height: auto !important;
             top: auto !important;
@@ -268,15 +242,15 @@ body.ui-dialog-open {
     }
 
     /* confirm dialog and message dialog */
-    &.ui-confirm-dialog .ui-dialog-box .ui-dialog-content,
-    &.ui-message-dialog .ui-dialog-box .ui-dialog-content {
+    &.p-confirm-dialog .p-dialog-box .p-dialog-content,
+    &.p-message-dialog .p-dialog-box .p-dialog-content {
         display: flex;
         align-items: center;
         gap: var(--p-confirmdialog-content-gap);
     }
 
-    &.ui-confirm-dialog .ui-dialog-box .ui-dialog-content > span,
-    &.ui-message-dialog .ui-dialog-box .ui-dialog-content > span {
+    &.p-confirm-dialog .p-dialog-box .p-dialog-content > span,
+    &.p-message-dialog .p-dialog-box .p-dialog-content > span {
         display: inline-block;
         margin: 0;
         color: var(--p-confirmdialog-message-color);
@@ -284,66 +258,37 @@ body.ui-dialog-open {
         font-weight: var(--p-confirmdialog-message-font-weight);
     }
 
-    &.ui-confirm-dialog .ui-dialog-box .ui-dialog-content > span.ui-icon,
-    &.ui-message-dialog .ui-dialog-box .ui-dialog-content > span.ui-dialog-message {
+    &.p-confirm-dialog .p-dialog-box .p-dialog-content > span.p-confirm-dialog-severity,
+    &.p-message-dialog .p-dialog-box .p-dialog-content > span.p-dialog-message {
         flex-shrink: 0;
         line-height: 1;
         color: var(--p-confirmdialog-icon-color);
         font-size: var(--p-confirmdialog-icon-size);
     }
 
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-alert,
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-warn,
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-info,
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-error,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-warn-icon,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-info-icon,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-error-icon,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-fatal-icon {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
+    /* severity icon: p:confirmDialog severity, message dialog severity */
+    .p-dialog-warn-icon {
+        --_icon: var(--p-dialog-warn-icon);
     }
 
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-alert::before,
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-warn::before,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-warn-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-dialog-warn-icon) center / contain no-repeat;
+    .p-dialog-info-icon {
+        --_icon: var(--p-dialog-info-icon);
     }
 
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-info::before,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-info-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-dialog-info-icon) center / contain no-repeat;
+    .p-dialog-error-icon {
+        --_icon: var(--p-dialog-error-icon);
     }
 
-    &.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-error::before,
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-error-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-dialog-error-icon) center / contain no-repeat;
-    }
-
-    &.ui-message-dialog .ui-dialog-content > span.ui-dialog-message.ui-messages-fatal-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-dialog-fatal-icon) center / contain no-repeat;
+    .p-dialog-fatal-icon {
+        --_icon: var(--p-dialog-fatal-icon);
     }
 }
 
-.ui-draggable .ui-dialog-titlebar {
+.p-draggable .p-dialog-titlebar {
     cursor: move;
 }
 
-.ui-dialog-docking-zone {
+.p-dialog-docking-zone {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -355,12 +300,12 @@ body.ui-dialog-open {
 }
 
 /* transfer effect while minimizing */
-.ui-dialog-minimizing {
+.p-dialog-minimizing {
     border: 1px dashed var(--p-primary-color);
     border-radius: var(--p-dialog-border-radius);
 }
 
-.ui-dialog-mask {
+.p-dialog-mask {
     position: fixed;
     top: 0;
     right: 0;
@@ -370,6 +315,6 @@ body.ui-dialog-open {
     user-select: none;
 }
 
-.ui-dialog-rtl {
+.p-dialog-rtl {
     direction: rtl;
 }

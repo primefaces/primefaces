@@ -7,17 +7,17 @@
 
     <ui:define name="head">
         <style>
-            .ui-datalist-item .ui-draggable:hover {
+            .p-datalist-item .p-draggable:hover {
                 background: var(--p-content-hover-background);
             }
             
-            .ui-datalist-data {
+            .p-datalist-data {
                 margin: 0;
                 padding: 0;
                 list-style: none;
             }
 
-            .ui-datalist-item {
+            .p-datalist-item {
                 margin-bottom: .5rem;
                 width: 100%;
             }
@@ -56,8 +56,8 @@
 
                 <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"
                     eventMarginAxis="0" minHeight="400" start="#{dndTimelineView.start}" end="#{dndTimelineView.end}"
-                    style="margin-left:135px;" dropActiveStyleClass="ui-state-highlight"
-                    dropHoverStyleClass="ui-state-hover">
+                    style="margin-left:135px;" dropActiveStyleClass="p-state-highlight"
+                    dropHoverStyleClass="p-state-hover">
                     <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
 
                     <h:panelGrid columns="1">

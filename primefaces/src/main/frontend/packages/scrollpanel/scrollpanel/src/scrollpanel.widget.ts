@@ -42,9 +42,9 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.content = this.jq.children('.ui-scrollpanel-content');
+        this.content = this.jq.children('.p-scrollpanel-content');
         this.contentElement = this.content[0]!;
-        const track = (axis: Axis) => this.jq.children('.ui-scrollpanel-track-' + axis)[0]!;
+        const track = (axis: Axis) => this.jq.children('.p-scrollpanel-track-' + axis)[0]!;
         this.tracks = { x: track('x'), y: track('y') };
         const bar = (axis: Axis) => this.tracks[axis].firstElementChild as HTMLElement;
         this.bars = { x: bar('x'), y: bar('y') };
@@ -140,7 +140,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
         const bar = this.bars[axis];
         e.stopPropagation();
         bar.setPointerCapture(event.pointerId);
-        bar.classList.add('ui-scrollpanel-bar-active');
+        bar.classList.add('p-scrollpanel-bar-active');
 
         const startPointer = axis === 'x' ? event.clientX : event.clientY;
         const startScroll = axis === 'x' ? content.scrollLeft : content.scrollTop;
@@ -161,7 +161,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
                 }
             })
             .on('pointerup.scrollpanel-drag pointercancel.scrollpanel-drag', () => {
-                $(bar).off('.scrollpanel-drag').removeClass('ui-scrollpanel-bar-active');
+                $(bar).off('.scrollpanel-drag').removeClass('p-scrollpanel-bar-active');
             });
     }
 
@@ -207,12 +207,12 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
             const scrollable = scrollSize > clientSize + 1;
             scrollableContent ||= scrollable;
             this.tracks[axis].classList.toggle('p-hidden', !scrollable);
-            this.jq.toggleClass('ui-scrollpanel-scrollable-' + axis, scrollable);
+            this.jq.toggleClass('p-scrollpanel-scrollable-' + axis, scrollable);
         }
         // focusable for keyboard scrolling only while there is something to scroll, no extra tab stop otherwise
         this.content.attr('tabindex', scrollableContent ? 0 : null);
         for (const axis of ['x', 'y'] as Axis[]) {
-            if (this.jq.hasClass('ui-scrollpanel-scrollable-' + axis)) {
+            if (this.jq.hasClass('p-scrollpanel-scrollable-' + axis)) {
                 this.positionBar(axis);
             }
         }

@@ -21,40 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.panel;
+package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.io.Serializable;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
-class PanelTest {
+import lombok.Data;
 
-    private Panel panel;
+@Named
+@ViewScoped
+@Data
+public class DataTable059 implements Serializable {
 
-    @BeforeEach
-    void setup() {
-        panel = new Panel();
+    private static final long serialVersionUID = 1L;
+
+    private List<ProgrammingLanguage> progLanguages;
+    private List<DataTable001Dynamic.ColumnModel> columns;
+
+    @Inject
+    private ProgrammingLanguageService service;
+
+    @PostConstruct
+    public void init() {
+        progLanguages = service.getLangs();
+        columns = List.of(
+                new DataTable001Dynamic.ColumnModel("ID", "id", null, true),
+                new DataTable001Dynamic.ColumnModel("Name", "name", null, true),
+                new DataTable001Dynamic.ColumnModel("First Appeared", "firstAppeared", null, true));
     }
 
-    @Test
-    void defaultIcons() {
-        assertEquals(Panel.DEFAULT_CLOSE_ICON, panel.getCloseIcon());
-        assertEquals(Panel.DEFAULT_COLLAPSED_ICON, panel.getCollapsedIcon());
-        assertEquals(Panel.DEFAULT_EXPANDED_ICON, panel.getExpandedIcon());
-        assertEquals(Panel.DEFAULT_MENU_ICON, panel.getMenuIcon());
-    }
-
-    @Test
-    void customIcons() {
-        panel.setCloseIcon("pi pi-times");
-        panel.setCollapsedIcon("pi pi-chevron-down");
-        panel.setExpandedIcon("pi pi-chevron-up");
-        panel.setMenuIcon("pi pi-bars");
-
-        assertEquals("pi pi-times", panel.getCloseIcon());
-        assertEquals("pi pi-chevron-down", panel.getCollapsedIcon());
-        assertEquals("pi pi-chevron-up", panel.getExpandedIcon());
-        assertEquals("pi pi-bars", panel.getMenuIcon());
-    }
 }

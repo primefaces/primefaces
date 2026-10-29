@@ -143,8 +143,8 @@ If you’d like to add custom actions to a tab header, use actions facet with ic
 <p:accordionPanel>
     <p:tab title="Tab With Custom Action">
         <f:facet name="actions">
-            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-                <h:outputText styleClass="ui-icon ui-icon-help" />
+            <h:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                <h:outputText styleClass="pi pi-question-circle" />
             </h:commandLink>
         </f:facet>
         //content
@@ -169,9 +169,9 @@ the list of structural style classes;
 
 | Class | Element |
 | --- | --- |
-| .ui-accordion | Main container |
-| .ui-accordion-header | Tab header |
-| .ui-accordion-content | Tab content |
+| .p-accordion | Main container |
+| .p-accordion-header | Tab header |
+| .p-accordion-content | Tab content |
 
 ## Common Mistakes
 

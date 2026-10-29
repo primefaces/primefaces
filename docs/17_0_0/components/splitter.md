@@ -144,10 +144,10 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-| .ui-splitter | Container element.
-| .ui-splitter | Container element during resize.
-| .ui-splitter-horizontal | Container element with horizontal layout.
-| .ui-splitter-vertical | Container element with vertical layout.
-| .ui-splitter-panel | Splitter panel element.
-| .ui-splitter-gutter | Gutter element to use when resizing the panels.
-| .ui-splitter-gutter-handle | Handle element of the gutter.
+| .p-splitter | Container element.
+| .p-splitter | Container element during resize.
+| .p-splitter-horizontal | Container element with horizontal layout.
+| .p-splitter-vertical | Container element with vertical layout.
+| .p-splitter-panel | Splitter panel element.
+| .p-splitter-gutter | Gutter element to use when resizing the panels.
+| .p-splitter-gutter-handle | Handle element of the gutter.

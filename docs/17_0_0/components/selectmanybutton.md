@@ -84,4 +84,4 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectmanybutton | Main container element.
+.p-selectmanybutton | Main container element.

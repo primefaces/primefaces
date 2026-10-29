@@ -1,12 +1,12 @@
 /*
  * Steps: p:steps
  *
- * Markup: .ui-steps (.ui-steps-readonly) > ul > li.ui-steps-item
- *         (ui-state-highlight = current step, ui-state-disabled = not reachable, ui-steps-item-executable = clickable)
- *         > a.ui-menuitem-link > span.ui-steps-number (number or span.ui-steps-number-icon) + span.ui-steps-title
+ * Markup: .p-steps (.p-steps-readonly) > ul > li.p-steps-item
+ *         (p-state-highlight = current step, p-state-disabled = not reachable, p-steps-item-executable = clickable)
+ *         > a.p-menuitem-link > span.p-steps-number (number or span.p-steps-number-icon) + span.p-steps-title
  * Like PrimeUIX: a separator line runs through the middle of the numbers, the label is below the number.
  */
-.ui-steps {
+.p-steps {
     position: relative;
 
     ul {
@@ -16,14 +16,14 @@
         display: flex;
     }
 
-    .ui-steps-item {
+    .p-steps-item {
         position: relative;
         display: flex;
         justify-content: center;
         flex: 1 1 0;
         background: transparent;
         text-align: center;
-        /* like PrimeUIX: inactive (.ui-state-disabled) steps are not dimmed, the muted number/label colors mark them */
+        /* like PrimeUIX: inactive (.p-state-disabled) steps are not dimmed, the muted number/label colors mark them */
         opacity: 1;
 
         /* separator through the middle of the numbers */
@@ -51,7 +51,7 @@
             display: none;
         }
 
-        .ui-menuitem-link {
+        .p-menuitem-link {
             text-decoration: none;
             position: relative;
             text-align: center;
@@ -74,7 +74,7 @@
                 box-shadow: var(--p-steps-item-link-focus-ring-shadow);
             }
 
-            .ui-steps-number {
+            .p-steps-number {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -93,13 +93,13 @@
                 margin: 0;
                 border-radius: var(--p-steps-item-number-border-radius);
 
-                .ui-steps-number-icon {
+                .p-steps-number-icon {
                     font-size: var(--p-icon-size);
                     line-height: 1;
                 }
             }
 
-            .ui-steps-title {
+            .p-steps-title {
                 max-width: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -109,37 +109,37 @@
             }
         }
 
-        &.ui-state-highlight {
-            .ui-steps-number {
+        &.p-state-highlight {
+            .p-steps-number {
                 background: var(--p-steps-item-number-active-background);
                 color: var(--p-steps-item-number-active-color);
                 border-color: var(--p-steps-item-number-active-border-color);
             }
 
             /* no separate active font-weight token, the active label only changes its color */
-            .ui-steps-title {
+            .p-steps-title {
                 color: var(--p-steps-item-label-active-color);
             }
         }
     }
 
-    .ui-steps-item.ui-state-highlight:not(.ui-steps-item-executable) .ui-menuitem-link,
-    .ui-steps-item.ui-state-disabled .ui-menuitem-link {
+    .p-steps-item.p-state-highlight:not(.p-steps-item-executable) .p-menuitem-link,
+    .p-steps-item.p-state-disabled .p-menuitem-link {
         cursor: default;
     }
 
-    .ui-steps-title {
+    .p-steps-title {
         display: block;
         white-space: nowrap;
     }
 
     @media (max-width: 640px) {
-        .ui-steps-item .ui-steps-title {
+        .p-steps-item .p-steps-title {
             display: none;
         }
     }
 }
 
-.ui-steps:not(.ui-steps-readonly) .ui-steps-item.ui-steps-item-executable .ui-menuitem-link {
+.p-steps:not(.p-steps-readonly) .p-steps-item.p-steps-item-executable .p-menuitem-link {
     cursor: pointer;
 }

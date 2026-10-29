@@ -53,7 +53,7 @@ class DatePicker002Test extends AbstractDatePickerTest {
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        List<WebElement> elements = panel.findElements(By.cssSelector("table.ui-datepicker-calendar"));
+        List<WebElement> elements = panel.findElements(By.cssSelector("table.p-datepicker-calendar"));
         assertNotNull(elements);
         assertEquals(1, elements.size());
         WebElement table = elements.get(0);
@@ -62,11 +62,11 @@ class DatePicker002Test extends AbstractDatePickerTest {
         assertNotNull(days);
         assertEquals(28, days.size());
 
-        List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.ui-datepicker-other-month"));
+        List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.p-datepicker-other-month"));
         assertNotNull(daysOtherMonths);
         assertEquals(7, daysOtherMonths.size());
         // only the content is hidden, the cells stay in the table so screen readers announce the right column (#15338)
-        List<WebElement> daysOtherMonthsContent = table.findElements(By.cssSelector("td.ui-datepicker-other-month > *"));
+        List<WebElement> daysOtherMonthsContent = table.findElements(By.cssSelector("td.p-datepicker-other-month > *"));
         assertEquals(7, daysOtherMonthsContent.size());
         assertEquals(0, daysOtherMonthsContent.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
     }
@@ -84,7 +84,7 @@ class DatePicker002Test extends AbstractDatePickerTest {
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        List<WebElement> elements = panel.findElements(By.cssSelector("table.ui-datepicker-calendar"));
+        List<WebElement> elements = panel.findElements(By.cssSelector("table.p-datepicker-calendar"));
         assertNotNull(elements);
         assertEquals(1, elements.size());
         WebElement table = elements.get(0);
@@ -93,7 +93,7 @@ class DatePicker002Test extends AbstractDatePickerTest {
         assertNotNull(days);
         assertEquals(28, days.size());
 
-        List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.ui-datepicker-other-month"));
+        List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.p-datepicker-other-month"));
         assertNotNull(daysOtherMonths);
         assertEquals(7, daysOtherMonths.size());
         assertEquals(7, daysOtherMonths.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());

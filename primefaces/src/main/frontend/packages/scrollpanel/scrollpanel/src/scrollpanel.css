@@ -2,15 +2,15 @@
  * ScrollPanel: p:scrollPanel (themed bars and mode="native")
  *
  * The content scrolls natively with hidden browser scrollbars, the widget positions the bars of the tracks.
- * Structure: div.ui-scrollpanel > div.ui-scrollpanel-content (tabindex 0 while it overflows)
- *            + div.ui-scrollpanel-track.ui-scrollpanel-track-y > div.ui-scrollpanel-bar
- *            + div.ui-scrollpanel-track.ui-scrollpanel-track-x > div.ui-scrollpanel-bar
- * mode="native": div.ui-scrollpanel.ui-scrollpanel-native, the browser scrollbars styled with the same tokens.
- * Supported classes: ui-scrollpanel-scrollable-x / -y (on .ui-scrollpanel, set by the widget),
- *                    ui-scrollpanel-bar-active (on .ui-scrollpanel-bar while it is dragged)
+ * Structure: div.p-scrollpanel > div.p-scrollpanel-content (tabindex 0 while it overflows)
+ *            + div.p-scrollpanel-track.p-scrollpanel-track-y > div.p-scrollpanel-bar
+ *            + div.p-scrollpanel-track.p-scrollpanel-track-x > div.p-scrollpanel-bar
+ * mode="native": div.p-scrollpanel.p-scrollpanel-native, the browser scrollbars styled with the same tokens.
+ * Supported classes: p-scrollpanel-scrollable-x / -y (on .p-scrollpanel, set by the widget),
+ *                    p-scrollpanel-bar-active (on .p-scrollpanel-bar while it is dragged)
  */
 
-.ui-scrollpanel {
+.p-scrollpanel {
     position: relative;
     overflow: hidden;
     padding: var(--p-scrollpanel-padding);
@@ -19,28 +19,28 @@
     border: 1px solid var(--p-scrollpanel-border-color);
     border-radius: var(--p-scrollpanel-border-radius);
 
-    &.ui-scrollpanel-native {
+    &.p-scrollpanel-native {
         overflow: auto;
         scrollbar-width: thin;
         scrollbar-color: var(--p-scrollpanel-bar-background) var(--p-scrollpanel-track-background);
     }
 
     /* the content fills the panel, also one with a max-height only, and scrolls up to the border */
-    &:not(.ui-scrollpanel-native) {
+    &:not(.p-scrollpanel-native) {
         display: flex;
         flex-direction: column;
         padding: 0;
     }
 
     /* keyboard scrolling: the content is focusable, the panel shows the focus (an outline is not clipped) */
-    &:has(> .ui-scrollpanel-content:focus-visible) {
+    &:has(> .p-scrollpanel-content:focus-visible) {
         outline: var(--p-scrollpanel-bar-focus-ring-width) var(--p-scrollpanel-bar-focus-ring-style) var(--p-scrollpanel-bar-focus-ring-color);
         outline-offset: var(--p-scrollpanel-bar-focus-ring-offset);
         box-shadow: var(--p-scrollpanel-bar-focus-ring-shadow);
     }
 }
 
-.ui-scrollpanel-content {
+.p-scrollpanel-content {
     flex: 1 1 auto;
     min-height: 0;
     width: 100%;
@@ -56,35 +56,35 @@
 }
 
 /* the tracks lie on the inner edge of the border, over the padding of the content */
-.ui-scrollpanel-track {
+.p-scrollpanel-track {
     position: absolute;
     background: var(--p-scrollpanel-track-background);
     border-radius: var(--p-scrollpanel-bar-border-radius);
 }
 
-.ui-scrollpanel-track-y {
+.p-scrollpanel-track-y {
     top: 0;
     bottom: 0;
     inset-inline-end: 0;
     width: var(--p-scrollpanel-bar-size);
 }
 
-.ui-scrollpanel-track-x {
+.p-scrollpanel-track-x {
     bottom: 0;
     inset-inline: 0;
     height: var(--p-scrollpanel-bar-size);
 }
 
 /* both bars: they leave the corner free */
-.ui-scrollpanel-scrollable-x > .ui-scrollpanel-track-y {
+.p-scrollpanel-scrollable-x > .p-scrollpanel-track-y {
     bottom: var(--p-scrollpanel-bar-size);
 }
 
-.ui-scrollpanel-scrollable-y > .ui-scrollpanel-track-x {
+.p-scrollpanel-scrollable-y > .p-scrollpanel-track-x {
     inset-inline-end: var(--p-scrollpanel-bar-size);
 }
 
-.ui-scrollpanel-bar {
+.p-scrollpanel-bar {
     position: absolute;
     top: 0;
     left: 0;
@@ -97,16 +97,16 @@
     transition: background var(--p-scrollpanel-transition-duration);
 
     &:hover,
-    &.ui-scrollpanel-bar-active {
+    &.p-scrollpanel-bar-active {
         background: var(--p-scrollpanel-bar-hover-background);
     }
 }
 
 /* the widget sets the length and the offset of the bar along its track */
-.ui-scrollpanel-track-y > .ui-scrollpanel-bar {
+.p-scrollpanel-track-y > .p-scrollpanel-bar {
     height: auto;
 }
 
-.ui-scrollpanel-track-x > .ui-scrollpanel-bar {
+.p-scrollpanel-track-x > .p-scrollpanel-bar {
     width: auto;
 }

@@ -31,16 +31,16 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class ConfirmDialog extends Dialog {
 
-    @FindBy(className = "ui-confirm-dialog-severity")
+    @FindBy(className = "p-confirm-dialog-severity")
     private WebElement icon;
 
-    @FindBy(className = "ui-confirm-dialog-message")
+    @FindBy(className = "p-confirm-dialog-message")
     private WebElement message;
 
-    @FindBy(className = "ui-confirmdialog-yes")
+    @FindBy(className = "p-confirmdialog-yes")
     private CommandButton yesButton;
 
-    @FindBy(className = "ui-confirmdialog-no")
+    @FindBy(className = "p-confirmdialog-no")
     private CommandButton noButton;
 
     public WebElement getMessage() {

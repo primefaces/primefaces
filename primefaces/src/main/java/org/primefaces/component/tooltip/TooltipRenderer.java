@@ -54,7 +54,7 @@ public class TooltipRenderer extends CoreRenderer<Tooltip> {
         if (target != null) {
             String styleClass = component.getStyleClass();
             styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
-            styleClass = styleClass + " ui-tooltip-" + component.getPosition();
+            styleClass = styleClass + " p-tooltip-" + component.getPosition();
 
             writer.startElement("div", component);
             writer.writeAttribute("id", component.getClientId(context), null);
@@ -66,11 +66,11 @@ public class TooltipRenderer extends CoreRenderer<Tooltip> {
             }
 
             writer.startElement("div", component);
-            writer.writeAttribute("class", "ui-tooltip-arrow", null);
+            writer.writeAttribute("class", "p-tooltip-arrow", null);
             writer.endElement("div");
 
             writer.startElement("div", component);
-            writer.writeAttribute("class", "ui-tooltip-text", null);
+            writer.writeAttribute("class", "p-tooltip-text", null);
 
             if (component.getChildCount() > 0) {
                 renderChildren(context, component);

@@ -61,14 +61,14 @@ public class DataList extends DataListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataList";
 
-    public static final String DATALIST_CLASS = "ui-datalist ui-widget";
-    public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
-    public static final String LIST_CLASS = "ui-datalist-data";
-    public static final String NO_BULLETS_CLASS = "ui-datalist-nobullets";
-    public static final String LIST_ITEM_CLASS = "ui-datalist-item";
-    public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header";
-    public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header";
-    public static final String DATALIST_EMPTY_MESSAGE_CLASS = "ui-datalist-empty-message";
+    public static final String DATALIST_CLASS = "p-datalist p-widget";
+    public static final String CONTENT_CLASS = "p-datalist-content p-widget-content";
+    public static final String LIST_CLASS = "p-datalist-data";
+    public static final String NO_BULLETS_CLASS = "p-datalist-nobullets";
+    public static final String LIST_ITEM_CLASS = "p-datalist-item";
+    public static final String HEADER_CLASS = "p-datalist-header p-widget-header";
+    public static final String FOOTER_CLASS = "p-datalist-footer p-widget-header";
+    public static final String DATALIST_EMPTY_MESSAGE_CLASS = "p-datalist-empty-message";
 
     public String getListTag() {
         String type = getType();

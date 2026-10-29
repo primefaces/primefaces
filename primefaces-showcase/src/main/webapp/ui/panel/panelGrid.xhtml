@@ -18,11 +18,11 @@
 
     <ui:define name="head">
         <style>
-            .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+            .p-panelgrid.showcase-text-align-center .ui-grid-responsive .p-panelgrid-cell {
                 text-align: center;
             }
 
-            .customPanelGrid .ui-panelgrid-content {
+            .customPanelGrid .p-panelgrid-content {
                 align-items: center;
             }
         </style>
@@ -132,7 +132,7 @@
             <h5>Responsive (PrimeFlex, align-items-baseline)</h5>
             <p:panelGrid columns="4" layout="flex"
                          columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
-                         contentStyleClass="align-items-baseline ui-fluid">
+                         contentStyleClass="align-items-baseline p-fluid">
                 <p:outputLabel for="text1" value="Text 1"/>
                 <p:inputText id="text1"/>
 
@@ -162,7 +162,7 @@
             <h5>Responsive (PrimeFlex, align-items: center)</h5>
             <p:panelGrid columns="4" layout="flex"
                          columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
-                         styleClass="customPanelGrid" contentStyleClass="ui-fluid">
+                         styleClass="customPanelGrid" contentStyleClass="p-fluid">
                 <p:outputLabel for="textA1" value="Text 1"/>
                 <p:inputText id="textA1"/>
 
@@ -192,7 +192,7 @@
             <h5>Responsive (PrimeFlex, Default alignment)</h5>
             <p:panelGrid columns="4" layout="flex"
                          columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
-                         contentStyleClass="ui-fluid">
+                         contentStyleClass="p-fluid">
                 <p:outputLabel for="textB1" value="Text 1"/>
                 <p:inputText id="textB1"/>
 
@@ -253,7 +253,7 @@
                 </p:row>
 
                 <p:row>
-                    <p:column colspan="4" styleClass="ui-widget-header">
+                    <p:column colspan="4" styleClass="p-widget-header">
                         <p:spacer height="0"/>
                     </p:column>
                 </p:row>
@@ -272,7 +272,7 @@
                 </p:row>
 
                 <p:row>
-                    <p:column colspan="6" styleClass="ui-widget-header">
+                    <p:column colspan="6" styleClass="p-widget-header">
                         <p:spacer height="0"/>
                     </p:column>
                 </p:row>
@@ -294,7 +294,7 @@
                 </p:row>
 
                 <p:row>
-                    <p:column colspan="4" styleClass="ui-widget-header">
+                    <p:column colspan="4" styleClass="p-widget-header">
                         <p:spacer height="0"/>
                     </p:column>
                 </p:row>
@@ -341,7 +341,7 @@
             <h5>Responsive Grid</h5>
             <style>
                 /* reset on the showcase style*/
-                body .ui-panelgrid .ui-panelgrid-cell {
+                body .p-panelgrid .p-panelgrid-cell {
                     background-color: transparent;
                 }
 
@@ -355,12 +355,12 @@
             <!--
             Note: Rows and columns can have style, styleClass, and id.
             Note: A column with a defined styleClass will ignore the styleClass specified in the columnClasses list.
-            Note: Note the use of ui-fluid to ensure that components are sized correctly and the use of ui-panelgrid-blank to remove borders.
+            Note: Note the use of p-fluid to ensure that components are sized correctly and the use of p-panelgrid-blank to remove borders.
             -->
             <p:panelGrid columns="4"
                          columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
                          layout="grid"
-                         styleClass="ui-panelgrid-blank ui-fluid"
+                         styleClass="p-panelgrid-blank p-fluid"
                          style="border:0px none; background-color:transparent;">
 
                 <p:row styleClass="my-heading-row">

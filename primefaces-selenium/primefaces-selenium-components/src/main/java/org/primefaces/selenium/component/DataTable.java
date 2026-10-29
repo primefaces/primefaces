@@ -41,8 +41,8 @@ public abstract class DataTable extends AbstractTable<Row> {
 
     public List<Row> getRows() {
         return getRowsWebElement().stream()
-                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message")
-                        && !PrimeSelenium.hasCssClass(rowElt, "ui-expanded-row-content"))
+                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "p-datatable-empty-message")
+                        && !PrimeSelenium.hasCssClass(rowElt, "p-expanded-row-content"))
                 .map(rowElt -> {
                     List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
                     return new Row(rowElt, cells);
@@ -55,7 +55,7 @@ public abstract class DataTable extends AbstractTable<Row> {
 
     public List<WebElement> getExpandedRows() {
         return getRowsWebElement().stream()
-                .filter(rowElt -> PrimeSelenium.hasCssClass(rowElt, "ui-expanded-row-content"))
+                .filter(rowElt -> PrimeSelenium.hasCssClass(rowElt, "p-expanded-row-content"))
                 .collect(Collectors.toList());
     }
 

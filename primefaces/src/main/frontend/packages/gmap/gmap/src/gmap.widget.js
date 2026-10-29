@@ -75,7 +75,7 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
             });
         }
         else if (this.jq[0]) {
-            var container = this.jq[0].closest('.ui-hidden-container');
+            var container = this.jq[0].closest('.p-hidden-container');
             if (container instanceof HTMLElement) {
                 var $container = $(container);
                 if ($container.length) {

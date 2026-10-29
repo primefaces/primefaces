@@ -135,8 +135,8 @@ If you’d like to add custom actions to a dialog titlebar, use actions facet wi
 ```xhtml
 <p:dialog>
     <f:facet name="actions">
-        <h:commandLink styleClass=""ui-dialog-titlebar-icon"">
-            <i class="ui-icon pi pi-question"></i>
+        <h:commandLink styleClass="p-dialog-titlebar-icon">
+            <i class="pi pi-question"></i>
         </h:commandLink>
     </f:facet>
     //content
@@ -152,12 +152,13 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-dialog | Container element of dialog, the scrollable layer
-| .ui-dialog-box | Visible dialog box
-| .ui-dialog-titlebar | Title bar
-| .ui-dialog-title-dialog | Header text
-| .ui-dialog-titlebar-close | Close icon
-| .ui-dialog-content | Dialog body
+| .p-dialog | Container element of dialog, the scrollable layer
+| .p-dialog-box | Visible dialog box
+| .p-dialog-titlebar | Title bar
+| .p-dialog-title | Header text
+| .p-dialog-titlebar-close | Close icon
+| .p-dialog-close-icon, .p-dialog-minimize-icon, .p-dialog-maximize-icon | Icons of the title bar (tokens `--p-dialog-close-icon`, `--p-dialog-minimize-icon` / `-unminimize-icon`, `--p-dialog-maximize-icon` / `-unmaximize-icon`; the restore icon is shown while the dialog is minimized / maximized)
+| .p-dialog-content | Dialog body
 
 As skinning style classes are global, see the main theming section for more information.
     

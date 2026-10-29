@@ -41,7 +41,7 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class SelectManyCheckbox extends AbstractComponent {
 
-    @FindBy(css = ".ui-chkbox")
+    @FindBy(css = ".p-chkbox")
     private List<WebElement> checkboxes;
 
     public List<WebElement> getCheckboxes() {
@@ -124,13 +124,13 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
         for (WebElement checkbox : getCheckboxes()) {
             WebElement input = checkbox.findElement(By.tagName("input"));
             WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getDomAttribute("id") + "']"));
-            WebElement box = checkbox.findElement(By.className("ui-chkbox-box"));
+            WebElement box = checkbox.findElement(By.className("p-chkbox-box"));
 
             SelectItem item = new SelectItem();
             item.setIndex(idx);
             item.setLabel(label.getText());
             item.setValue(input.getDomProperty("value"));
-            item.setSelected(PrimeSelenium.hasCssClass(box, "ui-state-active"));
+            item.setSelected(PrimeSelenium.hasCssClass(box, "p-state-active"));
             items.add(item);
 
             idx++;

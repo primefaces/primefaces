@@ -81,9 +81,9 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
                 .add(button.getButtonStyleClass())
                 .add(isIconLeft, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                 .add(isValueBlank(value) && isValueBlank(buttonIcon), HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
-                .add(disabled, "ui-state-disabled")
-                .add("small".equals(button.getSize()), "ui-button-sm")
-                .add("large".equals(button.getSize()), "ui-button-lg")
+                .add(disabled, "p-state-disabled")
+                .add("small".equals(button.getSize()), "p-button-sm")
+                .add("large".equals(button.getSize()), "p-button-lg")
                 .build();
 
         writer.startElement("button", null);
@@ -103,12 +103,14 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        // button icon
-        String iconClass = isValueBlank(button.getIcon()) ? MenuButton.ICON_CLASS : button.getIcon();
-
-        //button icon pos
-        String iconPosClass = isIconLeft ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
-        iconClass = iconPosClass + " " + iconClass;
+        // button icon: the application icon or the dropdown icon
+        String iconClass;
+        if (isValueBlank(button.getIcon())) {
+            iconClass = (isIconLeft ? MenuButton.ICON_LEFT_CLASS : MenuButton.ICON_RIGHT_CLASS) + " " + MenuButton.ICON_CLASS;
+        }
+        else {
+            iconClass = (isIconLeft ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS) + " " + button.getIcon();
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);

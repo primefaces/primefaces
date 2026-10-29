@@ -47,7 +47,7 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
     }
 
     public WebElement getBox() {
-        return findElement(By.className("ui-chkbox-box"));
+        return findElement(By.className("p-chkbox-box"));
     }
 
     @Override

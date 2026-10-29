@@ -383,8 +383,8 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         String containerClass = getStyleClassBuilder(context)
                 .add(component.isRTLRendering(), Tree.CONTAINER_RTL_CLASS, Tree.CONTAINER_CLASS)
                 .add(component.getStyleClass())
-                .add(component.isDisabled(), "ui-state-disabled")
-                .add(component.isShowUnselectableCheckbox(), "ui-tree-checkbox-all")
+                .add(component.isDisabled(), "p-state-disabled")
+                .add(component.isShowUnselectableCheckbox(), "p-tree-checkbox-all")
                 .build();
 
         writer.startElement("div", component);
@@ -440,7 +440,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.endElement("input");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-search", null);
+        writer.writeAttribute("class", Tree.FILTER_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");
@@ -456,8 +456,8 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         String containerClass = getStyleClassBuilder(context)
                 .add(component.isRTLRendering(), Tree.HORIZONTAL_CONTAINER_RTL_CLASS, Tree.HORIZONTAL_CONTAINER_CLASS)
                 .add(component.getStyleClass())
-                .add(component.isDisabled(), "ui-state-disabled")
-                .add(component.isShowUnselectableCheckbox(), "ui-tree-checkbox-all")
+                .add(component.isDisabled(), "p-state-disabled")
+                .add(component.isShowUnselectableCheckbox(), "p-tree-checkbox-all")
                 .build();
 
         writer.startElement("div", component);
@@ -512,26 +512,28 @@ public class TreeRenderer extends CoreRenderer<Tree> {
 
         String nodeClass = getStyleClassBuilder(context)
                 .add(leaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
-                .add(!leaf && expanded, "ui-treenode-expanded", "ui-treenode-collapsed")
-                .add(selected, "ui-treenode-selected")
-                .add(!selected && partialSelected, "ui-treenode-hasselected")
-                .add(!selected && !partialSelected, "ui-treenode-unselected")
+                .add(!leaf && expanded, "p-treenode-expanded", "p-treenode-collapsed")
+                .add(selected, "p-treenode-selected")
+                .add(!selected && partialSelected, "p-treenode-hasselected")
+                .add(!selected && !partialSelected, "p-treenode-unselected")
                 .add(uiTreeNode.getStyleClass())
                 .build();
         writer.writeAttribute("class", nodeClass, null);
+        if (!leaf) {
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        }
 
         String nodeContentClass = getStyleClassBuilder(context)
                 .add(component.isSelectionEnabled() && node.isSelectable(), Tree.SELECTABLE_NODE_CONTENT_CLASS_H, Tree.NODE_CONTENT_CLASS_H)
-                .add(selected, "ui-state-highlight")
+                .add(selected, "p-state-highlight")
                 .build();
         writer.startElement("div", null);
         writer.writeAttribute("class", nodeContentClass, null);
 
         //toggler
         if (!leaf) {
-            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_H : Tree.COLLAPSED_ICON_CLASS_H;
             writer.startElement("span", null);
-            writer.writeAttribute("class", toggleIcon, null);
+            writer.writeAttribute("class", Tree.TOGGLER_CLASS_H, null);
             writer.endElement("span");
         }
 
@@ -561,7 +563,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         //children
         if (!leaf) {
             writer.startElement("td", null);
-            writer.writeAttribute("class", "ui-treenode-children-container", null);
+            writer.writeAttribute("class", "p-treenode-children-container", null);
 
             if (!expanded) {
                 writer.writeAttribute("style", "display:none", null);
@@ -619,16 +621,16 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", "ui-treenode-connector", null);
+        writer.writeAttribute("class", "p-treenode-connector", null);
 
         writer.startElement("table", null);
-        writer.writeAttribute("class", "ui-treenode-connector-table", null);
+        writer.writeAttribute("class", "p-treenode-connector-table", null);
         writer.startElement("tbody", null);
 
         writer.startElement("tr", null);
         writer.startElement("td", null);
         if (nodeOrder != NodeOrder.FIRST) {
-            writer.writeAttribute("class", "ui-treenode-connector-line", null);
+            writer.writeAttribute("class", "p-treenode-connector-line", null);
         }
         writer.endElement("td");
         writer.endElement("tr");
@@ -636,7 +638,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.startElement("tr", null);
         writer.startElement("td", null);
         if (nodeOrder != NodeOrder.LAST) {
-            writer.writeAttribute("class", "ui-treenode-connector-line", null);
+            writer.writeAttribute("class", "p-treenode-connector-line", null);
         }
         writer.endElement("td");
         writer.endElement("tr");
@@ -697,30 +699,27 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         boolean isLeaf = node.isLeaf();
         boolean expanded = node.isExpanded();
         boolean selectable = component.isSelectionEnabled() && node.isSelectable();
-        String toggleIcon = expanded
-                            ? Tree.EXPANDED_ICON_CLASS_V
-                            : (component.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
-        String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
+        String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : Tree.TOGGLER_CLASS_V;
         Object datakey = component.getDatakey();
         String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
 
         //style class of node
         String selectedStateClass;
         if (selected) {
-            selectedStateClass = "ui-treenode-selected";
+            selectedStateClass = "p-treenode-selected";
         }
         else if (partialSelected) {
-            selectedStateClass = "ui-treenode-hasselected";
+            selectedStateClass = "p-treenode-hasselected";
         }
         else {
-            selectedStateClass = "ui-treenode-unselected";
+            selectedStateClass = "p-treenode-unselected";
         }
 
         String containerClass = getStyleClassBuilder(context)
                 .add(uiTreeNode.getStyleClass())
                 .add(selectedStateClass)
                 .add(isLeaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
-                .add(hidden, "ui-treenode-hidden")
+                .add(hidden, "p-treenode-hidden")
                 .build();
 
         writer.startElement("li", null);
@@ -744,8 +743,8 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         //content
         String contentClass = getStyleClassBuilder(context)
                 .add(selectable, Tree.SELECTABLE_NODE_CONTENT_CLASS_V, Tree.NODE_CONTENT_CLASS_V)
-                .add(dragdrop, "ui-treenode-droppable")
-                .add(selected, "ui-state-highlight")
+                .add(dragdrop, "p-treenode-droppable")
+                .add(selected, "p-state-highlight")
                 .build();
 
         writer.startElement("div", null);
@@ -820,7 +819,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("li", null);
-        writer.writeAttribute("class", "ui-tree-droppoint", null);
+        writer.writeAttribute("class", "p-tree-droppoint", null);
         writer.endElement("li");
     }
 

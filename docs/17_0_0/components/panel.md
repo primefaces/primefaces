@@ -44,8 +44,8 @@ If you’d like to add custom actions to panel titlebar, use actions facet with 
 ```xhtml
 <p:panel>
     <f:facet name="actions">
-        <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-            <h:outputText styleClass="ui-icon ui-icon-help" />
+        <h:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+            <h:outputText styleClass="pi pi-question-circle" />
         </h:commandLink>
     </f:facet>
     //content
@@ -53,16 +53,27 @@ If you’d like to add custom actions to panel titlebar, use actions facet with 
 ```
 
 ## Customizable Icons
-Header icons for closing, toggling, and the popup menu can be customized using `closeIcon`, `collapsedIcon`, `expandedIcon`, and `menuIcon` attributes:
+The header icons for closing, toggling and the popup menu are icon tokens of the theme (see
+[Theming](/core/theming.md?id=icons)): `--p-panel-close-icon`, `--p-panel-toggle-collapsed-icon`,
+`--p-panel-toggle-expanded-icon` and `--p-panel-menu-icon`. Set them in `:root, [data-p-scope]` for all panels or on a style class for
+some:
+
+```css
+.custom-icons-panel {
+    --p-panel-close-icon: var(--p-icon-trash);
+    --p-panel-toggle-collapsed-icon: var(--p-icon-down);
+    --p-panel-toggle-expanded-icon: var(--p-icon-up);
+}
+```
 
 ```xhtml
-<p:panel header="Custom Icons" toggleable="true" closable="true"
-         closeIcon="pi pi-times"
-         collapsedIcon="pi pi-chevron-down"
-         expandedIcon="pi pi-chevron-up">
+<p:panel header="Custom Icons" toggleable="true" closable="true" styleClass="custom-icons-panel">
     //content
 </p:panel>
 ```
+
+The icons are rendered as `<span class="p-icon p-close-icon p-panel-close-icon">` (`p-toggle-icon p-panel-toggle-icon`,
+`p-options-icon p-panel-menu-icon`); the state of the toggle icon is the `aria-expanded` attribute of the toggler.
 
 ## Skinning Panel
 Panel resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list of
@@ -70,12 +81,12 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-panel | Main container element of panel
-.ui-panel-titlebar | Header container
-.ui-panel-title | Header text
-.ui-panel-titlebar-icon | Option icon in header
-.ui-panel-content | Panel content
-.ui-panel-footer | Panel footer
+.p-panel | Main container element of panel
+.p-panel-titlebar | Header container
+.p-panel-title | Header text
+.p-panel-titlebar-icon | Option icon in header
+.p-panel-content | Panel content
+.p-panel-footer | Panel footer
 
 As skinning style classes are global, see the main theming section for more information.
 

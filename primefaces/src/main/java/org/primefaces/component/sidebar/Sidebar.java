@@ -43,11 +43,11 @@ public class Sidebar extends SidebarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Sidebar";
 
-    public static final String STYLE_CLASS = "ui-sidebar ui-widget ui-widget-content";
-    public static final String CONTENT_CLASS = "ui-sidebar-content ui-widget-content";
-    public static final String TITLE_BAR_CLOSE_CLASS = "ui-sidebar-close";
-    public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
-    public static final String FULL_BAR_CLASS = "ui-sidebar-full";
+    public static final String STYLE_CLASS = "p-sidebar p-widget p-widget-content";
+    public static final String CONTENT_CLASS = "p-sidebar-content p-widget-content";
+    public static final String TITLE_BAR_CLOSE_CLASS = "p-sidebar-close";
+    public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-sidebar-close-icon";
+    public static final String FULL_BAR_CLASS = "p-sidebar-full";
 
     @Override
     public void queueEvent(FacesEvent event) {

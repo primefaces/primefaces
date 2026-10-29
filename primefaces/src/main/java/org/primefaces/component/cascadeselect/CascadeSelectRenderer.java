@@ -72,8 +72,8 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(CascadeSelect.STYLE_CLASS)
-                .add(component.isDisabled(), "ui-state-disabled")
-                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.isDisabled(), "p-state-disabled")
+                .add(component.isReadonly(), "p-state-readonly")
                 .add(component.getStyleClass())
                 .build();
 
@@ -90,7 +90,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         encodeInput(context, component, valueToRender);
         encodeLabel(context, component, selectItems, valueToRender);
         encodeTrigger(context);
-        encodePanel(context, component, selectItems);
+        encodePanel(context, component, selectItems, valueToRender);
 
         writer.endElement("div");
     }
@@ -128,16 +128,17 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
             itemLabel = foundItem.getLabel();
         }
 
-        String placeholder = LangUtils.isNotBlank(itemLabel) ? itemLabel : component.getPlaceholder();
+        boolean showPlaceholder = LangUtils.isBlank(itemLabel);
+        String label = showPlaceholder ? component.getPlaceholder() : itemLabel;
         String styleClass = getStyleClassBuilder(context)
-                .add(placeholder != null, CascadeSelect.LABEL_CLASS)
-                .add(placeholder == null, CascadeSelect.LABEL_EMPTY_CLASS)
+                .add(CascadeSelect.LABEL_CLASS)
+                .add(showPlaceholder, CascadeSelect.LABEL_PLACEHOLDER_CLASS)
                 .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
-        if (LangUtils.isNotBlank(placeholder)) {
-            writer.writeText(placeholder, null);
+        if (LangUtils.isNotBlank(label)) {
+            writer.writeText(label, null);
         }
         writer.endElement("span");
     }
@@ -157,7 +158,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, CascadeSelect component, List<SelectItem> itemList) throws IOException {
+    protected void encodePanel(FacesContext context, CascadeSelect component, List<SelectItem> itemList, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String panelId = component.getPanelClientId();
         SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
@@ -168,13 +169,14 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.startElement("div", null);
         writer.writeAttribute("class", CascadeSelect.ITEMS_WRAPPER_CLASS, null);
 
-        encodeList(context, component, items, false);
+        encodeList(context, component, items, false, valueToRender);
 
         writer.endElement("div");
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, CascadeSelect component, SelectItem[] items, boolean isSublist) throws IOException {
+    protected void encodeList(FacesContext context, CascadeSelect component, SelectItem[] items, boolean isSublist, String valueToRender)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = isSublist ? CascadeSelect.PANEL_ITEMS_CLASS + " " + CascadeSelect.SUBLIST_CLASS : CascadeSelect.PANEL_ITEMS_CLASS;
 
@@ -184,12 +186,13 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.writeAttribute("aria-orientation", "horizontal", null);
         renderARIARequired(context, component);
 
-        encodeListItems(context, component, items);
+        encodeListItems(context, component, items, valueToRender);
 
         writer.endElement("ul");
     }
 
-    protected void encodeListItems(FacesContext context, CascadeSelect component, SelectItem[] selectItems) throws IOException {
+    protected void encodeListItems(FacesContext context, CascadeSelect component, SelectItem[] selectItems, String valueToRender)
+            throws IOException {
         if (selectItems != null && selectItems.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
             UIComponent contentFacet = component.getContentFacet();
@@ -204,6 +207,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
                 String itemStyleClass = getStyleClassBuilder(context)
                         .add(CascadeSelect.ITEM_CLASS)
                         .add(isGroup, CascadeSelect.ITEM_GROUP_CLASS)
+                        .add(!isGroup && valueToRender != null && valueToRender.equals(itemValueAsString), "p-state-active")
                         .build();
 
                 if (var != null) {
@@ -242,7 +246,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
                     SelectItem[] groupItems = group.getSelectItems();
 
                     if (groupItems != null && groupItems.length > 0) {
-                        encodeList(context, component, group.getSelectItems(), true);
+                        encodeList(context, component, groupItems, true, valueToRender);
                     }
                 }
 

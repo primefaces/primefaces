@@ -64,7 +64,9 @@
         transform: translateX(-100%);
         position: fixed;
         width: var(--layout-sidebar-width);
-        background-color: var(--surface-a);
+        /* floats above the content: overlay background and blur (translucent presets), not the content background */
+        background-color: var(--p-overlay-modal-background);
+        backdrop-filter: var(--p-navigation-backdrop-filter);
 
         &.active {
             transform: translateX(0);

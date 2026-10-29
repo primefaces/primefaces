@@ -42,10 +42,10 @@ use the `<f:facet name="custom">` to control the rendering like this.
 There are two ways to specify an icon of a MenuItem, you can either use bundled icons within
 PrimeFaces or provide your own via CSS.
 
-#### ThemeRoller Icons ####
+#### Icons ####
 
 ```xhtml
-<p:menuitem icon="ui-icon-disk" ... />
+<p:menuitem icon="pi pi-save" ... />
 ```
 #### Custom Icons ####
 

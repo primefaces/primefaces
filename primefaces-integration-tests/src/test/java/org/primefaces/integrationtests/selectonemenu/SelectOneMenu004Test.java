@@ -66,7 +66,7 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
         assertEquals(6, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
@@ -111,7 +111,7 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getTable().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getTable().findElements(By.className("p-selectonemenu-item"));
         assertEquals(5, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());

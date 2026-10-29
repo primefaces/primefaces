@@ -66,22 +66,22 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         super.init(cfg);
 
         //elements
-        this.submenus = this.jq.find('ul.ui-menu-list');
-        this.wrapper = this.jq.children('div.ui-slidemenu-wrapper');
-        this.content = this.wrapper.children('div.ui-slidemenu-content');
-        this.rootList = this.content.children('ul.ui-menu-list');
-        this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
-        this.backward = this.wrapper.children('div.ui-slidemenu-backward');
+        this.submenus = this.jq.find('ul.p-menu-list');
+        this.wrapper = this.jq.children('div.p-slidemenu-wrapper');
+        this.content = this.wrapper.children('div.p-slidemenu-content');
+        this.rootList = this.content.children('ul.p-menu-list');
+        this.links = this.jq.find('a.p-menuitem-link:not(.p-state-disabled)');
+        this.backward = this.wrapper.children('div.p-slidemenu-backward');
         this.rendered = false;
 
         //config
         this.stack = [];
         this.jqWidth = this.jq.width() ?? 0;
 
-        if(!this.jq.hasClass('ui-menu-dynamic')) {
+        if(!this.jq.hasClass('p-menu-dynamic')) {
 
             if(this.jq.is(':not(:visible)')) {
-                var hiddenParent = this.jq.closest('.ui-hidden-container'),
+                var hiddenParent = this.jq.closest('.p-hidden-container'),
                 $this = this;
 
                 if(hiddenParent.length) {
@@ -105,10 +105,10 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         const $this = this;
 
         this.links.on("mouseenter", function() {
-           $(this).addClass('ui-state-hover');
+           $(this).addClass('p-state-hover');
         })
         .on("mouseleave", function() {
-           $(this).removeClass('ui-state-hover');
+           $(this).removeClass('p-state-hover');
         })
         .on("click", function(e) {
             const link = $(this);
@@ -120,22 +120,22 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
             }
         })
         .on("focus", function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         })
         .on("blur", function() {
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
         });
 
         this.backward.on("click", function(e) {
             $this.back();
             e.preventDefault();
-            PrimeFaces.queueTask(function() {$this.content.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
+            PrimeFaces.queueTask(function() {$this.content.find('a.p-menuitem-link:first').trigger('focus')}, 0);
         });
     }
 
     /**
      * Slides to the given sub menu.
-     * @param submenu A sub menu to show, with the class `ui-menuitem-link`.
+     * @param submenu A sub menu to show, with the class `p-menuitem-link`.
      */
     forward(submenu: JQuery): void {
         const _self = this;
@@ -153,12 +153,12 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         }, 500, 'easeInOutCirc', function() {
             if(_self.backward.is(':hidden')) {
                 _self.backward.fadeIn('fast');
-                PrimeFaces.queueTask(function() {submenu.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
+                PrimeFaces.queueTask(function() {submenu.find('a.p-menuitem-link:first').trigger('focus')}, 0);
             }
         });
         // after the swap of changeTabindex(), which would flip the back link too: reachable inside a submenu
         this.changeTabindex();
-        this.backwardButton = _self.backward.find('a.ui-menuitem-link');
+        this.backwardButton = _self.backward.find('a.p-menuitem-link');
         this.backwardButton.attr('tabindex', 0);
     }
 
@@ -187,7 +187,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         }
         // after the swap of changeTabindex(), which would flip the back link too: reachable as long as a submenu is shown
         this.changeTabindex();
-        this.backwardButton = this.backward.find('a.ui-menuitem-link');
+        this.backwardButton = this.backward.find('a.p-menuitem-link');
         this.backwardButton.attr('tabindex', this.depth() > 0 ? 0 : -1);
     }
 
@@ -227,9 +227,9 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      * Renders the client-side parts of this widget.
      */
     private render(): void {
-        this.menuList = this.backward.children('ul.ui-menu-list');
-        this.menuItem = this.menuList.children('li.ui-menuitem ');
-        this.backButton = this.menuItem.children('a.ui-menuitem-link');
+        this.menuList = this.backward.children('ul.p-menu-list');
+        this.menuItem = this.menuList.children('li.p-menuitem ');
+        this.backButton = this.menuItem.children('a.p-menuitem-link');
 
         this.submenus.outerWidth(this.jq.outerWidth() ?? 0);
         this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.backButton.outerHeight(true) ?? 0));
@@ -243,8 +243,8 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      * @private
      */
     private changeTabindex() {
-        this.linksActive = this.jq.find('a.ui-menuitem-link[tabindex=0]');
-        this.linksInactive = this.jq.find('a.ui-menuitem-link[tabindex=-1]');
+        this.linksActive = this.jq.find('a.p-menuitem-link[tabindex=0]');
+        this.linksInactive = this.jq.find('a.p-menuitem-link[tabindex=-1]');
 
         this.linksActive.attr('tabindex', -1);
         this.linksInactive.attr('tabindex', 0);
@@ -263,7 +263,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 },
                 onEntered: () => {
                     this.bindPanelEvents();
-                    PrimeFaces.queueTask(function() {$this.content.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
+                    PrimeFaces.queueTask(function() {$this.content.find('a.p-menuitem-link:first').trigger('focus')}, 0);
                 }
             });
         }

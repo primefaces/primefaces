@@ -50,7 +50,7 @@ class DataTable035Test extends AbstractDataTableTest {
 
             // assert selection
             WebElement row1 = page.dataTable.findElement(By.cssSelector("tr[data-ri='1']"));
-            assertCss(row1, "ui-state-highlight");
+            assertCss(row1, "p-state-highlight");
 
             // trigger selection on row2 via button
             WebElement buttonRow2 = getWebDriver().findElement(By.id("form:datatable:2:select"));
@@ -58,7 +58,7 @@ class DataTable035Test extends AbstractDataTableTest {
 
             // assert selection
             WebElement row2 = page.dataTable.findElement(By.cssSelector("tr[data-ri='2']"));
-            assertCss(row2, "ui-state-highlight");
+            assertCss(row2, "p-state-highlight");
         });
     }
 

@@ -42,7 +42,7 @@ public abstract class OutputLabel extends AbstractComponent {
      */
     public boolean hasRequiredIndicator() {
         try {
-            findElement(By.className("ui-outputlabel-rfi"));
+            findElement(By.className("p-outputlabel-rfi"));
             return true;
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {

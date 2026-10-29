@@ -24,7 +24,7 @@ PrimeFaces.widget.Stack = class Stack extends PrimeFaces.widget.BaseWidget {
         this.cfg.expanded = this.cfg.expanded||false;
         var $this = this;
 
-        $(this.jqId + '.ui-stack > img').on('click.stack', function() {
+        $(this.jqId + '.p-stack > img').on('click.stack', function() {
             if($this.cfg.expanded)
                 $this.collapse($(this));
             else
@@ -47,7 +47,7 @@ PrimeFaces.widget.Stack = class Stack extends PrimeFaces.widget.BaseWidget {
     /**
      * Expands the given menu item of this stack.
      * @param {JQuery} item A menu item to expand, usually the root IMG element that is an immediate child of
-     * `.ui-stack`.
+     * `.p-stack`.
      */
     open(item) {
         var vertical = 0,
@@ -70,7 +70,7 @@ PrimeFaces.widget.Stack = class Stack extends PrimeFaces.widget.BaseWidget {
     /**
      * Collapses the given menu item of this stack.
      * @param {JQuery} item A menu item to collapse, usually the root IMG element that is an immediate child of
-     * `.ui-stack`.
+     * `.p-stack`.
      */
     collapse(item) {
         item.next().removeClass('openStack').children('li').animate({top: '55px', left: '-10px'}, this.cfg.closeSpeed);

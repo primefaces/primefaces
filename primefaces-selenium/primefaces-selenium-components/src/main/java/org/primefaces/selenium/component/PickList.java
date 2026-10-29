@@ -48,24 +48,24 @@ public abstract class PickList extends AbstractComponent {
 
     private static final String ITEM_LABEL_ATTR = "data-item-label";
     private static final String ITEM_VALUE_ATTR = "data-item-value";
-    private static final By CHECK_SELECTOR = By.cssSelector("div[class*='ui-chkbox']");
+    private static final By CHECK_SELECTOR = By.cssSelector("div[class*='p-chkbox']");
 
-    @FindBy(css = "button[class*='ui-picklist-button-add']")
+    @FindBy(css = "button[class*='p-picklist-button-add']")
     private WebElement add;
 
-    @FindBy(css = "button[class*='ui-picklist-button-add-all']")
+    @FindBy(css = "button[class*='p-picklist-button-add-all']")
     private WebElement addAll;
 
-    @FindBy(css = "button[class*='ui-picklist-button-remove']")
+    @FindBy(css = "button[class*='p-picklist-button-remove']")
     private WebElement remove;
 
-    @FindBy(css = "button[class*='ui-picklist-button-remove-all']")
+    @FindBy(css = "button[class*='p-picklist-button-remove-all']")
     private WebElement removeAll;
 
-    @FindBy(css = "ul[class*='ui-picklist-source']")
+    @FindBy(css = "ul[class*='p-picklist-source']")
     private WebElement sourceList;
 
-    @FindBy(css = "ul[class*='ui-picklist-target']")
+    @FindBy(css = "ul[class*='p-picklist-target']")
     private WebElement targetList;
 
     @FindByParentPartialId("_source_filter")
@@ -368,7 +368,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the source control element
      */
     private WebElement getSourceControls() {
-        return findElement(By.cssSelector("div[class*='ui-picklist-source-controls']"));
+        return findElement(By.cssSelector("div[class*='p-picklist-source-controls']"));
     }
 
     /**
@@ -377,7 +377,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the target control element
      */
     private WebElement getTargetControls() {
-        return findElement(By.cssSelector("div[class*='ui-picklist-target-controls']"));
+        return findElement(By.cssSelector("div[class*='p-picklist-target-controls']"));
     }
 
     /**

@@ -266,10 +266,6 @@
                 <artifactId>jetty-ee10-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
                 <configuration>
-                    <!-- see https://eclipse.dev/jetty/documentation/jetty-12/programming-guide/index.html#jetty-run-goal -->
-                    <webApp>
-                        <contextPath>/showcase</contextPath>
-                    </webApp>
                     <webXml>${project.build.directory}/web.xml</webXml>
                     <httpConnector>
                         <host>0.0.0.0</host>

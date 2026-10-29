@@ -53,7 +53,7 @@ class InputText004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("cannot change me", readonly.getValue());
-        assertCss(readonly, "ui-state-readonly");
+        assertCss(readonly, "p-state-readonly");
         assertConfiguration(readonly.getWidgetConfiguration());
     }
 

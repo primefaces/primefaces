@@ -132,7 +132,7 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
             element("form:toggle_input").sendKeys(Keys.SPACE);
         }
         else {
-            element("form:toggle").findElement(By.className("ui-toggleswitch-slider")).click();
+            element("form:toggle").findElement(By.className("p-toggleswitch-slider")).click();
         }
     }
 
@@ -153,7 +153,7 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
     }
 
     private void answer(boolean popup, boolean yes) {
-        String prefix = popup ? "ui-confirm-popup-" : "ui-confirmdialog-";
+        String prefix = popup ? "p-confirm-popup-" : "p-confirmdialog-";
         WebElement button = PrimeSelenium.getWebDriver().findElement(By.className(prefix + (yes ? "yes" : "no")));
         new WebDriverWait(PrimeSelenium.getWebDriver(), Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(button));

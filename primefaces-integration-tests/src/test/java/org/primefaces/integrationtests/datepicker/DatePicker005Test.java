@@ -53,11 +53,11 @@ class DatePicker005Test extends AbstractDatePickerTest {
 
         // Assert Panel
         assertNotNull(panel);
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("26")), "ui-state-active"));
-        assertEquals(6, panel.findElements(By.className("ui-state-active")).size());
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("26")), "p-state-active"));
+        assertEquals(6, panel.findElements(By.className("p-state-active")).size());
 
         // Assert Submit Value
         page.button.click();
@@ -79,11 +79,11 @@ class DatePicker005Test extends AbstractDatePickerTest {
         panel.findElement(By.linkText("5")).click();
 
         // Assert Panel
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("3")), "ui-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("5")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "ui-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("6")), "ui-state-active"));
-        assertEquals(3, panel.findElements(By.className("ui-state-active")).size());
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("3")), "p-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("5")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "p-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("6")), "p-state-active"));
+        assertEquals(3, panel.findElements(By.className("p-state-active")).size());
 
         // Assert Submit Value
         page.button.click();

@@ -7,31 +7,31 @@
             <h3>Severities: filled / outlined / text</h3>
             <div class="demo-row demo-severities">
                 <ui:repeat value="#{severities}" var="s">
-                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-#{s}"/>
+                    <p:commandButton type="button" value="#{s}" styleClass="p-button-#{s}"/>
                 </ui:repeat>
             </div>
             <div class="demo-row demo-severities" style="margin-top: .75rem">
                 <ui:repeat value="#{severities}" var="s">
-                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-outlined ui-button-#{s}"/>
+                    <p:commandButton type="button" value="#{s}" styleClass="p-button-outlined p-button-#{s}"/>
                 </ui:repeat>
             </div>
             <div class="demo-row demo-severities" style="margin-top: .75rem">
                 <ui:repeat value="#{severities}" var="s">
-                    <p:commandButton type="button" value="#{s}" styleClass="ui-button-flat ui-button-#{s}"/>
+                    <p:commandButton type="button" value="#{s}" styleClass="p-button-flat p-button-#{s}"/>
                 </ui:repeat>
             </div>
 
             <h3>Icons / sizes / rounded / raised / badge / disabled</h3>
             <div class="demo-row">
                 <p:commandButton type="button" value="Save" icon="pi pi-check"/>
-                <p:commandButton type="button" value="Next" icon="pi pi-arrow-right" iconPos="right" styleClass="ui-button-secondary"/>
+                <p:commandButton type="button" value="Next" icon="pi pi-arrow-right" iconPos="right" styleClass="p-button-secondary"/>
                 <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button" title="Search"/>
-                <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-outlined" title="Like"/>
+                <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button p-button-help p-button-outlined" title="Like"/>
                 <p:commandButton type="button" value="Small" size="small"/>
                 <p:commandButton type="button" value="Large" size="large"/>
-                <p:commandButton type="button" value="Rounded" styleClass="rounded-button ui-button-success"/>
-                <p:commandButton type="button" value="Raised" styleClass="ui-button-raised ui-button-info"/>
-                <p:commandButton type="button" value="Messages" icon="pi pi-envelope" styleClass="ui-button-warning">
+                <p:commandButton type="button" value="Rounded" styleClass="rounded-button p-button-success"/>
+                <p:commandButton type="button" value="Raised" styleClass="p-button-raised p-button-info"/>
+                <p:commandButton type="button" value="Messages" icon="pi pi-envelope" styleClass="p-button-warning">
                     <p:badge value="8" severity="danger"/>
                 </p:commandButton>
                 <p:commandButton type="button" value="Disabled" disabled="true"/>
@@ -45,11 +45,11 @@
                     <p:divider/>
                     <p:menuitem value="Homepage" icon="pi pi-home" url="#"/>
                 </p:splitButton>
-                <p:splitButton value="Outlined" icon="pi pi-save" styleClass="ui-button-outlined">
+                <p:splitButton value="Outlined" icon="pi pi-save" styleClass="p-button-outlined">
                     <p:menuitem value="Update" icon="pi pi-refresh" url="#"/>
                     <p:menuitem value="Delete" icon="pi pi-times" url="#"/>
                 </p:splitButton>
-                <p:menuButton value="Options" icon="pi pi-cog" styleClass="ui-button-secondary">
+                <p:menuButton value="Options" icon="pi pi-cog" styleClass="p-button-secondary">
                     <p:menuitem value="Save" icon="pi pi-save" url="#"/>
                     <p:menuitem value="Update" icon="pi pi-refresh" url="#"/>
                     <p:menuitem value="Delete" icon="pi pi-trash" url="#"/>
@@ -76,7 +76,7 @@
                 <p:menuitem value="Help" icon="pi pi-question-circle" url="#"/>
                 <f:facet name="options">
                     <p:inputText placeholder="Search" style="margin-inline-end: .5rem"/>
-                    <p:commandButton type="button" value="Logout" icon="pi pi-sign-out" styleClass="ui-button-secondary"/>
+                    <p:commandButton type="button" value="Logout" icon="pi pi-sign-out" styleClass="p-button-secondary"/>
                 </f:facet>
             </p:menubar>
         </div>

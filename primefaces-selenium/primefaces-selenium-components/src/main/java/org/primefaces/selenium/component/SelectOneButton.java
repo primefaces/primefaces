@@ -38,10 +38,10 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class SelectOneButton extends AbstractInputComponent {
 
-    @FindBy(css = ".ui-button")
+    @FindBy(css = ".p-button")
     private List<WebElement> options;
 
-    @FindBy(css = ".ui-button.ui-state-active")
+    @FindBy(css = ".p-button.p-state-active")
     private WebElement activeOption;
 
     public List<WebElement> getOptions() {
@@ -60,7 +60,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public String getSelectedLabel() {
-        WebElement label = getActiveOption().findElement(By.className("ui-button-text"));
+        WebElement label = getActiveOption().findElement(By.className("p-button-text"));
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }

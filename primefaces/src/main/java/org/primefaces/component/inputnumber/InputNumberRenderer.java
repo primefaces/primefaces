@@ -149,7 +149,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
         String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
-        styleClass = component.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
+        styleClass = component.isValid() ? styleClass : styleClass + " p-state-error"; // see #3706
 
         writer.startElement("span", component);
         writer.writeAttribute("id", clientId, null);

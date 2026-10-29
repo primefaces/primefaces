@@ -1,18 +1,18 @@
 /*
  * ContextMenu: p:contextMenu
  *
- * Renders the tiered .ui-menu markup (styled by menu/menu.base.css) as an overlay; this file maps the contextmenu tokens.
+ * Renders the tiered .p-menu markup (styled by menu/menu.base.css) as an overlay; this file maps the contextmenu tokens.
  */
 
 /* set by the widget on the target: disables the mobile browser context menu */
-.ui-touch-selection-disabled {
+.p-touch-selection-disabled {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-.ui-menu.ui-contextmenu {
+.p-menu.p-contextmenu {
     --_bg: var(--p-contextmenu-background);
     --_border-color: var(--p-contextmenu-border-color);
     --_border-radius: var(--p-contextmenu-border-radius);

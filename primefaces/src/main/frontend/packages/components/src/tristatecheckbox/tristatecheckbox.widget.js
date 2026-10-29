@@ -35,9 +35,9 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
         super.init(cfg);
 
         this.input = $(this.jqId + '_input');
-        this.box = this.jq.find('.ui-chkbox-box');
-        this.icon = this.box.children('.ui-chkbox-icon');
-        this.itemLabel = this.jq.find('.ui-chkbox-label');
+        this.box = this.jq.find('.p-chkbox-box');
+        this.icon = this.box.children('.p-chkbox-icon');
+        this.itemLabel = this.jq.find('.p-chkbox-label');
         this.ariaHelper = $('<span class="p-hidden-accessible" aria-live="polite"></span>').prependTo(this.jq);
         this.updateAriaLabel();
         this.updateStatus();
@@ -50,10 +50,10 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
         //bind events if not disabled/readonly
         if (!this.disabled) {
             this.box.on('mouseenter.triStateCheckbox', function () {
-                $this.box.addClass('ui-state-hover');
+                $this.box.addClass('p-state-hover');
             })
             .on('mouseleave.triStateCheckbox', function () {
-                $this.box.removeClass('ui-state-hover');
+                $this.box.removeClass('p-state-hover');
             })
             .on('click.triStateCheckbox', function () {
                 $this.toggle(1);
@@ -61,10 +61,10 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
             });
             
             this.input.on('focus.triStateCheckbox', function () {
-                $this.box.addClass('ui-state-focus');
+                $this.box.addClass('p-state-focus');
             })
             .on('blur.triStateCheckbox', function () {
-                $this.box.removeClass('ui-state-focus');
+                $this.box.removeClass('p-state-focus');
             })
             .on('keydown.triStateCheckbox', function (e) {
                 switch (e.key) {
@@ -126,13 +126,13 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
 
             // remove / add def. icon and active classes
             if (newValue === 0) {
-                this.box.removeClass('ui-state-active');
+                this.box.removeClass('p-state-active');
             } else {
-                this.box.addClass('ui-state-active');
+                this.box.addClass('p-state-active');
             }
 
-            // remove old icon and add the new one
-            var iconsClasses = this.box.data('iconstates');
+            // remove old icon and add the new one: none (null), checked (true), crossed (false)
+            var iconsClasses = ['', 'p-checkbox-checked-icon', 'p-checkbox-crossed-icon'];
             this.icon.removeClass(iconsClasses[oldValue]).addClass(iconsClasses[newValue]);
 
             // change title to the new one
@@ -177,7 +177,7 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
      * @private
      */
     updateStatus() {
-        this.readonly = this.box.hasClass('ui-chkbox-readonly');
+        this.readonly = this.box.hasClass('p-chkbox-readonly');
         this.disabled = this.input.is(':disabled') || this.readonly;
     }
 

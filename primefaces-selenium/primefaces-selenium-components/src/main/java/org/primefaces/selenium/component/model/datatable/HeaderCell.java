@@ -48,7 +48,7 @@ public class HeaderCell extends Cell {
      */
     public WebElement getColumnTitle() {
         if (getWebElement() != null) {
-            return getWebElement().findElement(By.className("ui-column-title"));
+            return getWebElement().findElement(By.className("p-column-title"));
         }
 
         return null;
@@ -61,7 +61,7 @@ public class HeaderCell extends Cell {
      */
     public WebElement getColumnFilter() {
         if (getWebElement() != null) {
-            return getWebElement().findElement(By.className("ui-column-filter"));
+            return getWebElement().findElement(By.className("p-column-filter"));
         }
 
         return null;

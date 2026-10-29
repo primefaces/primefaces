@@ -58,7 +58,7 @@ class Theming013Test extends AbstractThemingTest {
         assertTrue(links.stream().anyMatch(l -> l.getDomAttribute("href").contains("ln=primefaces-glass")), "primefaces-glass:theme.css not rendered");
         assertBlur("dialog box", backdropFilter(dialogBox(page.dialog), "::before"));
         assertEquals("none", backdropFilter(page.dialog), "the full viewport dialog container must not blur the page");
-        assertBlur("modal mask", backdropFilter(PrimeSelenium.getWebDriver().findElement(By.cssSelector(".ui-widget-overlay, .ui-dialog-mask"))));
+        assertBlur("modal mask", backdropFilter(PrimeSelenium.getWebDriver().findElement(By.cssSelector(".p-widget-overlay, .p-dialog-mask"))));
         assertBlur("toolbar", backdropFilter(page.toolbar, "::before"));
         assertEquals("none", backdropFilter(page.toolbar), "the toolbar itself must not be a backdrop root / stacking context");
         assertBlur("button", backdropFilter(page.primary));
@@ -79,7 +79,7 @@ class Theming013Test extends AbstractThemingTest {
 
             // Assert
             for (WebElement button : List.of(page.primary, page.secondary, page.outlined, page.success, page.danger)) {
-                double ratio = minContrast(button.findElement(By.cssSelector(".ui-button-text")), button, null);
+                double ratio = minContrast(button.findElement(By.cssSelector(".p-button-text")), button, null);
                 assertTrue(ratio >= 4.5, scheme + " " + button.getAttribute("id") + ": " + ratio);
             }
         }
@@ -112,7 +112,7 @@ class Theming013Test extends AbstractThemingTest {
     }
 
     private static WebElement dialogBox(WebElement dialog) {
-        return dialog.findElement(By.cssSelector(".ui-dialog-box"));
+        return dialog.findElement(By.cssSelector(".p-dialog-box"));
     }
 
     private void assertBlur(String description, String filter) {

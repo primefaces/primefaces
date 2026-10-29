@@ -21,7 +21,7 @@ PrimeFaces.widget.Chip = class Chip extends PrimeFaces.widget.BaseWidget {
     init(cfg) {
         super.init(cfg);
 
-        this.removeIcon = this.jq.children('.ui-chip-remove-icon');
+        this.removeIcon = this.jq.children('.p-chip-remove-icon');
 
         this.bindEvents();
     }

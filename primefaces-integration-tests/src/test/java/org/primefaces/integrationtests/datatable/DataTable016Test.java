@@ -68,10 +68,10 @@ class DataTable016Test extends AbstractDataTableTest {
         //check header-rows
         assertEquals("4", dataTable.getCell(0, 0).getWebElement().getAttribute("colspan"));
         assertEquals("COMPILED", dataTable.getCell(0, 0).getText());
-        assertEquals(1, dataTable.getCell(0, 0).getWebElement().findElements(By.className("ui-rowgroup-toggler")).size());
+        assertEquals(1, dataTable.getCell(0, 0).getWebElement().findElements(By.className("p-rowgroup-toggler")).size());
         assertEquals("4", dataTable.getCell(4, 0).getWebElement().getAttribute("colspan"));
         assertEquals("INTERPRETED", dataTable.getCell(4, 0).getText());
-        assertEquals(1, dataTable.getCell(4, 0).getWebElement().findElements(By.className("ui-rowgroup-toggler")).size());
+        assertEquals(1, dataTable.getCell(4, 0).getWebElement().findElements(By.className("p-rowgroup-toggler")).size());
 
         //check summary-rows
         assertEquals("3", dataTable.getCell(3, 0).getWebElement().getAttribute("colspan"));

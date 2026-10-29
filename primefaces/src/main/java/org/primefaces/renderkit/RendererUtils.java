@@ -53,8 +53,8 @@ public class RendererUtils {
     public static void encodeCheckbox(FacesContext context, boolean checked, boolean partialSelected, boolean disabled, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon;
-        String boxClass = disabled ? HTML.CHECKBOX_BOX_CLASS + " ui-state-disabled" : HTML.CHECKBOX_BOX_CLASS;
-        boxClass += checked ? " ui-state-active" : Constants.EMPTY_STRING;
+        String boxClass = disabled ? HTML.CHECKBOX_BOX_CLASS + " p-state-disabled" : HTML.CHECKBOX_BOX_CLASS;
+        boxClass += checked ? " p-state-active" : Constants.EMPTY_STRING;
         String containerClass = (styleClass == null) ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         if (checked) {

@@ -37,10 +37,10 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
     init(cfg) {
         super.init(cfg);
         
-        this.header = this.jq.children('.ui-log-header');
-        this.content = this.jq.children('.ui-log-content');
-        this.itemsContainer = this.content.find('.ui-log-items');
-        this.filters = this.header.children('.ui-log-button');
+        this.header = this.jq.children('.p-log-header');
+        this.content = this.jq.children('.p-log-content');
+        this.itemsContainer = this.content.find('.p-log-items');
+        this.filters = this.header.children('.p-log-button');
         this.severity = 'all';
         var _self = this;
 
@@ -83,50 +83,50 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
         var _self = this;
 
         //visuals
-        this.header.children('.ui-log-button').on("mouseover", function() {
+        this.header.children('.p-log-button').on("mouseover", function() {
             var el = $(this);
-            if(!el.hasClass('ui-state-active'))
-                $(this).addClass('ui-state-hover');
+            if(!el.hasClass('p-state-active'))
+                $(this).addClass('p-state-hover');
         }).on("mouseout", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         });
 
         //clear
-        this.header.children('.ui-log-clear').on("click", function(e) {
+        this.header.children('.p-log-clear').on("click", function(e) {
             _self.itemsContainer.html('');
-            _self.filters.filter('.ui-state-active').removeClass('ui-state-active');
-            _self.filters.filter('.ui-log-all').addClass('ui-state-active');
+            _self.filters.filter('.p-state-active').removeClass('p-state-active');
+            _self.filters.filter('.p-log-all').addClass('p-state-active');
             _self.severity = 'all';
             e.preventDefault();
         });
 
         //all
-        this.header.children('.ui-log-all').on("click", function(e) {
+        this.header.children('.p-log-all').on("click", function(e) {
             _self.itemsContainer.children().show();
-            _self.filters.filter('.ui-state-active').removeClass('ui-state-active');
-            $(this).addClass('ui-state-active').removeClass('ui-state-hover');
+            _self.filters.filter('.p-state-active').removeClass('p-state-active');
+            $(this).addClass('p-state-active').removeClass('p-state-hover');
             _self.severity = 'all';
             e.preventDefault();
         });
 
         //info
-        this.header.children('.ui-log-info').on("click", function(e) {
-            _self.handleFilterClick(e, '.ui-log-item-info', 'info', $(this));
+        this.header.children('.p-log-info').on("click", function(e) {
+            _self.handleFilterClick(e, '.p-log-item-info', 'info', $(this));
         });
 
         //warn
-        this.header.children('.ui-log-warn').on("click", function(e) {
-            _self.handleFilterClick(e, '.ui-log-item-warn', 'warn', $(this));
+        this.header.children('.p-log-warn').on("click", function(e) {
+            _self.handleFilterClick(e, '.p-log-item-warn', 'warn', $(this));
         });
 
         //debug
-        this.header.children('.ui-log-debug').on("click", function(e) {
-            _self.handleFilterClick(e, '.ui-log-item-debug', 'debug', $(this));
+        this.header.children('.p-log-debug').on("click", function(e) {
+            _self.handleFilterClick(e, '.p-log-item-debug', 'debug', $(this));
         });
 
         //error
-        this.header.children('.ui-log-error').on("click", function(e) {
-            _self.handleFilterClick(e, '.ui-log-item-error', 'error', $(this));
+        this.header.children('.p-log-error').on("click", function(e) {
+            _self.handleFilterClick(e, '.p-log-item-error', 'error', $(this));
         });
     }
     
@@ -135,7 +135,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
      * @param {string} msg Message to log
      */
     info(msg) {
-        this.add(msg, 'info', 'ui-icon-info');
+        this.add(msg, 'info', 'p-icon p-info-icon p-log-info-icon');
     }
     
     /**
@@ -143,7 +143,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
      * @param {string} msg Message to log
      */
     warn(msg) {
-        this.add(msg, 'warn', 'ui-icon-notice');
+        this.add(msg, 'warn', 'p-icon p-warn-icon p-log-warn-icon');
     }
     
     /**
@@ -151,7 +151,7 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
      * @param {string} msg Message to log
      */
     debug(msg) {
-        this.add(msg, 'debug', 'ui-icon-search');
+        this.add(msg, 'debug', 'p-icon p-search-icon p-log-debug-icon');
     }
     
     /**
@@ -159,21 +159,21 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
      * @param {string} msg Message to log
      */
     error(msg) {
-        this.add(msg, 'error', 'ui-icon-alert');
+        this.add(msg, 'error', 'p-icon p-error-icon p-log-error-icon');
     }
     
     /**
      * Logs a message at the given severity level.
      * @param {string} msg Message to log
      * @param {PrimeFaces.widget.Log.Severity} severity Severity of the log message
-     * @param {string} icon Icon to show near the log message
+     * @param {string} icon Style classes of the icon to show near the log message
      */
     add(msg, severity, icon) {
         var visible = this.severity == severity || this.severity == 'all',
         style = visible ? 'display:block' : 'display:none';
 
-        var item = '<li class="ui-log-item ui-log-item-' + severity + '" style="' + style + 
-            '"><span class="ui-icon ' + icon + '"></span>' + new Date().toLocaleString() + ' : '  + PrimeFaces.escapeHTML(msg) + '</li>';
+        var item = '<li class="p-log-item p-log-item-' + severity + '" style="' + style + 
+            '"><span class="' + icon + '"></span>' + new Date().toLocaleString() + ' : '  + PrimeFaces.escapeHTML(msg) + '</li>';
 
         this.itemsContainer.append(item);
     }
@@ -196,8 +196,8 @@ PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
      */
     handleFilterClick(event, severityClass, severity, button) {
         this.filter(severityClass);
-        this.filters.filter('.ui-state-active').removeClass('ui-state-active');
-        button.addClass('ui-state-active').removeClass('ui-state-hover');
+        this.filters.filter('.p-state-active').removeClass('p-state-active');
+        button.addClass('p-state-active').removeClass('p-state-hover');
         this.severity = severity;
         event.preventDefault();
     }

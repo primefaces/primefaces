@@ -26,10 +26,10 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
     init(cfg) {
         super.init(cfg);
 
-       this.root = this.jq.children('div.ui-multiselectlistbox-listcontainer');
-       this.items = this.jq.find('li.ui-multiselectlistbox-item');
+       this.root = this.jq.children('div.p-multiselectlistbox-listcontainer');
+       this.items = this.jq.find('li.p-multiselectlistbox-item');
        this.input = $(this.jqId + '_input');
-       this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
+       this.cfg.disabled = this.jq.hasClass('p-state-disabled');
 
        if(!this.cfg.disabled) {
            this.bindEvents();
@@ -51,19 +51,19 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
        this.items.on('mouseover.multiSelectListbox', function() {
            var item = $(this);
 
-           if(!item.hasClass('ui-state-highlight'))
-               $(this).addClass('ui-state-hover');
+           if(!item.hasClass('p-state-highlight'))
+               $(this).addClass('p-state-hover');
        })
        .on('mouseout.multiSelectListbox', function() {
            var item = $(this);
 
-           if(!item.hasClass('ui-state-highlight'))
-               $(this).removeClass('ui-state-hover');
+           if(!item.hasClass('p-state-highlight'))
+               $(this).removeClass('p-state-hover');
        })
        .on('click.multiSelectListbox', function() {
            var item = $(this);
 
-           if(!item.hasClass('ui-state-highlight')){
+           if(!item.hasClass('p-state-highlight')){
                $this.showOptionGroup(item);
            }
        });
@@ -83,18 +83,18 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
      * @param {JQuery} item The box to be shown.
      */
     showOptionGroup(item) {
-       item.addClass('ui-state-highlight').removeClass('ui-state-hover').siblings().filter('.ui-state-highlight').removeClass('ui-state-highlight');
-       item.closest('.ui-multiselectlistbox-listcontainer').nextAll().remove();
+       item.addClass('p-state-highlight').removeClass('p-state-hover').siblings().filter('.p-state-highlight').removeClass('p-state-highlight');
+       item.closest('.p-multiselectlistbox-listcontainer').nextAll().remove();
        this.input.val(item.attr('data-value'));
 
        var childItemsContainer = item.children('ul');
 
        if(childItemsContainer.length) {
-           var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer" style="display:none"></div>');
-           childItemsContainer.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('p-hidden');
+           var groupContainer = $('<div class="p-multiselectlistbox-listcontainer" style="display:none"></div>');
+           childItemsContainer.clone(true).appendTo(groupContainer).addClass('p-multiselectlistbox-list p-inputfield p-widget-content').removeClass('p-hidden');
 
            if(this.cfg.showHeaders) {
-               groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header">' + PrimeFaces.escapeHTML(item.children('span').text()) + '</div>');
+               groupContainer.prepend('<div class="p-multiselectlistbox-header p-widget-header">' + PrimeFaces.escapeHTML(item.children('span').text()) + '</div>');
            }
 
            this.jq.append(groupContainer);
@@ -145,7 +145,7 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
             return;
         }
 
-        var ancestors = item.parentsUntil('.ui-multiselectlistbox-list'),
+        var ancestors = item.parentsUntil('.p-multiselectlistbox-list'),
         selectedIndexMap = [];
 
         for(var i = (ancestors.length - 1); i >= 0; i--) {
@@ -155,11 +155,11 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
                 selectedIndexMap.push(ancestor.index());
             }
             else if(ancestor.is('ul')) {
-                var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer" style="display:none"></div>');
-                ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('p-hidden');
+                var groupContainer = $('<div class="p-multiselectlistbox-listcontainer" style="display:none"></div>');
+                ancestor.clone(true).appendTo(groupContainer).addClass('p-multiselectlistbox-list p-inputfield p-widget-content').removeClass('p-hidden');
 
                 if(this.cfg.showHeaders) {
-                   groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>');
+                   groupContainer.prepend('<div class="p-multiselectlistbox-header p-widget-header">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>');
                 }
 
                 $this.jq.append(groupContainer);
@@ -167,16 +167,16 @@ PrimeFaces.widget.MultiSelectListbox = class MultiSelectListbox extends PrimeFac
         }
 
         //highlight item
-        var lists = this.jq.children('div.ui-multiselectlistbox-listcontainer'),
-        clonedItem = lists.find(' > ul.ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').filter('[data-value="' + CSS.escape(value) + '"]');
-        clonedItem.addClass('ui-state-highlight');
+        var lists = this.jq.children('div.p-multiselectlistbox-listcontainer'),
+        clonedItem = lists.find(' > ul.p-multiselectlistbox-list > li.p-multiselectlistbox-item').filter('[data-value="' + CSS.escape(value) + '"]');
+        clonedItem.addClass('p-state-highlight');
 
         //highlight ancestors
         for(var j = 0; j < selectedIndexMap.length; j++) {
-            lists.eq(j).find('> .ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').eq(selectedIndexMap[j]).addClass('ui-state-highlight');
+            lists.eq(j).find('> .p-multiselectlistbox-list > li.p-multiselectlistbox-item').eq(selectedIndexMap[j]).addClass('p-state-highlight');
         }
 
-        $this.jq.children('div.ui-multiselectlistbox-listcontainer:hidden').show();
+        $this.jq.children('div.p-multiselectlistbox-listcontainer:hidden').show();
     }
 
     /**

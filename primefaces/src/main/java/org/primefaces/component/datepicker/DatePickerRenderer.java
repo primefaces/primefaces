@@ -236,7 +236,6 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
             .attr("showWeek", component.isShowWeek(), false)
             .attr("showLongMonthNames", component.isShowLongMonthNames(), false)
             .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
-            .attr("icon", component.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", component.getRangeSeparator(), "-")
             .attr("timeSeparator", component.getTimeSeparator(), ":")
             .attr("fractionSeparator", component.getFractionSeparator(), ".")

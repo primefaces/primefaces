@@ -65,27 +65,28 @@ import jakarta.faces.event.FacesEvent;
 public class AutoComplete extends AutoCompleteBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AutoComplete";
-    public static final String STYLE_CLASS = "ui-autocomplete";
-    public static final String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
-    public static final String DROPDOWN_SYLE_CLASS = "ui-autocomplete-dd";
-    public static final String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default";
-    public static final String INPUT_WITH_DROPDOWN_CLASS = "ui-autocomplete-input ui-autocomplete-dd-input ui-inputfield ui-widget ui-state-default";
-    public static final String DROPDOWN_CLASS = "ui-autocomplete-dropdown ui-button ui-widget ui-state-default ui-button-icon-only";
-    public static final String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content p-hidden ui-input-overlay";
-    public static final String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget";
-    public static final String TABLE_CLASS = "ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget";
-    public static final String ITEM_CLASS = "ui-autocomplete-item ui-autocomplete-list-item";
-    public static final String ROW_CLASS = "ui-autocomplete-item ui-autocomplete-row ui-widget-content";
-    public static final String TOKEN_DISPLAY_CLASS = "ui-autocomplete-token ui-state-active";
-    public static final String TOKEN_LABEL_CLASS = "ui-autocomplete-token-label";
-    public static final String TOKEN_LABEL_DISABLED_CLASS = "ui-autocomplete-token-label-disabled";
-    public static final String TOKEN_ICON_CLASS = "ui-autocomplete-token-icon ui-icon ui-icon-close";
-    public static final String TOKEN_INPUT_CLASS = "ui-autocomplete-input-token";
-    public static final String MULTIPLE_CONTAINER_CLASS = "ui-autocomplete-multiple-container ui-widget ui-inputfield ui-state-default";
-    public static final String MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS = "ui-autocomplete-multiple-container ui-autocomplete-dd-multiple-container ui-widget ui-inputfield ui-state-default";
-    public static final String ITEMTIP_CONTENT_CLASS = "ui-autocomplete-itemtip-content";
-    public static final String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext";
-    public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content";
+    public static final String STYLE_CLASS = "p-autocomplete";
+    public static final String MULTIPLE_STYLE_CLASS = "p-autocomplete p-autocomplete-multiple";
+    public static final String DROPDOWN_SYLE_CLASS = "p-autocomplete-dd";
+    public static final String INPUT_CLASS = "p-autocomplete-input p-inputfield p-widget p-state-default";
+    public static final String INPUT_WITH_DROPDOWN_CLASS = "p-autocomplete-input p-autocomplete-dd-input p-inputfield p-widget p-state-default";
+    public static final String DROPDOWN_CLASS = "p-autocomplete-dropdown p-button p-widget p-state-default p-button-icon-only";
+    public static final String DROPDOWN_ICON_CLASS = "p-button-icon-primary p-icon p-dropdown-icon p-autocomplete-dropdown-icon";
+    public static final String PANEL_CLASS = "p-autocomplete-panel p-widget-content p-hidden p-input-overlay";
+    public static final String LIST_CLASS = "p-autocomplete-items p-autocomplete-list p-widget-content p-widget";
+    public static final String TABLE_CLASS = "p-autocomplete-items p-autocomplete-table p-widget-content p-widget";
+    public static final String ITEM_CLASS = "p-autocomplete-item p-autocomplete-list-item";
+    public static final String ROW_CLASS = "p-autocomplete-item p-autocomplete-row p-widget-content";
+    public static final String TOKEN_DISPLAY_CLASS = "p-autocomplete-token p-state-active";
+    public static final String TOKEN_LABEL_CLASS = "p-autocomplete-token-label";
+    public static final String TOKEN_LABEL_DISABLED_CLASS = "p-autocomplete-token-label-disabled";
+    public static final String TOKEN_ICON_CLASS = "p-autocomplete-token-icon p-icon p-close-icon p-autocomplete-chip-remove-icon";
+    public static final String TOKEN_INPUT_CLASS = "p-autocomplete-input-token";
+    public static final String MULTIPLE_CONTAINER_CLASS = "p-autocomplete-multiple-container p-widget p-inputfield p-state-default";
+    public static final String MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS = "p-autocomplete-multiple-container p-autocomplete-dd-multiple-container p-widget p-inputfield p-state-default";
+    public static final String ITEMTIP_CONTENT_CLASS = "p-autocomplete-itemtip-content";
+    public static final String MORE_TEXT_LIST_CLASS = "p-autocomplete-item p-autocomplete-moretext";
+    public static final String MORE_TEXT_TABLE_CLASS = "p-autocomplete-item p-autocomplete-moretext p-widget-content";
 
     protected static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
             ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect,

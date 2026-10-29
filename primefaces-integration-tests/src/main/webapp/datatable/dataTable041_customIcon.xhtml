@@ -6,12 +6,19 @@
       xmlns:h="jakarta.faces.html">
 
     <h:head>
+        <style>
+            /* the toggler icons are tokens: here for one table */
+            .custom-icons-table {
+                --p-datatable-row-toggle-collapsed-icon: var(--p-icon-plus);
+                --p-datatable-row-toggle-expanded-icon: var(--p-icon-minus);
+            }
+        </style>
     </h:head>
     <h:body>
         <h:form id="form">
-            <p:dataTable id="datatable" value="#{dataTable041.cars}" var="car" rowKey="#{car.number}">
+            <p:dataTable id="datatable" value="#{dataTable041.cars}" var="car" rowKey="#{car.number}" styleClass="custom-icons-table">
                 <p:column style="width:2rem">
-                    <p:rowToggler expandIcon="pi pi-chevron-circle-right" collapseIcon="pi pi-chevron-circle-down" />
+                    <p:rowToggler />
                 </p:column>
 
                 <p:column headerText="Car Name">

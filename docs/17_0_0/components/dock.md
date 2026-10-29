@@ -26,11 +26,11 @@ via CSS sizing of the default and hover styles.
 
 ```css
 /* Default size */
-.ui-dock img {
+.p-dock img {
     width: 48px;
 }
 /* Zoomed size */
-.ui-dock-item.active:hover img {
+.p-dock-item.active:hover img {
     width: 128px;
 }
 ```
@@ -44,8 +44,8 @@ Following is the list of structural style classes.
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-dock | Main container.
-| .ui-dock-container | Menu item container.
-| .ui-dock-item | Each menu item.
+| .p-dock | Main container.
+| .p-dock-container | Menu item container.
+| .p-dock-item | Each menu item.
 
 As skinning style classes are global, see the main theming section for more information.

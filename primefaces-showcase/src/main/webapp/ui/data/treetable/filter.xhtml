@@ -7,11 +7,11 @@
 
     <ui:define name="head">
         <style>
-            .ui-treetable {
+            .p-treetable {
                 margin-top: 40px
             }
 
-            .ui-treetable table {
+            .p-treetable table {
                 table-layout: fixed
             }
         </style>
@@ -30,7 +30,7 @@
     <ui:param name="tagName" value="treeTable"/>
 
     <ui:define name="implementation">
-        <div class="card ui-fluid">
+        <div class="card p-fluid">
             <h:form>
                 <p:treeTable widgetVar="treeTable" value="#{ttScrollableView.root1}" var="document"
                              style="margin-top:0">

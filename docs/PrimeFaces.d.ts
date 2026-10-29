@@ -694,7 +694,7 @@ declare namespace PrimeFaces.ajax {
          * <partial-response>
          *    <changes>
          *       <update id="content:msgs"><![CDATA[
-         *           <span id="content:msgs" class="ui-growl-pl">...</span>
+         *           <span id="content:msgs" class="p-growl-pl">...</span>
          *           <script id="content:msgs_s" type="text/javascript">...</script>
          *       ]]></update>
          *       <update id="content:jakarta.faces.ViewState:0"><![CDATA[3644438980748093603:2519460806875181703]]></update>
@@ -1968,10 +1968,6 @@ declare namespace PrimeFaces.widget {
          */
         cache: boolean;
         /**
-         * The icon class name for the collapsed icon.
-         */
-        collapsedIcon: string;
-        /**
          * `true` if a tab controller was specified for this widget; or `false` otherwise. A tab
          * controller is a server side listener that decides whether a tab change or tab close should be allowed.
          */
@@ -1980,10 +1976,6 @@ declare namespace PrimeFaces.widget {
          * `true` if the contents of each panel are loaded on-demand via AJAX; `false` otherwise.
          */
         dynamic: boolean;
-        /**
-         * The icon class name for the expanded icon.
-         */
-        expandedIcon: string;
         /**
          * Whether to keep AccordionPanel state across views.
          */
@@ -5605,7 +5597,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Checks the given checkbox for a column, so that the column is now selected. Also display the column of the table
          * to which this column toggler is attached.
-         * @param chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
+         * @param chkbox Checkbox (`.p-chkbox-box`) of a column of this column toggler.
          */
         check(chkbox: JQuery): void;
         /**
@@ -5683,7 +5675,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Checks or unchecks the given checkbox for a column, depending on whether it is currently selected. Also shows or
          * hides  the column of the table to which this column toggler is attached.
-         * @param chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
+         * @param chkbox Checkbox (`.p-chkbox-box`) of a column of this column toggler.
          */
         toggle(chkbox: JQuery): void;
         /**
@@ -5693,7 +5685,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Unchecks the given checkbox for a column, so that the column is now not selected. Also hides the column of the
          * table to which this column toggler is attached.
-         * @param chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
+         * @param chkbox Checkbox (`.p-chkbox-box`) of a column of this column toggler.
          */
         uncheck(chkbox: JQuery): void;
         /**
@@ -7003,7 +6995,7 @@ declare namespace PrimeFaces {
      */
     export function bcnu(ext: Partial<PrimeFaces.ajax.ConfigurationExtender>, event: Event, fns: ((this: typeof PrimeFaces, ext: Partial<PrimeFaces.ajax.ConfigurationExtender>, event: Event) => boolean | undefined)[]): void;
     /**
-     * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
+     * Applies the inline AJAX status (p-state-loading) to the given widget / button.
      * @param widget the widget.
      * @param button The button DOM element.
      * @param isXhrSource Callback that checks if the widget is the source of the current AJAX request.
@@ -7389,8 +7381,8 @@ declare namespace PrimeFaces {
     export function showMessageInDialog(msg: PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage): void;
     /**
      * BUTTON elements may have different states, such as `hovering` or `focused`. For each state, there is a
-     * corresponding style class that is added to the button when it is in that state, such as `ui-state-hover` or
-     * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a button element so
+     * corresponding style class that is added to the button when it is in that state, such as `p-state-hover` or
+     * `p-state-focus`. These classes are used by CSS rules for styling. This method sets up a button element so
      * that the classes are added correctly (by adding event listeners).
      * @param button BUTTON element to skin
      * @return this for chaining
@@ -7404,8 +7396,8 @@ declare namespace PrimeFaces {
     export function skinCloseAction(element: JQuery): JQuery;
     /**
      * INPUT elements may have different states, such as `hovering` or `focused`. For each state, there is a
-     * corresponding style class that is added to the input when it is in that state, such as `ui-state-hover` or
-     * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up an input element so
+     * corresponding style class that is added to the input when it is in that state, such as `p-state-hover` or
+     * `p-state-focus`. These classes are used by CSS rules for styling. This method sets up an input element so
      * that the classes are added correctly (by adding event listeners).
      * @param input INPUT element to skin
      * @return this for chaining
@@ -7413,15 +7405,15 @@ declare namespace PrimeFaces {
     export function skinInput(input: JQuery): typeof PrimeFaces;
     /**
      * SELECT elements may have different states, such as `hovering` or `focused`. For each state, there is a
-     * corresponding style class that is added to the select when it is in that state, such as `ui-state-hover` or
-     * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a select element so
+     * corresponding style class that is added to the select when it is in that state, such as `p-state-hover` or
+     * `p-state-focus`. These classes are used by CSS rules for styling. This method sets up a select element so
      * that the classes are added correctly (by adding event listeners).
      * @param select SELECT element to skin
      * @return this for chaining
      */
     export function skinSelect(select: JQuery): typeof PrimeFaces;
     /**
-     * Submits the given form, and clears all `ui-submit-param`s after that to prevent dom caching issues.
+     * Submits the given form, and clears all `p-submit-param`s after that to prevent dom caching issues.
      *
      * If a target is given, it is set on the form temporarily before it is submitted. Afterwards, the original
      * target attribute of the form is restored.
@@ -8696,7 +8688,7 @@ declare namespace PrimeFaces.widget {
      * const widget = PF("MyDashboardWidget");
      *
      * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
-     * widget.jq.find(".ui-dashboard-column").sortable("option", "revert", true);
+     * widget.jq.find(".p-dashboard-column").sortable("option", "revert", true);
      * ```
      * @typeparam TCfg Defaults to `DashboardCfg`. Type of the configuration object for this widget.
      */
@@ -11127,7 +11119,7 @@ declare namespace PrimeFaces.widget {
          * // Switch to grid layout
          * widget.select(widget.buttons.eq(1));
          * ```
-         * @param button One of the layout switch buttons (`.ui-button`).
+         * @param button One of the layout switch buttons (`.p-button`).
          */
         select(button: JQuery): void;
         /**
@@ -11522,10 +11514,6 @@ declare namespace JQueryPrimeDatePicker {
          * Whether to show an icon to display the picker in an overlay
          */
         showIcon: boolean;
-        /**
-         * Icon of the date picker element that toggles the visibility in popup mode.
-         */
-        icon: string;
         /**
          * Whether the date picker overlay is shown when the element focused.
          */
@@ -12904,10 +12892,6 @@ declare namespace PrimeFaces.widget {
          * Separator for joining hour and minute, defaults to `:`.
          */
         timeSeparator: string;
-        /**
-         * Icon of the datepicker element that toggles the visibility in popup mode.
-         */
-        triggerButtonIcon: string;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -13673,7 +13657,7 @@ declare namespace PrimeFaces.widget.ConfirmDialog {
         header: string;
         /**
          * Optional icon that is shown to the left of the confirm dialog. When not given, defaults to
-         * `ui-icon-alert`. Must be a style class of some icon font.
+         * the severity icon of the confirm dialog. Must be a style class of some icon font.
          */
         icon?: string;
         /**
@@ -19712,10 +19696,6 @@ declare namespace PrimeFaces.widget {
          */
         circular: boolean;
         /**
-         * Close icon on fullscreen mode.
-         */
-        closeIcon: string;
-        /**
          * Whether to display the component on fullscreen.
          */
         fullScreen: boolean;
@@ -20108,7 +20088,7 @@ declare namespace PrimeFaces.widget {
         removeAll(): void;
         /**
          * Removes the given message from the screen, if it is currently displayed.
-         * @param message The message to remove, an HTML element with the class `ui-growl-item-container`.
+         * @param message The message to remove, an HTML element with the class `p-growl-item-container`.
          */
         removeMessage(message: JQuery): void;
         /**
@@ -20119,7 +20099,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Starts a timeout that removes the given message after a certain delay (as defined by this widget's
          * configuration).
-         * @param message The message to remove, an HTML element with the class `ui-growl-item-container`.
+         * @param message The message to remove, an HTML element with the class `p-growl-item-container`.
          */
         private setRemovalTimeout(message: JQuery): void;
         /**
@@ -24035,7 +24015,7 @@ declare namespace PrimeFaces.widget {
          * Logs a message at the given severity level.
          * @param msg Message to log
          * @param severity Severity of the log message
-         * @param icon Icon to show near the log message
+         * @param icon Style classes of the icon to show near the log message
          */
         add(msg: string, severity: PrimeFaces.widget.Log.Severity, icon: string): void;
         /**
@@ -24597,15 +24577,15 @@ declare namespace PrimeFaces.widget {
          */
         lastFocusedItem?: JQuery | null;
         /**
-         * The DOM elements for the root level menu links with the class `.ui-menuitem-link`.
+         * The DOM elements for the root level menu links with the class `.p-menuitem-link`.
          */
         rootLinks: JQuery;
         /**
-         * The DOM elements for the root level menu items with the class `.ui-menu-list`.
+         * The DOM elements for the root level menu items with the class `.p-menu-list`.
          */
         rootList: JQuery;
         /**
-         * The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
+         * The DOM elements for all menu links not a the root level, with the class `.p-menuitem-link`.
          */
         subLinks: JQuery;
         /**
@@ -24634,20 +24614,20 @@ declare namespace PrimeFaces.widget {
         deactivate(menuitem: JQuery, animate?: boolean): void;
         /**
          * Finds the menu items that succeeds the given item.
-         * @param menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
+         * @param menuitem One of the menu items of this mega menu, with the class `.p-menuitem`.
          * @return The menu item after the given item. Empty JQuery instance if the given item is the last.
          */
         findNextItem(menuitem: JQuery): JQuery;
         /**
          * Finds the menu items that preceeded the given item.
-         * @param menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
+         * @param menuitem One of the menu items of this mega menu, with the class `.p-menuitem`.
          * @return The menu item before the given item. Empty JQuery instance if the given item is the first.
          */
         findPrevItem(menuitem: JQuery): JQuery;
         /**
          * Finds the the menu group of the given submenu, i.e. the children of the given item.
          * @param submenu A submenu with children.
-         * @return The first sub menu list, an item with the class `.ui-menu-list`.
+         * @return The first sub menu list, an item with the class `.p-menu-list`.
          */
         getFirstMenuList(submenu: JQuery): JQuery;
         /**
@@ -24997,7 +24977,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Finds the first child menu item of the given content element.
          * @param content Some content element of this panel menu.
-         * @return The first child menu item of the given content, with the class `.ui-menuitem`.
+         * @return The first child menu item of the given content, with the class `.p-menuitem`.
          */
         private getFirstItemOfContent(content: JQuery): JQuery;
         /**
@@ -25268,7 +25248,7 @@ declare namespace PrimeFaces.widget {
         private depth(): number;
         /**
          * Slides to the given sub menu.
-         * @param submenu A sub menu to show, with the class `ui-menuitem-link`.
+         * @param submenu A sub menu to show, with the class `p-menuitem-link`.
          */
         forward(submenu: JQuery): void;
         /**
@@ -26279,7 +26259,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Selects the given organigram node.
          * @param widget This widget instance.
-         * @param node The node to select, with the class `.ui-organigram-node`.
+         * @param node The node to select, with the class `.p-organigram-node`.
          * @param event Name of the event that triggered the selection, usually `select` or `contextmenu`.
          */
         private selectNode(widget: PrimeFaces.widget.Organigram, node: JQuery, event: string): void;
@@ -27113,10 +27093,8 @@ declare namespace PrimeFaces.widget {
         /**
          * Toggles the expansion state of this panel.
          * @param collapsed Whether the panel is now to be collapsed.
-         * @param removeIcon Icon for closing this panel.
-         * @param addIcon Icon for opening this panel.
          */
-        private toggleState(collapsed: boolean, removeIcon: JQuery, addIcon: JQuery): void;
+        private toggleState(collapsed: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -27962,7 +27940,7 @@ declare namespace PrimeFaces.widget {
         private selectCheckbox(chkbox: JQuery): void;
         /**
          * Select the given pick list item in the source or target list.
-         * @param item A picklist item to select, with the class `ui-picklist-item`.
+         * @param item A picklist item to select, with the class `p-picklist-item`.
          * @param silent `true` to imit triggering event listeners and behaviors, or `false` otherwise.
          */
         selectItem(item: JQuery, silent?: boolean): void;
@@ -28008,7 +27986,7 @@ declare namespace PrimeFaces.widget {
         private unselectCheckbox(chkbox: JQuery): void;
         /**
          * Unselect the given pick list item in the source or target list.
-         * @param item A picklist item to unselect, with the class `ui-picklist-item`.
+         * @param item A picklist item to unselect, with the class `p-picklist-item`.
          * @param silent `true` to imit triggering event listeners and behaviors, or `false` otherwise.
          */
         unselectItem(item: JQuery, silent?: boolean): void;
@@ -31077,7 +31055,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Collapses the given menu item of this stack.
          * @param item A menu item to collapse, usually the root IMG element that is an immediate child of
-         * `.ui-stack`.
+         * `.p-stack`.
          */
         collapse(item: JQuery): void;
         /**
@@ -31106,7 +31084,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Expands the given menu item of this stack.
          * @param item A menu item to expand, usually the root IMG element that is an immediate child of
-         * `.ui-stack`.
+         * `.p-stack`.
          */
         open(item: JQuery): void;
     }
@@ -34016,10 +33994,6 @@ declare namespace PrimeFaces.widget {
      */
     export interface VerticalTreeCfg extends PrimeFaces.widget.BaseTreeCfg {
         /**
-         * Named of the icon for collapsed nodes.
-         */
-        collapsedIcon: string;
-        /**
          * Whether drag & drop operations of this tree table are controlled.
          */
         controlled: boolean;
@@ -35240,7 +35214,7 @@ declare namespace PrimeFaces.validation.Utils {
     /**
      * For a given ID of a component, finds the DOM element with the message for that component.
      * @param clientId ID of a component for which to find the ui message.
-     * @param messageComponents A JQuery instance with a list of `ui-message`s, or `null` if no
+     * @param messageComponents A JQuery instance with a list of `p-message`s, or `null` if no
      * such element exists.
      * @return The DOM element with the messages for the given component, or `null` when no such
      * element could be found.
@@ -35285,7 +35259,7 @@ declare namespace PrimeFaces.validation.Utils {
     /**
      * Renders all given messages in the given container.
      * @param messages The messages to render.
-     * @param container The container for the messages. Either the element with the class `ui-messages`, or
+     * @param container The container for the messages. Either the element with the class `p-messages`, or
      * a parent of such an element.
      */
     export function renderMessages(messages: Record<string, PrimeFaces.FacesMessage[]>, container: JQuery): void;
@@ -35315,7 +35289,7 @@ declare namespace PrimeFaces {
          */
         types: Record<string, PrimeFaces.validation.Highlighter>;
         /**
-         * Applies ui-state-XXX - css-classes to an element (component).
+         * Applies p-state-XXX - css-classes to an element (component).
          * @param element Element to which apply the css-classes.
          * @param valid Is the input of the element valid?
          */

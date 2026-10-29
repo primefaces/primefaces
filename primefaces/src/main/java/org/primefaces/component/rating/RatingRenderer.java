@@ -94,7 +94,7 @@ public class RatingRenderer extends InputRenderer<Rating> {
         String style = rating.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(createStyleClass(rating, Rating.CONTAINER_CLASS))
-                .add(readonly, "ui-state-readonly")
+                .add(readonly, "p-state-readonly")
                 .build();
 
         writer.startElement("div", rating);
@@ -107,24 +107,25 @@ public class RatingRenderer extends InputRenderer<Rating> {
         encodeInput(context, rating, clientId + "_input", valueToRender);
 
         if (rating.isCancel() && !disabled && !readonly) {
-            encodeIcon(context, Rating.CANCEL_CLASS);
+            encodeIcon(context, Rating.CANCEL_CLASS, Rating.CANCEL_ICON_CLASS);
         }
 
         for (int i = 0; i < stars; i++) {
             String starClass = (value != null && i < value) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
-            encodeIcon(context, starClass);
+            encodeIcon(context, starClass, Rating.STAR_ICON_CLASS);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeIcon(FacesContext context, String styleClass) throws IOException {
+    protected void encodeIcon(FacesContext context, String styleClass, String iconClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("a", null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("a");
 
         writer.endElement("div");

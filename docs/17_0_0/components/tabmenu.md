@@ -10,11 +10,11 @@ simple GET navigations.
 
 ```xhtml
 <p:tabMenu activeIndex="0">
-    <p:menuitem value="Overview" outcome="main" icon="ui-icon-star"/>
-    <p:menuitem value="Demos" outcome="demos" icon="ui-icon-search" />
-    <p:menuitem value="Documentation" outcome="docs" icon="ui-icon-document"/>
-    <p:menuitem value="Support" outcome="support" icon="ui-icon-wrench"/>
-    <p:menuitem value="Social" outcome="social" icon="ui-icon-person" />
+    <p:menuitem value="Overview" outcome="main" icon="pi pi-star"/>
+    <p:menuitem value="Demos" outcome="demos" icon="pi pi-search" />
+    <p:menuitem value="Documentation" outcome="docs" icon="pi pi-file"/>
+    <p:menuitem value="Support" outcome="support" icon="pi pi-wrench"/>
+    <p:menuitem value="Social" outcome="social" icon="pi pi-user" />
 </p:tabMenu>
 ```
 ## Skinning TabMenu
@@ -23,10 +23,10 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-tabmenu | Main container element.
-.ui-tabmenu-nav | Container for tabs.
-.ui-tabmenuitem | Menuitem container.
-.ui-menuitem | Anchor of a menuitem.
+.p-tabmenu | Main container element.
+.p-tabmenu-nav | Container for tabs.
+.p-tabmenuitem | Menuitem container.
+.p-menuitem | Anchor of a menuitem.
 
 As skinning style classes are global, see the main theming section for more information.
 

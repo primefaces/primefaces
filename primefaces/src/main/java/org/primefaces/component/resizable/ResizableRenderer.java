@@ -77,7 +77,7 @@ public class ResizableRenderer extends CoreRenderer<Resizable> {
         }
 
         if (component.isProxy()) {
-            wb.attr("helper", "ui-resizable-proxy");
+            wb.attr("helper", "p-resizable-proxy");
         }
 
         wb.attr("handles", component.getHandles(), null)

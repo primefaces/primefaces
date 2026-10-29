@@ -1,9 +1,10 @@
 /*
- * ScrollTop: p:scrollTop (renders a.ui-scrolltop (.ui-scrolltop-sticky for target="parent") > span.ui-scrolltop-icon)
+ * ScrollTop: p:scrollTop (renders a.p-scrolltop (.p-scrolltop-sticky for target="parent") > span.p-scrolltop-icon)
  *
  * PrimeUIX renders ScrollTop as a rounded primary icon-only button and has no own tokens, so the button tokens are used.
+ * Icon: span.p-icon.p-up-icon.p-scrolltop-icon, the token --p-scrolltop-icon (PrimeFaces only).
  */
-.ui-scrolltop {
+.p-scrolltop {
     position: fixed;
     bottom: 20px;
     inset-inline-end: 20px;
@@ -41,23 +42,24 @@
         outline-offset: var(--p-button-focus-ring-offset);
     }
 
-    .ui-scrolltop-icon {
+    .p-scrolltop-icon {
+        --_icon: var(--p-scrolltop-icon);
         font-size: var(--p-button-lg-font-size);
         color: inherit;
     }
 
     /* inside an element (target="parent"): normal button size */
-    &.ui-scrolltop-sticky {
+    &.p-scrolltop-sticky {
         width: var(--p-button-icon-only-width);
         height: var(--p-button-icon-only-width);
 
-        .ui-scrolltop-icon {
+        .p-scrolltop-icon {
             font-size: var(--p-icon-size);
         }
     }
 }
 
-.ui-scrolltop-sticky {
+.p-scrolltop-sticky {
     position: sticky;
     margin-inline-start: auto;
 }

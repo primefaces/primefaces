@@ -9,18 +9,18 @@
         <h:outputStylesheet name="css/primeflex3.css" library="it"/><!-- latest primeflex -->
 
         <style type="text/css">
-            body .ui-panelgrid .ui-panelgrid-cell {
+            body .p-panelgrid .p-panelgrid-cell {
                 padding: 0.5rem;
             }
 
-            button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
-                border-left-color: green !important; /* !important to override border-color set by ui-state-focus */
+            button.p-state-csv-valid, input.p-state-csv-valid, .p-inputfield.p-state-error.p-state-csv-valid, .p-selectonemenu.p-state-csv-valid {
+                border-left-color: green !important; /* !important to override border-color set by p-state-focus */
                 border-left-style: solid;
                 border-left-width: 5px;
             }
 
-            button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
-                border-left-color: red !important; /* !important to override border-color set by ui-state-focus */
+            button.p-state-csv-invalid, input.p-state-csv-invalid, span.p-inputnumber.p-state-csv-invalid, .p-selectonemenu.p-state-csv-invalid {
+                border-left-color: red !important; /* !important to override border-color set by p-state-focus */
                 border-left-style: solid;
                 border-left-width: 5px;
             }
@@ -36,7 +36,7 @@
 
             <p:panelGrid id="gridName" columns="4" layout="flex"
                          columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
-                         contentStyleClass="align-items-baseline ui-fluid">
+                         contentStyleClass="align-items-baseline p-fluid">
                 <p:outputLabel for="name" value="Name (3-50 characters):"/>
                 <p:inputText id="name" value="#{csv001.text}" required="true" label="Name">
                     <f:validateLength minimum="3" maximum="50"/>
@@ -48,7 +48,7 @@
 
             <p:panelGrid id="gridNumber" columns="4" layout="flex"
                          columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
-                         contentStyleClass="align-items-baseline ui-fluid">
+                         contentStyleClass="align-items-baseline p-fluid">
                 <p:outputLabel for="number" value="Number:"/>
                 <p:inputNumber id="number" value="#{csv001.integer}" label="Number"
                                validateMask="false" required="true">
@@ -61,7 +61,7 @@
 
             <p:panelGrid id="gridEverythingElse" columns="4" layout="flex"
                          columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
-                         contentStyleClass="align-items-baseline ui-fluid">
+                         contentStyleClass="align-items-baseline p-fluid">
                 <p:outputLabel for="double" value="Double (5.5 - 8.5):"/>
                 <p:inputText id="double" value="#{csv001.doubleNumber}"
                              converterMessage="Cannot convert to double." required="true">

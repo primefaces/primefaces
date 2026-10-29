@@ -35,15 +35,15 @@ import jakarta.faces.component.FacesComponent;
 public class Avatar extends AvatarBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Avatar";
 
-    public static final String STYLE_CLASS = "ui-avatar ui-widget";
-    public static final String CIRCLE_CLASS = "ui-avatar-circle";
-    public static final String SIZE_LARGE_CLASS = "ui-avatar-lg";
-    public static final String SIZE_XLARGE_CLASS = "ui-avatar-xl";
-    public static final String SIZE_TEXT_CLASS = "ui-avatar-text";
-    public static final String DYNAMIC_COLOR_CLASS = "ui-avatar-dynamic";
-    public static final String DYNAMIC_COLOR_DARK_CLASS = "ui-avatar-dark";
-    public static final String DYNAMIC_COLOR_LIGHT_CLASS = "ui-avatar-light";
-    public static final String ICON_CLASS = "ui-avatar-icon";
+    public static final String STYLE_CLASS = "p-avatar p-widget";
+    public static final String CIRCLE_CLASS = "p-avatar-circle";
+    public static final String SIZE_LARGE_CLASS = "p-avatar-lg";
+    public static final String SIZE_XLARGE_CLASS = "p-avatar-xl";
+    public static final String SIZE_TEXT_CLASS = "p-avatar-text";
+    public static final String DYNAMIC_COLOR_CLASS = "p-avatar-dynamic";
+    public static final String DYNAMIC_COLOR_DARK_CLASS = "p-avatar-dark";
+    public static final String DYNAMIC_COLOR_LIGHT_CLASS = "p-avatar-light";
+    public static final String ICON_CLASS = "p-avatar-icon";
 
     public boolean canFallback() {
         return LangUtils.isNotBlank(getLabel()) || LangUtils.isNotBlank(getIcon());

@@ -40,18 +40,18 @@ public class Galleria extends GalleriaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
 
-    public static final String CONTAINER_CLASS = "ui-galleria ui-widget ui-widget-content";
-    public static final String CONTENT_CLASS = "ui-galleria-content";
-    public static final String HEADER_CLASS = "ui-galleria-header";
-    public static final String FOOTER_CLASS = "ui-galleria-footer";
-    public static final String ITEMS_CLASS = "ui-galleria-items";
-    public static final String ITEM_CLASS = "ui-galleria-item";
-    public static final String CAPTION_ITEMS_CLASS = "ui-galleria-caption-items";
-    public static final String CAPTION_ITEM_CLASS = "ui-galleria-caption-item";
-    public static final String INDICATORS_CLASS = "ui-galleria-indicators";
-    public static final String INDICATOR_CLASS = "ui-galleria-indicator";
-    public static final String THUMBNAIL_ITEMS_CLASS = "ui-galleria-thumbnail-items";
-    public static final String THUMBNAIL_ITEM_CLASS = "ui-galleria-thumbnail-item";
-    public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "ui-galleria-thumbnail-item-content";
+    public static final String CONTAINER_CLASS = "p-galleria p-widget p-widget-content";
+    public static final String CONTENT_CLASS = "p-galleria-content";
+    public static final String HEADER_CLASS = "p-galleria-header";
+    public static final String FOOTER_CLASS = "p-galleria-footer";
+    public static final String ITEMS_CLASS = "p-galleria-items";
+    public static final String ITEM_CLASS = "p-galleria-item";
+    public static final String CAPTION_ITEMS_CLASS = "p-galleria-caption-items";
+    public static final String CAPTION_ITEM_CLASS = "p-galleria-caption-item";
+    public static final String INDICATORS_CLASS = "p-galleria-indicators";
+    public static final String INDICATOR_CLASS = "p-galleria-indicator";
+    public static final String THUMBNAIL_ITEMS_CLASS = "p-galleria-thumbnail-items";
+    public static final String THUMBNAIL_ITEM_CLASS = "p-galleria-thumbnail-item";
+    public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "p-galleria-thumbnail-item-content";
 
 }

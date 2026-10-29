@@ -79,7 +79,7 @@ Using _p:clientValidator_ and custom events, CSV for a particular component can 
             <p:message for="integer" display="icon" />
             <h:outputText value="#{validationBean.integer}" />
         </h:panelGrid>
-        <p:commandButton value="Save" ajax="false" icon="ui-icon-check" validateClient="true"/>
+        <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true"/>
     </p:panel>
 </h:form>
 ```
@@ -291,8 +291,8 @@ The logic behind `enabledByValidateClient="true"` is triggered on following even
 
 ### CSS-classes
 
-Following CSS-classes may be used (additional to classic `ui-state-error`) to style inputs dependent on their (client-side-)validation-state.  
+Following CSS-classes may be used (additional to classic `p-state-error`) to style inputs dependent on their (client-side-)validation-state.  
 (This behaviour is inspired by following Angular´s https://angular.io/guide/form-validation#control-status-css-classes)
 
-* `ui-state-csv-valid`
-* `ui-state-csv-invalid`
+* `p-state-csv-valid`
+* `p-state-csv-invalid`

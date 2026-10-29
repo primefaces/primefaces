@@ -44,20 +44,20 @@ public class CascadeSelect extends CascadeSelectBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CascadeSelect";
 
-    public static final String STYLE_CLASS = "ui-cascadeselect ui-widget ui-state-default";
-    public static final String LABEL_CLASS = "ui-cascadeselect-label ui-inputfield";
-    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content p-hidden ui-input-overlay";
-    public static final String ITEMS_WRAPPER_CLASS = "ui-cascadeselect-items-wrapper";
-    public static final String PANEL_ITEMS_CLASS = "ui-cascadeselect-panel ui-cascadeselect-items";
-    public static final String TRIGGER_CLASS = "ui-cascadeselect-trigger";
-    public static final String TRIGGER_ICON_CLASS = "ui-cascadeselect-trigger-icon ui-icon pi pi-chevron-down";
-    public static final String ITEM_CLASS = "ui-cascadeselect-item";
-    public static final String ITEM_GROUP_CLASS = "ui-cascadeselect-item-group";
-    public static final String ITEM_CONTENT_CLASS = "ui-cascadeselect-item-content";
-    public static final String ITEM_TEXT_CLASS = "ui-cascadeselect-item-text";
-    public static final String GROUP_ICON_CLASS = "ui-cascadeselect-group-icon ui-icon pi pi-angle-right";
-    public static final String SUBLIST_CLASS = "ui-cascadeselect-sublist";
-    public static final String LABEL_EMPTY_CLASS = "ui-cascadeselect-label-empty";
+    public static final String STYLE_CLASS = "p-cascadeselect p-widget p-state-default";
+    public static final String LABEL_CLASS = "p-cascadeselect-label p-inputfield";
+    public static final String PANEL_CLASS = "p-cascadeselect-panel p-widget p-widget-content p-hidden p-input-overlay";
+    public static final String ITEMS_WRAPPER_CLASS = "p-cascadeselect-items-wrapper";
+    public static final String PANEL_ITEMS_CLASS = "p-cascadeselect-panel p-cascadeselect-items";
+    public static final String TRIGGER_CLASS = "p-cascadeselect-trigger";
+    public static final String TRIGGER_ICON_CLASS = "p-cascadeselect-trigger-icon p-icon p-dropdown-icon p-cascadeselect-dropdown-icon";
+    public static final String ITEM_CLASS = "p-cascadeselect-item";
+    public static final String ITEM_GROUP_CLASS = "p-cascadeselect-item-group";
+    public static final String ITEM_CONTENT_CLASS = "p-cascadeselect-item-content";
+    public static final String ITEM_TEXT_CLASS = "p-cascadeselect-item-text";
+    public static final String GROUP_ICON_CLASS = "p-icon p-next-icon p-cascadeselect-group-icon";
+    public static final String SUBLIST_CLASS = "p-cascadeselect-sublist";
+    public static final String LABEL_PLACEHOLDER_CLASS = "p-cascadeselect-label-placeholder";
 
     @Override
     public void queueEvent(FacesEvent event) {

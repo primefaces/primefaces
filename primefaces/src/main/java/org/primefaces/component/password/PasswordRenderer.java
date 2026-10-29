@@ -93,7 +93,7 @@ public class PasswordRenderer extends InputRenderer<Password> {
                         .add(Password.STYLE_CLASS)
                         .add(Password.MASKED_CLASS)
                         .add(Password.WRAPPER_CLASS)
-                        .add(isRTL, "ui-input-icon-left", "ui-input-icon-right")
+                        .add(isRTL, "p-input-icon-left", "p-input-icon-right")
                         .build();
             writer.writeAttribute("class", positionClass, null);
         }

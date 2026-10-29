@@ -8,15 +8,15 @@ submenu will be displayed in an overlay.
 
 ```xhtml
 <p:tieredMenu>
-    <p:submenu label="Ajax Menuitems" icon="ui-icon-refresh">
-        <p:menuitem value="Save" action="#{buttonBean.save}" update="messages" icon="ui-icon-disk" />
-        <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w" />
+    <p:submenu label="Ajax Menuitems" icon="pi pi-refresh">
+        <p:menuitem value="Save" action="#{buttonBean.save}" update="messages" icon="pi pi-save" />
+        <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="pi pi-refresh" />
     </p:submenu>
-    <p:submenu label="Non-Ajax Menuitem" icon="ui-icon-newwin">
-        <p:menuitem value="Delete" action="#{buttonBean.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+    <p:submenu label="Non-Ajax Menuitem" icon="pi pi-window-maximize">
+        <p:menuitem value="Delete" action="#{buttonBean.delete}" update="messages" ajax="false" icon="pi pi-times"/>
     </p:submenu>
     <p:divider />
-    <p:submenu label="Navigations" icon="ui-icon-extlink">
+    <p:submenu label="Navigations" icon="pi pi-external-link">
         <p:submenu label="Prime Links">
             <p:menuitem value="Prime" url="http://www.prime.com.tr" />
             <p:menuitem value="PrimeFaces" url="http://www.primefaces.org" />
@@ -58,7 +58,7 @@ TieredMenu supports `start` and `end` facets to control UI output or add logos o
     </f:facet>
     <p:menuitem label="Logout" action="#{bean.logout}"/>
     <f:facet name="end">
-       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="p-button-info"/>
     </f:facet>
 </p:tieredMenu>
 ```
@@ -78,11 +78,11 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-menu .ui-tieredmenu | Container element of menu.
-.ui-menu-list | List container
-.ui-menuitem | Each menu item
-.ui-menuitem-link | Anchor element in a link item
-.ui-menuitem-text | Text element in an item
+.p-menu .p-tieredmenu | Container element of menu.
+.p-menu-list | List container
+.p-menuitem | Each menu item
+.p-menuitem-link | Anchor element in a link item
+.p-menuitem-text | Text element in an item
 
 As skinning style classes are global, see the main theming section for more information.
 

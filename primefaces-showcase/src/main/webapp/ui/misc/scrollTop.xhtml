@@ -7,18 +7,23 @@
 
     <ui:define name="head">
         <style>
-            .custom-scrolltop.ui-scrolltop {
+            /* the icon is a token of the theme */
+            .custom-scrolltop {
+                --p-scrolltop-icon: var(--p-icon-arrow-up);
+            }
+
+            .custom-scrolltop.p-scrolltop {
                 width: 2rem;
                 height: 2rem;
                 border-radius: 4px;
                 outline: 0 none;
                 background-color: var(--p-primary-color);
             }
-            .custom-scrolltop.ui-scrolltop:hover {
+            .custom-scrolltop.p-scrolltop:hover {
                     background-color: var(--p-primary-color);
                 }
 
-            .custom-scrolltop.ui-scrolltop .ui-scrolltop-icon {
+            .custom-scrolltop.p-scrolltop .p-scrolltop-icon {
                 font-size: 1rem;
                 color: var(--p-primary-contrast-color);
             }
@@ -58,7 +63,7 @@
                     Eget egestas purus viverra accumsan in nisl nisi. Suscipit adipiscing bibendum est ultricies integer.
                     Mattis aliquam faucibus purus in massa tempor nec.
                 </p>
-                <p:scrollTop target="parent" threshold="100" styleClass="custom-scrolltop" icon="pi pi-arrow-up" />
+                <p:scrollTop target="parent" threshold="100" styleClass="custom-scrolltop" />
             </p:scrollPanel>
         </div>
     </ui:define>

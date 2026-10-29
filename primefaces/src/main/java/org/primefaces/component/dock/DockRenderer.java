@@ -65,11 +65,11 @@ public class DockRenderer extends BaseMenuRenderer<Dock> {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "ui-dock " + position + " ui-widget", "styleClass");
+        writer.writeAttribute("class", "p-dock " + position + " p-widget", "styleClass");
         renderPassThruAttributes(context, component);
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", "ui-dock-container " + component.getHalign() + " " + position, null);
+        writer.writeAttribute("class", "p-dock-container " + component.getHalign() + " " + position, null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeMenuItems(context, component);
@@ -90,7 +90,7 @@ public class DockRenderer extends BaseMenuRenderer<Dock> {
             for (MenuElement element : menuElements) {
                 if (element.isRendered() && element instanceof MenuItem item) {
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", "ui-dock-item", "styleClass");
+                    writer.writeAttribute("class", "p-dock-item", "styleClass");
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeMenuItem(context, dock, item, "-1");
                     writer.endElement("li");
@@ -110,7 +110,7 @@ public class DockRenderer extends BaseMenuRenderer<Dock> {
 
         writer.startElement("img", null);
         writer.writeAttribute("src", getResourceURL(context, menuitem.getIcon()), null);
-        writer.writeAttribute("class", "ui-dock-image", "styleClass");
+        writer.writeAttribute("class", "p-dock-image", "styleClass");
         writer.endElement("img");
     }
 

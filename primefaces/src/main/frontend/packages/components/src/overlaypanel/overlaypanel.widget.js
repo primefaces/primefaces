@@ -62,20 +62,20 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
     init(cfg) {
         if (cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, cfg.target);
-            if (this.target.hasClass('ui-splitbutton')) {
-                this.target = this.target.find('.ui-splitbutton-menubutton');
+            if (this.target.hasClass('p-splitbutton')) {
+                this.target = this.target.find('.p-splitbutton-menubutton');
             }
         }
         super.init(cfg, null, null, this.target);
 
-        this.content = this.jq.children('div.ui-overlaypanel-content');
+        this.content = this.jq.children('div.p-overlaypanel-content');
 
         //configuration
         this.cfg.my = this.cfg.my || 'left top';
         this.cfg.at = this.cfg.at || 'left bottom';
         this.cfg.collision = this.cfg.collision || 'flip';
-        this.cfg.showEvent = this.cfg.showEvent || 'click.ui-overlaypanel';
-        this.cfg.hideEvent = this.cfg.hideEvent || 'click.ui-overlaypanel';
+        this.cfg.showEvent = this.cfg.showEvent || 'click.p-overlaypanel';
+        this.cfg.hideEvent = this.cfg.hideEvent || 'click.p-overlaypanel';
         this.cfg.dismissable = this.cfg.dismissable !== false;
         this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 0);
         this.cfg.autoHide = this.cfg.autoHide !== false;
@@ -83,7 +83,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
         this.allowHide = true;
 
         if (this.cfg.showCloseIcon) {
-            this.closerIcon = PrimeFaces.skinCloseAction($('<a href="#" class="ui-overlaypanel-close ui-state-default"><span class="ui-icon ui-icon-closethick"></span></a>'))
+            this.closerIcon = PrimeFaces.skinCloseAction($('<a href="#" class="p-overlaypanel-close p-state-default"><span class="p-icon p-close-icon p-overlaypanel-close-icon"></span></a>'))
                 .appendTo(this.jq);
         }
 
@@ -99,7 +99,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
             });
         }
 
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
     }
 
     /**
@@ -150,7 +150,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
         //show and hide events for target
         if (this.cfg.showEvent === this.cfg.hideEvent) {
             // own namespace, as other overlay panels could use the same target
-            var namespace = '.ui-overlaypanel.' + this.id;
+            var namespace = '.p-overlaypanel.' + this.id;
             var event = this.cfg.showEvent.split(' ').map(function(e) { return e + namespace; }).join(' ');
 
             this.target.off(event).on(event, function(e) {
@@ -158,13 +158,13 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
             });
         }
         else {
-            var showEvent = this.cfg.showEvent + '.ui-overlaypanel',
-                hideEvent = this.cfg.hideEvent + '.ui-overlaypanel';
+            var showEvent = this.cfg.showEvent + '.p-overlaypanel',
+                hideEvent = this.cfg.hideEvent + '.p-overlaypanel';
 
             this.target.off(showEvent + ' ' + hideEvent).on(showEvent, function(e) {
                 if (!$this.isVisible()) {
                     $this.show();
-                    if (showEvent === 'contextmenu.ui-overlaypanel') {
+                    if (showEvent === 'contextmenu.p-overlaypanel') {
                         e.preventDefault();
                     }
                 }
@@ -173,7 +173,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
                 clearTimeout($this.showTimeout);
                 if ($this.isVisible()) {
                     // GitHub #8546
-                    if (!$this.isAutoHide() && $(e.relatedTarget).is('div.ui-overlaypanel-content')) {
+                    if (!$this.isAutoHide() && $(e.relatedTarget).is('div.p-overlaypanel-content')) {
                         $this.allowHide = false;
                         return;
                     }
@@ -184,7 +184,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
         }
 
         if (this.cfg.showEvent !== 'none') {
-            $this.target.off('keyup.ui-overlaypanel').on('keyup.ui-overlaypanel', function(e) {
+            $this.target.off('keyup.p-overlaypanel').on('keyup.p-overlaypanel', function(e) {
                 if (PrimeFaces.utils.blockEnterKey(e)) {
                     $this.toggle();
                 }
@@ -224,21 +224,21 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
         var $this = this;
 
         if (this.cfg.showCloseIcon) {
-            this.closerIcon.on('mouseover.ui-overlaypanel', function() {
-                $(this).addClass('ui-state-hover');
+            this.closerIcon.on('mouseover.p-overlaypanel', function() {
+                $(this).addClass('p-state-hover');
             })
-                .on('mouseout.ui-overlaypanel', function() {
-                    $(this).removeClass('ui-state-hover');
+                .on('mouseout.p-overlaypanel', function() {
+                    $(this).removeClass('p-state-hover');
                 })
-                .on('click.ui-overlaypanel', function(e) {
+                .on('click.p-overlaypanel', function(e) {
                     $this.hide();
                     e.preventDefault();
                 })
-                .on('focus.ui-overlaypanel', function() {
-                    $(this).addClass('ui-state-focus');
+                .on('focus.p-overlaypanel', function() {
+                    $(this).addClass('p-state-focus');
                 })
-                .on('blur.ui-overlaypanel', function() {
-                    $(this).removeClass('ui-state-focus');
+                .on('blur.p-overlaypanel', function() {
+                    $(this).removeClass('p-state-focus');
                 });
         }
     }
@@ -257,7 +257,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
             this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, eventNamespace, this.jq,
                 function() { return $this.target; },
                 function(e, eventTarget) {
-                    if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0 || eventTarget.closest('.ui-input-overlay').length > 0)) {
+                    if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0 || eventTarget.closest('.p-input-overlay').length > 0)) {
                         $this.hide();
                     }
                 });
@@ -400,7 +400,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
         var allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
 
         this.targetElement = this.getTarget(target);
-        if (this.targetElement && this.targetElement.hasClass('ui-splitbutton-menubutton')) {
+        if (this.targetElement && this.targetElement.hasClass('p-splitbutton-menubutton')) {
             this.targetElement = this.targetElement.parent();
         }
         if (this.targetElement) {

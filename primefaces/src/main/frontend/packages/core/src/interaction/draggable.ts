@@ -159,7 +159,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
             // the stop callback returned false
             this.clear(null);
         }
-        this.handles().removeClass('ui-draggable-handle');
+        this.handles().removeClass('p-draggable-handle');
         super.destroy();
     }
 
@@ -170,7 +170,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
      */
     protected override setOption(key: string, value: unknown): void {
         if (key === 'handle') {
-            this.handles().removeClass('ui-draggable-handle');
+            this.handles().removeClass('p-draggable-handle');
         }
         super.setOption(key, value);
         if (key === 'handle') {
@@ -188,7 +188,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
 
     /** Marks the handles, which disables touch scrolling on them (CSS). */
     private updateHandles(): void {
-        this.handles().addClass('ui-draggable-handle');
+        this.handles().addClass('p-draggable-handle');
     }
 
     /**
@@ -221,7 +221,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
      * @returns Whether the drag can start.
      */
     protected capture(event: JQuery.TriggeredEvent): boolean {
-        if (this.helper || this.isCancel(event, this.options.cancel) || $(event.target).closest('.ui-resizable-handle').length) {
+        if (this.helper || this.isCancel(event, this.options.cancel) || $(event.target).closest('.p-resizable-handle').length) {
             return false;
         }
         return !this.options.handle || $(event.target).closest(this.element.find(this.options.handle)).length > 0;
@@ -256,7 +256,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
         this.originalPosition = { ...this.position };
         this.delta = { left: elementOffset.left - this.position.left, top: elementOffset.top - this.position.top };
 
-        helper.addClass('ui-draggable-dragging');
+        helper.addClass('p-draggable-dragging');
         if (o.zIndex !== false) {
             helper.css('z-index', o.zIndex);
         }
@@ -400,7 +400,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
         }
         this.restoreCursor();
         if (this.helper) {
-            this.helper.removeClass('ui-draggable-dragging');
+            this.helper.removeClass('p-draggable-dragging');
             if (this.helper[0] !== this.element[0]) {
                 this.helper.remove();
             }
@@ -487,7 +487,7 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
      */
     private findSnapElements(): SnapElement[] {
         const snap = this.options.snap;
-        return $(snap === true ? '.ui-draggable' : snap as string).not(this.element).not(this.helper!).filter(':visible').map((_, el) => {
+        return $(snap === true ? '.p-draggable' : snap as string).not(this.element).not(this.helper!).filter(':visible').map((_, el) => {
             const jq = $(el);
             const offset = offsetOf(jq);
             return { left: offset.left, top: offset.top, right: offset.left + (jq.outerWidth() ?? 0), bottom: offset.top + (jq.outerHeight() ?? 0) };

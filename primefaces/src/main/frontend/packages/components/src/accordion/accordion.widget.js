@@ -16,11 +16,9 @@
  * @prop {number[]} cfg.active List of tabs that are currently active (open). Each item is either a key or a 0-based index of a tab.
  * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load the contents from server again and use
  * the cached contents; or `false` if the caching is disabled.
- * @prop {string} cfg.collapsedIcon The icon class name for the collapsed icon.
  * @prop {boolean} cfg.controlled `true` if a tab controller was specified for this widget; or `false` otherwise. A tab
  * controller is a server side listener that decides whether a tab change or tab close should be allowed.
  * @prop {boolean} cfg.dynamic `true` if the contents of each panel are loaded on-demand via AJAX; `false` otherwise.
- * @prop {string} cfg.expandedIcon The icon class name for the expanded icon.
  * @prop {boolean} cfg.multiple `true` if multiple tabs may be open at the same time; or `false` if opening one tab
  * closes all other tabs.
  * @prop {boolean} cfg.rtl `true` if the current text direction `rtl` (right-to-left); or `false` otherwise.
@@ -39,11 +37,9 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         super.init(cfg);
 
         this.stateHolder = $(this.jqId + '_active');
-        this.headers = this.jq.children('.ui-accordion-header');
-        this.panels = this.jq.children('.ui-accordion-content');
-        this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
-        this.cfg.expandedIcon = 'ui-icon-triangle-1-n';
-        this.cfg.collapsedIcon = 'ui-icon-triangle-1-s';
+        this.headers = this.jq.children('.p-accordion-header');
+        this.panels = this.jq.children('.p-accordion-content');
+        this.cfg.rtl = this.jq.hasClass('p-accordion-rtl');
 
         this.initActive();
         this.bindEvents();
@@ -79,10 +75,10 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         this.headers.each(function() {
             var containerId = PrimeFaces.escapeClientId(this.id.replace('_header', ''));
-            if ($(containerId + ' .ui-state-error').length > 0 || $(containerId + ' .ui-message-error-detail').length > 0) {
-                $(this).addClass('ui-state-error');
+            if ($(containerId + ' .p-state-error').length > 0 || $(containerId + ' .p-message-error-detail').length > 0) {
+                $(this).addClass('p-state-error');
             } else {
-                $(this).removeClass('ui-state-error');
+                $(this).removeClass('p-state-error');
             }
         });
     }
@@ -96,20 +92,20 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         this.headers.on("mouseover", function() {
             var element = $(this);
-            if (!element.hasClass('ui-state-active') && !element.hasClass('ui-state-disabled')) {
-                element.addClass('ui-state-hover');
+            if (!element.hasClass('p-state-active') && !element.hasClass('p-state-disabled')) {
+                element.addClass('p-state-hover');
             }
         }).on("mouseout", function() {
             var element = $(this);
-            if (!element.hasClass('ui-state-active') && !element.hasClass('ui-state-disabled')) {
-                element.removeClass('ui-state-hover');
+            if (!element.hasClass('p-state-active') && !element.hasClass('p-state-disabled')) {
+                element.removeClass('p-state-hover');
             }
         }).on("click", function(e) {
             var header = $(this);
-            if (!header.hasClass('ui-state-disabled')) {
+            if (!header.hasClass('p-state-disabled')) {
                 var tabIndex = $this.headers.index(header);
 
-                if (header.hasClass('ui-state-active')) {
+                if (header.hasClass('p-state-active')) {
                     $this.unselect(tabIndex);
                 }
                 else {
@@ -143,10 +139,10 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         var $this = this;
         this.headers.on({
             'focus.accordion': function() {
-                $(this).addClass('ui-tabs-outline');
+                $(this).addClass('p-tabs-outline');
             },
             'blur.accordion': function() {
-                $(this).removeClass('ui-tabs-outline');
+                $(this).removeClass('p-tabs-outline');
             },
             'keydown.accordion': function(e) {
                 var currentHeader = $(this);
@@ -223,7 +219,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             header = panel.prev();
 
         // don't select already selected panel
-        if (header.hasClass('ui-state-active')) {
+        if (header.hasClass('p-state-active')) {
             return;
         }
 
@@ -283,7 +279,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             header = panel.prev();
 
         // don't unselect already unselected panel
-        if (!header.hasClass('ui-state-active')) {
+        if (!header.hasClass('p-state-active')) {
             return;
         }
 
@@ -314,9 +310,8 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         //deactivate current
         if (!this.cfg.multiple) {
-            var oldHeader = this.headers.filter('.ui-state-active');
-            oldHeader.children('.ui-accordion-toggler.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
-            oldHeader.attr('aria-expanded', false).removeClass('ui-state-active')
+            var oldHeader = this.headers.filter('.p-state-active');
+            oldHeader.attr('aria-expanded', false).removeClass('p-state-active')
                 .next().attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
                     if ($this.cfg.onTabClose)
                         $this.cfg.onTabClose.call($this, panel);
@@ -325,8 +320,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         //activate selected
         var newHeader = panel.prev();
-        newHeader.attr('aria-expanded', true).addClass('ui-state-active').removeClass('ui-state-hover')
-            .children('.ui-accordion-toggler.ui-icon').removeClass(this.cfg.collapsedIcon).addClass(this.cfg.expandedIcon);
+        newHeader.attr('aria-expanded', true).addClass('p-state-active').removeClass('p-state-hover');
 
         panel.attr('aria-hidden', false).slideDown(this.cfg.toggleSpeed, function() {
             $this.postTabShow(panel);
@@ -343,8 +337,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             panel = this.panels.eq(index),
             header = panel.prev();
 
-        header.attr('aria-expanded', false).children('.ui-accordion-toggler.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
-        header.removeClass('ui-state-active');
+        header.attr('aria-expanded', false).removeClass('p-state-active');
         panel.attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
             if ($this.cfg.onTabClose)
                 $this.cfg.onTabClose.call($this, panel);
