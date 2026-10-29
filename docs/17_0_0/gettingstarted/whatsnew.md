@@ -13,3 +13,6 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * Works together with [Tailwind CSS](/core/tailwind.md) v4: the utilities use the tokens of the theme.
 * Tag
     * Added `outlined` property to display the tag with an outlined style.
+* New components
+    * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
+    * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.

@@ -136,6 +136,8 @@
   - [InputGroup](/components/inputgroup.md)
   - [InputMask](/components/inputmask.md)
   - [InputNumber](/components/inputnumber.md)
+  - [InputOtp](/components/inputotp.md)
+  - [InputPhone](/components/inputphone.md)
   - [InputText](/components/inputtext.md)
   - [InputTextarea](/components/inputtextarea.md)
   - [Keyboard](/components/keyboard.md)

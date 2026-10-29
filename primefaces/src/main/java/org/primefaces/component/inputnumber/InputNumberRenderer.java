@@ -187,7 +187,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
             writer.writeAttribute("onkeyup", component.getOnkeyup(), null);
         }
 
-        renderValidationMetadata(context, component);
+        renderCompositeValidationMetadata(context, component);
 
         writer.endElement("input");
 

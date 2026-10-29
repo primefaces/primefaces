@@ -185,6 +185,12 @@
             <artifactId>owasp-java-html-sanitizer</artifactId>
         </dependency>
 
+        <!-- server side validation of the phone numbers of the inputPhone -->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+        </dependency>
+
         <!-- JAXB required for JDK9+ -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>

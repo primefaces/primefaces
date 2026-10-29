@@ -57,6 +57,28 @@
 
         <div class="demo-grid">
             <div class="demo-card">
+                <h2>InputOtp</h2>
+                <div class="demo-field">
+                    <p:inputOtp value="#{themingFormsTextView.otp}" length="6" integerOnly="true"/>
+                    <p:inputOtp value="#{themingFormsTextView.emptyText}" length="6" separator="-" placeholder="0"/>
+                    <p:inputOtp value="#{themingFormsTextView.pin}" mask="true" redisplay="true" integerOnly="true" inputStyleClass="p-inputtext-sm"/>
+                </div>
+            </div>
+
+            <div class="demo-card">
+                <h2>InputPhone</h2>
+                <div class="demo-field">
+                    <p:inputPhone value="#{themingFormsTextView.phone}"/>
+                    <p:inputPhone value="#{themingFormsTextView.emptyText}" initialCountry="DE" preferredCountries="DE,AT,CH"/>
+                    <span class="p-input-filled">
+                        <p:inputPhone value="#{themingFormsTextView.emptyText}" initialCountry="FR"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
                 <h2>AutoComplete</h2>
                 <div class="demo-field">
                     <p:autoComplete value="#{themingFormsTextView.autoText}" completeMethod="#{themingFormsTextView.completeFruit}"

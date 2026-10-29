@@ -464,6 +464,13 @@
                 <version>20261011.1</version>
             </dependency>
 
+            <!-- InputPhone, optional server side validation -->
+            <dependency>
+                <groupId>com.googlecode.libphonenumber</groupId>
+                <artifactId>libphonenumber</artifactId>
+                <version>9.0.38</version>
+            </dependency>
+
             <!-- Data Exporter -->
             <dependency>
                 <groupId>org.apache.poi</groupId>

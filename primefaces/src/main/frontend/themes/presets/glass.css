@@ -392,19 +392,19 @@
         --p-navigation-submenu-icon-active-color: light-dark(var(--p-surface-500), var(--p-surface-400));
         --p-overlay-select-border-radius: var(--p-border-radius-lg);
         --p-overlay-select-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
-        --p-overlay-select-background: light-dark(color-mix(in srgb, var(--p-surface-50) 92%, transparent), color-mix(in srgb, var(--p-surface-800) 90%, transparent));
+        --p-overlay-select-background: light-dark(color-mix(in srgb, var(--p-surface-50) 75%, transparent), color-mix(in srgb, var(--p-surface-800) 70%, transparent));
         --p-overlay-select-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-overlay-select-color: var(--p-text-color);
         --p-overlay-popover-border-radius: var(--p-border-radius-lg);
         --p-overlay-popover-padding: 0.625rem;
         --p-overlay-popover-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
-        --p-overlay-popover-background: light-dark(color-mix(in srgb, var(--p-surface-50) 92%, transparent), color-mix(in srgb, var(--p-surface-800) 90%, transparent));
+        --p-overlay-popover-background: light-dark(color-mix(in srgb, var(--p-surface-50) 75%, transparent), color-mix(in srgb, var(--p-surface-800) 70%, transparent));
         --p-overlay-popover-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-overlay-popover-color: var(--p-text-color);
         --p-overlay-modal-border-radius: var(--p-border-radius-xl);
         --p-overlay-modal-padding: 1.125rem;
         --p-overlay-modal-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
-        --p-overlay-modal-background: light-dark(color-mix(in srgb, var(--p-surface-50) 92%, transparent), color-mix(in srgb, var(--p-surface-800) 90%, transparent));
+        --p-overlay-modal-background: light-dark(color-mix(in srgb, var(--p-surface-50) 75%, transparent), color-mix(in srgb, var(--p-surface-800) 70%, transparent));
         --p-overlay-modal-border-color: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.14));
         --p-overlay-modal-color: var(--p-text-color);
         --p-overlay-navigation-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.12)), 0 0 0 0.5px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5)), 0 12px 40px light-dark(rgb(0 0 0 / 0.16), rgb(0 0 0 / 0.5));
@@ -1885,6 +1885,31 @@
         --p-inputnumber-button-active-color: light-dark(var(--p-surface-600), var(--p-surface-200));
         --p-inputnumber-increment-icon: var(--p-icon-up);
         --p-inputnumber-decrement-icon: var(--p-icon-down);
+    }
+
+    /* inputotp */
+    :root, [data-p-scope] {
+        --p-inputotp-gap: 0.5rem;
+        --p-inputotp-input-width: 2.5rem;
+        --p-inputotp-input-sm-width: 2rem;
+        --p-inputotp-input-lg-width: 3rem;
+        --p-inputotp-separator-color: var(--p-text-muted-color);
+    }
+
+    /* inputphone */
+    :root, [data-p-scope] {
+        --p-inputphone-country-background: transparent;
+        --p-inputphone-country-hover-background: light-dark(var(--p-surface-100), var(--p-surface-800));
+        --p-inputphone-country-color: var(--p-form-field-color);
+        --p-inputphone-country-padding-x: var(--p-form-field-padding-x);
+        --p-inputphone-country-gap: 0.375rem;
+        --p-inputphone-separator-color: var(--p-inputtext-border-color);
+        --p-inputphone-dial-code-color: var(--p-text-muted-color);
+        --p-inputphone-dropdown-color: var(--p-form-field-icon-color);
+        --p-inputphone-dropdown-icon: var(--p-icon-dropdown);
+        --p-inputphone-filter-icon: var(--p-icon-search);
+        --p-inputphone-filter-gap: 0.5rem;
+        --p-inputphone-list-max-height: 15rem;
     }
 
     /* inputtext */
@@ -3429,7 +3454,7 @@
         --p-toast-border-radius: var(--p-content-border-radius);
         --p-toast-border-width: 1px;
         --p-toast-transition-duration: 0.3s;
-        --p-toast-blur: 10px;
+        --p-toast-blur: 20px;
         --p-toast-icon-size: 1rem;
         --p-toast-content-padding: var(--p-overlay-popover-padding);
         --p-toast-content-gap: 0.5rem;
@@ -3445,7 +3470,7 @@
         --p-toast-close-button-focus-ring-style: var(--p-focus-ring-style);
         --p-toast-close-button-focus-ring-offset: var(--p-focus-ring-offset);
         --p-toast-close-icon-size: 0.875rem;
-        --p-toast-info-background: light-dark(color-mix(in srgb, var(--p-blue-50), transparent 5%), color-mix(in srgb, var(--p-blue-500), transparent 84%));
+        --p-toast-info-background: light-dark(color-mix(in srgb, var(--p-blue-50), transparent 5%), color-mix(in srgb, var(--p-blue-500) 16%, color-mix(in srgb, var(--p-surface-900) 45%, transparent)));
         --p-toast-info-border-color: light-dark(var(--p-blue-200), color-mix(in srgb, var(--p-blue-700), transparent 64%));
         --p-toast-info-color: light-dark(var(--p-blue-700), var(--p-blue-400));
         --p-toast-info-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
@@ -3453,7 +3478,7 @@
         --p-toast-info-close-button-hover-background: light-dark(var(--p-blue-100), rgba(255, 255, 255, 0.05));
         --p-toast-info-close-button-focus-ring-color: light-dark(var(--p-blue-600), var(--p-blue-500));
         --p-toast-info-close-button-focus-ring-shadow: none;
-        --p-toast-success-background: light-dark(color-mix(in srgb, var(--p-green-50), transparent 5%), color-mix(in srgb, var(--p-green-500), transparent 84%));
+        --p-toast-success-background: light-dark(color-mix(in srgb, var(--p-green-50), transparent 5%), color-mix(in srgb, var(--p-green-500) 16%, color-mix(in srgb, var(--p-surface-900) 45%, transparent)));
         --p-toast-success-border-color: light-dark(var(--p-green-200), color-mix(in srgb, var(--p-green-700), transparent 64%));
         --p-toast-success-color: light-dark(var(--p-green-700), var(--p-green-400));
         --p-toast-success-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
@@ -3461,7 +3486,7 @@
         --p-toast-success-close-button-hover-background: light-dark(var(--p-green-100), rgba(255, 255, 255, 0.05));
         --p-toast-success-close-button-focus-ring-color: light-dark(var(--p-green-600), var(--p-green-500));
         --p-toast-success-close-button-focus-ring-shadow: none;
-        --p-toast-warn-background: light-dark(color-mix(in srgb, var(--p-yellow-50), transparent 5%), color-mix(in srgb, var(--p-yellow-500), transparent 84%));
+        --p-toast-warn-background: light-dark(color-mix(in srgb, var(--p-yellow-50), transparent 5%), color-mix(in srgb, var(--p-yellow-500) 16%, color-mix(in srgb, var(--p-surface-900) 45%, transparent)));
         --p-toast-warn-border-color: light-dark(var(--p-yellow-200), color-mix(in srgb, var(--p-yellow-700), transparent 64%));
         --p-toast-warn-color: light-dark(var(--p-yellow-800), var(--p-yellow-400));
         --p-toast-warn-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));
@@ -3469,7 +3494,7 @@
         --p-toast-warn-close-button-hover-background: light-dark(var(--p-yellow-100), rgba(255, 255, 255, 0.05));
         --p-toast-warn-close-button-focus-ring-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
         --p-toast-warn-close-button-focus-ring-shadow: none;
-        --p-toast-error-background: light-dark(color-mix(in srgb, var(--p-red-50), transparent 5%), color-mix(in srgb, var(--p-red-500), transparent 84%));
+        --p-toast-error-background: light-dark(color-mix(in srgb, var(--p-red-50), transparent 5%), color-mix(in srgb, var(--p-red-500) 16%, color-mix(in srgb, var(--p-surface-900) 45%, transparent)));
         --p-toast-error-border-color: light-dark(var(--p-red-200), color-mix(in srgb, var(--p-red-700), transparent 64%));
         --p-toast-error-color: light-dark(var(--p-red-700), var(--p-red-400));
         --p-toast-error-detail-color: light-dark(var(--p-surface-700), var(--p-surface-0));

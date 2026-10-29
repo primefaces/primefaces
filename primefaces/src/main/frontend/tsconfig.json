@@ -28,6 +28,8 @@
         { "path": "./packages/imageswitch/imageswitch" },
         { "path": "./packages/inputmask/inputmask" },
         { "path": "./packages/inputnumber/inputnumber" },
+        { "path": "./packages/inputotp/inputotp" },
+        { "path": "./packages/inputphone/inputphone" },
         { "path": "./packages/jquery/jquery" },
         { "path": "./packages/keyboard/keyboard" },
         { "path": "./packages/keyfilter/keyfilter" },

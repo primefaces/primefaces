@@ -1888,6 +1888,31 @@
         --p-inputnumber-decrement-icon: var(--p-icon-down);
     }
 
+    /* inputotp */
+    :root, [data-p-scope] {
+        --p-inputotp-gap: 0.5rem;
+        --p-inputotp-input-width: 2.5rem;
+        --p-inputotp-input-sm-width: 2rem;
+        --p-inputotp-input-lg-width: 3rem;
+        --p-inputotp-separator-color: var(--p-text-muted-color);
+    }
+
+    /* inputphone */
+    :root, [data-p-scope] {
+        --p-inputphone-country-background: var(--p-inputgroup-addon-background);
+        --p-inputphone-country-hover-background: light-dark(var(--p-surface-200), var(--p-surface-700));
+        --p-inputphone-country-color: var(--p-form-field-color);
+        --p-inputphone-country-padding-x: var(--p-form-field-padding-x);
+        --p-inputphone-country-gap: 0.375rem;
+        --p-inputphone-separator-color: var(--p-inputtext-border-color);
+        --p-inputphone-dial-code-color: var(--p-text-muted-color);
+        --p-inputphone-dropdown-color: var(--p-form-field-icon-color);
+        --p-inputphone-dropdown-icon: var(--p-icon-dropdown);
+        --p-inputphone-filter-icon: var(--p-icon-search);
+        --p-inputphone-filter-gap: 0.5rem;
+        --p-inputphone-list-max-height: 15rem;
+    }
+
     /* inputtext */
     :root, [data-p-scope] {
         --p-inputtext-font-size: var(--p-form-field-font-size);

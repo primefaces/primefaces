@@ -116,6 +116,8 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("InputGroup", "/ui/input/inputGroup"));
         formMenuItems.add(new MenuItem("InputMask", "/ui/input/inputMask"));
         formMenuItems.add(new MenuItem("InputNumber", "/ui/input/inputNumber"));
+        formMenuItems.add(new MenuItem("InputOtp", "/ui/input/inputOtp", "New"));
+        formMenuItems.add(new MenuItem("InputPhone", "/ui/input/inputPhone", "New"));
         formMenuItems.add(new MenuItem("InputText", "/ui/input/inputText"));
         formMenuItems.add(new MenuItem("InputTextArea", "/ui/input/inputTextarea"));
         formMenuItems.add(new MenuItem("KeyFilter", "/ui/input/keyFilter"));
