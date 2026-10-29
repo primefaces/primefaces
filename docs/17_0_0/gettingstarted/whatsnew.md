@@ -16,6 +16,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
 * jQuery UI removed
     * PrimeFaces does not ship jQuery UI and jQuery UI Touch Punch anymore. Drag and drop, sorting and resizing are PrimeFaces' own implementation based on pointer events (mouse, pen and touch): `PrimeFaces.interactions`; positioning and effects are `PrimeFaces.utils.position` and `PrimeFaces.effects` (Web Animations API), see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=jquery-ui).
     * The resource `jquery/jquery-plugins.js` was removed, its remaining jQuery extensions are part of `core.js`.
+* Calendar removed
+    * `p:calendar` (based on the jQuery UI datepicker) was removed, use [DatePicker](/components/datepicker.md) instead, see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=calendar).
 * Tag
     * Added `outlined` property to display the tag with an outlined style.
 * New components
