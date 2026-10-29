@@ -28,15 +28,15 @@ import java.io.Serializable;
 
 public class TabViewState implements Serializable {
 
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 2L;
 
-    private int activeIndex;
+    private String active;
 
-    public int getActiveIndex() {
-        return activeIndex;
+    public String getActive() {
+        return active;
     }
 
-    public void setActiveIndex(int activeIndex) {
-        this.activeIndex = activeIndex;
+    public void setActive(String active) {
+        this.active = active;
     }
 }
