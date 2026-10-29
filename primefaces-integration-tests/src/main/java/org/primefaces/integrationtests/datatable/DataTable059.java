@@ -21,42 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.columns;
+package org.primefaces.integrationtests.datatable;
 
-import org.primefaces.mock.FacesContextMock;
+import java.io.Serializable;
+import java.util.List;
 
-import java.util.Arrays;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
-import jakarta.faces.context.FacesContext;
+import lombok.Data;
 
-import org.junit.jupiter.api.Test;
+@Named
+@ViewScoped
+@Data
+public class DataTable059 implements Serializable {
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+    private static final long serialVersionUID = 1L;
 
-class ColumnsTest {
+    private List<ProgrammingLanguage> progLanguages;
+    private List<DataTable001Dynamic.ColumnModel> columns;
 
-    @Test
-    void columnIndexVarIsExposedAsRowIndexVar() {
-        Columns columns = new Columns();
-        columns.setColumnIndexVar("colIndex");
+    @Inject
+    private ProgrammingLanguageService service;
 
-        assertEquals("colIndex", columns.getColumnIndexVar());
-        assertEquals("colIndex", columns.getRowIndexVar());
+    @PostConstruct
+    public void init() {
+        progLanguages = service.getLangs();
+        columns = List.of(
+                new DataTable001Dynamic.ColumnModel("ID", "id", null, true),
+                new DataTable001Dynamic.ColumnModel("Name", "name", null, true),
+                new DataTable001Dynamic.ColumnModel("First Appeared", "firstAppeared", null, true));
     }
 
-    @Test
-    void columnIndexVarIsPutIntoRequestMapWhileIterating() {
-        FacesContext context = new FacesContextMock();
-
-        Columns columns = new Columns();
-        columns.setId("cols");
-        columns.setVar("col");
-        columns.setColumnIndexVar("colIndex");
-        columns.setValue(Arrays.asList("A", "B", "C"));
-
-        columns.setRowIndex(2);
-
-        assertEquals("C", context.getExternalContext().getRequestMap().get("col"));
-        assertEquals(2, context.getExternalContext().getRequestMap().get("colIndex"));
-    }
 }
