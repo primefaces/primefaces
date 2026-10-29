@@ -165,6 +165,7 @@ public class MenuRenderer extends BaseMenuRenderer<Menu> {
         writer.startElement("li", null);
         if (toggleable) {
             writer.writeAttribute("id", submenu.getClientId(), null);
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
         }
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
@@ -174,11 +175,11 @@ public class MenuRenderer extends BaseMenuRenderer<Menu> {
         writer.startElement("h3", null);
 
         if (component.isToggleable()) {
-            encodeIcon(context, label, expanded ? Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS : Menu.COLLAPSED_SUBMENU_HEADER_ICON_CLASS);
+            encodeIcon(context, label, Menu.SUBMENU_HEADER_TOGGLE_ICON_CLASS);
         }
 
         if (icon != null) {
-            encodeIcon(context, label, "ui-submenu-icon ui-icon " + icon);
+            encodeIcon(context, label, "p-submenu-icon " + icon);
         }
 
         if (label != null) {

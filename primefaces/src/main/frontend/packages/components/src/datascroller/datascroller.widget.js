@@ -49,10 +49,10 @@ PrimeFaces.widget.DataScroller = class DataScroller extends PrimeFaces.widget.Ba
      */
     init(cfg) {
         super.init(cfg);
-        this.content = this.jq.children('div.ui-datascroller-content');
+        this.content = this.jq.children('div.p-datascroller-content');
         this.list = this.cfg.virtualScroll ? this.content.children('div').children('ul') : this.content.children('ul');
-        this.loaderContainer = this.content.children('div.ui-datascroller-loader');
-        this.loadStatus = this.content.children('div.ui-datascroller-loading');
+        this.loaderContainer = this.content.children('div.p-datascroller-loader');
+        this.loadStatus = this.content.children('div.p-datascroller-loading');
         this.loadStatus.remove();
         this.loading = false;
         this.allLoaded = false;
@@ -87,7 +87,7 @@ PrimeFaces.widget.DataScroller = class DataScroller extends PrimeFaces.widget.Ba
             this.itemHeight = 0;
 
             if(this.cfg.virtualScroll) {
-                var item = this.list.children('li.ui-datascroller-item');
+                var item = this.list.children('li.p-datascroller-item');
                 if(item) {
                     this.itemHeight = item.outerHeight();
                     this.content.children('div').css('min-height', parseFloat((this.cfg.totalSize * this.itemHeight) + 'px'));

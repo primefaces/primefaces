@@ -57,21 +57,25 @@ import jakarta.faces.validator.ValidatorException;
 public class FileUpload extends FileUploadBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FileUpload";
-    public static final String CONTAINER_CLASS = "ui-fileupload ui-widget ui-fileupload-responsive";
-    public static final String DRAG_OVERLAY_CLASS = "ui-fileupload-drag-overlay";
-    public static final String DRAG_OVERLAY_CONTENT_CLASS = "ui-fileupload-drag-overlay-content";
-    public static final String BUTTON_BAR_CLASS = "ui-fileupload-buttonbar ui-widget-header";
-    public static final String CONTENT_CLASS = "ui-fileupload-content ui-widget-content";
-    public static final String EMPTY_CLASS = "ui-fileupload-empty";
-    public static final String FILES_CLASS = "ui-fileupload-files";
-    public static final String CHOOSE_BUTTON_CLASS = "ui-fileupload-choose";
-    public static final String UPLOAD_BUTTON_CLASS = "ui-fileupload-upload";
-    public static final String CANCEL_BUTTON_CLASS = "ui-fileupload-cancel";
-    public static final String BUTTON_ICON_ONLY = "ui-fileupload-icon-only";
+    public static final String CONTAINER_CLASS = "p-fileupload p-widget p-fileupload-responsive";
+    public static final String DRAG_OVERLAY_CLASS = "p-fileupload-drag-overlay";
+    public static final String DRAG_OVERLAY_CONTENT_CLASS = "p-fileupload-drag-overlay-content";
+    public static final String BUTTON_BAR_CLASS = "p-fileupload-buttonbar p-widget-header";
+    public static final String CONTENT_CLASS = "p-fileupload-content p-widget-content";
+    public static final String EMPTY_CLASS = "p-fileupload-empty";
+    public static final String FILES_CLASS = "p-fileupload-files";
+    public static final String CHOOSE_BUTTON_CLASS = "p-fileupload-choose";
+    public static final String UPLOAD_BUTTON_CLASS = "p-fileupload-upload";
+    public static final String CANCEL_BUTTON_CLASS = "p-fileupload-cancel";
+    public static final String BUTTON_ICON_ONLY = "p-fileupload-icon-only";
+    public static final String CHOOSE_ICON_CLASS = "p-button-icon-left p-icon p-plus-icon p-fileupload-choose-icon p-c";
+    public static final String UPLOAD_ICON_CLASS = "p-button-icon-left p-icon p-upload-icon p-fileupload-upload-icon p-c";
+    public static final String CANCEL_ICON_CLASS = "p-button-icon-left p-icon p-close-icon p-fileupload-cancel-icon p-c";
+    public static final String DRAG_OVERLAY_ICON_CLASS = "p-icon p-upload-icon p-fileupload-drag-overlay-icon";
 
-    public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
-    public static final String FILENAME_CLASS = "ui-fileupload-filename";
-    public static final String WITHDROPZONE_CLASS = "ui-fileupload-withdropzone";
+    public static final String CONTAINER_CLASS_SIMPLE = "p-fileupload-simple p-widget";
+    public static final String FILENAME_CLASS = "p-fileupload-filename";
+    public static final String WITHDROPZONE_CLASS = "p-fileupload-withdropzone";
 
     @Override
     public boolean isDisplayFilename() {

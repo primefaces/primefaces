@@ -109,7 +109,7 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
         if (component.isToolbarVisible() && FacetUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", component);
             writer.writeAttribute("id", clientId + "_toolbar", null);
-            writer.writeAttribute("class", "ui-editor-toolbar", null);
+            writer.writeAttribute("class", "p-editor-toolbar", null);
             toolbar.encodeAll(context);
             writer.endElement("div");
         }

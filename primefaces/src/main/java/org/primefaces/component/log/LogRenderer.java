@@ -54,12 +54,12 @@ public class LogRenderer extends CoreRenderer<Log> {
         //header
         writer.startElement("div", null);
         writer.writeAttribute("class", Log.HEADER_CLASS, null);
-        encodeIcon(context, Log.CLEAR_BUTTON_CLASS, "ui-icon ui-icon-trash", "Clear");
-        encodeIcon(context, Log.ALL_BUTTON_CLASS, "ui-icon ui-icon-note", "All");
-        encodeIcon(context, Log.INFO_BUTTON_CLASS, "ui-icon ui-icon-info", "Info");
-        encodeIcon(context, Log.WARN_BUTTON_CLASS, "ui-icon ui-icon-notice", "Warn");
-        encodeIcon(context, Log.DEBUG_BUTTON_CLASS, "ui-icon ui-icon-search", "Debug");
-        encodeIcon(context, Log.ERROR_BUTTON_CLASS, "ui-icon ui-icon-alert", "Error");
+        encodeIcon(context, Log.CLEAR_BUTTON_CLASS, "p-icon p-trash-icon p-log-clear-icon", "Clear");
+        encodeIcon(context, Log.ALL_BUTTON_CLASS, "p-icon p-file-icon p-log-all-icon", "All");
+        encodeIcon(context, Log.INFO_BUTTON_CLASS, "p-icon p-info-icon p-log-info-icon", "Info");
+        encodeIcon(context, Log.WARN_BUTTON_CLASS, "p-icon p-warn-icon p-log-warn-icon", "Warn");
+        encodeIcon(context, Log.DEBUG_BUTTON_CLASS, "p-icon p-search-icon p-log-debug-icon", "Debug");
+        encodeIcon(context, Log.ERROR_BUTTON_CLASS, "p-icon p-error-icon p-log-error-icon", "Error");
         writer.endElement("div");
 
         //content

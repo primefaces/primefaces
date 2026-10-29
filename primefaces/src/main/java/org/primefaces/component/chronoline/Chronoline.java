@@ -35,18 +35,18 @@ public class Chronoline extends ChronolineBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chronoline";
 
-    public static final String STYLE_CLASS = "ui-chronoline ui-widget";
-    public static final String ALIGN_LEFT_CLASS = "ui-chronoline-left";
-    public static final String ALIGN_RIGHT_CLASS = "ui-chronoline-right";
-    public static final String ALIGN_TOP_CLASS = "ui-chronoline-top";
-    public static final String ALIGN_BOTTOM_CLASS = "ui-chronoline-bottom";
-    public static final String ALIGN_ALTERNATE_CLASS = "ui-chronoline-alternate";
-    public static final String LAYOUT_VERTICAL_CLASS = "ui-chronoline-vertical";
-    public static final String LAYOUT_HORIZONTAL_CLASS = "ui-chronoline-horizontal";
-    public static final String EVENT_CLASS = "ui-chronoline-event";
-    public static final String EVENT_OPPOSITE_CLASS = "ui-chronoline-event-opposite";
-    public static final String EVENT_CONTENT_CLASS = "ui-chronoline-event-content";
-    public static final String EVENT_SEPARATOR_CLASS = "ui-chronoline-event-separator";
-    public static final String EVENT_MARKER_CLASS = "ui-chronoline-event-marker";
-    public static final String EVENT_CONNECTOR_CLASS = "ui-chronoline-event-connector";
+    public static final String STYLE_CLASS = "p-chronoline p-widget";
+    public static final String ALIGN_LEFT_CLASS = "p-chronoline-left";
+    public static final String ALIGN_RIGHT_CLASS = "p-chronoline-right";
+    public static final String ALIGN_TOP_CLASS = "p-chronoline-top";
+    public static final String ALIGN_BOTTOM_CLASS = "p-chronoline-bottom";
+    public static final String ALIGN_ALTERNATE_CLASS = "p-chronoline-alternate";
+    public static final String LAYOUT_VERTICAL_CLASS = "p-chronoline-vertical";
+    public static final String LAYOUT_HORIZONTAL_CLASS = "p-chronoline-horizontal";
+    public static final String EVENT_CLASS = "p-chronoline-event";
+    public static final String EVENT_OPPOSITE_CLASS = "p-chronoline-event-opposite";
+    public static final String EVENT_CONTENT_CLASS = "p-chronoline-event-content";
+    public static final String EVENT_SEPARATOR_CLASS = "p-chronoline-event-separator";
+    public static final String EVENT_MARKER_CLASS = "p-chronoline-event-marker";
+    public static final String EVENT_CONNECTOR_CLASS = "p-chronoline-event-connector";
 }

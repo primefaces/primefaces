@@ -31,18 +31,18 @@ useful if you need to place custom content instead of simple text.
 ## Global
 Creating a confirmPopup for a specific action is a repetitive task. To solve this global confirmPopup,
 which is a singleton, has been introduced. Trigger components need to have p:confirm _type="popup"_ behavior to
-use the confirm popup. The component that triggers the actual command in the popup must have _ui-confirm-
-popup-yes_ style class. Similarly, the component to cancel the command must have _ui-confirm-popup-no_ style class.
+use the confirm popup. The component that triggers the actual command in the popup must have _p-confirm-
+popup-yes_ style class. Similarly, the component to cancel the command must have _p-confirm-popup-no_ style class.
 At the moment p:confirm is supported by p:commandButton, p:commandLink and p:menuitem.
 
 ```xhtml
 <p:growl id="messages" />
 <p:commandButton value="Save" action="#{bean.save}" update="messages">
-    <p:confirm header="Confirmation" message="Sure?" icon="ui-icon-alert"/>
+    <p:confirm header="Confirmation" message="Sure?" icon="pi pi-exclamation-triangle"/>
 </p:commandButton>
 <p:confirmPopup global="true">
-    <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" icon="ui-icon-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no" icon="ui-icon-close"/>
+    <p:commandButton value="Yes" type="button" styleClass="p-confirm-popup-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="p-confirm-popup-no" icon="pi pi-times"/>
 </p:confirmPopup>
 ```
 ## Client Side API
@@ -60,8 +60,8 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-confirm-popup | Container element.
-| .ui-confirm-content | Content element.
-| .ui-confirm-popup-icon | Message icon.
-| .ui-confirm-popup-message | Message text.
-| .ui-confirm-popup-footer | Footer element for buttons.
+| .p-confirm-popup | Container element.
+| .p-confirm-popup-content | Content element.
+| .p-confirm-popup-icon | Message icon.
+| .p-confirm-popup-message | Message text.
+| .p-confirm-popup-footer | Footer element for buttons.

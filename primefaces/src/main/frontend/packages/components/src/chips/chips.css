@@ -1,12 +1,12 @@
 /*
  * Chips: p:chips (PrimeUIX: inputchips)
  *
- * The container is a .ui-inputfield (forms/inputfield.css: hover, focus, error, disabled, filled), only the chips live here.
- * Supported classes: ui-state-hover / ui-state-focus / ui-state-error / ui-state-disabled (on .ui-chips-container),
- *                    ui-inputwrapper-focus (on .ui-chips, float label)
+ * The container is a .p-inputfield (forms/inputfield.css: hover, focus, error, disabled, filled), only the chips live here.
+ * Supported classes: p-state-hover / p-state-focus / p-state-error / p-state-disabled (on .p-chips-container),
+ *                    p-inputwrapper-focus (on .p-chips, float label)
  */
-.ui-chips {
-    /* the container (.ui-inputfield) reads the inputtext tokens: point them to the inputchips tokens */
+.p-chips {
+    /* the container (.p-inputfield) reads the inputtext tokens: point them to the inputchips tokens */
     --p-inputtext-background: var(--p-inputchips-background);
     --p-inputtext-disabled-background: var(--p-inputchips-disabled-background);
     --p-inputtext-filled-background: var(--p-inputchips-filled-background);
@@ -34,11 +34,11 @@
     display: inline-flex;
     position: relative;
 
-    .ui-chips-container {
+    .p-chips-container {
         padding: calc(var(--p-inputchips-padding-y) / 2) var(--p-inputchips-padding-x);
         gap: calc(var(--p-inputchips-padding-y) / 2);
 
-        .ui-chips-token {
+        .p-chips-token {
             padding: calc(var(--p-inputchips-padding-y) / 2) 0;
             margin: 0;
             background: var(--p-chip-background);
@@ -46,33 +46,26 @@
             border-radius: var(--p-inputchips-chip-border-radius);
             transition: background var(--p-inputchips-transition-duration), color var(--p-inputchips-transition-duration);
 
-            .ui-chips-token-label {
+            .p-chips-token-label {
                 padding-block: 0;
                 padding-inline: var(--p-chip-padding-x) calc(var(--p-chip-padding-x) + var(--p-chip-gap) + var(--p-chip-remove-icon-size));
                 font-size: var(--p-chip-label-font-size);
                 font-weight: var(--p-chip-label-font-weight);
             }
 
-            .ui-chips-token-icon {
+            .p-chips-chip-remove-icon {
+                --_icon: var(--p-inputchips-chip-remove-icon);
+            }
+
+            .p-chips-token-icon {
                 inset-inline-end: var(--p-chip-padding-x);
                 margin-top: calc(-1 * var(--p-chip-remove-icon-size) / 2);
                 font-size: var(--p-chip-remove-icon-size);
                 color: var(--p-chip-remove-icon-color);
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
-            }
-
-            .ui-chips-token-icon::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-inputchips-chip-remove-icon) center / contain no-repeat;
             }
         }
 
-        .ui-chips-input-token {
+        .p-chips-input-token {
             margin: 0;
             padding: calc(var(--p-inputchips-padding-y) / 2) 0;
 
@@ -91,17 +84,17 @@
             }
         }
 
-        &.ui-state-error .ui-chips-input-token input::placeholder {
+        &.p-state-error .p-chips-input-token input::placeholder {
             color: var(--p-form-field-invalid-placeholder-color);
         }
 
-        &.ui-state-disabled .ui-chips-input-token input {
+        &.p-state-disabled .p-chips-input-token input {
             color: var(--p-inputchips-disabled-color);
         }
     }
 }
 
-.ui-chips-container {
+.p-chips-container {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -113,7 +106,7 @@
     overflow: hidden;
 }
 
-.ui-chips-token {
+.p-chips-token {
     cursor: default;
     display: inline-flex;
     align-items: center;
@@ -121,18 +114,18 @@
     overflow: hidden;
     position: relative;
 
-    .ui-chips-token-label {
+    .p-chips-token-label {
         display: block;
     }
 
-    .ui-chips-token-icon {
+    .p-chips-token-icon {
         cursor: pointer;
         position: absolute;
         top: 50%;
     }
 }
 
-.ui-chips-input-token {
+.p-chips-input-token {
     display: inline-flex;
     align-items: center;
     /* fills the rest of the line, wraps only below 4rem (not at the intrinsic width of the input) */
@@ -152,11 +145,11 @@
     }
 }
 
-.ui-fluid .ui-chips {
+.p-fluid .p-chips {
     display: flex;
     flex: 1 1 auto;
 
-    .ui-chips-container {
+    .p-chips-container {
         width: 100%;
     }
 }

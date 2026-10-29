@@ -229,15 +229,15 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
         }
 
         if (!component.isValid()) {
-            sb.append(" ui-state-error");
+            sb.append(" p-state-error");
         }
 
         if (isDisabled(component)) {
-            sb.append(" ui-state-disabled");
+            sb.append(" p-state-disabled");
         }
 
         if (isReadOnly(component)) {
-            sb.append(" ui-state-readonly");
+            sb.append(" p-state-readonly");
         }
 
         if (LangUtils.isNotBlank(styleClassProperty)) {

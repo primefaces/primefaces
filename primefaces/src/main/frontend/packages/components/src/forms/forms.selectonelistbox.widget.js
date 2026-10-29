@@ -30,7 +30,7 @@ PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.w
 
             this.items.on('click.selectListbox', function (e) {
                 var item = $(this),
-                    selectedItem = $this.items.filter('.ui-state-highlight');
+                    selectedItem = $this.items.filter('.p-state-highlight');
 
                 if (item.index() !== selectedItem.index()) {
                     if (selectedItem.length) {
@@ -64,9 +64,9 @@ PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.w
 
         this.input.off('focus.selectListbox blur.selectListbox keydown.selectListbox')
             .on('focus.selectListbox', function (e) {
-                $this.jq.addClass('ui-state-focus');
+                $this.jq.addClass('p-state-focus');
 
-                var activeItem = $this.focusedItem || $this.items.filter('.ui-state-highlight:visible:first');
+                var activeItem = $this.focusedItem || $this.items.filter('.p-state-highlight:visible:first');
                 if (activeItem.length) {
                     $this.focusedItem = activeItem;
                 }
@@ -77,12 +77,12 @@ PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.w
                 PrimeFaces.queueTask(function () {
                     if ($this.focusedItem) {
                         PrimeFaces.scrollInView($this.listContainer, $this.focusedItem);
-                        $this.focusedItem.addClass('ui-listbox-outline');
+                        $this.focusedItem.addClass('p-listbox-outline');
                     }
                 });
             })
             .on('blur.selectListbox', function () {
-                $this.jq.removeClass('ui-state-focus');
+                $this.jq.removeClass('p-state-focus');
                 $this.removeOutline();
                 $this.focusedItem = null;
             })
@@ -94,12 +94,12 @@ PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.w
                 switch (e.code) {
                     case 'ArrowLeft':
                     case 'ArrowUp':
-                        $this.select($this.focusedItem.prevAll('.ui-selectlistbox-item:visible:first'));
+                        $this.select($this.focusedItem.prevAll('.p-selectlistbox-item:visible:first'));
                         e.preventDefault();
                         break;
                     case 'ArrowRight':
                     case 'ArrowDown':
-                        $this.select($this.focusedItem.nextAll('.ui-selectlistbox-item:visible:first'));
+                        $this.select($this.focusedItem.nextAll('.p-selectlistbox-item:visible:first'));
                         e.preventDefault();
                         break;
                     case 'Home':
@@ -122,7 +122,7 @@ PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.w
      * @param {JQuery} item The item to focus.
      */
     select(item) {
-        if (!this.focusedItem.hasClass('ui-state-highlight')) {
+        if (!this.focusedItem.hasClass('p-state-highlight')) {
             this.focusedItem.trigger('click.selectListbox');
         }
         else if (item && item.length) {
@@ -136,8 +136,8 @@ PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.w
      * @private
      */
     removeOutline() {
-        if (this.focusedItem && this.focusedItem.hasClass('ui-listbox-outline')) {
-            this.focusedItem.removeClass('ui-listbox-outline');
+        if (this.focusedItem && this.focusedItem.hasClass('p-listbox-outline')) {
+            this.focusedItem.removeClass('p-listbox-outline');
         }
     }
 }

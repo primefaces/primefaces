@@ -1,11 +1,11 @@
 /*
  * Stack: p:stack (Mac OS X like stack, fixed in the bottom right corner of the page)
  *
- * Markup: div.ui-stack > img (toggler) + ul (.openStack when expanded) > li > a.ui-menuitem-link > span (label) + img
+ * Markup: div.p-stack > img (toggler) + ul (.openStack when expanded) > li > a.p-menuitem-link > span (label) + img
  * The widget animates positions and image sizes inline, the theme only styles the labels.
  */
 
-.ui-stack {
+.p-stack {
     position: fixed;
     bottom: 28px;
     right: 40px;

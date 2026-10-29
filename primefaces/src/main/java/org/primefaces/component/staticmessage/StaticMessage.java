@@ -34,5 +34,6 @@ import jakarta.faces.component.FacesComponent;
 public class StaticMessage extends StaticMessageBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.StaticMessage";
+    public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-message-close-icon";
 
 }

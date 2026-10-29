@@ -46,15 +46,15 @@ class DataTable032Test extends AbstractDataTableTest {
     @DisplayName("DataTable: disableSelection")
     void disabledRowSelection(Page page) {
 
-        // rows are always "ui-selection-column", indepdent of if the current row is selection disabled or not
+        // rows are always "p-selection-column", indepdent of if the current row is selection disabled or not
         WebElement firstCell = page.dataTable.getCell(0, 0).getWebElement();
         WebElement secondCell = page.dataTable.getCell(1, 0).getWebElement();
-        assertTrue(PrimeSelenium.hasCssClass(firstCell, "ui-selection-column"));
-        assertTrue(PrimeSelenium.hasCssClass(secondCell, "ui-selection-column"));
+        assertTrue(PrimeSelenium.hasCssClass(firstCell, "p-selection-column"));
+        assertTrue(PrimeSelenium.hasCssClass(secondCell, "p-selection-column"));
 
         // not selectable yet, try to trigger it, check CSS should be disabled
-        WebElement radio = firstCell.findElement(By.className("ui-radiobutton-box"));
-        assertCss(radio, "ui-state-disabled");
+        WebElement radio = firstCell.findElement(By.className("p-radiobutton-box"));
+        assertCss(radio, "p-state-disabled");
         assertNotClickable(radio);
         firstCell.click();
         assertTrue(page.messages.isEmpty());
@@ -67,8 +67,8 @@ class DataTable032Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(firstCell).click();
 
         // make sure it is actually Active
-        radio = firstCell.findElement(By.className("ui-radiobutton-box"));
-        assertCss(radio, "ui-state-active");
+        radio = firstCell.findElement(By.className("p-radiobutton-box"));
+        assertCss(radio, "p-state-active");
 
         assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();

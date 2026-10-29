@@ -69,7 +69,7 @@ class DataView001Test extends AbstractDataTableTest {
         WebElement firstRowElt = dataView.getRowWebElement(0);
         assertTrue(firstRowElt.getText().contains(langs.get(0).getId().toString()));
         assertTrue(firstRowElt.getText().contains(langs.get(0).getName()));
-        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
+        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "p-dataview-row"));
 
         Paginator paginator = dataView.getPaginator();
         assertNotNull(paginator);
@@ -105,7 +105,7 @@ class DataView001Test extends AbstractDataTableTest {
         // Assert
         assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
         WebElement firstRowElt = dataView.getRowWebElement(0);
-        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
+        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "p-dataview-row"));
 
         // Act
         dataView.setActiveLayout(DataView.Layout.GRID);
@@ -113,7 +113,7 @@ class DataView001Test extends AbstractDataTableTest {
         // Assert
         assertEquals(DataView.Layout.GRID, dataView.getActiveLayout());
         firstRowElt = dataView.getRowWebElement(0);
-        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-column"));
+        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "p-dataview-column"));
 
         // Act
         dataView.setActiveLayout(DataView.Layout.LIST);
@@ -121,7 +121,7 @@ class DataView001Test extends AbstractDataTableTest {
         // Assert
         assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
         firstRowElt = dataView.getRowWebElement(0);
-        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
+        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "p-dataview-row"));
 
         assertConfiguration(dataView.getWidgetConfiguration());
     }

@@ -1,12 +1,12 @@
 /*
  * DatePicker: p:datePicker, month picker, time picker, button bar. Loaded with datepicker/datepicker.js.
  *
- * Supported state classes: ui-state-active (selected date / month), ui-state-hover, ui-state-disabled (date, month,
- *                          navigator, whole panel), ui-datepicker-today,
- *                          ui-datepicker-other-month, ui-datepicker-weeknumber, ui-input-overlay (popup),
- *                          ui-datepicker-inline, ui-datepicker-multiple-month, ui-datepicker-timeonly,
- *                          ui-datepicker-touch-ui, ui-trigger-calendar; RTL follows the dir of the panel
- * The trigger button is a .ui-button: it only remaps the private --_* button variables to the datepicker dropdown tokens.
+ * Supported state classes: p-state-active (selected date / month), p-state-hover, p-state-disabled (date, month,
+ *                          navigator, whole panel), p-datepicker-today,
+ *                          p-datepicker-other-month, p-datepicker-weeknumber, p-input-overlay (popup),
+ *                          p-datepicker-inline, p-datepicker-multiple-month, p-datepicker-timeonly,
+ *                          p-datepicker-touch-ui, p-trigger-calendar; RTL follows the dir of the panel
+ * The trigger button is a .p-button: it only remaps the private --_* button variables to the datepicker dropdown tokens.
  * PrimeFaces only tokens: the datepicker block of presets/*.css
  * Without the jQuery UI datepicker CSS; the header and button bar are flex rows.
  */
@@ -19,26 +19,26 @@
 }
 
 .p-datepicker-panel {
-    .ui-datepicker-header .ui-datepicker-next,
-    .ui-datepicker-header .ui-datepicker-prev,
+    .p-datepicker-header .p-datepicker-next,
+    .p-datepicker-header .p-datepicker-prev,
     table td > a,
-    .ui-timepicker > div a {
+    .p-timepicker > div a {
         cursor: pointer;
     }
 
-    .ui-datepicker-calendar-container {
+    .p-datepicker-calendar-container {
         td span,
         td a {
             text-align: center;
         }
 
         /* hide only the content, a hidden cell would shift the columns announced by screen readers */
-        td.ui-datepicker-other-month-hidden > * {
+        td.p-datepicker-other-month-hidden > * {
             visibility: hidden;
         }
     }
 
-    .ui-timepicker {
+    .p-timepicker {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -52,7 +52,7 @@
             row-gap: var(--p-datepicker-time-picker-button-gap);
         }
 
-        > .ui-ampm-picker {
+        > .p-ampm-picker {
             margin-inline-start: var(--p-datepicker-time-picker-gap);
         }
 
@@ -60,50 +60,50 @@
             display: block;
         }
 
-        /* .ui-divider is also the p:divider class (divider.css), reset here; the separator column keeps
+        /* .p-divider is also the p:divider class (divider.css), reset here; the separator column keeps
            (invisible) buttons so the ":" stays aligned with the values */
-        > .ui-divider {
+        > .p-divider {
             margin: 0;
             padding: 0;
             min-width: 0.75em;
         }
 
-        > .ui-divider::before,
-        > .ui-divider::after {
+        > .p-divider::before,
+        > .p-divider::after {
             display: none;
         }
 
-        > .ui-divider button {
+        > .p-divider button {
             visibility: hidden;
             opacity: 0;
         }
 
-        &.ui-timepicker-timeinput input {
+        &.p-timepicker-timeinput input {
             text-align: center;
             -moz-appearance: textfield;
         }
 
-        &.ui-timepicker-timeinput input::-webkit-outer-spin-button,
-        &.ui-timepicker-timeinput input::-webkit-inner-spin-button {
+        &.p-timepicker-timeinput input::-webkit-outer-spin-button,
+        &.p-timepicker-timeinput input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
     }
 }
 
-.ui-datepicker-multiple-month .ui-datepicker-group {
+.p-datepicker-multiple-month .p-datepicker-group {
     display: table-cell;
     border-left-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
 }
 
-.p-datepicker-panel.ui-datepicker-multiple-month {
+.p-datepicker-panel.p-datepicker-multiple-month {
     width: auto;
 }
 
-.p-datepicker .ui-datepicker-touch-ui,
-.ui-datepicker-touch-ui {
+.p-datepicker .p-datepicker-touch-ui,
+.p-datepicker-touch-ui {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -112,7 +112,7 @@
     transform: translate(-50%, -50%);
 }
 
-.ui-monthpicker .ui-monthpicker-month {
+.p-monthpicker .p-monthpicker-month {
     width: 33.3%;
     display: inline-flex;
     align-items: center;
@@ -121,15 +121,15 @@
     cursor: pointer;
 }
 
-.ui-state-disabled.ui-datepicker-disabled {
+.p-state-disabled.p-datepicker-disabled {
     opacity: 1;
 }
 
-.ui-datepicker-disabled tbody a {
+.p-datepicker-disabled tbody a {
     opacity: var(--p-disabled-opacity);
 }
 
-.ui-datepicker {
+.p-datepicker-panel {
     display: none;
     background: var(--p-datepicker-panel-background);
     color: var(--p-datepicker-panel-color);
@@ -138,17 +138,17 @@
     padding: var(--p-datepicker-panel-padding);
     width: auto;
 
-    &.ui-input-overlay {
+    &.p-input-overlay {
         box-shadow: var(--p-datepicker-panel-shadow);
     }
 
-    &.ui-datepicker-inline {
+    &.p-datepicker-inline {
         box-shadow: none;
         overflow-x: auto;
     }
 
     /* header */
-    .ui-datepicker-header {
+    .p-datepicker-header {
         position: relative;
         display: flex;
         align-items: center;
@@ -166,8 +166,8 @@
     }
 
     /* prev / next: rounded secondary text buttons like PrimeUIX (which uses a Button there) */
-    .ui-datepicker-next,
-    .ui-datepicker-prev {
+    .p-datepicker-next,
+    .p-datepicker-prev {
         position: relative;
         flex: 0 0 auto;
         cursor: pointer;
@@ -193,12 +193,12 @@
         transition: background var(--p-datepicker-transition-duration), color var(--p-datepicker-transition-duration),
             outline-color var(--p-datepicker-transition-duration), box-shadow var(--p-datepicker-transition-duration);
 
-        &:not(.ui-state-disabled):hover {
+        &:not(.p-state-disabled):hover {
             background: var(--p-button-text-secondary-hover-background);
             color: var(--p-button-text-secondary-color);
         }
 
-        &:not(.ui-state-disabled):active {
+        &:not(.p-state-disabled):active {
             background: var(--p-button-text-secondary-active-background);
         }
 
@@ -208,39 +208,28 @@
             box-shadow: var(--p-focus-ring-shadow);
         }
 
-        &.ui-state-disabled {
+        &.p-state-disabled {
             cursor: default;
         }
     }
 
-    .ui-datepicker-prev {
+    .p-datepicker-prev {
         order: 0;
     }
 
-    .ui-datepicker-next {
+    .p-datepicker-next {
         order: 2;
     }
 
-    .ui-datepicker-next::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-datepicker-next-icon) center / contain no-repeat;
+    .p-datepicker-next-icon {
+        --_icon: var(--p-datepicker-next-icon);
     }
 
-    .ui-datepicker-prev::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-datepicker-prev-icon) center / contain no-repeat;
+    .p-datepicker-prev-icon {
+        --_icon: var(--p-datepicker-prev-icon);
     }
 
-    .ui-datepicker-next span,
-    .ui-datepicker-prev span {
-        display: none;
-    }
-
-    .ui-datepicker-title {
+    .p-datepicker-title {
         order: 1;
         flex: 1 1 auto;
         text-align: center;
@@ -252,8 +241,8 @@
         margin: 0;
 
         /* month / year: plain text, or select / number input when the navigator is on */
-        .ui-datepicker-month,
-        .ui-datepicker-year {
+        .p-datepicker-month,
+        .p-datepicker-year {
             margin: 0;
             font-family: inherit;
             background: transparent;
@@ -263,7 +252,7 @@
                 outline-color var(--p-datepicker-transition-duration), box-shadow var(--p-datepicker-transition-duration);
         }
 
-        .ui-datepicker-month {
+        .p-datepicker-month {
             padding: var(--p-datepicker-select-month-padding);
             color: var(--p-datepicker-select-month-color);
             border-radius: var(--p-datepicker-select-month-border-radius);
@@ -271,7 +260,7 @@
             font-weight: var(--p-datepicker-select-month-font-weight);
         }
 
-        .ui-datepicker-year {
+        .p-datepicker-year {
             padding: var(--p-datepicker-select-year-padding);
             color: var(--p-datepicker-select-year-color);
             border-radius: var(--p-datepicker-select-year-border-radius);
@@ -284,13 +273,13 @@
             cursor: pointer;
         }
 
-        select.ui-datepicker-month:hover {
+        select.p-datepicker-month:hover {
             background: var(--p-datepicker-select-month-hover-background);
             color: var(--p-datepicker-select-month-hover-color);
         }
 
-        select.ui-datepicker-year:hover,
-        input.ui-datepicker-year:hover {
+        select.p-datepicker-year:hover,
+        input.p-datepicker-year:hover {
             background: var(--p-datepicker-select-year-hover-background);
             color: var(--p-datepicker-select-year-hover-color);
         }
@@ -308,8 +297,8 @@
         }
     }
 
-    select.ui-datepicker-month,
-    select.ui-datepicker-year {
+    select.p-datepicker-month,
+    select.p-datepicker-year {
         width: auto;
     }
 
@@ -335,7 +324,7 @@
     }
 
     /* day view */
-    .ui-datepicker-calendar {
+    .p-datepicker-calendar {
         margin: var(--p-datepicker-day-view-margin);
 
         th {
@@ -378,13 +367,13 @@
                 outline-color var(--p-datepicker-transition-duration);
         }
 
-        td.ui-datepicker-other-month > a,
-        td.ui-datepicker-other-month > span {
+        td.p-datepicker-other-month > a,
+        td.p-datepicker-other-month > span {
             color: var(--p-datepicker-other-month-color);
         }
 
-        td > a:not(.ui-state-disabled):hover,
-        td > a.ui-state-hover {
+        td > a:not(.p-state-disabled):hover,
+        td > a.p-state-hover {
             background: var(--p-datepicker-date-hover-background);
             color: var(--p-datepicker-date-hover-color);
         }
@@ -396,36 +385,36 @@
             box-shadow: var(--p-datepicker-date-focus-ring-shadow);
         }
 
-        td > .ui-state-disabled {
+        td > .p-state-disabled {
             cursor: default;
         }
 
-        td.ui-datepicker-today > a,
-        td.ui-datepicker-today > span {
+        td.p-datepicker-today > a,
+        td.p-datepicker-today > span {
             background: var(--p-datepicker-today-background);
             color: var(--p-datepicker-today-color);
             border: 0 none;
         }
 
-        td.ui-datepicker-today > a:not(.ui-state-disabled):hover,
-        td.ui-datepicker-today > a.ui-state-hover {
+        td.p-datepicker-today > a:not(.p-state-disabled):hover,
+        td.p-datepicker-today > a.p-state-hover {
             background: var(--p-datepicker-date-hover-background);
             color: var(--p-datepicker-date-hover-color);
         }
 
         /* selected wins over hover and today */
-        td > a.ui-state-active,
-        td > span.ui-state-active,
-        td > a.ui-state-active:hover,
-        td.ui-datepicker-today > a.ui-state-active,
-        td.ui-datepicker-today > span.ui-state-active {
+        td > a.p-state-active,
+        td > span.p-state-active,
+        td > a.p-state-active:hover,
+        td.p-datepicker-today > a.p-state-active,
+        td.p-datepicker-today > span.p-state-active {
             background: var(--p-datepicker-date-selected-background);
             color: var(--p-datepicker-date-selected-color);
             border: 0 none;
         }
 
         /* week numbers (showWeek): a disabled span */
-        td.ui-datepicker-weeknumber > span {
+        td.p-datepicker-weeknumber > span {
             opacity: 1;
             color: var(--p-datepicker-week-number-color);
             font-size: var(--p-datepicker-week-number-font-size);
@@ -433,7 +422,7 @@
     }
 
     /* p:datePicker time picker */
-    .ui-timepicker {
+    .p-timepicker {
         padding: var(--p-datepicker-time-picker-padding);
         margin: 0;
         background: transparent;
@@ -444,12 +433,12 @@
         border-radius: 0;
     }
 
-    &.ui-datepicker-timeonly .ui-timepicker {
+    &.p-datepicker-timeonly .p-timepicker {
         border-top: 0 none;
     }
 
     /* p:datePicker time picker with inputs (timeInput) */
-    .ui-timepicker-timeinput {
+    .p-timepicker-timeinput {
         input {
             font-family: inherit;
             font-size: var(--p-inputtext-font-size);
@@ -470,12 +459,12 @@
                 box-shadow var(--p-inputtext-transition-duration);
         }
 
-        .ui-millisecond-picker input {
+        .p-millisecond-picker input {
             width: calc(var(--p-datepicker-time-input-width) * 1.25);
         }
 
         input:hover,
-        input.ui-state-hover {
+        input.p-state-hover {
             border-color: var(--p-inputtext-hover-border-color);
         }
 
@@ -486,24 +475,24 @@
             box-shadow: var(--p-inputtext-focus-ring-shadow);
         }
 
-        .ui-divider > span,
-        .ui-ampm-picker > span {
+        .p-divider > span,
+        .p-ampm-picker > span {
             padding-block: var(--p-inputtext-padding-y);
             padding-inline: calc(var(--p-inputtext-padding-x) / 2);
             font-size: var(--p-inputtext-font-size);
         }
     }
 
-    .ui-timepicker > div > span,
-    .ui-timepicker .ui-divider > span {
+    .p-timepicker > div > span,
+    .p-timepicker .p-divider > span {
         color: var(--p-datepicker-time-picker-color);
         font-size: var(--p-datepicker-time-picker-font-size);
         font-weight: var(--p-datepicker-time-picker-font-weight);
         font-variant-numeric: tabular-nums;
     }
 
-    .ui-picker-up,
-    .ui-picker-down {
+    .p-picker-up,
+    .p-picker-down {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -537,31 +526,18 @@
             outline-offset: var(--p-focus-ring-offset);
             box-shadow: var(--p-focus-ring-shadow);
         }
-
-        .ui-icon {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
-        }
     }
 
-    .ui-picker-up .ui-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-datepicker-increment-icon) center / contain no-repeat;
+    .p-datepicker-increment-icon {
+        --_icon: var(--p-datepicker-increment-icon);
     }
 
-    .ui-picker-down .ui-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-datepicker-decrement-icon) center / contain no-repeat;
+    .p-datepicker-decrement-icon {
+        --_icon: var(--p-datepicker-decrement-icon);
     }
 
     /* button bar: secondary buttons */
-    .ui-datepicker-buttonbar {
+    .p-datepicker-buttonbar {
         margin: 0;
         padding: var(--p-datepicker-buttonbar-padding);
         background: transparent;
@@ -571,7 +547,7 @@
         border-radius: 0;
     }
 
-    .ui-datepicker-buttonbar button {
+    .p-datepicker-buttonbar button {
         --_bg: var(--p-button-secondary-background);
         --_hover-bg: var(--p-button-secondary-hover-background);
         --_active-bg: var(--p-button-secondary-active-background);
@@ -593,22 +569,22 @@
             box-shadow var(--p-button-transition-duration);
     }
 
-    .ui-datepicker-buttonbar button {
-        &.ui-state-hover,
+    .p-datepicker-buttonbar button {
+        &.p-state-hover,
         &:not(:disabled):hover {
             background: var(--p-button-secondary-hover-background);
             border-color: var(--p-button-secondary-hover-border-color);
             color: var(--p-button-secondary-hover-color);
         }
 
-        &.ui-state-focus,
+        &.p-state-focus,
         &:focus-visible {
             outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--p-button-secondary-focus-ring-color);
             outline-offset: var(--p-button-focus-ring-offset);
             box-shadow: var(--p-button-secondary-focus-ring-shadow);
         }
 
-        &.ui-state-active,
+        &.p-state-active,
         &:not(:disabled):active {
             background: var(--p-button-secondary-active-background);
             border-color: var(--p-button-secondary-active-border-color);
@@ -616,20 +592,20 @@
         }
     }
 
-    .ui-datepicker-buttonbar .ui-g-6:first-child {
+    .p-datepicker-buttonbar .ui-g-6:first-child {
         text-align: start;
     }
 
-    .ui-datepicker-buttonbar .ui-g-6:last-child {
+    .p-datepicker-buttonbar .ui-g-6:last-child {
         text-align: end;
     }
 
     /* month view */
-    .ui-monthpicker {
+    .p-monthpicker {
         margin: var(--p-datepicker-month-view-margin);
     }
 
-    .ui-monthpicker-month {
+    .p-monthpicker-month {
         margin: 0;
         padding: var(--p-datepicker-month-padding);
         color: var(--p-datepicker-date-color);
@@ -641,8 +617,8 @@
             border-color var(--p-datepicker-transition-duration), box-shadow var(--p-datepicker-transition-duration),
             outline-color var(--p-datepicker-transition-duration);
 
-        &:not(.ui-state-disabled, .ui-state-active):hover,
-        &.ui-state-hover {
+        &:not(.p-state-disabled, .p-state-active):hover,
+        &.p-state-hover {
             background: var(--p-datepicker-date-hover-background);
             color: var(--p-datepicker-date-hover-color);
         }
@@ -653,19 +629,19 @@
             box-shadow: var(--p-datepicker-date-focus-ring-shadow);
         }
 
-        &.ui-state-active {
+        &.p-state-active {
             background: var(--p-datepicker-date-selected-background);
             color: var(--p-datepicker-date-selected-color);
             border: 0 none;
         }
 
-        &.ui-state-disabled {
+        &.p-state-disabled {
             cursor: default;
         }
     }
 
     /* multiple months: separated by a vertical line like PrimeUIX */
-    .ui-datepicker-group {
+    .p-datepicker-group {
         padding-block: 0;
         padding-inline: var(--p-datepicker-group-gap);
         border-inline-start: 1px solid var(--p-datepicker-group-border-color);
@@ -681,7 +657,7 @@
     }
 
     /* touch UI */
-    &.ui-datepicker-touch-ui .ui-datepicker-calendar {
+    &.p-datepicker-touch-ui .p-datepicker-calendar {
         th {
             padding: var(--p-datepicker-touch-ui-date-padding) 0;
         }
@@ -698,24 +674,24 @@
 }
 
 /* rtl: the arrows point the other way */
-.p-datepicker-panel:dir(rtl) .ui-datepicker-next::before {
+.p-datepicker-panel:dir(rtl) .p-datepicker-next-icon {
     scale: -1 1;
 }
 
-.p-datepicker-panel:dir(rtl) .ui-datepicker-prev::before {
+.p-datepicker-panel:dir(rtl) .p-datepicker-prev-icon {
     scale: -1 1;
 }
 
 @media (max-width: 480px) {
-    .ui-datepicker .ui-datepicker-calendar td > a,
-    .ui-datepicker .ui-datepicker-calendar td > span {
+    .p-datepicker-panel .p-datepicker-calendar td > a,
+    .p-datepicker-panel .p-datepicker-calendar td > span {
         width: calc(var(--p-datepicker-date-width) * 0.6);
         height: calc(var(--p-datepicker-date-height) * 0.6);
     }
 }
 
 /* trigger button (showIcon) */
-.ui-calendar .ui-button.ui-button-icon-only {
+.p-calendar .p-button.p-button-icon-only {
     --_bg: var(--p-datepicker-dropdown-background);
     --_hover-bg: var(--p-datepicker-dropdown-hover-background);
     --_active-bg: var(--p-datepicker-dropdown-active-background);
@@ -729,7 +705,7 @@
     --_focus-ring-shadow: var(--p-datepicker-dropdown-focus-ring-shadow);
 
     width: var(--p-datepicker-dropdown-width);
-    /* the container is a flex row: the trigger stretches to the input height (also for ui-inputtext-sm / -lg) */
+    /* the container is a flex row: the trigger stretches to the input height (also for p-inputtext-sm / -lg) */
     padding-block: 0;
     border-inline-start-width: 0;
     border-radius: 0;
@@ -741,35 +717,25 @@
         outline-offset: var(--p-datepicker-dropdown-focus-ring-offset);
     }
 
-    .ui-icon-calendar {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
-    }
-
-    .ui-icon-calendar::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-datepicker-dropdown-icon) center / contain no-repeat;
+    .p-datepicker-dropdown-icon {
+        --_icon: var(--p-datepicker-dropdown-icon);
     }
 }
 
 /* with a trigger: the container is a flex row (.p-datepicker), so the trigger always has the input height */
-.ui-calendar.ui-trigger-calendar > .ui-inputfield {
+.p-calendar.p-trigger-calendar > .p-inputfield {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
 }
 
 /* fluid: input and trigger share the width */
-.ui-fluid {
-    .ui-calendar,
-    .ui-calendar > input {
+.p-fluid {
+    .p-calendar,
+    .p-calendar > input {
         width: 100%;
     }
 
-    .ui-calendar {
+    .p-calendar {
         position: relative;
     }
 
@@ -777,17 +743,17 @@
         display: flex;
     }
 
-    .ui-trigger-calendar > .ui-inputfield {
+    .p-trigger-calendar > .p-inputfield {
         flex: 1 1 auto;
         width: 1%;
     }
 }
 
-/* sizes: the input carries ui-inputtext-sm / -lg (forms/inputfield.css), the trigger width follows like PrimeUIX */
-.ui-calendar.ui-trigger-calendar:has(> .ui-inputtext-sm) > .ui-datepicker-trigger.ui-button {
+/* sizes: the input carries p-inputtext-sm / -lg (forms/inputfield.css), the trigger width follows like PrimeUIX */
+.p-calendar.p-trigger-calendar:has(> .p-inputtext-sm) > .p-datepicker-trigger.p-button {
     width: var(--p-datepicker-dropdown-sm-width);
 }
 
-.ui-calendar.ui-trigger-calendar:has(> .ui-inputtext-lg) > .ui-datepicker-trigger.ui-button {
+.p-calendar.p-trigger-calendar:has(> .p-inputtext-lg) > .p-datepicker-trigger.p-button {
     width: var(--p-datepicker-dropdown-lg-width);
 }

@@ -7,7 +7,7 @@
 
     <ui:define name="head">
         <style>
-            .ui-diagram-element {
+            .p-diagram-element {
                 width: 14em;
                 height: 4em;
                 line-height: 4em;
@@ -19,13 +19,13 @@
                 color: #ffffff;
             }
 
-            .ui-diagram-success {
+            .p-diagram-success {
                 background-color: #9CB071;
                 color: #ffffff;
                 border-color: #7ab02c;
             }
 
-            .ui-diagram-fail {
+            .p-diagram-fail {
                 background-color: #C34A2C;
                 color: #ffffff;
             }
@@ -52,7 +52,7 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:diagram value="#{diagramFlowChartView.model}" style="height:600px" styleClass="ui-widget-content"/>
+            <p:diagram value="#{diagramFlowChartView.model}" style="height:600px" styleClass="p-widget-content"/>
         </div>
     </ui:define>
 

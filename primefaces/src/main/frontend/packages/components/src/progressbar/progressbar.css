@@ -1,10 +1,10 @@
 /*
  * ProgressBar: p:progressBar (determinate / indeterminate)
  *
- * Markup: .ui-progressbar > .ui-progressbar-value > .ui-progressbar-label
- * Supported classes: ui-progressbar-determinate | -indeterminate, ui-progressbar-success | -info | -warning | -danger
+ * Markup: .p-progressbar > .p-progressbar-value > .p-progressbar-label
+ * Supported classes: p-progressbar-determinate | -indeterminate, p-progressbar-success | -info | -warning | -danger
  */
-.ui-progressbar {
+.p-progressbar {
     --_value-bg: var(--p-progressbar-value-background);
     --_label-color: var(--p-progressbar-label-color);
 
@@ -15,13 +15,13 @@
     background: var(--p-progressbar-background);
     border-radius: var(--p-progressbar-border-radius);
 
-    .ui-progressbar-value {
+    .p-progressbar-value {
         border: 0 none;
         background: var(--_value-bg);
         border-radius: var(--p-progressbar-border-radius);
     }
 
-    .ui-progressbar-label {
+    .p-progressbar-label {
         color: var(--_label-color);
         font-size: var(--p-progressbar-label-font-size);
         font-weight: var(--p-progressbar-label-font-weight);
@@ -30,22 +30,22 @@
         font-variant-numeric: tabular-nums;
     }
 
-    &.ui-progressbar-success {
+    &.p-progressbar-success {
         --_value-bg: var(--p-progressbar-success-value-background);
         --_label-color: var(--p-progressbar-success-label-color);
     }
 
-    &.ui-progressbar-info {
+    &.p-progressbar-info {
         --_value-bg: var(--p-progressbar-info-value-background);
         --_label-color: var(--p-progressbar-info-label-color);
     }
 
-    &.ui-progressbar-warning {
+    &.p-progressbar-warning {
         --_value-bg: var(--p-progressbar-warn-value-background);
         --_label-color: var(--p-progressbar-warn-label-color);
     }
 
-    &.ui-progressbar-danger {
+    &.p-progressbar-danger {
         --_value-bg: var(--p-progressbar-danger-value-background);
         --_label-color: var(--p-progressbar-danger-label-color);
     }
@@ -55,18 +55,18 @@
  * inside a selection (selected row / item, highlight background): the value can have the color of the selection
  * (Nora: primary), so the bar takes the selection text color on a translucent track of it
  */
-.ui-state-highlight .ui-progressbar {
+.p-state-highlight .p-progressbar {
     background: color-mix(in srgb, var(--p-highlight-color), transparent 70%);
 
-    &:not(.ui-progressbar-success, .ui-progressbar-info, .ui-progressbar-warning, .ui-progressbar-danger) {
+    &:not(.p-progressbar-success, .p-progressbar-info, .p-progressbar-warning, .p-progressbar-danger) {
         --_value-bg: var(--p-highlight-color);
         --_label-color: var(--p-highlight-background);
     }
 }
 
-.ui-progressbar-determinate {
+.p-progressbar-determinate {
     /* width is animated by the widget (jQuery), so no CSS transition here */
-    .ui-progressbar-value {
+    .p-progressbar-value {
         height: 100%;
         width: 0%;
         position: absolute;
@@ -74,7 +74,7 @@
         overflow: hidden;
     }
 
-    .ui-progressbar-label {
+    .p-progressbar-label {
         text-align: center;
         height: 100%;
         width: 100%;
@@ -84,7 +84,7 @@
     }
 }
 
-.ui-progressbar-indeterminate .ui-progressbar-value {
+.p-progressbar-indeterminate .p-progressbar-value {
     &::before {
         content: '';
         position: absolute;
@@ -93,7 +93,7 @@
         left: 0;
         bottom: 0;
         will-change: left, right;
-        animation: ui-progressbar-indeterminate-anim 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+        animation: p-progressbar-indeterminate-anim 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
     }
 
     &::after {
@@ -104,7 +104,7 @@
         left: 0;
         bottom: 0;
         will-change: left, right;
-        animation: ui-progressbar-indeterminate-anim-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+        animation: p-progressbar-indeterminate-anim-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
         animation-delay: 1.15s;
     }
 
@@ -123,7 +123,7 @@
     }
 }
 
-@keyframes ui-progressbar-indeterminate-anim {
+@keyframes p-progressbar-indeterminate-anim {
     0% {
         left: -35%;
         right: 100%;
@@ -138,7 +138,7 @@
     }
 }
 
-@keyframes ui-progressbar-indeterminate-anim-short {
+@keyframes p-progressbar-indeterminate-anim-short {
     0% {
         left: -200%;
         right: 100%;

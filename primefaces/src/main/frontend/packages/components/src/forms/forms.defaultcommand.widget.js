@@ -58,7 +58,7 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
                     return;
                 }
 
-                if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
+                if (!$this.jqTarget.is(':disabled, .p-state-disabled')) {
                     // focus default command button and click it
                     $this.jqTarget.trigger('focus').trigger(PrimeFaces.csp.clickEvent($this.jqTarget));
                 }

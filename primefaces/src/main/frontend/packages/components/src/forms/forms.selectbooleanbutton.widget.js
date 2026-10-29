@@ -31,7 +31,7 @@ PrimeFaces.widget.SelectBooleanButton = class SelectBooleanButton extends PrimeF
 
         this.input = $(this.jqId + '_input');
         this.disabled = this.input.is(':disabled');
-        this.icon = this.jq.children('.ui-button-icon-left');
+        this.icon = this.jq.children('.p-button-icon-left');
         this.onLabel = this.cfg.onLabel || this.getAriaLabel('switch.ON');
         this.offLabel = this.cfg.offLabel || this.getAriaLabel('switch.OFF');
         var $this = this;
@@ -39,11 +39,11 @@ PrimeFaces.widget.SelectBooleanButton = class SelectBooleanButton extends PrimeF
         //bind events if not disabled
         if(!this.disabled) {
             this.jq.on('mouseover', function() {
-                if(!$this.jq.hasClass('ui-state-active')) {
-                    $this.jq.addClass('ui-state-hover');
+                if(!$this.jq.hasClass('p-state-active')) {
+                    $this.jq.addClass('p-state-hover');
                 }
             }).on('mouseout', function() {
-                $this.jq.removeClass('ui-state-hover');
+                $this.jq.removeClass('p-state-hover');
             })
             .on('click', function() {
                 $this.toggle();
@@ -53,18 +53,18 @@ PrimeFaces.widget.SelectBooleanButton = class SelectBooleanButton extends PrimeF
         
         if (this.input.prop('checked')) {
             this.input.attr('aria-label', this.onLabel);
-            this.jq.children('.ui-button-text').text(this.onLabel);
+            this.jq.children('.p-button-text').text(this.onLabel);
         }
         else {
             this.input.attr('aria-label', this.offLabel);
-            this.jq.children('.ui-button-text').text(this.offLabel);
+            this.jq.children('.p-button-text').text(this.offLabel);
         }
 
         this.input.on('focus', function() {
-            $this.jq.addClass('ui-state-focus');
+            $this.jq.addClass('p-state-focus');
         })
         .on('blur', function() {
-            $this.jq.removeClass('ui-state-focus');
+            $this.jq.removeClass('p-state-focus');
         })
         .on('keydown', function(e) {
             if(e.key === ' ') {
@@ -103,7 +103,7 @@ PrimeFaces.widget.SelectBooleanButton = class SelectBooleanButton extends PrimeF
         if (!this.disabled) {
             this.input.prop('checked', true);
             this.input.attr('aria-label', this.onLabel);
-            this.jq.addClass('ui-state-active').children('.ui-button-text').text(this.onLabel);
+            this.jq.addClass('p-state-active').children('.p-button-text').text(this.onLabel);
 
             if (this.icon.length > 0) {
                 this.icon.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
@@ -120,7 +120,7 @@ PrimeFaces.widget.SelectBooleanButton = class SelectBooleanButton extends PrimeF
         if (!this.disabled) {
             this.input.prop('checked', false);
             this.input.attr('aria-label', this.offLabel);
-            this.jq.removeClass('ui-state-active').children('.ui-button-text').text(this.offLabel);
+            this.jq.removeClass('p-state-active').children('.p-button-text').text(this.offLabel);
 
             if (this.icon.length > 0) {
                 this.icon.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);

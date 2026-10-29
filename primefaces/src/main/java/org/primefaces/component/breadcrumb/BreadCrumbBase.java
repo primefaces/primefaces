@@ -58,9 +58,6 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget, Sty
     @Property(defaultValue = "icon", description = "Defines display mode of root link, valid values are \"icon\" and \"text\".")
     public abstract String getHomeDisplay();
 
-    @Property(defaultValue = "ui-icon ui-icon-home", description = "Defines home icon CSS class.")
-    public abstract String getHomeIcon();
-
     @Override
     @Property(defaultValue = "0", description = "Position of the items in the tabbing order.")
     public abstract String getTabindex();

@@ -42,7 +42,7 @@ public abstract class MegaMenu extends AbstractInputComponent {
     /**
      * Finds a menuitem (or root submenu) by its label/value, searching directly under this MegaMenu.
      * @param value the visible label of the menuitem
-     * @return the matching {@code li.ui-menuitem} element
+     * @return the matching {@code li.p-menuitem} element
      */
     public WebElement findMenuitemByValue(String value) {
         return findMenuitemByValue(this, value);
@@ -50,13 +50,13 @@ public abstract class MegaMenu extends AbstractInputComponent {
 
     /**
      * Finds a menuitem (or submenu) by its label/value within the given parent element.
-     * Column titles ({@code li.ui-widget-header}) are not {@code ui-menuitem}s and are therefore ignored.
+     * Column titles ({@code li.p-widget-header}) are not {@code p-menuitem}s and are therefore ignored.
      * @param parentElt element to search within
      * @param value the visible label of the menuitem
-     * @return the matching {@code li.ui-menuitem} element
+     * @return the matching {@code li.p-menuitem} element
      */
     public WebElement findMenuitemByValue(WebElement parentElt, String value) {
-        List<WebElement> subElements = parentElt.findElements(By.cssSelector("li.ui-menuitem"));
+        List<WebElement> subElements = parentElt.findElements(By.cssSelector("li.p-menuitem"));
         return subElements.stream()
                 .filter(e -> e.getText().equals(value))
                 .findFirst()
@@ -67,15 +67,15 @@ public abstract class MegaMenu extends AbstractInputComponent {
      * Opens the mega panel of a root submenu identified by its label. Uses hover when {@code autoDisplay}
      * is enabled, otherwise clicks the submenu link, then waits until the panel becomes visible.
      * @param label the label of the root submenu
-     * @return the root submenu {@code li.ui-menu-parent} element so nested lookups can be scoped to it
+     * @return the root submenu {@code li.p-menu-parent} element so nested lookups can be scoped to it
      */
     public WebElement openRootSubmenu(String label) {
         Actions actions = new Actions(getWebDriver());
         actions.moveToElement(getWrappedElement()).build().perform(); // ensure menu is in viewport / reset hover state
 
         WebElement rootSubmenu = findMenuitemByValue(label);
-        WebElement submenuLink = rootSubmenu.findElement(By.cssSelector("a.ui-submenu-link"));
-        WebElement panel = rootSubmenu.findElement(By.cssSelector("ul.ui-menu-child"));
+        WebElement submenuLink = rootSubmenu.findElement(By.cssSelector("a.p-submenu-link"));
+        WebElement panel = rootSubmenu.findElement(By.cssSelector("ul.p-menu-child"));
 
         if (isAutoDisplay()) {
             actions = new Actions(getWebDriver());
@@ -94,7 +94,7 @@ public abstract class MegaMenu extends AbstractInputComponent {
      * Selects a leaf menuitem (by label) within the given parent element, guarding the AJAX request when applicable.
      * @param parentElt element to search within (typically the root submenu returned by {@link #openRootSubmenu(String)})
      * @param value the visible label of the menuitem
-     * @return the selected {@code li.ui-menuitem} element
+     * @return the selected {@code li.p-menuitem} element
      */
     public WebElement selectMenuitemByValue(WebElement parentElt, String value) {
         WebElement elt = findMenuitemByValue(parentElt, value);
@@ -115,6 +115,6 @@ public abstract class MegaMenu extends AbstractInputComponent {
     }
 
     public boolean isVertical() {
-        return PrimeSelenium.hasCssClass(getRoot(), "ui-megamenu-vertical");
+        return PrimeSelenium.hasCssClass(getRoot(), "p-megamenu-vertical");
     }
 }

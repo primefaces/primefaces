@@ -77,7 +77,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
                 .add(flex, GridLayoutUtils.getResponsiveClass(flex))
                 .add(component.isResponsive() && !flex, GridLayoutUtils.getResponsiveClass(false))
                 .add(component.getStyleClass())
-                .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isDisabled(), "p-state-disabled")
                 .add("right".equals(component.getControlsLocation()), OrderList.CONTROLS_RIGHT_CLASS)
                 .build();
 
@@ -231,7 +231,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
+        writer.write("p-button");
         writer.endElement("span");
 
         writer.endElement("button");

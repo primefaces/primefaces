@@ -39,5 +39,5 @@ public class InputMask extends InputMaskBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputMask";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputmask ui-widget ui-state-default";
+    public static final String STYLE_CLASS = "p-inputfield p-inputmask p-widget p-state-default";
 }

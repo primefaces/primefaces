@@ -1,14 +1,14 @@
 /*
  * SelectOneButton / SelectManyButton / SelectBooleanButton (PrimeUIX: selectbutton + togglebutton)
  *
- * Every option is a .ui-button (button.css) restyled as a toggle button. Like PrimeUIX the checked state can show an
+ * Every option is a .p-button (button.css) restyled as a toggle button. Like PrimeUIX the checked state can show an
  * inner "pill" (togglebutton content tokens, e.g. Aura); it is drawn by ::before so icon and label both sit on it.
- * Supported classes on the option / boolean button: ui-state-hover, ui-state-focus, ui-state-active (checked),
- *                                                  ui-state-disabled, ui-state-error, ui-button-sm, ui-button-lg
- * On the group: ui-state-error (invalid), ui-state-disabled, .ui-fluid parent
+ * Supported classes on the option / boolean button: p-state-hover, p-state-focus, p-state-active (checked),
+ *                                                  p-state-disabled, p-state-error, p-button-sm, p-button-lg
+ * On the group: p-state-error (invalid), p-state-disabled, .p-fluid parent
  */
-.ui-selectonebutton,
-.ui-selectmanybutton {
+.p-selectonebutton,
+.p-selectmanybutton {
     display: inline-flex;
     /* the group wraps its options, also as a stretched flex / grid item (the invalid outline is drawn on the group) */
     width: fit-content;
@@ -20,21 +20,21 @@
     border-radius: var(--p-selectbutton-border-radius);
     outline-color: transparent;
 
-    &.ui-state-error {
+    &.p-state-error {
         outline: 1px solid var(--p-selectbutton-invalid-border-color);
         outline-offset: 0;
     }
 
-    .ui-button.ui-state-focus {
+    .p-button.p-state-focus {
         position: relative;
         z-index: 1;
     }
 }
 
 /* all alternatives have the same specificity (0,2,0), so nesting under this list keeps the flat specificity */
-.ui-selectonebutton > .ui-button,
-.ui-selectmanybutton > .ui-button,
-.ui-button.ui-selectbooleanbutton {
+.p-selectonebutton > .p-button,
+.p-selectmanybutton > .p-button,
+.p-button.p-selectbooleanbutton {
     --_bg: var(--p-togglebutton-background);
     --_hover-bg: var(--p-togglebutton-hover-background);
     --_active-bg: var(--p-togglebutton-checked-background);
@@ -73,28 +73,28 @@
     }
 
     /* hover (unchecked only) */
-    &.ui-state-hover:not(.ui-state-active, .ui-state-disabled),
-    &:not(.ui-state-active, .ui-state-disabled):hover {
+    &.p-state-hover:not(.p-state-active, .p-state-disabled),
+    &:not(.p-state-active, .p-state-disabled):hover {
         background: var(--p-togglebutton-hover-background);
         border-color: var(--p-togglebutton-border-color);
         color: var(--p-togglebutton-hover-color);
     }
 
     /* checked (also while hovered) */
-    &.ui-state-active,
-    &.ui-state-active:not(.ui-state-disabled):hover {
+    &.p-state-active,
+    &.p-state-active:not(.p-state-disabled):hover {
         background: var(--p-togglebutton-checked-background);
         border-color: var(--p-togglebutton-checked-border-color);
         color: var(--p-togglebutton-checked-color);
     }
 
-    &.ui-state-active::before {
+    &.p-state-active::before {
         background: var(--p-togglebutton-content-checked-background);
         box-shadow: var(--p-togglebutton-content-checked-shadow);
     }
 
     /* focus */
-    &.ui-state-focus,
+    &.p-state-focus,
     &:focus-visible {
         outline: var(--p-togglebutton-focus-ring-width) var(--p-togglebutton-focus-ring-style) var(--p-togglebutton-focus-ring-color);
         outline-offset: var(--p-togglebutton-focus-ring-offset);
@@ -103,65 +103,65 @@
 }
 
 /* label and icon sit on the pill (position: relative, above the ::before) */
-.ui-selectonebutton > .ui-button > .ui-button-text,
-.ui-selectmanybutton > .ui-button > .ui-button-text,
-.ui-button.ui-selectbooleanbutton > .ui-button-text,
-.ui-selectonebutton > .ui-button > .ui-button-icon-left,
-.ui-selectmanybutton > .ui-button > .ui-button-icon-left,
-.ui-button.ui-selectbooleanbutton > .ui-button-icon-left {
+.p-selectonebutton > .p-button > .p-button-text,
+.p-selectmanybutton > .p-button > .p-button-text,
+.p-button.p-selectbooleanbutton > .p-button-text,
+.p-selectonebutton > .p-button > .p-button-icon-left,
+.p-selectmanybutton > .p-button > .p-button-icon-left,
+.p-button.p-selectbooleanbutton > .p-button-icon-left {
     position: relative;
     padding: var(--p-togglebutton-content-padding);
     font-weight: var(--p-togglebutton-font-weight);
     cursor: inherit;
 }
 
-.ui-selectonebutton > .ui-button,
-.ui-selectmanybutton > .ui-button,
-.ui-button.ui-selectbooleanbutton {
+.p-selectonebutton > .p-button,
+.p-selectmanybutton > .p-button,
+.p-button.p-selectbooleanbutton {
     /* icon + label: the pill padding goes around both, the gap sits between them */
-    > .ui-button-icon-left {
+    > .p-button-icon-left {
         padding-inline-end: 0;
         color: var(--p-togglebutton-icon-color);
     }
 
-    > .ui-button-icon-left + .ui-button-text {
+    > .p-button-icon-left + .p-button-text {
         padding-inline-start: 0;
     }
 
-    &.ui-button-icon-only {
+    &.p-button-icon-only {
         width: auto;
 
-        > .ui-button-icon-left {
+        > .p-button-icon-left {
             padding: var(--p-togglebutton-content-padding);
         }
 
         /* icon only: the label is kept hidden by button.css, it must not add width */
-        > .ui-button-text {
+        > .p-button-text {
             padding: 0;
         }
     }
 
-    &:not(.ui-state-active, .ui-state-disabled):hover > .ui-button-icon-left {
+    &:not(.p-state-active, .p-state-disabled):hover > .p-button-icon-left {
         color: var(--p-togglebutton-icon-hover-color);
     }
 
-    &.ui-state-active > .ui-button-icon-left {
+    &.p-state-active > .p-button-icon-left {
         color: var(--p-togglebutton-icon-checked-color);
     }
 }
 
 /* invalid: the border also wins over hover and checked hover (same specificity, later) */
-.ui-button.ui-selectbooleanbutton.ui-state-error,
-.ui-button.ui-selectbooleanbutton.ui-state-error:is(:hover, .ui-state-hover),
-.ui-button.ui-selectbooleanbutton.ui-state-error.ui-state-active:hover {
+.p-button.p-selectbooleanbutton.p-state-error,
+.p-button.p-selectbooleanbutton.p-state-error:is(:hover, .p-state-hover),
+.p-button.p-selectbooleanbutton.p-state-error.p-state-active:hover {
     border-color: var(--p-togglebutton-invalid-border-color);
 }
 
 /* disabled */
-.ui-selectonebutton > .ui-button,
-.ui-selectmanybutton > .ui-button,
-.ui-button.ui-selectbooleanbutton {
-    &.ui-state-disabled {
+.p-selectonebutton > .p-button,
+.p-selectmanybutton > .p-button,
+.p-button.p-selectbooleanbutton {
+    &.p-state-disabled {
         opacity: 1;
         cursor: default;
         background: var(--p-togglebutton-disabled-background);
@@ -169,23 +169,23 @@
         color: var(--p-togglebutton-disabled-color);
     }
 
-    &.ui-state-disabled::before {
+    &.p-state-disabled::before {
         background: transparent;
         box-shadow: none;
     }
 }
 
-.ui-selectonebutton > .ui-button.ui-state-disabled > .ui-button-icon-left,
-.ui-selectmanybutton > .ui-button.ui-state-disabled > .ui-button-icon-left,
-.ui-button.ui-selectbooleanbutton.ui-state-disabled > .ui-button-icon-left {
+.p-selectonebutton > .p-button.p-state-disabled > .p-button-icon-left,
+.p-selectmanybutton > .p-button.p-state-disabled > .p-button-icon-left,
+.p-button.p-selectbooleanbutton.p-state-disabled > .p-button-icon-left {
     color: var(--p-togglebutton-icon-disabled-color);
 }
 
 /* sizes */
-.ui-selectonebutton > .ui-button,
-.ui-selectmanybutton > .ui-button,
-.ui-button.ui-selectbooleanbutton {
-    &.ui-button-sm {
+.p-selectonebutton > .p-button,
+.p-selectmanybutton > .p-button,
+.p-button.p-selectbooleanbutton {
+    &.p-button-sm {
         padding: var(--p-togglebutton-sm-padding);
         font-size: var(--p-togglebutton-sm-font-size);
 
@@ -193,12 +193,12 @@
             inset: var(--p-togglebutton-sm-padding);
         }
 
-        > .ui-button-text {
+        > .p-button-text {
             padding: var(--p-togglebutton-content-sm-padding);
         }
     }
 
-    &.ui-button-lg {
+    &.p-button-lg {
         padding: var(--p-togglebutton-lg-padding);
         font-size: var(--p-togglebutton-lg-font-size);
 
@@ -206,16 +206,16 @@
             inset: var(--p-togglebutton-lg-padding);
         }
 
-        > .ui-button-text {
+        > .p-button-text {
             padding: var(--p-togglebutton-content-lg-padding);
         }
     }
 }
 
 /* grouped: only the outer corners are rounded, neighbours share one border */
-.ui-selectonebutton,
-.ui-selectmanybutton {
-    > .ui-button {
+.p-selectonebutton,
+.p-selectmanybutton {
+    > .p-button {
         margin: 0;
         border-radius: 0;
         border-width: 1px;
@@ -235,12 +235,12 @@
 }
 
 /* fluid */
-.ui-fluid .ui-selectonebutton,
-.ui-fluid .ui-selectmanybutton {
+.p-fluid .p-selectonebutton,
+.p-fluid .p-selectmanybutton {
     display: flex;
     width: 100%;
 
-    > .ui-button {
+    > .p-button {
         flex: 1 1 0;
         width: auto;
     }
@@ -248,11 +248,11 @@
 
 /* fluid on small screens: the options stack vertically, only the outer corners are rounded, neighbours share one border */
 @media (max-width: 640px) {
-    .ui-fluid .ui-selectonebutton,
-    .ui-fluid .ui-selectmanybutton {
+    .p-fluid .p-selectonebutton,
+    .p-fluid .p-selectmanybutton {
         flex-direction: column;
 
-        > .ui-button {
+        > .p-button {
             flex: 0 0 auto;
             width: 100%;
             border-radius: 0;

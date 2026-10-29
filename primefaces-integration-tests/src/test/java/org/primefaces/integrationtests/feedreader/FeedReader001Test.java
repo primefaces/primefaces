@@ -51,7 +51,7 @@ class FeedReader001Test extends AbstractPrimePageTest {
         WebElement form = page.form;
 
         // Act
-        List<WebElement> rssArticles = form.findElements(By.className("ui-rss-feed"));
+        List<WebElement> rssArticles = form.findElements(By.className("p-rss-feed"));
 
         // Assert
         assertTrue(rssArticles.size() > 3);
@@ -70,7 +70,7 @@ class FeedReader001Test extends AbstractPrimePageTest {
         page.buttonInvalidate.click();
 
         // Assert
-        WebElement error = form.findElement(By.className("ui-feed-error"));
+        WebElement error = form.findElement(By.className("p-feed-error"));
         assertEquals("Error reading RSS Feed!!!", error.getText());
         assertNoJavascriptErrors();
     }

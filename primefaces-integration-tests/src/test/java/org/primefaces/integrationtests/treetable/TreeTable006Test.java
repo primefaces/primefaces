@@ -61,7 +61,7 @@ class TreeTable006Test extends AbstractTreeTableTest {
         treeTable.getRow(1).toggle();
 
         // Act - edit row and accept
-        treeTable.getRow(1).getCell(4).getWebElement().findElement(By.cssSelector(".ui-row-editor-pencil")).click();
+        treeTable.getRow(1).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-pencil")).click();
 
         String eltId = treeTable.getRow(1).getCell(0).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
         InputText input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
@@ -71,20 +71,20 @@ class TreeTable006Test extends AbstractTreeTableTest {
         input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
         input.setValue("Folder - IT");
 
-        PrimeSelenium.guardAjax(treeTable.getRow(1).getCell(4).getWebElement().findElement(By.cssSelector(".ui-row-editor-check"))).click();
+        PrimeSelenium.guardAjax(treeTable.getRow(1).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-check"))).click();
 
         // Assert
         PrimeSelenium.guardAjax(treeTable.getRow(1).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
         assertMessage(page.messages, 0, "selected document", "Spanish - IT;10kb;Folder - IT");
 
         // Act - edit row and undo
-        treeTable.getRow(3).getCell(4).getWebElement().findElement(By.cssSelector(".ui-row-editor-pencil")).click();
+        treeTable.getRow(3).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-pencil")).click();
 
         eltId = treeTable.getRow(3).getCell(0).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
         input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
         input.setValue("xxx");
 
-        PrimeSelenium.guardAjax(treeTable.getRow(3).getCell(4).getWebElement().findElement(By.cssSelector(".ui-row-editor-close"))).click();
+        PrimeSelenium.guardAjax(treeTable.getRow(3).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-close"))).click();
 
         // Assert
         PrimeSelenium.guardAjax(treeTable.getRow(3).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();

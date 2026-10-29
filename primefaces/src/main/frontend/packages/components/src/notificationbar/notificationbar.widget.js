@@ -47,7 +47,7 @@ PrimeFaces.widget.NotificationBar = class NotificationBar extends PrimeFaces.wid
         }
 
         //bind events
-        this.jq.children('.ui-notificationbar-close').on("click", function() {
+        this.jq.children('.p-notificationbar-close').on("click", function() {
             $this.hide();
         });
     }

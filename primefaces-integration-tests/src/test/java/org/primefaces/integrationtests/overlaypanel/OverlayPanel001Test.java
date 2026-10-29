@@ -140,7 +140,7 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
     }
 
     private List<WebElement> getOverlays() {
-        return getWebDriver().findElements(By.className("ui-overlaypanel"));
+        return getWebDriver().findElements(By.className("p-overlaypanel"));
     }
 
     private void assertConfiguration(JSONObject cfg) {

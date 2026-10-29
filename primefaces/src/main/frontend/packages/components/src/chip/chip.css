@@ -1,10 +1,10 @@
 /*
  * Chip: p:chip
  *
- * Markup: .ui-chip > img | .ui-chip-icon, .ui-chip-text, .ui-chip-remove-icon
+ * Markup: .p-chip > img | .p-chip-icon, .p-chip-text, .p-chip-remove-icon
  */
 
-.ui-chip {
+.p-chip {
     display: inline-flex;
     align-items: center;
     gap: var(--p-chip-gap);
@@ -14,15 +14,15 @@
     padding-block: var(--p-chip-padding-y);
     padding-inline: var(--p-chip-padding-x);
 
-    &:has(> .ui-chip-remove-icon) {
+    &:has(> .p-chip-remove-icon) {
         padding-inline-end: var(--p-chip-padding-y);
     }
 
-    &.ui-chip-image {
+    &.p-chip-image {
         padding-block: calc(var(--p-chip-padding-y) / 2);
     }
 
-    .ui-chip-text {
+    .p-chip-text {
         margin: 0;
         line-height: var(--p-typography-line-height);
         font-size: var(--p-chip-label-font-size);
@@ -30,7 +30,7 @@
     }
 
     /* icon boxes = icon size (like PrimeUIX), so an icon never makes the chip taller than the label */
-    .ui-chip-icon {
+    .p-chip-icon {
         margin: 0;
         line-height: 1;
         color: var(--p-chip-icon-color);
@@ -49,7 +49,9 @@
         margin-inline: calc(-1 * var(--p-chip-padding-y)) 0;
     }
 
-    .ui-chip-remove-icon {
+    /* remove icon: --p-chip-remove-icon (default: the clear icon of the icon set, a circled x) */
+    .p-chip-remove-icon {
+        --_icon: var(--p-chip-remove-icon);
         cursor: pointer;
         flex-shrink: 0;
         margin: 0;
@@ -69,7 +71,7 @@
         }
     }
 
-    &:has(> .ui-chip-remove-icon:focus-visible) {
+    &:has(> .p-chip-remove-icon:focus-visible) {
         background-color: var(--p-chip-focus-background);
     }
 }

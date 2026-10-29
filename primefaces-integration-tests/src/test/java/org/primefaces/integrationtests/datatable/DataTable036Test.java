@@ -80,7 +80,7 @@ class DataTable036Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after navigating to another page and back
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
-        assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(2).getWebElement(), "ui-state-highlight"));
+        assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(2).getWebElement(), "p-state-highlight"));
         assertEquals("true", dataTable.getRow(2).getWebElement().getAttribute("aria-selected"));
     }
 

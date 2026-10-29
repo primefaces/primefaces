@@ -1,14 +1,13 @@
 /*
  * BreadCrumb: p:breadCrumb
  *
- * Markup: nav.ui-breadcrumb > ol.ui-breadcrumb-items > li > a.ui-menuitem-link (> .ui-menuitem-icon, .ui-menuitem-text)
- *         (disabled / last item: span.ui-menuitem-link.ui-state-disabled), li.ui-breadcrumb-options (options facet).
- *         homeDisplay="icon": the first link gets .ui-breadcrumb-home-icon + the homeIcon classes
- *         (default "ui-icon ui-icon-home", or e.g. "pi pi-home").
+ * Markup: nav.p-breadcrumb > ol.p-breadcrumb-items > li > a.p-menuitem-link (> .p-menuitem-icon, .p-menuitem-text)
+ *         (disabled / last item: span.p-menuitem-link.p-state-disabled), li.p-breadcrumb-options (options facet).
+ *         homeDisplay="icon": the first link is the icon (.p-breadcrumb-home-icon.p-icon.p-breadcrumb-home-icon).
  * Separators are rendered with ::before on every li except the first one.
  * The border is PrimeFaces only (the breadcrumb block of presets/*.css), PrimeUIX breadcrumb has none.
  */
-.ui-breadcrumb {
+.p-breadcrumb {
     margin: 0;
     overflow-x: auto;
     background: var(--p-breadcrumb-background);
@@ -20,11 +19,11 @@
         display: none;
     }
 
-    .ui-menuitem-link {
+    .p-menuitem-link {
         text-decoration: none;
     }
 
-    .ui-breadcrumb-items {
+    .p-breadcrumb-items {
         margin: 0;
         padding: 0;
         list-style-type: none;
@@ -32,7 +31,7 @@
         align-items: center;
         flex-wrap: nowrap;
 
-        li .ui-menuitem-link {
+        li .p-menuitem-link {
             display: flex;
             align-items: center;
             gap: var(--p-breadcrumb-item-gap);
@@ -49,50 +48,50 @@
                 box-shadow: var(--p-breadcrumb-item-focus-ring-shadow);
             }
 
-            .ui-menuitem-text {
+            .p-menuitem-text {
                 color: var(--p-breadcrumb-item-color);
                 font-size: var(--p-breadcrumb-item-label-font-size);
                 font-weight: var(--p-breadcrumb-item-label-font-weight);
                 transition: inherit;
             }
 
-            .ui-menuitem-icon {
+            .p-menuitem-icon {
                 color: var(--p-breadcrumb-item-icon-color);
                 font-size: var(--p-breadcrumb-item-icon-size);
                 transition: inherit;
             }
 
-            &:not(.ui-state-disabled):hover .ui-menuitem-text {
+            &:not(.p-state-disabled):hover .p-menuitem-text {
                 color: var(--p-breadcrumb-item-hover-color);
             }
 
-            &:not(.ui-state-disabled):hover .ui-menuitem-icon {
+            &:not(.p-state-disabled):hover .p-menuitem-icon {
                 color: var(--p-breadcrumb-item-icon-hover-color);
             }
 
-            /* home icon (homeDisplay="icon"): the link itself carries the icon classes */
-            &.ui-breadcrumb-home-icon {
+            /* home icon (homeDisplay="icon"): the link itself is the icon */
+            &.p-breadcrumb-home-icon {
                 color: var(--p-breadcrumb-item-icon-color);
                 font-size: var(--p-breadcrumb-item-icon-size);
                 line-height: 1;
 
-                &:not(.ui-state-disabled):hover {
+                &:not(.p-state-disabled):hover {
                     color: var(--p-breadcrumb-item-icon-hover-color);
                 }
             }
         }
 
-        li.ui-breadcrumb-options {
+        li.p-breadcrumb-options {
             margin-inline-start: auto;
         }
 
         /* separator */
-        li:not(.ui-breadcrumb-options) {
+        li:not(.p-breadcrumb-options) {
             display: flex;
             align-items: center;
         }
 
-        li:not(.ui-breadcrumb-options)::before {
+        li:not(.p-breadcrumb-options)::before {
             content: "\2003";
             background: currentColor;
             forced-color-adjust: none;
@@ -106,7 +105,7 @@
             color: var(--p-breadcrumb-separator-color);
         }
 
-        li:not(.ui-breadcrumb-options):dir(rtl)::before {
+        li:not(.p-breadcrumb-options):dir(rtl)::before {
             scale: -1 1;
         }
 
@@ -114,26 +113,9 @@
             display: none;
         }
 
-        /* default homeIcon "ui-icon ui-icon-home" */
-        li:first-child a.ui-icon-home {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
-            color: var(--p-breadcrumb-item-icon-color);
-            font-size: var(--p-breadcrumb-item-icon-size);
-            margin: 0;
-
-            &::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-breadcrumb-home-icon) center / contain no-repeat;
-            }
-
-            &:hover {
-                color: var(--p-breadcrumb-item-icon-hover-color);
-            }
+        /* home icon: only the icon of the link is shown */
+        li:first-child a.p-breadcrumb-home-icon {
+            --_icon: var(--p-breadcrumb-home-icon);
 
             span {
                 display: none;
@@ -142,6 +124,6 @@
     }
 }
 
-.ui-breadcrumb-home-icon .ui-menuitem-text {
+.p-breadcrumb-home-icon .p-menuitem-text {
     display: none;
 }

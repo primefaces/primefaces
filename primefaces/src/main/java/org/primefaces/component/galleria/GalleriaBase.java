@@ -74,9 +74,6 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, StyleAw
     @Property(defaultValue = "false", description = "Whether to display the component on fullscreen.")
     public abstract boolean isFullScreen();
 
-    @Property(description = "Close icon on fullscreen mode.")
-    public abstract String getCloseIcon();
-
     @Property(defaultValue = "3", description = "Number of items per page.")
     public abstract int getNumVisible();
 

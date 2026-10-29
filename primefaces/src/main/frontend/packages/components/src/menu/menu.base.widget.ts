@@ -115,7 +115,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      */
     protected initOverlay(): void {
         var $menu = this.getMenuElement();
-        $menu.addClass('ui-menu-overlay');
+        $menu.addClass('p-menu-overlay');
 
         this.cfg.trigger = this.cfg.trigger?.replace(/\\\\:/g, "\\:");
 
@@ -126,7 +126,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
             this.cfg.appendTo = '@(body)';
         }
         PrimeFaces.utils.registerDynamicOverlay(this, $menu, this.getId());
-        this.transition = PrimeFaces.utils.registerCSSTransition($menu, 'ui-connected-overlay');
+        this.transition = PrimeFaces.utils.registerCSSTransition($menu, 'p-connected-overlay');
 
         // register for AJAX updates on trigger
         this.bindAjaxListener();
@@ -146,7 +146,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
         //mark trigger and descendants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
-        this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
+        this.trigger.off(this.cfg.triggerEvent + '.p-menu').on(this.cfg.triggerEvent + '.p-menu', function(e) {
             var trigger = $(this);
 
             if ($menu.is(':visible')) {
@@ -156,7 +156,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
                 $this.show();
 
                 if (trigger.is(':button')) {
-                    trigger.addClass('ui-state-focus');
+                    trigger.addClass('p-state-focus');
                 }
 
                 e.preventDefault();
@@ -205,10 +205,10 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $menu,
             () => this.trigger,
             (_, eventTarget) => {
-                const menuItemLink = '.ui-menuitem-link:not(.ui-submenu-link, .ui-state-disabled)';
+                const menuItemLink = '.p-menuitem-link:not(.p-submenu-link, .p-state-disabled)';
 
                 // the SlideMenu back link only navigates within the menu, it must not close the overlay
-                const isSlideMenuBackward = eventTarget.closest('.ui-slidemenu-backward').length > 0;
+                const isSlideMenuBackward = eventTarget.closest('.p-slidemenu-backward').length > 0;
 
                 if (!isSlideMenuBackward && (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length)) {
                     this.itemMouseDown = true;
@@ -275,7 +275,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      * Performs some setup required to make this overlay menu work with dialogs.
      */
     protected setupDialogSupport(): void {
-        var dialog = this.trigger.parents('.ui-dialog:first');
+        var dialog = this.trigger.parents('.p-dialog:first');
 
         if (dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.getMenuElement().css('position', 'fixed');
@@ -297,7 +297,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
                 onEntered: function() {
                     $this.bindPanelEvents();
                     $this.resetFocus(true);
-                    $this.getMenuElement().find('a.ui-menuitem-link:not(.ui-state-disabled):focusable:first').trigger('focus');
+                    $this.getMenuElement().find('a.p-menuitem-link:not(.p-state-disabled):focusable:first').trigger('focus');
                 }
             });
         }
@@ -337,8 +337,8 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
     resetFocus(resetFirst: boolean): void {
         // default all links to not focusable
         var $container = this.getMenuElement();
-        var focusableLinks = $container.find("a.ui-menuitem-link:not(.ui-state-disabled)");
-        focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', "-1");
+        var focusableLinks = $container.find("a.p-menuitem-link:not(.p-state-disabled)");
+        focusableLinks.removeClass('p-state-hover p-state-active').attr('tabindex', "-1");
 
         if (resetFirst) {
             // reset aria-expanded
@@ -352,7 +352,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
             // the very first link should be focusable
             var defaultTabIndex = this.tabIndex || "0";
             var focused = focusableLinks.filter(':focusable:first').first();
-            focused.addClass('ui-state-hover ui-state-active').attr('tabindex', defaultTabIndex);
+            focused.addClass('p-state-hover p-state-active').attr('tabindex', defaultTabIndex);
         }
     }
 
@@ -363,15 +363,15 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      * @param event - The event that triggered the focus.
      */
     focus(menulink: JQuery, event?: JQuery.TriggeredEvent): void {
-        if (menulink.hasClass('ui-state-disabled')) {
+        if (menulink.hasClass('p-state-disabled')) {
             return;
         }
         this.resetFocus(false);
         var defaultTabIndex = this.tabIndex || "0";
-        var cssClass = 'ui-state-hover';
+        var cssClass = 'p-state-hover';
         if (!event || !event.type.startsWith('mouse')) {
              // only add active class if the event is not a mouse event like a click or keyboard event
-            cssClass = cssClass + ' ui-state-active';
+            cssClass = cssClass + ' p-state-active';
         }
         menulink.addClass(cssClass).attr('tabindex', defaultTabIndex).trigger('focus');
     }
@@ -382,14 +382,14 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      * @param event - The event that triggered the unfocus.
      */
     unfocus(menulink: JQuery, event?: JQuery.TriggeredEvent): void {
-        if (menulink.hasClass('ui-state-disabled')) {
+        if (menulink.hasClass('p-state-disabled')) {
             return;
         }
 
-        var cssClass = 'ui-state-hover';
+        var cssClass = 'p-state-hover';
         if (!event || !event.type.startsWith('mouse')) {
             // only remove active class if the event is not a mouse event like a click or keyboard event
-            cssClass = cssClass + ' ui-state-active';
+            cssClass = cssClass + ' p-state-active';
         }
         menulink.removeClass(cssClass).attr('tabindex', -1);
     }

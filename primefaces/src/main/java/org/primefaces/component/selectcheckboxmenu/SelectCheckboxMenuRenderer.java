@@ -204,7 +204,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         writer.startElement("label", null);
         writer.writeAttribute("for", id, null);
         if (disabled) {
-            writer.writeAttribute("class", "ui-state-disabled", null);
+            writer.writeAttribute("class", "p-state-disabled", null);
         }
 
         if ("&nbsp;".equals(itemLabel)) {
@@ -225,7 +225,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
     protected void encodeLabel(FacesContext context, SelectCheckboxMenu component, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = component.getLabel();
-        String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
+        String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " p-state-error" : SelectCheckboxMenu.LABEL_CLASS;
         if (label == null) {
             label = Constants.EMPTY_STRING;
         }
@@ -319,13 +319,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
 
     protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu component, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String iconClass = valid ? SelectCheckboxMenu.TRIGGER_CLASS : SelectCheckboxMenu.TRIGGER_CLASS + " ui-state-error";
+        String iconClass = valid ? SelectCheckboxMenu.TRIGGER_CLASS : SelectCheckboxMenu.TRIGGER_CLASS + " p-state-error";
 
         writer.startElement("div", component);
         writer.writeAttribute("class", iconClass, null);
 
         writer.startElement("span", component);
-        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.TRIGGER_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");
@@ -414,7 +414,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         writer.writeAttribute("href", "#", null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-circle-close", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.CLOSER_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("a");
@@ -448,7 +448,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         writer.endElement("input");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-search", id);
+        writer.writeAttribute("class", SelectCheckboxMenu.FILTER_ICON_CLASS, id);
         writer.endElement("span");
 
         writer.endElement("div");
@@ -519,7 +519,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
                 }
 
                 String headerText = column.getHeaderText();
-                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                String styleClass = column.getStyleClass() == null ? "p-state-default" : "p-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);
@@ -600,12 +600,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
 
             //attribute values
             rowStyleClass = SelectCheckboxMenu.ROW_ITEM_CLASS;
-            rowStyleClass += checked ? " ui-selectcheckboxmenu-checked" : " ui-selectcheckboxmenu-unchecked";
+            rowStyleClass += checked ? " p-selectcheckboxmenu-checked" : " p-selectcheckboxmenu-unchecked";
             if (selectItem.isNoSelectionOption()) {
-                rowStyleClass += " ui-noselection-option";
+                rowStyleClass += " p-noselection-option";
             }
             if (selectItem.isDisabled()) {
-                rowStyleClass += " ui-state-disabled";
+                rowStyleClass += " p-state-disabled";
             }
             itemValueAsString = getOptionAsString(context, component, converter, selectItem.getValue());
 
@@ -745,10 +745,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         if (disabled) {
-            boxClass += " ui-state-disabled";
+            boxClass += " p-state-disabled";
         }
         if (checked) {
-            boxClass += " ui-state-active";
+            boxClass += " p-state-active";
         }
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
         writer.startElement("div", null);

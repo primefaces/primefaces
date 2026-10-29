@@ -89,7 +89,7 @@ public class CheckboxRenderer extends InputRenderer<Checkbox> {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("class", "ui-chkbox-clone", null);
+        writer.writeAttribute("class", "p-chkbox-clone", null);
         writer.writeAttribute("data-itemindex", checkbox.getItemIndex(), null);
 
         if (tabindex != null) {
@@ -132,7 +132,7 @@ public class CheckboxRenderer extends InputRenderer<Checkbox> {
     protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectManyCheckbox selectManyCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = createStyleClass(selectManyCheckbox, null, HTML.CHECKBOX_BOX_CLASS) ;
-        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = disabled ? boxClass + " p-state-disabled" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

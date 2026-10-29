@@ -43,4 +43,4 @@ of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-clock | Container element. |
+| .p-clock | Container element. |

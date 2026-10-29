@@ -2,11 +2,11 @@
  * Log: p:log (client side log window)
  *
  * No PrimeUIX counterpart: styled like a dialog, PF only tokens in the log block of presets/*.css.
- * Markup: .ui-log > .ui-log-header (> a.ui-log-button.ui-log-{clear|all|info|warn|debug|error}),
- *         .ui-log-content > ul.ui-log-items > li.ui-log-item.ui-log-item-{info|warn|debug|error} (> span.ui-icon + text)
+ * Markup: .p-log > .p-log-header (> a.p-log-button.p-log-{clear|all|info|warn|debug|error}),
+ *         .p-log-content > ul.p-log-items > li.p-log-item.p-log-item-{info|warn|debug|error} (> span.p-icon + text)
  */
 
-.ui-log {
+.p-log {
     position: fixed;
     width: 400px;
     left: 50px;
@@ -19,7 +19,7 @@
     border-radius: var(--p-log-border-radius);
     box-shadow: var(--p-log-shadow);
 
-    .ui-log-header {
+    .p-log-header {
         display: flex;
         align-items: center;
         gap: var(--p-log-header-gap);
@@ -31,7 +31,7 @@
         cursor: move;
 
         /* header buttons: rounded text secondary icon-only buttons */
-        .ui-log-button {
+        .p-log-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -52,13 +52,13 @@
                 outline-color var(--p-log-button-transition-duration), box-shadow var(--p-log-button-transition-duration);
 
             &:hover,
-            &.ui-state-hover {
+            &.p-state-hover {
                 background: var(--p-log-button-hover-background);
                 color: var(--p-log-button-color);
             }
 
             &:active,
-            &.ui-state-active {
+            &.p-state-active {
                 background: var(--p-log-button-active-background);
                 color: var(--p-log-button-active-color);
             }
@@ -72,62 +72,35 @@
     }
 
     /* header buttons and log entries */
-    .ui-icon-trash,
-    .ui-icon-note,
-    .ui-icon-info,
-    .ui-icon-notice,
-    .ui-icon-search,
-    .ui-icon-alert {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
+    .p-icon {
         color: inherit;
     }
 
-    .ui-icon-trash::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-log-clear-icon) center / contain no-repeat;
+    .p-log-clear-icon {
+        --_icon: var(--p-log-clear-icon);
     }
 
-    .ui-icon-note::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-log-all-icon) center / contain no-repeat;
+    .p-log-all-icon {
+        --_icon: var(--p-log-all-icon);
     }
 
-    .ui-icon-info::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-log-info-icon) center / contain no-repeat;
+    .p-log-info-icon {
+        --_icon: var(--p-log-info-icon);
     }
 
-    .ui-icon-notice::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-log-warn-icon) center / contain no-repeat;
+    .p-log-warn-icon {
+        --_icon: var(--p-log-warn-icon);
     }
 
-    .ui-icon-search::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-log-debug-icon) center / contain no-repeat;
+    .p-log-debug-icon {
+        --_icon: var(--p-log-debug-icon);
     }
 
-    .ui-icon-alert::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-log-error-icon) center / contain no-repeat;
+    .p-log-error-icon {
+        --_icon: var(--p-log-error-icon);
     }
 
-    .ui-log-content {
+    .p-log-content {
         flex-grow: 1;
         background: transparent;
         color: var(--p-log-color);
@@ -135,44 +108,44 @@
         padding: var(--p-log-content-padding);
     }
 
-    .ui-log-items {
+    .p-log-items {
         margin: 0;
         padding: 0;
         list-style-type: none;
     }
 
-    .ui-log-item {
+    .p-log-item {
         margin: 0 0 var(--p-log-item-gap) 0;
         font-size: var(--p-log-item-font-size);
         overflow-wrap: anywhere;
 
-        .ui-icon {
+        .p-icon {
             margin-inline-end: var(--p-log-item-gap);
         }
 
-        &.ui-log-item-info .ui-icon {
+        &.p-log-item-info .p-icon {
             color: var(--p-log-item-info-icon-color);
         }
 
-        &.ui-log-item-warn .ui-icon {
+        &.p-log-item-warn .p-icon {
             color: var(--p-log-item-warn-icon-color);
         }
 
-        &.ui-log-item-debug .ui-icon {
+        &.p-log-item-debug .p-icon {
             color: var(--p-log-item-debug-icon-color);
         }
 
-        &.ui-log-item-error .ui-icon {
+        &.p-log-item-error .p-icon {
             color: var(--p-log-item-error-icon-color);
         }
     }
 }
 
-.ui-log-header {
+.p-log-header {
     position: relative;
 }
 
-.ui-log-content {
+.p-log-content {
     overflow: auto;
     height: 274px;
 }

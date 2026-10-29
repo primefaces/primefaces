@@ -33,8 +33,8 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
 
         if(this.cfg.custom) {
             this.originalInputs = this.jq.find(':checkbox');
-            this.inputs = $('input:checkbox[name="' + this.id + '"].ui-chkbox-clone');
-            this.outputs = this.inputs.parent().next('.ui-chkbox-box');
+            this.inputs = $('input:checkbox[name="' + this.id + '"].p-chkbox-clone');
+            this.outputs = this.inputs.parent().next('.p-chkbox-box');
             this.labels = $();
 
             //labels
@@ -57,7 +57,7 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
             }
         }
         else {
-            this.outputs = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
+            this.outputs = this.jq.find('.p-chkbox-box:not(.p-state-disabled)');
             this.inputs = this.jq.find(':checkbox:not(:disabled)');
             this.labels = this.jq.find('label');
         }
@@ -78,11 +78,11 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
         var $this = this,
         namespace = '.selectManyCheckbox';
 
-        this.outputs.filter(':not(.ui-state-disabled)').off(namespace).on('mouseenter' + namespace, function() {
-            $(this).addClass('ui-state-hover');
+        this.outputs.filter(':not(.p-state-disabled)').off(namespace).on('mouseenter' + namespace, function() {
+            $(this).addClass('p-state-hover');
         })
         .on('mouseleave' + namespace, function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click' + namespace, function(e) {
             var checkbox = $(this),
@@ -91,7 +91,7 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
             $this.toggle(input, checkbox, e);
         });
 
-        this.labels.filter(':not(.ui-state-disabled)').off(namespace).on('click' + namespace, function(e) {
+        this.labels.filter(':not(.p-state-disabled)').off(namespace).on('click' + namespace, function(e) {
             var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
             checkbox = null;
 
@@ -99,7 +99,7 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
             if(target.is(':input'))
                 checkbox = target.parent().next();
             else
-                checkbox = target.children('.ui-chkbox-box'); //custom layout
+                checkbox = target.children('.p-chkbox-box'); //custom layout
 
             checkbox.trigger('click');
 
@@ -111,13 +111,13 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
             var input = $(this),
             checkbox = input.parent().next();
 
-            checkbox.addClass('ui-state-focus');
+            checkbox.addClass('p-state-focus');
         })
         .on('blur' + namespace, function() {
             var input = $(this),
             checkbox = input.parent().next();
 
-            checkbox.removeClass('ui-state-focus');
+            checkbox.removeClass('p-state-focus');
         })
         .on('keydown' + namespace, function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {
@@ -143,7 +143,7 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
             return;
         }
 
-        if (!checkbox.hasClass('ui-state-active')) {
+        if (!checkbox.hasClass('p-state-active')) {
             this.check(input, checkbox);
         }
         else {
@@ -162,8 +162,8 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
      * @param {JQuery} checkbox the checbkox.
      */
     check(input, checkbox) {
-        checkbox.addClass('ui-state-active');
-        checkbox.children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+        checkbox.addClass('p-state-active');
+        checkbox.children('.p-chkbox-icon').addClass('p-checkbox-checked-icon');
         input.attr('aria-checked', true);
         input.prop('checked', true);
 
@@ -180,8 +180,8 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
      * @param {JQuery} checkbox the checbkox.
      */
     uncheck(input, checkbox) {
-        checkbox.removeClass('ui-state-active');
-        checkbox.children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+        checkbox.removeClass('p-state-active');
+        checkbox.children('.p-chkbox-icon').removeClass('p-checkbox-checked-icon');
         input.attr('aria-checked', false);
         input.prop('checked', false);
 
@@ -213,7 +213,7 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
      */
     checkAll(silent) {
         var $this = this;
-        this.outputs.filter(':not(.ui-state-disabled)').each(function() {
+        this.outputs.filter(':not(.p-state-disabled)').each(function() {
             var checkbox = $(this),
             input = checkbox.prev().children(':checkbox');
 
@@ -232,7 +232,7 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
      */
     uncheckAll(silent) {
         var $this = this;
-        this.outputs.filter(':not(.ui-state-disabled)').each(function() {
+        this.outputs.filter(':not(.p-state-disabled)').each(function() {
             var checkbox = $(this),
             input = checkbox.prev().children(':checkbox');
 

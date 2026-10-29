@@ -6,19 +6,18 @@
  *         facet of the current request phase) and div#id_default (always shown).
  *
  * Supported classes:
- *   ui-ajaxstatus-bar  an indeterminate progress bar fixed at the top of the viewport while a request runs. Either on
- *                      an element in the start facet (<f:facet name="start"><div class="ui-ajaxstatus-bar"/></f:facet>)
+ *   p-ajaxstatus-bar  an indeterminate progress bar fixed at the top of the viewport while a request runs. Either on
+ *                      an element in the start facet (<f:facet name="start"><div class="p-ajaxstatus-bar"/></f:facet>)
  *                      or as styleClass of p:ajaxStatus itself, which then needs a start facet (its content is hidden).
  *
- * Inline ajax status: buttons, p:autoComplete and p:selectOneMenu get a spinner
- * <span class="ui-icon-loading [ui-icon] pi pi-spin pi-spinner"> from the core while their request runs. The PrimeIcons
- * glyph is replaced by the --p-ajaxstatus-loading-icon token (::after, the ::before of PrimeIcons is hidden). The
- * rotation is the ui-spin animation below: PrimeIcons is in the primefaces.vendor layer, so it wins over pi-spin.
+ * Inline ajax status: buttons (from the core), p:autoComplete and p:selectOneMenu get a spinner
+ * <span class="p-icon-loading p-icon p-loading-icon p-ajaxstatus-loading-icon"> while their request runs (the
+ * --p-ajaxstatus-loading-icon token, rotated by the p-spin animation below).
  */
 
 /* the rotation of every spinner of the theme (blockUI, commandLink, dataScroller, outputPanel, inline ajax status);
    prefers-reduced-motion stops it (base/document.css) */
-@keyframes ui-spin {
+@keyframes p-spin {
     from {
         transform: rotate(0deg);
     }
@@ -28,7 +27,7 @@
     }
 }
 
-@keyframes ui-ajaxstatus-bar-anim {
+@keyframes p-ajaxstatus-bar-anim {
     from {
         inset-inline-start: -40%;
     }
@@ -38,26 +37,17 @@
     }
 }
 
-.ui-icon-loading {
-    display: inline-block;
-    line-height: 1;
-    animation: ui-spin var(--p-ajaxstatus-loading-icon-animation-duration) linear infinite;
-
-    &::before {
-        display: none;
-    }
-
-    &::after {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-ajaxstatus-loading-icon) center / contain no-repeat;
-    }
+.p-icon-loading {
+    animation: p-spin var(--p-ajaxstatus-loading-icon-animation-duration) linear infinite;
 }
 
-/* the bar: an element in the start facet, or the start facet of p:ajaxStatus styleClass="ui-ajaxstatus-bar" */
-.ui-ajaxstatus-bar:not(:has(> [id$="_start"])),
-.ui-ajaxstatus-bar > [id$="_start"] {
+.p-ajaxstatus-loading-icon {
+    --_icon: var(--p-ajaxstatus-loading-icon);
+}
+
+/* the bar: an element in the start facet, or the start facet of p:ajaxStatus styleClass="p-ajaxstatus-bar" */
+.p-ajaxstatus-bar:not(:has(> [id$="_start"])),
+.p-ajaxstatus-bar > [id$="_start"] {
     position: fixed;
     top: 0;
     inset-inline: 0;
@@ -76,7 +66,7 @@
         inset-inline-start: -40%;
         width: 40%;
         background: var(--p-ajaxstatus-bar-value-background);
-        animation: ui-ajaxstatus-bar-anim var(--p-ajaxstatus-bar-animation-duration) linear infinite;
+        animation: p-ajaxstatus-bar-anim var(--p-ajaxstatus-bar-animation-duration) linear infinite;
     }
 
     /* the content of the start facet when the class is on p:ajaxStatus */

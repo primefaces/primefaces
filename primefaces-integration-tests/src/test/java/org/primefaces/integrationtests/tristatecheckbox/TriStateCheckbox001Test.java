@@ -133,7 +133,7 @@ class TriStateCheckbox001Test extends AbstractPrimePageTest {
         assertNotClickable(triStateCheckbox);
         assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
         assertFalse(triStateCheckbox.isEnabled());
-        assertCss(triStateCheckbox, "ui-state-disabled");
+        assertCss(triStateCheckbox, "p-state-disabled");
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 
@@ -171,7 +171,7 @@ class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert - value should not be accepted
         assertEquals(null, triStateCheckbox.getValue());
-        assertCss(triStateCheckbox.getBox(), "ui-chkbox-readonly");
+        assertCss(triStateCheckbox.getBox(), "p-chkbox-readonly");
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 

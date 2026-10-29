@@ -72,7 +72,7 @@ class Theming011Test extends AbstractThemingTest {
         assertTrue(computedStyle(page.primary, "background-clip").contains("border-box"), "no edge layer (border-box)");
         assertEquals("rgba(0, 0, 0, 0)", computedStyle(page.primary, "border-top-color"), "the edge is drawn by the background");
         assertNotEquals("none", computedStyle(page.primary, "box-shadow"), "no machined shadow");
-        WebElement label = page.primary.findElement(By.cssSelector(".ui-button-text"));
+        WebElement label = page.primary.findElement(By.cssSelector(".p-button-text"));
         assertNotEquals("none", computedStyle(label, "text-shadow"), "no engraved label");
         assertNoJavascriptErrors();
     }
@@ -88,11 +88,11 @@ class Theming011Test extends AbstractThemingTest {
             // Assert
             for (WebElement button : List.of(page.primary, page.secondary, page.outlined, page.info, page.success, page.warning,
                     page.help, page.danger, page.contrast)) {
-                double ratio = minContrast(button.findElement(By.cssSelector(".ui-button-text")), button, null);
+                double ratio = minContrast(button.findElement(By.cssSelector(".p-button-text")), button, null);
                 assertTrue(ratio >= 4.5, scheme + " " + button.getAttribute("id") + ": " + ratio);
             }
-            WebElement checked = page.selectButton.findElement(By.cssSelector(".ui-button.ui-state-active"));
-            double ratio = minContrast(checked.findElement(By.cssSelector(".ui-button-text")), checked, "::before");
+            WebElement checked = page.selectButton.findElement(By.cssSelector(".p-button.p-state-active"));
+            double ratio = minContrast(checked.findElement(By.cssSelector(".p-button-text")), checked, "::before");
             assertTrue(ratio >= 4.5, scheme + " checked select button: " + ratio);
         }
         assertNoJavascriptErrors();
@@ -104,8 +104,8 @@ class Theming011Test extends AbstractThemingTest {
     void knobs(MetalPage page) {
         // Arrange
         setColorScheme("light");
-        WebElement handle = page.slider.findElement(By.cssSelector(".ui-slider-handle"));
-        WebElement toggleHandle = page.toggleSwitch.findElement(By.cssSelector(".ui-toggleswitch-handler"));
+        WebElement handle = page.slider.findElement(By.cssSelector(".p-slider-handle"));
+        WebElement toggleHandle = page.toggleSwitch.findElement(By.cssSelector(".p-toggleswitch-handler"));
 
         // Assert: the toggleSwitch is checked, its knob is the aluminium one the slider uses
         String sliderKnob = PrimeSelenium.executeScript("return getComputedStyle(arguments[0], '::before').backgroundImage;", handle);
@@ -127,8 +127,8 @@ class Theming011Test extends AbstractThemingTest {
         String image = computedStyle(page.primary, "background-image");
         assertTrue(image.matches("none(, none)*"), "aura button has a background image: " + image);
         assertEquals("none", computedStyle(page.primary, "box-shadow"));
-        assertEquals("none", computedStyle(page.primary.findElement(By.cssSelector(".ui-button-text")), "text-shadow"));
-        assertEquals("none", computedStyle(page.toggleSwitch.findElement(By.cssSelector(".ui-toggleswitch-handler")), "box-shadow"));
+        assertEquals("none", computedStyle(page.primary.findElement(By.cssSelector(".p-button-text")), "text-shadow"));
+        assertEquals("none", computedStyle(page.toggleSwitch.findElement(By.cssSelector(".p-toggleswitch-handler")), "box-shadow"));
         assertNoJavascriptErrors();
     }
 

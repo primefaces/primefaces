@@ -38,12 +38,11 @@ public class Menu extends MenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menu";
 
-    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-widget ui-widget-content";
-    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content";
-    public static final String CONTAINER_MAXHEIGHT_CLASS = "ui-menu-dynamic-maxheight";
-    public static final String SUBMENU_TITLE_CLASS = "ui-widget-header";
-    public static final String EXPANDED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
-    public static final String COLLAPSED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String TOGGLEABLE_MENU_CLASS = "ui-menu-toggleable";
-    public static final String SUBMENU_CHILD_CLASS = "ui-submenu-child";
+    public static final String STATIC_CONTAINER_CLASS = "p-menu p-widget p-widget-content";
+    public static final String DYNAMIC_CONTAINER_CLASS = "p-menu p-menu-dynamic p-widget p-widget-content";
+    public static final String CONTAINER_MAXHEIGHT_CLASS = "p-menu-dynamic-maxheight";
+    public static final String SUBMENU_TITLE_CLASS = "p-widget-header";
+    public static final String SUBMENU_HEADER_TOGGLE_ICON_CLASS = "p-icon p-toggle-icon p-menu-toggle-icon";
+    public static final String TOGGLEABLE_MENU_CLASS = "p-menu-toggleable";
+    public static final String SUBMENU_CHILD_CLASS = "p-submenu-child";
 }

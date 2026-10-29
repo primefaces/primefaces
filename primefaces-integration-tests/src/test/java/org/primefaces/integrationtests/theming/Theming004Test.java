@@ -46,8 +46,11 @@ class Theming004Test extends AbstractThemingTest {
             + "  ['::before', '::after'].forEach(function(pseudo) {"
             + "    var cs = getComputedStyle(el, pseudo);"
             + "    if (cs.getPropertyValue('content') !== '\"\\u2003\"') { return; }"
-            + "    count++;"
             + "    var mask = cs.getPropertyValue('mask-image') || cs.getPropertyValue('-webkit-mask-image');"
+            // an unchecked checkbox draws nothing on purpose (no --_icon, transparent mask); every other .p-icon must have one
+            + "    var blank = '.p-checkbox-icon:not(.p-checkbox-checked-icon, .p-checkbox-indeterminate-icon, .p-checkbox-crossed-icon)';"
+            + "    if (el.matches(blank) && mask.indexOf('linear-gradient(rgba(0, 0, 0, 0)') === 0) { return; }"
+            + "    count++;"
             + "    if (!mask || mask.indexOf('url(') < 0) {"
             + "      var parent = el.closest('[id]');"
             + "      missing.push(el.tagName.toLowerCase() + '.' + String(el.className).trim().split(/\\s+/).join('.') + pseudo"

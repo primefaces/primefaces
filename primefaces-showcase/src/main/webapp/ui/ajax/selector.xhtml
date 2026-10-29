@@ -48,9 +48,9 @@
     
                     <p:commandButton update="@(form)" value="All Forms" styleClass="mr-2"/>
                     <p:commandButton update="@(form:last)" value="Last Form" styleClass="mr-2"/>
-                    <p:commandButton update="@(.ui-panel)" value="All Panels" styleClass="mr-2"/>
-                    <p:commandButton process="@(.ui-panel :input)" update="@(.ui-panel)" value="Inputs of Panel" styleClass="mr-2"/>
-                    <p:commandButton process="@(.ui-panel :input:not(select))" update="@(.ui-panel)" value="Inputs Except Select"/>
+                    <p:commandButton update="@(.p-panel)" value="All Panels" styleClass="mr-2"/>
+                    <p:commandButton process="@(.p-panel :input)" update="@(.p-panel)" value="Inputs of Panel" styleClass="mr-2"/>
+                    <p:commandButton process="@(.p-panel :input:not(select))" update="@(.p-panel)" value="Inputs Except Select"/>
     
                     <p:growl id="messages"/>
                 </p:panel>

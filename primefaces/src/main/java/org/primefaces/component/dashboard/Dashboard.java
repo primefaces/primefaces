@@ -47,9 +47,9 @@ public class Dashboard extends DashboardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dashboard";
 
-    public static final String CONTAINER_CLASS = "ui-dashboard";
-    public static final String COLUMN_CLASS = "ui-dashboard-column";
-    public static final String PANEL_CLASS = "ui-dashboard-panel";
+    public static final String CONTAINER_CLASS = "p-dashboard";
+    public static final String COLUMN_CLASS = "p-dashboard-column";
+    public static final String PANEL_CLASS = "p-dashboard-panel";
 
     @Override
     public void queueEvent(FacesEvent event) {

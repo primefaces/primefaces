@@ -23,7 +23,7 @@ ScrollTop can also be assigned to its parent element by setting ```target``` as 
 ```xhtml
 <div style="height: 400px; overflow: auto">
     Content that overflows to container
-    <p:scrollTop />
+    <p:scrollTop target="parent" />
 </div>
 ```
 
@@ -34,5 +34,8 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-scrolltop | Container element.
-|.ui-scrolltop-sticky | Container element when attached to its parent.
+|.p-scrolltop | Container element.
+|.p-scrolltop-sticky | Container element when attached to its parent.
+
+The icon is the icon token `--p-scrolltop-icon` of the theme (default `--p-icon-up`, see
+[Theming](/core/theming.md?id=icons)), rendered as `<span class="p-icon p-up-icon p-scrolltop-icon">`.

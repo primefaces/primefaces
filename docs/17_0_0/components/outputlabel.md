@@ -53,6 +53,6 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-outputlabel | Label element
-.ui-state-error | Label element when input is invalid
-.ui-outputlabel-rfi | Required field indicator.
+.p-outputlabel | Label element
+.p-state-error | Label element when input is invalid
+.p-outputlabel-rfi | Required field indicator.

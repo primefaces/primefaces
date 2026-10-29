@@ -3,6 +3,7 @@
  *
  * Normal keys look like form fields, the special keys (shift, space, enter, clear, back, close) like primary buttons.
  * Supported classes on the keys: ui-state-hover, ui-state-active (pressed), :focus-visible
+ * (the ui-* classes are written by the jQuery keypad plugin with useThemeRoller, so they keep the jQuery UI names)
  * Other parts: .keypad-prompt (prompt text), .keypad-trigger (showMode="button"), .keypad-disabled, .keypad-rtl
  */
 .keypad-popup {
@@ -77,6 +78,8 @@ img.keypad-trigger {
     width: auto;
     font-family: inherit;
     font-size: var(--p-keypad-font-size);
+    font-weight: var(--p-typography-font-weight);
+    line-height: var(--p-typography-line-height);
     background: var(--p-keypad-background);
     color: var(--p-keypad-color);
     border: 1px solid var(--p-keypad-border-color);
@@ -202,6 +205,6 @@ button.keypad-trigger {
     }
 }
 
-.ui-fluid .ui-keyboard-input {
+.p-fluid .p-keyboard-input {
     width: 100%;
 }

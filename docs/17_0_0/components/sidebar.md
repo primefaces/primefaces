@@ -62,13 +62,13 @@ list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-sidebar | Container element.
-.ui-sidebar-left | Container element of a sidebar whose position is left.
-.ui-sidebar-right | Container element of a sidebar whose position is right.
-.ui-sidebar-top | Container element of a sidebar whose position is top.
-.ui-sidebar-bottom | Container element of a sidebar whose position is bottom.
-.ui-sidebar-full |Container element of a full screen sidebar.
-.ui-sidebar-close | Close icon.
+.p-sidebar | Container element.
+.p-sidebar-left | Container element of a sidebar whose position is left.
+.p-sidebar-right | Container element of a sidebar whose position is right.
+.p-sidebar-top | Container element of a sidebar whose position is top.
+.p-sidebar-bottom | Container element of a sidebar whose position is bottom.
+.p-sidebar-full |Container element of a full screen sidebar.
+.p-sidebar-close | Close icon.
 
 As skinning style classes are global, see the main theming section for more information.
 

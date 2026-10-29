@@ -135,15 +135,15 @@ public class AbstractTreeTableTest extends AbstractTableTest {
     }
 
     protected boolean isSelected(TreeTable treeTable, String rowKey) {
-        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "ui-state-highlight");
+        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "p-state-highlight");
     }
 
     protected boolean isPartialSelected(TreeTable treeTable, String rowKey) {
-        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "ui-treetable-partialselected");
+        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "p-treetable-partialselected");
     }
 
     protected boolean isChecked(TreeTable treeTable, String rowKey) {
-        return !row(treeTable, rowKey).findElements(By.cssSelector("span.ui-chkbox-icon.ui-icon-check")).isEmpty();
+        return !row(treeTable, rowKey).findElements(By.cssSelector("span.p-chkbox-icon.p-checkbox-checked-icon")).isEmpty();
     }
 
     protected WebElement row(TreeTable treeTable, String rowKey) {
@@ -151,6 +151,6 @@ public class AbstractTreeTableTest extends AbstractTableTest {
     }
 
     private WebElement checkboxBox(TreeTable treeTable, String rowKey) {
-        return row(treeTable, rowKey).findElement(By.cssSelector("div.ui-chkbox-box"));
+        return row(treeTable, rowKey).findElement(By.cssSelector("div.p-chkbox-box"));
     }
 }

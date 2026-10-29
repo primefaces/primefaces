@@ -136,7 +136,6 @@
   - [InputGroup](/components/inputgroup.md)
   - [InputMask](/components/inputmask.md)
   - [InputNumber](/components/inputnumber.md)
-  - [InputSwitch](/components/inputswitch.md)
   - [InputText](/components/inputtext.md)
   - [InputTextarea](/components/inputtextarea.md)
   - [Keyboard](/components/keyboard.md)

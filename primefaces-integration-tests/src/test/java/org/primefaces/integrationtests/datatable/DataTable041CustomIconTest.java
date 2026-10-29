@@ -25,10 +25,12 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,14 +50,23 @@ class DataTable041CustomIconTest extends AbstractPrimePageTest {
 
     @Test
     void customIcons(Page page) {
-        // Assert
-        assertTrue(page.dataTable.getRow(0).getToggler().getAttribute("class").contains("pi pi-chevron-circle-right"));
+        // Assert: the icon follows aria-expanded, the image comes from the overridden tokens
+        WebElement toggler = page.dataTable.getRow(0).getToggler();
+        assertTrue(PrimeSelenium.hasCssClass(toggler, "p-datatable-row-toggle-icon"));
+        assertEquals("false", toggler.getDomAttribute("aria-expanded"));
+        assertEquals(token(toggler, "--p-icon-plus"), token(toggler, "--_icon"));
 
         // Act
         page.dataTable.getRow(0).toggle();
 
         // Assert
-        assertTrue(page.dataTable.getRow(0).getToggler().getAttribute("class").contains("pi pi-chevron-circle-down"));
+        toggler = page.dataTable.getRow(0).getToggler();
+        assertEquals("true", toggler.getDomAttribute("aria-expanded"));
+        assertEquals(token(toggler, "--p-icon-minus"), token(toggler, "--_icon"));
+    }
+
+    private static String token(WebElement element, String name) {
+        return PrimeSelenium.executeScript("return getComputedStyle(arguments[0]).getPropertyValue(arguments[1]).trim();", element, name);
     }
 
     public static class Page extends AbstractPrimePage {

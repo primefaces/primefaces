@@ -21,7 +21,7 @@
             .custom-button:hover {
                 background: var(--p-content-hover-background);
             }
-            .custom-button.ui-state-active {
+            .custom-button.p-state-active {
                 background: var(--p-primary-color);
                 color: var(--p-primary-contrast-color);
                 border-color: var(--p-primary-color);
@@ -54,7 +54,7 @@
                 transform: translateY(-2px);
                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             }
-            .payment-button.ui-state-active {
+            .payment-button.p-state-active {
                 background: var(--p-content-hover-background);
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -62,32 +62,32 @@
             .payment-button.paypal {
                 border-color: #0070ba;
             }
-            .payment-button.paypal.ui-state-active {
+            .payment-button.paypal.p-state-active {
                 border-color: #0070ba;
                 background: color-mix(in srgb, #0070ba 14%, var(--p-content-background));
             }
             .payment-button.bitcoin {
                 border-color: #f7931a;
             }
-            .payment-button.bitcoin.ui-state-active {
+            .payment-button.bitcoin.p-state-active {
                 border-color: #f7931a;
                 background: color-mix(in srgb, #f7931a 14%, var(--p-content-background));
             }
             .payment-button.creditcard {
                 border-color: #6c757d;
             }
-            .payment-button.creditcard.ui-state-active {
+            .payment-button.creditcard.p-state-active {
                 border-color: #6c757d;
                 background: color-mix(in srgb, #6c757d 14%, var(--p-content-background));
             }
             .payment-button.cash {
                 border-color: #28a745;
             }
-            .payment-button.cash.ui-state-active {
+            .payment-button.cash.p-state-active {
                 border-color: #28a745;
                 background: color-mix(in srgb, #28a745 14%, var(--p-content-background));
             }
-            .payment-button.ui-state-disabled {
+            .payment-button.p-state-disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
                 pointer-events: none;
@@ -118,7 +118,7 @@
                 color: var(--p-text-muted-color);
                 text-align: center;
             }
-            .payment-button.ui-state-active .payment-tagline {
+            .payment-button.p-state-active .payment-tagline {
                 color: var(--p-text-color);
             }
         </style>
@@ -203,7 +203,7 @@
                             <div class="payment-title">Bitcoin</div>
                             <div class="payment-tagline">Cryptocurrency payment</div>
                         </div>
-                        <div class="payment-button creditcard ui-state-disabled" role="radio" tabindex="-1">
+                        <div class="payment-button creditcard p-state-disabled" role="radio" tabindex="-1">
                             <i class="pi pi-credit-card payment-icon"></i>
                             <div class="payment-title">Credit Card</div>
                             <div class="payment-tagline">Currently unavailable</div>

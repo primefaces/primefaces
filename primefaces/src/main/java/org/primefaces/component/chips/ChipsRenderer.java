@@ -167,7 +167,7 @@ public class ChipsRenderer extends InputRenderer<Chips> {
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", inputId, null);
-        writer.writeAttribute("class", "ui-widget", null);
+        writer.writeAttribute("class", "p-widget", null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
 

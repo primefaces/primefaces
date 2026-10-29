@@ -84,13 +84,13 @@ is the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-datascroller | Main container element
-| .ui-datascroller-inline | Main container element in inline mode
-| .ui-datalist-header | Header element
-| .ui-datalist-content | Content element
-| .ui-datascroller-list | List element container
-| .ui-datascroller-item | Container of each item in the list
-| .ui-datascroller-loader | Container of custom loader element.
-| .ui-datascroller-loading | Built-in load status indicator
+| .p-datascroller | Main container element
+| .p-datascroller-inline | Main container element in inline mode
+| .p-datalist-header | Header element
+| .p-datalist-content | Content element
+| .p-datascroller-list | List element container
+| .p-datascroller-item | Container of each item in the list
+| .p-datascroller-loader | Container of custom loader element.
+| .p-datascroller-loading | Built-in load status indicator
 
 As skinning style classes are global, see the main theming section for more information.

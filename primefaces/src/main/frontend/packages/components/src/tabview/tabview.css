@@ -1,19 +1,19 @@
 /*
- * TabView: p:tabView (.ui-tabs)
+ * TabView: p:tabView (.p-tabs)
  *
- * ul.ui-tabs-nav = PrimeUIX tablist, li.ui-tabs-header = tab, .ui-tabs-panels = tabpanels.
+ * ul.p-tabs-nav = PrimeUIX tablist, li.p-tabs-header = tab, .p-tabs-panels = tabpanels.
  * PF has no active bar element, the active bar is the ::after of the active tab and follows the orientation.
- * The tablist is a flex container, so the li.ui-tabs-actions (global and per tab) are flex items (order/margin, no floats).
- * States: ui-tabs-top | -bottom | -left | -right, ui-tabs-scrollable,
- *         ui-state-active, ui-state-hover, ui-state-disabled, ui-state-error on a tab,
- *         ui-tabs-rtl, ui-tabs-outline (keyboard focus, set by the widget)
+ * The tablist is a flex container, so the li.p-tabs-actions (global and per tab) are flex items (order/margin, no floats).
+ * States: p-tabs-top | -bottom | -left | -right, p-tabs-scrollable,
+ *         p-state-active, p-state-hover, p-state-disabled, p-state-error on a tab,
+ *         p-tabs-rtl, p-tabs-outline (keyboard focus, set by the widget)
  */
-.ui-tabs {
+.p-tabs {
     /* containing block of the vertical actions and the scroller */
     position: relative;
 
     /* tablist */
-    .ui-tabs-nav {
+    .p-tabs-nav {
         display: flex;
         position: relative;
         margin: 0;
@@ -34,7 +34,7 @@
             vertical-align: top;
 
             /* GitHub #12338 menu inside tabs */
-            .ui-menu-list {
+            .p-menu-list {
                 white-space: initial;
             }
 
@@ -44,17 +44,17 @@
                 cursor: pointer;
             }
 
-            &.ui-tabs-selected a,
-            &.ui-state-disabled a {
+            &.p-tabs-selected a,
+            &.p-state-disabled a {
                 cursor: text;
             }
 
-            > .ui-icon {
+            > .p-tabs-close-icon {
                 cursor: pointer;
             }
 
             /* tab */
-            &.ui-tabs-header {
+            &.p-tabs-header {
                 display: flex;
                 align-items: center;
                 gap: var(--p-tabs-tab-gap);
@@ -78,33 +78,19 @@
                     box-shadow var(--p-tabs-transition-duration);
             }
 
-            &.ui-tabs-header a {
+            &.p-tabs-header a {
                 display: block;
                 color: inherit;
                 font-weight: var(--p-tabs-tab-font-weight);
                 line-height: var(--p-typography-line-height);
             }
 
-            &.ui-tabs-header .ui-icon {
-                color: inherit;
-            }
-
-            &.ui-tabs-header .ui-icon.ui-icon-close {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
-            }
-
-            &.ui-tabs-header .ui-icon.ui-icon-close::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-tabs-close-icon) center / contain no-repeat;
+            &.p-tabs-header .p-tabs-close-icon {
+                --_icon: var(--p-tabs-close-icon);
             }
 
             /* active bar: horizontal at the bottom of the tab (top orientation) */
-            &.ui-tabs-header::after {
+            &.p-tabs-header::after {
                 content: "";
                 display: block;
                 position: absolute;
@@ -117,41 +103,41 @@
                 transition: background var(--p-tabs-transition-duration);
             }
 
-            &.ui-tabs-header.ui-state-hover,
-            &.ui-tabs-header:not(.ui-state-active, .ui-state-disabled):hover {
+            &.p-tabs-header.p-state-hover,
+            &.p-tabs-header:not(.p-state-active, .p-state-disabled):hover {
                 background: var(--p-tabs-tab-hover-background);
                 border-color: var(--p-tabs-tab-hover-border-color);
                 color: var(--p-tabs-tab-hover-color);
             }
 
-            &.ui-tabs-header.ui-state-active {
+            &.p-tabs-header.p-state-active {
                 background: var(--p-tabs-tab-active-background);
                 border-color: var(--p-tabs-tab-active-border-color);
                 color: var(--p-tabs-tab-active-color);
             }
 
-            &.ui-tabs-header.ui-state-active::after {
+            &.p-tabs-header.p-state-active::after {
                 background: var(--p-tabs-active-bar-background);
             }
 
             /* invalid: PrimeFaces tokens */
-            &.ui-tabs-header.ui-state-error,
-            &.ui-tabs-header.ui-state-error:not(.ui-state-disabled):hover {
+            &.p-tabs-header.p-state-error,
+            &.p-tabs-header.p-state-error:not(.p-state-disabled):hover {
                 color: var(--p-tabs-tab-invalid-color);
                 border-color: var(--p-tabs-tab-invalid-border-color);
             }
 
             /* active: the invalid text color would sit on the active tab background (Nora: primary) */
-            &.ui-tabs-header.ui-state-error.ui-state-active,
-            &.ui-tabs-header.ui-state-error.ui-state-active:not(.ui-state-disabled):hover {
+            &.p-tabs-header.p-state-error.p-state-active,
+            &.p-tabs-header.p-state-error.p-state-active:not(.p-state-disabled):hover {
                 color: var(--p-tabs-tab-active-invalid-color);
             }
 
-            &.ui-tabs-header.ui-state-error.ui-state-active::after {
+            &.p-tabs-header.p-state-error.p-state-active::after {
                 background: var(--p-tabs-active-bar-invalid-background);
             }
 
-            &.ui-tabs-header:not(.ui-state-disabled):has(> a:focus-visible) {
+            &.p-tabs-header:not(.p-state-disabled):has(> a:focus-visible) {
                 z-index: 1;
                 outline: var(--p-tabs-tab-focus-ring-width) var(--p-tabs-tab-focus-ring-style) var(--p-tabs-tab-focus-ring-color);
                 outline-offset: var(--p-tabs-tab-focus-ring-offset);
@@ -159,7 +145,7 @@
             }
 
             /* actions facet */
-            &.ui-tabs-actions {
+            &.p-tabs-actions {
                 order: 1;
                 margin-inline-start: auto;
                 align-self: center;
@@ -167,23 +153,23 @@
         }
     }
 
-    li.ui-tabs-actions[aria-hidden='true'] {
+    li.p-tabs-actions[aria-hidden='true'] {
         display: none;
     }
 
     /* footer facet */
-    .ui-tabs-footer {
+    .p-tabs-footer {
         padding: var(--p-tabs-tabpanel-padding);
         background: var(--p-tabs-tabpanel-background);
         color: var(--p-tabs-tabpanel-color);
     }
 
     /* tabpanels */
-    .ui-tabs-panels {
+    .p-tabs-panels {
         background: var(--p-tabs-tabpanel-background);
         color: var(--p-tabs-tabpanel-color);
 
-        .ui-tabs-panel {
+        .p-tabs-panel {
             padding: var(--p-tabs-tabpanel-padding);
             outline-color: transparent;
 
@@ -195,110 +181,110 @@
         }
     }
 
-    .ui-tabs-panel {
+    .p-tabs-panel {
         border-width: 0;
         background: none;
     }
 
     /* top / bottom */
-    &.ui-tabs-top > .ui-tabs-nav,
-    &.ui-tabs-bottom > .ui-tabs-nav {
+    &.p-tabs-top > .p-tabs-nav,
+    &.p-tabs-bottom > .p-tabs-nav {
         flex-wrap: wrap;
     }
 
-    &.ui-tabs-bottom {
+    &.p-tabs-bottom {
         /* bottom: the tablist border and the active bar move to the top edge */
-        > .ui-tabs-nav,
-        > .ui-tabs-navscroller > .ui-tabs-nav {
+        > .p-tabs-nav,
+        > .p-tabs-navscroller > .p-tabs-nav {
             border-width: 0;
             /* no token: the tablist border token only describes the bottom edge of a top tablist */
             border-top: 1px solid var(--p-tabs-tablist-border-color);
         }
 
-        > .ui-tabs-nav > li.ui-tabs-header::after,
-        > .ui-tabs-navscroller > .ui-tabs-nav > li.ui-tabs-header::after {
+        > .p-tabs-nav > li.p-tabs-header::after,
+        > .p-tabs-navscroller > .p-tabs-nav > li.p-tabs-header::after {
             top: var(--p-tabs-active-bar-bottom);
             bottom: auto;
         }
     }
 
     /* left / right: vertical tablist */
-    &.ui-tabs-left > .ui-tabs-nav,
-    &.ui-tabs-right > .ui-tabs-nav {
+    &.p-tabs-left > .p-tabs-nav,
+    &.p-tabs-right > .p-tabs-nav {
         flex-direction: column;
         width: 25%;
         border-width: 0;
     }
 
-    &.ui-tabs-left > .ui-tabs-nav li,
-    &.ui-tabs-right > .ui-tabs-nav li {
+    &.p-tabs-left > .p-tabs-nav li,
+    &.p-tabs-right > .p-tabs-nav li {
         white-space: normal;
     }
 
-    &.ui-tabs-left > .ui-tabs-nav li a,
-    &.ui-tabs-right > .ui-tabs-nav li a {
+    &.p-tabs-left > .p-tabs-nav li a,
+    &.p-tabs-right > .p-tabs-nav li a {
         width: 90%;
     }
 
-    &.ui-tabs-left > .ui-tabs-nav > li.ui-tabs-header,
-    &.ui-tabs-right > .ui-tabs-nav > li.ui-tabs-header {
+    &.p-tabs-left > .p-tabs-nav > li.p-tabs-header,
+    &.p-tabs-right > .p-tabs-nav > li.p-tabs-header {
         width: 100%;
     }
 
-    &.ui-tabs-left > .ui-tabs-panels,
-    &.ui-tabs-right > .ui-tabs-panels {
+    &.p-tabs-left > .p-tabs-panels,
+    &.p-tabs-right > .p-tabs-panels {
         width: 75%;
     }
 
-    &.ui-tabs-left .ui-tabs-actions,
-    &.ui-tabs-right .ui-tabs-actions {
+    &.p-tabs-left .p-tabs-actions,
+    &.p-tabs-right .p-tabs-actions {
         position: absolute;
         bottom: 0;
     }
 
-    &.ui-tabs-left > .ui-tabs-nav {
+    &.p-tabs-left > .p-tabs-nav {
         /* no token: see bottom orientation */
         border-right: 1px solid var(--p-tabs-tablist-border-color);
     }
 
-    &.ui-tabs-right {
-        > .ui-tabs-nav {
+    &.p-tabs-right {
+        > .p-tabs-nav {
             float: right;
             /* no token: see bottom orientation */
             border-left: 1px solid var(--p-tabs-tablist-border-color);
         }
 
-        > .ui-tabs-panels {
+        > .p-tabs-panels {
             float: left;
         }
     }
 
-    &.ui-tabs-left > .ui-tabs-nav > li.ui-tabs-header::after,
-    &.ui-tabs-right > .ui-tabs-nav > li.ui-tabs-header::after {
+    &.p-tabs-left > .p-tabs-nav > li.p-tabs-header::after,
+    &.p-tabs-right > .p-tabs-nav > li.p-tabs-header::after {
         inset-block: 0;
         width: var(--p-tabs-active-bar-height);
         height: auto;
     }
 
-    &.ui-tabs-left > .ui-tabs-nav > li.ui-tabs-header::after {
+    &.p-tabs-left > .p-tabs-nav > li.p-tabs-header::after {
         inset-inline: auto var(--p-tabs-active-bar-bottom);
     }
 
-    &.ui-tabs-right > .ui-tabs-nav > li.ui-tabs-header::after {
+    &.p-tabs-right > .p-tabs-nav > li.p-tabs-header::after {
         inset-inline: var(--p-tabs-active-bar-bottom) auto;
     }
 
     /* scrollable: nav buttons */
-    .ui-tabs-navscroller {
+    .p-tabs-navscroller {
         position: relative;
         overflow: hidden;
         padding-left: var(--p-tabs-nav-button-width);
 
-        &.ui-tabs-navscroller-btn-hidden {
+        &.p-tabs-navscroller-btn-hidden {
             padding-left: 0;
         }
 
-        .ui-tabs-navscroller-btn {
+        .p-tabs-navscroller-btn {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -315,37 +301,24 @@
             transition: color var(--p-tabs-transition-duration), outline-color var(--p-tabs-transition-duration),
                 box-shadow var(--p-tabs-transition-duration);
 
-            &.ui-tabs-navscroller-btn-left {
+            &.p-tabs-navscroller-btn-left {
                 left: 0;
             }
 
-            &.ui-tabs-navscroller-btn-right {
+            &.p-tabs-navscroller-btn-right {
                 right: 0;
             }
 
-            .ui-icon {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
+            .p-tabs-prev-icon {
+                --_icon: var(--p-tabs-prev-icon);
             }
 
-            &.ui-tabs-navscroller-btn-left .ui-icon::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-tabs-prev-icon) center / contain no-repeat;
+            .p-tabs-next-icon {
+                --_icon: var(--p-tabs-next-icon);
             }
 
-            &.ui-tabs-navscroller-btn-right .ui-icon::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-tabs-next-icon) center / contain no-repeat;
-            }
-
-            &.ui-state-hover,
-            &:not(.ui-state-disabled):hover {
+            &.p-state-hover,
+            &:not(.p-state-disabled):hover {
                 background: var(--p-tabs-nav-button-background);
                 color: var(--p-tabs-nav-button-hover-color);
             }
@@ -359,19 +332,19 @@
         }
     }
 
-    .ui-tabs-navscroller-btn {
+    .p-tabs-navscroller-btn {
         position: absolute;
         cursor: pointer;
     }
 
-    .ui-tabs-navscroller.ui-tabs-navscroller-btn-hidden .ui-tabs-navscroller-btn {
+    .p-tabs-navscroller.p-tabs-navscroller-btn-hidden .p-tabs-navscroller-btn {
         display: none;
     }
 }
 
 /* vertical tablist: the nav floats next to the panels */
-.ui-tabs-left::after,
-.ui-tabs-right::after {
+.p-tabs-left::after,
+.p-tabs-right::after {
     clear: both;
     content: ".";
     display: block;
@@ -379,24 +352,24 @@
     visibility: hidden;
 }
 
-.ui-tabs-left {
-    > .ui-tabs-nav {
+.p-tabs-left {
+    > .p-tabs-nav {
         float: left;
     }
 
-    > .ui-tabs-panels {
+    > .p-tabs-panels {
         overflow: hidden;
     }
 }
 
-.ui-tabs-rtl {
+.p-tabs-rtl {
     direction: rtl;
 }
 
-.ui-tabs-scrollable > .ui-tabs-navscroller > .ui-tabs-nav {
+.p-tabs-scrollable > .p-tabs-navscroller > .p-tabs-nav {
     width: 5000px;
 }
 
-.ui-tabs-outline {
+.p-tabs-outline {
     z-index: 1;
 }

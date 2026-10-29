@@ -137,7 +137,7 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
 
             String styleClass = getLinkStyleClass(menuitem);
             if (disabled) {
-                styleClass = styleClass + " ui-state-disabled";
+                styleClass = styleClass + " p-state-disabled";
             }
 
             writer.writeAttribute("class", styleClass, null);
@@ -225,7 +225,7 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
         String icon = menuitem.getIcon();
         if (icon != null && LangUtils.isNotBlank(iconPos)) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon + " ui-menuitem-icon-" + iconPos, null);
+            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon + " p-menuitem-icon-" + iconPos, null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
@@ -281,8 +281,7 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
 
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
-        styleClass = isVertical ? styleClass : Menu.SUBMENU_DOWN_ICON_CLASS;
+        String styleClass = isVertical ? Menu.SUBMENU_ICON_CLASS : Menu.MENUBAR_SUBMENU_ICON_CLASS;
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);

@@ -9,11 +9,11 @@ method of the bean and updates messages. Nested options defined as menuitems do 
 requests as well as regular navigation to an external url.
 
 ```xhtml
-<p:splitButton value="Save" action="#{buttonBean.save}" update="messages" icon="ui-icon-disk">
-    <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
-    <p:menuitem value="Delete" action="#{buttonBean.delete}" ajax="false" icon="ui-icon-close"/>
+<p:splitButton value="Save" action="#{buttonBean.save}" update="messages" icon="pi pi-save">
+    <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="pi pi-refresh"/>
+    <p:menuitem value="Delete" action="#{buttonBean.delete}" ajax="false" icon="pi pi-times"/>
     <p:divider />
-    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-external-link"/>
 </p:splitButton>
 ```
 ## Client Side API
@@ -32,16 +32,16 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-splitbutton | Container element.
-| .ui-button | Button element
-| .ui-splitbutton-menubutton | Dropdown button
-| .ui-button-text-only | Button element when icon is not used
-| .ui-button-text | Label of button
-| .ui-menu | Container element of menu
-| .ui-menu-list | List container
-| .ui-menuitem | Each menu item
-| .ui-menuitem-link | Anchor element in a link item
-| .ui-menuitem-text | Text element in an item
+| .p-splitbutton | Container element.
+| .p-button | Button element
+| .p-splitbutton-menubutton | Dropdown button
+| .p-button-text-only | Button element when icon is not used
+| .p-button-text | Label of button
+| .p-menu | Container element of menu
+| .p-menu-list | List container
+| .p-menuitem | Each menu item
+| .p-menuitem-link | Anchor element in a link item
+| .p-menuitem-text | Text element in an item
 
 As skinning style classes are global, see the main theming section for more information.
 

@@ -1,13 +1,13 @@
 /*
  * Tree: p:tree (vertical and horizontal), PrimeUIX tree tokens
  *
- * Supported classes: ui-tree-horizontal, ui-tree-rtl, ui-tree-selectable, ui-state-hover / ui-state-highlight (node content),
- *                    ui-treenode-outline (keyboard focus), ui-tree-droppoint, ui-tree-draghelper, ui-tree-checkbox-all, ui-noborder
+ * Supported classes: p-tree-horizontal, p-tree-rtl, p-tree-selectable, p-state-hover / p-state-highlight (node content),
+ *                    p-treenode-outline (keyboard focus), p-tree-droppoint, p-tree-draghelper, p-tree-checkbox-all, p-noborder
  *
  * The connector lines of the horizontal tree are gradients; the horizontal tree uses logical properties, so it mirrors
- * in RTL (ui-tree-rtl or dir="rtl" on an ancestor).
+ * in RTL (p-tree-rtl or dir="rtl" on an ancestor).
  */
-.ui-tree {
+.p-tree {
     position: relative;
     border: 1px solid var(--p-tree-border-color);
     background: var(--p-tree-background);
@@ -16,108 +16,108 @@
     width: 100%;
     border-radius: var(--p-tree-border-radius);
 
-    .ui-treenode {
+    .p-treenode {
         list-style: none outside none;
         margin: 0;
     }
 
-    .ui-tree-toggler {
+    .p-tree-toggler {
         cursor: pointer;
         display: inline-block;
         vertical-align: middle;
     }
 
-    .ui-treenode-icon {
+    .p-treenode-icon {
         display: inline-block;
         vertical-align: middle;
     }
 
-    .ui-treenode-label {
+    .p-treenode-label {
         display: inline-block;
         vertical-align: middle;
         cursor: default;
     }
 
-    .ui-tree-selectable .ui-treenode-content,
-    .ui-treenode-content.ui-tree-selectable,
-    .ui-treenode-content.ui-tree-selectable .ui-treenode-label {
+    .p-tree-selectable .p-treenode-content,
+    .p-treenode-content.p-tree-selectable,
+    .p-treenode-content.p-tree-selectable .p-treenode-label {
         cursor: pointer;
     }
 
-    .ui-treenode-leaf-icon {
+    .p-treenode-leaf-icon {
         display: inline-block;
     }
 
-    .ui-chkbox {
+    .p-chkbox {
         display: inline-block;
     }
 
-    .ui-chkbox-box {
+    .p-chkbox-box {
         cursor: pointer;
     }
 
-    .ui-treenode-hidden {
+    .p-treenode-hidden {
         display: none;
     }
 
-    &.ui-noborder {
+    &.p-noborder {
         border: 0;
         padding: 0;
     }
 
-    &.ui-state-disabled .ui-tree-toggler,
-    &.ui-state-disabled .ui-tree-selectable .ui-treenode-content,
-    &.ui-state-disabled .ui-treenode-content.ui-tree-selectable,
-    &.ui-state-disabled .ui-treenode-content.ui-tree-selectable .ui-treenode-label,
-    &.ui-state-disabled .ui-tree-selectable .ui-treenode-icon,
-    &.ui-state-disabled .ui-chkbox-box {
+    &.p-state-disabled .p-tree-toggler,
+    &.p-state-disabled .p-tree-selectable .p-treenode-content,
+    &.p-state-disabled .p-treenode-content.p-tree-selectable,
+    &.p-state-disabled .p-treenode-content.p-tree-selectable .p-treenode-label,
+    &.p-state-disabled .p-tree-selectable .p-treenode-icon,
+    &.p-state-disabled .p-chkbox-box {
         cursor: default;
     }
 
-    .ui-treenode-content .ui-chkbox.ui-selection {
+    .p-treenode-content .p-chkbox.p-selection {
         display: none;
     }
 
-    .ui-treenode-content.ui-tree-selectable .ui-chkbox.ui-selection,
-    &.ui-tree-checkbox-all .ui-treenode-content .ui-chkbox.ui-selection {
+    .p-treenode-content.p-tree-selectable .p-chkbox.p-selection,
+    &.p-tree-checkbox-all .p-treenode-content .p-chkbox.p-selection {
         display: inline-block;
     }
 
-    &.ui-tree-rtl {
+    &.p-tree-rtl {
         direction: rtl;
     }
 
-    .ui-tree-scrollertop,
-    .ui-tree-scrollerbottom {
+    .p-tree-scrollertop,
+    .p-tree-scrollerbottom {
         height: 10px;
         width: 100%;
         position: absolute;
     }
 
-    .ui-tree-scrollertop {
+    .p-tree-scrollertop {
         top: 0;
     }
 
-    .ui-tree-scrollerbottom {
+    .p-tree-scrollerbottom {
         bottom: 0;
     }
 
     /* vertical tree */
-    .ui-tree-container {
+    .p-tree-container {
         white-space: nowrap;
         overflow: auto;
         padding: 0;
         margin: 0;
 
-        .ui-treenode {
+        .p-treenode {
             padding: var(--p-tree-gap) 0 0 0;
         }
 
-        .ui-treenode .ui-treenode-content * {
+        .p-treenode .p-treenode-content * {
             flex: none;
         }
 
-        .ui-treenode .ui-treenode-content {
+        .p-treenode .p-treenode-content {
             display: flex;
             align-items: center;
             padding: var(--p-tree-node-padding);
@@ -128,7 +128,7 @@
                 outline-color var(--p-tree-transition-duration), box-shadow var(--p-tree-transition-duration);
         }
 
-        .ui-treenode .ui-treenode-content .ui-tree-toggler {
+        .p-treenode .p-treenode-content .p-tree-toggler {
             margin: 0 var(--p-tree-node-gap) 0 0;
             width: var(--p-tree-node-toggle-button-size);
             height: var(--p-tree-node-toggle-button-size);
@@ -146,76 +146,50 @@
                 outline-color var(--p-tree-transition-duration), box-shadow var(--p-tree-transition-duration);
         }
 
-        .ui-treenode .ui-treenode-content .ui-tree-toggler:hover {
+        .p-treenode .p-treenode-content .p-tree-toggler:hover {
             background: var(--p-tree-node-toggle-button-hover-background);
             color: var(--p-tree-node-toggle-button-hover-color);
         }
 
-        .ui-treenode .ui-treenode-content .ui-tree-toggler:focus-visible {
+        .p-treenode .p-treenode-content .p-tree-toggler:focus-visible {
             outline: var(--p-tree-node-toggle-button-focus-ring-width) var(--p-tree-node-toggle-button-focus-ring-style) var(--p-tree-node-toggle-button-focus-ring-color);
             outline-offset: var(--p-tree-node-toggle-button-focus-ring-offset);
             box-shadow: var(--p-tree-node-toggle-button-focus-ring-shadow);
         }
 
-        .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-e::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-tree-toggle-collapsed-icon) center / contain no-repeat;
+        /* the state is aria-expanded of the node (li) */
+        .p-tree-toggle-icon {
+            --_icon: var(--p-tree-toggle-expanded-icon);
         }
 
-        .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-s::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-tree-toggle-expanded-icon) center / contain no-repeat;
+        .p-treenode[aria-expanded="false"] > .p-treenode-content > .p-tree-toggle-icon {
+            --_icon: var(--p-tree-toggle-collapsed-icon);
         }
 
-        .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-w::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-tree-toggle-collapsed-icon) center / contain no-repeat;
-            scale: -1 1;
-        }
-
-        .ui-treenode .ui-treenode-content .ui-treenode-leaf-icon {
+        .p-treenode .p-treenode-content .p-treenode-leaf-icon {
             width: var(--p-tree-node-toggle-button-size);
             height: var(--p-tree-node-toggle-button-size);
             margin: 0 var(--p-tree-node-gap) 0 0;
         }
 
-        .ui-treenode .ui-treenode-content .ui-treenode-icon {
+        .p-treenode .p-treenode-content .p-treenode-icon {
             margin: 0 var(--p-tree-node-gap) 0 0;
             color: var(--p-tree-node-icon-color);
             transition: color var(--p-tree-transition-duration);
         }
     }
 
-    .ui-treenode-children {
+    .p-treenode-children {
         margin: 0;
         padding: 0 0 0 var(--p-tree-indent);
     }
 
-    &.ui-tree-rtl .ui-treenode-children {
+    &.p-tree-rtl .p-treenode-children {
         padding: 0 var(--p-tree-indent) 0 0;
     }
 
-    .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-e,
-    .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-s,
-    .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-w,
-    .ui-tree-container .ui-treenode .ui-treenode-content .ui-chkbox .ui-icon-minus,
-    &.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler.ui-icon-minus,
-    &.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler.ui-icon-plus,
-    &.ui-tree-horizontal .ui-treenode-content .ui-chkbox .ui-icon-minus,
-    .ui-tree-filter-container .ui-icon {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-    }
-
-    .ui-tree-container {
-        .ui-treenode .ui-treenode-content .ui-treenode-label {
+    .p-tree-container {
+        .p-treenode .p-treenode-content .p-treenode-label {
             margin: 0;
             padding: 0;
             font-size: var(--p-tree-node-label-font-size);
@@ -223,111 +197,103 @@
             border-radius: var(--p-tree-node-border-radius);
         }
 
-        .ui-treenode .ui-treenode-content .ui-chkbox {
+        .p-treenode .p-treenode-content .p-chkbox {
             margin-right: calc(2 * var(--p-tree-node-gap));
         }
 
-        .ui-treenode .ui-treenode-content .ui-chkbox .ui-icon-minus {
+        .p-treenode .p-treenode-content .p-chkbox .p-checkbox-indeterminate-icon {
             color: var(--p-tree-color);
         }
 
-        .ui-treenode .ui-treenode-content .ui-chkbox .ui-icon-minus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-checkbox-indeterminate-icon) center / contain no-repeat;
-        }
-
-        .ui-treenode .ui-treenode-content.ui-state-highlight {
+        .p-treenode .p-treenode-content.p-state-highlight {
             background: var(--p-tree-node-selected-background);
             color: var(--p-tree-node-selected-color);
         }
 
-        .ui-treenode .ui-treenode-content.ui-state-highlight .ui-treenode-label {
+        .p-treenode .p-treenode-content.p-state-highlight .p-treenode-label {
             font-weight: var(--p-tree-node-label-selected-font-weight);
         }
 
-        .ui-treenode .ui-treenode-content.ui-state-highlight .ui-tree-toggler,
-        .ui-treenode .ui-treenode-content.ui-state-highlight .ui-treenode-icon {
+        .p-treenode .p-treenode-content.p-state-highlight .p-tree-toggler,
+        .p-treenode .p-treenode-content.p-state-highlight .p-treenode-icon {
             color: var(--p-tree-node-icon-selected-color);
         }
 
-        .ui-treenode .ui-treenode-content.ui-state-highlight .ui-tree-toggler:hover {
+        .p-treenode .p-treenode-content.p-state-highlight .p-tree-toggler:hover {
             background: var(--p-tree-node-toggle-button-selected-hover-background);
             color: var(--p-tree-node-toggle-button-selected-hover-color);
         }
 
-        .ui-treenode .ui-treenode-content.ui-state-highlight .ui-treenode-icon:hover {
+        .p-treenode .p-treenode-content.p-state-highlight .p-treenode-icon:hover {
             color: var(--p-tree-node-icon-selected-color);
         }
 
-        .ui-treenode .ui-treenode-content.ui-tree-selectable:not(.ui-state-highlight):hover,
-        .ui-treenode .ui-treenode-content.ui-tree-selectable:not(.ui-state-highlight).ui-state-hover {
+        .p-treenode .p-treenode-content.p-tree-selectable:not(.p-state-highlight):hover,
+        .p-treenode .p-treenode-content.p-tree-selectable:not(.p-state-highlight).p-state-hover {
             background: var(--p-tree-node-hover-background);
             color: var(--p-tree-node-hover-color);
         }
 
-        .ui-treenode .ui-treenode-content.ui-tree-selectable:not(.ui-state-highlight):hover .ui-treenode-icon,
-        .ui-treenode .ui-treenode-content.ui-tree-selectable:not(.ui-state-highlight).ui-state-hover .ui-treenode-icon {
+        .p-treenode .p-treenode-content.p-tree-selectable:not(.p-state-highlight):hover .p-treenode-icon,
+        .p-treenode .p-treenode-content.p-tree-selectable:not(.p-state-highlight).p-state-hover .p-treenode-icon {
             color: var(--p-tree-node-icon-hover-color);
         }
 
-        .ui-tree-droppoint.ui-state-hover {
+        .p-tree-droppoint.p-state-hover {
             background: var(--p-tree-droppoint-active-background);
             border: 0 none;
         }
 
-        .ui-treenode-outline {
+        .p-treenode-outline {
             outline: var(--p-tree-node-focus-ring-width) var(--p-tree-node-focus-ring-style) var(--p-tree-node-focus-ring-color);
             outline-offset: var(--p-tree-node-focus-ring-offset);
             box-shadow: var(--p-tree-node-focus-ring-shadow);
         }
     }
 
-    .ui-tree-droppoint {
+    .p-tree-droppoint {
         height: var(--p-tree-droppoint-height);
     }
 
-    &.ui-tree-rtl .ui-tree-container .ui-treenode .ui-treenode-content {
-        .ui-tree-toggler {
+    &.p-tree-rtl .p-tree-container .p-treenode .p-treenode-content {
+        .p-tree-toggler {
             margin-right: 0;
             margin-left: var(--p-tree-node-gap);
         }
 
-        .ui-treenode-leaf-icon {
+        .p-treenode-leaf-icon {
             margin: 0 0 0 var(--p-tree-node-gap);
         }
 
-        .ui-treenode-icon {
+        .p-treenode-icon {
             margin: 0 0 0 var(--p-tree-node-gap);
         }
 
-        .ui-chkbox {
+        .p-chkbox {
             margin-right: 0;
             margin-left: calc(2 * var(--p-tree-node-gap));
         }
     }
 
+    /* the collapsed icon points to the start */
+    &:is(.p-tree-rtl, :dir(rtl)) .p-tree-container .p-treenode[aria-expanded="false"] > .p-treenode-content > .p-tree-toggle-icon {
+        scale: -1 1;
+    }
+
     /* filter: search icon inside the input, at the start */
-    .ui-tree-filter-container {
+    .p-tree-filter-container {
         margin: var(--p-tree-filter-margin);
 
-        .ui-icon {
+        .p-tree-filter-icon {
+            --_icon: var(--p-tree-filter-icon);
             position: absolute;
             inset-inline-start: var(--p-inputtext-padding-x);
             top: 50%;
             margin-top: calc(-1 * var(--p-icon-size) / 2);
             color: var(--p-form-field-icon-color);
-
-            &::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-tree-filter-icon) center / contain no-repeat;
-            }
         }
 
-        .ui-inputfield {
+        .p-inputfield {
             padding-block: var(--p-inputtext-padding-y);
             padding-inline: var(--p-inputtext-padding-x);
             padding-inline-start: calc(2 * var(--p-inputtext-padding-x) + var(--p-icon-size));
@@ -335,39 +301,39 @@
     }
 }
 
-.ui-tree-droppoint {
+.p-tree-droppoint {
     list-style: none outside none;
     margin: 0;
     padding: 0;
 }
 
-.ui-tree-filter-container {
+.p-tree-filter-container {
     padding: 0;
     position: relative;
 }
 
-.ui-tree-filter.ui-inputfield {
+.p-tree-filter.p-inputfield {
     width: 100%;
     box-sizing: border-box;
 }
 
-/* horizontal tree: td.ui-treenode > div.ui-treenode-content + td.ui-treenode-children-container */
-.ui-tree-horizontal {
+/* horizontal tree: td.p-treenode > div.p-treenode-content + td.p-treenode-children-container */
+.p-tree-horizontal {
     width: auto;
     overflow: auto;
 
-    .ui-treenode-content {
+    .p-treenode-content {
         position: relative;
         z-index: 1;
         outline: 0 none;
     }
 
-    .ui-treenode-parent .ui-treenode-content {
+    .p-treenode-parent .p-treenode-content {
         white-space: nowrap;
     }
 }
 
-.ui-tree.ui-tree-horizontal {
+.p-tree.p-tree-horizontal {
     padding-left: 0;
     padding-right: 0;
 
@@ -385,37 +351,37 @@
     }
 
     /* the horizontal line through a node, masked by ::before between the connectors */
-    .ui-treenode {
+    .p-treenode {
         background: linear-gradient(var(--p-tree-connector-color), var(--p-tree-connector-color)) repeat-x left center / 100% 1px;
         padding: 5px 40px;
         position: relative;
     }
 
-    .ui-treenode.ui-treenode-leaf,
-    .ui-treenode.ui-treenode-collapsed {
+    .p-treenode.p-treenode-leaf,
+    .p-treenode.p-treenode-collapsed {
         padding-inline-end: 0;
     }
 
-    .ui-treenode-children {
+    .p-treenode-children {
         padding: 0;
         margin: 0;
     }
 
-    .ui-treenode-connector {
+    .p-treenode-connector {
         width: 1px;
     }
 
-    .ui-treenode-connector-table {
+    .p-treenode-connector-table {
         height: 100%;
         width: 1px;
     }
 
-    .ui-treenode-connector-line {
+    .p-treenode-connector-line {
         background: linear-gradient(var(--p-tree-connector-color), var(--p-tree-connector-color)) repeat-y left top / 1px 100%;
         width: 1px;
     }
 
-    .ui-treenode-content {
+    .p-treenode-content {
         font-weight: var(--p-tree-node-label-font-weight);
         border: 1px solid var(--p-tree-horizontal-node-border-color);
         background: var(--p-tree-horizontal-node-background);
@@ -424,68 +390,56 @@
         border-radius: var(--p-tree-node-border-radius);
         transition: background var(--p-tree-transition-duration), color var(--p-tree-transition-duration);
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-tree-node-hover-background);
             color: var(--p-tree-node-hover-color);
         }
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-tree-node-selected-background);
             color: var(--p-tree-node-selected-color);
         }
 
-        .ui-tree-toggler {
+        .p-tree-toggler {
             margin-inline-end: var(--p-tree-node-gap);
             vertical-align: middle;
         }
 
-        .ui-tree-toggler.ui-icon-minus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-tree-horizontal-toggle-expanded-icon) center / contain no-repeat;
+        .p-tree-horizontal-toggle-icon {
+            --_icon: var(--p-tree-horizontal-toggle-expanded-icon);
         }
 
-        .ui-tree-toggler.ui-icon-plus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-tree-horizontal-toggle-collapsed-icon) center / contain no-repeat;
-        }
-
-        .ui-treenode-icon {
+        .p-treenode-icon {
             vertical-align: middle;
             margin-inline-end: var(--p-tree-node-gap);
         }
 
-        .ui-treenode-label {
+        .p-treenode-label {
             padding: 0;
             vertical-align: middle;
         }
 
-        .ui-chkbox {
+        .p-chkbox {
             vertical-align: bottom;
             margin-inline-end: var(--p-tree-node-gap);
         }
 
-        .ui-chkbox .ui-icon-minus {
+        .p-chkbox .p-checkbox-indeterminate-icon {
             color: var(--p-tree-color);
-        }
-
-        .ui-chkbox .ui-icon-minus::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-checkbox-indeterminate-icon) center / contain no-repeat;
         }
     }
 
-    .ui-treenode::before {
+    /* the state is the p-treenode-collapsed class of the node (td) */
+    .p-treenode-collapsed > .p-treenode-content > .p-tree-horizontal-toggle-icon {
+        --_icon: var(--p-tree-horizontal-toggle-collapsed-icon);
+    }
+
+    .p-treenode::before {
         background-color: var(--p-tree-background);
     }
 }
 
-.ui-tree-horizontal .ui-treenode {
+.p-tree-horizontal .p-treenode {
     &::before {
         content: " ";
         position: absolute;
@@ -496,20 +450,20 @@
         pointer-events: none;
     }
 
-    &.ui-treenode-collapsed::before,
-    &.ui-treenode-leaf::before {
+    &.p-treenode-collapsed::before,
+    &.p-treenode-leaf::before {
         width: calc(100% - 40px);
     }
 }
 
-.ui-tree-draghelper,
-.ui-tree-draghelper.ui-state-highlight {
+.p-tree-draghelper,
+.p-tree-draghelper.p-state-highlight {
     background: var(--p-tree-draghelper-background);
     color: var(--p-tree-node-color);
     border: 1px solid var(--p-tree-draghelper-border-color);
     border-radius: var(--p-tree-node-border-radius);
 }
 
-.ui-fluid .ui-tree {
+.p-fluid .p-tree {
     width: 100%;
 }

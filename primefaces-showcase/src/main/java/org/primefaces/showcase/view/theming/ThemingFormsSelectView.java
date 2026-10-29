@@ -75,7 +75,7 @@ public class ThemingFormsSelectView implements Serializable {
     }
 
     /**
-     * Marks the input as invalid, so it renders the ui-state-error look without a submit.
+     * Marks the input as invalid, so it renders the p-state-error look without a submit.
      *
      * @param event the preRenderComponent event of an input component
      */

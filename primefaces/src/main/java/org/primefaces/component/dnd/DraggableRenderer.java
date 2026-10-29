@@ -88,7 +88,7 @@ public class DraggableRenderer extends CoreRenderer<Draggable> {
         String dashboard = component.getDashboard();
         if (dashboard != null) {
             Dashboard db = (Dashboard) SearchExpressionUtils.contextlessResolveComponent(context, component, dashboard);
-            wb.selectorAttr("connectToSortable", "#" + db.getClientId(context) + " .ui-dashboard-column");
+            wb.selectorAttr("connectToSortable", "#" + db.getClientId(context) + " .p-dashboard-column");
         }
 
         wb.finish();

@@ -76,6 +76,6 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-multiselectlistbox | Main container element.
-.ui-multiselectlistbox-list | List container.
-.ui-multiselectlistbox-item | Each item in a list.
+.p-multiselectlistbox | Main container element.
+.p-multiselectlistbox-list | List container.
+.p-multiselectlistbox-item | Each item in a list.

@@ -41,10 +41,10 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class TabView extends AbstractComponent {
 
-    @FindBy(css = ".ui-tabs-header")
+    @FindBy(css = ".p-tabs-header")
     private List<WebElement> headers;
 
-    @FindBy(css = ".ui-tabs-panel")
+    @FindBy(css = ".p-tabs-panel")
     private List<WebElement> contents;
 
     private List<Tab> tabs = null;
@@ -90,7 +90,7 @@ public abstract class TabView extends AbstractComponent {
      * @return the selected tab
      */
     public Tab getSelectedTab() {
-        WebElement selectedTabHeader = findElement(By.className("ui-tabs-selected"));
+        WebElement selectedTabHeader = findElement(By.className("p-tabs-selected"));
         int index = getIndexOfHeader(selectedTabHeader);
 
         return getTabs().get(index);

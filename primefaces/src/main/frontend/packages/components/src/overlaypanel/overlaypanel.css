@@ -1,11 +1,11 @@
 /*
  * OverlayPanel: p:overlayPanel (PrimeUIX popover)
  *
- * Markup: .ui-overlaypanel > .ui-overlaypanel-content, optional a.ui-overlaypanel-close (showCloseIcon)
+ * Markup: .p-overlaypanel > .p-overlaypanel-content, optional a.p-overlaypanel-close (showCloseIcon)
  * Close icon tokens: the overlaypanel block of presets/*.css
  */
 
-.ui-overlaypanel {
+.p-overlaypanel {
     position: absolute;
     display: none;
     margin: 0;
@@ -15,11 +15,11 @@
     border-radius: var(--p-popover-border-radius);
     box-shadow: var(--p-popover-shadow);
 
-    .ui-overlaypanel-content {
+    .p-overlaypanel-content {
         padding: var(--p-popover-content-padding);
     }
 
-    .ui-overlaypanel-close {
+    .p-overlaypanel-close {
         position: absolute;
         display: inline-flex;
         align-items: center;
@@ -41,7 +41,7 @@
             box-shadow var(--p-overlaypanel-close-button-transition-duration);
 
         &:hover,
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-overlaypanel-close-button-hover-background);
             color: var(--p-overlaypanel-close-button-hover-color);
         }
@@ -53,19 +53,9 @@
             box-shadow: var(--p-overlaypanel-close-button-focus-ring-shadow);
         }
 
-        .ui-icon {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
+        .p-overlaypanel-close-icon {
+            --_icon: var(--p-overlaypanel-close-icon);
             color: inherit;
-
-            &::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-overlaypanel-close-icon) center / contain no-repeat;
-            }
         }
     }
 }

@@ -47,16 +47,16 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-scrollpanel | Main container element.
-.ui-scrollpanel-native | Main container element in native mode.
-.ui-scrollpanel-content | Scrolling content element.
-.ui-scrollpanel-track | Track of a bar.
-.ui-scrollpanel-track-x | Track of the horizontal bar.
-.ui-scrollpanel-track-y | Track of the vertical bar.
-.ui-scrollpanel-bar | Bar, it can be dragged.
-.ui-scrollpanel-bar-active | Bar while it is dragged.
-.ui-scrollpanel-scrollable-x | Main container element, when the content overflows horizontally.
-.ui-scrollpanel-scrollable-y | Main container element, when the content overflows vertically.
+.p-scrollpanel | Main container element.
+.p-scrollpanel-native | Main container element in native mode.
+.p-scrollpanel-content | Scrolling content element.
+.p-scrollpanel-track | Track of a bar.
+.p-scrollpanel-track-x | Track of the horizontal bar.
+.p-scrollpanel-track-y | Track of the vertical bar.
+.p-scrollpanel-bar | Bar, it can be dragged.
+.p-scrollpanel-bar-active | Bar while it is dragged.
+.p-scrollpanel-scrollable-x | Main container element, when the content overflows horizontally.
+.p-scrollpanel-scrollable-y | Main container element, when the content overflows vertically.
 
 The bars use the `--p-scrollpanel-*` tokens of the theme (`--p-scrollpanel-bar-size`, `--p-scrollpanel-bar-background`,
 `--p-scrollpanel-bar-hover-background`, `--p-scrollpanel-track-background`, ...).

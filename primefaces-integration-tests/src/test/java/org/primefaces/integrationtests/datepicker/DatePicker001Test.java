@@ -143,9 +143,9 @@ class DatePicker001Test extends AbstractDatePickerTest {
 
         //Assert panel
         String currentDayOfMonth = ((Integer) LocalDate.now().getDayOfMonth()).toString();
-        assertDay(datePicker, currentDayOfMonth, "ui-state-highlight");
+        assertDay(datePicker, currentDayOfMonth, "p-state-highlight");
         String selectedDayOfMonth = ((Integer) selectedDate.getDayOfMonth()).toString();
-        assertDay(datePicker, selectedDayOfMonth, "ui-state-active");
+        assertDay(datePicker, selectedDayOfMonth, "p-state-active");
     }
 
     @Test

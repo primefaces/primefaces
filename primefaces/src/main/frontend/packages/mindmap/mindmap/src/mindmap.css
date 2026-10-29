@@ -5,7 +5,7 @@
  * CSS properties override them, except a fill the model sets on a node (only fill="none" gets the default background).
  */
 
-.ui-mindmap {
+.p-mindmap {
     position: relative;
     background: var(--p-mindmap-background);
     border: 1px solid var(--p-mindmap-border-color);
@@ -31,7 +31,7 @@
     }
 }
 
-.ui-tooltip.ui-mindmap-tooltip {
+.p-tooltip.p-mindmap-tooltip {
     position: absolute;
     background: var(--p-mindmap-tooltip-background);
     color: var(--p-mindmap-tooltip-color);

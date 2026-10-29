@@ -167,9 +167,6 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Mixed
     @Property(description = "Search expression to append the calendar panel to.", defaultValue = "@(body)")
     public abstract String getAppendTo();
 
-    @Property(description = "Icon for the trigger button.")
-    public abstract String getTriggerButtonIcon();
-
     @Property(description = "List of disabled dates.")
     public abstract List<Object> getDisabledDates();
 

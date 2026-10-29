@@ -71,11 +71,11 @@ public class FlowChartView implements Serializable {
 
         Element succeed = new Element("Succeed", "50em", "18em");
         succeed.addEndPoint(new BlankEndPoint(EndPointAnchor.LEFT));
-        succeed.setStyleClass("ui-diagram-success");
+        succeed.setStyleClass("p-diagram-success");
 
         Element fail = new Element("Fail", "50em", "30em");
         fail.addEndPoint(new BlankEndPoint(EndPointAnchor.LEFT));
-        fail.setStyleClass("ui-diagram-fail");
+        fail.setStyleClass("p-diagram-fail");
 
         model.addElement(start);
         model.addElement(trouble);

@@ -102,12 +102,12 @@ update="@(:input)" process="@(:input)"
 Update all datatables
 
 ```xhtml
-update="@(.ui-datatable)"
+update="@(.p-datatable)"
 ```
 Process input components inside any panel and update all panels
 
 ```xhtml
-process="@(.ui-panel :input)" update="@(.ui-panel)"
+process="@(.p-panel :input)" update="@(.p-panel)"
 ```
 Process input components but not select components
 

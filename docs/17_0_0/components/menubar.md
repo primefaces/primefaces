@@ -66,7 +66,7 @@ Menubar supports `start` and `end` facets to control UI output or add logos or e
     </f:facet>
     <p:menuitem label="Logout" action="#{bean.logout}"/>
     <f:facet name="end">
-       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="p-button-info"/>
     </f:facet>
 </p:menubar>
 ```
@@ -94,11 +94,11 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-menubar | Container element of menubar.
-.ui-menu-list | List container
-.ui-menuitem | Each menu item
-.ui-menuitem-link | Anchor element in a link item
-.ui-menuitem-text | Text element in an item
+.p-menubar | Container element of menubar.
+.p-menu-list | List container
+.p-menuitem | Each menu item
+.p-menuitem-link | Anchor element in a link item
+.p-menuitem-text | Text element in an item
 
 As skinning style classes are global, see the main theming section for more information.
 

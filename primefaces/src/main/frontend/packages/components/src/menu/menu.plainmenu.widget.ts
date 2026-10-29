@@ -50,8 +50,8 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
-        this.headers = this.jq.find('> .ui-menu-list > .ui-widget-header');
+        this.menuitemLinks = this.jq.find('.p-menuitem-link:not(.p-state-disabled)');
+        this.headers = this.jq.find('> .p-menu-list > .p-widget-header');
 
         this.bindEvents();
         this.bindToggleable();
@@ -69,7 +69,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
         // Initialize collapsedIds with currently collapsed headers
         this.collapsedIds = this.headers.filter(function() {
-            return $(this).find('> h3 > .ui-icon:not(.ui-submenu-icon)').hasClass('ui-icon-triangle-1-e');
+            return $(this).attr('aria-expanded') === 'false';
         }).map(function() {
             return $(this).attr('id') ?? '';
         }).get().filter(function(id) {
@@ -79,14 +79,13 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         this.restoreState();
 
         this.headers.on('mouseover.menu', function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         }).on('mouseout.menu', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on('click.menu', function(e) {
             var header = $(this);
-            var icon = header.find('> h3 > .ui-icon:not(.ui-submenu-icon)');
 
-            if (icon.hasClass('ui-icon-triangle-1-s')) {
+            if (header.attr('aria-expanded') === 'true') {
                 $this.collapseSubmenu(header, true);
             } else {
                 $this.expandSubmenu(header, true);
@@ -109,7 +108,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
             });
 
             // Handle keyboard navigation for overlay
-            const keydownEvent = 'keydown.ui-menu.' + this.id;
+            const keydownEvent = 'keydown.p-menu.' + this.id;
             this.trigger.off(keydownEvent).on(keydownEvent, (e) => {
                 switch (e.key) {
                     case 'ArrowDown':
@@ -156,16 +155,16 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
 
         // Bind mouse events to highlight items without changing browser focus
         this.menuitemLinks.on("mouseenter.menu", function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         }).on("mouseleave.menu", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on("click.menu", function(e) {
             $this.focus($(this), e);
         });
 
         // Bind keyboard navigation events
         this.menuitemLinks.on('keydown.menu', function(e) {
-            var currentLink = $this.menuitemLinks.filter('.ui-state-active:first');
+            var currentLink = $this.menuitemLinks.filter('.p-state-active:first');
             switch ("code" in e ? e.code : e.key) {
                 case 'Home':
                 case 'PageUp':
@@ -211,7 +210,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
 
         // Clear transient hover and active states for non-overlay menus
         if (!this.cfg.overlay) {
-            this.menuitemLinks.removeClass('ui-state-hover ui-state-active');
+            this.menuitemLinks.removeClass('p-state-hover p-state-active');
         }
     }
 
@@ -223,10 +222,10 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * @param firstOrLast The first or last item to navigate to ('first' or 'last').
      */
     private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: PrimeFacesTypes.widget.PlainMenu.NavigationDirection, firstOrLast: string): void {
-        const targetItem = currentLink.parent()[`${direction}All`]('.ui-menuitem:not(:has(.ui-state-disabled)):' + firstOrLast);
+        const targetItem = currentLink.parent()[`${direction}All`]('.p-menuitem:not(:has(.p-state-disabled)):' + firstOrLast);
         if (targetItem.length) {
             this.unfocus(currentLink, event);
-            this.focus(targetItem.children('.ui-menuitem-link'), event);
+            this.focus(targetItem.children('.p-menuitem-link'), event);
         }
     }
 
@@ -245,12 +244,11 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * be saved (in an HTML5 Local Store), `false` otherwise. 
      */
     collapseSubmenu(header: JQuery, stateful?: boolean): void {
-        const items = header.nextUntil('li.ui-widget-header');
+        const items = header.nextUntil('li.p-widget-header');
 
-        header.attr('aria-expanded', "false")
-            .find('> h3 > .ui-icon:not(.ui-submenu-icon)').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        header.attr('aria-expanded', "false");
 
-        items.filter('.ui-submenu-child').hide();
+        items.filter('.p-submenu-child').hide();
 
         if (stateful) {
             this.collapsedIds.push(header.attr('id') ?? "");
@@ -265,12 +263,11 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * be saved (in an HTML5 Local Store), `false` otherwise. 
      */
     expandSubmenu(header: JQuery, stateful?: boolean): void {
-        var items = header.nextUntil('li.ui-widget-header');
+        var items = header.nextUntil('li.p-widget-header');
 
-        header.attr('aria-expanded', "true")
-            .find('> h3 > .ui-icon:not(.ui-submenu-icon)').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+        header.attr('aria-expanded', "true");
 
-        items.filter('.ui-submenu-child').show();
+        items.filter('.p-submenu-child').show();
 
         if (stateful) {
             var id = header.attr('id');

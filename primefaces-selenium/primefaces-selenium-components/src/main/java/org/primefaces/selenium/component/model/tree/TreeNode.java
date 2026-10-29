@@ -45,7 +45,7 @@ public class TreeNode {
     }
 
     public WebElement getWebElement() {
-        return tree.findElement(By.cssSelector(".ui-treenode[data-rowkey='" + rowKey + "']"));
+        return tree.findElement(By.cssSelector(".p-treenode[data-rowkey='" + rowKey + "']"));
     }
 
     public Tree getTree() {
@@ -70,7 +70,7 @@ public class TreeNode {
     }
 
     public WebElement getTreeToggler() {
-        return getWebElement().findElement(By.cssSelector(".ui-treenode-content .ui-tree-toggler"));
+        return getWebElement().findElement(By.cssSelector(".p-treenode-content .p-tree-toggler"));
     }
 
     public String getLabelText() {
@@ -78,13 +78,13 @@ public class TreeNode {
     }
 
     public WebElement getLabel() {
-        return getWebElement().findElement(By.cssSelector(".ui-treenode-content .ui-treenode-label"));
+        return getWebElement().findElement(By.cssSelector(".p-treenode-content .p-treenode-label"));
     }
 
     public List<TreeNode> getChildren() {
         // we need a xpath selector as selenium doesn't support direct child selector like #findElements(">...")
         return getWebElement()
-                .findElements(By.xpath("./ul/li[contains(@class, 'ui-treenode')]")).stream()
+                .findElements(By.xpath("./ul/li[contains(@class, 'p-treenode')]")).stream()
                 .map(e -> new TreeNode(tree, e.getDomAttribute("data-rowkey"), this))
                 .collect(Collectors.toList());
     }

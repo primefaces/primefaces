@@ -31,9 +31,9 @@ PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget
     init(cfg) {
         super.init(cfg);
 
-        this.header = this.jq.children('.ui-dataview-header');
-        this.content = this.jq.children('.ui-dataview-content');
-        this.layoutOptions = this.header.children('.ui-dataview-layout-options');
+        this.header = this.jq.children('.p-dataview-header');
+        this.content = this.jq.children('.p-dataview-content');
+        this.layoutOptions = this.header.children('.p-dataview-layout-options');
         this.buttons = this.layoutOptions.children('div');
 
         if(this.cfg.paginator) {
@@ -67,10 +67,10 @@ PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget
 
         this.buttons.on('mouseover', function() {
             var button = $(this);
-            button.addClass('ui-state-hover');
+            button.addClass('p-state-hover');
         })
         .on('mouseout', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('click', function() {
             var button = $(this),
@@ -84,11 +84,11 @@ PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget
         /* For keyboard accessibility */
         this.buttons.on('focus.dataview-button', function(){
             var button = $(this);
-            button.addClass('ui-state-focus');
+            button.addClass('p-state-focus');
         })
         .on('blur.dataview-button', function(){
             var button = $(this);
-            button.removeClass('ui-state-focus');
+            button.removeClass('p-state-focus');
         })
         .on('keydown.dataview-button', function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {
@@ -111,12 +111,12 @@ PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget
      * // Switch to grid layout
      * widget.select(widget.buttons.eq(1));
      * ```
-     * @param {JQuery} button One of the layout switch buttons (`.ui-button`).
+     * @param {JQuery} button One of the layout switch buttons (`.p-button`).
      */
     select(button) {
-        this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
+        this.buttons.filter('.p-state-active').removeClass('p-state-active p-state-hover').children(':radio').prop('checked', false);
 
-        button.addClass('ui-state-active').children(':radio').prop('checked', true);
+        button.addClass('p-state-active').children(':radio').prop('checked', true);
 
         this.loadLayoutContent(button.children(':radio').val());
     }
@@ -146,7 +146,7 @@ PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget
                 return true;
             },
             oncomplete: function() {
-                $this.jq.removeClass('ui-dataview-grid ui-dataview-list').addClass('ui-dataview-' + layout);
+                $this.jq.removeClass('p-dataview-grid p-dataview-list').addClass('p-dataview-' + layout);
             }
         };
 

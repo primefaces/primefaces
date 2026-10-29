@@ -122,7 +122,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
                     String containerStyleClass = getStyleClassBuilder(context)
                             .add(Menu.MENUITEM_CLASS)
                             .add(menuItem.getContainerStyleClass())
-                            .add(menuItem.getBadge() != null, "ui-overlay-badge")
+                            .add(menuItem.getBadge() != null, "p-overlay-badge")
                             .build();
 
                     writer.startElement("li", null);
@@ -183,7 +183,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
 
         String styleClass = getStyleClassBuilder(context)
                 .add(Menu.SUBMENU_LINK_CLASS)
-                .add(disabled, "ui-state-disabled")
+                .add(disabled, "p-state-disabled")
                 .build();
         writer.writeAttribute("class", styleClass, null);
 

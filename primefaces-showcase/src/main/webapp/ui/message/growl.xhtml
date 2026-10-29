@@ -25,14 +25,14 @@
 
                 <h5 class="mt-0">Severities</h5>
                 <p:commandButton actionListener="#{growlView.showInfo}" update="growl" value="Info" styleClass="mr-2" style="width: 10rem" />
-                <p:commandButton actionListener="#{growlView.showWarn}" update="growl" value="Warn" styleClass="mr-2 ui-button-warning" style="width: 10rem" />
-                <p:commandButton actionListener="#{growlView.showError}" update="growl" value="Error" styleClass="ui-button-danger" style="width: 10rem" />
+                <p:commandButton actionListener="#{growlView.showWarn}" update="growl" value="Warn" styleClass="mr-2 p-button-warning" style="width: 10rem" />
+                <p:commandButton actionListener="#{growlView.showError}" update="growl" value="Error" styleClass="p-button-danger" style="width: 10rem" />
 
                 <h5>Multiple</h5>
-                <p:commandButton actionListener="#{growlView.showMultiple}" update="growl" value="Multiple" style="width: 10rem" styleClass="ui-button-outlined" />
+                <p:commandButton actionListener="#{growlView.showMultiple}" update="growl" value="Multiple" style="width: 10rem" styleClass="p-button-outlined" />
 
                 <h5>Sticky</h5>
-                <p:commandButton actionListener="#{growlView.showSticky}" update="growl-sticky" value="Info" style="width: 10rem" styleClass="ui-button-help" />
+                <p:commandButton actionListener="#{growlView.showSticky}" update="growl-sticky" value="Info" style="width: 10rem" styleClass="p-button-help" />
             </h:form>
         </div>
     </ui:define>

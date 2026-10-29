@@ -67,7 +67,7 @@ public class DashboardRenderer extends CoreRenderer<Dashboard> {
         String styleClass = getStyleClassBuilder(context)
                 .add(Dashboard.CONTAINER_CLASS)
                 .add(component.getStyleClass())
-                .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isDisabled(), "p-state-disabled")
                 .add(responsive, GridLayoutUtils.getFlexGridClass(true))
                 .build();
         writer.writeAttribute("class", styleClass, "styleClass");

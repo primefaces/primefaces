@@ -81,14 +81,14 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
      */
     init(cfg) {
         super.init(cfg);
-        this.mask = this.jq.children('.ui-speeddial-mask');
-        this.container = this.jq.children('.ui-speeddial');
-        this.badge = this.container.children('.ui-overlay-badge');
+        this.mask = this.jq.children('.p-speeddial-mask');
+        this.container = this.jq.children('.p-speeddial');
+        this.badge = this.container.children('.p-overlay-badge');
         var buttonContainer = this.badge.length === 0 ? this.container : this.badge;
-        this.button = buttonContainer.children('.ui-speeddial-button');
-        this.buttonIcon = this.button.children('.ui-icon');
-        this.itemContainer = this.container.children('.ui-speeddial-list');
-        this.items = this.itemContainer.children('.ui-speeddial-item');
+        this.button = buttonContainer.children('.p-speeddial-button');
+        this.buttonIcon = this.button.children('.p-button-icon-left, .p-button-icon-right');
+        this.itemContainer = this.container.children('.p-speeddial-list');
+        this.items = this.itemContainer.children('.p-speeddial-item');
         this.itemsCount = this.items.length;
 
         this.cfg.visible = this.cfg.visible || false;
@@ -178,10 +178,10 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
      */
     show() {
         if (this.mask) {
-            this.mask.addClass('ui-speeddial-mask-visible');
+            this.mask.addClass('p-speeddial-mask-visible');
         }
 
-        this.container.addClass('ui-speeddial-opened');
+        this.container.addClass('p-speeddial-opened');
         this.container.find('a').attr("tabindex", "0");
         this.visible = true;
         this.updateItemStyles();
@@ -200,10 +200,10 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
      */
     hide() {
         if (this.mask) {
-            this.mask.removeClass('ui-speeddial-mask-visible');
+            this.mask.removeClass('p-speeddial-mask-visible');
         }
 
-        this.container.removeClass('ui-speeddial-opened');
+        this.container.removeClass('p-speeddial-opened');
         this.container.find('a').attr("tabindex", "-1");
         this.visible = false;
         this.updateItemStyles();

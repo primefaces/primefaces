@@ -44,12 +44,12 @@ public class Password extends PasswordBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Password";
 
-    public static final String STYLE_CLASS = "ui-password";
-    public static final String INPUT_CLASS = "ui-inputfield ui-widget ui-state-default";
-    public static final String WRAPPER_CLASS = "ui-inputwrapper";
-    public static final String ICON_CLASS = "ui-password-icon";
-    public static final String MASKED_CLASS = "ui-password-masked";
-    public static final String UNMASKED_CLASS = "ui-password-unmasked";
+    public static final String STYLE_CLASS = "p-password";
+    public static final String INPUT_CLASS = "p-inputfield p-widget p-state-default";
+    public static final String WRAPPER_CLASS = "p-inputwrapper";
+    public static final String ICON_CLASS = "p-password-icon p-icon p-toggle-icon p-password-toggle-icon";
+    public static final String MASKED_CLASS = "p-password-masked";
+    public static final String UNMASKED_CLASS = "p-password-unmasked";
 
     public static final String INVALID_MATCH_KEY = "primefaces.password.INVALID_MATCH";
 

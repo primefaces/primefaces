@@ -134,7 +134,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
             }
         }
 
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
     }
 
     override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
@@ -212,7 +212,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         if (PrimeFaces.env.isTouchable(this.cfg)) {
              // GitHub #6776 turn off Copy/Paste menu for IOS
              if(PrimeFaces.env.ios) {
-                $(document.body).addClass('ui-touch-selection-disabled');
+                $(document.body).addClass('p-touch-selection-disabled');
              }
 
              this.jqTarget.swipe({
@@ -231,7 +231,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         //hide menu on item click
         this.links.on('click', function(e) {
             var target = $(e.target),
-                submenuLink = target.hasClass('ui-submenu-link') ? target : target.closest('.ui-submenu-link');
+                submenuLink = target.hasClass('p-submenu-link') ? target : target.closest('.p-submenu-link');
 
             if (submenuLink.length) {
                 return;
@@ -256,7 +256,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         }
 
         // hide other context menus if any
-        $(document.body).children('.ui-contextmenu:visible').hide();
+        $(document.body).children('.p-contextmenu:visible').hide();
 
         if(this.cfg.beforeShow) {
             const  retVal = e !== undefined ? this.cfg.beforeShow.call(this, e) : undefined;
@@ -295,7 +295,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
                 onEntered: () => {
                     this.bindPanelEvents();
                     this.resetFocus(true);
-                    this.jq.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+                    this.jq.find('a.p-menuitem-link:focusable:first').trigger('focus');
                 }
             });
         }
@@ -314,7 +314,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
                 },
                 onExited: function() {
                     //hide submenus
-                    $this.jq.find('li.ui-menuitem-active').each(function() {
+                    $this.jq.find('li.p-menuitem-active').each(function() {
                         $this.deactivate($(this), true);
                     });
                 }

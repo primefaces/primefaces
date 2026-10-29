@@ -141,10 +141,10 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         this.isDynamicLoaded = !this.cfg.dynamic;
 
         if (this.menu.length > 0) {
-            this.menuitemContainer = this.menu.find('.ui-menu-list');
-            this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
+            this.menuitemContainer = this.menu.find('.p-menu-list');
+            this.menuitems = this.menuitemContainer.children('.p-menuitem:not(.p-state-disabled)');
             PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
-            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'p-connected-overlay');
         }
 
         this.bindEvents();
@@ -206,13 +206,13 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         if (this.menuitems.length > 0) {
             this.menuitems.on('mouseover.splitbutton', function() {
                 var menuitem = $(this),
-                menuitemLink = menuitem.children('.ui-menuitem-link');
+                menuitemLink = menuitem.children('.p-menuitem-link');
 
-                if(!menuitemLink.hasClass('ui-state-disabled')) {
-                    menuitem.addClass('ui-state-hover');
+                if(!menuitemLink.hasClass('p-state-disabled')) {
+                    menuitem.addClass('p-state-hover');
                 }
             }).on('mouseout.splitbutton', function() {
-                $(this).removeClass('ui-state-hover');
+                $(this).removeClass('p-state-hover');
             }).on('click.splitbutton', () => {
                 this.hide();
             });
@@ -264,7 +264,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
 
         if(this.cfg.filter) {
             this.setupFilterMatcher();
-            this.filterInput = this.menu.find('> div.ui-splitbuttonmenu-filter-container > input.ui-splitbuttonmenu-filter');
+            this.filterInput = this.menu.find('> div.p-splitbuttonmenu-filter-container > input.p-splitbuttonmenu-filter');
             PrimeFaces.skinInput(this.filterInput);
 
             this.bindFilterEvents();
@@ -278,7 +278,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.menu, null,
             (_, eventTarget) => {
                 if (!(this.menu.is(eventTarget) || this.menu.has(eventTarget[0] ?? "").length > 0)) {
-                    this.button.removeClass('ui-state-focus ui-state-hover');
+                    this.button.removeClass('p-state-focus p-state-hover');
                     this.hide();
                 }
             });
@@ -319,7 +319,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     private bindFilterEvents(): void {
         const $this = this;
 
-        this.filterInput.on('keyup.ui-splitbutton', function(e) {
+        this.filterInput.on('keyup.p-splitbutton', function(e) {
             if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
@@ -329,7 +329,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 $this.filter(typeof value === "string" ? value : "");
             }
         })
-        .on('keydown.ui-splitbutton',(e) => {
+        .on('keydown.p-splitbutton',(e) => {
             switch(e.key) {
                 case 'ArrowUp':
                     this.highlightPrev(e);
@@ -346,7 +346,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 case ' ': {
                     const target = $(e.target);
 
-                    if(target.is('input') && target.hasClass('ui-splitbuttonmenu-filter')) {
+                    if(target.is('input') && target.hasClass('p-splitbuttonmenu-filter')) {
                         return;
                     }
 
@@ -362,7 +362,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 default:
                 break;
             }
-        }).on('paste.ui-splitbutton', () => {
+        }).on('paste.p-splitbutton', () => {
             PrimeFaces.queueTask(() => {
                 const value = this.filterInput.val();
                 this.filter(typeof value === "string" ? value : "");
@@ -375,14 +375,14 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
      * @param event Keyboard arrow event that caused the next item to be highlighted.
      */
     private highlightNext(event: JQuery.TriggeredEvent): void {
-        const highlightedItem = this.menuitems.filter('.ui-state-hover');
+        const highlightedItem = this.menuitems.filter('.p-state-hover');
         const nextItems = highlightedItem.length
-            ? highlightedItem.nextAll(':not(.ui-divider, .ui-widget-header):visible')
+            ? highlightedItem.nextAll(':not(.p-divider, .p-widget-header):visible')
             : this.menuitems.filter(':visible').eq(0);
 
         if(nextItems.length) {
-            highlightedItem.removeClass('ui-state-hover');
-            nextItems.eq(0).addClass('ui-state-hover');
+            highlightedItem.removeClass('p-state-hover');
+            nextItems.eq(0).addClass('p-state-hover');
         }
 
         event.preventDefault();
@@ -393,14 +393,14 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
      * @param event Keyboard arrow event that caused the previous item to be highlighted.
      */
     private highlightPrev(event: JQuery.TriggeredEvent): void {
-        const highlightedItem = this.menuitems.filter('.ui-state-hover');
+        const highlightedItem = this.menuitems.filter('.p-state-hover');
         const prevItems = highlightedItem.length 
-            ? highlightedItem.prevAll(':not(.ui-divider, .ui-widget-header):visible')
+            ? highlightedItem.prevAll(':not(.p-divider, .p-widget-header):visible')
             : null;
 
         if(prevItems && prevItems.length) {
-            highlightedItem.removeClass('ui-state-hover');
-            prevItems.eq(0).addClass('ui-state-hover');
+            highlightedItem.removeClass('p-state-hover');
+            prevItems.eq(0).addClass('p-state-hover');
         }
 
         event.preventDefault();
@@ -413,7 +413,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
      */
     private handleEnterKey(event: JQuery.TriggeredEvent): void {
         if(this.menu.is(':visible')) {
-            const link = this.menuitems.filter('.ui-state-hover').children('a');
+            const link = this.menuitems.filter('.p-state-hover').children('a');
             link.trigger('click');
 
             const href = link.attr('href');
@@ -492,16 +492,16 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
-            this.menuitemContainer.children('.ui-widget-header').show();
-            this.menuitemContainer.children('.ui-divider').show();
+            this.menuitemContainer.children('.p-widget-header').show();
+            this.menuitemContainer.children('.p-divider').show();
         }
         else {
             for(let i = 0; i < this.menuitems.length; i++) {
                 const menuitem = this.menuitems.eq(i);
-                const itemLabel = PrimeFaces.toSearchable(menuitem.find('.ui-menuitem-text').text(), true, normalize);
+                const itemLabel = PrimeFaces.toSearchable(menuitem.find('.p-menuitem-text').text(), true, normalize);
 
                 /* for keyboard support */
-                menuitem.removeClass('ui-state-hover');
+                menuitem.removeClass('p-state-hover');
 
                 if (this.filterMatcher === undefined || this.filterMatcher(itemLabel, filterValue)) {
                     menuitem.show();
@@ -512,19 +512,19 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
             }
 
             //groups
-            const groupHeaders = this.menuitemContainer.children('.ui-widget-header');
+            const groupHeaders = this.menuitemContainer.children('.p-widget-header');
             for(var g = 0; g < groupHeaders.length; g++) {
                 var group = groupHeaders.eq(g);
 
                 if(g === (groupHeaders.length - 1)) {
-                    if(group.nextAll('.ui-submenu-child').filter(':visible').length === 0) {
+                    if(group.nextAll('.p-submenu-child').filter(':visible').length === 0) {
                         group.hide();
                     }
                     else {
                         group.show();
                     }
                 }
-                else if(group.nextUntil('.ui-widget-header').filter(':visible').length === 0) {
+                else if(group.nextUntil('.p-widget-header').filter(':visible').length === 0) {
                     group.hide();
                 }
                 else {
@@ -532,7 +532,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 }
             }
 
-            const separators = this.menuitemContainer.children('.ui-divider');
+            const separators = this.menuitemContainer.children('.p-divider');
             for(let s = 0; s < separators.length; s++) {
                 const separator = separators.eq(s);
                 if(separator.nextAll().filter(':visible').length === 0 || separator.prevAll().filter(':visible').length === 0) {
@@ -613,17 +613,17 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                             }
                             
                             $this.menu = menuElement;
-                            $this.menuitemContainer = $this.menu.find('.ui-menu-list');
-                            $this.menuitems = $this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
+                            $this.menuitemContainer = $this.menu.find('.p-menu-list');
+                            $this.menuitems = $this.menuitemContainer.children('.p-menuitem:not(.p-state-disabled)');
                             
                             // Re-register dynamic overlay
                             PrimeFaces.utils.registerDynamicOverlay($this, $this.menu, $this.id + '_menu');
-                            $this.transition = PrimeFaces.utils.registerCSSTransition($this.menu, 'ui-connected-overlay');
+                            $this.transition = PrimeFaces.utils.registerCSSTransition($this.menu, 'p-connected-overlay');
                             
                             // Re-bind filter events if filter is enabled
                             if ($this.cfg.filter) {
                                 $this.setupFilterMatcher();
-                                $this.filterInput = $this.menu.find('> div.ui-splitbuttonmenu-filter-container > input.ui-splitbuttonmenu-filter');
+                                $this.filterInput = $this.menu.find('> div.p-splitbuttonmenu-filter-container > input.p-splitbuttonmenu-filter');
                                 PrimeFaces.skinInput($this.filterInput);
                                 $this.bindFilterEvents();
                             }
@@ -631,12 +631,12 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                             // Re-bind menu item events
                             $this.menuitems.on('mouseover.splitbutton', function() {
                                 const menuitem = $(this);
-                                const menuitemLink = menuitem.children('.ui-menuitem-link');
-                                if(!menuitemLink.hasClass('ui-state-disabled')) {
-                                    menuitem.addClass('ui-state-hover');
+                                const menuitemLink = menuitem.children('.p-menuitem-link');
+                                if(!menuitemLink.hasClass('p-state-disabled')) {
+                                    menuitem.addClass('p-state-hover');
                                 }
                             }).on('mouseout.splitbutton', function() {
-                                $(this).removeClass('ui-state-hover');
+                                $(this).removeClass('p-state-hover');
                             }).on('click.splitbutton', () => {
                                 $this.hide();
                             });
@@ -667,8 +667,8 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 },
                 onExited: () => {
                     this.menuButton.attr('aria-expanded', "false");
-                    this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
-                    this.menuButton.removeClass('ui-state-focus');
+                    this.menuitems.filter('.p-state-hover').removeClass('p-state-hover');
+                    this.menuButton.removeClass('p-state-focus');
                 }
             });
         }

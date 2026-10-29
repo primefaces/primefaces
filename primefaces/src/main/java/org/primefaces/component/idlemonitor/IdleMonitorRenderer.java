@@ -67,7 +67,7 @@ public class IdleMonitorRenderer extends CoreRenderer<IdleMonitor> {
 
         writer.startElement("span", idleMonitor);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "ui-idlemonitor", "styleClass");
+        writer.writeAttribute("class", "p-idlemonitor", "styleClass");
         writer.endElement("span");
     }
 }

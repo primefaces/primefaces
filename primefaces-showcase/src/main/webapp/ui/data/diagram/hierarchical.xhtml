@@ -7,7 +7,7 @@
 
     <ui:define name="head">
         <style>
-            .ui-diagram-element {
+            .p-diagram-element {
                 width: 5em;
                 height: 5em;
                 line-height: 5em;
@@ -20,7 +20,7 @@
                 user-select: none;
             }
 
-            .ui-diagram-element:hover {
+            .p-diagram-element:hover {
                 background-color: #20282b;
             }
         </style>
@@ -40,7 +40,7 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:diagram value="#{diagramHierarchicalView.model}" style="height:600px" styleClass="ui-widget-content"/>
+            <p:diagram value="#{diagramHierarchicalView.model}" style="height:600px" styleClass="p-widget-content"/>
         </div>
     </ui:define>
 

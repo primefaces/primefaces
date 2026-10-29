@@ -167,7 +167,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
         String styleClass = getStyleClassBuilder(facesContext)
-                .add("ui-wizard ui-widget")
+                .add("p-wizard p-widget")
                 .add(component.getStyleClass())
                 .build();
 
@@ -220,10 +220,10 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         String clientId = component.getClientId(facesContext);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-wizard-navbar", null);
+        writer.writeAttribute("class", "p-wizard-navbar", null);
 
-        encodeNavigator(facesContext, component, clientId + "_back", component.getBackLabel(), Wizard.BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w", true);
-        encodeNavigator(facesContext, component, clientId + "_next", component.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e", false);
+        encodeNavigator(facesContext, component, clientId + "_back", component.getBackLabel(), Wizard.BACK_BUTTON_CLASS, Wizard.BACK_ICON_CLASS, true);
+        encodeNavigator(facesContext, component, clientId + "_next", component.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, Wizard.NEXT_ICON_CLASS, false);
 
         writer.endElement("div");
     }
@@ -234,7 +234,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_content", "id");
-        writer.writeAttribute("class", "ui-wizard-content", null);
+        writer.writeAttribute("class", "p-wizard-content", null);
 
         encodeCurrentStep(facesContext, component);
 
@@ -256,7 +256,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
                 boolean active = tab == currentTab;
                 boolean completed = currentTab != null && !currentFound && !active && component.isHighlightCompletedSteps();
                 boolean userHighlight = tab.getTitleStyleClass() != null
-                        && Arrays.asList(tab.getTitleStyleClass().split("\\s+")).contains("ui-state-highlight");
+                        && Arrays.asList(tab.getTitleStyleClass().split("\\s+")).contains("p-state-highlight");
                 String titleStyleClass = getStyleClassBuilder(context)
                         .add(active || completed, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)
                         .add(active, Wizard.CURRENT_STEP_CLASS)
@@ -295,12 +295,8 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
     }
 
     protected void encodeNavigator(FacesContext facesContext, Wizard component, String id, String label, String buttonClass,
-                                   String icon, boolean isBack) throws IOException {
+                                   String iconClass, boolean isBack) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String iconClass = getStyleClassBuilder(facesContext)
-                .add(isBack, HTML.BUTTON_LEFT_ICON_CLASS, HTML.BUTTON_RIGHT_ICON_CLASS)
-                .add(icon)
-                .build();
         String button_Class = getStyleClassBuilder(facesContext)
                 .add(isBack, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                 .add(buttonClass)

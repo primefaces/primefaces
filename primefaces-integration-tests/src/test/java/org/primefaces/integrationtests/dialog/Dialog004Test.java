@@ -53,7 +53,7 @@ class Dialog004Test extends AbstractPrimePageTest {
 
         // Assert
         assertPresent(page.minimizedClone);
-        assertCss(page.minimizedClone, "ui-dialog-minimized");
+        assertCss(page.minimizedClone, "p-dialog-minimized");
         assertTrue(dialog.isVisible()); // visible is true even for minimized
         assertFalse(dialog.isDisplayed()); // dialog is in DOM but hidden
         assertConfiguration(dialog.getWidgetConfiguration());
@@ -96,7 +96,7 @@ class Dialog004Test extends AbstractPrimePageTest {
         dialog.toggleMaximize();
 
         // Assert
-        assertCss(dialog, "ui-dialog-maximized");
+        assertCss(dialog, "p-dialog-maximized");
         assertTrue(dialog.isVisible());
         assertTrue(dialog.isDisplayed());
         assertConfiguration(dialog.getWidgetConfiguration());

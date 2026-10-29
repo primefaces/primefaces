@@ -39,7 +39,7 @@ import jakarta.faces.event.ValueChangeEvent;
 public class TriStateCheckbox extends TriStateCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TriStateCheckbox";
-    public static final String UI_ICON = "ui-icon ";
+    public static final String CROSSED_ICON_CLASS = "p-chkbox-icon p-icon p-checkbox-icon p-checkbox-crossed-icon p-c";
 
     @Override
     public void validate(FacesContext context) {

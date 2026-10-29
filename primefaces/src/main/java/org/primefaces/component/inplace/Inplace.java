@@ -43,13 +43,15 @@ public class Inplace extends InplaceBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Inplace";
 
-    public static final String CONTAINER_CLASS = "ui-inplace ui-hidden-container";
-    public static final String DISPLAY_CLASS = "ui-inplace-display";
-    public static final String DISABLED_DISPLAY_CLASS = "ui-inplace-display-disabled";
-    public static final String CONTENT_CLASS = "ui-inplace-content";
-    public static final String EDITOR_CLASS = "ui-inplace-editor";
-    public static final String SAVE_BUTTON_CLASS = "ui-inplace-save";
-    public static final String CANCEL_BUTTON_CLASS = "ui-inplace-cancel";
+    public static final String CONTAINER_CLASS = "p-inplace p-hidden-container";
+    public static final String DISPLAY_CLASS = "p-inplace-display";
+    public static final String DISABLED_DISPLAY_CLASS = "p-inplace-display-disabled";
+    public static final String CONTENT_CLASS = "p-inplace-content";
+    public static final String EDITOR_CLASS = "p-inplace-editor";
+    public static final String SAVE_BUTTON_CLASS = "p-inplace-save";
+    public static final String CANCEL_BUTTON_CLASS = "p-inplace-cancel";
+    public static final String SAVE_ICON_CLASS = "p-button-icon-left p-icon p-check-icon p-inplace-save-icon p-c";
+    public static final String CANCEL_ICON_CLASS = "p-button-icon-left p-icon p-close-icon p-inplace-cancel-icon p-c";
     public static final String DISPLAY_INLINE = "inline";
     public static final String DISPLAY_NONE = "none";
 

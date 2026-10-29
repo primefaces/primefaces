@@ -60,7 +60,7 @@ public class ChartRenderer extends CoreRenderer<Chart> {
         String styleClass = component.getStyleClass();
         String canvasStyle = component.getCanvasStyle();
         String canvasStyleClass = component.getCanvasStyleClass();
-        styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
+        styleClass = (styleClass != null) ? "p-chart " + styleClass : "p-chart";
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
