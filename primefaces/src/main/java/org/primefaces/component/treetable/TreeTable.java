@@ -116,6 +116,7 @@ public class TreeTable extends TreeTableBaseImpl {
     public static final String EDITABLE_COLUMN_CLASS = "p-editable-column";
     public static final String EDITING_ROW_CLASS = "p-row-editing";
     public static final String GRIDLINES_CLASS = "p-treetable-gridlines";
+    public static final String STRIPED_ROWS_CLASS = "p-treetable-striped";
     public static final String SMALL_SIZE_CLASS = "p-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "p-treetable-lg";
 

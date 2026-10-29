@@ -77,6 +77,10 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
     @Property(description = "Name of iterator to be used in custom content display.")
     public abstract String getVar();
 
+    @Property(description = "Style class of the table element rendered in advanced layout, when columns are used."
+            + " Themes provide \"p-table-gridlines\", \"p-table-striped\", \"p-table-sm\" and \"p-table-lg\".")
+    public abstract String getAdvancedStyleClass();
+
     @Property(description = "Displays an input filter for the list.",
             defaultValue = "false")
     public abstract boolean isFilter();

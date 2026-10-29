@@ -7,6 +7,7 @@
  * Panel: p-select-checkmark (panelStyleClass, a check in front of the selected item)
  * Panel items: p-state-hover (mouse and keyboard), p-state-highlight (selected)
  * Variants: editable (input label), filter, groups, custom content (table with columns), footer facet
+ * Table (p:column children, advancedStyleClass): p-table-gridlines (always on), p-table-striped, p-table-sm, p-table-lg
  */
 .p-selectonemenu {
     display: inline-block;
@@ -332,6 +333,32 @@
         &.p-state-highlight.p-state-hover {
             background: var(--p-select-option-selected-focus-background);
             color: var(--p-select-option-selected-focus-color);
+        }
+    }
+
+    /* table variants (advancedStyleClass): p-table-striped, p-table-sm / -lg; the cells always have gridlines */
+    .p-selectonemenu-items.p-selectonemenu-table.p-table-striped > tbody
+        > tr.p-selectonemenu-row:nth-child(even of .p-selectonemenu-row):not(.p-state-hover, .p-state-highlight) {
+        background: var(--p-datatable-row-striped-background);
+    }
+
+    .p-selectonemenu-items.p-selectonemenu-table.p-table-sm {
+        > thead > tr > th {
+            padding: var(--p-datatable-header-cell-sm-padding);
+        }
+
+        > tbody > tr.p-selectonemenu-row > td {
+            padding: var(--p-datatable-body-cell-sm-padding);
+        }
+    }
+
+    .p-selectonemenu-items.p-selectonemenu-table.p-table-lg {
+        > thead > tr > th {
+            padding: var(--p-datatable-header-cell-lg-padding);
+        }
+
+        > tbody > tr.p-selectonemenu-row > td {
+            padding: var(--p-datatable-body-cell-lg-padding);
         }
     }
 

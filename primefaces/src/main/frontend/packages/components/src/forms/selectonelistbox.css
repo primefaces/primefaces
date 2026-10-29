@@ -6,6 +6,7 @@
  *                    p-listbox-striped, p-listbox-checkmark (styleClass)
  * Items: p-state-hover, p-state-highlight (selected), p-listbox-outline (keyboard focus)
  * Variants: filter, showCheckbox (p:selectManyMenu), custom content (table with p:column children)
+ * Table (p:column children, advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm, p-table-lg
  */
 .p-selectonelistbox,
 .p-selectmanymenu {
@@ -146,6 +147,25 @@
     &.p-listbox-striped .p-selectlistbox-listcontainer .p-selectlistbox-list
         .p-selectlistbox-item:nth-child(even of .p-selectlistbox-item):not(.p-state-hover, .p-state-highlight, .p-listbox-outline) {
         background: var(--p-listbox-option-striped-background);
+    }
+
+    /* table variants (advancedStyleClass on the table of p:column children): p-table-gridlines, p-table-striped,
+       p-table-sm / -lg */
+    table.p-selectlistbox-list.p-table-gridlines > tbody > tr.p-selectlistbox-item > td {
+        border: 1px solid var(--p-datatable-body-cell-border-color);
+    }
+
+    table.p-selectlistbox-list.p-table-striped > tbody
+        > tr.p-selectlistbox-item:nth-child(even of .p-selectlistbox-item):not(.p-state-hover, .p-state-highlight, .p-listbox-outline) {
+        background: var(--p-datatable-row-striped-background);
+    }
+
+    table.p-selectlistbox-list.p-table-sm > tbody > tr.p-selectlistbox-item > td {
+        padding: var(--p-datatable-body-cell-sm-padding);
+    }
+
+    table.p-selectlistbox-list.p-table-lg > tbody > tr.p-selectlistbox-item > td {
+        padding: var(--p-datatable-body-cell-lg-padding);
     }
 
     /*

@@ -5,6 +5,7 @@
  * The dropdown is a .p-button: it only remaps the private --_* button variables to the autocomplete dropdown tokens.
  * Supported classes: p-autocomplete-dd, p-autocomplete-multiple, p-state-loading (on .p-autocomplete),
  *                    p-state-highlight (focused item), p-state-disabled
+ * Table (p:column children, advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm, p-table-lg
  */
 .p-autocomplete {
     /* the input / multiple container (.p-inputfield) read the inputtext tokens: point them to the autocomplete tokens */
@@ -364,6 +365,39 @@
 
         &:last-child > td {
             border-bottom-width: 0;
+        }
+    }
+
+    /* table variants (advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm / -lg */
+    .p-autocomplete-table.p-table-gridlines {
+        th,
+        td {
+            border-width: 1px;
+        }
+    }
+
+    .p-autocomplete-table.p-table-striped > tbody
+        > tr.p-autocomplete-row:nth-child(even of .p-autocomplete-row):not(.p-state-highlight) {
+        background: var(--p-datatable-row-striped-background);
+    }
+
+    .p-autocomplete-table.p-table-sm {
+        > thead > tr > th {
+            padding: var(--p-datatable-header-cell-sm-padding);
+        }
+
+        > tbody > tr.p-autocomplete-row > td {
+            padding: var(--p-datatable-body-cell-sm-padding);
+        }
+    }
+
+    .p-autocomplete-table.p-table-lg {
+        > thead > tr > th {
+            padding: var(--p-datatable-header-cell-lg-padding);
+        }
+
+        > tbody > tr.p-autocomplete-row > td {
+            padding: var(--p-datatable-body-cell-lg-padding);
         }
     }
 
