@@ -44,9 +44,9 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SelectOneMenu015Test extends AbstractPrimePageTest {
+class SelectOneMenu016Test extends AbstractPrimePageTest {
 
-    SelectOneMenu015Test() {
+    SelectOneMenu016Test() {
         super();
     }
 
@@ -243,7 +243,7 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
 
         @Override
         public String getLocation() {
-            return "selectonemenu/selectOneMenu015.xhtml";
+            return "selectonemenu/selectOneMenu016.xhtml";
         }
     }
 }

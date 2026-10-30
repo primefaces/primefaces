@@ -42,7 +42,7 @@ import lombok.Data;
 @Named
 @ViewScoped
 @Data
-public class SelectOneMenu015 implements Serializable {
+public class SelectOneMenu016 implements Serializable {
 
     @Serial private static final long serialVersionUID = 6151640563487911512L;
 
@@ -52,7 +52,7 @@ public class SelectOneMenu015 implements Serializable {
 
     private int value;
 
-    public SelectOneMenu015() {
+    public SelectOneMenu016() {
         super();
     }
 
