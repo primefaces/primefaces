@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:inputPhone id="phone" value="#{inputPhone001.phone}" label="Phone" initialCountry="DE"/>
+            <h:outputText id="phoneValue" value="#{inputPhone001.phone}"/>
+
+            <p:inputPhone id="preset" value="#{inputPhone001.preset}" initialCountry="DE"/>
+
+            <p:inputPhone id="country" value="#{inputPhone001.countryPhone}" initialCountry="DE">
+                <p:ajax event="countrySelect" listener="#{inputPhone001.onCountrySelect}" update="form:selectedCountry"/>
+            </p:inputPhone>
+            <h:outputText id="selectedCountry" value="#{inputPhone001.selectedCountry}"/>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -92,6 +92,22 @@
                     </p:password>
                 </c:forEach>
 
+                <span>InputOtp</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:inputOtp value="#{themingStatesView.otp}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:inputOtp>
+                </c:forEach>
+
+                <span>InputPhone</span>
+                <c:forEach items="#{formStates}" var="st">
+                    <p:inputPhone value="#{themingStatesView.phone}" readonly="#{st[1]}" disabled="#{st[2]}">
+                        <f:attribute name="invalid" value="#{st[3]}"/>
+                        <f:event type="preRenderComponent" listener="#{themingStatesView.markInvalid}"/>
+                    </p:inputPhone>
+                </c:forEach>
+
                 <span>AutoComplete</span>
                 <c:forEach items="#{formStates}" var="st">
                     <p:autoComplete value="#{themingStatesView.fruit}" completeMethod="#{themingStatesView.completeFruit}"
@@ -241,6 +257,10 @@
                 <div class="field">
                     <p:outputLabel for="@next" value="Password"/>
                     <p:password value="#{themingStatesView.password}" redisplay="true" toggleMask="true"/>
+                </div>
+                <div class="field">
+                    <p:outputLabel for="@next" value="InputPhone"/>
+                    <p:inputPhone value="#{themingStatesView.phone}"/>
                 </div>
                 <div class="field">
                     <p:outputLabel for="@next" value="AutoComplete"/>

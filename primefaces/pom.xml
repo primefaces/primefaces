@@ -246,6 +246,12 @@
             <artifactId>owasp-java-html-sanitizer</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

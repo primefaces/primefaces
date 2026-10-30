@@ -1,0 +1,20 @@
+/*
+ * TriStateManyCheckbox: p:triStateManyCheckbox (layouts lineDirection, pageDirection)
+ *
+ * The boxes and labels are styled in forms/checkbox.css (like p:triStateCheckbox); this file only lays out the items.
+ * Structure: div.p-tristatemanycheckbox[role=group] > (div.p-chkbox > div.p-hidden-accessible > input
+ *            + div.p-chkbox-box > span.p-chkbox-icon + label.p-chkbox-label)*
+ * Supported classes: p-tristatemanycheckbox-vertical (layout pageDirection),
+ *                    p-chkbox-sm, p-chkbox-lg (styleClass, see forms/checkbox.css)
+ */
+.p-tristatemanycheckbox {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--p-tristatemanycheckbox-row-gap) var(--p-tristatemanycheckbox-gap);
+
+    &.p-tristatemanycheckbox-vertical {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

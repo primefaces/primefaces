@@ -347,6 +347,7 @@ __metadata:
     js-cookie: "npm:3.0.8"
     jsplumb: "npm:2.15.6"
     keycharm: "npm:0.4.0"
+    libphonenumber-js: "npm:1.13.15"
     lucide-static: "npm:1.62.0"
     moment: "npm:2.31.0"
     moment-jdateformatparser: "npm:1.2.1"
@@ -831,6 +832,13 @@ __metadata:
   version: 0.4.0
   resolution: "keycharm@npm:0.4.0"
   checksum: 10c0/5e845331148b5cb652f65a6354a830df62a189e2c17faec56375fa12d91152a70f93c872c6f22b81acafe56b9df51268c9af6b7b8c0543cb65ba46042eb9713e
+  languageName: node
+  linkType: hard
+
+"libphonenumber-js@npm:1.13.15":
+  version: 1.13.15
+  resolution: "libphonenumber-js@npm:1.13.15"
+  checksum: 10c0/041fa295a526566a9e0910240887d1daa678faf546303ef2580479dadafc40c240dae50cc9f1c73632d0772f09fd3d87fbb47ec505d9f569025997807c6fe6ae
   languageName: node
   linkType: hard
 

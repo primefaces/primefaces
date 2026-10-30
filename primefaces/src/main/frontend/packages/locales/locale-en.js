@@ -105,6 +105,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.ALLOW_TYPES_detail": "Invalid file type: '{0}'. Allowed types: '{1}'.",
       "primefaces.FileValidator.SIZE_LIMIT": "Invalid file size.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "File '{0}' must not be larger than {1}.",
+      "primefaces.inputphone.INVALID": "{0}: Validation Error: Value is not a valid phone number.",
       //optional for bean validation integration in client side validation
       "jakarta.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "jakarta.validation.constraints.AssertFalse.message": "must be false.",
