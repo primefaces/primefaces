@@ -55,6 +55,8 @@ public class RemoteCommandRenderer extends CoreRenderer<RemoteCommand> {
 
             component.queueEvent(event);
         }
+
+        decodeBehaviors(context, component);
     }
 
     @Override
