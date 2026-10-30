@@ -5,7 +5,8 @@
  *                    p-selectonemenu-rtl, p-input-filled (on a parent), .p-fluid (on a parent),
  *                    p-selectonemenu-sm, p-selectonemenu-lg (styleClass)
  * Panel: p-select-checkmark (panelStyleClass, a check in front of the selected item)
- * Panel items: p-state-hover (mouse and keyboard), p-state-highlight (selected)
+ * Panel items: p-state-hover (mouse and keyboard), p-state-focus (keyboard with selectOnFocus="false"),
+ *              p-state-highlight (selected)
  * Variants: editable (input label), filter, groups, custom content (table with columns), footer facet
  */
 .p-selectonemenu {
@@ -317,7 +318,8 @@
             border-top-color: transparent;
         }
 
-        &.p-state-hover {
+        &.p-state-hover,
+        &.p-state-focus {
             background: var(--p-select-option-focus-background);
             color: var(--p-select-option-focus-color);
         }
@@ -329,7 +331,8 @@
             overflow: auto;
         }
 
-        &.p-state-highlight.p-state-hover {
+        &.p-state-highlight.p-state-hover,
+        &.p-state-highlight.p-state-focus {
             background: var(--p-select-option-selected-focus-background);
             color: var(--p-select-option-selected-focus-color);
         }
