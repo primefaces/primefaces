@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.core.ajax;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 
 import org.junit.jupiter.api.DisplayName;
@@ -100,6 +101,22 @@ class CoreAjax002Test extends AbstractPrimePageTest {
         assertEquals("modified 4 success ok true true true true", page.output8.getText());
     }
 
+    @Test
+    @DisplayName("Core-AJAX: RemoteCommand with literal and EL oncomplete - https://github.com/primefaces/primefaces/issues/15440")
+    void remoteCommandWithPartialELOncomplete(Page page) {
+        assertEquals("", page.output9.getText());
+        PrimeSelenium.executeScript(true, "remoteCommand9()");
+        assertEquals("literal modified", page.output9.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: RemoteCommand with full EL oncomplete - https://github.com/primefaces/primefaces/issues/15440")
+    void remoteCommandWithFullELOncomplete(Page page) {
+        assertEquals("", page.output10.getText());
+        PrimeSelenium.executeScript(true, "remoteCommand10()");
+        assertEquals("modified", page.output10.getText());
+    }
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form1:button")
         CommandButton button1;
@@ -148,6 +165,12 @@ class CoreAjax002Test extends AbstractPrimePageTest {
 
         @FindBy(id = "output8")
         WebElement output8;
+
+        @FindBy(id = "output9")
+        WebElement output9;
+
+        @FindBy(id = "output10")
+        WebElement output10;
 
         @Override
         public String getLocation() {
