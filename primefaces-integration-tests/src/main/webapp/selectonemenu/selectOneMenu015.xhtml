@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="primefaces">
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head>
+
+    </h:head>
+        <h:body>
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <!-- GitHub #15435: an item clicked while the panel is still fading in must be selected -->
+                <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu015.option}">
+                    <f:selectItem itemLabel="One" itemValue="1"/>
+                    <f:selectItem itemLabel="Two" itemValue="2"/>
+                    <f:selectItem itemLabel="Three" itemValue="3"/>
+                </p:selectOneMenu>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
