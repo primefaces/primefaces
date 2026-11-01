@@ -311,85 +311,91 @@
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Responsive priority of the column, lower values have more priority.Default is 0.</td>
                         </tr>
-                        <tr id="rowspan" class="rowColor">
+                        <tr id="rowHeader" class="rowColor">
+                            <td class="colFirst"><a href="#rowHeader"><code>rowHeader</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">Renders the column's body cells as <th scope="row"> instead of <td>, marking it as a row header for accessibility (see WAI tables tutorial: two headers). Only supported by DataTable.Default is false.</td>
+                        </tr>
+                        <tr id="rowspan" class="altColor">
                             <td class="colFirst"><a href="#rowspan"><code>rowspan</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Defines the number of rows the column spans.Default is 1.</td>
                         </tr>
-                        <tr id="selectionBox" class="altColor">
+                        <tr id="selectionBox" class="rowColor">
                             <td class="colFirst"><a href="#selectionBox"><code>selectionBox</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Indicates whether or not the column should contain a radiobutton or checkbox for selectionDefault is false.</td>
                         </tr>
-                        <tr id="selectRow" class="rowColor">
+                        <tr id="selectRow" class="altColor">
                             <td class="colFirst"><a href="#selectRow"><code>selectRow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Whether clicking the column selects the row when datatable has row selection enabled.Default is true.</td>
                         </tr>
-                        <tr id="sortable" class="altColor">
+                        <tr id="sortable" class="rowColor">
                             <td class="colFirst"><a href="#sortable"><code>sortable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to mark column as sortable.Default is true.</td>
                         </tr>
-                        <tr id="sortBy" class="rowColor">
+                        <tr id="sortBy" class="altColor">
                             <td class="colFirst"><a href="#sortBy"><code>sortBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Property to be used for sorting.</td>
                         </tr>
-                        <tr id="sortFunction" class="altColor">
+                        <tr id="sortFunction" class="rowColor">
                             <td class="colFirst"><a href="#sortFunction"><code>sortFunction</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.el.MethodExpression</code>)
                     </td><td class="colLast">Custom pluggable sortFunction.</td>
                         </tr>
-                        <tr id="sortOrder" class="rowColor">
+                        <tr id="sortOrder" class="altColor">
                             <td class="colFirst"><a href="#sortOrder"><code>sortOrder</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Sets default sorting order. Possible values "asc", "desc" or null</td>
                         </tr>
-                        <tr id="sortPriority" class="altColor">
+                        <tr id="sortPriority" class="rowColor">
                             <td class="colFirst"><a href="#sortPriority"><code>sortPriority</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Sets default sorting priority over the other columns. Lower values have more priority.Default is org.primefaces.model.SortMeta.MIN_PRIORITY.</td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style of the component.</td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the component.</td>
                         </tr>
-                        <tr id="title" class="rowColor">
+                        <tr id="title" class="altColor">
                             <td class="colFirst"><a href="#title"><code>title</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Advisory tooltip information.</td>
                         </tr>
-                        <tr id="toggleable" class="altColor">
+                        <tr id="toggleable" class="rowColor">
                             <td class="colFirst"><a href="#toggleable"><code>toggleable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.Default is true.</td>
                         </tr>
-                        <tr id="visible" class="rowColor">
+                        <tr id="visible" class="altColor">
                             <td class="colFirst"><a href="#visible"><code>visible</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Controls the visibility of the column.Default is true.</td>
                         </tr>
-                        <tr id="width" class="altColor">
+                        <tr id="width" class="rowColor">
                             <td class="colFirst"><a href="#width"><code>width</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
