@@ -53,6 +53,8 @@ public class PollRenderer extends CoreRenderer<Poll> {
 
             component.queueEvent(event);
         }
+
+        decodeBehaviors(context, component);
     }
 
     @Override

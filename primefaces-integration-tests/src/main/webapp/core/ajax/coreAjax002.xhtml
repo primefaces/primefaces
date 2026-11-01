@@ -67,5 +67,19 @@
                 oncomplete="$('#output8').text(`#{coreAjax002.property} \${xhr.readyState} \${status} \${args.param} \${!!data} \${!!window} \${!!PrimeFaces} \${!!PF}`)" />
             <span id="output8"></span>
         </h:form>
+
+        <h:form id="form9">
+            <p:remoteCommand name="remoteCommand9"
+                action="#{coreAjax002.modifyProperty}"
+                oncomplete="$('#output9').text('literal'); $('#output9').append(' #{coreAjax002.property}');" />
+            <span id="output9"></span>
+        </h:form>
+
+        <h:form id="form10">
+            <p:remoteCommand name="remoteCommand10"
+                action="#{coreAjax002.fullOncomplete10}"
+                oncomplete="#{coreAjax002.oncomplete}" />
+            <span id="output10"></span>
+        </h:form>
     </h:body>
 </html>
