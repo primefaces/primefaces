@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,14 +47,14 @@ class Dialog004Test extends AbstractPrimePageTest {
         dialog.show();
         assertTrue(dialog.isVisible());
         assertDisplayed(dialog.getMinimizeButton());
-        assertNotPresent(page.minimizedClone);
+        assertNotPresent(page.docked);
 
         // Act
         dialog.toggleMinimize();
 
         // Assert
-        assertPresent(page.minimizedClone);
-        assertCss(page.minimizedClone, "p-dialog-minimized");
+        assertPresent(page.docked);
+        assertCss(page.docked, "p-dialog-docked");
         assertTrue(dialog.isVisible()); // visible is true even for minimized
         assertFalse(dialog.isDisplayed()); // dialog is in DOM but hidden
         assertConfiguration(dialog.getWidgetConfiguration());
@@ -70,13 +71,13 @@ class Dialog004Test extends AbstractPrimePageTest {
         assertDisplayed(dialog.getMinimizeButton());
         dialog.toggleMinimize();
         assertFalse(dialog.isDisplayed()); // dialog is in DOM but hidden
-        assertPresent(page.minimizedClone);
+        assertPresent(page.docked);
 
         // Act
         dialog.toggleMinimize(); // toggle minimize
 
         // Assert
-        assertNotPresent(page.minimizedClone); // clone destroyed
+        assertNotPresent(page.docked); // docked bar removed
         assertTrue(dialog.isVisible()); // visible is true even for minimized
         assertTrue(dialog.isDisplayed()); // dialog is in displayed
         assertConfiguration(dialog.getWidgetConfiguration());
@@ -119,8 +120,8 @@ class Dialog004Test extends AbstractPrimePageTest {
         @FindBy(id = "form:dlg")
         Dialog dialog;
 
-        @FindBy(id = "form:dlg_clone")
-        Dialog minimizedClone;
+        @FindBy(id = "form:dlg_docked")
+        WebElement docked;
 
         @Override
         public String getLocation() {

@@ -173,9 +173,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     maximized?: boolean;
 
     /**
-     * DOM element clone of the JQ to be used for minimizing.
+     * DOM element of the bar that represents this dialog in the docking zone while it is minimized.
      */
-    minimizeClone: JQuery = $();
+    dockItem: JQuery = $();
 
     /**
      * DOM element of the icon for minimizing this dialog, when this dialog can be minimized.
@@ -287,18 +287,18 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
 
         $(document).off('keydown.dialog_' + cfg.id);
 
-        if(this.minimized) {
-            var dockingZone = $(document.body).children('.p-dialog-docking-zone');
-            if(dockingZone.length && dockingZone.children(this.jqId).length) {
-                this.removeMinimize();
-                dockingZone.children(this.jqId).remove();
-            }
-        }
+        this.undock();
 
         this.minimized = false;
         this.maximized = false;
 
         super.refresh(cfg);
+    }
+
+    override destroy(): void {
+        this.undock();
+
+        super.destroy();
     }
 
     /**
@@ -487,7 +487,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
 
 		if(this.minimized) {
-			this.toggleMinimize();
+			this.unminimize(false);
 		}
 
         this.lastOffset = [ this.box.css('top'), this.box.css('left') ];
@@ -830,7 +830,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     toggleMaximize(): void {
         if (this.minimized) {
-            this.toggleMinimize();
+            this.unminimize(false);
         }
 
         if(this.maximized) {
@@ -880,30 +880,22 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
 
         if(this.minimized) {
-            this.removeMinimize();
-
-            this.callBehavior('restoreMinimize');
+            this.unminimize(animate);
         }
         else {
             this.saveState();
-            
-            // create a minimize clone which is just the titlebar
-            this.minimizeClone = this.jq.clone(true);
-            this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
-            this.minimizeClone.addClass('p-dialog-minimized');
-            this.minimizeClone.children('.p-dialog-content').remove();
-            this.minimizeClone.find('.p-dialog-footer').remove();
-
-            if (this.cfg.resizable) {
-                this.minimizeClone.children('.p-resizable-handle').remove();
-            }
 
             if (animate) {
                 PrimeFaces.effects.run(this.jq, 'transfer', {
                     to: dockingZone,
                     className: 'p-dialog-minimizing',
                     duration: 500,
-                    complete: () => this.dock(dockingZone)
+                    complete: () => {
+                        // closed or updated meanwhile
+                        if (this.jq.is(':visible') && !this.minimized) {
+                            this.dock(dockingZone);
+                        }
+                    }
                 });
             }
             else {
@@ -913,10 +905,46 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     }
 
     /**
+     * Restores this dialog from the docking zone and triggers the `restoreMinimize` behavior.
+     * @param animate Whether to animate from the docked bar to the dialog.
+     */
+    protected unminimize(animate: boolean): void {
+        if (!animate) {
+            this.removeMinimize();
+            this.callBehavior('restoreMinimize');
+            return;
+        }
+
+        // already restoring
+        if (this.dockItem.hasClass('p-dialog-docked-restoring')) {
+            return;
+        }
+
+        // the restored dialog is laid out invisibly, so the animation knows where it ends
+        const dialog = this.jq;
+        const visibility = dialog[0]?.style.visibility ?? '';
+        dialog.css('visibility', 'hidden').show();
+        this.restoreState();
+
+        PrimeFaces.effects.run(this.dockItem.addClass('p-dialog-docked-restoring'), 'transfer', {
+            to: this.box,
+            className: 'p-dialog-minimizing',
+            duration: 500,
+            complete: () => {
+                dialog.css('visibility', visibility);
+                // closed or updated meanwhile
+                if (this.minimized && this.jq === dialog) {
+                    this.unminimize(false);
+                }
+            }
+        });
+    }
+
+    /**
      * Called when this dialog is minimized. Restores the original position of this dialog.
      */
     protected removeMinimize(): void {
-        this.minimizeClone.remove();
+        this.undock();
         this.jq.show();
         this.restoreState();
         this.minimized = false;
@@ -924,18 +952,51 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
 
     /**
      * Docks this dialog to the given docking zone. The docking zone is usually at the bottom of the screen and displays
-     * a list of minimized dialogs.
+     * a list of minimized dialogs. The dialog itself is only hidden (#3210), the zone gets an own bar for it.
      * @param zone Zone to dock to.
      */
     protected dock(zone: JQuery): void {
         zone.css('z-index', this.jq.css('z-index'));
         this.jq.hide();
-        this.minimizeClone.appendTo(zone).css({'position':'static', 'height':'auto', 'width':'auto', 'float': 'left'});
-        var titlebar = this.minimizeClone.children('.p-dialog-titlebar');
-        var minimizeIcon = titlebar.children('.p-dialog-titlebar-minimize');
-        minimizeIcon.removeClass('p-state-hover');
+        this.dockItem = this.renderDockItem().appendTo(zone);
+        this.minimizeIcon.removeClass('p-state-hover');
         this.minimized = true;
         this.callBehavior('minimize');
+    }
+
+    /**
+     * Removes the bar of this dialog from the docking zone.
+     */
+    protected undock(): void {
+        this.dockItem.remove();
+        this.dockItem = $();
+    }
+
+    /**
+     * Renders the bar of this dialog in the docking zone, with the title and the restore, maximize and close icons.
+     * Nothing of the dialog is cloned, so its event handlers, interactions and child overlays stay with the dialog.
+     * @returns The bar.
+     */
+    protected renderDockItem(): JQuery {
+        const item = $('<div class="p-dialog-docked"></div>').attr('id', this.getId() + '_docked');
+        $('<span class="p-dialog-docked-title"></span>').text(this.titlebar.children('.p-dialog-title').text()).appendTo(item);
+        this.renderDockIcon(item, this.minimizeIcon, 'p-dialog-docked-restore', () => this.toggleMinimize());
+        this.renderDockIcon(item, this.maximizeIcon, 'p-dialog-docked-maximize', () => this.toggleMaximize());
+        this.renderDockIcon(item, this.closeIcon, 'p-dialog-docked-close', () => this.hide());
+        return item;
+    }
+
+    private renderDockIcon(item: JQuery, icon: JQuery, styleClass: string, action: () => void): void {
+        if (icon.length) {
+            $('<a href="#" role="button" class="p-dialog-docked-icon"><span class="p-icon"></span></a>')
+                .addClass(styleClass)
+                .attr('aria-label', icon.attr('aria-label') ?? null)
+                .on('click', (e) => {
+                    e.preventDefault();
+                    action();
+                })
+                .appendTo(item);
+        }
     }
 
     /**

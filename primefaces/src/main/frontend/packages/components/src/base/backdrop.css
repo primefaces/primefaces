@@ -2,8 +2,8 @@
  * Backdrop: translucent presets (Glass) blur and saturate what lies behind the floating layer. All tokens are "none"
  * in the other presets.
  *
- * Only elements that float or form a bar get a backdrop filter: overlays (dialogs, popovers, dropdown panels, menus,
- * tooltips, growl), the toolbar and buttons. Nested overlays (submenus inside a menu) only blur what lies inside their
+ * Only elements that float or form a bar get a backdrop filter: overlays (dialogs, minimized dialogs in the docking
+ * zone, popovers, dropdown panels, menus, tooltips, growl), the toolbar and buttons. Nested overlays (submenus inside a menu) only blur what lies inside their
  * parent overlay (backdrop root), so the overlay backgrounds stay mostly opaque. CascadeSelect: the root panel is only
  * the anchor (no height, its first list is absolutely positioned), so the first list gets the filter.
  * Content containers (panel, card, table) stay without one: a backdrop filter makes the element the containing block
@@ -15,7 +15,7 @@
     .p-selectcheckboxmenu-panel, .p-autocomplete-panel,
     .p-cascadeselect-items-wrapper > .p-cascadeselect-items,
     .p-menu-dynamic, .p-menu-child, .p-contextmenu, .p-tooltip-text, .p-growl-item-container, .p-password-panel,
-    .p-columntoggler) {
+    .p-columntoggler, .p-dialog-docked) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
