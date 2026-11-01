@@ -1364,6 +1364,45 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
         }
     }
 
+    /**
+     * Finds the index of the rendered tab with the given key. Unlike {@link #forEachTab(BiConsumer, boolean)}, unrendered
+     * static tabs are not counted, so the index matches the one used by the renderers.
+     *
+     * @param key the key of the tab
+     * @return the 0-based index of the tab, or <code>-1</code> if no rendered tab has the given key
+     */
+    public int findTabIndexByKey(String key) {
+        if (isRepeating()) {
+            Tab tab = getDynamicTab();
+            try {
+                int dataCount = getRowCount();
+                for (int i = 0; i < dataCount; i++) {
+                    setIndex(i);
+                    if (tab.isRendered() && key.equals(tab.getKey())) {
+                        return i;
+                    }
+                }
+            }
+            finally {
+                setIndex(-1);
+            }
+        }
+        else {
+            int j = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab tab) {
+                    if (key.equals(tab.getKey())) {
+                        return j;
+                    }
+                    j++;
+                }
+            }
+        }
+
+        return -1;
+    }
+
     public Tab getDynamicTab() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);

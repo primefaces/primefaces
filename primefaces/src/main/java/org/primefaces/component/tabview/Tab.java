@@ -79,6 +79,14 @@ public class Tab extends TabBaseImpl {
         }
     }
 
+    /**
+     * @param index The tab index.
+     * @return the key of the tab, or its index if the tab does not define a key.
+     */
+    public String getKeyOrIndex(int index) {
+        return getKey() != null ? getKey() : Integer.toString(index);
+    }
+
     @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered() || isDisabled()) {

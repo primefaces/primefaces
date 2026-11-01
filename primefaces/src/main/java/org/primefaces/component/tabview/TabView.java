@@ -31,11 +31,9 @@ import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
 import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
@@ -72,10 +70,6 @@ public class TabView extends TabViewBaseImpl {
     public static final String NAVIGATOR_RIGHT_ICON_CLASS = "p-icon p-next-icon p-tabs-next-icon";
     public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-tabs-close-icon";
     public static final String SCROLLABLE_TABS_CLASS = "p-tabs-scrollable";
-
-    // active tab index and key/index of the active tab, resolved once per encode, see TabViewRenderer#encodeMarkup
-    private Integer encodeActiveIndex;
-    private String encodeActive;
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
@@ -210,10 +204,6 @@ public class TabView extends TabViewBaseImpl {
      * @return the 0-based index of the active tab
      */
     public int resolveActiveIndex() {
-        if (encodeActiveIndex != null) {
-            return encodeActiveIndex;
-        }
-
         String active = getActive();
 
         // Deprecated
@@ -238,80 +228,18 @@ public class TabView extends TabViewBaseImpl {
         }
     }
 
-    /**
-     * Resolves the key of the active tab, or its index if the tab does not define a key.
-     *
-     * @return the key or index of the active tab, or an empty string if there is no active tab
-     */
-    public String resolveActive() {
-        if (encodeActive != null) {
-            return encodeActive;
-        }
-
-        AtomicReference<String> resolved = new AtomicReference<>();
-
-        forEachTab((tab, index, active) -> {
-            if (Boolean.TRUE.equals(active) && resolved.get() == null) {
-                resolved.set(toActive(tab, index));
-            }
-        });
-
-        return resolved.get() == null ? Constants.EMPTY_STRING : resolved.get();
-    }
-
-    private String toActive(Tab tab, int index) {
-        return tab.getKey() != null ? tab.getKey() : Integer.toString(index);
-    }
-
-    /**
-     * Resolves the active tab once for the whole encode, so {@link #forEachTab} (called for the headers and the contents)
-     * does not look up the key again and {@link #resolveActive()} does not walk the tabs again.
-     * Must be followed by {@link #endEncodeActive()}.
-     */
-    void startEncodeActive() {
-        encodeActiveIndex = resolveActiveIndex();
-        encodeActive = null;
-    }
-
-    void endEncodeActive() {
-        encodeActiveIndex = null;
-        encodeActive = null;
-    }
-
-    protected int findTabIndexByKey(String key) {
-        if (isRepeating()) {
-            Tab tab = getDynamicTab();
-            try {
-                int dataCount = getRowCount();
-                for (int i = 0; i < dataCount; i++) {
-                    setIndex(i);
-                    if (tab.isRendered() && key.equals(tab.getKey())) {
-                        return i;
-                    }
-                }
-            }
-            finally {
-                setIndex(-1);
-            }
-        }
-        else {
-            int j = 0;
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent child = getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab tab) {
-                    if (key.equals(tab.getKey())) {
-                        return j;
-                    }
-                    j++;
-                }
-            }
-        }
-
-        return -1;
-    }
-
     public void forEachTab(Callbacks.TriConsumer<Tab, Integer, Boolean> callback) {
-        int activeIndex = resolveActiveIndex();
+        forEachTab(resolveActiveIndex(), callback);
+    }
+
+    /**
+     * Iterates over the rendered tabs, using an already resolved active index (see {@link #resolveActiveIndex()}), so it is
+     * resolved only once if the tabs are iterated multiple times, e.g. for the headers and the contents.
+     *
+     * @param activeIndex the 0-based index of the active tab
+     * @param callback the callback receiving the tab, its index and whether it is active
+     */
+    public void forEachTab(int activeIndex, Callbacks.TriConsumer<Tab, Integer, Boolean> callback) {
         boolean activeTabRendered = false;
 
         if (isRepeating()) {
@@ -335,7 +263,6 @@ public class TabView extends TabViewBaseImpl {
                     }
                     if (tabActive) {
                         activeTabRendered = true;
-                        recordEncodeActive(tab, i);
                     }
 
                     callback.accept(tab, i, tabActive);
@@ -363,19 +290,12 @@ public class TabView extends TabViewBaseImpl {
                     }
                     if (tabActive) {
                         activeTabRendered = true;
-                        recordEncodeActive(tab, j);
                     }
 
                     callback.accept(tab, j, tabActive);
                     j++;
                 }
             }
-        }
-    }
-
-    private void recordEncodeActive(Tab tab, int index) {
-        if (encodeActiveIndex != null && encodeActive == null) {
-            encodeActive = toActive(tab, index);
         }
     }
 

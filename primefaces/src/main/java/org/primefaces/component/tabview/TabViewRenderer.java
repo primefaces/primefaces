@@ -26,6 +26,7 @@ package org.primefaces.component.tabview;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -34,6 +35,7 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
@@ -153,24 +155,20 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        component.startEncodeActive();
-        try {
-            if ("bottom".equals(orientation)) {
-                encodeFooter(context, component);
-                encodeContents(context, component);
-                encodeHeaders(context, component);
-            }
-            else {
-                encodeHeaders(context, component);
-                encodeContents(context, component);
-                encodeFooter(context, component);
-            }
+        int activeIndex = component.resolveActiveIndex();
+        String active;
+        if ("bottom".equals(orientation)) {
+            encodeFooter(context, component);
+            encodeContents(context, component, activeIndex);
+            active = encodeHeaders(context, component, activeIndex);
+        }
+        else {
+            active = encodeHeaders(context, component, activeIndex);
+            encodeContents(context, component, activeIndex);
+            encodeFooter(context, component);
+        }
 
-            encodeStateHolder(context, component, clientId + "_active", component.resolveActive());
-        }
-        finally {
-            component.endEncodeActive();
-        }
+        encodeStateHolder(context, component, clientId + "_active", active);
 
         if (component.isScrollable()) {
             String scrollParam = clientId + "_scrollState";
@@ -197,7 +195,10 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         }
     }
 
-    protected void encodeHeaders(FacesContext context, TabView component) throws IOException {
+    /**
+     * @return the key of the active tab, or its index if the tab does not define a key
+     */
+    protected String encodeHeaders(FacesContext context, TabView component, int activeIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean scrollable = component.isScrollable();
 
@@ -214,7 +215,12 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         writer.writeAttribute("role", "tablist", null);
 
         AtomicBoolean withActiveFacet = new AtomicBoolean(false);
-        component.forEachTab((tab, i, active) -> {
+        AtomicReference<String> activeTab = new AtomicReference<>(Constants.EMPTY_STRING);
+        component.forEachTab(activeIndex, (tab, i, active) -> {
+            if (active) {
+                activeTab.set(tab.getKeyOrIndex(i));
+            }
+
             try {
                 if (encodeTabHeader(context, component, tab, i, active)) {
                     withActiveFacet.set(true);
@@ -239,6 +245,8 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         if (scrollable) {
             writer.endElement("div");
         }
+
+        return activeTab.get();
     }
 
     protected boolean encodeTabHeader(FacesContext context, TabView component, Tab tab, int index, boolean active)
@@ -315,7 +323,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         return active && withFacet;
     }
 
-    protected void encodeContents(FacesContext context, TabView component) throws IOException {
+    protected void encodeContents(FacesContext context, TabView component, int activeIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean dynamic = component.isDynamic();
         boolean repeating = component.isRepeating();
@@ -323,7 +331,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         writer.startElement("div", null);
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
-        component.forEachTab((tab, i, active) -> {
+        component.forEachTab(activeIndex, (tab, i, active) -> {
             try {
                 String tabindex = Boolean.TRUE.equals(active) ? component.getTabindex() : "-1";
                 encodeTabContent(context, tab, i, active, dynamic, repeating, tabindex);
