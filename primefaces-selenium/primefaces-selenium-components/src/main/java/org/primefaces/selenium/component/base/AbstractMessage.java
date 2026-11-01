@@ -28,29 +28,29 @@ import org.openqa.selenium.support.FindBy;
 
 public abstract class AbstractMessage extends AbstractComponent {
 
-    @FindBy(css = ".ui-message-error-icon")
+    @FindBy(css = ".p-message-error-icon")
     private WebElement iconError;
-    @FindBy(css = ".ui-message-info-icon")
+    @FindBy(css = ".p-message-info-icon")
     private WebElement iconInfo;
-    @FindBy(css = ".ui-message-warn-icon")
+    @FindBy(css = ".p-message-warn-icon")
     private WebElement iconWarn;
-    @FindBy(css = ".ui-message-fatal-icon")
+    @FindBy(css = ".p-message-fatal-icon")
     private WebElement iconFatal;
-    @FindBy(css = ".ui-message-error-summary")
+    @FindBy(css = ".p-message-error-summary")
     private WebElement summaryError;
-    @FindBy(css = ".ui-message-info-summary")
+    @FindBy(css = ".p-message-info-summary")
     private WebElement summaryInfo;
-    @FindBy(css = ".ui-message-warn-summary")
+    @FindBy(css = ".p-message-warn-summary")
     private WebElement summaryWarn;
-    @FindBy(css = ".ui-message-fatal-summary")
+    @FindBy(css = ".p-message-fatal-summary")
     private WebElement summaryFatal;
-    @FindBy(css = ".ui-message-error-detail")
+    @FindBy(css = ".p-message-error-detail")
     private WebElement detailError;
-    @FindBy(css = ".ui-message-info-detail")
+    @FindBy(css = ".p-message-info-detail")
     private WebElement detailInfo;
-    @FindBy(css = ".ui-message-warn-detail")
+    @FindBy(css = ".p-message-warn-detail")
     private WebElement detailWarn;
-    @FindBy(css = ".ui-message-fatal-detail")
+    @FindBy(css = ".p-message-fatal-detail")
     private WebElement detailFatal;
 
     public WebElement getIconError() {

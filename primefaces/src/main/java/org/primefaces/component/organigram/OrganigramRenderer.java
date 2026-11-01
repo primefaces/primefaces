@@ -122,7 +122,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
         }
 
         // render container
-        String styleClass = "ui-widget ui-organigram";
+        String styleClass = "p-widget p-organigram";
         if (component.getStyleClass() != null) {
             styleClass += " " + component.getStyleClass();
         }
@@ -203,7 +203,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
 
         // encode node
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-organigram-node-content", null);
+        writer.writeAttribute("class", "p-organigram-node-content", null);
         uiNode.encodeAll(context);
         writer.endElement("div");
 

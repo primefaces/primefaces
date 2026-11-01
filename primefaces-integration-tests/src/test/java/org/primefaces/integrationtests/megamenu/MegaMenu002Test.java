@@ -49,7 +49,7 @@ class MegaMenu002Test extends AbstractPrimePageTest {
 
         // Assert - vertical layout class is present
         assertTrue(megamenu.isVertical());
-        assertTrue(PrimeSelenium.hasCssClass(megamenu.getRoot(), "ui-megamenu-vertical"));
+        assertTrue(PrimeSelenium.hasCssClass(megamenu.getRoot(), "p-megamenu-vertical"));
 
         // Act - open a root submenu and select a leaf item
         WebElement users = megamenu.openRootSubmenu("Users");

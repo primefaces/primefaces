@@ -18,7 +18,7 @@
                 <p:confirm type="popup" header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
             </p:commandButton>
 
-            <p:commandButton id="delete" value="Delete" action="#{confirmPopup001.delete}" update="message" styleClass="ui-button-danger" icon="pi pi-times">
+            <p:commandButton id="delete" value="Delete" action="#{confirmPopup001.delete}" update="message" styleClass="p-button-danger" icon="pi pi-times">
                 <p:confirm type="popup" header="Confirmation"
                     message="Do you want to delete this record?"
                     icon="pi pi-info-circle" 
@@ -35,8 +35,8 @@
             </p:commandButton>
 
             <p:confirmPopup id="confirmpopup" global="true" showEffect="fade" hideEffect="fade" icon="pi pi-question-circle">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check"/>
-                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times"/>
+                <p:commandButton value="Yes" type="button" styleClass="p-confirm-popup-yes" icon="pi pi-check"/>
+                <p:commandButton value="No" type="button" styleClass="p-confirm-popup-no p-button-flat" icon="pi pi-times"/>
             </p:confirmPopup>
         </h:form>
 

@@ -71,7 +71,7 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-orderlist | Main container element.
-.ui-orderlist-list | Container of items.
-.ui-orderlist-item | Each item in the list.
-.ui-orderlist-caption | Caption of the list.
+.p-orderlist | Main container element.
+.p-orderlist-list | Container of items.
+.p-orderlist-item | Each item in the list.
+.p-orderlist-caption | Caption of the list.

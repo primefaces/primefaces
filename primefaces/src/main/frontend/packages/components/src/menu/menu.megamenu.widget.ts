@@ -61,17 +61,17 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     lastFocusedItem?: JQuery | null = null;
 
     /**
-     * The DOM elements for the root level menu links with the class `.ui-menuitem-link`.
+     * The DOM elements for the root level menu links with the class `.p-menuitem-link`.
      */
     rootLinks: JQuery = $();
 
     /**
-     * The DOM elements for the root level menu items with the class `.ui-menu-list`.
+     * The DOM elements for the root level menu items with the class `.p-menu-list`.
      */
     rootList: JQuery = $();
 
     /**
-     * The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
+     * The DOM elements for all menu links not a the root level, with the class `.p-menuitem-link`.
      */
     subLinks: JQuery = $();
 
@@ -83,13 +83,13 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.cfg.vertical = this.jq.hasClass('ui-megamenu-vertical');
-        this.rootList = this.jq.children('ul.ui-menu-list');
-        this.rootLinks = this.rootList.find('> li.ui-menuitem > a.ui-menuitem-link:not(.ui-state-disabled)');
-        this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
-        this.isRTL = this.jq.hasClass('ui-menu-rtl');
+        this.cfg.vertical = this.jq.hasClass('p-megamenu-vertical');
+        this.rootList = this.jq.children('ul.p-menu-list');
+        this.rootLinks = this.rootList.find('> li.p-menuitem > a.p-menuitem-link:not(.p-state-disabled)');
+        this.subLinks = this.jq.find('.p-menu-child a.p-menuitem-link:not(.p-state-disabled)');
+        this.isRTL = this.jq.hasClass('p-menu-rtl');
 
-        this.selectedRoot = this.rootList.children('li.ui-menuitem-selected');
+        this.selectedRoot = this.rootList.children('li.p-menuitem-selected');
 
         this.bindEvents();
         this.bindKeyEvents();
@@ -106,9 +106,9 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             var link = $(this),
             menuitem = link.parent();
 
-            var current = menuitem.siblings('.ui-menuitem-highlight');
+            var current = menuitem.siblings('.p-menuitem-highlight');
             if(current.length > 0) {
-                current.find('li.ui-menuitem-highlight').each(function() {
+                current.find('li.p-menuitem-highlight').each(function() {
                     $this.deactivate($(this));
                 });
                 $this.deactivate(current, false);
@@ -149,7 +149,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             });
         }
         else {
-            this.rootLinks.filter('.ui-submenu-link').on("click", function(e) {
+            this.rootLinks.filter('.p-submenu-link').on("click", function(e) {
                 e.preventDefault();
             });
         }
@@ -164,17 +164,17 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             if($this.activeitem && !$this.isRootLink($this.activeitem)) {
                 $this.deactivate($this.activeitem);
             }
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         });
 
         this.rootList.on("mouseleave", function() {
-            var activeitem = $this.rootList.children('.ui-menuitem-highlight');
+            var activeitem = $this.rootList.children('.p-menuitem-highlight');
             if(activeitem.length === 1) {
                 $this.deactivate(activeitem, false);
             }
         });
 
-        this.rootList.find('> li.ui-menuitem > ul.ui-menu-child').on("mouseleave", function(e) {
+        this.rootList.find('> li.p-menuitem > ul.p-menu-child').on("mouseleave", function(e) {
             e.stopPropagation();
         });
  
@@ -186,7 +186,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             }
 
             $this.active = false;
-            $this.deactivate($this.rootList.children('li.ui-menuitem-highlight'), true);
+            $this.deactivate($this.rootList.children('li.p-menuitem-highlight'), true);
         });
         this.addDestroyListener(function() {
             $(document.body).off(clickNS);
@@ -223,8 +223,8 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             }
 
             const isRootLink = this.isRootLink(currentItem);
-            const submenu = currentItem.children('.ui-menu-child');
-            const parentItem = currentItem.closest('ul.ui-menu-child').parent();
+            const submenu = currentItem.children('.p-menu-child');
+            const parentItem = currentItem.closest('ul.p-menu-child').parent();
             let prevItem = null;
             let nextItem = null;
 
@@ -239,7 +239,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
 
                         e.preventDefault();
                     }
-                    else if (currentItem.hasClass('ui-menu-parent') && currentItem.children('.ui-menu-child').is(':visible')) {
+                    else if (currentItem.hasClass('p-menu-parent') && currentItem.children('.p-menu-child').is(':visible')) {
                         this.deactivate(currentItem);
                         this.highlight(currentItem);
                     }
@@ -252,7 +252,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
 
                 case 'ArrowRight':
                     if (isRootLink && !this.cfg.vertical) {
-                        nextItem = currentItem.nextAll('.ui-menuitem:visible:first');
+                        nextItem = currentItem.nextAll('.p-menuitem:visible:first');
                         if (nextItem.length) {
                             this.deactivate(currentItem);
                             this.highlight(nextItem);
@@ -260,9 +260,9 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
 
                         e.preventDefault();
                     }
-                    else if (currentItem.hasClass('ui-menu-parent')) {
+                    else if (currentItem.hasClass('p-menu-parent')) {
                         if (submenu.is(':visible')) {
-                            this.highlight(submenu.find('ul.ui-menu-list:visible > .ui-menuitem:visible:first'));
+                            this.highlight(submenu.find('ul.p-menu-list:visible > .p-menuitem:visible:first'));
                         }
                         else {
                             this.activate(currentItem);
@@ -286,7 +286,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
                     if (isRootLink && !this.cfg.vertical) {
                         if (submenu.is(':visible')) {
                             var firstMenulist = this.getFirstMenuList(submenu);
-                            this.highlight(firstMenulist.children('.ui-menuitem:visible:first'));
+                            this.highlight(firstMenulist.children('.p-menuitem:visible:first'));
                         }
                         else {
                             this.activate(currentItem);
@@ -306,7 +306,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
                 case 'Enter':
                 case 'Space':
                 case 'NumpadEnter':
-                    var currentLink = currentItem.children('.ui-menuitem-link');
+                    var currentLink = currentItem.children('.p-menuitem-link');
                     currentLink.trigger('click');
                     PrimeFaces.utils.openLink(e, currentLink);
                     this.deactivate(currentItem);
@@ -314,8 +314,8 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
                     break;
 
                 case 'Escape':
-                    if (currentItem.hasClass('ui-menu-parent')) {
-                        var submenuPopup = currentItem.children('ul.ui-menu-list:visible');
+                    if (currentItem.hasClass('p-menu-parent')) {
+                        var submenuPopup = currentItem.children('ul.p-menu-list:visible');
                         if (submenuPopup.length > 0) {
                             submenuPopup.hide();
                         }
@@ -333,21 +333,21 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
 
     /**
      * Finds the menu items that precedes the given item.
-     * @param menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
+     * @param menuitem One of the menu items of this mega menu, with the class `.p-menuitem`.
      * @return The menu item before the given item. Empty JQuery instance if the given item is the first.
      */
     findPrevItem(menuitem: JQuery): JQuery {
-        let prevItem = menuitem.prev('.ui-menuitem');
+        let prevItem = menuitem.prev('.p-menuitem');
 
         if(!prevItem.length) {
-            let prevSubmenu = menuitem.closest('ul.ui-menu-list').prev('.ui-menu-list');
+            let prevSubmenu = menuitem.closest('ul.p-menu-list').prev('.p-menu-list');
 
             if(!prevSubmenu.length) {
-                prevSubmenu = menuitem.closest('td').prev('td').children('.ui-menu-list:visible:last');
+                prevSubmenu = menuitem.closest('td').prev('td').children('.p-menu-list:visible:last');
             }
 
             if(prevSubmenu.length) {
-                prevItem = prevSubmenu.find('li.ui-menuitem:visible:last');
+                prevItem = prevSubmenu.find('li.p-menuitem:visible:last');
             }
         }
         return prevItem;
@@ -355,20 +355,20 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
 
     /**
      * Finds the menu items that succeeds the given item.
-     * @param menuItem One of the menu items of this mega menu, with the class `.ui-menuitem`.
+     * @param menuItem One of the menu items of this mega menu, with the class `.p-menuitem`.
      * @return The menu item after the given item. Empty JQuery instance if the given item is the last.
      */
     findNextItem(menuItem: JQuery): JQuery {
-        let nextItem = menuItem.next('.ui-menuitem');
+        let nextItem = menuItem.next('.p-menuitem');
 
         if(!nextItem.length) {
-            let nextSubmenu = menuItem.closest('ul.ui-menu-list').next('.ui-menu-list');
+            let nextSubmenu = menuItem.closest('ul.p-menu-list').next('.p-menu-list');
             if(!nextSubmenu.length) {
-                nextSubmenu = menuItem.closest('td').next('td').children('.ui-menu-list:visible:first');
+                nextSubmenu = menuItem.closest('td').next('td').children('.p-menu-list:visible:first');
             }
 
             if(nextSubmenu.length) {
-                nextItem = nextSubmenu.find('li.ui-menuitem:visible:first');
+                nextItem = nextSubmenu.find('li.p-menuitem:visible:first');
             }
         }
         return nextItem;
@@ -377,10 +377,10 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     /**
      * Finds the the menu group of the given submenu, i.e. the children of the given item.
      * @param submenu A submenu with children.
-     * @return The first sub menu list, an item with the class `.ui-menu-list`.
+     * @return The first sub menu list, an item with the class `.p-menu-list`.
      */
     getFirstMenuList(submenu: JQuery): JQuery {
-        return submenu.find('.ui-menu-list:not(.ui-state-disabled):first');
+        return submenu.find('.p-menu-list:not(.p-state-disabled):first');
     }
 
     /**
@@ -390,7 +390,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      */
     isRootLink(menuItem: JQuery): boolean {
         const submenu = menuItem.closest('ul');
-        return submenu.parent().hasClass('ui-menu');
+        return submenu.parent().hasClass('p-menu');
     }
 
     /**
@@ -400,14 +400,14 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         const $this = this;
         this.active = false;
 
-        this.jq.find('li.ui-menuitem-highlight').each(function() {
+        this.jq.find('li.p-menuitem-highlight').each(function() {
             $this.deactivate($(this), true);
         });
         this.resetFocus(this.selectedRoot.length > 0 || !this.lastFocusedItem);
         if (!this.selectedRoot.length && this.lastFocusedItem) {
-            this.lastFocusedItem.children('a.ui-menuitem-link').attr('tabindex', this.tabIndex);
+            this.lastFocusedItem.children('a.p-menuitem-link').attr('tabindex', this.tabIndex);
         }
-        this.rootLinks.removeClass('ui-state-hover');
+        this.rootLinks.removeClass('p-state-hover');
     }
 
     /**
@@ -416,9 +416,9 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     override resetFocus(resetFirst: boolean): void {
         super.resetFocus(resetFirst);
         if (resetFirst) {
-            const selectedLink = this.selectedRoot.children('a.ui-menuitem-link:not(.ui-state-disabled)');
+            const selectedLink = this.selectedRoot.children('a.p-menuitem-link:not(.p-state-disabled)');
             const defaultLink = selectedLink.length ? selectedLink : this.rootLinks.first();
-            this.rootLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', '-1');
+            this.rootLinks.removeClass('p-state-hover p-state-active').attr('tabindex', '-1');
             defaultLink.attr('tabindex', this.tabIndex || '0');
         }
     }
@@ -431,19 +431,19 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
     deactivate(menuitem: JQuery, animate?: boolean): void {
         const $this = this;
         this.activeitem = null;
-        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
-        const $link = menuitem.children('a.ui-menuitem-link');
+        menuitem.removeClass('p-menuitem-active p-menuitem-highlight');
+        const $link = menuitem.children('a.p-menuitem-link');
         this.unfocus($link);
 
-        var activeSibling = menuitem.siblings('.ui-menuitem-highlight');
+        var activeSibling = menuitem.siblings('.p-menuitem-highlight');
         if (activeSibling.length) {
-            activeSibling.find('li.ui-menuitem-highlight').each(function() {
+            activeSibling.find('li.p-menuitem-highlight').each(function() {
                 $this.deactivate($(this));
             });
             $this.deactivate(activeSibling);
         }
 
-        const submenu = menuitem.children('ul.ui-menu-child');
+        const submenu = menuitem.children('ul.p-menu-child');
         if (submenu.length > 0) {
             $link.attr('aria-expanded', 'false');
             if (animate) {
@@ -461,8 +461,8 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      */
     highlight(menuItem: JQuery): void {
         this.activeitem = menuItem;
-        menuItem.addClass('ui-menuitem-active ui-menuitem-highlight');
-        menuItem.children('a.ui-menuitem-link').addClass('ui-state-hover');
+        menuItem.addClass('p-menuitem-active p-menuitem-highlight');
+        menuItem.children('a.p-menuitem-link').addClass('p-state-hover');
     }
 
     /**
@@ -475,16 +475,16 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
         this.highlight(menuitem);
         
         // if this is a root menu item.
-        if (menuitem.parent().is('ul.ui-menu-list:not(.ui-menu-child)')) {
+        if (menuitem.parent().is('ul.p-menu-list:not(.p-menu-child)')) {
             this.lastFocusedItem = menuitem;
         }
 
 
         // focus the menu item when activated
-        this.focus(menuitem.children('a.ui-menuitem-link'));
+        this.focus(menuitem.children('a.p-menuitem-link'));
 
         if (showSubMenu) {
-            var submenu = menuitem.children('ul.ui-menu-child');
+            var submenu = menuitem.children('ul.p-menu-child');
             if (submenu.length == 1) {
                 this.showSubmenu(menuitem, submenu);
             }

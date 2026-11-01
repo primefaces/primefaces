@@ -63,7 +63,7 @@ class Tree005Test extends AbstractTreeTest {
         assertTrue(children.get(2).getWebElement().isDisplayed());
 
         // Act
-        WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
+        WebElement filter = tree.findElement(By.cssSelector("input.p-tree-filter"));
         PrimeSelenium.guardAjax(filter).sendKeys("Pro");
 
         // Assert

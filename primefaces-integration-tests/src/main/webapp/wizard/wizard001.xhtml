@@ -11,7 +11,7 @@
                 <p:tab id="first" title="First"><p:inputText id="value" value="#{wizard001.value}" required="#{wizard001.required}" /></p:tab>
                 <p:tab id="hidden" title="Hidden" rendered="false" />
                 <p:tab id="second" title="Second"><h:outputText value="Second step" /></p:tab>
-                <p:tab id="third" title="Third" titleStyleClass="#{wizard001.custom ? 'ui-state-highlight custom' : ''}"><h:outputText value="Third step" /></p:tab>
+                <p:tab id="third" title="Third" titleStyleClass="#{wizard001.custom ? 'p-state-highlight custom' : ''}"><h:outputText value="Third step" /></p:tab>
             </p:wizard>
             <p:commandButton id="refresh" value="Refresh" update="wizard" />
         </h:form>

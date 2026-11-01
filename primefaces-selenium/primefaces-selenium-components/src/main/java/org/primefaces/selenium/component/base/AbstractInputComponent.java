@@ -48,7 +48,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      */
     @Override
     public boolean isEnabled() {
-        return getInput().isEnabled() && !PrimeSelenium.hasCssClass(this, "ui-state-disabled");
+        return getInput().isEnabled() && !PrimeSelenium.hasCssClass(this, "p-state-disabled");
     }
 
     /**

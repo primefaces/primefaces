@@ -85,10 +85,10 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-datalist | Main container element
-| .ui-datalist-content | Content container
-| .ui-datalist-data | Data container
-| .ui-datalist-item | Each item in list
+| .p-datalist | Main container element
+| .p-datalist-content | Content container
+| .p-datalist-data | Data container
+| .p-datalist-item | Each item in list
 
 As skinning style classes are global, see the main theming section for more information.
 

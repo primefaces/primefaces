@@ -1,16 +1,16 @@
 /*
  * Messages: p:messages
  *
- * Markup: .ui-messages(.ui-messages-noicon) > div.ui-messages-<severity> > a.ui-messages-close (> .ui-icon-close)
- *         + span.ui-messages-<severity>-icon + ul > li > span.ui-messages-<severity>-summary + span.ui-messages-<severity>-detail
- * Severity classes only switch the private --_* variables: ui-messages-info | -success | -warn | -error | -fatal
- * Variants / sizes (styleClass on .ui-messages, for all its messages): ui-message-outlined | -simple | -sm | -lg
- * (the same classes as p:message). The default is the large padding / icon (block messages), ui-message-lg also
- * enlarges the text and the close icon, ui-message-sm makes everything small.
+ * Markup: .p-messages(.p-messages-noicon) > div.p-messages-<severity> > a.p-messages-close (> .p-messages-close-icon)
+ *         + span.p-messages-<severity>-icon.p-message-<severity>-icon + ul > li > span.p-messages-<severity>-summary + span.p-messages-<severity>-detail
+ * Severity classes only switch the private --_* variables: p-messages-info | -success | -warn | -error | -fatal
+ * Variants / sizes (styleClass on .p-messages, for all its messages): p-message-outlined | -simple | -sm | -lg
+ * (the same classes as p:message). The default is the large padding / icon (block messages), p-message-lg also
+ * enlarges the text and the close icon, p-message-sm makes everything small.
  * PF only tokens: the messages block of presets/*.css (spacing), the message block of presets/*.css (fatal, summary/detail)
  */
 
-.ui-messages {
+.p-messages {
     --_padding: var(--p-message-content-lg-padding);
     --_font-size: var(--p-message-text-font-size);
     --_icon-size: var(--p-message-icon-lg-size);
@@ -46,21 +46,21 @@
 
         /* a new message (inserted by an ajax update or the client side validation) fades in, base/common.css */
         --_enter-offset: var(--p-message-enter-offset);
-        animation: ui-enter var(--p-message-enter-duration) var(--p-transition-easing-enter);
+        animation: p-enter var(--p-message-enter-duration) var(--p-transition-easing-enter);
     }
 
-    .ui-messages-info,
-    .ui-messages-success,
-    .ui-messages-warn,
-    .ui-messages-error,
-    .ui-messages-fatal {
+    .p-messages-info,
+    .p-messages-success,
+    .p-messages-warn,
+    .p-messages-error,
+    .p-messages-fatal {
         background: var(--_bg);
         border: var(--_border-width) solid var(--_border-color);
         color: var(--_color);
         box-shadow: var(--_shadow);
     }
 
-    .ui-messages-success {
+    .p-messages-success {
         --_bg: var(--p-message-success-background);
         --_border-color: var(--p-message-success-border-color);
         --_color: var(--p-message-success-color);
@@ -73,7 +73,7 @@
         --_close-focus-ring-shadow: var(--p-message-success-close-button-focus-ring-shadow);
     }
 
-    .ui-messages-warn {
+    .p-messages-warn {
         --_bg: var(--p-message-warn-background);
         --_border-color: var(--p-message-warn-border-color);
         --_color: var(--p-message-warn-color);
@@ -86,7 +86,7 @@
         --_close-focus-ring-shadow: var(--p-message-warn-close-button-focus-ring-shadow);
     }
 
-    .ui-messages-error {
+    .p-messages-error {
         --_bg: var(--p-message-error-background);
         --_border-color: var(--p-message-error-border-color);
         --_color: var(--p-message-error-color);
@@ -99,7 +99,7 @@
         --_close-focus-ring-shadow: var(--p-message-error-close-button-focus-ring-shadow);
     }
 
-    .ui-messages-fatal {
+    .p-messages-fatal {
         --_bg: var(--p-message-fatal-background);
         --_border-color: var(--p-message-fatal-border-color);
         --_color: var(--p-message-fatal-color);
@@ -113,24 +113,24 @@
     }
 
     /* sizes (styleClass) */
-    &.ui-message-sm {
+    &.p-message-sm {
         --_padding: var(--p-message-content-sm-padding);
         --_font-size: var(--p-message-text-sm-font-size);
         --_icon-size: var(--p-message-icon-sm-size);
         --_close-icon-size: var(--p-message-close-icon-sm-size);
     }
 
-    &.ui-message-lg {
+    &.p-message-lg {
         --_font-size: var(--p-message-text-lg-font-size);
         --_close-icon-size: var(--p-message-close-icon-lg-size);
     }
 
-    /* variants (styleClass), after the sizes: .ui-messages.ui-message-* > div wins over the severity rules */
-    &.ui-message-simple {
+    /* variants (styleClass), after the sizes: .p-messages.p-message-* > div wins over the severity rules */
+    &.p-message-simple {
         --_padding: var(--p-message-simple-content-padding);
     }
 
-    &.ui-message-outlined > div {
+    &.p-message-outlined > div {
         --_bg: transparent;
         --_border-width: var(--p-message-outlined-border-width);
         --_border-color: var(--_outlined-border-color);
@@ -138,7 +138,7 @@
         --_shadow: none;
     }
 
-    &.ui-message-simple > div {
+    &.p-message-simple > div {
         --_bg: transparent;
         --_border-width: 0;
         --_color: var(--_simple-color);
@@ -163,19 +163,19 @@
             }
         }
 
-        .ui-messages-info-summary,
-        .ui-messages-success-summary,
-        .ui-messages-warn-summary,
-        .ui-messages-error-summary,
-        .ui-messages-fatal-summary {
+        .p-messages-info-summary,
+        .p-messages-success-summary,
+        .p-messages-warn-summary,
+        .p-messages-error-summary,
+        .p-messages-fatal-summary {
             font-weight: var(--p-message-summary-font-weight);
         }
 
-        .ui-messages-info-detail,
-        .ui-messages-success-detail,
-        .ui-messages-warn-detail,
-        .ui-messages-error-detail,
-        .ui-messages-fatal-detail {
+        .p-messages-info-detail,
+        .p-messages-success-detail,
+        .p-messages-warn-detail,
+        .p-messages-error-detail,
+        .p-messages-fatal-detail {
             font-weight: var(--p-message-detail-font-weight);
             overflow-wrap: break-word;
             text-wrap: pretty;
@@ -184,15 +184,11 @@
     }
 
     /* severity icons */
-    .ui-messages-info-icon,
-    .ui-messages-success-icon,
-    .ui-messages-warn-icon,
-    .ui-messages-error-icon,
-    .ui-messages-fatal-icon {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
+    .p-messages-info-icon,
+    .p-messages-success-icon,
+    .p-messages-warn-icon,
+    .p-messages-error-icon,
+    .p-messages-fatal-icon {
         flex-shrink: 0;
         font-size: var(--_icon-size);
         line-height: 1;
@@ -201,43 +197,28 @@
         color: var(--_color);
     }
 
-    .ui-messages-info-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-info-icon) center / contain no-repeat;
+    .p-messages-info-icon {
+        --_icon: var(--p-message-info-icon);
     }
 
-    .ui-messages-success-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-success-icon) center / contain no-repeat;
+    .p-messages-success-icon {
+        --_icon: var(--p-message-success-icon);
     }
 
-    .ui-messages-warn-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-warn-icon) center / contain no-repeat;
+    .p-messages-warn-icon {
+        --_icon: var(--p-message-warn-icon);
     }
 
-    .ui-messages-error-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-error-icon) center / contain no-repeat;
+    .p-messages-error-icon {
+        --_icon: var(--p-message-error-icon);
     }
 
-    .ui-messages-fatal-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-fatal-icon) center / contain no-repeat;
+    .p-messages-fatal-icon {
+        --_icon: var(--p-message-fatal-icon);
     }
 
     /* close button: rendered first, shown last */
-    .ui-messages-close {
+    .p-messages-close {
         order: 1;
         display: inline-flex;
         flex-shrink: 0;
@@ -269,20 +250,10 @@
             box-shadow: var(--_close-focus-ring-shadow);
         }
 
-        .ui-icon-close {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
+        .p-messages-close-icon {
+            --_icon: var(--p-message-close-icon);
             font-size: var(--_close-icon-size);
             color: inherit;
-
-            &::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-message-close-icon) center / contain no-repeat;
-            }
         }
     }
 }

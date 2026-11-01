@@ -55,11 +55,11 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
         super.init(cfg);
 
         this.input = $(this.jqId + '_input');
-        this.listContainer = this.jq.children('.ui-selectlistbox-listcontainer');
-        this.listElement = this.listContainer.children('.ui-selectlistbox-list');
+        this.listContainer = this.jq.children('.p-selectlistbox-listcontainer');
+        this.listElement = this.listContainer.children('.p-selectlistbox-list');
         this.options = $(this.input).children('option');
-        this.allItems = this.listElement.find('.ui-selectlistbox-item');
-        this.items = this.allItems.filter(':not(.ui-state-disabled)');
+        this.allItems = this.listElement.find('.p-selectlistbox-item');
+        this.items = this.allItems.filter(':not(.p-state-disabled)');
 
         //scroll to selected
         var selected = this.options.filter(':selected:not(:disabled)');
@@ -88,12 +88,12 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
         //items
         this.items.on('mouseover.selectListbox', function() {
             var item = $(this);
-            if(!item.hasClass('ui-state-highlight')) {
-                item.addClass('ui-state-hover');
+            if(!item.hasClass('p-state-highlight')) {
+                item.addClass('p-state-hover');
             }
         })
         .on('mouseout.selectListbox', function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         })
         .on('dblclick.selectListbox', function(e) {
             $this.input.trigger('dblclick');
@@ -104,13 +104,13 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
 
         //input
         this.input.on('focus.selectListbox', function() {
-            $this.jq.addClass('ui-state-focus');
+            $this.jq.addClass('p-state-focus');
         }).on('blur.selectListbox', function() {
-            $this.jq.removeClass('ui-state-focus');
+            $this.jq.removeClass('p-state-focus');
         });
 
         if(this.cfg.filter) {
-            this.filterInput = this.jq.find('> div.ui-selectlistbox-filter-container > input.ui-selectlistbox-filter');
+            this.filterInput = this.jq.find('> div.p-selectlistbox-filter-container > input.p-selectlistbox-filter');
             PrimeFaces.skinInput(this.filterInput);
             this.filterInput.on('keyup.selectListbox', function(e) {
                 $this.filter(this.value);
@@ -124,7 +124,7 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
      * Unselects all items that are currently selected.
      */
     unselectAll() {
-        this.items.removeClass('ui-state-highlight ui-state-hover');
+        this.items.removeClass('p-state-highlight p-state-hover');
         this.options.filter(':selected').prop('selected', false);
     }
 
@@ -133,7 +133,7 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
      * @param {JQuery} item An OPTION element to set as the selected element.
      */
     selectItem(item) {
-        item.addClass('ui-state-highlight').removeClass('ui-state-hover').attr('aria-selected', 'true');
+        item.addClass('p-state-highlight').removeClass('p-state-hover').attr('aria-selected', 'true');
         this.listElement.attr('aria-activedescendant', item.attr('id'));
         var itemSelected = this.options.eq(item.index());
         itemSelected.prop('selected', true);
@@ -151,7 +151,7 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
      * @param {JQuery} item Item to unselect.
      */
     unselectItem(item) {
-        item.removeClass('ui-state-highlight').attr('aria-selected', 'false');
+        item.removeClass('p-state-highlight').attr('aria-selected', 'false');
         this.listElement.removeAttr('aria-activedescendant');
         this.options.eq(item.index()).prop('selected', false);
         var itemUnselected = this.options.eq(item.index());

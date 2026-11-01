@@ -98,7 +98,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
         boolean withRequiredIndicator = "true".equals(indicateRequired)
                 || (isAuto && forState != null && forState.isRequired());
         if (withRequiredIndicator) {
-            styleClassBuilder.add("ui-required");
+            styleClassBuilder.add("p-required");
         }
 
         writer.startElement("label", component);
@@ -114,7 +114,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
         if (value != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-outputlabel-label", null);
+            writer.writeAttribute("class", "p-outputlabel-label", null);
             if (component.isEscape()) {
                 writer.writeText(value, "value");
             }
@@ -248,7 +248,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
                 }
 
                 if (!input.isValid()) {
-                    styleClassBuilder.add("ui-state-error");
+                    styleClassBuilder.add("p-state-error");
                 }
 
                 if (isAuto) {

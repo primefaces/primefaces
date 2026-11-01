@@ -21,40 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.panel;
+package org.primefaces.integrationtests.tristatemanycheckbox;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
-class PanelTest {
+import lombok.Data;
 
-    private Panel panel;
+@Named
+@ViewScoped
+@Data
+public class TriStateManyCheckbox003 implements Serializable {
 
-    @BeforeEach
-    void setup() {
-        panel = new Panel();
-    }
+    @Serial private static final long serialVersionUID = 1L;
+    private Map<String, String> value;
 
-    @Test
-    void defaultIcons() {
-        assertEquals(Panel.DEFAULT_CLOSE_ICON, panel.getCloseIcon());
-        assertEquals(Panel.DEFAULT_COLLAPSED_ICON, panel.getCollapsedIcon());
-        assertEquals(Panel.DEFAULT_EXPANDED_ICON, panel.getExpandedIcon());
-        assertEquals(Panel.DEFAULT_MENU_ICON, panel.getMenuIcon());
-    }
-
-    @Test
-    void customIcons() {
-        panel.setCloseIcon("pi pi-times");
-        panel.setCollapsedIcon("pi pi-chevron-down");
-        panel.setExpandedIcon("pi pi-chevron-up");
-        panel.setMenuIcon("pi pi-bars");
-
-        assertEquals("pi pi-times", panel.getCloseIcon());
-        assertEquals("pi pi-chevron-down", panel.getCollapsedIcon());
-        assertEquals("pi pi-chevron-up", panel.getExpandedIcon());
-        assertEquals("pi pi-bars", panel.getMenuIcon());
+    @PostConstruct
+    public void init() {
+        value = new LinkedHashMap<>();
+        value.put("A", "1");
+        value.put("B", "1");
     }
 }

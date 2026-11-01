@@ -54,11 +54,11 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     public WebElement getItems() {
-        return getWebDriver().findElement(By.className("ui-autocomplete-items"));
+        return getWebDriver().findElement(By.className("p-autocomplete-items"));
     }
 
     public List<String> getItemValues() {
-        List<WebElement> itemElements = getItems().findElements(By.className("ui-autocomplete-item"));
+        List<WebElement> itemElements = getItems().findElements(By.className("p-autocomplete-item"));
         return itemElements.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
@@ -67,7 +67,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     public WebElement getDropDownButton() {
-        return findElement(By.className("ui-autocomplete-dropdown"));
+        return findElement(By.className("p-autocomplete-dropdown"));
     }
 
     public String getValue() {
@@ -118,7 +118,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public List<String> getValues() {
         List<WebElement> tokens = getTokens();
         return tokens.stream()
-                    .map(token -> token.findElement(By.className("ui-autocomplete-token-label")).getText())
+                    .map(token -> token.findElement(By.className("p-autocomplete-token-label")).getText())
                     .collect(Collectors.toList());
     }
 
@@ -128,7 +128,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @return the List of tokens
      */
     public List<WebElement> getTokens() {
-        return findElements(By.cssSelector("ul li.ui-autocomplete-token"));
+        return findElements(By.cssSelector("ul li.p-autocomplete-token"));
     }
 
     /**

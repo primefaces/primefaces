@@ -97,22 +97,22 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
         super.init(cfg);
 
         this.focusedElementBeforeDialogOpened = null;
-        this.content = this.jq.children('.ui-confirm-popup-content');
-        this.message = this.content.children('.ui-confirm-popup-message');
-        this.icon = this.content.children('.ui-confirm-popup-icon');
+        this.content = this.jq.children('.p-confirm-popup-content');
+        this.message = this.content.children('.p-confirm-popup-message');
+        this.icon = this.content.children('.p-confirm-popup-icon');
         if (this.cfg.global) {
             this.content.data('p-text', this.content.text());
             this.message.data('p-text', this.message.text());
-            this.icon.data('p-icon', this.icon.removeClass('ui-confirm-popup-icon').attr('class') ?? "");
-            this.yesButton = this.jq.find('.ui-confirm-popup-yes');
-            this.noButton = this.jq.find('.ui-confirm-popup-no');
-            this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
-            this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
-            this.yesButton.data('p-icon', this.yesButton.children('.ui-icon').attr('class') ?? "");
-            this.noButton.data('p-icon', this.noButton.children('.ui-icon').attr('class') ?? "");
+            this.icon.data('p-icon', this.icon.removeClass('p-confirm-popup-icon').attr('class') ?? "");
+            this.yesButton = this.jq.find('.p-confirm-popup-yes');
+            this.noButton = this.jq.find('.p-confirm-popup-no');
+            this.yesButton.data('p-text', this.yesButton.children('.p-button-text').text());
+            this.noButton.data('p-text', this.noButton.children('.p-button-text').text());
+            this.yesButton.data('p-icon', this.yesButton.children('.p-button-icon-left, .p-button-icon-right').attr('class') ?? "");
+            this.noButton.data('p-icon', this.noButton.children('.p-button-icon-left, .p-button-icon-right').attr('class') ?? "");
         }
 
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
 
         this.bindEvents();
     }
@@ -124,10 +124,10 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
         if (this.cfg.global) {
             PrimeFaces.confirmPopup = this;
 
-            this.jq.on('click.ui-confirmpopup', '.ui-confirm-popup-yes, .ui-confirm-popup-no', null, function (e) {
+            this.jq.on('click.p-confirmpopup', '.p-confirm-popup-yes, .p-confirm-popup-no', null, function (e) {
                 const el = $(this);
 
-                if (el.hasClass('ui-confirm-popup-yes') && PrimeFaces.confirmPopupSource) {
+                if (el.hasClass('p-confirm-popup-yes') && PrimeFaces.confirmPopupSource) {
                     const source = PrimeFaces.confirmPopupSource;
                     const id = source.get(0);
                     const js = source.data('pfconfirmcommand');
@@ -173,7 +173,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
                     PrimeFaces.confirmPopup?.hide();
                     PrimeFaces.confirmPopupSource = null;
                 }
-                else if (el.hasClass('ui-confirm-popup-no')) {
+                else if (el.hasClass('p-confirm-popup-no')) {
                     PrimeFaces.confirmPopup?.hide();
                     PrimeFaces.confirmPopupSource = null;
                 }
@@ -295,14 +295,14 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
                 $this.message.text($this.message.data('p-text'));
             }
             if ($this.icon.data('p-icon')) {
-                $this.icon.attr('class', 'ui-confirm-popup-icon ' + $this.icon.data('p-icon'));
+                $this.icon.attr('class', 'p-confirm-popup-icon ' + $this.icon.data('p-icon'));
             }
             $this.yesButton.removeClass($this.yesButton.data('p-class'));
             $this.noButton.removeClass($this.noButton.data('p-class'));
-            $this.yesButton.children('.ui-button-text').text($this.yesButton.data('p-text'));
-            $this.noButton.children('.ui-button-text').text($this.noButton.data('p-text'));
-            $this.yesButton.children('.ui-icon').attr('class', $this.yesButton.data('p-icon'));
-            $this.noButton.children('.ui-icon').attr('class', $this.noButton.data('p-icon'));
+            $this.yesButton.children('.p-button-text').text($this.yesButton.data('p-text'));
+            $this.noButton.children('.p-button-text').text($this.noButton.data('p-text'));
+            $this.yesButton.children('.p-button-icon-left, .p-button-icon-right').attr('class', $this.yesButton.data('p-icon'));
+            $this.noButton.children('.p-button-icon-left, .p-button-icon-right').attr('class', $this.noButton.data('p-icon'));
         }
     }
 
@@ -314,7 +314,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
         if (target) {
             const $this = this;
 
-            this.jq.removeClass('ui-confirm-popup-flipped');
+            this.jq.removeClass('p-confirm-popup-flipped');
 
             PrimeFaces.utils.position(this.jq.css({ left: '0px', top: '0px', 'transform-origin': 'center top' }), {
                 my: 'left top',
@@ -331,7 +331,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
                     $this.jq.css('--overlayArrowLeft', arrowLeft + 'px');
 
                     if (pos.top < targetOffset.top) {
-                        $this.jq.addClass('ui-confirm-popup-flipped');
+                        $this.jq.addClass('p-confirm-popup-flipped');
                     }
                     else {
                         pos.top += parseFloat($this.jq.css('margin-top'));
@@ -386,7 +386,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
 
             const iconClass = msg.icon || this.icon.data('p-icon');
             if (iconClass) {
-                this.icon.removeClass().addClass('ui-confirm-popup-icon ' + iconClass);
+                this.icon.removeClass().addClass('p-confirm-popup-icon ' + iconClass);
                 this.icon.show();
             } else {
                 this.icon.hide();
@@ -403,22 +403,22 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
 
             // Set labels, icons, and CSS classes for yes/no buttons
             if (msg.yesButtonLabel) {
-                this.yesButton.children('.ui-button-text').text(msg.yesButtonLabel);
+                this.yesButton.children('.p-button-text').text(msg.yesButtonLabel);
             }
             if (msg.yesButtonClass) {
                 this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
             }
             if (msg.yesButtonIcon) {
-                PrimeFaces.utils.replaceIcon(this.yesButton.children('.ui-icon'), msg.yesButtonIcon);
+                PrimeFaces.utils.replaceIcon(this.yesButton.children('.p-button-icon-left, .p-button-icon-right'), msg.yesButtonIcon);
             }
             if (msg.noButtonLabel) {
-                this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
+                this.noButton.children('.p-button-text').text(msg.noButtonLabel);
             }
             if (msg.noButtonClass) {
                 this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
             }
             if (msg.noButtonIcon) {
-                PrimeFaces.utils.replaceIcon(this.noButton.children('.ui-icon'), msg.noButtonIcon);
+                PrimeFaces.utils.replaceIcon(this.noButton.children('.p-button-icon-left, .p-button-icon-right'), msg.noButtonIcon);
             }
         };
 

@@ -34,12 +34,12 @@ import jakarta.faces.component.FacesComponent;
 public class Card extends CardBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";
 
-    public static final String STYLE_CLASS = "ui-card ui-widget ui-widget-content";
-    public static final String HEADER_CLASS = "ui-card-header";
-    public static final String BODY_CLASS = "ui-card-body";
-    public static final String TITLE_CLASS = "ui-card-title";
-    public static final String SUBTITLE_CLASS = "ui-card-subtitle";
-    public static final String CONTENT_CLASS = "ui-card-content";
-    public static final String FOOTER_CLASS = "ui-card-footer";
+    public static final String STYLE_CLASS = "p-card p-widget p-widget-content";
+    public static final String HEADER_CLASS = "p-card-header";
+    public static final String BODY_CLASS = "p-card-body";
+    public static final String TITLE_CLASS = "p-card-title";
+    public static final String SUBTITLE_CLASS = "p-card-subtitle";
+    public static final String CONTENT_CLASS = "p-card-content";
+    public static final String FOOTER_CLASS = "p-card-footer";
 
 }

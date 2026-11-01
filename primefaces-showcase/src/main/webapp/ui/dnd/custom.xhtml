@@ -17,19 +17,19 @@
         </style>
         <script>
             function initDND() {
-                PrimeFaces.interactions.draggable($('.ui-treenode-leaf'), {
+                PrimeFaces.interactions.draggable($('.p-treenode-leaf'), {
                     helper: 'clone',
                     scope: 'treetotable',
                     zIndex: ++PrimeFaces.zindex
                 });
 
-                PrimeFaces.interactions.droppable($('.ui-datatable .droppoint'), {
+                PrimeFaces.interactions.droppable($('.p-datatable .droppoint'), {
                     activeClass: 'active-drop',
                     hoverClass: 'highlight-drop',
                     tolerance: 'pointer',
                     scope: 'treetotable',
                     drop: function (event, ui) {
-                        var property = ui.draggable.find('.ui-treenode-label').text(),
+                        var property = ui.draggable.find('.p-treenode-label').text(),
                             droppedColumnId = $(this).parents('th:first').attr('id'),
                             dropPos = $(this).hasClass('dropleft') ? 0 : 1;
 
@@ -41,7 +41,7 @@
                     }
                 });
 
-                PrimeFaces.interactions.draggable($('.ui-datatable th'), {
+                PrimeFaces.interactions.draggable($('.p-datatable th'), {
                     scope: 'tabletotree',
                     helper: function () {
                         var th = $(this);
@@ -50,7 +50,7 @@
                     }
                 });
 
-                PrimeFaces.interactions.droppable($('.ui-tree'), {
+                PrimeFaces.interactions.droppable($('.p-tree'), {
                     scope: 'tabletotree',
                     activeClass: 'active-drop',
                     hoverClass: 'highlight-drop',

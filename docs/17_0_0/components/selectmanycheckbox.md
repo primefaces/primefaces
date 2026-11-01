@@ -60,7 +60,7 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectmanycheckbox | Main container element.
-.ui-chkbox | Container of a checkbox.
-.ui-chkbox-box | Container of checkbox icon.
-.ui-chkbox-icon | Checkbox icon.
+.p-selectmanycheckbox | Main container element.
+.p-chkbox | Container of a checkbox.
+.p-chkbox-box | Container of checkbox icon.
+.p-chkbox-icon | Checkbox icon.

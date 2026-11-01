@@ -22,23 +22,23 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-steps | Main container element.
-.ui-steps-item | Step element.
-.ui-steps-name | Name of the step.
-.ui-steps-item | Number of the step.
+.p-steps | Main container element.
+.p-steps-item | Step element.
+.p-steps-title | Title of the step.
+.p-steps-number | Number of the step.
 
 As skinning style classes are global, see the main theming section for more information. Here is an
 example of a styled steps having "custom" as its styleClass;
 
 ```css
-.ui-steps.custom {
+.p-steps.custom {
     margin-bottom: 30px;
 }
-.ui-steps.custom .ui-steps-item .ui-menuitem-link {
+.p-steps.custom .p-steps-item .p-menuitem-link {
     height: 10px;
     padding: 0 1em;
 }
-.ui-steps.custom .ui-steps-item .ui-steps-number {
+.p-steps.custom .p-steps-item .p-steps-number {
     background-color: #0081c2;
     color: #FFFFFF;
     display: inline-block;

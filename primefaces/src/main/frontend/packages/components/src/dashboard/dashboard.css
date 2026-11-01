@@ -1,56 +1,56 @@
 /*
  * Dashboard: p:dashboard (legacy columns and responsive mode); the panels themselves are styled by panel.css.
  *
- * Drag states: .ui-sortable-placeholder (legacy, sortable), .ui-dashboard-active / .ui-dashboard-hover
- * (responsive, droppable classes), .ui-state-disabled (disabled dashboard).
+ * Drag states: .p-sortable-placeholder (legacy, sortable), .p-dashboard-active / .p-dashboard-hover
+ * (responsive, droppable classes), .p-state-disabled (disabled dashboard).
  */
 
-.ui-dashboard-column {
+.p-dashboard-column {
     float: left;
     /* drop area below the last panel */
     padding-bottom: 100px;
 }
 
-.ui-dashboard-column .ui-panel-titlebar,
-.ui-dashboard-panel .ui-panel-titlebar {
+.p-dashboard-column .p-panel-titlebar,
+.p-dashboard-panel .p-panel-titlebar {
     cursor: move;
 }
 
-.ui-dashboard {
+.p-dashboard {
     &::after {
         content: "";
         display: table;
         clear: both;
     }
 
-    .ui-dashboard-column {
+    .p-dashboard-column {
         padding-inline-end: var(--p-dashboard-gap);
 
-        > .ui-panel,
-        > .ui-sortable-placeholder {
+        > .p-panel,
+        > .p-sortable-placeholder {
             margin-bottom: var(--p-dashboard-gap);
         }
     }
 
-    &.ui-state-disabled .ui-panel-titlebar {
+    &.p-state-disabled .p-panel-titlebar {
         cursor: default;
     }
 
     /* drop placeholder (legacy) */
-    .ui-sortable-placeholder {
+    .p-sortable-placeholder {
         background: var(--p-dashboard-placeholder-background);
         border: 1px dashed var(--p-dashboard-placeholder-border-color);
         border-radius: var(--p-dashboard-placeholder-border-radius);
     }
 
     /* drop targets (responsive) */
-    .ui-dashboard-active {
+    .p-dashboard-active {
         outline: 1px dashed var(--p-dashboard-drop-active-border-color);
         outline-offset: calc(-1 * var(--p-dashboard-drop-outline-offset));
         border-radius: var(--p-dashboard-placeholder-border-radius);
     }
 
-    .ui-dashboard-hover {
+    .p-dashboard-hover {
         outline: 1px solid var(--p-dashboard-drop-hover-border-color);
         outline-offset: calc(-1 * var(--p-dashboard-drop-outline-offset));
         background: var(--p-dashboard-drop-hover-background);

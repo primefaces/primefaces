@@ -78,7 +78,7 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
     }
 
     private WebElement box(SelectManyCheckbox selectManyCheckbox, int index) {
-        return selectManyCheckbox.getCheckboxes().get(index).findElement(By.className("ui-chkbox-box"));
+        return selectManyCheckbox.getCheckboxes().get(index).findElement(By.className("p-chkbox-box"));
     }
 
     private void assertConfiguration(JSONObject cfg) {

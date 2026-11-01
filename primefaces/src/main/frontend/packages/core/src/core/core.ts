@@ -817,14 +817,14 @@ export class Core {
         var form = this.getClosestForm(parent);
 
         for(var key in params) {
-            form.append("<input type=\"hidden\" name=\"" + this.escapeHTML(key) + "\" value=\"" + this.escapeHTML(params[key] ?? "") + "\" class=\"ui-submit-param\"></input>");
+            form.append("<input type=\"hidden\" name=\"" + this.escapeHTML(key) + "\" value=\"" + this.escapeHTML(params[key] ?? "") + "\" class=\"p-submit-param\"></input>");
         }
 
         return this;
     }
 
     /**
-     * Submits the given form, and clears all `ui-submit-param`s after that to prevent dom caching issues.
+     * Submits the given form, and clears all `p-submit-param`s after that to prevent dom caching issues.
      *
      * If a target is given, it is set on the form temporarily before it is submitted. Afterwards, the original
      * target attribute of the form is restored.
@@ -841,7 +841,7 @@ export class Core {
         }
 
         form.trigger('submit');
-        form.children('input.ui-submit-param').remove();
+        form.children('input.p-submit-param').remove();
 
         if (target) {
             if (prevTarget !== undefined) {
@@ -958,26 +958,26 @@ export class Core {
         var isFilled = typeof value === "number" ? false : value.length > 0;
 
         // #11974: Autocomplete multiple mode must be handled differently
-        if(parent.hasClass('ui-autocomplete-multiple')) {
-            isFilled = parent.find('li.ui-autocomplete-token').length > 0;
+        if(parent.hasClass('p-autocomplete-multiple')) {
+            isFilled = parent.find('li.p-autocomplete-token').length > 0;
         }
 
         if (isFilled) {
-            input.addClass('ui-state-filled');
+            input.addClass('p-state-filled');
 
-            if(parent.is("div, span:not('.ui-float-label')")) {
-                parent.addClass('ui-inputwrapper-filled');
+            if(parent.is("div, span:not('.p-float-label')")) {
+                parent.addClass('p-inputwrapper-filled');
             }
         } else {
-            input.removeClass('ui-state-filled');
-            parent.removeClass('ui-inputwrapper-filled');
+            input.removeClass('p-state-filled');
+            parent.removeClass('p-inputwrapper-filled');
         }
     }
 
     /**
      * INPUT elements may have different states, such as `hovering` or `focused`. For each state, there is a
-     * corresponding style class that is added to the input when it is in that state, such as `ui-state-hover` or
-     * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up an input element so
+     * corresponding style class that is added to the input when it is in that state, such as `p-state-hover` or
+     * `p-state-focus`. These classes are used by CSS rules for styling. This method sets up an input element so
      * that the classes are added correctly (by adding event listeners).
      * @param input INPUT element to skin
      * @return this for chaining
@@ -986,13 +986,13 @@ export class Core {
         let parent = input.parent();
 
         // #11974: Autocomplete multiple mode must be handled differently
-        if(parent.hasClass('ui-autocomplete-input-token')) {
+        if(parent.hasClass('p-autocomplete-input-token')) {
             parent = parent.parent().parent();
         }
 
         const updateFilledStateOnBlur = () => {
-            if(parent.hasClass('ui-inputwrapper-focus')) {
-                parent.removeClass('ui-inputwrapper-focus');
+            if(parent.hasClass('p-inputwrapper-focus')) {
+                parent.removeClass('p-inputwrapper-focus');
             }
             this.updateFilledState(input, parent);
         };
@@ -1000,18 +1000,18 @@ export class Core {
         this.updateFilledState(input, parent);
 
         input.on("mouseenter", function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         }).on("mouseleave", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on("focus", function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
 
-            if(parent.is("div, span:not('.ui-float-label')")) {
-                parent.addClass('ui-inputwrapper-focus');
+            if(parent.is("div, span:not('.p-float-label')")) {
+                parent.addClass('p-inputwrapper-focus');
             }
         }).on("blur animationstart", function() {
             //animationstart is to fix autofill issue https://github.com/primefaces/primefaces/issues/12444
-            $(this).removeClass('ui-state-focus');
+            $(this).removeClass('p-state-focus');
 
             // if the input is a datepicker or a number input, wait a bit before updating the filled state
             if(input.hasClass('hasDatepicker') || input.attr('inputmode') === 'numeric') {
@@ -1041,8 +1041,8 @@ export class Core {
 
     /**
      * BUTTON elements may have different states, such as `hovering` or `focused`. For each state, there is a
-     * corresponding style class that is added to the button when it is in that state, such as `ui-state-hover` or
-     * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a button element so
+     * corresponding style class that is added to the button when it is in that state, such as `p-state-hover` or
+     * `p-state-focus`. These classes are used by CSS rules for styling. This method sets up a button element so
      * that the classes are added correctly (by adding event listeners).
      * @param button BUTTON element to skin
      * @return this for chaining
@@ -1051,27 +1051,27 @@ export class Core {
         button.on("mouseover", function(){
             var el = $(this);
             if(!button.prop('disabled')) {
-                el.addClass('ui-state-hover');
+                el.addClass('p-state-hover');
             }
         }).on("mouseout", function() {
-            $(this).removeClass('ui-state-active ui-state-hover');
+            $(this).removeClass('p-state-active p-state-hover');
         }).on("mousedown", function() {
             var el = $(this);
             if(!button.prop('disabled')) {
-                el.addClass('ui-state-active').removeClass('ui-state-hover');
+                el.addClass('p-state-active').removeClass('p-state-hover');
             }
         }).on("mouseup", function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+            $(this).removeClass('p-state-active').addClass('p-state-hover');
         }).on("focus", function() {
-            $(this).addClass('ui-state-focus');
+            $(this).addClass('p-state-focus');
         }).on("blur", function() {
-            $(this).removeClass('ui-state-focus ui-state-active');
+            $(this).removeClass('p-state-focus p-state-active');
         }).on("keydown", function(e) {
             if(e.code === 'Space' || e.key === 'Enter') {
-                $(this).addClass('ui-state-active');
+                $(this).addClass('p-state-active');
             }
         }).on("keyup", function() {
-            $(this).removeClass('ui-state-active');
+            $(this).removeClass('p-state-active');
         });
 
         return this;
@@ -1090,7 +1090,7 @@ export class Core {
     }
 
     /**
-     * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
+     * Applies the inline AJAX status (p-state-loading) to the given widget / button.
      * 
      * If the widget defines a {@link BaseWidget.disable disable} method, it will
      * be disabled during the AJAX call, if the
@@ -1126,17 +1126,17 @@ export class Core {
                     return;
                 }
 
-                button.addClass('ui-state-loading');
+                button.addClass('p-state-loading');
                 widget.ajaxStart = Date.now();
 
                 if (widget.cfg.disableOnAjax !== false) {
                     widget.disable?.();
                 }
 
-                const loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
-                const uiIcon = button.find('.ui-icon');
+                const loadIcon = $('<span class="p-icon-loading p-icon p-loading-icon p-ajaxstatus-loading-icon p-c"></span>');
+                const uiIcon = button.find('.p-button-icon-left, .p-button-icon-right');
                 if (uiIcon.length) {
-                    var prefix = 'ui-button-icon-';
+                    var prefix = 'p-button-icon-';
                     loadIcon.addClass(prefix + (uiIcon.attr('class')?.includes(prefix + 'left') ? 'left' : 'right'));
                 }
                 button.prepend(loadIcon);
@@ -1176,7 +1176,7 @@ export class Core {
         Cfg extends BaseWidgetCfg,
         Widget extends BaseWidget<Cfg>
     >(widget: Widget, button: JQuery): void {
-        button.removeClass('ui-state-loading');
+        button.removeClass('p-state-loading');
 
         if (typeof widget.enable === 'function'
             && widget.cfg.disableOnAjax !== false
@@ -1184,13 +1184,13 @@ export class Core {
             widget.enable();
         }
 
-        button.find('.ui-icon-loading').remove();
+        button.find('.p-icon-loading').remove();
     }
 
     /**
      * SELECT elements may have different states, such as `hovering` or `focused`. For each state, there is a
-     * corresponding style class that is added to the select when it is in that state, such as `ui-state-hover` or
-     * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a select element so
+     * corresponding style class that is added to the select when it is in that state, such as `p-state-hover` or
+     * `p-state-focus`. These classes are used by CSS rules for styling. This method sets up a select element so
      * that the classes are added correctly (by adding event listeners).
      * @param select SELECT element to skin
      * @return this for chaining
@@ -1198,14 +1198,14 @@ export class Core {
     skinSelect(select: JQuery): this {
         select.on("mouseover", function() {
             var el = $(this);
-            if(!el.hasClass('ui-state-focus'))
-                el.addClass('ui-state-hover');
+            if(!el.hasClass('p-state-focus'))
+                el.addClass('p-state-hover');
         }).on("mouseout", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on("focus", function() {
-            $(this).addClass('ui-state-focus').removeClass('ui-state-hover');
+            $(this).addClass('p-state-focus').removeClass('p-state-hover');
         }).on("blur", function() {
-            $(this).removeClass('ui-state-focus ui-state-hover');
+            $(this).removeClass('p-state-focus p-state-hover');
         });
 
         return this;
@@ -1483,7 +1483,7 @@ export class Core {
         // if looking in container like dialog also check for first link
         if (context) {
             var container = $(this.escapeClientId(context));
-            if (container.hasClass('ui-dialog')) {
+            if (container.hasClass('p-dialog')) {
                 selector += ', a:first';
             }
         }

@@ -27,6 +27,24 @@ The TriStateCheckbox component automatically handles conversion between String a
   - `true` - Checked state (state two) 
   - `false` - Indeterminate state (state three)
 
+## Customizable Icons
+The state icons are icon tokens of the theme (see [Theming](/core/theming.md?id=icons)): `--p-checkbox-checked-icon`
+(`true`) and `--p-checkbox-crossed-icon` (`false`), `null` shows no icon. Set them in `:root, [data-p-scope]` for all checkboxes or on a
+style class for some:
+
+```css
+.custom-icons-tristate {
+    --p-checkbox-checked-icon: var(--p-icon-plus);
+    --p-checkbox-crossed-icon: var(--p-icon-minus);
+}
+```
+
+```xhtml
+<p:triStateCheckbox value="#{bean.value}" styleClass="custom-icons-tristate"/>
+```
+
+The icon is rendered as `<span class="p-chkbox-icon p-icon p-checkbox-icon">` plus the state class
+`p-checkbox-checked-icon` or `p-checkbox-crossed-icon`.
 
 ## Client Side API
 Widget: _PrimeFaces.widget.TriStateCheckbox_
@@ -44,7 +62,7 @@ the list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-chkbox | Main container element.
-.ui-chkbox-box | Container of checkbox icon.
-.ui-chkbox-icon | Checkbox icon.
-.ui-chkbox-label | Checkbox label.
+.p-chkbox | Main container element.
+.p-chkbox-box | Container of checkbox icon.
+.p-chkbox-icon | Checkbox icon.
+.p-chkbox-label | Checkbox label.

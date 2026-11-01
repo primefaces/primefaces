@@ -58,8 +58,8 @@ class DatePicker007Test extends AbstractDatePickerTest {
         assertTrue(panel.getText().contains("AM"));
 
         // Act (go down by 1 hour)
-        WebElement hourPicker = panel.findElement(By.className("ui-hour-picker"));
-        hourPicker.findElement(By.className("ui-picker-down")).click();
+        WebElement hourPicker = panel.findElement(By.className("p-hour-picker"));
+        hourPicker.findElement(By.className("p-picker-down")).click();
 
         // Assert (new time should be 11:04 PM)
         assertTime(panel, "11", "04", null);

@@ -56,8 +56,8 @@ Following is the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-blockui | Container element.
-| .ui-blockui-content | Container for custom content.
+| .p-blockui | Container element.
+| .p-blockui-content | Container for custom content.
 
 As skinning style classes are global, see the main theming section for more information.
 

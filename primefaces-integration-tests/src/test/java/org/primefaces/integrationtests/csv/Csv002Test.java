@@ -133,14 +133,14 @@ public class Csv002Test extends AbstractColorPickerTest {
         Assertions.assertEquals("", page.msgSelectOneListbox.getText());
 
         // Act
-        page.selectOneListbox.findElement(By.cssSelector("ul li.ui-selectlistbox-item[aria-label=\" \"]")).click();
+        page.selectOneListbox.findElement(By.cssSelector("ul li.p-selectlistbox-item[aria-label=\" \"]")).click();
 
         // Assert
         Assertions.assertEquals("Select UI-library: Validation Error: Value is required.",
                 page.msgSelectOneListbox.getText());
 
         // Act
-        page.selectOneListbox.findElement(By.cssSelector("ul li.ui-selectlistbox-item[aria-label=\"Faces\"]")).click();
+        page.selectOneListbox.findElement(By.cssSelector("ul li.p-selectlistbox-item[aria-label=\"Faces\"]")).click();
 
         // Assert
         Assertions.assertEquals("", page.msgSelectOneListbox.getText());

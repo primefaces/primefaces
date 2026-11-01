@@ -16,6 +16,12 @@ permissions:
   contents: read
   packages: write
 
+# A newer push to the same branch cancels the older run. Otherwise both runs
+# deploy the same DigitalOcean app and the older deployment fails as SUPERSEDED.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,7 +40,7 @@ jobs:
       - name: Build Showcase
         run: mvn clean install -f primefaces-showcase -P tomee -T1C --batch-mode --show-version
       - name: Log in to Container Registry
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

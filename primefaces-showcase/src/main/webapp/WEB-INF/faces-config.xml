@@ -13,6 +13,7 @@
             <default-locale>en</default-locale>
         </locale-config>
         <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+        <resource-handler>org.primefaces.showcase.util.ShowcaseResourceHandler</resource-handler>
         <resource-bundle>
             <base-name>build</base-name>
             <var>build</var>

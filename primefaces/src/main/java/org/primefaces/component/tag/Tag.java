@@ -34,15 +34,15 @@ import jakarta.faces.component.FacesComponent;
 public class Tag extends TagBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tag";
 
-    public static final String STYLE_CLASS = "ui-tag ui-widget";
-    public static final String SEVERITY_INFO_CLASS = "ui-tag-info";
-    public static final String SEVERITY_SUCCESS_CLASS = "ui-tag-success";
-    public static final String SEVERITY_WARNING_CLASS = "ui-tag-warning";
-    public static final String SEVERITY_DANGER_CLASS = "ui-tag-danger";
-    public static final String SEVERITY_SECONDARY_CLASS = "ui-tag-secondary";
-    public static final String SEVERITY_HELP_CLASS = "ui-tag-help";
-    public static final String ROUNDED_CLASS = "ui-tag-rounded";
-    public static final String OUTLINED_CLASS = "ui-tag-outlined";
-    public static final String ICON_CLASS = "ui-tag-icon";
-    public static final String VALUE_CLASS = "ui-tag-value";
+    public static final String STYLE_CLASS = "p-tag p-widget";
+    public static final String SEVERITY_INFO_CLASS = "p-tag-info";
+    public static final String SEVERITY_SUCCESS_CLASS = "p-tag-success";
+    public static final String SEVERITY_WARNING_CLASS = "p-tag-warning";
+    public static final String SEVERITY_DANGER_CLASS = "p-tag-danger";
+    public static final String SEVERITY_SECONDARY_CLASS = "p-tag-secondary";
+    public static final String SEVERITY_HELP_CLASS = "p-tag-help";
+    public static final String ROUNDED_CLASS = "p-tag-rounded";
+    public static final String OUTLINED_CLASS = "p-tag-outlined";
+    public static final String ICON_CLASS = "p-tag-icon";
+    public static final String VALUE_CLASS = "p-tag-value";
 }

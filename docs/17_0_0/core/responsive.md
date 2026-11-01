@@ -48,10 +48,10 @@ components related to responsive design.
 
 First is the fluid mode support for components where component gets 100% width meaning when
 used within a grid, it will take the width of the grid. Fluid usually effects the form components. To
-enable fluid mode, add _ui-fluid_ to a container element.
+enable fluid mode, add _p-fluid_ to a container element.
 
 ```xhtml
-<div class="ui-fluid">
+<div class="p-fluid">
     <p:panelGrid columns="2" layout="grid">
         <p:outputLabel for="input" value="Input"/>
         <p:inputText id="input"/>

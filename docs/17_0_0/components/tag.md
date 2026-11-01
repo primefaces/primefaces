@@ -49,8 +49,8 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-tag | Tag element
-|.ui-tag-rounded | Rounded element
-|.ui-tag-outlined | Outlined element
-|.ui-tag-icon | Icon of the tag
-|.ui-tag-value	| Value of the tag
+|.p-tag | Tag element
+|.p-tag-rounded | Rounded element
+|.p-tag-outlined | Outlined element
+|.p-tag-icon | Icon of the tag
+|.p-tag-value	| Value of the tag

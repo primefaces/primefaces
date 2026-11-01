@@ -84,6 +84,6 @@ OutputPanel has two layout modes;
 - inline: Renders a span
 
 ## Skinning
-_style_ and _styleClass_ attributes are used to style the outputPanel, by default _.ui-outputpanel_ css class
-is added to element and _.ui-outputpanel-loading_ when content is loading in deferred loading case.
+_style_ and _styleClass_ attributes are used to style the outputPanel, by default _.p-outputpanel_ css class
+is added to element and _.p-outputpanel-loading_ when content is loading in deferred loading case.
 

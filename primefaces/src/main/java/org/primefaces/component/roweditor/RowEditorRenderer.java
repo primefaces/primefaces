@@ -25,10 +25,12 @@ package org.primefaces.component.roweditor;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.renderkit.CoreRenderer;
 
 import java.io.IOException;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
@@ -51,20 +53,24 @@ public class RowEditorRenderer extends CoreRenderer<RowEditor> {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeIcon(writer, "pencil", component.getEditTitle());
-        encodeIcon(writer, "check", component.getSaveTitle());
-        encodeIcon(writer, "close", component.getCancelTitle());
+        // the icon tokens are per table component: --p-datatable-row-edit-icon / --p-treetable-row-edit-icon
+        UIComponent parent = component.getParent();
+        while (parent != null && !(parent instanceof DataTable) && !(parent instanceof TreeTable)) {
+            parent = parent.getParent();
+        }
+        String table = parent instanceof TreeTable ? "treetable" : "datatable";
+
+        encodeIcon(writer, "pencil", "p-icon p-edit-icon p-" + table + "-row-edit-icon", component.getEditTitle());
+        encodeIcon(writer, "check", "p-icon p-check-icon p-" + table + "-row-save-icon p-c", component.getSaveTitle());
+        encodeIcon(writer, "close", "p-icon p-close-icon p-" + table + "-row-cancel-icon p-c", component.getCancelTitle());
 
         writer.endElement("div");
     }
 
-    protected void encodeIcon(ResponseWriter writer, String type, String title) throws IOException {
-        String iconClass = "ui-icon ui-icon-" + type;
-        iconClass = ("pencil".equals(type)) ? iconClass : iconClass + " ui-c";
-
+    protected void encodeIcon(ResponseWriter writer, String type, String iconClass, String title) throws IOException {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", "ui-row-editor-" + type, null);
+        writer.writeAttribute("class", "p-row-editor-" + type, null);
 
         writer.startElement("span", null);
         if (title != null) {

@@ -72,7 +72,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
     init(cfg) {
         super.init(cfg);
 
-        this.panelContainer = this.jq.children('.ui-tabs-panels');
+        this.panelContainer = this.jq.children('.p-tabs-panels');
         this.stateHolder = $(this.jqId + '_activeIndex');
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
@@ -81,19 +81,19 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         this.cfg.focusOnLastActiveTab = this.cfg.focusOnLastActiveTab || false;
 
         if(this.cfg.scrollable) {
-            this.navscroller = this.jq.children('.ui-tabs-navscroller');
-            this.navcrollerLeft = this.navscroller.children('.ui-tabs-navscroller-btn-left');
-            this.navcrollerRight = this.navscroller.children('.ui-tabs-navscroller-btn-right');
-            this.navContainer = this.navscroller.children('.ui-tabs-nav');
-            this.firstTab = this.navContainer.children('li.ui-tabs-header').first();
-            this.lastTab = this.navContainer.children('li.ui-tabs-header').last();
+            this.navscroller = this.jq.children('.p-tabs-navscroller');
+            this.navcrollerLeft = this.navscroller.children('.p-tabs-navscroller-btn-left');
+            this.navcrollerRight = this.navscroller.children('.p-tabs-navscroller-btn-right');
+            this.navContainer = this.navscroller.children('.p-tabs-nav');
+            this.firstTab = this.navContainer.children('li.p-tabs-header').first();
+            this.lastTab = this.navContainer.children('li.p-tabs-header').last();
             this.scrollStateHolder = $(this.jqId + '_scrollState');
         }
         else {
-            this.navContainer = this.jq.children('.ui-tabs-nav');
+            this.navContainer = this.jq.children('.p-tabs-nav');
         }
 
-        this.headerContainer = this.navContainer.children('li.ui-tabs-header');
+        this.headerContainer = this.navContainer.children('li.p-tabs-header');
 
         this.bindEvents();
 
@@ -114,7 +114,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
             this._render();
         }
         else if (this.jq.parent()[0]) {
-            var container = this.jq.parent()[0].closest('.ui-hidden-container');
+            var container = this.jq.parent()[0].closest('.p-hidden-container');
             if (container) {
                 var $container = $(container);
                 if ($container.length) {
@@ -167,23 +167,23 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         this.headerContainer
                 .on('mouseover.tabview', function(e) {
                     var element = $(this);
-                    if(!element.hasClass('ui-state-disabled')) {
-                        element.addClass('ui-state-hover');
+                    if(!element.hasClass('p-state-disabled')) {
+                        element.addClass('p-state-hover');
                     }
                 })
                 .on('mouseout.tabview', function(e) {
                     var element = $(this);
-                    if(!element.hasClass('ui-state-disabled')) {
-                        element.removeClass('ui-state-hover');
+                    if(!element.hasClass('p-state-disabled')) {
+                        element.removeClass('p-state-hover');
                     }
                 })
                 .on('click.tabview', function(e) {
                     var element = $(this);
 
-                    if($(e.target).is(':not(.ui-icon-close)')) {
+                    if($(e.target).is(':not(.p-tabs-close-icon)')) {
                         var index = $this.headerContainer.index(element);
 
-                        if(!element.hasClass('ui-state-disabled') && index !== $this.cfg.selected) {
+                        if(!element.hasClass('p-state-disabled') && index !== $this.cfg.selected) {
                             $this.select(index);
                             element.find('a').trigger('focus.tabview');
                         }
@@ -193,7 +193,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
                 });
 
         //Closable tabs
-        this.navContainer.find('li .ui-icon-close')
+        this.navContainer.find('li .p-tabs-close-icon')
             .on('click.tabview', function(e) {
                 var index = $(this).parent().index();
 
@@ -213,32 +213,32 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
         //Scrolling
         if(this.cfg.scrollable) {
-            this.navscroller.children('.ui-tabs-navscroller-btn')
+            this.navscroller.children('.p-tabs-navscroller-btn')
                             .on('mouseover.tabview', function() {
                                 var el = $(this);
-                                if(!el.hasClass('ui-state-disabled'))
-                                    $(this).addClass('ui-state-hover');
+                                if(!el.hasClass('p-state-disabled'))
+                                    $(this).addClass('p-state-hover');
                             })
                             .on('mouseout.tabview', function() {
                                 var el = $(this);
-                                if(!el.hasClass('ui-state-disabled'))
-                                    $(this).removeClass('ui-state-hover ui-state-active');
+                                if(!el.hasClass('p-state-disabled'))
+                                    $(this).removeClass('p-state-hover p-state-active');
                             })
                             .on('mousedown.tabview', function() {
                                 var el = $(this);
-                                if(!el.hasClass('ui-state-disabled'))
-                                    $(this).removeClass('ui-state-hover').addClass('ui-state-active');
+                                if(!el.hasClass('p-state-disabled'))
+                                    $(this).removeClass('p-state-hover').addClass('p-state-active');
                             })
                             .on('mouseup.tabview', function() {
                                 var el = $(this);
-                                if(!el.hasClass('ui-state-disabled'))
-                                    $(this).addClass('ui-state-hover').removeClass('ui-state-active');
+                                if(!el.hasClass('p-state-disabled'))
+                                    $(this).addClass('p-state-hover').removeClass('p-state-active');
                             })
                             .on('focus.tabview', function() {
-                                $(this).addClass('ui-state-focus');
+                                $(this).addClass('p-state-focus');
                             })
                             .on('blur.tabview', function() {
-                                $(this).removeClass('ui-state-focus');
+                                $(this).removeClass('p-state-focus');
                             });
 
 
@@ -293,14 +293,14 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
             tabs = this.headerContainer;
 
         /* For Screen Reader and Keyboard accessibility */
-        tabs = tabs.not('.ui-state-disabled').find('a');
+        tabs = tabs.not('.p-state-disabled').find('a');
         tabs.attr('tabindex', this.tabindex);
 
         tabs.on('focus.tabview', function(e) {
             var focusedTab = $(this).parent();
 
-            if(!focusedTab.hasClass('ui-state-disabled')) {
-                focusedTab.addClass('ui-tabs-outline');
+            if(!focusedTab.hasClass('p-state-disabled')) {
+                focusedTab.addClass('p-tabs-outline');
 
                 if($this.cfg.scrollable) {
                     if($this.navcrollerRight.is(':visible') && (focusedTab.position().left + focusedTab.width() > $this.navcrollerRight.position().left)) {
@@ -313,20 +313,20 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
             }
         })
         .on('blur.tabview', function(){
-            $(this).parent().removeClass('ui-tabs-outline');
+            $(this).parent().removeClass('p-tabs-outline');
         })
         .on('keydown.tabview', function(e) {
             var element = $(this).parent();
             switch (e.code) {
                 case 'ArrowRight':
-                    var nextTab = element.nextAll('.ui-tabs-header:not(.ui-state-disabled)');
+                    var nextTab = element.nextAll('.p-tabs-header:not(.p-state-disabled)');
                     if (nextTab.length) {
                         nextTab.first().find('a').trigger('focus.tabview');
                     }
                     e.preventDefault();
                     break;
                 case 'ArrowLeft':
-                    var prevTab = element.prevAll('.ui-tabs-header:not(.ui-state-disabled)');
+                    var prevTab = element.prevAll('.p-tabs-header:not(.p-state-disabled)');
                     if (prevTab.length) {
                         prevTab.first().find('a').trigger('focus.tabview');
                     }
@@ -335,7 +335,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
                 case 'NumpadEnter':
                 case 'Enter':
                 case 'Space':
-                    if (!element.hasClass('ui-state-disabled')) {
+                    if (!element.hasClass('p-state-disabled')) {
                         $this.select(element.data('index'));
                         e.preventDefault();
                     }
@@ -381,16 +381,16 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         this.addRefreshListener(function() {
 			
             // update error highlighting and set focusIndex
-            $(this.jqId + '>ul>li.ui-tabs-header').each(function() {
+            $(this.jqId + '>ul>li.p-tabs-header').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
-                if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {
-                    $(this).addClass('ui-state-error');
+                if ($(tabId + ' .p-state-error').length > 0 || $(tabId + ' .p-message-error-detail').length > 0) {
+                    $(this).addClass('p-state-error');
                     if (focusIndex < 0) {
                         focusIndex = $(this).data('index');
                     }
                 } else {
-                    $(this).removeClass('ui-state-error');
+                    $(this).removeClass('p-state-error');
                 }
             });
             
@@ -414,13 +414,13 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         if(this.headerContainer.length) {
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if (overflown) {
-                this.navscroller.removeClass('ui-tabs-navscroller-btn-hidden');
+                this.navscroller.removeClass('p-tabs-navscroller-btn-hidden');
                 this.navcrollerLeft.attr('tabindex', this.tabindex);
                 this.navcrollerRight.attr('tabindex', this.tabindex);
                 this.restoreScrollState();
             }
             else {
-                this.navscroller.addClass('ui-tabs-navscroller-btn-hidden');
+                this.navscroller.addClass('p-tabs-navscroller-btn-hidden');
                 this.navcrollerLeft.attr('tabindex', this.tabindex);
                 this.navcrollerRight.attr('tabindex', this.tabindex);
             }
@@ -451,7 +451,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
                     if((lastTabBoundry + step) < viewportWidth)
                         $this.disableScrollerButton($this.navcrollerRight);
-                    if($this.navcrollerLeft.hasClass('ui-state-disabled'))
+                    if($this.navcrollerLeft.hasClass('p-state-disabled'))
                         $this.enableScrollerButton($this.navcrollerLeft);
                 });
         }
@@ -461,7 +461,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
                 if(newMarginLeft === 0)
                     $this.disableScrollerButton($this.navcrollerLeft);
-                if($this.navcrollerRight.hasClass('ui-state-disabled'))
+                if($this.navcrollerRight.hasClass('p-state-disabled'))
                     $this.enableScrollerButton($this.navcrollerRight);
             });
         }
@@ -472,7 +472,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
      * @param {JQuery} btn The scroll button to enable.
      */
     disableScrollerButton(btn) {
-        btn.addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus').attr('tabindex', -1);
+        btn.addClass('p-state-disabled').removeClass('p-state-hover p-state-active p-state-focus').attr('tabindex', -1);
     }
 
     /**
@@ -480,7 +480,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
      * @param {JQuery} btn The scroll button to enable.
      */
     enableScrollerButton(btn) {
-        btn.removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
+        btn.removeClass('p-state-disabled').attr('tabindex', this.tabindex);
     }
 
     /**
@@ -563,7 +563,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
      * @param {JQuery} newPanel New tab to be shown.
      */
     show(newPanel) {
-        var oldPanel = this.panelContainer.children('.ui-tabs-panel:visible');
+        var oldPanel = this.panelContainer.children('.p-tabs-panel:visible');
         
         // it is possible the current panel has been removed from the DOM with rendered flag
         if (!newPanel || newPanel.length === 0) {
@@ -571,14 +571,14 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         }
         
         var headers = this.headerContainer,
-        actionsQuery = '.ui-tabs-actions:not(.ui-tabs-actions-global)',
-        oldHeader = headers.filter('.ui-state-active'),
+        actionsQuery = '.p-tabs-actions:not(.p-tabs-actions-global)',
+        oldHeader = headers.filter('.p-state-active'),
         oldActions = oldHeader.next(actionsQuery),
         hasOldActions = oldActions.length,
         newHeader = headers.eq(newPanel.index()),
         newActions = newHeader.next(actionsQuery),
         hasNewActions = newActions.length,
-        globalActions = this.navContainer.children('.ui-tabs-actions.ui-tabs-actions-global'),
+        globalActions = this.navContainer.children('.p-tabs-actions.p-tabs-actions-global'),
         $this = this;
 
         globalActions.hide();
@@ -606,12 +606,12 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
         if(this.cfg.effect && oldPanel.length) {
             PrimeFaces.effects.hide(oldPanel, this.cfg.effect, { duration: this.cfg.effectDuration, complete: function() {
-                oldHeader.removeClass('ui-tabs-selected ui-state-active');
+                oldHeader.removeClass('p-tabs-selected p-state-active');
                 if(hasOldActions) {
                     PrimeFaces.effects.hide(oldActions, $this.cfg.effect, { duration: $this.cfg.effectDuration });
                 }
 
-                newHeader.addClass('ui-tabs-selected ui-state-active');
+                newHeader.addClass('p-tabs-selected p-state-active');
                 PrimeFaces.effects.show(newPanel, $this.cfg.effect, { duration: $this.cfg.effectDuration, complete: function() {
                     $this.postTabShow(newPanel);
                 } });
@@ -621,13 +621,13 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
             } });
         }
         else {
-            oldHeader.removeClass('ui-tabs-selected ui-state-active');
+            oldHeader.removeClass('p-tabs-selected p-state-active');
             oldPanel.hide();
             if(hasOldActions) {
                 oldActions.hide();
             }
 
-            newHeader.addClass('ui-tabs-selected ui-state-active');
+            newHeader.addClass('p-tabs-selected p-state-active');
             newPanel.show();
             if(hasNewActions) {
                 newActions.show();
@@ -703,8 +703,8 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         PrimeFaces.utils.cleanseDomElement(panel);
         
         // refresh "cached" selectors
-        this.headerContainer = this.navContainer.children('li.ui-tabs-header');
-        this.panelContainer = this.jq.children('.ui-tabs-panels');
+        this.headerContainer = this.navContainer.children('li.p-tabs-header');
+        this.panelContainer = this.jq.children('.p-tabs-panels');
 
         // select next tab
         var length = this.getLength();
@@ -716,8 +716,8 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
                 var newIndex = (this.cfg.selected === (length)) ? (this.cfg.selected - 1): this.cfg.selected,
                 newPanelHeader = this.headerContainer.eq(newIndex);
 
-                if(newPanelHeader.hasClass('ui-state-disabled')) {
-                    var newHeader = this.headerContainer.filter(':not(.ui-state-disabled):first');
+                if(newPanelHeader.hasClass('p-state-disabled')) {
+                    var newHeader = this.headerContainer.filter(':not(.p-state-disabled):first');
                     if(newHeader.length) {
                         this.select(newHeader.index(), true);
                     }
@@ -829,7 +829,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
      */
     disable(index) {
         const target = index !== null && index !== undefined ? this.headerContainer.eq(index) : this.headerContainer;
-        target.addClass('ui-state-disabled').find('a').attr('tabindex', '-1');
+        target.addClass('p-state-disabled').find('a').attr('tabindex', '-1');
     }
 
     /**
@@ -839,7 +839,7 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
      */
     enable(index) {
         const target = index !== null && index !== undefined ? this.headerContainer.eq(index) : this.headerContainer; 
-        target.removeClass('ui-state-disabled').find('a').attr('tabindex', this.tabindex);
+        target.removeClass('p-state-disabled').find('a').attr('tabindex', this.tabindex);
     }
 
     /**

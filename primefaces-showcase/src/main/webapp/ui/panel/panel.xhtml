@@ -5,6 +5,18 @@
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style>
+            /* the header icons are tokens: here for one panel, in :root for all */
+            .custom-icons-panel {
+                --p-panel-close-icon: var(--p-icon-trash);
+                --p-panel-toggle-collapsed-icon: var(--p-icon-down);
+                --p-panel-toggle-expanded-icon: var(--p-icon-up);
+                --p-panel-menu-icon: var(--p-icon-list);
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="title">
         Panel
     </ui:define>
@@ -66,21 +78,17 @@
                     <i class="pi pi-ellipsis-v mr-2"></i>Header
                 </f:facet>
                 <f:facet name="actions">
-                    <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-                            <i class="ui-icon pi pi-question"></i>
+                    <p:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                            <i class="pi pi-question"></i>
                     </p:commandLink>
-                    <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-                        <i class="ui-icon pi pi-star"></i>
+                    <p:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                        <i class="pi pi-star"></i>
                     </p:commandLink>
                 </f:facet>
             </p:panel>
 
             <h5>Custom Icons</h5>
-            <p:panel header="Custom Icons" toggleable="true" closable="true"
-                     closeIcon="pi pi-trash"
-                     collapsedIcon="pi pi-chevron-down"
-                     expandedIcon="pi pi-chevron-up"
-                     menuIcon="pi pi-bars">
+            <p:panel header="Custom Icons" toggleable="true" closable="true" styleClass="custom-icons-panel">
 
                 <p:ajax event="close" listener="#{panelView.onClose}" update="msgs"/>
                 <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs"/>

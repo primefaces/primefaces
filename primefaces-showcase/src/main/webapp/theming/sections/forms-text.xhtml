@@ -19,20 +19,20 @@
                 <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Invalid">
                     <f:event type="preRenderComponent" listener="#{themingFormsTextView.markInvalid}"/>
                 </p:inputText>
-                <span class="ui-input-filled">
+                <span class="p-input-filled">
                     <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Filled"/>
                 </span>
             </div>
 
             <h3>Sizes / icon / float label</h3>
             <div class="demo-row">
-                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Small" styleClass="ui-inputtext-sm"/>
-                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Large" styleClass="ui-inputtext-lg"/>
-                <span class="ui-input-icon-left">
+                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Small" styleClass="p-inputtext-sm"/>
+                <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Large" styleClass="p-inputtext-lg"/>
+                <span class="p-input-icon-left">
                     <i class="pi pi-search"/>
                     <p:inputText value="#{themingFormsTextView.emptyText}" placeholder="Search"/>
                 </span>
-                <span class="ui-float-label">
+                <span class="p-float-label">
                     <p:inputText id="floatText" value="#{themingFormsTextView.emptyText}"/>
                     <p:outputLabel for="@previous" value="Username"/>
                 </span>
@@ -57,6 +57,28 @@
 
         <div class="demo-grid">
             <div class="demo-card">
+                <h2>InputOtp</h2>
+                <div class="demo-field">
+                    <p:inputOtp value="#{themingFormsTextView.otp}" length="6" integerOnly="true"/>
+                    <p:inputOtp value="#{themingFormsTextView.emptyText}" length="6" separator="-" placeholder="0"/>
+                    <p:inputOtp value="#{themingFormsTextView.pin}" mask="true" redisplay="true" integerOnly="true" inputStyleClass="p-inputtext-sm"/>
+                </div>
+            </div>
+
+            <div class="demo-card">
+                <h2>InputPhone</h2>
+                <div class="demo-field">
+                    <p:inputPhone value="#{themingFormsTextView.phone}"/>
+                    <p:inputPhone value="#{themingFormsTextView.emptyText}" initialCountry="DE" preferredCountries="DE,AT,CH"/>
+                    <span class="p-input-filled">
+                        <p:inputPhone value="#{themingFormsTextView.emptyText}" initialCountry="FR"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
                 <h2>AutoComplete</h2>
                 <div class="demo-field">
                     <p:autoComplete value="#{themingFormsTextView.autoText}" completeMethod="#{themingFormsTextView.completeFruit}"
@@ -75,16 +97,16 @@
         <div class="demo-card">
             <h2>InputGroup</h2>
             <div class="demo-grid">
-                <div class="ui-inputgroup">
-                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"/></span>
                     <p:inputText placeholder="Username"/>
                 </div>
-                <div class="ui-inputgroup">
-                    <span class="ui-inputgroup-addon">$</span>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">$</span>
                     <p:inputText placeholder="Price"/>
-                    <span class="ui-inputgroup-addon">.00</span>
+                    <span class="p-inputgroup-addon">.00</span>
                 </div>
-                <div class="ui-inputgroup">
+                <div class="p-inputgroup">
                     <p:inputText placeholder="Keyword"/>
                     <p:commandButton type="button" icon="pi pi-search"/>
                 </div>

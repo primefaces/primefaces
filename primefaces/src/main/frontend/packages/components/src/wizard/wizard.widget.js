@@ -56,7 +56,7 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
 
         //Step controls
         if(this.cfg.showStepStatus) {
-            this.stepControls = $(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
+            this.stepControls = $(this.jqId + ' .p-wizard-step-titles li.p-wizard-step-title');
             this.updateStepStatus();
         }
 
@@ -92,11 +92,11 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
             return;
         }
 
-        this.stepControls.removeClass('ui-wizard-step-current ui-wizard-step-completed');
-        this.stepControls.not('[data-pf-user-highlight]').removeClass('ui-state-highlight');
-        this.stepControls.eq(currentStepIndex).addClass('ui-state-highlight ui-wizard-step-current');
+        this.stepControls.removeClass('p-wizard-step-current p-wizard-step-completed');
+        this.stepControls.not('[data-pf-user-highlight]').removeClass('p-state-highlight');
+        this.stepControls.eq(currentStepIndex).addClass('p-state-highlight p-wizard-step-current');
         if (this.cfg.highlightCompletedSteps) {
-            this.stepControls.slice(0, currentStepIndex).addClass('ui-state-highlight ui-wizard-step-completed');
+            this.stepControls.slice(0, currentStepIndex).addClass('p-state-highlight p-wizard-step-completed');
         }
     }
 

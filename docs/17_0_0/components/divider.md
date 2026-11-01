@@ -72,14 +72,14 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-divider | Container element.
-|.ui-divider-horizontal | Container element in horizontal layout.
-|.ui-divider-vertical | Container element in vertical layout.
-|.ui-divider-solid | Container element with solid border.
-|.ui-divider-dashed | Container element with dashed border.
-|.ui-divider-dotted | Container element with dotted border.
-|.ui-divider-left | Container element with content aligned to left.
-|.ui-divider-right | Container element with content aligned to right.
-|.ui-divider-center | Container element with content aligned to center.
-|.ui-divider-bottom | Container element with content aligned to bottom.
-|.ui-divider-top | Container element with content aligned to top.
+|.p-divider | Container element.
+|.p-divider-horizontal | Container element in horizontal layout.
+|.p-divider-vertical | Container element in vertical layout.
+|.p-divider-solid | Container element with solid border.
+|.p-divider-dashed | Container element with dashed border.
+|.p-divider-dotted | Container element with dotted border.
+|.p-divider-left | Container element with content aligned to left.
+|.p-divider-right | Container element with content aligned to right.
+|.p-divider-center | Container element with content aligned to center.
+|.p-divider-bottom | Container element with content aligned to bottom.
+|.p-divider-top | Container element with content aligned to top.

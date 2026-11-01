@@ -53,13 +53,13 @@ class SelectOneMenu013Test extends AbstractPrimePageTest {
         selectOneMenu.show();
 
         // Assert
-        WebElement table = selectOneMenu.getPanel().findElement(By.className("ui-selectonemenu-table"));
+        WebElement table = selectOneMenu.getPanel().findElement(By.className("p-selectonemenu-table"));
         assertNotNull(table);
-        List<WebElement> options = table.findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = table.findElements(By.className("p-selectonemenu-item"));
 
-        assertCss(options.get(0), "ui-selectonemenu-item", "ui-selectonemenu-row", "ui-state-highlight");
-        assertCss(options.get(1), "ui-selectonemenu-item", "ui-selectonemenu-row", "ui-state-disabled");
-        assertCss(options.get(2), "ui-selectonemenu-item", "ui-selectonemenu-row");
+        assertCss(options.get(0), "p-selectonemenu-item", "p-selectonemenu-row", "p-state-highlight");
+        assertCss(options.get(1), "p-selectonemenu-item", "p-selectonemenu-row", "p-state-disabled");
+        assertCss(options.get(2), "p-selectonemenu-item", "p-selectonemenu-row");
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }

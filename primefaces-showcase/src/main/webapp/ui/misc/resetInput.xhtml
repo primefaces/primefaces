@@ -42,18 +42,18 @@
 
                     <div>
                         <p:commandButton value="Reset Fail" update="panel" process="@this"
-                                         action="#{resetInputView.resetFail}" styleClass="mr-2 ui-button-outlined"/>
+                                         action="#{resetInputView.resetFail}" styleClass="mr-2 p-button-outlined"/>
 
-                        <p:commandButton value="Reset Tag" update="panel" process="@this" styleClass="mr-2 ui-button-outlined">
+                        <p:commandButton value="Reset Tag" update="panel" process="@this" styleClass="mr-2 p-button-outlined">
                             <p:resetInput target="panel"/>
                         </p:commandButton>
 
                         <p:commandButton value="Reset Code" update="panel" process="@this"
                                          action="#{resetInputView.reset}"
-                                         styleClass="mr-2 ui-button-outlined"/>
+                                         styleClass="mr-2 p-button-outlined"/>
 
                         <p:commandButton value="Reset Non-Ajax" action="#{resetInputView.reset}" immediate="true"
-                                         ajax="false" styleClass="mr-2 ui-button-outlined">
+                                         ajax="false" styleClass="mr-2 p-button-outlined">
                             <p:resetInput target="panel"/>
                         </p:commandButton>
 

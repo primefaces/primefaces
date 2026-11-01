@@ -126,7 +126,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
         styleClass = getStyleClassBuilder(context)
                 .add(styleClass)
                 .add(ComponentUtils.isRTL(context, component),  SelectOneMenu.RTL_CLASS)
-                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.isReadonly(), "p-state-readonly")
                 .build();
 
         writer.startElement("div", component);
@@ -325,13 +325,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
     protected void encodeMenuIcon(FacesContext context, SelectOneMenu component, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String iconClass = valid ? SelectOneMenu.TRIGGER_CLASS : SelectOneMenu.TRIGGER_CLASS + " ui-state-error";
+        String iconClass = valid ? SelectOneMenu.TRIGGER_CLASS : SelectOneMenu.TRIGGER_CLASS + " p-state-error";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", iconClass, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s ui-c", null);
+        writer.writeAttribute("class", SelectOneMenu.TRIGGER_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");
@@ -443,7 +443,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
                 }
 
                 String headerText = column.getHeaderText();
-                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default" + column.getStyleClass();
+                String styleClass = column.getStyleClass() == null ? "p-state-default" : "p-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);
@@ -481,10 +481,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
-                itemStyleClass += " ui-noselection-option";
+                itemStyleClass += " p-noselection-option";
             }
             if (selectItem.isDisabled()) {
-                itemStyleClass += " ui-state-disabled";
+                itemStyleClass += " p-state-disabled";
             }
 
             context.getExternalContext().getRequestMap().put(var, itemValue);
@@ -542,6 +542,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
                 .attr("labelTemplate", component.getLabelTemplate(), null)
                 .attr("autoWidth", component.getAutoWidth(), "auto")
                 .attr("dynamic", component.isDynamic(), false)
+                .attr("selectOnFocus", component.isSelectOnFocus(), true)
                 .attr("touchable", ComponentUtils.isTouchable(context, component),  true)
                 .attr("renderPanelContentOnClient", component.getVar() == null,  false);
 
@@ -671,10 +672,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
         String id = component.getClientId(context) + "_filter";
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-selectonemenu-filter-container", null);
+        writer.writeAttribute("class", "p-selectonemenu-filter-container", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default", null);
+        writer.writeAttribute("class", "p-selectonemenu-filter p-inputfield p-inputtext p-widget p-state-default", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
@@ -688,7 +689,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
         writer.endElement("input");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-search", id);
+        writer.writeAttribute("class", SelectOneMenu.FILTER_ICON_CLASS, id);
         writer.endElement("span");
 
         writer.endElement("div");

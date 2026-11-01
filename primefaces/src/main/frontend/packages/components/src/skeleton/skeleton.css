@@ -1,10 +1,10 @@
 /*
  * Skeleton: p:skeleton
  *
- * Supported classes: ui-skeleton-circle, ui-skeleton-animation-none
+ * Supported classes: p-skeleton-circle, p-skeleton-animation-none
  */
 
-.ui-skeleton {
+.p-skeleton {
     position: relative;
     overflow: hidden;
     background-color: var(--p-skeleton-background);
@@ -12,7 +12,7 @@
 
     &:after {
         content: "";
-        animation: ui-skeleton-animation 1.2s infinite;
+        animation: p-skeleton-animation 1.2s infinite;
         height: 100%;
         left: 0;
         position: absolute;
@@ -24,19 +24,19 @@
     }
 
     &:dir(rtl):after {
-        animation-name: ui-skeleton-animation-rtl;
+        animation-name: p-skeleton-animation-rtl;
     }
 
-    &.ui-skeleton-animation-none:after {
+    &.p-skeleton-animation-none:after {
         animation: none;
     }
 
-    &.ui-skeleton-circle {
+    &.p-skeleton-circle {
         border-radius: 50%;
     }
 }
 
-@keyframes ui-skeleton-animation {
+@keyframes p-skeleton-animation {
     from {
         transform: translateX(-100%);
     }
@@ -45,7 +45,7 @@
     }
 }
 
-@keyframes ui-skeleton-animation-rtl {
+@keyframes p-skeleton-animation-rtl {
     from {
         transform: translateX(100%);
     }

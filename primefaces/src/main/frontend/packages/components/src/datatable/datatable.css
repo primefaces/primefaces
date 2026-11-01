@@ -2,16 +2,16 @@
  * DataTable: p:dataTable (+ p:subTable, p:headerRow, p:summaryRow, p:rowToggler, p:rowEditor, p:cellEditor)
  * The p:columnToggler overlay lives in columntoggler.css.
  *
- * Supported classes: ui-datatable-striped, ui-datatable-gridlines, ui-datatable-sm, ui-datatable-lg,
- *                    ui-datatable-sticky, ui-datatable-reflow, ui-datatable-scrollable, ui-datatable-resizable,
- *                    ui-datatable-frozencolumn, ui-datatable-rtl
- * States (set by the widget): th.ui-state-hover / ui-state-active (sorted) / ui-state-focus,
- *                             tr.ui-state-hover / ui-state-highlight (selected), tr.ui-datatable-odd (striped),
- *                             tr.ui-row-editing, td.ui-cell-editing
+ * Supported classes: p-datatable-striped, p-datatable-gridlines, p-datatable-sm, p-datatable-lg,
+ *                    p-datatable-sticky, p-datatable-reflow, p-datatable-scrollable, p-datatable-resizable,
+ *                    p-datatable-frozencolumn, p-datatable-rtl, p-filter-toggleable (filters hidden until toggleFilter())
+ * States (set by the widget): th.p-state-hover / p-state-active (sorted) / p-state-focus,
+ *                             tr.p-state-hover / p-state-highlight (selected), tr.p-datatable-odd (striped),
+ *                             tr.p-row-editing, td.p-cell-editing
  */
-.ui-datatable {
+.p-datatable {
     /* header / footer facets */
-    .ui-datatable-header {
+    .p-datatable-header {
         background: var(--p-datatable-header-background);
         color: var(--p-datatable-header-color);
         border: 1px solid var(--p-datatable-header-border-color);
@@ -23,7 +23,7 @@
         border-start-end-radius: var(--p-content-border-radius);
     }
 
-    .ui-datatable-footer {
+    .p-datatable-footer {
         background: var(--p-datatable-footer-background);
         color: var(--p-datatable-footer-color);
         border: 1px solid var(--p-datatable-footer-border-color);
@@ -35,17 +35,17 @@
         border-end-end-radius: var(--p-content-border-radius);
     }
 
-    .ui-paginator {
+    .p-paginator {
         padding: var(--p-paginator-padding);
 
-        &.ui-paginator-top {
+        &.p-paginator-top {
             border-style: solid;
             border-color: var(--p-datatable-paginator-top-border-color);
             border-width: var(--p-datatable-paginator-top-border-width);
             border-radius: 0;
         }
 
-        &.ui-paginator-bottom {
+        &.p-paginator-bottom {
             border-style: solid;
             border-color: var(--p-datatable-paginator-bottom-border-color);
             border-width: var(--p-datatable-paginator-bottom-border-width);
@@ -83,52 +83,36 @@
             border-color var(--p-datatable-transition-duration), outline-color var(--p-datatable-transition-duration),
             box-shadow var(--p-datatable-transition-duration);
 
-        .ui-column-title {
+        .p-column-title {
             font-weight: var(--p-datatable-column-title-font-weight);
             font-size: var(--p-datatable-column-title-font-size);
             vertical-align: middle;
         }
 
-        .ui-sortable-column-icon {
+        .p-sortable-column-icon {
             display: inline-block;
+            vertical-align: middle;
             margin: 0;
             margin-inline-start: var(--p-datatable-header-cell-gap);
             color: var(--p-datatable-sort-icon-color);
             font-size: var(--p-datatable-sort-icon-size);
             transition: color var(--p-datatable-transition-duration);
 
-            &.ui-icon-carat-2-n-s,
-            &.ui-icon-triangle-1-n,
-            &.ui-icon-triangle-1-s {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                vertical-align: middle;
+            /* the sort order is the state class of the icon (the widget reads it, aria-sort is on one column only) */
+            &.p-datatable-sort-icon {
+                --_icon: var(--p-datatable-sort-icon);
             }
 
-            &.ui-icon-carat-2-n-s::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-datatable-sort-icon) center / contain no-repeat;
+            &.p-datatable-sort-asc-icon {
+                --_icon: var(--p-datatable-sort-asc-icon);
             }
 
-            &.ui-icon-triangle-1-n::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-datatable-sort-asc-icon) center / contain no-repeat;
-            }
-
-            &.ui-icon-triangle-1-s::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-datatable-sort-desc-icon) center / contain no-repeat;
+            &.p-datatable-sort-desc-icon {
+                --_icon: var(--p-datatable-sort-desc-icon);
             }
         }
 
-        .ui-sortable-column-badge {
+        .p-sortable-column-badge {
             border-radius: var(--p-badge-border-radius);
             padding: var(--p-badge-padding);
             height: var(--p-badge-height);
@@ -143,44 +127,44 @@
             vertical-align: middle;
         }
 
-        &.ui-sortable-column.ui-state-focus,
-        &.ui-sortable-column:focus-visible {
+        &.p-sortable-column.p-state-focus,
+        &.p-sortable-column:focus-visible {
             outline: var(--p-datatable-header-cell-focus-ring-width) var(--p-datatable-header-cell-focus-ring-style) var(--p-datatable-header-cell-focus-ring-color);
             outline-offset: var(--p-datatable-header-cell-focus-ring-offset);
             box-shadow: var(--p-datatable-header-cell-focus-ring-shadow);
         }
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-datatable-header-cell-hover-background);
             color: var(--p-datatable-header-cell-hover-color);
 
-            .ui-sortable-column-icon {
+            .p-sortable-column-icon {
                 color: var(--p-datatable-sort-icon-hover-color);
             }
         }
     }
 
     /* sorted column (PrimeUIX has no separate hover look for it) */
-    thead th.ui-state-active {
+    thead th.p-state-active {
         &,
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-datatable-header-cell-selected-background);
             color: var(--p-datatable-header-cell-selected-color);
         }
 
-        .ui-sortable-column-icon {
+        .p-sortable-column-icon {
             color: var(--p-datatable-header-cell-selected-color);
         }
     }
 
-    .ui-sortable-column {
+    .p-sortable-column {
         cursor: pointer;
         -webkit-user-select: none;
         user-select: none;
     }
 
     /* multiple sort number badges */
-    .ui-sortable-column-badge {
+    .p-sortable-column-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -191,26 +175,31 @@
         }
     }
 
-    .ui-column-filter {
+    .p-column-filter {
         display: block;
         box-sizing: border-box;
         width: 100%;
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
-    .ui-column-filter .ui-inputfield,
-    .ui-column-customfilter .ui-inputfield,
-    .ui-column-customfilter .ui-selectonemenu {
+    .p-column-filter .p-inputfield,
+    .p-column-customfilter .p-inputfield,
+    .p-column-customfilter .p-selectonemenu {
         width: 100%;
         max-width: 100%;
     }
 
-    .ui-column-customfilter {
+    .p-column-customfilter {
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
+    /* p-filter-toggleable (styleClass): the filters are hidden until the widget shows them with toggleFilter() */
+    &.p-filter-toggleable thead :is(.p-column-filter, .p-column-customfilter) {
+        display: none;
+    }
+
     /* focusable for the keyboard row navigation: ring inside on keyboard focus, the table would clip an outer one */
-    tbody.ui-datatable-data {
+    tbody.p-datatable-data {
         outline: 0;
 
         &:focus-visible {
@@ -219,16 +208,16 @@
         }
     }
 
-    tr.ui-state-highlight {
+    tr.p-state-highlight {
         cursor: pointer;
     }
 
-    .ui-datatable-data tr.ui-state-hover {
+    .p-datatable-data tr.p-state-hover {
         cursor: pointer;
     }
 
     /* rows */
-    .ui-datatable-data > tr {
+    .p-datatable-data > tr {
         background: var(--p-datatable-row-background);
         color: var(--p-datatable-row-color);
         outline-color: transparent;
@@ -246,11 +235,11 @@
             text-align: start;
         }
 
-        &.ui-datatable-empty-message > td {
+        &.p-datatable-empty-message > td {
             color: var(--p-datatable-empty-message-color);
         }
 
-        > td.ui-datatable-subtable-header {
+        > td.p-datatable-subtable-header {
             background: var(--p-datatable-subtable-header-background);
             border: 1px solid var(--p-datatable-subtable-header-border-color);
             border-width: 0 0 1px 0;
@@ -259,44 +248,44 @@
         }
 
         /* footer facet of p:subTable (no own tokens: column footer look) */
-        > td.ui-datatable-subtable-footer {
+        > td.p-datatable-subtable-footer {
             background: var(--p-datatable-footer-cell-background);
             color: var(--p-datatable-footer-cell-color);
             font-weight: var(--p-datatable-column-footer-font-weight);
         }
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-datatable-row-hover-background);
             color: var(--p-datatable-row-hover-color);
         }
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-datatable-row-selected-background);
             color: var(--p-datatable-row-selected-color);
 
-            .ui-row-toggler,
-            .ui-row-editor > a {
+            .p-row-toggler,
+            .p-row-editor > a {
                 color: var(--p-datatable-row-selected-color);
             }
 
-            .ui-row-toggler.ui-icon:hover,
-            .ui-row-editor > a:hover {
+            .p-row-toggler.p-icon:hover,
+            .p-row-editor > a:hover {
                 background: var(--p-datatable-row-toggle-button-selected-hover-background);
                 color: var(--p-datatable-row-toggle-button-selected-hover-color);
             }
         }
 
-        &.ui-state-highlight > td,
-        &.ui-state-highlight > th,
-        &:has(+ tr.ui-state-highlight) > td,
-        &:has(+ tr.ui-state-highlight) > th {
+        &.p-state-highlight > td,
+        &.p-state-highlight > th,
+        &:has(+ tr.p-state-highlight) > td,
+        &:has(+ tr.p-state-highlight) > th {
             border-bottom-color: var(--p-datatable-body-cell-selected-border-color);
         }
 
-        &.ui-datatable-selectable {
+        &.p-datatable-selectable {
             cursor: pointer;
 
-            > .ui-grouped-column {
+            > .p-grouped-column {
                 background: var(--p-datatable-row-background);
                 color: var(--p-datatable-row-color);
                 cursor: default;
@@ -304,90 +293,90 @@
         }
 
         /* row grouping: p:headerRow / p:summaryRow */
-        &.ui-rowgroup-header {
+        &.p-rowgroup-header {
             background: var(--p-datatable-row-group-header-background);
             color: var(--p-datatable-row-group-header-color);
             font-weight: var(--p-datatable-row-group-header-font-weight);
         }
 
-        &.ui-datatable-summaryrow {
+        &.p-datatable-summaryrow {
             background: var(--p-datatable-summary-row-background);
             color: var(--p-datatable-summary-row-color);
             font-weight: var(--p-datatable-summary-row-font-weight);
         }
 
-        &.ui-datatable-rowordering {
+        &.p-datatable-rowordering {
             background: var(--p-datatable-row-selected-background);
         }
     }
 
-    .ui-row-toggler {
+    .p-row-toggler {
         cursor: pointer;
     }
 
     /* in-cell editing */
-    .ui-cell-editor-input {
+    .p-cell-editor-input {
         display: none;
     }
 
-    .ui-row-editing {
-        .ui-cell-editor .ui-cell-editor-output {
+    .p-row-editing {
+        .p-cell-editor .p-cell-editor-output {
             display: none;
         }
 
-        .ui-cell-editor .ui-cell-editor-input {
+        .p-cell-editor .p-cell-editor-input {
             display: block;
         }
 
-        .ui-row-editor .ui-row-editor-pencil {
+        .p-row-editor .p-row-editor-pencil {
             display: none;
         }
 
-        .ui-row-editor .ui-row-editor-check,
-        .ui-row-editor .ui-row-editor-close {
+        .p-row-editor .p-row-editor-check,
+        .p-row-editor .p-row-editor-close {
             display: inline-flex;
         }
     }
 
-    .ui-row-editor {
+    .p-row-editor {
         span {
             cursor: pointer;
         }
 
-        .ui-row-editor-pencil {
+        .p-row-editor-pencil {
             display: inline-flex;
         }
 
-        .ui-row-editor-check,
-        .ui-row-editor-close {
+        .p-row-editor-check,
+        .p-row-editor-close {
             display: none;
         }
     }
 
-    .ui-datatable-data tr.ui-row-editing td.ui-editable-column,
-    .ui-datatable-data td.ui-cell-editing {
+    .p-datatable-data tr.p-row-editing td.p-editable-column,
+    .p-datatable-data td.p-cell-editing {
         padding-top: 0;
         padding-bottom: 0;
         margin-top: 0;
         margin-bottom: 0;
     }
 
-    /* action icons: row editor (a.ui-row-editor-pencil / -check / -close), row toggler, row group toggler */
-    .ui-row-editor {
+    /* action icons: row editor (a.p-row-editor-pencil / -check / -close), row toggler, row group toggler */
+    .p-row-editor {
         display: inline-flex;
         align-items: center;
         vertical-align: middle;
     }
 
-    .ui-datatable-data > tr .ui-row-toggler.ui-icon,
-    .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-toggler-icon {
+    .p-datatable-data > tr .p-row-toggler.p-icon,
+    .p-datatable-data > tr .p-rowgroup-toggler .p-rowgroup-toggler-icon {
         display: inline-flex;
     }
 
     /* no display here: it would win over the pencil / check / close switching of the in-cell editing rules */
-    .ui-datatable-data > tr .ui-row-editor > a,
-    .ui-datatable-data > tr .ui-row-toggler.ui-icon,
-    .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-toggler-icon {
+    .p-datatable-data > tr .p-row-editor > a,
+    .p-datatable-data > tr .p-row-toggler.p-icon,
+    .p-datatable-data > tr .p-rowgroup-toggler .p-rowgroup-toggler-icon {
         align-items: center;
         justify-content: center;
         vertical-align: middle;
@@ -407,32 +396,32 @@
             outline-color var(--p-datatable-transition-duration), box-shadow var(--p-datatable-transition-duration);
     }
 
-    .ui-datatable-data > tr {
+    .p-datatable-data > tr {
         /* text toggler (expandLabel / collapseLabel) */
-        .ui-row-toggler:not(.ui-icon) {
+        .p-row-toggler:not(.p-icon) {
             color: var(--p-primary-color);
         }
 
-        .ui-row-editor > a:hover,
-        .ui-row-toggler.ui-icon:hover,
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon:hover {
+        .p-row-editor > a:hover,
+        .p-row-toggler.p-icon:hover,
+        .p-rowgroup-toggler .p-rowgroup-toggler-icon:hover {
             background: var(--p-datatable-row-toggle-button-hover-background);
             color: var(--p-datatable-row-toggle-button-hover-color);
             border-color: transparent;
         }
 
-        /* ui-row-editor-outline: keyboard focus of a row editor link (set by the widget) */
-        .ui-row-editor > a:focus-visible,
-        .ui-row-editor > a.ui-row-editor-outline,
-        .ui-row-toggler:focus-visible,
-        .ui-rowgroup-toggler:focus-visible .ui-rowgroup-toggler-icon,
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon:focus-visible {
+        /* p-row-editor-outline: keyboard focus of a row editor link (set by the widget) */
+        .p-row-editor > a:focus-visible,
+        .p-row-editor > a.p-row-editor-outline,
+        .p-row-toggler:focus-visible,
+        .p-rowgroup-toggler:focus-visible .p-rowgroup-toggler-icon,
+        .p-rowgroup-toggler .p-rowgroup-toggler-icon:focus-visible {
             outline: var(--p-datatable-row-toggle-button-focus-ring-width) var(--p-datatable-row-toggle-button-focus-ring-style) var(--p-datatable-row-toggle-button-focus-ring-color);
             outline-offset: var(--p-datatable-row-toggle-button-focus-ring-offset);
             box-shadow: var(--p-datatable-row-toggle-button-focus-ring-shadow);
         }
 
-        .ui-rowgroup-toggler {
+        .p-rowgroup-toggler {
             margin-inline-end: var(--p-datatable-header-cell-gap);
 
             &:focus-visible {
@@ -440,86 +429,59 @@
             }
         }
 
-        .ui-row-editor {
-            > a.ui-row-editor-check {
+        .p-row-editor {
+            > a.p-row-editor-check {
                 margin-inline-end: var(--p-datatable-header-cell-gap);
             }
 
-            .ui-icon.ui-icon-pencil::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-datatable-row-edit-icon) center / contain no-repeat;
+            .p-datatable-row-edit-icon {
+                --_icon: var(--p-datatable-row-edit-icon);
             }
 
-            .ui-icon.ui-icon-check::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-datatable-row-save-icon) center / contain no-repeat;
+            .p-datatable-row-save-icon {
+                --_icon: var(--p-datatable-row-save-icon);
             }
 
-            .ui-icon.ui-icon-close::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-datatable-row-cancel-icon) center / contain no-repeat;
+            .p-datatable-row-cancel-icon {
+                --_icon: var(--p-datatable-row-cancel-icon);
             }
         }
 
-        .ui-row-editor .ui-icon.ui-icon-pencil,
-        .ui-row-editor .ui-icon.ui-icon-check,
-        .ui-row-editor .ui-icon.ui-icon-close,
-        .ui-row-toggler.ui-icon-circle-triangle-e,
-        .ui-row-toggler.ui-icon-circle-triangle-s,
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-e,
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-s {
-            font-style: normal;
-            font-weight: normal;
+        /* row toggler (the toggler is the icon) / row group toggler: the state is aria-expanded of the toggler */
+        .p-datatable-row-toggle-icon {
+            --_icon: var(--p-datatable-row-toggle-expanded-icon);
         }
 
-        .ui-row-toggler.ui-icon-circle-triangle-e::before,
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-e::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-datatable-row-toggle-collapsed-icon) center / contain no-repeat;
-        }
+        .p-row-toggler.p-datatable-row-toggle-icon[aria-expanded="false"],
+        .p-rowgroup-toggler[aria-expanded="false"] > .p-datatable-row-toggle-icon {
+            --_icon: var(--p-datatable-row-toggle-collapsed-icon);
 
-        .ui-row-toggler.ui-icon-circle-triangle-s::before,
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-s::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-datatable-row-toggle-expanded-icon) center / contain no-repeat;
-        }
-
-        .ui-row-toggler.ui-icon-circle-triangle-e:dir(rtl),
-        .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-e:dir(rtl) {
-            transform: rotate(180deg);
+            &:dir(rtl) {
+                transform: rotate(180deg);
+            }
         }
     }
 
-    .ui-rowgroup-header {
-        > td > a.ui-rowgroup-toggler {
+    .p-rowgroup-header {
+        > td > a.p-rowgroup-toggler {
             display: inline-flex;
             vertical-align: middle;
             position: relative;
             padding: 0;
         }
 
-        .ui-rowgroup-toggler-icon {
+        .p-rowgroup-toggler-icon {
             position: static;
             margin: 0;
         }
     }
 
-    .ui-datatable-data > tr.ui-expanded-row-content {
+    .p-datatable-data > tr.p-expanded-row-content {
         background: var(--p-datatable-row-background);
         color: var(--p-datatable-row-color);
     }
 
-    .ui-column-resizer {
+    .p-column-resizer {
         position: absolute;
         top: 0;
         inset-inline-end: 0;
@@ -532,7 +494,7 @@
         box-sizing: border-box;
     }
 
-    .ui-column-resizer-helper {
+    .p-column-resizer-helper {
         width: var(--p-datatable-resize-indicator-width);
         position: absolute;
         z-index: 10;
@@ -555,63 +517,48 @@
     }
 
     /* column reorder indicators (the widget shows / positions them with inline styles) */
-    > .ui-icon-arrowthick-1-s,
-    > .ui-icon-arrowthick-1-n {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
+    > .p-datatable-column-reorder-top-icon,
+    > .p-datatable-column-reorder-bottom-icon {
         color: var(--p-datatable-drop-point-color);
     }
 
-    > .ui-icon-arrowthick-1-s {
+    > .p-datatable-column-reorder-top-icon {
+        --_icon: var(--p-datatable-column-reorder-top-icon);
         /* not shown: jQuery show() writes an inline display, visibility keeps it hidden without !important */
         visibility: hidden;
-
-        &::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-datatable-column-reorder-top-icon) center / contain no-repeat;
-        }
     }
 
-    > .ui-icon-arrowthick-1-n {
+    > .p-datatable-column-reorder-bottom-icon {
+        --_icon: var(--p-datatable-column-reorder-bottom-icon);
         /* push the up arrow below the header */
         padding-top: var(--p-datatable-drop-point-offset);
-
-        &::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-datatable-column-reorder-bottom-icon) center / contain no-repeat;
-        }
     }
 
-    .ui-datatable-scrollable-body {
+    .p-datatable-scrollable-body {
         min-height: 0%;
         outline: 0 none;
     }
 
-    .ui-datatable-scrollable-header {
+    .p-datatable-scrollable-header {
         background: var(--p-datatable-header-cell-background);
     }
 
-    .ui-datatable-scrollable-footer {
+    .p-datatable-scrollable-footer {
         background: var(--p-datatable-footer-cell-background);
     }
 
-    .ui-datatable-virtualscroll-wrapper {
+    .p-datatable-virtualscroll-wrapper {
         position: relative;
     }
 
-    .ui-datatable-virtualscroll-table {
+    .p-datatable-virtualscroll-table {
         top: 0;
         left: 0;
         position: absolute;
     }
 
     /* selection column: the select all checkbox follows the text-align of the column like the row checkboxes */
-    .ui-selection-column .ui-chkbox-all {
+    .p-selection-column .p-chkbox-all {
         display: inline-flex;
         vertical-align: middle;
         margin: 0;
@@ -620,49 +567,49 @@
     }
 
     /* frozen columns */
-    table.ui-datatable-fs {
+    table.p-datatable-fs {
         width: auto;
     }
 
-    .ui-datatable-frozenlayout-left,
-    .ui-datatable-frozenlayout-right {
+    .p-datatable-frozenlayout-left,
+    .p-datatable-frozenlayout-right {
         padding: 0;
         border: 0 none;
         vertical-align: top;
     }
 
-    .ui-datatable-frozen-container {
+    .p-datatable-frozen-container {
         /* the frozen container comes first: its inner edge overlaps the border of the scrollable one (also in RTL) */
         margin-inline-end: -1px;
 
-        .ui-row-toggler {
+        .p-row-toggler {
             margin-top: -2px;
             margin-bottom: -2px;
         }
 
-        .ui-row-editor {
+        .p-row-editor {
             margin-top: -2px;
             margin-bottom: -2px;
         }
     }
 
-    &.ui-datatable-striped .ui-datatable-data > tr.ui-datatable-odd {
+    &.p-datatable-striped .p-datatable-data > tr.p-datatable-odd {
         background: var(--p-datatable-row-striped-background);
 
-        &.ui-state-hover {
+        &.p-state-hover {
             background: var(--p-datatable-row-hover-background);
             color: var(--p-datatable-row-hover-color);
         }
 
-        &.ui-state-highlight {
+        &.p-state-highlight {
             background: var(--p-datatable-row-selected-background);
             color: var(--p-datatable-row-selected-color);
         }
     }
 
     /* sizes */
-    &.ui-datatable-sm {
-        .ui-datatable-header {
+    &.p-datatable-sm {
+        .p-datatable-header {
             padding: var(--p-datatable-header-sm-padding);
         }
 
@@ -670,8 +617,8 @@
             padding: var(--p-datatable-header-cell-sm-padding);
         }
 
-        .ui-datatable-data > tr > td,
-        .ui-datatable-data > tr > th {
+        .p-datatable-data > tr > td,
+        .p-datatable-data > tr > th {
             padding: var(--p-datatable-body-cell-sm-padding);
         }
 
@@ -679,13 +626,13 @@
             padding: var(--p-datatable-footer-cell-sm-padding);
         }
 
-        .ui-datatable-footer {
+        .p-datatable-footer {
             padding: var(--p-datatable-footer-sm-padding);
         }
     }
 
-    &.ui-datatable-lg {
-        .ui-datatable-header {
+    &.p-datatable-lg {
+        .p-datatable-header {
             padding: var(--p-datatable-header-lg-padding);
         }
 
@@ -693,8 +640,8 @@
             padding: var(--p-datatable-header-cell-lg-padding);
         }
 
-        .ui-datatable-data > tr > td,
-        .ui-datatable-data > tr > th {
+        .p-datatable-data > tr > td,
+        .p-datatable-data > tr > th {
             padding: var(--p-datatable-body-cell-lg-padding);
         }
 
@@ -702,44 +649,44 @@
             padding: var(--p-datatable-footer-cell-lg-padding);
         }
 
-        .ui-datatable-footer {
+        .p-datatable-footer {
             padding: var(--p-datatable-footer-lg-padding);
         }
     }
 
-    &.ui-datatable-sm .ui-datatable-scrollable-theadclone > tr > th,
-    &.ui-datatable-lg .ui-datatable-scrollable-theadclone > tr > th {
+    &.p-datatable-sm .p-datatable-scrollable-theadclone > tr > th,
+    &.p-datatable-lg .p-datatable-scrollable-theadclone > tr > th {
         padding-top: 0;
         padding-bottom: 0;
     }
 
-    &.ui-datatable-gridlines {
-        .ui-datatable-header {
+    &.p-datatable-gridlines {
+        .p-datatable-header {
             border-width: 1px 1px 0 1px;
         }
 
-        .ui-datatable-footer {
+        .p-datatable-footer {
             border-width: 0 1px 1px 1px;
         }
 
-        .ui-paginator {
-            &.ui-paginator-top {
+        .p-paginator {
+            &.p-paginator-top {
                 border-width: 1px 1px 0 1px;
             }
 
-            &.ui-paginator-bottom {
+            &.p-paginator-bottom {
                 border-width: 0 1px 1px 1px;
             }
         }
 
         thead > tr > th,
-        .ui-datatable-data > tr > td,
-        .ui-datatable-data > tr > th,
+        .p-datatable-data > tr > td,
+        .p-datatable-data > tr > th,
         tfoot > tr > td {
             border-width: 1px;
         }
 
-        .ui-datatable-scrollable-theadclone > tr > th {
+        .p-datatable-scrollable-theadclone > tr > th {
             padding-top: 0;
             padding-bottom: 0;
             border-bottom: 0 none;
@@ -747,8 +694,8 @@
         }
     }
 
-    &.ui-datatable-sticky {
-        &.ui-sticky {
+    &.p-datatable-sticky {
+        &.p-sticky {
             box-shadow: var(--p-overlay-select-shadow);
         }
 
@@ -764,36 +711,36 @@
     }
 }
 
-.ui-datatable-tablewrapper {
+.p-datatable-tablewrapper {
     overflow: auto;
 }
 
-.ui-datatable-summary {
+.p-datatable-summary {
     display: none;
 }
 
-.ui-datatable-scrollable-body {
+.p-datatable-scrollable-body {
     overflow: auto;
 }
 
-.ui-datatable-scrollable-header,
-.ui-datatable-scrollable-footer {
+.p-datatable-scrollable-header,
+.p-datatable-scrollable-footer {
     overflow: hidden;
     border: 0 none;
 }
 
-.ui-datatable-scrollable {
-    .ui-datatable-scrollable-header,
-    .ui-datatable-scrollable-footer {
+.p-datatable-scrollable {
+    .p-datatable-scrollable-header,
+    .p-datatable-scrollable-footer {
         position: relative;
     }
 
-    .ui-datatable-scrollable-header td {
+    .p-datatable-scrollable-header td {
         font-weight: normal;
     }
 }
 
-.ui-datatable-scrollable-theadclone {
+.p-datatable-scrollable-theadclone {
     height: 0;
 
     tr {
@@ -801,7 +748,7 @@
     }
 
     th {
-        &.ui-state-default {
+        &.p-state-default {
             height: 0 !important; /* #12908 */
             border-bottom-width: 0;
             border-top-width: 0;
@@ -810,14 +757,14 @@
             outline: 0 none;
         }
 
-        span.ui-column-title {
+        span.p-column-title {
             display: block;
             height: 0;
         }
     }
 }
 
-.ui-datatable-resizable {
+.p-datatable-resizable {
     padding-bottom: 1px; /* fix for webkit overflow */
     overflow: auto;
 
@@ -827,21 +774,21 @@
         white-space: nowrap;
     }
 
-    th.ui-resizable-column {
+    th.p-resizable-column {
         background-clip: padding-box;
         position: relative;
     }
 }
 
-.ui-datatable-rtl {
+.p-datatable-rtl {
     direction: rtl;
 }
 
-.ui-datatable-frozen-container .ui-datatable-scrollable-body {
+.p-datatable-frozen-container .p-datatable-scrollable-body {
     overflow: hidden;
 }
 
-.ui-datatable-frozenlayout-right .ui-datatable-empty-message td {
+.p-datatable-frozenlayout-right .p-datatable-empty-message td {
     text-indent: -9999px;
 
     > * {
@@ -850,28 +797,28 @@
 }
 
 /* keyboard cell navigation (cellNavigation="true") */
-.ui-datatable-data td[role="gridcell"]:focus,
-.ui-datatable-data td[role="grid"] [tabindex="0"]:focus {
+.p-datatable-data td[role="gridcell"]:focus,
+.p-datatable-data td[role="grid"] [tabindex="0"]:focus {
     outline: var(--p-datatable-row-focus-ring-width) var(--p-datatable-row-focus-ring-style) var(--p-datatable-row-focus-ring-color);
     outline-offset: var(--p-datatable-row-focus-ring-offset);
     box-shadow: var(--p-datatable-row-focus-ring-shadow);
 }
 
-.ui-datatable-reflow {
-    .ui-datatable-data td[role="gridcell"] .ui-column-title,
-    .ui-datatable-data th[role="rowheader"] .ui-column-title,
-    .ui-expanded-row-content td .ui-column-title {
+.p-datatable-reflow {
+    .p-datatable-data td[role="gridcell"] .p-column-title,
+    .p-datatable-data th[role="rowheader"] .p-column-title,
+    .p-expanded-row-content td .p-column-title {
         display: none;
     }
 
-    .ui-reflow-label,
-    .ui-reflow-dropdown {
+    .p-reflow-label,
+    .p-reflow-dropdown {
         margin-bottom: var(--p-datatable-reflow-gap);
         display: none;
     }
 
     /* sort dropdown (native select) */
-    .ui-reflow-dropdown {
+    .p-reflow-dropdown {
         font-family: inherit;
         font-size: var(--p-select-font-size);
         padding-block: var(--p-select-padding-y);
@@ -896,14 +843,14 @@
 }
 
 @media (max-width: 640px) {
-    .ui-datatable-reflow thead th,
-    .ui-datatable-reflow tfoot td {
+    .p-datatable-reflow thead th,
+    .p-datatable-reflow tfoot td {
         display: none;
     }
 
     /* keep column filters usable in reflow mode: stack the filterable header cells instead of hiding the whole thead */
-    .ui-datatable-reflow {
-        thead th.ui-filter-column {
+    .p-datatable-reflow {
+        thead th.p-filter-column {
             box-sizing: border-box;
             display: block;
             float: inline-start;
@@ -912,21 +859,21 @@
             border: 0 none;
             text-align: start;
 
-            .ui-column-title {
+            .p-column-title {
                 display: block;
                 font-weight: var(--p-datatable-reflow-title-font-weight);
                 margin: 0 0 var(--p-datatable-reflow-gap) 0;
                 padding: 0;
             }
 
-            .ui-sortable-column-icon,
-            .ui-sortable-column-badge,
-            .ui-column-resizer {
+            .p-sortable-column-icon,
+            .p-sortable-column-badge,
+            .p-column-resizer {
                 display: none;
             }
 
-            .ui-column-filter,
-            .ui-column-customfilter {
+            .p-column-filter,
+            .p-column-customfilter {
                 display: block;
                 box-sizing: border-box;
                 width: 100% !important;
@@ -934,7 +881,11 @@
             }
         }
 
-        .ui-datatable-data {
+        &.p-filter-toggleable thead th.p-filter-column :is(.p-column-filter, .p-column-customfilter) {
+            display: none;
+        }
+
+        .p-datatable-data {
             td[role="gridcell"]:not(.p-hidden),
             th[role="rowheader"]:not(.p-hidden) {
                 box-sizing: border-box;
@@ -946,17 +897,17 @@
                 width: 100% !important;
             }
 
-            &.ui-widget-content {
+            &.p-widget-content {
                 border: 0 none;
             }
 
-            tr.ui-widget-content {
+            tr.p-widget-content {
                 border-left: 0 none;
                 border-right: 0 none;
             }
 
-            td[role="gridcell"] .ui-column-title,
-            th[role="rowheader"] .ui-column-title {
+            td[role="gridcell"] .p-column-title,
+            th[role="rowheader"] .p-column-title {
                 display: inline-block;
                 font-weight: var(--p-datatable-reflow-title-font-weight);
                 margin: 0;
@@ -970,29 +921,29 @@
                 border-bottom: 1px solid var(--p-datatable-body-cell-border-color);
 
                 &:hover,
-                &.ui-state-highlight {
+                &.p-state-highlight {
                     border-left: 0 none;
                     border-right: 0 none;
                     border-bottom: 1px solid var(--p-datatable-body-cell-border-color);
                 }
 
-                &.ui-expanded-row-content > td {
+                &.p-expanded-row-content > td {
                     display: block;
                     width: 100%;
                 }
             }
         }
 
-        .ui-reflow-label,
-        .ui-reflow-dropdown {
+        .p-reflow-label,
+        .p-reflow-dropdown {
             display: inline-block;
         }
 
-        .ui-reflow-dropdown {
+        .p-reflow-dropdown {
             margin-inline-start: var(--p-datatable-reflow-gap);
         }
 
-        tr.ui-datatable-empty-message > td {
+        tr.p-datatable-empty-message > td {
             display: block;
             border: 0 none;
         }

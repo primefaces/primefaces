@@ -1,24 +1,24 @@
 /*
  * Drag and drop: p:draggable, p:droppable; touch-action comes from base/interactions.css.
- * Classes set by the interactions: ui-draggable, ui-draggable-handle, ui-draggable-dragging (element or helper while dragging),
- * ui-droppable, ui-droppable-active (an acceptable draggable is dragged), ui-droppable-hover (it is over the droppable).
- * activeStyleClass / hoverStyleClass of p:droppable are added on top (e.g. ui-state-highlight).
+ * Classes set by the interactions: p-draggable, p-draggable-handle, p-draggable-dragging (element or helper while dragging),
+ * p-droppable, p-droppable-active (an acceptable draggable is dragged), p-droppable-hover (it is over the droppable).
+ * activeStyleClass / hoverStyleClass of p:droppable are added on top (e.g. p-state-highlight).
  * PrimeFaces only tokens: the dragdrop block of presets/*.css.
  */
-.ui-draggable-dragging {
+.p-draggable-dragging {
     box-shadow: var(--p-dragdrop-dragging-shadow);
 }
 
-.ui-droppable {
+.p-droppable {
     transition: background var(--p-dragdrop-transition-duration), outline-color var(--p-dragdrop-transition-duration);
 }
 
-.ui-droppable-active {
+.p-droppable-active {
     outline: var(--p-dragdrop-droppable-active-outline-width) dashed var(--p-dragdrop-droppable-active-outline-color);
     outline-offset: var(--p-dragdrop-droppable-active-outline-offset);
 }
 
-.ui-droppable-hover {
+.p-droppable-hover {
     background: var(--p-dragdrop-droppable-hover-background);
     color: var(--p-dragdrop-droppable-hover-color);
 }

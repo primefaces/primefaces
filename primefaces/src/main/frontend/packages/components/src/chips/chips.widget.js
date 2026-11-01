@@ -34,7 +34,7 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
         this.input = $(this.jqId + '_input');
         this.hinput = $(this.jqId + '_hinput');
         this.itemContainer = this.jq.children('ul');
-        this.inputContainer = this.itemContainer.children('.ui-chips-input-token');
+        this.inputContainer = this.itemContainer.children('.p-chips-input-token');
         this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
         
         // Ensure separator is only 1 character
@@ -59,26 +59,26 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
         var $this = this;
 
         this.itemContainer.on("mouseenter", function() {
-            $(this).addClass('ui-state-hover');
+            $(this).addClass('p-state-hover');
         }).on("mouseleave", function() {
-            $(this).removeClass('ui-state-hover');
+            $(this).removeClass('p-state-hover');
         }).on("click", function() {
             $this.input.trigger('focus');
         });
 
 
         this.input.on('focus.chips', function() {
-            $this.itemContainer.addClass('ui-state-focus');
+            $this.itemContainer.addClass('p-state-focus');
             if ($this.hasFloatLabel) {
-                $this.jq.addClass('ui-inputwrapper-focus');
+                $this.jq.addClass('p-inputwrapper-focus');
             }
         }).on('blur.chips', function() {
-            $this.itemContainer.removeClass('ui-state-focus');
+            $this.itemContainer.removeClass('p-state-focus');
             if ($this.cfg.addOnBlur) {
                 $this.addItem($(this).val(), false);
             }
             if ($this.hasFloatLabel) {
-                $this.jq.removeClass('ui-inputwrapper-focus');
+                $this.jq.removeClass('p-inputwrapper-focus');
                 $this.updateFloatLabel();
             }
         }).on('paste.chips', function(e) {
@@ -96,7 +96,7 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
                     if (value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                             index = lastOption.index();
-                        $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
+                        $this.removeItem($($this.itemContainer.children('li.p-chips-token').get(index)));
                     }
                     break;
 
@@ -125,7 +125,7 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
             }
         });
 
-        var closeSelector = '> li.ui-chips-token > .ui-chips-token-icon';
+        var closeSelector = '> li.p-chips-token > .p-chips-token-icon';
         this.itemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             $this.removeItem($(this).parent());
         });
@@ -172,9 +172,9 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
                     }
                 }
 
-                var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active">';
-                itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close"></span>';
-                itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
+                var itemDisplayMarkup = '<li class="p-chips-token p-state-active">';
+                itemDisplayMarkup += '<span class="p-chips-token-icon p-icon p-clear-icon p-chips-chip-remove-icon"></span>';
+                itemDisplayMarkup += '<span class="p-chips-token-label">' + escapedValue + '</span></li>';
 
                 this.inputContainer.before(itemDisplayMarkup);
                 this.refocus(refocus);
@@ -216,8 +216,8 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
      * @param {boolean} [silent] Flag indicating whether to animate the removal and fire the AJAX behavior.
      */
     removeItem(item, silent) {
-        var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
-        var itemValue = item.find('span.ui-chips-token-label').html();
+        var itemIndex = this.itemContainer.children('li.p-chips-token').index(item);
+        var itemValue = item.find('span.p-chips-token-label').html();
         var $this = this;
 
         //remove from options
@@ -247,13 +247,13 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
      */
     toggleEditor() {
         var $this = this,
-            tokens = this.itemContainer.children('li.ui-chips-token');
+            tokens = this.itemContainer.children('li.p-chips-token');
 
         if (tokens.length) {
             var editor = '';
             tokens.each(function() {
                 var token = $(this),
-                    tokenValue = token.find('span.ui-chips-token-label').html();
+                    tokenValue = token.find('span.p-chips-token-label').html();
                 editor = editor + tokenValue + ($this.cfg.separator !== undefined ? $this.cfg.separator : '');
                 $this.removeItem(token, true);
             });

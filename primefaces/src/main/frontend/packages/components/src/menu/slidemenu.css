@@ -1,48 +1,48 @@
 /*
  * SlideMenu: p:slideMenu
  *
- * The common .ui-menu markup is styled by menu/menu.base.css, this file has the sliding wrapper, the "back" header
- * (.ui-slidemenu-backward) and the slidemenu tokens (PrimeFaces only, the slidemenu block of presets/*.css).
+ * The common .p-menu markup is styled by menu/menu.base.css, this file has the sliding wrapper, the "back" header
+ * (.p-slidemenu-backward) and the slidemenu tokens (PrimeFaces only, the slidemenu block of presets/*.css).
  */
 
 /*
  * The lists are absolutely positioned (carousel), so the container has no content width: it needs a fixed width
  * (menu/menu.base.css only gives the other menus width: fit-content + min-width). style="width: ..." still wins.
  */
-.ui-slidemenu {
+.p-slidemenu {
     width: 12.5rem;
 
-    .ui-slidemenu-wrapper {
+    .p-slidemenu-wrapper {
         position: relative;
     }
 
-    .ui-slidemenu-content {
+    .p-slidemenu-content {
         overflow-x: hidden;
         overflow-y: auto;
         position: relative;
     }
 
-    .ui-menu-list {
+    .p-menu-list {
         position: absolute;
         top: 0;
     }
 
-    .ui-menu-parent {
+    .p-menu-parent {
         position: static;
     }
 
-    .ui-menu-child {
+    .p-menu-child {
         box-shadow: none;
         border: 0 none;
     }
 }
 
-.ui-slidemenu-backward {
+.p-slidemenu-backward {
     position: absolute;
     cursor: pointer;
 }
 
-.ui-menu.ui-slidemenu {
+.p-menu.p-slidemenu {
     --_bg: var(--p-slidemenu-background);
     --_border-color: var(--p-slidemenu-border-color);
     --_border-radius: var(--p-slidemenu-border-radius);
@@ -79,7 +79,7 @@
     --_submenu-padding: var(--p-slidemenu-list-padding);
     --_submenu-shadow: var(--p-slidemenu-shadow);
 
-    .ui-slidemenu-backward {
+    .p-slidemenu-backward {
         padding: 0;
         color: var(--_submenu-label-color);
         width: 100%;
@@ -88,7 +88,7 @@
         margin-bottom: 0;
         border-radius: 0;
 
-        .ui-menuitem-link {
+        .p-menuitem-link {
             color: var(--_submenu-label-color);
             padding: var(--_item-padding);
             width: 100%;
@@ -97,31 +97,29 @@
             border-radius: var(--_item-border-radius);
             transition: background var(--_transition-duration), color var(--_transition-duration);
 
-            .ui-menuitem-text {
+            .p-menuitem-text {
                 color: var(--_submenu-label-color);
                 font-weight: var(--_submenu-label-font-weight);
             }
 
-            .ui-icon-triangle-1-w:first-child {
-                font-style: normal;
-                font-weight: normal;
-                display: inline-block;
-                background: none;
+            .p-slidemenu-back-icon {
+                --_icon: var(--p-slidemenu-back-icon);
                 position: relative;
                 float: none;
                 margin: 0;
+                font-size: var(--_submenu-icon-size);
+                color: var(--_submenu-icon-color);
+            }
 
-                &::before {
-                    content: "\2003";
-                    background: currentColor;
-                    forced-color-adjust: none;
-                    mask: var(--p-slidemenu-back-icon) center / contain no-repeat;
-                }
+            &:not(.p-state-disabled):hover .p-slidemenu-back-icon,
+            &.p-state-hover .p-slidemenu-back-icon,
+            &.p-state-focus .p-slidemenu-back-icon {
+                color: var(--_submenu-icon-focus-color);
             }
         }
     }
 
-    .ui-menu-child {
+    .p-menu-child {
         padding: 0;
         box-shadow: none;
         border: 0 none;

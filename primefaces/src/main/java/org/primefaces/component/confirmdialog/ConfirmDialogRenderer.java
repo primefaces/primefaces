@@ -56,7 +56,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
         styleClass = styleClass == null ? ConfirmDialog.DIALOG_CLASS : ConfirmDialog.DIALOG_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, component)) {
-            styleClass += " ui-dialog-rtl";
+            styleClass += " p-dialog-rtl";
         }
 
         writer.startElement("div", null);
@@ -138,8 +138,12 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = component.getMessage();
         UIComponent messageFacet = component.getMessageFacet();
-        String defaultIcon = "ui-icon ui-icon-" + component.getSeverity();
-        String severityIcon = defaultIcon + " " + ConfirmDialog.SEVERITY_ICON_CLASS;
+        // the dialog has icons for info, error and fatal; "alert" and any other severity get the warn icon (--p-dialog-warn-icon)
+        String severity = component.getSeverity();
+        if (!"info".equals(severity) && !"error".equals(severity) && !"fatal".equals(severity)) {
+            severity = "warn";
+        }
+        String severityIcon = "p-icon p-" + severity + "-icon p-dialog-" + severity + "-icon " + ConfirmDialog.SEVERITY_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);

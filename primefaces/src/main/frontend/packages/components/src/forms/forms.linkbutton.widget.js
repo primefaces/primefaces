@@ -36,9 +36,9 @@ PrimeFaces.widget.LinkButton = class LinkButton extends PrimeFaces.widget.BaseWi
         if (this.link.length > 0) {
             this.link.off('focus.linkbutton keydown.linkbutton blur.linkbutton')
                 .on('focus.linkbutton keydown.linkbutton', function () {
-                    $this.jq.addClass('ui-state-focus ui-state-active');
+                    $this.jq.addClass('p-state-focus p-state-active');
                 }).on('blur.linkbutton', function () {
-                    $this.jq.removeClass('ui-state-focus ui-state-active');
+                    $this.jq.removeClass('p-state-focus p-state-active');
                 });
         }
     }

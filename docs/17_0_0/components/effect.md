@@ -1,6 +1,6 @@
 # Effect
 
-Effect component runs an animation effect of [PrimeFaces.effects](../core/javascriptAPI.md#primefaces-effects-primefaceseffects) on a
+Effect component runs an animation effect of [PrimeFaces.effects](/core/javascriptAPI.md?id=primefaces-effects-primefaceseffects) on a
 component. The effects are implemented with the Web Animations API (formerly jQuery UI effects).
 
 ## Getting started with Effect

@@ -52,5 +52,5 @@ defined css selectors used to customize the look and feel.
 
 | Class | Applies | 
 | --- | --- | 
-.ui-notificationbar | Main container element
+.p-notificationbar | Main container element
 

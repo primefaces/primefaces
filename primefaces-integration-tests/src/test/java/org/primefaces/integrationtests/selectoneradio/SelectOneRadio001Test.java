@@ -99,7 +99,7 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         for (WebElement radioButton : selectOneRadio.getRadioButtons()) {
-            assertNotClickable(radioButton.findElement(By.className("ui-radiobutton-box")));
+            assertNotClickable(radioButton.findElement(By.className("p-radiobutton-box")));
         }
         assertConfiguration(selectOneRadio.getWidgetConfiguration());
     }
@@ -118,7 +118,7 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         for (WebElement radioButton : selectOneRadio.getRadioButtons()) {
-            assertClickable(radioButton.findElement(By.className("ui-radiobutton-box")));
+            assertClickable(radioButton.findElement(By.className("p-radiobutton-box")));
         }
         assertConfiguration(selectOneRadio.getWidgetConfiguration());
     }

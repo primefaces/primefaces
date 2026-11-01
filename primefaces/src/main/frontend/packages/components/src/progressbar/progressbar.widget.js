@@ -33,8 +33,8 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
     init(cfg) {
         super.init(cfg);
 
-        this.jqValue = this.jq.children('.ui-progressbar-value');
-        this.jqLabel = this.jqValue.children('.ui-progressbar-label');
+        this.jqValue = this.jq.children('.p-progressbar-value');
+        this.jqLabel = this.jqValue.children('.p-progressbar-label');
         this.cfg.global = this.cfg.global !== false;
         this.setValue(this.cfg.initialValue || 0, 0);
 
@@ -90,7 +90,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
             $span.remove();
         }
 
-        const isIndeterminate = this.jq.hasClass('ui-progressbar-indeterminate');
+        const isIndeterminate = this.jq.hasClass('p-progressbar-indeterminate');
         const isTransparent = value === 0 && !isIndeterminate;
 
         // Handle styling based on value

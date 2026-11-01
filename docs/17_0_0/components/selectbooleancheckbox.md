@@ -23,7 +23,7 @@ the list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-chkbox | Main container element.
-.ui-chkbox-box | Container of checkbox icon.
-.ui-chkbox-icon | Checkbox icon.
+.p-chkbox | Main container element.
+.p-chkbox-box | Container of checkbox icon.
+.p-chkbox-icon | Checkbox icon.
 

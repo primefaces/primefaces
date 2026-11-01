@@ -42,7 +42,7 @@ class InputTextArea002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("InputTextarea: Test floating label empty field does not have class 'ui-state-filled' but has 'ui-state-hover' ")
+    @DisplayName("InputTextarea: Test floating label empty field does not have class 'p-state-filled' but has 'p-state-hover' ")
     void emptyField(Page page) {
         // Arrange
         InputTextarea inputTextarea = page.inputTextarea;
@@ -55,14 +55,14 @@ class InputTextArea002Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
         assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
         assertEquals("", inputTextarea.getValue());
-        assertCss(inputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-hover", "ui-state-focus");
+        assertCss(inputTextarea, "p-inputfield", "p-InputTextarea", "p-state-hover", "p-state-focus");
 
         assertEquals(0, messages.getAllMessages().size());
     }
 
     @Test
     @Order(2)
-    @DisplayName("InputTextarea: Test input with data has class 'ui-state-filled'")
+    @DisplayName("InputTextarea: Test input with data has class 'p-state-filled'")
     void filledField(Page page) {
         // Arrange
         InputTextarea inputTextarea = page.inputTextarea;
@@ -76,7 +76,7 @@ class InputTextArea002Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
         assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
         assertEquals("filled", inputTextarea.getValue());
-        assertCss(inputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-filled");
+        assertCss(inputTextarea, "p-inputfield", "p-InputTextarea", "p-state-filled");
         assertEquals(0, messages.getAllMessages().size());
     }
 

@@ -24,19 +24,19 @@
                     <p:toolbarGroup>
                         <p:commandButton value="New" icon="pi pi-plus" actionListener="#{crudView.openNew}"
                             update=":dialogs:manage-product-content" oncomplete="PF('manageProductDialog').show()"
-                            styleClass="ui-button-success" style="margin-right: .5rem">
+                            styleClass="p-button-success" style="margin-right: .5rem">
                             <p:resetInput target=":dialogs:manage-product-content" />
                         </p:commandButton>
                         <p:commandButton id="delete-products-button" value="#{crudView.deleteButtonMessage}"
                             icon="pi pi-trash" actionListener="#{crudView.deleteSelectedProducts}"
-                            styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}" update="@this">
+                            styleClass="p-button-danger" disabled="#{!crudView.hasSelectedProducts()}" update="@this">
                             <p:confirm header="Confirmation" message="Delete the selected products?"
                                 icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download" />
-                        <p:commandButton value="Export" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                        <p:fileUpload mode="simple" skinSimple="true" label="Import" />
+                        <p:commandButton value="Export" icon="pi pi-upload" styleClass="p-button-help" ajax="false">
                             <p:dataExporter type="pdf" target="dt-products" fileName="products" />
                         </p:commandButton>
                     </p:toolbarGroup>
@@ -48,7 +48,7 @@
                     <f:facet name="header">
                         <div class="products-table-header">
                             <span style="font-weight: bold">PRODUCTS</span>
-                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                            <span class="filter-container p-input-icon-left"> <i class="pi pi-search"></i>
                                 <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('dtProducts').filter())" placeholder="Search" />
                             </span>
                         </div>
@@ -90,11 +90,11 @@
                     <p:column exportable="false" ariaHeaderText="Actions">
                         <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content"
                             oncomplete="PF('manageProductDialog').show()"
-                            styleClass="edit-button rounded-button ui-button-success" process="@this">
+                            styleClass="edit-button rounded-button p-button-success" process="@this">
                             <f:setPropertyActionListener value="#{product}" target="#{crudView.selectedProduct}" />
                             <p:resetInput target=":dialogs:manage-product-content" />
                         </p:commandButton>
-                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                        <p:commandButton class="p-button-warning rounded-button" icon="pi pi-trash"
                                          process="@this"
                                          oncomplete="PF('deleteProductDialog').show()">
                             <f:setPropertyActionListener value="#{product}" target="#{crudView.selectedProduct}" />
@@ -107,7 +107,7 @@
             <h:form id="dialogs">
                 <p:dialog header="Product Details" showEffect="fade" modal="true" widgetVar="manageProductDialog"
                     responsive="true">
-                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                    <p:outputPanel id="manage-product-content" class="p-fluid">
                         <p:outputPanel rendered="#{not empty crudView.selectedProduct}">
                             <p:graphicImage name="images/product/#{crudView.selectedProduct.image}" library="demo"
                                 styleClass="product-image" rendered="#{not empty crudView.selectedProduct.image}" />
@@ -147,7 +147,7 @@
                         <p:commandButton value="Save" icon="pi pi-check" actionListener="#{crudView.saveProduct}"
                             update="manage-product-content" process="manage-product-content @this" />
                         <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
-                            class="ui-button-secondary" type="button" />
+                            class="p-button-secondary" type="button" />
                     </f:facet>
                 </p:dialog>
 
@@ -156,13 +156,13 @@
                     <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProduct}"
                         process="@this" update=":form:delete-products-button"
                         oncomplete="PF('deleteProductDialog').hide()" />
-                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                    <p:commandButton value="No" type="button" styleClass="p-button-secondary" icon="pi pi-times"
                         onclick="PF('deleteProductDialog').hide()" />
                 </p:confirmDialog>
 
                 <p:confirmDialog global="true" showEffect="fade" width="300">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                    <p:commandButton value="Yes" type="button" styleClass="p-confirmdialog-yes" icon="pi pi-check" />
+                    <p:commandButton value="No" type="button" styleClass="p-confirmdialog-no p-button-secondary"
                         icon="pi pi-times" />
                 </p:confirmDialog>
             </h:form>

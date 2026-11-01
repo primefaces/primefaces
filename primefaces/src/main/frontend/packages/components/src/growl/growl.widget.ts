@@ -46,8 +46,8 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
         super.init(cfg);
 
         //create container
-        var styleClass = "ui-growl ui-widget";
-        styleClass = this.cfg.sticky ? styleClass + " ui-growl-sticky" : styleClass;
+        var styleClass = "p-growl p-widget";
+        styleClass = this.cfg.sticky ? styleClass + " p-growl-sticky" : styleClass;
         this.jq = $('<div id="' + this.id + '_container" class="' + styleClass + '" aria-live="polite"></div>');
         this.jq.appendTo($(document.body));
 
@@ -104,7 +104,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
      * Removes all growl messages that are currently displayed.
      */
     removeAll(): void {
-        this.jq.children('div.ui-growl-item-container').remove();
+        this.jq.children('div.p-growl-item-container').remove();
     }
 
     /**
@@ -112,19 +112,19 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
      * @param msg A message to translate into an HTML element.
      */
     renderMessage(msg: PrimeFacesTypes.FacesMessage): void {
-        let markup = '<div class="ui-growl-item-container ui-state-highlight p-hidden ui-growl-' + msg.severity + '">';
-        markup += '<div role="alert" class="ui-growl-item">';
-        markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
-        markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" ></span>';
+        let markup = '<div class="p-growl-item-container p-state-highlight p-hidden p-growl-' + msg.severity + '">';
+        markup += '<div role="alert" class="p-growl-item">';
+        markup += '<div class="p-growl-icon-close p-icon p-close-icon p-growl-close-icon" style="display:none"></div>';
+        markup += '<span class="p-growl-image p-growl-image-' + msg.severity + ' p-icon p-' + msg.severity + '-icon p-growl-' + msg.severity + '-icon"></span>';
         // GitHub #5153 for screen readers
-        markup += '<span class="ui-growl-severity p-hidden-accessible">' + this.getAriaLabel(`messages.${PrimeFaces.utils.toRootUpperCase(msg.severity)}`) + '</span>';
-        markup += '<div class="ui-growl-message">';
-        markup += '<span class="ui-growl-title"></span>';
+        markup += '<span class="p-growl-severity p-hidden-accessible">' + this.getAriaLabel(`messages.${PrimeFaces.utils.toRootUpperCase(msg.severity)}`) + '</span>';
+        markup += '<div class="p-growl-message">';
+        markup += '<span class="p-growl-title"></span>';
         markup += '<p></p>';
         markup += '</div><div style="clear: both;"></div></div></div>';
 
         const message = $(markup);
-        const summaryEL = message.find('span.ui-growl-title');
+        const summaryEL = message.find('span.p-growl-title');
         const detailEL = summaryEL.next();
 
         if (this.cfg.escape) {
@@ -154,7 +154,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
 
             //visuals
             if (!msg.is(':animated')) {
-                msg.find('div.ui-growl-icon-close:first').show();
+                msg.find('div.p-growl-icon-close:first').show();
             }
 
             // clear hide timeout on mouseover
@@ -164,7 +164,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
         })
             .on("mouseout", function() {
                 //visuals
-                $(this).find('div.ui-growl-icon-close:first').hide();
+                $(this).find('div.p-growl-icon-close:first').hide();
 
                 // setup hide timeout again after mouseout
                 if (!sticky) {
@@ -173,7 +173,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
             });
 
         //remove message on click of close icon
-        const closeIcon = message.find('div.ui-growl-icon-close');
+        const closeIcon = message.find('div.p-growl-icon-close');
         PrimeFaces.skinCloseAction(closeIcon);
         closeIcon.on("click", function() {
             $this.removeMessage(message);
@@ -192,7 +192,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
 
     /**
      * Removes the given message from the screen, if it is currently displayed.
-     * @param message The message to remove, an HTML element with the class `ui-growl-item-container`.
+     * @param message The message to remove, an HTML element with the class `p-growl-item-container`.
      */
     removeMessage(message: JQuery): void {
         message.fadeTo(400, 0, function() {
@@ -205,7 +205,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
     /**
      * Starts a timeout that removes the given message after a certain delay (as defined by this widget's
      * configuration).
-     * @param message The message to remove, an HTML element with the class `ui-growl-item-container`.
+     * @param message The message to remove, an HTML element with the class `p-growl-item-container`.
      */
     private setRemovalTimeout(message: JQuery): void {
         const timeout = PrimeFaces.queueTask(() => this.removeMessage(message), this.cfg.life);
@@ -236,11 +236,11 @@ export function registerMessageRenderHookForGrowlWidget(): void {
 
             for (const container of containers) {
                 const $container = $(container);
-                if ($container.is('.ui-growl-pl')) {
+                if ($container.is('.p-growl-pl')) {
                     growlComponents = growlComponents.add($container);
                 }
                 else {
-                    growlComponents = growlComponents.add($container.find('.ui-growl-pl'));
+                    growlComponents = growlComponents.add($container.find('.p-growl-pl'));
                 }
             }
 

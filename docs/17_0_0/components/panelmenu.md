@@ -17,8 +17,8 @@ menuitems can be utilized to do ajax requests, non-ajax requests and simple GET 
         <p:menuitem value="Delete" action="#{buttonBean.delete}" ajax="false"/>
     </p:submenu>
     <p:submenu label="Navigations" >
-        <p:submenu label="Links" icon="ui-icon-extlink">
-            <p:submenu label="PrimeFaces" icon="ui-icon-heart">
+        <p:submenu label="Links" icon="pi pi-external-link">
+            <p:submenu label="PrimeFaces" icon="pi pi-heart">
             <p:menuitem value="Home" url="http://www.primefaces.org" />
             <p:menuitem value="Docs" url="http://www.primefaces.org/..." />
             <p:menuitem value="Support" url="http://www.primefaces.org/..." />
@@ -93,11 +93,11 @@ list of structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-panelmenu | Main container element.
-.ui-panelmenu-header | Header of a panel.
-.ui-panelmenu-content | Footer of a panel.
-.ui-panelmenu .ui-menu-list | Tree container.
-.ui-panelmenu .ui-menuitem | A menuitem in tree.
+.p-panelmenu | Main container element.
+.p-panelmenu-header | Header of a panel.
+.p-panelmenu-content | Footer of a panel.
+.p-panelmenu .p-menu-list | Tree container.
+.p-panelmenu .p-menuitem | A menuitem in tree.
 
 As skinning style classes are global, see the main theming section for more information.
 

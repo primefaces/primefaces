@@ -1,7 +1,7 @@
 /*
  * TextEditor: p:textEditor (Quill snow theme, PrimeUIX: editor)
  *
- * Supported classes: ui-state-error (on .ui-texteditor)
+ * Supported classes: p-state-error (on .p-texteditor)
  * quill.snow.css is in the vendor layer; these rules adjust it and apply the tokens.
  */
 .ql-container {
@@ -94,14 +94,14 @@
     }
 }
 
-.ui-texteditor {
-    .ui-editor-toolbar {
+.p-texteditor {
+    .p-editor-toolbar {
         background: var(--p-editor-toolbar-background);
         border-top-right-radius: var(--p-editor-toolbar-border-radius);
         border-top-left-radius: var(--p-editor-toolbar-border-radius);
     }
 
-    .ui-editor-toolbar.ql-snow {
+    .p-editor-toolbar.ql-snow {
         border: 1px solid var(--p-editor-toolbar-border-color);
 
         .ql-stroke {
@@ -230,8 +230,8 @@
     }
 
     /* invalid */
-    &.ui-state-error {
-        .ui-editor-toolbar.ql-snow,
+    &.p-state-error {
+        .p-editor-toolbar.ql-snow,
         .ql-container.ql-snow {
             border-color: var(--p-editor-invalid-border-color);
         }

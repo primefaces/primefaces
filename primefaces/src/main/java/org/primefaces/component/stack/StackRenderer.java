@@ -58,7 +58,7 @@ public class StackRenderer extends BaseMenuRenderer<Stack> {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "ui-stack", null);
+        writer.writeAttribute("class", "p-stack", null);
 
         writer.startElement("img", null);
         writer.writeAttribute("src", getResourceURL(context, component.getIcon()), null);

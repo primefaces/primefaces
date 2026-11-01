@@ -1,17 +1,17 @@
 /*
  * Message: p:message (inline message of a single component), shared by p:staticMessage (see staticmessage.css)
  *
- * Markup p:message:       .ui-message.ui-message-<severity> > div > span.ui-message-<severity>-icon
- *                         + span.ui-message-<severity>-summary + span.ui-message-<severity>-detail
- * Markup p:staticMessage: .ui-message.ui-staticmessage.ui-message-<severity> > (a.ui-messages-close) + span.icon + summary + detail
- * Severity classes only switch the private --_* variables: ui-message-info | -success | -warn | -error | -fatal,
- * ui-message-secondary | -contrast (p:staticMessage severity only), ui-message-icon-only (display="icon").
- * Variants (styleClass, also on p:messages, see messages.css): ui-message-outlined | ui-message-simple,
- * sizes ui-message-sm | ui-message-lg.
+ * Markup p:message:       .p-message.p-message-<severity> > div > span.p-message-<severity>-icon.p-message-<severity>-icon
+ *                         + span.p-message-<severity>-summary + span.p-message-<severity>-detail
+ * Markup p:staticMessage: .p-message.p-staticmessage.p-message-<severity> > (a.p-messages-close) + span.icon + summary + detail
+ * Severity classes only switch the private --_* variables: p-message-info | -success | -warn | -error | -fatal,
+ * p-message-secondary | -contrast (p:staticMessage severity only), p-message-icon-only (display="icon").
+ * Variants (styleClass, also on p:messages, see messages.css): p-message-outlined | p-message-simple,
+ * sizes p-message-sm | p-message-lg.
  * PF only tokens (fatal, secondary/contrast icon, summary/detail): the message block of presets/*.css
  */
 
-.ui-message {
+.p-message {
     --_bg: var(--p-message-info-background);
     --_border-color: var(--p-message-info-border-color);
     --_color: var(--p-message-info-color);
@@ -38,19 +38,19 @@
         border-color var(--p-message-transition-duration);
 
     /* a new message (inserted by an ajax update or the client side validation) fades in, base/common.css */
-    &:not(.ui-staticmessage) {
+    &:not(.p-staticmessage) {
         --_enter-offset: var(--p-message-enter-offset);
-        animation: ui-enter var(--p-message-enter-duration) var(--p-transition-easing-enter);
+        animation: p-enter var(--p-message-enter-duration) var(--p-transition-easing-enter);
     }
 
     /* an empty p:message (no message) has no severity class and stays invisible */
-    &.ui-message-info,
-    &.ui-message-success,
-    &.ui-message-warn,
-    &.ui-message-error,
-    &.ui-message-fatal,
-    &.ui-message-secondary,
-    &.ui-message-contrast {
+    &.p-message-info,
+    &.p-message-success,
+    &.p-message-warn,
+    &.p-message-error,
+    &.p-message-fatal,
+    &.p-message-secondary,
+    &.p-message-contrast {
         padding: var(--_padding);
         background: var(--_bg);
         border: var(--_border-width) solid var(--_border-color);
@@ -58,7 +58,7 @@
         box-shadow: var(--_shadow);
     }
 
-    &.ui-message-success {
+    &.p-message-success {
         --_bg: var(--p-message-success-background);
         --_border-color: var(--p-message-success-border-color);
         --_color: var(--p-message-success-color);
@@ -71,7 +71,7 @@
         --_close-focus-ring-shadow: var(--p-message-success-close-button-focus-ring-shadow);
     }
 
-    &.ui-message-warn {
+    &.p-message-warn {
         --_bg: var(--p-message-warn-background);
         --_border-color: var(--p-message-warn-border-color);
         --_color: var(--p-message-warn-color);
@@ -84,7 +84,7 @@
         --_close-focus-ring-shadow: var(--p-message-warn-close-button-focus-ring-shadow);
     }
 
-    &.ui-message-error {
+    &.p-message-error {
         --_bg: var(--p-message-error-background);
         --_border-color: var(--p-message-error-border-color);
         --_color: var(--p-message-error-color);
@@ -97,7 +97,7 @@
         --_close-focus-ring-shadow: var(--p-message-error-close-button-focus-ring-shadow);
     }
 
-    &.ui-message-fatal {
+    &.p-message-fatal {
         --_bg: var(--p-message-fatal-background);
         --_border-color: var(--p-message-fatal-border-color);
         --_color: var(--p-message-fatal-color);
@@ -111,7 +111,7 @@
     }
 
     /* p:staticMessage only (severity="secondary" / "contrast"), p:message gets its severity from the FacesMessage */
-    &.ui-message-secondary {
+    &.p-message-secondary {
         --_bg: var(--p-message-secondary-background);
         --_border-color: var(--p-message-secondary-border-color);
         --_color: var(--p-message-secondary-color);
@@ -124,7 +124,7 @@
         --_close-focus-ring-shadow: var(--p-message-secondary-close-button-focus-ring-shadow);
     }
 
-    &.ui-message-contrast {
+    &.p-message-contrast {
         --_bg: var(--p-message-contrast-background);
         --_border-color: var(--p-message-contrast-border-color);
         --_color: var(--p-message-contrast-color);
@@ -138,14 +138,14 @@
     }
 
     /* sizes (styleClass) */
-    &.ui-message-sm {
+    &.p-message-sm {
         --_padding: var(--p-message-content-sm-padding);
         --_font-size: var(--p-message-text-sm-font-size);
         --_icon-size: var(--p-message-icon-sm-size);
         --_close-icon-size: var(--p-message-close-icon-sm-size);
     }
 
-    &.ui-message-lg {
+    &.p-message-lg {
         --_padding: var(--p-message-content-lg-padding);
         --_font-size: var(--p-message-text-lg-font-size);
         --_icon-size: var(--p-message-icon-lg-size);
@@ -153,7 +153,7 @@
     }
 
     /* variants (styleClass): after the severities and sizes, they only switch the private variables */
-    &.ui-message-outlined {
+    &.p-message-outlined {
         --_bg: transparent;
         --_border-width: var(--p-message-outlined-border-width);
         --_border-color: var(--_outlined-border-color);
@@ -161,7 +161,7 @@
         --_shadow: none;
     }
 
-    &.ui-message-simple {
+    &.p-message-simple {
         --_bg: transparent;
         --_border-width: 0;
         --_color: var(--_simple-color);
@@ -179,109 +179,84 @@
     }
 
     /* icons */
-    .ui-message-info-icon,
-    .ui-message-success-icon,
-    .ui-message-warn-icon,
-    .ui-message-error-icon,
-    .ui-message-fatal-icon,
-    .ui-message-secondary-icon,
-    .ui-message-contrast-icon {
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        background: none;
+    .p-message-info-icon,
+    .p-message-success-icon,
+    .p-message-warn-icon,
+    .p-message-error-icon,
+    .p-message-fatal-icon,
+    .p-message-secondary-icon,
+    .p-message-contrast-icon {
         flex-shrink: 0;
         color: var(--_color);
         font-size: var(--_icon-size);
         line-height: 1;
     }
 
-    .ui-message-info-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-info-icon) center / contain no-repeat;
+    .p-message-info-icon {
+        --_icon: var(--p-message-info-icon);
     }
 
-    .ui-message-success-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-success-icon) center / contain no-repeat;
+    .p-message-success-icon {
+        --_icon: var(--p-message-success-icon);
     }
 
-    .ui-message-warn-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-warn-icon) center / contain no-repeat;
+    .p-message-warn-icon {
+        --_icon: var(--p-message-warn-icon);
     }
 
-    .ui-message-error-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-error-icon) center / contain no-repeat;
+    .p-message-error-icon {
+        --_icon: var(--p-message-error-icon);
     }
 
-    .ui-message-fatal-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-fatal-icon) center / contain no-repeat;
+    .p-message-fatal-icon {
+        --_icon: var(--p-message-fatal-icon);
     }
 
-    .ui-message-secondary-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-secondary-icon) center / contain no-repeat;
+    .p-message-secondary-icon {
+        --_icon: var(--p-message-secondary-icon);
     }
 
-    .ui-message-contrast-icon::before {
-        content: "\2003";
-        background: currentColor;
-        forced-color-adjust: none;
-        mask: var(--p-message-contrast-icon) center / contain no-repeat;
+    .p-message-contrast-icon {
+        --_icon: var(--p-message-contrast-icon);
     }
 
     /* texts */
-    .ui-message-info-summary,
-    .ui-message-success-summary,
-    .ui-message-warn-summary,
-    .ui-message-error-summary,
-    .ui-message-fatal-summary,
-    .ui-message-secondary-summary,
-    .ui-message-contrast-summary {
+    .p-message-info-summary,
+    .p-message-success-summary,
+    .p-message-warn-summary,
+    .p-message-error-summary,
+    .p-message-fatal-summary,
+    .p-message-secondary-summary,
+    .p-message-contrast-summary {
         font-weight: var(--p-message-summary-font-weight);
     }
 
-    .ui-message-info-detail,
-    .ui-message-success-detail,
-    .ui-message-warn-detail,
-    .ui-message-error-detail,
-    .ui-message-fatal-detail,
-    .ui-message-secondary-detail,
-    .ui-message-contrast-detail {
+    .p-message-info-detail,
+    .p-message-success-detail,
+    .p-message-warn-detail,
+    .p-message-error-detail,
+    .p-message-fatal-detail,
+    .p-message-secondary-detail,
+    .p-message-contrast-detail {
         font-weight: var(--p-message-detail-font-weight);
         overflow-wrap: break-word;
         text-wrap: pretty;
     }
 
-    .ui-message-info-summary:empty,
-    .ui-message-success-summary:empty,
-    .ui-message-warn-summary:empty,
-    .ui-message-error-summary:empty,
-    .ui-message-fatal-summary:empty,
-    .ui-message-secondary-summary:empty,
-    .ui-message-contrast-summary:empty,
-    .ui-message-info-detail:empty,
-    .ui-message-success-detail:empty,
-    .ui-message-warn-detail:empty,
-    .ui-message-error-detail:empty,
-    .ui-message-fatal-detail:empty,
-    .ui-message-secondary-detail:empty,
-    .ui-message-contrast-detail:empty {
+    .p-message-info-summary:empty,
+    .p-message-success-summary:empty,
+    .p-message-warn-summary:empty,
+    .p-message-error-summary:empty,
+    .p-message-fatal-summary:empty,
+    .p-message-secondary-summary:empty,
+    .p-message-contrast-summary:empty,
+    .p-message-info-detail:empty,
+    .p-message-success-detail:empty,
+    .p-message-warn-detail:empty,
+    .p-message-error-detail:empty,
+    .p-message-fatal-detail:empty,
+    .p-message-secondary-detail:empty,
+    .p-message-contrast-detail:empty {
         display: none;
     }
 
@@ -291,6 +266,6 @@
 }
 
 /* inline p:message next to its input; p:staticMessage is a block of its own */
-.ui-widget + .ui-message:not(.ui-staticmessage) {
+.p-widget + .p-message:not(.p-staticmessage) {
     margin-inline-start: var(--p-message-content-gap);
 }

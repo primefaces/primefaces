@@ -61,11 +61,11 @@ class DatePicker009Test extends AbstractDatePickerTest {
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        List<WebElement> elements = panel.findElements(By.cssSelector(".ui-datepicker-group"));
+        List<WebElement> elements = panel.findElements(By.cssSelector(".p-datepicker-group"));
         assertNotNull(elements);
         assertEquals(27, elements.size());
         for (WebElement mon : elements) {
-            List<WebElement> titles = mon.findElements(By.cssSelector(".ui-datepicker-title .ui-datepicker-month"));
+            List<WebElement> titles = mon.findElements(By.cssSelector(".p-datepicker-title .p-datepicker-month"));
             assertNotNull(titles);
             assertEquals(1, titles.size());
             WebElement title = titles.get(0);

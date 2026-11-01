@@ -70,9 +70,9 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
                 .add(ToggleSwitch.CONTAINER_CLASS)
                 .add(component.getStyleClass())
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
-                .add(disabled, "ui-state-disabled")
-                .add(component.isReadonly(), "ui-state-readonly")
-                .add(component.getOffIcon() != null, "ui-toggleswitch-dual-icon")
+                .add(disabled, "p-state-disabled")
+                .add(component.isReadonly(), "p-state-readonly")
+                .add(component.getOffIcon() != null, "p-toggleswitch-dual-icon")
                 .build();
 
         writer.startElement("div", component);
@@ -94,7 +94,7 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
 
         String styleClass = getStyleClassBuilder(context)
                     .add(ToggleSwitch.SLIDER_CLASS)
-                    .add(!component.isValid(), "ui-state-error")
+                    .add(!component.isValid(), "p-state-error")
                     .build();
 
         writer.startElement("div", null);

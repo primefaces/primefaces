@@ -57,15 +57,15 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
         String style = component.getStyle();
         String title = component.getTitle();
         String styleClass = getStyleClassBuilder(context)
-                    .add("ui-linkbutton")
+                    .add("p-linkbutton")
                     .add(component.getStyleClass())
                     .add(hasValue && !hasIcon, HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS)
                     .add(!hasValue && hasIcon, HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
                     .add(isTextAndIcon && "left".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
                     .add(isTextAndIcon && "right".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
-                    .add(disabled, "ui-state-disabled")
-                    .add("small".equals(component.getSize()), "ui-button-sm")
-                    .add("large".equals(component.getSize()), "ui-button-lg")
+                    .add(disabled, "p-state-disabled")
+                    .add("small".equals(component.getSize()), "p-button-sm")
+                    .add("large".equals(component.getSize()), "p-button-lg")
                     .build();
 
         writer.startElement("span", component);

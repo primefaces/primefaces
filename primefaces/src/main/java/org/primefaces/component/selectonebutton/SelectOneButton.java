@@ -40,7 +40,7 @@ public class SelectOneButton extends SelectOneButtonBaseImpl implements Confirma
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneButton";
 
-    public static final String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget";
+    public static final String STYLE_CLASS = "p-selectonebutton p-buttonset p-widget";
 
     private String confirmationScript;
 

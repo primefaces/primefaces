@@ -20,7 +20,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <div class="ui-fluid formgrid grid">
+                <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Basic Spinner"/>
                         <p:spinner id="basic" value="#{spinnerView.number1}"/>
@@ -69,15 +69,15 @@
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Horizontal after"/>
                         <p:spinner id="horizontalAfter" value="#{spinnerView.number9}" buttons="horizontal-after" 
-                                   upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"/>
+                                   upButtonStyleClass="p-button-success" downButtonStyleClass="p-button-danger"/>
                     </div>
                 </div>
 
-                <div class="ui-fluid formgrid grid">
+                <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-1">
                         <p:outputLabel for="@next" value="Vertical"/>
                         <p:spinner id="vertical" value="#{spinnerView.number10}" buttons="vertical"
-                                   upButtonStyleClass="ui-button-secondary" downButtonStyleClass="ui-button-secondary"/>
+                                   upButtonStyleClass="p-button-secondary" downButtonStyleClass="p-button-secondary"/>
                     </div>
                 </div>
             </h:form>

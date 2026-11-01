@@ -47,10 +47,12 @@ public class Rating extends RatingBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Rating";
 
-    public static final String CONTAINER_CLASS = "ui-rating";
-    public static final String CANCEL_CLASS = "ui-rating-cancel";
-    public static final String STAR_CLASS = "ui-rating-star";
-    public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
+    public static final String CONTAINER_CLASS = "p-rating";
+    public static final String CANCEL_CLASS = "p-rating-cancel";
+    public static final String STAR_CLASS = "p-rating-star";
+    public static final String STAR_ON_CLASS = "p-rating-star p-rating-star-on";
+    public static final String CANCEL_ICON_CLASS = "p-icon p-clear-icon p-rating-cancel-icon";
+    public static final String STAR_ICON_CLASS = "p-icon p-star-icon p-rating-icon";
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 

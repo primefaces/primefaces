@@ -156,22 +156,22 @@ of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-picklist | Main container element(table) of picklist
-.ui-picklist-list | Lists of a picklist
-.ui-picklist-list-source | Source list
-.ui-picklist-list-target | Target list
-.ui-picklist-source-controls | Container element of source list reordering controls
-.ui-picklist-target-controls | Container element of target list reordering controls
-.ui-picklist-button | Buttons of a picklist
-.ui-picklist-button-move-up | Move up button
-.ui-picklist-button-move-top | Move top button
-.ui-picklist-button-move-down | Move down button
-.ui-picklist-button-move-bottom | Move bottom button
-.ui-picklist-button-add | Add button
-.ui-picklist-button-add-all | Add all button
-.ui-picklist-button-remove | Remove button
-.ui-picklist-button-remove-all | Remove all button
-.ui-picklist-vertical | Container element of a vertical picklist
+.p-picklist | Main container element(table) of picklist
+.p-picklist-list | Lists of a picklist
+.p-picklist-source | Source list
+.p-picklist-target | Target list
+.p-picklist-source-controls | Container element of source list reordering controls
+.p-picklist-target-controls | Container element of target list reordering controls
+.p-picklist-buttons | Container of the buttons
+.p-picklist-button-move-up | Move up button
+.p-picklist-button-move-top | Move top button
+.p-picklist-button-move-down | Move down button
+.p-picklist-button-move-bottom | Move bottom button
+.p-picklist-button-add | Add button
+.p-picklist-button-add-all | Add all button
+.p-picklist-button-remove | Remove button
+.p-picklist-button-remove-all | Remove all button
+.p-picklist-vertical | Container element of a vertical picklist
 
 As skinning style classes are global, see the main theming section for more information.
 

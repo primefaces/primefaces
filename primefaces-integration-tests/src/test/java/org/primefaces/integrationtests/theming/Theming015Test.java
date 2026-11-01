@@ -68,7 +68,7 @@ class Theming015Test extends AbstractThemingTest {
         WebElement after = PrimeSelenium.getWebDriver().findElement(By.id("after"));
         select.show();
         WebElement panel = select.getPanel();
-        List<WebElement> items = panel.findElements(By.cssSelector("li.ui-selectonemenu-item"));
+        List<WebElement> items = panel.findElements(By.cssSelector("li.p-selectonemenu-item"));
         WebElement last = items.get(items.size() - 1);
         Boolean overlaps = PrimeSelenium.executeScript(INTERSECTS_SCRIPT, last, after);
         assertTrue(overlaps, preset + ": the last option does not lie over the following content, the test proves nothing");
@@ -101,7 +101,7 @@ class Theming015Test extends AbstractThemingTest {
         dialog.show();
 
         // Assert
-        WebElement box = dialog.findElement(By.cssSelector(".ui-dialog-box"));
+        WebElement box = dialog.findElement(By.cssSelector(".p-dialog-box"));
         Boolean overlaps = PrimeSelenium.executeScript(INTERSECTS_SCRIPT, box, pageButton);
         assertFalse(overlaps, preset + ": the dialog box covers the page button, the test proves nothing");
         assertTrue(contains(pageButton, hit(pageButton)), preset + ": the page button is covered by " + describe(hit(pageButton)));

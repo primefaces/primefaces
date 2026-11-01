@@ -66,22 +66,21 @@ button which can be “left” or “right”.
     background-image: url(‘disk.png’) !important;
 }
 ```
-You can also use the pre-defined icons from ThemeRoller like _ui-icon-search_.
 
 ## Ajax loading indicator icon
 A loading indicator will be shown by default when the button triggers an Ajax request. This is done based on the
-`ui-state-loading` class which is toggled on the button.
+`p-state-loading` class which is toggled on the button.
 
 If you don't want this default styling, you can suppress it using the following custom CSS rules:
 
 ```css
-html .ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
+html .p-state-loading.p-button-text-only .p-icon-loading + .p-button-text {
     opacity: inherit;
 }
-html .ui-state-loading .ui-icon-loading {
+html .p-state-loading .p-icon-loading {
     display: none;
 }
-html .ui-state-loading .ui-icon:not(.ui-icon-loading) {
+html .p-state-loading :is(.p-button-icon-left, .p-button-icon-right, .p-icon):not(.p-icon-loading) {
     display: inherit;
 }
 ```
@@ -100,9 +99,9 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-button | Button element
-| .ui-button-text-only | Button element when icon is not used
-| .ui-button-text | Label of button
-| .ui-state-loading | Button element; when `disableOnAjax` is set and an Ajax request triggered by the button is in progress.
+| .p-button | Button element
+| .p-button-text-only | Button element when icon is not used
+| .p-button-text | Label of button
+| .p-state-loading | Button element; when `disableOnAjax` is set and an Ajax request triggered by the button is in progress.
 
 As skinning style classes are global, see the main theming section for more information.

@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SplitButton001Test extends AbstractPrimePageTest {
 
-    private static final String CLASS_NAME_MENUBUTTON = "ui-splitbutton-menubutton";
+    private static final String CLASS_NAME_MENUBUTTON = "p-splitbutton-menubutton";
 
     @Test
     @Order(1)

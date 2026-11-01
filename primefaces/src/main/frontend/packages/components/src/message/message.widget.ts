@@ -29,9 +29,9 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        let msgSrc = this.jq.find('.ui-message-error-summary');
+        let msgSrc = this.jq.find('.p-message-error-summary');
         if (msgSrc.length === 0) {
-            msgSrc = this.jq.find('.ui-message-error-detail');
+            msgSrc = this.jq.find('.p-message-error-detail');
         }
 
         const text = msgSrc.text();
@@ -54,17 +54,17 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
         const display = this.jq.data('display');
 
         if (display !== 'tooltip') {
-            this.jq.addClass('ui-message-error ui-widget');
+            this.jq.addClass('p-message-error p-widget');
 
             if (display === 'both') {
-                this.jq.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
+                this.jq.append('<div><span class="p-icon p-error-icon p-message-error-icon"></span><span class="p-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
             }
             else if (display === 'text') {
-                this.jq.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
+                this.jq.append('<span class="p-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
             }
             else if (display === 'icon') {
-                this.jq.addClass('ui-message-icon-only')
-                    .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
+                this.jq.addClass('p-message-icon-only')
+                    .append('<span class="p-icon p-error-icon p-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
             }
         }
         else {
@@ -78,7 +78,7 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
      */
     clearMessage(): void {
         this.jq.html('');
-        this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget');
+        this.jq.removeClass('p-message-error p-message-icon-only p-widget');
     }
 }
 
@@ -105,11 +105,11 @@ export function registerMessageRenderHookForMessageWidget(): void {
             for (const container of containers) {
                 const $container = $(container);
 
-                if ($container.is('div.ui-message')) {
+                if ($container.is('div.p-message')) {
                     messageComponents = messageComponents.add($container);
                 }
                 else {
-                    messageComponents = messageComponents.add($container.find('div.ui-message'));
+                    messageComponents = messageComponents.add($container.find('div.p-message'));
                 }
             }
 

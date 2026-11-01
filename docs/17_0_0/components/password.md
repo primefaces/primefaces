@@ -62,10 +62,10 @@ Structural selectors for password are;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-password | Input element.
-.ui-password-panel | Overlay panel of strength indicator.
-.ui-password-meter | Strength meter.
-.ui-password-info | Strength label.
+.p-password | Input element.
+.p-password-panel | Overlay panel of strength indicator.
+.p-password-meter | Strength meter.
+.p-password-info | Strength label.
 
 As skinning style classes are global, see the main theming section for more information.
 

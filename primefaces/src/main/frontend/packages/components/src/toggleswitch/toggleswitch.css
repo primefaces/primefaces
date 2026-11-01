@@ -1,22 +1,22 @@
 /*
  * ToggleSwitch: p:toggleSwitch
  *
- * Supported classes: ui-toggleswitch-checked, ui-toggleswitch-focus, ui-state-disabled, ui-state-readonly,
- *                    ui-toggleswitch-dual-icon (onIcon + offIcon), ui-state-error (on .ui-toggleswitch-slider),
- *                    ui-toggleswitch-sm, ui-toggleswitch-lg (styleClass of p:toggleSwitch or any parent: small / large switch)
+ * Supported classes: p-toggleswitch-checked, p-toggleswitch-focus, p-state-disabled, p-state-readonly,
+ *                    p-toggleswitch-dual-icon (onIcon + offIcon), p-state-error (on .p-toggleswitch-slider),
+ *                    p-toggleswitch-sm, p-toggleswitch-lg (styleClass of p:toggleSwitch or any parent: small / large switch)
  *
  * RTL (dir="rtl" on the switch or an ancestor): the handle starts on the right and slides to the left, the dual icons
  * roll the other way.
  */
-.ui-toggleswitch-handler {
+.p-toggleswitch-handler {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 /* onIcon / offIcon: both icons are stacked in the handle, the inactive one is rotated out */
-.ui-toggleswitch-dual-icon {
-    .ui-toggleswitch-handler span {
+.p-toggleswitch-dual-icon {
+    .p-toggleswitch-handler span {
         position: absolute;
         transition-duration: var(--p-toggleswitch-slide-duration);
         transition-timing-function: var(--p-transition-easing);
@@ -30,7 +30,7 @@
         }
     }
 
-    &.ui-toggleswitch-checked .ui-toggleswitch-handler span {
+    &.p-toggleswitch-checked .p-toggleswitch-handler span {
         opacity: 1;
         transform: rotate(0deg);
 
@@ -41,7 +41,7 @@
     }
 
     /* RTL: the handle rolls to the left, so the icons rotate the other way */
-    &:dir(rtl) .ui-toggleswitch-handler span {
+    &:dir(rtl) .p-toggleswitch-handler span {
         transform: rotate(90deg);
 
         & + span {
@@ -49,7 +49,7 @@
         }
     }
 
-    &.ui-toggleswitch-checked:dir(rtl) .ui-toggleswitch-handler span {
+    &.p-toggleswitch-checked:dir(rtl) .p-toggleswitch-handler span {
         transform: rotate(0deg);
 
         & + span {
@@ -58,7 +58,7 @@
     }
 }
 
-.ui-toggleswitch {
+.p-toggleswitch {
     /* the size classes set --_toggleswitch-* (a size token must not be redeclared from itself on the same element) */
     --_width: var(--_toggleswitch-width, var(--p-toggleswitch-width));
     --_height: var(--_toggleswitch-height, var(--p-toggleswitch-height));
@@ -70,7 +70,7 @@
     width: var(--_width);
     height: var(--_height);
 
-    .ui-toggleswitch-slider {
+    .p-toggleswitch-slider {
         position: absolute;
         cursor: pointer;
         top: 0;
@@ -88,7 +88,7 @@
     }
 
     /* the handle sits inside the slider border, so the border width is subtracted from the gap */
-    .ui-toggleswitch-handler {
+    .p-toggleswitch-handler {
         position: absolute;
         top: 50%;
         background: var(--p-toggleswitch-handle-background);
@@ -105,19 +105,19 @@
             transform var(--p-toggleswitch-slide-duration) var(--p-transition-easing), box-shadow var(--p-toggleswitch-slide-duration);
     }
 
-    .ui-toggleswitch-handler span {
+    .p-toggleswitch-handler span {
         font-size: var(--_handle-icon-size);
         line-height: var(--_handle-size);
     }
 
     /* checked */
-    &.ui-toggleswitch-checked {
-        .ui-toggleswitch-slider {
+    &.p-toggleswitch-checked {
+        .p-toggleswitch-slider {
             background: var(--p-toggleswitch-checked-background);
             border-color: var(--p-toggleswitch-checked-border-color);
         }
 
-        .ui-toggleswitch-handler {
+        .p-toggleswitch-handler {
             background: var(--p-toggleswitch-handle-checked-background);
             color: var(--p-toggleswitch-handle-checked-color);
             transform: translateX(calc(var(--_width) - var(--_handle-size) - 2 * var(--_gap)));
@@ -129,77 +129,77 @@
     }
 
     /* hover */
-    &:not(.ui-state-disabled, .ui-state-readonly):hover {
-        .ui-toggleswitch-slider {
+    &:not(.p-state-disabled, .p-state-readonly):hover {
+        .p-toggleswitch-slider {
             background: var(--p-toggleswitch-hover-background);
             border-color: var(--p-toggleswitch-hover-border-color);
         }
 
-        .ui-toggleswitch-handler {
+        .p-toggleswitch-handler {
             background: var(--p-toggleswitch-handle-hover-background);
             color: var(--p-toggleswitch-handle-hover-color);
         }
     }
 
-    &.ui-toggleswitch-checked:not(.ui-state-disabled, .ui-state-readonly):hover {
-        .ui-toggleswitch-slider {
+    &.p-toggleswitch-checked:not(.p-state-disabled, .p-state-readonly):hover {
+        .p-toggleswitch-slider {
             background: var(--p-toggleswitch-checked-hover-background);
             border-color: var(--p-toggleswitch-checked-hover-border-color);
         }
 
-        .ui-toggleswitch-handler {
+        .p-toggleswitch-handler {
             background: var(--p-toggleswitch-handle-checked-hover-background);
             color: var(--p-toggleswitch-handle-checked-hover-color);
         }
     }
 
     /* focus */
-    &.ui-toggleswitch-focus .ui-toggleswitch-slider {
+    &.p-toggleswitch-focus .p-toggleswitch-slider {
         outline: var(--p-toggleswitch-focus-ring-width) var(--p-toggleswitch-focus-ring-style) var(--p-toggleswitch-focus-ring-color);
         outline-offset: var(--p-toggleswitch-focus-ring-offset);
         box-shadow: var(--p-toggleswitch-focus-ring-shadow);
     }
 
     /* invalid: the border also wins over the (checked) hover border (same specificity, later) */
-    .ui-toggleswitch-slider.ui-state-error,
-    &:hover .ui-toggleswitch-slider.ui-state-error,
-    &.ui-toggleswitch-checked:hover .ui-toggleswitch-slider.ui-state-error {
+    .p-toggleswitch-slider.p-state-error,
+    &:hover .p-toggleswitch-slider.p-state-error,
+    &.p-toggleswitch-checked:hover .p-toggleswitch-slider.p-state-error {
         border-color: var(--p-toggleswitch-invalid-border-color);
     }
 
     /* disabled: a flat disabled look (opacity 1, the same tokens for on and off: Aura, Lara, Nora, Metal) or the
        on / off look dimmed (Glass, like iOS) */
-    &.ui-state-disabled {
+    &.p-state-disabled {
         opacity: var(--p-toggleswitch-disabled-opacity);
 
-        .ui-toggleswitch-slider {
+        .p-toggleswitch-slider {
             cursor: default;
             background: var(--p-toggleswitch-disabled-background);
         }
 
-        .ui-toggleswitch-handler {
+        .p-toggleswitch-handler {
             background: var(--p-toggleswitch-handle-disabled-background);
         }
 
-        &.ui-toggleswitch-checked {
-            .ui-toggleswitch-slider {
+        &.p-toggleswitch-checked {
+            .p-toggleswitch-slider {
                 background: var(--p-toggleswitch-checked-disabled-background);
             }
 
-            .ui-toggleswitch-handler {
+            .p-toggleswitch-handler {
                 background: var(--p-toggleswitch-handle-checked-disabled-background);
             }
         }
     }
 
     /* readonly */
-    &.ui-state-readonly .ui-toggleswitch-slider {
+    &.p-state-readonly .p-toggleswitch-slider {
         cursor: default;
     }
 }
 
 /* sizes: the size tokens replace the base ones (on the switch or on any parent), through the private --_toggleswitch-* */
-.ui-toggleswitch-sm {
+.p-toggleswitch-sm {
     --_toggleswitch-width: var(--p-toggleswitch-sm-width);
     --_toggleswitch-height: var(--p-toggleswitch-sm-height);
     --_toggleswitch-gap: var(--p-toggleswitch-sm-gap);
@@ -207,7 +207,7 @@
     --_toggleswitch-handle-icon-size: var(--p-toggleswitch-handle-sm-icon-size);
 }
 
-.ui-toggleswitch-lg {
+.p-toggleswitch-lg {
     --_toggleswitch-width: var(--p-toggleswitch-lg-width);
     --_toggleswitch-height: var(--p-toggleswitch-lg-height);
     --_toggleswitch-gap: var(--p-toggleswitch-lg-gap);

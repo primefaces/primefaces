@@ -36,7 +36,7 @@ _se_ , _sw_ and _nw_ as the value. Default value is " _e_ , _s_ , _se_ ".
 Resize helper is the element used to provide visual feedback during resizing. By default actual
 element itself is the helper and two options are available to customize the way feedback is provided.
 Enabling _ghost_ option displays the element itself with a lower opacity, in addition enabling _proxy_
-option adds a css class called _.ui-resizable-proxy_ which you can override to customize.
+option adds a css class called _.p-resizable-proxy_ which you can override to customize.
 
 
 ```xhtml
@@ -44,7 +44,7 @@ option adds a css class called _.ui-resizable-proxy_ which you can override to c
 <p:resizable for="area" proxy="true" />
 ```
 ```css
-.ui-resizable-proxy {
+.p-resizable-proxy {
    border: 2px dotted #00F;
 }
 ```
@@ -111,8 +111,8 @@ function handleStop(event, ui) {
 
 | Class | Applies | 
 | --- | --- | 
-.ui-resizable | Element that is resizable
-.ui-resizable-handle | Handle element
-.ui-resizable-{handlekey} | Particular handle element identified by handlekey like e, s, ne
-.ui-resizable-proxy | Proxy helper element for visual feedback
+.p-resizable | Element that is resizable
+.p-resizable-handle | Handle element
+.p-resizable-{handlekey} | Particular handle element identified by handlekey like e, s, ne
+.p-resizable-proxy | Proxy helper element for visual feedback
 

@@ -67,7 +67,7 @@ PrimeFaces.widget.Mindmap = class Mindmap extends PrimeFaces.widget.DeferredWidg
             }
         }
 
-        var tooltip = this.tooltip = $('<div class="ui-tooltip ui-mindmap-tooltip ui-widget ui-widget-content"></div>').appendTo(document.body);
+        var tooltip = this.tooltip = $('<div class="p-tooltip p-mindmap-tooltip p-widget p-widget-content"></div>').appendTo(document.body);
         this.addRefreshListener(function() {
             tooltip.remove();
         });

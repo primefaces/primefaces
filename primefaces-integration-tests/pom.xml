@@ -326,6 +326,12 @@
                         <artifactId>jetty-ee10-cdi</artifactId>
                         <version>${jetty.version}</version>
                     </dependency>
+                    <!-- Jetty ships no JPA and jetty:run leaves the provided dependency off the webapp classpath -->
+                    <dependency>
+                        <groupId>jakarta.persistence</groupId>
+                        <artifactId>jakarta.persistence-api</artifactId>
+                        <version>${jakarta.persistence-api.version}</version>
+                    </dependency>
                 </dependencies>
             </plugin>
         </plugins>
@@ -508,7 +514,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.1.18</version>
+                    <version>4.1.19</version>
                 </dependency>
                 <dependency>
                     <groupId>jakarta.enterprise</groupId>

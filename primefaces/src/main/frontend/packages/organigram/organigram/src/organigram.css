@@ -8,7 +8,7 @@
  * Connector lines, node icons / expander and the zoom controls use logical properties, so the chart mirrors in RTL
  * (dir="rtl" on an ancestor).
  */
-.ui-organigram {
+.p-organigram {
     position: relative;
 
     > ul {
@@ -64,7 +64,7 @@
         margin: 0;
     }
 
-    .ui-organigram-node {
+    .p-organigram-node {
         width: 110px;
         min-height: 20px;
         margin: 0 2px;
@@ -80,20 +80,20 @@
         transition: background var(--p-organigram-transition-duration), color var(--p-organigram-transition-duration),
             border-color var(--p-organigram-transition-duration), box-shadow var(--p-organigram-transition-duration);
 
-        .ui-organigram-icon {
+        .p-organigram-icon {
             display: inline-block;
             color: var(--p-organigram-node-icon-color);
         }
 
-        .ui-organigram-icon.left {
+        .p-organigram-icon.left {
             float: inline-start;
         }
 
-        .ui-organigram-icon.right {
+        .p-organigram-icon.right {
             float: inline-end;
         }
 
-        .ui-organigram-node-content {
+        .p-organigram-node-content {
             clear: both;
             word-wrap: break-word;
         }
@@ -113,7 +113,7 @@
             color: var(--p-organigram-node-selected-color);
         }
 
-        &.selected .ui-organigram-icon {
+        &.selected .p-organigram-icon {
             color: var(--p-organigram-node-selected-icon-color);
         }
 
@@ -151,33 +151,21 @@
             &::before {
                 font-size: var(--p-organigram-toggle-button-icon-size);
             }
+        }
 
-            &.ui-icon-plusthick::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-organigram-toggle-collapsed-icon) center / contain no-repeat;
-            }
+        /* default expander icon (no collapsedIcon / expandedIcon of the node): the state is the collapsed class */
+        .p-organigram-toggle-icon {
+            --_icon: var(--p-organigram-toggle-expanded-icon);
+        }
 
-            &.ui-icon-minusthick::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-organigram-toggle-expanded-icon) center / contain no-repeat;
-            }
+        &.collapsed .p-organigram-toggle-icon {
+            --_icon: var(--p-organigram-toggle-collapsed-icon);
         }
     }
 
-    .ui-organigram-icon-container {
+    .p-organigram-icon-container {
         width: 100%;
         min-height: 16px;
-    }
-
-    .ui-organigram-node .expander.ui-icon-plusthick,
-    .ui-organigram-node .expander.ui-icon-minusthick,
-    .controls .control {
-        font-style: normal;
-        font-weight: normal;
     }
 
     /* zoom controls */
@@ -214,18 +202,12 @@
                 font-size: var(--p-icon-size);
             }
 
-            &.zoom-in::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-organigram-zoom-in-icon) center / contain no-repeat;
+            &.p-organigram-zoom-in-icon {
+                --_icon: var(--p-organigram-zoom-in-icon);
             }
 
-            &.zoom-out::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-organigram-zoom-out-icon) center / contain no-repeat;
+            &.p-organigram-zoom-out-icon {
+                --_icon: var(--p-organigram-zoom-out-icon);
             }
         }
     }

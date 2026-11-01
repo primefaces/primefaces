@@ -82,8 +82,8 @@ class Wizard001Test extends AbstractPrimePageTest {
         // Act / Assert
         for (String id : new String[] {"form:wizard_next", "form:wizard_back", "form:refresh"}) {
             click(id);
-            String classes = PrimeSelenium.getWebDriver().findElements(By.cssSelector(".ui-wizard-step-title")).get(2).getDomAttribute("class");
-            assertTrue(classes.contains("ui-state-highlight"));
+            String classes = PrimeSelenium.getWebDriver().findElements(By.cssSelector(".p-wizard-step-title")).get(2).getDomAttribute("class");
+            assertTrue(classes.contains("p-state-highlight"));
             assertTrue(classes.contains("custom"));
         }
         assertNoJavascriptErrors();
@@ -117,7 +117,7 @@ class Wizard001Test extends AbstractPrimePageTest {
         assertSteps(0, true);
         goTo("wizard/wizard001.xhtml?status=false");
         click("form:wizard_next");
-        assertTrue(PrimeSelenium.getWebDriver().findElements(By.cssSelector(".ui-wizard-step-title")).isEmpty());
+        assertTrue(PrimeSelenium.getWebDriver().findElements(By.cssSelector(".p-wizard-step-title")).isEmpty());
         assertNoJavascriptErrors();
     }
 
@@ -162,13 +162,13 @@ class Wizard001Test extends AbstractPrimePageTest {
     }
 
     private void assertSteps(int current, boolean highlight) {
-        List<WebElement> steps = PrimeSelenium.getWebDriver().findElements(By.cssSelector("#form\\:wizard .ui-wizard-step-title"));
+        List<WebElement> steps = PrimeSelenium.getWebDriver().findElements(By.cssSelector("#form\\:wizard .p-wizard-step-title"));
         assertEquals(3, steps.size());
         for (int i = 0; i < steps.size(); i++) {
             String classes = steps.get(i).getDomAttribute("class");
-            assertEquals(i == current, classes.contains("ui-wizard-step-current"));
-            assertEquals(highlight && i < current, classes.contains("ui-wizard-step-completed"));
-            assertEquals(i == current || (highlight && i < current), classes.contains("ui-state-highlight"));
+            assertEquals(i == current, classes.contains("p-wizard-step-current"));
+            assertEquals(highlight && i < current, classes.contains("p-wizard-step-completed"));
+            assertEquals(i == current || (highlight && i < current), classes.contains("p-state-highlight"));
         }
     }
 }

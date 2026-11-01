@@ -19,12 +19,12 @@
             <p:commandButton id="enable" type="button" value="Enable" onclick="PF('toggle').enable()" />
             <h:outputText id="values" value="#{confirmDialog003.enabled},#{confirmDialog003.choice},#{confirmDialog003.changes}" />
             <p:confirmDialog id="dialog" global="true">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                <p:commandButton value="Yes" type="button" styleClass="p-confirmdialog-yes" />
+                <p:commandButton value="No" type="button" styleClass="p-confirmdialog-no" />
             </p:confirmDialog>
             <p:confirmPopup id="popup" global="true">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
-                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no" />
+                <p:commandButton value="Yes" type="button" styleClass="p-confirm-popup-yes" />
+                <p:commandButton value="No" type="button" styleClass="p-confirm-popup-no" />
             </p:confirmPopup>
         </h:form>
     </h:body>

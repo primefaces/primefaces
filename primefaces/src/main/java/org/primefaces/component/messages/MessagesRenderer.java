@@ -139,7 +139,7 @@ public class MessagesRenderer extends UINotificationRenderer<Messages> {
 
         if (component.isShowIcon()) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", styleClassPrefix + "-icon", null);
+            writer.writeAttribute("class", styleClassPrefix + "-icon p-icon p-" + severity + "-icon", null);
             writer.endElement("span");
         }
 
@@ -161,7 +161,7 @@ public class MessagesRenderer extends UINotificationRenderer<Messages> {
 
         writer.startElement("li", null);
 
-        // role="alert" is not an allowed role for <li> (#14864), the enclosing ui-messages
+        // role="alert" is not an allowed role for <li> (#14864), the enclosing p-messages
         // container is already an aria-live="polite" region which announces the message
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 

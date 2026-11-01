@@ -28,9 +28,9 @@ PrimeFaces.widget.Terminal = class Terminal extends PrimeFaces.widget.BaseWidget
     init(cfg) {
         super.init(cfg);
 
-        this.promptContainer = this.jq.find('> div:last-child > span.ui-terminal-prompt');
+        this.promptContainer = this.jq.find('> div:last-child > span.p-terminal-prompt');
         this.cfg.prompt = this.promptContainer.text();
-        this.content = this.jq.children('.ui-terminal-content');
+        this.content = this.jq.children('.p-terminal-content');
         this.input = this.promptContainer.next('');
         this.commands = [];
         this.commandIndex = 0;
@@ -100,8 +100,8 @@ PrimeFaces.widget.Terminal = class Terminal extends PrimeFaces.widget.BaseWidget
 
         // print the previous command, the response will be appended async when the ajax response is received
         var item = $('<div></div>');
-        item.append('<span>' + this.cfg.prompt + '</span><span class="ui-terminal-command"></span>').appendTo(this.content);
-        item.find('.ui-terminal-command').text(this.input.val());
+        item.append('<span>' + this.cfg.prompt + '</span><span class="p-terminal-command"></span>').appendTo(this.content);
+        item.find('.p-terminal-command').text(this.input.val());
 
         // hide the prompt until the command finishes
         this.promptContainerParent.hide();
@@ -181,7 +181,7 @@ PrimeFaces.widget.Terminal = class Terminal extends PrimeFaces.widget.BaseWidget
 
                                 // store the baseCommand in a hidden span, the anchors will use it
                                 if (responseObj.baseCommand != '') {
-                                    matchesOutput.push($('<span style="display:none;" class="ui-terminal-basecommand">' + PrimeFaces.escapeHTML(responseObj.baseCommand) + '</span>'));
+                                    matchesOutput.push($('<span style="display:none;" class="p-terminal-basecommand">' + PrimeFaces.escapeHTML(responseObj.baseCommand) + '</span>'));
                                 }
 
                                 // create the anchors
@@ -191,14 +191,14 @@ PrimeFaces.widget.Terminal = class Terminal extends PrimeFaces.widget.BaseWidget
                                         e.preventDefault();
 
                                         // prepend the baseCommand to the selected command on click
-                                        var baseSpan = $(this).siblings(".ui-terminal-basecommand");
+                                        var baseSpan = $(this).siblings(".p-terminal-basecommand");
                                         var command = $(this).text();
                                         if (baseSpan.length) {
                                             command = baseSpan.html().trim() + ' ' + command;
                                         }
 
                                         // update the terminal input
-                                        $('input.ui-terminal-input').val(command);
+                                        $('input.p-terminal-input').val(command);
                                     });
 
                                     matchesOutput.push($(entryChar), anchor, $(lineBreak));
@@ -206,12 +206,12 @@ PrimeFaces.widget.Terminal = class Terminal extends PrimeFaces.widget.BaseWidget
 
                                 // print the previous command
                                 var item = $('<div></div>');
-                                item.append('<span>' + PrimeFaces.escapeHTML(this.cfg.prompt) + '</span><span class="ui-terminal-command"></span>')
+                                item.append('<span>' + PrimeFaces.escapeHTML(this.cfg.prompt) + '</span><span class="p-terminal-command"></span>')
                                 .appendTo(this.content);
-                                item.find('.ui-terminal-command').text(this.input.val());
+                                item.find('.p-terminal-command').text(this.input.val());
 
                                 // print the list of matches as response
-                                $('<div class="ui-terminal-autocomplete"></div>').append(matchesOutput).appendTo(this.content.children().last());
+                                $('<div class="p-terminal-autocomplete"></div>').append(matchesOutput).appendTo(this.content.children().last());
 
                                 // always scroll down to the last item
                                 this.jq.scrollTop(this.jq[0].scrollHeight);

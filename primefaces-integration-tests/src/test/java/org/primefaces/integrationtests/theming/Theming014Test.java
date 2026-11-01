@@ -54,9 +54,9 @@ class Theming014Test extends AbstractThemingTest {
     /** the element of the field that is marked invalid and draws the border (the input, the select box, the checkbox box, ...) */
     private static final String INVALID_ELEMENT_SCRIPT = ""
             + "var root = document.getElementById(arguments[0]);"
-            + "var all = [root].concat(Array.prototype.slice.call(root.querySelectorAll('.ui-state-error')));"
+            + "var all = [root].concat(Array.prototype.slice.call(root.querySelectorAll('.p-state-error')));"
             + "return all.filter(function (e) {"
-            + "  return e.classList.contains('ui-state-error') && parseFloat(getComputedStyle(e).borderTopWidth) > 0;"
+            + "  return e.classList.contains('p-state-error') && parseFloat(getComputedStyle(e).borderTopWidth) > 0;"
             + "})[0] || null;";
 
     /** focuses the input behind the element (the element itself, the hidden accessible input of a checkbox, the label of a select, ...) */
@@ -76,7 +76,7 @@ class Theming014Test extends AbstractThemingTest {
         PrimeSelenium.goTo("theming/theming014.xhtml?theme=" + preset);
         setColorScheme("light");
         WebElement text = PrimeSelenium.getWebDriver().findElement(By.id("form:text"));
-        assertFalse(text.getDomAttribute("class").contains("ui-state-error"));
+        assertFalse(text.getDomAttribute("class").contains("p-state-error"));
 
         // Act
         PrimeSelenium.guardAjax(PrimeSelenium.getWebDriver().findElement(By.id("form:submit"))).click();
@@ -100,7 +100,7 @@ class Theming014Test extends AbstractThemingTest {
         }
         assertTokenWired(preset + " label", PrimeSelenium.getWebDriver().findElement(By.id("form:textLabel")), "color",
                 "--p-label-invalid-color");
-        WebElement message = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:textMessage'].ui-message-error"));
+        WebElement message = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:textMessage'].p-message-error"));
         assertTokenWired(preset + " message", message, "background-color", "--p-message-error-background");
         assertNoJavascriptErrors();
     }
@@ -125,7 +125,7 @@ class Theming014Test extends AbstractThemingTest {
             assertTokenValue(preset + " hover " + field, element, "border-top-color", INVALID);
         }
         WebElement spinner = PrimeSelenium.getWebDriver().findElement(By.id("form:spinner"));
-        assertTrue(spinner.getDomAttribute("class").contains("ui-state-error"), "the client side validation marks the spinner wrapper");
+        assertTrue(spinner.getDomAttribute("class").contains("p-state-error"), "the client side validation marks the spinner wrapper");
         WebElement spinnerInput = PrimeSelenium.getWebDriver().findElement(By.id("form:spinner_input"));
         assertTokenValue(preset + " spinner input", spinnerInput, "border-top-color", INVALID);
         new Actions(PrimeSelenium.getWebDriver()).moveToElement(spinnerInput).perform();
@@ -147,17 +147,17 @@ class Theming014Test extends AbstractThemingTest {
         // Act: hover the invalid field
         WebElement field = PrimeSelenium.getWebDriver().findElement(By.id("form:tooltipText"));
         new Actions(PrimeSelenium.getWebDriver()).moveToElement(field).perform();
-        WebElement text = PrimeSelenium.getWebDriver().findElement(By.cssSelector(".ui-tooltip .ui-tooltip-text"));
+        WebElement text = PrimeSelenium.getWebDriver().findElement(By.cssSelector(".p-tooltip .p-tooltip-text"));
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(text));
 
         // Assert
-        assertTrue(text.getDomAttribute("class").contains("ui-state-error"), preset + ": the tooltip is not marked invalid");
+        assertTrue(text.getDomAttribute("class").contains("p-state-error"), preset + ": the tooltip is not marked invalid");
         assertTokenWired(preset + " invalid tooltip", text, "background-color", "--p-tooltip-invalid-background");
         assertTokenWired(preset + " invalid tooltip", text, "color", "--p-tooltip-invalid-color");
 
         // Act: a readonly radio marked invalid (like the renderer marks an invalid component), hovered
-        WebElement box = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:readonlyRadio'] .ui-radiobutton-box"));
-        PrimeSelenium.executeScript("arguments[0].classList.add('ui-state-error');", box);
+        WebElement box = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:readonlyRadio'] .p-radiobutton-box"));
+        PrimeSelenium.executeScript("arguments[0].classList.add('p-state-error');", box);
         new Actions(PrimeSelenium.getWebDriver()).moveToElement(box).perform();
 
         // Assert
@@ -167,7 +167,7 @@ class Theming014Test extends AbstractThemingTest {
 
     private static WebElement invalidElement(String field) {
         WebElement element = PrimeSelenium.executeScript(INVALID_ELEMENT_SCRIPT, "form:" + field);
-        assertNotNull(element, field + ": no element marked ui-state-error with a border");
+        assertNotNull(element, field + ": no element marked p-state-error with a border");
         return element;
     }
 }

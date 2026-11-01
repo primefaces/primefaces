@@ -8,7 +8,7 @@
 
     <ui:define name="head">
         <style>
-            body .card.ui-state-drag {
+            body .card.p-state-drag {
                 background-color: #ffffd6;
             }
         </style>
@@ -38,7 +38,7 @@
             <h:form id="unskinned" enctype="multipart/form-data">
                 <p:fileUpload id="upload" value="#{fileUploadView.file}" mode="simple" />
 
-                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"/>
+                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 p-button-outlined block"/>
             </h:form>
         </div>
 
@@ -50,7 +50,7 @@
             <h:form id="single" enctype="multipart/form-data">
                 <p:fileUpload id="upload" value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
 
-                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"/>
+                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 p-button-outlined block"/>
             </h:form>
         </div>
 
@@ -61,7 +61,7 @@
 
             <h:form id="multiple" enctype="multipart/form-data">
                 <p:fileUpload id="upload" value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"/>
-                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.uploadMultiple}" styleClass="mt-3 ui-button-outlined block"/>
+                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.uploadMultiple}" styleClass="mt-3 p-button-outlined block"/>
             </h:form>
         </div>
 
@@ -75,10 +75,10 @@
                     <p:validateFile allowTypes="/(\.|\/)(pdf)$/" />
                 </p:fileUpload>
 
-                <p:commandButton id="submit" value="Submit" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"
+                <p:commandButton id="submit" value="Submit" action="#{fileUploadView.upload}" styleClass="mt-3 p-button-outlined block"
                                  validateClient="false" process="@form" update=":growl"/>
 
-                <p:commandButton id="submitCSV" value="Submit (+ validateClient)" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"
+                <p:commandButton id="submitCSV" value="Submit (+ validateClient)" action="#{fileUploadView.upload}" styleClass="mt-3 p-button-outlined block"
                                  validateClient="true" process="@form" update=":growl"/>
             </h:form>
         </div>

@@ -25,9 +25,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = class SelectBooleanCheckbox extends Pr
         super.init(cfg);
 
         this.input = $(this.jqId + '_input');
-        this.box = this.jq.find('.ui-chkbox-box');
-        this.icon = this.box.children('.ui-chkbox-icon');
-        this.itemLabel = this.jq.find('.ui-chkbox-label');
+        this.box = this.jq.find('.p-chkbox-box');
+        this.icon = this.box.children('.p-chkbox-icon');
+        this.itemLabel = this.jq.find('.p-chkbox-label');
         this.disabled = this.input.is(':disabled');
 
         //pfs metadata
@@ -48,13 +48,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = class SelectBooleanCheckbox extends Pr
             return;
         }
         var $this = this;
-        this.box.removeClass('ui-state-disabled')
+        this.box.removeClass('p-state-disabled')
             .off('.selectBooleanCheckbox')
             .on('mouseenter.selectBooleanCheckbox', function () {
-                $this.box.addClass('ui-state-hover');
+                $this.box.addClass('p-state-hover');
             })
             .on('mouseleave.selectBooleanCheckbox', function () {
-                $this.box.removeClass('ui-state-hover');
+                $this.box.removeClass('p-state-hover');
             })
             .on('click.selectBooleanCheckbox', function () {
                 $this.input.trigger('click').trigger('focus.selectBooleanCheckbox');
@@ -62,21 +62,20 @@ PrimeFaces.widget.SelectBooleanCheckbox = class SelectBooleanCheckbox extends Pr
 
         this.input.off('.selectBooleanCheckbox')
             .on('focus.selectBooleanCheckbox', function () {
-                $this.box.addClass('ui-state-focus');
+                $this.box.addClass('p-state-focus');
             })
             .on('blur.selectBooleanCheckbox', function () {
-                $this.box.removeClass('ui-state-focus');
+                $this.box.removeClass('p-state-focus');
             })
             .on('change.selectBooleanCheckbox', function () {
                 var isChecked = $this.isChecked();
                 $this.input.prop('checked', isChecked).attr('aria-checked', isChecked);
-                $this.box.toggleClass('ui-state-active', isChecked)
-                    .children('.ui-chkbox-icon')
-                    .toggleClass('ui-icon-blank', !isChecked)
-                    .toggleClass('ui-icon-check', isChecked);
+                $this.box.toggleClass('p-state-active', isChecked)
+                    .children('.p-chkbox-icon')
+                    .toggleClass('p-checkbox-checked-icon', isChecked);
             });
 
-        this.itemLabel.removeClass('ui-state-disabled')
+        this.itemLabel.removeClass('p-state-disabled')
             .off('.selectBooleanCheckbox')
             .on("click.selectBooleanCheckbox", function () {
                 $this.toggle();
@@ -108,10 +107,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = class SelectBooleanCheckbox extends Pr
     check(silent) {
         if (!this.isChecked()) {
             this.input.prop('checked', true).attr('aria-checked', true);
-            this.box.addClass('ui-state-active')
-                .children('.ui-chkbox-icon')
-                .removeClass('ui-icon-blank')
-                .addClass('ui-icon-check');
+            this.box.addClass('p-state-active')
+                .children('.p-chkbox-icon')
+                .addClass('p-checkbox-checked-icon');
 
             if (!silent) {
                 this.input.trigger('change');
@@ -126,10 +124,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = class SelectBooleanCheckbox extends Pr
     uncheck(silent) {
         if (this.isChecked()) {
             this.input.prop('checked', false).attr('aria-checked', false);
-            this.box.removeClass('ui-state-active')
-                .children('.ui-chkbox-icon')
-                .removeClass('ui-icon-check')
-                .addClass('ui-icon-blank');
+            this.box.removeClass('p-state-active')
+                .children('.p-chkbox-icon')
+                .removeClass('p-checkbox-checked-icon');
 
             if (!silent) {
                 this.input.trigger('change');

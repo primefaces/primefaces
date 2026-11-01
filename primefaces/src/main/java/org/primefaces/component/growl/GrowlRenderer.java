@@ -52,7 +52,7 @@ public class GrowlRenderer extends UINotificationRenderer<Growl> {
         writer.writeAttribute("id", clientId, "id");
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            writer.writeAttribute("class", "ui-growl-pl", null);
+            writer.writeAttribute("class", "p-growl-pl", null);
             writer.writeAttribute("data-global", component.isGlobalOnly(), null);
             writer.writeAttribute("data-summary", component.isShowSummary(), null);
             writer.writeAttribute("data-detail", component.isShowDetail(), null);

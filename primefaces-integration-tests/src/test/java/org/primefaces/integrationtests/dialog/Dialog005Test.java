@@ -50,16 +50,16 @@ class Dialog005Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(dialog.isDisplayed());
-        assertCss(dialog, "ui-dialog", "container-class");
+        assertCss(dialog, "p-dialog", "container-class");
         assertTrue(dialog.getAttribute("style").contains("opacity"));
 
         WebElement box = getBox(dialog);
-        assertCss(box, "ui-dialog-box", "box-wide");
+        assertCss(box, "p-dialog-box", "box-wide");
         assertTrue(box.getAttribute("style").contains("min-height"));
         assertEquals("600px", box.getCssValue("width")); // CSS width is not overridden by an inline width
 
         WebElement content = dialog.getContent();
-        assertCss(content, "ui-dialog-content", "content-class");
+        assertCss(content, "p-dialog-content", "content-class");
         assertEquals("7px", content.getCssValue("padding-top"));
         assertNoJavascriptErrors();
     }
@@ -72,19 +72,19 @@ class Dialog005Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         dialog.show();
         dialog.toggleMaximize();
-        assertCss(dialog, "ui-dialog-maximized");
+        assertCss(dialog, "p-dialog-maximized");
 
         // Act
         dialog.toggleMaximize();
 
         // Assert
-        assertFalse(dialog.getAttribute("class").contains("ui-dialog-maximized"));
+        assertFalse(dialog.getAttribute("class").contains("p-dialog-maximized"));
         assertEquals("600px", getBox(dialog).getCssValue("width"));
         assertNoJavascriptErrors();
     }
 
     private WebElement getBox(Dialog dialog) {
-        return dialog.findElement(By.className("ui-dialog-box"));
+        return dialog.findElement(By.className("p-dialog-box"));
     }
 
     public static class Page extends AbstractPrimePage {

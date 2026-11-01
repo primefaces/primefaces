@@ -16,10 +16,10 @@ Core member of the FormLayout is the `.field` class that wraps the input field a
 ```
 
 ## Vertical Layout
-In its simplest form, a vertical layout is created when used within `.ui-fluid` which makes the components use all available width.
+In its simplest form, a vertical layout is created when used within `.p-fluid` which makes the components use all available width.
 
 ```xhtml
-<div class="ui-fluid">
+<div class="p-fluid">
     <div class="field">
         <p:outputLabel for="firstname" value="Firstname" />
         <p:inputText id="firstname" />
@@ -35,7 +35,7 @@ This is where FormLayout actually hooks-in to PrimeFlex with the help of `.formg
 Example below arranges two fields to be displayed next two each other.
 
 ```xhtml
-<div class="ui-fluid formgrid grid">
+<div class="p-fluid formgrid grid">
     <div class="field col">
         <p:outputLabel for="firstname" value="Firstname" />
         <p:inputText id="firstname" />
@@ -70,7 +70,7 @@ In this example, label has a fixed width where container of the inputs gets the 
 Wrapping the form in the previous example with `.fluid` and removing the fixed width results in a fluid layout.
 
 ```xhtml
-<div class="ui-fluid">
+<div class="p-fluid">
     <div class="field grid">
         <p:outputLabel for="firstname" styleClass="col-12 md-2" value="Firstname" />
         <div class="col-12 md-10">
@@ -88,16 +88,16 @@ Wrapping the form in the previous example with `.fluid` and removing the fixed w
 
 ## Inline
 Inline forms are used to display the content on the same row and can simply be implemented by adding `.formgroup-inline` to the form container.
-Note that per design requirements, if labels are not visually hidden, it is suggested to use `.ui-sr-only` to still support screen readers.
+Note that per design requirements, if labels are not visually hidden, it is suggested to use `.p-sr-only` to still support screen readers.
 
 ```xhtml
 <div class="formgroup-inline">
     <div class="field">
-        <p:outputLabel for="firstname5" styleClass="ui-sr-only" value="Firstname" />
+        <p:outputLabel for="firstname5" styleClass="p-sr-only" value="Firstname" />
         <p:inputText id="firstname5" placeholder="Firstname" />
     </div>
     <div class="field">
-        <p:outputLabel for="lastname5" styleClass="ui-sr-only" value="Lastname" />
+        <p:outputLabel for="lastname5" styleClass="p-sr-only" value="Lastname" />
         <p:inputText id="lastname5" placeholder="Lastname" />
     </div>
     <p:button value="Submit" />
@@ -136,7 +136,7 @@ Examples here demonstrates vertical and horizontal layout alternatives.
 Helper text is an optional element defined with the small tag to display additional information about the input field.
 
 ```xhtml
-<div class="field ui-fluid">
+<div class="field p-fluid">
     <p:outputLabel for="username" value="Username" />
     <p:inputText id="username" />
     <small id="username-help">Enter your username to reset your password.</small>
@@ -144,10 +144,10 @@ Helper text is an optional element defined with the small tag to display additio
 ```
 
 ## Advanced Forms
-A responsive form with various input fields can easily be implemented using a combination of `.field`, `.formgrid` and `.ui-fluid`.
+A responsive form with various input fields can easily be implemented using a combination of `.field`, `.formgrid` and `.p-fluid`.
 
 ```xhtml
-<div class="ui-fluid formgrid grid">
+<div class="p-fluid formgrid grid">
     <div class="field col-12 md-6">
         <p:outputLabel for="firstname" value="Firstname" />
         <p:inputText id="firstname" />

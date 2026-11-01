@@ -1,23 +1,23 @@
 /*
  * Growl: p:growl (PrimeUIX toast)
  *
- * Markup: .ui-growl > .ui-growl-item-container.ui-growl-<severity> > .ui-growl-item
- *         > .ui-growl-icon-close.ui-icon-closethick + span.ui-growl-image + .ui-growl-message (> .ui-growl-title + p)
- * Severity classes only switch the private --_* variables: ui-growl-info | -success | -warn | -error | -fatal
- * States: ui-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css
- * Variants: ui-growl-outlined | ui-growl-simple, on the .ui-growl container or any ancestor. p:growl has no styleClass
+ * Markup: .p-growl > .p-growl-item-container.p-growl-<severity> > .p-growl-item
+ *         > .p-growl-icon-close.p-growl-close-icon + span.p-growl-image.p-growl-<severity>-icon + .p-growl-message (> .p-growl-title + p)
+ * Severity classes only switch the private --_* variables: p-growl-info | -success | -warn | -error | -fatal
+ * States: p-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css
+ * Variants: p-growl-outlined | p-growl-simple, on the .p-growl container or any ancestor. p:growl has no styleClass
  * and appends its container to the body, so today: on the body (all growls) or added to the widget container
- * (PF('growl').jq.addClass('ui-growl-outlined')); a styleClass / variant attribute in the core would set it there.
+ * (PF('growl').jq.addClass('p-growl-outlined')); a styleClass / variant attribute in the core would set it there.
  */
 
-.ui-growl {
+.p-growl {
     position: fixed;
     top: var(--p-growl-offset);
     right: var(--p-growl-offset);
     width: var(--p-toast-width);
     max-width: calc(100dvw - 2 * var(--p-growl-offset));
 
-    .ui-growl-item-container {
+    .p-growl-item-container {
         --_bg: var(--p-toast-info-background);
         --_border-color: var(--p-toast-info-border-color);
         --_color: var(--p-toast-info-color);
@@ -40,7 +40,7 @@
         box-shadow: var(--_shadow);
         backdrop-filter: blur(var(--p-toast-blur));
 
-        &.ui-growl-success {
+        &.p-growl-success {
             --_bg: var(--p-toast-success-background);
             --_border-color: var(--p-toast-success-border-color);
             --_color: var(--p-toast-success-color);
@@ -54,7 +54,7 @@
             --_simple-color: var(--p-toast-success-simple-color);
         }
 
-        &.ui-growl-warn {
+        &.p-growl-warn {
             --_bg: var(--p-toast-warn-background);
             --_border-color: var(--p-toast-warn-border-color);
             --_color: var(--p-toast-warn-color);
@@ -68,7 +68,7 @@
             --_simple-color: var(--p-toast-warn-simple-color);
         }
 
-        &.ui-growl-error {
+        &.p-growl-error {
             --_bg: var(--p-toast-error-background);
             --_border-color: var(--p-toast-error-border-color);
             --_color: var(--p-toast-error-color);
@@ -82,7 +82,7 @@
             --_simple-color: var(--p-toast-error-simple-color);
         }
 
-        &.ui-growl-fatal {
+        &.p-growl-fatal {
             --_bg: var(--p-growl-fatal-background);
             --_border-color: var(--p-growl-fatal-border-color);
             --_color: var(--p-growl-fatal-color);
@@ -96,7 +96,7 @@
             --_simple-color: var(--p-growl-fatal-simple-color);
         }
 
-        .ui-growl-item {
+        .p-growl-item {
             display: flex;
             align-items: flex-start;
             gap: var(--p-toast-content-gap);
@@ -104,11 +104,8 @@
         }
 
         /* close icon (shown on hover by the widget) */
-        .ui-icon-closethick {
-            font-style: normal;
-            font-weight: normal;
+        .p-growl-icon-close {
             display: inline-flex; /* the inline display:none of the widget still hides it */
-            background: none;
             position: absolute;
             top: calc(var(--p-toast-content-gap) / 2);
             inset-inline-end: calc(var(--p-toast-content-gap) / 2);
@@ -123,13 +120,6 @@
             transition: background var(--p-toast-transition-duration), color var(--p-toast-transition-duration),
                 outline-color var(--p-toast-transition-duration), box-shadow var(--p-toast-transition-duration);
 
-            &::before {
-                content: "\2003";
-                background: currentColor;
-                forced-color-adjust: none;
-                mask: var(--p-toast-close-icon) center / contain no-repeat;
-            }
-
             &:hover {
                 background: var(--_close-hover-bg);
             }
@@ -141,12 +131,12 @@
             }
         }
 
+        .p-growl-close-icon {
+            --_icon: var(--p-toast-close-icon);
+        }
+
         /* severity icon */
-        .ui-growl-image {
-            font-style: normal;
-            font-weight: normal;
-            display: inline-block;
-            background: none;
+        .p-growl-image {
             flex-shrink: 0;
             width: var(--p-toast-icon-size);
             height: var(--p-toast-icon-size);
@@ -158,47 +148,28 @@
             color: var(--_color);
         }
 
-        &.ui-growl-info .ui-growl-image::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-toast-info-icon) center / contain no-repeat;
+        .p-growl-info-icon {
+            --_icon: var(--p-toast-info-icon);
         }
 
-        &.ui-growl-success .ui-growl-image::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-toast-success-icon) center / contain no-repeat;
+        .p-growl-success-icon {
+            --_icon: var(--p-toast-success-icon);
         }
 
-        &.ui-growl-warn .ui-growl-image::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-toast-warn-icon) center / contain no-repeat;
+        .p-growl-warn-icon {
+            --_icon: var(--p-toast-warn-icon);
         }
 
-        &.ui-growl-error .ui-growl-image::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-toast-error-icon) center / contain no-repeat;
+        .p-growl-error-icon {
+            --_icon: var(--p-toast-error-icon);
         }
 
-        &.ui-growl-fatal .ui-growl-image::before {
-            content: "\2003";
-            background: currentColor;
-            forced-color-adjust: none;
-            mask: var(--p-toast-fatal-icon) center / contain no-repeat;
-        }
-
-        .ui-icon {
-            color: var(--_color);
+        .p-growl-fatal-icon {
+            --_icon: var(--p-toast-fatal-icon);
         }
 
         /* texts */
-        .ui-growl-message {
+        .p-growl-message {
             flex: 1 1 auto;
             min-width: 0;
             /* the close icon is positioned over the content: keep long texts clear of it */
@@ -209,13 +180,13 @@
             overflow-wrap: break-word;
         }
 
-        .ui-growl-title {
+        .p-growl-title {
             font-size: var(--p-toast-summary-font-size);
             font-weight: var(--p-toast-summary-font-weight);
             line-height: var(--p-typography-line-height);
         }
 
-        .ui-growl-message p {
+        .p-growl-message p {
             font-size: var(--p-toast-detail-font-size);
             font-weight: var(--p-toast-detail-font-weight);
             color: var(--_detail-color);
@@ -227,11 +198,11 @@
 /*
  * Variants. :is() gives (0,3,0) whether the class is on the container itself or on an ancestor, so the variant wins
  * over the severity rules (same specificity, later), which switch the same private variables.
- * outlined: overlay surface, colored border, summary and icon (like ui-message-outlined).
+ * outlined: overlay surface, colored border, summary and icon (like p-message-outlined).
  * simple: no border and no severity tint, colored summary and icon. The overlay background and shadow stay: the growl
  * floats over arbitrary content and would be unreadable (and indistinguishable from it) without them.
  */
-:is(.ui-growl-outlined.ui-growl, .ui-growl-outlined .ui-growl) .ui-growl-item-container {
+:is(.p-growl-outlined.p-growl, .p-growl-outlined .p-growl) .p-growl-item-container {
     --_bg: var(--p-toast-outlined-background);
     --_border-color: var(--_outlined-border-color);
     --_color: var(--_outlined-color);
@@ -242,7 +213,7 @@
     border-width: var(--p-toast-outlined-border-width);
 }
 
-:is(.ui-growl-simple.ui-growl, .ui-growl-simple .ui-growl) .ui-growl-item-container {
+:is(.p-growl-simple.p-growl, .p-growl-simple .p-growl) .p-growl-item-container {
     --_bg: var(--p-toast-simple-background);
     --_border-color: transparent;
     --_color: var(--_simple-color);
@@ -251,20 +222,20 @@
     --_close-hover-bg: var(--p-toast-simple-close-button-hover-background);
 }
 
-.ui-growl-item-container {
+.p-growl-item-container {
     position: relative;
 }
 
-.ui-growl-item p {
+.p-growl-item p {
     padding: 0;
     margin: 0;
 }
 
-.ui-growl-icon-close {
+.p-growl-icon-close {
     position: absolute;
     cursor: pointer;
 }
 
-.ui-growl-title {
+.p-growl-title {
     display: block;
 }

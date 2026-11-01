@@ -54,7 +54,7 @@ class Sidebar001Test extends AbstractPrimePageTest {
         assertTrue(page.sidebar1.isVisible());
 
         assertDoesNotThrow(() -> {
-            page.sidebar2.findElement(By.className("ui-sidebar-close")).isDisplayed();
+            page.sidebar2.findElement(By.className("p-sidebar-close")).isDisplayed();
         });
     }
 
@@ -74,7 +74,7 @@ class Sidebar001Test extends AbstractPrimePageTest {
         assertTrue(page.sidebar2.isVisible());
 
         assertDoesNotThrow(() -> {
-            page.sidebar2.findElement(By.className("ui-sidebar-close")).isDisplayed();
+            page.sidebar2.findElement(By.className("p-sidebar-close")).isDisplayed();
         });
     }
 

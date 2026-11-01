@@ -1,12 +1,12 @@
 /*
- * MegaMenu: p:megaMenu (.ui-megamenu, .ui-megamenu-vertical)
+ * MegaMenu: p:megaMenu (.p-megamenu, .p-megamenu-vertical)
  *
- * The megamenu also carries .ui-menubar: the common .ui-menu and .ui-menubar rules are in menu/menu.base.css
+ * The megamenu also carries .p-menubar: the common .p-menu and .p-menubar rules are in menu/menu.base.css
  * (bundled before this file, so the megamenu tokens below override the menubar ones).
- * Submenu overlay: .ui-menu-child > table > tbody > tr > td (column) > ul.ui-menu-list > li.ui-widget-header > span.
+ * Submenu overlay: .p-menu-child > table > tbody > tr > td (column) > ul.p-menu-list > li.p-widget-header > span.
  */
-.ui-megamenu {
-    > .ui-menu-list > .ui-menuitem-selected > .ui-menuitem-link {
+.p-megamenu {
+    > .p-menu-list > .p-menuitem-selected > .p-menuitem-link {
         text-decoration: underline;
         text-underline-offset: 0.25em;
         text-decoration-thickness: 0.125em;
@@ -16,26 +16,26 @@
         vertical-align: top;
     }
 
-    .ui-widget-header span {
+    .p-widget-header span {
         display: block;
     }
 }
 
 /* PrimeUIX min-width 12.5rem (only without an inline width, see menu/menu.base.css) */
-.ui-megamenu-vertical {
+.p-megamenu-vertical {
     width: fit-content;
 
     &:not([style*="width"]) {
         min-width: 12.5rem;
     }
 
-    .ui-menu-parent {
+    .p-menu-parent {
         clear: both;
         width: 100%;
     }
 }
 
-.ui-menu.ui-megamenu {
+.p-menu.p-megamenu {
     --_bg: var(--p-megamenu-background);
     --_border-color: var(--p-megamenu-border-color);
     --_border-radius: var(--p-megamenu-border-radius);
@@ -77,7 +77,7 @@
     --_base-item-padding: var(--p-megamenu-base-item-padding);
     --_base-item-border-radius: var(--p-megamenu-base-item-border-radius);
 
-    .ui-widget-header {
+    .p-widget-header {
         margin: 0;
         width: 100%;
         background: var(--_submenu-label-background);
@@ -92,57 +92,57 @@
     }
 
     /* columns */
-    .ui-menu-child .ui-menu-list {
+    .p-menu-child .p-menu-list {
         min-width: 12.5rem;
     }
 
     /* root list: no own padding, the container has the orientation padding (--_list-padding is for the columns) */
-    > .ui-menu-list {
+    > .p-menu-list {
         padding: 0;
     }
 
     /* overlay: PrimeUIX overlay color, the columns are separated by the overlay gap (padding of each column) */
-    .ui-menu-child {
+    .p-menu-child {
         color: var(--p-megamenu-overlay-color);
     }
 
-    .ui-menu-list > table > tbody > tr > td {
+    .p-menu-list > table > tbody > tr > td {
         padding: var(--p-megamenu-overlay-gap);
     }
 
     /* separator between the submenus of a column (an hr, see MegaMenuRenderer#encodeSubmenuSeparator) */
-    td > hr.ui-divider {
+    td > hr.p-divider {
         margin: var(--_list-gap) 0;
         border: 0 none;
         border-block-start: 1px solid var(--_separator-border-color);
     }
 
-    .ui-menu-list .ui-menuitem-link {
+    .p-menu-list .p-menuitem-link {
         border-radius: var(--_item-border-radius);
     }
 
-    &.ui-megamenu-vertical {
+    &.p-megamenu-vertical {
         background: var(--_bg);
         padding: var(--p-megamenu-vertical-orientation-padding);
 
         /* root list: column instead of the menubar row */
-        > .ui-menu-list {
+        > .p-menu-list {
             flex-direction: column;
             flex-wrap: nowrap;
             align-items: stretch;
             gap: var(--p-megamenu-vertical-orientation-gap);
         }
 
-        > .ui-menu-list .ui-menuitem {
+        > .p-menu-list .p-menuitem {
             width: 100%;
 
-            > .ui-menuitem-link {
+            > .p-menuitem-link {
                 border-radius: var(--_item-border-radius);
             }
         }
 
         /* no auto margin of the menubar facets in the column (it would right-align them) */
-        > .ui-menu-list > :is(.ui-menubar-options, .ui-menubar-end) {
+        > .p-menu-list > :is(.p-menubar-options, .p-menubar-end) {
             margin-inline-start: 0;
         }
     }

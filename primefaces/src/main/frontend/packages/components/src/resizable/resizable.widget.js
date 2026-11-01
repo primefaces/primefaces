@@ -68,7 +68,7 @@ PrimeFaces.widget.Resizable = class Resizable extends PrimeFaces.widget.BaseWidg
             this._render();
         }
         else {
-            var container = this.jqTarget.parent()[0].closest('.ui-hidden-container');
+            var container = this.jqTarget.parent()[0].closest('.p-hidden-container');
             if (container) {
                 var $container = $(container);
                 if ($container.length) {

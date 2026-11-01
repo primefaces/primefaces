@@ -22,6 +22,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 4.0.0 | https://jquery.com/ |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.15.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.1 | http://keith-wood.name/keypad.html |
+| libphonenumber-js | 1.13.15 | https://gitlab.com/catamphetamine/libphonenumber-js |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.30.1 | https://github.com/moment/moment |
 | [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.45 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 2.0.3 | https://quilljs.com/ |

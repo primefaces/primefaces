@@ -351,29 +351,28 @@ public class HTML {
     public static final String ARIA_ROLE_SEPARATOR = "separator";
     public static final String ARIA_ROLE_TEXTBOX = "textbox";
 
-    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
-    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";
-    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-left";
-    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-right";
-    public static final String BUTTON_LEFT_ICON_CLASS = "ui-button-icon-left ui-icon ui-c";
-    public static final String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon ui-c";
-    public static final String BUTTON_TEXT_CLASS = "ui-button-text ui-c";
-    public static final String BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "p-button p-widget p-state-default p-button-text-only";
+    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "p-button p-widget p-state-default p-button-icon-only";
+    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "p-button p-widget p-state-default p-button-text-icon-left";
+    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "p-button p-widget p-state-default p-button-text-icon-right";
+    public static final String BUTTON_LEFT_ICON_CLASS = "p-button-icon-left p-c";
+    public static final String BUTTON_RIGHT_ICON_CLASS = "p-button-icon-right p-c";
+    public static final String BUTTON_TEXT_CLASS = "p-button-text p-c";
+    public static final String BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS = "p-button p-widget p-state-default p-button-text-only";
 
-    public static final String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
-    public static final String CHECKBOX_CLASS = "ui-chkbox ui-widget";
-    public static final String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-state-default";
+    public static final String CHECKBOX_ALL_CLASS = "p-chkbox p-chkbox-all p-widget";
+    public static final String CHECKBOX_CLASS = "p-chkbox p-widget";
+    public static final String CHECKBOX_BOX_CLASS = "p-chkbox-box p-widget p-state-default";
     public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "p-hidden-accessible";
-    public static final String CHECKBOX_UNCHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-blank ui-c";
-    public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
-    public static final String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-minus ui-c";
-    public static final String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
+    public static final String CHECKBOX_UNCHECKED_ICON_CLASS = "p-chkbox-icon p-icon p-checkbox-icon p-c";
+    public static final String CHECKBOX_CHECKED_ICON_CLASS = "p-chkbox-icon p-icon p-checkbox-icon p-checkbox-checked-icon p-c";
+    public static final String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "p-chkbox-icon p-icon p-checkbox-icon p-checkbox-indeterminate-icon p-c";
+    public static final String CHECKBOX_LABEL_CLASS = "p-chkbox-label";
 
-    public static final String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
-    public static final String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-state-default";
+    public static final String RADIOBUTTON_CLASS = "p-radiobutton p-widget";
+    public static final String RADIOBUTTON_BOX_CLASS = "p-radiobutton-box p-widget p-state-default";
     public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "p-hidden";
-    public static final String RADIOBUTTON_UNCHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-blank ui-c";
-    public static final String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-bullet ui-c";
+    public static final String RADIOBUTTON_ICON_CLASS = "p-radiobutton-icon p-c";
 
     public static final String WIDGET_VAR = "data-widget";
 
@@ -407,6 +406,7 @@ public class HTML {
         public static final String NUMBER_TYPE = "data-p-notype";
         public static final String HIGHLIGHTER = "data-p-hl";
         public static final String GROUPED = "data-p-grouped";
+        public static final String COMPOSITE = "data-p-composite";
 
         private ValidationMetadata() {
 

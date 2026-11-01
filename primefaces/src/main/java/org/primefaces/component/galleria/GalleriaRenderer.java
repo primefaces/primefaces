@@ -353,7 +353,6 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
         wb.attr("activeIndex", component.getActiveIndex(), 0)
                 .attr("fullScreen", component.isFullScreen(), false)
-                .attr("closeIcon", component.getCloseIcon(), null)
                 .attr("numVisible", component.getNumVisible(), 3)
                 .attr("showThumbnails", component.isShowThumbnails(), true)
                 .attr("showIndicators", component.isShowIndicators(), false)

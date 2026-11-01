@@ -44,6 +44,10 @@ You can use the `buttonIcon` attribute to display an icon in place of the button
 
 In the above example, the menu button will display the "save" icon (`pi pi-save`) instead of a text label.
 
+### Icons
+Without `icon` the button shows the dropdown icon, the icon token `--p-button-dropdown-icon` of the theme (see
+[Theming](/core/theming.md?id=icons)), rendered as `<span class="p-button-icon-left p-icon p-dropdown-icon p-button-dropdown-icon p-c">`.
+
 
 ## Client Side API
 Widget: `PrimeFaces.widget.MenuButton`
@@ -62,10 +66,10 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-| .ui-menu | Container element of menu.
-| .ui-menu-list | List container
-| .ui-menuitem | Each menu item
-| .ui-menuitem-link | Anchor element in a link item
-| .ui-menuitem-text | Text element in an item
-| .ui-button | Button element
-| .ui-button-text | Label of button
+| .p-menu | Container element of menu.
+| .p-menu-list | List container
+| .p-menuitem | Each menu item
+| .p-menuitem-link | Anchor element in a link item
+| .p-menuitem-text | Text element in an item
+| .p-button | Button element
+| .p-button-text | Label of button

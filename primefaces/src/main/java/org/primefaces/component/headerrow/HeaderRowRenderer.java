@@ -82,7 +82,7 @@ public class HeaderRowRenderer extends CoreRenderer<HeaderRow> {
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
         writer.writeAttribute("href", "#", null);
         writer.startElement("span", null);
-        writer.writeAttribute("class", expanded ? DataTable.ROW_GROUP_TOGGLER_OPEN_ICON_CLASS : DataTable.ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS, null);
+        writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_ICON_CLASS, null);
         writer.endElement("span");
         writer.endElement("a");
     }

@@ -42,14 +42,14 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-badge | Badge element
-|.ui-overlay-badge | Wrapper of a badge and its target.
-|.ui-badge-dot | Badge element with no value.
-|.ui-badge-success | Badge element with success severity.
-|.ui-badge-info | Badge element with info severity.
-|.ui-badge-warning | Badge element with warning severity.
-|.ui-badge-danger | Badge element with danger severity.
-|.ui-badge-secondary | Badge element with secondary severity.
-|.ui-badge-help | Badge element with help severity.
-|.ui-badge-lg | Large badge element
-|.ui-badge-xl | Extra large badge element
+|.p-badge | Badge element
+|.p-overlay-badge | Wrapper of a badge and its target.
+|.p-badge-dot | Badge element with no value.
+|.p-badge-success | Badge element with success severity.
+|.p-badge-info | Badge element with info severity.
+|.p-badge-warning | Badge element with warning severity.
+|.p-badge-danger | Badge element with danger severity.
+|.p-badge-secondary | Badge element with secondary severity.
+|.p-badge-help | Badge element with help severity.
+|.p-badge-lg | Large badge element
+|.p-badge-xl | Extra large badge element

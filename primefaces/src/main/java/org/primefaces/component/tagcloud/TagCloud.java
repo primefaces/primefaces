@@ -46,7 +46,7 @@ public class TagCloud extends TagCloudBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TagCloud";
 
-    public static final String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content";
+    public static final String STYLE_CLASS = "p-tagcloud p-widget p-widget-content";
 
     @Override
     public void queueEvent(FacesEvent event) {

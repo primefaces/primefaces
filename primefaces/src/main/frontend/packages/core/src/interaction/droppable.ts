@@ -6,7 +6,7 @@ export interface DroppableOptions extends InteractionOptions {
     accept: string | ((this: HTMLElement, draggable: JQuery) => boolean);
     /** Class added while an accepted draggable is dragged. */
     activeClass: string | false;
-    /** Additional classes for `ui-droppable-active` / `ui-droppable-hover`. */
+    /** Additional classes for `p-droppable-active` / `p-droppable-hover`. */
     classes: Record<string, string>;
     /** Whether a drop on this droppable is not propagated to parent droppables. */
     greedy: boolean;
@@ -166,7 +166,7 @@ export class Droppable extends Interaction<DroppableOptions> {
      * @param on Whether to add the classes.
      */
     private toggleClasses(state: 'active' | 'hover', on: boolean): void {
-        const key = 'ui-droppable-' + state;
+        const key = 'p-droppable-' + state;
         const custom = state === 'active' ? this.options.activeClass : this.options.hoverClass;
         this.element.toggleClass([key, this.options.classes[key] ?? '', custom || ''].join(' ').trim(), on);
     }

@@ -35,19 +35,19 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class Dialog extends AbstractComponent {
 
-    @FindBy(className = "ui-dialog-content")
+    @FindBy(className = "p-dialog-content")
     private WebElement content;
 
-    @FindBy(className = "ui-dialog-title")
+    @FindBy(className = "p-dialog-title")
     private WebElement title;
 
-    @FindBy(className = "ui-dialog-titlebar-close")
+    @FindBy(className = "p-dialog-titlebar-close")
     private WebElement closeButton;
 
-    @FindBy(className = "ui-dialog-titlebar-minimize")
+    @FindBy(className = "p-dialog-titlebar-minimize")
     private WebElement minimizeButton;
 
-    @FindBy(className = "ui-dialog-titlebar-maximize")
+    @FindBy(className = "p-dialog-titlebar-maximize")
     private WebElement maximizeButton;
 
     public WebElement getContent() {

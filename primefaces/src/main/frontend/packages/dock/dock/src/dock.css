@@ -1,13 +1,13 @@
 /*
  * Dock: p:dock (Mac OS X like dock with magnifying images)
  *
- * Markup: div.ui-dock.bottom|top > ul.ui-dock-container.left|center|right.bottom|top
- *         > li.ui-dock-item (.active / .prev / .next / .prev-anchor / .next-anchor while hovering)
- *         > a.ui-menuitem-link (.ui-dock-bounce while animating) > em > span (label) + img.ui-dock-image
+ * Markup: div.p-dock.bottom|top > ul.p-dock-container.left|center|right.bottom|top
+ *         > li.p-dock-item (.active / .prev / .next / .prev-anchor / .next-anchor while hovering)
+ *         > a.p-menuitem-link (.p-dock-bounce while animating) > em > span (label) + img.p-dock-image
  * The container uses the PrimeUIX dock tokens, the label and the magnification are PrimeFaces only (the dock block of presets/*.css).
  * Like PrimeUIX the dock is absolutely positioned: put it into a positioned element (or it docks to the page).
  */
-.ui-dock {
+.p-dock {
     position: absolute;
     left: 0;
     z-index: 9999;
@@ -129,7 +129,7 @@
     }
 }
 
-.ui-dock-container {
+.p-dock-container {
     position: relative;
     display: inline-block;
     margin: 0;
@@ -148,7 +148,7 @@
     }
 }
 
-.ui-dock-item {
+.p-dock-item {
     &.active:hover img {
         width: var(--p-dock-item-image-active-size);
     }
@@ -165,11 +165,11 @@
 }
 
 /* bounce animation */
-.ui-dock-bounce {
-    animation: ui-dock-bounce 0.4s 4 alternate ease-out;
+.p-dock-bounce {
+    animation: p-dock-bounce 0.4s 4 alternate ease-out;
 }
 
-@keyframes ui-dock-bounce {
+@keyframes p-dock-bounce {
     0% {
         transform: translateY(0);
     }

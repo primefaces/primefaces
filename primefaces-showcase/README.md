@@ -37,7 +37,7 @@ mvn clean package -Pnon-ee,mojarra-4.0        -- create war file (under target d
 mvn clean package -Pnon-ee,myfaces-4.0        -- create war file (under target directory)
 ```
 
-## Run from sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
+## Run from sources on [http://localhost:8080/](http://localhost:8080/)
 
 ```
 git clone https://github.com/primefaces/primefaces.git

@@ -69,9 +69,9 @@ public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(SpeedDial.CONTAINER_CLASS)
-                .add("ui-speeddial-" + component.getType())
-                .add(!"circle".equals(component.getType()), "ui-speeddial-direction-" + component.getDirection())
-                .add(component.isDisabled(), "ui-disabled")
+                .add("p-speeddial-" + component.getType())
+                .add(!"circle".equals(component.getType()), "p-speeddial-direction-" + component.getDirection())
+                .add(component.isDisabled(), "p-disabled")
                 .add(component.getStyleClass())
                 .build();
         String containerStyle = component.getStyle();
@@ -129,7 +129,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
 
                 String styleClass = getStyleClassBuilder(context)
                         .add(SpeedDial.ITEM_BUTTON_CLASS)
-                        .add(disabled, "ui-disabled")
+                        .add(disabled, "p-disabled")
                         .build();
 
                 writer.writeAttribute("class", styleClass, null);
@@ -200,8 +200,8 @@ public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
         String buttonStyleClass = getStyleClassBuilder(context)
                 .add(HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
                 .add(SpeedDial.BUTTON_CLASS)
-                .add(component.isRotateAnimation(), "ui-speeddial-rotate")
-                .add(component.getHideIcon() != null, "ui-speeddial-dual-icon")
+                .add(component.isRotateAnimation(), "p-speeddial-rotate")
+                .add(component.getHideIcon() != null, "p-speeddial-dual-icon")
                 .add(component.getButtonStyleClass())
                 .build();
 
@@ -225,9 +225,10 @@ public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        //show icon
+        //show icon: the icon of the application or the icon token of the theme
+        String showIcon = LangUtils.isNotEmpty(component.getShowIcon()) ? component.getShowIcon() : SpeedDial.SHOW_ICON_CLASS;
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + component.getShowIcon(), null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + showIcon, null);
         writer.endElement("span");
 
         //hide icon

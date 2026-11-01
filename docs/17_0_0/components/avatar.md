@@ -87,18 +87,18 @@ structural style classes;
 
 | Name | Element |
 | --- | --- |
-|.ui-avatar | Container element.
-|.ui-avatar-circle | Container element with a circle shape.
-|.ui-avatar-text | Text of the Avatar.
-|.ui-avatar-icon | Icon of the Avatar.
-|.ui-avatar-lg | Container element with a large size.
-|.ui-avatar-xl | Container element with an xlarge size.
-|.ui-avatar-dynamic | Container element with dynamic color.
-|.ui-avatar-dark | Container element with dark dynamic color.
-|.ui-avatar-light | Container element with light dynamic color.
+|.p-avatar | Container element.
+|.p-avatar-circle | Container element with a circle shape.
+|.p-avatar-text | Text of the Avatar.
+|.p-avatar-icon | Icon of the Avatar.
+|.p-avatar-lg | Container element with a large size.
+|.p-avatar-xl | Container element with an xlarge size.
+|.p-avatar-dynamic | Container element with dynamic color.
+|.p-avatar-dark | Container element with dark dynamic color.
+|.p-avatar-light | Container element with light dynamic color.
 
 ## Skinning of AvatarGroup
 
 | Name | Element |
 | --- | --- |
-|.ui-avatar-group | Container element.
+|.p-avatar-group | Container element.

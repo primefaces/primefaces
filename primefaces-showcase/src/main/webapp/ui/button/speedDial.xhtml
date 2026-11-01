@@ -17,92 +17,92 @@
 
     <ui:define name="head">
         <style>
-            .speeddial-linear-demo .ui-speeddial-direction-up {
+            .speeddial-linear-demo .p-speeddial-direction-up {
                 left: calc(50% - 2rem);
                 bottom: 0;
             }
 
-            .speeddial-linear-demo .ui-speeddial-direction-down {
+            .speeddial-linear-demo .p-speeddial-direction-down {
                 left: calc(50% - 2rem);
                 top: 0;
             }
 
-            .speeddial-linear-demo .ui-speeddial-direction-left {
+            .speeddial-linear-demo .p-speeddial-direction-left {
                 right: 0;
                 top: calc(50% - 2rem);
             }
 
-            .speeddial-linear-demo .ui-speeddial-direction-right {
+            .speeddial-linear-demo .p-speeddial-direction-right {
                 left: 0;
                 top: calc(50% - 2rem);
             }
 
-            .speeddial-circle-demo .ui-speeddial-circle {
+            .speeddial-circle-demo .p-speeddial-circle {
                 top: calc(50% - 2rem);
                 left: calc(50% - 2rem);
             }
 
-            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-up {
+            .speeddial-circle-demo .p-speeddial-semi-circle.p-speeddial-direction-up {
                  left: calc(50% - 2rem);
                  bottom: 0;
             }
 
-            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-down {
+            .speeddial-circle-demo .p-speeddial-semi-circle.p-speeddial-direction-down {
                  left: calc(50% - 2rem);
                  top: 0;
             }
 
-            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-left {
+            .speeddial-circle-demo .p-speeddial-semi-circle.p-speeddial-direction-left {
                  right: 0;
                  top: calc(50% - 2rem);
             }
 
-            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-right {
+            .speeddial-circle-demo .p-speeddial-semi-circle.p-speeddial-direction-right {
                  left: 0;
                  top: calc(50% - 2rem);
             }
 
-            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-up-left {
+            .speeddial-circle-demo .p-speeddial-quarter-circle.p-speeddial-direction-up-left {
                  right: 0;
                  bottom: 0;
             }
 
-            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-up-right {
+            .speeddial-circle-demo .p-speeddial-quarter-circle.p-speeddial-direction-up-right {
                  left: 0;
                  bottom: 0;
             }
 
-            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-down-left {
+            .speeddial-circle-demo .p-speeddial-quarter-circle.p-speeddial-direction-down-left {
                  right: 0;
                  top: 0;
             }
 
-            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-down-right {
+            .speeddial-circle-demo .p-speeddial-quarter-circle.p-speeddial-direction-down-right {
                  left: 0;
                  top: 0;
             }
 
-            .speeddial-tooltip-demo .ui-speeddial-direction-up.speeddial-left {
+            .speeddial-tooltip-demo .p-speeddial-direction-up.speeddial-left {
                  left: 0;
                  bottom: 0;
             }
 
-            .speeddial-tooltip-demo .ui-speeddial-direction-up.speeddial-right {
+            .speeddial-tooltip-demo .p-speeddial-direction-up.speeddial-right {
                  right: 0;
                  bottom: 0;
             }
 
-            .speeddial-delay-demo .ui-speeddial-direction-up {
+            .speeddial-delay-demo .p-speeddial-direction-up {
                 left: calc(50% - 2rem);
                 bottom: 0;
             }
 
-            .speeddial-mask-demo .ui-speeddial-direction-up {
+            .speeddial-mask-demo .p-speeddial-direction-up {
                 right: 0;
                 bottom: 0;
             }
 
-            .speeddial-dynamicitem-demo .ui-speeddial-direction-down {
+            .speeddial-dynamicitem-demo .p-speeddial-direction-down {
                 left: calc(50% - 2rem);
                 top: 0;
             }
@@ -155,7 +155,7 @@
             <div class="card">
                 <h5>Circle, Semi-Circle and Quarter-Circle</h5>
                 <div class="speeddial-circle-demo" style="position: relative; height: 500px">
-                    <p:speedDial radius="80" type="circle" buttonStyleClass="ui-button-warning">
+                    <p:speedDial radius="80" type="circle" buttonStyleClass="p-button-warning">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
@@ -195,7 +195,7 @@
                         <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
                     </p:speedDial>
 
-                    <p:speedDial radius="120" direction="up-left" type="quarter-circle" buttonStyleClass="ui-button-success">
+                    <p:speedDial radius="120" direction="up-left" type="quarter-circle" buttonStyleClass="p-button-success">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
@@ -203,7 +203,7 @@
                         <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
                     </p:speedDial>
 
-                    <p:speedDial radius="120" direction="up-right" type="quarter-circle" buttonStyleClass="ui-button-success">
+                    <p:speedDial radius="120" direction="up-right" type="quarter-circle" buttonStyleClass="p-button-success">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
@@ -211,7 +211,7 @@
                         <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
                     </p:speedDial>
 
-                    <p:speedDial radius="120" direction="down-left" type="quarter-circle" buttonStyleClass="ui-button-success">
+                    <p:speedDial radius="120" direction="down-left" type="quarter-circle" buttonStyleClass="p-button-success">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
@@ -219,7 +219,7 @@
                         <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
                     </p:speedDial>
 
-                    <p:speedDial radius="120" direction="down-right" type="quarter-circle" buttonStyleClass="ui-button-success">
+                    <p:speedDial radius="120" direction="down-right" type="quarter-circle" buttonStyleClass="p-button-success">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
@@ -232,7 +232,7 @@
             <div class="card">
                 <h5>Tooltip and Keep Open</h5>
                 <div class="speeddial-tooltip-demo" style="position: relative; height: 350px">
-                    <p:speedDial direction="up" styleClass="speeddial-right" buttonStyleClass="ui-button-danger"
+                    <p:speedDial direction="up" styleClass="speeddial-right" buttonStyleClass="p-button-danger"
                                  keepOpen="true">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" title="Add"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages" title="Update"/>
@@ -241,7 +241,7 @@
                         <p:menuitem icon="pi pi-external-link" title="PrimeFaces" url="https://www.primefaces.org"/>
                     </p:speedDial>
 
-                    <p:speedDial direction="up" styleClass="speeddial-left" buttonStyleClass="ui-button-help"
+                    <p:speedDial direction="up" styleClass="speeddial-left" buttonStyleClass="p-button-help"
                                  keepOpen="true">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" title="Add"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages" title="Update"/>
@@ -256,7 +256,7 @@
                 <h5>Transition Duration and Icon</h5>
                 <div class="speeddial-delay-demo" style="position: relative; height: 350px">
                     <p:speedDial direction="up" transitionDelay="80" showIcon="pi pi-bars" hideIcon="pi pi-times"
-                                 buttonStyleClass="ui-button-outlined">
+                                 buttonStyleClass="p-button-outlined">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>

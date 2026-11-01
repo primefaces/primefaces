@@ -61,6 +61,7 @@ public class AppMenu {
         ajaxMenuItems.add(new MenuItem("Validation", "/ui/ajax/validation"));
         ajaxMenuItems.add(new MenuItem("RemoteCommand", "/ui/ajax/remoteCommand"));
         ajaxMenuItems.add(new MenuItem("Observer", "/ui/ajax/observer"));
+        ajaxMenuItems.add(new MenuItem("Callback", "/ui/ajax/callback", "New"));
         ajaxMenuItems.add(new MenuItem("Poll", "/ui/ajax/poll"));
         ajaxMenuItems.add(new MenuItem("Fragment", "/ui/ajax/fragment"));
         ajaxMenuItems.add(new MenuItem("Status", "/ui/ajax/status"));
@@ -116,6 +117,8 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("InputGroup", "/ui/input/inputGroup"));
         formMenuItems.add(new MenuItem("InputMask", "/ui/input/inputMask"));
         formMenuItems.add(new MenuItem("InputNumber", "/ui/input/inputNumber"));
+        formMenuItems.add(new MenuItem("InputOtp", "/ui/input/inputOtp", "New"));
+        formMenuItems.add(new MenuItem("InputPhone", "/ui/input/inputPhone", "New"));
         formMenuItems.add(new MenuItem("InputText", "/ui/input/inputText"));
         formMenuItems.add(new MenuItem("InputTextArea", "/ui/input/inputTextarea"));
         formMenuItems.add(new MenuItem("KeyFilter", "/ui/input/keyFilter"));
@@ -140,6 +143,7 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("TextEditor", "/ui/input/textEditor"));
         formMenuItems.add(new MenuItem("ToggleSwitch", "/ui/input/toggleSwitch"));
         formMenuItems.add(new MenuItem("TriStateCheckbox", "/ui/input/triStateCheckbox"));
+        formMenuItems.add(new MenuItem("TriStateManyCheckbox", "/ui/input/triStateManyCheckbox", "New"));
         menuCategories.add(new MenuCategory("Form", formMenuItems));
         //FORM CATEGORY END
 

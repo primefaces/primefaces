@@ -71,17 +71,17 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
         this.cfg.goodLabel = this.cfg.goodLabel || this.getLabel('medium');
         this.cfg.strongLabel = this.cfg.strongLabel || this.getLabel('strong');
 
-        var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
+        var panelStyle = this.cfg.inline ? 'p-password-panel-inline' : 'p-password-panel-overlay';
 
         //create panel element
-        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-password-panel ui-widget ui-state-highlight p-hidden ' + panelStyle + '">';
-        panelMarkup += '<div class="ui-password-meter" style="background-position:0pt 0pt">&nbsp;</div>';
-        panelMarkup += '<div class="ui-password-info">' + PrimeFaces.escapeHTML(this.cfg.promptLabel) + '</div>';
+        var panelMarkup = '<div id="' + this.id + '_panel" class="p-password-panel p-widget p-state-highlight p-hidden ' + panelStyle + '">';
+        panelMarkup += '<div class="p-password-meter" style="background-position:0pt 0pt">&nbsp;</div>';
+        panelMarkup += '<div class="p-password-info">' + PrimeFaces.escapeHTML(this.cfg.promptLabel) + '</div>';
         panelMarkup += '</div>';
 
         this.panel = $(panelMarkup).insertAfter(this.jq);
-        this.meter = this.panel.children('div.ui-password-meter');
-        this.infoText = this.panel.children('div.ui-password-info');
+        this.meter = this.panel.children('div.p-password-meter');
+        this.infoText = this.panel.children('div.p-password-info');
 
         //events
         this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent + ' keyup.password')
@@ -125,7 +125,7 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
         //overlay setting
         if (!this.cfg.inline) {
             this.panel.appendTo('body');
-            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'p-connected-overlay');
         }
 
         // the panel is created on init (if enabled), so remove it on refresh too
@@ -207,11 +207,11 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
         }
 
         if (this.jq.attr('type') === 'password') {
-            this.jq.attr('type', 'text').parent().removeClass('ui-password-masked').addClass('ui-password-unmasked');
+            this.jq.attr('type', 'text').parent().removeClass('p-password-masked').addClass('p-password-unmasked');
             this.icon.attr('aria-checked', 'false').attr('aria-label', this.getAriaLabel('passwordHide', 'Hide Password'));;
         }
         else {
-            this.jq.attr('type', 'password').parent().removeClass('ui-password-unmasked').addClass('ui-password-masked');
+            this.jq.attr('type', 'password').parent().removeClass('p-password-unmasked').addClass('p-password-masked');
             this.icon.attr('aria-checked', 'true').attr('aria-label', this.getAriaLabel('passwordShow', 'Show Password'));
         }
     }

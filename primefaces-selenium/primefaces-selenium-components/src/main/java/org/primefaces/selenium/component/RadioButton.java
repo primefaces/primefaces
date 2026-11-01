@@ -34,11 +34,11 @@ import org.openqa.selenium.support.FindBy;
  */
 public abstract class RadioButton extends AbstractComponent {
 
-    @FindBy(css = ".ui-radiobutton-box")
+    @FindBy(css = ".p-radiobutton-box")
     private WebElement box;
 
     public boolean isSelected() {
-        return PrimeSelenium.hasCssClass(box, "ui-state-active");
+        return PrimeSelenium.hasCssClass(box, "p-state-active");
     }
 
     public void select() {

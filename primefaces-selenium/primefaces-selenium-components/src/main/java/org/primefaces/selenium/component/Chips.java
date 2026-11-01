@@ -51,12 +51,12 @@ public abstract class Chips extends AbstractInputComponent {
     public List<String> getValues() {
         List<WebElement> chipTokens = getChipTokens();
         return chipTokens.stream()
-                    .map(token -> token.findElement(By.className("ui-chips-token-label")).getText())
+                    .map(token -> token.findElement(By.className("p-chips-token-label")).getText())
                     .collect(Collectors.toList());
     }
 
     public List<WebElement> getChipTokens() {
-        return findElements(By.cssSelector("ul li.ui-chips-token"));
+        return findElements(By.cssSelector("ul li.p-chips-token"));
     }
 
     public void addValue(String value) {
@@ -72,8 +72,8 @@ public abstract class Chips extends AbstractInputComponent {
 
     public void removeValue(String value) {
         for (WebElement chipToken : getChipTokens()) {
-            if (chipToken.findElement(By.className("ui-chips-token-label")).getText().equals(value)) {
-                WebElement closeIcon = chipToken.findElement(By.className("ui-icon-close"));
+            if (chipToken.findElement(By.className("p-chips-token-label")).getText().equals(value)) {
+                WebElement closeIcon = chipToken.findElement(By.className("p-chips-token-icon"));
                 if (ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect")) {
                     PrimeSelenium.guardAjax(closeIcon).click();
                 }

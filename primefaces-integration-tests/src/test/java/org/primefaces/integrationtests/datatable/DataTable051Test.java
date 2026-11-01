@@ -134,9 +134,9 @@ class DataTable051Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
         assertHistory(page,
                 "count()",
                 "load(first=0, size=3)",

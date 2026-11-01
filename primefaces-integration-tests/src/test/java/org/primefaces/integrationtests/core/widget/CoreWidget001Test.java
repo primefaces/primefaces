@@ -141,7 +141,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         List<WebElement> items = page.orderListItems();
         Actions actions = new Actions(getWebDriver());
         actions.clickAndHold(items.get(0)).moveByOffset(0, 10).perform();
-        assertEquals(1L, (Long) PrimeSelenium.executeScript("return document.querySelectorAll('.ui-sortable-helper').length;"));
+        assertEquals(1L, (Long) PrimeSelenium.executeScript("return document.querySelectorAll('.p-sortable-helper').length;"));
 
         // Act: the list is replaced while the item is dragged
         PrimeSelenium.executeScript(true, "PrimeFaces.ab({s: 'form:btnUpdate', p: 'form:btnUpdate', u: 'form:wrapper'});");
@@ -149,7 +149,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
 
         // Assert
         assertEquals(0L, (Long) PrimeSelenium.executeScript(
-                    "return document.querySelectorAll('.ui-sortable-helper, .ui-sortable-placeholder').length;"));
+                    "return document.querySelectorAll('.p-sortable-helper, .p-sortable-placeholder').length;"));
         assertSameState(initialState, globalState());
         assertEquals("Alpha", page.orderListItems().get(0).getText());
         assertNoJavascriptErrors();
@@ -191,20 +191,20 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         assertTrue(Math.abs(resized.getWidth() - (size.getWidth() + 35)) <= 2, size + " -> " + resized);
         assertTrue(resized.getHeight() > size.getHeight(), size + " -> " + resized);
         assertEquals(0L, (Long) PrimeSelenium.executeScript(
-                    "return document.querySelectorAll('.ui-draggable-dragging, .ui-resizable-resizing').length;"));
+                    "return document.querySelectorAll('.p-draggable-dragging, .p-resizable-resizing').length;"));
         assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
 
         /** The dialog box, the element with the client id is a container covering the viewport. */
-        @FindBy(css = "[id='form:dlg'] > .ui-dialog-box")
+        @FindBy(css = "[id='form:dlg'] > .p-dialog-box")
         WebElement dialogBox;
 
-        @FindBy(css = "[id='form:dlg'] .ui-dialog-titlebar")
+        @FindBy(css = "[id='form:dlg'] .p-dialog-titlebar")
         WebElement dialogTitleBar;
 
-        @FindBy(css = "[id='form:dlg'] .ui-resizable-se")
+        @FindBy(css = "[id='form:dlg'] .p-resizable-se")
         WebElement dialogResizeHandle;
 
         @FindBy(id = "form:btnUpdate")
@@ -214,7 +214,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         WebElement btnToggle;
 
         List<WebElement> orderListItems() {
-            return getWebDriver().findElements(By.cssSelector("[id='form:orderList'] .ui-orderlist-list .ui-orderlist-item"));
+            return getWebDriver().findElements(By.cssSelector("[id='form:orderList'] .p-orderlist-list .p-orderlist-item"));
         }
 
         @Override

@@ -3,10 +3,10 @@
  *
  * The boxes are styled in forms/checkbox.css; this file only lays out the options, labels and group headers
  * (options are separated by the label end margin).
- * Markup: .ui-selectmanycheckbox.ui-grid-responsive > .ui-g (or .grid) > .ui-g-* > .ui-chkbox + label
- * Supported classes: layout-line-direction, ui-selectmanycheckbox-responsive-group, ui-state-disabled (on an option label)
+ * Markup: .p-selectmanycheckbox.ui-grid-responsive > .ui-g (or .grid) > .ui-g-* > .p-chkbox + label
+ * Supported classes: layout-line-direction, p-selectmanycheckbox-responsive-group, p-state-disabled (on an option label)
  */
-.ui-selectmanycheckbox {
+.p-selectmanycheckbox {
     &.layout-line-direction.ui-grid-responsive > div,
     &.layout-line-direction.ui-grid-responsive > div label {
         display: inline;
@@ -51,21 +51,21 @@
         outline: 0 none;
         z-index: 1;
 
-        &.ui-state-disabled {
+        &.p-state-disabled {
             cursor: default;
         }
     }
 
-    .ui-chkbox .ui-chkbox-box {
+    .p-chkbox .p-chkbox-box {
         display: block;
     }
 
-    .ui-selectmanycheckbox-item-group {
+    .p-selectmanycheckbox-item-group {
         color: var(--p-selectmanycheckbox-group-color);
         font-weight: var(--p-selectmanycheckbox-group-font-weight);
     }
 
-    .ui-selectmanycheckbox-responsive-group {
+    .p-selectmanycheckbox-responsive-group {
         padding: var(--p-selectmanycheckbox-group-padding);
     }
 }

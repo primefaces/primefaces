@@ -43,7 +43,7 @@ public abstract class Menubar extends AbstractInputComponent {
     }
 
     public WebElement findMenuitemByValue(WebElement parentElt, String value) {
-        List<WebElement> subElements = parentElt.findElements(By.cssSelector("ul > li.ui-menuitem"));
+        List<WebElement> subElements = parentElt.findElements(By.cssSelector("ul > li.p-menuitem"));
         return subElements.stream()
                 .filter(e -> e.getText().equals(value))
                 .findFirst()
@@ -70,7 +70,7 @@ public abstract class Menubar extends AbstractInputComponent {
     public WebElement selectMenuitemByValue(WebElement parentElt, String value) {
         WebElement elt = findMenuitemByValue(parentElt, value);
 
-        if ((PrimeSelenium.hasCssClass(elt, "ui-menu-parent")) && isToggleEventHover()) {
+        if ((PrimeSelenium.hasCssClass(elt, "p-menu-parent")) && isToggleEventHover()) {
             Actions actions = new Actions(getWebDriver());
             actions.moveToElement(elt).build().perform();
         }

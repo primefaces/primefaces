@@ -34,8 +34,8 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
         super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.value = this.getValue();
-        this.stars = this.jq.children('.ui-rating-star');
-        this.cancel = this.jq.children('.ui-rating-cancel');
+        this.stars = this.jq.children('.p-rating-star');
+        this.cancel = this.jq.children('.p-rating-cancel');
         this.tabindex = this.jq.attr('tabindex');
 
         if(!this.cfg.disabled && !this.cfg.readonly) {
@@ -76,7 +76,7 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
         }).on("focus.rating", function(){
             $this.focus($this.getFocusableElement());
         }).on("blur.rating", function(){
-            $this.jq.children('.ui-state-focus').removeClass("ui-state-focus");
+            $this.jq.children('.p-state-focus').removeClass("p-state-focus");
         });
 
         this.stars.on("click.rating", function() {
@@ -87,9 +87,9 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
         });
 
         this.cancel.on("mouseenter.rating", function() {
-            $(this).addClass('ui-rating-cancel-hover');
+            $(this).addClass('p-rating-cancel-hover');
         }).on("mouseleave.rating", function() {
-            $(this).removeClass('ui-rating-cancel-hover');
+            $(this).removeClass('p-rating-cancel-hover');
         }).on("click.rating", function() {
             $this.reset();
             $this.focus($(this), true);
@@ -103,8 +103,8 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
      */
     focus(star, isInputFocus) {
         if (!this.cfg.disabled && star) {
-            this.jq.children('.ui-state-focus').removeClass("ui-state-focus");
-            star.addClass('ui-state-focus');
+            this.jq.children('.p-state-focus').removeClass("p-state-focus");
+            star.addClass('p-state-focus');
             
             if (isInputFocus) {
                 this.input.focus();
@@ -180,9 +180,9 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
         this.updateInput(newValue);
 
         //update visuals
-        this.stars.removeClass('ui-rating-star-on');
+        this.stars.removeClass('p-rating-star-on');
         for(var i = 0; i < newValue; i++) {
-            this.stars.eq(i).addClass('ui-rating-star-on');
+            this.stars.eq(i).addClass('p-rating-star-on');
         }
 
         //invoke callback
@@ -199,7 +199,7 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
      * @return {boolean} `true` if this rating widget is disabled, `false` otherwise.
      */
     isDisabled() {
-        return this.jq.hasClass('ui-state-disabled');
+        return this.jq.hasClass('p-state-disabled');
     }
 
     /**
@@ -245,7 +245,7 @@ PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
     reset() {
         this.updateInput('0');
 
-        this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
+        this.stars.filter('.p-rating-star-on').removeClass('p-rating-star-on');
 
         this.callBehavior('cancel');
     }

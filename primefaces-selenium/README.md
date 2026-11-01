@@ -106,6 +106,8 @@ Currently, only the following components are implemented (partially):
 - FileUpload
 - InputMask
 - InputNumber
+- InputOtp
+- InputPhone
 - ~~InputSwitch~~ (use ToggleSwitch)
 - InputText
 - InputTextarea
@@ -136,6 +138,7 @@ Currently, only the following components are implemented (partially):
 - Tree
 - TreeTable
 - TriStateCheckbox
+- TriStateManyCheckbox
 
 ## Usage
 

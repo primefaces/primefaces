@@ -75,13 +75,12 @@ public class MenubarRenderer extends TieredMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Object parent = submenu.getParent();
         String icon = null;
-        String rtlStyleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
 
         if (parent == null) {
-            icon = (submenu.getId().startsWith("_")) ? Menu.SUBMENU_DOWN_ICON_CLASS : rtlStyleClass;
+            icon = (submenu.getId().startsWith("_")) ? Menu.MENUBAR_SUBMENU_ICON_CLASS : Menu.SUBMENU_ICON_CLASS;
         }
         else {
-            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : rtlStyleClass;
+            icon = (parent instanceof Menubar) ? Menu.MENUBAR_SUBMENU_ICON_CLASS : Menu.SUBMENU_ICON_CLASS;
         }
 
         writer.startElement("span", null);

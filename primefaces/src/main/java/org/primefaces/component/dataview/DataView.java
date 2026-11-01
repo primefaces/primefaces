@@ -54,18 +54,20 @@ public class DataView extends DataViewBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataView";
 
-    public static final String DATAVIEW_CLASS = "ui-dataview ui-widget";
-    public static final String LIST_LAYOUT_CLASS = "ui-dataview-list";
-    public static final String GRID_LAYOUT_CLASS = "ui-dataview-grid";
-    public static final String HEADER_CLASS = "ui-dataview-header ui-widget-header";
-    public static final String FOOTER_CLASS = "ui-dataview-footer ui-widget-header";
-    public static final String CONTENT_CLASS = "ui-dataview-content ui-widget-content";
-    public static final String BUTTON_CONTAINER_CLASS = "ui-dataview-layout-options ui-selectonebutton ui-buttonset";
-    public static final String BUTTON_CLASS = "ui-button ui-button-icon-only ui-state-default";
-    public static final String LIST_LAYOUT_CONTAINER_CLASS = "ui-dataview-list-container";
-    public static final String ROW_CLASS = "ui-dataview-row";
-    public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row";
-    public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
+    public static final String DATAVIEW_CLASS = "p-dataview p-widget";
+    public static final String LIST_LAYOUT_CLASS = "p-dataview-list";
+    public static final String GRID_LAYOUT_CLASS = "p-dataview-grid";
+    public static final String HEADER_CLASS = "p-dataview-header p-widget-header";
+    public static final String FOOTER_CLASS = "p-dataview-footer p-widget-header";
+    public static final String CONTENT_CLASS = "p-dataview-content p-widget-content";
+    public static final String BUTTON_CONTAINER_CLASS = "p-dataview-layout-options p-selectonebutton p-buttonset";
+    public static final String BUTTON_CLASS = "p-button p-button-icon-only p-state-default";
+    public static final String LIST_LAYOUT_ICON_CLASS = "p-button-icon-left p-icon p-list-icon p-dataview-list-layout-icon p-c";
+    public static final String GRID_LAYOUT_ICON_CLASS = "p-button-icon-left p-icon p-grid-icon p-dataview-grid-layout-icon p-c";
+    public static final String LIST_LAYOUT_CONTAINER_CLASS = "p-dataview-list-container";
+    public static final String ROW_CLASS = "p-dataview-row";
+    public static final String GRID_LAYOUT_ROW_CLASS = "p-dataview-row";
+    public static final String GRID_LAYOUT_COLUMN_CLASS = "p-dataview-column";
 
     private DataViewGridItem gridItem;
     private DataViewListItem listItem;

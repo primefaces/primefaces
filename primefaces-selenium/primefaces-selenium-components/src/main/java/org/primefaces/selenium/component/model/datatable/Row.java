@@ -46,7 +46,7 @@ public class Row {
 
     public WebElement getToggler() {
         try {
-            return webElement.findElement(By.className("ui-row-toggler"));
+            return webElement.findElement(By.className("p-row-toggler"));
         }
         catch (NoSuchElementException e) {
             return null; // Ignore, its optional

@@ -1,31 +1,37 @@
 /*
  * SpeedDial: p:speedDial
  *
- * Markup: div[id] > .ui-speeddial (.ui-speeddial-linear|circle|semi-circle|quarter-circle, .ui-speeddial-direction-*,
- *         .ui-speeddial-opened, .ui-disabled)
- *         > button.ui-speeddial-button.ui-button.ui-button-icon-only.rounded-button (.ui-speeddial-rotate, .ui-speeddial-dual-icon)
- *         + ul.ui-speeddial-list > li.ui-speeddial-item > a.ui-speeddial-action (> .ui-speeddial-action-icon + .ui-menuitem-text)
- *         + div.ui-speeddial-mask (optional, .ui-speeddial-mask-visible)
+ * Markup: div[id] > .p-speeddial (.p-speeddial-linear|circle|semi-circle|quarter-circle, .p-speeddial-direction-*,
+ *         .p-speeddial-opened, .p-disabled)
+ *         > button.p-speeddial-button.p-button.p-button-icon-only.rounded-button (.p-speeddial-rotate, .p-speeddial-dual-icon)
+ *         + ul.p-speeddial-list > li.p-speeddial-item > a.p-speeddial-action (> .p-speeddial-action-icon + .p-menuitem-text)
+ *         + div.p-speeddial-mask (optional, .p-speeddial-mask-visible)
  * Like PrimeUIX: the main button is a rounded button (button.css), the actions are small rounded secondary buttons.
  * The item / mask / rotate animations keep their fixed timings, like PrimeUIX.
+ * Main button icon: the showIcon / hideIcon of the application, without showIcon span.p-icon.p-plus-icon.p-speeddial-show-icon
+ * (token --p-speeddial-show-icon, rotated by p-speeddial-rotate when opened).
  */
-.ui-speeddial {
+.p-speeddial {
     position: absolute;
     display: flex;
     z-index: 1;
 
-    .ui-speeddial-rotate .ui-button-icon-left + .ui-button-icon-left {
+    .p-speeddial-show-icon {
+        --_icon: var(--p-speeddial-show-icon);
+    }
+
+    .p-speeddial-rotate .p-button-icon-left + .p-button-icon-left {
         transform: rotate(-90deg);
     }
 
     /* dual icon (showIcon / hideIcon): the second icon lies on top of the first one (centered by the flex button) */
-    .ui-speeddial-button .ui-button-icon-left + .ui-button-icon-left {
+    .p-speeddial-button .p-button-icon-left + .p-button-icon-left {
         position: absolute;
         opacity: 0;
     }
 }
 
-.ui-speeddial-list {
+.p-speeddial-list {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -36,15 +42,15 @@
     pointer-events: none;
 }
 
-.ui-speeddial-item {
+.p-speeddial-item {
     transform: scale(0);
     opacity: 0;
     transition: transform var(--p-speeddial-transition-duration) var(--p-transition-easing), opacity var(--p-speeddial-item-fade-duration);
     will-change: transform;
 }
 
-/* the main button (rounded icon only, incl. ui-button-sm / -lg via buttonStyleClass) is sized by button.css */
-.ui-speeddial-action {
+/* the main button (rounded icon only, incl. p-button-sm / -lg via buttonStyleClass) is sized by button.css */
+.p-speeddial-action {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,22 +70,22 @@
         border-color var(--p-speeddial-transition-duration), outline-color var(--p-speeddial-transition-duration),
         box-shadow var(--p-speeddial-transition-duration);
 
-    .ui-speeddial-action-icon {
+    .p-speeddial-action-icon {
         font-size: var(--p-button-sm-font-size);
     }
 
     /* actions are icon only, an empty label must not take space */
-    .ui-menuitem-text:empty {
+    .p-menuitem-text:empty {
         display: none;
     }
 
-    &:not(.ui-disabled):hover {
+    &:not(.p-disabled):hover {
         background: var(--p-button-secondary-hover-background);
         color: var(--p-button-secondary-hover-color);
         border-color: var(--p-button-secondary-hover-border-color);
     }
 
-    &:not(.ui-disabled):active {
+    &:not(.p-disabled):active {
         background: var(--p-button-secondary-active-background);
         color: var(--p-button-secondary-active-color);
         border-color: var(--p-button-secondary-active-border-color);
@@ -93,19 +99,19 @@
 }
 
 /* disabled: the whole speeddial (disabled="true") or a single action (menuitem disabled) */
-.ui-speeddial.ui-disabled .ui-speeddial-button,
-.ui-speeddial-action.ui-disabled {
+.p-speeddial.p-disabled .p-speeddial-button,
+.p-speeddial-action.p-disabled {
     opacity: var(--p-disabled-opacity);
     cursor: default;
 }
 
-.ui-speeddial-button.ui-speeddial-rotate .ui-button-icon-left {
+.p-speeddial-button.p-speeddial-rotate .p-button-icon-left {
     transition-duration: var(--p-speeddial-rotate-duration);
     transition-timing-function: var(--p-transition-easing);
     transition-property: opacity, transform;
 }
 
-.ui-speeddial-mask {
+.p-speeddial-mask {
     position: absolute;
     left: 0;
     top: 0;
@@ -117,59 +123,59 @@
     transition: opacity var(--p-speeddial-mask-hide-duration) var(--p-transition-easing-exit);
 }
 
-.ui-speeddial-mask-visible {
+.p-speeddial-mask-visible {
     pointer-events: none;
     opacity: 1;
     transition: opacity var(--p-speeddial-mask-show-duration) var(--p-transition-easing-enter);
 }
 
-/* after the .ui-speeddial rules: the opened state wins over them */
-.ui-speeddial-opened {
-    &.ui-speeddial {
+/* after the .p-speeddial rules: the opened state wins over them */
+.p-speeddial-opened {
+    &.p-speeddial {
         z-index: 2;
     }
 
-    .ui-speeddial-list {
+    .p-speeddial-list {
         pointer-events: auto;
     }
 
-    .ui-speeddial-item {
+    .p-speeddial-item {
         transform: scale(1);
         opacity: 1;
     }
 
-    .ui-speeddial-rotate .ui-button-icon-left {
+    .p-speeddial-rotate .p-button-icon-left {
         transform: rotate(45deg);
     }
 
-    .ui-speeddial-dual-icon .ui-button-icon-left {
+    .p-speeddial-dual-icon .p-button-icon-left {
         opacity: 0;
     }
 
-    .ui-button-icon-left + .ui-button-icon-left,
-    .ui-speeddial-button .ui-button-icon-left + .ui-button-icon-left {
+    .p-button-icon-left + .p-button-icon-left,
+    .p-speeddial-button .p-button-icon-left + .p-button-icon-left {
         opacity: 1;
     }
 
-    .ui-speeddial-rotate.ui-speeddial-dual-icon .ui-button-icon-left {
+    .p-speeddial-rotate.p-speeddial-dual-icon .p-button-icon-left {
         transform: rotate(90deg);
     }
 
-    .ui-speeddial-rotate .ui-button-icon-left + .ui-button-icon-left {
+    .p-speeddial-rotate .p-button-icon-left + .p-button-icon-left {
         transform: rotate(0deg);
     }
 }
 
 /* direction */
-.ui-speeddial-direction-up {
+.p-speeddial-direction-up {
     align-items: center;
     flex-direction: column-reverse;
 
-    .ui-speeddial-list {
+    .p-speeddial-list {
         flex-direction: column-reverse;
     }
 
-    .ui-speeddial-item {
+    .p-speeddial-item {
         margin: calc(var(--p-speeddial-gap) / 2) 0;
 
         &:first-child {
@@ -178,15 +184,15 @@
     }
 }
 
-.ui-speeddial-direction-down {
+.p-speeddial-direction-down {
     align-items: center;
     flex-direction: column;
 
-    .ui-speeddial-list {
+    .p-speeddial-list {
         flex-direction: column;
     }
 
-    .ui-speeddial-item {
+    .p-speeddial-item {
         margin: calc(var(--p-speeddial-gap) / 2) 0;
 
         &:first-child {
@@ -195,15 +201,15 @@
     }
 }
 
-.ui-speeddial-direction-left {
+.p-speeddial-direction-left {
     justify-content: center;
     flex-direction: row-reverse;
 
-    .ui-speeddial-list {
+    .p-speeddial-list {
         flex-direction: row-reverse;
     }
 
-    .ui-speeddial-item {
+    .p-speeddial-item {
         margin: 0 calc(var(--p-speeddial-gap) / 2);
 
         &:first-child {
@@ -212,15 +218,15 @@
     }
 }
 
-.ui-speeddial-direction-right {
+.p-speeddial-direction-right {
     justify-content: center;
     flex-direction: row;
 
-    .ui-speeddial-list {
+    .p-speeddial-list {
         flex-direction: row;
     }
 
-    .ui-speeddial-item {
+    .p-speeddial-item {
         margin: 0 calc(var(--p-speeddial-gap) / 2);
 
         &:first-child {
@@ -230,15 +236,15 @@
 }
 
 /* circle types: the widget positions the items, after the direction margins */
-.ui-speeddial-circle,
-.ui-speeddial-semi-circle,
-.ui-speeddial-quarter-circle {
-    .ui-speeddial-item {
+.p-speeddial-circle,
+.p-speeddial-semi-circle,
+.p-speeddial-quarter-circle {
+    .p-speeddial-item {
         position: absolute;
         margin: 0;
     }
 
-    .ui-speeddial-item:first-child {
+    .p-speeddial-item:first-child {
         margin: 0;
     }
 }

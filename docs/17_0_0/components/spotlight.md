@@ -27,8 +27,8 @@ theming section for more information. Following is the list of structural style 
 
 | Class | Applies | 
 | --- | --- | 
-.ui-spotlight | Mask element, common to all regions.
-.ui-spotlight-top | Top mask element.
-.ui-spotlight-bottom | Bottom mask element.
-.ui-spotlight-left | Left mask element.
-.ui-spotlight-right | Right mask element.
+.p-spotlight | Mask element, common to all regions.
+.p-spotlight-top | Top mask element.
+.p-spotlight-bottom | Bottom mask element.
+.p-spotlight-left | Left mask element.
+.p-spotlight-right | Right mask element.

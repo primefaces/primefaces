@@ -134,7 +134,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         String active = resolveActive(context, component);
 
         if (ComponentUtils.isRTL(context, component)) {
-            styleClass = styleClass + " ui-accordion-rtl";
+            styleClass = styleClass + " p-accordion-rtl";
         }
 
         writer.startElement("div", null);
@@ -192,7 +192,6 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     protected void encodeTabs(FacesContext context, AccordionPanel component, String active) throws IOException {
         boolean dynamic = component.isDynamic();
         boolean repeating = component.isRepeating();
-        boolean rtl = "rtl".equalsIgnoreCase(component.getDir());
         boolean noneActive = RESOLVED_ACTIVE_NONE.equalsIgnoreCase(active) || isNoneActive(active); // Safety net if called directly or overridden
 
         Set<String> activeSet = noneActive
@@ -207,7 +206,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                 component.setIndex(i);
                 if (tab.isRendered()) {
                     boolean activated = isActive(tab, activeSet, i);
-                    encodeTab(context, component, tab, i, activated, dynamic, repeating, rtl);
+                    encodeTab(context, component, tab, i, activated, dynamic, repeating);
                 }
             }
 
@@ -221,7 +220,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                 if (child.isRendered() && child instanceof Tab) {
                     Tab tab = (Tab) child;
                     boolean activated = isActive(tab, activeSet, j);
-                    encodeTab(context, component, tab, j, activated, dynamic, repeating, rtl);
+                    encodeTab(context, component, tab, j, activated, dynamic, repeating);
                     j++;
                 }
             }
@@ -236,7 +235,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel component, Tab tab, int index, boolean active, boolean dynamic,
-            boolean repeating, boolean rtl) throws IOException {
+            boolean repeating) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tab.getClientId(context);
@@ -245,14 +244,8 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
         String headerStyleClass = getStyleClassBuilder(context)
             .add(active, AccordionPanel.ACTIVE_TAB_HEADER_CLASS, AccordionPanel.TAB_HEADER_CLASS)
-            .add(tab.isDisabled(), "ui-state-disabled")
+            .add(tab.isDisabled(), "p-state-disabled")
             .add(tab.getTitleStyleClass())
-            .build();
-
-        String iconStyleClass = getStyleClassBuilder(context)
-            .add(active, AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS)
-            .add(!active && rtl, AccordionPanel.TAB_HEADER_ICON_RTL_CLASS)
-            .add(!active && !rtl, AccordionPanel.TAB_HEADER_ICON_CLASS)
             .build();
 
         String contentStyleClass = getStyleClassBuilder(context)
@@ -284,7 +277,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", iconStyleClass, null);
+        writer.writeAttribute("class", AccordionPanel.TAB_HEADER_ICON_CLASS, null);
         writer.endElement("span");
 
         if (FacetUtils.shouldRenderFacet(titleFacet)) {
@@ -299,7 +292,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
         //options menu trigger
         if (optionsMenu != null) {
-            encodeIcon(context, tab, "ui-icon-gear", clientId + "_menu", tab.getMenuTitle(), null);
+            encodeIcon(context, tab, AccordionPanel.TAB_HEADER_MENU_ICON_CLASS, clientId + "_menu", tab.getMenuTitle(), null);
         }
 
         //actions
@@ -380,7 +373,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         writer.writeAttribute("onclick", "event.stopPropagation()", null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon " + iconClass, null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
 
         writer.endElement("a");

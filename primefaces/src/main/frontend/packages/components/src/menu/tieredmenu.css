@@ -1,11 +1,11 @@
 /*
  * TieredMenu: p:tieredMenu
  *
- * The tiered markup (.ui-menu-parent > .ui-menu-child overlay submenus, item hover / active states) is shared with
+ * The tiered markup (.p-menu-parent > .p-menu-child overlay submenus, item hover / active states) is shared with
  * p:menubar, p:megaMenu and p:contextMenu and styled by menu/menu.base.css; this file only maps the tieredmenu tokens.
  */
 
-.ui-menu.ui-tieredmenu {
+.p-menu.p-tieredmenu {
     --_bg: var(--p-tieredmenu-background);
     --_border-color: var(--p-tieredmenu-border-color);
     --_border-radius: var(--p-tieredmenu-border-radius);

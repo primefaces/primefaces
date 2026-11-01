@@ -64,6 +64,20 @@ function customFilter(itemLabel, filterValue) {
 }
 ```
 
+## Keyboard Navigation
+By default the option that gets the focus while navigating with the keyboard is selected: with a closed overlay, the arrow
+keys and typing the first letters of an option change the value right away, and with an open overlay the label shows the
+highlighted option. Set `selectOnFocus` to `false` to only move the focus while navigating and filtering. The arrow
+keys and typing then open the overlay, and the focused option gets the `p-state-focus` style class. The selected option
+keeps its highlight, `aria-selected` and the label, and the value only changes when an option is selected with `enter`,
+`tab` or a click. `escape` and a click outside close the overlay without changing the value.
+
+```xhtml
+<p:selectOneMenu value="#{bean.selectedOption}" filter="true" selectOnFocus="false">
+    <f:selectItems value="#{bean.options}" />
+</p:selectOneMenu>
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneMenu_
 
@@ -86,7 +100,7 @@ closed menu once it is selected. If a `placeholder` is set, the placeholder is t
 announced instead.
 
 The text can be changed application-wide via the locale settings (see the
-[Localization](../core/localization.md) section):
+[Localization](/core/localization.md) section):
 
 ```javascript
 PrimeFaces.locales['en_US'].aria.nullLabel = 'Empty';
@@ -100,11 +114,11 @@ structural style classes;
 
 | Class | Applies | 
 | --- | --- | 
-.ui-selectonemenu | Main container.
-.ui-selectonemenu-label | Label of the component.
-.ui-selectonemenu-trigger | Container of dropdown icon.
-.ui-selectonemenu-items | Items list.
-.ui-selectonemenu-items | Each item in the list.
-.ui-selectonemenu-rtl | When RTL direction is set
-.ui-selectonemenu-footer | Style applied to footer facet
+.p-selectonemenu | Main container.
+.p-selectonemenu-label | Label of the component.
+.p-selectonemenu-trigger | Container of dropdown icon.
+.p-selectonemenu-items | Items list.
+.p-selectonemenu-item | Each item in the list.
+.p-selectonemenu-rtl | When RTL direction is set
+.p-selectonemenu-footer | Style applied to footer facet
 

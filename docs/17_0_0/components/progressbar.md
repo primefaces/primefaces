@@ -84,13 +84,13 @@ list of structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-progressbar | Main container.
-.ui-progressbar-value | Value of the progressbar
-.ui-progressbar-label | Progress label.
-.ui-progressbar-success | Progress element with success severity.
-.ui-progressbar-info | Progress element with info severity.
-.ui-progressbar-warning | Progress element with warning severity.
-.ui-progressbar-danger | Progress element with danger severity.
+.p-progressbar | Main container.
+.p-progressbar-value | Value of the progressbar
+.p-progressbar-label | Progress label.
+.p-progressbar-success | Progress element with success severity.
+.p-progressbar-info | Progress element with info severity.
+.p-progressbar-warning | Progress element with warning severity.
+.p-progressbar-danger | Progress element with danger severity.
 
 As skinning style classes are global, see the main theming section for more information.
 

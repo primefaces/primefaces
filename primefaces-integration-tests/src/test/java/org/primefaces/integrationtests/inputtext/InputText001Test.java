@@ -101,7 +101,7 @@ class InputText001Test extends AbstractPrimePageTest {
         // Assert - value should not be accepted
         assertEquals("safari", inputText.getValue());
         assertFalse(inputText.isEnabled());
-        assertCss(inputText, "ui-state-disabled");
+        assertCss(inputText, "p-state-disabled");
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 

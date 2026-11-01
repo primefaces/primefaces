@@ -190,11 +190,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     protected void encodePrevButton(FacesContext context, Carousel component, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String prevButtonIconStyleClass = getStyleClassBuilder(context)
-                .add(Carousel.PREV_BUTTON_ICON_CLASS)
-                .add(!isVertical, "pi-chevron-left")
-                .add(isVertical, "pi-chevron-up")
-                .build();
+        String prevButtonIconStyleClass = isVertical ? Carousel.PREV_BUTTON_VERTICAL_ICON_CLASS : Carousel.PREV_BUTTON_ICON_CLASS;
 
         writer.startElement("button", null);
         writer.writeAttribute("class", Carousel.PREV_BUTTON_CLASS, null);
@@ -209,11 +205,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     protected void encodeNextButton(FacesContext context, Carousel component, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String nextButtonIconStyleClass = getStyleClassBuilder(context)
-                .add(Carousel.NEXT_BUTTON_ICON_CLASS)
-                .add(!isVertical, "pi-chevron-right")
-                .add(isVertical, "pi-chevron-down")
-                .build();
+        String nextButtonIconStyleClass = isVertical ? Carousel.NEXT_BUTTON_VERTICAL_ICON_CLASS : Carousel.NEXT_BUTTON_ICON_CLASS;
 
         writer.startElement("button", null);
         writer.writeAttribute("class", Carousel.NEXT_BUTTON_CLASS, null);
