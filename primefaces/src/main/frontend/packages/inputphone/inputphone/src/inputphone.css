@@ -1,0 +1,269 @@
+/*
+ * InputPhone: p:inputPhone (no PrimeUIX counterpart)
+ *
+ * One field: the component has the border, background and focus ring of an input field (the --p-inputtext-* tokens),
+ * the country selector and the input are borderless parts of it, divided by a separator. The focus ring is shown while
+ * the selector or the input has the focus and while the panel is open (p-state-focus).
+ * The panel is a select overlay: --p-select-* tokens for the overlay, the filter and the options, --p-inputphone-* for
+ * the parts of its own.
+ * Structure: span.p-inputphone > button.p-inputphone-country (span.p-inputphone-country-code
+ *            + span.p-inputphone-dial-code + span.p-inputphone-dropdown-icon) + input.p-inputphone-input
+ *            + input[type=hidden] (number) + input[type=hidden] (country)
+ *            div.p-inputphone-panel > div.p-inputphone-filter-container + ul.p-inputphone-list[role=listbox]
+ *            > li.p-inputphone-item + div.p-inputphone-empty-message
+ * Supported classes: p-state-focus, p-state-disabled, p-state-error (on .p-inputphone), p-input-filled (on the
+ *                    component or a parent), .p-fluid (on a parent), p-inputtext-sm / p-inputtext-lg (inputStyleClass)
+ * Panel items: p-state-hover (mouse and keyboard), p-state-highlight (selected)
+ */
+.p-inputphone {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    vertical-align: middle;
+    background: var(--p-inputtext-background);
+    border: 1px solid var(--p-inputtext-border-color);
+    border-radius: var(--p-inputtext-border-radius);
+    box-shadow: var(--p-inputtext-shadow);
+    outline: 0 none;
+    outline-color: transparent;
+    transition: background var(--p-inputtext-transition-duration), border-color var(--p-inputtext-transition-duration),
+        outline-color var(--p-inputtext-transition-duration), box-shadow var(--p-inputtext-transition-duration);
+
+    .p-fluid & {
+        display: flex;
+        width: 100%;
+    }
+
+    &:not(.p-state-disabled):hover {
+        border-color: var(--p-inputtext-hover-border-color);
+    }
+
+    &:not(.p-state-disabled):focus-within,
+    &.p-state-focus {
+        border-color: var(--p-inputtext-focus-border-color);
+        outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
+        outline-offset: var(--p-inputtext-focus-ring-offset);
+        box-shadow: var(--p-inputtext-focus-ring-shadow);
+    }
+
+    /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
+    &.p-state-error,
+    &.p-state-error:is(:hover, :focus-within, .p-state-focus) {
+        border-color: var(--p-inputtext-invalid-border-color);
+    }
+
+    /* filled: both alternatives have the same specificity */
+    .p-input-filled &,
+    &.p-input-filled {
+        background: var(--p-inputtext-filled-background);
+
+        &:not(.p-state-disabled):hover {
+            background: var(--p-inputtext-filled-hover-background);
+        }
+
+        &:focus-within,
+        &.p-state-focus {
+            background: var(--p-inputtext-filled-focus-background);
+        }
+    }
+
+    /* after filled (same specificity): a disabled filled field shows the disabled background */
+    &.p-state-disabled {
+        background: var(--p-inputtext-disabled-background);
+        color: var(--p-inputtext-disabled-color);
+    }
+
+    .p-inputphone-country {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: var(--p-inputphone-country-gap);
+        margin: 0;
+        padding-block: 0;
+        padding-inline: var(--p-inputphone-country-padding-x);
+        font-family: inherit;
+        font-size: var(--p-inputtext-font-size);
+        font-weight: var(--p-inputtext-font-weight);
+        line-height: var(--p-typography-line-height);
+        color: var(--p-inputphone-country-color);
+        background: var(--p-inputphone-country-background);
+        border: 0 none;
+        border-inline-end: 1px solid var(--p-inputphone-separator-color);
+        /* the inner corners of the component */
+        border-start-start-radius: calc(var(--p-inputtext-border-radius) - 1px);
+        border-end-start-radius: calc(var(--p-inputtext-border-radius) - 1px);
+        outline: 0 none;
+        white-space: nowrap;
+        transition: background var(--p-inputtext-transition-duration), color var(--p-inputtext-transition-duration);
+    }
+
+    button.p-inputphone-country {
+        cursor: pointer;
+
+        /* hover, keyboard focus (the ring is on the component) and open panel */
+        &:not(:disabled):is(:hover, :focus-visible, [aria-expanded="true"]) {
+            background: var(--p-inputphone-country-hover-background);
+        }
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    &.p-state-disabled .p-inputphone-country {
+        color: var(--p-inputtext-disabled-color);
+    }
+
+    .p-inputphone-dial-code {
+        color: var(--p-inputphone-dial-code-color);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .p-inputphone-dropdown-icon {
+        --_icon: var(--p-inputphone-dropdown-icon);
+        color: var(--p-inputphone-dropdown-color);
+    }
+
+    /* the input is a borderless part of the component: no own border, background, shadow or focus ring */
+    > .p-inputphone-input.p-inputfield,
+    > .p-inputphone-input.p-inputfield:is(:hover, :focus, :disabled, .p-state-hover, .p-state-focus, .p-state-error, .p-state-disabled) {
+        flex: 1 1 auto;
+        min-width: 0;
+        border: 0 none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        outline: 0 none;
+    }
+
+    /* sizes (inputStyleClass): the selector follows the font size of the input */
+    &:has(> .p-inputtext-sm) .p-inputphone-country {
+        font-size: var(--p-inputtext-sm-font-size);
+        padding-inline: var(--p-inputtext-sm-padding-x);
+    }
+
+    &:has(> .p-inputtext-lg) .p-inputphone-country {
+        font-size: var(--p-inputtext-lg-font-size);
+        padding-inline: var(--p-inputtext-lg-padding-x);
+    }
+}
+
+/* panel */
+.p-inputphone-panel {
+    position: absolute;
+    overflow: hidden;
+    background: var(--p-select-overlay-background);
+    color: var(--p-select-overlay-color);
+    border: 1px solid var(--p-select-overlay-border-color);
+    border-radius: var(--p-select-overlay-border-radius);
+    box-shadow: var(--p-select-overlay-shadow);
+
+    /* separated from the scrolling list, the items do not run into the filter */
+    .p-inputphone-filter-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: var(--p-select-list-header-padding);
+        padding-block-end: var(--p-inputphone-filter-gap);
+        border-bottom: 1px solid var(--p-select-overlay-border-color);
+
+        .p-inputphone-filter.p-inputfield {
+            width: 100%;
+            padding-block: var(--p-select-padding-y);
+            padding-inline: var(--p-select-padding-x);
+            padding-inline-start: calc(2 * var(--p-select-padding-x) + var(--p-icon-size));
+        }
+
+        /* no insets: the icon stays at the start of the content box, vertically centered by the flex container */
+        .p-inputphone-filter-icon {
+            --_icon: var(--p-inputphone-filter-icon);
+            position: absolute;
+            margin-inline-start: var(--p-select-padding-x);
+            color: var(--p-form-field-icon-color);
+            pointer-events: none;
+        }
+    }
+
+    .p-inputphone-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--p-select-list-gap);
+        max-height: var(--p-inputphone-list-max-height);
+        overflow: auto;
+        overscroll-behavior: contain;
+        margin: 0;
+        padding: var(--p-select-list-padding);
+        list-style-type: none;
+        /* the highlighted item scrolled into view keeps the padding of the list */
+        scroll-padding-block: var(--p-inputphone-filter-gap);
+    }
+
+    .p-inputphone-item {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--p-inputphone-country-gap);
+        margin: 0;
+        padding: var(--p-select-option-padding);
+        border-radius: var(--p-select-option-border-radius);
+        color: var(--p-select-option-color);
+        font-size: var(--p-select-option-font-size);
+        font-weight: var(--p-select-option-font-weight);
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background var(--p-list-option-transition-duration), color var(--p-list-option-transition-duration);
+
+        .p-inputphone-item-name {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .p-inputphone-item-dial-code {
+            flex: 0 0 auto;
+            color: var(--p-inputphone-dial-code-color);
+            font-variant-numeric: tabular-nums;
+        }
+
+        &.p-state-hover {
+            background: var(--p-select-option-focus-background);
+            color: var(--p-select-option-focus-color);
+        }
+
+        &.p-state-highlight {
+            background: var(--p-select-option-selected-background);
+            color: var(--p-select-option-selected-color);
+            font-weight: var(--p-select-option-selected-font-weight);
+        }
+
+        &.p-state-highlight.p-state-hover {
+            background: var(--p-select-option-selected-focus-background);
+            color: var(--p-select-option-selected-focus-color);
+        }
+
+        &:is(.p-state-hover, .p-state-highlight) .p-inputphone-item-dial-code {
+            color: inherit;
+        }
+    }
+
+    /* the preferred countries are divided from the others; the separator stays outside the item */
+    .p-inputphone-item-preferred-last {
+        position: relative;
+        margin-block-end: var(--p-inputphone-filter-gap);
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset-inline: 0;
+            bottom: calc(var(--p-inputphone-filter-gap) / -2);
+            border-bottom: 1px solid var(--p-select-overlay-border-color);
+        }
+    }
+
+    .p-inputphone-empty-message {
+        padding: var(--p-select-option-padding);
+        margin: var(--p-select-list-padding);
+        color: var(--p-select-option-color);
+    }
+}

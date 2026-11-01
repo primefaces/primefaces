@@ -1247,6 +1247,23 @@ Columns can be ordered via `displayPriority`. Lower value means higher priority.
 </p:dataTable>
 ```
 
+## Row Header
+A column can act as row header by setting `rowHeader="true"`. Its body cells are then rendered as
+`<th scope="row" role="rowheader">` instead of `<td role="gridcell">`, so assistive technologies can associate each row
+with its header (see [WAI tables with two headers](https://www.w3.org/WAI/tutorials/tables/two-headers/)).
+Any column can be the row header, not only the first one. The attribute is only supported by DataTable.
+
+```xhtml
+<p:dataTable var="car" value="#{tableBean.cars}">
+    <p:column headerText="Model" rowHeader="true">
+        #{car.model}
+    </p:column>
+    <p:column headerText="Brand">
+        #{car.brand}
+    </p:column>
+</p:dataTable>
+```
+
 ## Responsive DataTable
 DataTable has two responsive modes: `responsivePriority` and `reflow`.
 In priority mode, responsiveness is based on column `responsivePriority` that vary between 1 and 6. Lower value means higher priority.

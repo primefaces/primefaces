@@ -406,6 +406,7 @@ public class HTML {
         public static final String NUMBER_TYPE = "data-p-notype";
         public static final String HIGHLIGHTER = "data-p-hl";
         public static final String GROUPED = "data-p-grouped";
+        public static final String COMPOSITE = "data-p-composite";
 
         private ValidationMetadata() {
 

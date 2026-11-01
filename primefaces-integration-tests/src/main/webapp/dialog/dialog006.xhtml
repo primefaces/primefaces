@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:commandButton id="btnUpdate" value="Update dialog" process="@this" update="dlg" />
+            <p:commandButton id="btnRemove" value="Remove dialog" process="@this" action="#{dialog006.remove}" update="wrapper" />
+
+            <h:panelGroup id="wrapper" layout="block">
+                <p:dialog header="Minimizable" id="dlg" widgetVar="dlg" width="350" minimizable="true" maximizable="true"
+                          rendered="#{dialog006.rendered}">
+                    <p:ajax event="minimize" listener="#{dialog006.onMinimize}" />
+                    <p:ajax event="restoreMinimize" listener="#{dialog006.onRestoreMinimize}" />
+
+                    <p:selectOneMenu id="menu" value="#{dialog006.value}" appendTo="@(body)">
+                        <f:selectItem itemLabel="Alpha" itemValue="Alpha" />
+                        <f:selectItem itemLabel="Beta" itemValue="Beta" />
+                        <f:selectItem itemLabel="Gamma" itemValue="Gamma" />
+                    </p:selectOneMenu>
+                </p:dialog>
+            </h:panelGroup>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

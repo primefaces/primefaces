@@ -128,12 +128,13 @@ public class TaglibMojo extends AbstractMojo {
             }
 
             // Find all component and behavior classes
-            List<Class<?>> componentClasses = findAnnotatedClasses(FacesComponent.class);
-            List<Class<?>> behaviorClasses = findAnnotatedClasses(FacesBehavior.class);
-            List<Class<?>> converterClasses = findAnnotatedClasses(FacesConverter.class);
-            List<Class<?>> validatorClasses = findAnnotatedClasses(FacesValidator.class);
-            List<Class<?>> tagHandlerClasses = findAnnotatedClasses(FacesTagHandler.class);
-            List<FunctionInfo> functionInfos = findFunctionInfos();
+            Collection<Class<?>> projectClasses = getAllProjectClasses();
+            List<Class<?>> componentClasses = findAnnotatedClasses(projectClasses, FacesComponent.class);
+            List<Class<?>> behaviorClasses = findAnnotatedClasses(projectClasses, FacesBehavior.class);
+            List<Class<?>> converterClasses = findAnnotatedClasses(projectClasses, FacesConverter.class);
+            List<Class<?>> validatorClasses = findAnnotatedClasses(projectClasses, FacesValidator.class);
+            List<Class<?>> tagHandlerClasses = findAnnotatedClasses(projectClasses, FacesTagHandler.class);
+            List<FunctionInfo> functionInfos = findFunctionInfos(projectClasses);
 
             getLog().info("Found " + componentClasses.size() + " component classes");
             getLog().info("Found " + behaviorClasses.size() + " behavior classes");
@@ -141,35 +142,35 @@ public class TaglibMojo extends AbstractMojo {
             getLog().info("Found " + tagHandlerClasses.size() + " TagHandler classes");
 
             getLog().info("Processing components...");
-            List<ComponentInfo> componentInfos = componentClasses.stream()
+            List<ComponentInfo> componentInfos = componentClasses.parallelStream()
                     .map(clazz -> processComponentClass(clazz))
                     .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(ComponentInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing behaviors...");
-            List<BehaviorInfo> behaviorInfos = behaviorClasses.stream()
+            List<BehaviorInfo> behaviorInfos = behaviorClasses.parallelStream()
                     .map(clazz -> processBehaviorClass(clazz))
                     .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(BehaviorInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing converters...");
-            List<ConverterInfo> converterInfos = converterClasses.stream()
+            List<ConverterInfo> converterInfos = converterClasses.parallelStream()
                     .map(clazz -> processConverterClass(clazz))
                     .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(ConverterInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing validators...");
-            List<ValidatorInfo> validatorInfos = validatorClasses.stream()
+            List<ValidatorInfo> validatorInfos = validatorClasses.parallelStream()
                     .map(clazz -> processValidatorClass(clazz))
                     .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(ValidatorInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing tagHandlers...");
-            List<TagHandlerInfo> tagHandlerInfos = tagHandlerClasses.stream()
+            List<TagHandlerInfo> tagHandlerInfos = tagHandlerClasses.parallelStream()
                     .map(clazz -> processTagHandlerClass(clazz))
                     .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(TagHandlerInfo::getTagName))
@@ -191,67 +192,51 @@ public class TaglibMojo extends AbstractMojo {
         }
     }
 
-    private List<Class<?>> findAnnotatedClasses(Class<? extends Annotation> annotation) throws MojoExecutionException {
+    private List<Class<?>> findAnnotatedClasses(Collection<Class<?>> projectClasses, Class<? extends Annotation> annotation) {
         getLog().info("Scanning for @" + annotation.getSimpleName() + " annotated classes...");
 
-        try {
-            Collection<Class<?>> projectClasses = getAllProjectClasses();
-
-            List<Class<?>> foundClasses = new ArrayList<>();
-            for (Class<?> c : projectClasses) {
-                try {
-                    if (c.getAnnotation(annotation) != null) {
-                        foundClasses.add(c);
-                    }
-                }
-                catch (Throwable e) {
-                    // Skip classes that can't be processed due to missing dependencies
-                    getLog().warn("Skipping class " + c.getName() + " during annotation scan: " + e.getMessage());
+        List<Class<?>> foundClasses = new ArrayList<>();
+        for (Class<?> c : projectClasses) {
+            try {
+                if (c.getAnnotation(annotation) != null) {
+                    foundClasses.add(c);
                 }
             }
-
-            Collection<String> classNames = foundClasses.stream().map(Class::getName).collect(Collectors.toList());
-            getLog().info("Found classes: " + String.join(",", classNames));
-
-            return foundClasses;
+            catch (Throwable e) {
+                // Skip classes that can't be processed due to missing dependencies
+                getLog().warn("Skipping class " + c.getName() + " during annotation scan: " + e.getMessage());
+            }
         }
-        catch (Exception e) {
-            getLog().error("Error while scanning", e);
-            throw new MojoExecutionException("Error while scanning", e);
-        }
+
+        Collection<String> classNames = foundClasses.stream().map(Class::getName).collect(Collectors.toList());
+        getLog().info("Found classes: " + String.join(",", classNames));
+
+        return foundClasses;
     }
 
-    private List<FunctionInfo> findFunctionInfos() throws MojoExecutionException {
+    private List<FunctionInfo> findFunctionInfos(Collection<Class<?>> projectClasses) {
         getLog().info("Scanning for @" + Function.class.getName() + " annotated methods...");
 
-        try {
-            Collection<Class<?>> projectClasses = getAllProjectClasses();
-            List<FunctionInfo> allFunctions = new ArrayList<>();
-
-            for (Class<?> clazz : projectClasses) {
-                try {
-                    List<FunctionInfo> functions = TaglibUtils.getFunctionInfos(clazz);
-                    if (!functions.isEmpty()) {
-                        allFunctions.addAll(functions);
-                    }
-                }
-                catch (Throwable e) {
-                    // Skip classes that can't be processed due to missing dependencies
-                    getLog().debug("Skipping class " + clazz.getName() + " during function scan: " + e.getMessage());
+        List<FunctionInfo> allFunctions = new ArrayList<>();
+        for (Class<?> clazz : projectClasses) {
+            try {
+                List<FunctionInfo> functions = TaglibUtils.getFunctionInfos(clazz);
+                if (!functions.isEmpty()) {
+                    allFunctions.addAll(functions);
                 }
             }
-
-            Collection<String> classNames = allFunctions.stream().map(FunctionInfo::getName).collect(Collectors.toList());
-            getLog().info("Found functions: " + String.join(",", classNames));
-
-            allFunctions.sort(Comparator.comparing(FunctionInfo::getName));
-
-            return allFunctions;
+            catch (Throwable e) {
+                // Skip classes that can't be processed due to missing dependencies
+                getLog().debug("Skipping class " + clazz.getName() + " during function scan: " + e.getMessage());
+            }
         }
-        catch (Exception e) {
-            getLog().error("Error while scanning", e);
-            throw new MojoExecutionException("Error while scanning", e);
-        }
+
+        Collection<String> classNames = allFunctions.stream().map(FunctionInfo::getName).collect(Collectors.toList());
+        getLog().info("Found functions: " + String.join(",", classNames));
+
+        allFunctions.sort(Comparator.comparing(FunctionInfo::getName));
+
+        return allFunctions;
     }
 
     private ComponentInfo processComponentClass(Class<?> componentClass) {
@@ -498,17 +483,7 @@ public class TaglibMojo extends AbstractMojo {
         return primitivesToWrapper.getOrDefault(type, type);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> Class<? extends T> loadClass(String className) throws MojoExecutionException {
-        try {
-            return (Class<? extends T>) getProjectClassLoader(project).loadClass(className);
-        }
-        catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Could not load class " + className, e);
-        }
-    }
-
-    private ClassLoader getProjectClassLoader(MavenProject project) throws MojoExecutionException {
+    private ClassLoader getProjectClassLoader(MavenProject project) {
         try {
             URL url = new File(project.getBuild().getOutputDirectory()).toURI().toURL();
             return new URLClassLoader(new URL[]{url}, this.getClass().getClassLoader());
@@ -521,6 +496,7 @@ public class TaglibMojo extends AbstractMojo {
 
     private Collection<Class<?>> getAllProjectClasses() {
         String b = project.getBuild().getOutputDirectory();
+        ClassLoader classLoader = getProjectClassLoader(project);
 
         try (Stream<Path> stream = Files.walk(Path.of(b))) {
             final Collection<Class<?>> classes = new ArrayList<>();
@@ -535,7 +511,7 @@ public class TaglibMojo extends AbstractMojo {
                             currentFile = currentFile.substring(1);
                         }
                         try {
-                            Class<?> clazz = loadClass(currentFile);
+                            Class<?> clazz = classLoader.loadClass(currentFile);
                             classes.add(clazz);
                         }
                         catch (Throwable e) {

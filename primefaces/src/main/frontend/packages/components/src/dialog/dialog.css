@@ -3,7 +3,8 @@
  *
  * Markup: .p-dialog (fixed full-viewport container) > .p-dialog-box > .p-dialog-titlebar, .p-dialog-content, .p-dialog-footer
  * States: p-dialog-absolute, p-dialog-fitviewport, p-overflow-hidden, p-resizable, p-dialog-rtl,
- *         p-dialog-maximized, p-dialog-minimized (docked clone), p-confirm-dialog, p-message-dialog
+ *         p-dialog-maximized, p-confirm-dialog, p-message-dialog
+ * Minimized: the dialog is hidden, .p-dialog-docking-zone > .p-dialog-docked is an own bar with title and icons
  */
 body.p-dialog-open {
     position: relative;
@@ -178,12 +179,8 @@ body.p-dialog-open {
         --_icon: var(--p-dialog-maximize-icon);
     }
 
-    /* the docked clone shows the restore icon of minimize, the maximized dialog the restore icon of maximize (only its
-       own titlebar, not the one of a dialog nested in its content) */
-    &.p-dialog-minimized .p-dialog-minimize-icon {
-        --_icon: var(--p-dialog-unminimize-icon);
-    }
-
+    /* the maximized dialog shows the restore icon of maximize (only its own titlebar, not the one of a dialog nested in
+       its content) */
     &.p-dialog-maximized > .p-dialog-box > .p-dialog-titlebar .p-dialog-maximize-icon {
         --_icon: var(--p-dialog-unmaximize-icon);
     }
@@ -225,19 +222,6 @@ body.p-dialog-open {
             top: 0 !important;
             left: 0 !important;
             border-radius: 0;
-        }
-    }
-
-    /* minimized: a clone of the dialog (title bar only) docked into .p-dialog-docking-zone */
-    &.p-dialog-minimized {
-        padding: 0;
-        overflow: visible;
-
-        .p-dialog-box {
-            width: auto !important;
-            height: auto !important;
-            top: auto !important;
-            left: auto !important;
         }
     }
 
@@ -297,6 +281,70 @@ body.p-dialog-open {
     align-items: flex-end;
     gap: var(--p-dialog-header-gap);
     padding: var(--p-dialog-header-gap);
+}
+
+/* minimized: the dialog is hidden, the docking zone shows an own bar for it with the title and the title bar icons */
+.p-dialog-docked {
+    display: flex;
+    align-items: center;
+    gap: var(--p-dialog-header-gap);
+    max-width: 20rem;
+    padding: var(--p-dialog-header-gap) var(--p-dialog-header-gap) var(--p-dialog-header-gap) var(--p-dialog-header-padding);
+    background: var(--p-dialog-background);
+    color: var(--p-dialog-color);
+    border: 1px solid var(--p-dialog-border-color);
+    border-radius: var(--p-dialog-border-radius);
+    box-shadow: var(--p-dialog-shadow);
+
+    .p-dialog-docked-title {
+        flex: 1 1 auto;
+        font-weight: var(--p-dialog-title-font-weight);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* rounded text secondary icon-only button like the title bar icons */
+    .p-dialog-docked-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: var(--p-button-icon-only-width);
+        height: var(--p-button-icon-only-width);
+        border-radius: 50%;
+        color: var(--p-button-text-secondary-color);
+        text-decoration: none;
+        cursor: pointer;
+        outline-color: transparent;
+        transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration);
+
+        &:hover {
+            background: var(--p-button-text-secondary-hover-background);
+        }
+
+        &:active {
+            background: var(--p-button-text-secondary-active-background);
+        }
+
+        &:focus-visible {
+            outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--p-button-secondary-focus-ring-color);
+            outline-offset: var(--p-button-focus-ring-offset);
+            box-shadow: var(--p-button-secondary-focus-ring-shadow);
+        }
+    }
+
+    .p-dialog-docked-restore .p-icon {
+        --_icon: var(--p-dialog-unminimize-icon);
+    }
+
+    .p-dialog-docked-maximize .p-icon {
+        --_icon: var(--p-dialog-maximize-icon);
+    }
+
+    .p-dialog-docked-close .p-icon {
+        --_icon: var(--p-dialog-close-icon);
+    }
 }
 
 /* transfer effect while minimizing */

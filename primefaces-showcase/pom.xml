@@ -185,6 +185,12 @@
             <artifactId>owasp-java-html-sanitizer</artifactId>
         </dependency>
 
+        <!-- server side validation of the phone numbers of the inputPhone -->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+        </dependency>
+
         <!-- JAXB required for JDK9+ -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
@@ -266,10 +272,6 @@
                 <artifactId>jetty-ee10-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
                 <configuration>
-                    <!-- see https://eclipse.dev/jetty/documentation/jetty-12/programming-guide/index.html#jetty-run-goal -->
-                    <webApp>
-                        <contextPath>/showcase</contextPath>
-                    </webApp>
                     <webXml>${project.build.directory}/web.xml</webXml>
                     <httpConnector>
                         <host>0.0.0.0</host>
@@ -363,7 +365,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.0.26</version>
+                    <version>4.0.27</version>
                 </dependency>
             </dependencies>
             <build>
@@ -378,7 +380,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.1.18</version>
+                    <version>4.1.19</version>
                 </dependency>
                 <dependency>
                     <groupId>jakarta.enterprise</groupId>

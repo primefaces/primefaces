@@ -226,7 +226,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
         List<WebElement> frozenBodyRows = getFrozenBodyWebElement().findElements(By.tagName("tr"));
 
         frozenBodyRows.forEach(row -> {
-            List<WebElement> rowCellsTmp = row.findElements(By.tagName("td"));
+            List<WebElement> rowCellsTmp = row.findElements(By.cssSelector("td, th[role='rowheader']"));
             List<Cell> rowCells = rowCellsTmp.stream()
                     .map(Cell::new)
                     .collect(Collectors.toList());
@@ -241,7 +241,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
         List<WebElement> scrollableBodyRows = getScrollableBodyWebElement().findElements(By.tagName("tr"));
 
         scrollableBodyRows.forEach(row -> {
-            List<WebElement> rowCellsTmp = row.findElements(By.tagName("td"));
+            List<WebElement> rowCellsTmp = row.findElements(By.cssSelector("td, th[role='rowheader']"));
             List<Cell> rowCells = rowCellsTmp.stream()
                     .map(Cell::new)
                     .collect(Collectors.toList());

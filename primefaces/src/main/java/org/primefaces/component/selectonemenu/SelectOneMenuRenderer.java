@@ -545,6 +545,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
                 .attr("labelTemplate", component.getLabelTemplate(), null)
                 .attr("autoWidth", component.getAutoWidth(), "auto")
                 .attr("dynamic", component.isDynamic(), false)
+                .attr("selectOnFocus", component.isSelectOnFocus(), true)
                 .attr("touchable", ComponentUtils.isTouchable(context, component),  true)
                 .attr("renderPanelContentOnClient", component.getVar() == null,  false);
 

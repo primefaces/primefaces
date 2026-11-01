@@ -889,6 +889,18 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         }
     }
 
+    /**
+     * Renders the validation metadata on the hidden input with the value of a component that consists of several inputs
+     * (e.g. p:inputNumber): the client side validation validates it instead of the inputs next to it.
+     */
+    protected void renderCompositeValidationMetadata(FacesContext context, EditableValueHolder component,
+                                                     ClientValidator... clientValidators) throws IOException {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            context.getResponseWriter().writeAttribute(HTML.ValidationMetadata.COMPOSITE, "true", null);
+        }
+        renderValidationMetadata(context, component, clientValidators);
+    }
+
     private void renderValidationMetadataMap(FacesContext context, Map<String, Object> metadata) throws IOException {
         if (metadata == null || metadata.isEmpty()) {
             return;

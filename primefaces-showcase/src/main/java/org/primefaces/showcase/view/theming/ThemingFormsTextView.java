@@ -52,6 +52,9 @@ public class ThemingFormsTextView implements Serializable {
     private String mask = "(555) 123-4567";
     private Double amount = 1234.56;
     private String password = "Secret#2026";
+    private String otp = "123456";
+    private String pin = "1234";
+    private String phone = "+12015550123";
     private List<String> chips = new ArrayList<>(List.of("Aura", "Lara", "Nora"));
     private String color = "#10b981";
     private Integer rating = 3;

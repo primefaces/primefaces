@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:triStateManyCheckbox id="disabled" value="#{triStateManyCheckbox002.disabledValue}" disabled="true">
+                <f:selectItem itemLabel="Item A" itemValue="A"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+            </p:triStateManyCheckbox>
+            <h:outputText id="disabledValue" value="#{triStateManyCheckbox002.disabledValue}"/>
+
+            <p:triStateManyCheckbox id="readonly" value="#{triStateManyCheckbox002.readonlyValue}" readonly="true">
+                <f:selectItem itemLabel="Item A" itemValue="A"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+            </p:triStateManyCheckbox>
+            <h:outputText id="readonlyValue" value="#{triStateManyCheckbox002.readonlyValue}"/>
+
+            <p:triStateManyCheckbox id="itemDisabled" value="#{triStateManyCheckbox002.itemDisabledValue}">
+                <f:selectItem itemLabel="Item A" itemValue="A" itemDisabled="true"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+            </p:triStateManyCheckbox>
+            <h:outputText id="itemDisabledValue" value="#{triStateManyCheckbox002.itemDisabledValue}"/>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+        <h:form id="requiredForm">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:triStateManyCheckbox id="required" value="#{triStateManyCheckbox002.requiredValue}" required="true" label="Required">
+                <f:selectItem itemLabel="Item A" itemValue="A"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+            </p:triStateManyCheckbox>
+            <h:outputText id="requiredValue" value="#{triStateManyCheckbox002.requiredValue}"/>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

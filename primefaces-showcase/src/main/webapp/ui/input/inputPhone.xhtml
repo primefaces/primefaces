@@ -1,0 +1,143 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputPhone
+    </ui:define>
+
+    <ui:define name="description">
+        InputPhone is an input for international phone numbers with a country selector. The number is formatted while
+        typing and submitted in the E.164 format (e.g. +4930123456), numbers that are not valid for their country are
+        rejected. Formatting and validation are based on libphonenumber-js, on the server Google's libphonenumber is used
+        if it is available.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputphone"/>
+    <ui:param name="widgetLink" value="InputPhone"/>
+    <ui:param name="tagName" value="inputPhone"/>
+
+    <ui:define name="implementation">
+        <p:growl>
+            <p:autoUpdate/>
+        </p:growl>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Basic</h5>
+                <p class="mt-0">The country is selected in the panel or follows a number entered with its calling code (e.g. +44 20 7946 0958).</p>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="phone" value="Phone"/>
+                        <p:inputPhone id="phone" value="#{inputPhoneView.phone}" label="Phone">
+                            <p:ajax event="countrySelect" listener="#{inputPhoneView.onCountrySelect}"/>
+                        </p:inputPhone>
+                        <p:message for="phone"/>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="mobile" value="With value"/>
+                        <p:inputPhone id="mobile" value="#{inputPhoneView.mobile}" label="Mobile"/>
+                        <p:message for="mobile"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">International Format</h5>
+                <p class="mt-0">With <i>nationalMode="false"</i> the number is shown with its calling code, which is filled in when the empty input gets the focus.</p>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="international" value="International"/>
+                        <p:inputPhone id="international" value="#{inputPhoneView.international}" nationalMode="false"
+                                      separateDialCode="false" label="International"/>
+                        <p:message for="international"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Countries</h5>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="office" value="Only DACH countries, Switzerland preselected"/>
+                        <p:inputPhone id="office" value="#{inputPhoneView.office}" onlyCountries="DE,AT,CH"
+                                      initialCountry="CH" label="Office"/>
+                        <p:message for="office"/>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="preferred" value="Preferred countries"/>
+                        <p:inputPhone id="preferred" preferredCountries="US,GB,DE,FR"/>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="fixed" value="Fixed country"/>
+                        <p:inputPhone id="fixed" initialCountry="GB" allowDropdown="false"/>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="excluded" value="Excluded countries, wide panel"/>
+                        <p:inputPhone id="excluded" excludeCountries="US,CA" fixDropdownWidth="false"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Variants</h5>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="small" value="Small"/>
+                        <p:inputPhone id="small" inputStyleClass="p-inputtext-sm"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="filled" value="Filled"/>
+                        <p:inputPhone id="filled" styleClass="p-input-filled"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="large" value="Large"/>
+                        <p:inputPhone id="large" inputStyleClass="p-inputtext-lg"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="placeholder" value="Placeholder"/>
+                        <p:inputPhone id="placeholder" placeholder="Your phone number"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="readonly" value="Readonly"/>
+                        <p:inputPhone id="readonly" value="+33123456789" readonly="true"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="disabled" value="Disabled"/>
+                        <p:inputPhone id="disabled" value="+33123456789" disabled="true"/>
+                    </div>
+                </div>
+
+                <p:commandButton value="Submit" action="#{inputPhoneView.submit}" update="@form"/>
+            </div>
+        </h:form>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Client Side Validation</h5>
+                <p class="mt-0">The number is validated in the browser before the form is submitted.</p>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="csv" value="Phone"/>
+                        <p:inputPhone id="csv" value="#{inputPhoneView.csv}" required="true" label="Phone"/>
+                        <p:message for="csv"/>
+                    </div>
+                </div>
+                <p:commandButton value="Submit" action="#{inputPhoneView.submit}" update="@form" validateClient="true"/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -48,6 +48,8 @@ public class PrimeEnvironment {
 
     private final boolean htmlSanitizerAvailable;
 
+    private final boolean phoneNumberUtilAvailable;
+
     public PrimeEnvironment(FacesContext context) {
         beanValidationAvailable = resolveBeanValidationAvailable();
 
@@ -55,6 +57,7 @@ public class PrimeEnvironment {
         resourceVersion = resolveResourceVersion(buildVersion);
 
         htmlSanitizerAvailable = LangUtils.isClassAvailable("org.owasp.html.PolicyFactory");
+        phoneNumberUtilAvailable = LangUtils.isClassAvailable("com.google.i18n.phonenumbers.PhoneNumberUtil");
 
         if (context == null || context.getExternalContext() == null) {
             mojarra = false;
@@ -135,5 +138,12 @@ public class PrimeEnvironment {
 
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
+    }
+
+    /**
+     * @return whether Google's libphonenumber is available, p:inputPhone then validates the numbers on the server
+     */
+    public boolean isPhoneNumberUtilAvailable() {
+        return phoneNumberUtilAvailable;
     }
 }

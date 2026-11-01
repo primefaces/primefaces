@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head />
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="remove" value="Remove" action="#{dialog007.remove}" update="container" />
+            <p:commandButton id="refresh" value="Refresh container" update="container" />
+            <p:commandButton id="refreshDialog" value="Refresh dialog" update="dlg" />
+            <h:panelGroup id="container" layout="block">
+                <p:dialog id="dlg" widgetVar="relocatedDialog" header="Relocated dialog"
+                          minimizable="true" appendTo="@(body)" rendered="#{dialog007.rendered}">
+                    <p:selectOneMenu id="choice" widgetVar="dialogChoice">
+                        <f:selectItem itemLabel="One" itemValue="1" />
+                        <f:selectItem itemLabel="Two" itemValue="2" />
+                    </p:selectOneMenu>
+                </p:dialog>
+            </h:panelGroup>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
