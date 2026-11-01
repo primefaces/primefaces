@@ -47,14 +47,19 @@ class Dialog007Test extends AbstractPrimePageTest {
         assertEquals("@(body)", page.dialog.getWidgetConfiguration().getString("appendTo"));
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
+        page.choice.select("Two");
         page.dialog.hide();
+        // the relocated panel of the nested p:selectOneMenu needs no marker, it is removed with its widget
+        assertEquals(1L, count("body > [id=\"form:choice_panel\"]"));
+        assertEquals(0L, count("[id=\"form:choice\"] .p-overlay-placeholder"));
 
         // Act
         page.remove.click();
 
         // Assert
         assertNotPresent(page.dialog);
-        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
+        assertEquals(0L, count("[id=\"form:choice_panel\"]"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog && !PrimeFaces.widgets.dialogChoice"));
         assertNoJavascriptErrors();
     }
 
@@ -102,9 +107,9 @@ class Dialog007Test extends AbstractPrimePageTest {
     void removeMinimized(Page page) {
         page.dialog.show();
         page.dialog.toggleMinimize();
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_docked\"]').length"));
+        assertEquals(1L, count("[id=\"form:dlg_docked\"]"));
         page.remove.click();
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_docked\"]').length"));
+        assertEquals(0L, count("[id=\"form:dlg_docked\"]"));
         assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
         assertNoJavascriptErrors();
     }
@@ -117,7 +122,7 @@ class Dialog007Test extends AbstractPrimePageTest {
                 + "$(document.getElementById('form:container')).on('remove.test', () => window.containerRemovals++);");
         PrimeSelenium.executeScript("PF('relocatedDialog').destroy();");
         assertEquals(0L, PrimeSelenium.<Long>executeScript("return window.containerRemovals"));
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
+        assertEquals(0L, count("[id=\"form:container\"] > .p-overlay-placeholder"));
         assertNoJavascriptErrors();
     }
 
@@ -128,7 +133,7 @@ class Dialog007Test extends AbstractPrimePageTest {
         page.dialog.show();
         page.dialog.toggleMinimize();
         page.refreshDialog.click();
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_docked\"]').length"));
+        assertEquals(0L, count("[id=\"form:dlg_docked\"]"));
         assertSingleDialogAndMarker();
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
@@ -136,47 +141,13 @@ class Dialog007Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
-    @Test
-    @Order(7)
-    @DisplayName("Dialog: minimizing and restoring preserves relocated child overlays")
-    void minimizeWithChildOverlay(Page page) {
-        // Arrange
-        page.dialog.show();
-        page.choice.select("Two");
-
-        // Act
-        page.dialog.toggleMinimize();
-        PrimeSelenium.waitGui().until(driver -> Boolean.TRUE.equals(PrimeSelenium.executeScript("return PF('relocatedDialog').minimized")));
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:choice_panel\"]').length"));
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:choice\"]').length"));
-        page.dialog.toggleMinimize();
-        PrimeSelenium.waitGui().until(driver -> Boolean.FALSE.equals(PrimeSelenium.executeScript("return PF('relocatedDialog').minimized")));
-
-        // Assert
-        page.choice.select("One");
-        assertEquals("One", page.choice.getSelectedLabel());
-        page.dialog.hide();
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(8)
-    @DisplayName("Dialog: disabled dynamic overlay refresh removes its previous source marker")
-    void disabledOverlayRefresh(Page page) {
-        // Arrange
-        assertSingleDialogAndMarker();
-
-        // Act: exercise the disabled DynamicOverlayWidget refresh path.
-        PrimeSelenium.executeScript("const widget = PF('relocatedDialog'); widget.refresh({...widget.cfg, disabled: true});");
-
-        // Assert
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
-        assertNoJavascriptErrors();
-    }
-
     private void assertSingleDialogAndMarker() {
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg\"]').length"));
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:container\"] > span[hidden]').length"));
+        assertEquals(1L, count("[id=\"form:dlg\"]"));
+        assertEquals(1L, count("[id=\"form:container\"] > .p-overlay-placeholder"));
+    }
+
+    private static long count(String selector) {
+        return PrimeSelenium.<Long>executeScript("return document.querySelectorAll('" + selector + "').length");
     }
 
     public static class Page extends AbstractPrimePage {

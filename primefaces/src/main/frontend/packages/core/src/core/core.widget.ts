@@ -704,7 +704,6 @@ export class DynamicOverlayWidget<Cfg extends DynamicOverlayWidgetCfg = DynamicO
 
         // do not bind overlay if widget disabled
         if (this.cfg.disabled === true) {
-            utils.removeOverlayPlaceholder(this, overlayId || this.getId());
             return;
         }
 

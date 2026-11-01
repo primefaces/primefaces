@@ -45,7 +45,7 @@ class Dialog008Test extends AbstractPrimePageTest {
         page.refresh.click();
         assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg\"]').length"));
         assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:sidebar\"]').length"));
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:sidebar\"] span[hidden]').length"));
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:sidebar\"] .p-overlay-placeholder').length"));
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
         page.dialog.hide();
@@ -66,7 +66,7 @@ class Dialog008Test extends AbstractPrimePageTest {
     @Order(3)
     @DisplayName("Dialog: #14287 no marker when appendTo is already the parent")
     void unchangedParent(Page page) {
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:localContainer\"] > span[hidden]').length"));
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:localContainer\"] > .p-overlay-placeholder').length"));
         assertNoJavascriptErrors();
     }
 

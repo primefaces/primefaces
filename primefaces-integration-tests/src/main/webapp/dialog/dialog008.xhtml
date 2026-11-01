@@ -8,9 +8,9 @@
     <h:body>
         <h:form id="form">
             <p:commandButton id="refresh" value="Refresh form" update="@form" />
-            <p:commandButton id="remove" value="Remove overlays" action="#{dialog007.remove}" update="container" />
+            <p:commandButton id="remove" value="Remove overlays" action="#{dialog008.remove}" update="container" />
             <h:panelGroup id="container" layout="block">
-                <p:sidebar id="sidebar" widgetVar="relocatedSidebar" appendTo="@(body)" rendered="#{dialog007.rendered}">
+                <p:sidebar id="sidebar" widgetVar="relocatedSidebar" appendTo="@(body)" rendered="#{dialog008.rendered}">
                     <p:dialog id="dlg" widgetVar="nestedDialog" header="Nested dialog" appendTo="@(body)">
                         Nested content
                     </p:dialog>
