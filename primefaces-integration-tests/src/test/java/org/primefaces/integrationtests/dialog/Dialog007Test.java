@@ -98,13 +98,13 @@ class Dialog007Test extends AbstractPrimePageTest {
 
     @Test
     @Order(4)
-    @DisplayName("Dialog: #14287 remove minimized clone with original container")
+    @DisplayName("Dialog: #14287 remove minimized dialog and its docked bar with original container")
     void removeMinimized(Page page) {
         page.dialog.show();
         page.dialog.toggleMinimize();
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"]').length"));
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_docked\"]').length"));
         page.remove.click();
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"]').length"));
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_docked\"]').length"));
         assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
         assertNoJavascriptErrors();
     }
@@ -123,12 +123,12 @@ class Dialog007Test extends AbstractPrimePageTest {
 
     @Test
     @Order(6)
-    @DisplayName("Dialog: #14287 refresh minimized dialog without leaving its old clone")
+    @DisplayName("Dialog: #14287 refresh minimized dialog without leaving its docked bar")
     void refreshMinimized(Page page) {
         page.dialog.show();
         page.dialog.toggleMinimize();
         page.refreshDialog.click();
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"]').length"));
+        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_docked\"]').length"));
         assertSingleDialogAndMarker();
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
@@ -148,7 +148,7 @@ class Dialog007Test extends AbstractPrimePageTest {
         page.dialog.toggleMinimize();
         PrimeSelenium.waitGui().until(driver -> Boolean.TRUE.equals(PrimeSelenium.executeScript("return PF('relocatedDialog').minimized")));
         assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:choice_panel\"]').length"));
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg_clone\"] .p-dialog-content').length"));
+        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:choice\"]').length"));
         page.dialog.toggleMinimize();
         PrimeSelenium.waitGui().until(driver -> Boolean.FALSE.equals(PrimeSelenium.executeScript("return PF('relocatedDialog').minimized")));
 

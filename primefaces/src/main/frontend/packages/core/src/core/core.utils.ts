@@ -14,7 +14,7 @@ export class Utils {
     private overlayPlaceholders = new WeakMap<BaseWidget, Map<string, JQuery>>();
 
     /**
-     * Removes a source marker without bubbling a synthetic remove event to ancestor widgets.
+     * Removes the source marker of a relocated overlay without removing the overlay itself (its `remove` handler).
      * @param widget The widget that owns the relocated overlay.
      * @param overlayId The ID of the relocated overlay.
      */
