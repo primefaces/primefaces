@@ -49,7 +49,7 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     }
 
     public void setColumnIndexVar(String columnIndexVar) {
-        super.setRowIndexVar(columnIndexVar);
+        setRowIndexVar(columnIndexVar);
     }
 
     @Override

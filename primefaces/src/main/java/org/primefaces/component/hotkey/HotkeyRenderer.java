@@ -47,6 +47,8 @@ public class HotkeyRenderer extends CoreRenderer<Hotkey> {
         if (params.containsKey(component.getClientId(facesContext))) {
             component.queueEvent(new ActionEvent(component));
         }
+
+        decodeBehaviors(facesContext, component);
     }
 
     @Override

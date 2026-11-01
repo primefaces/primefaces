@@ -16,7 +16,7 @@ It utilizes Tomcat Embedded, Weld, RestEasy and different Faces implementations.
 
 ## Run as web application
 - `mvn clean jetty:run -P"mojarra-4.0"`
-- Now you can open it on 'http://localhost:8080/integrationtests/'
+- Now you can open it on 'http://localhost:8080/' (a directory listing, e.g. 'http://localhost:8080/datatable/dataTable001.xhtml')
 
 ## Profiles
 

@@ -219,6 +219,29 @@ class InputNumberHighlighter implements PrimeFacesTypes.validation.Highlighter {
     }
 }
 
+/**
+ * Highlighter of components whose value is in a hidden input next to the inputs the user types into (p:inputOtp,
+ * p:inputPhone): the component and its inputs get the state classes, the label references the first input.
+ */
+class CompositeHighlighter implements PrimeFacesTypes.validation.Highlighter {
+    highlight(element: JQuery): void {
+        const inputs = element.siblings('input:not([type="hidden"])');
+        validationHighlighter.highlightLabel(inputs.first());
+        element.parent().addClass('p-state-error');
+        validationHighlighter.applyStateCssClasses(inputs, false);
+        // the inputs the user types into are invalid, not the hidden input that is validated
+        inputs.attr('aria-invalid', 'true');
+    }
+
+    unhighlight(element: JQuery): void {
+        const inputs = element.siblings('input:not([type="hidden"])');
+        validationHighlighter.unhighlightLabel(inputs.first());
+        element.parent().removeClass('p-state-error');
+        validationHighlighter.applyStateCssClasses(inputs, true);
+        inputs.removeAttr('aria-invalid');
+    }
+}
+
 export function registerCommonHighlighters(): void {
     validationHighlighter.types["default"] = new DefaultHighlighter();
     validationHighlighter.types["booleanchkbox"] = new BooleanCheckBoxHighlighter();
@@ -230,6 +253,8 @@ export function registerCommonHighlighters(): void {
     validationHighlighter.types["booleanbutton"] = new BooleanButtonHighlighter();
     validationHighlighter.types["toggleswitch"] = new ToggleSwitchHighlighter();
     validationHighlighter.types["inputnumber"] = new InputNumberHighlighter();
+    validationHighlighter.types["inputotp"] = new CompositeHighlighter();
+    validationHighlighter.types["inputphone"] = new CompositeHighlighter();
 }
 
 /**

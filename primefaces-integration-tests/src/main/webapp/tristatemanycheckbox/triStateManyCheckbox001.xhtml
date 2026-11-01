@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:triStateManyCheckbox id="checkbox" value="#{triStateManyCheckbox001.value}">
+                <f:selectItem itemLabel="Item A" itemValue="A"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+                <f:selectItem itemLabel="Item C" itemValue="C"/>
+            </p:triStateManyCheckbox>
+            <h:outputText id="value" value="#{triStateManyCheckbox001.value}"/>
+
+            <p:triStateManyCheckbox id="ajax" value="#{triStateManyCheckbox001.ajaxValue}"
+                                    stateOneTitle="none" stateTwoTitle="yes" stateThreeTitle="no">
+                <f:selectItem itemLabel="Item A" itemValue="A"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+                <p:ajax listener="#{triStateManyCheckbox001.onChange}" update="msgs ajax"/>
+            </p:triStateManyCheckbox>
+
+            <p:triStateManyCheckbox id="converted" value="#{triStateManyCheckbox001.converted}" layout="pageDirection">
+                <f:converter converterId="jakarta.faces.Integer"/>
+                <f:selectItem itemLabel="Item A" itemValue="A"/>
+                <f:selectItem itemLabel="Item B" itemValue="B"/>
+            </p:triStateManyCheckbox>
+            <h:outputText id="convertedSum" value="#{triStateManyCheckbox001.convertedSum}"/>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,5 +1,10 @@
 
 @media screen and (max-width: 1200px) {
+    // less padding, more room for the demos (the topbar, footer and submenu use the same variable and stay aligned)
+    :root {
+        --layout-page-padding-x: 1.5rem;
+    }
+
     .layout-wrapper.layout-news-active {
         .layout-content {
             padding-top: 180px;
@@ -84,28 +89,20 @@
         margin-left: 0;
         margin-right: 0;
         padding-top: var(--layout-topbar-height);
-        grid-template-columns: minmax(0, 1fr);
-        column-gap: 0;
 
         > * {
             max-width: 100%;
         }
 
-        // On mobile there is no right rail, so flow the submenu
-        // (RESOURCES / ON THIS PAGE) inline within the content instead
-        // of keeping it sticky in the (now missing) second grid column.
+        // the right rail stays (down to 960px), only the menu became an overlay: keep it off the window edge
         .layout-submenu {
-            grid-column: 1;
-            grid-row: auto;
-            position: static;
-            top: auto;
-            max-width: 100%;
-            width: 100%;
-            padding: 1.5rem var(--layout-page-padding-x);
-            border-left: none;
+            padding-right: var(--layout-page-padding-x);
         }
 
         .content-section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+
             &.introduction {
                 flex-direction: column;
             }
@@ -180,6 +177,29 @@
     }
 }
 
+@media screen and (max-width: 960px) {
+    .layout-content {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+
+        // No room for the right rail anymore, so flow the submenu
+        // (RESOURCES / ON THIS PAGE) inline within the content instead
+        // of keeping it sticky in the (now missing) second grid column.
+        // It goes after the demo, the demo stays at the top of the page.
+        .layout-submenu {
+            grid-column: 1;
+            grid-row: auto;
+            order: 1;
+            position: static;
+            top: auto;
+            max-width: 100%;
+            width: 100%;
+            padding: 1.5rem var(--layout-page-padding-x);
+            border-left: none;
+        }
+    }
+}
+
 @media screen and (max-width: 800px) {
     .layout-topbar {
         .topbar-menu {
@@ -191,6 +211,21 @@
 }
 
 @media screen and (max-width: 640px) {
+    :root {
+        --layout-page-padding-x: 1rem;
+    }
+
+    .layout-content {
+        .content-section {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .card {
+            padding: 1rem;
+        }
+    }
+
     .layout-topbar {
         .topbar-form {
             display: none;

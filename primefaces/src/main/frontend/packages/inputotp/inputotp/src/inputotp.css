@@ -1,0 +1,33 @@
+/*
+ * InputOtp: p:inputOtp (PrimeUIX: inputotp)
+ *
+ * One .p-inputfield per character, the field styles (hover, focus, invalid, disabled, filled) come from
+ * forms/inputfield.css.
+ * Structure: div.p-inputotp[role=group] > (input.p-inputotp-input + span.p-inputotp-separator)* + input[type=hidden]
+ * Supported classes: p-state-disabled, p-state-error (on .p-inputotp and the inputs),
+ *                    p-inputtext-sm, p-inputtext-lg (inputStyleClass)
+ */
+.p-inputotp {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--p-inputotp-gap);
+
+    .p-inputotp-input {
+        width: var(--p-inputotp-input-width);
+        text-align: center;
+
+        &.p-inputtext-sm {
+            width: var(--p-inputotp-input-sm-width);
+        }
+
+        &.p-inputtext-lg {
+            width: var(--p-inputotp-input-lg-width);
+        }
+    }
+
+    .p-inputotp-separator {
+        display: inline-flex;
+        align-items: center;
+        color: var(--p-inputotp-separator-color);
+    }
+}

@@ -209,7 +209,7 @@ class WidgetBuilderTest {
 
         String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces"
                 + ".cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\","
-                + "someAttribute:\"<script>alert(\\x27Hello World!\\x27)<\\/script>\"});</script>";
+                + "someAttribute:\"\\x3cscript\\x3ealert(\\x27Hello\\x20World\\x21\\x27)\\x3c\\/script\\x3e\"});</script>";
         assertEquals(expectedOutput, output);
     }
 }

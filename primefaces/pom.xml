@@ -60,7 +60,7 @@
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
-            <version>1.4.0</version>
+            <version>1.6.0</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -244,6 +244,12 @@
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -808,19 +814,14 @@
     </build>
 
     <profiles>
-        <!-- Quick build for developers which skips many build steps for speed -->
+        <!-- Quick build for developers, in addition to the skips of the quick profile in the parent pom -->
         <profile>
             <id>quick</id>
             <properties>
-                <maven.test.skip>true</maven.test.skip>
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-                <maven.source.skip>true</maven.source.skip>
-                <checkstyle.skip>true</checkstyle.skip>
                 <xml.formatter.skip>true</xml.formatter.skip>
                 <frontend.node.env>development</frontend.node.env>
                 <cyclonedx.skip>true</cyclonedx.skip>
                 <vdl.skip>true</vdl.skip>
-                <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
             </properties>

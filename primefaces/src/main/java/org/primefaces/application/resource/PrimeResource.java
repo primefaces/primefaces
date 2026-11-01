@@ -43,15 +43,17 @@ public class PrimeResource extends ResourceWrapper {
         FacesContext context = FacesContext.getCurrentInstance();
         version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
                 ? null
-                : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getResourceVersion();
+                : "v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getResourceVersion();
     }
 
     @Override
     public String getRequestPath() {
+        String requestPath = super.getRequestPath();
         if (version == null) {
-            return super.getRequestPath();
+            return requestPath;
         }
-        return super.getRequestPath() + version;
+        // a resource without library has no query string yet
+        return requestPath + (requestPath.contains("?") ? "&" : "?") + version;
     }
 
     @Override

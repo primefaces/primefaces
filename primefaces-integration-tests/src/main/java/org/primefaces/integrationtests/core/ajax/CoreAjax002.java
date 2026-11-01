@@ -47,6 +47,10 @@ public class CoreAjax002 {
         oncomplete = "$('#output6').text('modified');";
     }
 
+    public void fullOncomplete10() {
+        oncomplete = "$('#output10').text('modified');";
+    }
+
     public void addCallbackParam() {
         PrimeFaces.current().ajax().addCallbackParam("param", "ok");
     }
