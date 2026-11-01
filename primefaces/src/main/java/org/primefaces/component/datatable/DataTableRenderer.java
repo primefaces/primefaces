@@ -1334,9 +1334,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
+        boolean rowHeader = column.isRowHeader();
+        String cellTag = rowHeader ? "th" : "td";
 
-        writer.startElement("td", null);
-        writer.writeAttribute("role", "gridcell", null);
+        writer.startElement(cellTag, null);
+        writer.writeAttribute("role", rowHeader ? "rowheader" : "gridcell", null);
+        if (rowHeader) {
+            writer.writeAttribute("scope", "row", null);
+        }
         if (colspan != 1) {
             writer.writeAttribute("colspan", colspan, null);
         }
@@ -1371,7 +1376,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             column.renderChildren(context);
         }
 
-        writer.endElement("td");
+        writer.endElement(cellTag);
     }
 
     /**

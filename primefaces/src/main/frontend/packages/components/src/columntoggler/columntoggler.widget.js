@@ -481,8 +481,8 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
         chkbox.attr('aria-checked', true);
         columnHeader.removeClass('p-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).removeClass('p-hidden');
-        tbody.children(rowSelector).find('td:nth-child(' + index + ')').removeClass('p-hidden');
-        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').removeClass('p-hidden');
+        tbody.children(rowSelector).children(':nth-child(' + index + ')').removeClass('p-hidden');
+        tfoot.children(rowSelector).children(':nth-child(' + index + ')').removeClass('p-hidden');
 
         if (this.hasFrozenColumn) {
             var headers = rowHeader.children('th');
@@ -542,8 +542,8 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
         chkbox.attr('aria-checked', false);
         columnHeader.addClass('p-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('p-hidden');
-        tbody.children(rowSelector).find('td:nth-child(' + index + ')').addClass('p-hidden').removeAttr('tabindex');
-        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').addClass('p-hidden').removeAttr('tabindex');
+        tbody.children(rowSelector).children(':nth-child(' + index + ')').addClass('p-hidden').removeAttr('tabindex');
+        tfoot.children(rowSelector).children(':nth-child(' + index + ')').addClass('p-hidden').removeAttr('tabindex');
 
         if (this.hasFrozenColumn) {
             var headers = rowHeader.children('th');
