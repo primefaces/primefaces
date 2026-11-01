@@ -101,7 +101,7 @@ import jakarta.faces.component.UIComponent;
     "org.primefaces.cdk.api.FacesConverterBase",
     "org.primefaces.cdk.api.FacesValidatorBase"
 })
-@SupportedSourceVersion(SourceVersion.RELEASE_11)
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class AnnotationProcessor extends AbstractProcessor {
 
     private Filer filer;
