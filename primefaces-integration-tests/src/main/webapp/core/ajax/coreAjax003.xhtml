@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+
+    <h:head>
+        <title>coreAjax003</title>
+    </h:head>
+
+    <h:body>
+        <h:form id="form1">
+            <p:poll id="poll" widgetVar="poll" autoStart="false"
+                listener="#{coreAjax003.increment}"
+                update="count"
+                oncomplete="$('#output1').text('#{coreAjax003.count}');" />
+            <h:outputText id="count" value="#{coreAjax003.count}" />
+            <span id="output1"></span>
+        </h:form>
+
+        <h:form id="form2">
+            <p:remoteCommand name="remoteCommand2"
+                action="#{coreAjax003.increment}"
+                update="count"
+                oncomplete="$('#output2').text('#{coreAjax003.count}');" />
+            <h:outputText id="count" value="#{coreAjax003.count}" />
+            <span id="output2"></span>
+        </h:form>
+
+        <h:form id="form3">
+            <p:hotkey bind="x"
+                action="#{coreAjax003.increment}"
+                update="count"
+                oncomplete="$('#output3').text('#{coreAjax003.count}');" />
+            <h:outputText id="count" value="#{coreAjax003.count}" />
+            <span id="output3"></span>
+        </h:form>
+    </h:body>
+</html>
