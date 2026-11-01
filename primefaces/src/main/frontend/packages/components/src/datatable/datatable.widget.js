@@ -215,6 +215,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Builds a selector for body cells, which are `td` elements or `th` row headers (`rowHeader="true"`).
+     * @param {string} [suffix] Selector part appended to each cell type, e.g. `.p-editable-column`.
+     * @return {string} The cell selector.
+     */
+    static cellSelector(suffix = '') {
+        return 'td' + suffix + ', th[role="rowheader"]' + suffix;
+    }
+
+    /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
@@ -855,7 +864,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // helper function to reset the state of the whole table
         function resetFocusable(resetFirstCell) {
-            var selector = resetFirstCell ? "td:not(.p-hidden)" : 'td[tabindex="'+cellTabIndex+'"]';
+            var selector = resetFirstCell ? DataTable.cellSelector(':not(.p-hidden)') : DataTable.cellSelector('[tabindex="' + cellTabIndex + '"]');
             // default all cells to not focusable
             var focusableCells = $this.getTbody().find(selector);
             focusableCells.attr("tabindex", "-1");
@@ -870,7 +879,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         resetFocusable(true);
 
         // on click should make it focusable
-        this.getTbody().find("td").off('.focuscell')
+        this.getTbody().find(DataTable.cellSelector()).off('.focuscell')
             .on("click.focuscell", function(e) {
                 resetFocusable(false);
 
@@ -905,24 +914,24 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowDown":
-                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find('td[tabindex="-1"], td.p-hidden').eq(cell.index());
+                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find(DataTable.cellSelector('[tabindex="-1"]') + ', ' + DataTable.cellSelector('.p-hidden')).eq(cell.index());
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowUp":
-                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find('td[tabindex="-1"], td.p-hidden').eq(cell.index());
+                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find(DataTable.cellSelector('[tabindex="-1"]') + ', ' + DataTable.cellSelector('.p-hidden')).eq(cell.index());
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "Home":
                         prevCell = cell.prevAll('[tabindex="-1"]').last();
                         if (e.ctrlKey) {
-                            prevCell = cell.closest("tr[data-ri]").prevAll().last().find('td[tabindex="-1"]').first();
+                            prevCell = cell.closest("tr[data-ri]").prevAll().last().find(DataTable.cellSelector('[tabindex="-1"]')).first();
                         }
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "End":
                         nextCell = cell.nextAll('[tabindex="-1"]').last();
                         if (e.ctrlKey) {
-                            nextCell = cell.closest("tr[data-ri]").nextAll().last().find('td[tabindex="-1"]').last();
+                            nextCell = cell.closest("tr[data-ri]").nextAll().last().find(DataTable.cellSelector('[tabindex="-1"]')).last();
                         }
                         makeFocusable(e, cell, nextCell);
                         break;
@@ -934,7 +943,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         for (var i = 0; i < pageRows; i++) {
                             currentRow = currentRow.prev("tr[data-ri]");
                             if (currentRow.length) {
-                                prevCell = currentRow.find('td[tabindex="-1"]').eq(cell.index());
+                                prevCell = currentRow.find(DataTable.cellSelector('[tabindex="-1"]')).eq(cell.index());
                             } else {
                                 break;
                             }
@@ -949,7 +958,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         for (var i = 0; i < pageRows; i++) {
                             currentRow = currentRow.next("tr[data-ri]");
                             if (currentRow.length) {
-                                nextCell = currentRow.find('td[tabindex="-1"]').eq(cell.index());
+                                nextCell = currentRow.find(DataTable.cellSelector('[tabindex="-1"]')).eq(cell.index());
                             } else {
                                 break;
                             }
@@ -991,7 +1000,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.rowSelector = '> tr.p-widget-content.p-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
         this.cfg.selectionPageOnly = this.cfg.selectionPageOnly !== false;
-        this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.p-column-unselectable):not(.p-grouped-column),span:not(.p-c)';
+        this.rowSelectorForRowClick = this.cfg.rowSelector||DataTable.cellSelector(':not(.p-column-unselectable):not(.p-grouped-column)') + ',span:not(.p-c)';
 
         var preselection = $(this.selectionHolder).val();
         this.selection = !preselection ? [] : preselection.split(',');
@@ -1214,7 +1223,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             });
 
         if (this.cfg.groupColumnIndexes) {
-            var columnSelector = rowSelector + ' > td';
+            var columnSelector = rowSelector + ' > *';
             this.tbody.off('mouseenter.dataTable mouseleave.dataTable', columnSelector)
                 .on('mouseenter.dataTable', columnSelector, null, function() {
                     var row = $(this).parent();
@@ -1562,7 +1571,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      */
     updateContextMenuCell(event, targetWidget) {
         var target = $(event.target),
-        cell = target.is('td.p-editable-column') ? target : target.parents('td.p-editable-column:first');
+        cell = target.closest(DataTable.cellSelector('.p-editable-column'));
 
         if(targetWidget.contextMenuCell) {
             targetWidget.contextMenuCell.removeClass('p-state-highlight');
@@ -1803,7 +1812,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             const th = $(this);
 
             if (isAutoLayout) {
-                const td = firstRow.find("td").eq(i);
+                const td = firstRow.children().eq(i);
                 const width = td.width();
                 th.css({width: width + "px"}).data("width", width); // remember width in data so minWidth can be set after prependTo
             }
@@ -2101,7 +2110,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // Select all the cells in the same column of other rows
         var $whichBody = this.cfg.scrollable ? this.scrollTbody : this.tbody;
-        var cellsInSameColumn = $whichBody.find("> tr:not(.p-expanded-row-content) td:nth-child(" + (columnIndex + 1) + ")");
+        var cellsInSameColumn = $whichBody.find("> tr:not(.p-expanded-row-content) > *:nth-child(" + (columnIndex + 1) + ")");
 
         // Find the max width of the largest column
         var maxWidth = 0;
@@ -3696,7 +3705,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             
         }
         else if(this.cfg.editMode === 'cell') {
-            var originalCellSelector = '> tr > td.p-editable-column',
+            var originalCellSelector = '> tr > .p-editable-column',
             cellSelector = this.cfg.cellSeparator || originalCellSelector,
             editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.datatable-cell click.datatable-cell' : 'click.datatable-cell';
 
@@ -3779,7 +3788,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} row Row for which to show the row editor.
      */
     showRowEditors(row) {
-        row.addClass('p-state-highlight p-row-editing').children('td.p-editable-column').each(function() {
+        row.addClass('p-state-highlight p-row-editing').children('.p-editable-column').each(function() {
             var column = $(this);
 
             column.find('.p-cell-editor-output').hide();
@@ -4022,10 +4031,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {boolean} forward `true` if tabbing forward, `false` otherwise.
      */
     tabCell(cell, forward) {
-        var targetCell = forward ? cell.nextAll('td.p-editable-column:first') : cell.prevAll('td.p-editable-column:first');
+        var targetCell = forward ? cell.nextAll('.p-editable-column:first') : cell.prevAll('.p-editable-column:first');
         if(targetCell.length == 0) {
             var tabRow = forward ? cell.parent().next() : cell.parent().prev();
-            targetCell = forward ? tabRow.children('td.p-editable-column:first') : tabRow.children('td.p-editable-column:last');
+            targetCell = forward ? tabRow.children('.p-editable-column:first') : tabRow.children('.p-editable-column:last');
         }
 
         var cellEditor = targetCell.children('div.p-cell-editor'),
@@ -4667,7 +4676,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             return;
         }
 
-        var columnsOfFirstRow = firstRow.children('td'),
+        var columnsOfFirstRow = firstRow.children(),
         dataColumnsCount = columnsOfFirstRow.length,
         columnMarkup = '';
 
@@ -4986,8 +4995,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 draggedColumnFooter = null,
                 droppedColumnFooter = null;
 
-                var draggedCells = $this.tbody.find('> tr:not(.p-expanded-row-content) > td:nth-child(' + (draggedColumnHeader.index() + 1) + ')'),
-                droppedCells = $this.tbody.find('> tr:not(.p-expanded-row-content) > td:nth-child(' + (droppedColumnHeader.index() + 1) + ')');
+                var draggedCells = $this.tbody.find('> tr:not(.p-expanded-row-content) > *:nth-child(' + (draggedColumnHeader.index() + 1) + ')'),
+                droppedCells = $this.tbody.find('> tr:not(.p-expanded-row-content) > *:nth-child(' + (droppedColumnHeader.index() + 1) + ')');
 
                 if($this.tfoot.length) {
                     var footerColumns = $this.tfoot.find('> tr > td'),
@@ -5094,7 +5103,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      */
     makeRowsDraggable() {
         var $this = this,
-        draggableHandle = this.cfg.rowDragSelector||'td,span:not(.p-c)';
+        draggableHandle = this.cfg.rowDragSelector||DataTable.cellSelector() + ',span:not(.p-c)';
 
         PrimeFaces.interactions.sortable(this.tbody, {
             placeholder: 'p-datatable-rowordering p-state-active',
@@ -5568,7 +5577,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             for(var i = 0; i < this.headers.length; i++) {
                 var header = this.headers.eq(i),
                     index = header.index(),
-                    column = this.tbody.find('> tr:not(.p-expanded-row-content) > td:nth-child(' + (index + 1) + ')');
+                    column = this.tbody.find('> tr:not(.p-expanded-row-content) > *:nth-child(' + (index + 1) + ')');
 
                 column.data('ci', index);
             }
@@ -5578,7 +5587,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             this.groupRow(this.cfg.groupColumnIndexes[i], rows);
         }
 
-        rows.children('td.p-duplicated-column').remove();
+        rows.children('.p-duplicated-column').remove();
     }
 
     /**
@@ -5592,7 +5601,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         for(var i = 0; i < rows.length; i++) {
             var row = rows.eq(i);
-            var column = row.children('td').eq(colIndex);
+            var column = row.children().eq(colIndex);
             var columnData = column.text();
 
             if(rowGroupCellData != columnData) {
@@ -5613,7 +5622,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
 
             if(groupStartIndex != null && rowGroupCount > 1) {
-                rows.eq(groupStartIndex).children('td').eq(colIndex).attr('rowspan', rowGroupCount);
+                rows.eq(groupStartIndex).children().eq(colIndex).attr('rowspan', rowGroupCount);
             }
         }
     }
@@ -5717,7 +5726,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
             var groupedColumnIndex = groupedColumn.index();
             if (groupedColumnIndex > 0) {
-                var columns = row.children('td:visible');
+                var columns = row.children(':visible');
                 for (var i = 0; i < groupedColumnIndex; i++) {
                     var column = columns.eq(i);
                     if (column) {
@@ -5826,7 +5835,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             var rows = this.tbody.find('> tr:not(.p-expanded-row-content):not(.p-datatable-headerrow)');
             for(var i = 0; i < rows.length; i++) {
                 var row = rows.eq(i);
-                var columns = row.find('td');
+                var columns = row.children();
                 
                 for(var j = 0; j < columns.length; j++) {
                     var column = columns.eq(j);

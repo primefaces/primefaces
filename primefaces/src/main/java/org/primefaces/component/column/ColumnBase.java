@@ -159,7 +159,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     public abstract boolean isGroupRow();
 
     @Property(description = "Renders the column's body cells as <th scope=\"row\"> instead of <td>, marking it as a row header"
-            + " for accessibility (WCAG tables with two headers).",
+            + " for accessibility (see WAI tables tutorial: two headers). Only supported by DataTable.",
             defaultValue = "false")
     public abstract boolean isRowHeader();
 

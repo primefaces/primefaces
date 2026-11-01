@@ -43,6 +43,7 @@ public class RowHeaderView implements Serializable {
 
     private List<DeliverySlot> slots;
     private List<HolidayRecord> holidays;
+    private DeliverySlot selectedSlot;
 
     @PostConstruct
     public void init() {
@@ -66,6 +67,14 @@ public class RowHeaderView implements Serializable {
 
     public List<HolidayRecord> getHolidays() {
         return holidays;
+    }
+
+    public DeliverySlot getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public void setSelectedSlot(DeliverySlot selectedSlot) {
+        this.selectedSlot = selectedSlot;
     }
 
     public static class DeliverySlot implements Serializable {

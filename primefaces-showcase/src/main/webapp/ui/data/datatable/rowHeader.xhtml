@@ -23,12 +23,13 @@
         <div class="card">
             <h5>Table with header cells in the top row and first column</h5>
             <h:form>
-                <p:dataTable var="slot" value="#{dtRowHeaderView.slots}">
+                <p:dataTable var="slot" value="#{dtRowHeaderView.slots}" rowKey="#{slot.time}"
+                             selection="#{dtRowHeaderView.selectedSlot}" selectionMode="single">
                     <f:facet name="header">
                         Delivery slots:
                     </f:facet>
 
-                    <p:column headerText="" rowHeader="true">
+                    <p:column headerText="Time" rowHeader="true">
                         <h:outputText value="#{slot.time}" />
                     </p:column>
 

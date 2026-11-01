@@ -44,7 +44,8 @@ public abstract class DataTable extends AbstractTable<Row> {
                 .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "p-datatable-empty-message")
                         && !PrimeSelenium.hasCssClass(rowElt, "p-expanded-row-content"))
                 .map(rowElt -> {
-                    List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
+                    List<Cell> cells = rowElt.findElements(By.cssSelector("td, th[role='rowheader']")).stream()
+                            .map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
                     return new Row(rowElt, cells);
                 }).collect(Collectors.toList());
     }

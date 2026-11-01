@@ -346,11 +346,11 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
 
         //find slice index by checking how many rendered columns there are in frozen part
         var firstRow = this.frozenTbody.children('tr:first'),
-        frozenColumnCount = firstRow.length ? firstRow.children('td').length: this.cfg.frozenColumns;
+        frozenColumnCount = firstRow.length ? firstRow.children().length: this.cfg.frozenColumns;
 
         for(var i = 0; i < rows.length; i++) {
             var row = rows.eq(i),
-            columns = row.children('td'),
+            columns = row.children(),
             frozenRow = this.copyRow(row),
             scrollableRow = this.copyRow(row);
 
@@ -530,7 +530,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
     updateRow(row, content) {
         var table = $('<table><tbody>' + content + '</tbody></table>'),
         newRow = table.find('> tbody > tr'),
-        columns = newRow.children('td'),
+        columns = newRow.children(),
         frozenRow = this.copyRow(newRow),
         scrollableRow = this.copyRow(newRow),
         twinRow = this.getTwinRow(row);
@@ -771,7 +771,7 @@ PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.wid
      * @param {string} [columnClass] Optional CSS class for the ghost columns.
      */
     _addGhostRow(body, header, headerClone, footerTable, columnClass) {
-        var dataColumns = body.find('tr:first').children('td'),
+        var dataColumns = body.find('tr:first').children(),
         dataColumnsCount = dataColumns.length,
         columnMarkup = '',
         columnStyleClass = columnClass ? 'p-resizable-column ' + columnClass : 'p-resizable-column';
