@@ -201,6 +201,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
                 .add(component.getStyleClass())
                 .add(component.isShowUnselectableCheckbox(), "p-treetable-checkbox-all")
                 .add(component.isShowGridlines(), TreeTable.GRIDLINES_CLASS)
+                .add(component.isStripedRows(), TreeTable.STRIPED_ROWS_CLASS)
                 .add("small".equals(component.getSize()), TreeTable.SMALL_SIZE_CLASS)
                 .add("large".equals(component.getSize()), TreeTable.LARGE_SIZE_CLASS)
                 .build();

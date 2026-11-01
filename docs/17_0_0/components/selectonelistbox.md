@@ -40,3 +40,13 @@ the list of structural style classes;
 | --- | --- | 
 .p-selectonelistbox | Main container element.
 .p-selectlistbox-item | Each item in list.
+
+When columns are used, the items are rendered as a table and the _advancedStyleClass_ attribute applies
+to that table element. Themes provide the following generic modifier classes for it;
+
+| Class | Applies |
+| --- | --- |
+| .p-table-gridlines | Displays cell borders. |
+| .p-table-striped | Displays striped rows to visually separate content. |
+| .p-table-sm | Renders the cells with reduced padding. |
+| .p-table-lg | Renders the cells with increased padding. |
