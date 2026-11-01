@@ -32,6 +32,7 @@ import jakarta.el.ValueExpression;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
 
 @FacesComponent(value = Poll.COMPONENT_TYPE, namespace = Poll.COMPONENT_FAMILY)
 @FacesComponentInfo(description =
@@ -46,6 +47,11 @@ public class Poll extends PollBaseImpl {
     @Override
     public void broadcast(jakarta.faces.event.FacesEvent event) throws jakarta.faces.event.AbortProcessingException {
         super.broadcast(event); //backward compatibility
+
+        // e.g. DynamicOncompleteEvent must not invoke the listener again
+        if (!(event instanceof ActionEvent)) {
+            return;
+        }
 
         FacesContext facesContext = getFacesContext();
         MethodExpression me = getListener();

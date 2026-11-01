@@ -410,7 +410,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                         if (childIndex > 0) {
                             sb.append(",");
                         }
-                        sb.append(tab.getKey() != null ? tab.getKey() : Integer.toString(childIndex));
+                        sb.append(tab.getKeyOrIndex(childIndex));
                         childIndex++;
                     }
                 }
@@ -423,7 +423,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                         if (i > 0) {
                             sb.append(",");
                         }
-                        sb.append(tab.getKey() != null ? tab.getKey() : Integer.toString(i));
+                        sb.append(tab.getKeyOrIndex(i));
                     }
                 }
                 finally {

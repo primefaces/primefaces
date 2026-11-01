@@ -104,9 +104,10 @@ primefaces/src/main/frontend/
                                              components.js): CSS next to the widget, loaded with it by the
                                              @ResourceDependency of the component (clock, colorpicker,
                                              datepicker, diagram, dock, fileupload, galleria, imagecompare,
-                                             imagecropper, keyboard, knob, lifecycle, log, mindmap, organigram,
+                                             imagecropper, inputotp, inputphone, keyboard, knob, lifecycle, log,
+                                             mindmap, organigram,
                                              schedule, scrollpanel, signature, stack, terminal, texteditor,
-                                             timeline) with their third-party CSS
+                                             timeline, tristatemanycheckbox) with their third-party CSS
   build/scripts/bundle.mjs                   esbuild: bundles the index.css files and the themes, inlines the icons
   build/scripts/themes/check.mjs             conventions check, runs before the build (see below)
   build/scripts/themes/generate-density.mjs  generates themes/density/*.css from the presets (--check: up to date)
@@ -476,7 +477,7 @@ other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0
 - Keyboard focus where PrimeFaces has none: growl close button, organigram nodes, autoComplete / chips tokens.
 - Empty states: consistent empty message for selects / listbox / multiSelect filters (dataTable, dataView, autoComplete
   have one).
-- New components PrimeReact has: InputOtp, MeterGroup, Stepper (modern successor of steps / wizard).
+- New components PrimeReact has: MeterGroup, Stepper (modern successor of steps / wizard).
 
 **Material preset** (after the markup changes above)
 

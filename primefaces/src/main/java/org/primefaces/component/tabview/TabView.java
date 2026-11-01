@@ -31,6 +31,7 @@ import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
 import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 import java.util.Map;
 
@@ -129,7 +130,37 @@ public class TabView extends TabViewBaseImpl {
         }
     }
 
-    protected void resetActiveIndex() {
+    /**
+     * Returns the key or index of the active tab. Non-String values (e.g. an <code>int</code> bean property) are converted
+     * to a String.
+     *
+     * @return the key or index of the active tab
+     */
+    @Override
+    public String getActive() {
+        Object active = getStateHelper().eval(PropertyKeys.active);
+        return active == null ? null : active.toString();
+    }
+
+    /**
+     * Sets the index of the active tab. When called at runtime (e.g. from a listener), it clears a local <code>active</code>
+     * value (e.g. decoded from the request), which would otherwise take precedence.
+     *
+     * @param activeIndex the 0-based index of the active tab
+     */
+    @Override
+    public void setActiveIndex(int activeIndex) {
+        super.setActiveIndex(activeIndex);
+
+        // Facelets sets the tag attributes before the component is added to the view; there active takes precedence over
+        // activeIndex, regardless of the order in which the attributes are applied
+        if (getParent() != null) {
+            getStateHelper().remove(PropertyKeys.active);
+        }
+    }
+
+    protected void resetActive() {
+        getStateHelper().remove(PropertyKeys.active);
         getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
@@ -142,16 +173,73 @@ public class TabView extends TabViewBaseImpl {
         super.processUpdates(context);
 
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.activeIndex.toString()), true);
-        if (expr != null && !expr.isReadOnly(elContext)) {
-            expr.setValue(elContext, getActiveIndex());
-            resetActiveIndex();
+        ValueExpression activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.active.toString()), true);
+
+        // the bean gets the requested index (as posted by the client), not the index of the tab rendered as active,
+        // which may differ if the requested tab is not rendered, see #forEachTab - same as before the key support
+        if (activeExpr != null) {
+            if (!activeExpr.isReadOnly(elContext)) {
+                Class<?> type = activeExpr.getType(elContext);
+                boolean index = type == int.class || type == Integer.class;
+                activeExpr.setValue(elContext, index ? resolveActiveIndex() : getActive());
+                resetActive();
+            }
+        }
+        else {
+            // Fallback to deprecated activeIndex
+            ValueExpression activeIndexExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                    getValueExpression(PropertyKeys.activeIndex.toString()), true);
+            if (activeIndexExpr != null && !activeIndexExpr.isReadOnly(elContext)) {
+                activeIndexExpr.setValue(elContext, resolveActiveIndex());
+                resetActive();
+            }
+        }
+    }
+
+    /**
+     * Resolves the index of the active tab, either from the key or the index defined via <code>active</code>,
+     * falling back to the deprecated <code>activeIndex</code>.
+     *
+     * @return the 0-based index of the active tab
+     */
+    public int resolveActiveIndex() {
+        String active = getActive();
+
+        // Deprecated
+        if (active == null) {
+            return getActiveIndex();
+        }
+
+        if (LangUtils.isBlank(active)) {
+            return 0;
+        }
+
+        int index = findTabIndexByKey(active);
+        if (index != -1) {
+            return index;
+        }
+
+        try {
+            return Integer.parseInt(active.trim());
+        }
+        catch (NumberFormatException e) {
+            return 0;
         }
     }
 
     public void forEachTab(Callbacks.TriConsumer<Tab, Integer, Boolean> callback) {
-        int activeIndex = getActiveIndex();
+        forEachTab(resolveActiveIndex(), callback);
+    }
+
+    /**
+     * Iterates over the rendered tabs, using an already resolved active index (see {@link #resolveActiveIndex()}), so it is
+     * resolved only once if the tabs are iterated multiple times, e.g. for the headers and the contents.
+     *
+     * @param activeIndex the 0-based index of the active tab
+     * @param callback the callback receiving the tab, its index and whether it is active
+     */
+    public void forEachTab(int activeIndex, Callbacks.TriConsumer<Tab, Integer, Boolean> callback) {
         boolean activeTabRendered = false;
 
         if (isRepeating()) {
@@ -215,7 +303,7 @@ public class TabView extends TabViewBaseImpl {
     public void restoreMultiViewState() {
         TabViewState ts = getMultiViewState(false);
         if (ts != null) {
-            setActiveIndex(ts.getActiveIndex());
+            setActive(ts.getActive());
         }
     }
 
@@ -230,6 +318,6 @@ public class TabView extends TabViewBaseImpl {
 
     @Override
     public void resetMultiViewState() {
-        setActiveIndex(0);
+        setActive(null);
     }
 }

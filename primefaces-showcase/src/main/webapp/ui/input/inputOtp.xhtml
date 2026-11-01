@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputOtp
+    </ui:define>
+
+    <ui:define name="description">
+        InputOtp is an input for one-time passwords and PINs with one input per character. Typing moves to the next input,
+        a pasted code is distributed over the inputs and mobile browsers can fill in a code received by SMS.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputotp"/>
+    <ui:param name="widgetLink" value="InputOtp"/>
+    <ui:param name="tagName" value="inputOtp"/>
+
+    <ui:define name="implementation">
+        <p:growl>
+            <p:autoUpdate/>
+        </p:growl>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Basic</h5>
+                <p class="mt-0">The <i>complete</i> event fires when all characters are entered.</p>
+                <p:outputLabel for="@next" value="Verification code" styleClass="block mb-2"/>
+                <p:inputOtp value="#{inputOtpView.code}" length="6" integerOnly="true">
+                    <p:ajax event="complete" listener="#{inputOtpView.onComplete}"/>
+                </p:inputOtp>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Mask</h5>
+                <p:inputOtp value="#{inputOtpView.pin}" mask="true" integerOnly="true"/>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Separator</h5>
+                <div class="flex flex-column gap-3">
+                    <p:inputOtp length="6" separator="-"/>
+                    <p:inputOtp length="6" integerOnly="true">
+                        <f:facet name="separator">
+                            <i class="pi pi-minus"/>
+                        </f:facet>
+                    </p:inputOtp>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Placeholder</h5>
+                <div class="flex flex-column gap-3">
+                    <p:inputOtp placeholder="0" integerOnly="true"/>
+                    <p:inputOtp length="5" placeholder="ABCDE"/>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Sizes</h5>
+                <div class="flex flex-column gap-3">
+                    <p:inputOtp inputStyleClass="p-inputtext-sm"/>
+                    <p:inputOtp/>
+                    <p:inputOtp inputStyleClass="p-inputtext-lg"/>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Disabled and Readonly</h5>
+                <div class="flex flex-column gap-3">
+                    <p:inputOtp value="1234" disabled="true"/>
+                    <p:inputOtp value="5678" readonly="true"/>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5 class="mt-0">Validation</h5>
+                <p class="mt-0">A partially entered code is invalid.</p>
+                <div class="flex flex-wrap align-items-start gap-3">
+                    <div>
+                        <p:inputOtp id="token" value="#{inputOtpView.token}" length="6" integerOnly="true" required="true"
+                                    label="Token"/>
+                        <p:message for="token"/>
+                    </div>
+                    <p:commandButton value="Submit" action="#{inputOtpView.submit}" process="@this token" update="@form"/>
+                </div>
+            </div>
+        </h:form>
+
+        <h:form>
+            <div class="card">
+                <h5 class="mt-0">Client Side Validation</h5>
+                <p class="mt-0">The code is validated in the browser before the form is submitted.</p>
+                <div class="flex flex-wrap align-items-start gap-3">
+                    <div>
+                        <p:inputOtp id="csvToken" value="#{inputOtpView.csvToken}" length="6" integerOnly="true" required="true"
+                                    label="Token"/>
+                        <p:message for="csvToken"/>
+                    </div>
+                    <p:commandButton value="Submit" action="#{inputOtpView.submit}" update="@form" validateClient="true"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

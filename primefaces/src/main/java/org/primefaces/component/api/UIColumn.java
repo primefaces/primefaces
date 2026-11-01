@@ -231,6 +231,10 @@ public interface UIColumn {
 
     boolean isGroupRow();
 
+    default boolean isRowHeader() {
+        return false;
+    }
+
     Object getExportHeaderValue();
 
     Object getExportFooterValue();

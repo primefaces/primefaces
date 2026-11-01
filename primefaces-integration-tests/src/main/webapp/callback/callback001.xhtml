@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs"/>
+            <h:outputText id="output" value="-"/>
+
+            <p:panel id="panel" widgetVar="panel" header="Panel" toggleable="true">
+                <p:callback event="toggle" execute="document.getElementById('form:output').textContent = source + '|' + event + '|' + JSON.stringify(params);"/>
+                Content
+            </p:panel>
+
+            <p:panel id="chained" widgetVar="chained" header="Chained" toggleable="true">
+                <p:callback event="toggle" execute="document.getElementById('form:output').textContent = 'chained';"/>
+                <p:ajax event="toggle" listener="#{callback001.onAjax}" update="msgs"/>
+                Content
+            </p:panel>
+
+            <p:panel id="stopped" widgetVar="stopped" header="Stopped" toggleable="true">
+                <p:callback event="toggle" execute="document.getElementById('form:output').textContent = 'stopped'; return false;"/>
+                <p:ajax event="toggle" listener="#{callback001.onAjax}" update="msgs"/>
+                Content
+            </p:panel>
+
+            <p:panel id="disabled" widgetVar="disabled" header="Disabled" toggleable="true">
+                <p:callback event="toggle" disabled="true" execute="document.getElementById('form:output').textContent = 'disabled';"/>
+                Content
+            </p:panel>
+
+            <p:commandButton id="button" value="Button" actionListener="#{callback001.onAjax}" update="msgs">
+                <p:callback event="click" execute="document.getElementById('form:output').textContent = source + '|' + event + '|' + ext;"/>
+            </p:commandButton>
+
+            <p:commandButton id="stoppedButton" value="Stopped Button" actionListener="#{callback001.onAjax}" update="msgs">
+                <p:callback event="click" execute="document.getElementById('form:output').textContent = 'stoppedButton'; return false;"/>
+            </p:commandButton>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

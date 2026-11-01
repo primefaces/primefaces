@@ -55,6 +55,8 @@ public class ThemingStatesView implements Serializable {
     private Double amount = 1234.56;
     private String mask = "(555) 123-4567";
     private String password = "Secret#2026";
+    private String otp = "1234";
+    private String phone = "+12015550123";
     private String fruit = "Apple";
     private List<String> chips = new ArrayList<>(List.of("Aura", "Lara"));
     private LocalDate date = LocalDate.now();

@@ -163,10 +163,19 @@ export class Validation {
             }
         }
         if (validateInvisibleElements === false) {
-            inputs = inputs.filter(':visible');
+            // the hidden input with the value of a composite component is visible with the component
+            inputs = inputs.filter((i, input) => $(input).is('[data-p-composite]') ? $(input).parent().is(':visible') : $(input).is(':visible'));
         }
+        // the inputs of a composite component are validated once, by the hidden input with its value
+        const validatableInputs = new Set<HTMLElement>();
         for (var i = 0; i < inputs.length; i++) {
-            this.validateInput(source, inputs.eq(i), highlight);
+            const input = this.resolveValidatableInput(inputs.eq(i));
+            if (input[0]) {
+                validatableInputs.add(input[0]);
+            }
+        }
+        for (const input of validatableInputs) {
+            this.validateInput(source, $(input), highlight);
         }
 
         // validate complex validations, which can be applied to any container element
@@ -205,6 +214,12 @@ export class Validation {
             for (var key in vc.messages) {
                 if (vc.messages.hasOwnProperty(key)) {
                     var el = $(core.escapeClientId(key));
+                    // a component that consists of several inputs (the component or its hidden input, e.g. of
+                    // p:inputNumber without client id data): the first input the user types into
+                    const compositeInput = this.resolveValidatableInput(el);
+                    if (compositeInput.is('[data-p-composite]')) {
+                        el = compositeInput.siblings('input:not([type="hidden"])').first();
+                    }
                     if (!el.is(':focusable')) {
                         el.find(':focusable:first').trigger('focus');
                     }
@@ -368,6 +383,23 @@ export class Validation {
     }
 
     /**
+     * Finds the input that is validated for an element: the element itself, or for a component that consists of
+     * several inputs (e.g. p:inputNumber) and for its inputs the hidden input with the value of the component, marked
+     * with `data-p-composite`.
+     * @param element An input, or the element of a component (e.g. by p:clientValidator).
+     * @returns The input to validate.
+     */
+    private resolveValidatableInput(element: JQuery): JQuery {
+        if (element.is('[data-p-composite]')) {
+            return element;
+        }
+        const composite = element.is(':input')
+            ? element.siblings('input[data-p-composite]')
+            : element.children('input[data-p-composite]');
+        return composite.length ? composite.first() : element;
+    }
+
+    /**
      * Performs a client-side validation of (the value of) the given input element. If the element is valid, removes old
      * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
      * messages.
@@ -376,6 +408,8 @@ export class Validation {
      * @param highlight If the invalid element should be highlighted.
      */
     private validateInput(source: JQuery, element: JQuery, highlight: boolean): void {
+        // a component that consists of several inputs or one of its inputs: the hidden input with its value
+        element = this.resolveValidatableInput(element);
         var vc = this.ValidationContext;
 
         if (element.is(':checkbox,:radio') && element.data('p-grouped')) {
@@ -386,10 +420,6 @@ export class Validation {
             } else {
                 return;
             }
-        }
-
-        if (element.parent().hasClass('p-inputnumber')) {
-            element = element.parent().children('input:hidden');
         }
 
         let submittedValue: PrimeFacesTypes.validation.SubmittedValue | null = this.Utils.getSubmittedValue(element);
@@ -868,7 +898,9 @@ export class ValidationUtils {
      * @returns The label of the given element.
      */
     getLabel(element: JQuery): string {
-        return element.data('p-label') || element.attr('id');
+        // the hidden input of a component that consists of several inputs: the client id of the component, like on the server
+        const id = element.is('[data-p-composite]') ? element.parent().attr('id') : element.attr('id');
+        return element.data('p-label') || id;
     }
 
     /**

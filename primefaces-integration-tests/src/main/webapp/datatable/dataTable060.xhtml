@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" widgetVar="dtWidget" value="#{dataTable060.progLanguages}" var="lang"
+                         paginator="true" rows="3" rowKey="#{lang.id}"
+                         selection="#{dataTable060.selectedProgLanguage}" selectionMode="single">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column headerText="Name" rowHeader="true">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column headerText="First Appeared" visible="false">
+                    <h:outputText value="#{lang.firstAppeared}"/>
+                </p:column>
+
+                <p:column headerText="Type">
+                    <h:outputText value="#{lang.type}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

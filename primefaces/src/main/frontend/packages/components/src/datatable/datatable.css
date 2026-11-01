@@ -61,6 +61,7 @@
 
     thead th,
     tbody td,
+    tbody th,
     tfoot td,
     tfoot th {
         overflow: hidden;
@@ -224,7 +225,8 @@
             border-color var(--p-datatable-transition-duration), outline-color var(--p-datatable-transition-duration),
             box-shadow var(--p-datatable-transition-duration);
 
-        > td {
+        > td,
+        > th {
             padding: var(--p-datatable-body-cell-padding);
             border: 1px solid var(--p-datatable-body-cell-border-color);
             border-width: 0 0 1px 0;
@@ -274,7 +276,9 @@
         }
 
         &.p-state-highlight > td,
-        &:has(+ tr.p-state-highlight) > td {
+        &.p-state-highlight > th,
+        &:has(+ tr.p-state-highlight) > td,
+        &:has(+ tr.p-state-highlight) > th {
             border-bottom-color: var(--p-datatable-body-cell-selected-border-color);
         }
 
@@ -350,7 +354,9 @@
     }
 
     .p-datatable-data tr.p-row-editing td.p-editable-column,
-    .p-datatable-data td.p-cell-editing {
+    .p-datatable-data tr.p-row-editing th.p-editable-column,
+    .p-datatable-data td.p-cell-editing,
+    .p-datatable-data th.p-cell-editing {
         padding-top: 0;
         padding-bottom: 0;
         margin-top: 0;
@@ -613,7 +619,8 @@
             padding: var(--p-datatable-header-cell-sm-padding);
         }
 
-        .p-datatable-data > tr > td {
+        .p-datatable-data > tr > td,
+        .p-datatable-data > tr > th {
             padding: var(--p-datatable-body-cell-sm-padding);
         }
 
@@ -635,7 +642,8 @@
             padding: var(--p-datatable-header-cell-lg-padding);
         }
 
-        .p-datatable-data > tr > td {
+        .p-datatable-data > tr > td,
+        .p-datatable-data > tr > th {
             padding: var(--p-datatable-body-cell-lg-padding);
         }
 
@@ -675,6 +683,7 @@
 
         thead > tr > th,
         .p-datatable-data > tr > td,
+        .p-datatable-data > tr > th,
         tfoot > tr > td {
             border-width: 1px;
         }
@@ -763,6 +772,7 @@
 
     thead th,
     tbody td,
+    tbody th,
     tfoot td {
         white-space: nowrap;
     }
@@ -791,6 +801,7 @@
 
 /* keyboard cell navigation (cellNavigation="true") */
 .p-datatable-data td[role="gridcell"]:focus,
+.p-datatable-data th[role="rowheader"]:focus,
 .p-datatable-data td[role="grid"] [tabindex="0"]:focus {
     outline: var(--p-datatable-row-focus-ring-width) var(--p-datatable-row-focus-ring-style) var(--p-datatable-row-focus-ring-color);
     outline-offset: var(--p-datatable-row-focus-ring-offset);
@@ -799,6 +810,7 @@
 
 .p-datatable-reflow {
     .p-datatable-data td[role="gridcell"] .p-column-title,
+    .p-datatable-data th[role="rowheader"] .p-column-title,
     .p-expanded-row-content td .p-column-title {
         display: none;
     }
@@ -878,7 +890,8 @@
         }
 
         .p-datatable-data {
-            td[role="gridcell"]:not(.p-hidden) {
+            td[role="gridcell"]:not(.p-hidden),
+            th[role="rowheader"]:not(.p-hidden) {
                 box-sizing: border-box;
                 clear: inline-start;
                 float: inline-start;
@@ -897,7 +910,8 @@
                 border-right: 0 none;
             }
 
-            td[role="gridcell"] .p-column-title {
+            td[role="gridcell"] .p-column-title,
+            th[role="rowheader"] .p-column-title {
                 display: inline-block;
                 font-weight: var(--p-datatable-reflow-title-font-weight);
                 margin: 0;
