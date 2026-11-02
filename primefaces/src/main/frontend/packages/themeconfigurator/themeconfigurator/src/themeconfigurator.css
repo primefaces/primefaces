@@ -1,34 +1,62 @@
 /*
- * Theme configurator of the theming pages (theming/configurator.xhtml): a palette button at the right edge of the
- * window opens the panel as an overlay from the right (no mask: the page stays visible and follows every change). The
- * panel itself is themed by the tokens it edits.
+ * Theme configurator (pc:themeConfigurator): inline the panel in the page, as overlay a button at the right edge of the
+ * window opens it from the right (no mask: the page stays visible and follows every change). The panel itself is
+ * themed by the tokens it edits.
  */
-.cfg {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1001;
+.p-themeconfigurator-panel {
     box-sizing: border-box;
-    width: min(21rem, 100vw);
-    overflow-y: auto;
-    overscroll-behavior: contain;
     padding: 0 1rem 1rem;
     background: var(--p-content-background);
     color: var(--p-content-color);
-    border-left: 1px solid var(--p-content-border-color);
+    font-family: var(--p-typography-font-family, inherit);
+    font-size: 13px;
+    outline: none;
+}
+
+/* inline: the header and its border stay inside of the rounded corners, it does not stick (the page has its own top bar) */
+.p-themeconfigurator-inline .p-themeconfigurator-panel {
+    max-width: 21rem;
+    overflow: clip;
+    border: 1px solid var(--p-content-border-color);
+    border-radius: var(--p-content-border-radius);
+}
+
+.p-themeconfigurator-inline .p-themeconfigurator-header {
+    position: static;
+    /* the panel shows through (a second translucent layer of Glass would be a band) */
+    background: none;
+}
+
+.p-themeconfigurator-overlay .p-themeconfigurator-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    inset-inline-end: 0;
+    z-index: 1001;
+    width: min(21rem, 100vw);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-inline-start: 1px solid var(--p-content-border-color);
     box-shadow: var(--p-overlay-modal-shadow);
     backdrop-filter: var(--p-overlay-backdrop-filter);
     transform: translateX(100%);
     visibility: hidden;
-    transition: transform .2s ease, visibility 0s .2s;
-    font-family: var(--p-typography-font-family, inherit);
-    font-size: 13px;
-    outline: none;
+    transition: transform var(--p-transition-duration) var(--p-transition-easing-exit),
+        visibility 0s var(--p-transition-duration);
     scrollbar-width: thin;
 }
 
-.cfg-header {
+.p-themeconfigurator-overlay:dir(rtl) .p-themeconfigurator-panel {
+    transform: translateX(-100%);
+}
+
+.p-themeconfigurator-overlay.p-themeconfigurator-open .p-themeconfigurator-panel {
+    transform: none;
+    visibility: visible;
+    transition: transform var(--p-transition-duration) var(--p-transition-easing-enter);
+}
+
+.p-themeconfigurator-header {
     position: sticky;
     top: 0;
     z-index: 1;
@@ -41,18 +69,27 @@
     border-bottom: 1px solid var(--p-content-border-color);
 }
 
-.cfg-header h2 {
+.p-themeconfigurator-title {
     flex: 1;
     margin: 0;
     font-size: 1rem;
+    font-weight: 600;
 }
 
-.cfg-group {
+.p-themeconfigurator-inline .p-themeconfigurator-close {
+    display: none;
+}
+
+.p-themeconfigurator-group {
     border-bottom: 1px solid var(--p-content-border-color);
     padding: .25rem 0 .75rem;
 }
 
-.cfg-group > summary {
+.p-themeconfigurator-group:last-child {
+    border-bottom: 0;
+}
+
+.p-themeconfigurator-group > summary {
     display: flex;
     align-items: baseline;
     gap: .5rem;
@@ -63,11 +100,11 @@
     border-radius: var(--p-border-radius-sm);
 }
 
-.cfg-group > summary::-webkit-details-marker {
+.p-themeconfigurator-group > summary::-webkit-details-marker {
     display: none;
 }
 
-.cfg-group > summary::after {
+.p-themeconfigurator-group > summary::after {
     content: "";
     margin-inline-start: auto;
     align-self: center;
@@ -76,20 +113,21 @@
     border-inline-end: 1.5px solid currentColor;
     border-bottom: 1.5px solid currentColor;
     transform: rotate(-45deg);
-    transition: transform .15s;
+    transition: transform var(--p-transition-duration) var(--p-transition-easing);
     opacity: .6;
 }
 
-.cfg-group[open] > summary::after {
+.p-themeconfigurator-group[open] > summary::after {
     transform: rotate(45deg);
 }
 
-.cfg-group > summary:focus-visible {
+.p-themeconfigurator-group > summary:focus-visible,
+.p-themeconfigurator-swatch:focus-visible {
     outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
     outline-offset: var(--p-focus-ring-offset);
 }
 
-.cfg-hint {
+.p-themeconfigurator-hint {
     font-weight: 400;
     font-size: 11px;
     color: var(--p-text-muted-color);
@@ -97,13 +135,13 @@
 }
 
 /* token names and CSS stay left to right in an RTL page (else the bidi algorithm moves the leading dashes) */
-.cfg-hint,
-.cfg-snippet {
+.p-themeconfigurator-hint,
+.p-themeconfigurator-snippet {
     direction: ltr;
     unicode-bidi: isolate;
 }
 
-.cfg-label {
+.p-themeconfigurator-label {
     display: flex;
     align-items: baseline;
     gap: .5rem;
@@ -111,19 +149,34 @@
     color: var(--p-text-muted-color);
 }
 
-.cfg-note {
+.p-themeconfigurator-note {
     margin-top: .5rem;
     color: var(--p-text-muted-color);
     line-height: 1.45;
 }
 
+/* preset tiles: 3 per row */
+.p-themeconfigurator-presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .375rem;
+}
+
+.p-themeconfigurator-presets > .p-button {
+    min-width: 0;
+    justify-content: center;
+    padding-inline: .25rem;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
 /* segmented controls: the select button of the theme */
-.cfg-seg {
+.p-themeconfigurator-segments {
     display: flex;
     width: 100%;
 }
 
-.cfg-seg > .p-button {
+.p-themeconfigurator-segments > .p-button {
     flex: 1 1 0;
     min-width: 0;
     justify-content: center;
@@ -132,17 +185,17 @@
     text-transform: capitalize;
 }
 
-.cfg-seg > .p-button .p-button-icon-left {
+.p-themeconfigurator-segments > .p-button .p-button-icon-left {
     font-size: 12px;
 }
 
-.cfg-swatches {
+.p-themeconfigurator-swatches {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: .375rem;
 }
 
-.cfg-swatch {
+.p-themeconfigurator-swatch {
     aspect-ratio: 1;
     width: 100%;
     padding: 0;
@@ -152,23 +205,18 @@
     cursor: pointer;
 }
 
-.cfg-swatch[aria-pressed="true"] {
+.p-themeconfigurator-swatch[aria-pressed="true"] {
     outline: 2px solid var(--p-text-color);
 }
 
-.cfg-swatch:focus-visible {
-    outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
-    outline-offset: var(--p-focus-ring-offset);
-}
-
-.cfg-chips {
+.p-themeconfigurator-chips {
     display: flex;
     flex-wrap: wrap;
     gap: .25rem;
     margin-bottom: .5rem;
 }
 
-.cfg-field {
+.p-themeconfigurator-field {
     display: grid;
     grid-template-columns: 5.5rem minmax(0, 1fr) auto;
     gap: .5rem;
@@ -176,28 +224,35 @@
     margin-top: .5rem;
 }
 
-.cfg-field label {
+.p-themeconfigurator-field label {
     color: var(--p-text-muted-color);
 }
 
-.cfg-field.changed label {
+.p-themeconfigurator-field.p-themeconfigurator-changed label {
     color: var(--p-primary-color);
     font-weight: 600;
 }
 
-.cfg-field output {
+.p-themeconfigurator-field output {
     min-width: 3.75rem;
     text-align: end;
     font-variant-numeric: tabular-nums;
     color: var(--p-text-muted-color);
 }
 
-/* p:slider: room for the handle, which overhangs the ends of the track */
-.cfg-field .p-slider {
-    margin-inline: .5rem;
+.p-themeconfigurator-field input[type=range] {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--p-primary-color);
+    cursor: pointer;
 }
 
-.cfg-field input[type=color] {
+.p-themeconfigurator-field input[type=range]:focus-visible {
+    outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+    outline-offset: var(--p-focus-ring-offset);
+}
+
+.p-themeconfigurator-field input[type=color] {
     width: 100%;
     height: 1.75rem;
     padding: 0;
@@ -209,21 +264,21 @@
 }
 
 /* the color fills the field: no inner padding and border of the native swatch */
-.cfg-field input[type=color]::-webkit-color-swatch-wrapper {
+.p-themeconfigurator-field input[type=color]::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
-.cfg-field input[type=color]::-webkit-color-swatch {
+.p-themeconfigurator-field input[type=color]::-webkit-color-swatch {
     border: 0;
     border-radius: 0;
 }
 
-.cfg-field input[type=color]::-moz-color-swatch {
+.p-themeconfigurator-field input[type=color]::-moz-color-swatch {
     border: 0;
     border-radius: 0;
 }
 
-.cfg-field select {
+.p-themeconfigurator-field select {
     grid-column: span 2;
     min-width: 0;
     font: inherit;
@@ -234,7 +289,7 @@
     padding: .25rem .5rem;
 }
 
-.cfg-snippet {
+.p-themeconfigurator-snippet {
     margin: .5rem 0;
     padding: .75rem;
     overflow: auto;
@@ -245,16 +300,10 @@
     white-space: pre;
 }
 
-:root.cfg-open .cfg {
-    transform: none;
-    visibility: visible;
-    transition: transform .2s ease;
-}
-
-/* the palette button at the right edge, vertically centered */
-.cfg-toggle.p-button {
+/* the palette button at the edge of the window, vertically centered */
+.p-themeconfigurator-toggle.p-button {
     position: fixed;
-    right: 0;
+    inset-inline-end: 0;
     /* centered without transform: a transformed layer is rasterized at sub-pixel positions, the edge at the window
        border then gets a 1px anti-aliased gap with fractional device pixel ratios */
     top: calc(50% - 1.375rem);
@@ -265,27 +314,28 @@
     /* a plain solid tab: no border (a transparent one shows as a darker band at fractional pixel ratios), no inset
        highlight and ring of the preset shadows (Glass), no backdrop blur (the button is opaque) */
     border: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: var(--p-border-radius-md);
-    border-bottom-left-radius: var(--p-border-radius-md);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    border-start-start-radius: var(--p-border-radius-md);
+    border-end-start-radius: var(--p-border-radius-md);
+    box-shadow: var(--p-overlay-popover-shadow);
     backdrop-filter: none;
     /* the shadow stops at the window edge */
     clip-path: inset(-2rem 0 -2rem -2rem);
 }
 
-.cfg-toggle .pi {
+.p-themeconfigurator-toggle.p-button:dir(rtl) {
+    clip-path: inset(-2rem -2rem -2rem 0);
+}
+
+.p-themeconfigurator-toggle .p-button-icon-left {
     font-size: 1.25rem;
 }
 
-:root.cfg-open .cfg-toggle.p-button {
+.p-themeconfigurator-open .p-themeconfigurator-toggle.p-button {
     visibility: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .cfg,
-    :root.cfg-open .cfg {
-        transition: none;
-    }
+.p-themeconfigurator-inline .p-themeconfigurator-toggle {
+    display: none;
 }

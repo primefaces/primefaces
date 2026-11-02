@@ -27,7 +27,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.showcase.domain.Country;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Locale;
 
 import jakarta.enterprise.context.SessionScoped;
@@ -38,56 +37,16 @@ import jakarta.inject.Named;
 @SessionScoped
 public class App implements Serializable {
 
-    /**
-     * The themes of PrimeFaces. The theme configurator (theming/configurator.xhtml) switches with ?theme=...,
-     * the choice is kept in the session; color scheme, density, primary color and input style are set on the client.
-     */
-    public static final List<String> PRESETS = List.of("aura", "lara", "nora", "metal", "glass");
-
-    // default preset of the showcase (for now: Glass)
-    private String theme = "glass";
     private Country locale = new Country(0, Locale.US);
-    // text direction chosen in the theme configurator (?dir=ltr|rtl); null: the direction of the locale
-    private String direction;
 
     /**
-     * The current preset (primefaces.THEME in web.xml); a valid ?theme= request parameter switches it.
-     *
-     * @return aura, lara, nora, metal or glass
-     */
-    public String getTheme() {
-        String requested = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("theme");
-        if (requested != null && PRESETS.contains(requested)) {
-            theme = requested;
-        }
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        if (PRESETS.contains(theme)) {
-            this.theme = theme;
-        }
-    }
-
-    /**
-     * The text direction (primefaces.DIR in web.xml, dir of the html element): a valid ?dir= request parameter sets it,
-     * without a choice it follows the locale.
+     * The direction of the locale: primefaces.DIR in web.xml, unless the user chose one in the theme configurator
+     * (pc:themeConfigurator, the effective direction is #{p:dir()}).
      *
      * @return ltr or rtl
      */
-    public String getDir() {
-        String requested = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("dir");
-        if ("ltr".equals(requested) || "rtl".equals(requested)) {
-            direction = requested;
-        }
-        if (direction != null) {
-            return direction;
-        }
+    public String getLocaleDir() {
         return locale.isRtl() ? "rtl" : "ltr";
-    }
-
-    public List<String> getPresets() {
-        return PRESETS;
     }
 
     public Country getLocale() {

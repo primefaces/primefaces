@@ -49,6 +49,7 @@
    invalid border */
 .p-selectoneradio.p-state-readonly .p-radiobutton .p-radiobutton-box {
     &:not(.p-state-error):hover {
+        --_layer-opacity: 0%;
         border-color: var(--p-radiobutton-border-color);
     }
 

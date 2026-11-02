@@ -51,7 +51,9 @@ textarea::placeholder {
     padding-inline: var(--p-inputtext-padding-x);
     color: var(--p-inputtext-color);
     background: var(--p-inputtext-background);
-    border: 1px solid var(--p-inputtext-border-color);
+    /* the states set --_border-color, the filled variant draws its line with it */
+    --_border-color: var(--p-inputtext-border-color);
+    border: 1px solid var(--_border-color);
     border-radius: var(--p-inputtext-border-radius);
     box-shadow: var(--p-inputtext-shadow);
     outline: 0 none;
@@ -67,12 +69,12 @@ textarea::placeholder {
 
     &:not(:disabled, .p-state-disabled):hover,
     &.p-state-hover {
-        border-color: var(--p-inputtext-hover-border-color);
+        --_border-color: var(--p-inputtext-hover-border-color);
     }
 
     &:not(:disabled, .p-state-disabled):focus,
     &.p-state-focus {
-        border-color: var(--p-inputtext-focus-border-color);
+        --_border-color: var(--p-inputtext-focus-border-color);
         outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
         outline-offset: var(--p-inputtext-focus-ring-offset);
         box-shadow: var(--p-inputtext-focus-ring-shadow);
@@ -81,7 +83,7 @@ textarea::placeholder {
     /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
     &.p-state-error,
     &.p-state-error:is(:hover, :focus, .p-state-hover, .p-state-focus) {
-        border-color: var(--p-inputtext-invalid-border-color);
+        --_border-color: var(--p-inputtext-invalid-border-color);
     }
 
     &.p-state-error {
@@ -90,23 +92,39 @@ textarea::placeholder {
         }
     }
 
-    /* filled: both alternatives have the same specificity */
+    /* filled: both alternatives have the same specificity. Border and focus ring are shown with
+       --p-form-field-filled-border-opacity, a line in the border color is drawn at the bottom
+       (--p-form-field-filled-indicator-width, thicker on focus): Material 0% and a line, the M3 filled field */
     .p-input-filled &,
     &.p-input-filled {
-        background: var(--p-inputtext-filled-background);
+        --_line-width: var(--p-form-field-filled-indicator-width);
+        --_line: linear-gradient(var(--_border-color), var(--_border-color)) bottom / 100% var(--_line-width) no-repeat
+            border-box;
+        background: var(--_line), var(--p-inputtext-filled-background);
+        border-color: color-mix(in srgb, var(--_border-color) var(--p-form-field-filled-border-opacity), transparent);
+        border-end-start-radius: var(--p-form-field-filled-bottom-border-radius);
+        border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
 
         &:not(:disabled, .p-state-disabled):hover,
         &.p-state-hover {
-            background: var(--p-inputtext-filled-hover-background);
+            background: var(--_line), var(--p-inputtext-filled-hover-background);
         }
 
         &:focus,
         &.p-state-focus {
-            background: var(--p-inputtext-filled-focus-background);
+            --_line-width: var(--p-form-field-filled-focus-indicator-width);
+            background: var(--_line), var(--p-inputtext-filled-focus-background);
+            outline-color: color-mix(in srgb, var(--p-inputtext-focus-ring-color) var(--p-form-field-filled-border-opacity),
+                transparent);
+        }
+
+        &:disabled,
+        &.p-state-disabled {
+            background: var(--_line), var(--p-inputtext-disabled-background);
         }
     }
 
-    /* after filled (same specificity): a disabled filled field shows the disabled background, like PrimeUIX */
+    /* after filled (same specificity), filled disabled above: the disabled background, like PrimeUIX */
     &:disabled,
     &.p-state-disabled {
         background: var(--p-inputtext-disabled-background);
@@ -383,6 +401,12 @@ textarea::placeholder {
         > .p-inputfield {
             outline: 0 none;
             box-shadow: none;
+        }
+
+        /* filled: the ring like the one of a filled input (above) */
+        .p-input-filled & {
+            outline-color: color-mix(in srgb, var(--p-inputtext-focus-ring-color) var(--p-form-field-filled-border-opacity),
+                transparent);
         }
     }
 }

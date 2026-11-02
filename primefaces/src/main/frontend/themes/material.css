@@ -1,0 +1,8 @@
+/*
+ * Theme "material" (primefaces.THEME = material): the tokens of the preset and its density, built to primefaces-material/theme.css.
+ * The CSS of the components (components.css, ...) is the same for every theme.
+ */
+@layer primefaces.tokens, primefaces.vendor, primefaces.components, primefaces.behaviors;
+
+@import url("./presets/material.css");
+@import url("./density/material.css");

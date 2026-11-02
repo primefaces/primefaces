@@ -9,8 +9,11 @@ This page contains a list of big features. Please check the GitHub issues for al
 Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0) for more enhancements and changes.
 
 * Theming
-    * New [token based theming](/core/theming.md) with the themes Aura, Lara, Nora, Metal and Glass: pure CSS design tokens, light and dark mode, primary color, density and icons customizable with CSS variables. The themes are part of the `primefaces` jar and replace the SASS based themes (`primefaces-themes`).
+    * New [token based theming](/core/theming.md) with the themes Aura, Lara, Nora, Material, Metal and Glass: pure CSS design tokens, light and dark mode, primary color, density and icons customizable with CSS variables. The themes are part of the `primefaces` jar and replace the SASS based themes (`primefaces-themes`).
     * Works together with [Tailwind CSS](/core/tailwind.md) v4: the utilities use the tokens of the theme.
+    * [User settings](/core/theming.md?id=user-settings) (`primefaces.THEME_CONFIGURATOR`): color scheme, density, input style and tokens chosen by the user are applied before the first paint, preset and direction come from cookies. The composite component [themeConfigurator](/core/theming.md?id=theme-configurator) (`xmlns:pc="jakarta.faces.composite/primefaces"`) lets the user change them; `#{p:theme()}` and `#{p:dir()}` return the preset and direction of the request.
+* MoveScriptsToBottom
+    * Scripts with the attribute `data-p-no-move` are not moved to the bottom.
 * Style classes
     * The style classes of the components use the prefix `p-` instead of the jQuery UI prefix `ui-` (e.g. `ui-widget` -> `p-widget`, `ui-state-active` -> `p-state-active`, `ui-datatable` -> `p-datatable`), only the Grid CSS (`ui-g`, `ui-grid`, ...) keeps its names, see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=style-classes).
 * jQuery UI removed

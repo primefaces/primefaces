@@ -45,6 +45,11 @@ import jakarta.faces.context.ResponseWriterWrapper;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
+    /**
+     * Marks a script that stays where it is written, e.g. one that must run before the first paint.
+     */
+    public static final String NO_MOVE_ATTRIBUTE = "data-p-no-move";
+
     private static final String SCRIPT_TAG = "script";
     private static final String BODY_TAG = "body";
     private static final String HTML_TAG = "html";
@@ -205,9 +210,16 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         if (SCRIPT_TAG.equalsIgnoreCase(name)) {
             inScript = false;
 
-            state.addInline(scriptType, inline);
-            if (LangUtils.isNotBlank(includeAttributes.get("src"))) {
-                state.addInclude(scriptType, includeAttributes);
+            // the attributes are only known now: a marked script is written in place, without the marker
+            if (includeAttributes.containsKey(NO_MOVE_ATTRIBUTE)) {
+                includeAttributes.remove(NO_MOVE_ATTRIBUTE);
+                writeInPlace();
+            }
+            else {
+                state.addInline(scriptType, inline);
+                if (LangUtils.isNotBlank(includeAttributes.get("src"))) {
+                    state.addInclude(scriptType, includeAttributes);
+                }
             }
 
             scriptType = null;
@@ -265,6 +277,22 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         else {
             getWrapped().endElement(name);
         }
+    }
+
+    protected void writeInPlace() throws IOException {
+        writeFouc();
+
+        getWrapped().startElement(SCRIPT_TAG, null);
+        // like the moved ones: without blank attributes
+        for (Entry<String, String> attribute : includeAttributes.entrySet()) {
+            if (LangUtils.isNotBlank(attribute.getValue())) {
+                getWrapped().writeAttribute(attribute.getKey(), attribute.getValue(), null);
+            }
+        }
+        if (inline.length() > 0) {
+            getWrapped().write(inline.toString());
+        }
+        getWrapped().endElement(SCRIPT_TAG);
     }
 
     protected void writeFouc() throws IOException {

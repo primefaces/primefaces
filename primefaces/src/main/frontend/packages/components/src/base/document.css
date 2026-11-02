@@ -27,6 +27,7 @@
     :root,
     [data-p-scope] {
         --p-transition-duration: 0s;
+        --p-ripple-opacity: 0;
     }
 
     /* fixed durations (keyframes, speed dial, dock); 0.01ms instead of none so animation events still fire
@@ -63,6 +64,7 @@
     --p-message-enter-duration: 0s;
     --p-dataview-content-enter-duration: 0s;
     --p-fileupload-transition-duration: 0s;
+    --p-ripple-opacity: 0;
 }
 
 /*

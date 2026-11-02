@@ -316,6 +316,10 @@
         --p-form-field-filled-background: linear-gradient(180deg, light-dark(#e2e2e5, #060607), light-dark(#f2f2f4, #0b0a0c) 6px) padding-box;
         --p-form-field-filled-hover-background: var(--p-form-field-filled-background);
         --p-form-field-filled-focus-background: var(--p-form-field-filled-background);
+        --p-form-field-filled-border-opacity: 100%;
+        --p-form-field-filled-bottom-border-radius: var(--p-form-field-border-radius);
+        --p-form-field-filled-indicator-width: 0px;
+        --p-form-field-filled-focus-indicator-width: 0px;
         --p-form-field-border-color: light-dark(#8e8e96, #6b6870);
         --p-form-field-hover-border-color: light-dark(#6e6e76, #85818a);
         --p-form-field-focus-border-color: light-dark(#5f5f67, #a6a3aa);
@@ -546,6 +550,9 @@
         --p-autocomplete-dropdown-background: light-dark(var(--p-surface-100), var(--p-surface-800));
         --p-autocomplete-dropdown-hover-background: light-dark(var(--p-surface-200), var(--p-surface-700));
         --p-autocomplete-dropdown-active-background: light-dark(var(--p-surface-300), var(--p-surface-600));
+        --p-autocomplete-dropdown-filled-background: var(--p-autocomplete-dropdown-background);
+        --p-autocomplete-dropdown-filled-hover-background: var(--p-autocomplete-dropdown-hover-background);
+        --p-autocomplete-dropdown-filled-active-background: var(--p-autocomplete-dropdown-active-background);
         --p-autocomplete-dropdown-border-color: var(--p-form-field-border-color);
         --p-autocomplete-dropdown-hover-border-color: var(--p-form-field-border-color);
         --p-autocomplete-dropdown-active-border-color: var(--p-form-field-border-color);
@@ -980,6 +987,7 @@
     /* checkbox */
     :root, [data-p-scope] {
         --p-checkbox-border-radius: var(--p-border-radius-sm);
+        --p-checkbox-border-width: 1px;
         --p-checkbox-width: 1.125rem;
         --p-checkbox-height: 1.125rem;
         --p-checkbox-background: var(--p-form-field-background);
@@ -1001,6 +1009,8 @@
         --p-checkbox-focus-ring-color: var(--p-focus-ring-color);
         --p-checkbox-focus-ring-offset: var(--p-focus-ring-offset);
         --p-checkbox-focus-ring-shadow: var(--p-focus-ring-shadow);
+        --p-checkbox-state-layer-size: 2.5rem;
+        --p-checkbox-hover-state-layer-opacity: 0%;
         --p-checkbox-transition-duration: var(--p-form-field-transition-duration);
         --p-checkbox-icon-size: 0.75rem;
         --p-checkbox-icon-color: var(--p-form-field-color);
@@ -1381,6 +1391,9 @@
         --p-datepicker-dropdown-background: light-dark(var(--p-surface-100), var(--p-surface-800));
         --p-datepicker-dropdown-hover-background: light-dark(var(--p-surface-200), var(--p-surface-700));
         --p-datepicker-dropdown-active-background: light-dark(var(--p-surface-300), var(--p-surface-600));
+        --p-datepicker-dropdown-filled-background: var(--p-datepicker-dropdown-background);
+        --p-datepicker-dropdown-filled-hover-background: var(--p-datepicker-dropdown-hover-background);
+        --p-datepicker-dropdown-filled-active-background: var(--p-datepicker-dropdown-active-background);
         --p-datepicker-dropdown-border-color: var(--p-form-field-border-color);
         --p-datepicker-dropdown-hover-border-color: var(--p-form-field-border-color);
         --p-datepicker-dropdown-active-border-color: var(--p-form-field-border-color);
@@ -1858,6 +1871,7 @@
     /* inputgroup */
     :root, [data-p-scope] {
         --p-inputgroup-addon-background: var(--p-form-field-background);
+        --p-inputgroup-addon-filled-background: var(--p-inputgroup-addon-background);
         --p-inputgroup-addon-border-color: var(--p-form-field-border-color);
         --p-inputgroup-addon-color: light-dark(#5f5f67, var(--p-surface-400));
         --p-inputgroup-addon-border-radius: var(--p-form-field-border-radius);
@@ -2764,6 +2778,7 @@
 
     /* radiobutton */
     :root, [data-p-scope] {
+        --p-radiobutton-border-width: 1px;
         --p-radiobutton-width: 1.125rem;
         --p-radiobutton-height: 1.125rem;
         --p-radiobutton-background: var(--p-form-field-background);
@@ -2785,6 +2800,8 @@
         --p-radiobutton-focus-ring-color: var(--p-focus-ring-color);
         --p-radiobutton-focus-ring-offset: var(--p-focus-ring-offset);
         --p-radiobutton-focus-ring-shadow: var(--p-focus-ring-shadow);
+        --p-radiobutton-state-layer-size: 2.5rem;
+        --p-radiobutton-hover-state-layer-opacity: 0%;
         --p-radiobutton-transition-duration: var(--p-form-field-transition-duration);
         --p-radiobutton-icon-size: 0.625rem;
         --p-radiobutton-icon-checked-color: var(--p-primary-contrast-color);
@@ -2818,6 +2835,13 @@
         --p-rating-cancel-icon: var(--p-icon-clear);
         --p-rating-off-icon: var(--p-icon-star);
         --p-rating-on-icon: var(--p-icon-star-filled);
+    }
+
+    /* ripple */
+    :root, [data-p-scope] {
+        --p-ripple-color: currentColor;
+        --p-ripple-opacity: 0;
+        --p-ripple-duration: 0.45s;
     }
 
     /* resizable */
@@ -2997,6 +3021,7 @@
     /* sidebar */
     :root, [data-p-scope] {
         --p-sidebar-transition-duration: 0.3s;
+        --p-sidebar-border-radius: 0;
         --p-sidebar-close-button-size: var(--p-button-icon-only-width);
         --p-sidebar-close-button-color: var(--p-button-text-secondary-color);
         --p-sidebar-close-button-hover-background: var(--p-button-text-secondary-hover-background);

@@ -1,0 +1,383 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <!-- the case for PrimeFaces: shared by the landing page (index.xhtml) and the "Why PrimeFaces" page -->
+    <div class="landing-why">
+
+        <!-- ═══ WHY PRIMEFACES ══════════════════════════════════════════════ -->
+        <section id="why" class="landing-section landing-features">
+            <div class="landing-container">
+                <div class="landing-features-header">
+                    <span class="landing-section-label">Why PrimeFaces</span>
+                    <h2 class="landing-section-title">Built for Java teams shipping business apps</h2>
+                    <p class="landing-section-subtitle">
+                        Your Java developers build the whole app, from the database to the UI. No separate frontend team,
+                        no second stack to build, secure and keep up to date.
+                    </p>
+                </div>
+
+                <div class="landing-features-grid">
+                    <a href="#{request.contextPath}/ui/data/datatable/basic" class="landing-feature-card">
+                        <div class="lf-icon lf-icon-indigo"><i class="pi pi-table"></i></div>
+                        <h3>#{tagLibProvider.componentCount} components</h3>
+                        <p>DataTable, Schedule, TreeTable, FileUpload, Charts and more, with lazy loading, filtering and export built in.</p>
+                    </a>
+
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-amber"><i class="pi pi-box"></i></div>
+                        <h3>No npm, no bundler</h3>
+                        <p>One Maven dependency. No node_modules, no lockfile churn, no second toolchain to keep patched.</p>
+                    </div>
+
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-blue"><i class="pi pi-arrows-h"></i></div>
+                        <h3>No API layer for your own UI</h3>
+                        <p>Components bind straight to CDI beans. No REST endpoints, JSON mapping or CORS rules just to talk to yourself.</p>
+                    </div>
+
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-green"><i class="pi pi-shield"></i></div>
+                        <h3>Logic stays on the server</h3>
+                        <p>Validation and business rules run in the JVM, next to your data and security. The browser gets rendered HTML, not your domain model.</p>
+                    </div>
+
+                    <h:link outcome="/ui/misc/csp" styleClass="landing-feature-card">
+                        <div class="lf-icon lf-icon-rose"><i class="pi pi-lock"></i></div>
+                        <h3>Security built in</h3>
+                        <p>Strict nonce-based CSP with one context parameter. Faces itself brings CSRF protection and output escaping.</p>
+                    </h:link>
+
+                    <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-selenium" target="_blank" rel="noopener noreferrer" class="landing-feature-card">
+                        <div class="lf-icon lf-icon-cyan"><i class="pi pi-check-square"></i></div>
+                        <h3>Tests in Java, too</h3>
+                        <p>JUnit 5 and Selenium with ready-made page objects for PrimeFaces components. No second test stack in JavaScript.</p>
+                    </a>
+
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-purple"><i class="pi pi-palette"></i></div>
+                        <h3>Design tokens</h3>
+                        <p>Aura, Lara, Nora, Material, Metal and Glass, each in light and dark. Change any token at runtime, no build step.</p>
+                        <button type="button" class="landing-feature-action" data-tc-toggle="themeConfigurator" aria-controls="themeConfigurator_panel">Open theme configurator</button>
+                    </div>
+
+                    <h:link outcome="/accessibility" styleClass="landing-feature-card">
+                        <div class="lf-icon lf-icon-teal"><i class="pi pi-eye"></i></div>
+                        <h3>Accessible by default</h3>
+                        <p>Keyboard navigation, screen reader support, ARIA roles and focus management built into the components.</p>
+                    </h:link>
+
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-orange"><i class="pi pi-server"></i></div>
+                        <h3>Runs on your stack</h3>
+                        <p>Jakarta EE servers, Quarkus and Spring Boot, on Mojarra or MyFaces. Your existing runtime, no extra service.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ QUICK START ════════════════════════════════════════════════ -->
+        <section class="landing-section landing-quickstart">
+            <div class="landing-container">
+                <div class="landing-quickstart-grid">
+                    <div class="landing-quickstart-text">
+                        <span class="landing-section-label">Quick Start</span>
+                        <h2 class="landing-section-title">One view, one bean.</h2>
+                        <p>Add PrimeFaces to Jakarta EE, Quarkus or Spring Boot and bind components straight to your beans.
+                           A sortable, filterable, paginated table is a Facelets view and a CDI bean, nothing else:
+                           <code>field</code> alone gives every column sorting and its own filter.</p>
+
+                        <table class="landing-compare">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <th scope="col" class="landing-compare-pf">PrimeFaces</th>
+                                    <th scope="col">Angular + component library</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Files for this table</th>
+                                    <td class="landing-compare-pf">2</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Toolchains to build and patch</th>
+                                    <td class="landing-compare-pf">Maven</td>
+                                    <td>Maven, Node, npm, Angular CLI</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Languages</th>
+                                    <td class="landing-compare-pf">Java, XHTML</td>
+                                    <td>Java, TypeScript, HTML</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">API layer for the UI</th>
+                                    <td class="landing-compare-pf">None</td>
+                                    <td>REST endpoints, DTOs</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="landing-compare-note">Angular files shown next to the code, here with Angular Material as component library.
+                           Generated tsconfig.json and index.html, auth token handling and CORS not counted.
+                           pom.xml not counted on either side: both projects have one, PrimeFaces adds a single dependency.</p>
+
+                        <h:link styleClass="landing-btn landing-btn-outline" outcome="/getstarted">
+                            <i class="pi pi-book mr-2"></i>Read the Docs
+                        </h:link>
+                    </div>
+                    <div class="landing-quickstart-codes">
+                        <div class="landing-quickstart-code">
+                            <div class="landing-code-caption">PrimeFaces</div>
+                            <div class="landing-code-tab-bar">
+                                <span class="landing-code-tab active" data-tab="qs-page">customers.xhtml</span>
+                                <span class="landing-code-tab" data-tab="qs-bean">CustomerView.java</span>
+                            </div>
+                            <div id="qs-page">
+                                <pre class="language-xml line-numbers"><code>&lt;h:form&gt;
+    &lt;p:dataTable var="c" value="\#{customerView.customers}"
+                 paginator="true" rows="10" sortMode="multiple"&gt;
+        &lt;p:column field="name" headerText="Name"/&gt;
+        &lt;p:column field="country" headerText="Country"/&gt;
+        &lt;p:column field="status" headerText="Status"&gt;
+            &lt;p:tag value="\#{c.status}"/&gt;
+        &lt;/p:column&gt;
+    &lt;/p:dataTable&gt;
+&lt;/h:form&gt;</code></pre>
+                            </div>
+                            <div id="qs-bean" style="display:none">
+                                <pre class="language-java line-numbers"><code>@Named
+@RequestScoped
+public class CustomerView {
+
+    @Inject
+    CustomerService service;
+
+    private List&lt;Customer&gt; customers;
+
+    @PostConstruct
+    void init() {
+        customers = service.findAll();
+    }
+
+    public List&lt;Customer&gt; getCustomers() {
+        return customers;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                        <div class="landing-quickstart-code landing-quickstart-other">
+                            <div class="landing-code-caption">The same table with Angular + component library</div>
+                            <div class="landing-code-tab-bar">
+                                <span class="landing-code-tab active" data-tab="ng-component">customers.component.ts</span>
+                                <span class="landing-code-tab" data-tab="ng-resource">CustomerResource.java</span>
+                                <span class="landing-code-tab" data-tab="ng-dto">CustomerDto.java</span>
+                                <span class="landing-code-tab" data-tab="ng-main">main.ts</span>
+                                <span class="landing-code-tab" data-tab="ng-package">package.json</span>
+                                <span class="landing-code-tab" data-tab="ng-angular">angular.json</span>
+                            </div>
+                            <div class="landing-code-scroll">
+                                <div id="ng-component">
+                                    <pre class="language-javascript line-numbers"><code>import { AfterViewInit, Component, inject, viewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
+
+export interface Customer {
+    name: string;
+    country: string;
+    status: string;
+}
+
+@Component({
+    selector: 'app-customers',
+    imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatInputModule, MatChipsModule],
+    template: `
+        &lt;mat-form-field&gt;
+            &lt;input matInput placeholder="Search" (keyup)="filter($event)"&gt;
+        &lt;/mat-form-field&gt;
+        &lt;table mat-table [dataSource]="customers" matSort&gt;
+            &lt;ng-container matColumnDef="name"&gt;
+                &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt;Name&lt;/th&gt;
+                &lt;td mat-cell *matCellDef="let c"&gt;{{ c.name }}&lt;/td&gt;
+            &lt;/ng-container&gt;
+            &lt;ng-container matColumnDef="country"&gt;
+                &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt;Country&lt;/th&gt;
+                &lt;td mat-cell *matCellDef="let c"&gt;{{ c.country }}&lt;/td&gt;
+            &lt;/ng-container&gt;
+            &lt;ng-container matColumnDef="status"&gt;
+                &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt;Status&lt;/th&gt;
+                &lt;td mat-cell *matCellDef="let c"&gt;&lt;mat-chip&gt;{{ c.status }}&lt;/mat-chip&gt;&lt;/td&gt;
+            &lt;/ng-container&gt;
+            &lt;tr mat-header-row *matHeaderRowDef="columns"&gt;&lt;/tr&gt;
+            &lt;tr mat-row *matRowDef="let row; columns: columns"&gt;&lt;/tr&gt;
+        &lt;/table&gt;
+        &lt;mat-paginator [pageSize]="10"&gt;&lt;/mat-paginator&gt;
+    `
+})
+export class CustomersComponent implements AfterViewInit {
+
+    private http = inject(HttpClient);
+    private sort = viewChild.required(MatSort);
+    private paginator = viewChild.required(MatPaginator);
+
+    columns = ['name', 'country', 'status'];
+    customers = new MatTableDataSource&lt;Customer&gt;();
+
+    ngAfterViewInit() {
+        this.customers.sort = this.sort();
+        this.customers.paginator = this.paginator();
+        this.http.get&lt;Customer[]&gt;('/api/customers')
+            .subscribe(data =&gt; this.customers.data = data);
+    }
+
+    filter(event: Event) {
+        this.customers.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    }
+}</code></pre>
+                                </div>
+                                <div id="ng-resource" style="display:none">
+                                    <pre class="language-java line-numbers"><code>@Path("/api/customers")
+@Produces(MediaType.APPLICATION_JSON)
+public class CustomerResource {
+
+    @Inject
+    CustomerService service;
+
+    @GET
+    public List&lt;CustomerDto&gt; list() {
+        return service.findAll().stream()
+                .map(c -&gt; new CustomerDto(c.getName(), c.getCountry(), c.getStatus()))
+                .toList();
+    }
+}</code></pre>
+                                </div>
+                                <div id="ng-dto" style="display:none">
+                                    <pre class="language-java line-numbers"><code>public record CustomerDto(String name, String country, String status) {
+}</code></pre>
+                                </div>
+                                <div id="ng-main" style="display:none">
+                                    <pre class="language-javascript line-numbers"><code>import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { CustomersComponent } from './app/customers.component';
+
+bootstrapApplication(CustomersComponent, {
+    providers: [provideHttpClient()]
+}).catch(err =&gt; console.error(err));</code></pre>
+                                </div>
+                                <div id="ng-package" style="display:none">
+                                    <pre class="language-javascript line-numbers"><code>{
+    "name": "customers",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "ng serve",
+        "build": "ng build"
+    },
+    "dependencies": {
+        "@angular/cdk": "^21.0.0",
+        "@angular/common": "^21.0.0",
+        "@angular/compiler": "^21.0.0",
+        "@angular/core": "^21.0.0",
+        "@angular/forms": "^21.0.0",
+        "@angular/material": "^21.0.0",
+        "@angular/platform-browser": "^21.0.0",
+        "rxjs": "~7.8.0",
+        "tslib": "^2.8.0"
+    },
+    "devDependencies": {
+        "@angular/build": "^21.0.0",
+        "@angular/cli": "^21.0.0",
+        "@angular/compiler-cli": "^21.0.0",
+        "typescript": "~5.9.0"
+    }
+}</code></pre>
+                                </div>
+                                <div id="ng-angular" style="display:none">
+                                    <pre class="language-javascript line-numbers"><code>{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "projects": {
+        "customers": {
+            "projectType": "application",
+            "root": "",
+            "sourceRoot": "src",
+            "architect": {
+                "build": {
+                    "builder": "@angular/build:application",
+                    "options": {
+                        "browser": "src/main.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "styles": ["@angular/material/prebuilt-themes/azure-blue.css"]
+                    }
+                },
+                "serve": {
+                    "builder": "@angular/build:dev-server"
+                }
+            }
+        }
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ LONG-TERM ══════════════════════════════════════════════════ -->
+        <section class="landing-section landing-longterm">
+            <div class="landing-container">
+                <div class="landing-features-header">
+                    <span class="landing-section-label">Long-term</span>
+                    <h2 class="landing-section-title">Here for the long run</h2>
+                    <p class="landing-section-subtitle">
+                        Business applications live for a decade. PrimeFaces has been shipping releases
+                        since 2009 and plans for upgrades, not rewrites.
+                    </p>
+                </div>
+
+                <div class="landing-longterm-grid">
+                    <a href="https://github.com/primefaces/primefaces/releases" target="_blank" rel="noopener noreferrer" class="landing-longterm-item">
+                        <h3>Since 2009</h3>
+                        <p>Continuously developed for more than 15 years, with regular major and minor releases.</p>
+                    </a>
+                    <a href="https://primefaces.github.io/primefaces/16_0_0/#/../migrationguide/migrationguide" target="_blank" rel="noopener noreferrer" class="landing-longterm-item">
+                        <h3>Migration guides</h3>
+                        <p>Every major release documents what changed and how to upgrade.</p>
+                    </a>
+                    <a href="https://github.com/primefaces/primefaces" target="_blank" rel="noopener noreferrer" class="landing-longterm-item">
+                        <h3>MIT licensed</h3>
+                        <p>Free for commercial use, source on GitHub.</p>
+                    </a>
+                    <h:link outcome="/support" styleClass="landing-longterm-item">
+                        <h3>Commercial support</h3>
+                        <p>Optional support and backports straight from the PrimeFaces project lead.</p>
+                    </h:link>
+                </div>
+            </div>
+        </section>
+
+        <script>
+        (function () {
+            document.querySelectorAll('.landing-code-tab-bar').forEach(function (bar) {
+                bar.addEventListener('click', function (e) {
+                    var tab = e.target.closest('[data-tab]');
+                    if (!tab) return;
+                    // activate the tab and show its panel, hide the others of this bar
+                    bar.querySelectorAll('[data-tab]').forEach(function (t) {
+                        t.classList.toggle('active', t === tab);
+                        document.getElementById(t.getAttribute('data-tab')).style.display = (t === tab) ? '' : 'none';
+                    });
+                });
+            });
+        })();
+        </script>
+
+    </div>
+
+</ui:composition>

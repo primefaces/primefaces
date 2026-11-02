@@ -4,8 +4,9 @@
       xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:p="primefaces"
+      xmlns:pc="jakarta.faces.composite/primefaces"
       xmlns:sc="primefaces.showcase"
-      lang="#{p:language()}" xml:lang="#{p:language()}" data-preset="#{app.theme}" dir="#{app.dir}">
+      lang="#{p:language()}" xml:lang="#{p:language()}" data-preset="#{p:theme()}" dir="#{p:dir()}">
 
     <h:head>
         <f:facet name="first">
@@ -24,6 +25,8 @@
             <link href="#{resource['showcase:images/favicon-16x16.png']}" rel="icon" type="image/png" sizes="16x16"/>
         </f:facet>
         <title>PrimeFaces Showcase</title>
+        <!-- data-dark for the code highlighting, before the first paint: not moved to the bottom -->
+        <script src="#{resource['theming:scheme.js']}" data-p-no-move="true"></script>
 
         <h:outputStylesheet name="primeflex/4.0.0/primeflex.min.css" library="webjars" />
         <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
@@ -56,8 +59,8 @@
             </ui:fragment>
             
             <ui:include src="./topbar.xhtml"></ui:include>
-            <!-- theme configurator: palette button at the right edge + overlay -->
-            <ui:include src="/theming/configurator.xhtml"/>
+            <!-- theme configurator of PrimeFaces: palette button at the right edge + overlay -->
+            <pc:themeConfigurator id="themeConfigurator"/>
             <div class="layout-mask"></div>
 
             <div class="layout-shell">

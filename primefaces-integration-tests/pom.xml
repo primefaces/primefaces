@@ -439,6 +439,12 @@
             </properties>
         </profile>
         <profile>
+            <id>theme-material</id>
+            <properties>
+                <primefaces.THEME>material</primefaces.THEME>
+            </properties>
+        </profile>
+        <profile>
             <id>theme-metal</id>
             <properties>
                 <primefaces.THEME>metal</primefaces.THEME>

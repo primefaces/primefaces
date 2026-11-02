@@ -27,6 +27,7 @@
 
 .landing-section {
     padding: 5rem var(--landing-pad);
+    scroll-margin-top: var(--layout-topbar-height);
 }
 
 .landing-container {
@@ -119,13 +120,14 @@
     }
 }
 
+// on a primary background (final CTA)
 .landing-btn-ghost {
-    background-color: rgba(255,255,255,.12);
-    color: #fff !important;
-    border-color: rgba(255,255,255,.3);
+    background-color: color-mix(in srgb, var(--primary-color-text) 12%, transparent);
+    color: var(--primary-color-text) !important;
+    border-color: color-mix(in srgb, var(--primary-color-text) 35%, transparent);
 
     &:hover {
-        background-color: rgba(255,255,255,.2);
+        background-color: color-mix(in srgb, var(--primary-color-text) 20%, transparent);
     }
 }
 
@@ -338,6 +340,25 @@
     }
 }
 
+.landing-feature-action {
+    margin-top: 1rem;
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .35rem .9rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-d);
+    background: var(--surface-a);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+
+    &:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+}
+
 /* Icon badge */
 .lf-icon {
     width: 44px;
@@ -367,9 +388,9 @@
 
 .landing-quickstart-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
     gap: 4rem;
-    align-items: center;
+    align-items: start;
 }
 
 .landing-quickstart-text {
@@ -384,11 +405,29 @@
     }
 }
 
+.landing-quickstart-codes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
 .landing-quickstart-code {
     border-radius: var(--landing-radius);
     overflow: hidden;
     border: 1px solid var(--surface-d);
     box-shadow: 0 4px 24px rgba(0,0,0,.08);
+}
+
+.landing-code-caption {
+    background: var(--surface-c);
+    padding: .75rem 1rem 0;
+    font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-color-secondary);
 }
 
 .landing-code-tab-bar {
@@ -397,9 +436,20 @@
     border-bottom: 1px solid var(--surface-d);
     padding: .5rem .75rem 0;
     gap: .25rem;
+    // many files (Angular): scroll the tabs instead of squeezing them
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+// long files (Angular): scroll inside of the panel
+.landing-code-scroll {
+    max-height: 22rem;
+    overflow: auto;
 }
 
 .landing-code-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
     font-size: .8rem;
     font-weight: 600;
     padding: .4rem .9rem;
@@ -415,199 +465,167 @@
     }
 }
 
-/* ── Theming ───────────────────────────────────────────────────────────── */
-.landing-theming {
-    background-color: transparent;
-}
+/* ── Quick Start: compared to an Angular SPA ───────────────────────────── */
+.landing-compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .85rem;
+    margin: 0 0 .75rem;
 
-.landing-theming-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-.landing-theming-text {
-    .landing-section-title {
+    th, td {
+        padding: .55rem .75rem;
         text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--surface-d);
+        color: var(--text-color-secondary);
+    }
+
+    thead th {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    tbody th {
+        font-weight: 500;
+        padding-left: 0;
+    }
+
+    .landing-compare-pf {
+        color: var(--text-color);
+        font-weight: 600;
+        background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+    }
+
+    thead .landing-compare-pf {
+        color: var(--primary-color);
+        border-radius: 8px 8px 0 0;
+    }
+}
+
+.landing-quickstart-text p.landing-compare-note {
+    font-size: .75rem;
+    margin: 0 0 2rem;
+}
+
+/* ── Long-term ─────────────────────────────────────────────────────────── */
+.landing-longterm-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--surface-d);
+    border-bottom: 1px solid var(--surface-d);
+}
+
+.landing-longterm-item {
+    display: block;
+    padding: 1.5rem 1.25rem;
+    color: inherit;
+    text-decoration: none !important;
+    transition: background-color .2s;
+
+    & + & {
+        border-left: 1px solid var(--surface-d);
+    }
+
+    &:hover {
+        background: color-mix(in srgb, var(--surface-c) 50%, transparent);
+    }
+
+    h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 0 0 .5rem;
+        color: var(--text-color);
     }
 
     p {
+        font-size: .875rem;
         color: var(--text-color-secondary);
         line-height: 1.6;
-        margin-bottom: 1.5rem;
+        margin: 0;
     }
 }
 
-.landing-theme-card {
+/* ── Why PrimeFaces page: the landing sections inside of the showcase layout ── */
+.landing-embedded {
+    --landing-pad: 0;
+
+    .landing-section { padding-top: 3rem; padding-bottom: 3rem; }
+
+    .landing-features {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        border: 1px solid var(--surface-d);
+        border-radius: var(--landing-radius);
+    }
+}
+
+/* ── Fit: when PrimeFaces fits and when not ────────────────────────────── */
+.landing-fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.landing-fit-card {
     background: var(--surface-a);
     border: 1px solid var(--surface-d);
     border-radius: var(--landing-radius);
     padding: 1.5rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,.08);
-}
 
-.landing-theme-card-header {
-    display: flex;
-    gap: .5rem;
-    margin-bottom: 1.5rem;
-}
-
-.landing-theme-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.landing-theme-tokens {
-    display: flex;
-    flex-direction: column;
-    gap: .75rem;
-    margin-bottom: 1.5rem;
-}
-
-.landing-theme-token {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    font-size: .85rem;
-}
-
-.landing-token-swatch {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    border: 1px solid var(--surface-d);
-    flex-shrink: 0;
-    display: inline-block;
-}
-
-.landing-token-label {
-    color: var(--text-color-secondary);
-    font-family: monospace;
-    width: 70px;
-    flex-shrink: 0;
-}
-
-.landing-token-value {
-    color: var(--text-color);
-    font-family: monospace;
-    font-size: .8rem;
-}
-
-.landing-theme-names {
-    display: flex;
-    gap: .5rem;
-    flex-wrap: wrap;
-}
-
-.landing-theme-badge {
-    font-size: .75rem;
-    font-weight: 600;
-    padding: .3rem .75rem;
-    border-radius: 999px;
-    background: var(--surface-c);
-    color: var(--text-color-secondary);
-    border: 1px solid var(--surface-d);
-    cursor: pointer;
-    transition: background .15s, color .15s;
-
-    &.active {
-        background: var(--primary-color);
-        color: var(--primary-color-text);
-        border-color: var(--primary-color);
-    }
-}
-
-/* ── Theme list (reuses real themes bean) ──────────────────────────────── */
-.landing-theme-list {
-    max-height: 280px;
-    overflow-y: auto;
-    padding-right: .25rem;
-    margin-top: .75rem;
-
-    /* subtle scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: var(--surface-d) transparent;
-    &::-webkit-scrollbar { width: 4px; }
-    &::-webkit-scrollbar-thumb { background: var(--surface-d); border-radius: 4px; }
-}
-
-.landing-theme-category {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--text-color-secondary);
-    padding: .6rem 0 .3rem;
-    border-top: 1px solid var(--surface-d);
-    margin-top: .25rem;
-
-    &:first-child { border-top: none; padding-top: 0; }
-}
-
-.landing-theme-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .35rem;
-    padding-bottom: .35rem;
-}
-
-.landing-theme-item {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    padding: .25rem .5rem;
-    border-radius: 6px;
-    font-size: .78rem;
-    color: var(--text-color);
-    text-decoration: none !important;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: background-color .15s, border-color .15s;
-
-    img {
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
-        flex-shrink: 0;
-    }
-
-    &:hover {
-        background-color: var(--surface-c);
-        border-color: var(--surface-d);
-        text-decoration: none !important;
-    }
-
-    &.active {
-        background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
-        border-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
-        color: var(--primary-color);
-        font-weight: 600;
-    }
-}
-
-/* ── Check list ────────────────────────────────────────────────────────── */
-.landing-check-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem;
-
-    li {
+    h3 {
         display: flex;
         align-items: center;
-        gap: .6rem;
-        padding: .4rem 0;
-        font-size: .95rem;
+        gap: .5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 .75rem;
         color: var(--text-color);
 
-        i {
-            color: var(--primary-color);
-            font-size: 1rem;
-            flex-shrink: 0;
+        i { color: var(--text-color-secondary); }
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        position: relative;
+        padding: .6rem 0 .6rem 1.25rem;
+        font-size: .9rem;
+        line-height: 1.55;
+        color: var(--text-color-secondary);
+
+        & + li { border-top: 1px solid var(--surface-d); }
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 1.15rem;
+            width: .4rem;
+            height: .4rem;
+            border-radius: 50%;
+            background: var(--surface-d);
         }
     }
+}
+
+.landing-fit-yes {
+    border-color: color-mix(in srgb, var(--primary-color) 40%, var(--surface-d));
+
+    h3 i { color: var(--primary-color); }
+
+    li::before { background: var(--primary-color); }
+}
+
+.landing-fit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
 }
 
 /* ── Quick Start install command ───────────────────────────────────────── */
@@ -636,64 +654,6 @@
         user-select: all;
     }
 }
-
-/* ── Accessibility ─────────────────────────────────────────────────────── */
-.landing-accessibility {
-    background: color-mix(in srgb, var(--surface-ground) 85%, #000 15%);
-    text-align: center;
-
-    .landing-section-label { color: var(--text-color-secondary); }
-
-    .landing-section-title,
-    .landing-section-subtitle {
-        text-align: center;
-    }
-}
-
-.landing-a11y-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-top: 3rem;
-    text-align: left;
-}
-
-.landing-a11y-card {
-    background: color-mix(in srgb, var(--surface-a) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--surface-d) 60%, transparent);
-    border-radius: var(--landing-radius);
-    padding: 1.5rem;
-
-    h4 {
-        font-size: .95rem;
-        font-weight: 600;
-        margin: .75rem 0 .5rem;
-        color: var(--text-color);
-    }
-
-    p {
-        font-size: .875rem;
-        color: var(--text-color-secondary);
-        line-height: 1.5;
-        margin: 0;
-    }
-}
-
-.landing-a11y-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: color-mix(in srgb, var(--primary-color) 12%, transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    i {
-        font-size: 1.1rem;
-        color: var(--primary-color);
-    }
-}
-
 
 /* ── Templates ─────────────────────────────────────────────────────────── */
 .landing-templates {
@@ -838,18 +798,28 @@
 }
 
 /* ── Final CTA ─────────────────────────────────────────────────────────── */
+/* primary background: everything on it uses the theme's primary contrast color
+   (light in most themes, dark where the primary is light, e.g. dark variants) */
 .landing-cta {
+    // gradient by hue, not by lightness: the contrast to the text stays the same over the whole section
     background: linear-gradient(
         135deg,
         var(--primary-color) 0%,
-        color-mix(in srgb, var(--primary-color) 70%, #000) 100%
+        oklch(from var(--primary-color) l c calc(h + 40)) 100%
     );
     text-align: center;
-    color: #fff;
+    color: var(--primary-color-text);
 
-    .landing-section-label {
-        background: rgba(255,255,255,.15);
-        color: rgba(255,255,255,.9);
+    // inverted: the primary button would vanish on the primary background
+    .landing-btn-primary {
+        background-color: var(--primary-color-text);
+        color: var(--primary-color) !important;
+        box-shadow: 0 4px 14px rgba(0,0,0,.18);
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--primary-color-text) 88%, var(--primary-color));
+            box-shadow: 0 6px 20px rgba(0,0,0,.24);
+        }
     }
 }
 
@@ -857,12 +827,12 @@
     h2 {
         font-size: clamp(1.75rem, 4vw, 2.5rem);
         font-weight: 800;
-        color: #fff;
+        color: inherit;
         margin: 0 0 1rem;
     }
 
     p {
-        color: rgba(255,255,255,.8);
+        color: color-mix(in srgb, var(--primary-color-text) 85%, transparent);
         font-size: 1.1rem;
         margin: 0 0 2rem;
         line-height: 1.6;
@@ -890,20 +860,20 @@
     gap: .875rem;
 
     .ldeck-form     { grid-column: 1; grid-row: 1; }
-    .ldeck-members  { grid-column: 1; grid-row: 2; }
-    .ldeck-extra    { grid-column: 1; grid-row: 3; }
     .ldeck-eq       { grid-column: 2; grid-row: 1; }
     .ldeck-stats    { grid-column: 3; grid-row: 1; }
-    .ldeck-calendar { grid-column: 2; grid-row: 2; }
+    .ldeck-members  { grid-column: 1; grid-row: 2; }
+    .ldeck-view     { grid-column: 2; grid-row: 2; }
     .ldeck-filter   { grid-column: 3; grid-row: 2; }
-    .ldeck-table    { grid-column: 2 / -1; grid-row: 3; }
+    .ldeck-calendar { grid-column: 1; grid-row: 3; }
+    .ldeck-table    { grid-column: 2 / -1; grid-row: 3; max-height: 280px; }
 }
 
 .landing-deck-card {
     background: var(--surface-a);
     border: 1px solid var(--surface-d);
     border-radius: 18px;
-    padding: 1.625rem 1.75rem;
+    padding: 1.25rem 1.5rem;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
@@ -912,7 +882,7 @@
     font-size: .9375rem;
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 1.125rem;
+    margin-bottom: .875rem;
     display: flex;
     align-items: center;
     gap: .5rem;
@@ -946,19 +916,6 @@
 
 .ldeck-field        { margin-bottom: .625rem; }
 
-.ldeck-field-label {
-    font-size: .7rem;
-    color: var(--text-color-secondary);
-    margin-bottom: .3rem;
-    display: block;
-}
-
-.ldeck-divider {
-    height: 1px;
-    background: var(--surface-d);
-    margin: .875rem 0;
-}
-
 .ldeck-members-list { display: flex; flex-direction: column; gap: .625rem; margin-top: .25rem; }
 
 .ldeck-member {
@@ -975,28 +932,6 @@
 .ldeck-av-indigo { background: #6366f1 !important; color: #fff !important; }
 .ldeck-av-green  { background: #22c55e !important; color: #fff !important; }
 .ldeck-av-amber  { background: #f59e0b !important; color: #fff !important; }
-
-/* ── Knob card: p:knob ───────────────────────────────────────── */
-.ldeck-knob-row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: .75rem 0 .25rem;
-    gap: .5rem;
-}
-
-.ldeck-knob-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .5rem;
-}
-
-.ldeck-knob-label {
-    font-size: .75rem;
-    color: var(--text-color-secondary);
-    text-align: center;
-}
 
 /* ── Rating card: p:rating ────────────────────────────────────── */
 .ldeck-rating-list {
@@ -1045,27 +980,13 @@
     .p-progressbar-label { display: none; }
 }
 
-.ldeck-stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .45rem 0;
-    border-top: 1px solid var(--surface-d);
-    font-size: .875rem;
-    color: var(--text-color-secondary);
-
-    span:last-child { font-weight: 600; color: var(--text-color); }
-
-    &:first-of-type { margin-top: .625rem; }
-}
-
 /* ── Chart card: p:chart ─────────────────────────────────────── */
 .ldeck-chart {
     display: block;
     width: 100%;
 }
 
-/* ── Toggle card: p:inputSwitch ──────────────────────────────── */
+/* ── Toggle card: p:toggleSwitch ──────────────────────────────── */
 .ldeck-switch-list {
     display: flex;
     flex-direction: column;
@@ -1087,6 +1008,16 @@
     color: var(--text-color);
 }
 
+/* ── View card: p:selectOneButton, p:slider ─────────────────── */
+.ldeck-segment {
+    display: flex;
+    width: 100%;
+
+    .p-button { flex: 1; justify-content: center; }
+}
+
+.ldeck-slider-row { margin: 1.25rem 0 .75rem; }
+
 /* ── DataTable card: p:dataTable ─────────────────────────────── */
 .ldeck-table .ldeck-datatable {
     font-size: .875rem;
@@ -1107,11 +1038,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media screen and (max-width: 1024px) {
-    .landing-features-grid  { grid-template-columns: repeat(2, 1fr); }
-
     .landing-templates-grid { grid-template-columns: repeat(2, 1fr); }
-
-    .landing-a11y-grid      { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media screen and (max-width: 1100px) {
@@ -1133,26 +1060,12 @@
 
     .landing-hero-deck-outer { display: none; }
 
-    .landing-quickstart-grid,
-    .landing-theming-grid,
     .landing-pro-grid {
         grid-template-columns: 1fr;
         gap: 2.5rem;
     }
 
-    .landing-theming-grid {
-        .landing-theming-preview { order: -1; }
-    }
-
-    .landing-features-grid {
-        grid-template-columns: 1fr;
-    }
-
     .landing-templates-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .landing-a11y-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -1180,8 +1093,45 @@
         grid-template-columns: 1fr;
     }
 
-    .landing-a11y-grid {
+}
+
+/* ── Shared "why" sections: break by the width they get, not the viewport ─
+   (full width on the landing page, next to the menu on the Why PrimeFaces page) */
+.landing-why,
+.landing-fit {
+    container-type: inline-size;
+}
+
+@container (max-width: 1024px) {
+    .landing-features-grid  { grid-template-columns: repeat(2, 1fr); }
+
+    .landing-longterm-grid  { grid-template-columns: repeat(2, 1fr); }
+    .landing-longterm-item:nth-child(odd) { border-left: none; }
+    .landing-longterm-item:nth-child(n+3) { border-top: 1px solid var(--surface-d); }
+}
+
+@container (max-width: 900px) {
+    .landing-quickstart-grid {
         grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+@container (max-width: 768px) {
+    .landing-features-grid,
+    .landing-fit-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@container (max-width: 480px) {
+    .landing-longterm-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-longterm-item + .landing-longterm-item {
+        border-left: none;
+        border-top: 1px solid var(--surface-d);
     }
 }
 

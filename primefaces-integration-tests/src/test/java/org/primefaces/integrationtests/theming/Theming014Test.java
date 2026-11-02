@@ -68,7 +68,7 @@ class Theming014Test extends AbstractThemingTest {
             + "return document.activeElement === f;";
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(1)
     @DisplayName("Theming: server side validation marks every field invalid, also on hover and focus, in light and dark mode")
     void serverValidation(String preset) {
@@ -106,7 +106,7 @@ class Theming014Test extends AbstractThemingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(2)
     @DisplayName("Theming: client side validation marks the fields invalid (also the spinner, marked on its wrapper)")
     void clientValidation(String preset) {
@@ -134,7 +134,7 @@ class Theming014Test extends AbstractThemingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(3)
     @DisplayName("Theming: the tooltip of an invalid field (p:message display=tooltip) and an invalid readonly selectOneRadio")
     void tooltipAndReadonly(String preset) {

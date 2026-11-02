@@ -124,7 +124,7 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 - Faces impl: `mojarra-4.0`, `mojarra-4.1`, `myfaces-4.0`, `myfaces-4.1`
 - Browser: `chrome`, `firefox`, `safari` (`safari` forces serial execution and excludes tests tagged `SafariExclude`)
 - Options: `headless`, `parallel-execution`, `csp` (Content Security Policy), `client-state-saving`
-- Theme: `theme-aura` (default, CI), `theme-lara`, `theme-nora`, `theme-metal`, `theme-glass`
+- Theme: `theme-aura` (default, CI), `theme-lara`, `theme-nora`, `theme-material`, `theme-metal`, `theme-glass`
 - Screenshots on failure are only written when `screenshotDirectory` is configured; CI sets `SCREENSHOT_DIRECTORY=/tmp/pf_it/`
 
 ## Linting & Code Style

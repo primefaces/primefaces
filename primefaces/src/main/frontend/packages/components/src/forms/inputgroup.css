@@ -220,3 +220,26 @@
         }
     }
 }
+
+/* filled (forms/inputfield.css): the addons like the fields (filled background, frame with
+   --p-form-field-filled-border-opacity, the bottom border as line) and the bottom corners of the outer parts */
+.p-input-filled .p-inputgroup {
+    .p-inputgroup-addon,
+    .p-inputgroup-addon-checkbox {
+        background: var(--p-inputgroup-addon-filled-background);
+        border-block-start-color: color-mix(in srgb, var(--p-inputgroup-addon-border-color) var(--p-form-field-filled-border-opacity),
+            transparent);
+        border-inline-color: color-mix(in srgb, var(--p-inputgroup-addon-border-color) var(--p-form-field-filled-border-opacity),
+            transparent);
+    }
+
+    > :first-child,
+    > :first-child > :is(.p-inputfield, .p-widget, input, textarea):first-child {
+        border-end-start-radius: var(--p-form-field-filled-bottom-border-radius);
+    }
+
+    > :last-child,
+    > :last-child > :is(.p-inputfield, .p-widget, input, textarea):last-child {
+        border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
+    }
+}

@@ -4,11 +4,12 @@ The themes of PrimeFaces are based on **design tokens**: every color, radius, sp
 duration is a CSS variable (`--p-primary-color`, `--p-form-field-background`, `--p-button-border-radius`, ...).
 The look of an application is customized with plain CSS: no SASS, no build step, no theme to fork.
 
-Five themes are built in:
+Six themes are built in:
 
 - **Aura**
 - **Lara**
 - **Nora**
+- **Material**: Material Design 3, surfaces tinted by the primary color, pill buttons, state layers
 - **Metal**: graphite and brushed aluminium (light), black metal (dark)
 - **Glass**: Apple Liquid Glass style, translucent overlays, menus, bars and buttons over a calm content layer
 
@@ -27,7 +28,7 @@ The themes are part of the `primefaces` jar. Select one with the `primefaces.THE
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | metal | glass | none -->
+    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | material | metal | glass | none -->
 </context-param>
 ```
 
@@ -361,6 +362,79 @@ Transitions use duration and easing tokens, which can be overridden like any oth
     --p-overlay-enter-duration: 0.12s;                         /* overlays opening */
     --p-overlay-leave-duration: 0.1s;                          /* overlays closing */
 }
+```
+
+The **ripple** (the Material 3 press feedback: an ink circle that spreads from the pointer when a button, menu item,
+list option, tab, checkbox, ... is pressed and fades out on release) is on in the Material theme and off in the others;
+it follows the token, also per area:
+
+```css
+:root { --p-ripple-opacity: 0.12; }     /* on in any theme (0 = off) */
+.toolbar { --p-ripple-opacity: 0; }     /* off in an area */
+```
+
+## User settings
+
+With `primefaces.THEME_CONFIGURATOR` an application lets its users choose the theme settings, e.g. in a settings page,
+and keeps them across pages and visits without a flicker:
+
+```xml
+<context-param>
+    <param-name>primefaces.THEME_CONFIGURATOR</param-name>
+    <param-value>true</param-value>
+</context-param>
+```
+
+- **Color scheme, density, input style and tokens** are kept in the `localStorage` of the browser. The head renders the
+  script `primefaces:theme.js` before the stylesheets, it applies them to `<html>` before the first paint; it needs
+  neither jQuery nor PrimeFaces and is not moved by `MOVE_SCRIPTS_TO_BOTTOM`.
+- **Preset and direction** are rendered by the server: the cookies `primefaces.theme` (e.g. `lara`) and
+  `primefaces.dir` (`ltr` or `rtl`) are used instead of `primefaces.THEME` and `primefaces.DIR`; an unknown preset falls
+  back to `primefaces.THEME`.
+  `PrimeRequestContext.getCurrentInstance().getTheme()` and `isRTL()` return the result, in EL `#{p:theme()}` and
+  `#{p:dir()}`; the page sets the direction with `<html dir="#{p:dir()}">`.
+
+### Theme configurator
+
+The composite component `themeConfigurator` is a ready-made UI for all of them: preset, color scheme, input style,
+density, direction, primary color, surface, button shape, shadows, animations, ripple, border radius, typography,
+focus ring, form field padding and the CSS of the changes to copy. It needs no form (it can be placed inside of one) and
+no inline scripts.
+
+```xml
+<html xmlns:pc="jakarta.faces.composite/primefaces">
+...
+<pc:themeConfigurator/>                                 <!-- a button at the edge of the window opens it -->
+<pc:themeConfigurator mode="inline" direction="false"/>  <!-- in the page, e.g. a settings page -->
+```
+
+| Attribute | Default | Description |
+| --- | --- | --- |
+| mode | overlay | `overlay`: a button at the edge of the window opens the panel; `inline`: the panel in the page. |
+| presets | aura,lara,nora,material,metal,glass | The presets to choose from, comma separated (custom themes too); empty: no preset choice. |
+| direction | true | Whether the user can choose the direction. |
+| export | true | Whether the CSS of the changes is shown to copy. |
+| style, styleClass | | Inline style and style class of the container. |
+
+Another button opens an overlay configurator with `data-tc-toggle="<client id of the configurator>"`. After each
+change the event `p-theme-change` is dispatched on the `document`.
+
+### API
+
+Without the configurator, a settings page changes them with `window.PrimeFacesTheme`; a missing setting keeps the value
+of the page:
+
+```js
+const settings = PrimeFacesTheme.load();
+settings.scheme = 'dark';                                   // light | dark
+settings.density = 'compact';                               // normal | compact | comfortable
+settings.input = 'filled';                                  // outlined | filled
+settings.tokens = { '--p-primary-base': 'var(--p-teal-500)', '--p-border-radius-md': '10px' };
+PrimeFacesTheme.save(settings);                             // stores and applies, apply(settings) only applies
+
+// preset and direction: a cookie, then a reload
+PrimeFaces.setCookie('primefaces.theme', 'lara', { path: PrimeFaces.settings.contextPath || '/', expires: 365 });
+location.reload();
 ```
 
 ## User preferences and accessibility

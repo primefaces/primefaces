@@ -59,39 +59,43 @@ a {
     text-decoration: none;
 }
 
+// :where(:not(.p-widget)): not the component headers that are headings (p:panelMenu: h3.p-panelmenu-header), the theme
+// styles them; the specificity stays the one of the type selector
 h1, h2, h3, h4, h5, h6 {
-    margin: 1.5rem 0 1rem 0;
-    font-family: inherit;
-    font-weight: 600;
-    line-height: 1.2;
-    color: inherit;
+    &:where(:not(.p-widget)) {
+        margin: 1.5rem 0 1rem 0;
+        font-family: inherit;
+        font-weight: 600;
+        line-height: 1.2;
+        color: inherit;
 
-    &:first-child {
-        margin-top: 0;
+        &:first-child {
+            margin-top: 0;
+        }
     }
 }
 
-h1 {
+h1:where(:not(.p-widget)) {
     font-size: 2.5rem;
 }
 
-h2 {
+h2:where(:not(.p-widget)) {
     font-size: 2rem;
 }
 
-h3 {
+h3:where(:not(.p-widget)) {
     font-size: 1.75rem;
 }
 
-h4 {
+h4:where(:not(.p-widget)) {
     font-size: 1.5rem;
 }
 
-h5 {
+h5:where(:not(.p-widget)) {
     font-size: 1.25rem;
 }
 
-h6 {
+h6:where(:not(.p-widget)) {
     font-size: 1rem;
 }
 

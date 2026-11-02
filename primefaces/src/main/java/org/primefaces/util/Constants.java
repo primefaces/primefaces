@@ -52,6 +52,7 @@ public class Constants {
         public static final String RESET_VALUES = "primefaces.RESET_VALUES";
         public static final String SUBMIT = "primefaces.SUBMIT";
         public static final String THEME = "primefaces.THEME";
+        public static final String THEME_CONFIGURATOR = "primefaces.THEME_CONFIGURATOR";
         public static final String TOUCHABLE = "primefaces.TOUCHABLE";
         public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
         public static final String DYNAMIC_CONTENT_LIMIT = "primefaces.DYNAMIC_CONTENT_LIMIT";
@@ -77,6 +78,17 @@ public class Constants {
         public static final String NONCE_PARAM = "primefaces.nonce";
 
         private RequestParams() {
+
+        }
+    }
+
+    public static class Cookies {
+
+        // the preset and the direction (ltr or rtl) chosen by the user, primefaces.THEME_CONFIGURATOR
+        public static final String THEME = "primefaces.theme";
+        public static final String DIR = "primefaces.dir";
+
+        private Cookies() {
 
         }
     }

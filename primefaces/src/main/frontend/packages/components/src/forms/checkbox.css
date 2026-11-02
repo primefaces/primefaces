@@ -28,7 +28,7 @@
         height: var(--p-checkbox-height);
         background: var(--p-checkbox-background);
         color: var(--p-checkbox-icon-color);
-        border: 1px solid var(--p-checkbox-border-color);
+        border: var(--p-checkbox-border-width) solid var(--p-checkbox-border-color);
         border-radius: var(--p-checkbox-border-radius);
         box-shadow: var(--p-checkbox-shadow);
         outline-color: transparent;
@@ -174,4 +174,44 @@
  */
 .p-state-highlight .p-chkbox .p-chkbox-box.p-state-active.p-state-active {
     border-color: var(--p-highlight-color);
+}
+
+/*
+ * State layer (Material 3): a circle of --p-checkbox-state-layer-size around the box on hover, in the hover border
+ * color, checked in the checked border color (--p-checkbox-hover-state-layer-opacity, 0% in the presets without it).
+ * The ripple of the press draws the same circle (ripple/ripple.css). No focus layer: the widget focuses the input by
+ * script, so it would stay after a click (:focus-visible); keyboard focus has the focus ring.
+ */
+.p-chkbox .p-chkbox-box {
+    --_layer-color: var(--p-checkbox-hover-border-color);
+    --_layer-opacity: 0%;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: var(--p-checkbox-state-layer-size);
+        height: var(--p-checkbox-state-layer-size);
+        translate: -50% -50%;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--_layer-color) var(--_layer-opacity), transparent);
+        pointer-events: none;
+        transition: background var(--p-checkbox-transition-duration);
+    }
+
+    &.p-state-active {
+        --_layer-color: var(--p-checkbox-checked-border-color);
+    }
+
+    &.p-state-hover:not(.p-chkbox-readonly, .p-state-readonly, .p-state-readonly *),
+    &:not(.p-state-disabled, .p-chkbox-readonly, .p-state-readonly, .p-state-readonly *):hover {
+        --_layer-opacity: var(--p-checkbox-hover-state-layer-opacity);
+    }
+}
+
+@media (forced-colors: active) {
+    .p-chkbox .p-chkbox-box::before {
+        display: none;
+    }
 }
