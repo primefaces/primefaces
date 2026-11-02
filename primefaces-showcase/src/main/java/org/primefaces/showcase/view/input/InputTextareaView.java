@@ -25,6 +25,7 @@ package org.primefaces.showcase.view.input;
 
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.showcase.util.taglib.TagLibProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,15 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named
 @RequestScoped
 public class InputTextareaView {
+
+    @Inject
+    private TagLibProvider tagLibProvider;
 
     private String value;
 
@@ -46,7 +51,7 @@ public class InputTextareaView {
 
         if ("PrimeFaces".equals(query)) {
             results.add("PrimeFaces Rocks!!!");
-            results.add("PrimeFaces has 100+ components.");
+            results.add("PrimeFaces has " + tagLibProvider.getComponentCount() + " components.");
             results.add("PrimeFaces is lightweight.");
             results.add("PrimeFaces is easy to use.");
             results.add("PrimeFaces is developed with passion!");

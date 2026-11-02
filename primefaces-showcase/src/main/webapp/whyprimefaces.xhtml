@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>Why PrimeFaces</h1>
+                <p>Why a server-side component framework is still a great choice for business applications &#8211; and when it is not.</p>
+            </div>
+        </div>
+
+        <div class="content-section landing-page landing-embedded">
+            <ui:include src="/WEB-INF/landing/why.xhtml"/>
+
+            <!-- ═══ FIT ════════════════════════════════════════════════════════ -->
+            <section class="landing-section landing-fit">
+                <div class="landing-container">
+                    <div class="landing-features-header">
+                        <span class="landing-section-label">Honest answer</span>
+                        <h2 class="landing-section-title">When PrimeFaces fits, and when it does not</h2>
+                        <p class="landing-section-subtitle">
+                            No technology fits every project. Pick the architecture that matches your application and your team.
+                        </p>
+                    </div>
+
+                    <div class="landing-fit-grid">
+                        <div class="landing-fit-card landing-fit-yes">
+                            <h3><i class="pi pi-check-circle"></i>PrimeFaces is a great fit for</h3>
+                            <ul>
+                                <li>Business applications full of forms, tables and workflows: back offices, admin tools, B2B portals</li>
+                                <li>Java teams who want one stack from the database to the UI</li>
+                                <li>Applications that have to be maintained for many years</li>
+                                <li>Security-sensitive domains where logic and data should stay on the server</li>
+                            </ul>
+                        </div>
+                        <div class="landing-fit-card">
+                            <h3><i class="pi pi-info-circle"></i>An SPA may fit better for</h3>
+                            <ul>
+                                <li>Applications that have to work offline or with a poor connection</li>
+                                <li>Canvas-like UIs such as design tools or editors, where nearly every interaction stays in the browser</li>
+                                <li>Public sites with huge numbers of anonymous users, where server-side state per user gets expensive</li>
+                                <li>Projects that need a public API anyway (mobile apps, third parties) and have a frontend team in place</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="landing-fit-actions">
+                        <h:link styleClass="landing-btn landing-btn-primary" outcome="/getstarted">
+                            Get Started
+                        </h:link>
+                        <h:link styleClass="landing-btn landing-btn-outline" outcome="/support">
+                            Commercial Support
+                        </h:link>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </ui:define>
+
+</ui:composition>

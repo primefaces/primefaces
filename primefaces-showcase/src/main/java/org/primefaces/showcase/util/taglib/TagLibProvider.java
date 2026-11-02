@@ -23,8 +23,10 @@
  */
 package org.primefaces.showcase.util.taglib;
 
+import org.primefaces.cdk.spi.taglib.TagType;
 import org.primefaces.cdk.spi.taglib.Taglib;
 import org.primefaces.cdk.spi.taglib.TaglibParser;
+import org.primefaces.util.LangUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -47,6 +49,7 @@ public class TagLibProvider {
     private Map<String, TagInfo> tags;
     private List<TagInfo> tagsSorted;
     private List<FunctionInfo> functionsSorted;
+    private int componentCount;
 
     @PostConstruct
     public void init() {
@@ -62,6 +65,10 @@ public class TagLibProvider {
                     .map(f -> new FunctionInfo(f))
                     .sorted(Comparator.comparing(o -> o.getFunction().getName()))
                     .collect(Collectors.toList());
+            // rendered components only: no child-only tags like p:tab or p:menuitem
+            componentCount = (int) taglib.getTags().stream()
+                    .filter(t -> t.getType() == TagType.COMPONENT && LangUtils.isNotBlank(t.getRendererType()))
+                    .count();
         }
         catch (Exception e) {
             throw new FacesException("Could not parse taglib!", e);

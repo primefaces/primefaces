@@ -25,14 +25,15 @@
                     </h1>
 
                     <p class="landing-hero-subtitle">
-                        Enhance your web applications with PrimeFaces' comprehensive suite of customizable,
-                        feature-rich UI components for Jakarta EE, Quarkus and Spring.
+                        Build complete business UIs in Java. #{tagLibProvider.componentCount} components for Jakarta EE, Quarkus and Spring Boot &#8211;
+                        no npm, no REST layer, no second stack.
                     </p>
 
                     <div class="landing-hero-actions">
                         <h:link styleClass="landing-btn landing-btn-primary" outcome="/getstarted">
                             Get Started
                         </h:link>
+                        <a href="#why" class="landing-btn landing-btn-secondary">Why PrimeFaces</a>
                     </div>
                 </div>
 
@@ -69,25 +70,58 @@
                                 <i class="pi pi-user-plus"></i> Invite Member
                             </div>
                             <div class="ldeck-field">
-                                <label class="ldeck-field-label">Email address</label>
                                 <p:inputText styleClass="w-full" placeholder="colleague@company.com"/>
                             </div>
                             <div class="ldeck-field">
-                                <label class="ldeck-field-label">Permission</label>
                                 <p:selectOneMenu styleClass="w-full">
                                     <f:selectItem itemValue="view"  itemLabel="Can view"/>
                                     <f:selectItem itemValue="edit"  itemLabel="Can edit" itemSelected="true"/>
                                     <f:selectItem itemValue="admin" itemLabel="Admin"/>
                                 </p:selectOneMenu>
                             </div>
-                            <p:commandButton value="Send Invite" styleClass="w-full mt-2"
+                            <p:commandButton value="Send Invite" styleClass="w-full"
                                              action="#{landingData.sendInvite}"
                                              update="invite-growl" process="@this"/>
-                            <div class="ldeck-divider"></div>
-                            <div class="ldeck-title" style="margin-bottom:.5rem">
-                                <i class="pi pi-link"></i> Share Link
+                        </div>
+
+                        <!-- ── RATING CARD: p:rating ─── -->
+                        <div class="landing-deck-card ldeck-eq">
+                            <div class="ldeck-title">
+                                <i class="pi pi-star"></i> p:rating
                             </div>
-                            <p:inputText styleClass="w-full" value="https://primefaces.org/sc/abc123" readonly="true"/>
+                            <div class="ldeck-rating-list">
+                                <div class="ldeck-rating-row">
+                                    <span class="ldeck-rating-label">Flat White</span>
+                                    <p:rating value="5" readonly="true"/>
+                                </div>
+                                <div class="ldeck-rating-row">
+                                    <span class="ldeck-rating-label">Croissant</span>
+                                    <p:rating value="4" readonly="true"/>
+                                </div>
+                                <div class="ldeck-rating-row">
+                                    <span class="ldeck-rating-label">Banana Bread</span>
+                                    <p:rating value="3" readonly="true"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── PROGRESS CARD: p:progressBar ─── -->
+                        <div class="landing-deck-card ldeck-stats">
+                            <div class="ldeck-title">
+                                <i class="pi pi-chart-bar"></i> p:progressBar
+                            </div>
+                            <div class="ldeck-progress-item">
+                                <div class="ldeck-progress-row"><span>Applications</span><span>65%</span></div>
+                                <p:progressBar value="65" displayOnly="true" styleClass="ldeck-pbar"/>
+                            </div>
+                            <div class="ldeck-progress-item">
+                                <div class="ldeck-progress-row"><span>Media</span><span>42%</span></div>
+                                <p:progressBar value="42" displayOnly="true" styleClass="ldeck-pbar"/>
+                            </div>
+                            <div class="ldeck-progress-item">
+                                <div class="ldeck-progress-row"><span>System</span><span>28%</span></div>
+                                <p:progressBar value="28" displayOnly="true" styleClass="ldeck-pbar"/>
+                            </div>
                         </div>
 
                         <!-- ── MEMBERS CARD: p:avatar, p:tag ─── -->
@@ -115,73 +149,39 @@
                             </div>
                         </div>
 
-                        <!-- ── KNOB CARD: p:knob ─── -->
-                        <div class="landing-deck-card ldeck-extra">
+                        <!-- ── VIEW CARD: p:selectOneButton, p:slider ─── -->
+                        <div class="landing-deck-card ldeck-view">
                             <div class="ldeck-title">
-                                <i class="pi pi-circle"></i> p:knob
+                                <i class="pi pi-sliders-v"></i> p:selectOneButton
                             </div>
-                            <div class="ldeck-knob-row">
-                                <div class="ldeck-knob-item">
-                                    <p:knob value="98" disabled="true" labelTemplate="{value}%"
-                                            size="100" foregroundColor="#6366f1"/>
-                                    <span class="ldeck-knob-label">Accessibility Score</span>
-                                </div>
-                            </div>
+                            <p:selectOneButton value="week" styleClass="ldeck-segment">
+                                <f:selectItem itemValue="day"   itemLabel="Day"/>
+                                <f:selectItem itemValue="week"  itemLabel="Week"/>
+                                <f:selectItem itemValue="month" itemLabel="Month"/>
+                            </p:selectOneButton>
+                            <div class="ldeck-progress-row ldeck-slider-row"><span>Zoom</span><h:outputText id="deck-zoom-out" value="60%"/></div>
+                            <h:inputHidden id="deck-zoom" value="60"/>
+                            <p:slider for="deck-zoom" display="deck-zoom-out" displayTemplate="{value}%"/>
                         </div>
 
-                        <!-- ── RATING CARD: p:rating ─── -->
-                        <div class="landing-deck-card ldeck-eq">
+                        <!-- ── TOGGLE CARD: p:toggleSwitch ─── -->
+                        <div class="landing-deck-card ldeck-filter">
                             <div class="ldeck-title">
-                                <i class="pi pi-star"></i> p:rating
+                                <i class="pi pi-sliders-h"></i> p:toggleSwitch
                             </div>
-                            <div class="ldeck-rating-list">
-                                <div class="ldeck-rating-row">
-                                    <span class="ldeck-rating-label">Performance</span>
-                                    <p:rating value="5" readonly="true"/>
+                            <div class="ldeck-switch-list">
+                                <div class="ldeck-switch-row">
+                                    <span class="ldeck-switch-label">AJAX built in</span>
+                                    <p:toggleSwitch value="#{true}"  disabled="true"/>
                                 </div>
-                                <div class="ldeck-rating-row">
-                                    <span class="ldeck-rating-label">Accessibility</span>
-                                    <p:rating value="5" readonly="true"/>
+                                <div class="ldeck-switch-row">
+                                    <span class="ldeck-switch-label">Dark mode</span>
+                                    <p:toggleSwitch value="#{true}"  disabled="true"/>
                                 </div>
-                                <div class="ldeck-rating-row">
-                                    <span class="ldeck-rating-label">Documentation</span>
-                                    <p:rating value="4" readonly="true"/>
+                                <div class="ldeck-switch-row">
+                                    <span class="ldeck-switch-label">Needs a build step</span>
+                                    <p:toggleSwitch value="#{false}" disabled="true"/>
                                 </div>
-                                <div class="ldeck-rating-row">
-                                    <span class="ldeck-rating-label">Theming</span>
-                                    <p:rating value="5" readonly="true"/>
-                                </div>
-                                <div class="ldeck-rating-row">
-                                    <span class="ldeck-rating-label">Ecosystem</span>
-                                    <p:rating value="4" readonly="true"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ── PROGRESS CARD: p:progressBar ─── -->
-                        <div class="landing-deck-card ldeck-stats">
-                            <div class="ldeck-title">
-                                <i class="pi pi-chart-bar"></i> p:progressBar
-                            </div>
-
-                            <div class="ldeck-progress-item">
-                                <div class="ldeck-progress-row"><span>Applications</span><span>65%</span></div>
-                                <p:progressBar value="65" displayOnly="true" styleClass="ldeck-pbar"/>
-                            </div>
-                            <div class="ldeck-progress-item">
-                                <div class="ldeck-progress-row"><span>Media</span><span>42%</span></div>
-                                <p:progressBar value="42" displayOnly="true" styleClass="ldeck-pbar"/>
-                            </div>
-                            <div class="ldeck-progress-item">
-                                <div class="ldeck-progress-row"><span>System</span><span>28%</span></div>
-                                <p:progressBar value="28" displayOnly="true" styleClass="ldeck-pbar"/>
-                            </div>
-
-                            <div class="ldeck-stat-row">
-                                <span>Components loaded</span><span>127</span>
-                            </div>
-                            <div class="ldeck-stat-row">
-                                <span>Bundle size</span><span>48 kb</span>
                             </div>
                         </div>
 
@@ -191,47 +191,14 @@
                                 <i class="pi pi-chart-pie"></i> p:chart
                             </div>
                             <p:chart type="doughnut" value="#{landingData.componentChart}"
-                                     style="width:100%;height:220px;" styleClass="ldeck-chart"/>
-                        </div>
-
-                        <!-- ── TOGGLE CARD: p:inputSwitch ─── -->
-                        <div class="landing-deck-card ldeck-filter">
-                            <div class="ldeck-title">
-                                <i class="pi pi-sliders-h"></i> p:toggleSwitch
-                            </div>
-                            <div class="ldeck-switch-list">
-                                <div class="ldeck-switch-row">
-                                    <span class="ldeck-switch-label">AJAX Built-in</span>
-                                    <p:toggleSwitch value="#{true}"  disabled="true"/>
-                                </div>
-                                <div class="ldeck-switch-row">
-                                    <span class="ldeck-switch-label">Theme System</span>
-                                    <p:toggleSwitch value="#{true}"  disabled="true"/>
-                                </div>
-                                <div class="ldeck-switch-row">
-                                    <span class="ldeck-switch-label">Accessibility</span>
-                                    <p:toggleSwitch value="#{true}"  disabled="true"/>
-                                </div>
-                                <div class="ldeck-switch-row">
-                                    <span class="ldeck-switch-label">Mobile Ready</span>
-                                    <p:toggleSwitch value="#{true}"  disabled="true"/>
-                                </div>
-                                <div class="ldeck-switch-row">
-                                    <span class="ldeck-switch-label">RTL Support</span>
-                                    <p:toggleSwitch value="#{false}" disabled="true"/>
-                                </div>
-                                <div class="ldeck-switch-row">
-                                    <span class="ldeck-switch-label">Dark Mode</span>
-                                    <p:toggleSwitch value="#{false}" disabled="true"/>
-                                </div>
-                            </div>
+                                     style="width:100%;height:170px;" styleClass="ldeck-chart"/>
                         </div>
 
                         <!-- ── DATA TABLE CARD: p:dataTable ─── -->
                         <div class="landing-deck-card ldeck-table">
                             <div class="ldeck-title">
                                 <i class="pi pi-table"></i> p:dataTable
-                                <span class="ldeck-badge">127 components</span>
+                                <span class="ldeck-badge">#{tagLibProvider.componentCount} components</span>
                             </div>
                             <p:dataTable value="#{landingData.components}" var="comp"
                                          styleClass="ldeck-datatable" rowHover="true">
@@ -255,203 +222,7 @@
 
             </section>
 
-            <!-- ═══ FEATURES ════════════════════════════════════════════════════ -->
-            <section class="landing-section landing-features">
-                <div class="landing-container">
-                    <div class="landing-features-header">
-                        <span class="landing-section-label">Features</span>
-                        <h2 class="landing-section-title">Everything you need</h2>
-                        <p class="landing-section-subtitle">
-                            A complete UI toolkit for Jakarta Faces that covers every use case —
-                            from simple forms to complex data-driven enterprise applications.
-                        </p>
-                    </div>
-
-                    <div class="landing-features-grid">
-                        <a href="#{request.contextPath}/ui/data/datatable/basic" class="landing-feature-card">
-                            <div class="lf-icon lf-icon-indigo"><i class="pi pi-table"></i></div>
-                            <h3>100+ Components</h3>
-                            <p>The most complete set of UI components for Jakarta Faces covering every UI requirement.</p>
-                        </a>
-
-                        <a href="https://github.com/primefaces/primefaces" target="_blank" rel="noopener noreferrer" class="landing-feature-card">
-                            <div class="lf-icon lf-icon-green"><i class="pi pi-github"></i></div>
-                            <h3>Open Source</h3>
-                            <p>Hosted at GitHub, all components are open source and free to use under the MIT license.</p>
-                        </a>
-
-                        <a href="#{request.contextPath}/theming" class="landing-feature-card">
-                            <div class="lf-icon lf-icon-purple"><i class="pi pi-palette"></i></div>
-                            <h3>Themes</h3>
-                            <p>Five design token themes (Aura, Lara, Nora, Metal, Glass) with light and dark mode, customizable with CSS variables.</p>
-                        </a>
-
-                        <div class="landing-feature-card">
-                            <div class="lf-icon lf-icon-teal"><i class="pi pi-eye"></i></div>
-                            <h3>Accessibility</h3>
-                            <p>WCAG 2.0 compliant. Every component handles keyboard navigation, screen readers and ARIA out of the box.</p>
-                        </div>
-
-                        <div class="landing-feature-card">
-                            <div class="lf-icon lf-icon-amber"><i class="pi pi-bolt"></i></div>
-                            <h3>Productivity</h3>
-                            <p>Allocate your valuable time to business logic rather than dealing with complex UI requirements.</p>
-                        </div>
-
-                        <a href="https://discord.gg/gzKFYnpmCY" target="_blank" rel="noopener noreferrer" class="landing-feature-card">
-                            <div class="lf-icon lf-icon-blue"><i class="pi pi-users"></i></div>
-                            <h3>Community</h3>
-                            <p>Join a vibrant and growing open-source community with thousands of developers worldwide.</p>
-                        </a>
-
-                        <div class="landing-feature-card">
-                            <div class="lf-icon lf-icon-cyan"><i class="pi pi-mobile"></i></div>
-                            <h3>Mobile Ready</h3>
-                            <p>Touch-optimized and responsive design elements with enhanced mobile user experience.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ═══ QUICK START ════════════════════════════════════════════════ -->
-            <section class="landing-section landing-quickstart">
-                <div class="landing-container">
-                    <div class="landing-quickstart-grid">
-                        <div class="landing-quickstart-text">
-                            <span class="landing-section-label">Quick Start</span>
-                            <h2 class="landing-section-title">So simple to use</h2>
-                            <p>Add the Maven dependency, declare the namespace, drop a component tag — you have a
-                               production-ready UI. No complex setup, no boilerplate ceremony.</p>
-                            <h:link styleClass="landing-btn landing-btn-outline" outcome="/getstarted">
-                                <i class="pi pi-book mr-2"></i>Read the Docs
-                            </h:link>
-                        </div>
-                        <div class="landing-quickstart-code">
-                            <div class="landing-code-tab-bar" id="qs-tabs">
-                                <span class="landing-code-tab active" data-tab="qs-pom">pom.xml</span>
-                                <span class="landing-code-tab" data-tab="qs-page">page.xhtml</span>
-                            </div>
-                            <div id="qs-pom">
-                                <pre class="language-xml line-numbers"><code>&lt;dependency&gt;
-    &lt;groupId&gt;org.primefaces&lt;/groupId&gt;
-    &lt;artifactId&gt;primefaces&lt;/artifactId&gt;
-    &lt;version&gt;#{app.primeFacesVersion}&lt;/version&gt;
-&lt;/dependency&gt;
-
-&lt;!-- Optional: PrimeFlex CSS utility --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.webjars.npm&lt;/groupId&gt;
-    &lt;artifactId&gt;primeflex&lt;/artifactId&gt;
-    &lt;version&gt;4.0.0&lt;/version&gt;
-&lt;/dependency&gt;</code></pre>
-                            </div>
-                            <div id="qs-page" style="display:none">
-                                <pre class="language-xml line-numbers"><code>&lt;html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:p="primefaces"&gt;
-&lt;h:head&gt;
-    &lt;title&gt;My App&lt;/title&gt;
-&lt;/h:head&gt;
-&lt;h:body&gt;
-    &lt;p:dataTable var="item" value="\#{bean.items}"&gt;
-        &lt;p:column headerText="Name"&gt;\#{item.name}&lt;/p:column&gt;
-        &lt;p:column headerText="Status"&gt;
-            &lt;p:tag value="\#{item.status}" /&gt;
-        &lt;/p:column&gt;
-    &lt;/p:dataTable&gt;
-&lt;/h:body&gt;
-&lt;/html&gt;</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ═══ THEMING ════════════════════════════════════════════════════ -->
-            <section class="landing-section landing-theming">
-                <div class="landing-container">
-                    <div class="landing-theming-grid">
-                        <div class="landing-theming-preview">
-                            <div class="landing-theme-card">
-                                <div class="landing-theme-card-header">
-                                    <i class="pi pi-palette" style="font-size:1.1rem;color:var(--p-primary-color)"></i>
-                                    <span style="font-weight:700;font-size:.9rem;color:var(--p-text-color)">Available Themes</span>
-                                </div>
-                                <div class="landing-theme-list">
-                                    <div class="landing-theme-category">Presets</div>
-                                    <div class="landing-theme-items">
-                                        <ui:repeat value="#{app.presets}" var="preset">
-                                            <a class="landing-theme-item #{app.theme eq preset ? 'active' : ''}" href="?theme=#{preset}" title="#{preset}">
-                                                <i class="pi pi-palette"></i>
-                                                <span style="text-transform: capitalize">#{preset}</span>
-                                            </a>
-                                        </ui:repeat>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="landing-theming-text">
-                            <span class="landing-section-label">Theming</span>
-                            <h2 class="landing-section-title">Pick your theme</h2>
-                            <p>Pure CSS themes built on design tokens: the presets Aura, Lara, Nora, Metal and Glass, each in a
-                               light and a dark color scheme. Change the primary color, density or any token without a build step.
-                               Try it with the palette button at the right edge.</p>
-                            <ul class="landing-check-list">
-                                <li><i class="pi pi-check-circle"></i>Free and premium themes included</li>
-                                <li><i class="pi pi-check-circle"></i>Light and dark variants for every family</li>
-                                <li><i class="pi pi-check-circle"></i>Theme configurator with live token editing</li>
-                                <li><i class="pi pi-check-circle"></i>Runtime theme switching built-in</li>
-                            </ul>
-                            <h:link styleClass="landing-btn landing-btn-outline" outcome="/theming">
-                                <i class="pi pi-palette mr-2"></i>Explore Themes
-                            </h:link>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ═══ ACCESSIBILITY ══════════════════════════════════════════════ -->
-            <section class="landing-section landing-accessibility">
-                <div class="landing-container">
-                    <span class="landing-section-label">Accessibility</span>
-                    <h2 class="landing-section-title">Accessible by Default</h2>
-                    <p class="landing-section-subtitle">
-                        WCAG 2.0 compliant. Every component handles keyboard navigation, screen readers,
-                        and focus management out of the box.
-                    </p>
-
-                    <div class="landing-a11y-grid">
-                        <div class="landing-a11y-card">
-                            <div class="landing-a11y-icon">
-                                <i class="pi pi-key"></i>
-                            </div>
-                            <h4>Keyboard Navigation</h4>
-                            <p>Every component is fully navigable with Tab, Arrow keys, Enter, and Escape.</p>
-                        </div>
-                        <div class="landing-a11y-card">
-                            <div class="landing-a11y-icon">
-                                <i class="pi pi-volume-up"></i>
-                            </div>
-                            <h4>Screen Reader</h4>
-                            <p>Semantic HTML and ARIA live regions ensure assistive technologies interpret every component correctly.</p>
-                        </div>
-                        <div class="landing-a11y-card">
-                            <div class="landing-a11y-icon">
-                                <i class="pi pi-info-circle"></i>
-                            </div>
-                            <h4>ARIA Attributes</h4>
-                            <p>Roles, states, and properties are automatically applied following WAI-ARIA patterns.</p>
-                        </div>
-                        <div class="landing-a11y-card">
-                            <div class="landing-a11y-icon">
-                                <i class="pi pi-circle"></i>
-                            </div>
-                            <h4>Focus Management</h4>
-                            <p>Focus trapping, restoration, and visible focus indicators are applied throughout.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <ui:include src="/WEB-INF/landing/why.xhtml"/>
 
             <!-- ═══ FINAL CTA ═══════════════════════════════════════════════════ -->
             <section class="landing-section landing-cta">
@@ -470,24 +241,6 @@
             </section>
 
         </div>
-
-        <script>
-        (function () {
-            document.getElementById('qs-tabs').addEventListener('click', function (e) {
-                var tab = e.target.closest('[data-tab]');
-                if (!tab) return;
-                var targetId = tab.getAttribute('data-tab');
-                // update tab active state
-                this.querySelectorAll('.landing-code-tab').forEach(function (t) {
-                    t.classList.toggle('active', t === tab);
-                });
-                // show/hide panels
-                ['qs-pom', 'qs-page'].forEach(function (id) {
-                    document.getElementById(id).style.display = (id === targetId) ? '' : 'none';
-                });
-            });
-        })();
-        </script>
     </ui:define>
 
 </ui:composition>

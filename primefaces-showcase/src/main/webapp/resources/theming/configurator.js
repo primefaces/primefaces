@@ -460,7 +460,7 @@
 
     // closes on a click outside of the panel (the page itself stays usable while it is open)
     document.addEventListener('pointerdown', function (e) {
-        if (root.classList.contains('cfg-open') && !e.target.closest('#cfgPanel, #cfgToggle, .clr-picker')) {
+        if (root.classList.contains('cfg-open') && !e.target.closest('#cfgPanel, #cfgToggle, [data-cfg-toggle], .clr-picker')) {
             if (cfg.toggle(false)) {
                 // the click itself may blur the toggle button again: keep it unless the click focused another element
                 setTimeout(function () {
