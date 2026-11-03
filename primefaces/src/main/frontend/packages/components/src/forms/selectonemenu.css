@@ -14,7 +14,9 @@
     width: auto;
     cursor: pointer;
     vertical-align: middle;
-    border: 1px solid var(--p-select-border-color);
+    /* the states set --_border-color, the filled variant draws its line with it */
+    --_border-color: var(--p-select-border-color);
+    border: 1px solid var(--_border-color);
     position: relative;
     padding: 0;
     background: var(--p-select-background);
@@ -105,13 +107,13 @@
 
     &.p-state-hover,
     &:not(.p-state-disabled):hover {
-        border-color: var(--p-select-hover-border-color);
+        --_border-color: var(--p-select-hover-border-color);
     }
 
     /* the widget sets p-state-focus; an editable label focused with tab does not get it */
     &.p-state-focus,
     &:has(> .p-selectonemenu-label:focus-visible) {
-        border-color: var(--p-select-focus-border-color);
+        --_border-color: var(--p-select-focus-border-color);
         outline: var(--p-select-focus-ring-width) var(--p-select-focus-ring-style) var(--p-select-focus-ring-color);
         outline-offset: var(--p-select-focus-ring-offset);
         box-shadow: var(--p-select-focus-ring-shadow);
@@ -120,7 +122,7 @@
     /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
     &.p-state-error,
     &.p-state-error:is(:hover, .p-state-focus, :focus-within) {
-        border-color: var(--p-select-invalid-border-color);
+        --_border-color: var(--p-select-invalid-border-color);
     }
 
     &.p-state-disabled {
@@ -155,22 +157,30 @@
     direction: rtl;
 }
 
-/* filled variant */
+/* filled variant (border, focus ring and line at the bottom: see forms/inputfield.css) */
 .p-input-filled .p-selectonemenu {
-    background: var(--p-select-filled-background);
+    --_line-width: var(--p-form-field-filled-indicator-width);
+    --_line: linear-gradient(var(--_border-color), var(--_border-color)) bottom / 100% var(--_line-width) no-repeat
+        border-box;
+    background: var(--_line), var(--p-select-filled-background);
+    border-color: color-mix(in srgb, var(--_border-color) var(--p-form-field-filled-border-opacity), transparent);
+    border-end-start-radius: var(--p-form-field-filled-bottom-border-radius);
+    border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
 
     &.p-state-hover,
     &:not(.p-state-disabled):hover {
-        background: var(--p-select-filled-hover-background);
+        background: var(--_line), var(--p-select-filled-hover-background);
     }
 
     &.p-state-focus,
     &:has(> .p-selectonemenu-label:focus-visible) {
-        background: var(--p-select-filled-focus-background);
+        --_line-width: var(--p-form-field-filled-focus-indicator-width);
+        background: var(--_line), var(--p-select-filled-focus-background);
+        outline-color: color-mix(in srgb, var(--p-select-focus-ring-color) var(--p-form-field-filled-border-opacity), transparent);
     }
 
     &.p-state-disabled {
-        background: var(--p-select-disabled-background);
+        background: var(--_line), var(--p-select-disabled-background);
     }
 
     /* keep the filled backgrounds of forms/inputfield.css off the inner label */

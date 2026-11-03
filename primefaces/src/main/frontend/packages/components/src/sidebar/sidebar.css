@@ -4,7 +4,7 @@
  * Markup: .p-sidebar.p-sidebar-{left|right|top|bottom} > a.p-sidebar-close, .p-sidebar-content
  * States: p-sidebar-active (opened), p-sidebar-full (fullScreen)
  * Sizes: p-sidebar-sm | -md | -lg via styleClass (the component has no size attribute)
- * PF only tokens: the sidebar block of presets/*.css
+ * PF only tokens: the sidebar block of presets/*.css (--p-sidebar-border-radius: the corners facing the page)
  */
 
 .p-sidebar {
@@ -17,28 +17,36 @@
     color: var(--p-drawer-color);
     padding: var(--p-drawer-header-padding);
     border: 0 solid var(--p-drawer-border-color);
-    border-radius: 0;
     box-shadow: none;
 
     /* like PrimeUIX: only the edge facing the page has a border (physical: the position is physical too) */
     &.p-sidebar-left {
         border-right-width: 1px;
+        border-top-right-radius: var(--p-sidebar-border-radius);
+        border-bottom-right-radius: var(--p-sidebar-border-radius);
     }
 
     &.p-sidebar-right {
         border-left-width: 1px;
+        border-top-left-radius: var(--p-sidebar-border-radius);
+        border-bottom-left-radius: var(--p-sidebar-border-radius);
     }
 
     &.p-sidebar-top {
         border-block-end-width: 1px;
+        border-bottom-left-radius: var(--p-sidebar-border-radius);
+        border-bottom-right-radius: var(--p-sidebar-border-radius);
     }
 
     &.p-sidebar-bottom {
         border-block-start-width: 1px;
+        border-top-left-radius: var(--p-sidebar-border-radius);
+        border-top-right-radius: var(--p-sidebar-border-radius);
     }
 
     &.p-sidebar-full {
         border-width: 1px;
+        border-radius: 0;
     }
 
     &.p-sidebar-active {

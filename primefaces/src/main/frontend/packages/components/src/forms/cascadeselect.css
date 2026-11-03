@@ -16,7 +16,9 @@
     user-select: none;
     background: var(--p-cascadeselect-background);
     color: var(--p-cascadeselect-color);
-    border: 1px solid var(--p-cascadeselect-border-color);
+    /* the states set --_border-color, the filled variant draws its line with it */
+    --_border-color: var(--p-cascadeselect-border-color);
+    border: 1px solid var(--_border-color);
     border-radius: var(--p-cascadeselect-border-radius);
     box-shadow: var(--p-cascadeselect-shadow);
     outline-color: transparent;
@@ -25,11 +27,11 @@
         box-shadow var(--p-cascadeselect-transition-duration);
 
     &:not(.p-state-disabled):hover {
-        border-color: var(--p-cascadeselect-hover-border-color);
+        --_border-color: var(--p-cascadeselect-hover-border-color);
     }
 
     &:not(.p-state-disabled).p-state-focus {
-        border-color: var(--p-cascadeselect-focus-border-color);
+        --_border-color: var(--p-cascadeselect-focus-border-color);
         outline: var(--p-cascadeselect-focus-ring-width) var(--p-cascadeselect-focus-ring-style) var(--p-cascadeselect-focus-ring-color);
         outline-offset: var(--p-cascadeselect-focus-ring-offset);
         box-shadow: var(--p-cascadeselect-focus-ring-shadow);
@@ -38,7 +40,7 @@
     /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
     &.p-state-error,
     &.p-state-error:is(:hover, .p-state-focus) {
-        border-color: var(--p-cascadeselect-invalid-border-color);
+        --_border-color: var(--p-cascadeselect-invalid-border-color);
     }
 
     &.p-state-disabled {
@@ -244,16 +246,28 @@
     top: 0;
 }
 
-/* filled */
+/* filled variant (border, focus ring and line at the bottom: see forms/inputfield.css) */
 .p-input-filled .p-cascadeselect {
-    background: var(--p-cascadeselect-filled-background);
+    --_line-width: var(--p-form-field-filled-indicator-width);
+    --_line: linear-gradient(var(--_border-color), var(--_border-color)) bottom / 100% var(--_line-width) no-repeat
+        border-box;
+    background: var(--_line), var(--p-cascadeselect-filled-background);
+    border-color: color-mix(in srgb, var(--_border-color) var(--p-form-field-filled-border-opacity), transparent);
+    border-end-start-radius: var(--p-form-field-filled-bottom-border-radius);
+    border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
 
     &:not(.p-state-disabled):hover {
-        background: var(--p-cascadeselect-filled-hover-background);
+        background: var(--_line), var(--p-cascadeselect-filled-hover-background);
     }
 
     &:not(.p-state-disabled).p-state-focus {
-        background: var(--p-cascadeselect-filled-focus-background);
+        --_line-width: var(--p-form-field-filled-focus-indicator-width);
+        background: var(--_line), var(--p-cascadeselect-filled-focus-background);
+        outline-color: color-mix(in srgb, var(--p-cascadeselect-focus-ring-color) var(--p-form-field-filled-border-opacity), transparent);
+    }
+
+    &.p-state-disabled {
+        background: var(--_line), var(--p-cascadeselect-disabled-background);
     }
 }
 

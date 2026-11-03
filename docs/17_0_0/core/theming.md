@@ -4,11 +4,12 @@ The themes of PrimeFaces are based on **design tokens**: every color, radius, sp
 duration is a CSS variable (`--p-primary-color`, `--p-form-field-background`, `--p-button-border-radius`, ...).
 The look of an application is customized with plain CSS: no SASS, no build step, no theme to fork.
 
-Five themes are built in:
+Six themes are built in:
 
 - **Aura**
 - **Lara**
 - **Nora**
+- **Material**: Material Design 3, surfaces tinted by the primary color, pill buttons, state layers
 - **Metal**: graphite and brushed aluminium (light), black metal (dark)
 - **Glass**: Apple Liquid Glass style, translucent overlays, menus, bars and buttons over a calm content layer
 
@@ -27,7 +28,7 @@ The themes are part of the `primefaces` jar. Select one with the `primefaces.THE
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | metal | glass | none -->
+    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | material | metal | glass | none -->
 </context-param>
 ```
 
@@ -361,6 +362,15 @@ Transitions use duration and easing tokens, which can be overridden like any oth
     --p-overlay-enter-duration: 0.12s;                         /* overlays opening */
     --p-overlay-leave-duration: 0.1s;                          /* overlays closing */
 }
+```
+
+The **ripple** (the Material 3 press feedback: an ink circle that spreads from the pointer when a button, menu item,
+list option, tab, checkbox, ... is pressed and fades out on release) is on in the Material theme and off in the others;
+it follows the token, also per area:
+
+```css
+:root { --p-ripple-opacity: 0.12; }     /* on in any theme (0 = off) */
+.toolbar { --p-ripple-opacity: 0; }     /* off in an area */
 ```
 
 ## User preferences and accessibility

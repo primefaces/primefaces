@@ -15,7 +15,9 @@
     min-width: 12rem;
     background: var(--p-listbox-background);
     color: var(--p-listbox-color);
-    border: 1px solid var(--p-listbox-border-color);
+    /* a .p-inputfield: its hover / focus states set --_border-color (forms/inputfield.css) */
+    --_border-color: var(--p-listbox-border-color);
+    border: 1px solid var(--_border-color);
     border-radius: var(--p-listbox-border-radius);
     box-shadow: var(--p-listbox-shadow);
     transition: background var(--p-listbox-transition-duration), color var(--p-listbox-transition-duration),
@@ -25,7 +27,7 @@
     /* invalid: also wins over the hover / focus border of forms/inputfield.css (same specificity, later) */
     &.p-state-error,
     &.p-state-error:is(:hover, :focus, .p-state-hover, .p-state-focus) {
-        border-color: var(--p-listbox-invalid-border-color);
+        --_border-color: var(--p-listbox-invalid-border-color);
     }
 
     &.p-state-disabled {
@@ -222,12 +224,19 @@
     z-index: 1;
 }
 
-/* filled variant: a listbox keeps its own background */
+/* filled variant: a listbox keeps its own background, frame and focus ring (not the filled field of forms/inputfield.css) */
 .p-input-filled .p-selectonelistbox.p-inputfield,
 .p-input-filled .p-selectmanymenu.p-inputfield,
 .p-input-filled .p-selectonelistbox.p-inputfield:hover,
 .p-input-filled .p-selectmanymenu.p-inputfield:hover {
     background: var(--p-listbox-background);
+    border-color: var(--_border-color);
+    border-radius: var(--p-listbox-border-radius);
+}
+
+.p-input-filled .p-selectonelistbox.p-inputfield:is(:focus, .p-state-focus),
+.p-input-filled .p-selectmanymenu.p-inputfield:is(:focus, .p-state-focus) {
+    outline-color: var(--p-inputtext-focus-ring-color);
 }
 
 .p-fluid .p-selectonelistbox,

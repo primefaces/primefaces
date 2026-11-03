@@ -1,0 +1,51 @@
+/*
+ * Ripple (Material): an ink circle spreads when a button, menu item, list option, tab, ... is pressed.
+ * ripple.ts adds span.p-ink-container > span.p-ink to the pressed element if --p-ripple-opacity is above 0 (the ripple
+ * block of presets/*.css: 0 = off, Material 0.12), animates it (grow from the pointer to the center over
+ * --p-ripple-duration, fade in / out) and removes it after the release.
+ */
+/* over the pressed element: inset 0 if it is positioned, else ripple.ts places it */
+.p-ink-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+/* checkbox, radio button, switch handle: the 40px circle of the Material 3 state layer around the control, in the text
+   color, checked in the primary color */
+.p-ink-container.p-ink-unbounded {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    translate: -50% -50%;
+    border-radius: 50%;
+    color: var(--p-text-color);
+
+    .p-state-active > &,
+    .p-toggleswitch-checked & {
+        color: var(--p-primary-color);
+    }
+}
+
+/* the soft edge of the Material 3 ripple; ripple.ts sets the size and animates the transform and the opacity, from the
+   values here: the opacity while pressed, the grow duration and curve */
+.p-ink {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--p-ripple-color) max(calc(100% - 70px), 65%), transparent 100%);
+    opacity: var(--p-ripple-opacity);
+    transition-duration: var(--p-ripple-duration);
+    transition-timing-function: var(--p-transition-easing);
+}
+
+@media (forced-colors: active) {
+    .p-ink-container {
+        display: none;
+    }
+}

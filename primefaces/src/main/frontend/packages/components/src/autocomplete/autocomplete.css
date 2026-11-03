@@ -443,3 +443,30 @@
         width: var(--p-autocomplete-dropdown-width);
     }
 }
+
+/* filled (forms/inputfield.css): the dropdown continues the field (its filled backgrounds), its frame with
+   --p-form-field-filled-border-opacity, the line at the bottom in its border color (the state of the input, thicker while
+   the input has the focus) */
+.p-input-filled .p-autocomplete-dd > .p-autocomplete-dropdown.p-button {
+    --_bg: var(--p-autocomplete-dropdown-filled-background);
+    --_hover-bg: var(--p-autocomplete-dropdown-filled-hover-background);
+    --_active-bg: var(--p-autocomplete-dropdown-filled-active-background);
+    --_line-width: var(--p-form-field-filled-indicator-width);
+    --_texture: linear-gradient(var(--_border), var(--_border)) bottom / 100% var(--_line-width) no-repeat border-box,
+        var(--p-button-texture);
+    border-color: color-mix(in srgb, var(--_border) var(--p-form-field-filled-border-opacity), transparent);
+    border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
+
+    &:not(:disabled, .p-state-disabled):hover {
+        border-color: color-mix(in srgb, var(--_hover-border) var(--p-form-field-filled-border-opacity), transparent);
+    }
+
+    &:not(:disabled, .p-state-disabled):active,
+    &.p-state-active {
+        border-color: color-mix(in srgb, var(--_active-border) var(--p-form-field-filled-border-opacity), transparent);
+    }
+}
+
+.p-input-filled .p-autocomplete-dd:has(> .p-inputfield.p-state-focus, > .p-inputfield:focus) > .p-autocomplete-dropdown.p-button {
+    --_line-width: var(--p-form-field-filled-focus-indicator-width);
+}

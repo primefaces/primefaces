@@ -16,7 +16,7 @@
 
 /* onIcon / offIcon: both icons are stacked in the handle, the inactive one is rotated out */
 .p-toggleswitch-dual-icon {
-    .p-toggleswitch-handler span {
+    .p-toggleswitch-handler > span:not(.p-ink-container) {
         position: absolute;
         transition-duration: var(--p-toggleswitch-slide-duration);
         transition-timing-function: var(--p-transition-easing);
@@ -30,7 +30,7 @@
         }
     }
 
-    &.p-toggleswitch-checked .p-toggleswitch-handler span {
+    &.p-toggleswitch-checked .p-toggleswitch-handler > span:not(.p-ink-container) {
         opacity: 1;
         transform: rotate(0deg);
 
@@ -41,7 +41,7 @@
     }
 
     /* RTL: the handle rolls to the left, so the icons rotate the other way */
-    &:dir(rtl) .p-toggleswitch-handler span {
+    &:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container) {
         transform: rotate(90deg);
 
         & + span {
@@ -49,7 +49,7 @@
         }
     }
 
-    &.p-toggleswitch-checked:dir(rtl) .p-toggleswitch-handler span {
+    &.p-toggleswitch-checked:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container) {
         transform: rotate(0deg);
 
         & + span {
@@ -105,7 +105,7 @@
             transform var(--p-toggleswitch-slide-duration) var(--p-transition-easing), box-shadow var(--p-toggleswitch-slide-duration);
     }
 
-    .p-toggleswitch-handler span {
+    .p-toggleswitch-handler > span:not(.p-ink-container) {
         font-size: var(--_handle-icon-size);
         line-height: var(--_handle-size);
     }

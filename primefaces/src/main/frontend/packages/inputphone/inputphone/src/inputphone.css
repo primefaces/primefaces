@@ -21,7 +21,9 @@
     align-items: stretch;
     vertical-align: middle;
     background: var(--p-inputtext-background);
-    border: 1px solid var(--p-inputtext-border-color);
+    /* the states set --_border-color, the filled variant draws its line with it (like forms/inputfield.css) */
+    --_border-color: var(--p-inputtext-border-color);
+    border: 1px solid var(--_border-color);
     border-radius: var(--p-inputtext-border-radius);
     box-shadow: var(--p-inputtext-shadow);
     outline: 0 none;
@@ -35,12 +37,12 @@
     }
 
     &:not(.p-state-disabled):hover {
-        border-color: var(--p-inputtext-hover-border-color);
+        --_border-color: var(--p-inputtext-hover-border-color);
     }
 
     &:not(.p-state-disabled):focus-within,
     &.p-state-focus {
-        border-color: var(--p-inputtext-focus-border-color);
+        --_border-color: var(--p-inputtext-focus-border-color);
         outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
         outline-offset: var(--p-inputtext-focus-ring-offset);
         box-shadow: var(--p-inputtext-focus-ring-shadow);
@@ -49,25 +51,38 @@
     /* invalid: the border also wins over hover and focus (same specificity, later), the focus ring stays */
     &.p-state-error,
     &.p-state-error:is(:hover, :focus-within, .p-state-focus) {
-        border-color: var(--p-inputtext-invalid-border-color);
+        --_border-color: var(--p-inputtext-invalid-border-color);
     }
 
-    /* filled: both alternatives have the same specificity */
+    /* filled: both alternatives have the same specificity; border, focus ring and line like forms/inputfield.css */
     .p-input-filled &,
     &.p-input-filled {
-        background: var(--p-inputtext-filled-background);
+        --_line-width: var(--p-form-field-filled-indicator-width);
+        --_line: linear-gradient(var(--_border-color), var(--_border-color)) bottom / 100% var(--_line-width) no-repeat
+            border-box;
+        background: var(--_line), var(--p-inputtext-filled-background);
+        border-color: color-mix(in srgb, var(--_border-color) var(--p-form-field-filled-border-opacity), transparent);
+        border-end-start-radius: var(--p-form-field-filled-bottom-border-radius);
+        border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
 
         &:not(.p-state-disabled):hover {
-            background: var(--p-inputtext-filled-hover-background);
+            background: var(--_line), var(--p-inputtext-filled-hover-background);
         }
 
         &:focus-within,
         &.p-state-focus {
-            background: var(--p-inputtext-filled-focus-background);
+            --_line-width: var(--p-form-field-filled-focus-indicator-width);
+            background: var(--_line), var(--p-inputtext-filled-focus-background);
+            outline-color: color-mix(in srgb, var(--p-inputtext-focus-ring-color) var(--p-form-field-filled-border-opacity),
+                transparent);
+        }
+
+        &.p-state-disabled {
+            background: var(--_line), var(--p-inputtext-disabled-background);
         }
     }
 
-    /* after filled (same specificity): a disabled filled field shows the disabled background */
+    /* after filled (same specificity), filled disabled above: the disabled background */
     &.p-state-disabled {
         background: var(--p-inputtext-disabled-background);
         color: var(--p-inputtext-disabled-color);

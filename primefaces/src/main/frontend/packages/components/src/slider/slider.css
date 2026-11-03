@@ -66,6 +66,8 @@
 
     &.p-slider-horizontal {
         height: var(--p-slider-track-size);
+        /* room for the handle, which is taller than the track: it does not overlap the neighbors */
+        margin-block: calc((var(--p-slider-handle-height) - var(--p-slider-track-size)) / 2);
         touch-action: pan-y;
 
         .p-slider-range {
@@ -90,6 +92,7 @@
     &.p-slider-vertical {
         width: var(--p-slider-track-size);
         height: 100px;
+        margin-inline: calc((var(--p-slider-handle-width) - var(--p-slider-track-size)) / 2);
         touch-action: pan-x;
 
         .p-slider-range {
@@ -133,7 +136,7 @@
     }
 }
 
-/* p:slider below its display input; no token for the old inline spacing */
-.p-inputtext + .p-slider {
-    margin-bottom: var(--p-form-field-padding-y);
+/* p:slider below its display input; no token for the old inline spacing, at least the room for the handle */
+.p-inputtext + .p-slider-horizontal {
+    margin-bottom: max(var(--p-form-field-padding-y), calc((var(--p-slider-handle-height) - var(--p-slider-track-size)) / 2));
 }

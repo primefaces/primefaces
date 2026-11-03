@@ -58,7 +58,7 @@ class Theming015Test extends AbstractThemingTest {
             + "return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;";
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(1)
     @DisplayName("Theming: a dropdown inside a toolbar lies above the following content and its options can be clicked")
     void dropdownInToolbar(String preset) {
@@ -88,7 +88,7 @@ class Theming015Test extends AbstractThemingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(2)
     @DisplayName("Theming: a non modal dialog leaves the page outside of its box clickable and unblurred")
     void nonModalDialog(String preset) {

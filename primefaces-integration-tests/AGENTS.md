@@ -211,7 +211,7 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
   excludes tests tagged `SafariExclude`).
 - **Toggles**: `headless`, `parallel-execution`, `csp` (sets `primefaces.CSP=true`),
   `client-state-saving` (client state saving), `theme-aura` (default, CI) / `theme-lara` /
-  `theme-nora` / `theme-metal` / `theme-glass`.
+  `theme-nora` / `theme-material` / `theme-metal` / `theme-glass`.
 
 ### How a run actually works
 

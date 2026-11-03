@@ -17,7 +17,7 @@
 
     .p-radiobutton-box {
         cursor: pointer;
-        border: 1px solid var(--p-radiobutton-border-color);
+        border: var(--p-radiobutton-border-width) solid var(--p-radiobutton-border-color);
         background: var(--p-radiobutton-background);
         width: var(--p-radiobutton-width);
         height: var(--p-radiobutton-height);
@@ -152,4 +152,44 @@
 /* checked inside a selection (selected row / item): a rim in the selection text color, see checkbox.css */
 .p-state-highlight .p-radiobutton .p-radiobutton-box.p-state-active.p-state-active {
     border-color: var(--p-highlight-color);
+}
+
+/*
+ * State layer (Material 3): a circle of --p-radiobutton-state-layer-size around the box on hover, in the hover border
+ * color, checked in the checked border color (--p-radiobutton-hover-state-layer-opacity, 0% in the presets without it).
+ * The ripple of the press draws the same circle (ripple/ripple.css). No focus layer: the widget focuses the input by
+ * script, so it would stay after a click (:focus-visible); keyboard focus has the focus ring.
+ */
+.p-radiobutton .p-radiobutton-box {
+    --_layer-color: var(--p-radiobutton-hover-border-color);
+    --_layer-opacity: 0%;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: var(--p-radiobutton-state-layer-size);
+        height: var(--p-radiobutton-state-layer-size);
+        translate: -50% -50%;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--_layer-color) var(--_layer-opacity), transparent);
+        pointer-events: none;
+        transition: background var(--p-radiobutton-transition-duration);
+    }
+
+    &.p-state-active {
+        --_layer-color: var(--p-radiobutton-checked-border-color);
+    }
+
+    &.p-state-hover,
+    &:not(.p-state-disabled):hover {
+        --_layer-opacity: var(--p-radiobutton-hover-state-layer-opacity);
+    }
+}
+
+@media (forced-colors: active) {
+    .p-radiobutton .p-radiobutton-box::before {
+        display: none;
+    }
 }

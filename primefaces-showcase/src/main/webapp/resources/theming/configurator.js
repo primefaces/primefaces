@@ -75,8 +75,9 @@
             .concat(EXTRA);
     }
 
-    // segmented token settings: button shape, shadows, animations (the values of "theme" are the preset's own)
+    // segmented token settings: button shape, shadows, animations, ripple (the values of "theme" are the preset's own)
     var SHAPES = { pill: '999px', square: '0' };
+    var RIPPLE = { on: '0.12', off: '0' };
     var DEEP_SHADOWS = {
         '--p-overlay-select-shadow': '0 12px 32px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.18)',
         '--p-overlay-popover-shadow': '0 12px 32px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.18)',
@@ -167,6 +168,7 @@
         var shape = tokens['--p-button-border-radius'];
         var shadow = tokens['--p-card-shadow'];
         var motion = tokens['--p-transition-duration'];
+        var ripple = tokens['--p-ripple-opacity'];
         markSegment('data-cfg-scheme', root.style.colorScheme || 'system');
         markSegment('data-cfg-input', root.classList.contains('p-input-filled') ? 'filled' : 'outlined');
         markSegment('data-cfg-density', root.getAttribute('data-p-density') || 'normal');
@@ -174,6 +176,7 @@
         markSegment('data-cfg-shape', shape === SHAPES.pill ? 'pill' : shape === SHAPES.square ? 'square' : 'theme');
         markSegment('data-cfg-shadow', shadow === 'none' ? 'none' : shadow ? 'deep' : 'theme');
         markSegment('data-cfg-motion', motion === '0s' ? 'off' : motion ? 'slow' : 'normal');
+        markSegment('data-cfg-ripple', ripple === RIPPLE.off ? 'off' : ripple ? 'on' : 'theme');
     }
 
     // p:slider renders role slider and the aria-value* of its handle: labelled by the label of the row, the token value
@@ -368,6 +371,11 @@
             });
             saveTokens();
             applyMotion();
+            refresh();
+        },
+        ripple: function (value) {
+            setToken('--p-ripple-opacity', RIPPLE[value] || null);
+            saveTokens();
             refresh();
         },
         // the direction is set on the server (primefaces.DIR: the renderers add their RTL classes): reload with ?dir=...

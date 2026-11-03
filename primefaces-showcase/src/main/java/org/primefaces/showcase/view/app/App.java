@@ -42,7 +42,7 @@ public class App implements Serializable {
      * The themes of PrimeFaces. The theme configurator (theming/configurator.xhtml) switches with ?theme=...,
      * the choice is kept in the session; color scheme, density, primary color and input style are set on the client.
      */
-    public static final List<String> PRESETS = List.of("aura", "lara", "nora", "metal", "glass");
+    public static final List<String> PRESETS = List.of("aura", "lara", "nora", "material", "metal", "glass");
 
     // default preset of the showcase (for now: Glass)
     private String theme = "glass";
@@ -53,7 +53,7 @@ public class App implements Serializable {
     /**
      * The current preset (primefaces.THEME in web.xml); a valid ?theme= request parameter switches it.
      *
-     * @return aura, lara, nora, metal or glass
+     * @return aura, lara, nora, material, metal or glass
      */
     public String getTheme() {
         String requested = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("theme");

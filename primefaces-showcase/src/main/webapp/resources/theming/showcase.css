@@ -90,7 +90,8 @@ html[data-preset="glass"] body {
     font-size: 1.125rem;
 }
 
-.theming-page h3 {
+/* only the demo headings: component headers can be h3 too (p:panelMenu) */
+.theming-page h3:not([class]) {
     margin: 1rem 0 .5rem;
     font-size: .875rem;
     font-weight: 600;

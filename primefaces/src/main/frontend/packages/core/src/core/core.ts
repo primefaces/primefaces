@@ -1314,7 +1314,7 @@ export class Core {
     /**
      * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
      * installed and is available.
-     * @param newTheme The new theme, e.g. `aura`, `lara`, `nora`, `metal` or `glass`.
+     * @param newTheme The new theme, e.g. `aura`, `lara`, `nora`, `material`, `metal` or `glass`.
      */
     changeTheme(newTheme: string): void {
         if(newTheme && newTheme !== '') {

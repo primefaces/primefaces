@@ -31,7 +31,7 @@ Each breaking core change gets its entry in the migration guide (`docs/migration
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | metal | glass | none (or empty) -->
+    <param-value>aura</param-value>   <!-- aura (default) | lara | nora | material | metal | glass | none (or empty) -->
 </context-param>
 ```
 
@@ -81,12 +81,12 @@ over the `.pi` rules).
 
 ```
 primefaces/src/main/frontend/
-  themes/<theme>.css               entry of a theme (aura, lara, nora, metal, glass): preset + density, built to
+  themes/<theme>.css               entry of a theme (aura, lara, nora, material, metal, glass): preset + density, built to
                                    META-INF/resources/primefaces-<theme>/theme.css
   themes/presets/<theme>.css       all tokens of a theme: primitive, semantic and one block per component; the PrimeUIX
                                    tokens and the PrimeFaces tokens (components/parts PrimeUIX does not have) side by side.
-                                   metal (graphite / brushed aluminium, black metal in dark mode) and glass (Apple
-                                   Liquid Glass style) are own presets, started from Aura
+                                   material (Material Design 3), metal (graphite / brushed aluminium, black metal in
+                                   dark mode) and glass (Apple Liquid Glass style) are own presets, started from Aura
   themes/density/<theme>.css       compact / comfortable spacing of a preset (generated)
   packages/components/index.css    components.css: layer order, icon set, interaction CSS, then base -> shared -> components
                                    -> behaviors (alphabetical inside each group, see the comments there)
@@ -156,6 +156,44 @@ The build (`yarn run build:bundle`, run by Maven through `frontend-maven-plugin`
   vis-timeline based p:timeline.
 - Tokens of PrimeUIX features PrimeFaces does not have were deleted. When such a feature comes (see "Modern look and
   feel" below), its tokens are added in all presets; PrimeUIX 3.0.1 is the reference for names and values.
+- **Material** (`themes/presets/material.css`, started from Aura; PrimeUIX Material is Material Design 2, this preset
+  follows Material Design 3):
+  - Dynamic color: the surfaces (`--p-surface-0` - `950`, slightly tinted neutrals), the highlight and the tonal
+    (secondary) button are tones of `--p-primary-base` (`oklch(from var(--p-primary-base) L C h)`), so a primary color
+    (also in a scope) re-tints the whole theme like Material You. Baseline purple `#6750a4`, in dark mode the primary
+    color is the light tone (primary-200) with dark text on it.
+  - State layers: hover / pressed of buttons, list options and menu items are the content color at 8% / 12% over the
+    container (`color-mix(in srgb, <content> 8%, transparent)`), so they work on any surface.
+  - Shape: 4px fields, menus and tooltips, 12px cards and panels, 28px dialogs, pill buttons. Outlined fields, the focus
+    border grows to 2px inside (form field focus ring 2px with offset -2px), the focus indicator of the other controls
+    is 3px. Checkbox and radio button have a 2px outline (`--p-checkbox-border-width` / `--p-radiobutton-border-width`,
+    1px in the other presets), the selected radio button is a primary ring with a primary dot. Lists and menus have
+    full width items without radius. Menus, popovers and dialogs are tinted containers without a border, with M3
+    elevation shadows.
+  - Filled input style (`p-input-filled`, `primefaces.INPUT_STYLE`): the M3 filled field, like PrimeUIX Material. The
+    field shows its border and focus ring with `--p-form-field-filled-border-opacity` (100% in the other presets, 0%)
+    and draws a line at the bottom in its border color (`--p-form-field-filled-indicator-width` 1px, focus
+    `--p-form-field-filled-focus-indicator-width` 2px, 0 in the other presets), bottom corners
+    `--p-form-field-filled-bottom-border-radius` 0. The states set the private `--_border-color` of the field
+    (`forms/inputfield.css`, selects, inputPhone), so the line follows hover / focus / invalid; the attached buttons
+    (autoComplete dropdown, datePicker trigger: `--p-*-dropdown-filled-*-background`) and inputGroup addons
+    (`--p-inputgroup-addon-filled-background`) continue the field.
+  - Sizes for 14px text (M3 sizes its controls for 16px body text, with 56px fields): 40px fields and buttons,
+    checkbox and radio button 20px with the M3 hover state layer (a 40px circle, `--p-checkbox-state-layer-size` /
+    `--p-*-hover-state-layer-opacity`, 0% in the other presets; no focus layer, the widgets focus the input by script),
+    switch 46x28 (M3 52x32 scaled to the text).
+  - Components: switch with an outlined track, the off handle is a dot of 2/3 of the handle box (a radial gradient as
+    handle background); selectOneButton / selectManyButton are segmented buttons (outlined pill, selected
+    segment in the secondary container); growl is the M3 snackbar (inverse surface, the severity in the summary / icon
+    color); slider with a 4px track and a 20px primary handle; docked date picker (16px container, 40px day cells);
+    plain tooltip on the inverse surface; navigation drawer corners (`--p-sidebar-border-radius`, 0 in the other
+    presets). Severity buttons are M3 tonal palettes: tone 40 (700) with white text in light mode, tone 80 (200) with
+    dark text in dark mode.
+  - Type scale: field text is body large (`--p-form-field-font-size` 1rem, sm 0.875rem, lg 1.125rem), buttons and
+    segmented buttons label large (`--p-button-font-size` 0.875rem); `--p-button-padding-y` adds half the line height
+    difference to the field padding, so a button is as tall as a field (also sm / lg and in every density).
+  - The M3 standard / emphasized easing curves, disabled opacity 0.38, Roboto (falls back to Segoe UI / the system
+    font), ripple (see "Ripple").
 - **Metal** (`themes/presets/metal.css`, not a PrimeUIX preset): graphite and brushed aluminium in light mode, black metal in
   dark mode, the focus ring in the primary color (graphite by default). Everything is token values:
   - Metal edge lit from above: a background token with a face layer (`padding-box`) and an edge layer (`border-box`),
@@ -271,6 +309,27 @@ with virtual scrolling) (`--p-dataview-content-enter-duration` / `-offset`). Del
 (sorting / filtering often, a fade would only flicker; moving rows needs View Transitions in the core), dynamic tree
 nodes (static nodes would not animate, `animate="true"` slides with jQuery already).
 
+### Ripple
+
+On press, an ink circle spreads over buttons, menu items, list options, tabs, accordion / panelMenu headers, paginator
+links, tree nodes, datepicker days and title bar icons (panel, dialog, sidebar). Like the Material 3 ripple: a
+soft-edged circle grows from the pointer to the center of the element, stays while pressed and fades out on release
+(at least half the duration pressed); keyboard activation gets a centered one, touch waits 150ms so scrolling does not
+ripple. Checkbox, radio button and switch handle get the 40px circle of the M3 state layer around them (text color,
+checked primary), clickable steps a centered ripple in the number circle; read-only steps, breadcrumb links and
+disabled elements have none (`packages/components/src/ripple/`: passive `pointerdown` / `click` listeners on the
+document add `span.p-ink-container > span.p-ink` to the pressed element and remove it after the release).
+The theme decides, per element (so also per scope):
+
+```css
+--p-ripple-color: currentColor;      /* the ink: the content color of the pressed element */
+--p-ripple-opacity: 0;               /* 0 = off (Aura, Lara, Nora, Metal, Glass), Material 0.12 */
+--p-ripple-duration: 0.45s;          /* the growth; fade in / out and the minimum press follow it */
+```
+
+`:root { --p-ripple-opacity: 0.12; }` turns it on in any preset, `.toolbar { --p-ripple-opacity: 0; }` off in an area.
+Off with reduced motion, `PrimeFaces.utils.disableAnimations()` and in the forced colors mode.
+
 ## User preferences and accessibility
 
 `packages/components/src/base/document.css`:
@@ -351,13 +410,13 @@ without width, an inline-flex / auto table cell, a flex item without width) coll
 ## Showcase
 
 `primefaces-showcase` runs on the themes: `primefaces.THEME` is `#{app.theme}`, the preset of the session
-(`?theme=aura|lara|nora|metal|glass` switches it). `resources/theming/showcase.css` maps the variables of the
+(`?theme=aura|lara|nora|material|metal|glass` switches it). `resources/theming/showcase.css` maps the variables of the
 showcase layout (`--surface-a`, `--primary-color`, ...) to the tokens, so topbar, menu and footer follow the preset.
 
 - **Theme configurator** on every page (both showcase templates): the palette button at the right edge opens it as an
   overlay: preset, color scheme (light/dark with a view transition), input style, density, direction (LTR/RTL),
-  primary color, surface palette, button shape, shadows, animations, border radius, typography, focus ring, form field
-  and the CSS of the changes. Preset and direction are set on the server (`?theme=`, `?dir=`, kept in the session:
+  primary color, surface palette, button shape, shadows, animations, ripple, border radius, typography, focus ring,
+  form field and the CSS of the changes. Preset and direction are set on the server (`?theme=`, `?dir=`, kept in the session:
   `primefaces.THEME` / `primefaces.DIR`, the renderers add their RTL classes); everything else is set on `<html>` on the
   client and kept in `localStorage` (`theming/configurator.xhtml` + `resources/theming/configurator.js/.css`). The
   exported CSS uses the form of the built themes: literal values on `:root`, values with `var()` on
@@ -371,18 +430,18 @@ showcase layout (`--surface-a`, `--primary-color`, ...) to the tokens, so topbar
 ## Tests
 
 `primefaces-integration-tests`, package `org.primefaces.integrationtests.theming` (views under `/theming/` use aura,
-`?theme=lara|nora|metal|glass` another preset):
+`?theme=lara|nora|material|metal|glass` another preset):
 rendered resources (also after ajax), component styles equal their resolved tokens (light and dark), overrides (primary
 color incl. contrast color and its light / dark threshold, icons, density), every icon has a mask, variants, float labels
 (incl. selectCheckboxMenu), motion tokens and reduced motion, `:focus-visible` of menu items, RTL, Metal (layers, 4.5:1
 text contrast on every gradient stop), Glass (backdrop filters of the floating layer only, page wallpaper, 4.5:1 button
-text in light and dark mode), nested density / scopes. In all five presets: invalid fields after server and client side
+text in light and dark mode), nested density / scopes. In all six presets: invalid fields after server and client side
 validation incl. hover / focus, label, message, invalid tooltip and readonly radio (`Theming014`), layering and hit testing of a dropdown in a toolbar and
 of a non modal dialog (`Theming015`), narrow viewport, RTL password, size classes in a scope, print, reduced motion,
 `p-hidden` (`Theming016`).
 
 Visual regression (`Theming012Test`, Chrome at device pixel ratio 1 only, skipped otherwise): a fixed set of components
-is captured per preset (all five) and color scheme and compared with the reference images in
+is captured per preset (all six) and color scheme and compared with the reference images in
 `primefaces-integration-tests/src/test/resources/theming-baselines/<os>/` (font rendering differs per OS). Without a
 reference for the OS the test is skipped and writes a candidate to `<out>/theming-baselines/<os>/`: review it and copy it
 to the references (only Windows references exist so far; the linux ones come from the screenshot artifact of a CI run).

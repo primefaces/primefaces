@@ -103,14 +103,14 @@ public class HeadRenderer extends Renderer<UIComponent> {
             theme = "aura";     //default
         }
 
-        // the tokens of the theme (aura, lara, nora, metal, glass or a custom primefaces-<name>/theme.css); the CSS of the
+        // the tokens of the theme (aura, lara, nora, material, metal, glass or a custom primefaces-<name>/theme.css); the CSS of the
         // components is the same for every theme; "none" or an empty value: no theme
         if (LangUtils.isNotBlank(theme) && !"none".equals(theme)) {
             String themeLibrary = LIBRARY + "-" + theme;
             if (context.isProjectStage(ProjectStage.Development)
                     && context.getApplication().getResourceHandler().createResource("theme.css", themeLibrary) == null) {
                 LOGGER.log(Level.WARNING, "Theme \"{0}\" not found (no {1}:theme.css), the components are rendered without "
-                        + "their tokens. Use aura, lara, nora, metal, glass or a custom theme.", new Object[] {theme, themeLibrary});
+                        + "their tokens. Use aura, lara, nora, material, metal, glass or a custom theme.", new Object[] {theme, themeLibrary});
             }
             encodeCSS(context, themeLibrary, "theme.css");
         }

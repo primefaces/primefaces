@@ -48,5 +48,6 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
   - `theme-aura` - Aura theme (default)
   - `theme-lara` - Lara theme
   - `theme-nora` - Nora theme
+  - `theme-material` - Material theme
   - `theme-metal` - Metal theme
   - `theme-glass` - Glass theme

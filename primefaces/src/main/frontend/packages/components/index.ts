@@ -42,6 +42,7 @@ import { ConfirmDialog, Dialog as _Dialog, DynamicDialog } from "./src/dialog/di
 import { Growl, registerMessageRenderHookForGrowlWidget } from "./src/growl/growl.widget.js";
 import { Message, registerMessageRenderHookForMessageWidget } from "./src/message/message.widget.js";
 import { Messages, registerMessageRenderHookForMessagesWidget } from "./src/messages/messages.widget.js";
+import { registerRipple } from "./src/ripple/ripple.js";
 import { StaticMessage } from "./src/staticmessage/staticmessage.widget.js";
 
 import "./src/accordion/accordion.widget.js";
@@ -108,6 +109,7 @@ function exposeToGlobalScope() {
     registerMessageRenderHookForGrowlWidget();
     registerMessageRenderHookForMessageWidget()
     registerMessageRenderHookForMessagesWidget();
+    registerRipple();
     
     // Expose autosize to the global scope
     Object.assign(window, { autosize });

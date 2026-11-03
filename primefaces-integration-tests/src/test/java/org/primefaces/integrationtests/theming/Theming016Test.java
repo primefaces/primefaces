@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class Theming016Test extends AbstractThemingTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(1)
     @DisplayName("Theming: narrow viewport stacks the fluid selectOneButton and reflows the dataTable")
     void narrowViewport(String preset) {
@@ -85,7 +85,7 @@ class Theming016Test extends AbstractThemingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(2)
     @DisplayName("Theming: the toggleMask icon of an RTL password lies on the left, outside of the text")
     void rtlPassword(String preset) {
@@ -106,7 +106,7 @@ class Theming016Test extends AbstractThemingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(3)
     @DisplayName("Theming: p-toggleswitch-sm on a scope / density element keeps a valid size (no var() cycle)")
     void toggleSwitchSize(String preset) {
@@ -124,7 +124,7 @@ class Theming016Test extends AbstractThemingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aura", "lara", "nora", "metal", "glass"})
+    @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(4)
     @DisplayName("Theming: p-hidden hides a component that sets its own display")
     void helperHidden(String preset) {

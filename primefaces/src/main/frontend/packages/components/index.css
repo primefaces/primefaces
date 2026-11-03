@@ -30,6 +30,7 @@
 @import url("./src/menu/menu.base.css") layer(primefaces.components);
 @import url("./src/paginator/paginator.css") layer(primefaces.components);
 @import url("./src/forms/radiobutton.css") layer(primefaces.components);
+@import url("./src/ripple/ripple.css") layer(primefaces.components);
 
 /* components */
 @import url("./src/accordion/accordion.css") layer(primefaces.components);

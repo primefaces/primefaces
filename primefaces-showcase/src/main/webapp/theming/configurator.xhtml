@@ -13,6 +13,7 @@
             ['aura', 'Aura', 'Soft and modern, the PrimeReact / PrimeVue default (PrimeUIX Aura).'],
             ['lara', 'Lara', 'Classic PrimeFaces look with stronger borders (PrimeUIX Lara).'],
             ['nora', 'Nora', 'Compact and angular, solid selections for enterprise apps (PrimeUIX Nora).'],
+            ['material', 'Material', 'Material Design 3: tonal surfaces tinted by the primary color, pill buttons, state layers, ripple.'],
             ['metal', 'Metal', 'Graphite and brushed aluminium (light), black metal (dark): metal edges, turned knobs, anodized severities.'],
             ['glass', 'Glass', 'Apple Liquid Glass style: translucent overlays, menus and bars that blur the page behind them, capsule buttons.']]}"/>
 
@@ -34,9 +35,10 @@
 
             <details class="cfg-group" open="open">
                 <summary>Preset <span class="cfg-hint">primefaces.THEME</span></summary>
-                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Preset">
+                <!-- tiles, 3 per row: one segmented row is too narrow for six presets; the current one is a primary button -->
+                <div class="cfg-presets" role="group" aria-label="Preset">
                     <ui:repeat value="#{presets}" var="p">
-                        <button type="button" class="p-button p-widget p-state-default p-button-text-only #{app.theme eq p[0] ? 'p-state-active' : ''}"
+                        <button type="button" class="p-button p-widget p-state-default p-button-text-only #{app.theme eq p[0] ? '' : 'p-button-outlined p-button-secondary'}"
                                 aria-pressed="#{app.theme eq p[0]}" onclick="cfg.preset('#{p[0]}')">
                             <span class="p-button-text p-c">#{p[1]}</span>
                         </button>
@@ -154,6 +156,19 @@
                         <span class="p-button-text p-c">Slow</span>
                     </button>
                     <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-motion="off" onclick="cfg.motion('off')">
+                        <span class="p-button-text p-c">Off</span>
+                    </button>
+                </div>
+
+                <div class="cfg-label">Ripple <span class="cfg-hint">--p-ripple-opacity</span></div>
+                <div class="cfg-seg p-selectonebutton p-buttonset p-widget" role="group" aria-label="Ripple">
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-ripple="theme" onclick="cfg.ripple('theme')">
+                        <span class="p-button-text p-c">Theme</span>
+                    </button>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-ripple="on" onclick="cfg.ripple('on')">
+                        <span class="p-button-text p-c">On</span>
+                    </button>
+                    <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-cfg-ripple="off" onclick="cfg.ripple('off')">
                         <span class="p-button-text p-c">Off</span>
                     </button>
                 </div>

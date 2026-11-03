@@ -117,6 +117,20 @@
     line-height: 1.45;
 }
 
+/* preset tiles: 3 per row */
+.cfg-presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .375rem;
+}
+
+.cfg-presets > .p-button {
+    min-width: 0;
+    justify-content: center;
+    padding-inline: .25rem;
+    font-size: 12px;
+}
+
 /* segmented controls: the select button of the theme */
 .cfg-seg {
     display: flex;
