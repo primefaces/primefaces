@@ -121,30 +121,35 @@
 
             <h:form>
                 <p:panel header="Options" styleClass="mt-5">
-                    <h:panelGrid columns="2" cellpadding="7">
-                        <p:outputLabel for="@next" value="zoom" styleClass="text-secondary" />
-                        <p:selectBooleanCheckbox value="#{organigramView.zoom}">
-                            <p:ajax process="@this" update=":form:organigram"/>
-                        </p:selectBooleanCheckbox>
-
-                        <p:outputLabel for="@next" value="autoScrollToSelection" styleClass="text-secondary" />
-                        <p:selectBooleanCheckbox value="#{organigramView.autoScrollToSelection}">
-                            <p:ajax process="@this" update=":form:organigram"/>
-                        </p:selectBooleanCheckbox>
-
-                        <p:outputLabel for="@next" value="leafNodeConnectorHeight" styleClass="text-secondary" />
-                        <p:inputText value="#{organigramView.leafNodeConnectorHeight}">
-                            <p:ajax process="@this" update=":form:organigram"/>
-                        </p:inputText>
-
-                        <p:outputLabel for="@next" value="style" styleClass="text-secondary" />
-                        <p:inputText value="#{organigramView.style}" size="100">
-                            <p:ajax process="@this" update=":form:organigram"/>
-                        </p:inputText>
-                    </h:panelGrid>
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="@next" value="zoom"/>
+                            <p:selectBooleanCheckbox value="#{organigramView.zoom}">
+                                <p:ajax process="@this" update=":form:organigram"/>
+                            </p:selectBooleanCheckbox>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="@next" value="autoScrollToSelection"/>
+                            <p:selectBooleanCheckbox value="#{organigramView.autoScrollToSelection}">
+                                <p:ajax process="@this" update=":form:organigram"/>
+                            </p:selectBooleanCheckbox>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="@next" value="leafNodeConnectorHeight"/>
+                            <p:inputText value="#{organigramView.leafNodeConnectorHeight}">
+                                <p:ajax process="@this" update=":form:organigram"/>
+                            </p:inputText>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="@next" value="style"/>
+                            <p:inputText value="#{organigramView.style}">
+                                <p:ajax process="@this" update=":form:organigram"/>
+                            </p:inputText>
+                        </div>
+                    </div>
 
                     <p:commandButton value="Scroll To Selection" onclick="PF('organigram').scrollToSelection(); return false;" styleClass="mt-3 mr-2" />
-                        <p:commandButton value="Update Organigram" update=":form:organigram" styleClass="mt-3" />
+                    <p:commandButton value="Update Organigram" update=":form:organigram" styleClass="mt-3" />
                 </p:panel>
             </h:form>
         </div>

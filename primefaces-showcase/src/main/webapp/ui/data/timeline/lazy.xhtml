@@ -50,13 +50,12 @@
                             oncomplete="$('#loadingText').css('visibility', 'hidden')"/>
                 </p:timeline>
 
-                <h:panelGrid columns="2" style="margin-top:15px">
+                <div class="flex flex-wrap align-items-center gap-2 mt-3">
                     <p:spinner id="spinner" value="#{lazyTimelineView.preloadFactor}"
                                min="0" max="1" stepFactor="0.05"/>
                     <p:commandButton value="Update Preload Factor" process="@this spinner" update="timeline"
-                                     action="#{lazyTimelineView.clearTimeline}"
-                                     style="margin-left:5px"/>
-                </h:panelGrid>
+                                     action="#{lazyTimelineView.clearTimeline}"/>
+                </div>
             </h:form>
         </div>
     </ui:define>

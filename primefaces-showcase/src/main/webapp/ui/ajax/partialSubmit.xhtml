@@ -13,9 +13,10 @@
                 top: 300px;
             }
 
-            .other-content input {
-                margin-right: .5rem;
-                margin-bottom: .5rem;
+            .other-content {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+                gap: .5rem;
             }
         </style>
     </ui:define>
@@ -38,15 +39,19 @@
                 <p:log />
 
                 <h5>Partial Submit Target</h5>
-                <h:panelGrid columns="4" cellpadding="7">
-                    <h:outputLabel for="name" value="Name"/>
-                    <p:inputText id="name" />
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="name" value="Name"/>
+                        <p:inputText id="name" />
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
                     <p:commandButton value="Full Submit" partialSubmit="false" process="name"/>
                     <p:commandButton value="Partial Submit" partialSubmit="true" process="name" styleClass="p-button-success" />
-                </h:panelGrid>
+                </div>
 
                 <h5>Other Form Content</h5>
-                <div class="flex flex-wrap other-content">
+                <div class="other-content p-fluid">
                     <p:inputText/>
                     <p:inputText/>
                     <p:inputText/>

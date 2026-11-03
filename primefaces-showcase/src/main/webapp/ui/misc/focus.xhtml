@@ -24,17 +24,20 @@
 
                 <p:messages/>
 
-                <h:panelGrid id="panel" columns="3" cellpadding="7">
-                    <p:outputLabel for="username" value="Username"/>
-                    <p:inputText id="username" value="#{focusView.username}" required="true" label="Firstname">
-                        <f:validateLength minimum="2"/>
-                    </p:inputText>
-                    <p:message for="username"/>
-
-                    <p:outputLabel for="email" value="Email"/>
-                    <p:inputText id="email" value="#{focusView.email}" required="true" label="Surname"/>
-                    <p:message for="email"/>
-                </h:panelGrid>
+                <h:panelGroup id="panel" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="username" value="Username"/>
+                        <p:inputText id="username" value="#{focusView.username}" required="true" label="Firstname">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="username"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="email" value="Email"/>
+                        <p:inputText id="email" value="#{focusView.email}" required="true" label="Surname"/>
+                        <p:message for="email"/>
+                    </div>
+                </h:panelGroup>
 
                 <p:commandButton id="submitButton" value="Save" update="@parent" action="#{focusView.save}" styleClass="mt-3" />
             </h:form>

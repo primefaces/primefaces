@@ -24,20 +24,23 @@
             </p:growl>
             <h:form id="form">
                 <p:outputPanel id="panel" styleClass="mb-2">
-                    <h:panelGrid columns="3" cellpadding="7">
-                        <p:outputLabel for="text1" value="Text 1:"/>
-                        <p:inputText id="text1" value="#{resetInputView.text1}" required="true" label="Firstname">
-                            <f:validateLength minimum="2"/>
-                        </p:inputText>
-                        <p:message for="text1"/>
-
-                        <p:outputLabel for="text2" value="Text 2:"/>
-                        <p:inputText id="text2" value="#{resetInputView.text2}" required="true" label="Surname"/>
-                        <p:message for="text2"/>
-                    </h:panelGrid>
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="text1" value="Text 1"/>
+                            <p:inputText id="text1" value="#{resetInputView.text1}" required="true" label="Firstname">
+                                <f:validateLength minimum="2"/>
+                            </p:inputText>
+                            <p:message for="text1"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="text2" value="Text 2"/>
+                            <p:inputText id="text2" value="#{resetInputView.text2}" required="true" label="Surname"/>
+                            <p:message for="text2"/>
+                        </div>
+                    </div>
                 </p:outputPanel>
 
-                <div class="flex justify-content-between">
+                <div class="flex flex-wrap justify-content-between gap-2">
                     <p:commandButton value="Submit" update="panel" action="#{resetInputView.save}" styleClass="mr-2" />
 
                     <div>

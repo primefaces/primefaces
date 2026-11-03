@@ -23,18 +23,26 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:inputText id="ignored" required="true" placeholder="Required field" />
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="ignored" value="Outside of the fragment"/>
+                        <p:inputText id="ignored" required="true" placeholder="Required field" />
+                    </div>
+                </div>
 
                 <p:divider />
 
                 <p:fragment>
                     <p:autoUpdate/>
-                    
-                    <h:panelGrid columns="4" cellpadding="7">
-                        <p:inputText id="txt" value="#{fragmentView.text}" placeholder="Fragment Field" />
-                        <p:commandButton value="Submit"/>
-                        <h:outputText value="#{fragmentView.text}"/>
-                    </h:panelGrid>
+
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="txt" value="Inside of the fragment"/>
+                            <p:inputText id="txt" value="#{fragmentView.text}" placeholder="Fragment Field" />
+                            <small>Value: <h:outputText value="#{fragmentView.text}"/></small>
+                        </div>
+                    </div>
+                    <p:commandButton value="Submit"/>
                 </p:fragment>
             </h:form>
         </div>

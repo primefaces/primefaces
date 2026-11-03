@@ -27,63 +27,79 @@
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                     <p:dataViewGridItem>
-                        <div class="card flex justify-content-center">
-                            <h:panelGrid columns="2" cellpadding="7">
-                                <h:outputText value="Name:" styleClass="text-secondary"/>
-                                <h:outputText value="#{customer.name}"/>
-
-                                <h:outputText value="Country:" styleClass="text-secondary"/>
-                                <p:column>
+                        <div class="card">
+                            <div class="grid">
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Name"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Country"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
                                     <span class="flag flag-#{customer.country.code}"
                                             style="width: 30px; height: 20px"/>
                                     <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                                     value="#{customer.country.name}"/>
-                                </p:column>
-
-                                <h:outputText value="Company:" styleClass="text-secondary"/>
-                                <h:outputText value="#{customer.company}"/>
-
-                                <h:outputText value="Representative:" styleClass="text-secondary"/>
-                                <p:column>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Company"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.company}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Representative"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
                                     <p:graphicImage name="images/avatar/#{customer.representative.image}"
                                                     library="demo"
                                                     width="32" style="vertical-align: middle"/>
                                     <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                                     value="#{customer.representative.name}"/>
-                                </p:column>
-                            </h:panelGrid>
+                                </div>
+                            </div>
                         </div>
                     </p:dataViewGridItem>
 
                     <p:dataViewListItem>
-                        <h:panelGrid columns="2" style="width:100%" cellspacing="20">
-                            <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="7">
-                                    <h:outputText value="Name:" styleClass="text-secondary" />
+                        <div class="py-3">
+                            <div class="grid">
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Name"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
                                     <h:outputText value="#{customer.name}"/>
-
-                                    <h:outputText value="Country:" styleClass="text-secondary"/>
-                                    <p:column>
-                                        <span class="flag flag-#{customer.country.code}"
-                                              style="width: 30px; height: 20px"/>
-                                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
-                                                      value="#{customer.country.name}"/>
-                                    </p:column>
-
-                                    <h:outputText value="Company:" styleClass="text-secondary"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Country"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <span class="flag flag-#{customer.country.code}"
+                                          style="width: 30px; height: 20px"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                  value="#{customer.country.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Company"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
                                     <h:outputText value="#{customer.company}"/>
-
-                                    <h:outputText value="Representative:" styleClass="text-secondary"/>
-                                    <p:column>
-                                        <p:graphicImage name="images/avatar/#{customer.representative.image}"
-                                                        library="demo"
-                                                        width="32" style="vertical-align: middle"/>
-                                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
-                                                      value="#{customer.representative.name}"/>
-                                    </p:column>
-                                </h:panelGrid>
-                            </p:outputPanel>
-                        </h:panelGrid>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Representative"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <p:graphicImage name="images/avatar/#{customer.representative.image}"
+                                                    library="demo"
+                                                    width="32" style="vertical-align: middle"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                  value="#{customer.representative.name}"/>
+                                </div>
+                            </div>
+                        </div>
                     </p:dataViewListItem>
                 </p:dataView>
             </h:form>

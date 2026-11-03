@@ -27,77 +27,88 @@
                 <p:dataList value="#{dtLazyView.lazyModel}" var="customer" type="unordered" itemType="none"
                             paginator="true" rows="5" rowsPerPageTemplate="5,10,20" pageLinks="5"
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                    <h:panelGrid columns="2" style="width:100%" cellspacing="20">
-
-                        <p:outputPanel>
-                            <h:panelGrid columns="2" cellpadding="5">
-
-                                <h:outputText value="Name:"/>
-                                <h:outputText value="#{customer.name}"/>
-
-                                <h:outputText value="Country"/>
-                                <p:column>
+                    <div class="flex align-items-center gap-3">
+                        <div class="flex-1">
+                            <div class="grid">
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Name"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Country"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
                                     <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
                                     <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                                   value="#{customer.country.name}"/>
-                                </p:column>
-
-                                <h:outputText value="Company:"/>
-                                <h:outputText value="#{customer.company}"/>
-
-                                <h:outputText value="Representative:"/>
-                                <p:column>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Company"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.company}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Representative"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
                                     <p:graphicImage name="images/avatar/#{customer.representative.image}"
                                                     library="demo"
                                                     width="32" style="vertical-align: middle"/>
                                     <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                                   value="#{customer.representative.name}"/>
-                                </p:column>
-
-                            </h:panelGrid>
-
-                        </p:outputPanel>
+                                </div>
+                            </div>
+                        </div>
 
                         <p:commandLink update=":form:customerDetail" oncomplete="PF('customerDialog').show()"
                                        title="View Detail">
                             <h:outputText styleClass="pi pi-search" style="margin:0 auto;"/>
                             <f:setPropertyActionListener value="#{customer}" target="#{dtLazyView.selectedCustomer}"/>
                         </p:commandLink>
+                    </div>
 
-                        <p:divider />
-
-                    </h:panelGrid>
+                    <p:divider />
                 </p:dataList>
 
                 <p:dialog header="Customer Info" widgetVar="customerDialog" modal="true" showEffect="blind"
                           hideEffect="explode" resizable="false">
-                    <p:outputPanel id="customerDetail" style="text-align:center;">
-                        <p:panelGrid columns="2" cellpadding="5" rendered="#{not empty dtLazyView.selectedCustomer}">
-
-                            <h:outputText value="Name:"/>
-                            <h:outputText value="#{dtLazyView.selectedCustomer.name}"/>
-
-                            <h:outputText value="Country"/>
-                            <p:column>
+                    <p:outputPanel id="customerDetail">
+                        <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty dtLazyView.selectedCustomer}">
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputText value="Name"/>
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText value="#{dtLazyView.selectedCustomer.name}"/>
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputText value="Country"/>
+                            </div>
+                            <div class="col-12 sm:col-8">
                                 <span class="flag flag-#{dtLazyView.selectedCustomer.country.code}"
                                       style="width: 30px; height: 20px"/>
                                 <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                               value="#{dtLazyView.selectedCustomer.country.name}"/>
-                            </p:column>
-
-                            <h:outputText value="Company:"/>
-                            <h:outputText value="#{dtLazyView.selectedCustomer.company}"/>
-
-                            <h:outputText value="Representative:"/>
-                            <p:column>
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputText value="Company"/>
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText value="#{dtLazyView.selectedCustomer.company}"/>
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputText value="Representative"/>
+                            </div>
+                            <div class="col-12 sm:col-8">
                                 <p:graphicImage name="images/avatar/#{dtLazyView.selectedCustomer.representative.image}"
                                                 library="demo"
                                                 width="32" style="vertical-align: middle"/>
                                 <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                               value="#{dtLazyView.selectedCustomer.representative.name}"/>
-                            </p:column>
-
-                        </p:panelGrid>
+                            </div>
+                        </h:panelGroup>
                     </p:outputPanel>
                 </p:dialog>
             </h:form>

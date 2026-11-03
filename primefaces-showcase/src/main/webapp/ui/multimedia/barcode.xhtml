@@ -26,43 +26,56 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <h:panelGrid columns="2" cellpadding="7">
-                <h:outputText value="Interleaved 2 of 5"/>
-                <p:barcode value="0123456789" type="int2of5"/>
-
-                <h:outputText value="Codabar"/>
-                <p:barcode value="A123456B" type="codabar"/>
-
-                <h:outputText value="Code39"/>
-                <p:barcode value="0123456789" type="code39"/>
-
-                <h:outputText value="Code128"/>
-                <p:barcode value="0123456789" type="code128"/>
-
-                <h:outputText value="EAN-8"/>
-                <p:barcode value="12345670" type="ean8"/>
-
-                <h:outputText value="EAN-13"/>
-                <p:barcode value="1234567890128" type="ean13"/>
-
-                <h:outputText value="UPC-A (PNG)"/>
-                <p:barcode value="012345678958" type="upca" format="png"/>
-
-                <h:outputText value="UPC-E (Vertical)"/>
-                <p:barcode value="0123456" type="upce" orientation="90"/>
-
-                <h:outputText value="PDF417"/>
-                <p:barcode value="0123456789" type="pdf417"/>
-
-                <h:outputText value="DataMatrix"/>
-                <p:barcode value="0123456789" type="datamatrix" magnification="3.0"/>
-
-                <h:outputText value="Postnet"/>
-                <p:barcode value="0123456789" type="postnet" magnification="3.0"/>
-
-                <h:outputText value="QR"/>
-                <p:barcode value="0123456789" type="qr" width="125" height="125"/>
-            </h:panelGrid>
+            <div class="grid">
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">Interleaved 2 of 5</div>
+                    <p:barcode value="0123456789" type="int2of5" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">Codabar</div>
+                    <p:barcode value="A123456B" type="codabar" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">Code39</div>
+                    <p:barcode value="0123456789" type="code39" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">Code128</div>
+                    <p:barcode value="0123456789" type="code128" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">EAN-8</div>
+                    <p:barcode value="12345670" type="ean8" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">EAN-13</div>
+                    <p:barcode value="1234567890128" type="ean13" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">UPC-A (PNG)</div>
+                    <p:barcode value="012345678958" type="upca" format="png" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">UPC-E (Vertical)</div>
+                    <p:barcode value="0123456" type="upce" orientation="90" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">PDF417</div>
+                    <p:barcode value="0123456789" type="pdf417" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">DataMatrix</div>
+                    <p:barcode value="0123456789" type="datamatrix" magnification="3.0" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">Postnet</div>
+                    <p:barcode value="0123456789" type="postnet" magnification="3.0" styleClass="max-w-full"/>
+                </div>
+                <div class="col-12 sm:col-6 lg:col-4">
+                    <div class="mb-2">QR</div>
+                    <p:barcode value="0123456789" type="qr" width="125" height="125" styleClass="max-w-full"/>
+                </div>
+            </div>
         </div>
     </ui:define>
 

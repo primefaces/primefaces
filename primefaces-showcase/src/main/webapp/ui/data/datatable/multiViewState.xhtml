@@ -131,33 +131,41 @@
 
             <p:dialog header="Customer Info" widgetVar="customerDialog" modal="true" showEffect="fade" hideEffect="fade"
                       resizable="false">
-                <p:outputPanel id="customerDetail" style="text-align:center;">
-                    <p:panelGrid columns="2" rendered="#{not empty dtMultiViewStateView.selectedCustomer}"
-                                 columnClasses="label,value">
-                        <h:outputText value="Name:"/>
-                        <h:outputText value="#{dtMultiViewStateView.selectedCustomer.name}"/>
-
-                        <h:outputText value="Country"/>
-                        <p:column>
+                <p:outputPanel id="customerDetail">
+                    <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty dtMultiViewStateView.selectedCustomer}">
+                        <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                            <h:outputText value="Name"/>
+                        </div>
+                        <div class="col-12 sm:col-8">
+                            <h:outputText value="#{dtMultiViewStateView.selectedCustomer.name}"/>
+                        </div>
+                        <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                            <h:outputText value="Country"/>
+                        </div>
+                        <div class="col-12 sm:col-8">
                             <span class="flag flag-#{dtMultiViewStateView.selectedCustomer.country.code}"
                                   style="width: 30px; height: 20px"/>
                             <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                           value="#{dtMultiViewStateView.selectedCustomer.name}"/>
-                        </p:column>
-
-                        <h:outputText value="Representative"/>
-                        <p:column>
+                        </div>
+                        <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                            <h:outputText value="Representative"/>
+                        </div>
+                        <div class="col-12 sm:col-8">
                             <p:graphicImage
                                     name="images/avatar/#{dtMultiViewStateView.selectedCustomer.representative.image}"
                                     library="demo"
                                     width="32" style="vertical-align: middle"/>
                             <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                           value="#{dtMultiViewStateView.selectedCustomer.representative}"/>
-                        </p:column>
-
-                        <h:outputText value="Status:"/>
-                        <span class="customer-badge status-#{dtMultiViewStateView.selectedCustomer.status.name().toLowerCase()}">#{dtMultiViewStateView.selectedCustomer.status}</span>
-                    </p:panelGrid>
+                        </div>
+                        <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                            <h:outputText value="Status"/>
+                        </div>
+                        <div class="col-12 sm:col-8">
+                            <span class="customer-badge status-#{dtMultiViewStateView.selectedCustomer.status.name().toLowerCase()}">#{dtMultiViewStateView.selectedCustomer.status}</span>
+                        </div>
+                    </h:panelGroup>
                 </p:outputPanel>
             </p:dialog>
 

@@ -26,20 +26,25 @@
                 </p:growl>
 
                 <p:panel header="Panel 1" id="panel1" styleClass="mb-5">
-                    <h:panelGrid columns="2" cellpadding="7">
-                        <h:outputLabel for="name" value="Name"/>
-                        <p:inputText id="name" value="#{defaultCommandView.text}"/>
-
-                        <h:outputLabel for="textarea" value="Textarea"/>
-                        <p:inputTextarea id="textarea" value="#{defaultCommandView.text2}"/>
-                    </h:panelGrid>
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <h:outputLabel for="name" value="Name"/>
+                            <p:inputText id="name" value="#{defaultCommandView.text}"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <h:outputLabel for="textarea" value="Textarea"/>
+                            <p:inputTextarea id="textarea" value="#{defaultCommandView.text2}"/>
+                        </div>
+                    </div>
                 </p:panel>
 
                 <p:panel header="Panel 2" id="panel2" styleClass="mb-5">
-                    <h:panelGrid columns="2" cellpadding="7">
-                        <h:outputLabel for="otherInput" value="Other input"/>
-                        <p:inputText id="otherInput"/>
-                    </h:panelGrid>
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <h:outputLabel for="otherInput" value="Other input"/>
+                            <p:inputText id="otherInput"/>
+                        </div>
+                    </div>
                 </p:panel>
 
                 <p:commandButton value="Button1" id="btn1" action="#{defaultCommandView.btn1Submit}" styleClass="mr-2" />

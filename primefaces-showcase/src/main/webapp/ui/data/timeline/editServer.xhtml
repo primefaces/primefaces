@@ -86,40 +86,47 @@
                 <p:dialog id="detailsBookingDlg" header="Booking Details" widgetVar="detailsBookingWdgt"
                           showEffect="clip" hideEffect="clip">
                     <h:panelGroup id="detailsBookingInner" layout="block">
-                        <h:panelGrid columns="2" columnClasses="bookingDetails1,bookingDetails2">
-                            <h:outputText value="Room"/>
-                            <p:inputText value="#{editServerTimelineView.event.data.roomNumber}"
-                                         rendered="#{not empty editServerTimelineView.event}"
-                                         required="true" label="Room"/>
-
-                            <h:outputText value="Category"/>
-                            <p:selectOneMenu value="#{editServerTimelineView.event.data.category}"
-                                             rendered="#{not empty editServerTimelineView.event}">
-                                <f:selectItem itemLabel="Standard" itemValue="STANDARD"/>
-                                <f:selectItem itemLabel="Superior" itemValue="SUPERIOR"/>
-                                <f:selectItem itemLabel="Deluxe" itemValue="DELUXE"/>
-                                <f:selectItem itemLabel="Junior" itemValue="JUNIOR"/>
-                                <f:selectItem itemLabel="Executive Suite" itemValue="EXECUTIVE_SUITE"/>
-                            </p:selectOneMenu>
-
-                            <h:outputText value="From"/>
-                            <p:datePicker value="#{editServerTimelineView.event.startDate}"
-                                          rendered="#{not empty editServerTimelineView.event}"
-                                          pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>
-
-                            <h:outputText value="Until"/>
-                            <p:datePicker value="#{editServerTimelineView.event.endDate}"
-                                          rendered="#{not empty editServerTimelineView.event}"
-                                          pattern="dd/MM/yyyy HH:mm" label="Until"/>
-
-                            <h:outputText value="Phone"/>
-                            <p:inputMask value="#{editServerTimelineView.event.data.phone}" mask="(9999) 999-999"
-                                         rendered="#{not empty editServerTimelineView.event}"/>
-
-                            <h:outputText value="Comment"/>
-                            <p:inputTextarea value="#{editServerTimelineView.event.data.comment}" autoResize="false"
+                        <div class="formgrid grid p-fluid">
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel for="@next" value="Room"/>
+                                <p:inputText value="#{editServerTimelineView.event.data.roomNumber}"
+                                             rendered="#{not empty editServerTimelineView.event}"
+                                             required="true" label="Room"/>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel for="@next" value="Category"/>
+                                <p:selectOneMenu value="#{editServerTimelineView.event.data.category}"
+                                                 rendered="#{not empty editServerTimelineView.event}">
+                                    <f:selectItem itemLabel="Standard" itemValue="STANDARD"/>
+                                    <f:selectItem itemLabel="Superior" itemValue="SUPERIOR"/>
+                                    <f:selectItem itemLabel="Deluxe" itemValue="DELUXE"/>
+                                    <f:selectItem itemLabel="Junior" itemValue="JUNIOR"/>
+                                    <f:selectItem itemLabel="Executive Suite" itemValue="EXECUTIVE_SUITE"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel for="@next" value="From"/>
+                                <p:datePicker value="#{editServerTimelineView.event.startDate}"
+                                              rendered="#{not empty editServerTimelineView.event}"
+                                              pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel for="@next" value="Until"/>
+                                <p:datePicker value="#{editServerTimelineView.event.endDate}"
+                                              rendered="#{not empty editServerTimelineView.event}"
+                                              pattern="dd/MM/yyyy HH:mm" label="Until"/>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel for="@next" value="Phone"/>
+                                <p:inputMask value="#{editServerTimelineView.event.data.phone}" mask="(9999) 999-999"
                                              rendered="#{not empty editServerTimelineView.event}"/>
-                        </h:panelGrid>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel for="@next" value="Comment"/>
+                                <p:inputTextarea value="#{editServerTimelineView.event.data.comment}" autoResize="false"
+                                                 rendered="#{not empty editServerTimelineView.event}"/>
+                            </div>
+                        </div>
                     </h:panelGroup>
 
                     <f:facet name="footer">

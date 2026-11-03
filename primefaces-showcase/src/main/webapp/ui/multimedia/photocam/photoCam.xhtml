@@ -20,14 +20,16 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}" update="photo"/>
-                    <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>
-                    <p:outputPanel id="photo">
+                <div class="grid">
+                    <div class="col-12 md:col-6">
+                        <p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}" update="photo" styleClass="max-w-full"/>
+                        <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()" styleClass="mt-3"/>
+                    </div>
+                    <p:outputPanel id="photo" layout="block" styleClass="col-12 md:col-6">
                         <p:graphicImage name="demo/images/photocam/#{photoCamView.filename}.jpeg"
-                                        rendered="#{not empty photoCamView.filename}"/>
+                                        rendered="#{not empty photoCamView.filename}" styleClass="max-w-full"/>
                     </p:outputPanel>
-                </h:panelGrid>
+                </div>
             </h:form>
         </div>
     </ui:define>

@@ -29,9 +29,7 @@
                 <p:dataView id="availableProducts" var="product" value="#{dndProductsView.products}" rows="9" layout="grid" >
                     <p:dataViewGridItem>
                         <p:panel id="pnl" header="#{product.name}" style="text-align:center">
-                            <h:panelGrid columns="1" style="width:100%">
-                                <p:graphicImage name="/demo/images/product/#{product.image}"/>
-                            </h:panelGrid>
+                            <p:graphicImage name="/demo/images/product/#{product.image}" styleClass="max-w-full"/>
                         </p:panel>
     
                         <p:draggable for="pnl" revert="true" handle=".p-panel-titlebar" stack=".p-panel"/>

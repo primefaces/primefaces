@@ -19,17 +19,21 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
-                    <p:outputLabel for="firstname" value="Firstname:"/>
-                    <p:inputText id="firstname" value="#{processView.firstname}"/>
-
-                    <p:outputLabel for="middle" value="Middle:"/>
-                    <p:inputText id="middle" value="#{processView.middlename}"/>
-
-                    <p:outputLabel for="surname" value="Surname:"/>
-                    <p:inputText id="surname" value="#{processView.lastname}" required="true"
-                                 requiredMessage="Surname is required"/>
-                </h:panelGrid>
+                <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="firstname" value="Firstname"/>
+                        <p:inputText id="firstname" value="#{processView.firstname}"/>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="middle" value="Middle"/>
+                        <p:inputText id="middle" value="#{processView.middlename}"/>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="surname" value="Surname"/>
+                        <p:inputText id="surname" value="#{processView.lastname}" required="true"
+                                     requiredMessage="Surname is required"/>
+                    </div>
+                </h:panelGroup>
 
                 <p:commandButton value="All" id="btnAll" process="@all" update="grid msgs" action="#{processView.save}" styleClass="mr-2"/>
                 <p:commandButton value="Form" id="btnForm" process="@form" update="grid msgs" action="#{processView.save}" styleClass="mr-2"/>

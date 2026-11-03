@@ -33,21 +33,26 @@
                 </p:schedule>
 
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
-                    <h:panelGrid id="eventDetails" columns="2" cellpadding="7">
-                        <p:outputLabel for="title" value="Titles" styleClass="font-bold"/>
-                        <p:inputText id="title" value="#{scheduleJava8View.event.title}" required="true"/>
-
-                        <p:outputLabel for="from" value="From" styleClass="font-bold"/>
-                        <p:datePicker id="from" value="#{scheduleJava8View.event.startDate}" pattern="dd/MM/yyyy"
-                                      showTime="true" appendTo="@(body)"/>
-
-                        <p:outputLabel for="to" value="To" styleClass="font-bold"/>
-                        <p:datePicker id="to" value="#{scheduleJava8View.event.endDate}" pattern="dd/MM/yyyy"
-                                      showTime="true" appendTo="@(body)"/>
-
-                        <p:outputLabel for="allDay" value="All Day" styleClass="font-bold"/>
-                        <h:selectBooleanCheckbox id="allDay" value="#{scheduleJava8View.event.allDay}"/>
-                    </h:panelGrid>
+                    <h:panelGroup id="eventDetails" layout="block" styleClass="formgrid grid p-fluid">
+                        <div class="field col-12">
+                            <p:outputLabel for="title" value="Titles" styleClass="font-bold"/>
+                            <p:inputText id="title" value="#{scheduleJava8View.event.title}" required="true"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:outputLabel for="from" value="From" styleClass="font-bold"/>
+                            <p:datePicker id="from" value="#{scheduleJava8View.event.startDate}" pattern="dd/MM/yyyy"
+                                          showTime="true" appendTo="@(body)"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:outputLabel for="to" value="To" styleClass="font-bold"/>
+                            <p:datePicker id="to" value="#{scheduleJava8View.event.endDate}" pattern="dd/MM/yyyy"
+                                          showTime="true" appendTo="@(body)"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:outputLabel for="allDay" value="All Day" styleClass="font-bold"/>
+                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleJava8View.event.allDay}"/>
+                        </div>
+                    </h:panelGroup>
 
                     <div class="flex justify-content-between mt-3">
                         <p:commandButton type="reset" value="Reset" styleClass="font-bold p-button-outlined"/>

@@ -35,25 +35,30 @@
         <div class="card">
             <h:form>
                 <h5>Validation</h5>
-                <h:panelGrid id="grid" columns="3" cellpadding="7">
-                    <p:outputLabel for="@next" value="Default:"/>
-                    <p:inputText id="default" required="true"/>
-                    <p:message for="@previous"/>
+                <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Default"/>
+                        <p:inputText id="default" required="true"/>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Text"/>
+                        <p:inputText id="txt" required="true"/>
+                        <p:message for="@previous" display="text"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Icon"/>
+                        <p:inputText id="icon" required="true"/>
+                        <p:message for="@previous" display="icon"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Tooltip"/>
+                        <p:inputText id="tt" required="true"/>
+                        <p:message for="@previous" display="tooltip"/>
+                    </div>
+                </h:panelGroup>
 
-                    <p:outputLabel for="@next" value="Text:"/>
-                    <p:inputText id="txt" required="true"/>
-                    <p:message for="@previous" display="text"/>
-
-                    <p:outputLabel for="@next" value="Icon:"/>
-                    <p:inputText id="icon" required="true"/>
-                    <p:message for="@previous" display="icon"/>
-
-                    <p:outputLabel for="@next" value="Tooltip:"/>
-                    <p:inputText id="tt" required="true"/>
-                    <p:message for="@previous" display="tooltip"/>
-                </h:panelGrid>
-
-                <p:commandButton id="submitButton" value="Submit" update="grid" styleClass="mt-3" />
+                <p:commandButton id="submitButton" value="Submit" update="grid" />
             </h:form>
         </div>
     </ui:define>

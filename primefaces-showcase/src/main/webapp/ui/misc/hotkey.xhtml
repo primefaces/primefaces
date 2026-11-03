@@ -17,11 +17,28 @@
     <ui:param name="primefacesClientApiLink" value="interfaces/src_PrimeFaces.JQueryStatic.html#hotkeys"/>
     <ui:param name="tagName" value="hotkey"/>
 
+    <ui:define name="head">
+        <style>
+            /* the images (500 x 313) scale down with the card on small screens */
+            .hotkey-switch {
+                width: 500px !important;
+                max-width: 100%;
+                height: auto !important;
+                aspect-ratio: 500 / 313;
+            }
+
+            .hotkey-switch img {
+                max-width: 100%;
+                height: auto;
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="implementation">
         <div class="card">
             <h:form>
                 <h5 class="mt-0">ImageSwitch Integration (Left-Right)</h5>
-                <p:imageSwitch effect="fade" widgetVar="switcher" slideshowAuto="false">
+                <p:imageSwitch effect="fade" widgetVar="switcher" slideshowAuto="false" styleClass="hotkey-switch">
                     <p:graphicImage name="demo/images/nature/nature1.jpg"/>
                     <p:graphicImage name="demo/images/nature/nature2.jpg"/>
                     <p:graphicImage name="demo/images/nature/nature3.jpg"/>
@@ -36,10 +53,12 @@
 
                 <p:hotkey bind="ctrl+shift+s" update="msgs" action="#{hotkeyView.save}"/>
 
-                <h:panelGrid columns="2" cellpadding="7">
-                    <p:outputLabel for="text" value="Text"/>
-                    <p:inputText id="text" value="#{hotkeyView.text}"/>
-                </h:panelGrid>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="text" value="Text"/>
+                        <p:inputText id="text" value="#{hotkeyView.text}"/>
+                    </div>
+                </div>
             </h:form>
         </div>
     </ui:define>

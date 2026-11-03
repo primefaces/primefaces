@@ -45,16 +45,26 @@
 
                 <p:dialog id="dialog" header="Document Detail" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false" width="250">
                     <p:outputPanel id="documentPanel">
-                        <h:panelGrid columns="2" rendered="#{not empty ttContextMenuView.selectedNode}" cellpadding="7">
-                            <h:outputLabel for="name" value="Name" />
-                            <h:outputText id="name" value="#{ttContextMenuView.selectedNode.data.name}" styleClass="font-bold"/>
-
-                            <h:outputLabel for="size" value="Size"/>
-                            <h:outputText id="size" value="#{ttContextMenuView.selectedNode.data.size}" styleClass="font-bold" />
-
-                            <h:outputLabel for="type" value="Type "/>
-                            <h:outputText id="type" value="#{ttContextMenuView.selectedNode.data.type}" styleClass="font-bold" />
-                    </h:panelGrid>
+                        <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty ttContextMenuView.selectedNode}">
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="name" value="Name" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="name" value="#{ttContextMenuView.selectedNode.data.name}" styleClass="font-bold"/>
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="size" value="Size"/>
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="size" value="#{ttContextMenuView.selectedNode.data.size}" styleClass="font-bold" />
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="type" value="Type "/>
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="type" value="#{ttContextMenuView.selectedNode.data.type}" styleClass="font-bold" />
+                            </div>
+                        </h:panelGroup>
                     </p:outputPanel>
                 </p:dialog>
             </h:form>

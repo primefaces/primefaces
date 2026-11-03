@@ -65,16 +65,18 @@
         </div>
         <p:dialog widgetVar="dlg" showEffect="fade">
             <h:form prependId="false">
-                <h:panelGrid columns="2">
-                    <h:outputLabel for="title" value="Title:"/>
-                    <p:inputText id="title" value="#{addMarkersView.title}"/>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12">
+                        <h:outputLabel for="title" value="Title"/>
+                        <p:inputText id="title" value="#{addMarkersView.title}"/>
+                    </div>
+                </div>
 
-                    <f:facet name="footer">
-                        <p:commandButton value="Add" action="#{addMarkersView.addMarker}" update=":messages"
-                                         oncomplete="markerAddComplete()"/>
-                        <p:commandButton value="Cancel" onclick="return cancel()"/>
-                    </f:facet>
-                </h:panelGrid>
+                <div class="flex gap-2">
+                    <p:commandButton value="Add" action="#{addMarkersView.addMarker}" update=":messages"
+                                     oncomplete="markerAddComplete()"/>
+                    <p:commandButton value="Cancel" onclick="return cancel()"/>
+                </div>
 
                 <h:inputHidden id="lat" value="#{addMarkersView.lat}"/>
                 <h:inputHidden id="lng" value="#{addMarkersView.lng}"/>

@@ -34,8 +34,7 @@
                                   value="#{not empty scheduleJava8View.extenderExample ? scheduleJava8View.extenderExample.html : ''}">
                     </h:outputText>
 
-                    <p:panelGrid columns="2" layout="flex" styleClass="p-noborder"
-                                 columnClasses="col-12 xl:col-12, col-12 xl:col-12">
+                    <div class="flex flex-column gap-3">
 
                         <p:selectOneMenu id="examples" label="Examples"
                                          style="width: 100%;"
@@ -76,10 +75,10 @@
                             <pre class="line-numbers"><code class="language-xml">#{scheduleJava8View.extenderExample.html}</code></pre>
                         </ui:fragment>
 
-                        <p:commandButton id="update" styleClass="extender-update"
+                        <p:commandButton id="update" styleClass="extender-update align-self-start"
                                          value="Apply extender and update schedule" process="@form"
                                          update="@form:schedulePanel" icon="pi pi-refresh"/>
-                    </p:panelGrid>
+                    </div>
                 </p:panel>
 
                 <p:outputPanel id="schedulePanel">

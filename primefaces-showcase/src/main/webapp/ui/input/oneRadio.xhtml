@@ -89,19 +89,23 @@
                     <f:selectItem itemLabel="Blue" itemValue="Blue"/>
                 </p:selectOneRadio>
 
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:radioButton id="ref1" for="customRadio2" itemIndex="0"/>
-                    <span class="legend" style="background:red"/>
-                    <p:outputLabel for="ref1" value="Red"/>
-
-                    <p:radioButton id="ref2" for="customRadio2" itemIndex="1"/>
-                    <span class="legend" style="background:green"/>
-                    <p:outputLabel for="ref2" value="Green"/>
-
-                    <p:radioButton id="ref3" for="customRadio2" itemIndex="2"/>
-                    <span class="legend" style="background:blue"/>
-                    <p:outputLabel for="ref3" value="Blue"/>
-                </h:panelGrid>
+                <div class="flex flex-column gap-3">
+                    <div class="flex align-items-center gap-2">
+                        <p:radioButton id="ref1" for="customRadio2" itemIndex="0"/>
+                        <span class="legend" style="background:red"/>
+                        <p:outputLabel for="ref1" value="Red"/>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <p:radioButton id="ref2" for="customRadio2" itemIndex="1"/>
+                        <span class="legend" style="background:green"/>
+                        <p:outputLabel for="ref2" value="Green"/>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <p:radioButton id="ref3" for="customRadio2" itemIndex="2"/>
+                        <span class="legend" style="background:blue"/>
+                        <p:outputLabel for="ref3" value="Blue"/>
+                    </div>
+                </div>
             </h:form>
         </div>
     </ui:define>

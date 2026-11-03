@@ -108,12 +108,14 @@
                     <p:effect type="pulsate" event="load" delay="500"/>
                 </p:messages>
 
-                <h:panelGrid columns="2" cellpadding="7">
-                    <p:outputLabel for="text" value="Type:"/>
-                    <p:inputText id="text" value="#{effectView.text}" required="true"/>
-                </h:panelGrid>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="text" value="Type"/>
+                        <p:inputText id="text" value="#{effectView.text}" required="true"/>
+                    </div>
+                </div>
 
-                <p:commandButton id="submit" value="Echo" action="#{effectView.echo}" update="messages" styleClass="mt-3" />
+                <p:commandButton id="submit" value="Echo" action="#{effectView.echo}" update="messages" />
             </h:form>
         </div>
     </ui:define>

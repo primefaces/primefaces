@@ -18,12 +18,14 @@
                 Welcome to Level 3, enter value and click send to transfer data from level 3 back to level 2.
             </p>
 
-            <h:panelGrid columns="2" cellpadding="7">
-                <p:outputLabel for="val" value="Return Value"/>
-                <p:inputText id="val" value="#{dfLevel3View.val}"/>
-            </h:panelGrid>
+            <div class="formgrid grid p-fluid">
+                <div class="field col-12">
+                    <p:outputLabel for="val" value="Return Value"/>
+                    <p:inputText id="val" value="#{dfLevel3View.val}"/>
+                </div>
+            </div>
 
-            <p:commandButton value="Send" action="#{dfLevel3View.closeDialog()}" style="margin-top: 1rem" />
+            <p:commandButton value="Send" action="#{dfLevel3View.closeDialog()}" />
         </h:form>
     </div>
 </h:body>

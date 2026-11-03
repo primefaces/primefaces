@@ -43,16 +43,26 @@
 
                 <p:dialog id="dialog" header="Document Detail" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false">
                     <p:outputPanel id="documentPanel">
-                        <h:panelGrid columns="2" cellpadding="7" rendered="#{not empty ttBasicView.selectedDocument}">
-                            <h:outputLabel for="name" value="Name" styleClass="text-secondary" />
-                            <h:outputText id="name" value="#{ttBasicView.selectedDocument.name}" />
-
-                            <h:outputLabel for="size" value="Size" styleClass="text-secondary" />
-                            <h:outputText id="size" value="#{ttBasicView.selectedDocument.size}" />
-
-                            <h:outputLabel for="type" value="Type" styleClass="text-secondary" />
-                            <h:outputText id="type" value="#{ttBasicView.selectedDocument.type}" />
-                        </h:panelGrid>
+                        <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty ttBasicView.selectedDocument}">
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="name" value="Name" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="name" value="#{ttBasicView.selectedDocument.name}" />
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="size" value="Size" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="size" value="#{ttBasicView.selectedDocument.size}" />
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="type" value="Type" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="type" value="#{ttBasicView.selectedDocument.type}" />
+                            </div>
+                        </h:panelGroup>
                     </p:outputPanel>
                 </p:dialog>
             </h:form>

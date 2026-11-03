@@ -148,21 +148,27 @@
                     <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs"/>
 
                     <p:tab title="Validation">
-                       <h:panelGrid columns="3" cellpadding="7" styleClass="mb-3">
-                           <p:outputLabel for="firstname" value="Firstname:"/>
-                           <p:inputText id="firstname" value="#{remoteValidationView.firstname}" required="true" label="Firstname">
-                               <f:validateLength minimum="2"/>
-                           </p:inputText>
-                           <p:message for="firstname" display="icon"/>
-                       
-                           <p:outputLabel for="lastname" value="Lastname:"/>
-                           <p:inputText id="lastname" value="#{remoteValidationView.lastname}" label="Lastname" required="true">
-                               <f:validateLength minimum="2"/>
-                               <p:ajax update="msgLastname" event="keyup"/>
-                           </p:inputText>
-                           <p:message for="lastname" id="msgLastname" display="icon"/>
-                       
-                       </h:panelGrid>
+                       <div class="formgrid grid p-fluid">
+                           <div class="field col-12 md:col-6">
+                               <p:outputLabel for="firstname" value="Firstname"/>
+                               <div class="flex align-items-center gap-2">
+                                   <p:inputText id="firstname" value="#{remoteValidationView.firstname}" required="true" label="Firstname">
+                                       <f:validateLength minimum="2"/>
+                                   </p:inputText>
+                                   <p:message for="firstname" display="icon"/>
+                               </div>
+                           </div>
+                           <div class="field col-12 md:col-6">
+                               <p:outputLabel for="lastname" value="Lastname"/>
+                               <div class="flex align-items-center gap-2">
+                                   <p:inputText id="lastname" value="#{remoteValidationView.lastname}" label="Lastname" required="true">
+                                       <f:validateLength minimum="2"/>
+                                       <p:ajax update="msgLastname" event="keyup"/>
+                                   </p:inputText>
+                                   <p:message for="lastname" id="msgLastname" display="icon"/>
+                               </div>
+                           </div>
+                       </div>
                        
                        <p:commandButton value="Save" update="@form" action="#{remoteValidationView.save}" icon="pi pi-check"/>
                     </p:tab>

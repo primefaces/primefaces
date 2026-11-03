@@ -40,17 +40,20 @@
 
                 <p:panel id="pnl" header="New User">
                     <p:messages id="messages"/>
-                    <h:panelGrid columns="3" id="grid" cellpadding="7">
-                        <p:outputLabel for="username" value="Username"/>
-                        <p:inputText id="username" value="#{spotlightView.username}" required="true">
-                            <f:validateLength minimum="2"/>
-                        </p:inputText>
-                        <p:message for="username"/>
-
-                        <p:outputLabel for="email" value="Surname:"/>
-                        <p:inputText id="email" value="#{spotlightView.email}" required="true"/>
-                        <p:message for="email"/>
-                    </h:panelGrid>
+                    <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="username" value="Username"/>
+                            <p:inputText id="username" value="#{spotlightView.username}" required="true">
+                                <f:validateLength minimum="2"/>
+                            </p:inputText>
+                            <p:message for="username"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="email" value="Surname"/>
+                            <p:inputText id="email" value="#{spotlightView.email}" required="true"/>
+                            <p:message for="email"/>
+                        </div>
+                    </h:panelGroup>
 
                     <p:commandButton value="Save" icon="pi pi-check" action="#{spotlightView.save}" update="growl grid"
                                      oncomplete="handleForm(xhr, status, args)" styleClass="mt-3"/>

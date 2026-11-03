@@ -67,19 +67,22 @@
             <h:form>
                 <p:growl showDetail="true"/>
 
-                <h:panelGrid columns="4" cellpadding="7">
-                    <p:outputLabel for="email1" value="Email 1: (Faces Validation)"/>
-                    <p:inputText id="email1" value="#{customValidationView.text}">
-                        <f:validator validatorId="custom.emailValidator"/>
-                    </p:inputText>
-                    <p:message for="email1" display="tooltip"/>
-                    <h:outputText value="#{customValidationView.text}"/>
-
-                    <p:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
-                    <p:inputText id="email2" value="#{customValidationView.email}"/>
-                    <p:message for="email2" display="tooltip"/>
-                    <h:outputText value="#{customValidationView.email}"/>
-                </h:panelGrid>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="email1" value="Email 1: (Faces Validation)"/>
+                        <p:inputText id="email1" value="#{customValidationView.text}">
+                            <f:validator validatorId="custom.emailValidator"/>
+                        </p:inputText>
+                        <p:message for="email1" display="tooltip"/>
+                        <small>Value: <h:outputText value="#{customValidationView.text}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
+                        <p:inputText id="email2" value="#{customValidationView.email}"/>
+                        <p:message for="email2" display="tooltip"/>
+                        <small>Value: <h:outputText value="#{customValidationView.email}"/></small>
+                    </div>
+                </div>
                 
                 <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mt-3" />
             </h:form>

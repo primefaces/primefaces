@@ -24,18 +24,22 @@
             <p:tooltip/>
 
             <h:form>
-                <h:panelGrid columns="2" cellpadding="10">
-                    <h:outputText value="Input: "/>
-                    <p:inputText pt:data-tooltip="Tooltip for an input"/>
-
-                    <h:outputText value="Link: "/>
-                    <h:outputLink value="#" pt:data-tooltip="Tooltip for a link">
-                        <h:outputText value="About"/>
-                    </h:outputLink>
-
-                    <h:outputText value="Button: "/>
-                    <p:commandButton value="Update" pt:data-tooltip="Update components" update="@parent"/>
-                </h:panelGrid>
+                <h:panelGroup layout="block" styleClass="formgrid grid">
+                    <div class="field col-12 md:col-4 p-fluid">
+                        <p:outputLabel for="@next" value="Input"/>
+                        <p:inputText pt:data-tooltip="Tooltip for an input"/>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <span class="block mb-2">Link</span>
+                        <h:outputLink value="#" pt:data-tooltip="Tooltip for a link">
+                            <h:outputText value="About"/>
+                        </h:outputLink>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <span class="block mb-2">Button</span>
+                        <p:commandButton value="Update" pt:data-tooltip="Update components" update="@parent"/>
+                    </div>
+                </h:panelGroup>
             </h:form>
         </div>
     </ui:define>

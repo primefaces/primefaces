@@ -42,10 +42,12 @@
 
             <h5>Ajax Request</h5>
             <h:form id="form">
-                <h:panelGrid id="grid" columns="4" cellpadding="7">
-                    <p:outputLabel for="name" value="Name:"/>
-                    <p:inputText id="name"/>
-                </h:panelGrid>
+                <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="name" value="Name"/>
+                        <p:inputText id="name"/>
+                    </div>
+                </h:panelGroup>
 
                 <p:commandButton value="Submit" update="grid" styleClass="mt-3" />
             </h:form>

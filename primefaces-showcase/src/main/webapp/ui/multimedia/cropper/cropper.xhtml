@@ -22,18 +22,20 @@
             <h:form>
                 <p:growl id="msgs" showDetail="true"/>
 
-                <h:panelGrid columns="2" cellpadding="7">
-                    <p:imageCropper value="#{cropperView.croppedImage}"
-                                    image="/resources/demo/images/nature/nature6.jpg"
-                                    initialCoords="225,75,300,125"
-                                    minSize="100,100"
-                                    maxSize="250,250"
-                                    zoomOnWheel="false"/>
-                    <h:panelGroup id="cropped">
+                <div class="grid">
+                    <div class="col-12 md:col-6">
+                        <p:imageCropper value="#{cropperView.croppedImage}"
+                                        image="/resources/demo/images/nature/nature6.jpg"
+                                        initialCoords="225,75,300,125"
+                                        minSize="100,100"
+                                        maxSize="250,250"
+                                        zoomOnWheel="false"/>
+                    </div>
+                    <h:panelGroup id="cropped" layout="block" styleClass="col-12 md:col-6">
                         <p:graphicImage rendered="#{not empty cropperView.newImageName}"
-                                        name="demo/images/crop/#{cropperView.newImageName}.jpg"/>
+                                        name="demo/images/crop/#{cropperView.newImageName}.jpg" styleClass="max-w-full"/>
                     </h:panelGroup>
-                </h:panelGrid>
+                </div>
 
                 <p:commandButton value="Crop" action="#{cropperView.crop}" update="cropped msgs" styleClass="mt-3" />
             </h:form>

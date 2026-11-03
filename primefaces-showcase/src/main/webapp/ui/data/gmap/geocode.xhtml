@@ -39,11 +39,13 @@
 
             <div class="card">
                 <h5 style="margin-top:0">Geocode</h5>
-                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
-                    <p:outputLabel for="address" value="Address:"/>
-                    <p:inputText id="address"/>
-                    <p:commandButton value="Geocode" icon="pi pi-search" onclick="geocode()" type="button"/>
-                </h:panelGrid>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="address" value="Address"/>
+                        <p:inputText id="address"/>
+                    </div>
+                </div>
+                <p:commandButton value="Geocode" icon="pi pi-search" onclick="geocode()" type="button" styleClass="mb-3"/>
 
                 <p:gmap id="geoGmap" widgetVar="geoMap" center="#{geocodeView.centerGeoMap}" zoom="2" type="ROADMAP"
                         model="#{geocodeView.geoModel}" style="width:100%;height:400px">
@@ -53,14 +55,18 @@
 
             <div class="card">
                 <h5>Reverse Geocode</h5>
-                <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
-                    <p:outputLabel for="lat" value="Lat:"/>
-                    <p:inputText id="lat"/>
-                    <p:outputLabel for="lng" value="Lng:"/>
-                    <p:inputText id="lng"/>
-                    <p:commandButton value="Reverse Geocode" icon="pi pi-search" onclick="reverseGeocode()"
-                                     type="button"/>
-                </h:panelGrid>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="lat" value="Lat"/>
+                        <p:inputText id="lat"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="lng" value="Lng"/>
+                        <p:inputText id="lng"/>
+                    </div>
+                </div>
+                <p:commandButton value="Reverse Geocode" icon="pi pi-search" onclick="reverseGeocode()"
+                                 type="button" styleClass="mb-3"/>
 
                 <p:gmap id="revGeoGmap" widgetVar="revGeoMap" center="#{geocodeView.centerRevGeoMap}" zoom="2"
                         type="ROADMAP" model="#{geocodeView.revGeoModel}" style="width:100%;height:400px">

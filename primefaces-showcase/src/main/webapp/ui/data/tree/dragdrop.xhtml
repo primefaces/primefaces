@@ -22,7 +22,7 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
-                <h:panelGrid columns="3">
+                <div class="flex flex-wrap align-items-center gap-3">
                     <p:tree id="tree1" value="#{treeDNDView.root1}" var="node" selectionMode="single"
                             selection="#{treeDNDView.selectedNode1}" style="width:16rem"
                             draggable="true" droppable="true" dragdropScope="demo">
@@ -32,7 +32,7 @@
                         </p:treeNode>
                     </p:tree>
 
-                    <h:outputText styleClass="pi pi-sort-alt mx-5 text-secondary" style="transform: rotate(90deg); font-size: 3rem" />
+                    <h:outputText styleClass="pi pi-sort-alt mx-3 text-secondary" style="transform: rotate(90deg); font-size: 3rem" />
 
                     <p:tree id="tree2" value="#{treeDNDView.root2}" var="node" selectionMode="single"
                             selection="#{treeDNDView.selectedNode2}" style="width:16rem"
@@ -42,7 +42,7 @@
                             <h:outputText value="#{node}"/>
                         </p:treeNode>
                     </p:tree>
-                </h:panelGrid>
+                </div>
             </h:form>
         </div>
     </ui:define>
