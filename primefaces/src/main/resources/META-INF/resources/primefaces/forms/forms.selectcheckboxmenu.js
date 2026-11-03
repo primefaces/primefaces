@@ -144,16 +144,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindEvents();
             this.bindKeyEvents();
-
-            if (!this.cfg.multiple) {
-                this.label.attr('id', this.labelId);
-                this.keyboardTarget.attr('aria-labelledby', this.labelId);
-            }
-            this.keyboardTarget.attr('aria-expanded', false);
-            this.jq.attr('aria-expanded', false);
         }
 
         this.renderLabel();
+        this.renderAriaLabel();
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -226,6 +220,32 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
 
         this.keyboardTarget.attr('aria-controls', rawPanelId);
+    },
+
+    /**
+     * Provides the accessible name of the focusable combobox input.
+     * @private
+     */
+    renderAriaLabel: function() {
+        // keep an associated label (e.g. p:outputLabel) as part of the accessible name
+        var labelledBy = $('label[for="' + this.keyboardTarget.attr('id') + '"]').map(function() {
+            return this.id || null;
+        }).get();
+
+        if (!this.cfg.multiple) {
+            this.label.attr('id', this.labelId);
+            labelledBy.push(this.labelId);
+        }
+
+        if (labelledBy.length) {
+            this.keyboardTarget.attr('aria-labelledby', labelledBy.join(' '));
+        }
+        else {
+            var label = this.jq.children('.ui-selectcheckboxmenu-multiple-container').data('label');
+            if (label) {
+                this.keyboardTarget.attr('aria-label', label);
+            }
+        }
     },
 
     /**
@@ -1024,7 +1044,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.keyboardTarget.attr('aria-expanded', true);
-                    $this.jq.attr('aria-expanded', true);
                     $this.postShow();
                     $this.bindPanelEvents();
                 }
@@ -1045,7 +1064,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onExited: function() {
                     $this.keyboardTarget.attr('aria-expanded', false);
-                    $this.jq.attr('aria-expanded', false);
                     $this.postHide();
                 }
             });
@@ -1284,6 +1302,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
+        this.keyboardTarget.prop('disabled', false);
         this.disabled = false;
     },
 
@@ -1292,6 +1311,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     disable: function() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
+        this.keyboardTarget.prop('disabled', true);
         this.disabled = true;
     },
 

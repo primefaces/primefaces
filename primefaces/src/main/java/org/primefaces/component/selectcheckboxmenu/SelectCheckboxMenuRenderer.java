@@ -98,7 +98,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        renderARIACombobox(context, menu);
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
@@ -739,7 +738,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "dialog", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_panel", null);
+        if (menu.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }
