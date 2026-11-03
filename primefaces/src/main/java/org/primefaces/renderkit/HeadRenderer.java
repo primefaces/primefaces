@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.clientwindow.PrimeClientWindow;
 import org.primefaces.clientwindow.PrimeClientWindowUtils;
 import org.primefaces.config.PrimeConfiguration;
@@ -44,6 +45,7 @@ import java.util.logging.Logger;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ProjectStage;
+import jakarta.faces.application.Resource;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIViewRoot;
 import jakarta.faces.context.ExternalContext;
@@ -57,6 +59,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Renders head content based on the following order
  * - First Facet
+ * - Theme configurator script (primefaces.THEME_CONFIGURATOR)
  * - Theme CSS
  * - PrimeIcons CSS
  * - Middle Facet
@@ -90,17 +93,11 @@ public class HeadRenderer extends Renderer<UIComponent> {
         }
 
         //Theme
-        String theme;
-        String themeParamValue = applicationContext.getConfig().getTheme();
+        String theme = requestContext.getTheme();
 
-        if (themeParamValue != null) {
-            theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
-            if (LangUtils.isNotBlank(theme)) {
-                theme = theme.trim();
-            }
-        }
-        else {
-            theme = "aura";     //default
+        // the settings of the user, before the first paint: written here, before the stylesheets, and not moved to the bottom
+        if (configuration.isThemeConfiguratorEnabled()) {
+            encodeThemeConfiguratorScript(context, writer);
         }
 
         // the tokens of the theme (aura, lara, nora, material, metal, glass or a custom primefaces-<name>/theme.css); the CSS of the
@@ -168,6 +165,22 @@ public class HeadRenderer extends Renderer<UIComponent> {
 
     protected void encodeJS(FacesContext context, String library, String script) throws IOException {
         ResourceUtils.addJavascriptResource(context, library, script);
+    }
+
+    protected void encodeThemeConfiguratorScript(FacesContext context, ResponseWriter writer) throws IOException {
+        Resource resource = context.getApplication().getResourceHandler().createResource("theme.js", LIBRARY);
+        if (resource == null) {
+            LOGGER.log(Level.WARNING, "primefaces.THEME_CONFIGURATOR is enabled but {0}:theme.js was not found", LIBRARY);
+            return;
+        }
+        writer.startElement("script", null);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
+        writer.writeURIAttribute("src", context.getExternalContext().encodeResourceURL(resource.getRequestPath()), null);
+        // only MoveScriptsToBottom knows (and removes) the marker
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isMoveScriptsToBottom()) {
+            writer.writeAttribute(MoveScriptsToBottomResponseWriter.NO_MOVE_ATTRIBUTE, "true", null);
+        }
+        writer.endElement("script");
     }
 
     protected void encodeValidationResources(FacesContext context, PrimeConfiguration configuration) {

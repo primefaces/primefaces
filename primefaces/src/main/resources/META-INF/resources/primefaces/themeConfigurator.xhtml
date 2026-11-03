@@ -1,0 +1,266 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:ui="jakarta.faces.facelets"
+                xmlns:cc="jakarta.faces.composite" xmlns:c="jakarta.tags.core" xmlns:p="primefaces">
+    <!--
+        Theme configurator: preset, color scheme, input style, density, direction, primary color and the main tokens of
+        the theme, changed live by the user. Needs primefaces.THEME_CONFIGURATOR=true: the settings are applied before
+        the first paint of every page (theme.js), preset and direction are cookies. Usage:
+
+        xmlns:pc="jakarta.faces.composite/primefaces"
+        <pc:themeConfigurator/>                  a button at the edge of the window opens it
+        <pc:themeConfigurator mode="inline"/>    in the page, e.g. a settings page
+
+        Plain HTML controls without inline handlers (themeconfigurator.js works by event delegation on the data-tc-*
+        attributes), so it needs no form and can be placed inside of one.
+    -->
+    <cc:interface shortDescription="Lets the user change the theme: preset, color scheme, density, primary color and tokens.">
+        <cc:attribute name="mode" type="java.lang.String" default="overlay"
+                      shortDescription="overlay: a button at the edge of the window opens the panel; inline: the panel in the page."/>
+        <cc:attribute name="presets" type="java.lang.String" default="aura,lara,nora,material,metal,glass"
+                      shortDescription="The presets to choose from, comma separated; empty: no preset choice."/>
+        <cc:attribute name="direction" type="java.lang.Boolean" default="true"
+                      shortDescription="Whether the user can choose the direction (ltr, rtl)."/>
+        <cc:attribute name="export" type="java.lang.Boolean" default="true"
+                      shortDescription="Whether the CSS of the changes is shown to copy."/>
+        <cc:attribute name="style" type="java.lang.String" shortDescription="Inline style of the container."/>
+        <cc:attribute name="styleClass" type="java.lang.String" shortDescription="Style class of the container."/>
+    </cc:interface>
+
+    <cc:implementation>
+        <h:outputStylesheet library="primefaces" name="components.css"/>
+        <h:outputStylesheet library="primefaces" name="themeconfigurator/themeconfigurator.css"/>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
+        <h:outputScript library="primefaces" name="core.js" target="head"/>
+        <h:outputScript library="primefaces" name="themeconfigurator/themeconfigurator.js" target="head"/>
+
+        <c:set var="tcId" value="#{cc.clientId}"/>
+        <c:set var="tcTheme" value="#{p:theme()}"/>
+        <c:set var="tcPresets" value="#{empty cc.attrs.presets ? [] : cc.attrs.presets.split(',')}"/>
+
+        <div id="#{tcId}" style="#{empty cc.attrs.style ? null : cc.attrs.style}"
+             class="p-themeconfigurator p-themeconfigurator-#{cc.attrs.mode eq 'inline' ? 'inline' : 'overlay'}#{empty cc.attrs.styleClass ? '' : ' '.concat(cc.attrs.styleClass)}">
+            <button type="button" id="#{tcId}_toggle" class="p-themeconfigurator-toggle p-button p-widget p-button-icon-only"
+                    aria-controls="#{tcId}_panel" aria-expanded="false" title="Theme" data-tc-toggle="">
+                <span class="p-button-icon-left p-c pi pi-palette"></span>
+                <span class="p-button-text p-c">Theme</span>
+            </button>
+
+            <section id="#{tcId}_panel" class="p-themeconfigurator-panel" aria-label="Theme" tabindex="-1">
+                <div class="p-themeconfigurator-header">
+                    <div class="p-themeconfigurator-title">Theme</div>
+                    <button type="button" class="p-button p-widget p-button-text-icon-left p-button-flat p-button-secondary p-button-sm"
+                            title="Reset color scheme, density, input style, primary color and tokens" data-tc-reset="">
+                        <span class="p-button-icon-left p-c pi pi-refresh"></span><span class="p-button-text p-c">Reset</span>
+                    </button>
+                    <button type="button" class="p-themeconfigurator-close p-button p-widget p-button-icon-only p-button-flat p-button-secondary p-button-sm"
+                            title="Close" aria-label="Close" data-tc-close="">
+                        <span class="p-button-icon-left p-c pi pi-times"></span><span class="p-button-text p-c">Close</span>
+                    </button>
+                </div>
+
+                <details class="p-themeconfigurator-group" open="open">
+                    <summary>Theme</summary>
+                    <ui:fragment rendered="#{not empty tcPresets}">
+                        <div class="p-themeconfigurator-label">Preset <span class="p-themeconfigurator-hint">primefaces.THEME</span></div>
+                        <!-- tiles, 3 per row: one segmented row is too narrow for six presets; the current one is a primary button -->
+                        <div class="p-themeconfigurator-presets" role="group" aria-label="Preset">
+                            <ui:repeat value="#{tcPresets}" var="preset">
+                                <button type="button" aria-pressed="#{tcTheme eq preset.trim()}" data-tc-preset="#{preset.trim()}"
+                                        class="p-button p-widget p-state-default p-button-text-only #{tcTheme eq preset.trim() ? '' : 'p-button-outlined p-button-secondary'}">
+                                    <span class="p-button-text p-c">#{preset.trim()}</span>
+                                </button>
+                            </ui:repeat>
+                        </div>
+                        <c:set var="tcNote" value="#{{
+                            'aura': 'Soft and modern, the PrimeReact / PrimeVue default (PrimeUIX Aura).',
+                            'lara': 'Classic PrimeFaces look with stronger borders (PrimeUIX Lara).',
+                            'nora': 'Compact and angular, solid selections for enterprise apps (PrimeUIX Nora).',
+                            'material': 'Material Design 3: tonal surfaces tinted by the primary color, pill buttons, state layers, ripple.',
+                            'metal': 'Graphite and brushed aluminium (light), black metal (dark): metal edges, turned knobs, anodized severities.',
+                            'glass': 'Apple Liquid Glass style: translucent overlays, menus and bars that blur the page behind them, capsule buttons.'}[tcTheme]}"/>
+                        <ui:fragment rendered="#{not empty tcNote}">
+                            <div class="p-themeconfigurator-note">#{tcNote}</div>
+                        </ui:fragment>
+                    </ui:fragment>
+
+                    <div class="p-themeconfigurator-label">Color scheme <span class="p-themeconfigurator-hint">color-scheme</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Color scheme">
+                        <ui:repeat value="#{[['light', 'Light', 'pi-sun'], ['dark', 'Dark', 'pi-moon'], ['system', 'System', 'pi-desktop']]}" var="s">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-icon-left" data-tc-scheme="#{s[0]}">
+                                <span class="p-button-icon-left p-c pi #{s[2]}"></span><span class="p-button-text p-c">#{s[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="p-themeconfigurator-label">Input style <span class="p-themeconfigurator-hint">p-input-filled</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Input style">
+                        <ui:repeat value="#{[['outlined', 'Outlined'], ['filled', 'Filled']]}" var="i">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-input="#{i[0]}">
+                                <span class="p-button-text p-c">#{i[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="p-themeconfigurator-label">Density <span class="p-themeconfigurator-hint">data-p-density</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Density">
+                        <ui:repeat value="#{[['normal', 'Normal'], ['compact', 'Compact'], ['comfortable', 'Comfortable']]}" var="d">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-density="#{d[0]}">
+                                <span class="p-button-text p-c">#{d[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+
+                    <ui:fragment rendered="#{cc.attrs.direction}">
+                        <div class="p-themeconfigurator-label">Direction <span class="p-themeconfigurator-hint">primefaces.DIR</span></div>
+                        <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Direction">
+                            <ui:repeat value="#{[['ltr', 'LTR'], ['rtl', 'RTL']]}" var="d">
+                                <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-dir="#{d[0]}">
+                                    <span class="p-button-text p-c">#{d[1]}</span>
+                                </button>
+                            </ui:repeat>
+                        </div>
+                    </ui:fragment>
+                </details>
+
+                <details class="p-themeconfigurator-group" open="open">
+                    <summary>Colors</summary>
+                    <div class="p-themeconfigurator-label">Primary <span class="p-themeconfigurator-hint">--p-primary-base</span></div>
+                    <div class="p-themeconfigurator-swatches">
+                        <ui:repeat value="#{['emerald', 'green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'red', 'orange', 'amber', 'yellow', 'lime', 'slate']}" var="color">
+                            <button type="button" class="p-themeconfigurator-swatch" title="#{color}" aria-label="#{color}"
+                                    style="background: var(--p-#{color}-500)" data-tc-primary="var(--p-#{color}-500)"></button>
+                        </ui:repeat>
+                    </div>
+                    <div class="p-themeconfigurator-field">
+                        <label for="#{tcId}_primary">Custom</label>
+                        <input type="color" id="#{tcId}_primary"/>
+                        <button type="button" class="p-button p-widget p-button-text-only p-button-flat p-button-sm"
+                                title="Primary color of the preset" data-tc-primary="">
+                            <span class="p-button-text p-c">Theme</span>
+                        </button>
+                    </div>
+                    <!-- the first one is the surface of the preset, its color is set by themeconfigurator.js -->
+                    <div class="p-themeconfigurator-label">Surface <span class="p-themeconfigurator-hint">--p-surface-*</span></div>
+                    <div class="p-themeconfigurator-swatches">
+                        <button type="button" class="p-themeconfigurator-swatch" title="Theme" aria-label="Theme" data-tc-surface=""></button>
+                        <ui:repeat value="#{['slate', 'gray', 'zinc', 'neutral', 'stone']}" var="surface">
+                            <button type="button" class="p-themeconfigurator-swatch" title="#{surface}" aria-label="#{surface}"
+                                    style="background: var(--p-#{surface}-500)" data-tc-surface="#{surface}"></button>
+                        </ui:repeat>
+                    </div>
+                </details>
+
+                <details class="p-themeconfigurator-group" open="open">
+                    <summary>Shape and motion</summary>
+                    <div class="p-themeconfigurator-label">Button shape <span class="p-themeconfigurator-hint">--p-button-border-radius</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Button shape">
+                        <ui:repeat value="#{[['theme', 'Theme'], ['pill', 'Pill'], ['square', 'Square']]}" var="o">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-shape="#{o[0]}">
+                                <span class="p-button-text p-c">#{o[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="p-themeconfigurator-label">Shadows <span class="p-themeconfigurator-hint">--p-*-shadow</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Shadows">
+                        <ui:repeat value="#{[['none', 'None'], ['theme', 'Theme'], ['deep', 'Deep']]}" var="o">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-shadow="#{o[0]}">
+                                <span class="p-button-text p-c">#{o[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="p-themeconfigurator-label">Animations <span class="p-themeconfigurator-hint">--p-transition-duration</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Animations">
+                        <ui:repeat value="#{[['normal', 'Normal'], ['slow', 'Slow'], ['off', 'Off']]}" var="o">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-motion="#{o[0]}">
+                                <span class="p-button-text p-c">#{o[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="p-themeconfigurator-label">Ripple <span class="p-themeconfigurator-hint">--p-ripple-opacity</span></div>
+                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Ripple">
+                        <ui:repeat value="#{[['theme', 'Theme'], ['on', 'On'], ['off', 'Off']]}" var="o">
+                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-ripple="#{o[0]}">
+                                <span class="p-button-text p-c">#{o[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+                </details>
+
+                <!-- the numeric tokens: [token, label, min, max, step, unit] -->
+                <details class="p-themeconfigurator-group" open="open">
+                    <summary>Border radius <span class="p-themeconfigurator-hint">--p-border-radius-*</span></summary>
+                    <div class="p-themeconfigurator-chips">
+                        <ui:repeat value="#{[['0,0,0,0', 'Sharp'], ['', 'Theme'], ['6,10,14,20', 'Soft'], ['10,16,22,28', 'Round']]}" var="o">
+                            <button type="button" class="p-button p-widget p-button-text-only p-button-flat p-button-sm" data-tc-radius="#{o[0]}">
+                                <span class="p-button-text p-c">#{o[1]}</span>
+                            </button>
+                        </ui:repeat>
+                    </div>
+                    <ui:repeat value="#{[['--p-border-radius-sm', 'sm', 0, 32, 1, 'px'], ['--p-border-radius-md', 'md', 0, 32, 1, 'px'], ['--p-border-radius-lg', 'lg', 0, 32, 1, 'px'], ['--p-border-radius-xl', 'xl', 0, 40, 1, 'px']]}" var="r">
+                        <div class="p-themeconfigurator-field" data-tc-token="#{r[0]}" data-tc-unit="#{r[5]}">
+                            <label for="#{tcId}_#{r[0]}" title="#{r[0]}">#{r[1]}</label>
+                            <input type="range" id="#{tcId}_#{r[0]}" min="#{r[2]}" max="#{r[3]}" step="#{r[4]}"/>
+                            <output for="#{tcId}_#{r[0]}"></output>
+                        </div>
+                    </ui:repeat>
+                </details>
+
+                <details class="p-themeconfigurator-group" open="open">
+                    <summary>Typography</summary>
+                    <div class="p-themeconfigurator-field">
+                        <label for="#{tcId}_font">Font family</label>
+                        <select id="#{tcId}_font" data-tc-font="">
+                            <option value="">Theme default</option>
+                            <option value="&quot;Inter var&quot;, Inter, ui-sans-serif, system-ui, sans-serif">Inter</option>
+                            <option value="system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, sans-serif">System UI</option>
+                            <option value="Georgia, &quot;Times New Roman&quot;, serif">Serif</option>
+                            <option value="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Monospace</option>
+                        </select>
+                    </div>
+                    <ui:repeat value="#{[['--p-typography-font-size', 'Font size', 0.75, 1.125, 0.0625, 'rem']]}" var="r">
+                        <div class="p-themeconfigurator-field" data-tc-token="#{r[0]}" data-tc-unit="#{r[5]}">
+                            <label for="#{tcId}_#{r[0]}" title="#{r[0]}">#{r[1]}</label>
+                            <input type="range" id="#{tcId}_#{r[0]}" min="#{r[2]}" max="#{r[3]}" step="#{r[4]}"/>
+                            <output for="#{tcId}_#{r[0]}"></output>
+                        </div>
+                    </ui:repeat>
+                </details>
+
+                <details class="p-themeconfigurator-group">
+                    <summary>Focus ring</summary>
+                    <ui:repeat value="#{[['--p-focus-ring-width', 'Width', 0, 4, 1, 'px'], ['--p-focus-ring-offset', 'Offset', -2, 6, 1, 'px']]}" var="r">
+                        <div class="p-themeconfigurator-field" data-tc-token="#{r[0]}" data-tc-unit="#{r[5]}">
+                            <label for="#{tcId}_#{r[0]}" title="#{r[0]}">#{r[1]}</label>
+                            <input type="range" id="#{tcId}_#{r[0]}" min="#{r[2]}" max="#{r[3]}" step="#{r[4]}"/>
+                            <output for="#{tcId}_#{r[0]}"></output>
+                        </div>
+                    </ui:repeat>
+                </details>
+
+                <details class="p-themeconfigurator-group">
+                    <summary>Form field</summary>
+                    <ui:repeat value="#{[['--p-form-field-padding-x', 'Padding x', 0.25, 1.25, 0.0625, 'rem'], ['--p-form-field-padding-y', 'Padding y', 0.125, 1, 0.0625, 'rem']]}" var="r">
+                        <div class="p-themeconfigurator-field" data-tc-token="#{r[0]}" data-tc-unit="#{r[5]}">
+                            <label for="#{tcId}_#{r[0]}" title="#{r[0]}">#{r[1]}</label>
+                            <input type="range" id="#{tcId}_#{r[0]}" min="#{r[2]}" max="#{r[3]}" step="#{r[4]}"/>
+                            <output for="#{tcId}_#{r[0]}"></output>
+                        </div>
+                    </ui:repeat>
+                </details>
+
+                <ui:fragment rendered="#{cc.attrs.export}">
+                    <details class="p-themeconfigurator-group">
+                        <summary>CSS</summary>
+                        <div class="p-themeconfigurator-note">Only the tokens that differ from the preset.</div>
+                        <pre class="p-themeconfigurator-snippet" data-tc-snippet=""></pre>
+                        <button type="button" class="p-button p-widget p-button-text-icon-left p-button-sm p-button-outlined" data-tc-copy="">
+                            <span class="p-button-icon-left p-c pi pi-copy"></span><span class="p-button-text p-c">Copy</span>
+                        </button>
+                    </details>
+                </ui:fragment>
+            </section>
+        </div>
+    </cc:implementation>
+</ui:composition>

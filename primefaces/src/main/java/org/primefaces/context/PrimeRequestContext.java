@@ -23,6 +23,7 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.cdk.api.Function;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.Constants;
@@ -35,8 +36,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -51,6 +54,8 @@ public class PrimeRequestContext {
 
     public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
 
+    // the name of a theme library primefaces-<name>: no path, no ".."
+    private static final Pattern THEME_NAME = Pattern.compile("[\\w-]+(\\.[\\w-]+)*");
     private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private static final String EXECUTE_INIT_SCRIPTS_KEY = "EXECUTE_INIT_SCRIPTS";
     private static final String EXECUTE_SCRIPTS_KEY = "EXECUTE_SCRIPTS";
@@ -65,6 +70,7 @@ public class PrimeRequestContext {
     private PrimeApplicationContext applicationContext;
     private Boolean ignoreAutoUpdate;
     private Boolean rtl;
+    private String theme;
     private Boolean touchable;
     private Boolean secure;
     private Boolean flex;
@@ -275,16 +281,66 @@ public class PrimeRequestContext {
         this.ignoreAutoUpdate = ignoreAutoUpdate;
     }
 
-    public boolean isRTL() {
-        if (rtl == null) {
-            String param = context.getExternalContext().getInitParameter(Constants.ContextParams.DIRECTION);
-            if (param == null) {
-                rtl = false;
+    /**
+     * @return the preset of this request: the one chosen by the user (cookie {@value Constants.Cookies#THEME}, only with
+     * {@code primefaces.THEME_CONFIGURATOR}) if it exists, otherwise {@code primefaces.THEME} or aura; blank for none.
+     */
+    public String getTheme() {
+        if (theme == null) {
+            String chosen = getThemeConfiguratorCookie(Constants.Cookies.THEME);
+            if (chosen != null && THEME_NAME.matcher(chosen).matches()
+                    && context.getApplication().getResourceHandler().createResource("theme.css", "primefaces-" + chosen) != null) {
+                theme = chosen;
             }
             else {
-                String expressionValue = context.getApplication().evaluateExpressionGet(context, param, String.class);
+                String param = getApplicationContext().getConfig().getTheme();
+                if (param == null) {
+                    theme = "aura";
+                }
+                else {
+                    String expressionValue = context.getApplication().evaluateExpressionGet(context, param, String.class);
+                    theme = expressionValue == null ? "" : expressionValue.trim();
+                }
+            }
+        }
 
-                rtl = "rtl".equalsIgnoreCase(expressionValue);
+        return theme;
+    }
+
+    /**
+     * @return the preset of the current request, see {@link #getTheme()}
+     */
+    @Function(name = "theme", description = "Gets the preset of the current request: the one chosen by the user "
+            + "(primefaces.THEME_CONFIGURATOR) or primefaces.THEME.")
+    public static String currentTheme() {
+        return getCurrentInstance().getTheme();
+    }
+
+    /**
+     * @return the direction of the current request, ltr or rtl, see {@link #isRTL()}
+     */
+    @Function(name = "dir", description = "Gets the direction of the current request, ltr or rtl: the one chosen by the user "
+            + "(primefaces.THEME_CONFIGURATOR) or primefaces.DIR.")
+    public static String currentDir() {
+        return getCurrentInstance().isRTL() ? "rtl" : "ltr";
+    }
+
+    public boolean isRTL() {
+        if (rtl == null) {
+            String chosen = getThemeConfiguratorCookie(Constants.Cookies.DIR);
+            if ("ltr".equals(chosen) || "rtl".equals(chosen)) {
+                rtl = "rtl".equals(chosen);
+            }
+            else {
+                String param = context.getExternalContext().getInitParameter(Constants.ContextParams.DIRECTION);
+                if (param == null) {
+                    rtl = false;
+                }
+                else {
+                    String expressionValue = context.getApplication().evaluateExpressionGet(context, param, String.class);
+
+                    rtl = "rtl".equalsIgnoreCase(expressionValue);
+                }
             }
         }
 
@@ -313,6 +369,14 @@ public class PrimeRequestContext {
         }
 
         return hideResourceVersion;
+    }
+
+    private String getThemeConfiguratorCookie(String name) {
+        if (!getApplicationContext().getConfig().isThemeConfiguratorEnabled()) {
+            return null;
+        }
+        Object cookie = context.getExternalContext().getRequestCookieMap().get(name);
+        return cookie instanceof Cookie servletCookie ? servletCookie.getValue() : null;
     }
 
     private boolean evalBooleanExpression(String param, boolean defaultValueIfNull) {

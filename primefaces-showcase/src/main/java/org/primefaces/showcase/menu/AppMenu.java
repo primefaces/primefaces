@@ -93,6 +93,7 @@ public class AppMenu {
         coreMenuItems.add(new MenuItem("PrimeIcons", "/icons"));
         coreMenuItems.add(new MenuItem("Theming", "/theming", "New"));
         coreMenuItems.add(new MenuItem("Theming Tokens", "/theming/tokens", "New"));
+        coreMenuItems.add(new MenuItem("Theme Configurator", "/theming/configurator", "New"));
         menuCategories.add(new MenuCategory("Core", coreMenuItems));
         //CORE FRAMEWORK CATEGORY END
 

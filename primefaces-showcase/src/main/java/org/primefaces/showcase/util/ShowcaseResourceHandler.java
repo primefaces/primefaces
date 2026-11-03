@@ -33,7 +33,7 @@ import jakarta.faces.application.ResourceHandlerWrapper;
 /**
  * Appends the resource version of PrimeFaces ({@code v=}, for a SNAPSHOT plus the startup time) to the URLs of all
  * other resources too (showcase, theming, webjars, ...), so browsers don't keep serving an old layout.css or
- * configurator.js from their cache after a redeploy. The primefaces* libraries are versioned by PrimeFaces itself.
+ * scheme.js from their cache after a redeploy. The primefaces* libraries are versioned by PrimeFaces itself.
  */
 public class ShowcaseResourceHandler extends ResourceHandlerWrapper {
 

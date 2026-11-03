@@ -46,6 +46,7 @@ public class PrimeConfiguration {
     private final boolean resetValuesEnabled;
     private final boolean interpretEmptyStringAsNull;
     private final String theme;
+    private final boolean themeConfiguratorEnabled;
     private final boolean primeIconsEnabled;
     private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
@@ -98,6 +99,9 @@ public class PrimeConfiguration {
         clientSideValidationEnabled = Boolean.parseBoolean(value);
 
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.THEME_CONFIGURATOR);
+        themeConfiguratorEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.PRIME_ICONS);
         primeIconsEnabled = Boolean.parseBoolean(Objects.toString(value, "true"));
@@ -232,6 +236,10 @@ public class PrimeConfiguration {
 
     public String getTheme() {
         return theme;
+    }
+
+    public boolean isThemeConfiguratorEnabled() {
+        return themeConfiguratorEnabled;
     }
 
     public boolean isPrimeIconsEnabled() {

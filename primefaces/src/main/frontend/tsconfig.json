@@ -50,6 +50,8 @@
         { "path": "./packages/stack/stack" },
         { "path": "./packages/terminal/terminal" },
         { "path": "./packages/texteditor/texteditor" },
+        { "path": "./packages/theme" },
+        { "path": "./packages/themeconfigurator/themeconfigurator" },
         { "path": "./packages/timeline/timeline" },
         { "path": "./packages/touch/touchswipe" },
         { "path": "./packages/tristatemanycheckbox/tristatemanycheckbox" },

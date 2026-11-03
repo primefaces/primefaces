@@ -303,6 +303,57 @@ class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
+    void noMoveIncludeScript() throws IOException {
+        writer.startElement("head", null);
+
+        writer.startElement("script", null);
+        writer.writeURIAttribute("src", "theme.js", null);
+        writer.writeAttribute(MoveScriptsToBottomResponseWriter.NO_MOVE_ATTRIBUTE, "true", null);
+        writer.endElement("script");
+
+        writer.startElement("link", null);
+
+        // written in place, before the next element, without the marker
+        InOrder inOrder = inOrder(wrappedWriter);
+        inOrder.verify(wrappedWriter).startElement("script", null);
+        inOrder.verify(wrappedWriter).writeAttribute("src", "theme.js", null);
+        inOrder.verify(wrappedWriter).endElement("script");
+        inOrder.verify(wrappedWriter).startElement("link", null);
+        verify(wrappedWriter, never()).writeAttribute(eq(MoveScriptsToBottomResponseWriter.NO_MOVE_ATTRIBUTE), any(), any());
+        verify(wrappedWriter, never()).writeAttribute(eq("defer"), any(), any());
+
+        assertTrue(state.getIncludes().isEmpty());
+        assertTrue(state.getInlines().isEmpty());
+    }
+
+    @Test
+    void noMoveInlineScript() throws IOException {
+        writer.startElement("head", null);
+
+        writer.startElement("script", null);
+        writer.writeAttribute(MoveScriptsToBottomResponseWriter.NO_MOVE_ATTRIBUTE, "", null);
+        writer.writeText("early", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        writer.writeText("late", null);
+        writer.endElement("script");
+
+        verify(wrappedWriter).startElement("script", null);
+        verify(wrappedWriter).write("early");
+        verify(wrappedWriter).endElement("script");
+        assertEquals(1, state.getInlines().get("text/javascript").size());
+
+        writer.startElement("body", null);
+        writer.endElement("body");
+
+        // only the unmarked one is moved to the bottom
+        verify(wrappedWriter, times(2)).startElement("script", null);
+        verify(wrappedWriter).write(contains("late"));
+        verify(wrappedWriter, never()).write(matches("(?s).*early.*late.*"));
+    }
+
+    @Test
     void duplicateHtmlElements() throws IOException {
         writer.startElement("HTML", null);
         verify(wrappedWriter).startElement("HTML", null);
