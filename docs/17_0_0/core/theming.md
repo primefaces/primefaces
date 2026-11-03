@@ -9,7 +9,7 @@ Six themes are built in:
 - **Aura**
 - **Lara**
 - **Nora**
-- **Material**: Material Design 3, surfaces tinted by the primary color, pill buttons, state layers
+- **Material**: Material Design 3, surfaces tinted by the primary color (light mode), pill buttons, state layers
 - **Metal**: graphite and brushed aluminium (light), black metal (dark)
 - **Glass**: Apple Liquid Glass style, translucent overlays, menus, bars and buttons over a calm content layer
 

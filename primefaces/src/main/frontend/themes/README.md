@@ -120,7 +120,8 @@ primefaces/src/main/frontend/
   follow the global focus ring in all presets).
 - All tokens follow the PrimeUIX naming (`--p-<component>-<section>-<token>`), reference other tokens instead of literal
   colors and live in the block of their component, in all presets.
-- Differences to PrimeUIX: the primary palette 50-950 is derived from `--p-primary-base` via `color-mix(in oklch)`,
+- Differences to PrimeUIX: the surfaces are slate in dark mode too (PrimeUIX: zinc), like the PrimeReact / PrimeVue
+  showcases; the primary palette 50-950 is derived from `--p-primary-base` via `color-mix(in oklch)`,
   `--p-primary-contrast-color` is computed from the primary color, every semantic/component token is declared on
   `:root, [data-p-scope]`. The build (`scopedTokensPlugin` in `bundle.mjs`) splits these blocks: tokens with a literal
   value go to `:root` only and inherit into scopes (density, application overrides on `:root`), tokens that reference
@@ -158,9 +159,10 @@ The build (`yarn run build:bundle`, run by Maven through `frontend-maven-plugin`
   feel" below), its tokens are added in all presets; PrimeUIX 3.0.1 is the reference for names and values.
 - **Material** (`themes/presets/material.css`, started from Aura; PrimeUIX Material is Material Design 2, this preset
   follows Material Design 3):
-  - Dynamic color: the surfaces (`--p-surface-0` - `950`, slightly tinted neutrals), the highlight and the tonal
-    (secondary) button are tones of `--p-primary-base` (`oklch(from var(--p-primary-base) L C h)`), so a primary color
-    (also in a scope) re-tints the whole theme like Material You. Baseline purple `#6750a4`, in dark mode the primary
+  - Dynamic color: the surfaces in light mode (`--p-surface-0` - `950`, slightly tinted neutrals; slate in dark mode
+    like the other presets), the highlight and the tonal (secondary) button are tones of `--p-primary-base`
+    (`oklch(from var(--p-primary-base) L C h)`), so a primary color (also in a scope) re-tints the whole theme like
+    Material You. Baseline purple `#6750a4`, in dark mode the primary
     color is the light tone (primary-200) with dark text on it.
   - State layers: hover / pressed of buttons, list options and menu items are the content color at 8% / 12% over the
     container (`color-mix(in srgb, <content> 8%, transparent)`), so they work on any surface.
