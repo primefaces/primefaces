@@ -216,6 +216,7 @@ async function createFrontendBuildTask(project) {
             entryPoints: [project.indexScript],
             outfile: `${targetPath}.js`,
         };
+        buildOptions.plugins.unshift(projectVersionPlugin());
         // Replace imports with window globals, e.g. <import "jquery"> with <window.$>
         if (buildSettings.loadFromExpression !== undefined) {
             buildOptions.plugins.push(loadFromExpressionPlugin({
@@ -260,6 +261,28 @@ async function createLocaleBuildTasks() {
             outfile: toPath,
         };
     });
+}
+
+/**
+ * Replaces the `${project.version}` placeholder in the core sources (`PrimeFaces.VERSION`) with the version passed
+ * by Maven via the `PRIMEFACES_VERSION` environment variable. The bundles are written to `target/generated-resources`,
+ * which Maven does not filter.
+ * @returns {import("esbuild").Plugin}
+ */
+function projectVersionPlugin() {
+    const version = process.env.PRIMEFACES_VERSION;
+    return {
+        name: "primefaces-project-version",
+        setup(build) {
+            if (!version) {
+                return;
+            }
+            build.onLoad({ filter: /[\\/]packages[\\/]core[\\/]src[\\/]core[\\/]core\.ts$/ }, async args => ({
+                contents: (await fs.readFile(args.path, "utf8")).replaceAll("${project.version}", version),
+                loader: "ts",
+            }));
+        },
+    };
 }
 
 /**
