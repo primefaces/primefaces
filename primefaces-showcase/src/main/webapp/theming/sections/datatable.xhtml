@@ -52,7 +52,7 @@
         <div class="demo-card">
             <h2>DataTable: row expansion and editing</h2>
             <p:dataTable var="product" value="#{themingDataTableView.products}" rowKey="#{product.code}" editable="true"
-                         stripedRows="true" size="small">
+                         stripedRows="true">
                 <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update=":datatableForm:msgs"/>
                 <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":datatableForm:msgs"/>
                 <p:column style="width: 3rem" ariaHeaderText="Row Toggler">
