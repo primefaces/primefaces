@@ -605,6 +605,7 @@
                             <arguments>run build:bundle</arguments>
                             <environmentVariables>
                                 <NODE_ENV>${frontend.node.env}</NODE_ENV>
+                                <PRIMEFACES_VERSION>${project.version}</PRIMEFACES_VERSION>
                             </environmentVariables>
                         </configuration>
                     </execution>

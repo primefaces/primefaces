@@ -221,7 +221,7 @@ async function createFrontendBuildTask(project) {
             outfile: `${targetPath}.js`,
         };
         // CSS comes from index.css only (in the cascade layers of the theme), not from CSS imported by JS dependencies
-        buildOptions.plugins.unshift(ignoreCssImportsPlugin());
+        buildOptions.plugins.unshift(ignoreCssImportsPlugin(), projectVersionPlugin());
         // Replace imports with window globals, e.g. <import "jquery"> with <window.$>
         if (buildSettings.loadFromExpression !== undefined) {
             buildOptions.plugins.push(loadFromExpressionPlugin({
@@ -389,6 +389,28 @@ function ignoreCssImportsPlugin() {
         setup(build) {
             build.onResolve({ filter: /\.css$/ }, args => ({ path: args.path, namespace: "primefaces-ignored-css" }));
             build.onLoad({ filter: /.*/, namespace: "primefaces-ignored-css" }, () => ({ contents: "", loader: "empty" }));
+        },
+    };
+}
+
+/**
+ * Replaces the `${project.version}` placeholder in the core sources (`PrimeFaces.VERSION`) with the version passed
+ * by Maven via the `PRIMEFACES_VERSION` environment variable. The bundles are written to `target/generated-resources`,
+ * which Maven does not filter.
+ * @returns {import("esbuild").Plugin}
+ */
+function projectVersionPlugin() {
+    const version = process.env.PRIMEFACES_VERSION;
+    return {
+        name: "primefaces-project-version",
+        setup(build) {
+            if (!version) {
+                return;
+            }
+            build.onLoad({ filter: /[\\/]packages[\\/]core[\\/]src[\\/]core[\\/]core\.ts$/ }, async args => ({
+                contents: (await fs.readFile(args.path, "utf8")).replaceAll("${project.version}", version),
+                loader: "ts",
+            }));
         },
     };
 }
