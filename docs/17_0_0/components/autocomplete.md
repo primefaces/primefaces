@@ -318,15 +318,8 @@ Following is the list of structural style classes;
 | .p-autocomplete-query | Highlighted part in suggestions. |
 | .p-state-loading | Container element; while search queries are executed. |
 
-When columns are used, the suggestions are rendered as a table and the _advancedStyleClass_ attribute
-applies to that table element. Themes provide the following generic modifier classes for it;
-
-| Class | Applies |
-| --- | --- |
-| .p-table-gridlines | Displays cell borders. |
-| .p-table-striped | Displays striped rows to visually separate content. |
-| .p-table-sm | Renders the cells with reduced padding. |
-| .p-table-lg | Renders the cells with increased padding. |
+With _p:column_ children the suggestions are a table; _panelStyleClass_ accepts the table variants
+`p-table-gridlines` (cell borders), `p-table-striped` (striped rows), `p-table-sm` and `p-table-lg` (cell padding).
 
 As skinning style classes are global, see the main theming section for more information.
 

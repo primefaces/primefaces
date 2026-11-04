@@ -27,6 +27,7 @@
 @import url("./src/forms/checkbox.css") layer(primefaces.components);
 @import url("./src/forms/inputfield.css") layer(primefaces.components);
 @import url("./src/forms/inputgroup.css") layer(primefaces.components);
+@import url("./src/base/itemtable.css") layer(primefaces.components);
 @import url("./src/menu/menu.base.css") layer(primefaces.components);
 @import url("./src/paginator/paginator.css") layer(primefaces.components);
 @import url("./src/forms/radiobutton.css") layer(primefaces.components);

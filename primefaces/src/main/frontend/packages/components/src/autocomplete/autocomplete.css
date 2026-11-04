@@ -5,7 +5,8 @@
  * The dropdown is a .p-button: it only remaps the private --_* button variables to the autocomplete dropdown tokens.
  * Supported classes: p-autocomplete-dd, p-autocomplete-multiple, p-state-loading (on .p-autocomplete),
  *                    p-state-highlight (focused item), p-state-disabled
- * Table (p:column children, advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm, p-table-lg
+ * Table (p:column children), panelStyleClass: p-table-gridlines, p-table-striped, p-table-sm, p-table-lg
+ *                                             (base/itemtable.css)
  */
 .p-autocomplete {
     /* the input / multiple container (.p-inputfield) read the inputtext tokens: point them to the autocomplete tokens */
@@ -339,8 +340,13 @@
         margin-top: var(--p-autocomplete-list-gap);
     }
 
-    /* table mode (p:column children) */
+    /* table mode (p:column children); the variants of base/itemtable.css set --_table-gridlines and
+       --_table-(header-)cell-padding, the sizes are the autocomplete ones (header and body share one token) */
     .p-autocomplete-table {
+        --_table-cell-sm-padding: var(--p-autocomplete-table-cell-sm-padding);
+        --_table-cell-lg-padding: var(--p-autocomplete-table-cell-lg-padding);
+        --_table-header-cell-sm-padding: var(--p-autocomplete-table-cell-sm-padding);
+        --_table-header-cell-lg-padding: var(--p-autocomplete-table-cell-lg-padding);
         border-collapse: collapse;
         width: 100%;
 
@@ -348,12 +354,14 @@
         td {
             border-style: solid;
             border-color: var(--p-autocomplete-table-cell-border-color);
-            border-width: 0 0 1px 0;
-            padding: var(--p-autocomplete-table-cell-padding);
+            border-width: 0 var(--_table-gridlines, 0) 1px var(--_table-gridlines, 0);
+            padding: var(--_table-cell-padding, var(--p-autocomplete-table-cell-padding));
             text-align: start;
         }
 
         th {
+            border-top-width: var(--_table-gridlines, 0);
+            padding: var(--_table-header-cell-padding, var(--p-autocomplete-table-cell-padding));
             background: var(--p-autocomplete-table-header-cell-background);
             color: var(--p-autocomplete-table-header-cell-color);
             font-weight: var(--p-autocomplete-table-header-cell-font-weight);
@@ -363,41 +371,9 @@
     .p-autocomplete-items .p-autocomplete-item.p-autocomplete-row {
         border-radius: 0;
 
+        /* the last row has no bottom border, unless gridlines close the table */
         &:last-child > td {
-            border-bottom-width: 0;
-        }
-    }
-
-    /* table variants (advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm / -lg */
-    .p-autocomplete-table.p-table-gridlines {
-        th,
-        td {
-            border-width: 1px;
-        }
-    }
-
-    .p-autocomplete-table.p-table-striped > tbody
-        > tr.p-autocomplete-row:nth-child(even of .p-autocomplete-row):not(.p-state-highlight) {
-        background: var(--p-datatable-row-striped-background);
-    }
-
-    .p-autocomplete-table.p-table-sm {
-        > thead > tr > th {
-            padding: var(--p-datatable-header-cell-sm-padding);
-        }
-
-        > tbody > tr.p-autocomplete-row > td {
-            padding: var(--p-datatable-body-cell-sm-padding);
-        }
-    }
-
-    .p-autocomplete-table.p-table-lg {
-        > thead > tr > th {
-            padding: var(--p-datatable-header-cell-lg-padding);
-        }
-
-        > tbody > tr.p-autocomplete-row > td {
-            padding: var(--p-datatable-body-cell-lg-padding);
+            border-bottom-width: var(--_table-gridlines, 0);
         }
     }
 

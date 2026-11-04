@@ -1,0 +1,35 @@
+/*
+ * Item table variants: the table of p:column children of p:autoComplete, p:selectOneMenu (panelStyleClass, the panel
+ * contains the table) and p:selectOneListbox, p:selectManyMenu (styleClass, the root contains the table).
+ *
+ * Supported classes: p-table-gridlines (cell borders; p:selectOneMenu always has them),
+ *                    p-table-striped (striped rows; p:selectOneListbox / p:selectManyMenu use p-listbox-striped),
+ *                    p-table-sm, p-table-lg (cell padding)
+ *
+ * Gridlines and sizes only set private variables, which the component CSS reads on its cells:
+ *   --_table-gridlines                    border width of the gridlines (unset: the component's own borders)
+ *   --_table-cell-padding                 body cell padding (unset: the regular padding of the component)
+ *   --_table-header-cell-padding          header cell padding
+ * The component maps the sizes to its own tokens on the table (--_table-cell-sm-padding, --_table-cell-lg-padding,
+ * --_table-header-cell-sm-padding, --_table-header-cell-lg-padding), so a size is relative to the regular cell.
+ * A variant so never competes with the rules of the component (row states, the last row without bottom border).
+ */
+.p-table-gridlines :is(.p-autocomplete-table, table.p-selectlistbox-list) {
+    --_table-gridlines: 1px;
+}
+
+.p-table-sm :is(.p-autocomplete-table, .p-selectonemenu-table, table.p-selectlistbox-list) {
+    --_table-cell-padding: var(--_table-cell-sm-padding);
+    --_table-header-cell-padding: var(--_table-header-cell-sm-padding);
+}
+
+.p-table-lg :is(.p-autocomplete-table, .p-selectonemenu-table, table.p-selectlistbox-list) {
+    --_table-cell-padding: var(--_table-cell-lg-padding);
+    --_table-header-cell-padding: var(--_table-header-cell-lg-padding);
+}
+
+/* striped: :nth-child because the panels are rebuilt on the client; rows with a state keep their own background */
+.p-table-striped :is(.p-autocomplete-table, .p-selectonemenu-table) > tbody
+    > tr:nth-child(even of .p-autocomplete-row, .p-selectonemenu-row):not(.p-state-hover, .p-state-focus, .p-state-highlight) {
+    background: var(--p-datatable-row-striped-background);
+}

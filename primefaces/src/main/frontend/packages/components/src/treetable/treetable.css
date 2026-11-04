@@ -498,8 +498,7 @@
     }
 
     /* striped: :nth-child because expanding / collapsing a node adds and removes rows on the client */
-    &.p-treetable-striped .p-treetable-data
-        > tr:nth-child(even of :not(.p-expanded-row-content)):not(.p-state-hover, .p-state-highlight) {
+    &.p-treetable-striped .p-treetable-data > tr:nth-child(even):not(.p-state-hover, .p-state-highlight) {
         background: var(--p-datatable-row-striped-background);
     }
 

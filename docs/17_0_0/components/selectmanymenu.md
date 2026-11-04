@@ -57,12 +57,5 @@ structural style classes;
 .p-selectmanymenu | Main container element.
 .p-selectlistbox-item | Each item in list.
 
-When columns are used, the items are rendered as a table and the _advancedStyleClass_ attribute applies
-to that table element. Themes provide the following generic modifier classes for it;
-
-| Class | Applies |
-| --- | --- |
-| .p-table-gridlines | Displays cell borders. |
-| .p-table-striped | Displays striped rows to visually separate content. |
-| .p-table-sm | Renders the cells with reduced padding. |
-| .p-table-lg | Renders the cells with increased padding. |
+With _p:column_ children the items are a table; _styleClass_ accepts the table variants `p-table-gridlines`
+(cell borders), `p-table-sm` and `p-table-lg` (cell padding); `p-listbox-striped` stripes the rows.

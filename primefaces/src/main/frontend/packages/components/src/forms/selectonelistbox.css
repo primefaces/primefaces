@@ -6,7 +6,8 @@
  *                    p-listbox-striped, p-listbox-checkmark (styleClass)
  * Items: p-state-hover, p-state-highlight (selected), p-listbox-outline (keyboard focus)
  * Variants: filter, showCheckbox (p:selectManyMenu), custom content (table with p:column children)
- * Table (p:column children, advancedStyleClass): p-table-gridlines, p-table-striped, p-table-sm, p-table-lg
+ * Table (p:column children), styleClass: p-table-gridlines, p-table-sm, p-table-lg (base/itemtable.css);
+ *                                        striped rows: p-listbox-striped
  */
 .p-selectonelistbox,
 .p-selectmanymenu {
@@ -96,7 +97,11 @@
         padding: 0;
     }
 
+    /* table (p:column children): the variants of base/itemtable.css set --_table-gridlines and --_table-cell-padding,
+       the sizes are the DataTable ones; striped is p-listbox-striped */
     table.p-selectlistbox-list {
+        --_table-cell-sm-padding: var(--p-datatable-body-cell-sm-padding);
+        --_table-cell-lg-padding: var(--p-datatable-body-cell-lg-padding);
         border-collapse: collapse;
         width: 100%;
     }
@@ -141,7 +146,8 @@
         }
 
         > td {
-            padding: var(--p-datatable-body-cell-padding);
+            padding: var(--_table-cell-padding, var(--p-datatable-body-cell-padding));
+            border: var(--_table-gridlines, 0) solid var(--p-datatable-body-cell-border-color);
         }
     }
 
@@ -149,25 +155,6 @@
     &.p-listbox-striped .p-selectlistbox-listcontainer .p-selectlistbox-list
         .p-selectlistbox-item:nth-child(even of .p-selectlistbox-item):not(.p-state-hover, .p-state-highlight, .p-listbox-outline) {
         background: var(--p-listbox-option-striped-background);
-    }
-
-    /* table variants (advancedStyleClass on the table of p:column children): p-table-gridlines, p-table-striped,
-       p-table-sm / -lg */
-    table.p-selectlistbox-list.p-table-gridlines > tbody > tr.p-selectlistbox-item > td {
-        border: 1px solid var(--p-datatable-body-cell-border-color);
-    }
-
-    table.p-selectlistbox-list.p-table-striped > tbody
-        > tr.p-selectlistbox-item:nth-child(even of .p-selectlistbox-item):not(.p-state-hover, .p-state-highlight, .p-listbox-outline) {
-        background: var(--p-datatable-row-striped-background);
-    }
-
-    table.p-selectlistbox-list.p-table-sm > tbody > tr.p-selectlistbox-item > td {
-        padding: var(--p-datatable-body-cell-sm-padding);
-    }
-
-    table.p-selectlistbox-list.p-table-lg > tbody > tr.p-selectlistbox-item > td {
-        padding: var(--p-datatable-body-cell-lg-padding);
     }
 
     /*

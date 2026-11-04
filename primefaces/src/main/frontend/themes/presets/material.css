@@ -584,6 +584,8 @@
         --p-autocomplete-more-text-color: var(--p-text-muted-color);
         --p-autocomplete-more-text-font-weight: var(--p-autocomplete-option-group-font-weight);
         --p-autocomplete-table-cell-padding: var(--p-autocomplete-option-padding);
+        --p-autocomplete-table-cell-sm-padding: 0.313rem 0.5rem;
+        --p-autocomplete-table-cell-lg-padding: 0.938rem 1.5rem;
         --p-autocomplete-table-cell-border-color: var(--p-content-border-color);
         --p-autocomplete-table-header-cell-background: var(--p-autocomplete-option-group-background);
         --p-autocomplete-table-header-cell-color: var(--p-autocomplete-option-group-color);
