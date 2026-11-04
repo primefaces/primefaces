@@ -223,8 +223,10 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
                 normalize = this.cfg.filterNormalize,
                 filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
+        // the filtered out items also get p-hidden: p-rows-striped counts the visible items only (CSS :nth-child of S)
         if(filterValue === '') {
             this.allItems.filter(':hidden').show();
+            this.allItems.removeClass('p-hidden');
         }
         else {
             for(var i = 0; i < this.options.length; i++) {
@@ -233,9 +235,9 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
                 item = this.allItems.eq(i);
 
                 if(this.filterMatcher(itemLabel, filterValue))
-                    item.show();
+                    item.removeClass('p-hidden').show();
                 else
-                    item.hide();
+                    item.addClass('p-hidden').hide();
             }
         }
     }

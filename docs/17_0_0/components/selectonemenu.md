@@ -122,5 +122,5 @@ structural style classes;
 .p-selectonemenu-rtl | When RTL direction is set
 .p-selectonemenu-footer | Style applied to footer facet
 
-With _p:column_ children the items are a table with cell borders; _panelStyleClass_ accepts the table variants
-`p-table-striped` (striped rows), `p-table-sm` and `p-table-lg` (cell padding).
+Rows: _panelStyleClass_ accepts `p-rows-striped` (striped rows), with _p:column_ children also `p-rows-gridlines`
+(cell borders), `p-rows-sm` and `p-rows-lg` (cell padding); the cells always have borders, so `p-rows-gridlines` has no effect. See the [theming](/core/theming.md) variants.

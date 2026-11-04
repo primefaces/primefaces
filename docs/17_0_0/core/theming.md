@@ -463,7 +463,8 @@ Some variants are selected with a style class (`styleClass`, `panelStyleClass`):
 | `p-chkbox-sm` / `-lg`, `p-radiobutton-sm` / `-lg` | the checkbox / radio or any ancestor (e.g. `p:selectManyCheckbox`) | small / large boxes |
 | `p-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
 | `p-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
-| `p-listbox-checkmark`, `p-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
+| `p-listbox-checkmark` | p:selectOneListbox / p:selectManyMenu | check in front of selected options |
+| `p-rows-striped`, `p-rows-gridlines`, `p-rows-sm` / `-lg` | p:selectOneListbox / p:selectManyMenu `styleClass`, p:selectOneMenu / p:autoComplete `panelStyleClass` (`components/src/base/rows.css`) | striped rows (list and table mode) / cell borders, small / large cells (table mode with `p:column` children; p:selectOneMenu cells always have borders) |
 | `p-message-outlined`, `p-message-simple`, `p-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
 | `severity="secondary"` / `"contrast"` | p:staticMessage | additional severities |
 | `p-tag-contrast`, `p-badge-contrast` | p:tag, p:badge | contrast severity (also with `outlined` / `rounded`) |

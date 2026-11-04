@@ -8,8 +8,8 @@
  * Panel items: p-state-hover (mouse and keyboard), p-state-focus (keyboard with selectOnFocus="false"),
  *              p-state-highlight (selected)
  * Variants: editable (input label), filter, groups, custom content (table with columns), footer facet
- * Table (p:column children), panelStyleClass: p-table-striped, p-table-sm, p-table-lg (base/itemtable.css);
- *                                             the cells always have gridlines
+ * Rows (panelStyleClass, base/rows.css): p-rows-striped; table mode (p:column children): p-rows-sm, p-rows-lg
+ *                                         (the cells always have gridlines, p-rows-gridlines has no effect)
  */
 .p-selectonemenu {
     display: inline-block;
@@ -274,7 +274,7 @@
         white-space: nowrap;
     }
 
-    /* table (p:column children): the cells always have gridlines; the variants of base/itemtable.css set
+    /* table (p:column children): the cells always have gridlines; the p-rows-* variants of base/rows.css set
        --_table-(header-)cell-padding, the sizes are the DataTable ones */
     .p-selectonemenu-table {
         --_table-cell-sm-padding: var(--p-datatable-body-cell-sm-padding);

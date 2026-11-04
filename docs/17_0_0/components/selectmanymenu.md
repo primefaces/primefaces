@@ -57,5 +57,5 @@ structural style classes;
 .p-selectmanymenu | Main container element.
 .p-selectlistbox-item | Each item in list.
 
-With _p:column_ children the items are a table; _styleClass_ accepts the table variants `p-table-gridlines`
-(cell borders), `p-table-sm` and `p-table-lg` (cell padding); `p-listbox-striped` stripes the rows.
+Rows: _styleClass_ accepts `p-rows-striped` (striped rows), with _p:column_ children also `p-rows-gridlines`
+(cell borders), `p-rows-sm` and `p-rows-lg` (cell padding). See the [theming](/core/theming.md) variants.

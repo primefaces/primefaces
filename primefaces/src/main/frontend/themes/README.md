@@ -367,8 +367,8 @@ Variants other UI frameworks have, done in CSS only: the application selects the
 | `p-chkbox-sm` / `-lg`, `p-radiobutton-sm` / `-lg` | the checkbox / radio or any ancestor (e.g. `p:selectManyCheckbox`) | small / large boxes |
 | `p-badge-sm` | p:badge | small badge (`size` has large / xlarge) |
 | `p-select-checkmark` | p:selectOneMenu `panelStyleClass` | check in front of the selected option |
-| `p-listbox-checkmark`, `p-listbox-striped` | p:selectOneListbox / p:selectManyMenu | check in front of selected options / striped options |
-| `p-table-gridlines`, `p-table-striped`, `p-table-sm` / `-lg` | the table of `p:column` children: p:autoComplete / p:selectOneMenu `panelStyleClass`, p:selectOneListbox / p:selectManyMenu `styleClass` (`components/src/base/itemtable.css`) | cell borders (p:selectOneMenu always has them) / striped rows (p:selectOneListbox / p:selectManyMenu: `p-listbox-striped`) / small / large cells |
+| `p-listbox-checkmark` | p:selectOneListbox / p:selectManyMenu | check in front of selected options |
+| `p-rows-striped`, `p-rows-gridlines`, `p-rows-sm` / `-lg` | p:selectOneListbox / p:selectManyMenu `styleClass`, p:selectOneMenu / p:autoComplete `panelStyleClass` (`components/src/base/rows.css`) | striped rows (list and table mode) / cell borders, small / large cells (table mode with `p:column` children; p:selectOneMenu cells always have borders) |
 | `p-message-outlined`, `p-message-simple`, `p-message-sm` / `-lg` | p:message, p:messages, p:staticMessage | outlined (border, no background) / simple (text only) / sizes; combinable |
 | `p-growl-outlined`, `p-growl-simple` | the growl container (`div.p-growl`, appended to the body) or an ancestor (`h:body`); p:growl has no `styleClass` yet, so per growl: `PF('growl').jq.addClass(...)` | outlined (overlay background, colored border and title) / simple (no border, no severity tint, colored title; keeps the overlay background and shadow, as the growl floats over content) |
 | `severity="secondary"` / `"contrast"` | p:staticMessage | additional severities |

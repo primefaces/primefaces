@@ -499,7 +499,7 @@
 
     /* striped: :nth-child because expanding / collapsing a node adds and removes rows on the client */
     &.p-treetable-striped .p-treetable-data > tr:nth-child(even):not(.p-state-hover, .p-state-highlight) {
-        background: var(--p-datatable-row-striped-background);
+        background: var(--p-treetable-row-striped-background);
     }
 
     /* sizes */

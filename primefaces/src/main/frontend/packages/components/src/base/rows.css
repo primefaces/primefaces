@@ -1,0 +1,57 @@
+/*
+ * Row variants of the components whose items are rows: p:selectOneListbox, p:selectManyMenu (styleClass, the root
+ * contains the items) and p:selectOneMenu, p:autoComplete (panelStyleClass, the panel contains the items).
+ *
+ * Supported classes: p-rows-striped (striped rows; list mode and table mode of p:column children),
+ *                    p-rows-gridlines (cell borders; table mode, p:selectOneMenu always has them),
+ *                    p-rows-sm, p-rows-lg (cell padding; table mode)
+ *
+ * Gridlines and sizes only set private variables, which the component CSS reads on its cells:
+ *   --_table-gridlines                    border width of the gridlines (unset: the component's own borders)
+ *   --_table-cell-padding                 body cell padding (unset: the regular padding of the component)
+ *   --_table-header-cell-padding          header cell padding
+ * The component maps the sizes to its own tokens on the table (--_table-cell-sm-padding, --_table-cell-lg-padding,
+ * --_table-header-cell-sm-padding, --_table-header-cell-lg-padding), so a size is relative to the regular cell.
+ * A variant so never competes with the rules of the component (row states, the last row without bottom border).
+ */
+.p-rows-gridlines :is(.p-autocomplete-table, table.p-selectlistbox-list) {
+    --_table-gridlines: 1px;
+}
+
+.p-rows-sm :is(.p-autocomplete-table, .p-selectonemenu-table, table.p-selectlistbox-list) {
+    --_table-cell-padding: var(--_table-cell-sm-padding);
+    --_table-header-cell-padding: var(--_table-header-cell-sm-padding);
+}
+
+.p-rows-lg :is(.p-autocomplete-table, .p-selectonemenu-table, table.p-selectlistbox-list) {
+    --_table-cell-padding: var(--_table-cell-lg-padding);
+    --_table-header-cell-padding: var(--_table-header-cell-lg-padding);
+}
+
+/*
+ * striped: every second visible item. The filters of p:selectOneMenu / p:selectOneListbox / p:selectManyMenu hide the
+ * items they filter out with p-hidden, which "of S" skips; group headers and the moreText row of p:autoComplete are no
+ * items. Items with a state (hover, keyboard focus, selected) keep their own background.
+ * List mode uses the option token of the component, table mode the DataTable row token.
+ */
+.p-rows-striped {
+    li.p-selectlistbox-item:nth-child(even of .p-selectlistbox-item:not(.p-hidden)):not(.p-state-hover,
+        .p-state-highlight, .p-listbox-outline, :focus-visible) {
+        background: var(--p-listbox-option-striped-background);
+    }
+
+    li.p-selectonemenu-item:nth-child(even of .p-selectonemenu-item:not(.p-hidden)):not(.p-state-hover,
+        .p-state-focus, .p-state-highlight) {
+        background: var(--p-select-option-striped-background);
+    }
+
+    li.p-autocomplete-list-item:nth-child(even of .p-autocomplete-list-item):not(.p-state-highlight) {
+        background: var(--p-autocomplete-option-striped-background);
+    }
+
+    :is(tr.p-selectlistbox-item, tr.p-selectonemenu-row, tr.p-autocomplete-row):nth-child(even of :is(.p-selectlistbox-item,
+        .p-selectonemenu-row, .p-autocomplete-row):not(.p-hidden)):not(.p-state-hover, .p-state-focus, .p-state-highlight,
+        .p-listbox-outline, :focus-visible) {
+        background: var(--p-datatable-row-striped-background);
+    }
+}

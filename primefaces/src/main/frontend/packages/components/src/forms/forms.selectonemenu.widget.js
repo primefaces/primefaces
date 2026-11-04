@@ -1394,8 +1394,10 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 normalize = this.cfg.filterNormalize,
                 filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
+        // the filtered out items also get p-hidden: p-rows-striped counts the visible items only (CSS :nth-child of S)
         if(filterValue === '') {
             this.items.filter(':hidden').show();
+            this.items.removeClass('p-hidden');
             this.itemsContainer.find('li.p-selectonemenu-item-group').show();
         }
         else {
@@ -1425,8 +1427,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 }
             }
 
-            $.each(hide, function(i, o) { o.hide(); });
-            $.each(show, function(i, o) { o.show(); });
+            $.each(hide, function(i, o) { o.addClass('p-hidden').hide(); });
+            $.each(show, function(i, o) { o.removeClass('p-hidden').show(); });
             hide = [];
             show = [];
 
