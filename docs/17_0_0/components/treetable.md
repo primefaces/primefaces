@@ -128,5 +128,7 @@ Following is the list of structural style classes;
 .p-treetable | Main container element.
 .p-treetable-header | Header of treetable.
 .p-treetable-data | Body element of the table containing data
+.p-treetable-gridlines | Main container element; when showGridlines is enabled.
+.p-treetable-striped | Main container element; when stripedRows is enabled.
 
 As skinning style classes are global, see the main theming section for more information.

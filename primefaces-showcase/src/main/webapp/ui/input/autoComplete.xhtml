@@ -111,7 +111,8 @@
                         <p:autoComplete id="countryCustom" value="#{autoCompleteView.country2}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
                                         var="country" itemLabel="#{country.name}" itemValue="#{country}"
-                                        converter="#{countryConverter}" forceSelection="true" scrollHeight="250">
+                                        converter="#{countryConverter}" forceSelection="true" scrollHeight="250"
+                                        panelStyleClass="p-rows-gridlines p-rows-sm">
                             <p:column>
                                 <span class="flag flag-#{country.code}" style="width: 30px; height: 20px"/>
                                 <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{country.name}"/>

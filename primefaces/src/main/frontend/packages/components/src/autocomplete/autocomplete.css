@@ -5,6 +5,8 @@
  * The dropdown is a .p-button: it only remaps the private --_* button variables to the autocomplete dropdown tokens.
  * Supported classes: p-autocomplete-dd, p-autocomplete-multiple, p-state-loading (on .p-autocomplete),
  *                    p-state-highlight (focused item), p-state-disabled
+ * Rows (panelStyleClass, base/rows.css): p-rows-striped; table mode (p:column children): p-rows-gridlines,
+ *                                         p-rows-sm, p-rows-lg
  */
 .p-autocomplete {
     /* the input / multiple container (.p-inputfield) read the inputtext tokens: point them to the autocomplete tokens */
@@ -338,8 +340,13 @@
         margin-top: var(--p-autocomplete-list-gap);
     }
 
-    /* table mode (p:column children) */
+    /* table mode (p:column children); the p-rows-* variants of base/rows.css set --_table-gridlines and
+       --_table-(header-)cell-padding, the sizes are the autocomplete ones (header and body share one token) */
     .p-autocomplete-table {
+        --_table-cell-sm-padding: var(--p-autocomplete-table-cell-sm-padding);
+        --_table-cell-lg-padding: var(--p-autocomplete-table-cell-lg-padding);
+        --_table-header-cell-sm-padding: var(--p-autocomplete-table-cell-sm-padding);
+        --_table-header-cell-lg-padding: var(--p-autocomplete-table-cell-lg-padding);
         border-collapse: collapse;
         width: 100%;
 
@@ -347,12 +354,14 @@
         td {
             border-style: solid;
             border-color: var(--p-autocomplete-table-cell-border-color);
-            border-width: 0 0 1px 0;
-            padding: var(--p-autocomplete-table-cell-padding);
+            border-width: 0 var(--_table-gridlines, 0) 1px var(--_table-gridlines, 0);
+            padding: var(--_table-cell-padding, var(--p-autocomplete-table-cell-padding));
             text-align: start;
         }
 
         th {
+            border-top-width: var(--_table-gridlines, 0);
+            padding: var(--_table-header-cell-padding, var(--p-autocomplete-table-cell-padding));
             background: var(--p-autocomplete-table-header-cell-background);
             color: var(--p-autocomplete-table-header-cell-color);
             font-weight: var(--p-autocomplete-table-header-cell-font-weight);
@@ -362,8 +371,14 @@
     .p-autocomplete-items .p-autocomplete-item.p-autocomplete-row {
         border-radius: 0;
 
+        /* the first row has no top border (there is no thead without a column header) and the last row no bottom
+           border, unless gridlines close the table */
+        &:first-child > td {
+            border-top-width: var(--_table-gridlines, 0);
+        }
+
         &:last-child > td {
-            border-bottom-width: 0;
+            border-bottom-width: var(--_table-gridlines, 0);
         }
     }
 

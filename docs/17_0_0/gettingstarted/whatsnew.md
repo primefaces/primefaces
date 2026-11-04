@@ -23,6 +23,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * `p:calendar` (based on the jQuery UI datepicker) was removed, use [DatePicker](/components/datepicker.md) instead, see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=calendar).
 * Tag
     * Added `outlined` property to display the tag with an outlined style.
+* TreeTable
+    * Added `stripedRows` property to display striped rows, like DataTable.
+* AutoComplete, SelectOneMenu, SelectOneListbox, SelectManyMenu
+    * Row variants `p-rows-striped` (list and table mode), `p-rows-gridlines`, `p-rows-sm` and `p-rows-lg` (table mode with `p:column` children), set with `panelStyleClass` (AutoComplete, SelectOneMenu) or `styleClass` (SelectOneListbox, SelectManyMenu).
 * New components
     * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
     * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.

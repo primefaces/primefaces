@@ -318,6 +318,9 @@ Following is the list of structural style classes;
 | .p-autocomplete-query | Highlighted part in suggestions. |
 | .p-state-loading | Container element; while search queries are executed. |
 
+Rows: _panelStyleClass_ accepts `p-rows-striped` (striped rows), with _p:column_ children also `p-rows-gridlines`
+(cell borders), `p-rows-sm` and `p-rows-lg` (cell padding). See the [theming](/core/theming.md) variants.
+
 As skinning style classes are global, see the main theming section for more information.
 
 ## Tips

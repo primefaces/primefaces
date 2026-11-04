@@ -56,3 +56,6 @@ structural style classes;
 | --- | --- | 
 .p-selectmanymenu | Main container element.
 .p-selectlistbox-item | Each item in list.
+
+Rows: _styleClass_ accepts `p-rows-striped` (striped rows), with _p:column_ children also `p-rows-gridlines`
+(cell borders), `p-rows-sm` and `p-rows-lg` (cell padding). See the [theming](/core/theming.md) variants.

@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">StripedRows</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Striped rows display every second row with a different background; expanding and collapsing a node keeps the stripes in order.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+    <ui:param name="tagName" value="treeTable"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:treeTable value="#{ttBasicView.root}" var="document" stripedRows="true">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

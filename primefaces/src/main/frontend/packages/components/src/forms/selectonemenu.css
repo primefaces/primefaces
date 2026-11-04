@@ -8,6 +8,8 @@
  * Panel items: p-state-hover (mouse and keyboard), p-state-focus (keyboard with selectOnFocus="false"),
  *              p-state-highlight (selected)
  * Variants: editable (input label), filter, groups, custom content (table with columns), footer facet
+ * Rows (panelStyleClass, base/rows.css): p-rows-striped; table mode (p:column children): p-rows-sm, p-rows-lg
+ *                                         (the cells always have gridlines, p-rows-gridlines has no effect)
  */
 .p-selectonemenu {
     display: inline-block;
@@ -272,7 +274,13 @@
         white-space: nowrap;
     }
 
+    /* table (p:column children): the cells always have gridlines; the p-rows-* variants of base/rows.css set
+       --_table-(header-)cell-padding, the sizes are the DataTable ones */
     .p-selectonemenu-table {
+        --_table-cell-sm-padding: var(--p-datatable-body-cell-sm-padding);
+        --_table-cell-lg-padding: var(--p-datatable-body-cell-lg-padding);
+        --_table-header-cell-sm-padding: var(--p-datatable-header-cell-sm-padding);
+        --_table-header-cell-lg-padding: var(--p-datatable-header-cell-lg-padding);
         border-collapse: collapse;
         width: 100%;
 
@@ -295,7 +303,7 @@
             border: 1px solid var(--p-datatable-header-cell-border-color);
             color: var(--p-datatable-header-cell-color);
             font-weight: var(--p-datatable-column-title-font-weight);
-            padding: var(--p-datatable-header-cell-padding);
+            padding: var(--_table-header-cell-padding, var(--p-datatable-header-cell-padding));
         }
     }
 
@@ -320,7 +328,7 @@
         }
 
         &.p-selectonemenu-row > td {
-            padding: var(--p-datatable-body-cell-padding);
+            padding: var(--_table-cell-padding, var(--p-datatable-body-cell-padding));
             border-color: var(--p-datatable-body-cell-border-color);
         }
 
