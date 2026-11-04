@@ -54,12 +54,10 @@ public class PrimeIconsView implements Serializable {
 
     @Serial private static final long serialVersionUID = 1L;
 
-    private List<Icon> iconsPrevious;
     private List<Icon> icons;
 
     @PostConstruct
     public void init() {
-        iconsPrevious = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/6.0.1/selection.json");
         icons = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/7.0.0/selection.json");
         icons.sort(Comparator.comparing(Icon::getName));
     }
@@ -99,10 +97,6 @@ public class PrimeIconsView implements Serializable {
 
     public List<Icon> getIcons() {
         return icons;
-    }
-
-    public boolean isNew(Icon icon) {
-        return !iconsPrevious.contains(icon);
     }
 
     public static class Icon {
