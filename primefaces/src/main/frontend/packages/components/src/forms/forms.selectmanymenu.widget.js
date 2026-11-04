@@ -13,7 +13,9 @@
  * @prop {boolean} [checkboxClick] Whether a checkbox of the select menu was clicked. Reset after the list
  * box was clicked.
  * @prop {JQuery} [checkboxes] DOM elements of the checkboxes, if checkboxes are enabled.
- * 
+ * @prop {JQuery} toggler DOM element of the checkbox that selects or unselects all items, if enabled.
+ * @prop {JQuery} footer DOM element of the footer with the number of selected items, if enabled.
+ *
  * @prop {boolean} cfg.disabled Whether the select many menu is initially disabled.
  * @prop {boolean} cfg.metaKeySelection Whether the meta key (`SHIFT` or `CTRL`) must be held down to select multiple
  * items.
@@ -33,6 +35,9 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         this.allItems.filter('.p-state-highlight').find('> .p-chkbox > .p-chkbox-box').addClass('p-state-active');
         // Checkbox is inside TD element when using custom content
         this.allItems.filter('.p-state-highlight').find('> td > .p-chkbox > .p-chkbox-box').addClass('p-state-active');
+
+        this.footer = this.jq.children('.p-selectmanymenu-footer');
+        this.updateSelectionInfo();
     }
 
     /**
@@ -44,7 +49,29 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         super.bindEvents();
         var $this = this;
 
+        this.toggler = this.jq.find('> .p-selectmanymenu-header > .p-chkbox > .p-chkbox-box').attr('role', 'checkbox');
+
         if (!this.cfg.disabled) {
+            this.toggler.attr('tabindex', '0').on('click.selectManyMenu', function() {
+                if ($(this).hasClass('p-state-active')) {
+                    $this.unselectAll();
+                }
+                else {
+                    $this.selectAll();
+                }
+
+                $this.input.trigger('change');
+            }).on('keydown.selectManyMenu', function(e) {
+                if (e.code === 'Space') {
+                    $(this).trigger('click');
+                    e.preventDefault();
+                }
+            }).on('focus.selectManyMenu', function() {
+                $(this).addClass('p-state-focus');
+            }).on('blur.selectManyMenu', function() {
+                $(this).removeClass('p-state-focus');
+            });
+
             this.items.off().on('click.selectListbox', function(e) {
                 //stop propagation
                 if ($this.checkboxClick) {
@@ -202,7 +229,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         //
         // 1) don't use jquery wrappers
         // 2) don't use existing methods like selectItem
-        var filteredItems = this.items.filter(":visible");
+        var filteredItems = this.items.not('.p-hidden');
 
         for (var i = 0; i < filteredItems.length; i++) {
             var item = filteredItems.eq(i);
@@ -224,9 +251,12 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
             }
         }
 
+        // filtered out and disabled items keep their state
         for (var j = 0; j < this.options.length; j++) {
-            this.options[j].selected = true;
+            this.options[j].selected = this.allItems[j].classList.contains('p-state-highlight');
         }
+
+        this.updateSelectionInfo();
     }
 
     /**
@@ -239,7 +269,7 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         //
         // 1) don't use jquery wrappers
         // 2) don't use existing methods like unselectItem
-        var filteredItems = this.items.filter(":visible");
+        var filteredItems = this.items.not('.p-hidden');
 
         for (var i = 0; i < filteredItems.length; i++) {
             var item = filteredItems.eq(i);
@@ -259,9 +289,12 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
             }
         }
 
+        // filtered out and disabled items keep their state
         for (var j = 0; j < this.options.length; j++) {
-            this.options[j].selected = false;
+            this.options[j].selected = this.allItems[j].classList.contains('p-state-highlight');
         }
+
+        this.updateSelectionInfo();
     }
 
     /**
@@ -275,6 +308,8 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
         if (this.cfg.showCheckbox) {
             this.selectCheckbox(item.find('div.p-chkbox-box'));
         }
+
+        this.updateSelectionInfo();
     }
 
     /**
@@ -287,6 +322,46 @@ PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widge
 
         if (this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.p-chkbox-box'));
+        }
+
+        this.updateSelectionInfo();
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {string} value
+     */
+    filter(value) {
+        super.filter(value);
+        this.updateSelectionInfo();
+    }
+
+    /**
+     * Updates the number of selected items in the footer and the state of the toggle all checkbox, if enabled.
+     * @private
+     */
+    updateSelectionInfo() {
+        if (this.footer.length) {
+            var count = this.input[0].selectedOptions.length;
+            this.footer.text(count ? this.getLabel('selectionMessage').replace('{0}', count) : this.getLabel('emptySelectionMessage'));
+        }
+
+        if (this.toggler.length) {
+            var selectable = this.items.not('.p-hidden'),
+                checked = selectable.length > 0 && selectable.not('.p-state-highlight').length === 0;
+
+            if (checked) {
+                this.selectCheckbox(this.toggler);
+            }
+            else {
+                this.unselectCheckbox(this.toggler);
+            }
+
+            this.toggler.attr({
+                'aria-checked': checked,
+                'aria-label': this.getAriaLabel(checked ? 'selectAll' : 'unselectAll')
+            });
         }
     }
 

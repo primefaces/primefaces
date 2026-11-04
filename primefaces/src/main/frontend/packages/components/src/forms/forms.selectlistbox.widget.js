@@ -110,7 +110,7 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
         });
 
         if(this.cfg.filter) {
-            this.filterInput = this.jq.find('> div.p-selectlistbox-filter-container > input.p-selectlistbox-filter');
+            this.filterInput = this.jq.find('div.p-selectlistbox-filter-container > input.p-selectlistbox-filter');
             PrimeFaces.skinInput(this.filterInput);
             this.filterInput.on('keyup.selectListbox', function(e) {
                 $this.filter(this.value);

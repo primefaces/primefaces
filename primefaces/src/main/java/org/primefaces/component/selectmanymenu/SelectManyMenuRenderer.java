@@ -77,12 +77,29 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
             writer.writeAttribute("style", style, "style");
         }
 
+        if (component.isShowToggleAll()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", SelectManyMenu.HEADER_CLASS, null);
+            RendererUtils.encodeCheckbox(context, false, false, component.isDisabled(), null);
+        }
+
         if (component.isFilter()) {
             encodeFilter(context, component);
         }
 
+        if (component.isShowToggleAll()) {
+            writer.endElement("div");
+        }
+
         encodeInput(context, component, clientId, selectItems);
         encodeList(context, component, selectItems);
+
+        if (component.isShowSelectionCount()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", SelectManyMenu.FOOTER_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
+            writer.endElement("div");
+        }
 
         writer.endElement("div");
     }

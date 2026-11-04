@@ -35,6 +35,17 @@ reject a value. To add a filter to previous example;
 SelectManyMenu has built-in support for checkbox based multiple selection, when enabled by
 _showCheckbox_ option, checkboxes are displayed next to each column.
 
+## Toggle All and Selection Count
+_showToggleAll_ displays a checkbox in the header, next to the filter if there is one, to select or unselect all items.
+With an active filter it only applies to the items that match the filter. _showSelectionCount_ displays the number of
+selected items in the footer, using the `selectionMessage` and `emptySelectionMessage` labels of the locale.
+
+```xhtml
+<p:selectManyMenu value="#{bean.selectedOptions}" filter="true" showCheckbox="true" showToggleAll="true" showSelectionCount="true">
+    ...
+</p:selectManyMenu>
+```
+
 
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectManyMenu_
@@ -56,6 +67,8 @@ structural style classes;
 | --- | --- | 
 .p-selectmanymenu | Main container element.
 .p-selectlistbox-item | Each item in list.
+.p-selectmanymenu-header | Header with the toggle all checkbox.
+.p-selectmanymenu-footer | Footer with the number of selected items.
 
 Rows: _styleClass_ accepts `p-rows-striped` (striped rows), with _p:column_ children also `p-rows-gridlines`
 (cell borders), `p-rows-sm` and `p-rows-lg` (cell padding). See the [theming](/core/theming.md) variants.

@@ -37,7 +37,7 @@
                 <p:selectManyMenu id="advanced" value="#{selectManyView.selectedCountries}"
                                     converter="#{countryConverter}"
                                     var="c" filter="true" filterMatchMode="contains" filterNormalize="true"
-                                    showCheckbox="true" styleClass="manymenu-advanced">
+                                    showCheckbox="true" showToggleAll="true" showSelectionCount="true" styleClass="manymenu-advanced">
                     <f:selectItems value="#{selectManyView.countries}" var="country" itemLabel="#{country.name}"
                                     itemValue="#{country}"/>
 

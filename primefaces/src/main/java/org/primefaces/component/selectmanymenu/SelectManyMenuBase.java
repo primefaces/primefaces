@@ -81,6 +81,14 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
             defaultValue = "false")
     public abstract boolean isShowCheckbox();
 
+    @Property(description = "When true, a checkbox to select or unselect all items is displayed in the header.",
+            defaultValue = "false")
+    public abstract boolean isShowToggleAll();
+
+    @Property(description = "When true, the number of selected items is displayed in the footer.",
+            defaultValue = "false")
+    public abstract boolean isShowSelectionCount();
+
     @Property(description = "Displays an input filter for the list.",
             defaultValue = "false")
     public abstract boolean isFilter();

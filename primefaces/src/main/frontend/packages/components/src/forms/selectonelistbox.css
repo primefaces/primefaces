@@ -5,7 +5,7 @@
  * Supported classes: p-state-error, p-state-disabled, p-input-filled (on a parent), .p-fluid (on a parent),
  *                    p-listbox-checkmark (styleClass)
  * Items: p-state-hover, p-state-highlight (selected), p-listbox-outline (keyboard focus)
- * Variants: filter, showCheckbox (p:selectManyMenu), custom content (table with p:column children)
+ * Variants: filter, showCheckbox, showToggleAll, showSelectionCount (p:selectManyMenu), custom content (table with p:column children)
  * Rows (styleClass, base/rows.css): p-rows-striped; table mode (p:column children): p-rows-gridlines, p-rows-sm,
  *                                     p-rows-lg
  */
@@ -75,6 +75,24 @@
             margin-inline-start: var(--p-form-field-padding-x);
             color: var(--p-form-field-icon-color);
         }
+    }
+
+    /* showToggleAll: the checkbox next to the filter; no listbox token for the gap, the multiselect option gap is used */
+    .p-selectmanymenu-header {
+        display: flex;
+        align-items: center;
+        gap: var(--p-multiselect-option-gap);
+        padding: var(--p-listbox-list-header-padding);
+
+        .p-selectlistbox-filter-container {
+            flex: 1 1 0;
+            padding: 0;
+        }
+    }
+
+    /* showSelectionCount */
+    .p-selectmanymenu-footer {
+        padding: var(--p-listbox-list-header-padding);
     }
 
     /* list */

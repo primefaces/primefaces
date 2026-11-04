@@ -49,6 +49,8 @@ public class SelectManyMenu extends SelectManyMenuBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyMenu";
 
     public static final String CONTAINER_CLASS = "p-selectmanymenu p-inputfield p-widget p-widget-content";
+    public static final String HEADER_CLASS = "p-selectmanymenu-header";
+    public static final String FOOTER_CLASS = "p-selectmanymenu-footer";
     public static final String LIST_CONTAINER_CLASS = "p-selectlistbox-listcontainer";
     public static final String LIST_CLASS = "p-selectlistbox-list";
     public static final String ITEM_CLASS = "p-selectlistbox-item";
