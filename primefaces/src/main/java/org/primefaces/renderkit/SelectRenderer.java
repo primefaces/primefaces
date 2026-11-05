@@ -222,10 +222,6 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
     }
 
     protected String getOptionAsString(FacesContext context, T component, Converter converter, Object value) throws ConverterException {
-        if (component == null) {
-            return value == null ? null : value.toString();
-        }
-
         if (converter == null) {
             if (value == null) {
                 return "";

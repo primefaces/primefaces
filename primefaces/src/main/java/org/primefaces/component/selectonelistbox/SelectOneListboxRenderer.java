@@ -136,12 +136,12 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         Object values = getValues(component);
         Object submittedValues = getSubmittedValues(component);
         boolean customContent = component.getVar() != null;
+        int totalItems = selectItems.size();
 
         writer.startElement("div", component);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
         writer.writeAttribute("style", "height:" + calculateWrapperHeight(component, countSelectItems(selectItems)), null);
 
-        int totalItems = selectItems.size();
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
