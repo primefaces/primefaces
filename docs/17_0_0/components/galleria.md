@@ -48,6 +48,21 @@ content declaratively. For this you can use built-in data iteration feature.
 </p:galleria>
 ```
 
+## Lazy Loading
+By default the browser loads all images of the galleria when the page is loaded. Use `loading="lazy"` on the images
+so the browser only loads the images of the visible item and thumbnails, the other images are loaded when they are
+displayed.
+
+```xhtml
+<p:galleria value="#{galleriaBean.images}" var="image">
+    <p:graphicImage value="#{image.path}" alt="#{image.description}" loading="lazy" />
+
+    <f:facet name="thumbnail">
+        <p:graphicImage value="#{image.thumbnailPath}" alt="#{image.thumbnailDescription}" loading="lazy" />
+    </f:facet>
+</p:galleria>
+```
+
 ## Items per page
 Number of items per page is defined using the numVisible property.
 

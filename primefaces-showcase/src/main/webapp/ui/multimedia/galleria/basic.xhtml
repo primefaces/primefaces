@@ -20,9 +20,9 @@
     <ui:define name="implementation">
         <div class="card">
             <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" style="max-width: 640px">
-                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%" />
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%" loading="lazy" />
                 <f:facet name="thumbnail">
-                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" />
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" loading="lazy" />
                 </f:facet>
             </p:galleria>
         </div>

@@ -61,4 +61,13 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
 
     @Property(description = "One or more strings separated by commas, indicating a set of source sizes.")
     public abstract String getSizes();
+
+    @Property(description = "Loading behavior of the image: \"eager\" or \"lazy\" to defer loading until the image is near the viewport.")
+    public abstract String getLoading();
+
+    @Property(description = "Decoding hint for the image: \"sync\", \"async\" or \"auto\".")
+    public abstract String getDecoding();
+
+    @Property(description = "Fetch priority hint for the image: \"high\", \"low\" or \"auto\".")
+    public abstract String getFetchpriority();
 }

@@ -86,6 +86,9 @@ public class HTML {
         "usemap",
         "srcset",
         "sizes",
+        "loading",
+        "decoding",
+        "fetchpriority",
         "style"
     );
 
