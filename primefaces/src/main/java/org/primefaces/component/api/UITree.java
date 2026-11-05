@@ -482,6 +482,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     private void updateSelectedNodes(TreeNode<?> node) {
+        if (node == null) {
+            return;
+        }
+
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -942,7 +946,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (component instanceof EditableValueHolder input) {
             String clientId = component.getClientId(context);
 
-            SavedState state = saved.get(clientId);
+            SavedState state = saved == null ? null : saved.get(clientId);
             if (state == null) {
                 state = new SavedState();
             }

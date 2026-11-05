@@ -37,7 +37,7 @@ import org.owasp.encoder.Encode;
  */
 public class EscapeUtils {
 
-    private static final Pattern JAVASCRIPT_VAR_NAME = Pattern.compile("^[^a-zA-Z_$]|[^\\w$]");
+    private static final Pattern JAVASCRIPT_VAR_NAME = Pattern.compile("(^[^a-zA-Z_$])|([^\\w$])");
 
     private EscapeUtils() {
     }

@@ -102,7 +102,9 @@ public class MindmapRenderer extends CoreRenderer<Mindmap> {
         encodeNodeConfig(context, component, node, nodeKey);
 
         if (parent != null) {
-            String parentNodeKey = (nodeKey.indexOf('_') != -1) ? nodeKey.substring(0, nodeKey.lastIndexOf('_')) : "root";
+            String parentNodeKey = (nodeKey != null && nodeKey.indexOf('_') != -1)
+                    ? nodeKey.substring(0, nodeKey.lastIndexOf('_'))
+                    : "root";
 
             writer.write(",\"parent\":{");
             encodeNodeConfig(context, component, parent, parentNodeKey);

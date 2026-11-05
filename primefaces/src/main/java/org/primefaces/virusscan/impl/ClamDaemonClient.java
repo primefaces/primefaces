@@ -182,10 +182,16 @@ public class ClamDaemonClient {
      * @throws IOException if an I/O error occurs when creating the socket
      */
     protected Socket getSocket() throws IOException {
-        Socket socket =  new Socket();
-        socket.setSoTimeout(timeout);
-        socket.connect(new InetSocketAddress(host, port), timeout);
-        return socket;
+        Socket socket = new Socket();
+        try {
+            socket.setSoTimeout(timeout);
+            socket.connect(new InetSocketAddress(host, port), timeout);
+            return socket;
+        }
+        catch (IOException | RuntimeException e) {
+            socket.close();
+            throw e;
+        }
     }
 
     /**

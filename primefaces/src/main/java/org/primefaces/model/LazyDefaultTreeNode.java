@@ -26,6 +26,7 @@ package org.primefaces.model;
 import org.primefaces.util.Callbacks;
 
 import java.io.Serial;
+import java.util.AbstractList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,8 @@ import java.util.stream.Collectors;
 public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTreeNode {
 
     @Serial private static final long serialVersionUID = 1L;
+
+    private static final TreeNodeChildren<?> EMPTY_CHILDREN = new EmptyTreeNodeChildren<>();
 
     private Callbacks.SerializableFunction<T, List<T>> loadFunction;
     private Callbacks.SerializableFunction<T, Boolean> isLeafFunction;
@@ -56,9 +59,10 @@ public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTr
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public TreeNodeChildren<T> getChildren() {
         if (isLeaf()) {
-            return null;
+            return (TreeNodeChildren<T>) EMPTY_CHILDREN;
         }
 
         lazyLoad();
@@ -105,4 +109,19 @@ public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTr
         return new LazyDefaultTreeNodeChildren<>(this);
     }
 
+    /**
+     * Immutable, empty children of a leaf node.
+     */
+    private static final class EmptyTreeNodeChildren<T> extends AbstractList<TreeNode<T>> implements TreeNodeChildren<T> {
+
+        @Override
+        public TreeNode<T> get(int index) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0");
+        }
+
+        @Override
+        public int size() {
+            return 0;
+        }
+    }
 }
