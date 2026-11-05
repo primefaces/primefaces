@@ -234,8 +234,9 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         UIComponent actionsFacet = component.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("li", null);
-            writer.writeAttribute("class", "p-tabs-actions p-tabs-actions-global", null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(withActiveFacet.get()), null);
+            writer.writeAttribute("class", "p-tabs-actions p-tabs-actions-global"
+                    + (withActiveFacet.get() ? " p-hidden" : ""), null);
+            writer.writeAttribute("role", "presentation", null);
             actionsFacet.encodeAll(context);
             writer.endElement("li");
         }
@@ -313,8 +314,8 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             withFacet = true;
             writer.startElement("li", null);
-            writer.writeAttribute("class", "p-tabs-actions", null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
+            writer.writeAttribute("class", active ? "p-tabs-actions" : "p-tabs-actions p-hidden", null);
+            writer.writeAttribute("role", "presentation", null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");
         }

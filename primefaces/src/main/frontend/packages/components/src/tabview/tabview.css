@@ -153,7 +153,7 @@
         }
     }
 
-    li.p-tabs-actions[aria-hidden='true'] {
+    li.p-tabs-actions.p-hidden {
         display: none;
     }
 
