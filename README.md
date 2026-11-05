@@ -38,11 +38,6 @@ PrimeFaces follows a simple lifecycle:
   * Older supported versions
   * Only security-related fixes and critical issues are addressed
 
-* **EOL phase**
-
-  * Last ~6 months before End-of-Life
-  * Only critical security fixes are applied
-
 * **EOL**
 
   * End-of-Life, no more fixes or releases
