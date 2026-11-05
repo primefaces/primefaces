@@ -47,6 +47,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -96,7 +97,8 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
 
         int viewMode = component.getViewMode();
         if (viewMode <= 0 || viewMode > 3) {
-            LOGGER.warning("ImageCropper: viewMode='" + viewMode + "' is not valid or not supported and has been changed to viewMode='1'.");
+            LOGGER.log(Level.WARNING, "ImageCropper: viewMode=''{0}'' is not valid or not supported and has been changed to viewMode=''1''.",
+                    String.valueOf(viewMode));
             viewMode = 1;
         }
 

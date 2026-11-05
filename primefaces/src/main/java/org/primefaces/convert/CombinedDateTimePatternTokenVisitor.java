@@ -108,10 +108,8 @@ public class CombinedDateTimePatternTokenVisitor implements TokenVisitor {
 
             default:
                 final String letterString = Character.toString((char) letter);
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "Found unsupported letter '" + letterString
-                                + "' in pattern. Date / times will be formatted differently on the server and client. Use a different pattern.");
-                }
+                LOGGER.log(Level.WARNING, () -> "Found unsupported letter '" + letterString
+                            + "' in pattern. Date / times will be formatted differently on the server and client. Use a different pattern.");
                 visitDefault(letterString, repetitions, builder);
         }
     }

@@ -434,8 +434,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                 if (selectItem.isDisabled()) {
                     if (submittedValuesSet.contains(selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
                         // disabled select item has been selected
-                        // #13954: ignore it silently for now
-                        //throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                        // #13954: ignore it silently for now instead of throwing an exception
                     }
                     else if (LangUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);

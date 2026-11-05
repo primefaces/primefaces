@@ -62,7 +62,6 @@ class GMapRendererTest {
         marker.setDraggable(true);
         marker.setVisible(false);
         marker.setZindex(3);
-        marker.setShadow("ignored.png");
 
         assertEquals("{position:{lat:36.5,lng:30.25},id:'m1',title:\"Konyaalt\\x69\",icon:\"https:\\/\\/example.com\\/pin.png\""
                 + ",gmpDraggable:true,visible:false,zIndex:3}", encode(marker));

@@ -45,17 +45,15 @@ public class DateTimePatternConverter implements PatternConverter {
      * @return The converted JQuery UI date picker pattern.
      */
     public String convert(String pattern) {
-        pattern = pattern != null ? pattern : "";
+        final String javaPattern = pattern != null ? pattern : "";
         final JQueryDateTimePatternBuilder builder = new JQueryDateTimePatternBuilder();
         final TokenVisitor visitor = new CombinedDateTimePatternTokenVisitor(builder);
         try {
-            PatternReader.parsePattern(pattern, visitor);
+            PatternReader.parsePattern(javaPattern, visitor);
         }
         catch (final Exception e) {
-            if (LOGGER.isLoggable(Level.SEVERE)) {
-                LOGGER.log(Level.SEVERE, "Could not process pattern '{0}" + pattern + "'", e);
-            }
-            return pattern;
+            LOGGER.log(Level.SEVERE, e, () -> "Could not process pattern '" + javaPattern + "'");
+            return javaPattern;
         }
         return builder.toString();
     }

@@ -43,7 +43,7 @@ class CurrencyValidatorTest {
     private static String brazilReal;
     private static DecimalFormat uk = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.UK);
     private static DecimalFormat us = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.US);
-    private static DecimalFormat brazil = (DecimalFormat) DecimalFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    private static DecimalFormat brazil = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.forLanguageTag("pt-BR"));
 
     @BeforeAll
     protected static void setUp() throws Exception {

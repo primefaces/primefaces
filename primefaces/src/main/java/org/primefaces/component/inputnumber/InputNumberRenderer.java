@@ -134,8 +134,8 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
     protected String formatValueToRender(FacesContext context, InputNumber component, String valueToRender) {
         BigDecimal decimalToRender = new BigDecimal(valueToRender);
         BigDecimal coerced = coerceValueInRange(context, decimalToRender, component);
-        // leadingZero=keep: preserve original string (e.g. "000123") when in range;
-        // BigDecimal formatting would strip leading zeros
+        // with leadingZero "keep", the original string with its leading zeros is kept when in range,
+        // as BigDecimal formatting would strip them
         if ("keep".equalsIgnoreCase(component.getLeadingZero()) && decimalToRender.compareTo(coerced) == 0) {
             return valueToRender;
         }

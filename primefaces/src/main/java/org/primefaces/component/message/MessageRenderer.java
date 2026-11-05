@@ -29,6 +29,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.ContextCallback;
 import jakarta.faces.component.UIComponent;
@@ -49,7 +51,13 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
 
     @Override
     public void encodeEnd(FacesContext context, Message component) throws IOException {
-        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, component.getFor());
+        String forValue = component.getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("Message requires the 'for' attribute. ClientId: " + component.getClientId(context));
+        }
+
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, forValue);
+
         final MessageState state = new MessageState();
         state.setTargetId(target.getClientId(context));
         state.setTooltipTargetId(getTooltipTargetId(target, context));

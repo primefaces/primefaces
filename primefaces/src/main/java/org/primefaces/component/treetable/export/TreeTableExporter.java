@@ -54,8 +54,8 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
         }
 
         // a page of a TreeTable is a slice of the direct children of the root, each one rendered together with the
-        // descendants which are currently displayed - see TreeTableRenderer#encodeTbody;
-        // without a paginator all children of the root are displayed
+        // descendants which are currently displayed, see TreeTableRenderer#encodeTbody.
+        // Without a paginator all children of the root are displayed.
         int first = 0;
         int last = root.getChildCount();
         if (table.isPaginator()) {

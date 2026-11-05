@@ -29,10 +29,12 @@ import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 import java.io.IOException;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
@@ -45,8 +47,13 @@ public class CheckboxRenderer extends InputRenderer<Checkbox> {
 
     @Override
     public void encodeEnd(FacesContext context, Checkbox component) throws IOException {
+        String forValue = component.getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("Checkbox requires the 'for' attribute. ClientId: " + component.getClientId(context));
+        }
+
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionUtils.contextlessResolveComponent(
-                context, component, component.getFor());
+                context, component, forValue);
 
         encodeMarkup(context, component, selectManyCheckbox);
     }

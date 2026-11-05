@@ -481,6 +481,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private static List<TreeNode<?>> asNodeList(Class<?> selectionType, Object selection) {
+        if (selection == null) {
+            return null;
+        }
+        return selectionType.isArray() ? Arrays.asList((TreeNode<?>[]) selection) : (List<TreeNode<?>>) selection;
+    }
+
     private void updateSelectedNodes(TreeNode<?> node) {
         if (node == null) {
             return;
@@ -643,11 +651,16 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (isSelectionEnabled() && isRequired()) {
             Class<?> selectionType = getSelectionType();
             Object localSelection = getLocalSelectedNodes();
-            boolean isValueBlank = !isMultipleSelectionMode()
-                    ? localSelection == null
-                    : (selectionType.isArray()
-                        ? ((TreeNode<?>[]) localSelection).length == 0
-                        : ((List<TreeNode<?>>) localSelection).isEmpty());
+            boolean isValueBlank;
+            if (!isMultipleSelectionMode()) {
+                isValueBlank = localSelection == null;
+            }
+            else if (selectionType.isArray()) {
+                isValueBlank = ((TreeNode<?>[]) localSelection).length == 0;
+            }
+            else {
+                isValueBlank = ((List<TreeNode<?>>) localSelection).isEmpty();
+            }
             if (isValueBlank) {
                 updateSelection(context);
             }
@@ -720,12 +733,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             Object previousSelection = selectionVE.getValue(context.getELContext());
 
             if (isMultipleSelectionMode()) {
-                List<TreeNode<?>> previousSelections = selectionType.isArray()
-                        ? (previousSelection == null ? null : Arrays.asList((TreeNode<?>[]) previousSelection))
-                        : (List<TreeNode<?>>) previousSelection;
-                List<TreeNode<?>> selections = selectionType.isArray()
-                        ? (selection == null ? null : Arrays.asList((TreeNode<?>[]) selection))
-                        : (List<TreeNode<?>>) selection;
+                List<TreeNode<?>> previousSelections = asNodeList(selectionType, previousSelection);
+                List<TreeNode<?>> selections = asNodeList(selectionType, selection);
 
                 if (previousSelections != null) {
                     for (TreeNode<?> node : previousSelections) {

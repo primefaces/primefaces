@@ -179,6 +179,7 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     @Property(description = "Renders the column's body cells as <th scope=\"row\"> instead of <td>, marking it as a row header"
             + " for accessibility (see WAI tables tutorial: two headers). Only supported by DataTable.",
             defaultValue = "false")
+    @Override
     public abstract boolean isRowHeader();
 
     @Property(description = "Defines the value of the cell to be exported if something other than the cell contents or exportFunction.")

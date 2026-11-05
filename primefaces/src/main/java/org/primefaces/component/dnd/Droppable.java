@@ -26,6 +26,7 @@ package org.primefaces.component.dnd;
 import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.LangUtils;
 
 import java.util.Map;
 
@@ -65,7 +66,7 @@ public class Droppable extends DroppableBaseImpl {
                 DragDropEvent<?> dndEvent = null;
                 String datasourceId = getDatasource();
 
-                if (datasourceId != null) {
+                if (LangUtils.isNotBlank(datasourceId)) {
                     UIData datasource = findDatasource(context, this, datasourceId);
                     String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
                     int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);

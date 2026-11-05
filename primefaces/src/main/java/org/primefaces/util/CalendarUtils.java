@@ -326,11 +326,11 @@ public class CalendarUtils {
             return string;
         }
         //Use built-in converter
-        else if (value instanceof Date date1) {
+        else if (value instanceof Date date) {
             SimpleDateFormat format = new SimpleDateFormat(pattern, calendar.calculateLocale(context));
             format.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
 
-            return format.format(date1);
+            return format.format(date);
         }
         else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof LocalTime || value instanceof YearMonth) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
@@ -346,9 +346,11 @@ public class CalendarUtils {
                 }
                 return time.format(dateTimeFormatter);
             }
-            else { //if (value instanceof YearMonth)
-                return ((YearMonth) value).format(dateTimeFormatter);
+            else if (value instanceof YearMonth yearMonth) {
+                return yearMonth.format(dateTimeFormatter);
             }
+
+            throw new FacesException("Value of type " + value.getClass().getName() + " not supported!");
         }
         else {
             //Delegate to global defined converter (e.g. joda)
@@ -664,8 +666,7 @@ public class CalendarUtils {
         String to = input.substring(tokenIndex + token.length());
 
         if (week) {
-            // hardcoded pattern, see JS:
-            // formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
+            // hardcoded pattern, the client appends the week as " (<weekHeader> <week>)"
             int weekNumberIndex = to.lastIndexOf(" (");
             // there are cases when weeknumber might not get displayed on client and therefore not submitted
             if (weekNumberIndex != -1) {

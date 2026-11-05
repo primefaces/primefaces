@@ -30,11 +30,13 @@ import org.primefaces.event.ColumnToggleEvent;
 import org.primefaces.event.ToggleCloseEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.Visibility;
+import org.primefaces.util.LangUtils;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
@@ -90,7 +92,12 @@ public class ColumnToggler extends ColumnTogglerBaseImpl {
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
-            dataSourceComponent = SearchExpressionUtils.contextlessResolveComponent(getFacesContext(), this, getDatasource());
+            String datasource = getDatasource();
+            if (LangUtils.isBlank(datasource)) {
+                throw new FacesException("ColumnToggler requires the 'datasource' attribute. ClientId: " + getClientId());
+            }
+
+            dataSourceComponent = SearchExpressionUtils.contextlessResolveComponent(getFacesContext(), this, datasource);
         }
 
         return dataSourceComponent;

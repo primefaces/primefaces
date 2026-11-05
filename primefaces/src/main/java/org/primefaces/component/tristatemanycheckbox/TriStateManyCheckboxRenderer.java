@@ -142,9 +142,13 @@ public class TriStateManyCheckboxRenderer extends SelectRenderer<TriStateManyChe
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            int state = submittedValue != null
-                    ? Math.max(0, TriStateManyCheckbox.STATES.indexOf(submittedValue.get(selectItem.getValue())))
-                    : component.getState(context, values == null ? null : values.get(selectItem.getValue()));
+            int state;
+            if (submittedValue == null) {
+                state = component.getState(context, values == null ? null : values.get(selectItem.getValue()));
+            }
+            else {
+                state = Math.max(0, TriStateManyCheckbox.STATES.indexOf(submittedValue.get(selectItem.getValue())));
+            }
             encodeItem(context, component, selectItem, i, state, icons[state], titles == null ? null : titles[state]);
         }
 

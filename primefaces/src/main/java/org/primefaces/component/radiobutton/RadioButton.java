@@ -25,7 +25,9 @@ package org.primefaces.component.radiobutton;
 
 import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.LangUtils;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UINamingContainer;
@@ -44,7 +46,12 @@ public class RadioButton extends RadioButtonBaseImpl {
     @Override
     public String getInputClientId() {
         FacesContext context = FacesContext.getCurrentInstance();
-        return SearchExpressionUtils.contextlessResolveComponent(context, this, getFor()).getClientId(context)
+        String forValue = getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("RadioButton requires the 'for' attribute. ClientId: " + getClientId(context));
+        }
+
+        return SearchExpressionUtils.contextlessResolveComponent(context, this, forValue).getClientId(context)
                 + UINamingContainer.getSeparatorChar(context) + getItemIndex() + "_clone";
     }
 

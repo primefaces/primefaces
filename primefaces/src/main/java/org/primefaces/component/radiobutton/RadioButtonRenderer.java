@@ -28,10 +28,12 @@ import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 import java.io.IOException;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
@@ -44,8 +46,13 @@ public class RadioButtonRenderer extends InputRenderer<RadioButton> {
 
     @Override
     public void encodeEnd(FacesContext context, RadioButton component) throws IOException {
+        String forValue = component.getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("RadioButton requires the 'for' attribute. ClientId: " + component.getClientId(context));
+        }
+
         SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionUtils.contextlessResolveComponent(
-                context, component, component.getFor());
+                context, component, forValue);
 
         encodeMarkup(context, component, selectOneRadio);
     }

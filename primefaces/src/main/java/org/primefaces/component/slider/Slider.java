@@ -85,6 +85,10 @@ public class Slider extends SliderBaseImpl {
 
         if ("true".equals(getRange())) {
             String[] inputIds = getFor().split(",");
+            if (inputIds.length != 2 || LangUtils.isBlank(inputIds[0]) || LangUtils.isBlank(inputIds[1])) {
+                throw new FacesException("Slider in range mode requires two inputs in the 'for' attribute. ClientId: " + getClientId(context));
+            }
+
             UIInput inputFrom = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, inputIds[0]);
             UIInput inputTo = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, inputIds[1]);
             String valueFromStr = getValueAsStringOfAttachedInput(context, inputFrom);

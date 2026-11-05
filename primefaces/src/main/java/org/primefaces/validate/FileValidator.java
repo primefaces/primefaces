@@ -140,8 +140,8 @@ public class FileValidator extends FileValidatorBaseImpl implements ClientValida
             }
             else {
                 LOGGER.log(Level.WARNING,
-                    "Either allowTypes attribute in p:validateFile or accept attribute with filename extension(s) in p:fileUpload is required. ClientId: "
-                    + component.getClientId());
+                    "Either allowTypes attribute in p:validateFile or accept attribute with filename extension(s) in p:fileUpload is required. ClientId: {0}",
+                    component.getClientId());
             }
         }
         return allowTypes;

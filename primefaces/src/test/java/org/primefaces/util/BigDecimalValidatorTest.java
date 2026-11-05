@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class BigDecimalValidatorTest {
 
     private static final DecimalFormat US = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
-    private static final DecimalFormat EC = (DecimalFormat) DecimalFormat.getInstance(new Locale("es", "EC"));
+    private static final DecimalFormat EC = (DecimalFormat) DecimalFormat.getInstance(Locale.forLanguageTag("es-EC"));
 
     /**
      * Test Valid currency values
