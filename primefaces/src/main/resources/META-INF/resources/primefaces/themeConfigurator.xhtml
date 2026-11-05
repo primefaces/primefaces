@@ -62,14 +62,14 @@
                     <ui:fragment rendered="#{not empty tcPresets}">
                         <div class="p-themeconfigurator-label">Preset <span class="p-themeconfigurator-hint">primefaces.THEME</span></div>
                         <!-- tiles, 3 per row: one segmented row is too narrow for six presets; the current one is a primary button -->
-                        <div class="p-themeconfigurator-presets" role="group" aria-label="Preset">
+                        <fieldset class="p-themeconfigurator-presets" aria-label="Preset">
                             <ui:repeat value="#{tcPresets}" var="preset">
                                 <button type="button" aria-pressed="#{tcTheme eq preset.trim()}" data-tc-preset="#{preset.trim()}"
                                         class="p-button p-widget p-state-default p-button-text-only #{tcTheme eq preset.trim() ? '' : 'p-button-outlined p-button-secondary'}">
                                     <span class="p-button-text p-c">#{preset.trim()}</span>
                                 </button>
                             </ui:repeat>
-                        </div>
+                        </fieldset>
                         <c:set var="tcNote" value="#{{
                             'aura': 'Soft and modern, the PrimeReact / PrimeVue default (PrimeUIX Aura).',
                             'lara': 'Classic PrimeFaces look with stronger borders (PrimeUIX Lara).',
@@ -83,41 +83,41 @@
                     </ui:fragment>
 
                     <div class="p-themeconfigurator-label">Color scheme <span class="p-themeconfigurator-hint">color-scheme</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Color scheme">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Color scheme">
                         <ui:repeat value="#{[['light', 'Light', 'pi-sun'], ['dark', 'Dark', 'pi-moon'], ['system', 'System', 'pi-desktop']]}" var="s">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-icon-left" data-tc-scheme="#{s[0]}">
                                 <span class="p-button-icon-left p-c pi #{s[2]}"></span><span class="p-button-text p-c">#{s[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
 
                     <div class="p-themeconfigurator-label">Input style <span class="p-themeconfigurator-hint">p-input-filled</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Input style">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Input style">
                         <ui:repeat value="#{[['outlined', 'Outlined'], ['filled', 'Filled']]}" var="i">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-input="#{i[0]}">
                                 <span class="p-button-text p-c">#{i[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
 
                     <div class="p-themeconfigurator-label">Density <span class="p-themeconfigurator-hint">data-p-density</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Density">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Density">
                         <ui:repeat value="#{[['normal', 'Normal'], ['compact', 'Compact'], ['comfortable', 'Comfortable']]}" var="d">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-density="#{d[0]}">
                                 <span class="p-button-text p-c">#{d[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
 
                     <ui:fragment rendered="#{cc.attrs.direction}">
                         <div class="p-themeconfigurator-label">Direction <span class="p-themeconfigurator-hint">primefaces.DIR</span></div>
-                        <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Direction">
+                        <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Direction">
                             <ui:repeat value="#{[['ltr', 'LTR'], ['rtl', 'RTL']]}" var="d">
                                 <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-dir="#{d[0]}">
                                     <span class="p-button-text p-c">#{d[1]}</span>
                                 </button>
                             </ui:repeat>
-                        </div>
+                        </fieldset>
                     </ui:fragment>
                 </details>
 
@@ -152,40 +152,40 @@
                 <details class="p-themeconfigurator-group" open="open">
                     <summary>Shape and motion</summary>
                     <div class="p-themeconfigurator-label">Button shape <span class="p-themeconfigurator-hint">--p-button-border-radius</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Button shape">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Button shape">
                         <ui:repeat value="#{[['theme', 'Theme'], ['pill', 'Pill'], ['square', 'Square']]}" var="o">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-shape="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
 
                     <div class="p-themeconfigurator-label">Shadows <span class="p-themeconfigurator-hint">--p-*-shadow</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Shadows">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Shadows">
                         <ui:repeat value="#{[['none', 'None'], ['theme', 'Theme'], ['deep', 'Deep']]}" var="o">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-shadow="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
 
                     <div class="p-themeconfigurator-label">Animations <span class="p-themeconfigurator-hint">--p-transition-duration</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Animations">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Animations">
                         <ui:repeat value="#{[['normal', 'Normal'], ['slow', 'Slow'], ['off', 'Off']]}" var="o">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-motion="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
 
                     <div class="p-themeconfigurator-label">Ripple <span class="p-themeconfigurator-hint">--p-ripple-opacity</span></div>
-                    <div class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" role="group" aria-label="Ripple">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Ripple">
                         <ui:repeat value="#{[['theme', 'Theme'], ['on', 'On'], ['off', 'Off']]}" var="o">
                             <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-ripple="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
-                    </div>
+                    </fieldset>
                 </details>
 
                 <!-- the numeric tokens: [token, label, min, max, step, unit] -->

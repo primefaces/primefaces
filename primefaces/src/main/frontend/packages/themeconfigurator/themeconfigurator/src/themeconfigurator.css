@@ -155,6 +155,15 @@
     line-height: 1.45;
 }
 
+/* the button groups are fieldsets: no border, padding or min-content width of the browser */
+.p-themeconfigurator-presets,
+.p-themeconfigurator-segments {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 /* preset tiles: 3 per row */
 .p-themeconfigurator-presets {
     display: grid;
