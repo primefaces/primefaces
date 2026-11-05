@@ -29,10 +29,12 @@ import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.model.file.UploadedFilesWrapper;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
@@ -44,6 +46,8 @@ import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FilenameUtils;
 
 public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder, FileUploadChunkDecoder<T> {
 
@@ -171,11 +175,17 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
     protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange, Long sizeLimit) throws IOException {
         String fileKey = generateFileInfoKey(request);
-        Path whole = Path.of(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
+        List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
+
+        Path whole = resolveMergedFile(getUploadDirectory(request), fileKey, chunk.getFileName());
+        if (whole == null) {
+            deleteChunkFolder(chunksDir, chunks);
+            throw new IOException("Invalid file name for chunked upload");
+        }
+
         Files.deleteIfExists(whole);
         Files.createFile(whole);
 
-        List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
         for (Path p : chunks) {
             Files.write(whole, Files.readAllBytes(p), StandardOpenOption.APPEND);
         }
@@ -188,6 +198,27 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         }
 
         return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType(), sizeLimit, FileUploadUtils.getWebkitRelativePath(request));
+    }
+
+    /**
+     * Resolves the merged file directly inside the upload directory.
+     *
+     * @return the merged file or {@code null} if the file name is invalid or escapes the upload directory
+     */
+    protected Path resolveMergedFile(String uploadDirectory, String fileKey, String fileName) {
+        String name = FilenameUtils.getName(fileName);
+        if (LangUtils.isBlank(name) || ".".equals(name) || "..".equals(name)) {
+            return null;
+        }
+
+        try {
+            Path dir = Path.of(uploadDirectory).toAbsolutePath().normalize();
+            Path whole = dir.resolve("[" + fileKey + "]" + name).normalize();
+            return dir.equals(whole.getParent()) ? whole : null;
+        }
+        catch (InvalidPathException e) {
+            return null;
+        }
     }
 
     protected String getContentRange(HttpServletRequest request) {

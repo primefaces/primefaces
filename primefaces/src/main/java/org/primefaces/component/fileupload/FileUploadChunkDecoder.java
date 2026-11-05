@@ -48,7 +48,7 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
     default String getUploadDirectory(T request) {
         File tmpDir = (File) request.getServletContext().getAttribute(ServletContext.TEMPDIR);
         if (tmpDir == null) {
-            tmpDir = new File(System.getenv("java.io.tmpdir"));
+            tmpDir = new File(System.getProperty("java.io.tmpdir"));
         }
         return tmpDir.getAbsolutePath();
     }
