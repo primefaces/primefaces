@@ -222,7 +222,9 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
      * @param value The new value.
      */
     protected override setOption(key: string, value: unknown): void {
-        const handles = key === 'handle' || key === 'items';
+        // #14452 the handle class (touch-action: none) is only set while enabled, so a disabled sortable keeps native
+        // touch scrolling, e.g. the PickList which disables drag and drop on touch devices
+        const handles = key === 'handle' || key === 'items' || key === 'disabled';
         if (handles) {
             this.handleElements().removeClass('p-sortable-handle');
         }
@@ -249,9 +251,11 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
         return this.options.handle ? items.find(this.options.handle) : items;
     }
 
-    /** Marks the handles, which disables touch scrolling on them (CSS). */
+    /** Marks the handles, which disables touch scrolling on them (CSS); not while disabled. */
     private updateHandles(): void {
-        this.handleElements().addClass('p-sortable-handle');
+        if (!this.options.disabled) {
+            this.handleElements().addClass('p-sortable-handle');
+        }
     }
 
     /** Updates the CSS classes of the items, e.g. after items were added. */

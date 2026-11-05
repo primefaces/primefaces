@@ -169,11 +169,14 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
      * @param value The new value.
      */
     protected override setOption(key: string, value: unknown): void {
-        if (key === 'handle') {
+        // #14452 the handle class (touch-action: none) is only set while enabled, so a disabled draggable keeps native
+        // touch scrolling
+        const handles = key === 'handle' || key === 'disabled';
+        if (handles) {
             this.handles().removeClass('p-draggable-handle');
         }
         super.setOption(key, value);
-        if (key === 'handle') {
+        if (handles) {
             this.updateHandles();
         }
     }
@@ -186,9 +189,11 @@ export class Draggable extends PointerInteraction<DraggableOptions> implements D
         return this.options.handle ? this.element.find(this.options.handle) : this.element;
     }
 
-    /** Marks the handles, which disables touch scrolling on them (CSS). */
+    /** Marks the handles, which disables touch scrolling on them (CSS); not while disabled. */
     private updateHandles(): void {
-        this.handles().addClass('p-draggable-handle');
+        if (!this.options.disabled) {
+            this.handles().addClass('p-draggable-handle');
+        }
     }
 
     /**
