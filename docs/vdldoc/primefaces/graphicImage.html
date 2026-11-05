@@ -125,11 +125,23 @@
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Enables/Disables browser from caching the image.Default is false.</td>
                         </tr>
-                        <tr id="dir" class="altColor">
+                        <tr id="decoding" class="altColor">
+                            <td class="colFirst"><a href="#decoding"><code>decoding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Decoding hint for the image: "sync", "async" or "auto".</td>
+                        </tr>
+                        <tr id="dir" class="rowColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Direction indication for text that does not inherit directionality.</td>
+                        </tr>
+                        <tr id="fetchpriority" class="altColor">
+                            <td class="colFirst"><a href="#fetchpriority"><code>fetchpriority</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Fetch priority hint for the image: "high", "low" or "auto".</td>
                         </tr>
                         <tr id="height" class="rowColor">
                             <td class="colFirst"><a href="#height"><code>height</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -161,139 +173,145 @@
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Library name of the image.</td>
                         </tr>
-                        <tr id="longdesc" class="altColor">
+                        <tr id="loading" class="altColor">
+                            <td class="colFirst"><a href="#loading"><code>loading</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Loading behavior of the image: "eager" or "lazy" to defer loading until the image is near the viewport.</td>
+                        </tr>
+                        <tr id="longdesc" class="rowColor">
                             <td class="colFirst"><a href="#longdesc"><code>longdesc</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="name" class="rowColor">
+                        <tr id="name" class="altColor">
                             <td class="colFirst"><a href="#name"><code>name</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Name of the image.</td>
                         </tr>
-                        <tr id="onclick" class="altColor">
+                        <tr id="onclick" class="rowColor">
                             <td class="colFirst"><a href="#onclick"><code>onclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse click on the element.</td>
                         </tr>
-                        <tr id="ondblclick" class="rowColor">
+                        <tr id="ondblclick" class="altColor">
                             <td class="colFirst"><a href="#ondblclick"><code>ondblclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse double-click on the element.</td>
                         </tr>
-                        <tr id="onkeydown" class="altColor">
+                        <tr id="onkeydown" class="rowColor">
                             <td class="colFirst"><a href="#onkeydown"><code>onkeydown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a user is pressing a key.</td>
                         </tr>
-                        <tr id="onkeypress" class="rowColor">
+                        <tr id="onkeypress" class="altColor">
                             <td class="colFirst"><a href="#onkeypress"><code>onkeypress</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a user presses a key.</td>
                         </tr>
-                        <tr id="onkeyup" class="altColor">
+                        <tr id="onkeyup" class="rowColor">
                             <td class="colFirst"><a href="#onkeyup"><code>onkeyup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a user releases a key.</td>
                         </tr>
-                        <tr id="onmousedown" class="rowColor">
+                        <tr id="onmousedown" class="altColor">
                             <td class="colFirst"><a href="#onmousedown"><code>onmousedown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse button is pressed down on an element.</td>
                         </tr>
-                        <tr id="onmousemove" class="altColor">
+                        <tr id="onmousemove" class="rowColor">
                             <td class="colFirst"><a href="#onmousemove"><code>onmousemove</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the mouse pointer is moving while it is over an element.</td>
                         </tr>
-                        <tr id="onmouseout" class="rowColor">
+                        <tr id="onmouseout" class="altColor">
                             <td class="colFirst"><a href="#onmouseout"><code>onmouseout</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the mouse pointer moves out of an element.</td>
                         </tr>
-                        <tr id="onmouseover" class="altColor">
+                        <tr id="onmouseover" class="rowColor">
                             <td class="colFirst"><a href="#onmouseover"><code>onmouseover</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the mouse pointer moves onto an element.</td>
                         </tr>
-                        <tr id="onmouseup" class="rowColor">
+                        <tr id="onmouseup" class="altColor">
                             <td class="colFirst"><a href="#onmouseup"><code>onmouseup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse button is released over an element.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="role" class="rowColor">
+                        <tr id="role" class="altColor">
                             <td class="colFirst"><a href="#role"><code>role</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="sizes" class="altColor">
+                        <tr id="sizes" class="rowColor">
                             <td class="colFirst"><a href="#sizes"><code>sizes</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">One or more strings separated by commas, indicating a set of source sizes.</td>
                         </tr>
-                        <tr id="srcset" class="rowColor">
+                        <tr id="srcset" class="altColor">
                             <td class="colFirst"><a href="#srcset"><code>srcset</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">One or more strings separated by commas, indicating possible image sources for the user agent to use.</td>
                         </tr>
-                        <tr id="stream" class="altColor">
+                        <tr id="stream" class="rowColor">
                             <td class="colFirst"><a href="#stream"><code>stream</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines if the image is streamed or rendered directly as data uri / base64 with ViewScoped support.Default is true.</td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies an inline CSS style for an element.</td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies one or more CSS class names for an element.</td>
                         </tr>
-                        <tr id="title" class="rowColor">
+                        <tr id="title" class="altColor">
                             <td class="colFirst"><a href="#title"><code>title</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies extra information about an element (displayed as a tooltip).</td>
                         </tr>
-                        <tr id="usemap" class="altColor">
+                        <tr id="usemap" class="rowColor">
                             <td class="colFirst"><a href="#usemap"><code>usemap</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Value of the component.</td>
                         </tr>
-                        <tr id="width" class="altColor">
+                        <tr id="width" class="rowColor">
                             <td class="colFirst"><a href="#width"><code>width</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
