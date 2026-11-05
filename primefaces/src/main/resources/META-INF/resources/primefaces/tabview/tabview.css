@@ -198,6 +198,6 @@
     float: left;
 }
 
-.ui-tabs li.ui-tabs-actions[aria-hidden='true'] {
+.ui-tabs li.ui-tabs-actions.ui-helper-hidden {
     display: none;
 }
