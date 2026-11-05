@@ -97,17 +97,47 @@ class AbstractFileUploadDecoderTest {
         "C:\\evil.txt"
     })
     void processLastChunkStripsPathFromFileName(String fileName) throws IOException {
+        // an existing file outside must neither be deleted nor overwritten
+        Path outside = tempDir.resolve("evil.txt");
+        Files.writeString(outside, "keep");
+
         decoder.processLastChunk(request, chunk(fileName), chunksDir, range(), null);
 
-        assertTrue(Files.exists(uploadDir.resolve("[" + FILE_KEY + "]evil.txt")));
-        assertFalse(Files.exists(tempDir.resolve("evil.txt")));
+        assertEquals("Hello World", Files.readString(uploadDir.resolve("[" + FILE_KEY + "]evil.txt")));
+        assertEquals("keep", Files.readString(outside));
         assertFalse(Files.exists(tempDir.resolve("[" + FILE_KEY + "]evil.txt")));
         assertFalse(Files.exists(uploadDir.resolve("evil.txt")));
         assertNoChunksLeft();
     }
 
+    /**
+     * Characters which are invalid only on some file systems (e.g. Windows): the upload is either rejected or
+     * the merged file is created inside the upload directory.
+     */
     @ParameterizedTest
-    @ValueSource(strings = {"", " ", "..", ".", "sub/..", "sub\\..", "sub/"})
+    @ValueSource(strings = {"evil.txt:stream", "C:evil.txt", "a?.txt", "a<b>.txt", "a|b.txt", "a*.txt", "CON"})
+    void processLastChunkHandlesFileSystemSpecificNames(String fileName) throws IOException {
+        try {
+            decoder.processLastChunk(request, chunk(fileName), chunksDir, range(), null);
+
+            try (Stream<Path> files = Files.list(uploadDir)) {
+                assertEquals(List.of(uploadDir.resolve("[" + FILE_KEY + "]" + fileName)), files.toList());
+            }
+        }
+        catch (IOException e) {
+            try (Stream<Path> files = Files.list(uploadDir)) {
+                assertEquals(0, files.count(), "no merged file must be created");
+            }
+        }
+
+        assertNoChunksLeft();
+        try (Stream<Path> files = Files.list(tempDir)) {
+            assertEquals(List.of(uploadDir), files.toList(), "nothing must be created outside the upload directory");
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "..", ".", "sub/..", "sub\\..", "sub/", "a\0b.txt"})
     void processLastChunkRejectsInvalidFileName(String fileName) throws IOException {
         Path outside = tempDir.resolve("keep.txt");
         Files.writeString(outside, "keep");
@@ -124,17 +154,51 @@ class AbstractFileUploadDecoderTest {
     @Test
     void processLastChunkRejectsNullFileName() {
         assertThrows(IOException.class, () -> decoder.processLastChunk(request, chunk(null), chunksDir, range(), null));
+        assertNoChunksLeft();
+    }
+
+    /**
+     * The guard in processLastChunk must also hold if resolveMergedFile is overridden.
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {"outside", "nested", "uploadDir"})
+    void processLastChunkRejectsMergedFileOutsideUploadDirectory(String target) throws IOException {
+        Path dir = uploadDir.toAbsolutePath().normalize();
+        Path mergedFile = switch (target) {
+            case "outside" -> tempDir.toAbsolutePath().normalize().resolve("evil.txt");
+            case "nested" -> dir.resolve("sub").resolve("evil.txt");
+            default -> dir;
+        };
+        Files.createDirectories(dir.resolve("sub"));
+        decoder.mergedFile = mergedFile;
+
+        assertThrows(IOException.class, () -> decoder.processLastChunk(request, chunk("evil.txt"), chunksDir, range(), null));
+
+        assertNoChunksLeft();
+        assertFalse(Files.exists(tempDir.resolve("evil.txt")));
+        assertFalse(Files.exists(dir.resolve("sub").resolve("evil.txt")));
+    }
+
+    @Test
+    void processLastChunkDeletesMergedFileOnSizeMismatch() {
+        ContentRange range = ContentRange.of("bytes 6-11/12", 6);
+
+        assertThrows(IOException.class, () -> decoder.processLastChunk(request, chunk("test.txt"), chunksDir, range, null));
+
+        assertFalse(Files.exists(uploadDir.resolve("[" + FILE_KEY + "]test.txt")));
+        assertNoChunksLeft();
     }
 
     @Test
     void resolveMergedFileStaysInUploadDirectory() {
         Path dir = uploadDir.toAbsolutePath().normalize();
 
-        assertEquals(dir.resolve("[1]a.txt"), decoder.resolveMergedFile(uploadDir.toString(), "1", "a.txt"));
-        assertEquals(dir.resolve("[1]a.txt"), decoder.resolveMergedFile(uploadDir.toString(), "1", "../../a.txt"));
-        assertEquals(dir.resolve("[1]a.txt"), decoder.resolveMergedFile(uploadDir.toString(), "1", "..\\..\\a.txt"));
-        assertNull(decoder.resolveMergedFile(uploadDir.toString(), "1", ".."));
-        assertNull(decoder.resolveMergedFile(uploadDir.toString(), "1", null));
+        assertEquals(dir.resolve("[1]a.txt"), decoder.resolveMergedFile(dir, "1", "a.txt"));
+        assertEquals(dir.resolve("[1]a.txt"), decoder.resolveMergedFile(dir, "1", "../../a.txt"));
+        assertEquals(dir.resolve("[1]a.txt"), decoder.resolveMergedFile(dir, "1", "..\\..\\a.txt"));
+        assertNull(decoder.resolveMergedFile(dir, "1", ".."));
+        assertNull(decoder.resolveMergedFile(dir, "1", "a\0b.txt"));
+        assertNull(decoder.resolveMergedFile(dir, "1", null));
     }
 
     @Test
@@ -165,9 +229,15 @@ class AbstractFileUploadDecoderTest {
     private static final class TestDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
 
         private final String uploadDirectory;
+        private Path mergedFile;
 
         TestDecoder(String uploadDirectory) {
             this.uploadDirectory = uploadDirectory;
+        }
+
+        @Override
+        protected Path resolveMergedFile(Path uploadDir, String fileKey, String fileName) {
+            return mergedFile == null ? super.resolveMergedFile(uploadDir, fileKey, fileName) : mergedFile;
         }
 
         @Override

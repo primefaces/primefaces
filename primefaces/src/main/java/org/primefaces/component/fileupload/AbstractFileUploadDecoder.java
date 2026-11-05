@@ -34,7 +34,6 @@ import org.primefaces.util.LangUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
@@ -177,8 +176,10 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         String fileKey = generateFileInfoKey(request);
         List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
 
-        Path whole = resolveMergedFile(getUploadDirectory(request), fileKey, chunk.getFileName());
-        if (whole == null) {
+        Path uploadDir = Path.of(getUploadDirectory(request)).toAbsolutePath().normalize();
+        Path whole = resolveMergedFile(uploadDir, fileKey, chunk.getFileName());
+        // path traversal protection: the merged file must reside directly inside the upload directory
+        if (whole == null || !whole.startsWith(uploadDir) || !uploadDir.equals(whole.getParent())) {
             deleteChunkFolder(chunksDir, chunks);
             throw new IOException("Invalid file name for chunked upload");
         }
@@ -201,22 +202,21 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     }
 
     /**
-     * Resolves the merged file directly inside the upload directory.
+     * Resolves the normalized merged file inside the upload directory, using only the name part of the given file name.
      *
-     * @return the merged file or {@code null} if the file name is invalid or escapes the upload directory
+     * @return the merged file or {@code null} if the file name is invalid
      */
-    protected Path resolveMergedFile(String uploadDirectory, String fileKey, String fileName) {
-        String name = FilenameUtils.getName(fileName);
-        if (LangUtils.isBlank(name) || ".".equals(name) || "..".equals(name)) {
-            return null;
-        }
-
+    protected Path resolveMergedFile(Path uploadDir, String fileKey, String fileName) {
         try {
-            Path dir = Path.of(uploadDirectory).toAbsolutePath().normalize();
-            Path whole = dir.resolve("[" + fileKey + "]" + name).normalize();
-            return dir.equals(whole.getParent()) ? whole : null;
+            String name = FilenameUtils.getName(fileName);
+            if (LangUtils.isBlank(name) || ".".equals(name) || "..".equals(name)) {
+                return null;
+            }
+
+            return uploadDir.resolve("[" + fileKey + "]" + name).normalize();
         }
-        catch (InvalidPathException e) {
+        catch (IllegalArgumentException e) {
+            // e.g. null character (FilenameUtils) or invalid characters for the file system (InvalidPathException)
             return null;
         }
     }
