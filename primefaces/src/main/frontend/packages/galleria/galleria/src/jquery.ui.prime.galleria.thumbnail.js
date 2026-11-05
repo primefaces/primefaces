@@ -205,6 +205,11 @@ $.widget("prime.galleriaThumbnail", {
     },
 
     changePageOnTouch: function (e, diff) {
+        if (Math.abs(diff) < 10) {
+            // a tap, let the click select the thumbnail
+            return;
+        }
+
         if (diff < 0) {           // left
             this.navForward(e);
         }
