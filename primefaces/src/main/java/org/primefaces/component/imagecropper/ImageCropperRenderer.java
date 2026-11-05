@@ -98,7 +98,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         int viewMode = component.getViewMode();
         if (viewMode <= 0 || viewMode > 3) {
             LOGGER.log(Level.WARNING, "ImageCropper: viewMode=''{0}'' is not valid or not supported and has been changed to viewMode=''1''.",
-                    String.valueOf(viewMode));
+                    viewMode);
             viewMode = 1;
         }
 

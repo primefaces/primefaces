@@ -133,13 +133,11 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             }
 
             // Make Okapi backwards compatible with Barcode4J legacy values, Okapi is clockwise and Barcode4J is counter-clockwise
-            switch (rotation) {
-                case 90:
-                    rotation = 270;
-                    break;
-                case 270:
-                    rotation = 90;
-                    break;
+            if (rotation == 90) {
+                rotation = 270;
+            }
+            else if (rotation == 270) {
+                rotation = 90;
             }
 
             OutputStream out = externalContext.getResponseOutputStream();
