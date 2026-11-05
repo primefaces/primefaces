@@ -27,12 +27,14 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -75,9 +77,13 @@ public class FocusRenderer extends CoreRenderer<Focus> {
     }
 
     protected void encodeExplicitFocus(FacesContext context, Focus component) throws IOException {
+        String forValue = component.getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("Focus requires the 'for' attribute for explicit focus. ClientId: " + component.getClientId(context));
+        }
+
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(
-                context, component, component.getFor());
+        UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, forValue);
 
         String clientId = forComponent.getClientId(context);
 
@@ -95,7 +101,7 @@ public class FocusRenderer extends CoreRenderer<Focus> {
         if (invalidClientId != null) {
             writer.write("PrimeFaces.focus('" + invalidClientId + "');");
         }
-        else if (component.getContext() != null) {
+        else if (LangUtils.isNotBlank(component.getContext())) {
             UIComponent focusContext = SearchExpressionUtils.contextlessResolveComponent(
                     context, component, component.getContext());
 

@@ -26,10 +26,12 @@ package org.primefaces.component.defaultcommand;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.render.FacesRenderer;
@@ -40,14 +42,19 @@ public class DefaultCommandRenderer extends CoreRenderer<DefaultCommand> {
 
     @Override
     public void encodeEnd(FacesContext context, DefaultCommand component) throws IOException {
-        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, component.getTarget());
+        String targetValue = component.getTarget();
+        if (LangUtils.isBlank(targetValue)) {
+            throw new FacesException("DefaultCommand requires the 'target' attribute. ClientId: " + component.getClientId(context));
+        }
+
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, targetValue);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DefaultCommand", component)
                 .attr("target", target.getClientId(context));
 
         String scope = component.getScope();
-        if (scope != null) {
+        if (LangUtils.isNotBlank(scope)) {
             UIComponent scopeComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, scope);
             wb.attr("scope", scopeComponent.getClientId(context));
         }

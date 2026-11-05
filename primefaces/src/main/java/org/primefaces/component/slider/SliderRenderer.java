@@ -35,6 +35,7 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
@@ -77,6 +78,11 @@ public class SliderRenderer extends CoreRenderer<Slider> {
     }
 
     protected void encodeScript(FacesContext context, Slider component) throws IOException {
+        String forValue = component.getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("Slider requires the 'for' attribute. ClientId: " + component.getClientId(context));
+        }
+
         String range = component.getRange();
         UIComponent output = getTarget(context, component, component.getDisplay());
 
@@ -84,7 +90,7 @@ public class SliderRenderer extends CoreRenderer<Slider> {
         wb.init("Slider", component);
 
         if ("true".equals(range)) {
-            String[] inputIds = component.getFor().split(",");
+            String[] inputIds = forValue.split(",");
             UIComponent inputMin = getTarget(context, component, inputIds[0]);
             UIComponent inputMax = getTarget(context, component, inputIds[1]);
 
@@ -103,7 +109,7 @@ public class SliderRenderer extends CoreRenderer<Slider> {
                     .append("\",\"").append(EscapeUtils.forJavaScript(inputMaxValue)).append("\"]");
         }
         else {
-            UIComponent input = getTarget(context, component, component.getFor());
+            UIComponent input = getTarget(context, component, forValue);
             String inputClientId = input instanceof InputHolder ih ? ih.getInputClientId() : input.getClientId(context);
 
             wb.attr("value", ComponentUtils.getValueToRender(context, input))

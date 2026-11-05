@@ -125,7 +125,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
                 .attr("autoResize", autoResize)
                 .attr("maxlength", component.getMaxlength(), Integer.MIN_VALUE);
 
-        if (counter != null) {
+        if (LangUtils.isNotBlank(counter)) {
             UIComponent counterComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, counter);
 
             wb.attr("counter", counterComponent.getClientId(context))

@@ -27,6 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -86,7 +87,7 @@ public class DraggableRenderer extends CoreRenderer<Draggable> {
 
         //Dashboard support
         String dashboard = component.getDashboard();
-        if (dashboard != null) {
+        if (LangUtils.isNotBlank(dashboard)) {
             Dashboard db = (Dashboard) SearchExpressionUtils.contextlessResolveComponent(context, component, dashboard);
             wb.selectorAttr("connectToSortable", "#" + db.getClientId(context) + " .p-dashboard-column");
         }

@@ -83,8 +83,13 @@ public class Slider extends SliderBaseImpl {
             return;
         }
 
+        String forValue = getFor();
+        if (LangUtils.isBlank(forValue)) {
+            throw new FacesException("Slider requires the 'for' attribute. ClientId: " + getClientId(context));
+        }
+
         if ("true".equals(getRange())) {
-            String[] inputIds = getFor().split(",");
+            String[] inputIds = forValue.split(",");
             if (inputIds.length != 2 || LangUtils.isBlank(inputIds[0]) || LangUtils.isBlank(inputIds[1])) {
                 throw new FacesException("Slider in range mode requires two inputs in the 'for' attribute. ClientId: " + getClientId(context));
             }
@@ -116,7 +121,7 @@ public class Slider extends SliderBaseImpl {
             }
         }
         else {
-            UIInput input = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, getFor());
+            UIInput input = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, forValue);
             String value = getValueAsStringOfAttachedInput(context, input);
             if (LangUtils.isBlank(value)) {
                 return;
