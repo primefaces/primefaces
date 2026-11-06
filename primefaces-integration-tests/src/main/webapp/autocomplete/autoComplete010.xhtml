@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core" xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- GitHub https://github.com/primefaces/primefaces/issues/14152 -->
+            <p:autoComplete id="autocomplete"
+                            dropdown="true"
+                            value="#{autoComplete010.text}"
+                            completeMethod="#{autoComplete010.completeText}">
+                <p:ajax event="itemSelect" process="@this" update="@form" listener="#{autoComplete010.onChange}" />
+                <p:ajax event="change" process="@this" update="@form" listener="#{autoComplete010.onChange}" />
+            </p:autoComplete>
+            <h:outputText id="value" value="#{autoComplete010.text}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
