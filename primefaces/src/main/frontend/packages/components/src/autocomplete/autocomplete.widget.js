@@ -431,17 +431,15 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
     bindKeyEvents() {
         var $this = this;
 
-        // GitHub #6711 use DOM if non-CSP and JQ event if CSP
-        var originalOnchange = this.input.prop('onchange');
-        if (!originalOnchange && this.input[0]) {
-            var events = $._data(this.input[0], "events");
-            if (events.change) {
-                originalOnchange = events.change[0].handler;
-            }
-        }
-        this.cfg.onChange = originalOnchange;
-        if (originalOnchange) {
-            this.input.prop('onchange', null).off('change');
+        // #14152 with CSP the change handler is registered by PrimeFaces.csp.register, which runs AFTER the widget
+        // init on AJAX updates, so if it is not found yet, try again once CSP has registered it (see #13269)
+        this.cfg.onChange = null;
+        if (!this.captureOriginalOnchange()) {
+            PrimeFaces.queueTask(function() {
+                if ($this.input[0] && $this.input[0].isConnected) {
+                    $this.captureOriginalOnchange();
+                }
+            }, 1);
         }
 
         if (this.cfg.queryEvent !== 'enter') {
@@ -622,6 +620,37 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
             $this.currentInputValue = $this.cfg.forceSelection && !valid ? '' : value;
             $this.preventInputChangeEvent = false;
         });
+    }
+
+    /**
+     * Takes over the user's change handler of the input, so the widget decides when to call it (e.g. not when the
+     * input is blurred by clicking a suggestion item).
+     * GitHub #6711 use DOM if non-CSP and JQ event if CSP.
+     * @private
+     * @return {boolean} `true` if a change handler was found.
+     */
+    captureOriginalOnchange() {
+        var input = this.input[0];
+        if (!input) {
+            return false;
+        }
+
+        var originalOnchange = this.input.prop('onchange');
+        if (originalOnchange) {
+            this.input.prop('onchange', null);
+        }
+        else {
+            // skip the widget's own handler
+            var events = $._data(input, "events"),
+                handler = events && events.change && events.change.find(function(h) { return h.namespace !== 'autoComplete'; });
+            if (handler) {
+                originalOnchange = handler.handler;
+                this.input.off('change', originalOnchange);
+            }
+        }
+
+        this.cfg.onChange = originalOnchange || null;
+        return !!originalOnchange;
     }
 
     /**
