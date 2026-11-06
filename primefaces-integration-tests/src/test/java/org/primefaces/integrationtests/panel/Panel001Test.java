@@ -63,13 +63,13 @@ class Panel001Test extends AbstractPrimePageTest {
     void collapse(Page page) {
         // Arrange
         Panel panel = page.panel;
-        assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertTrue(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
 
         // Act
         panel.collapse();
 
         // Assert
-        assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertFalse(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
         assertFalse(page.messages.isEmpty());
         assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
@@ -83,14 +83,15 @@ class Panel001Test extends AbstractPrimePageTest {
         // Arrange
         Panel panel = page.panel;
         panel.collapse();
-        assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertFalse(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
 
         // Act
         panel.expand();
 
         // Assert
-        assertEquals("button", panel.getHeader().getAttribute("role"));
-        assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertNull(panel.getHeader().getAttribute("role"));
+        assertEquals(panel.getContent().getAttribute("id"), panel.getToggler().getAttribute("aria-controls"));
+        assertTrue(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
         assertFalse(page.messages.isEmpty());
         assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         assertEquals("Status:VISIBLE", page.messages.getMessage(0).getDetail());
@@ -103,14 +104,15 @@ class Panel001Test extends AbstractPrimePageTest {
     void toggle(Page page) {
         // Arrange
         Panel panel = page.panel;
-        assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertTrue(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
 
         // Act
         panel.toggle();
 
         // Assert
-        assertEquals("button", panel.getHeader().getAttribute("role"));
-        assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertNull(panel.getHeader().getAttribute("role"));
+        assertEquals(panel.getContent().getAttribute("id"), panel.getToggler().getAttribute("aria-controls"));
+        assertFalse(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
         assertFalse(page.messages.isEmpty());
         assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());

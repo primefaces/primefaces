@@ -187,13 +187,6 @@ public class PanelRenderer extends CoreRenderer<Panel> {
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context) + "_header", null);
         writer.writeAttribute("class", styleClass, null);
-        if (component.isToggleable()) {
-            if (component.isToggleableHeader()) {
-                writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
-            }
-            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!component.isCollapsed()), null);
-            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
-        }
         renderPassThruAttributes(context, headerFacet);
 
         //Title
@@ -293,6 +286,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
         }
         if (expanded != null) {
             writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS, component.getClientId(context) + "_content", null);
         }
 
         writer.startElement("span", null);
