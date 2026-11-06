@@ -65,6 +65,13 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
             implicitDefaultValue = "startsWith")
     public abstract String getFilterMatchMode();
 
+    @Property(description = "Lets the user pick the filter match mode from a menu in the column header (DataTable only, ignored by"
+            + " TreeTable). Not set or \"none\": no menu. \"auto\": preset derived from the column's value type (numeric and date"
+            + " values only with a converter). Presets: \"text\", \"numeric\", \"date\". Or a comma separated list of match"
+            + " modes (e.g. \"contains,startsWith,equals\") or a Collection<MatchMode>. The initial match mode is filterMatchMode if"
+            + " set (it must be one of them), otherwise the first one. Ignored for a filter facet or filterFunction.")
+    public abstract Object getFilterMatchModeOptions();
+
     @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",
             defaultValue = "bottom")
     public abstract String getFilterPosition();

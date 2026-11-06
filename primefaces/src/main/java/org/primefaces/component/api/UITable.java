@@ -25,11 +25,15 @@ package org.primefaces.component.api;
 
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
+import org.primefaces.model.MatchModeOptions;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.FacetUtils;
@@ -80,6 +84,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         forEachColumn(c -> {
             FilterMeta meta = FilterMeta.of(context, getVar(), c, isFilterNormalize());
             if (meta != null) {
+                applyFilterMatchModeOptions(context, c, meta);
                 filterBy.put(meta.getColumnKey(), meta);
             }
 
@@ -106,6 +111,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (intlFilterBy != null) {
                 FilterMeta tsFilterMeta = entry.getValue();
                 intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
+                // restore the match mode picked by the user, if it can still be picked
+                if (intlFilterBy.getMatchModeOptions().contains(tsFilterMeta.getMatchMode())) {
+                    intlFilterBy.setMatchMode(tsFilterMeta.getMatchMode());
+                    intlFilterBy.setConstraint(FilterConstraints.of(tsFilterMeta.getMatchMode()));
+                }
             }
             // #7325 restore global filter value
             if (FilterMeta.GLOBAL_FILTER_KEY.equals(entry.getKey())) {
@@ -182,6 +192,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // lazy init - happens in cases where the column is initially not rendered
         FilterMeta f = FilterMeta.of(context, getVar(), column, isFilterNormalize());
         if (f != null) {
+            applyFilterMatchModeOptions(context, column, f);
             filterBy.put(f.getColumnKey(), f);
         }
         setFilterByAsMap(filterBy);
@@ -220,10 +231,23 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 filterValue = editableValueHolderState.getValue();
             }
             else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
+                String columnClientId = column instanceof DynamicColumn
+                        ? column.getContainerClientId(context)
+                        : column.getClientId(context);
+                filterValue = params.get(columnClientId + separator + "filter");
+
+                // only a match mode offered by the picker is accepted
+                List<MatchMode> matchModeOptions = filterMeta.getMatchModeOptions();
+                if (!matchModeOptions.isEmpty()) {
+                    String operator = params.get(columnClientId + separator + "filterMatchMode");
+                    matchModeOptions.stream()
+                            .filter(m -> m.operator().equals(operator))
+                            .findFirst()
+                            .ifPresent(m -> {
+                                filterMeta.setMatchMode(m);
+                                filterMeta.setConstraint(FilterConstraints.of(m));
+                            });
+                }
 
                 try {
                     // if no custom filter provided and conversion necessary, use UIColumn#converter instead
@@ -250,6 +274,16 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             return true;
         });
+    }
+
+    /**
+     * Resolves the match mode options of a column, see {@link MatchModeOptions#apply}.
+     */
+    private void applyFilterMatchModeOptions(FacesContext context, UIColumn column, FilterMeta filterMeta) {
+        // DataTable only for now
+        if (this instanceof DataTable) {
+            MatchModeOptions.apply(context, this, column, filterMeta);
+        }
     }
 
     default Object getFilterValue(UIColumn column) {
@@ -296,6 +330,15 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     @Property(defaultValue = "false",
             description = "Defines if filtering would be done using normalized values (accents will be removed from characters).")
     boolean isFilterNormalize();
+
+    /**
+     * The default {@code filterMatchModeOptions} for all columns, see {@link MatchModeOptions}.
+     *
+     * @return a String, a {@code Collection<MatchMode>} or {@code null}
+     */
+    default Object getFilterMatchModeOptions() {
+        return null;
+    }
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortBy = new LinkedHashMap<>();

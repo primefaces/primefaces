@@ -92,6 +92,55 @@
             </h:form>
         </div>
         <div class="card">
+            <h5>Match Mode Selection</h5>
+            <p>
+                With <strong>filterMatchModeOptions</strong> the user picks the match mode of a column filter from a menu in the
+                column header. Presets are <i>text</i>, <i>numeric</i> and <i>date</i>, <i>auto</i> derives the preset from the
+                value type, or list the match modes, e.g. <i>contains,startsWith,exact</i>. Set on the table, it is the default of
+                all columns, <i>none</i> turns it off for a column. The initial match mode is <strong>filterMatchMode</strong>,
+                otherwise the first option. Columns with a filter facet or filterFunction get no menu.
+                Numeric and date columns need a converter. Keyboard: ArrowDown opens the menu, ArrowUp/ArrowDown/Home/End move,
+                Enter selects, Escape or Tab close it.
+            </p>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtFilterView.customers4}" widgetVar="customersTable5"
+                    emptyMessage="No customers found with given criteria"
+                    filteredValue="#{dtFilterView.filteredCustomers4}" filterMatchModeOptions="text"
+                    paginator="true" rows="10">
+
+                    <p:column field="name" headerText="Name" filterPlaceholder="Filter By Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country" sortBy="#{customer.country.name}" filterBy="#{customer.country.name}"
+                              filterMatchModeOptions="contains,startsWith,exact">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px" />
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country.name}" />
+                    </p:column>
+
+                    <p:column field="date" headerText="Join Date" filterMatchModeOptions="date" filterMatchMode="gte"
+                              converter="#{dtFilterView.dateConverter}" filterPlaceholder="yyyy-MM-dd" />
+
+                    <p:column field="status" headerText="Status" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('customersTable5').filter()" autoWidth="false">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{dtFilterView.customerStatus}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
+                    </p:column>
+
+                    <p:column field="activity" headerText="Activity" filterMatchModeOptions="numeric" filterMatchMode="gte"
+                              converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+        <div class="card">
             <h5>Default Filter</h5>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers2}" widgetVar="customersTable2"
