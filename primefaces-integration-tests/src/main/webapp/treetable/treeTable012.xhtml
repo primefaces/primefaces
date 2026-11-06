@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:treeTable value="#{treeTable012.root}" var="document" id="treeTable" widgetVar="treeTable"
+                         selectionMode="single" selection="#{treeTable012.selectedNode}" filterEvent="enter"
+                         paginator="true" rows="2">
+                <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Size">
+                    <h:outputText value="#{document.size}"/>
+                </p:column>
+                <p:column headerText="Type">
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+                <p:column style="width:3rem">
+                    <p:commandButton title="View Detail" icon="pi pi-search" action="#{treeTable012.showSelectedDocument}">
+                        <f:setPropertyActionListener value="#{document}" target="#{treeTable012.selectedDocument}"/>
+                    </p:commandButton>
+                </p:column>
+
+                <p:ajax event="select"/>
+            </p:treeTable>
+
+            <p:commandButton id="buttonShowSelectedNode" value="show selected node" action="#{treeTable012.showSelectedNode}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

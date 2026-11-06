@@ -21,17 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.treetable.feature;
+package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.model.TreeNode;
 
-public class CustomNode<T> extends org.primefaces.model.DefaultTreeNode<T> {
+import java.io.Serial;
+import java.io.Serializable;
 
-    public CustomNode(String type, T data, TreeNode parent) {
-        super(type, data, parent);
-    }
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
-    public CustomNode(CustomNode<T> other) {
-        super(other.getType(), other.getData(), null);
+import lombok.Data;
+
+@Named
+@ViewScoped
+@Data
+public class TreeTable013 implements Serializable {
+
+    @Serial private static final long serialVersionUID = 1L;
+
+    private TreeNode<Document> root;
+
+    @Inject
+    private DocumentService service;
+
+    @PostConstruct
+    public void init() {
+        root = service.createDocuments();
     }
 }

@@ -18,6 +18,7 @@
 
     <properties>
         <jetty.version>12.1.14</jetty.version>
+        <jetty.http.port>8080</jetty.http.port>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
         <resteasy.version>7.0.5.Final</resteasy.version>
@@ -275,7 +276,7 @@
                     <webXml>${project.build.directory}/web.xml</webXml>
                     <httpConnector>
                         <host>0.0.0.0</host>
-                        <port>8080</port>
+                        <port>${jetty.http.port}</port>
                     </httpConnector>
                 </configuration>
                 <dependencies>

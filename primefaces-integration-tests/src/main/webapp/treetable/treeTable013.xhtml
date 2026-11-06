@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:treeTable value="#{treeTable013.root}" var="document" id="treeTable" widgetVar="treeTable"
+                         filterEvent="enter" filterPrune="descendants">
+                <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Size">
+                    <h:outputText value="#{document.size}"/>
+                </p:column>
+                <p:column headerText="Type">
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+            </p:treeTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

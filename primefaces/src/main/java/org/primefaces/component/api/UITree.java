@@ -796,9 +796,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<? extends TreeNode<?>> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = childRowKey(rowKey, childIndex);
-
-                processNode(context, phaseId, root, iterator.next(), childRowKey);
+                TreeNode<?> childNode = iterator.next();
+                if (isNodeVisible(childNode)) {
+                    processNode(context, phaseId, root, childNode, childRowKey(rowKey, childIndex));
+                }
 
                 childIndex++;
             }
@@ -1146,9 +1147,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<? extends TreeNode<?>> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = childRowKey(rowKey, childIndex);
-
-                if (visitNode(context, root, callback, iterator.next(), childRowKey)) {
+                TreeNode<?> childNode = iterator.next();
+                if (isNodeVisible(childNode) && visitNode(context, root, callback, childNode, childRowKey(rowKey, childIndex))) {
                     return true;
                 }
 
@@ -1243,6 +1243,17 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     protected boolean shouldVisitNode(TreeNode<?> node) {
         return (node.isExpanded() || node.getParent() == null);
+    }
+
+    /**
+     * Whether the given node is displayed at all, e.g. not hidden by a filter. Hidden nodes and their descendants are
+     * neither processed nor visited.
+     *
+     * @param node the node
+     * @return {@code true} if the node is displayed
+     */
+    protected boolean isNodeVisible(TreeNode<?> node) {
+        return true;
     }
 
     @Override

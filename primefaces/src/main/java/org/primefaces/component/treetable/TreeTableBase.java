@@ -43,7 +43,6 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.TreeNode;
 
 import jakarta.faces.component.UIComponent;
 
@@ -168,9 +167,6 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     @Property(implicitDefaultValue = "fit", description = "Defines the resize behavior, valid values are \"fit\" and expand.")
     public abstract String getResizeMode();
 
-    @Property(description = "Node to keep the filtered nodes if filtering is enabled.")
-    public abstract TreeNode<?> getFilteredValue();
-
     @Property(implicitDefaultValue = "keyup", description = "Client side event to invoke filtering."
             + " If \"enter\" it will only filter after ENTER key is pressed.")
     public abstract String getFilterEvent();
@@ -198,11 +194,6 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
 
     @Property(defaultValue = "multiple", description = "Defines sorting mode, valid values are \"single\" and \"multiple\".")
     public abstract String getSortMode();
-
-    @Property(defaultValue = "false", description = "Defines if nodes should be cloned on filter via Cloneable interface or"
-            + " Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent))."
-            + " Normally the filtered nodes are new instanceof of DefaultTreeNode.")
-    public abstract boolean isCloneOnFilter();
 
     @Property(defaultValue = "true", description = "Saves the changes in cell editing on blur, when set to false changes are discarded.")
     public abstract boolean isSaveOnCellBlur();

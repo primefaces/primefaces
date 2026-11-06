@@ -424,7 +424,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             },
             oncomplete: function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
-                if(args && args.totalRecords) {
+                if(args && args.totalRecords !== undefined) {
                     if(paginator) {
                         paginator.setTotalRecords(args.totalRecords);
                     }
@@ -971,7 +971,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             var nextNode = nextNodes.eq(i),
             nextNodeRowKey = nextNode.attr('data-rk');
 
-            if(nextNodeRowKey.indexOf(nodeKey) !== -1) {
+            if(nextNodeRowKey.indexOf(nodeKey + '_') === 0) {
                nextNode.remove();
             }
             else {
@@ -1326,7 +1326,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             var nextNode = nextNodes.eq(i),
             nextNodeRowKey = nextNode.attr('data-rk');
 
-            if(nextNodeRowKey.indexOf(nodeKey) != -1) {
+            if(nextNodeRowKey.indexOf(nodeKey + '_') === 0) {
                 descendants.push(nextNode);
             }
             else {
@@ -2219,7 +2219,12 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @param {string | HTMLElement | HTMLElement[] | JQuery} content The new HTML content of the row.
      */
     updateRows(row, content) {
-        this.tbody.children('tr').filter('[data-prk^="'+ row.data('rk') +'"]').remove();
+        // the descendants of the row, a prefix match alone would also remove the descendants of e.g. "10" for "1"
+        var rowKey = row.attr('data-rk');
+        this.tbody.children('tr').filter(function() {
+            var parentRowKey = $(this).attr('data-prk');
+            return parentRowKey !== undefined && (parentRowKey === rowKey || parentRowKey.indexOf(rowKey + '_') === 0);
+        }).remove();
         row.replaceWith(content);
     }
 
