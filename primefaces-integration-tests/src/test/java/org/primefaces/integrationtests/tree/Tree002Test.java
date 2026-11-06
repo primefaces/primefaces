@@ -35,9 +35,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,9 +67,7 @@ class Tree002Test extends AbstractTreeTest {
         assertMessage(page.messages, 0, "Selected node", "Documents");
 
         // Act Pt. 2
-        Actions actions = new Actions(page.getWebDriver());
-        Action actionUnselect = actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        first.toggleSelection();
 
         // Assert Pt. 2
         assertMessage(page.messages, 0, "Unselected", "Documents");

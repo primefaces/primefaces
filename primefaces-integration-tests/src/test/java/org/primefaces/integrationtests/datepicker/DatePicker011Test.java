@@ -40,15 +40,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatePicker011Test extends AbstractDatePickerTest {
-
-    public static final int SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS = 250;
 
     private enum DatePickerBehaviour {
         _none, dateSelect, viewChange, close;
@@ -218,15 +215,14 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 assertEmptyMessages(messages);
                 break;
         }
-        assertCalendarDate(datePicker, ".tst-disabled", "1");
-        assertCalendarDate(datePicker, ".tst-begin", "2");
-        assertCalendarDate(datePicker, ".tst-end", "3");
+        assertDisabledDayStyleClass(datePicker, "tst-disabled", "1");
+        assertDayStyleClass(datePicker, "tst-begin", "2");
+        assertDayStyleClass(datePicker, "tst-end", "3");
 
         // Act - 2nd previous month
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -235,13 +231,12 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 assertEmptyMessages(messages);
                 break;
         }
-        assertCalendarDate(datePicker, ".tst-disabled", "2");
+        assertDisabledDayStyleClass(datePicker, "tst-disabled", "2");
 
         // Act - 3rd next month
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -255,7 +250,6 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -264,13 +258,12 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 assertEmptyMessages(messages);
                 break;
         }
-        assertCalendarDate(datePicker, ".tst-disabled", "3");
+        assertDisabledDayStyleClass(datePicker, "tst-disabled", "3");
 
         // Act - 5th previous month
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -284,7 +277,6 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectMonthDropdown(LocalDate.now().getMonth().getValue() % 12);
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -298,7 +290,6 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.incrementYear(1);
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -308,11 +299,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 break;
         }
 
-        // Act - 8th clear
+        // Act - 8th clear (waits for the requests and until the panel is hidden)
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -324,32 +314,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 break;
         }
 
-        // Act - 9th select 5th of current month
-        datePicker.showPanel();
-        WebElement link = datePicker.getPanel().findElement(By.linkText("5"));
-        switch (behaviour) {
-            case viewChange:
-                if (datePicker.isViewChangeAjaxified()) {
-                    link = PrimeSelenium.guardAjax(link);
-                }
-                break;
-            case dateSelect:
-                if (datePicker.isDateSelectAjaxified()) {
-                    link = PrimeSelenium.guardAjax(link);
-                }
-                break;
-            case close:
-                if (datePicker.isCloseAjaxified()) {
-                    link = PrimeSelenium.guardAjax(link);
-                }
-                break;
-            default:
-                break;
-        }
-        link.click();
+        // Act - 9th select 5th of current month (waits for the requests and until the panel is hidden by focusOnSelect)
+        datePicker.selectDay(5);
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -386,31 +354,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 break;
         }
 
-        // Act - 2nd today
-        WebElement button = datePicker.getTodayButton();
-        switch (behaviour) {
-            case viewChange:
-                if (datePicker.isViewChangeAjaxified()) {
-                    button = PrimeSelenium.guardAjax(button);
-                }
-                break;
-            case dateSelect:
-                if (datePicker.isDateSelectAjaxified()) {
-                    button = PrimeSelenium.guardAjax(button);
-                }
-                break;
-            case close:
-                if (datePicker.isCloseAjaxified()) {
-                    button = PrimeSelenium.guardAjax(button);
-                }
-                break;
-            default:
-                break;
-        }
-        button.click(); // may trigger 2 ajax-calls due to DatePicker internals; PrimeSelenium.guardAjax only covers the first one
+        // Act - 2nd today (waits for the requests and until the panel is hidden by focusOnSelect)
+        datePicker.getTodayButton().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -441,11 +388,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 break;
         }
 
-        // Act - 2nd clear
+        // Act - 2nd clear (waits for the requests and until the panel is hidden)
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -487,16 +433,6 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     private void assertEmptyMessages(Messages messages) {
         assertTrue(messages.getAllMessages().isEmpty(), messages.getAllMessages().toString());
 
-    }
-
-    private void assertCalendarDate(DatePicker datePicker, String styleClass, String day) {
-        List<WebElement> days = datePicker.getPanel().findElements(
-                    By.cssSelector(".p-datepicker-calendar td:not(.p-datepicker-other-month) " + styleClass));
-        assertEquals(1, days.size(), days.toString());
-        assertEquals(day, days.get(0).getText());
-        if (".tst-disabled".equals(styleClass)) {
-            assertTrue(days.get(0).getAttribute("class").contains("p-state-disabled"));
-        }
     }
 
     private void assertConfiguration(JSONObject cfg, DatePickerBehaviour behaviour, int disabledDateCount) {

@@ -25,19 +25,16 @@ package org.primefaces.integrationtests.datepicker;
 
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -81,13 +78,13 @@ class DatePicker017Test extends AbstractDatePickerTest {
     void maskTimePickerSync(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        WebElement panel = datePicker.showPanel();
+        datePicker.showPanel();
 
         // Act
-        incrementTimeSegment(panel);
+        datePicker.incrementTime(ChronoUnit.SECONDS);
 
         // Assert
-        assertTime(panel, "0", "0", "1");
+        assertTime(datePicker, "0", "0", "1");
         assertEquals("05/06/2026 00:00:01", datePicker.getInputValue());
 
         // Act
@@ -119,12 +116,6 @@ class DatePicker017Test extends AbstractDatePickerTest {
         // Assert - incomplete value cleared
         assertNoJavascriptErrors();
         assertEquals("", datePicker.getInputValue());
-    }
-
-    protected void incrementTimeSegment(WebElement panel) {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement picker = panel.findElement(By.className("p-second-picker"));
-        picker.findElement(By.className("p-picker-up")).click();
     }
 
     public static class Page extends AbstractPrimePage {

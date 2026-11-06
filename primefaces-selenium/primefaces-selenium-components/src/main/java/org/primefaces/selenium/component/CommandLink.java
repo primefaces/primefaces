@@ -62,4 +62,14 @@ public abstract class CommandLink extends Link {
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
         link.click();
     }
+
+    /**
+     * Is the inline AJAX loading state shown, i.e. a request of this link is running or the minimum loading animation
+     * ({@code PrimeFaces.ajax.minLoadAnimation}) is not over yet.
+     *
+     * @return true if loading
+     */
+    public boolean isLoading() {
+        return PrimeSelenium.hasCssClass(getRoot(), "p-state-loading");
+    }
 }

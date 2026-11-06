@@ -52,7 +52,7 @@ public class AutoComplete009 implements Serializable {
 
     public List<String> completeText(String query) {
         try {
-            Thread.sleep(1000L);
+            Thread.sleep(2000L);
         }
         catch (InterruptedException e) {
             Thread.currentThread().interrupt();

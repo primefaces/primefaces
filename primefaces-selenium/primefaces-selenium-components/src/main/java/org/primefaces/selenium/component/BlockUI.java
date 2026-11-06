@@ -30,6 +30,7 @@ import org.primefaces.selenium.component.base.AbstractComponent;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -38,21 +39,34 @@ import org.openqa.selenium.WebElement;
 public abstract class BlockUI extends AbstractComponent {
 
     /**
-     * Finds all Block UI overlay elements by class name.
+     * Finds the overlay elements of this Block UI, one per blocked target. If this Block UI is no longer in the DOM (e.g. destroyed),
+     * the overlays of all Block UIs are returned, so leftovers can be detected.
      *
-     * @return a List<WebElement> containing at least one element
+     * @return the overlay elements
      */
     public List<WebElement> getOverlays() {
-        return getWebDriver().findElements(By.className("p-blockui"));
+        return findElements("data-bui-overlay", "p-blockui");
     }
 
     /**
-     * Finds all Block UI content elements by class name.
+     * Finds the content elements of this Block UI, one per blocked target if there is more than one. If this Block UI is no longer in
+     * the DOM (e.g. destroyed), the contents of all Block UIs are returned, so leftovers can be detected.
      *
-     * @return a List<WebElement> containing at least one element
+     * @return the content elements
      */
     public List<WebElement> getContents() {
-        return getWebDriver().findElements(By.className("p-blockui-content"));
+        return findElements("data-bui-content", "p-blockui-content");
+    }
+
+    private List<WebElement> findElements(String dataAttribute, String fallbackClassName) {
+        String id;
+        try {
+            id = getId();
+        }
+        catch (NoSuchElementException e) {
+            return getWebDriver().findElements(By.className(fallbackClassName));
+        }
+        return getWebDriver().findElements(By.cssSelector("[" + dataAttribute + "~=\"" + id + "\"]"));
     }
 
     /**

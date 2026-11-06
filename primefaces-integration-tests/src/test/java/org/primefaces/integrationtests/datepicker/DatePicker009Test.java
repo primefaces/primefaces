@@ -33,7 +33,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -61,18 +60,22 @@ class DatePicker009Test extends AbstractDatePickerTest {
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        List<WebElement> elements = panel.findElements(By.cssSelector(".p-datepicker-group"));
+        List<WebElement> elements = datePicker.getDisplayedMonths();
         assertNotNull(elements);
         assertEquals(27, elements.size());
-        for (WebElement mon : elements) {
-            List<WebElement> titles = mon.findElements(By.cssSelector(".p-datepicker-title .p-datepicker-month"));
-            assertNotNull(titles);
-            assertEquals(1, titles.size());
-            WebElement title = titles.get(0);
+        for (int i = 0; i < elements.size(); i++) {
+            WebElement title = datePicker.getTitleMonth(i);
             assertNotNull(title);
             String monthName = title.getText();
             assertTrue(MONTHS.contains(monthName), "unknown month `" + monthName + "´");
         }
+
+        // the days of all 27 months from November 2020 to January 2023, the value is the 1st of the first month
+        assertEquals(30 + 31 + 365 + 365 + 31, datePicker.getDays().size());
+        assertTrue(datePicker.isDaySelected(1));
+        assertTrue(datePicker.isDaySelected(0, 1));
+        assertFalse(datePicker.isDaySelected(1, 1));
+        assertEquals(1, datePicker.getSelectedDays().size());
     }
 
     public static class Page extends AbstractPrimePage {

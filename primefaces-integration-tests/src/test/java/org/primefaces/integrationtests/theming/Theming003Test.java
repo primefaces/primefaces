@@ -120,16 +120,16 @@ class Theming003Test extends AbstractThemingTest {
     void density(Page page) {
         // Arrange
         setColorScheme("light");
-        double normalPaddingTop = px(computedStyle(page.inputText, "padding-top"));
-        double normalPaddingLeft = px(computedStyle(page.inputText, "padding-left"));
+        double normalPaddingTop = pixels(computedStyle(page.inputText, "padding-top"));
+        double normalPaddingLeft = pixels(computedStyle(page.inputText, "padding-left"));
         assertTrue(normalPaddingTop > 0);
 
         // Act
         PrimeSelenium.executeScript("document.documentElement.setAttribute('data-p-density', 'compact');");
 
         // Assert
-        double compactPaddingTop = px(computedStyle(page.inputText, "padding-top"));
-        double compactPaddingLeft = px(computedStyle(page.inputText, "padding-left"));
+        double compactPaddingTop = pixels(computedStyle(page.inputText, "padding-top"));
+        double compactPaddingLeft = pixels(computedStyle(page.inputText, "padding-left"));
         assertTrue(compactPaddingTop < normalPaddingTop, "compact padding-top " + compactPaddingTop + " not < " + normalPaddingTop);
         assertTrue(compactPaddingLeft < normalPaddingLeft, "compact padding-left " + compactPaddingLeft + " not < " + normalPaddingLeft);
 
@@ -137,7 +137,7 @@ class Theming003Test extends AbstractThemingTest {
         PrimeSelenium.executeScript("document.documentElement.removeAttribute('data-p-density');");
 
         // Assert
-        assertEquals(normalPaddingTop, px(computedStyle(page.inputText, "padding-top")));
+        assertEquals(normalPaddingTop, pixels(computedStyle(page.inputText, "padding-top")));
         assertNoJavascriptErrors();
     }
 
@@ -182,13 +182,13 @@ class Theming003Test extends AbstractThemingTest {
     void nestedDensity(Page page) {
         // Arrange
         setColorScheme("light");
-        double normalInput = px(computedStyle(page.inputText, "padding-left"));
-        double normalButton = px(computedStyle(page.buttonPrimary, "padding-left"));
+        double normalInput = pixels(computedStyle(page.inputText, "padding-left"));
+        double normalButton = pixels(computedStyle(page.buttonPrimary, "padding-left"));
 
         // Assert: the referencing spacing tokens (button padding) and the scope inside follow the compact density
-        assertTrue(px(computedStyle(page.buttonCompact, "padding-left")) < normalButton, "button in a compact area is not compact");
-        assertTrue(px(computedStyle(page.inputCompactScope, "padding-left")) < normalInput, "a scope inside a compact area resets the density");
-        assertEquals(normalInput, px(computedStyle(page.inputNormal, "padding-left")), "data-p-density=normal does not restore the preset");
+        assertTrue(pixels(computedStyle(page.buttonCompact, "padding-left")) < normalButton, "button in a compact area is not compact");
+        assertTrue(pixels(computedStyle(page.inputCompactScope, "padding-left")) < normalInput, "a scope inside a compact area resets the density");
+        assertEquals(normalInput, pixels(computedStyle(page.inputNormal, "padding-left")), "data-p-density=normal does not restore the preset");
 
         // Act: global primary color
         setApplicationStyle(STYLE_ID, ":root { --p-primary-base: #1e3a8a; }");
@@ -204,10 +204,6 @@ class Theming003Test extends AbstractThemingTest {
 
     private static void assertIcon(String description, String maskImage) {
         assertTrue(maskImage != null && maskImage.startsWith("url("), description + " has no mask-image: " + maskImage);
-    }
-
-    private static double px(String value) {
-        return Double.parseDouble(value.replace("px", "").trim());
     }
 
     public static class Page extends AbstractPrimePage {

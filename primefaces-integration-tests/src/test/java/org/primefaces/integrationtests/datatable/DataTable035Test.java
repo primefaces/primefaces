@@ -35,6 +35,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-selection")
 class DataTable035Test extends AbstractDataTableTest {
@@ -49,16 +50,14 @@ class DataTable035Test extends AbstractDataTableTest {
             PrimeSelenium.guardAjax(nameRow1).click();
 
             // assert selection
-            WebElement row1 = page.dataTable.findElement(By.cssSelector("tr[data-ri='1']"));
-            assertCss(row1, "p-state-highlight");
+            assertTrue(page.dataTable.getRow(1).isSelected());
 
             // trigger selection on row2 via button
             WebElement buttonRow2 = getWebDriver().findElement(By.id("form:datatable:2:select"));
             PrimeSelenium.guardAjax(buttonRow2).click();
 
             // assert selection
-            WebElement row2 = page.dataTable.findElement(By.cssSelector("tr[data-ri='2']"));
-            assertCss(row2, "p-state-highlight");
+            assertTrue(page.dataTable.getRow(2).isSelected());
         });
     }
 

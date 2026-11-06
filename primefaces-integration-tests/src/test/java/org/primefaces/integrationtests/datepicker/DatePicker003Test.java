@@ -30,7 +30,6 @@ import org.primefaces.selenium.component.DatePicker;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -50,22 +49,27 @@ class DatePicker003Test extends AbstractDatePickerTest {
         // Assert (all days of august active)
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        assertEquals(31, panel.findElements(By.cssSelector("a.p-state-default")).size());
+        assertEquals(31, datePicker.getSelectableDays().size());
 
         // Act - previous month
-        panel.findElement(By.className("p-datepicker-prev")).click();
+        datePicker.getPreviousMonthLink().click();
 
-        // Assert
-        assertEquals(23, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
-        assertEquals(12, panel.findElements(By.cssSelector("td > a.p-state-default")).size());
+        // Assert (July 1-19 before minDate; the 4 days of June / August filling the weeks are disabled as other months
+        // are not selectable)
+        assertEquals(19, datePicker.getDisabledDays().size());
+        assertEquals(12, datePicker.getSelectableDays().size());
+        assertEquals(4, datePicker.getOtherMonthDays().size());
+        assertEquals(4, datePicker.getDisabledOtherMonthDays().size());
 
         // Act - next month
-        panel.findElement(By.className("p-datepicker-next")).click();
-        panel.findElement(By.className("p-datepicker-next")).click();
+        datePicker.getNextMonthLink().click();
+        datePicker.getNextMonthLink().click();
 
-        // Assert
-        assertEquals(15, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
-        assertEquals(20, panel.findElements(By.cssSelector("td > a.p-state-default")).size());
+        // Assert (September 21-30 after maxDate, the 5 days of August / October are disabled too)
+        assertEquals(10, datePicker.getDisabledDays().size());
+        assertEquals(20, datePicker.getSelectableDays().size());
+        assertEquals(5, datePicker.getOtherMonthDays().size());
+        assertEquals(5, datePicker.getDisabledOtherMonthDays().size());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }

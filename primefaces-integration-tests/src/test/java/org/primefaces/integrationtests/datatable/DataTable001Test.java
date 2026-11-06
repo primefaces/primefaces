@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage.ProgrammingLanguageType;
-import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
@@ -183,8 +182,7 @@ class DataTable001Test extends AbstractDataTableTest {
         DataTable dataTable = getDataTable();
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
-        PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
+        dataTable.selectRowsPerPage(2);
 
         // Act
         dataTable.filter("Name", "t");
@@ -219,7 +217,7 @@ class DataTable001Test extends AbstractDataTableTest {
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(globalFilter, "Python");
+        dataTable.filterGlobal("Python");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Python");
@@ -242,7 +240,7 @@ class DataTable001Test extends AbstractDataTableTest {
 
         // Act
         getButtonGlobalFilterOnly().click();
-        filterGlobal(getGlobalFilter(), ProgrammingLanguageType.INTERPRETED.name());
+        getDataTable().filterGlobal(ProgrammingLanguageType.INTERPRETED.name());
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);
@@ -262,15 +260,14 @@ class DataTable001Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Assert
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
+        Select selectRowsPerPage = dataTable.getPaginator().getRowsPerPageDropdown();
         assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        selectRowsPerPage.selectByVisibleText("10");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        dataTable.selectRowsPerPage(10);
 
         // Assert
         assertEquals(languages.size(), dataTable.getRows().size());
@@ -280,7 +277,7 @@ class DataTable001Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(getButtonResetTable()).click();
 
         // Assert
-        selectRowsPerPage = new Select(getDataTable().getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
+        selectRowsPerPage = getDataTable().getPaginator().getRowsPerPageDropdown();
         assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         assertEquals(3, getDataTable().getRows().size());
         assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter

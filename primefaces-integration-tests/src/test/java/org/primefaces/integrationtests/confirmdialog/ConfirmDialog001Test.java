@@ -35,16 +35,12 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class ConfirmDialog001Test extends AbstractPrimePageTest {
 
@@ -106,10 +102,10 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton noButton = dialog.getNoButton();
         assertEquals("No", noButton.getText());
         assertCss(noButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-no p-button-flat");
-        assertCss(noButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-times");
+        assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-times");
 
         // Act
-        noButton.click();
+        dialog.cancel();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -127,10 +123,10 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Yes", yesButton.getText());
         assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-yes");
-        assertCss(yesButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-check");
+        assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-check");
 
         // Act
-        PrimeSelenium.guardAjax(yesButton).click();
+        dialog.confirm();
 
         // Assert
         assertEquals("You have accepted", page.message.getMessage(0).getDetail());
@@ -149,10 +145,10 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
                 "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-no p-button-flat bg-green-600 text-white");
-        assertCss(noButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-heart");
+        assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-heart");
 
         // Act
-        dialog.getNoButton().click();
+        dialog.cancel();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -173,10 +169,10 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
         assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-yes bg-red-600 text-white");
-        assertCss(yesButton.findElement(By.className("p-button-icon-left")), "p-button-icon-left p-c pi pi-trash");
+        assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-trash");
 
         // Act
-        PrimeSelenium.guardAjax(yesButton).click();
+        dialog.confirm();
 
         // Assert
         assertEquals("Record deleted", page.message.getMessage(0).getDetail());
@@ -195,7 +191,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        dialog.getNoButton().click();
+        dialog.cancel();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -212,7 +208,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        PrimeSelenium.guardHttp(dialog.getYesButton()).click();
+        dialog.confirm();
 
         // Assert
         PrimeSelenium.waitGui().until(ExpectedConditions.and(PrimeExpectedConditions.documentLoaded(),
@@ -226,17 +222,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         assertEquals(visible, dialog.isVisible());
 
         if (visible) {
-            try {
-                // modal dialog should block clickability of button
-                page.confirm.click();
-                fail("Button should not be clickable because modal mask is covering it!");
-            }
-            catch (ElementClickInterceptedException ex) {
-                // element should be blocked by modal mask!
-            }
-            catch (WebDriverException ex) {
-                // Safari: element should be blocked by modal mask!
-            }
+            // modal dialog should block clickability of button
+            assertTrue(PrimeSelenium.isElementCovered(page.confirm), "Button should not be clickable because modal mask is covering it!");
         }
         else {
             assertClickableOrLoading(page.confirm);

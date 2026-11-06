@@ -46,6 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class Theming014Test extends AbstractThemingTest {
 
+    private static final String LOCATION = "theming/theming014.xhtml";
+
     private static final String INVALID = "--p-form-field-invalid-border-color";
 
     private static final List<String> FIELDS = List.of("text", "password", "number", "textarea", "mask", "autocomplete", "date",
@@ -73,8 +75,7 @@ class Theming014Test extends AbstractThemingTest {
     @DisplayName("Theming: server side validation marks every field invalid, also on hover and focus, in light and dark mode")
     void serverValidation(String preset) {
         // Arrange
-        PrimeSelenium.goTo("theming/theming014.xhtml?theme=" + preset);
-        setColorScheme("light");
+        open(LOCATION, preset);
         WebElement text = PrimeSelenium.getWebDriver().findElement(By.id("form:text"));
         assertFalse(text.getDomAttribute("class").contains("p-state-error"));
 
@@ -111,8 +112,7 @@ class Theming014Test extends AbstractThemingTest {
     @DisplayName("Theming: client side validation marks the fields invalid (also the spinner, marked on its wrapper)")
     void clientValidation(String preset) {
         // Arrange
-        PrimeSelenium.goTo("theming/theming014.xhtml?theme=" + preset);
-        setColorScheme("light");
+        open(LOCATION, preset);
 
         // Act: no request, the client side validation fails
         PrimeSelenium.getWebDriver().findElement(By.id("form:submitClient")).click();
@@ -139,8 +139,7 @@ class Theming014Test extends AbstractThemingTest {
     @DisplayName("Theming: the tooltip of an invalid field (p:message display=tooltip) and an invalid readonly selectOneRadio")
     void tooltipAndReadonly(String preset) {
         // Arrange
-        PrimeSelenium.goTo("theming/theming014.xhtml?theme=" + preset);
-        setColorScheme("light");
+        open(LOCATION, preset);
         PrimeSelenium.guardAjax(PrimeSelenium.getWebDriver().findElement(By.id("form:submit"))).click();
         setColorScheme("light");
 

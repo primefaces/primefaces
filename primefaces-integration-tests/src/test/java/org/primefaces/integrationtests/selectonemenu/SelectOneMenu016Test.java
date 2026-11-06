@@ -29,7 +29,6 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.List;
 
@@ -121,7 +120,7 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
         selectOneMenu.show();
 
         // Act
-        ComponentUtils.sendKeys(selectOneMenu.getFilterInput(), "Char");
+        selectOneMenu.filter("Char");
 
         // Assert
         assertFocused(selectOneMenu, "Charles");
@@ -187,7 +186,8 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
     }
 
     private void assertFocused(SelectOneMenu selectOneMenu, String label) {
-        WebElement focused = selectOneMenu.getItems().findElement(By.cssSelector("li.p-state-focus"));
+        WebElement focused = selectOneMenu.getFocusedItem();
+        assertNotNull(focused);
         assertEquals(label, focused.getDomAttribute("data-label"));
         assertEquals(focused.getDomAttribute("id"), selectOneMenu.getLabel().getDomAttribute("aria-activedescendant"));
     }
@@ -199,11 +199,12 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
     }
 
     private void assertNoFocusedItem(SelectOneMenu selectOneMenu) {
-        assertTrue(selectOneMenu.getItems().findElements(By.cssSelector("li.p-state-focus")).isEmpty());
+        assertNull(selectOneMenu.getFocusedItem());
     }
 
     private void assertSelected(SelectOneMenu selectOneMenu, String label) {
-        WebElement selected = selectOneMenu.getItems().findElement(By.cssSelector("li.p-state-highlight"));
+        WebElement selected = selectOneMenu.getHighlightedItem();
+        assertNotNull(selected);
         assertEquals(label, selected.getDomAttribute("data-label"));
         List<WebElement> ariaSelected = selectOneMenu.getItems().findElements(By.cssSelector("li[aria-selected='true']"));
         assertEquals(1, ariaSelected.size());

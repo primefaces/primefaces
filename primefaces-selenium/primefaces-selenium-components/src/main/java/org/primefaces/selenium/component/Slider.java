@@ -27,10 +27,22 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 /**
  * Component wrapper for the PrimeFaces {@code p:slider}.
  */
 public abstract class Slider extends AbstractInputComponent {
+
+    /**
+     * Gets the handle which the user drags or moves with the arrow keys, the first one of a range slider.
+     *
+     * @return the handle element
+     */
+    public WebElement getHandle() {
+        return findElement(By.className("p-slider-handle"));
+    }
 
     /**
      * Is this component AJAX enabled?

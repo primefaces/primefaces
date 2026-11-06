@@ -41,12 +41,20 @@ public abstract class OutputLabel extends AbstractComponent {
      * @return true if has required indicator false if not
      */
     public boolean hasRequiredIndicator() {
+        return getRequiredIndicator() != null;
+    }
+
+    /**
+     * Gets the * required indicator.
+     *
+     * @return the required indicator element or NULL if the label has none
+     */
+    public WebElement getRequiredIndicator() {
         try {
-            findElement(By.className("p-outputlabel-rfi"));
-            return true;
+            return findElement(By.className("p-outputlabel-rfi"));
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
+            return null;
         }
     }
 

@@ -28,7 +28,6 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -59,7 +58,7 @@ class InputNumber005Test extends AbstractPrimePageTest {
         // Act
         WebElement input = inputNumber.getInput();
         input.clear();
-        ComponentUtils.sendKeys(input, "1234");
+        inputNumber.type("1234");
         input.sendKeys(Keys.TAB);
         page.button.click();
 

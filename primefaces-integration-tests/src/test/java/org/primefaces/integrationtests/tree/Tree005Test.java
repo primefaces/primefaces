@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.tree;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
@@ -33,9 +32,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,8 +59,7 @@ class Tree005Test extends AbstractTreeTest {
         assertTrue(children.get(2).getWebElement().isDisplayed());
 
         // Act
-        WebElement filter = tree.findElement(By.cssSelector("input.p-tree-filter"));
-        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
+        tree.filter("Pro");
 
         // Assert
         children = tree.getChildren();
@@ -82,8 +77,7 @@ class Tree005Test extends AbstractTreeTest {
         assertFalse(children.get(1).getChildren().get(2).getWebElement().isDisplayed());
 
         // Act
-        filter.clear();
-        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        tree.clearFilter();
 
         // Assert
         children = tree.getChildren();

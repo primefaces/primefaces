@@ -36,10 +36,10 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -56,7 +56,7 @@ class Dialog006Test extends AbstractPrimePageTest {
         dialog.show();
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
 
         // Assert
         assertTrue(dialog.isVisible());
@@ -84,17 +84,17 @@ class Dialog006Test extends AbstractPrimePageTest {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
 
         // Act
         PrimeSelenium.guardAjax(page.dockedMaximize).click();
 
         // Assert
         assertNotPresent(page.docked);
-        assertCss(dialog, "p-dialog-maximized");
+        assertTrue(dialog.isMaximized());
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
         PrimeSelenium.guardAjax(page.dockedClose).click();
 
         // Assert
@@ -110,34 +110,24 @@ class Dialog006Test extends AbstractPrimePageTest {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
         PrimeSelenium.guardAjax(page.dockedRestore).click();
-        Point location = page.dialogBox.getLocation();
-        Dimension size = page.dialogBox.getSize();
+        Point location = dialog.getBox().getLocation();
+        Dimension size = dialog.getBox().getSize();
 
         // Act: drag the title bar to the left and up
-        new Actions(getWebDriver())
-                    .clickAndHold(page.dialogTitleBar)
-                    .moveByOffset(-5, -5)
-                    .moveByOffset(-50, -40)
-                    .release()
-                    .perform();
+        dialog.dragBy(-55, -45);
 
         // Assert
-        Point moved = page.dialogBox.getLocation();
+        Point moved = dialog.getBox().getLocation();
         assertTrue(Math.abs(moved.getX() - (location.getX() - 55)) <= 2, location + " -> " + moved);
         assertTrue(Math.abs(moved.getY() - (location.getY() - 45)) <= 2, location + " -> " + moved);
 
         // Act: resize with the south east handle
-        new Actions(getWebDriver())
-                    .clickAndHold(page.dialogResizeHandle)
-                    .moveByOffset(5, 5)
-                    .moveByOffset(30, 20)
-                    .release()
-                    .perform();
+        dialog.resizeBy(35, 25);
 
         // Assert
-        Dimension resized = page.dialogBox.getSize();
+        Dimension resized = dialog.getBox().getSize();
         assertTrue(Math.abs(resized.getWidth() - (size.getWidth() + 35)) <= 2, size + " -> " + resized);
         assertTrue(resized.getHeight() > size.getHeight(), size + " -> " + resized);
         assertNoJavascriptErrors();
@@ -151,7 +141,7 @@ class Dialog006Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         dialog.show();
         page.menu.show();
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
         PrimeSelenium.guardAjax(page.dockedRestore).click();
 
         // Act
@@ -170,7 +160,7 @@ class Dialog006Test extends AbstractPrimePageTest {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
         assertDisplayed(page.docked);
 
         // Act
@@ -196,7 +186,7 @@ class Dialog006Test extends AbstractPrimePageTest {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
-        PrimeSelenium.guardAjax(dialog.getMinimizeButton()).click();
+        dialog.minimize();
         assertDisplayed(page.docked);
 
         // Act
@@ -231,14 +221,14 @@ class Dialog006Test extends AbstractPrimePageTest {
         // Assert: from the docked bar to the dialog, which appears when the animation finished
         assertEquals(1L, countElements(".p-effect-transfer.p-dialog-minimizing"));
         assertFalse(dialog.isDisplayed());
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(page.dialogBox));
+        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(dialog.getBox()));
         assertNotPresent(page.docked);
         assertEquals(0L, countElements(".p-effect-transfer"));
         assertNoJavascriptErrors();
     }
 
     private long countElements(String selector) {
-        return PrimeSelenium.executeScript("return document.querySelectorAll(\"" + selector + "\").length;");
+        return getWebDriver().findElements(By.cssSelector(selector)).size();
     }
 
     public static class Page extends AbstractPrimePage {
@@ -248,16 +238,6 @@ class Dialog006Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:dlg")
         Dialog dialog;
-
-        /** The dialog box, the element with the client id is a container covering the viewport. */
-        @FindBy(css = "[id='form:dlg'] > .p-dialog-box")
-        WebElement dialogBox;
-
-        @FindBy(css = "[id='form:dlg'] .p-dialog-titlebar")
-        WebElement dialogTitleBar;
-
-        @FindBy(css = "[id='form:dlg'] .p-resizable-se")
-        WebElement dialogResizeHandle;
 
         @FindBy(id = "form:dlg_docked")
         WebElement docked;

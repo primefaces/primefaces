@@ -154,12 +154,42 @@ void basicAndPaginator(String xhtml) {
 - **Assert the widget configuration** via a private `assertConfiguration(JSONObject cfg)`
   that reads `getWidgetConfiguration()` and calls `assertNoJavascriptErrors()`. This
   catches client-side JS errors that wouldn't otherwise fail the test.
-- Prefer **component wrapper APIs** (`dataTable.sort("Name")`, `rating.setValue(4)`) over
-  hand-rolled `WebElement` clicks; only drop to `WebElement`/`Actions` for behavior the
-  wrapper doesn't expose (e.g. meta-click multisort in `DataTable003Test`).
+- Use **component wrapper APIs** (`dataTable.sort("Name")`, `rating.setValue(4)`) instead
+  of hand-rolled `WebElement` clicks — see [Wrapper first](#wrapper-first-where-test-code-belongs).
 - Tests in a class **share one instance** (`@TestInstance(PER_CLASS)` from the base) and
   run in `@Order`. Don't rely on cross-method state beyond what `@Order` guarantees; each
   method re-navigates.
+
+### Wrapper first: where test code belongs
+
+`primefaces-selenium-components` is published for PrimeFaces users to test their own apps,
+so every interaction or state check a user could need belongs there — not in a test class.
+Decide in this order:
+
+1. **The wrapper already has it** → use it. Check the wrapper, its base classes
+   (`AbstractComponent`, `AbstractTable`, `AbstractPageableData`, …), the models (`Row`,
+   `Cell`, `HeaderCell`, `TreeNode`, …) and `PrimeSelenium` / `PrimeExpectedConditions`
+   before writing any raw `WebElement` code.
+2. **It's missing but generally useful** → write the wrapper method first (or a new wrapper
+   class if the component has none), then use it in the test. Rule of thumb: if a user
+   testing their own page would want it (select a row, read selection/sort state, edit a
+   cell, drag a dialog, read a day cell of a datepicker, …), it goes into the wrapper.
+   Component-agnostic helpers (computed style, focus wait, "is element covered") go into
+   `PrimeSelenium` / `PrimeExpectedConditions`. Follow the wrapper rules in
+   [`primefaces-selenium/AGENTS.md`](../primefaces-selenium/AGENTS.md) (guard internally,
+   name methods by intent, not by DOM).
+3. **It's specific to this suite** → put it in the component's `Abstract<Component>Test`
+   (or `AbstractTableTest` for table-wide helpers), not in the individual test. Examples:
+   assertions against our beans/messages, lazy-load call history, theming token/contrast
+   checks, widget-lifecycle internals (jQuery handler counts).
+4. **It's genuinely one-off** → keep it local in the test. Examples: deliberately tampering
+   with widget state via JS to test server-side rejection, asserting a mid-animation state.
+
+Red flags that usually mean step 2 was skipped: `executeScript("PF('x')…")` to drive a
+widget, `By.className`/`By.cssSelector` into component internals (`p-chkbox-box`,
+`p-row-editor-pencil`, `p-datepicker-next`, …), `new Actions()` for meta/shift clicks or drag,
+`PrimeSelenium.wait(ms)` / `Thread.sleep`, try/catch around clicks, and a private helper
+copied from another test class.
 
 ## Adding a new test — checklist
 
@@ -174,11 +204,13 @@ void basicAndPaginator(String xhtml) {
    `src/main/java/.../integrationtests/<component>/<Component><NNN>.java`: `@Named
    @ViewScoped`, `implements Serializable`, Lombok `@Data`, seed data in
    `@PostConstruct init()`. Reuse an existing `*Service`/model where possible.
-4. **Create the test** `src/test/java/.../integrationtests/<component>/<Component><NNN>Test.java`
+4. **Extend the wrapper first** if the test needs an interaction or state check the
+   component wrapper doesn't offer yet (see [Wrapper first](#wrapper-first-where-test-code-belongs)).
+5. **Create the test** `src/test/java/.../integrationtests/<component>/<Component><NNN>Test.java`
    extending `AbstractPrimePageTest` (or a component `Abstract...Test`). Follow the
    anatomy above.
-5. **Run it locally** (see below) and confirm `assertNoJavascriptErrors()` passes.
-6. **MIT license header** is required on every `.java` (and is enforced) — copy it from a
+6. **Run it locally** (see below) and confirm `assertNoJavascriptErrors()` passes.
+7. **MIT license header** is required on every `.java` (and is enforced) — copy it from a
    sibling file. Checkstyle (160-col, 4-space indent) applies to test sources too
    (`conf/checkstyle-tests.xml`).
 

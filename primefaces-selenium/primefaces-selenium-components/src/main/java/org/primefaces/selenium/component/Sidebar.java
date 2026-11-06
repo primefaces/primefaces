@@ -38,8 +38,20 @@ public abstract class Sidebar extends AbstractComponent {
     @FindBy(className = "p-sidebar-content")
     private WebElement content;
 
+    @FindBy(className = "p-sidebar-close")
+    private WebElement closeIcon;
+
     public WebElement getContent() {
         return content;
+    }
+
+    /**
+     * Gets the close icon of the sidebar.
+     *
+     * @return the close icon element
+     */
+    public WebElement getCloseIcon() {
+        return closeIcon;
     }
 
     /**

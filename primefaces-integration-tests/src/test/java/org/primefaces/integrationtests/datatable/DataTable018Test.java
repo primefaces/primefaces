@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
@@ -41,7 +40,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
@@ -172,15 +170,14 @@ class DataTable018Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Assert
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
+        Select selectRowsPerPage = dataTable.getPaginator().getRowsPerPageDropdown();
         assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        selectRowsPerPage.selectByVisibleText("10");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+        dataTable.selectRowsPerPage(10);
 
         // Assert
         assertEquals(languages.size(), dataTable.getRows().size());
@@ -190,7 +187,7 @@ class DataTable018Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(page.buttonResetTable).click();
 
         // Assert
-        selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
+        selectRowsPerPage = dataTable.getPaginator().getRowsPerPageDropdown();
         assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
         assertEquals(3, dataTable.getRows().size());
         assertRows(dataTable, languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter

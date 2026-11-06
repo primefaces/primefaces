@@ -48,6 +48,16 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
         return checkboxes;
     }
 
+    /**
+     * Gets the visible box of the checkbox at the index, the element the user clicks.
+     *
+     * @param index the index of the checkbox
+     * @return the checkbox box
+     */
+    public WebElement getCheckboxBox(int index) {
+        return getCheckboxes().get(index).findElement(By.className("p-chkbox-box"));
+    }
+
     public void toggle(int... indexes) {
         for (int i : indexes) {
             WebElement checkbox = getCheckboxes().get(i);

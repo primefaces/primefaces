@@ -24,23 +24,17 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectBooleanButton;
-import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
-
-import java.util.List;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,13 +62,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelections(page.messages, "1,3");
         int cnt = 0;
         for (Row row : dataTable.getRows()) {
-            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("p-chkbox-icon"));
-            if (cnt == 0 || cnt == 2) {
-                assertCss(checkboxIcon, "p-checkbox-checked-icon");
-            }
-            else {
-                assertFalse(PrimeSelenium.hasCssClass(checkboxIcon, "p-checkbox-checked-icon"));
-            }
+            assertEquals(cnt == 0 || cnt == 2, row.isSelected());
             cnt++;
         }
 
@@ -86,8 +74,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("ProgrammingLanguages unselected via backing bean"));
         for (Row row : dataTable.getRows()) {
-            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("p-chkbox-icon"));
-            assertFalse(PrimeSelenium.hasCssClass(checkboxIcon, "p-checkbox-checked-icon"));
+            assertFalse(row.isSelected());
         }
 
         // Act
@@ -114,7 +101,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1 // after submit
         );
@@ -136,9 +123,9 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert - row 0 and 2 on page 1 still selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertFalse(dataTable.getRow(1).isSelected());
+        assertTrue(dataTable.getRow(2).isSelected());
 
         // Act
         page.submit.click();
@@ -147,7 +134,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_2, // after pagination to page 2
                 PageLoad.PAGE_1, // after pagination back to page 1
@@ -155,20 +142,14 @@ class DataTable006Test extends AbstractDataTableTest {
         );
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
-        assertEquals("true",
-                dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false",
-                dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true",
-                dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertFalse(dataTable.getRow(1).isSelected());
+        assertTrue(dataTable.getRow(2).isSelected());
         dataTable.selectPage(2);
 
-        assertEquals("false",
-                dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true",
-                dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false",
-                dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertFalse(dataTable.getRow(0).isSelected());
+        assertTrue(dataTable.getRow(1).isSelected());
+        assertFalse(dataTable.getRow(2).isSelected());
     }
 
     @Test
@@ -220,7 +201,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after submit
                 PageLoad.PAGE_1 // after submit
@@ -332,7 +313,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
 
         // Assert - tracking: verify expected load calls have been made
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after toggleSelectPageOnly
                 PageLoad.ALL_DATA, // after 1st submit (select all)
@@ -380,7 +361,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after 1st submit
                 PageLoad.PAGE_1, // after filter
@@ -475,9 +456,9 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert - selections on page 1 should still be preserved
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertFalse(dataTable.getRow(1).isSelected());
+        assertTrue(dataTable.getRow(2).isSelected());
 
         // Act - submit to verify selections are still intact
         page.submit.click();
@@ -485,7 +466,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after 1st submit
                 PageLoad.PAGE_2, // after pagination to page 2
@@ -518,9 +499,9 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert - selections on page 1 should still be preserved
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertFalse(dataTable.getRow(1).isSelected());
+        assertTrue(dataTable.getRow(2).isSelected());
 
         // Act - submit to verify selections are still intact
         page.submit.click();
@@ -528,7 +509,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after toggleSelectPageOnly
                 PageLoad.PAGE_1, // after 1st submit
@@ -559,8 +540,8 @@ class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - all rows on page 2 are selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertTrue(dataTable.getRow(1).isSelected());
 
         // Act - go back to page 1 and unselect one item (row 2)
         dataTable.selectPage(1);
@@ -576,8 +557,8 @@ class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - items on page 2 should still be selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertTrue(dataTable.getRow(1).isSelected());
         assertSelections(page.messages, "1,3,4,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
@@ -618,9 +599,9 @@ class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - all rows on page 2 should still be selected
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
+        assertTrue(dataTable.getRow(0).isSelected());
+        assertTrue(dataTable.getRow(1).isSelected());
+        assertTrue(dataTable.getRow(2).isSelected());
         assertSelections(page.messages,
                 "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
@@ -628,7 +609,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
 
         // Assert - tracking: verify expected load calls have been made
-        assertLoadCalls(page,
+        assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after toggleSelectPageOnly
                 PageLoad.ALL_DATA, // after 1st submit (select all)
@@ -646,42 +627,7 @@ class DataTable006Test extends AbstractDataTableTest {
     }
 
     private void assertSelectAllCheckbox(DataTable datatable, boolean checked) {
-        WebElement selectAllCheckBox = datatable.getSelectAllCheckBox();
-        WebElement icon = selectAllCheckBox.findElement(By.className("p-chkbox-icon"));
-        assertEquals(checked, PrimeSelenium.hasCssClass(icon, "p-checkbox-checked-icon"));
-    }
-
-    private void assertSelections(Messages messages, String selections) {
-        Msg message = messages.getMessage(0);
-        assertTrue(message.getSummary().contains("Selected ProgrammingLanguage(s)"));
-        assertEquals(selections, message.getDetail());
-    }
-
-    private void assertLoadCalls(Page page, PageLoad... expectedLoads) {
-        assertEquals(expectedLoads.length, page.getLoadCallCount(),
-                "Expected " + expectedLoads.length + " load calls but got " + page.getLoadCallCount() + ":\n" + page.getFullHistory());
-
-        List<String> actualCalls = page.getLoadCalls();
-
-        // Build a full list for compare and set of unique elements
-        java.util.List<String> expectedList = new java.util.ArrayList<>(expectedLoads.length);
-        java.util.Set<String> uniqueExpected = new java.util.LinkedHashSet<>();
-        for (PageLoad expectedLoad : expectedLoads) {
-            String loadStr = expectedLoad.toString();
-            expectedList.add(loadStr);
-            uniqueExpected.add(loadStr);
-        }
-
-        // Assert each unique expected load appears in actual calls
-        for (String uniqueLoad : uniqueExpected) {
-            assertTrue(actualCalls.contains(uniqueLoad),
-                    "Expected load call '" + uniqueLoad + "' not found in actual calls:\n" + page.getFullHistory());
-        }
-
-        // Assert the full history matches exactly (including order and duplicates)
-        String expectedHistory = String.join(" | ", expectedList);
-        assertEquals(expectedHistory, page.getFullHistory(),
-                "Compare of full history of expected load calls failed");
+        assertEquals(checked, datatable.isSelectAllChecked());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -704,65 +650,9 @@ class DataTable006Test extends AbstractDataTableTest {
         @FindBy(id = "form:toggleLazyMode")
         CommandButton toggleLazyMode;
 
-        @FindBy(id = "form:loadCallCount")
-        WebElement loadCallCountInput;
-
-        @FindBy(id = "form:fullHistory")
-        WebElement fullHistoryInput;
-
         @Override
         public String getLocation() {
             return "datatable/dataTable006.xhtml";
-        }
-
-        public int getLoadCallCount() {
-            return Integer.parseInt(loadCallCountInput.getAttribute("value"));
-        }
-
-        public String getFullHistory() {
-            return fullHistoryInput.getAttribute("value");
-        }
-
-        public List<String> getLoadCalls() {
-            String history = fullHistoryInput.getAttribute("value");
-            if (history == null || history.trim().isEmpty()) {
-                return new java.util.ArrayList<>();
-            }
-            return java.util.Arrays.asList(history.split(" \\| "));
-        }
-    }
-
-    /**
-     * Represents a lazy data load operation with first offset and page size.
-     * Provides predefined constants for common page loads to improve test readability.
-     */
-    public static class PageLoad {
-
-        // Predefined page loads for common test scenarios
-        public static final PageLoad PAGE_1 = new PageLoad(0, 3);
-        public static final PageLoad PAGE_2 = new PageLoad(3, 3);
-        public static final PageLoad PAGE_3 = new PageLoad(6, 3);
-        public static final PageLoad ALL_DATA = new PageLoad(0, 75);
-
-        private final int first;
-        private final int pageSize;
-
-        public PageLoad(int first, int pageSize) {
-            this.first = first;
-            this.pageSize = pageSize;
-        }
-
-        public int getFirst() {
-            return first;
-        }
-
-        public int getPageSize() {
-            return pageSize;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("load(first=%d, size=%d)", first, pageSize);
         }
     }
 }

@@ -32,6 +32,7 @@ import org.primefaces.selenium.component.Dialog;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,9 +44,9 @@ class Dialog008Test extends AbstractPrimePageTest {
     @DisplayName("Dialog: #14287 refresh nested relocated overlays without deleting the new dialog")
     void refreshNestedOverlays(Page page) {
         page.refresh.click();
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg\"]').length"));
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:sidebar\"]').length"));
-        assertEquals(1L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:sidebar\"] .p-overlay-placeholder').length"));
+        assertEquals(1L, count("[id=\"form:dlg\"]"));
+        assertEquals(1L, count("[id=\"form:sidebar\"]"));
+        assertEquals(1L, count("[id=\"form:sidebar\"] .p-overlay-placeholder"));
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
         page.dialog.hide();
@@ -57,7 +58,7 @@ class Dialog008Test extends AbstractPrimePageTest {
     @DisplayName("Dialog: #14287 remove nested relocated overlays with their source container")
     void removeNestedOverlays(Page page) {
         page.remove.click();
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:dlg\"], [id=\"form:sidebar\"]').length"));
+        assertEquals(0L, count("[id=\"form:dlg\"], [id=\"form:sidebar\"]"));
         assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.nestedDialog && !PrimeFaces.widgets.relocatedSidebar"));
         assertNoJavascriptErrors();
     }
@@ -66,8 +67,12 @@ class Dialog008Test extends AbstractPrimePageTest {
     @Order(3)
     @DisplayName("Dialog: #14287 no marker when appendTo is already the parent")
     void unchangedParent(Page page) {
-        assertEquals(0L, PrimeSelenium.<Long>executeScript("return document.querySelectorAll('[id=\"form:localContainer\"] > .p-overlay-placeholder').length"));
+        assertEquals(0L, count("[id=\"form:localContainer\"] > .p-overlay-placeholder"));
         assertNoJavascriptErrors();
+    }
+
+    private long count(String selector) {
+        return getWebDriver().findElements(By.cssSelector(selector)).size();
     }
 
     public static class Page extends AbstractPrimePage {

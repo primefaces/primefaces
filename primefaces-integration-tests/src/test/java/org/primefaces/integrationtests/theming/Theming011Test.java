@@ -25,6 +25,10 @@ package org.primefaces.integrationtests.theming;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.SelectOneButton;
+import org.primefaces.selenium.component.Slider;
+import org.primefaces.selenium.component.ToggleSwitch;
 
 import java.util.List;
 
@@ -72,7 +76,7 @@ class Theming011Test extends AbstractThemingTest {
         assertTrue(computedStyle(page.primary, "background-clip").contains("border-box"), "no edge layer (border-box)");
         assertEquals("rgba(0, 0, 0, 0)", computedStyle(page.primary, "border-top-color"), "the edge is drawn by the background");
         assertNotEquals("none", computedStyle(page.primary, "box-shadow"), "no machined shadow");
-        WebElement label = page.primary.findElement(By.cssSelector(".p-button-text"));
+        WebElement label = page.primary.getLabelElement();
         assertNotEquals("none", computedStyle(label, "text-shadow"), "no engraved label");
         assertNoJavascriptErrors();
     }
@@ -86,12 +90,12 @@ class Theming011Test extends AbstractThemingTest {
             setColorScheme(scheme);
 
             // Assert
-            for (WebElement button : List.of(page.primary, page.secondary, page.outlined, page.info, page.success, page.warning,
+            for (CommandButton button : List.of(page.primary, page.secondary, page.outlined, page.info, page.success, page.warning,
                     page.help, page.danger, page.contrast)) {
-                double ratio = minContrast(button.findElement(By.cssSelector(".p-button-text")), button, null);
+                double ratio = minContrast(button.getLabelElement(), button, null);
                 assertTrue(ratio >= 4.5, scheme + " " + button.getAttribute("id") + ": " + ratio);
             }
-            WebElement checked = page.selectButton.findElement(By.cssSelector(".p-button.p-state-active"));
+            WebElement checked = page.selectButton.getActiveOption();
             double ratio = minContrast(checked.findElement(By.cssSelector(".p-button-text")), checked, "::before");
             assertTrue(ratio >= 4.5, scheme + " checked select button: " + ratio);
         }
@@ -104,15 +108,15 @@ class Theming011Test extends AbstractThemingTest {
     void knobs(MetalPage page) {
         // Arrange
         setColorScheme("light");
-        WebElement handle = page.slider.findElement(By.cssSelector(".p-slider-handle"));
-        WebElement toggleHandle = page.toggleSwitch.findElement(By.cssSelector(".p-toggleswitch-handler"));
+        WebElement handle = page.slider.getHandle();
+        WebElement toggleHandle = page.toggleSwitch.getHandle();
 
         // Assert: the toggleSwitch is checked, its knob is the aluminium one the slider uses
-        String sliderKnob = PrimeSelenium.executeScript("return getComputedStyle(arguments[0], '::before').backgroundImage;", handle);
+        String sliderKnob = PrimeSelenium.getComputedStyle(handle, "::before", "background-image");
         assertTrue(sliderKnob.startsWith("conic-gradient"), "slider knob is no turned metal: " + sliderKnob);
         assertEquals(computedStyle(toggleHandle, "background-image"), sliderKnob);
         assertEquals(computedStyle(toggleHandle, "box-shadow"),
-                PrimeSelenium.executeScript("return getComputedStyle(arguments[0], '::before').boxShadow;", handle));
+                PrimeSelenium.getComputedStyle(handle, "::before", "box-shadow"));
         assertNoJavascriptErrors();
     }
 
@@ -127,47 +131,47 @@ class Theming011Test extends AbstractThemingTest {
         String image = computedStyle(page.primary, "background-image");
         assertTrue(image.matches("none(, none)*"), "aura button has a background image: " + image);
         assertEquals("none", computedStyle(page.primary, "box-shadow"));
-        assertEquals("none", computedStyle(page.primary.findElement(By.cssSelector(".p-button-text")), "text-shadow"));
-        assertEquals("none", computedStyle(page.toggleSwitch.findElement(By.cssSelector(".p-toggleswitch-handler")), "box-shadow"));
+        assertEquals("none", computedStyle(page.primary.getLabelElement(), "text-shadow"));
+        assertEquals("none", computedStyle(page.toggleSwitch.getHandle(), "box-shadow"));
         assertNoJavascriptErrors();
     }
 
     public static class MetalPage extends AbstractPrimePage {
         @FindBy(id = "form:primary")
-        WebElement primary;
+        CommandButton primary;
 
         @FindBy(id = "form:secondary")
-        WebElement secondary;
+        CommandButton secondary;
 
         @FindBy(id = "form:outlined")
-        WebElement outlined;
+        CommandButton outlined;
 
         @FindBy(id = "form:info")
-        WebElement info;
+        CommandButton info;
 
         @FindBy(id = "form:success")
-        WebElement success;
+        CommandButton success;
 
         @FindBy(id = "form:warning")
-        WebElement warning;
+        CommandButton warning;
 
         @FindBy(id = "form:help")
-        WebElement help;
+        CommandButton help;
 
         @FindBy(id = "form:danger")
-        WebElement danger;
+        CommandButton danger;
 
         @FindBy(id = "form:contrast")
-        WebElement contrast;
+        CommandButton contrast;
 
         @FindBy(id = "form:selectButton")
-        WebElement selectButton;
+        SelectOneButton selectButton;
 
         @FindBy(id = "form:toggleSwitch")
-        WebElement toggleSwitch;
+        ToggleSwitch toggleSwitch;
 
         @FindBy(id = "form:slider")
-        WebElement slider;
+        Slider slider;
 
         @Override
         public String getLocation() {
@@ -177,10 +181,10 @@ class Theming011Test extends AbstractThemingTest {
 
     public static class AuraPage extends AbstractPrimePage {
         @FindBy(id = "form:primary")
-        WebElement primary;
+        CommandButton primary;
 
         @FindBy(id = "form:toggleSwitch")
-        WebElement toggleSwitch;
+        ToggleSwitch toggleSwitch;
 
         @Override
         public String getLocation() {

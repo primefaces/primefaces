@@ -28,7 +28,6 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectBooleanButton;
-import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,12 +38,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * GitHub #15013: Integration tests for {@link org.primefaces.model.JPALazyDataModel} verifying
@@ -55,6 +51,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("DataTable-paginator")
 @Tag("DataTable-filter")
 class DataTable051Test extends AbstractDataTableTest {
+
+    private static final String SELECTED_COUNTRIES = "Selected Country(s)";
 
     @Test
     @Order(1)
@@ -68,7 +66,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 new ExpectedCountry(1, "Albania"),
                 new ExpectedCountry(2, "Algeria"),
                 new ExpectedCountry(3, "Angola")));
-        assertHistory(page, "count()", "load(first=0, size=3)");
+        assertLazyCalls("count()", "load(first=0, size=3)");
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -87,7 +85,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 new ExpectedCountry(4, "Argentina"),
                 new ExpectedCountry(5, "Armenia"),
                 new ExpectedCountry(6, "Australia")));
-        assertHistory(page,
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)",
                 "count()",
@@ -108,8 +106,8 @@ class DataTable051Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelections(page.messages, "1,3");
-        assertHistory(page,
+        assertSelections(page.messages, SELECTED_COUNTRIES, "1,3");
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)",
                 "getRowData(rowKey=1)",
@@ -134,10 +132,10 @@ class DataTable051Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
 
         // Assert
-        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("p-chkbox-box")).getAttribute("aria-checked"));
-        assertHistory(page,
+        assertEquals("true", dataTable.getRow(0).getSelectionBox().getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getRow(1).getSelectionBox().getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getRow(2).getSelectionBox().getAttribute("aria-checked"));
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)",
                 "getRowData(rowKey=1)",
@@ -163,8 +161,8 @@ class DataTable051Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelections(page.messages, "1,2,3");
-        assertHistory(page,
+        assertSelections(page.messages, SELECTED_COUNTRIES, "1,2,3");
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)",
                 "getRowData(rowKey=1)",
@@ -188,8 +186,8 @@ class DataTable051Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelections(page.messages, buildIds(1, 98));
-        assertHistory(page,
+        assertSelections(page.messages, SELECTED_COUNTRIES, buildIds(1, 98));
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)", // after toggleSelectPageOnly re-render
                 "count()",
@@ -213,21 +211,21 @@ class DataTable051Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert initial selection
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages, SELECTED_COUNTRIES, "1,3");
 
         // Act - apply filter
         dataTable.filter("Name", "United");
         page.submit.click();
 
         // Assert - selection 1 and 3 survive filter
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages, SELECTED_COUNTRIES, "1,3");
 
         // Act - remove filter
         dataTable.removeFilter("Name");
         page.submit.click();
 
         // Assert full history
-        assertHistory(page,
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)",
                 "getRowData(rowKey=1)",
@@ -259,7 +257,7 @@ class DataTable051Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages, SELECTED_COUNTRIES, "1,3");
 
         // Act - paginate away and back
         dataTable.selectPage(2);
@@ -267,8 +265,8 @@ class DataTable051Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert - still selected after pagination
-        assertSelections(page.messages, "1,3");
-        assertHistory(page,
+        assertSelections(page.messages, SELECTED_COUNTRIES, "1,3");
+        assertLazyCalls(
                 "count()",
                 "load(first=0, size=3)", // after toggleSelectPageOnly re-render
                 "count()",
@@ -299,17 +297,6 @@ class DataTable051Test extends AbstractDataTableTest {
         }
     }
 
-    private void assertSelections(Messages messages, String selections) {
-        Msg message = messages.getMessage(0);
-        assertTrue(message.getSummary().contains("Selected Country(s)"));
-        assertEquals(selections, message.getDetail());
-    }
-
-    private void assertHistory(Page page, String... expected) {
-        String expectedHistory = String.join(" | ", expected);
-        assertEquals(expectedHistory, page.getFullHistory());
-    }
-
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         assertEquals("checkbox", cfg.get("selectionMode"));
@@ -329,23 +316,9 @@ class DataTable051Test extends AbstractDataTableTest {
         @FindBy(id = "form:toggleSelectPageOnly")
         SelectBooleanButton toggleSelectPageOnly;
 
-        @FindBy(id = "form:loadCallCount")
-        WebElement loadCallCountInput;
-
-        @FindBy(id = "form:fullHistory")
-        WebElement fullHistoryInput;
-
         @Override
         public String getLocation() {
             return "datatable/dataTable051.xhtml";
-        }
-
-        public int getLoadCallCount() {
-            return Integer.parseInt(loadCallCountInput.getAttribute("value"));
-        }
-
-        public String getFullHistory() {
-            return fullHistoryInput.getAttribute("value");
         }
     }
 

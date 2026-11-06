@@ -24,12 +24,9 @@
 package org.primefaces.integrationtests.dataexporter;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.jupiter.api.DisplayName;
@@ -49,19 +46,14 @@ class DataExporter002Test extends AbstractDataExporterTest {
     @Tag("FirefoxExclude")
     void csv(Page page) throws IOException {
         // Arrange
-        final String actualFileName = getActualFile("languages-pageonly.csv");
-        File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
-        page.buttonCsv.click();
 
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
-        File expected = getExpectedFile(actual.getName());
-        assertFileEquals(expected, actual, "Expected CSV files to match but they did not!");
+        // Act & Assert
+        assertDownload("languages-pageonly.csv", page.buttonCsv);
     }
 
     @Test
@@ -71,19 +63,14 @@ class DataExporter002Test extends AbstractDataExporterTest {
     @Tag("FirefoxExclude")
     void xml(Page page) throws IOException {
         // Arrange
-        final String actualFileName = getActualFile("languages-pageonly.xml");
-        File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
-        page.buttonXml.click();
 
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
-        File expected = getExpectedFile(actual.getName());
-        assertFileEquals(expected, actual, "Expected XML files to match but they did not!");
+        // Act & Assert
+        assertDownload("languages-pageonly.xml", page.buttonXml);
     }
 
     @Test
@@ -93,19 +80,14 @@ class DataExporter002Test extends AbstractDataExporterTest {
     @Tag("FirefoxExclude")
     void txt(Page page) throws IOException {
         // Arrange
-        final String actualFileName = getActualFile("languages-pageonly.txt");
-        File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
-        page.buttonTxt.click();
 
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
-        File expected = getExpectedFile(actual.getName());
-        assertFileEquals(expected, actual, "Expected TXT files to match but they did not!");
+        // Act & Assert
+        assertDownload("languages-pageonly.txt", page.buttonTxt);
     }
 
     @Test
@@ -115,19 +97,14 @@ class DataExporter002Test extends AbstractDataExporterTest {
     @Tag("FirefoxExclude")
     void xlsx(Page page) throws IOException {
         // Arrange
-        final String actualFileName = getActualFile("languages-pageonly.xlsx");
-        File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
-        page.buttonXlsx.click();
 
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
-        File expected = getExpectedFile(actual.getName());
-        assertFileEquals(expected, actual, "Expected XLSX files to match but they did not!");
+        // Act & Assert
+        assertDownload("languages-pageonly.xlsx", page.buttonXlsx);
     }
 
     @Test
@@ -137,19 +114,14 @@ class DataExporter002Test extends AbstractDataExporterTest {
     @Tag("FirefoxExclude")
     void pdf(Page page) throws IOException {
         // Arrange
-        final String actualFileName = getActualFile("languages-pageonly.pdf");
-        File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
         assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
-        page.buttonPdf.click();
 
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
-        File expected = getExpectedFile(actual.getName());
-        assertFileEquals(expected, actual, "Expected PDF files to match but they did not!");
+        // Act & Assert
+        assertDownload("languages-pageonly.pdf", page.buttonPdf);
     }
 
     public static class Page extends AbstractPrimePage {

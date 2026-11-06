@@ -23,21 +23,15 @@
  */
 package org.primefaces.integrationtests.selectmanycheckbox;
 
+import org.primefaces.integrationtests.SelectionAssertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectManyCheckbox;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AbstractSelectManyCheckboxTest extends AbstractPrimePageTest {
 
     protected void assertSelected(SelectManyCheckbox selectManyCheckbox, List<String> expectedSelection) {
-        Set<String> selectedLabels = new HashSet<>(selectManyCheckbox.getSelectedLabels());
-        assertEquals(expectedSelection.size(), selectedLabels.size());
-        expectedSelection.forEach(s -> assertTrue(selectedLabels.contains(s)));
+        SelectionAssertions.assertSelectedLabels(selectManyCheckbox.getSelectedLabels(), expectedSelection);
     }
 }

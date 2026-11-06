@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.dialog;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Dialog;
@@ -52,7 +53,7 @@ class Dialog002Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         dialog.show();
         assertTrue(dialog.isVisible());
-        PrimeSelenium.wait(400);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementFocused(dialog.getCloseButton()));
 
         // Act (ENTER key should close the dialog because the Close button is focused)
         Actions actions = new Actions(page.getWebDriver());

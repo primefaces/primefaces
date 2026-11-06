@@ -23,9 +23,9 @@
  */
 package org.primefaces.integrationtests.ajaxstatus;
 
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 
 import org.junit.jupiter.api.Disabled;
@@ -53,7 +53,7 @@ class AjaxStatus005Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Start Facet!", ajaxStatus.getText());
-        TestUtils.wait(3000);
+        PrimeSelenium.waitAjax().until(d -> "Error Facet!".equals(ajaxStatus.getText()));
         assertEquals("Error Facet!", ajaxStatus.getText());
     }
 

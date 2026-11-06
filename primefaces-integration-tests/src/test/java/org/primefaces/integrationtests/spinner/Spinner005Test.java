@@ -27,13 +27,11 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Spinner;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,7 +48,7 @@ public class Spinner005Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "12");
+        spinner.type("12");
         page.button.click();
 
         // Assert
@@ -67,7 +65,7 @@ public class Spinner005Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "20");
+        spinner.type("20");
         page.button.click();
 
         // Assert
@@ -84,7 +82,7 @@ public class Spinner005Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "1350");
+        spinner.type("1350");
         page.button.click();
 
         // Assert
@@ -101,7 +99,7 @@ public class Spinner005Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "995");
+        spinner.type("995");
         spinner.increment();
         spinner.increment();
         page.button.click();
@@ -120,11 +118,6 @@ public class Spinner005Test extends AbstractPrimePageTest {
         assertEquals(0, cfg.getInt("precision"));
         assertEquals("0", cfg.get("decimalPlaces"));
         assertTrue(cfg.getBoolean("round"));
-    }
-
-    public void sendKeys(Spinner spinner, CharSequence value) {
-        WebElement input = spinner.getInput();
-        ComponentUtils.sendKeys(input, value);
     }
 
     public static class Page extends AbstractPrimePage {

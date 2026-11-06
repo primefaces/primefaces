@@ -24,8 +24,8 @@
 package org.primefaces.integrationtests.core.widget;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.Slider;
 
 import java.time.LocalDate;
 
@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -46,8 +47,6 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         "form:datePickerBody", "form:datePicker", "form:slider", "form:knob", "form:signature", "form:spinner"
     };
 
-    private static final String UPDATE = "PrimeFaces.ab({s: 'form:btnUpdate', p: 'form:btnUpdate', u: 'form:wrapper'});";
-    private static final String TOGGLE = "PrimeFaces.ab({s: 'form:btnToggle', p: 'form:btnToggle', u: 'form:wrapper'});";
 
     @Test
     @Order(1)
@@ -61,7 +60,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
 
             // Act: update while the overlay is open
             datePicker.showPanel();
-            PrimeSelenium.executeScript(true, UPDATE);
+            updateWrapper();
 
             // Assert: one closed panel, the global listeners of the open overlay are gone
             assertEquals(1L, panelCount(datePicker.getId()), "panels of " + datePicker.getId());
@@ -85,15 +84,15 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         // Arrange: the state without the widgets (after the internal focus handler of jQuery was added, see above)
         page.datePickerBody.showPanel();
         page.datePickerBody.hidePanel();
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
         JSONObject removed = globalState();
         assertWidgetCount(0, WIDGETS);
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
         assertWidgetCount(1, WIDGETS);
 
         // Act: remove while the overlay appended to the body is open
         page.datePickerBody.showPanel();
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
 
         // Assert
         assertEquals(0L, panelCount("form:datePickerBody"));
@@ -108,12 +107,11 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
     void updateKeyFilter(Page page) {
         // Act
         for (int i = 0; i < 3; i++) {
-            PrimeSelenium.executeScript(true, UPDATE);
+            updateWrapper();
         }
 
         // Assert
-        assertEquals(1L, (Long) PrimeSelenium.executeScript(
-                    "return jQuery._data(document.getElementById('form:filtered'), 'events').beforeinput.length;"));
+        assertEquals(1L, handlerCount("form:filtered", "beforeinput"));
         page.filtered.sendKeys("a1b2c3");
         assertEquals("123", page.filtered.getAttribute("value"));
         assertNoJavascriptErrors();
@@ -128,7 +126,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
 
         // Act
         for (int i = 0; i < 3; i++) {
-            PrimeSelenium.executeScript(true, UPDATE);
+            updateWrapper();
         }
 
         // Assert: rendered once
@@ -136,26 +134,24 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         assertEquals(1L, count("[id='form:knob'] svg"));
         assertEquals(1L, count("[id='form:slider'] .p-slider-handle"));
         assertEquals(1L, count("[id='form:signature'] canvas"));
-        assertEquals(1L, (Long) PrimeSelenium.executeScript(
-                    "return jQuery._data(document.getElementById('form:spinner_input'), 'events').wheel.length;"));
+        assertEquals(1L, handlerCount("form:spinner_input", "wheel"));
 
         // Assert: the knob and the slider still react to the keyboard
         page.knobSvg.sendKeys(Keys.ARROW_UP);
         assertEquals("41", page.knobSvg.getAttribute("aria-valuenow"));
-        page.sliderHandle.sendKeys(Keys.ARROW_RIGHT);
-        assertEquals("31", page.sliderHandle.getAttribute("aria-valuenow"));
+        page.slider.getHandle().sendKeys(Keys.ARROW_RIGHT);
+        assertEquals("31", page.slider.getHandle().getAttribute("aria-valuenow"));
         assertEquals("31", page.sliderInput.getAttribute("value"));
         assertWidgetCount(1, WIDGETS);
         assertNoJavascriptErrors();
     }
 
     private long panelCount(String clientId) {
-        return (Long) PrimeSelenium.executeScript("return document.querySelectorAll('[id=' + JSON.stringify(arguments[0] + '_panel') + ']').length;",
-                    clientId);
+        return getWebDriver().findElements(By.id(clientId + "_panel")).size();
     }
 
     private long count(String selector) {
-        return (Long) PrimeSelenium.executeScript("return document.querySelectorAll(arguments[0]).length;", selector);
+        return getWebDriver().findElements(By.cssSelector(selector)).size();
     }
 
     public static class Page extends AbstractPrimePage {
@@ -172,8 +168,8 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         @FindBy(css = "[id='form:knob'] svg")
         WebElement knobSvg;
 
-        @FindBy(css = "[id='form:slider'] .p-slider-handle")
-        WebElement sliderHandle;
+        @FindBy(id = "form:slider")
+        Slider slider;
 
         @FindBy(id = "form:sliderInput")
         WebElement sliderInput;

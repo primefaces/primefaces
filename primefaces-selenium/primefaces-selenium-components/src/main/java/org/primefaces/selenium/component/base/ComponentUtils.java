@@ -118,4 +118,19 @@ public final class ComponentUtils {
         }
     }
 
+    /**
+     * Replaces the text of the input like the user: a non-empty input is cleared with the keyboard (so key listeners like client side filters see it),
+     * then the value is typed with {@link #sendKeys(WebElement, CharSequence)}. Nothing is guarded and the input is not left.
+     *
+     * @param input the input to type into
+     * @param value the new text, an empty text only clears the input
+     */
+    public static void replaceText(WebElement input, CharSequence value) {
+        String oldValue = input.getDomProperty("value");
+        if (oldValue != null && !oldValue.isEmpty()) {
+            PrimeSelenium.clearInput(input, false);
+        }
+        sendKeys(input, value);
+    }
+
 }

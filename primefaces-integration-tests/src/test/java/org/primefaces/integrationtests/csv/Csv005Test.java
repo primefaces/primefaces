@@ -24,8 +24,6 @@
 package org.primefaces.integrationtests.csv;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
@@ -45,7 +43,7 @@ import org.openqa.selenium.support.FindBy;
  * Client side validation of components that consist of several inputs (p:inputOtp, p:inputPhone, p:inputNumber): the
  * hidden input with the value is validated once, the component and its inputs are highlighted.
  */
-class Csv005Test extends AbstractPrimePageTest {
+class Csv005Test extends AbstractCsvTest {
 
     @Test
     @Order(1)
@@ -121,15 +119,6 @@ class Csv005Test extends AbstractPrimePageTest {
         Assertions.assertEquals("1234", page.otpValue.getText());
         Assertions.assertEquals("+4930123456", page.phoneValue.getText());
         Assertions.assertEquals("5", page.numberValue.getText());
-        assertNoJavascriptErrors();
-    }
-
-    private void assertMessage(Message message, String expected) {
-        // an empty p:message has no size (it is invisible), only a message is shown
-        if (!expected.isEmpty()) {
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(message));
-        }
-        Assertions.assertEquals(expected, message.getText());
         assertNoJavascriptErrors();
     }
 

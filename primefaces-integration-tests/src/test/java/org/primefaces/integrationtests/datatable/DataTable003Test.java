@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
 import java.util.List;
@@ -35,10 +34,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,18 +51,16 @@ class DataTable003Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Act
-        Actions actions = new Actions(page.getWebDriver());
         WebElement eltSortFirstAppeared = dataTable.getHeader().getCell(2).getWebElement();
         WebElement eltSortName = dataTable.getHeader().getCell(1).getWebElement();
 
         // 1) sort by firstAppeared desc
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
+        dataTable.sort(2);
+        dataTable.sort(2);
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 0);
 
         // 2) additional sort by name asc
-        Action actionMetaPlusSortClick = actions.keyDown(Keys.META).click(eltSortName).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionMetaPlusSortClick).perform();
+        dataTable.sort(1, true);
 
         // Assert
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -86,19 +80,17 @@ class DataTable003Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Act
-        Actions actions = new Actions(page.getWebDriver());
         WebElement eltSortFirstAppeared = dataTable.getHeader().getCell(2).getWebElement();
         WebElement eltSortName = dataTable.getHeader().getCell(1).getWebElement();
 
         // 1) sort by firstAppeared desc
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
-        PrimeSelenium.guardAjax(eltSortFirstAppeared).click();
+        dataTable.sort(2);
+        dataTable.sort(2);
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 0);
 
         // 2) additional sort by name desc
-        Action actionMetaPlusSortClick = actions.keyDown(Keys.META).click(eltSortName).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionMetaPlusSortClick).perform();
-        PrimeSelenium.guardAjax(actionMetaPlusSortClick).perform();
+        dataTable.sort(1, true);
+        dataTable.sort(1, true);
 
         // Assert
         assertConfiguration(dataTable.getWidgetConfiguration());

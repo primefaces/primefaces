@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.core.widget;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.Dialog;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -144,7 +145,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         assertEquals(1L, (Long) PrimeSelenium.executeScript("return document.querySelectorAll('.p-sortable-helper').length;"));
 
         // Act: the list is replaced while the item is dragged
-        PrimeSelenium.executeScript(true, "PrimeFaces.ab({s: 'form:btnUpdate', p: 'form:btnUpdate', u: 'form:wrapper'});");
+        updateWrapper();
         actions.moveByOffset(0, 20).release().perform();
 
         // Assert
@@ -162,32 +163,22 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         // Arrange
         ajaxClick(page.btnUpdate);
         ajaxClick(page.btnUpdate);
-        Point location = page.dialogBox.getLocation();
-        Dimension size = page.dialogBox.getSize();
+        Point location = page.dialog.getBox().getLocation();
+        Dimension size = page.dialog.getBox().getSize();
 
         // Act: drag the title bar to the left and up
-        new Actions(getWebDriver())
-                    .clickAndHold(page.dialogTitleBar)
-                    .moveByOffset(-5, -5)
-                    .moveByOffset(-50, -40)
-                    .release()
-                    .perform();
+        page.dialog.dragBy(-55, -45);
 
         // Assert
-        Point moved = page.dialogBox.getLocation();
+        Point moved = page.dialog.getBox().getLocation();
         assertTrue(Math.abs(moved.getX() - (location.getX() - 55)) <= 2, location + " -> " + moved);
         assertTrue(Math.abs(moved.getY() - (location.getY() - 45)) <= 2, location + " -> " + moved);
 
         // Act: resize with the south east handle
-        new Actions(getWebDriver())
-                    .clickAndHold(page.dialogResizeHandle)
-                    .moveByOffset(5, 5)
-                    .moveByOffset(30, 20)
-                    .release()
-                    .perform();
+        page.dialog.resizeBy(35, 25);
 
         // Assert
-        Dimension resized = page.dialogBox.getSize();
+        Dimension resized = page.dialog.getBox().getSize();
         assertTrue(Math.abs(resized.getWidth() - (size.getWidth() + 35)) <= 2, size + " -> " + resized);
         assertTrue(resized.getHeight() > size.getHeight(), size + " -> " + resized);
         assertEquals(0L, (Long) PrimeSelenium.executeScript(
@@ -197,15 +188,8 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
 
     public static class Page extends AbstractPrimePage {
 
-        /** The dialog box, the element with the client id is a container covering the viewport. */
-        @FindBy(css = "[id='form:dlg'] > .p-dialog-box")
-        WebElement dialogBox;
-
-        @FindBy(css = "[id='form:dlg'] .p-dialog-titlebar")
-        WebElement dialogTitleBar;
-
-        @FindBy(css = "[id='form:dlg'] .p-resizable-se")
-        WebElement dialogResizeHandle;
+        @FindBy(id = "form:dlg")
+        Dialog dialog;
 
         @FindBy(id = "form:btnUpdate")
         WebElement btnUpdate;

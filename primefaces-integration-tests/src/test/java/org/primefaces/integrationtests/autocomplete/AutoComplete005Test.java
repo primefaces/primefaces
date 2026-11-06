@@ -79,7 +79,7 @@ class AutoComplete005Test extends AbstractPrimePageTest {
         Driver driverLando = drivers.stream().filter(d -> "Lando".equals(d.getName())).findFirst().get();
 
         // Assert - Part 1
-        WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
+        WebElement hInputSelect = autoComplete.getHiddenInput();
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
         assertEquals(2, options.size());
         assertEquals(Integer.toString(driverMax.getId()), options.get(0).getDomAttribute("value"));
@@ -126,7 +126,7 @@ class AutoComplete005Test extends AbstractPrimePageTest {
         Driver driverMax = drivers.stream().filter(d -> "Max".equals(d.getName())).findFirst().get();
         Driver driverLando = drivers.stream().filter(d -> "Lando".equals(d.getName())).findFirst().get();
 
-        WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
+        WebElement hInputSelect = autoComplete.getHiddenInput();
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
         assertEquals(3, options.size());
         assertEquals(Integer.toString(driverMax.getId()), options.get(0).getDomAttribute("value"));

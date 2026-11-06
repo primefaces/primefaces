@@ -75,7 +75,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         List<Row> rows = new ArrayList<>(uploadedFiles.getRows());
         rows.sort((f1, f2) -> {
             int res = f1.getCell(0).getText().compareTo(f2.getCell(0).getText());
-            res = res == 0 ? (int) (Long.parseLong(f1.getCell(1).getText()) - Long.parseLong(f1.getCell(1).getText())) : res;
+            res = res == 0 ? Long.compare(Long.parseLong(f1.getCell(1).getText()), Long.parseLong(f2.getCell(1).getText())) : res;
             return res;
         });
         for (int f = 0; f < files.length; ++f) {
@@ -85,9 +85,8 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         }
     }
 
-    protected void wait4EmptyMesssage(DataTable uploadedFiles) {
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(
-                uploadedFiles.findElement(By.tagName("tbody")).findElement(By.cssSelector("tr.p-datatable-empty-message"))));
+    protected void wait4EmptyMessage(DataTable uploadedFiles) {
+        PrimeSelenium.waitGui().until(driver -> uploadedFiles.isEmpty());
     }
 
     protected void wait4File(DataTable uploadedFiles, String filename) {

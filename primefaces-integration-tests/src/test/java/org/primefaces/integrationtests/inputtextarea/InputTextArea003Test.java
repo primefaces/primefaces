@@ -70,7 +70,7 @@ class InputTextArea003Test extends AbstractPrimePageTest {
         assertEquals("", inputText.getValue());
 
         // Act
-        PrimeSelenium.executeScript("document.getElementById('form\\:inputtext').value = 'four\uD83D\uDE00';");
+        PrimeSelenium.setHiddenInput(inputText.getInput(), "four\uD83D\uDE00");
         page.button.click();
 
         // Assert
@@ -90,7 +90,7 @@ class InputTextArea003Test extends AbstractPrimePageTest {
         page.checkboxCountBytesAsChars.check();
 
         // Act
-        PrimeSelenium.executeScript("document.getElementById('form\\:inputtext').value = 'four\uD83D\uDE00';");
+        PrimeSelenium.setHiddenInput(inputText.getInput(), "four\uD83D\uDE00");
         page.button.click();
 
         // Assert

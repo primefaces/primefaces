@@ -28,12 +28,9 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
-import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,6 +38,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Filtering hides nodes instead of working on a copy of the tree, so that selecting, expanding and the paginator work
@@ -139,19 +137,9 @@ class TreeTable012Test extends AbstractTreeTableTest {
         treeTable.filter("Name", "nomatch");
 
         // Assert
-        assertEquals(1, treeTable.getRows().size()); // empty message
+        assertTrue(treeTable.isEmpty());
         assertEquals(1, treeTable.getPaginator().getPages().size());
         assertConfiguration(treeTable.getWidgetConfiguration());
-    }
-
-    private List<String> names(TreeTable treeTable) {
-        return treeTable.getRows().stream().map((Row row) -> row.getCell(0).getText()).collect(Collectors.toList());
-    }
-
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

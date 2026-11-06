@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.theming;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.ToggleSwitch;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
@@ -85,8 +86,8 @@ class Theming010Test extends AbstractThemingTest {
         setColorScheme("light");
 
         // Assert: LTR handle on the right half, RTL handle on the left half of the track
-        assertTrue(center(page.ltrHandle) > center(page.ltrSlider), "LTR: checked handle is not on the right");
-        assertTrue(center(page.rtlHandle) < center(page.rtlSlider), "RTL: checked handle is not on the left");
+        assertTrue(center(page.toggleLtr.getHandle()) > center(page.toggleLtr.getSlider()), "LTR: checked handle is not on the right");
+        assertTrue(center(page.toggleRtl.getHandle()) < center(page.toggleRtl.getSlider()), "RTL: checked handle is not on the left");
         assertNoJavascriptErrors();
     }
 
@@ -111,17 +112,11 @@ class Theming010Test extends AbstractThemingTest {
         @FindBy(css = "[id='form:panelMenu'] .p-panelmenu-content .p-menuitem-link")
         WebElement panelMenuLink;
 
-        @FindBy(css = "[id='form:toggleLtr'] .p-toggleswitch-slider")
-        WebElement ltrSlider;
+        @FindBy(id = "form:toggleLtr")
+        ToggleSwitch toggleLtr;
 
-        @FindBy(css = "[id='form:toggleLtr'] .p-toggleswitch-handler")
-        WebElement ltrHandle;
-
-        @FindBy(css = "[id='form:toggleRtl'] .p-toggleswitch-slider")
-        WebElement rtlSlider;
-
-        @FindBy(css = "[id='form:toggleRtl'] .p-toggleswitch-handler")
-        WebElement rtlHandle;
+        @FindBy(id = "form:toggleRtl")
+        ToggleSwitch toggleRtl;
 
         @Override
         public String getLocation() {

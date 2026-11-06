@@ -27,6 +27,9 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -61,5 +64,34 @@ public abstract class CommandButton extends AbstractComponent {
         WebElement button = getRoot();
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         button.click();
+    }
+
+    /**
+     * Is the inline AJAX loading state shown, i.e. a request of this button is running or the minimum loading animation
+     * ({@code PrimeFaces.ajax.minLoadAnimation}) is not over yet.
+     *
+     * @return true if loading
+     */
+    public boolean isLoading() {
+        return PrimeSelenium.hasCssClass(getRoot(), "p-state-loading");
+    }
+
+    /**
+     * Gets the icon element of this button.
+     *
+     * @return the icon {@link WebElement} ({@code .p-button-icon-left} or {@code .p-button-icon-right}), {@code null} if the button has no icon
+     */
+    public WebElement getIcon() {
+        List<WebElement> icons = findElements(By.cssSelector(".p-button-icon-left, .p-button-icon-right"));
+        return icons.isEmpty() ? null : icons.get(0);
+    }
+
+    /**
+     * Gets the label element of this button which holds the text ({@code .p-button-text}).
+     *
+     * @return the label {@link WebElement}
+     */
+    public WebElement getLabelElement() {
+        return findElement(By.className("p-button-text"));
     }
 }

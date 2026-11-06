@@ -25,12 +25,9 @@ package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.TreeTable;
-import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -68,16 +65,6 @@ class TreeTable013Test extends AbstractTreeTableTest {
                 "Pictures", "Videos"), names(treeTable));
         assertTrue(treeTable.getRow(5).getToggler().isDisplayed());
         assertConfiguration(treeTable.getWidgetConfiguration());
-    }
-
-    private List<String> names(TreeTable treeTable) {
-        return treeTable.getRows().stream().map((Row row) -> row.getCell(0).getText()).collect(Collectors.toList());
-    }
-
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

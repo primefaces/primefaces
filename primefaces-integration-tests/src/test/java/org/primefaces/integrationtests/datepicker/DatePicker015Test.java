@@ -25,8 +25,6 @@ package org.primefaces.integrationtests.datepicker;
 
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
@@ -39,12 +37,9 @@ import java.util.Locale;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DatePicker015Test extends AbstractDatePickerTest {
 
@@ -66,9 +61,9 @@ class DatePicker015Test extends AbstractDatePickerTest {
         assertDateEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
 
         // Act
-        WebElement panel = datePicker.showPanel();
-        assertAmPm(panel, am);
-        toggleAmPm(panel);
+        datePicker.showPanel();
+        assertDateEquals(am, datePicker.getAmPm());
+        datePicker.toggleAmPm();
         datePicker.hidePanel();
         page.button.click();
 
@@ -96,9 +91,9 @@ class DatePicker015Test extends AbstractDatePickerTest {
         assertDateEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
 
         // Act
-        WebElement panel = datePicker.showPanel();
-        assertAmPm(panel, am);
-        toggleAmPm(panel);
+        datePicker.showPanel();
+        assertDateEquals(am, datePicker.getAmPm());
+        datePicker.toggleAmPm();
         datePicker.hidePanel();
         page.button.click();
 
@@ -126,9 +121,9 @@ class DatePicker015Test extends AbstractDatePickerTest {
         assertDateEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
 
         // Act
-        WebElement panel = datePicker.showPanel();
-        assertAmPm(panel, pm);
-        toggleAmPm(panel);
+        datePicker.showPanel();
+        assertDateEquals(pm, datePicker.getAmPm());
+        datePicker.toggleAmPm();
         datePicker.hidePanel();
         page.button.click();
 
@@ -136,20 +131,6 @@ class DatePicker015Test extends AbstractDatePickerTest {
         assertNoJavascriptErrors();
         assertDateEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
         assertDateEquals(expectedString + am, page.messages.getMessage(2).getDetail());
-    }
-
-    protected void assertAmPm(WebElement panel, String ampm) {
-        assertNotNull(panel);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement timePicker = panel.findElement(By.className("p-timepicker"));
-        assertDateEquals(ampm, timePicker.findElement(By.cssSelector("div.p-ampm-picker > span")).getText());
-    }
-
-    protected void toggleAmPm(WebElement panel) {
-        assertNotNull(panel);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement amPmPicker = panel.findElement(By.className("p-ampm-picker"));
-        amPmPicker.findElement(By.className("p-picker-down")).click();
     }
 
     protected void assertDateEquals(String expected, String actual) {

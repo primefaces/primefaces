@@ -24,46 +24,20 @@
 package org.primefaces.integrationtests;
 
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.model.datatable.HeaderCell;
+import org.primefaces.selenium.component.model.datatable.SortOrder;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AbstractTableTest extends AbstractPrimePageTest {
 
     protected void assertHeaderSorted(WebElement header, String sortDirection, int sortPriority) {
-        String direction = null;
-        switch (sortDirection) {
-            case "ASC":
-                direction = "asc";
-                break;
-            case "DESC":
-                direction = "desc";
-                break;
-            default:
-                break;
-        }
-        // state class of the sort icon: p-datatable-sort-asc-icon / p-treetable-sort-desc-icon / ...
-        WebElement sortIcon = header.findElement(By.className("p-sortable-column-icon"));
-        assertTrue(PrimeSelenium.hasCssClass(sortIcon, "p-datatable-sort-" + direction + "-icon")
-                || PrimeSelenium.hasCssClass(sortIcon, "p-treetable-sort-" + direction + "-icon"));
-        WebElement badge = header.findElement(By.className("p-sortable-column-badge"));
-        if (sortPriority > 0) {
-            assertEquals(sortPriority, Integer.parseInt(badge.getText()));
-        }
-        else {
-            assertEquals("", badge.getText());
-        }
-    }
-
-    protected void filterGlobal(WebElement inputGlobalFilter, String filter) {
-        // maybe we can move some of this to PF Selenium (InputText?, DataTable?)
-        inputGlobalFilter.clear();
-        inputGlobalFilter.sendKeys(filter);
-        PrimeSelenium.guardAjax(inputGlobalFilter).sendKeys(Keys.TAB);
+        HeaderCell headerCell = new HeaderCell(header);
+        SortOrder expected = "ASC".equals(sortDirection) ? SortOrder.ASCENDING
+                : "DESC".equals(sortDirection) ? SortOrder.DESCENDING : SortOrder.UNSORTED;
+        assertEquals(expected, headerCell.getSortOrder());
+        assertEquals(sortPriority, headerCell.getSortPriority());
     }
 }

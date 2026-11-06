@@ -25,6 +25,7 @@ package org.primefaces.selenium.component.model.datatable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 
@@ -62,5 +63,14 @@ public class Header {
         return getCells().stream()
                     .filter(cell -> headerText.equals(cell.getColumnTitle().getText()))
                     .findFirst();
+    }
+
+    /**
+     * Gets the texts of all header cells.
+     *
+     * @return the header cell texts in column order
+     */
+    public List<String> getCellTexts() {
+        return getCells().stream().map(Cell::getText).collect(Collectors.toList());
     }
 }

@@ -1404,7 +1404,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.selectNode(node, true);
         }
         else if(partialSelected) {
-            node.removeClass('p-state-highlight').addClass('p-treetable-partialselected');
+            node.removeClass('p-state-highlight').addClass('p-treetable-partialselected').attr('aria-selected', false);
 
             if(this.cfg.nativeElements)
                 checkbox.prop('indeterminate', true).removeClass('p-state-active');
@@ -1414,7 +1414,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.removeSelection(node.attr('data-rk'));
         }
         else {
-            node.removeClass('p-state-highlight p-treetable-partialselected');
+            node.removeClass('p-state-highlight p-treetable-partialselected').attr('aria-selected', false);
 
             if(this.cfg.nativeElements)
                 checkbox.prop('indeterminate', false).prop('checked', false).removeClass('p-state-active');

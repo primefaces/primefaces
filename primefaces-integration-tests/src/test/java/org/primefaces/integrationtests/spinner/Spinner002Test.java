@@ -27,13 +27,11 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Spinner;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,7 +85,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "abc");
+        spinner.type("abc");
         page.button.click();
 
         // Assert
@@ -104,7 +102,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "3.4");
+        spinner.type("3.4");
         page.button.click();
 
         // Assert
@@ -121,7 +119,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "1,456.89");
+        spinner.type("1,456.89");
         page.button.click();
 
         // Assert
@@ -138,7 +136,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "-2.8");
+        spinner.type("-2.8");
         page.button.click();
 
         // Assert
@@ -181,11 +179,6 @@ public class Spinner002Test extends AbstractPrimePageTest {
         if (cfg.has("precision")) {
             assertEquals(2, cfg.getInt("precision"));
         }
-    }
-
-    public void sendKeys(Spinner spinner, CharSequence value) {
-        WebElement input = spinner.getInput();
-        ComponentUtils.sendKeys(input, value);
     }
 
     public static class Page extends AbstractPrimePage {

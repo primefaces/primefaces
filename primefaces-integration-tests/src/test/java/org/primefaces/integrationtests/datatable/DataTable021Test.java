@@ -28,7 +28,6 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +38,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -236,10 +234,7 @@ class DataTable021Test extends AbstractDataTableTest {
         dataTable.sort("Name");
 
         // Act
-        WebElement globalFilterInput = page.globalFilter.getInput();
-        globalFilterInput.clear();
-        ComponentUtils.sendKeys(globalFilterInput, "Script");
-        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        dataTable.filterGlobal("Script");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
@@ -265,10 +260,7 @@ class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> languagesWithoutScriptLangs = languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
 
         // Act
-        globalFilterInput = page.globalFilter.getInput();
-        globalFilterInput.clear();
-        ComponentUtils.sendKeys(globalFilterInput, "Java");
-        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        dataTable.filterGlobal("Java");
 
         // Assert
         langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java")).collect(Collectors.toList());
@@ -293,10 +285,7 @@ class DataTable021Test extends AbstractDataTableTest {
         dataTable.sort("Name");
 
         // Act
-        WebElement globalFilterInput = page.globalFilter.getInput();
-        globalFilterInput.clear();
-        ComponentUtils.sendKeys(globalFilterInput, "Script");
-        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        dataTable.filterGlobal("Script");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
@@ -322,10 +311,7 @@ class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> languagesWithoutScriptLangs = languages.stream().filter(l -> !l.getName().contains("Script")).collect(Collectors.toList());
 
         // Act
-        globalFilterInput = page.globalFilter.getInput();
-        globalFilterInput.clear();
-        ComponentUtils.sendKeys(globalFilterInput, "Java");
-        PrimeSelenium.guardAjax(globalFilterInput).sendKeys(Keys.TAB);
+        dataTable.filterGlobal("Java");
 
         // Assert
         langsFiltered = languagesWithoutScriptLangs.stream().filter(l -> l.getName().contains("Java")).collect(Collectors.toList());

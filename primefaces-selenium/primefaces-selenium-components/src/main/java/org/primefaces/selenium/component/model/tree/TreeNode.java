@@ -25,12 +25,16 @@ package org.primefaces.selenium.component.model.tree;
 
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Tree;
+import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 
 public class TreeNode {
 
@@ -67,6 +71,31 @@ public class TreeNode {
     public void select() {
         // TODO: we are only allowed to guardAjax if select/unselect is ajaxified!
         PrimeSelenium.guardAjax(getLabel()).click();
+    }
+
+    /**
+     * Adds this node to or removes it from the selection with a Cmd (macOS) / Ctrl click.
+     * Guards AJAX only if the select/unselect is AJAXified.
+     */
+    public void toggleSelection() {
+        boolean selecting = !isSelected();
+        boolean ajaxified;
+        if (selecting) {
+            ajaxified = ComponentUtils.hasBehavior(tree, "select")
+                    || (tree.getWidgetConfiguration().optBoolean("dynamic") && "checkbox".equals(tree.getWidgetConfiguration().optString("selectionMode")));
+        }
+        else {
+            ajaxified = ComponentUtils.hasBehavior(tree, "unselect");
+        }
+
+        Keys metaKey = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+        Action action = new Actions(PrimeSelenium.getWebDriver()).keyDown(metaKey).click(getLabel()).keyUp(metaKey).build();
+        if (ajaxified) {
+            PrimeSelenium.guardAjax(action).perform();
+        }
+        else {
+            action.perform();
+        }
     }
 
     public WebElement getTreeToggler() {

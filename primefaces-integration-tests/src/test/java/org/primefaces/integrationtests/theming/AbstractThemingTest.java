@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WrapsDriver;
@@ -149,7 +150,14 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
     }
 
     protected String computedStyle(WebElement element, String property) {
-        return PrimeSelenium.executeScript("return getComputedStyle(arguments[0]).getPropertyValue(arguments[1]);", element, property);
+        return PrimeSelenium.getComputedStyle(element, property);
+    }
+
+    /**
+     * @return the computed property of the document element (html)
+     */
+    protected String documentStyle(String property) {
+        return computedStyle(PrimeSelenium.getWebDriver().findElement(By.tagName("html")), property);
     }
 
     /**
@@ -183,19 +191,30 @@ abstract class AbstractThemingTest extends AbstractPrimePageTest {
     }
 
     protected String tokenValue(WebElement element, String token) {
-        return PrimeSelenium.executeScript("return getComputedStyle(arguments[0]).getPropertyValue(arguments[1]).trim();", element, token);
+        return PrimeSelenium.getCssVariable(element, token);
     }
 
     /**
-     * @return the computed mask-image of the ::before pseudo element
+     * @return the computed mask-image of the pseudo element (e.g. ::before)
      */
     protected String pseudoMaskImage(WebElement element, String pseudo) {
-        return PrimeSelenium.executeScript("var cs = getComputedStyle(arguments[0], arguments[1]);"
-                + "return cs.getPropertyValue('mask-image') || cs.getPropertyValue('-webkit-mask-image');", element, pseudo);
+        String maskImage = PrimeSelenium.getComputedStyle(element, pseudo, "mask-image");
+        return maskImage == null || maskImage.isEmpty() ? PrimeSelenium.getComputedStyle(element, pseudo, "-webkit-mask-image") : maskImage;
     }
 
     protected double luminance(String color) {
         return ((Number) PrimeSelenium.executeScript(LUMINANCE_SCRIPT, color)).doubleValue();
+    }
+
+    /**
+     * Opens the page with the preset (?theme=...) in the light color scheme.
+     *
+     * @param location the page location (e.g. "theming/theming016.xhtml")
+     * @param preset the preset (e.g. "aura")
+     */
+    protected void open(String location, String preset) {
+        PrimeSelenium.goTo(location + "?theme=" + preset);
+        setColorScheme("light");
     }
 
     /**

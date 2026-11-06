@@ -33,7 +33,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -53,9 +52,9 @@ class SelectOneMenu013Test extends AbstractPrimePageTest {
         selectOneMenu.show();
 
         // Assert
-        WebElement table = selectOneMenu.getPanel().findElement(By.className("p-selectonemenu-table"));
+        WebElement table = selectOneMenu.getTable();
         assertNotNull(table);
-        List<WebElement> options = table.findElements(By.className("p-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItemElements();
 
         assertCss(options.get(0), "p-selectonemenu-item", "p-selectonemenu-row", "p-state-highlight");
         assertCss(options.get(1), "p-selectonemenu-item", "p-selectonemenu-row", "p-state-disabled");

@@ -32,7 +32,6 @@ import org.primefaces.selenium.component.ToggleSwitch;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -53,7 +52,7 @@ class DataTable032Test extends AbstractDataTableTest {
         assertTrue(PrimeSelenium.hasCssClass(secondCell, "p-selection-column"));
 
         // not selectable yet, try to trigger it, check CSS should be disabled
-        WebElement radio = firstCell.findElement(By.className("p-radiobutton-box"));
+        WebElement radio = page.dataTable.getRow(0).getSelectionBox();
         assertCss(radio, "p-state-disabled");
         assertNotClickable(radio);
         firstCell.click();
@@ -67,7 +66,7 @@ class DataTable032Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(firstCell).click();
 
         // make sure it is actually Active
-        radio = firstCell.findElement(By.className("p-radiobutton-box"));
+        radio = page.dataTable.getRow(0).getSelectionBox();
         assertCss(radio, "p-state-active");
 
         assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());

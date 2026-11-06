@@ -28,12 +28,12 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -54,16 +54,15 @@ class DatePicker007Test extends AbstractDatePickerTest {
 
         // Assert Panel (12:04 AM)
         assertNotNull(panel);
-        assertTime(panel, "12", "04", null);
-        assertTrue(panel.getText().contains("AM"));
+        assertTime(datePicker, "12", "04", null);
+        assertEquals("AM", datePicker.getAmPm());
 
         // Act (go down by 1 hour)
-        WebElement hourPicker = panel.findElement(By.className("p-hour-picker"));
-        hourPicker.findElement(By.className("p-picker-down")).click();
+        datePicker.decrementTime(ChronoUnit.HOURS);
 
         // Assert (new time should be 11:04 PM)
-        assertTime(panel, "11", "04", null);
-        assertTrue(panel.getText().contains("PM"));
+        assertTime(datePicker, "11", "04", null);
+        assertEquals("PM", datePicker.getAmPm());
         assertConfiguration(datePicker.getWidgetConfiguration(), "12:04 AM");
     }
 

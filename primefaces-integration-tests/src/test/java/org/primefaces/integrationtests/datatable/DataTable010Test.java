@@ -35,8 +35,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +51,6 @@ class DataTable010Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable;
         assertNotNull(dataTable);
-        Actions actions = new Actions(page.getWebDriver());
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
@@ -66,7 +63,7 @@ class DataTable010Test extends AbstractDataTableTest {
 
         // Act
         dataTable.selectPage(2);
-        actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
+        dataTable.getRow(1).toggleSelection();
         page.buttonSubmit.click();
 
         // Assert
@@ -75,7 +72,7 @@ class DataTable010Test extends AbstractDataTableTest {
 
         // Act
         dataTable.selectPage(1);
-        actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
+        dataTable.getRow(1).toggleSelection();
         page.buttonSubmit.click();
 
         // Assert
@@ -91,7 +88,6 @@ class DataTable010Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable;
         assertNotNull(dataTable);
-        Actions actions = new Actions(page.getWebDriver());
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
@@ -103,7 +99,7 @@ class DataTable010Test extends AbstractDataTableTest {
 
         // Act
         dataTable.selectPage(2);
-        actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
+        dataTable.getRow(1).toggleSelection();
         page.buttonSubmit.click();
 
         // Assert
@@ -119,7 +115,7 @@ class DataTable010Test extends AbstractDataTableTest {
         assertEquals("1,5", page.messages.getMessage(0).getDetail());
 
         // Act
-        actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
+        dataTable.getRow(1).toggleSelection();
         page.buttonSubmit.click();
 
         // Assert

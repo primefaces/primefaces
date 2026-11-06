@@ -24,6 +24,8 @@
 package org.primefaces.integrationtests.dataexporter;
 
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +33,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.util.Locale;
 
 import com.google.common.base.Objects;
 import com.lowagie.text.pdf.PdfReader;
@@ -41,6 +44,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,6 +59,23 @@ public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
         FileUtils.deleteQuietly(file);
         assertFalse(file.exists(), "Download file " + downloadFileName + " already exists!");
         return file;
+    }
+
+    /**
+     * Clicks the download button and asserts that the downloaded file matches the expected file of the same name.
+     *
+     * @param fileName the name of the downloaded file, also the name of the expected file
+     * @param downloadButton the button triggering the download
+     */
+    protected void assertDownload(String fileName, WebElement downloadButton) throws IOException {
+        String actualFileName = getActualFile(fileName);
+        File actual = assertDownloadFileNotExists(actualFileName);
+
+        downloadButton.click();
+
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
+        String type = FilenameUtils.getExtension(fileName).toUpperCase(Locale.ROOT);
+        assertFileEquals(getExpectedFile(actual.getName()), actual, "Expected " + type + " files to match but they did not!");
     }
 
     protected File getExpectedFile(String fileName) {
@@ -89,9 +110,10 @@ public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
                 break;
 
             default:
-                Reader reader1 = new BufferedReader(new FileReader(expected));
-                Reader reader2 = new BufferedReader(new FileReader(actual));
-                assertTrue(IOUtils.contentEqualsIgnoreEOL(reader1, reader2), message);
+                try (Reader reader1 = new BufferedReader(new FileReader(expected));
+                        Reader reader2 = new BufferedReader(new FileReader(actual))) {
+                    assertTrue(IOUtils.contentEqualsIgnoreEOL(reader1, reader2), message);
+                }
                 break;
         }
 

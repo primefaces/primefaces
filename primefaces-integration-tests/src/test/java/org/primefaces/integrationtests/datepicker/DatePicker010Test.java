@@ -32,7 +32,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -53,15 +52,22 @@ class DatePicker010Test extends AbstractDatePickerTest {
         // Assert (some days of june active)
         WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
-        assertEquals(10, panel.findElements(By.cssSelector("a.p-state-default")).size());
-        assertEquals(20 + 5, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(10, datePicker.getSelectableDays().size());
+        assertEquals(20, datePicker.getDisabledDays().size());
+        // the 5 days of May / July filling the weeks are disabled, also the days of May within min / max date, as other
+        // months are not selectable
+        assertEquals(5, datePicker.getOtherMonthDays().size());
+        assertEquals(5, datePicker.getDisabledOtherMonthDays().size());
 
         // Act - previous month
-        panel.findElement(By.className("p-datepicker-prev")).click();
+        datePicker.getPreviousMonthLink().click();
 
         // Assert (some days of May active)
-        assertEquals(26 + 11, panel.findElements(By.cssSelector("td > span.p-state-disabled")).size()); //includes invisible days of other months
-        assertEquals(5, panel.findElements(By.cssSelector("td > a.p-state-default")).size());
+        assertEquals(26, datePicker.getDisabledDays().size());
+        assertEquals(5, datePicker.getSelectableDays().size());
+        // the 11 days of April / June are disabled, also the days of June within min / max date
+        assertEquals(11, datePicker.getOtherMonthDays().size());
+        assertEquals(11, datePicker.getDisabledOtherMonthDays().size());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -125,7 +131,8 @@ class DatePicker010Test extends AbstractDatePickerTest {
         datePicker.click(); // focus to bring up panel
 
         // Assert
-        assertDate(datePicker.showPanel(), "October", "2021");
+        datePicker.showPanel();
+        assertDate(datePicker, "October", "2021");
         assertNoJavascriptErrors();
     }
 
@@ -140,7 +147,8 @@ class DatePicker010Test extends AbstractDatePickerTest {
         datePicker.click(); // focus to bring up panel
 
         // Assert
-        assertDate(datePicker.showPanel(), "August", "2034");
+        datePicker.showPanel();
+        assertDate(datePicker, "August", "2034");
         assertNoJavascriptErrors();
     }
 

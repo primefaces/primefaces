@@ -89,7 +89,7 @@ class ColorPicker003Test extends AbstractColorPickerTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     @DisplayName("ColorPicker: AJAX change event new format")
     void ajaxChangeNewFormat(Page page) {
         // Arrange

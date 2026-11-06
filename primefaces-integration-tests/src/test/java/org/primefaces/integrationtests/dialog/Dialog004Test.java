@@ -97,7 +97,7 @@ class Dialog004Test extends AbstractPrimePageTest {
         dialog.toggleMaximize();
 
         // Assert
-        assertCss(dialog, "p-dialog-maximized");
+        assertTrue(dialog.isMaximized());
         assertTrue(dialog.isVisible());
         assertTrue(dialog.isDisplayed());
         assertConfiguration(dialog.getWidgetConfiguration());

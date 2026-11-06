@@ -50,13 +50,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class Theming016Test extends AbstractThemingTest {
 
+    private static final String LOCATION = "theming/theming016.xhtml";
+
     @ParameterizedTest
     @ValueSource(strings = {"aura", "lara", "nora", "material", "metal", "glass"})
     @Order(1)
     @DisplayName("Theming: narrow viewport stacks the fluid selectOneButton and reflows the dataTable")
     void narrowViewport(String preset) {
         // Arrange
-        open(preset);
+        open(LOCATION, preset);
         WebDriver.Window window = PrimeSelenium.getWebDriver().manage().window();
         Dimension size = window.getSize();
         List<WebElement> buttons = PrimeSelenium.getWebDriver().findElements(By.cssSelector("[id='form:fluidButtons'] > .p-button"));
@@ -90,7 +92,7 @@ class Theming016Test extends AbstractThemingTest {
     @DisplayName("Theming: the toggleMask icon of an RTL password lies on the left, outside of the text")
     void rtlPassword(String preset) {
         // Arrange
-        open(preset);
+        open(LOCATION, preset);
         WebElement input = PrimeSelenium.getWebDriver().findElement(By.id("form:rtlPassword"));
         WebElement icon = input.findElement(By.xpath("following-sibling::*[contains(@class, 'p-password-icon')]"));
 
@@ -111,7 +113,7 @@ class Theming016Test extends AbstractThemingTest {
     @DisplayName("Theming: p-toggleswitch-sm on a scope / density element keeps a valid size (no var() cycle)")
     void toggleSwitchSize(String preset) {
         // Arrange
-        open(preset);
+        open(LOCATION, preset);
         WebElement normal = PrimeSelenium.getWebDriver().findElement(By.id("form:normalSwitch"));
         WebElement small = PrimeSelenium.getWebDriver().findElement(By.id("form:smallSwitch"));
 
@@ -129,7 +131,7 @@ class Theming016Test extends AbstractThemingTest {
     @DisplayName("Theming: p-hidden hides a component that sets its own display")
     void helperHidden(String preset) {
         // Arrange
-        open(preset);
+        open(LOCATION, preset);
 
         // Assert
         WebElement button = PrimeSelenium.getWebDriver().findElement(By.id("form:hiddenButton"));
@@ -145,16 +147,16 @@ class Theming016Test extends AbstractThemingTest {
         // Arrange
         HasCdp cdp = cdp();
         Assumptions.assumeTrue(cdp != null, "the browser cannot emulate print (no Chrome DevTools Protocol)");
-        open(preset);
+        open(LOCATION, preset);
         setColorScheme("dark");
-        assertEquals("dark", PrimeSelenium.executeScript("return getComputedStyle(document.documentElement).colorScheme;"));
+        assertEquals("dark", documentStyle("color-scheme"));
 
         try {
             // Act
             cdp.executeCdpCommand("Emulation.setEmulatedMedia", Map.of("media", "print"));
 
             // Assert
-            assertEquals("light", PrimeSelenium.executeScript("return getComputedStyle(document.documentElement).colorScheme;"),
+            assertEquals("light", documentStyle("color-scheme"),
                     preset + ": print is not light");
         }
         finally {
@@ -171,7 +173,7 @@ class Theming016Test extends AbstractThemingTest {
         // Arrange
         HasCdp cdp = cdp();
         Assumptions.assumeTrue(cdp != null, "the browser cannot emulate prefers-reduced-motion (no Chrome DevTools Protocol)");
-        open(preset);
+        open(LOCATION, preset);
         WebElement value = PrimeSelenium.getWebDriver().findElement(By.cssSelector("[id='form:progress'] .p-progressbar-value"));
 
         try {
@@ -179,19 +181,15 @@ class Theming016Test extends AbstractThemingTest {
             emulateMediaFeature(cdp, "prefers-reduced-motion", "reduce");
 
             // Assert
-            String script = "var cs = getComputedStyle(arguments[0], '::before');"
-                    + "return [cs.animationName, cs.left, cs.right, cs.opacity];";
-            List<Object> before = PrimeSelenium.executeScript(script, value);
+            List<String> before = List.of(PrimeSelenium.getComputedStyle(value, "::before", "animation-name"),
+                    PrimeSelenium.getComputedStyle(value, "::before", "left"),
+                    PrimeSelenium.getComputedStyle(value, "::before", "right"),
+                    PrimeSelenium.getComputedStyle(value, "::before", "opacity"));
             assertEquals(List.of("none", "0px", "0px", "0.5"), before, preset + ": the bar is not full and static");
         }
         finally {
             emulateMediaFeature(cdp, "prefers-reduced-motion", null);
         }
         assertNoJavascriptErrors();
-    }
-
-    private void open(String preset) {
-        PrimeSelenium.goTo("theming/theming016.xhtml?theme=" + preset);
-        setColorScheme("light");
     }
 }

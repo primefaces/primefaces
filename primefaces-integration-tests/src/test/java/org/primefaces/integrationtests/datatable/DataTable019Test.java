@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 
@@ -49,12 +48,11 @@ class DataTable019Test extends AbstractDataTableTest {
     void globalFilterFunctionByName(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        InputText globalFilter = page.globalFilter;
         dataTable.selectPage(1);
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(globalFilter, "Java");
+        dataTable.filterGlobal("Java");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
@@ -69,12 +67,11 @@ class DataTable019Test extends AbstractDataTableTest {
     void globalFilterFunctionByType(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        InputText globalFilter = page.globalFilter;
         dataTable.selectPage(1);
         dataTable.sort("Type");
 
         // Act
-        filterGlobal(globalFilter, "COMPILED");
+        dataTable.filterGlobal("COMPILED");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.COMPILED);
@@ -89,12 +86,11 @@ class DataTable019Test extends AbstractDataTableTest {
     void globalFilterFunctionNoResults(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        InputText globalFilter = page.globalFilter;
         dataTable.selectPage(1);
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(globalFilter, "Clojure");
+        dataTable.filterGlobal("Clojure");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Clojure");
@@ -112,7 +108,7 @@ class DataTable019Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-        PrimeSelenium.executeScript(true, "PF('wgtTable').clearFilters()");
+        dataTable.clearFilters();
 
         // Assert
         assertEquals(5, languages.size());

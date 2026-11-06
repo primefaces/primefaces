@@ -25,10 +25,8 @@ package org.primefaces.integrationtests.inputnumber;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -64,10 +62,10 @@ class InputNumber009Test extends AbstractPrimePageTest {
         InputNumber inputNumber = page.inputnumber;
         assertEquals("000050", inputNumber.getValue());
 
-        // Act - type with leading zeros (setValue(000123) would be parsed as a JS number)
+        // Act - type with leading zeros like the user
         WebElement input = inputNumber.getInput();
         input.clear();
-        ComponentUtils.sendKeys(input, "000123");
+        inputNumber.type("000123");
         input.sendKeys(Keys.TAB);
         page.button.click();
 
@@ -86,7 +84,7 @@ class InputNumber009Test extends AbstractPrimePageTest {
         InputNumber inputNumber = page.inputnumber;
 
         // Act
-        PrimeSelenium.executeScript(inputNumber.getWidgetByIdScript() + ".setValue('000456')");
+        inputNumber.setValue("000456");
         page.button.click();
 
         // Assert

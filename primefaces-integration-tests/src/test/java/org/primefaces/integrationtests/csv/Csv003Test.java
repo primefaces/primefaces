@@ -24,9 +24,6 @@
 package org.primefaces.integrationtests.csv;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Message;
@@ -38,14 +35,13 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
-public class Csv003Test extends AbstractPrimePageTest {
+public class Csv003Test extends AbstractCsvTest {
 
     @Test
     @Order(1)
@@ -200,15 +196,6 @@ public class Csv003Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page.msgDateFutureOrPresent, "");
-    }
-
-    protected void assertMessage(Message message, String expected) {
-        // an empty p:message has no size (it is invisible), only a message is shown
-        if (!expected.isEmpty()) {
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(message));
-        }
-        Assertions.assertEquals(expected, message.getText());
-        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {

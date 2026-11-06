@@ -38,7 +38,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InputNumber004Test extends AbstractPrimePageTest {
 
@@ -68,16 +68,12 @@ class InputNumber004Test extends AbstractPrimePageTest {
         assertEquals("66", inputNumber.getValue());
 
         // Act
-        try {
-            inputNumber.setValue("-5");
-            fail("Should be blocked by AutoNumeric javascript.");
-        }
-        catch (JavascriptException ex) {
-            // Assert
-            assertEquals(
-                        "The value [-5] being set falls outside of the minimumValue [0] and maximumValue [999999] range set for this element",
-                        StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
-        }
+        JavascriptException ex = assertThrows(JavascriptException.class, () -> inputNumber.setValue("-5"), "Should be blocked by AutoNumeric javascript.");
+
+        // Assert
+        assertEquals(
+                    "The value [-5] being set falls outside of the minimumValue [0] and maximumValue [999999] range set for this element",
+                    StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
     }
 
     @Test
@@ -89,16 +85,13 @@ class InputNumber004Test extends AbstractPrimePageTest {
         assertEquals("66", inputNumber.getValue());
 
         // Act
-        try {
-            inputNumber.setValue("23999999");
-            fail("Should be blocked by AutoNumeric javascript.");
-        }
-        catch (JavascriptException ex) {
-            // Assert
-            assertEquals(
-                        "The value [23999999] being set falls outside of the minimumValue [0] and maximumValue [999999] range set for this element",
-                        StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
-        }
+        JavascriptException ex = assertThrows(JavascriptException.class, () -> inputNumber.setValue("23999999"),
+                    "Should be blocked by AutoNumeric javascript.");
+
+        // Assert
+        assertEquals(
+                    "The value [23999999] being set falls outside of the minimumValue [0] and maximumValue [999999] range set for this element",
+                    StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
     }
 
     @Test
@@ -148,16 +141,12 @@ class InputNumber004Test extends AbstractPrimePageTest {
         assertEquals("6.78", inputNumber.getValue());
 
         // Act
-        try {
-            inputNumber.setValue("-8.23");
-            fail("Should be blocked by AutoNumeric javascript.");
-        }
-        catch (JavascriptException ex) {
-            // Assert
-            assertEquals(
-                        "The value [-8.23] being set falls outside of the minimumValue [0] and maximumValue [999999.99] range set for this element",
-                        StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
-        }
+        JavascriptException ex = assertThrows(JavascriptException.class, () -> inputNumber.setValue("-8.23"), "Should be blocked by AutoNumeric javascript.");
+
+        // Assert
+        assertEquals(
+                    "The value [-8.23] being set falls outside of the minimumValue [0] and maximumValue [999999.99] range set for this element",
+                    StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
     }
 
     @Test
@@ -169,17 +158,14 @@ class InputNumber004Test extends AbstractPrimePageTest {
         assertEquals("6.78", inputNumber.getValue());
 
         // Act
-        try {
-            inputNumber.setValue("4599999999999");
-            fail("Should be blocked by AutoNumeric javascript.");
-        }
-        catch (JavascriptException ex) {
-            // Assert
-            assertEquals(
-                        "The value [4599999999999] being set falls outside of the minimumValue "
-                                + "[0] and maximumValue [999999.99] range set for this element",
-                        StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
-        }
+        JavascriptException ex = assertThrows(JavascriptException.class, () -> inputNumber.setValue("4599999999999"),
+                    "Should be blocked by AutoNumeric javascript.");
+
+        // Assert
+        assertEquals(
+                    "The value [4599999999999] being set falls outside of the minimumValue "
+                            + "[0] and maximumValue [999999.99] range set for this element",
+                    StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
     }
 
     private void assertConfiguration(JSONObject cfg, String decimalPlaces, String minValue, String maxValue) {

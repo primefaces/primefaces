@@ -109,7 +109,7 @@ class FileUpload005Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedCancelButton().click();
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
 
         // Assert
