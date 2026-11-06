@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.csv;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.TimeZone;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -54,6 +55,12 @@ public class Csv003 implements Serializable {
 
     @FutureOrPresent
     private Date dateFutureOrPresent;
+
+    /**
+     * Client side validation interprets the submitted date in the time zone of the browser, so the converter must use the same
+     * time zone. The browser runs on the same machine as the server.
+     */
+    private TimeZone clientTimeZone = TimeZone.getDefault();
 
 
     @PostConstruct
