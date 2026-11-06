@@ -32,7 +32,6 @@ import org.primefaces.selenium.component.Messages;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Assumptions;
@@ -50,10 +49,10 @@ public class Csv003Test extends AbstractCsvTest {
         // Arrange
         assertMessage(page.msgDatePast, "");
         // The field only holds a time of day (HH:mm:ss), so the value must be later than "now" on the same day.
-        // now + 1h would wrap past midnight between 23:00 and 24:00 UTC and then count as a past time.
+        // now + 1h would wrap past midnight between 23:00 and 24:00 and then count as a past time.
         LocalTime futureTime = LocalTime.of(23, 59, 59);
-        Assumptions.assumeTrue(LocalTime.now(ZoneId.of("UTC")).isBefore(futureTime.minusMinutes(1)),
-                "Too close to midnight UTC to enter a time of day that is still in the future");
+        Assumptions.assumeTrue(LocalTime.now().isBefore(futureTime.minusMinutes(1)),
+                "Too close to midnight to enter a time of day that is still in the future");
         page.datePast.setValue(futureTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         // Act
@@ -69,7 +68,7 @@ public class Csv003Test extends AbstractCsvTest {
     public void datePastValid(Page page) {
         // Arrange
         assertMessage(page.msgDatePast, "");
-        page.datePast.setValue(LocalTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        page.datePast.setValue(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         // Act
         page.btnSave.click();
@@ -129,7 +128,7 @@ public class Csv003Test extends AbstractCsvTest {
     public void dateFutureInvalid(Page page) {
         // Arrange
         assertMessage(page.msgDateFuture, "");
-        page.dateFuture.setValue(LocalDateTime.now(ZoneId.of("UTC")).minusHours(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        page.dateFuture.setValue(LocalDateTime.now().minusHours(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         // Act
         page.btnSave.click();
@@ -144,7 +143,7 @@ public class Csv003Test extends AbstractCsvTest {
     public void dateFutureValid(Page page) {
         // Arrange
         assertMessage(page.msgDateFuture, "");
-        page.dateFuture.setValue(LocalDateTime.now(ZoneId.of("UTC")).plusHours(6).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        page.dateFuture.setValue(LocalDateTime.now().plusHours(6).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         // Act
         page.btnSave.click();
