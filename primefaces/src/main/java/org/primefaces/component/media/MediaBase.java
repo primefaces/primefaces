@@ -42,7 +42,8 @@ public abstract class MediaBase extends UIComponentBase {
         styleClass,
         cache,
         zoom,
-        view
+        view,
+        title
     }
 
     public MediaBase() {
@@ -124,6 +125,14 @@ public abstract class MediaBase extends UIComponentBase {
 
     public void setView(String view) {
         getStateHelper().put(PropertyKeys.view, view);
+    }
+
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
 }

@@ -22,8 +22,8 @@ methods included) binary compatible.
 ## Differences to master
 
 - `javax.faces` (JSF 2.2 / 2.3); the Jakarta jar is built from the same sources as the `jakarta` classifier.
-- Java source/target 1.8, CI builds with Java 11. Build with JDK 11–21: JDK 25 fails with
-  `ExceptionInInitializerError: com.sun.tools.javac.code.TypeTag :: UNKNOWN`.
+- Java source/target 1.8, CI builds with Java 11. Builds with JDK 11–25 (JDK 25 needs Lombok 1.18.40+, otherwise
+  javac fails with `ExceptionInInitializerError: com.sun.tools.javac.code.TypeTag :: UNKNOWN`).
 - No frontend build: widgets are plain JavaScript in `primefaces/src/main/resources/META-INF/resources/primefaces/<component>/`.
 - Classic `ui-*` CSS classes and themes (no design tokens, no `p-*` classes).
 - No CDK: components are `*Base` + component classes written by hand.

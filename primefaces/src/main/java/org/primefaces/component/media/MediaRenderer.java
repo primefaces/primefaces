@@ -35,6 +35,7 @@ import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.Lazy;
 
@@ -78,6 +79,10 @@ public class MediaRenderer extends CoreRenderer {
             writer.writeAttribute("class", media.getStyleClass(), null);
         }
 
+        if (media.getTitle() != null) {
+            writer.writeAttribute("title", media.getTitle(), null);
+        }
+
         renderPassThruAttributes(context, media, Media.MEDIA_ATTRS);
 
         if (sourceParam != null) {
@@ -95,6 +100,11 @@ public class MediaRenderer extends CoreRenderer {
         }
 
         renderChildren(context, media);
+
+        UIComponent fallbackFacet = media.getFacet("fallback");
+        if (ComponentUtils.shouldRenderFacet(fallbackFacet)) {
+            fallbackFacet.encodeAll(context);
+        }
 
         writer.endElement("object");
     }

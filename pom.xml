@@ -68,7 +68,7 @@
         <junit.version>5.9.3</junit.version>
 
         <!-- dependency versions -->
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.42</lombok.version>
     </properties>
 
     <modules>
