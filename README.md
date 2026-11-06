@@ -42,21 +42,22 @@ PrimeFaces follows a simple lifecycle:
 
   * End-of-Life, no more fixes or releases
 
-### End-of-Life (EOL) policy
+## Support and End-of-Life (EOL) policy
 
 PrimeFaces releases a new major version roughly every ~6 months.
 
-* The **4 newest versions** are fully supported (Active, Maintenance or Security).
-* When a new version is released, the oldest of them enters the **EOL phase** until the next release (~6 months).
-* During the EOL phase, only critical security fixes are applied.
-* With the next release, it reaches **EOL**: no more fixes or releases.
+- With each new release, the previous Active version moves to Maintenance, and the previous Maintenance version moves to Security.
+- Versions in Security remain supported until their planned EOL date. Once that date is reached, the version is EOL.
+- EOL dates are estimates based on the ~6 month release cycle.
 
-This keeps 4–5 supported version lines at any time.
-Release dates are estimates based on the ~6 month cycle.
+### Extended support
 
-**Exception: 15.x** is the last version supporting `javax`. Since many users can't move to Jakarta quickly, 15.x is an exception to this policy and stays supported longer.
+Some versions are the last ones supporting an older JSF version. Since many users can't upgrade quickly, these stay supported longer and have no fixed EOL date yet:
 
-See the [versions](#versions) table for the planned EOL dates of each version.
+- **15.x** is the last version supporting JSF 2.3 (javax).
+- **13.x** is the last version supporting JSF 2.0 – 2.2.
+
+See the versions table for the planned EOL dates of each version.
 
 ### Community-driven development
 
