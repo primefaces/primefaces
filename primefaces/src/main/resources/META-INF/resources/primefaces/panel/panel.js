@@ -112,7 +112,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * Expands this panel, if not already expanded.
      */
     expand: function() {
-        this.header.attr('aria-expanded', true);
         this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -125,7 +124,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * Collapses this panel, if not already collapsed.
      */
     collapse: function() {
-        this.header.attr('aria-expanded', false);
         this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -209,6 +207,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      */
     toggleState: function(collapsed, removeIcon, addIcon) {
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
+        this.toggler.attr('aria-expanded', !collapsed);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
 

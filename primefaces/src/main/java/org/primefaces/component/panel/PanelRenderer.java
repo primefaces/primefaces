@@ -191,11 +191,6 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
-        if (panel.isToggleable()) {
-            writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
-            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!panel.isCollapsed()), null);
-            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
-        }
 
         //Title
         writer.startElement("span", null);
@@ -217,7 +212,8 @@ public class PanelRenderer extends CoreRenderer {
 
         if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE));
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE),
+                    !panel.isCollapsed());
         }
 
         if (optionsMenu != null) {
@@ -276,6 +272,11 @@ public class PanelRenderer extends CoreRenderer {
     }
 
     protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title, String ariaLabel) throws IOException {
+        encodeIcon(context, panel, iconClass, id, title, ariaLabel, null);
+    }
+
+    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title, String ariaLabel,
+            Boolean expanded) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
@@ -290,6 +291,11 @@ public class PanelRenderer extends CoreRenderer {
 
         if (ariaLabel != null) {
             writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+        if (expanded != null) {
+            writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS, panel.getClientId(context) + "_content", null);
         }
 
         writer.startElement("span", null);

@@ -61,13 +61,13 @@ public class Panel001Test extends AbstractPrimePageTest {
     public void testCollapse(Page page) {
         // Arrange
         Panel panel = page.panel;
-        Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        Assertions.assertTrue(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
 
         // Act
         panel.collapse();
 
         // Assert
-        Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        Assertions.assertFalse(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
         Assertions.assertFalse(page.messages.isEmpty());
         Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
@@ -81,14 +81,15 @@ public class Panel001Test extends AbstractPrimePageTest {
         // Arrange
         Panel panel = page.panel;
         panel.collapse();
-        Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        Assertions.assertFalse(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
 
         // Act
         panel.expand();
 
         // Assert
-        Assertions.assertEquals("button", panel.getHeader().getAttribute("role"));
-        Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        Assertions.assertNull(panel.getHeader().getAttribute("role"));
+        Assertions.assertEquals(panel.getContent().getAttribute("id"), panel.getToggler().getAttribute("aria-controls"));
+        Assertions.assertTrue(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
         Assertions.assertFalse(page.messages.isEmpty());
         Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Status:VISIBLE", page.messages.getMessage(0).getDetail());
@@ -101,14 +102,15 @@ public class Panel001Test extends AbstractPrimePageTest {
     public void testToggle(Page page) {
         // Arrange
         Panel panel = page.panel;
-        Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        Assertions.assertTrue(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
 
         // Act
         panel.toggle();
 
         // Assert
-        Assertions.assertEquals("button", panel.getHeader().getAttribute("role"));
-        Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        Assertions.assertNull(panel.getHeader().getAttribute("role"));
+        Assertions.assertEquals(panel.getContent().getAttribute("id"), panel.getToggler().getAttribute("aria-controls"));
+        Assertions.assertFalse(Boolean.valueOf(panel.getToggler().getAttribute("aria-expanded")));
         Assertions.assertFalse(page.messages.isEmpty());
         Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
