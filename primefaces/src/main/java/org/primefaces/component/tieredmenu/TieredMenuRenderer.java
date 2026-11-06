@@ -92,22 +92,22 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
             writer.writeAttribute("style", style, "style");
         }
 
+        encodeFacet(context, menu, "start", Menu.START_CLASS);
+
         writer.startElement("ul", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute(HTML.ARIA_ORIENTATION, orientation, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null); // allow focus/blur events
 
-        encodeFacet(context, menu, "start", Menu.START_CLASS);
-
         if (menu.getElementsCount() > 0) {
             encodeElements(context, menu, menu.getElements(), true);
         }
 
+        writer.endElement("ul");
+
         encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
         encodeFacet(context, menu, "end", Menu.END_CLASS);
-
-        writer.endElement("ul");
 
         writer.endElement("div");
     }
