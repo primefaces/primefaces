@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.picklist;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.PickList;
 
@@ -35,6 +36,8 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -468,6 +471,36 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(4, page.standardPickList.getTargetListElements().size());
+        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(27)
+    @DisplayName("PickList: #15476 clicking an item announces its label only once")
+    void ariaRegionAnnouncedOnce(final Page page) {
+        // Arrange - count text mutations of the aria-live region
+        PrimeSelenium.executeScript("var region = document.getElementById('form:standardPickList_ariaRegion');"
+                + "window.pickListAnnouncements = 0;"
+                + "new MutationObserver(function(m) { window.pickListAnnouncements += m.length; })"
+                + ".observe(region, {childList: true, characterData: true, subtree: true, attributes: true});");
+
+        // Act - first click gives the list focus and selects the item
+        page.standardPickList.getSourceListElements().get(0).click();
+        PrimeSelenium.wait(500);
+
+        // Assert
+        WebElement region = page.standardPickList.findElement(By.id("form:standardPickList_ariaRegion"));
+        assertEquals("Lewis", region.getAttribute("textContent"));
+        Long announcements = PrimeSelenium.executeScript("return window.pickListAnnouncements;");
+        assertEquals(1L, announcements);
+
+        // Act - clicking the same item again must not announce it again
+        page.standardPickList.getSourceListElements().get(0).click();
+        PrimeSelenium.wait(500);
+
+        // Assert
+        announcements = PrimeSelenium.executeScript("return window.pickListAnnouncements;");
+        assertEquals(1L, announcements);
         assertConfiguration(page.standardPickList.getWidgetConfiguration());
     }
 
