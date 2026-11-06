@@ -52,7 +52,10 @@ public final class Bots {
         "googlebot", "bingbot", "yandexbot", "duckduckbot", "baiduspider", "facebookexternalhit",
         "ahrefsbot", "semrushbot", "mj12bot", "dotbot", "petalbot", "dataforseobot", "screaming frog",
         "python-requests", "scrapy", "go-http-client", "okhttp", "curl/", "wget", "java/", "libwww-perl",
-        "headlesschrome", "chrome-lighthouse"
+        "headlesschrome", "chrome-lighthouse",
+        // scraper faking a browser: this exact Chrome 124 build (May 2024), on Windows and Mac alike, never sends
+        // the session cookie back and so allocates a new session per request
+        "chrome/124.0.6367.207"
     };
 
     private Bots() {
