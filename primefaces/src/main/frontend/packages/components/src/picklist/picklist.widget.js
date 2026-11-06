@@ -284,7 +284,16 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             /* For keyboard navigation */
             $this.removeOutline();
             $this.focusedItem = item;
-            parentList.trigger('focus.pickList');
+            // #15476 only re-trigger focus if the list does not already own it, otherwise
+            // the focus handler runs twice and the screen reader announces the item twice
+            if (!parentList.is(document.activeElement)) {
+                parentList.trigger('focus.pickList');
+            }
+            else {
+                parentList.children('.p-picklist-outline').removeClass('p-picklist-outline');
+                item.addClass('p-picklist-outline');
+                $this.updateAriaRegion();
+            }
         });
 
         if (this.cfg.transferOnDblclick) {
@@ -377,6 +386,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         .on('blur.pickList', listSelector, null, function() {
             $this.removeOutline();
             $this.focusedItem = null;
+            // #15476 clear the live region so the item is announced again on next focus
+            $this.ariaRegion.text('');
         })
         .on('keydown.pickList', listSelector, null, function(e) {
 
@@ -1463,8 +1474,16 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @private
      */
     updateAriaRegion() {
+        if (!this.focusedItem || !this.focusedItem.length) {
+            return;
+        }
         var labelText = this.focusedItem.data('item-label');
-        this.ariaRegion.attr('aria-label', labelText)
+        labelText = (labelText === undefined || labelText === null) ? '' : String(labelText);
+        // #15476 do not touch the live region if the label did not change, any DOM mutation
+        // of an aria-live region causes screen readers to announce it again
+        if (this.ariaRegion.text() === labelText) {
+            return;
+        }
         this.ariaRegion.text(labelText);
     }
 
