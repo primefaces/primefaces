@@ -92,15 +92,15 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             encodeElements(context, menu, menu.getElements());
         }
 
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            optionsFacet.encodeAll(context);
-            writer.endElement("li");
-        }
-
         writer.endElement("ul");
+
+        // rendered outside of the list, a role="menubar" must only contain menu items
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
+            optionsFacet.encodeAll(context);
+            writer.endElement("div");
+        }
 
         writer.endElement("div");
     }

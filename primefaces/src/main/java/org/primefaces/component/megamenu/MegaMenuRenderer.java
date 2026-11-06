@@ -85,16 +85,16 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             encodeRootItems(context, menu);
         }
 
+        writer.endElement("ul");
+
+        // rendered outside of the list, a role="menubar" must only contain menu items
         UIComponent optionsFacet = menu.getFacet("options");
         if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
+            writer.startElement("div", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
             optionsFacet.encodeAll(context);
-            writer.endElement("li");
+            writer.endElement("div");
         }
-
-        writer.endElement("ul");
 
         writer.endElement("div");
     }

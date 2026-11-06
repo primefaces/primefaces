@@ -195,6 +195,23 @@
     float: right;
 }
 
+/*
+ * options facet is rendered after the list, same look as the themes' list item:
+ * an inline list lets the floated options stay on the last line of the items or wrap below them
+ */
+.ui-menubar > .ui-menu-list {
+    display: inline;
+}
+
+.ui-menubar > .ui-menubar-options {
+    margin: 0 .5rem 0 0;
+}
+
+.ui-menubar.ui-menu-rtl > .ui-menubar-options {
+    float: left;
+    margin: 0 .5rem;
+}
+
 .ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-e,
 .ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-s{
     *float: none;
