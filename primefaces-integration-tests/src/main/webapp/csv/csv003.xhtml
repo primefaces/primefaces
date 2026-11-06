@@ -41,28 +41,28 @@
 
                     <p:outputLabel for="@next" value="Time (@Past)"/>
                     <p:inputText id="datePast" value="#{csv003.datePast}">
-                        <f:convertDateTime pattern="HH:mm:ss" timeZone="UTC" />
+                        <f:convertDateTime pattern="HH:mm:ss" timeZone="#{csv003.clientTimeZone}" />
                     </p:inputText>
                     <p:message for="@previous" id="msgDatePast"/>
                     <h:outputText value="#{csv003.datePast}"/>
                     
                     <p:outputLabel for="@next" value="Date (@PastOrPresent)"/>
                     <p:inputText id="datePastOrPresent" value="#{csv003.datePastOrPresent}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="#{csv003.clientTimeZone}"/>
                     </p:inputText>
                     <p:message for="@previous" id="msgDatePastOrPresent"/>
                     <h:outputText value="#{csv003.datePastOrPresent}"/>
                 
                     <p:outputLabel for="@next" value="DateTime (@Future)"/>
                     <p:inputText id="dateFuture" value="#{csv003.dateFuture}">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="UTC"/>
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="#{csv003.clientTimeZone}"/>
                     </p:inputText>
                     <p:message for="@previous" id="msgDateFuture"/>
                     <h:outputText value="#{csv003.dateFuture}"/>
                     
                     <p:outputLabel for="@next" value="Date (@FutureOrPresent)"/>
                     <p:inputText id="dateFutureOrPresent" value="#{csv003.dateFutureOrPresent}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="#{csv003.clientTimeZone}"/>
                     </p:inputText>
                     <p:message for="@previous" id="msgDateFutureOrPresent"/>
                     <h:outputText value="#{csv003.dateFutureOrPresent}"/>
