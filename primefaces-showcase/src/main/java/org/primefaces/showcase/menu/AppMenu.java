@@ -52,14 +52,6 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
 
-        //SUPPORT CATEGORY START
-        List<MenuItem> supportMenuItems = new ArrayList<>();
-        supportMenuItems.add(new MenuItem("Forum", "https://forum.primefaces.org"));
-        supportMenuItems.add(new MenuItem("Discord Chat", "https://discord.gg/gzKFYnpmCY"));
-        supportMenuItems.add(new MenuItem("PRO Support", "/support"));
-        menuCategories.add(new MenuCategory("Support", supportMenuItems));
-        //SUPPORT CATEGORY END
-
         //RESOURCES CATEGORY START
         List<MenuItem> resourcesMenuItems = new ArrayList<>();
         resourcesMenuItems.add(new MenuItem("PrimeTV", "https://www.youtube.com/channel/UCTgmp69aBOlLnPEqlUyetWw"));
