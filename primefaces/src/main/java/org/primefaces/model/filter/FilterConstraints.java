@@ -26,6 +26,9 @@ package org.primefaces.model.filter;
 import org.primefaces.model.MatchMode;
 import org.primefaces.util.MapBuilder;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,6 +56,78 @@ public final class FilterConstraints {
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
             .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
             .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
+            .put(MatchMode.IS_EMPTY, new IsEmptyFilterConstraint())
+            .put(MatchMode.NOT_EMPTY, new NegationFilterConstraintWrapper(new IsEmptyFilterConstraint()))
+            .put(MatchMode.IS_NULL, new IsNullFilterConstraint())
+            .put(MatchMode.NOT_NULL, new NegationFilterConstraintWrapper(new IsNullFilterConstraint()))
+            .put(MatchMode.MATCHES_REGEX, new MatchesRegexFilterConstraint())
+            .put(MatchMode.IS_TRUE, new IsTrueFilterConstraint())
+            .put(MatchMode.IS_FALSE, new IsFalseFilterConstraint())
+            .put(MatchMode.ALL, new AllFilterConstraint())
+            .put(MatchMode.IS_TODAY, new RelativeDateRangeFilterConstraint((today, locale) -> new LocalDate[] {today, today}))
+            .put(MatchMode.IS_YESTERDAY, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate d = today.minusDays(1);
+                return new LocalDate[] {d, d};
+            }))
+            .put(MatchMode.IS_TOMORROW, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate d = today.plusDays(1);
+                return new LocalDate[] {d, d};
+            }))
+            .put(MatchMode.IS_THIS_WEEK, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate start = DateFilterUtils.startOfWeek(today, locale);
+                return new LocalDate[] {start, start.plusDays(6)};
+            }))
+            .put(MatchMode.IS_LAST_WEEK, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate start = DateFilterUtils.startOfWeek(today, locale).minusWeeks(1);
+                return new LocalDate[] {start, start.plusDays(6)};
+            }))
+            .put(MatchMode.IS_NEXT_WEEK, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate start = DateFilterUtils.startOfWeek(today, locale).plusWeeks(1);
+                return new LocalDate[] {start, start.plusDays(6)};
+            }))
+            .put(MatchMode.IS_THIS_MONTH, new RelativeDateRangeFilterConstraint((today, locale) ->
+                    new LocalDate[] {DateFilterUtils.startOfMonth(today), DateFilterUtils.endOfMonth(today)}))
+            .put(MatchMode.IS_LAST_MONTH, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate lastMonth = today.minusMonths(1);
+                return new LocalDate[] {DateFilterUtils.startOfMonth(lastMonth), DateFilterUtils.endOfMonth(lastMonth)};
+            }))
+            .put(MatchMode.IS_NEXT_MONTH, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate nextMonth = today.plusMonths(1);
+                return new LocalDate[] {DateFilterUtils.startOfMonth(nextMonth), DateFilterUtils.endOfMonth(nextMonth)};
+            }))
+            .put(MatchMode.IS_THIS_QUARTER, new RelativeDateRangeFilterConstraint((today, locale) ->
+                    new LocalDate[] {DateFilterUtils.startOfQuarter(today), DateFilterUtils.endOfQuarter(today)}))
+            .put(MatchMode.IS_LAST_QUARTER, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate start = DateFilterUtils.startOfQuarter(today).minusMonths(3);
+                return new LocalDate[] {start, start.plusMonths(3).minusDays(1)};
+            }))
+            .put(MatchMode.IS_NEXT_QUARTER, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate start = DateFilterUtils.startOfQuarter(today).plusMonths(3);
+                return new LocalDate[] {start, start.plusMonths(3).minusDays(1)};
+            }))
+            .put(MatchMode.IS_THIS_YEAR, new RelativeDateRangeFilterConstraint((today, locale) ->
+                    new LocalDate[] {DateFilterUtils.startOfYear(today), DateFilterUtils.endOfYear(today)}))
+            .put(MatchMode.IS_LAST_YEAR, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate lastYear = today.minusYears(1);
+                return new LocalDate[] {DateFilterUtils.startOfYear(lastYear), DateFilterUtils.endOfYear(lastYear)};
+            }))
+            .put(MatchMode.IS_NEXT_YEAR, new RelativeDateRangeFilterConstraint((today, locale) -> {
+                LocalDate nextYear = today.plusYears(1);
+                return new LocalDate[] {DateFilterUtils.startOfYear(nextYear), DateFilterUtils.endOfYear(nextYear)};
+            }))
+            .put(MatchMode.LAST_N_DAYS, new RelativeNDaysFilterConstraint((today, n) -> new LocalDate[] {today.minusDays(n), today}))
+            .put(MatchMode.NEXT_N_DAYS, new RelativeNDaysFilterConstraint((today, n) -> new LocalDate[] {today, today.plusDays(n)}))
+            .put(MatchMode.RELATIVE_DATE,
+                    new RelativeNDaysFilterConstraint((today, n) -> new LocalDate[] {today.minusDays(n), today.plusDays(n)}))
+            .put(MatchMode.LAST_N_MINUTES, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.MINUTES, false))
+            .put(MatchMode.NEXT_N_MINUTES, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.MINUTES, true))
+            .put(MatchMode.LAST_N_HOURS, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.HOURS, false))
+            .put(MatchMode.NEXT_N_HOURS, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.HOURS, true))
+            .put(MatchMode.ARRAY_CONTAINS, new ArrayContainsFilterConstraint())
+            .put(MatchMode.ARRAY_NOT_CONTAINS, new NegationFilterConstraintWrapper(new ArrayContainsFilterConstraint()))
+            .put(MatchMode.CONTAINS_ANY, new ContainsAnyFilterConstraint())
+            .put(MatchMode.CONTAINS_ALL, new ContainsAllFilterConstraint())
+            .put(MatchMode.CONTAINS_NONE, new NegationFilterConstraintWrapper(new ContainsAnyFilterConstraint()))
             .build();
 
     private FilterConstraints() {
@@ -67,5 +142,22 @@ public final class FilterConstraints {
     public static FilterConstraint of(String matchMode) {
         MatchMode mode = MatchMode.of(matchMode);
         return of(mode);
+    }
+
+    public static boolean isRelativeDateMode(MatchMode mode) {
+        FilterConstraint constraint = ALL_CONSTRAINTS.get(mode);
+        return constraint instanceof RelativeDateRangeFilterConstraint
+                || constraint instanceof RelativeNDaysFilterConstraint;
+    }
+
+    public static LocalDate[] dateRange(MatchMode mode, LocalDate today, Locale locale, Integer amount) {
+        FilterConstraint constraint = ALL_CONSTRAINTS.get(mode);
+        if (constraint instanceof RelativeDateRangeFilterConstraint) {
+            return ((RelativeDateRangeFilterConstraint) constraint).resolveRange(today, locale);
+        }
+        if (constraint instanceof RelativeNDaysFilterConstraint && amount != null) {
+            return ((RelativeNDaysFilterConstraint) constraint).resolveRange(today, amount);
+        }
+        return null;
     }
 }
