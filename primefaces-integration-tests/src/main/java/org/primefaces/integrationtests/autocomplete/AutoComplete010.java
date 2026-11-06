@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ import lombok.Data;
 @Data
 public class AutoComplete010 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private static final List<String> ITEMS = List.of("123456789", "12345", "19875");
 
