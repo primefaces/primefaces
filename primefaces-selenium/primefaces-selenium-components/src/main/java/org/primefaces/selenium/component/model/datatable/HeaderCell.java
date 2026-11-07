@@ -29,6 +29,7 @@ import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -67,6 +68,78 @@ public class HeaderCell extends Cell {
         }
 
         return null;
+    }
+
+    /**
+     * Gets the trigger of the filter match mode picker if the column has one ({@code filterMatchModeOptions}).
+     *
+     * @return the trigger button or {@code null}
+     */
+    public WebElement getFilterMatchModeTrigger() {
+        if (getWebElement() != null) {
+            List<WebElement> triggers = getWebElement().findElements(By.className("p-datatable-filter-matchmode-trigger"));
+            if (!triggers.isEmpty()) {
+                return triggers.get(0);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the menu of the filter match mode picker. The widget moves it to the body.
+     *
+     * @return the menu ({@code ul})
+     * @throws NoSuchElementException if the column has no match mode picker
+     */
+    public WebElement getFilterMatchModeMenu() {
+        return PrimeSelenium.getWebDriver().findElement(By.id(getRequiredFilterMatchModeTrigger().getDomAttribute("aria-controls")));
+    }
+
+    /**
+     * Gets the selected filter match mode.
+     *
+     * @return the operator of the match mode, e.g. "gte", or {@code null} if the column has no match mode picker
+     */
+    public String getFilterMatchMode() {
+        if (getFilterMatchModeTrigger() == null) {
+            return null;
+        }
+        return getWebElement().findElement(By.className("p-datatable-filter-matchmode-input")).getDomProperty("value");
+    }
+
+    /**
+     * Gets the match modes of the filter match mode picker, in the order of the menu.
+     *
+     * @return the operators of the match modes, e.g. "equals", "lt"
+     * @throws NoSuchElementException if the column has no match mode picker
+     */
+    public List<String> getFilterMatchModeOptions() {
+        return getFilterMatchModeMenu().findElements(By.className("p-datatable-filter-matchmode-option")).stream()
+                .map(option -> option.getDomAttribute("data-match-mode"))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Selects a filter match mode with the picker and waits for the filter request. The match mode must differ from the
+     * selected one, otherwise there is no request.
+     *
+     * @param matchMode the operator of the match mode, e.g. "gte"
+     * @throws NoSuchElementException if the column has no match mode picker
+     */
+    public void setFilterMatchMode(String matchMode) {
+        // opening the menu sends no request
+        getRequiredFilterMatchModeTrigger().click();
+        WebElement option = getFilterMatchModeMenu().findElement(By.cssSelector("[data-match-mode='" + matchMode + "']"));
+        PrimeSelenium.guardAjax(option).click();
+    }
+
+    private WebElement getRequiredFilterMatchModeTrigger() {
+        WebElement trigger = getFilterMatchModeTrigger();
+        if (trigger == null) {
+            throw new NoSuchElementException("Column '" + this + "' has no filter match mode picker");
+        }
+        return trigger;
     }
 
     /**

@@ -668,7 +668,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }
 
         var target = $(event.target);
-        if(target.closest('.p-column-customfilter', column).length) {
+        if(target.closest('.p-column-customfilter, .p-datatable-filter-matchmode-trigger', column).length) {
             return false;
         }
 
@@ -712,16 +712,184 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
             
         });
+
+        filterColumns.children('.p-datatable-filter-matchmode-trigger').each(function() {
+            $this.bindFilterMatchModeMenu($(this));
+        });
         
-        // ARIA labels for filters
+        // ARIA labels for filters, the match mode trigger has its own
         filterColumns.each(function() {
             var filterColumn = $(this);
-            var filter = filterColumn.find(':input');
+            var filter = filterColumn.find(':input').not('.p-datatable-filter-matchmode-trigger');
             var title = filterColumn.find('.p-column-title')
 
             if (filter && title) {
                 filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
             }
+        });
+    }
+
+    /**
+     * Sets up the match mode picker of a column filter (`filterMatchModeOptions`). The menu opens on click (or ArrowDown /
+     * ArrowUp) of the trigger, picking another match mode stores it in the hidden input `<column>:filterMatchMode` and always
+     * filters, also with an empty filter value, so the server knows the picked match mode. The menu is moved to the body, so
+     * that the header of a scrollable table does not clip it, and removed on refresh and destroy of the widget.
+     * @private
+     * @param {JQuery} trigger The trigger button of the picker.
+     */
+    bindFilterMatchModeMenu(trigger) {
+        var $this = this,
+            input = trigger.siblings('.p-datatable-filter-matchmode-input'),
+            menu = trigger.siblings('.p-datatable-filter-matchmode-menu'),
+            menuId = menu.attr('id'),
+            namespace = '.' + trigger.attr('id');
+
+        // removes the menu of a previous rendering with the same id
+        PrimeFaces.utils.appendDynamicOverlay(this, menu, menuId, $(document.body));
+        var removeMenu = function() {
+            PrimeFaces.utils.removeDynamicOverlay($this, null, menuId, $(document.body));
+        };
+        this.addRefreshListener(removeMenu);
+        this.addDestroyListener(removeMenu);
+
+        var getOptions = function() {
+            return menu.children('.p-datatable-filter-matchmode-option');
+        };
+
+        var hide = function(focusTrigger) {
+            if (menu.hasClass('p-hidden')) {
+                return;
+            }
+            menu.addClass('p-hidden');
+            trigger.attr('aria-expanded', 'false');
+            if (focusTrigger) {
+                trigger.trigger('focus');
+            }
+        };
+
+        var show = function(focusLast) {
+            menu.css('z-index', PrimeFaces.nextZindex()).removeClass('p-hidden');
+            PrimeFaces.utils.position(menu, {
+                my: 'left top',
+                at: 'left bottom',
+                of: trigger,
+                collision: 'flipfit'
+            });
+            trigger.attr('aria-expanded', 'true');
+
+            var options = getOptions(),
+                option = focusLast ? options.last() : options.filter('[aria-checked="true"]');
+            (option.length ? option : options.first()).trigger('focus');
+        };
+
+        var select = function(option) {
+            var matchMode = option.attr('data-match-mode');
+            hide(true);
+            if (input.val() !== matchMode) {
+                $this.updateFilterMatchMode(trigger, matchMode);
+                $this.filter();
+            }
+        };
+
+        trigger.off('click' + namespace + ' keydown' + namespace)
+            .on('click' + namespace, function(e) {
+                e.preventDefault();
+                if (menu.hasClass('p-hidden')) {
+                    show(false);
+                }
+                else {
+                    hide(false);
+                }
+            })
+            .on('keydown' + namespace, function(e) {
+                switch (e.key) {
+                    case 'ArrowDown':
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        show(e.key === 'ArrowUp');
+                        break;
+                    case 'Escape':
+                        hide(true);
+                        break;
+                }
+            });
+
+        menu.off(namespace)
+            .on('click' + namespace, '.p-datatable-filter-matchmode-option', function(e) {
+                e.preventDefault();
+                select($(this));
+            })
+            .on('keydown' + namespace, function(e) {
+                var options = getOptions(),
+                    index = options.index($(e.target).closest('.p-datatable-filter-matchmode-option'));
+
+                switch (e.key) {
+                    case 'ArrowDown':
+                        options.eq((index + 1) % options.length).trigger('focus');
+                        break;
+                    case 'ArrowUp':
+                        options.eq(index > 0 ? index - 1 : options.length - 1).trigger('focus');
+                        break;
+                    case 'Home':
+                        options.first().trigger('focus');
+                        break;
+                    case 'End':
+                        options.last().trigger('focus');
+                        break;
+                    case 'Enter':
+                    case ' ':
+                        if (index >= 0) {
+                            select(options.eq(index));
+                        }
+                        break;
+                    case 'Escape':
+                    case 'Tab':
+                        hide(true);
+                        break;
+                    default:
+                        return;
+                }
+                e.preventDefault();
+            });
+
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown' + namespace + '_hide', menu,
+            function() { return trigger; },
+            function(e, eventTarget) {
+                if (!(menu.is(eventTarget) || menu.has(eventTarget).length > 0)) {
+                    hide(false);
+                }
+            });
+        PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll' + namespace + '_hide', trigger, function() {
+            hide(false);
+        });
+        PrimeFaces.utils.registerResizeHandler(this, 'resize' + namespace + '_hide', menu, function() {
+            hide(false);
+        });
+    }
+
+    /**
+     * Selects a match mode in the picker of a column filter: the hidden input, the checked option and the trigger icon
+     * and label. Does not filter.
+     * @private
+     * @param {JQuery} trigger The trigger button of the picker.
+     * @param {string} matchMode The operator of the match mode, e.g. `gte`.
+     */
+    updateFilterMatchMode(trigger, matchMode) {
+        var menu = $(PrimeFaces.escapeClientId(trigger.attr('aria-controls'))),
+            options = menu.children('.p-datatable-filter-matchmode-option'),
+            option = options.filter(function() {
+                return this.getAttribute('data-match-mode') === matchMode;
+            }),
+            label = option.children('.p-datatable-filter-matchmode-label').text();
+
+        trigger.siblings('.p-datatable-filter-matchmode-input').val(matchMode);
+        options.removeClass('p-state-active').attr('aria-checked', 'false');
+        option.addClass('p-state-active').attr('aria-checked', 'true');
+        // the semantic icon class of the match mode, as rendered for its option
+        trigger.children('.p-icon').attr('class', option.children('.p-icon').attr('class'));
+        trigger.attr({
+            'title': label,
+            'aria-label': menu.attr('aria-label') + ': ' + label
         });
     }
 
@@ -4511,6 +4679,13 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var standardFilters = this.thead.find('> tr > th.p-filter-column > .p-column-filter:not(:disabled):not([readonly])');
         resetInputFields(standardFilters);
 
+        // the match mode pickers back to their initial match mode
+        var $this = this;
+        this.thead.find('> tr > th.p-filter-column > .p-datatable-filter-matchmode-trigger').each(function() {
+            var trigger = $(this);
+            $this.updateFilterMatchMode(trigger, trigger.siblings('.p-datatable-filter-matchmode-input').attr('data-default'));
+        });
+
         var customFilters = this.thead.find('> tr > th.p-filter-column > .p-column-customfilter');
         customFilters.each(function() {
             var widgetElement = $(this).find('.p-widget');
@@ -5398,7 +5573,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }, { delay: null });
 
         //filter support
-        this.clone.find('.p-column-filter').prop('disabled', true);
+        this.clone.find('.p-column-filter, .p-datatable-filter-matchmode-input, .p-datatable-filter-matchmode-trigger').prop('disabled', true);
 
         // set original state upon loading
         updateStickyHeaderPosition();
@@ -5453,6 +5628,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     reclone() {
         PrimeFaces.utils.cleanseDomElement(this.clone);
         this.clone = this.thead.clone(false);
+        // the match mode of the clone would be submitted first
+        this.clone.find('.p-datatable-filter-matchmode-input, .p-datatable-filter-matchmode-trigger').prop('disabled', true);
         this.jq.find('.p-datatable-tablewrapper > table').prepend(this.clone);
     }
 
@@ -5886,7 +6063,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter(speed, callback) {
-        this.jq.find(".p-column-filter, .p-column-customfilter").fadeToggle(speed || 0, callback);
+        this.jq.find(".p-column-filter, .p-column-customfilter, .p-datatable-filter-matchmode-trigger").fadeToggle(speed || 0, callback);
     }
 
 }

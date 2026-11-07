@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.convert.DateTimeConverter;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -56,11 +57,15 @@ public class FilterView implements Serializable {
 
     private List<Customer> customers3;
 
+    private List<Customer> customers4;
+
     private List<Customer> filteredCustomers1;
 
     private List<Customer> filteredCustomers2;
 
     private List<Customer> filteredCustomers3;
+
+    private List<Customer> filteredCustomers4;
 
     private List<FilterMeta> filterBy;
 
@@ -72,6 +77,7 @@ public class FilterView implements Serializable {
         customers1 = service.getCustomers(10);
         customers2 = service.getCustomers(50);
         customers3 = service.getCustomers(10);
+        customers4 = service.getCustomers(20);
 
         filterBy = new ArrayList<>();
 
@@ -138,6 +144,10 @@ public class FilterView implements Serializable {
         return customers3;
     }
 
+    public List<Customer> getCustomers4() {
+        return customers4;
+    }
+
     public List<Customer> getFilteredCustomers1() {
         return filteredCustomers1;
     }
@@ -160,6 +170,21 @@ public class FilterView implements Serializable {
 
     public void setFilteredCustomers3(List<Customer> filteredCustomers3) {
         this.filteredCustomers3 = filteredCustomers3;
+    }
+
+    public List<Customer> getFilteredCustomers4() {
+        return filteredCustomers4;
+    }
+
+    public void setFilteredCustomers4(List<Customer> filteredCustomers4) {
+        this.filteredCustomers4 = filteredCustomers4;
+    }
+
+    public DateTimeConverter getDateConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("yyyy-MM-dd");
+        converter.setType("localDate");
+        return converter;
     }
 
     public void setService(CustomerService service) {
