@@ -630,23 +630,10 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      * @return {boolean} `true` if a change handler was found.
      */
     captureOriginalOnchange() {
-        var input = this.input[0];
-        if (!input) {
-            return false;
-        }
-
-        var originalOnchange = this.input.prop('onchange');
+        // skip the widget's own handler
+        var originalOnchange = PrimeFaces.utils.getOriginalEventHandler(this.input, 'change', 'autoComplete');
         if (originalOnchange) {
-            this.input.prop('onchange', null);
-        }
-        else {
-            // skip the widget's own handler
-            var events = $._data(input, "events"),
-                handler = events && events.change && events.change.find(function(h) { return h.namespace !== 'autoComplete'; });
-            if (handler) {
-                originalOnchange = handler.handler;
-                this.input.off('change', originalOnchange);
-            }
+            this.input.prop('onchange', null).off('change', originalOnchange);
         }
 
         this.cfg.onChange = originalOnchange || null;
