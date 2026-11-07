@@ -1230,13 +1230,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
                     else if (typeof js === 'string') {
                         if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                             // command is ajax=true
-                            var originalOnClick;
-
-                            if (source[0]) {
-                                // @ts-expect-error Internal JQuery method
-                                const events = $._data(source[0], "events");
-                                originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
-                            }
+                            const originalOnClick = PrimeFaces.utils.getOriginalEventHandler(source, 'click');
 
                             // Temporarily remove the click handler and execute the new one
                             source.prop('onclick', null).off("click").on("click", function(event) {

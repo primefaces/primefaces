@@ -658,6 +658,34 @@ export class Utils {
     }
 
     /**
+     * Finds the original handler of a DOM event of an element, so a widget can take it over, e.g. the `onchange`
+     * handler of an input. Without CSP this is the inline `on<event>` property, with CSP it is the first jQuery
+     * handler, which was registered by `PrimeFaces.csp.register`. Removing the handler is up to the caller.
+     * @param jq The element whose handler to find.
+     * @param event The name of the event, e.g. `change` or `click`.
+     * @param ignoreNamespace Optional namespace of handlers to skip, e.g. the ones bound by the widget itself.
+     * @returns The original handler, or `null` if there is none.
+     * @since 17.0.0
+     */
+    getOriginalEventHandler(jq: JQuery | undefined | null, event: string, ignoreNamespace?: string): ((this: HTMLElement, e: JQuery.TriggeredEvent) => unknown) | null {
+        const element = jq?.[0];
+        if (!jq || !element) {
+            return null;
+        }
+
+        const inlineHandler: unknown = jq.prop('on' + event);
+        if (typeof inlineHandler === 'function') {
+            return inlineHandler as (this: HTMLElement, e: JQuery.TriggeredEvent) => unknown;
+        }
+
+        type HandleObject = { namespace: string, handler: (this: HTMLElement, e: JQuery.TriggeredEvent) => unknown };
+        const events = ($ as unknown as { _data(element: Element, key: string): Record<string, HandleObject[]> | undefined })
+            ._data(element, 'events');
+        const handleObject = events?.[event]?.find((h) => !ignoreNamespace || h.namespace !== ignoreNamespace);
+        return handleObject?.handler ?? null;
+    }
+
+    /**
      * Positions an element relative to another element, a mouse event or the window, as the former jQuery UI
      * `$.fn.position(options)`.
      *

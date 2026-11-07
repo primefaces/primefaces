@@ -2696,14 +2696,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
                 }
                 if (!this.changeHandler) {
                     // get the current attached events if using CSP, use DOM if non-CSP and JQ event if CSP
-                    // @ts-expect-error Internal JQuery method
-                    const events = $._data(input, 'events');
-                    let originalOnchange = this.input.prop('onchange') as ((event: JQuery.TriggeredEvent) => void) | null;
-                    if (!originalOnchange && events?.change) {
-                        originalOnchange = events.change[0]?.handler ?? null;
-                    }
+                    const originalOnchange = PrimeFaces.utils.getOriginalEventHandler(this.input, 'change');
                     this.input.prop('onchange', null).off('change');
-                    this.changeHandler = (event) => originalOnchange?.call(this, event);
+                    this.changeHandler = (event) => originalOnchange?.call(input, event);
                 }
 
                 this.input.off('.datePicker')
