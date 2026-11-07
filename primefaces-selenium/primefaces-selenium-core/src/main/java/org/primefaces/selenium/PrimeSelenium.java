@@ -490,14 +490,14 @@ public final class PrimeSelenium {
      * Globally disable all CSS and jQuery animations.
      */
     public static void disableAnimations() {
-        executeScript("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
+        executeScript("if (window.PrimeFaces) { PrimeFaces.utils.disableAnimations(); }");
     }
 
     /**
      * Globally enable all CSS and jQuery animations.
      */
     public static void enableAnimations() {
-        executeScript("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.enableAnimations(); }); }");
+        executeScript("if (window.PrimeFaces) { PrimeFaces.utils.enableAnimations(); }");
     }
 
     /**

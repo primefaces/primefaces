@@ -214,7 +214,7 @@ class DataTable051Test extends AbstractDataTableTest {
         assertSelections(page.messages, SELECTED_COUNTRIES, "1,3");
 
         // Act - apply filter
-        dataTable.filter("Name", "United");
+        dataTable.filterAtOnce("Name", "United"); // typing could fire a filter request for partial input
         page.submit.click();
 
         // Assert - selection 1 and 3 survive filter

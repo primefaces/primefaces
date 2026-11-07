@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
@@ -172,6 +173,21 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
      */
     public void filterGlobal(WebElement globalFilterInput, String value) {
         PrimeSelenium.executeScript("arguments[0].value = arguments[1];", globalFilterInput, value == null ? "" : value);
+        applyFilters();
+    }
+
+    /**
+     * Filters the column found by its header text like {@link #filter(String, String)}, but sets the value at once instead
+     * of typing it and applies the filters with exactly one request. Typing a value on a slow browser can fire a filter
+     * request for partial input, which matters e.g. when asserting the requests of a lazy model.
+     *
+     * @param headerText the header text to look for
+     * @param filterValue the value to filter for, {@code null} or empty to remove the filter
+     */
+    public void filterAtOnce(String headerText, String filterValue) {
+        HeaderCell cell = getHeader().getCell(headerText)
+                .orElseThrow(() -> new NoSuchElementException("Header Cell '" + headerText + "' not found."));
+        PrimeSelenium.executeScript("arguments[0].value = arguments[1];", cell.getColumnFilter(), filterValue == null ? "" : filterValue);
         applyFilters();
     }
 

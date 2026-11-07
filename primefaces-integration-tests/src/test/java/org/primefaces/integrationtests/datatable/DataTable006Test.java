@@ -343,7 +343,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelections(page.messages, "1,3");
 
         // Act - filter
-        dataTable.filter("Name", "Java");
+        dataTable.filterAtOnce("Name", "Java"); // typing could fire a filter request for partial input
         page.submit.click();
 
         // Assert
