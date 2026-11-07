@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
@@ -83,7 +82,7 @@ class DataTable053Test extends AbstractPrimePageTest {
     void selectingAValueStillFilters(Page page) {
         // Act
         page.filterType.selectValue("COMPILED");
-        PrimeSelenium.executeScript(true, "PF('datatable').filter()");
+        page.dataTable.applyFilters();
 
         // Assert
         assertEquals(2, page.dataTable.getRows().size(), "only the COMPILED languages must remain");

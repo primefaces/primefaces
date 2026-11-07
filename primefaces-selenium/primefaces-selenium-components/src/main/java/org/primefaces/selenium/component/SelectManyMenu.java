@@ -113,7 +113,8 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
             if (element.getText().equalsIgnoreCase(label)) {
                 if (withMetaKey) {
                     Actions actions = new Actions(getWebDriver());
-                    Action action = actions.keyDown(Keys.META).click(element).keyUp(Keys.META).build();
+                    Keys metaKey = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+                    Action action = actions.keyDown(metaKey).click(element).keyUp(metaKey).build();
                     if (withGuardAjax) {
                         action = PrimeSelenium.guardAjax(action);
                     }
@@ -193,5 +194,46 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
 
     public WebElement getFilterInput() {
         return filterInput;
+    }
+
+    /**
+     * Filters the items like the user by replacing the text of the filter input. Filtering is done on the client.
+     *
+     * @param value the filter text
+     */
+    public void filter(String value) {
+        ComponentUtils.replaceText(getFilterInput(), value);
+    }
+
+    /**
+     * Gets the "toggle all" checkbox in the header ({@code showToggleAll}).
+     *
+     * @return the toggle all checkbox
+     */
+    public WebElement getToggleAllCheckbox() {
+        return getRoot().findElement(By.cssSelector(".p-selectmanymenu-header .p-chkbox-box"));
+    }
+
+    /**
+     * Selects all items visible with the current filter or unselects them all if they are all selected, like the user with the "toggle all"
+     * checkbox in the header ({@code showToggleAll}). Guards AJAX for the "change" event.
+     */
+    public void toggleAll() {
+        WebElement toggler = getToggleAllCheckbox();
+        if (isOnchangeAjaxified()) {
+            PrimeSelenium.guardAjax(toggler).click();
+        }
+        else {
+            toggler.click();
+        }
+    }
+
+    /**
+     * Are all items visible with the current filter selected, i.e. is the "toggle all" checkbox in the header checked ({@code showToggleAll})?
+     *
+     * @return true if all (filtered) items are selected
+     */
+    public boolean isAllSelected() {
+        return "true".equals(getToggleAllCheckbox().getDomAttribute("aria-checked"));
     }
 }

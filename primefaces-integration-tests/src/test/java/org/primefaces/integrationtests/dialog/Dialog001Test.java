@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.dialog;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Dialog;
@@ -35,8 +36,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -155,17 +154,8 @@ class Dialog001Test extends AbstractPrimePageTest {
         assertConfiguration(dialog.getWidgetConfiguration());
 
         if (visible) {
-            try {
-                // modal dialog should block clickability of button
-                page.buttonSubmit.click();
-                fail("Button should not be clickable because modal mask is covering it!");
-            }
-            catch (ElementClickInterceptedException ex) {
-                // element should be blocked by modal mask!
-            }
-            catch (WebDriverException ex) {
-                // Safari: element should be blocked by modal mask!
-            }
+            // modal dialog should block clickability of button
+            assertTrue(PrimeSelenium.isElementCovered(page.buttonSubmit), "Button should not be clickable because modal mask is covering it!");
         }
         else {
             assertClickable(page.buttonSubmit);

@@ -26,8 +26,7 @@ package org.primefaces.integrationtests.menu;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
-
-import java.util.List;
+import org.primefaces.selenium.component.Menu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -47,14 +46,14 @@ class Menu002Test extends AbstractPrimePageTest {
     @DisplayName("Menu: GitHub #15131 toggleable menu keeps the server side expanded state")
     void serverStateIsKept(Page page) {
         // Arrange
-        clearMenuState();
+        clearMenuState(page);
 
         // Act
         page.goTo();
 
         // Assert
-        assertExpanded(page.getHeader(page.menu, 0));
-        assertCollapsed(page.getHeader(page.menu, 1));
+        assertExpanded(page.menu, 0);
+        assertCollapsed(page.menu, 1);
         assertNoJavascriptErrors();
     }
 
@@ -63,14 +62,14 @@ class Menu002Test extends AbstractPrimePageTest {
     @DisplayName("Menu: GitHub #15131 toggleable menu keeps the expanded state of a programmatic MenuModel")
     void serverStateIsKeptForMenuModel(Page page) {
         // Arrange
-        clearMenuState();
+        clearMenuState(page);
 
         // Act
         page.goTo();
 
         // Assert
-        assertExpanded(page.getHeader(page.model, 0));
-        assertCollapsed(page.getHeader(page.model, 1));
+        assertExpanded(page.model, 0);
+        assertCollapsed(page.model, 1);
         assertNoJavascriptErrors();
     }
 
@@ -79,20 +78,20 @@ class Menu002Test extends AbstractPrimePageTest {
     @DisplayName("Menu: GitHub #15131 an expand stored on the client wins over the server side state")
     void storedExpandWinsOverServerState(Page page) {
         // Arrange - nothing is collapsed anymore, so the stored state is an empty string
-        clearMenuState();
+        clearMenuState(page);
         page.goTo();
 
         // Act - expand the submenu the server rendered collapsed, then reload
-        page.getHeader(page.menu, 1).click();
+        page.menu.toggleSubmenu(1);
         page.goTo();
 
         // Assert
-        assertExpanded(page.getHeader(page.menu, 0));
-        assertExpanded(page.getHeader(page.menu, 1));
+        assertExpanded(page.menu, 0);
+        assertExpanded(page.menu, 1);
         assertNoJavascriptErrors();
 
         // Cleanup so the stored state does not leak into other tests
-        clearMenuState();
+        clearMenuState(page);
     }
 
     @Test
@@ -100,62 +99,59 @@ class Menu002Test extends AbstractPrimePageTest {
     @DisplayName("Menu: GitHub #15131 a collapse stored on the client wins over the server side state")
     void storedCollapseWinsOverServerState(Page page) {
         // Arrange
-        clearMenuState();
+        clearMenuState(page);
         page.goTo();
 
         // Act - collapse the submenu the server rendered expanded, then reload
-        page.getHeader(page.menu, 0).click();
+        page.menu.toggleSubmenu(0);
         page.goTo();
 
         // Assert
-        assertCollapsed(page.getHeader(page.menu, 0));
-        assertCollapsed(page.getHeader(page.menu, 1));
+        assertCollapsed(page.menu, 0);
+        assertCollapsed(page.menu, 1);
         assertNoJavascriptErrors();
 
         // Cleanup so the stored state does not leak into other tests
-        clearMenuState();
+        clearMenuState(page);
     }
 
-    private void assertExpanded(WebElement header) {
+    private void assertExpanded(Menu menu, int index) {
         // the toggle icon follows aria-expanded
-        assertEquals("true", header.getAttribute("aria-expanded"));
-        assertToggleIcon(header, "--p-menu-toggle-expanded-icon");
+        assertTrue(menu.isSubmenuExpanded(index));
+        WebElement header = menu.getSubmenuHeaders().get(index);
+        assertToggleIcon(menu, index, "--p-menu-toggle-expanded-icon");
         assertTrue(getFirstChild(header).isDisplayed(), "Children of an expanded submenu should be visible");
     }
 
-    private void assertCollapsed(WebElement header) {
-        assertEquals("false", header.getAttribute("aria-expanded"));
-        assertToggleIcon(header, "--p-menu-toggle-collapsed-icon");
+    private void assertCollapsed(Menu menu, int index) {
+        assertFalse(menu.isSubmenuExpanded(index));
+        WebElement header = menu.getSubmenuHeaders().get(index);
+        assertToggleIcon(menu, index, "--p-menu-toggle-collapsed-icon");
         assertFalse(getFirstChild(header).isDisplayed(), "Children of a collapsed submenu should be hidden");
     }
 
-    private void assertToggleIcon(WebElement header, String token) {
-        WebElement icon = header.findElement(By.cssSelector("h3 > .p-menu-toggle-icon"));
+    private void assertToggleIcon(Menu menu, int index, String token) {
+        WebElement icon = menu.getSubmenuToggleIcon(index);
         assertTrue(icon.isDisplayed(), "Header should display the toggle icon");
-        String script = "return getComputedStyle(arguments[0]).getPropertyValue(arguments[1]).trim();";
-        assertEquals((String) PrimeSelenium.executeScript(script, icon, token), (String) PrimeSelenium.executeScript(script, icon, "--_icon"));
+        assertEquals(PrimeSelenium.getCssVariable(icon, token), PrimeSelenium.getCssVariable(icon, "--_icon"));
     }
 
     private WebElement getFirstChild(WebElement header) {
         return header.findElement(By.xpath("following-sibling::li[contains(@class, 'p-submenu-child')][1]"));
     }
 
-    private void clearMenuState() {
-        PrimeSelenium.executeScript("PF('menu').clearState(); PF('model').clearState();");
+    private void clearMenuState(Page page) {
+        page.menu.clearState();
+        page.model.clearState();
     }
 
     public static class Page extends AbstractPrimePage {
 
         @FindBy(id = "form:menu")
-        WebElement menu;
+        Menu menu;
 
         @FindBy(id = "form:model")
-        WebElement model;
-
-        WebElement getHeader(WebElement menuElement, int index) {
-            List<WebElement> headers = menuElement.findElements(By.cssSelector("ul.p-menu-list > li.p-widget-header"));
-            return headers.get(index);
-        }
+        Menu model;
 
         @Override
         public String getLocation() {

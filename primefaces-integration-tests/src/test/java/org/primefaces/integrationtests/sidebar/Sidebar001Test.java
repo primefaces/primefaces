@@ -31,7 +31,6 @@ import org.primefaces.selenium.component.Sidebar;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,10 +51,7 @@ class Sidebar001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
         assertTrue(page.sidebar1.isVisible());
-
-        assertDoesNotThrow(() -> {
-            page.sidebar2.findElement(By.className("p-sidebar-close")).isDisplayed();
-        });
+        assertDisplayed(page.sidebar1.getCloseIcon());
     }
 
     @Test
@@ -72,10 +68,7 @@ class Sidebar001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(getWebDriver().getPageSource().contains("sidebar2 content"));
         assertTrue(page.sidebar2.isVisible());
-
-        assertDoesNotThrow(() -> {
-            page.sidebar2.findElement(By.className("p-sidebar-close")).isDisplayed();
-        });
+        assertDisplayed(page.sidebar2.getCloseIcon());
     }
 
     public static class Page extends AbstractPrimePage {

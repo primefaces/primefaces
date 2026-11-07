@@ -125,6 +125,16 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     }
 
     /**
+     * Filters the items like the user: shows the panel and replaces the text of the filter input. Filtering is done on the client.
+     *
+     * @param value the filter text
+     */
+    public void filter(String value) {
+        show();
+        ComponentUtils.replaceText(getFilterInput(), value);
+    }
+
+    /**
      * Selects all available options.
      */
     public void checkAll() {

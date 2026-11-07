@@ -111,8 +111,10 @@ Currently, only the following components are implemented (partially):
 - ~~InputSwitch~~ (use ToggleSwitch)
 - InputText
 - InputTextarea
-- Messages
+- MegaMenu
+- Menu
 - Menubar
+- Messages
 - OutputLabel
 - OverlayPanel
 - Panel
@@ -131,6 +133,7 @@ Currently, only the following components are implemented (partially):
 - SlideMenu
 - Slider
 - Spinner
+- SplitButton
 - TabView
 - TextEditor
 - Timeline
@@ -139,6 +142,7 @@ Currently, only the following components are implemented (partially):
 - TreeTable
 - TriStateCheckbox
 - TriStateManyCheckbox
+- Wizard
 
 ## Usage
 

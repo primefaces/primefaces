@@ -51,9 +51,9 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTL
     public static final String SUBMENU_ICON_CLASS = "p-icon p-next-icon p-menu-submenu-icon";
     public static final String MENUBAR_SUBMENU_ICON_CLASS = "p-icon p-dropdown-icon p-menubar-submenu-icon";
     public static final String SUBMENU_LINK_CLASS = "p-menuitem-link p-submenu-link";
-    public static final String OPTIONS_CLASS = "p-menuitem p-menubar-options p-widget";
-    public static final String START_CLASS = "p-menuitem p-menubar-start p-widget";
-    public static final String END_CLASS = "p-menuitem p-menubar-end p-widget";
+    public static final String OPTIONS_CLASS = "p-menubar-options p-widget";
+    public static final String START_CLASS = "p-menubar-start p-widget";
+    public static final String END_CLASS = "p-menubar-end p-widget";
 
     @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
     public abstract String getTabindex();

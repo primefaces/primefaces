@@ -29,15 +29,10 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TreeTable004Test extends AbstractTreeTableTest {
 
@@ -49,18 +44,17 @@ class TreeTable004Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act - select 3 nodes
-        Actions actions = new Actions(page.getWebDriver());
-        actions.keyDown(Keys.META).click(treeTable.getRow(2).getCell(1).getWebElement()).keyUp(Keys.META).perform();
+        treeTable.getRow(2).toggleSelection();
         treeTable.getRow(0).toggle();
-        actions.keyDown(Keys.META).click(treeTable.getRow(1).getCell(1).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.META).click(treeTable.getRow(3).getCell(1).getWebElement()).keyUp(Keys.META).perform();
+        treeTable.getRow(1).toggleSelection();
+        treeTable.getRow(3).toggleSelection();
         page.buttonShowSelectedNodes.click();
 
         // Assert
         assertMessage(page.messages, 0, "selected nodes", "Desktop,editor.app,settings.app");
 
         // Act - unselect 1 node
-        actions.keyDown(Keys.META).click(treeTable.getRow(3).getCell(1).getWebElement()).keyUp(Keys.META).perform();
+        treeTable.getRow(3).toggleSelection();
         page.buttonShowSelectedNodes.click();
 
         // Assert
@@ -69,12 +63,6 @@ class TreeTable004Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
-
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
-    }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:treeTable")

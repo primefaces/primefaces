@@ -58,6 +58,16 @@ public abstract class TriStateManyCheckbox extends AbstractComponent {
     }
 
     /**
+     * The icon inside the box of an item, its style class shows the state (checked or crossed).
+     *
+     * @param index the 0-based index of the item
+     * @return the icon
+     */
+    public WebElement getIcon(int index) {
+        return getBoxes().get(index).findElement(By.className("p-chkbox-icon"));
+    }
+
+    /**
      * The labels of the items.
      *
      * @return the labels

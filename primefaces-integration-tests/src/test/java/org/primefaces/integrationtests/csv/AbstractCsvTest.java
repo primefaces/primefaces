@@ -21,17 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.treetable.feature;
+package org.primefaces.integrationtests.csv;
 
-import org.primefaces.model.TreeNode;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.Message;
 
-public class CustomNode<T> extends org.primefaces.model.DefaultTreeNode<T> {
+import org.junit.jupiter.api.Assertions;
 
-    public CustomNode(String type, T data, TreeNode parent) {
-        super(type, data, parent);
-    }
+public abstract class AbstractCsvTest extends AbstractPrimePageTest {
 
-    public CustomNode(CustomNode<T> other) {
-        super(other.getType(), other.getData(), null);
+    protected void assertMessage(Message message, String expected) {
+        // an empty p:message has no size (it is invisible), only a message is shown
+        if (!expected.isEmpty()) {
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(message));
+        }
+        Assertions.assertEquals(expected, message.getText());
+        assertNoJavascriptErrors();
     }
 }

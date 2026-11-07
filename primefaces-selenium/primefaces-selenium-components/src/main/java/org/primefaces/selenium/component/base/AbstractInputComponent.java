@@ -61,6 +61,30 @@ public abstract class AbstractInputComponent extends AbstractComponent {
     }
 
     /**
+     * Is the input marked invalid, e.g. after a failed (client side) validation? Reads {@code aria-invalid} of the input first and falls back to the
+     * {@code p-state-error} class of the input or the component root.
+     *
+     * @return true if invalid
+     */
+    public boolean isInvalid() {
+        WebElement input = getInput();
+        return "true".equals(input.getDomAttribute("aria-invalid"))
+                    || PrimeSelenium.hasCssClass(input, "p-state-error")
+                    || PrimeSelenium.hasCssClass(getRoot(), "p-state-error");
+    }
+
+    /**
+     * Types the text into the input like the user, without clearing it before and without leaving the input (no TAB, so no "change" event is fired).
+     * Keystrokes are not guarded as typing on its own does not trigger the "change" event; guard keyup/input AJAX behaviors yourself if your page has
+     * them.
+     *
+     * @param text the text to type
+     */
+    public void type(CharSequence text) {
+        ComponentUtils.sendKeys(getInput(), text);
+    }
+
+    /**
      * The HTML label assigned to this input.
      *
      * @return the {@link WebElement} representing the label.

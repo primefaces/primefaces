@@ -77,6 +77,15 @@ public abstract class InputPhone extends InputText {
     }
 
     /**
+     * Gets the dial code of the selected country displayed on the country selector.
+     *
+     * @return the dial code, e.g. "+43"
+     */
+    public String getDialCode() {
+        return getCountryButton().findElement(By.className("p-inputphone-dial-code")).getText();
+    }
+
+    /**
      * The panel with the countries.
      *
      * @return the panel

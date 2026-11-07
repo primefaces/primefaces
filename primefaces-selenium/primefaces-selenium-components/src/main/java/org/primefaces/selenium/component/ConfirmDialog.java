@@ -23,6 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.internal.ConfigProvider;
+import org.primefaces.selenium.internal.Guard;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -59,4 +64,42 @@ public abstract class ConfirmDialog extends Dialog {
         return noButton;
     }
 
+    /**
+     * Answers the dialog with yes. For a global dialog the confirmed command (AJAX request, full page submit or JavaScript
+     * function) runs within the click, so it waits until no request is pending and the dialog is hidden.
+     * For a non-global dialog the yes button is a command of the page: it guards its own request, hiding the dialog is up to the page.
+     */
+    public void confirm() {
+        if (!getWidgetConfiguration().optBoolean("global", false)) {
+            getYesButton().click();
+        }
+        else {
+            guardConfirmedCommand(getYesButton()).click();
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+        }
+    }
+
+    /**
+     * Answers the dialog with no.
+     */
+    public void cancel() {
+        getNoButton().click();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+    }
+
+    /**
+     * Guards the yes button of a global confirm dialog or popup: after the click it waits until whatever the confirmed
+     * command started (AJAX request, full page submit or nothing) has completed. No request has to be sent at all,
+     * unlike {@link PrimeSelenium#guardAjax(Object)}.
+     *
+     * @param yesButton the yes button
+     * @param <T> the type of the button
+     * @return the guarded button
+     */
+    static <T> T guardConfirmedCommand(T yesButton) {
+        return Guard.custom(yesButton, ConfigProvider.getInstance().getTimeoutAjax(),
+                    PrimeExpectedConditions.documentLoaded(), PrimeExpectedConditions.notNavigating(),
+                    PrimeExpectedConditions.notSubmitting(), PrimeExpectedConditions.ajaxQueueEmpty(),
+                    PrimeExpectedConditions.animationNotActive());
+    }
 }

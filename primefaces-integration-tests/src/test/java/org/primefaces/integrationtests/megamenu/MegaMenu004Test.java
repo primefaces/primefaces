@@ -38,7 +38,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,16 +52,16 @@ class MegaMenu004Test extends AbstractPrimePageTest {
     void activeIndex(String orientation, boolean auto, int index) {
         // Arrange
         goTo("megamenu/megaMenu004.xhtml?orientation=" + orientation + "&auto=" + auto + "&index=" + index);
-        MegaMenu menu = PrimeSelenium.createFragment(MegaMenu.class, By.id("form:menu"));
+        MegaMenu menu = menu();
         assertEquals(index, menu.getWidgetConfiguration().getInt("activeIndex"));
-        WebElement selected = roots().get(index);
+        WebElement selected = menu.getRootMenuitems().get(index);
         assertTrue(PrimeSelenium.hasCssClass(selected, "p-menuitem-selected"));
         assertEquals("page", selected.findElement(By.tagName("a")).getDomAttribute("aria-current"));
         assertFalse(PrimeSelenium.hasCssClass(selected.findElement(By.tagName("a")), "p-state-hover"));
         assertEquals("0", selected.findElement(By.tagName("a")).getDomAttribute("tabindex"));
 
         // Act: open another panel, then dismiss it outside the menu.
-        WebElement other = openRoot(1 - index, auto);
+        WebElement other = menu.openRootSubmenu(1 - index);
         WebElement panel = other.findElement(By.cssSelector("ul.p-menu-child"));
         // Assert: opening another panel must not erase the configured current item.
         assertTrue(PrimeSelenium.hasCssClass(selected, "p-menuitem-selected"));
@@ -73,7 +72,7 @@ class MegaMenu004Test extends AbstractPrimePageTest {
         assertEquals("false", other.findElement(By.tagName("a")).getDomAttribute("aria-expanded"));
 
         // Act: keyboard navigation changes the interaction target, not the current page.
-        WebElement first = roots().get(0).findElement(By.tagName("a"));
+        WebElement first = menu.getRootMenuitems().get(0).findElement(By.tagName("a"));
         first.sendKeys("vertical".equals(orientation) ? Keys.ARROW_DOWN : Keys.ARROW_RIGHT);
         assertEquals(Long.valueOf(1), PrimeSelenium.<Long>executeScript("return PF('menu').activeitem.index();"));
         PrimeSelenium.getWebDriver().findElement(By.id("form:outside")).click();
@@ -92,7 +91,7 @@ class MegaMenu004Test extends AbstractPrimePageTest {
         // Arrange
         goTo("megamenu/megaMenu004.xhtml?index=" + index);
         // Act
-        openRoot(0, true);
+        menu().openRootSubmenu(0);
         PrimeSelenium.getWebDriver().findElement(By.id("form:outside")).click();
         // Assert
         assertSelection(-1);
@@ -129,24 +128,12 @@ class MegaMenu004Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
-    private WebElement openRoot(int index, boolean auto) {
-        // Locate by index: an already open panel changes the root item's full text.
-        WebElement item = roots().get(index);
-        WebElement link = item.findElement(By.tagName("a"));
-        new Actions(PrimeSelenium.getWebDriver()).moveToElement(link).perform();
-        if (!auto) {
-            link.click();
-        }
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(item.findElement(By.cssSelector("ul.p-menu-child"))));
-        return item;
-    }
-
-    private List<WebElement> roots() {
-        return PrimeSelenium.getWebDriver().findElements(By.cssSelector("#form\\:menu > ul > li.p-menuitem"));
+    private MegaMenu menu() {
+        return PrimeSelenium.createFragment(MegaMenu.class, By.id("form:menu"));
     }
 
     private void assertSelection(int index) {
-        List<WebElement> items = roots();
+        List<WebElement> items = menu().getRootMenuitems();
         assertEquals(2, items.size());
         for (int i = 0; i < items.size(); i++) {
             assertEquals(i == index, PrimeSelenium.hasCssClass(items.get(i), "p-menuitem-selected"));

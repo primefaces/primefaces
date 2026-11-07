@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import org.primefaces.component.api.UITree;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.FilterMeta;
@@ -31,16 +30,17 @@ import org.primefaces.model.TreeNode;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.IdentityHashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
-import jakarta.el.ELContext;
-import jakarta.el.ValueExpression;
 import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,114 +48,99 @@ import static org.mockito.Mockito.when;
 
 class TreeTableFilterFeatureTest {
 
-    @Test
-    void cloneTreeNodeWithCustomNodeConstructor() {
-        FilterFeature filterFeature = new FilterFeature();
+    /**
+     * Matches the nodes by their data instead of evaluating the column filters.
+     */
+    private static FilterFeature matching(String data) {
+        return new FilterFeature() {
+            @Override
+            protected boolean isMatching(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node, Map<String, FilterMeta> filterBy,
+                    Locale filterLocale) {
+                return data.equals(node.getData());
+            }
+        };
+    }
 
-        DefaultTreeNode root = new DefaultTreeNode();
-        DefaultTreeNode cloneRoot = new DefaultTreeNode();
-        CustomNode<String> customNode = new CustomNode<>("Type", "Name", root);
-        TreeTable treeTable = new TreeTable();
-
-        TreeNode cloneCustomNode = filterFeature.cloneTreeNode(customNode, cloneRoot);
-
-        assertEquals(1, cloneRoot.getChildren().size());
-        assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
+    private static Set<TreeNode<?>> collect(FilterFeature filterFeature, TreeNode<?> root, boolean expandMatches, boolean pruneDescendants) {
+        Set<TreeNode<?>> filteredNodes = Collections.newSetFromMap(new IdentityHashMap<>());
+        filterFeature.collectFilteredNodes(null, null, root, root, Collections.emptyMap(), Locale.ENGLISH, false, expandMatches,
+                pruneDescendants, filteredNodes);
+        return filteredNodes;
     }
 
     @Test
-    void cloneTreeNodeWithBuiltInNodeConstructor() {
-        FilterFeature filterFeature = new FilterFeature();
-
-        DefaultTreeNode root = new DefaultTreeNode();
-        DefaultTreeNode cloneRoot = new DefaultTreeNode();
-        DefaultTreeNode<String> regularNode = new DefaultTreeNode<>("Type", "Name", root);
-        TreeTable treeTable = new TreeTable();
-
-        TreeNode cloneCustomNode = filterFeature.cloneTreeNode(regularNode, cloneRoot);
-
-        assertEquals(1, cloneRoot.getChildren().size());
-        assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
-    }
-
-    @Test
-    void createFilteredValueFromRowKeysKeepsChildrenOnDefaultPrune() {
-        FilterFeature filterFeature = new FilterFeature();
-
+    void keepsAncestorsAndDescendantsOfMatchesOnDefaultPrune() {
         DefaultTreeNode<String> root = new DefaultTreeNode<>();
-        DefaultTreeNode<String> matchingNode = new DefaultTreeNode<>("Type", "Match", root);
-        DefaultTreeNode<String> childOfMatch = new DefaultTreeNode<>("Type", "Child", matchingNode);
-        new DefaultTreeNode<>("Type", "Other", root);
-        TreeTable treeTable = new TreeTable();
+        DefaultTreeNode<String> parent = new DefaultTreeNode<>("Type", "Parent", root);
+        DefaultTreeNode<String> match = new DefaultTreeNode<>("Type", "Match", parent);
+        DefaultTreeNode<String> childOfMatch = new DefaultTreeNode<>("Type", "Child", match);
+        DefaultTreeNode<String> sibling = new DefaultTreeNode<>("Type", "Sibling", parent);
+        DefaultTreeNode<String> other = new DefaultTreeNode<>("Type", "Other", root);
 
-        root.setRowKey(UITree.ROOT_ROW_KEY);
-        treeTable.buildRowKeys(root);
+        Set<TreeNode<?>> filteredNodes = collect(matching("Match"), root, false, false);
 
-        TreeNode<?> filteredRoot = filterFeature.cloneTreeNode(root, root.getParent());
-        filterFeature.createFilteredValueFromRowKeys(treeTable, root, filteredRoot,
-                List.of(matchingNode.getRowKey()), false);
-
-        assertEquals(1, filteredRoot.getChildCount());
-        TreeNode<?> filteredMatch = filteredRoot.getChildren().get(0);
-        assertEquals(matchingNode.getRowKey(), filteredMatch.getRowKey());
-        assertEquals(1, filteredMatch.getChildCount());
-        assertEquals(childOfMatch.getRowKey(), filteredMatch.getChildren().get(0).getRowKey());
+        assertEquals(3, filteredNodes.size());
+        assertTrue(filteredNodes.contains(parent));
+        assertTrue(filteredNodes.contains(match));
+        assertTrue(filteredNodes.contains(childOfMatch));
+        assertFalse(filteredNodes.contains(sibling));
+        assertFalse(filteredNodes.contains(other));
     }
 
     @Test
-    void createFilteredValueFromRowKeysPrunesChildrenWhenRequested() {
-        FilterFeature filterFeature = new FilterFeature();
-
+    void prunesDescendantsOfMatchesWhenRequested() {
         DefaultTreeNode<String> root = new DefaultTreeNode<>();
-        DefaultTreeNode<String> matchingNode = new DefaultTreeNode<>("Type", "Match", root);
-        new DefaultTreeNode<>("Type", "Child", matchingNode);
-        TreeTable treeTable = new TreeTable();
+        DefaultTreeNode<String> match = new DefaultTreeNode<>("Type", "Match", root);
+        DefaultTreeNode<String> childOfMatch = new DefaultTreeNode<>("Type", "Child", match);
+        DefaultTreeNode<String> matchingChild = new DefaultTreeNode<>("Type", "Match", childOfMatch);
 
-        root.setRowKey(UITree.ROOT_ROW_KEY);
-        treeTable.buildRowKeys(root);
+        Set<TreeNode<?>> filteredNodes = collect(matching("Match"), root, false, true);
 
-        TreeNode<?> filteredRoot = filterFeature.cloneTreeNode(root, root.getParent());
-        filterFeature.createFilteredValueFromRowKeys(treeTable, root, filteredRoot,
-                List.of(matchingNode.getRowKey()), true);
+        assertTrue(filteredNodes.contains(match));
+        assertTrue(filteredNodes.contains(childOfMatch), "ancestor of a match");
+        assertTrue(filteredNodes.contains(matchingChild));
 
-        assertEquals(1, filteredRoot.getChildCount());
-        TreeNode<?> filteredMatch = filteredRoot.getChildren().get(0);
-        assertEquals(matchingNode.getRowKey(), filteredMatch.getRowKey());
-        assertEquals(0, filteredMatch.getChildCount());
-        assertTrue(filteredMatch.getChildren().isEmpty());
+        DefaultTreeNode<String> root2 = new DefaultTreeNode<>();
+        DefaultTreeNode<String> match2 = new DefaultTreeNode<>("Type", "Match", root2);
+        DefaultTreeNode<String> childOfMatch2 = new DefaultTreeNode<>("Type", "Child", match2);
+
+        Set<TreeNode<?>> filteredNodes2 = collect(matching("Match"), root2, false, true);
+
+        assertTrue(filteredNodes2.contains(match2));
+        assertFalse(filteredNodes2.contains(childOfMatch2));
     }
 
     @Test
-    void filterWithEmptyFilterByRestoresModelValue() {
-        FacesContext context = mock(FacesContext.class);
-        ELContext elContext = mock(ELContext.class);
-        when(context.getELContext()).thenReturn(elContext);
+    void expandsAncestorsOfMatchesOnlyWhenRequested() {
+        DefaultTreeNode<String> root = new DefaultTreeNode<>();
+        DefaultTreeNode<String> parent = new DefaultTreeNode<>("Type", "Parent", root);
+        DefaultTreeNode<String> match = new DefaultTreeNode<>("Type", "Match", parent);
+        new DefaultTreeNode<>("Type", "Child", match);
 
-        FilterFeature filterFeature = new FilterFeature();
+        collect(matching("Match"), root, false, false);
+        assertFalse(parent.isExpanded());
 
-        TreeTable treeTable = mock(TreeTable.class);
-        when(treeTable.getFilterByAsMap()).thenReturn(Collections.emptyMap());
-
-        TreeNode<?> modelValue = new DefaultTreeNode();
-        ValueExpression valueExpression = mock(ValueExpression.class);
-        when(treeTable.getValueExpression(TreeTable.PropertyKeys.value)).thenReturn(valueExpression);
-        when(valueExpression.getValue(elContext)).thenReturn(modelValue);
-
-        DefaultTreeNode root = new DefaultTreeNode();
-        filterFeature.filter(context, treeTable, root);
-
-        verify(treeTable).updateFilteredValue(context, null);
-        verify(treeTable).setValue(modelValue);
-        verify(treeTable).setRowKey(modelValue, null);
+        collect(matching("Match"), root, true, false);
+        assertTrue(parent.isExpanded());
+        assertFalse(match.isExpanded(), "a match itself is not expanded");
     }
 
     @Test
-    void filterWithInactiveFilterEntriesRestoresModelValue() {
-        FacesContext context = mock(FacesContext.class);
-        ELContext elContext = mock(ELContext.class);
-        when(context.getELContext()).thenReturn(elContext);
+    void filterKeepsTheModel() {
+        DefaultTreeNode<String> root = new DefaultTreeNode<>();
+        DefaultTreeNode<String> match = new DefaultTreeNode<>("Type", "Match", root);
+        DefaultTreeNode<String> other = new DefaultTreeNode<>("Type", "Other", root);
 
-        FilterFeature filterFeature = new FilterFeature();
+        collect(matching("Match"), root, true, true);
+
+        assertEquals(2, root.getChildCount());
+        assertEquals(match, root.getChildren().get(0));
+        assertEquals(other, root.getChildren().get(1));
+    }
+
+    @Test
+    void filterWithoutActiveFiltersDisplaysAllNodes() {
+        FacesContext context = mock(FacesContext.class);
 
         FilterMeta inactiveFilter = mock(FilterMeta.class);
         when(inactiveFilter.isActive()).thenReturn(false);
@@ -165,16 +150,8 @@ class TreeTableFilterFeatureTest {
         TreeTable treeTable = mock(TreeTable.class);
         when(treeTable.getFilterByAsMap()).thenReturn(filterBy);
 
-        TreeNode<?> modelValue = new DefaultTreeNode();
-        ValueExpression valueExpression = mock(ValueExpression.class);
-        when(treeTable.getValueExpression(TreeTable.PropertyKeys.value)).thenReturn(valueExpression);
-        when(valueExpression.getValue(elContext)).thenReturn(modelValue);
+        new FilterFeature().filter(context, treeTable, new DefaultTreeNode<>(), true);
 
-        DefaultTreeNode root = new DefaultTreeNode();
-        filterFeature.filter(context, treeTable, root);
-
-        verify(treeTable).updateFilteredValue(context, null);
-        verify(treeTable).setValue(modelValue);
-        verify(treeTable).setRowKey(modelValue, null);
+        verify(treeTable).setFilteredNodes(null);
     }
 }

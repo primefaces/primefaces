@@ -24,9 +24,11 @@
 package org.primefaces.integrationtests.confirmdialog;
 
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
-
-import java.time.Duration;
+import org.primefaces.selenium.component.ConfirmDialog;
+import org.primefaces.selenium.component.ConfirmPopup;
+import org.primefaces.selenium.component.ToggleSwitch;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -36,8 +38,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -132,7 +132,7 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
             element("form:toggle_input").sendKeys(Keys.SPACE);
         }
         else {
-            element("form:toggle").findElement(By.className("p-toggleswitch-slider")).click();
+            PrimeSelenium.createFragment(ToggleSwitch.class, By.id("form:toggle")).getSlider().click();
         }
     }
 
@@ -148,20 +148,27 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
     // Closing the dialog or popup refocuses option B about 100ms later (returnFocus). If that lands between
     // sendKeys focusing option A and the key press, ARROW_RIGHT wraps from B back to the selected A and nothing changes.
     private void awaitFocusReturn() {
-        new WebDriverWait(PrimeSelenium.getWebDriver(), Duration.ofSeconds(5))
-                .until(d -> "form:select".equals(d.switchTo().activeElement().getDomAttribute("name")));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementFocused(element("form:select:1")));
     }
 
     private void answer(boolean popup, boolean yes) {
-        String prefix = popup ? "p-confirm-popup-" : "p-confirmdialog-";
-        WebElement button = PrimeSelenium.getWebDriver().findElement(By.className(prefix + (yes ? "yes" : "no")));
-        new WebDriverWait(PrimeSelenium.getWebDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOf(button));
-        if (yes) {
-            PrimeSelenium.guardAjax(button).click();
+        if (popup) {
+            ConfirmPopup confirmPopup = PrimeSelenium.createFragment(ConfirmPopup.class, By.id("form:popup"));
+            if (yes) {
+                confirmPopup.confirm();
+            }
+            else {
+                confirmPopup.cancel();
+            }
         }
         else {
-            button.click();
+            ConfirmDialog confirmDialog = PrimeSelenium.createFragment(ConfirmDialog.class, By.id("form:dialog"));
+            if (yes) {
+                confirmDialog.confirm();
+            }
+            else {
+                confirmDialog.cancel();
+            }
         }
     }
 

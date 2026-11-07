@@ -100,8 +100,7 @@ class DataTable060Test extends AbstractPrimePageTest {
 
         // Assert
         Row row = dataTable.getRow(1);
-        assertTrue(PrimeSelenium.hasCssClass(row.getWebElement(), "p-state-highlight"));
-        assertEquals("true", row.getWebElement().getDomAttribute("aria-selected"));
+        assertTrue(row.isSelected());
         assertNoJavascriptErrors();
     }
 

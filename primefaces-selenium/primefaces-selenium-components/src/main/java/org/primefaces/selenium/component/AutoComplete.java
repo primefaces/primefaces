@@ -48,22 +48,56 @@ public abstract class AutoComplete extends AbstractInputComponent {
     @FindByParentPartialId(value = "_panel", searchFromRoot = true)
     private WebElement panel;
 
+    @FindByParentPartialId("_hinput")
+    private WebElement hiddenInput;
+
     @Override
     public WebElement getInput() {
         return input;
     }
 
+    /**
+     * Gets the list (or table) of the suggestions inside the panel.
+     *
+     * @return the suggestions container
+     */
     public WebElement getItems() {
-        return getWebDriver().findElement(By.className("p-autocomplete-items"));
+        return getPanel().findElement(By.className("p-autocomplete-items"));
+    }
+
+    /**
+     * Gets the suggestions in the panel, list items or table rows, including the "more" item if rendered.
+     *
+     * @return the suggestion elements
+     */
+    public List<WebElement> getItemElements() {
+        return getPanel().findElements(By.className("p-autocomplete-item"));
     }
 
     public List<String> getItemValues() {
-        List<WebElement> itemElements = getItems().findElements(By.className("p-autocomplete-item"));
-        return itemElements.stream().map(WebElement::getText).collect(Collectors.toList());
+        return getItemElements().stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     public WebElement getPanel() {
         return panel;
+    }
+
+    /**
+     * The hidden input with the submitted value(s), e.g. a {@code select} with one option per item in multiple mode.
+     *
+     * @return the hidden input
+     */
+    public WebElement getHiddenInput() {
+        return hiddenInput;
+    }
+
+    /**
+     * Gets the text of the hidden live region that announces the search results or the active suggestion to screen readers.
+     *
+     * @return the status text
+     */
+    public String getStatusText() {
+        return findElement(By.className("p-autocomplete-status")).getDomProperty("textContent");
     }
 
     public WebElement getDropDownButton() {

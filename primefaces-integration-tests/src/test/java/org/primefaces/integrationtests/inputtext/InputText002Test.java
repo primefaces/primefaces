@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InputText002Test extends AbstractPrimePageTest {
 
@@ -98,7 +99,8 @@ class InputText002Test extends AbstractPrimePageTest {
         assertEquals(1, messages.getAllMessages().size());
         Msg msg = messages.getAllMessages().get(0);
         assertEquals(Severity.ERROR, msg.getSeverity());
-        assertCss(inputText, "p-state-error", "p-inputtext");
+        assertCss(inputText, "p-inputtext");
+        assertTrue(inputText.isInvalid());
         assertEquals("InputText is required!", msg.getSummary());
         assertEquals("InputText is required!", msg.getDetail());
     }

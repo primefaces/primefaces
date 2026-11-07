@@ -36,6 +36,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HeaderCell extends Cell {
 
@@ -217,8 +218,39 @@ public class HeaderCell extends Cell {
                 // Restore interrupted state...
                 Thread.currentThread().interrupt();
             }
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
         }
+
+        // the filter request may still be queued or running, also with a slow server
+        PrimeSelenium.waitAjax().until(ExpectedConditions.and(PrimeExpectedConditions.ajaxQueueEmpty(), PrimeExpectedConditions.animationNotActive()));
+    }
+
+    /**
+     * Gets the current sort order of this column as tracked by the widget, which also works for every column of a
+     * multiSort (unlike {@code aria-sort}, which is only set on one column).
+     *
+     * @return the sort order, {@link SortOrder#UNSORTED} if not sorted or not sortable
+     */
+    public SortOrder getSortOrder() {
+        Object order = PrimeSelenium.executeScript("return jQuery(arguments[0]).data('sortorder');", getWebElement());
+        int value = order instanceof Number ? ((Number) order).intValue() : 0;
+        if (value > 0) {
+            return SortOrder.ASCENDING;
+        }
+        return value < 0 ? SortOrder.DESCENDING : SortOrder.UNSORTED;
+    }
+
+    /**
+     * Gets the priority of this column in a multiSort, read from the sort badge.
+     *
+     * @return the priority starting with 1, 0 if the column has no priority
+     */
+    public int getSortPriority() {
+        List<WebElement> badges = getWebElement().findElements(By.className("p-sortable-column-badge"));
+        if (badges.isEmpty()) {
+            return 0;
+        }
+        String text = badges.get(0).getText().trim();
+        return text.isEmpty() ? 0 : Integer.parseInt(text);
     }
 
     @Override

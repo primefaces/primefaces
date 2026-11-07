@@ -114,7 +114,6 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      * Expands this panel, if not already expanded.
      */
     expand() {
-        this.header.attr('aria-expanded', true);
         this.toggleState(false);
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -127,7 +126,6 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
      * Collapses this panel, if not already collapsed.
      */
     collapse() {
-        this.header.attr('aria-expanded', false);
         this.toggleState(true);
 
         if(this.cfg.toggleOrientation === 'vertical')

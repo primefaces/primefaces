@@ -243,15 +243,18 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
         }
     }
 
+    /**
+     * Encodes a facet (start, options, end) next to the menu list, not inside it: a role="menubar" / "menu" list must
+     * only contain menu items (axe aria-required-children).
+     */
     protected void encodeFacet(FacesContext context, T menu, String facetName, String styleClass) throws IOException {
         UIComponent facet = menu.getFacet(facetName);
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
-            writer.startElement("li", null);
+            writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
             facet.encodeAll(context);
-            writer.endElement("li");
+            writer.endElement("div");
         }
     }
 

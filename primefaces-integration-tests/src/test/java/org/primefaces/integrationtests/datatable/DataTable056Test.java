@@ -55,7 +55,7 @@ class DataTable056Test extends AbstractPrimePageTest {
 
         // Act - reload the (unsorted) data, re-apply the filter, then clear it
         page.buttonRefresh.click();
-        PrimeSelenium.executeScript(true, "PF('datatable').filter()");
+        dataTable.applyFilters();
         dataTable.removeFilter("Name");
 
         // Assert - the first rendered row is "Ada" and the action must receive exactly this row

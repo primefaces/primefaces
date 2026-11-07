@@ -420,14 +420,20 @@
         --_base-item-padding: var(--p-menubar-base-item-padding);
         --_base-item-border-radius: var(--p-menubar-base-item-border-radius);
 
+        /*
+         * bar: a flex row with the menubar gap of [start facet] [root list] [options facet] [end facet]; the facets
+         * are rendered next to the list (a role="menubar" must only contain menu items), so the row is the bar and
+         * the list is one wrapping flex item of it. The vertical megamenu turns both into a column (megamenu.css).
+         */
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--_gap);
         padding: var(--_padding);
         background: var(--_bg);
         border-radius: var(--_border-radius);
 
-        /*
-         * root list: a flex row with the menubar gap like the PrimeUIX menubar / megamenu root list, no list padding
-         * (only the bar padding). The vertical megamenu turns it into a column (megamenu.css).
-         */
+        /* root list: a flex row with the menubar gap like the PrimeUIX menubar / megamenu root list, no list padding */
         > .p-menu-list {
             display: flex;
             align-items: center;
@@ -445,23 +451,39 @@
                 padding: var(--_base-item-padding);
                 border-radius: var(--_base-item-border-radius);
             }
+        }
 
-            /* facets (PrimeUIX start / end): start before the items, options and end pushed to the end of the row */
-            &.p-menubar-start,
-            &.p-menubar-options,
-            &.p-menubar-end {
-                display: flex;
-                align-items: center;
-            }
+        /* facets (PrimeUIX start / end): start before the items, options and end pushed to the end of the row */
+        > .p-menubar-start,
+        > .p-menubar-options,
+        > .p-menubar-end {
+            display: flex;
+            align-items: center;
+        }
 
-            &.p-menubar-options,
-            &.p-menubar-end {
-                margin-inline-start: auto;
-            }
+        > .p-menubar-options,
+        > .p-menubar-end {
+            margin-inline-start: auto;
+        }
 
-            &.p-menubar-options + .p-menubar-end {
-                margin-inline-start: 0;
-            }
+        > .p-menubar-options + .p-menubar-end {
+            margin-inline-start: 0;
+        }
+    }
+
+    /*
+     * start / end facets of the vertical menus (p:tieredMenu, p:contextMenu), rendered next to the list: the menu gets
+     * the list padding and the list gap separates the facets from the list, the same spacing as list items
+     */
+    &:not(.p-menubar):has(> .p-menubar-start, > .p-menubar-options, > .p-menubar-end) {
+        padding: var(--_list-padding);
+
+        > .p-menu-list {
+            padding: 0;
+        }
+
+        > :not(:first-child) {
+            margin-top: var(--_list-gap);
         }
     }
 }

@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
@@ -37,7 +36,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,14 +57,14 @@ class DataTable007LazyTest extends AbstractDataTableTest {
 
         // Act
         page.btnAddRow.click();
-//        dataTable.getRow(5).getCell(3).getWebElement().findElement(By.className("p-row-editor-pencil")).click();
+//        dataTable.getRow(5).getRowEditorPencil().click();
 
         // Assert
         rows = dataTable.getRows();
         assertEquals(6, rows.size()); // now has 6 after row added
         Row row = dataTable.getRow(5);
-//        assertDisplayed(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-pencil")));
-//        assertNotDisplayed(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-close")));
+//        assertDisplayed(row.getRowEditorPencil());
+//        assertNotDisplayed(row.getRowEditorCancel());
         assertEquals("Smalltalk", row.getCell(1).getText());
         assertEquals("99", row.getCell(0).getText());
         assertEquals("New Language added", page.messages.getMessage(0).getSummary());
@@ -84,17 +82,17 @@ class DataTable007LazyTest extends AbstractDataTableTest {
 
         // Act - edit and cancel
         Row row = dataTable.getRow(1);
-        row.getCell(3).getWebElement().findElement(By.className("p-row-editor-pencil")).click();
-        row.getCell(1).getWebElement().findElement(By.tagName("input")).clear();
-        row.getCell(1).getWebElement().findElement(By.tagName("input")).sendKeys("xyz");
-        row.getCell(2).getWebElement().findElement(By.tagName("input")).clear();
-        row.getCell(2).getWebElement().findElement(By.tagName("input")).sendKeys("2000");
-        PrimeSelenium.guardAjax(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-close"))).click();
+        row.startEdit();
+        row.getCell(1).getEditorInput().clear();
+        row.getCell(1).getEditorInput().sendKeys("xyz");
+        row.getCell(2).getEditorInput().clear();
+        row.getCell(2).getEditorInput().sendKeys("2000");
+        row.cancelEdit();
 
         // Assert
         row = dataTable.getRow(1);
-        assertDisplayed(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-pencil")));
-        assertNotDisplayed(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-close")));
+        assertDisplayed(row.getRowEditorPencil());
+        assertNotDisplayed(row.getRowEditorCancel());
         assertEquals(model.getLangs().get(1).getName(), row.getCell(1).getText());
         assertEquals(Integer.toString(model.getLangs().get(1).getFirstAppeared()), row.getCell(2).getText());
         assertEquals("Edit Cancelled", page.messages.getMessage(0).getSummary());
@@ -102,17 +100,17 @@ class DataTable007LazyTest extends AbstractDataTableTest {
 
         // Act - edit and accept
         row = dataTable.getRow(2);
-        row.getCell(3).getWebElement().findElement(By.className("p-row-editor-pencil")).click();
-        row.getCell(1).getWebElement().findElement(By.tagName("input")).clear();
-        row.getCell(1).getWebElement().findElement(By.tagName("input")).sendKeys("abc");
-        row.getCell(2).getWebElement().findElement(By.tagName("input")).clear();
-        row.getCell(2).getWebElement().findElement(By.tagName("input")).sendKeys("2020");
-        PrimeSelenium.guardAjax(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-check"))).click();
+        row.startEdit();
+        row.getCell(1).getEditorInput().clear();
+        row.getCell(1).getEditorInput().sendKeys("abc");
+        row.getCell(2).getEditorInput().clear();
+        row.getCell(2).getEditorInput().sendKeys("2020");
+        row.saveEdit();
 
         // Assert
         row = dataTable.getRow(2);
-        assertDisplayed(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-pencil")));
-        assertNotDisplayed(row.getCell(3).getWebElement().findElement(By.className("p-row-editor-close")));
+        assertDisplayed(row.getRowEditorPencil());
+        assertNotDisplayed(row.getRowEditorCancel());
         assertEquals("abc", row.getCell(1).getText());
         assertEquals("2020", row.getCell(2).getText());
         assertEquals("ProgrammingLanguage Edited", page.messages.getMessage(0).getSummary());

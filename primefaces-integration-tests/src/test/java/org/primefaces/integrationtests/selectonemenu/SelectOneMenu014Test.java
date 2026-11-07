@@ -32,7 +32,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -55,8 +54,8 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
         page.menu.show();
 
         // Act
-        WebElement emptyItem = page.menu.getItems().findElement(By.id("form:selectonemenu_0"));
-        WebElement jaItem = page.menu.getItems().findElement(By.id("form:selectonemenu_1"));
+        WebElement emptyItem = page.menu.getItem(0);
+        WebElement jaItem = page.menu.getItem(1);
 
         // Assert - the blank item carries an accessible name, the labelled ones are announced by their text
         assertEquals(NULL_LABEL, emptyItem.getDomAttribute("aria-label"));
@@ -78,7 +77,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
         // Act - select the empty item the way a user does
         page.menu.show();
-        page.menu.getItems().findElement(By.id("form:selectonemenu_0")).click();
+        page.menu.getItem(0).click();
 
         // Assert - the stale "Ja" must be gone
         assertEquals(NULL_LABEL, label.getDomAttribute("aria-label"));
@@ -97,7 +96,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
 
         // Act
         page.placeholder.show();
-        page.placeholder.getItems().findElement(By.id("form:placeholder_0")).click();
+        page.placeholder.getItem(0).click();
 
         // Assert - the visible text is the placeholder, so that is what must be announced
         assertEquals("Choose One", label.getText());
@@ -113,7 +112,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
         page.blankLabel.show();
 
         // Act
-        WebElement blankItem = page.blankLabel.getItems().findElement(By.id("form:blankLabel_0"));
+        WebElement blankItem = page.blankLabel.getItem(0);
 
         // Assert
         assertEquals(NULL_LABEL, blankItem.getDomAttribute("aria-label"));
@@ -135,7 +134,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
         page.noSelection.show();
 
         // Act
-        WebElement emptyItem = page.noSelection.getItems().findElement(By.id("form:noSelection_0"));
+        WebElement emptyItem = page.noSelection.getItem(0);
 
         // Assert
         assertEquals(NULL_LABEL, emptyItem.getDomAttribute("aria-label"));
@@ -157,7 +156,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
         page.hideNoSelection.show();
 
         // Act
-        List<WebElement> items = page.hideNoSelection.getItems().findElements(By.cssSelector("li[role='option']"));
+        List<WebElement> items = page.hideNoSelection.getItemElements();
 
         // Assert - the empty no-selection item is not offered at all, the labelled ones are untouched
         assertEquals(List.of("Ja", "Nein"), items.stream().map(WebElement::getText).toList());
@@ -181,7 +180,7 @@ class SelectOneMenu014Test extends AbstractPrimePageTest {
         page.outputLabel.select("Ja");
         assertAnnouncedValue(label, "Ja");
         page.outputLabel.show();
-        page.outputLabel.getItems().findElement(By.id("form:outputLabel_0")).click();
+        page.outputLabel.getItem(0).click();
 
         // Assert
         assertAnnouncedValue(label, NULL_LABEL);

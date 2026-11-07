@@ -25,20 +25,15 @@ package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.TreeTable;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TreeTable002Test extends AbstractTreeTableTest {
@@ -70,9 +65,7 @@ class TreeTable002Test extends AbstractTreeTableTest {
         // Act - sort (column 2 desc, column 1 asc)
         treeTable.sort(1); //asc
         treeTable.sort(1); //desc
-        Actions actions = new Actions(page.getWebDriver());
-        Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getHeader().getCell(0).getWebElement()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        treeTable.sort(0, true); //asc, added to the sorting
         assertHeaderSorted(eltSortName, "ASC", 2);
         assertHeaderSorted(eltSortSize, "DESC", 1);
 
@@ -85,10 +78,9 @@ class TreeTable002Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
+    @Override
+    protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "wgtTreeTable");
     }
 
     public static class Page extends AbstractPrimePage {

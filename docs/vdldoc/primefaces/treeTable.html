@@ -131,95 +131,83 @@
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Separator text to use in output mode of editable cells with multiple components.</td>
                         </tr>
-                        <tr id="cloneOnFilter" class="rowColor">
-                            <td class="colFirst"><a href="#cloneOnFilter"><code>cloneOnFilter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.Default is false.</td>
-                        </tr>
-                        <tr id="currentPageReportTemplate" class="altColor">
+                        <tr id="currentPageReportTemplate" class="rowColor">
                             <td class="colFirst"><a href="#currentPageReportTemplate"><code>currentPageReportTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Template of the currentPageReport UI.Default is ({currentPage} of {totalPages}).</td>
                         </tr>
-                        <tr id="dataLocale" class="rowColor">
+                        <tr id="dataLocale" class="altColor">
                             <td class="colFirst"><a href="#dataLocale"><code>dataLocale</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Locale to be used in features such as sorting.Default is The view locale.</td>
                         </tr>
-                        <tr id="disabledTextSelection" class="altColor">
+                        <tr id="disabledTextSelection" class="rowColor">
                             <td class="colFirst"><a href="#disabledTextSelection"><code>disabledTextSelection</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Disables text selection on row click.Default is true.</td>
                         </tr>
-                        <tr id="editable" class="rowColor">
+                        <tr id="editable" class="altColor">
                             <td class="colFirst"><a href="#editable"><code>editable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Controls incell editing.Default is false.</td>
                         </tr>
-                        <tr id="editingRow" class="altColor">
+                        <tr id="editingRow" class="rowColor">
                             <td class="colFirst"><a href="#editingRow"><code>editingRow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines if cell editors of row should be displayed as editable or not. False means display mode.Default is false.</td>
                         </tr>
-                        <tr id="editInitEvent" class="rowColor">
+                        <tr id="editInitEvent" class="altColor">
                             <td class="colFirst"><a href="#editInitEvent"><code>editInitEvent</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines a client side event to open cell on editable table.Default is click.</td>
                         </tr>
-                        <tr id="editMode" class="altColor">
+                        <tr id="editMode" class="rowColor">
                             <td class="colFirst"><a href="#editMode"><code>editMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines edit mode, valid values are "row" and "cell".Default is row.</td>
                         </tr>
-                        <tr id="emptyMessage" class="rowColor">
+                        <tr id="emptyMessage" class="altColor">
                             <td class="colFirst"><a href="#emptyMessage"><code>emptyMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Text to display when there is no data to display.Default is i18n.</td>
                         </tr>
-                        <tr id="expandMode" class="altColor">
+                        <tr id="expandMode" class="rowColor">
                             <td class="colFirst"><a href="#expandMode"><code>expandMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Updates children only when set to "children" or the node itself with children when set to "self" on node expand.Default is children.</td>
                         </tr>
-                        <tr id="exportRowTag" class="rowColor">
+                        <tr id="exportRowTag" class="altColor">
                             <td class="colFirst"><a href="#exportRowTag"><code>exportRowTag</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">If XML data exporter in use, this allows customization of the row tag in the XML.</td>
                         </tr>
-                        <tr id="exportTag" class="altColor">
+                        <tr id="exportTag" class="rowColor">
                             <td class="colFirst"><a href="#exportTag"><code>exportTag</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">If XML data exporter in use, this allows customization of the document tag in the XML.</td>
                         </tr>
-                        <tr id="filterBy" class="rowColor">
+                        <tr id="filterBy" class="altColor">
                             <td class="colFirst"><a href="#filterBy"><code>filterBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Property to be used for filtering.</td>
                         </tr>
-                        <tr id="filterDelay" class="altColor">
+                        <tr id="filterDelay" class="rowColor">
                             <td class="colFirst"><a href="#filterDelay"><code>filterDelay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Delay to wait in milliseconds before sending each filter query.Default is 300.</td>
-                        </tr>
-                        <tr id="filteredValue" class="rowColor">
-                            <td class="colFirst"><a href="#filteredValue"><code>filteredValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>org.primefaces.model.TreeNode</code>)
-                    </td><td class="colLast">Node to keep the filtered nodes if filtering is enabled.</td>
                         </tr>
                         <tr id="filterEvent" class="altColor">
                             <td class="colFirst"><a href="#filterEvent"><code>filterEvent</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>

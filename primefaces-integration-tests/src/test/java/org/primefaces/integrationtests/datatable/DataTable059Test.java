@@ -28,14 +28,11 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.DataTable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,9 +50,9 @@ class DataTable059Test extends AbstractPrimePageTest {
         // Act - nothing, the index is rendered on initial load
 
         // Assert
-        assertEquals(List.of("0:ID", "1:Name", "2:First Appeared"), headerTexts(dataTable));
-        assertEquals(List.of("0:1", "1:Java", "2:1995"), rowValues(dataTable, 0));
-        assertEquals(List.of("0:2", "1:C#", "2:2000"), rowValues(dataTable, 1));
+        assertEquals(List.of("0:ID", "1:Name", "2:First Appeared"), dataTable.getHeader().getCellTexts());
+        assertEquals(List.of("0:1", "1:Java", "2:1995"), dataTable.getRow(0).getCellTexts());
+        assertEquals(List.of("0:2", "1:C#", "2:2000"), dataTable.getRow(1).getCellTexts());
         assertNoJavascriptErrors();
     }
 
@@ -70,20 +67,9 @@ class DataTable059Test extends AbstractPrimePageTest {
         dataTable.selectPage(2);
 
         // Assert
-        assertEquals(List.of("0:ID", "1:Name", "2:First Appeared"), headerTexts(dataTable));
-        assertEquals("0:4", rowValues(dataTable, 0).get(0));
+        assertEquals(List.of("0:ID", "1:Name", "2:First Appeared"), dataTable.getHeader().getCellTexts());
+        assertEquals("0:4", dataTable.getRow(0).getCellTexts().get(0));
         assertNoJavascriptErrors();
-    }
-
-    private List<String> headerTexts(DataTable dataTable) {
-        return dataTable.findElements(By.cssSelector("thead th")).stream().map(WebElement::getText).collect(Collectors.toList());
-    }
-
-    private List<String> rowValues(DataTable dataTable, int rowIndex) {
-        return dataTable.getRow(rowIndex).getWebElement().findElements(By.tagName("td"))
-                .stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
     }
 
     public static class Page extends AbstractPrimePage {

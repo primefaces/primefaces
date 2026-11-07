@@ -240,6 +240,63 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         return getWebDriver().findElement(By.id(getId() + "_table"));
     }
 
+    /**
+     * Gets the items in the panel, independent of the rendering: list items for normal rendering, table rows for advanced rendering (columns). Group
+     * headers are not included, items hidden by the filter are. The panel must have been shown once for a dynamic menu.
+     *
+     * @return the item elements
+     */
+    public List<WebElement> getItemElements() {
+        return getPanel().findElements(By.className("p-selectonemenu-item"));
+    }
+
+    /**
+     * Gets the item at the index, see {@link #getItemElements()}.
+     *
+     * @param index the index of the item (group headers are not counted)
+     * @return the item element
+     */
+    public WebElement getItem(int index) {
+        return getItemElements().get(index);
+    }
+
+    /**
+     * Gets the group header elements in the panel (one per {@code SelectItemGroup}). The panel must have been shown once for a dynamic menu.
+     *
+     * @return the group header elements
+     */
+    public List<WebElement> getItemGroupElements() {
+        return getPanel().findElements(By.className("p-selectonemenu-item-group"));
+    }
+
+    /**
+     * Gets the item that currently has the keyboard focus (e.g. moved there with the arrow keys).
+     *
+     * @return the focused item element or {@code null} if no item is focused
+     */
+    public WebElement getFocusedItem() {
+        return getPanel().findElements(By.cssSelector(".p-selectonemenu-item.p-state-focus")).stream().findFirst().orElse(null);
+    }
+
+    /**
+     * Gets the item that is highlighted as selected in the panel.
+     *
+     * @return the highlighted item element or {@code null} if no item is highlighted
+     */
+    public WebElement getHighlightedItem() {
+        return getPanel().findElements(By.cssSelector(".p-selectonemenu-item.p-state-highlight")).stream().findFirst().orElse(null);
+    }
+
+    /**
+     * Filters the items like the user: shows the panel and replaces the text of the filter input. Filtering is done on the client.
+     *
+     * @param value the filter text
+     */
+    public void filter(String value) {
+        show();
+        ComponentUtils.replaceText(getFilterInput(), value);
+    }
+
     public WebElement getPanel() {
         return panel;
     }

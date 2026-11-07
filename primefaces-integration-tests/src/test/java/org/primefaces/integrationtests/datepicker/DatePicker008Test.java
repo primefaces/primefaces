@@ -55,10 +55,10 @@ class DatePicker008Test extends AbstractDatePickerTest {
 
         // Act
         datePicker.setValue(value);
-        WebElement panel = datePicker.showPanel();
+        datePicker.showPanel();
 
         // Assert
-        assertDate(panel, "July", "1985");
+        assertDate(datePicker, "July", "1985");
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
@@ -145,7 +145,7 @@ class DatePicker008Test extends AbstractDatePickerTest {
         datePicker.showPanel();
 
         // Assert
-        assertDate(datePicker.getPanel(), "July", "1985");
+        assertDate(datePicker, "July", "1985");
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");

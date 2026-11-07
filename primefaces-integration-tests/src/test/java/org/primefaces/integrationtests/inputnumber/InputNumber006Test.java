@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -52,11 +53,10 @@ class InputNumber006Test extends AbstractPrimePageTest {
         // Act
         inputNumber.getInput().sendKeys("1234");
         page.button.click();
-        /*
-         Wait a bit because clicking the button triggers two ajax-calls and AjaxGuard as part of button.click() only
-         guards the first AJAX-call.
-         */
-        PrimeSelenium.wait(500);
+        // clicking the button triggers two ajax-calls and AjaxGuard as part of button.click() only guards the first AJAX-call
+        PrimeSelenium.waitGui().until(ExpectedConditions.and(
+                    ExpectedConditions.textToBePresentInElement(page.outputpanel, "value = 1234"),
+                    ExpectedConditions.textToBePresentInElement(page.messages, "some action; value: 1234")));
 
         // Assert
         assertEquals("value = 1234", page.outputpanel.getText());
@@ -76,11 +76,10 @@ class InputNumber006Test extends AbstractPrimePageTest {
         // Act
         inputNumber.getInput().sendKeys("5678");
         page.button2.click();
-        /*
-         Wait a bit because clicking the button triggers two ajax-calls and AjaxGuard as part of button.click() only
-         guards the first AJAX-call.
-         */
-        PrimeSelenium.wait(500);
+        // clicking the button triggers two ajax-calls and AjaxGuard as part of button.click() only guards the first AJAX-call
+        PrimeSelenium.waitGui().until(ExpectedConditions.and(
+                    ExpectedConditions.textToBePresentInElement(page.outputpanel2, "value = 5678"),
+                    ExpectedConditions.textToBePresentInElement(page.messages, "some second action; value: 5678")));
 
         // Assert
         assertEquals("value = 5678", page.outputpanel2.getText());

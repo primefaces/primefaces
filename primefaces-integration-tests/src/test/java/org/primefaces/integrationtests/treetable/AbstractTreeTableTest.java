@@ -26,7 +26,6 @@ package org.primefaces.integrationtests.treetable;
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 import org.primefaces.selenium.component.model.Msg;
@@ -37,11 +36,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.json.JSONObject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AbstractTreeTableTest extends AbstractTableTest {
 
@@ -51,15 +50,14 @@ public class AbstractTreeTableTest extends AbstractTableTest {
     protected void assertRows(TreeTable treeTable, TreeNode root) {
         List<Row> rows = treeTable.getRows();
         assertRows(rows, root);
+        if (rows.isEmpty()) {
+            assertTrue(treeTable.isEmpty()); // No records found.
+        }
     }
 
     protected void assertRows(List<Row> rows, TreeNode<Document> root) {
         int expectedSize = countRowsRecursive(root);
         assertNotNull(rows);
-        if (expectedSize == 0) {
-            assertEquals(1, rows.size()); // No records found.
-            return;
-        }
         assertEquals(expectedSize, rows.size());
 
         int row = 0;
@@ -121,36 +119,19 @@ public class AbstractTreeTableTest extends AbstractTableTest {
     }
 
     /**
-     * Checks the checkbox of the given row, which always fires an AJAX request to resolve the descendants of the node.
+     * Gets the texts of the first column, i.e. the names of the rendered documents.
      */
-    protected void selectCheckbox(TreeTable treeTable, String rowKey) {
-        PrimeSelenium.guardAjax(checkboxBox(treeTable, rowKey)).click();
+    protected List<String> names(TreeTable treeTable) {
+        return treeTable.getRows().stream().map(row -> row.getCell(0).getText()).collect(Collectors.toList());
     }
 
-    /**
-     * Unchecks the checkbox of the given row, which does not fire an AJAX request without an unselect behavior.
-     */
-    protected void unselectCheckbox(TreeTable treeTable, String rowKey) {
-        checkboxBox(treeTable, rowKey).click();
+    protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "treeTable");
     }
 
-    protected boolean isSelected(TreeTable treeTable, String rowKey) {
-        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "p-state-highlight");
-    }
-
-    protected boolean isPartialSelected(TreeTable treeTable, String rowKey) {
-        return PrimeSelenium.hasCssClass(row(treeTable, rowKey), "p-treetable-partialselected");
-    }
-
-    protected boolean isChecked(TreeTable treeTable, String rowKey) {
-        return !row(treeTable, rowKey).findElements(By.cssSelector("span.p-chkbox-icon.p-checkbox-checked-icon")).isEmpty();
-    }
-
-    protected WebElement row(TreeTable treeTable, String rowKey) {
-        return treeTable.findElement(By.id(treeTable.getId() + "_node_" + rowKey));
-    }
-
-    private WebElement checkboxBox(TreeTable treeTable, String rowKey) {
-        return row(treeTable, rowKey).findElement(By.cssSelector("div.p-chkbox-box"));
+    protected void assertConfiguration(JSONObject cfg, String widgetVar) {
+        assertNoJavascriptErrors();
+        System.out.println("TreeTable Config = " + cfg);
+        assertEquals(widgetVar, cfg.getString("widgetVar"));
     }
 }

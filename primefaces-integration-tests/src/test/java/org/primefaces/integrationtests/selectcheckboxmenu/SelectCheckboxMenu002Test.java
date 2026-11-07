@@ -24,22 +24,16 @@
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-class SelectCheckboxMenu002Test extends AbstractPrimePageTest {
+class SelectCheckboxMenu002Test extends AbstractSelectCheckboxMenuTest {
 
     @Test
     @Order(1)
@@ -61,22 +55,6 @@ class SelectCheckboxMenu002Test extends AbstractPrimePageTest {
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
         assertConfiguration(menu.getWidgetConfiguration());
-    }
-
-    private void assertSelected(SelectCheckboxMenu menu, int count) {
-        assertEquals(count, menu.getSelectedCheckboxes().size());
-    }
-
-    private void assertValue(WebElement checkbox, String value) {
-        assertEquals(value, checkbox.getAttribute("value"));
-    }
-
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        assertFalse(cfg.getBoolean("dynamic"));
-        assertTrue(cfg.getBoolean("showHeader"));
-        assertEquals("@(body)", cfg.get("appendTo"));
-        System.out.println("SelectCheckboxMenu Config = " + cfg);
     }
 
     public static class Page extends AbstractPrimePage {

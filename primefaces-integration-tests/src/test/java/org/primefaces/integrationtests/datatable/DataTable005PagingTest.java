@@ -33,8 +33,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -54,9 +52,8 @@ class DataTable005PagingTest extends AbstractDataTableTest {
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(getWebDriver());
-        actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.SHIFT).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
+        dataTable.getRow(1).toggleSelection();
+        dataTable.getRow(2).selectRange();
         page.button.click();
 
         // Assert
@@ -82,9 +79,8 @@ class DataTable005PagingTest extends AbstractDataTableTest {
 
         // Act
         dataTable.selectPage(2);
-        Actions actions = new Actions(getWebDriver());
-        actions.keyDown(Keys.META).click(dataTable.getCell(0, 0).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.SHIFT).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
+        dataTable.getRow(0).toggleSelection();
+        dataTable.getRow(1).selectRange();
         page.button.click();
 
         // Assert

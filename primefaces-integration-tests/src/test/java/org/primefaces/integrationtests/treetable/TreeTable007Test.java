@@ -30,13 +30,13 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
+import org.primefaces.selenium.component.model.datatable.Cell;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,12 +63,12 @@ class TreeTable007Test extends AbstractTreeTableTest {
         treeTable.getRow(1).toggle();
 
         // Act - edit cell and accept
-        treeTable.getRow(1).getCell(0).getWebElement().click();
-        String eltId = treeTable.getRow(1).getCell(0).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
-        InputText input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
+        Cell cell = treeTable.getRow(1).getCell(0);
+        cell.startEdit();
+        InputText input = PrimeSelenium.createFragment(InputText.class, cell.getEditorInput());
         input.clear();
         input.sendKeys("Spanish - IT");
-        PrimeSelenium.guardAjax(input).sendKeys(Keys.ENTER);
+        cell.saveEdit();
 
         // Assert
         assertMessage(page.messages, 0, "Cell Changed", "Old: Spanish, New:Spanish - IT");
@@ -76,12 +76,12 @@ class TreeTable007Test extends AbstractTreeTableTest {
         assertMessage(page.messages, 0, "selected document", "Spanish - IT;10kb;Folder");
 
         // Act - edit cell and undo
-        treeTable.getRow(1).getCell(2).getWebElement().click();
-        eltId = treeTable.getRow(1).getCell(2).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
-        input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
+        cell = treeTable.getRow(1).getCell(2);
+        cell.startEdit();
+        input = PrimeSelenium.createFragment(InputText.class, cell.getEditorInput());
         input.clear();
         input.sendKeys("Folder - IT");
-        PrimeSelenium.guardAjax(input).sendKeys(Keys.ESCAPE);
+        cell.cancelEdit();
 
         // Assert
         PrimeSelenium.waitGui().until(
@@ -91,10 +91,9 @@ class TreeTable007Test extends AbstractTreeTableTest {
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
+    @Override
+    protected void assertConfiguration(JSONObject cfg) {
+        super.assertConfiguration(cfg);
         assertTrue(cfg.getBoolean("editable"));
     }
 

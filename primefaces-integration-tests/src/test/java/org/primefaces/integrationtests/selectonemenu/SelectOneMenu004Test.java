@@ -36,7 +36,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -52,21 +51,13 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
         // Assert
-        boolean contentPanelExists = false;
-        try {
-            selectOneMenu.getItems().getText();
-            contentPanelExists = true;
-        }
-        catch (NoSuchElementException ex) {
-
-        }
-        assertFalse(contentPanelExists);
+        assertNotPresent(By.id(selectOneMenu.getId() + "_items"));
 
         // Act
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItemElements();
         assertEquals(6, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
@@ -97,21 +88,13 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         SelectOneMenu selectOneMenu = page.selectOneMenu3;
 
         // Assert
-        boolean contentPanelExists = false;
-        try {
-            selectOneMenu.getItems().getText();
-            contentPanelExists = true;
-        }
-        catch (NoSuchElementException ex) {
-
-        }
-        assertFalse(contentPanelExists);
+        assertNotPresent(By.id(selectOneMenu.getId() + "_items"));
 
         // Act
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getTable().findElements(By.className("p-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItemElements();
         assertEquals(5, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());

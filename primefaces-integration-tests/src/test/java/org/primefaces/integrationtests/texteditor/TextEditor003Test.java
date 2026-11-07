@@ -31,7 +31,6 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TextEditor;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -61,7 +60,7 @@ class TextEditor003Test extends AbstractPrimePageTest {
     void noBlurOnPaste(Page page) {
         // Arrange
         Messages messages = page.messages;
-        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
+        WebElement quillEditor = page.editor.getContentEditable();
         Keys command = PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL;
 
         // Act
@@ -79,8 +78,8 @@ class TextEditor003Test extends AbstractPrimePageTest {
     void noBlurOnToolbar(Page page) {
         // Arrange
         Messages messages = page.messages;
-        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
-        WebElement formatBold = page.editor.findElement(By.className("ql-bold"));
+        WebElement quillEditor = page.editor.getContentEditable();
+        WebElement formatBold = page.editor.getToolbarButton("bold");
 
         // Act
         quillEditor.sendKeys("Hello world");

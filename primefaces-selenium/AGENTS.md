@@ -138,6 +138,25 @@ Implement these to plug the framework into an environment (all in `org.primeface
    to avoid dropped keystrokes.
 5. Update the component list in [`README.md`](README.md) if you add a new public component.
 
+### Growing wrappers from tests
+
+Integration tests drive wrapper growth: when a test needs an interaction or state check a
+user could also need on their own page, add it to the wrapper (or model: `Row`, `Cell`,
+`HeaderCell`, `TreeNode`, …) instead of hand-rolling it in the test — see "Wrapper first" in
+[`primefaces-integration-tests/AGENTS.md`](../primefaces-integration-tests/AGENTS.md).
+Component-agnostic helpers go into `PrimeSelenium` / `PrimeExpectedConditions`.
+
+- **Name methods by user intent**, not by DOM: `row.select()`, `row.isSelected()`,
+  `dialog.isMaximized()` — not `getChkboxBox()` / `hasHighlightClass()`.
+- **Read state from ARIA or the widget** (`aria-selected`, `aria-checked`, `aria-sort`,
+  widget cfg) before falling back to CSS classes, so themes and markup changes don't break it.
+- **Guard inside the method** when the action can trigger a request (detect-then-guard, see
+  rule 3), so callers never need `guardAjax` or waits.
+- **Platform details live in the wrapper** (e.g. `COMMAND` vs `CONTROL` for multi-select clicks).
+- **Keep test-suite specifics out**: assertions on concrete messages/beans, theming token
+  checks or widget internals (jQuery handler counts) stay in the integration tests'
+  `Abstract*Test` classes.
+
 ## Usage pattern (consumer side)
 
 ```java

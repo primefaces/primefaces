@@ -25,6 +25,8 @@ package org.primefaces.integrationtests.theming;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Dialog;
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ class Theming013Test extends AbstractThemingTest {
         // Assert
         List<WebElement> links = PrimeSelenium.getWebDriver().findElements(By.cssSelector("link[href*='ln=primefaces-']"));
         assertTrue(links.stream().anyMatch(l -> l.getDomAttribute("href").contains("ln=primefaces-glass")), "primefaces-glass:theme.css not rendered");
-        assertBlur("dialog box", backdropFilter(dialogBox(page.dialog), "::before"));
+        assertBlur("dialog box", backdropFilter(page.dialog.getBox(), "::before"));
         assertEquals("none", backdropFilter(page.dialog), "the full viewport dialog container must not blur the page");
         assertBlur("modal mask", backdropFilter(PrimeSelenium.getWebDriver().findElement(By.cssSelector(".p-widget-overlay, .p-dialog-mask"))));
         assertBlur("toolbar", backdropFilter(page.toolbar, "::before"));
@@ -64,7 +66,7 @@ class Theming013Test extends AbstractThemingTest {
         assertBlur("button", backdropFilter(page.primary));
         assertEquals("none", backdropFilter(page.panel), "the content layer (panel) must not get a backdrop filter");
         assertEquals("none", backdropFilter(page.menubar), "the menubar must not get a backdrop filter (backdrop root of its submenus)");
-        String wallpaper = PrimeSelenium.executeScript("return getComputedStyle(document.documentElement).backgroundImage;");
+        String wallpaper = documentStyle("background-image");
         assertTrue(wallpaper.contains("radial-gradient"), "no page wallpaper: " + wallpaper);
         assertNoJavascriptErrors();
     }
@@ -78,8 +80,8 @@ class Theming013Test extends AbstractThemingTest {
             setColorScheme(scheme);
 
             // Assert
-            for (WebElement button : List.of(page.primary, page.secondary, page.outlined, page.success, page.danger)) {
-                double ratio = minContrast(button.findElement(By.cssSelector(".p-button-text")), button, null);
+            for (CommandButton button : List.of(page.primary, page.secondary, page.outlined, page.success, page.danger)) {
+                double ratio = minContrast(button.getLabelElement(), button, null);
                 assertTrue(ratio >= 4.5, scheme + " " + button.getAttribute("id") + ": " + ratio);
             }
         }
@@ -94,10 +96,10 @@ class Theming013Test extends AbstractThemingTest {
         setColorScheme("light");
 
         // Assert
-        assertEquals("none", backdropFilter(dialogBox(page.dialog), "::before"));
+        assertEquals("none", backdropFilter(page.dialog.getBox(), "::before"));
         assertEquals("none", backdropFilter(page.toolbar, "::before"));
         assertEquals("none", backdropFilter(page.primary));
-        String background = PrimeSelenium.executeScript("return getComputedStyle(document.documentElement).backgroundImage;");
+        String background = documentStyle("background-image");
         assertFalse(background.contains("gradient"), "aura paints a page background: " + background);
         assertNoJavascriptErrors();
     }
@@ -107,12 +109,7 @@ class Theming013Test extends AbstractThemingTest {
     }
 
     private String backdropFilter(WebElement element, String pseudo) {
-        return PrimeSelenium.executeScript("return getComputedStyle(arguments[0], arguments[1]).getPropertyValue('backdrop-filter');",
-                element, pseudo);
-    }
-
-    private static WebElement dialogBox(WebElement dialog) {
-        return dialog.findElement(By.cssSelector(".p-dialog-box"));
+        return PrimeSelenium.getComputedStyle(element, pseudo, "backdrop-filter");
     }
 
     private void assertBlur(String description, String filter) {
@@ -124,19 +121,19 @@ class Theming013Test extends AbstractThemingTest {
         WebElement toolbar;
 
         @FindBy(id = "form:primary")
-        WebElement primary;
+        CommandButton primary;
 
         @FindBy(id = "form:secondary")
-        WebElement secondary;
+        CommandButton secondary;
 
         @FindBy(id = "form:outlined")
-        WebElement outlined;
+        CommandButton outlined;
 
         @FindBy(id = "form:success")
-        WebElement success;
+        CommandButton success;
 
         @FindBy(id = "form:danger")
-        WebElement danger;
+        CommandButton danger;
 
         @FindBy(id = "form:menubar")
         WebElement menubar;
@@ -145,7 +142,7 @@ class Theming013Test extends AbstractThemingTest {
         WebElement panel;
 
         @FindBy(id = "form:dialog")
-        WebElement dialog;
+        Dialog dialog;
 
         @Override
         public String getLocation() {
@@ -158,10 +155,10 @@ class Theming013Test extends AbstractThemingTest {
         WebElement toolbar;
 
         @FindBy(id = "form:primary")
-        WebElement primary;
+        CommandButton primary;
 
         @FindBy(id = "form:dialog")
-        WebElement dialog;
+        Dialog dialog;
 
         @Override
         public String getLocation() {

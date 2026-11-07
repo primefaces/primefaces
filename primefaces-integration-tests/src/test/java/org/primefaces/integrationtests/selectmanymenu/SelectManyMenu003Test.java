@@ -29,7 +29,6 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectManyMenu;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -71,8 +70,7 @@ class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
         List<String> filter = Arrays.asList("Char", "asfsd", "Lan");
         filter.forEach(f -> {
             // Act
-            selectManyMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectManyMenu.getFilterInput(), f);
+            selectManyMenu.filter(f);
 
             // Assert
             assertEquals(

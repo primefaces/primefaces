@@ -30,31 +30,12 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.util.LangUtils;
 
-import java.time.Duration;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractColorPickerTest extends AbstractPrimePageTest {
-
-    private Duration defaultImplicitWaitTimeout;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.beforeEach();
-
-        defaultImplicitWaitTimeout = getWebDriver().manage().timeouts().getImplicitWaitTimeout();
-        getWebDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-    }
-
-    @AfterEach
-    public void afterEach() {
-        getWebDriver().manage().timeouts().implicitlyWait(defaultImplicitWaitTimeout);
-    }
 
     protected void assertAriaLabel(WebElement panel, String id, String value) {
         WebElement ariaElement = panel.findElement(By.id(id));

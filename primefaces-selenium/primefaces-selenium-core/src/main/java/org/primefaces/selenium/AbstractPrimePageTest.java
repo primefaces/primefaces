@@ -30,8 +30,6 @@ import org.primefaces.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.lang.reflect.InvocationTargetException;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -347,7 +345,7 @@ public abstract class AbstractPrimePageTest {
      * Waits for the default minimal Ajax load animation duration.
      */
     protected void waitAjaxMinLoadAnimation() {
-        getWebDriver().manage().timeouts().implicitlyWait(Duration.of(500, ChronoUnit.MILLIS));
+        PrimeSelenium.wait(500);
     }
 
     /**

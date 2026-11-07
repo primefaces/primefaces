@@ -65,12 +65,61 @@ public abstract class AbstractWidgetLifecycleTest extends AbstractPrimePageTest 
                 + "});"
                 + "return JSON.stringify(result);";
 
+    /** The jQuery handlers of an element by event type and namespace. */
+    private static final String HANDLERS = "var events = jQuery._data(document.getElementById(arguments[0]), 'events') || {}, result = {};"
+                + "Object.keys(events).sort().forEach(function(type) {"
+                + "  events[type].forEach(function(h) { var key = type + '.' + h.namespace; result[key] = (result[key] || 0) + 1; });"
+                + "});"
+                + "return JSON.stringify(result);";
+
+    /** The number of jQuery handlers of an element for an event type. */
+    private static final String HANDLER_COUNT = "var events = jQuery._data(document.getElementById(arguments[0]), 'events') || {};"
+                + "return (events[arguments[1]] || []).length;";
+
+    /** An AJAX request like a click on the source button, which updates the given component. */
+    private static final String AJAX_UPDATE = "PrimeFaces.ab({s: arguments[0], p: arguments[0], u: arguments[1]});";
+
     protected JSONObject globalState() {
         return new JSONObject((String) PrimeSelenium.executeScript(GLOBAL_STATE));
     }
 
     protected JSONObject interactions() {
         return new JSONObject((String) PrimeSelenium.executeScript(INTERACTIONS));
+    }
+
+    /**
+     * The jQuery handlers of the element with the client id, counted by "type.namespace".
+     */
+    protected JSONObject handlers(String clientId) {
+        return new JSONObject((String) PrimeSelenium.executeScript(HANDLERS, clientId));
+    }
+
+    /**
+     * The number of jQuery handlers of the element with the client id for the event type.
+     */
+    protected long handlerCount(String clientId, String type) {
+        return (Long) PrimeSelenium.executeScript(HANDLER_COUNT, clientId, type);
+    }
+
+    /**
+     * Sends the AJAX request of the source button without clicking it (e.g. while the mouse is held for a drag) and waits for it.
+     */
+    protected void ajaxUpdate(String source, String update) {
+        PrimeSelenium.executeScript(true, AJAX_UPDATE, source, update);
+    }
+
+    /**
+     * Updates {@code form:wrapper} with {@code form:btnUpdate}.
+     */
+    protected void updateWrapper() {
+        ajaxUpdate("form:btnUpdate", "form:wrapper");
+    }
+
+    /**
+     * Removes or renders {@code form:wrapper} again with {@code form:btnToggle}.
+     */
+    protected void toggleWrapper() {
+        ajaxUpdate("form:btnToggle", "form:wrapper");
     }
 
     protected void assertSameState(JSONObject expected, JSONObject actual) {

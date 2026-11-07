@@ -33,7 +33,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -95,7 +94,7 @@ class InputPhone001Test extends AbstractPrimePageTest {
         assertEquals("Phone: Validation Error: Value is not a valid phone number.", page.msgs.getMessage(0).getSummary());
         assertEquals("", page.phoneValue.getText());
         assertEquals("123", phone.getValue());
-        assertTrue(phone.getAttribute("class").contains("p-state-error"));
+        assertTrue(phone.isInvalid());
         assertConfiguration(phone.getWidgetConfiguration());
     }
 
@@ -113,7 +112,7 @@ class InputPhone001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("AT", country.getCountry());
         assertEquals("AT", page.selectedCountry.getText());
-        assertEquals("+43", country.getCountryButton().findElement(By.className("p-inputphone-dial-code")).getText());
+        assertEquals("+43", country.getDialCode());
         assertConfiguration(country.getWidgetConfiguration());
     }
 

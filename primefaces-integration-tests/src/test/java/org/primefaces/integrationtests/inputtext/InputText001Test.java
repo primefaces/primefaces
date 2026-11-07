@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,17 +86,14 @@ class InputText001Test extends AbstractPrimePageTest {
 
         // Act
         inputText.disable();
-        try {
-            inputText.setValue("hello safari!");
-            fail("Element should be disabled!");
-        }
-        catch (InvalidElementStateException e) {
-            assertNotClickable(inputText);
-        }
-        catch (JavascriptException e) {
-            assertNotClickable(inputText);
+        WebDriverException e = assertThrows(WebDriverException.class, () -> inputText.setValue("hello safari!"), "Element should be disabled!");
+        assertNotClickable(inputText);
+        if (e instanceof JavascriptException) {
             // Chrome 123+
             assertTrue(e.getMessage().contains("Element is not currently interactable and may not be manipulated"));
+        }
+        else {
+            assertInstanceOf(InvalidElementStateException.class, e);
         }
 
         // Assert - value should not be accepted

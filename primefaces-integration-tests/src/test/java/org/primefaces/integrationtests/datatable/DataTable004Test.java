@@ -35,10 +35,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,13 +68,10 @@ class DataTable004Test extends AbstractDataTableTest {
 
         // Assert (select row after update still selected)
         assertMessage(page, "Selected ProgrammingLanguage", languages.get(4).getName());
-        PrimeSelenium.hasCssClass(dataTable.getRow(4).getWebElement(), "p-state-highlight");
-        assertEquals("true", dataTable.getRow(4).getWebElement().getAttribute("aria-selected"));
+        assertTrue(dataTable.getRow(4).isSelected());
 
         // Act - unselect row
-        Actions actions = new Actions(page.getWebDriver());
-        Action actionMetaPlusRowClick = actions.keyDown(Keys.META).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionMetaPlusRowClick).perform();
+        dataTable.getRow(4).toggleSelection();
 
         // Assert
         assertMessage(page, "ProgrammingLanguage Unselected", languages.get(4).getName());
@@ -86,7 +80,7 @@ class DataTable004Test extends AbstractDataTableTest {
         page.button.click();
 
         // Assert (no row selected)
-        dataTable.getRows().forEach(r -> assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        dataTable.getRows().forEach(r -> assertFalse(r.isSelected(), "Found a selected row!"));
         assertMessage(page, "NO ProgrammingLanguage selected", "");
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -108,12 +102,11 @@ class DataTable004Test extends AbstractDataTableTest {
         assertTrue(card.getText().contains(languages.get(2).getName()));
 
         // Act - unselect row
-        Actions actions = new Actions(page.getWebDriver());
-        actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
+        dataTable.getRow(2).toggleSelection();
         page.buttonMsgOnly.click();
 
         // Assert (no row selected)
-        dataTable.getRows().forEach(r -> assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        dataTable.getRows().forEach(r -> assertFalse(r.isSelected(), "Found a selected row!"));
         assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -139,7 +132,7 @@ class DataTable004Test extends AbstractDataTableTest {
 
         // Assert (no row selected)
         assertMessage(page, "ProgrammingLanguage unselected via backing bean", "");
-        dataTable.getRows().forEach(r -> assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        dataTable.getRows().forEach(r -> assertFalse(r.isSelected(), "Found a selected row!"));
         assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
 
         // Act (submit button)
@@ -167,7 +160,7 @@ class DataTable004Test extends AbstractDataTableTest {
 
                 PrimeSelenium.guardAjax(dataTable.getCell(row, 0).getWebElement()).click();
 
-                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "p-state-highlight"));
+                assertTrue(dataTable.getRow(row).isSelected());
                 assertMessage(page, "ProgrammingLanguage Selected", languages.get(row).getName());
             }
             else {
@@ -175,7 +168,7 @@ class DataTable004Test extends AbstractDataTableTest {
 
                 dataTable.getCell(row, 0).getWebElement().click(); // nothing happens
 
-                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "p-state-highlight"));
+                assertFalse(dataTable.getRow(row).isSelected());
                 assertMessage(page, "ProgrammingLanguage Selected", languages.get(row - 1).getName()); // still the row we selected before
             }
         }

@@ -38,8 +38,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,9 +58,8 @@ class DataTable005Test extends AbstractDataTableTest {
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(getWebDriver());
-        actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
+        dataTable.getRow(2).toggleSelection();
+        dataTable.getRow(4).selectRange();
         getButton().click();
 
         // Assert
@@ -92,9 +89,8 @@ class DataTable005Test extends AbstractDataTableTest {
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
-        Actions actions = new Actions(getWebDriver());
-        actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
+        dataTable.getRow(2).toggleSelection();
+        dataTable.getRow(4).selectRange();
         getButton().click();
 
         // Assert
@@ -134,9 +130,8 @@ class DataTable005Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Act
-        Actions actions = new Actions(getWebDriver());
-        actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
-        actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
+        dataTable.getRow(2).toggleSelection();
+        dataTable.getRow(4).selectRange();
         getButtonProcess().click();
 
         // Assert

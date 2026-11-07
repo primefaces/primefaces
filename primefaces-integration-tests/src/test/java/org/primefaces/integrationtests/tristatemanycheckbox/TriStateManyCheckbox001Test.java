@@ -36,7 +36,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -197,9 +196,8 @@ class TriStateManyCheckbox001Test extends AbstractPrimePageTest {
     }
 
     private void assertIcons(TriStateManyCheckbox checkbox, String... stateClasses) {
-        List<WebElement> boxes = checkbox.getBoxes();
         for (int i = 0; i < stateClasses.length; i++) {
-            WebElement icon = boxes.get(i).findElement(By.className("p-chkbox-icon"));
+            WebElement icon = checkbox.getIcon(i);
             if (stateClasses[i] == null) {
                 assertFalse(PrimeSelenium.hasCssClass(icon, "p-checkbox-checked-icon"), "icon " + i);
                 assertFalse(PrimeSelenium.hasCssClass(icon, "p-checkbox-crossed-icon"), "icon " + i);

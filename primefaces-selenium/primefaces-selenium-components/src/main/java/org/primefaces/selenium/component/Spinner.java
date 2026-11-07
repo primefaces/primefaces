@@ -27,6 +27,7 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.findby.FindByParentPartialId;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -68,13 +69,27 @@ public abstract class Spinner extends InputText {
         return buttonDown;
     }
 
+    /**
+     * Sets the value with the widget JS method (no "change" event is fired, see {@link #change()}). A {@link Number} is passed as JS number, a numeric
+     * string like {@code "4.7"} is converted to a JS number, anything else is passed as string.
+     *
+     * @param value the numeric value, {@code null} clears the input
+     */
     @Override
     public void setValue(Serializable value) {
+        Object newValue = value;
         if (value == null) {
-            value = "\"\"";
+            newValue = "";
         }
-
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
+        else if (!(value instanceof Number)) {
+            try {
+                newValue = new BigDecimal(value.toString().trim()).doubleValue();
+            }
+            catch (NumberFormatException e) {
+                newValue = value.toString();
+            }
+        }
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(arguments[0]);", newValue);
     }
 
     public String getWidgetValue() {

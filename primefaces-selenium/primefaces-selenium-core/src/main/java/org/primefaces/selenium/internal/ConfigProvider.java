@@ -208,10 +208,11 @@ public class ConfigProvider {
         }
 
         if (disableAnimations) {
-            onloadScripts.add("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
-            // CHECKSTYLE:OFF
-            onloadScripts.add("document.head.insertAdjacentHTML('beforeend', '<style>*, *:before, *:after { -webkit-transition: none !important; -moz-transition: none !important; -ms-transition: none !important; -o-transition: none !important; transition: none !important; }</style>');");
-            // CHECKSTYLE:ON
+            // disable them right away too, $(fn) runs async on a loaded page
+            onloadScripts.add("if (window.PrimeFaces) { PrimeFaces.utils.disableAnimations(); $(function() { PrimeFaces.utils.disableAnimations(); }); }");
+            // the id allows tests of the theme's transitions to remove it
+            onloadScripts.add("document.head.insertAdjacentHTML('beforeend', '<style id=\"pfselenium-disable-transitions\">*, *:before, *:after {"
+                        + " transition: none !important; }</style>');");
         }
 
         if (scrollElementIntoView != null) {

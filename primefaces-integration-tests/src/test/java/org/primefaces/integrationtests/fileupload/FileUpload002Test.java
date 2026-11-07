@@ -144,7 +144,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2, file3);
 
         page.button.click();
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -168,7 +168,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getFilename().contains(file.getName()));
         page.button.click();
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
@@ -192,7 +192,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getFilename().contains(file.getName()));
         page.button.click();
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());

@@ -36,7 +36,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -85,9 +84,9 @@ class SelectOneMenu007Test extends AbstractPrimePageTest {
 
     private void assertItems(Page page, int itemCount, int groupCount) {
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        List<WebElement> groups = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item-group"));
+        List<WebElement> groups = selectOneMenu.getItemGroupElements();
         assertEquals(groupCount, groups.size());
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItemElements();
         assertEquals(itemCount, options.size());
     }
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.treetable.Row;
@@ -33,22 +34,49 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:treeTable}.
  */
 public abstract class TreeTable extends AbstractTable<Row> {
 
+    /**
+     * Gets the rendered rows, without the empty message row.
+     *
+     * @return the rows
+     */
     public List<Row> getRows() {
-        return getRowsWebElement().stream().map(rowElt -> {
-            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-            return new Row(rowElt, cells);
-        }).collect(Collectors.toList());
+        return getRowsWebElement().stream()
+                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "p-treetable-empty-message"))
+                .map(this::toRow)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Row getRow(int index) {
         return getRows().get(index);
+    }
+
+    /**
+     * Gets the row of the node with the given rowKey.
+     *
+     * @param rowKey the rowKey like "0_1"
+     * @return the row
+     * @throws NoSuchElementException if the node is not rendered
+     */
+    public Row getRow(String rowKey) {
+        return toRow(findElement(By.id(getId() + "_node_" + rowKey)));
+    }
+
+    /**
+     * Is the node with the given rowKey rendered (e.g. its parent is expanded)?
+     *
+     * @param rowKey the rowKey like "0_1"
+     * @return true if the row exists
+     */
+    public boolean hasRow(String rowKey) {
+        return !findElements(By.id(getId() + "_node_" + rowKey)).isEmpty();
     }
 
     public boolean isEmpty() {
@@ -61,4 +89,8 @@ public abstract class TreeTable extends AbstractTable<Row> {
         }
     }
 
+    private Row toRow(WebElement rowElt) {
+        List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt, this)).collect(Collectors.toList());
+        return new Row(rowElt, cells, this);
+    }
 }

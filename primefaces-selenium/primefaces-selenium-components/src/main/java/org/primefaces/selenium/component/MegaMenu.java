@@ -58,9 +58,27 @@ public abstract class MegaMenu extends AbstractInputComponent {
     public WebElement findMenuitemByValue(WebElement parentElt, String value) {
         List<WebElement> subElements = parentElt.findElements(By.cssSelector("li.p-menuitem"));
         return subElements.stream()
-                .filter(e -> e.getText().equals(value))
+                .filter(e -> value.equals(getMenuitemLabel(e)))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("no menuitem with value '" + value + "'"));
+    }
+
+    /**
+     * Gets the root menuitems (root submenus and root menuitems) of this MegaMenu.
+     * @return the root {@code li.p-menuitem} elements
+     */
+    public List<WebElement> getRootMenuitems() {
+        return findElements(By.cssSelector(":scope > ul > li.p-menuitem"));
+    }
+
+    /**
+     * Gets the label of a menuitem: the text of its own link only, so the text of an open mega panel is not included.
+     * @param menuitem the {@code li.p-menuitem} element
+     * @return the label
+     */
+    protected String getMenuitemLabel(WebElement menuitem) {
+        List<WebElement> links = menuitem.findElements(By.xpath("./a"));
+        return links.isEmpty() ? menuitem.getText() : links.get(0).getText();
     }
 
     /**
@@ -70,10 +88,22 @@ public abstract class MegaMenu extends AbstractInputComponent {
      * @return the root submenu {@code li.p-menu-parent} element so nested lookups can be scoped to it
      */
     public WebElement openRootSubmenu(String label) {
+        return openRootSubmenu(findMenuitemByValue(label));
+    }
+
+    /**
+     * Opens the mega panel of a root submenu identified by its position, see {@link #openRootSubmenu(String)}.
+     * @param index the 0-based index within {@link #getRootMenuitems()}
+     * @return the root submenu {@code li.p-menu-parent} element so nested lookups can be scoped to it
+     */
+    public WebElement openRootSubmenu(int index) {
+        return openRootSubmenu(getRootMenuitems().get(index));
+    }
+
+    private WebElement openRootSubmenu(WebElement rootSubmenu) {
         Actions actions = new Actions(getWebDriver());
         actions.moveToElement(getWrappedElement()).build().perform(); // ensure menu is in viewport / reset hover state
 
-        WebElement rootSubmenu = findMenuitemByValue(label);
         WebElement submenuLink = rootSubmenu.findElement(By.cssSelector("a.p-submenu-link"));
         WebElement panel = rootSubmenu.findElement(By.cssSelector("ul.p-menu-child"));
 

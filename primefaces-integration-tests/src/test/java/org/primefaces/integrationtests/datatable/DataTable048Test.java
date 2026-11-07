@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
@@ -67,6 +68,8 @@ class DataTable048Test extends AbstractDataTableTest {
         // Equals filter 2
         filter2.show();
         filter2.select("2");
+        // the onchange calls PF('datatable').filter(), which the wrapper can't detect as AJAX
+        PrimeSelenium.waitAjax().until(PrimeExpectedConditions.ajaxQueueEmpty());
 
         // Assert
         List<Row> rows = dataTable.getRows();
@@ -78,6 +81,7 @@ class DataTable048Test extends AbstractDataTableTest {
         filter2.show();
         // Equals filter null (all)
         filter2.select("Empty");
+        PrimeSelenium.waitAjax().until(PrimeExpectedConditions.ajaxQueueEmpty());
 
         filter1.togglePanel();
         filterTypeCheckboxes = filter1.getPanel().findElements(By.cssSelector(".p-chkbox-box"));

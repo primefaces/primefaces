@@ -26,50 +26,79 @@ package org.primefaces.integrationtests.datepicker;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DatePicker;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AbstractDatePickerTest extends AbstractPrimePageTest {
 
-    protected void assertDate(WebElement panel, String month, String year) {
+    protected void assertDate(DatePicker datePicker, String month, String year) {
+        WebElement panel = datePicker.getPanel();
         assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement title = panel.findElement(By.className("p-datepicker-title"));
-        WebElement monthElement = title.findElement(By.className("p-datepicker-month"));
-        WebElement yearElement = title.findElement(By.className("p-datepicker-year"));
-        assertEquals(month.toUpperCase(), monthElement.getText().toUpperCase(Locale.ROOT));
-        assertEquals(year, yearElement.getText());
+        assertEquals(month.toUpperCase(), datePicker.getTitleMonth().getText().toUpperCase(Locale.ROOT));
+        assertEquals(year, datePicker.getTitleYear().getText());
     }
 
-    protected void assertTime(WebElement panel, String hours, String minutes, String seconds) {
-        assertTime(panel, hours, minutes, seconds, null);
+    protected void assertTime(DatePicker datePicker, String hours, String minutes, String seconds) {
+        assertTime(datePicker, hours, minutes, seconds, null);
     }
 
-    protected void assertTime(WebElement panel, String hours, String minutes, String seconds, String milliseconds) {
-        assertNotNull(panel);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement timePicker = panel.findElement(By.className("p-timepicker"));
+    protected void assertTime(DatePicker datePicker, String hours, String minutes, String seconds, String milliseconds) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(datePicker.getPanel()));
         if (hours != null) {
-            assertEquals(Integer.parseInt(hours),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-hour-picker > span")).getText()));
+            assertEquals(Integer.parseInt(hours), datePicker.getHour());
         }
         if (minutes != null) {
-            assertEquals(Integer.parseInt(minutes),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-minute-picker > span")).getText()));
+            assertEquals(Integer.parseInt(minutes), datePicker.getMinute());
         }
         if (seconds != null) {
-            assertEquals(Integer.parseInt(seconds),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-second-picker > span")).getText()));
+            assertEquals(Integer.parseInt(seconds), datePicker.getSecond());
         }
         if (milliseconds != null) {
-            assertEquals(Integer.parseInt(milliseconds),
-                        Integer.parseInt(timePicker.findElement(By.cssSelector("div.p-millisecond-picker > span")).getText()));
+            assertEquals(Integer.parseInt(milliseconds), datePicker.getMillisecond());
         }
+    }
+
+    /**
+     * Gets the days of the displayed month with the style class, e.g. from the date metadata model.
+     */
+    protected List<WebElement> getDaysWithStyleClass(DatePicker datePicker, String styleClass) {
+        return datePicker.getDays().stream()
+                    .filter(day -> PrimeSelenium.hasCssClass(day, styleClass))
+                    .collect(Collectors.toList());
+    }
+
+    /**
+     * Asserts that the day is the only day of the displayed month with the style class.
+     */
+    protected void assertDayStyleClass(DatePicker datePicker, String styleClass, String day) {
+        List<WebElement> days = getDaysWithStyleClass(datePicker, styleClass);
+        assertEquals(1, days.size(), days.toString());
+        assertEquals(day, days.get(0).getText());
+    }
+
+    /**
+     * Asserts that the day is the only day of the displayed month with the style class and that it is disabled.
+     */
+    protected void assertDisabledDayStyleClass(DatePicker datePicker, String styleClass, String day) {
+        assertDayStyleClass(datePicker, styleClass, day);
+        assertTrue(datePicker.isDayDisabled(day));
+    }
+
+    /**
+     * Asserts that no day of the displayed month has the style class.
+     */
+    protected void assertNoDayStyleClass(DatePicker datePicker, String styleClass) {
+        List<WebElement> days = getDaysWithStyleClass(datePicker, styleClass);
+        assertTrue(days.isEmpty(), days.toString());
     }
 }

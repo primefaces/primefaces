@@ -34,8 +34,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,10 +51,10 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
         assertEquals(Arrays.asList("Lewis", "Max", "Charles", "Lando"), selectManyCheckbox.getLabels());
 
         // Act + Assert - Charles (index 2) is disabled, all others are clickable
-        assertClickable(box(selectManyCheckbox, 0));
-        assertClickable(box(selectManyCheckbox, 1));
-        assertNotClickable(box(selectManyCheckbox, 2));
-        assertClickable(box(selectManyCheckbox, 3));
+        assertClickable(selectManyCheckbox.getCheckboxBox(0));
+        assertClickable(selectManyCheckbox.getCheckboxBox(1));
+        assertNotClickable(selectManyCheckbox.getCheckboxBox(2));
+        assertClickable(selectManyCheckbox.getCheckboxBox(3));
         assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
     }
 
@@ -75,10 +73,6 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
         assertSelected(selectManyCheckbox, Arrays.asList("Lewis", "Max", "Lando"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Lewis,Max,Lando"));
         assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
-    }
-
-    private WebElement box(SelectManyCheckbox selectManyCheckbox, int index) {
-        return selectManyCheckbox.getCheckboxes().get(index).findElement(By.className("p-chkbox-box"));
     }
 
     private void assertConfiguration(JSONObject cfg) {

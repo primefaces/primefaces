@@ -50,13 +50,16 @@ public abstract class InputNumber extends InputText {
         return hiddenInput;
     }
 
+    /**
+     * Sets the value with the widget JS method and fires the "change" event (guarded if AJAX). A {@link Number} is passed as JS number, anything else as
+     * string, so leading zeros of e.g. {@code "000456"} are kept.
+     *
+     * @param value the numeric value, {@code null} clears the input
+     */
     @Override
     public void setValue(Serializable value) {
-        if (value == null) {
-            value = "\"\"";
-        }
-
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
+        Object newValue = value instanceof Number ? value : (value == null ? "" : value.toString());
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(arguments[0]);", newValue);
         PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change')");
     }
 

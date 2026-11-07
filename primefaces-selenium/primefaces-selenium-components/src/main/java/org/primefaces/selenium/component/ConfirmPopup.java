@@ -73,6 +73,29 @@ public abstract class ConfirmPopup extends AbstractComponent {
     }
 
     /**
+     * Answers the popup with yes. For a global popup the confirmed command (AJAX request, full page submit or JavaScript
+     * function) runs within the click, so it waits until no request is pending and the popup is hidden.
+     * For a non-global popup the yes button is a command of the page: it guards its own request, hiding the popup is up to the page.
+     */
+    public void confirm() {
+        if (!getWidgetConfiguration().optBoolean("global", false)) {
+            getYesButton().click();
+        }
+        else {
+            ConfirmDialog.guardConfirmedCommand(getYesButton()).click();
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+        }
+    }
+
+    /**
+     * Answers the popup with no.
+     */
+    public void cancel() {
+        getNoButton().click();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+    }
+
+    /**
      * Hides the overlay panel.
      */
     public void hidePopup() {
