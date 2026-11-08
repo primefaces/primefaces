@@ -268,6 +268,11 @@
             margin-inline-end: var(--p-treetable-body-cell-gap);
         }
 
+        /* the label is bare text: middle centers on the x-height, the nudge centers on the text (no layout change) */
+        > td > :is(.p-treetable-toggler, .p-chkbox.p-selection) {
+            translate: 0 -0.15em;
+        }
+
         &.p-state-hover {
             background: var(--p-treetable-row-hover-background);
             color: var(--p-treetable-row-hover-color);

@@ -48,10 +48,6 @@
         display: inline-block;
     }
 
-    .p-chkbox {
-        display: inline-block;
-    }
-
     .p-chkbox-box {
         cursor: pointer;
     }
@@ -80,7 +76,7 @@
 
     .p-treenode-content.p-tree-selectable .p-chkbox.p-selection,
     &.p-tree-checkbox-all .p-treenode-content .p-chkbox.p-selection {
-        display: inline-block;
+        display: inline-flex;
     }
 
     &.p-tree-rtl {
@@ -420,7 +416,6 @@
         }
 
         .p-chkbox {
-            vertical-align: bottom;
             margin-inline-end: var(--p-tree-node-gap);
         }
 
