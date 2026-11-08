@@ -103,7 +103,7 @@ jobs:
 
   publish-snapshot:
     runs-on: ubuntu-latest
-    needs: [build, integration-tests-23, integration-tests-40]
+    needs: [build]
     if: github.repository == 'primefaces/primefaces' && github.event_name == 'push' && github.ref == 'refs/heads/15.X'
     name: Publish Snapshot
     steps:
