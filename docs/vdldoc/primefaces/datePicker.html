@@ -161,733 +161,739 @@
                                 (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">An EL expression referring to a server side UIComponent instance in a backing bean.Default is generated.</td>
                         </tr>
-                        <tr id="buttonTabindex" class="altColor">
+                        <tr id="builtInValidation" class="altColor">
+                            <td class="colFirst"><a href="#builtInValidation"><code>builtInValidation</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">When disabled, the value is not validated against mindate / maxdate, disabledDates, enabledDates, disabledDays and the order of the range dates on the server. Required, the converter and the validators are still executed.Default is true.</td>
+                        </tr>
+                        <tr id="buttonTabindex" class="rowColor">
                             <td class="colFirst"><a href="#buttonTabindex"><code>buttonTabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Tabindex for the trigger button.</td>
                         </tr>
-                        <tr id="converter" class="rowColor">
+                        <tr id="converter" class="altColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.convert.Converter</code>)
                     </td><td class="colLast">EL expression resolves to a converter instance or literal converter ID defining a component converter.</td>
                         </tr>
-                        <tr id="converterMessage" class="altColor">
+                        <tr id="converterMessage" class="rowColor">
                             <td class="colFirst"><a href="#converterMessage"><code>converterMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Custom message to display when conversion fails.</td>
                         </tr>
-                        <tr id="dateTemplate" class="rowColor">
+                        <tr id="dateTemplate" class="altColor">
                             <td class="colFirst"><a href="#dateTemplate"><code>dateTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Template for custom date rendering.</td>
                         </tr>
-                        <tr id="defaultHour" class="altColor">
+                        <tr id="defaultHour" class="rowColor">
                             <td class="colFirst"><a href="#defaultHour"><code>defaultHour</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Default hour value.Default is 0.</td>
                         </tr>
-                        <tr id="defaultMillisecond" class="rowColor">
+                        <tr id="defaultMillisecond" class="altColor">
                             <td class="colFirst"><a href="#defaultMillisecond"><code>defaultMillisecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Default millisecond value.Default is 0.</td>
                         </tr>
-                        <tr id="defaultMinute" class="altColor">
+                        <tr id="defaultMinute" class="rowColor">
                             <td class="colFirst"><a href="#defaultMinute"><code>defaultMinute</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Default minute value.Default is 0.</td>
                         </tr>
-                        <tr id="defaultSecond" class="rowColor">
+                        <tr id="defaultSecond" class="altColor">
                             <td class="colFirst"><a href="#defaultSecond"><code>defaultSecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Default second value.Default is 0.</td>
                         </tr>
-                        <tr id="dir" class="altColor">
+                        <tr id="dir" class="rowColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Direction indication for text that does not inherit directionality.Default is ltr.</td>
                         </tr>
-                        <tr id="disabled" class="rowColor">
+                        <tr id="disabled" class="altColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies that an element should be disabled.Default is false.</td>
                         </tr>
-                        <tr id="disabledDates" class="altColor">
+                        <tr id="disabledDates" class="rowColor">
                             <td class="colFirst"><a href="#disabledDates"><code>disabledDates</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
                     </td><td class="colLast">List of disabled dates.</td>
                         </tr>
-                        <tr id="disabledDays" class="rowColor">
+                        <tr id="disabledDays" class="altColor">
                             <td class="colFirst"><a href="#disabledDays"><code>disabledDays</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
                     </td><td class="colLast">List of disabled days of week (0=Sunday, 6=Saturday).</td>
                         </tr>
-                        <tr id="enabledDates" class="altColor">
+                        <tr id="enabledDates" class="rowColor">
                             <td class="colFirst"><a href="#enabledDates"><code>enabledDates</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
                     </td><td class="colLast">List of enabled dates.</td>
                         </tr>
-                        <tr id="flex" class="rowColor">
+                        <tr id="flex" class="altColor">
                             <td class="colFirst"><a href="#flex"><code>flex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Use modern FlexGrid CSS for this component.</td>
                         </tr>
-                        <tr id="focusOnSelect" class="altColor">
+                        <tr id="focusOnSelect" class="rowColor">
                             <td class="colFirst"><a href="#focusOnSelect"><code>focusOnSelect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, focuses input after selection.Default is false.</td>
                         </tr>
-                        <tr id="hideOnDateTimeSelect" class="rowColor">
+                        <tr id="hideOnDateTimeSelect" class="altColor">
                             <td class="colFirst"><a href="#hideOnDateTimeSelect"><code>hideOnDateTimeSelect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, hides calendar after date/time selection.Default is false.</td>
                         </tr>
-                        <tr id="hideOnRangeSelection" class="altColor">
+                        <tr id="hideOnRangeSelection" class="rowColor">
                             <td class="colFirst"><a href="#hideOnRangeSelection"><code>hideOnRangeSelection</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, hides calendar after range selection.Default is false.</td>
                         </tr>
-                        <tr id="hourFormat" class="rowColor">
+                        <tr id="hourFormat" class="altColor">
                             <td class="colFirst"><a href="#hourFormat"><code>hourFormat</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Hour format. Options: '12' for 12-hour, '24' for 24-hour.</td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Unique identifier of the component in a namingContainer.Default is generated.</td>
                         </tr>
-                        <tr id="immediate" class="rowColor">
+                        <tr id="immediate" class="altColor">
                             <td class="colFirst"><a href="#immediate"><code>immediate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When set true, process validations logic is executed at apply request values phase for this component.Default is false.</td>
                         </tr>
-                        <tr id="inline" class="altColor">
+                        <tr id="inline" class="rowColor">
                             <td class="colFirst"><a href="#inline"><code>inline</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, displays calendar inline.Default is false.</td>
                         </tr>
-                        <tr id="inputmode" class="rowColor">
+                        <tr id="inputmode" class="altColor">
                             <td class="colFirst"><a href="#inputmode"><code>inputmode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies the type of data expected in the input, aiding virtual keyboards.</td>
                         </tr>
-                        <tr id="inputStyle" class="altColor">
+                        <tr id="inputStyle" class="rowColor">
                             <td class="colFirst"><a href="#inputStyle"><code>inputStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style for the input element.</td>
                         </tr>
-                        <tr id="inputStyleClass" class="rowColor">
+                        <tr id="inputStyleClass" class="altColor">
                             <td class="colFirst"><a href="#inputStyleClass"><code>inputStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">CSS class for the input element.</td>
                         </tr>
-                        <tr id="keepInvalid" class="altColor">
+                        <tr id="keepInvalid" class="rowColor">
                             <td class="colFirst"><a href="#keepInvalid"><code>keepInvalid</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, keeps invalid input value.Default is false.</td>
                         </tr>
-                        <tr id="label" class="rowColor">
+                        <tr id="label" class="altColor">
                             <td class="colFirst"><a href="#label"><code>label</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">A localized user presentable name.</td>
                         </tr>
-                        <tr id="lang" class="altColor">
+                        <tr id="lang" class="rowColor">
                             <td class="colFirst"><a href="#lang"><code>lang</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies the language of the element's content.</td>
                         </tr>
-                        <tr id="locale" class="rowColor">
+                        <tr id="locale" class="altColor">
                             <td class="colFirst"><a href="#locale"><code>locale</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Locale for the calendar.</td>
                         </tr>
-                        <tr id="mask" class="altColor">
+                        <tr id="mask" class="rowColor">
                             <td class="colFirst"><a href="#mask"><code>mask</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Input mask pattern. Set to 'false' to disable.Default is false.</td>
                         </tr>
-                        <tr id="maskAutoClear" class="rowColor">
+                        <tr id="maskAutoClear" class="altColor">
                             <td class="colFirst"><a href="#maskAutoClear"><code>maskAutoClear</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, clears the input when it doesn't match the mask.Default is true.</td>
                         </tr>
-                        <tr id="maskSlotChar" class="altColor">
+                        <tr id="maskSlotChar" class="rowColor">
                             <td class="colFirst"><a href="#maskSlotChar"><code>maskSlotChar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Character to display in empty mask slots.Default is _.</td>
                         </tr>
-                        <tr id="maxdate" class="rowColor">
+                        <tr id="maxdate" class="altColor">
                             <td class="colFirst"><a href="#maxdate"><code>maxdate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Maximum selectable date.</td>
                         </tr>
-                        <tr id="maxDateCount" class="altColor">
+                        <tr id="maxDateCount" class="rowColor">
                             <td class="colFirst"><a href="#maxDateCount"><code>maxDateCount</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Maximum number of dates that can be selected.Default is 2147483647.</td>
                         </tr>
-                        <tr id="maxlength" class="rowColor">
+                        <tr id="maxlength" class="altColor">
                             <td class="colFirst"><a href="#maxlength"><code>maxlength</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Defines the maximum number of characters allowed in the input.Default is Integer.MIN_VALUE.</td>
                         </tr>
-                        <tr id="mindate" class="altColor">
+                        <tr id="mindate" class="rowColor">
                             <td class="colFirst"><a href="#mindate"><code>mindate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Minimum selectable date.</td>
                         </tr>
-                        <tr id="model" class="rowColor">
+                        <tr id="model" class="altColor">
                             <td class="colFirst"><a href="#model"><code>model</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>org.primefaces.model.datepicker.DateMetadataModel</code>)
                     </td><td class="colLast">DateMetadataModel for advanced date metadata.</td>
                         </tr>
-                        <tr id="monthNavigator" class="altColor">
+                        <tr id="monthNavigator" class="rowColor">
                             <td class="colFirst"><a href="#monthNavigator"><code>monthNavigator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows month navigator.Default is false.</td>
                         </tr>
-                        <tr id="numberOfMonths" class="rowColor">
+                        <tr id="numberOfMonths" class="altColor">
                             <td class="colFirst"><a href="#numberOfMonths"><code>numberOfMonths</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Number of months to display.Default is 1.</td>
                         </tr>
-                        <tr id="onblur" class="altColor">
+                        <tr id="onblur" class="rowColor">
                             <td class="colFirst"><a href="#onblur"><code>onblur</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when an element loses focus.</td>
                         </tr>
-                        <tr id="onchange" class="rowColor">
+                        <tr id="onchange" class="altColor">
                             <td class="colFirst"><a href="#onchange"><code>onchange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the value of an element has been changed.</td>
                         </tr>
-                        <tr id="onclick" class="altColor">
+                        <tr id="onclick" class="rowColor">
                             <td class="colFirst"><a href="#onclick"><code>onclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse click on the element.</td>
                         </tr>
-                        <tr id="oncontextmenu" class="rowColor">
+                        <tr id="oncontextmenu" class="altColor">
                             <td class="colFirst"><a href="#oncontextmenu"><code>oncontextmenu</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when the context menu is triggered.</td>
                         </tr>
-                        <tr id="oncopy" class="altColor">
+                        <tr id="oncopy" class="rowColor">
                             <td class="colFirst"><a href="#oncopy"><code>oncopy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when content is copied from the element.</td>
                         </tr>
-                        <tr id="oncut" class="rowColor">
+                        <tr id="oncut" class="altColor">
                             <td class="colFirst"><a href="#oncut"><code>oncut</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when content is cut from the element.</td>
                         </tr>
-                        <tr id="ondblclick" class="altColor">
+                        <tr id="ondblclick" class="rowColor">
                             <td class="colFirst"><a href="#ondblclick"><code>ondblclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse double-click on the element.</td>
                         </tr>
-                        <tr id="ondrag" class="rowColor">
+                        <tr id="ondrag" class="altColor">
                             <td class="colFirst"><a href="#ondrag"><code>ondrag</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when an element is dragged.</td>
                         </tr>
-                        <tr id="ondragend" class="altColor">
+                        <tr id="ondragend" class="rowColor">
                             <td class="colFirst"><a href="#ondragend"><code>ondragend</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute at the end of a drag operation.</td>
                         </tr>
-                        <tr id="ondragenter" class="rowColor">
+                        <tr id="ondragenter" class="altColor">
                             <td class="colFirst"><a href="#ondragenter"><code>ondragenter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when a dragged element enters a valid drop target.</td>
                         </tr>
-                        <tr id="ondragleave" class="altColor">
+                        <tr id="ondragleave" class="rowColor">
                             <td class="colFirst"><a href="#ondragleave"><code>ondragleave</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when a dragged element leaves a valid drop target.</td>
                         </tr>
-                        <tr id="ondragover" class="rowColor">
+                        <tr id="ondragover" class="altColor">
                             <td class="colFirst"><a href="#ondragover"><code>ondragover</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when a dragged element is over a valid drop target.</td>
                         </tr>
-                        <tr id="ondragstart" class="altColor">
+                        <tr id="ondragstart" class="rowColor">
                             <td class="colFirst"><a href="#ondragstart"><code>ondragstart</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute at the start of a drag operation.</td>
                         </tr>
-                        <tr id="ondrop" class="rowColor">
+                        <tr id="ondrop" class="altColor">
                             <td class="colFirst"><a href="#ondrop"><code>ondrop</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when a dragged element is dropped.</td>
                         </tr>
-                        <tr id="onfocus" class="altColor">
+                        <tr id="onfocus" class="rowColor">
                             <td class="colFirst"><a href="#onfocus"><code>onfocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when an element gets focus.</td>
                         </tr>
-                        <tr id="oninput" class="rowColor">
+                        <tr id="oninput" class="altColor">
                             <td class="colFirst"><a href="#oninput"><code>oninput</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when the element receives user input.</td>
                         </tr>
-                        <tr id="oninvalid" class="altColor">
+                        <tr id="oninvalid" class="rowColor">
                             <td class="colFirst"><a href="#oninvalid"><code>oninvalid</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when the element's value is invalid.</td>
                         </tr>
-                        <tr id="onkeydown" class="rowColor">
+                        <tr id="onkeydown" class="altColor">
                             <td class="colFirst"><a href="#onkeydown"><code>onkeydown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a user is pressing a key.</td>
                         </tr>
-                        <tr id="onkeypress" class="altColor">
+                        <tr id="onkeypress" class="rowColor">
                             <td class="colFirst"><a href="#onkeypress"><code>onkeypress</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a user presses a key.</td>
                         </tr>
-                        <tr id="onkeyup" class="rowColor">
+                        <tr id="onkeyup" class="altColor">
                             <td class="colFirst"><a href="#onkeyup"><code>onkeyup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a user releases a key.</td>
                         </tr>
-                        <tr id="onMonthChange" class="altColor">
+                        <tr id="onMonthChange" class="rowColor">
                             <td class="colFirst"><a href="#onMonthChange"><code>onMonthChange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">JavaScript callback for month change event.</td>
                         </tr>
-                        <tr id="onmousedown" class="rowColor">
+                        <tr id="onmousedown" class="altColor">
                             <td class="colFirst"><a href="#onmousedown"><code>onmousedown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse button is pressed down on an element.</td>
                         </tr>
-                        <tr id="onmousemove" class="altColor">
+                        <tr id="onmousemove" class="rowColor">
                             <td class="colFirst"><a href="#onmousemove"><code>onmousemove</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the mouse pointer is moving while it is over an element.</td>
                         </tr>
-                        <tr id="onmouseout" class="rowColor">
+                        <tr id="onmouseout" class="altColor">
                             <td class="colFirst"><a href="#onmouseout"><code>onmouseout</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the mouse pointer moves out of an element.</td>
                         </tr>
-                        <tr id="onmouseover" class="altColor">
+                        <tr id="onmouseover" class="rowColor">
                             <td class="colFirst"><a href="#onmouseover"><code>onmouseover</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when the mouse pointer moves onto an element.</td>
                         </tr>
-                        <tr id="onmouseup" class="rowColor">
+                        <tr id="onmouseup" class="altColor">
                             <td class="colFirst"><a href="#onmouseup"><code>onmouseup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Fires when a mouse button is released over an element.</td>
                         </tr>
-                        <tr id="onpaste" class="altColor">
+                        <tr id="onpaste" class="rowColor">
                             <td class="colFirst"><a href="#onpaste"><code>onpaste</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when content is pasted into the element.</td>
                         </tr>
-                        <tr id="onreset" class="rowColor">
+                        <tr id="onreset" class="altColor">
                             <td class="colFirst"><a href="#onreset"><code>onreset</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when the form is reset.</td>
                         </tr>
-                        <tr id="onscroll" class="altColor">
+                        <tr id="onscroll" class="rowColor">
                             <td class="colFirst"><a href="#onscroll"><code>onscroll</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when the element is scrolled.</td>
                         </tr>
-                        <tr id="onsearch" class="rowColor">
+                        <tr id="onsearch" class="altColor">
                             <td class="colFirst"><a href="#onsearch"><code>onsearch</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when a search is performed.</td>
                         </tr>
-                        <tr id="onselect" class="altColor">
+                        <tr id="onselect" class="rowColor">
                             <td class="colFirst"><a href="#onselect"><code>onselect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when text is selected.</td>
                         </tr>
-                        <tr id="onwheel" class="rowColor">
+                        <tr id="onwheel" class="altColor">
                             <td class="colFirst"><a href="#onwheel"><code>onwheel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Script to execute when the mouse wheel is used.</td>
                         </tr>
-                        <tr id="onYearChange" class="altColor">
+                        <tr id="onYearChange" class="rowColor">
                             <td class="colFirst"><a href="#onYearChange"><code>onYearChange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">JavaScript callback for year change event.</td>
                         </tr>
-                        <tr id="panelStyle" class="rowColor">
+                        <tr id="panelStyle" class="altColor">
                             <td class="colFirst"><a href="#panelStyle"><code>panelStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style for the calendar panel.</td>
                         </tr>
-                        <tr id="panelStyleClass" class="altColor">
+                        <tr id="panelStyleClass" class="rowColor">
                             <td class="colFirst"><a href="#panelStyleClass"><code>panelStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">CSS class for the calendar panel.</td>
                         </tr>
-                        <tr id="pattern" class="rowColor">
+                        <tr id="pattern" class="altColor">
                             <td class="colFirst"><a href="#pattern"><code>pattern</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Date/time pattern for formatting.</td>
                         </tr>
-                        <tr id="placeholder" class="altColor">
+                        <tr id="placeholder" class="rowColor">
                             <td class="colFirst"><a href="#placeholder"><code>placeholder</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies a short hint describing the expected value of the input.</td>
                         </tr>
-                        <tr id="rangeSeparator" class="rowColor">
+                        <tr id="rangeSeparator" class="altColor">
                             <td class="colFirst"><a href="#rangeSeparator"><code>rangeSeparator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Separator character for date ranges.Default is -.</td>
                         </tr>
-                        <tr id="readonly" class="altColor">
+                        <tr id="readonly" class="rowColor">
                             <td class="colFirst"><a href="#readonly"><code>readonly</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies that an input field is read-only.Default is false.</td>
                         </tr>
-                        <tr id="readonlyInput" class="rowColor">
+                        <tr id="readonlyInput" class="altColor">
                             <td class="colFirst"><a href="#readonlyInput"><code>readonlyInput</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, makes the input field readonly.Default is false.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="required" class="rowColor">
+                        <tr id="required" class="altColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Marks component as required.Default is false.</td>
                         </tr>
-                        <tr id="requiredMessage" class="altColor">
+                        <tr id="requiredMessage" class="rowColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Custom message to display when the required validation fails.</td>
                         </tr>
-                        <tr id="resolverStyle" class="rowColor">
+                        <tr id="resolverStyle" class="altColor">
                             <td class="colFirst"><a href="#resolverStyle"><code>resolverStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Resolver style for date parsing. Options: 'STRICT', 'SMART', 'LENIENT'.Default is SMART.</td>
                         </tr>
-                        <tr id="responsiveBreakpoint" class="altColor">
+                        <tr id="responsiveBreakpoint" class="rowColor">
                             <td class="colFirst"><a href="#responsiveBreakpoint"><code>responsiveBreakpoint</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Responsive breakpoint in pixels for auto-switching to touch mode.Default is 576.</td>
                         </tr>
-                        <tr id="role" class="rowColor">
+                        <tr id="role" class="altColor">
                             <td class="colFirst"><a href="#role"><code>role</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines the role of the element for accessibility purposes.</td>
                         </tr>
-                        <tr id="selectionMode" class="altColor">
+                        <tr id="selectionMode" class="rowColor">
                             <td class="colFirst"><a href="#selectionMode"><code>selectionMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Selection mode. Options: 'single', 'multiple', 'range'. Defaults to 'range' when view is 'week', otherwise 'single'.</td>
                         </tr>
-                        <tr id="selectOtherMonths" class="rowColor">
+                        <tr id="selectOtherMonths" class="altColor">
                             <td class="colFirst"><a href="#selectOtherMonths"><code>selectOtherMonths</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, allows selecting dates from other months.Default is false.</td>
                         </tr>
-                        <tr id="shortYearCutoff" class="altColor">
+                        <tr id="shortYearCutoff" class="rowColor">
                             <td class="colFirst"><a href="#shortYearCutoff"><code>shortYearCutoff</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Cutoff year for two-digit year interpretation.</td>
                         </tr>
-                        <tr id="showButtonBar" class="rowColor">
+                        <tr id="showButtonBar" class="altColor">
                             <td class="colFirst"><a href="#showButtonBar"><code>showButtonBar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows button bar with today/clear buttons.Default is false.</td>
                         </tr>
-                        <tr id="showIcon" class="altColor">
+                        <tr id="showIcon" class="rowColor">
                             <td class="colFirst"><a href="#showIcon"><code>showIcon</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows calendar icon.Default is false.</td>
                         </tr>
-                        <tr id="showLongMonthNames" class="rowColor">
+                        <tr id="showLongMonthNames" class="altColor">
                             <td class="colFirst"><a href="#showLongMonthNames"><code>showLongMonthNames</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows long month names.Default is false.</td>
                         </tr>
-                        <tr id="showMilliseconds" class="altColor">
+                        <tr id="showMilliseconds" class="rowColor">
                             <td class="colFirst"><a href="#showMilliseconds"><code>showMilliseconds</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows milliseconds in time picker.Default is false.</td>
                         </tr>
-                        <tr id="showMinMaxRange" class="rowColor">
+                        <tr id="showMinMaxRange" class="altColor">
                             <td class="colFirst"><a href="#showMinMaxRange"><code>showMinMaxRange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows min/max range indicators.Default is true.</td>
                         </tr>
-                        <tr id="showOnFocus" class="altColor">
+                        <tr id="showOnFocus" class="rowColor">
                             <td class="colFirst"><a href="#showOnFocus"><code>showOnFocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows calendar on input focus.Default is true.</td>
                         </tr>
-                        <tr id="showOtherMonths" class="rowColor">
+                        <tr id="showOtherMonths" class="altColor">
                             <td class="colFirst"><a href="#showOtherMonths"><code>showOtherMonths</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows dates from other months.Default is false.</td>
                         </tr>
-                        <tr id="showSeconds" class="altColor">
+                        <tr id="showSeconds" class="rowColor">
                             <td class="colFirst"><a href="#showSeconds"><code>showSeconds</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows seconds in time picker.Default is false.</td>
                         </tr>
-                        <tr id="showTime" class="rowColor">
+                        <tr id="showTime" class="altColor">
                             <td class="colFirst"><a href="#showTime"><code>showTime</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows time picker.Default is false.</td>
                         </tr>
-                        <tr id="showWeek" class="altColor">
+                        <tr id="showWeek" class="rowColor">
                             <td class="colFirst"><a href="#showWeek"><code>showWeek</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows week numbers. Defaults to true when view is 'week'.Default is false.</td>
                         </tr>
-                        <tr id="size" class="rowColor">
+                        <tr id="size" class="altColor">
                             <td class="colFirst"><a href="#size"><code>size</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Number of characters used to determine the width of the input element.Default is Integer.MIN_VALUE.</td>
                         </tr>
-                        <tr id="stepHour" class="altColor">
+                        <tr id="stepHour" class="rowColor">
                             <td class="colFirst"><a href="#stepHour"><code>stepHour</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Step value for hour spinner.Default is 1.</td>
                         </tr>
-                        <tr id="stepMillisecond" class="rowColor">
+                        <tr id="stepMillisecond" class="altColor">
                             <td class="colFirst"><a href="#stepMillisecond"><code>stepMillisecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Step value for millisecond spinner.Default is 1.</td>
                         </tr>
-                        <tr id="stepMinute" class="altColor">
+                        <tr id="stepMinute" class="rowColor">
                             <td class="colFirst"><a href="#stepMinute"><code>stepMinute</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Step value for minute spinner.Default is 1.</td>
                         </tr>
-                        <tr id="stepSecond" class="rowColor">
+                        <tr id="stepSecond" class="altColor">
                             <td class="colFirst"><a href="#stepSecond"><code>stepSecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Step value for second spinner.Default is 1.</td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies an inline CSS style for an element.</td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies one or more CSS class names for an element.</td>
                         </tr>
-                        <tr id="submittedValue" class="altColor">
+                        <tr id="submittedValue" class="rowColor">
                             <td class="colFirst"><a href="#submittedValue"><code>submittedValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="tabindex" class="rowColor">
+                        <tr id="tabindex" class="altColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies the tab order of an element.</td>
                         </tr>
-                        <tr id="timeInput" class="altColor">
+                        <tr id="timeInput" class="rowColor">
                             <td class="colFirst"><a href="#timeInput"><code>timeInput</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, uses time input field instead of spinner.Default is false.</td>
                         </tr>
-                        <tr id="timeOnly" class="rowColor">
+                        <tr id="timeOnly" class="altColor">
                             <td class="colFirst"><a href="#timeOnly"><code>timeOnly</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, shows only time picker.Default is false.</td>
                         </tr>
-                        <tr id="timeZone" class="altColor">
+                        <tr id="timeZone" class="rowColor">
                             <td class="colFirst"><a href="#timeZone"><code>timeZone</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Time zone for the calendar.</td>
                         </tr>
-                        <tr id="title" class="rowColor">
+                        <tr id="title" class="altColor">
                             <td class="colFirst"><a href="#title"><code>title</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies extra information about an element (displayed as a tooltip).</td>
                         </tr>
-                        <tr id="touchable" class="altColor">
+                        <tr id="touchable" class="rowColor">
                             <td class="colFirst"><a href="#touchable"><code>touchable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Enable touch if supported by device. NULL uses global default or primefaces.TOUCHABLE. Default: globally enabled.</td>
                         </tr>
-                        <tr id="touchUI" class="rowColor">
+                        <tr id="touchUI" class="altColor">
                             <td class="colFirst"><a href="#touchUI"><code>touchUI</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, uses touch-optimized UI.Default is false.</td>
                         </tr>
-                        <tr id="type" class="altColor">
+                        <tr id="type" class="rowColor">
                             <td class="colFirst"><a href="#type"><code>type</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Input field type.Default is text.</td>
                         </tr>
-                        <tr id="validator" class="rowColor">
+                        <tr id="validator" class="altColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">A method expression referring to a method validating the input.</td>
                         </tr>
-                        <tr id="validatorMessage" class="altColor">
+                        <tr id="validatorMessage" class="rowColor">
                             <td class="colFirst"><a href="#validatorMessage"><code>validatorMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Custom message to display when validation fails.</td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Value of the component.</td>
                         </tr>
-                        <tr id="valueChangeListener" class="altColor">
+                        <tr id="valueChangeListener" class="rowColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">A method binding expression referring to a method for handling a valuchangeevent.</td>
                         </tr>
-                        <tr id="view" class="rowColor">
+                        <tr id="view" class="altColor">
                             <td class="colFirst"><a href="#view"><code>view</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">View mode. Options: 'date', 'month', 'year', 'week'.</td>
                         </tr>
-                        <tr id="weekCalculator" class="altColor">
+                        <tr id="weekCalculator" class="rowColor">
                             <td class="colFirst"><a href="#weekCalculator"><code>weekCalculator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Week calculator algorithm. Options: 'ISO', 'US'.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Name of the client side widget.Default is generated ('widget_' + componentClientId).</td>
                         </tr>
-                        <tr id="yearNavigator" class="altColor">
+                        <tr id="yearNavigator" class="rowColor">
                             <td class="colFirst"><a href="#yearNavigator"><code>yearNavigator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Year navigator mode. Options: 'false', 'true', 'dropdown'.Default is false.</td>
                         </tr>
-                        <tr id="yearRange" class="rowColor">
+                        <tr id="yearRange" class="altColor">
                             <td class="colFirst"><a href="#yearRange"><code>yearRange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
