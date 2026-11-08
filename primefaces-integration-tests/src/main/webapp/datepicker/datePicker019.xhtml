@@ -45,6 +45,15 @@
                           builtInValidation="false" mindate="#{datePicker019.minDate}"/>
             <p:commandButton id="requiredDateButton" value="Submit" process="@this requiredDate" update="@form"/>
             <h:outputText id="requiredDateValue" value="#{datePicker019.requiredDate}"/>
+
+            <p:datePicker id="week" value="#{datePicker019.week}" view="week" disabledDays="#{datePicker019.disabledDays}"/>
+            <p:commandButton id="weekButton" value="Submit" process="@this week" update="@form"/>
+            <h:outputText id="weekValue" value="#{datePicker019.week}"/>
+
+            <p:datePicker id="month" value="#{datePicker019.month}" view="month" pattern="MM/yyyy" showOnFocus="false"
+                          disabledDays="#{datePicker019.disabledDays}"/>
+            <p:commandButton id="monthButton" value="Submit" process="@this month" update="@form"/>
+            <h:outputText id="monthValue" value="#{datePicker019.month}"/>
         </h:form>
 
     </h:body>

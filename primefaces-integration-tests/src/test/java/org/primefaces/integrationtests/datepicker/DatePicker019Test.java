@@ -55,9 +55,12 @@ class DatePicker019Test extends AbstractDatePickerTest {
         submit(page, page.date, "08/20/2020", page.dateButton);
         assertValid(page, page.dateValue, "2020-08-20");
 
-        // disabled day (Wednesday)
+        // disabled days (Wednesday, Sunday)
         submit(page, page.date, "08/19/2020", page.dateButton);
         assertValid(page, page.dateValue, "2020-08-19");
+
+        submit(page, page.date, "08/16/2020", page.dateButton);
+        assertValid(page, page.dateValue, "2020-08-16");
     }
 
     @Test
@@ -68,6 +71,13 @@ class DatePicker019Test extends AbstractDatePickerTest {
         assertInvalid(page, page.validatedDateValue, "2020-08-12");
 
         submit(page, page.validatedDate, "08/20/2020", page.validatedDateButton);
+        assertInvalid(page, page.validatedDateValue, "2020-08-12");
+
+        // disabled days: Wednesday and Sunday (0, which is 7 in java.time)
+        submit(page, page.validatedDate, "08/19/2020", page.validatedDateButton);
+        assertInvalid(page, page.validatedDateValue, "2020-08-12");
+
+        submit(page, page.validatedDate, "08/16/2020", page.validatedDateButton);
         assertInvalid(page, page.validatedDateValue, "2020-08-12");
 
         submit(page, page.validatedDate, "08/14/2020", page.validatedDateButton);
@@ -111,6 +121,26 @@ class DatePicker019Test extends AbstractDatePickerTest {
 
         submit(page, page.requiredDate, "07/01/2020", page.requiredDateButton);
         assertValid(page, page.requiredDateValue, "2020-07-01");
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DatePicker: week view accepts a week starting with a disabled day like the popup")
+    void weekViewDisabledDays(Page page) {
+        page.week.showPanel();
+        page.week.selectDay(13);
+        page.weekButton.click();
+        // the week Sunday 9 - Saturday 15, Sunday is disabled
+        assertValid(page, page.weekValue, "[2020-08-09, 2020-08-15]");
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DatePicker: month view accepts a month starting with a disabled day like the popup")
+    void monthViewDisabledDays(Page page) {
+        // November 1, 2020 is a Sunday
+        submit(page, page.month, "11/2020", page.monthButton);
+        assertValid(page, page.monthValue, "2020-11");
     }
 
     private void submit(Page page, DatePicker datePicker, String value, CommandButton button) {
@@ -191,6 +221,24 @@ class DatePicker019Test extends AbstractDatePickerTest {
 
         @FindBy(id = "form:requiredDateValue")
         WebElement requiredDateValue;
+
+        @FindBy(id = "form:week")
+        DatePicker week;
+
+        @FindBy(id = "form:weekButton")
+        CommandButton weekButton;
+
+        @FindBy(id = "form:weekValue")
+        WebElement weekValue;
+
+        @FindBy(id = "form:month")
+        DatePicker month;
+
+        @FindBy(id = "form:monthButton")
+        CommandButton monthButton;
+
+        @FindBy(id = "form:monthValue")
+        WebElement monthValue;
 
         @Override
         public String getLocation() {

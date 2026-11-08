@@ -27,6 +27,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
@@ -55,6 +56,8 @@ public class DatePicker019 implements Serializable {
     private List<LocalDate> range;
     private LocalDateTime dateTime;
     private LocalDate requiredDate;
+    private List<LocalDate> week;
+    private YearMonth month;
 
     @PostConstruct
     public void init() {
@@ -63,12 +66,14 @@ public class DatePicker019 implements Serializable {
         minDateTime = LocalDateTime.of(2020, 8, 20, 10, 0);
         disabledDates = List.of(LocalDate.of(2020, 8, 20));
         enabledDates = List.of(LocalDate.of(2020, 8, 20));
-        disabledDays = List.of(3); // Wednesday
+        disabledDays = List.of(0, 3); // Sunday, Wednesday
 
         date = LocalDate.of(2020, 8, 12);
         validatedDate = date;
         enabledDate = LocalDate.of(2020, 8, 20);
         dateTime = LocalDateTime.of(2020, 8, 20, 12, 0);
         requiredDate = date;
+        week = List.of(LocalDate.of(2020, 8, 2), LocalDate.of(2020, 8, 8));
+        month = YearMonth.of(2020, 8);
     }
 }
