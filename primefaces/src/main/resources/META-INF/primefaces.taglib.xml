@@ -32265,6 +32265,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When disabled, the value is not validated against mindate / maxdate, disabledDates, enabledDates, disabledDays and the order of the range dates on the server. Required, the converter and the validators are still executed. Default is true.]]>
+            </description>
+            <name>builtInValidation</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to format the month. Default is true.]]>
             </description>
             <name>autoMonthFormat</name>
