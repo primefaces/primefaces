@@ -111,9 +111,17 @@
     line-height: 1;
     vertical-align: baseline;
 
-    /* inline: not transformable, RTL rules mirror the icon element (scale: -1 1), not the ::before */
+    /*
+     * inline-block 1em x 1em: an inline box paints the font's whole content area (taller than 1em on iOS), WebKit
+     * leaves that overhang unmasked (stripes above/below the icon). line-height 1 keeps the baseline of the glyph when
+     * the icon element has a taller line-height (e.g. tree toggler). RTL rules mirror the icon element (scale: -1 1).
+     */
     &::before {
         content: "\2003";
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        line-height: 1;
         background: currentColor;
         forced-color-adjust: none;
         mask: var(--_icon, linear-gradient(transparent, transparent)) center / contain no-repeat;
