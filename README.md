@@ -30,13 +30,14 @@ PrimeFaces follows a simple lifecycle:
 * **Maintenance**
 
   * Stable releases after feature completion
-  * Only bug fixes are applied
-  * No new features are introduced
+  * Only bug fixes or small enhancements are applied
+  * No new big features are introduced
 
 * **Security**
 
   * Older supported versions
   * Only security-related fixes and critical issues are addressed
+  * Other smaller bugfixes and small enhancements like ADA are accepted (via PR) but not addressed by maintainers
 
 * **EOL**
 
