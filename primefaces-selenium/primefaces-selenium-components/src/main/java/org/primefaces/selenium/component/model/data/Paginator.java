@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class Paginator {
 
@@ -60,6 +61,16 @@ public class Paginator {
 
     public Page getPage(int index) {
         return getPages().get(index);
+    }
+
+    /**
+     * Gets the rows per page dropdown ({@code {RowsPerPageDropdown}} in the paginator template), e.g. to read the
+     * displayed rows per page with {@code getFirstSelectedOption()}.
+     *
+     * @return the rows per page dropdown
+     */
+    public Select getRowsPerPageDropdown() {
+        return new Select(webElement.findElement(By.className("p-paginator-rpp-options")));
     }
 
     public Page getActivePage() {

@@ -45,9 +45,19 @@ public abstract class Menubar extends AbstractInputComponent {
     public WebElement findMenuitemByValue(WebElement parentElt, String value) {
         List<WebElement> subElements = parentElt.findElements(By.cssSelector("ul > li.p-menuitem"));
         return subElements.stream()
-                .filter(e -> e.getText().equals(value))
+                .filter(e -> value.equals(getMenuitemLabel(e)))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("no menuitem with value '" + value + "'"));
+    }
+
+    /**
+     * Gets the label of a menuitem: the text of its own link only, so the text of an open submenu is not included.
+     * @param menuitem the {@code li.p-menuitem} element
+     * @return the label
+     */
+    protected String getMenuitemLabel(WebElement menuitem) {
+        List<WebElement> links = menuitem.findElements(By.xpath("./a"));
+        return links.isEmpty() ? menuitem.getText() : links.get(0).getText();
     }
 
     /**

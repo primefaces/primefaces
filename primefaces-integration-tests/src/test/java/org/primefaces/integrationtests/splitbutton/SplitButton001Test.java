@@ -30,27 +30,21 @@ import org.primefaces.selenium.component.SplitButton;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SplitButton001Test extends AbstractPrimePageTest {
-
-    private static final String CLASS_NAME_MENUBUTTON = "p-splitbutton-menubutton";
 
     @Test
     @Order(1)
     @DisplayName("SplitButton: dropdown visibility #2690 #10086")
     void basic(Page page) {
-        assertNotNull(page.splitButtonChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
-        assertThrows(NoSuchElementException.class,
-                () -> page.splitButtonNoChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
-        assertThrows(NoSuchElementException.class,
-                () -> page.splitButtonNoRenderedChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
-        assertNotNull(page.splitButtonOverlayPanel.findElement(By.className(CLASS_NAME_MENUBUTTON)));
+        assertNotNull(page.splitButtonChildren.getMenuButton());
+        assertNull(page.splitButtonNoChildren.getMenuButton());
+        assertNull(page.splitButtonNoRenderedChildren.getMenuButton());
+        assertNotNull(page.splitButtonOverlayPanel.getMenuButton());
     }
 
     public static class Page extends AbstractPrimePage {

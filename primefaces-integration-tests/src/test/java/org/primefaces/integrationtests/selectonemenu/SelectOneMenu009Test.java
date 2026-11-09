@@ -30,7 +30,6 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,8 +74,7 @@ class SelectOneMenu009Test extends AbstractPrimePageTest {
         List<String> filter = Arrays.asList("L", "asfsd", "Char");
         filter.forEach(f -> {
             // Act
-            selectOneMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectOneMenu.getFilterInput(), f);
+            selectOneMenu.filter(f);
 
             // Assert
             assertEquals(

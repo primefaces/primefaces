@@ -36,6 +36,20 @@ using f:param tags.
 </p:media>
 ```
 
+## Accessibility
+Media is rendered as an `object` element. `title` gives it an accessible name, the `fallback` facet is rendered inside
+the `object` and shown when the media cannot be displayed (e.g. no PDF viewer), typically with a download link.
+Children (other than `f:param`) are rendered inside the `object` as well, so the fallback content can also be added
+directly as children, the facet is rendered after them.
+
+```xhtml
+<p:media value="#{bean.pdf}" player="pdf" title="Annual Report 2025" width="100%" height="500px">
+    <f:facet name="fallback">
+        <p>This PDF cannot be displayed. <h:outputLink value="#{bean.pdfUrl}">Download Annual Report 2025</h:outputLink></p>
+    </f:facet>
+</p:media>
+```
+
 ## StreamedContent Support
 Media component can also play binary media content, example for this use case is storing media
 files in database using binary format. In order to implement this, bind a StreamedContent.

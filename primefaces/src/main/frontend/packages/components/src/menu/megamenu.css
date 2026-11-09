@@ -125,7 +125,8 @@
         background: var(--_bg);
         padding: var(--p-megamenu-vertical-orientation-padding);
 
-        /* root list: column instead of the menubar row */
+        /* bar and root list: column instead of the menubar row */
+        &,
         > .p-menu-list {
             flex-direction: column;
             flex-wrap: nowrap;
@@ -142,7 +143,7 @@
         }
 
         /* no auto margin of the menubar facets in the column (it would right-align them) */
-        > .p-menu-list > :is(.p-menubar-options, .p-menubar-end) {
+        > :is(.p-menubar-options, .p-menubar-end) {
             margin-inline-start: 0;
         }
     }

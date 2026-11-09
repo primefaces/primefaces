@@ -50,7 +50,19 @@ Widget: _PrimeFaces.widget.TreeTable_
 | --- | --- | --- | --- |
 | clearFilters() | - | void | Clears all column filters
 
-## Filtering prune mode
+## Filtering
+Filtering hides the nodes which do not match, it does not change the tree: `value` always holds all nodes, so
+expanding, collapsing, selecting and editing work on the nodes of your model. A node is displayed when it matches,
+when one of its descendants matches or, by default, when one of its ancestors matches. The ancestors of the matching
+nodes are expanded when the user filters and when the page is loaded with a filter (`filterValue`, `multiViewState`),
+not when a filtered TreeTable is rendered for the first time by an AJAX update or after a POST navigation without
+redirect.
+
+The filters are applied again on every render, so nodes added, removed or changed in an action are filtered
+automatically. Call `filterAndSort()` on the component only if you need the result in the same action, e.g.
+`getFilteredNodes()` or `getRowCount()`.
+
+### Filtering prune mode
 Set `filterPrune="descendants"` to hide non-matching children of a matched node unless they (or their descendants) match the filter. Omit the attribute or use `none` to keep children of matched nodes visible.
 
 ```xhtml

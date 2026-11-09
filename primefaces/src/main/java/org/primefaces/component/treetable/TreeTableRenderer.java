@@ -102,9 +102,9 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             component.restoreMultiViewState();
         }
 
-        if (component.isFilteringCurrentlyActive()) {
-            TreeTableFeatures.filterFeature().filter(context, component, component.getValue());
-        }
+        // apply the filters again, as the model might have changed since they were applied during this request;
+        // expand the ancestors of the matches when the filters come with the view (filterValue, multiViewState)
+        TreeTableFeatures.filterFeature().filter(context, component, component.getValue(), !context.isPostback());
         if (component.isSortingCurrentlyActive()) {
             TreeTableFeatures.sortFeature().sort(context, component);
         }
@@ -431,7 +431,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
     public void encodeTbody(FacesContext context, TreeTable component, TreeNode root, boolean dataOnly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        boolean empty = (root == null || root.getChildCount() == 0);
+        boolean empty = (root == null || component.getVisibleChildren(root).isEmpty());
         UIComponent emptyFacet = component.getEmptyMessageFacet();
 
         if (!dataOnly) {
@@ -580,7 +580,10 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
                     writer.startElement("span", null);
                     writer.writeAttribute("class", TreeTable.TOGGLER_CLASS, null);
-                    if (treeNode.isLeaf()) {
+                    // a node whose children are all hidden by the filter can't be expanded either; only checked while
+                    // filtering, getChildCount() loads the children of a LazyDefaultTreeNode
+                    if (treeNode.isLeaf() || (component.getFilteredNodes() != null && treeNode.getChildCount() > 0
+                            && component.getVisibleChildren(treeNode).isEmpty())) {
                         writer.writeAttribute("style", "visibility:hidden", null);
                     }
                     writer.endElement("span");
@@ -829,8 +832,8 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             throws IOException {
 
         if (size > 0) {
-            List<TreeNode> children = treeNode.getChildren();
-            int childCount = treeNode.getChildCount();
+            List<TreeNode<?>> children = component.getVisibleChildren(treeNode);
+            int childCount = children.size();
             int last = (first + size);
             if (last > childCount) {
                 last = childCount;

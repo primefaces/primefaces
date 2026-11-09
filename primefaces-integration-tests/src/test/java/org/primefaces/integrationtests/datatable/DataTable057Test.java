@@ -27,6 +27,8 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Header;
+import org.primefaces.selenium.component.model.datatable.HeaderCell;
 
 import java.util.List;
 
@@ -34,7 +36,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -52,19 +53,19 @@ class DataTable057Test extends AbstractPrimePageTest {
     void columnOrderRetainedAfterLiveScroll(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        assertEquals(List.of("1", "Language 1", "1991"), rowValues(dataTable, 0));
+        assertEquals(List.of("1", "Language 1", "1991"), dataTable.getRow(0).getCellTexts());
 
         // Act - drag the "ID" column onto the "Name" column, then live scroll the next chunk in
         dragColumnOnto(page, dataTable, 0, 1);
         assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(dataTable));
-        assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
+        assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
 
         PrimeSelenium.executeScript(true, "PF('dtWidget').loadLiveRows()");
 
         // Assert - the rows loaded by the scroll must follow the dragged column order, like the already visible ones
-        assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
-        assertEquals(List.of("Language 6", "6", "1996"), rowValues(dataTable, 5));
-        assertEquals(List.of("Language 10", "10", "1990"), rowValues(dataTable, 9));
+        assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
+        assertEquals(List.of("Language 6", "6", "1996"), dataTable.getRow(5).getCellTexts());
+        assertEquals(List.of("Language 10", "10", "1990"), dataTable.getRow(9).getCellTexts());
         assertNoJavascriptErrors();
     }
 
@@ -74,13 +75,13 @@ class DataTable057Test extends AbstractPrimePageTest {
     void declaredColumnOrderRetainedAfterLiveScroll(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        assertEquals(List.of("1", "Language 1", "1991"), rowValues(dataTable, 0));
+        assertEquals(List.of("1", "Language 1", "1991"), dataTable.getRow(0).getCellTexts());
 
         // Act
         PrimeSelenium.executeScript(true, "PF('dtWidget').loadLiveRows()");
 
         // Assert
-        assertEquals(List.of("6", "Language 6", "1996"), rowValues(dataTable, 5));
+        assertEquals(List.of("6", "Language 6", "1996"), dataTable.getRow(5).getCellTexts());
         assertNoJavascriptErrors();
     }
 
@@ -90,31 +91,24 @@ class DataTable057Test extends AbstractPrimePageTest {
     void dynamicColumnOrderRetainedAfterLiveScroll(Page page) {
         // Arrange
         DataTable dataTable = page.dataTableDynamic;
-        assertEquals(List.of("1", "Language 1", "1991"), rowValues(dataTable, 0));
+        assertEquals(List.of("1", "Language 1", "1991"), dataTable.getRow(0).getCellTexts());
 
         // Act - drag the "ID" column onto the "Name" column, then live scroll the next chunk in
         dragColumnOnto(page, dataTable, 0, 1);
         assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(dataTable));
-        assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
+        assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
 
         PrimeSelenium.executeScript(true, "PF('dtDynamicWidget').loadLiveRows()");
 
         // Assert - the rows loaded by the scroll must follow the dragged column order, like the already visible ones
-        assertEquals(List.of("Language 1", "1", "1991"), rowValues(dataTable, 0));
-        assertEquals(List.of("Language 6", "6", "1996"), rowValues(dataTable, 5));
-        assertEquals(List.of("Language 10", "10", "1990"), rowValues(dataTable, 9));
+        assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
+        assertEquals(List.of("Language 6", "6", "1996"), dataTable.getRow(5).getCellTexts());
+        assertEquals(List.of("Language 10", "10", "1990"), dataTable.getRow(9).getCellTexts());
         assertNoJavascriptErrors();
     }
 
     private List<String> headerTexts(DataTable dataTable) {
-        return dataTable.findElements(By.cssSelector(".p-datatable-scrollable-header th")).stream().map(WebElement::getText).toList();
-    }
-
-    private List<String> rowValues(DataTable dataTable, int rowIndex) {
-        return dataTable.getRow(rowIndex).getWebElement().findElements(By.tagName("td"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        return dataTable.getHeader().getCellTexts();
     }
 
     /**
@@ -127,14 +121,14 @@ class DataTable057Test extends AbstractPrimePageTest {
      * @param toIndex index of the column to drop it on
      */
     private void dragColumnOnto(Page page, DataTable dataTable, int fromIndex, int toIndex) {
-        List<WebElement> headers = dataTable.findElements(By.cssSelector(".p-datatable-scrollable-header th"));
-        WebElement source = headers.get(fromIndex);
-        WebElement target = headers.get(toIndex);
+        Header header = dataTable.getHeader();
+        HeaderCell source = header.getCell(fromIndex);
+        WebElement target = header.getCell(toIndex).getWebElement();
 
         // grab the column title, not the header itself: the draggable cancels on ':input', which would be hit when the
         // pointer lands in the center of a header carrying a filter input
         new Actions(page.getWebDriver())
-                .moveToElement(source.findElement(By.cssSelector(".p-column-title")))
+                .moveToElement(source.getColumnTitle())
                 .clickAndHold()
                 .moveByOffset(10, 0)
                 .moveToElement(target)

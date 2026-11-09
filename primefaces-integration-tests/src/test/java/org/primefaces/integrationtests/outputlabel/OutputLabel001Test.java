@@ -30,8 +30,6 @@ import org.primefaces.selenium.component.OutputLabel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -236,13 +234,8 @@ class OutputLabel001Test extends AbstractPrimePageTest {
     }
 
     private boolean hasAriaHiddenRequiredIndicator(OutputLabel label) {
-        try {
-            WebElement indicator = label.findElement(By.className("p-outputlabel-rfi"));
-            return "true".equals(indicator.getDomAttribute("aria-hidden"));
-        }
-        catch (NoSuchElementException e) {
-            return false;
-        }
+        WebElement indicator = label.getRequiredIndicator();
+        return indicator != null && "true".equals(indicator.getDomAttribute("aria-hidden"));
     }
 
     private void assertLabel(OutputLabel label, String text, boolean required) {

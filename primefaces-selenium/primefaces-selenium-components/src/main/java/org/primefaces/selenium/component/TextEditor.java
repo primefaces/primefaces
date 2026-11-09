@@ -28,6 +28,7 @@ import org.primefaces.selenium.findby.FindByParentPartialId;
 
 import java.io.Serializable;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -55,6 +56,25 @@ public abstract class TextEditor extends InputText {
 
     public WebElement getToolbar() {
         return toolbar;
+    }
+
+    /**
+     * Gets the editable content area of the Quill editor where the user types.
+     *
+     * @return the {@code .ql-editor} contenteditable element
+     */
+    public WebElement getContentEditable() {
+        return getEditor().findElement(By.className("ql-editor"));
+    }
+
+    /**
+     * Gets a toolbar button (of the default or a custom toolbar) by its Quill format.
+     *
+     * @param format the Quill format like "bold", "italic" or "link"
+     * @return the {@code .ql-<format>} toolbar element
+     */
+    public WebElement getToolbarButton(String format) {
+        return findElement(By.cssSelector(".ql-toolbar .ql-" + format));
     }
 
     /**

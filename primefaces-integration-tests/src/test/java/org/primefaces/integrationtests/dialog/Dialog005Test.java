@@ -30,7 +30,6 @@ import org.primefaces.selenium.component.Dialog;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -53,7 +52,7 @@ class Dialog005Test extends AbstractPrimePageTest {
         assertCss(dialog, "p-dialog", "container-class");
         assertTrue(dialog.getAttribute("style").contains("opacity"));
 
-        WebElement box = getBox(dialog);
+        WebElement box = dialog.getBox();
         assertCss(box, "p-dialog-box", "box-wide");
         assertTrue(box.getAttribute("style").contains("min-height"));
         assertEquals("600px", box.getCssValue("width")); // CSS width is not overridden by an inline width
@@ -72,19 +71,15 @@ class Dialog005Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         dialog.show();
         dialog.toggleMaximize();
-        assertCss(dialog, "p-dialog-maximized");
+        assertTrue(dialog.isMaximized());
 
         // Act
         dialog.toggleMaximize();
 
         // Assert
-        assertFalse(dialog.getAttribute("class").contains("p-dialog-maximized"));
-        assertEquals("600px", getBox(dialog).getCssValue("width"));
+        assertFalse(dialog.isMaximized());
+        assertEquals("600px", dialog.getBox().getCssValue("width"));
         assertNoJavascriptErrors();
-    }
-
-    private WebElement getBox(Dialog dialog) {
-        return dialog.findElement(By.className("p-dialog-box"));
     }
 
     public static class Page extends AbstractPrimePage {

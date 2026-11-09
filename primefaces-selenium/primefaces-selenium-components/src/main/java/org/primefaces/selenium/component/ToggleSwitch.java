@@ -25,9 +25,29 @@ package org.primefaces.selenium.component;
 
 import org.primefaces.selenium.component.base.AbstractToggleComponent;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 /**
  * Component wrapper for the PrimeFaces {@code p:toggleSwitch}.
  */
 public abstract class ToggleSwitch extends AbstractToggleComponent {
 
+    /**
+     * Gets the track of the switch. A click on it toggles the switch like a user, without guarding a request.
+     *
+     * @return the slider element
+     */
+    public WebElement getSlider() {
+        return findElement(By.className("p-toggleswitch-slider"));
+    }
+
+    /**
+     * Gets the knob of the switch which moves to the end of the track when checked.
+     *
+     * @return the handle element
+     */
+    public WebElement getHandle() {
+        return findElement(By.className("p-toggleswitch-handler"));
+    }
 }

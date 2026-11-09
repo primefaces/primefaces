@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.csv;
 
-import org.primefaces.integrationtests.colorpicker.AbstractColorPickerTest;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
@@ -40,7 +39,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
-public class Csv001Test extends AbstractColorPickerTest {
+public class Csv001Test extends AbstractCsvTest {
 
     @Test
     @Order(1)

@@ -45,13 +45,6 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
     /** The default command works on the form (its listener is there), it stays while the form stays. */
     private static final String DEFAULT_COMMAND = "form:defaultCommand";
 
-    /** The handlers of an element by event type and namespace. */
-    private static final String HANDLERS = "var events = jQuery._data(document.getElementById(arguments[0]), 'events') || {}, result = {};"
-                + "Object.keys(events).sort().forEach(function(type) {"
-                + "  events[type].forEach(function(h) { var key = type + '.' + h.namespace; result[key] = (result[key] || 0) + 1; });"
-                + "});"
-                + "return JSON.stringify(result);";
-
     /** The interactions on the targets. */
     private static final String TARGET_INTERACTIONS = "var i = PrimeFaces.interactions;"
                 + "return JSON.stringify({"
@@ -63,10 +56,6 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
     /** Presses Enter in the input, the default command clicks its target button which counts the clicks. */
     private static final String ENTER = "jQuery(document.getElementById('form:input')).trigger(jQuery.Event('keydown', { key: 'Enter' }));"
                 + "return window.defaultCommandClicks || 0;";
-
-    private static final String TOGGLE = "PrimeFaces.ab({s: 'form:btnToggle', p: 'form:btnToggle', u: 'form:wrapper'});";
-    private static final String UPDATE = "PrimeFaces.ab({s: 'form:btnUpdate', p: 'form:btnUpdate', u: 'form:wrapper'});";
-    private static final String UPDATE_TARGET = "PrimeFaces.ab({s: 'form:btnUpdateTarget', p: 'form:btnUpdateTarget', u: 'form:btnDefault'});";
 
     /** The keydown handler of the default command on the form, which stays. */
     private static final String DEFAULT_COMMAND_HANDLER = "keydown.form:defaultCommand";
@@ -80,7 +69,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
 
         // Act
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
 
         // Assert: destroyed
         assertWidgetCount(0, WIDGETS);
@@ -99,7 +88,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
     void update(Page page) {
         // Act
         for (int i = 0; i < 3; i++) {
-            PrimeSelenium.executeScript(true, UPDATE);
+            updateWrapper();
         }
 
         // Assert: still there, once, bound to the new elements
@@ -123,15 +112,15 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
     @DisplayName("Widget lifecycle: removing and rendering widgets without own markup again doesn't leak")
     void removeAgain(Page page) {
         // Arrange
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
         JSONObject removed = globalState();
         JSONObject removedFormHandlers = handlers("form");
 
         // Act
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
         assertWidgetCount(1, WIDGETS);
         assertEquals(1L, enter());
-        PrimeSelenium.executeScript(true, TOGGLE);
+        toggleWrapper();
 
         // Assert
         assertWidgetCount(0, WIDGETS);
@@ -145,18 +134,14 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
     @DisplayName("Widget lifecycle: a default command stays when only its target is updated")
     void updateTarget(Page page) {
         // Act: e.g. an update that enables the target
-        PrimeSelenium.executeScript(true, UPDATE_TARGET);
-        PrimeSelenium.executeScript(true, UPDATE_TARGET);
+        ajaxUpdate("form:btnUpdateTarget", "form:btnDefault");
+        ajaxUpdate("form:btnUpdateTarget", "form:btnDefault");
 
         // Assert: Enter clicks the new target, once
         assertWidgetCount(1, DEFAULT_COMMAND);
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
         assertEquals(1L, enter());
         assertNoJavascriptErrors();
-    }
-
-    private JSONObject handlers(String clientId) {
-        return new JSONObject((String) PrimeSelenium.executeScript(HANDLERS, clientId));
     }
 
     private JSONObject targetInteractions() {

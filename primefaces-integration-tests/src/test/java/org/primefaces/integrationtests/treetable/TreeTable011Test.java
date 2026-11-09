@@ -50,11 +50,11 @@ class TreeTable011Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: GitHub #9925 propagateSelectionDown=false must not select the child nodes")
     void childIsNotSelectedVisually(Page page) {
         // Act
-        selectCheckbox(page.treeTable, PARENT);
+        page.treeTable.getRow(PARENT).toggleCheckbox();
 
         // Assert
-        assertTrue(isSelected(page.treeTable, PARENT));
-        assertFalse(isSelected(page.treeTable, CHILD));
+        assertTrue(page.treeTable.getRow(PARENT).isSelected());
+        assertFalse(page.treeTable.getRow(CHILD).isSelected());
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -63,7 +63,7 @@ class TreeTable011Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: GitHub #9925 propagateSelectionDown=false must not submit the child nodes either")
     void childIsNotSubmitted(Page page) {
         // Arrange
-        selectCheckbox(page.treeTable, PARENT);
+        page.treeTable.getRow(PARENT).toggleCheckbox();
 
         // Act
         page.showSelected.click();
@@ -73,10 +73,9 @@ class TreeTable011Test extends AbstractTreeTableTest {
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("ttWidget", cfg.getString("widgetVar"));
+    @Override
+    protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "ttWidget");
         assertEquals("checkbox", cfg.getString("selectionMode"));
         assertFalse(cfg.getBoolean("propagateSelectionDown"));
     }

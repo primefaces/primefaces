@@ -34,14 +34,11 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class ConfirmDialog002Test extends AbstractPrimePageTest {
 
@@ -104,7 +101,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertEquals("p-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
-        dialog.getNoButton().click();
+        dialog.cancel();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -123,7 +120,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertEquals("p-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        dialog.confirm();
 
         // Assert
         assertEquals("You have accepted", page.message.getMessage(0).getDetail());
@@ -142,7 +139,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertEquals("p-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
-        dialog.getNoButton().click();
+        dialog.cancel();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -161,7 +158,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertEquals("p-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        dialog.confirm();
 
         // Assert
         assertEquals("Record deleted", page.message.getMessage(0).getDetail());
@@ -178,7 +175,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        dialog.getNoButton().click();
+        dialog.cancel();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -195,7 +192,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        PrimeSelenium.guardHttp(dialog.getYesButton()).click();
+        dialog.confirm();
 
         // Assert
         assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
@@ -225,17 +222,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertEquals(visible, dialog.isVisible());
 
         if (visible) {
-            try {
-                // modal dialog should block clickability of button
-                page.confirm.click();
-                fail("Button should not be clickable because modal mask is covering it!");
-            }
-            catch (ElementClickInterceptedException ex) {
-                // element should be blocked by modal mask!
-            }
-            catch (WebDriverException ex) {
-                // Safari: element should be blocked by modal mask!
-            }
+            // modal dialog should block clickability of button
+            assertTrue(PrimeSelenium.isElementCovered(page.confirm), "Button should not be clickable because modal mask is covering it!");
         }
         else {
             assertClickableOrLoading(page.confirm);

@@ -29,14 +29,11 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +53,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
-        assertNoDisablebCalendarDates(page.datePicker1);
+        assertNoDayStyleClass(page.datePicker1, "tst-disabled");
 
         // Act - 2nd show other panel
         page.datePicker1.hidePanel(); // #12009 - close panel of datePicker1 to ensure it does not overlap datePicker2-input-field
@@ -64,13 +61,13 @@ class DatePicker012Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
-        assertNoDisablebCalendarDates(page.datePicker2);
+        assertNoDayStyleClass(page.datePicker2, "tst-disabled");
 
         // Act - 3rd show panel and select 5th of current month
         page.datePicker2.hidePanel(); // #12009 - close panel of datePicker2 to ensure it does not overlap datePicker1-input-field
         page.datePicker1.click();
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
-        page.datePicker1.getPanel().findElement(By.linkText("5")).click();
+        page.datePicker1.selectDay(5);
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1));
@@ -82,11 +79,11 @@ class DatePicker012Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
-        assertDisabledCalendarDate(page.datePicker2, "5");
+        assertDisabledDayStyleClass(page.datePicker2, "tst-disabled", "5");
         JSONObject cfg2 = page.datePicker2.getWidgetConfiguration();
 
         // Act - 5th elect 6th of current month
-        page.datePicker2.getPanel().findElement(By.linkText("6")).click();
+        page.datePicker2.selectDay(6);
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2));
@@ -98,25 +95,11 @@ class DatePicker012Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
-        assertDisabledCalendarDate(page.datePicker1, "6");
+        assertDisabledDayStyleClass(page.datePicker1, "tst-disabled", "6");
         JSONObject cfg1 = page.datePicker2.getWidgetConfiguration();
 
         assertConfiguration(cfg1);
         assertConfiguration(cfg2);
-    }
-
-    private void assertNoDisablebCalendarDates(DatePicker datePicker) {
-        List<WebElement> days = datePicker.getPanel().findElements(
-                    By.cssSelector(".p-datepicker-calendar td:not(.p-datepicker-other-month) .tst-disabled"));
-        assertTrue(days.isEmpty(), days.toString());
-    }
-
-    private void assertDisabledCalendarDate(DatePicker datePicker, String day) {
-        List<WebElement> days = datePicker.getPanel().findElements(
-                    By.cssSelector(".p-datepicker-calendar td:not(.p-datepicker-other-month) .tst-disabled"));
-        assertEquals(1, days.size(), days.toString());
-        assertEquals(day, days.get(0).getText());
-        assertTrue(days.get(0).getAttribute("class").contains("p-state-disabled"));
     }
 
     private void assertConfiguration(JSONObject cfg) {

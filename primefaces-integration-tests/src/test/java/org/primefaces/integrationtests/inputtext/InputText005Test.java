@@ -68,7 +68,7 @@ class InputText005Test extends AbstractPrimePageTest {
         assertEquals("", inputText.getValue());
 
         // Act - ChromeDriver cannot sendKeys non-BMP chars, so set the value via script
-        PrimeSelenium.executeScript("document.getElementById('form\\:bytes').value = 'four😀';");
+        PrimeSelenium.setHiddenInput(inputText.getInput(), "four😀");
         page.button.click();
 
         // Assert - "four" (4 bytes) + emoji (4 bytes) = 8 bytes, maxlength 10 -> 2 remaining

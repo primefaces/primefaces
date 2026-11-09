@@ -50,7 +50,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadSingleFile(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act
@@ -71,7 +71,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadMultipleFiles(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act
@@ -96,7 +96,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadMultipleFilesTwice(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act
@@ -136,7 +136,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadCancel(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act
@@ -160,7 +160,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act
@@ -199,7 +199,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act
@@ -220,7 +220,7 @@ class FileUpload009Test extends AbstractFileUploadTest {
     void advancedMultipleUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
         assertEquals("", fileUpload.getValue());
 
         // Act

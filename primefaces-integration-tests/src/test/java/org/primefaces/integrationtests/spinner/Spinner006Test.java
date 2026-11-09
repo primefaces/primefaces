@@ -27,7 +27,6 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Spinner;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +48,7 @@ public class Spinner006Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "12345");
+        spinner.type("12345");
         page.button.click();
 
         // Assert
@@ -67,7 +66,7 @@ public class Spinner006Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "5,678.90");
+        spinner.type("5,678.90");
         page.button.click();
 
         // Assert
@@ -85,11 +84,6 @@ public class Spinner006Test extends AbstractPrimePageTest {
 
     private void assertOutputLabel(Page page, String value) {
         assertEquals(value, page.output.getText());
-    }
-
-    public void sendKeys(Spinner spinner, CharSequence value) {
-        WebElement input = spinner.getInput();
-        ComponentUtils.sendKeys(input, value);
     }
 
     public static class Page extends AbstractPrimePage {

@@ -25,11 +25,9 @@ package org.primefaces.integrationtests.selectmanymenu;
 
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectManyMenu;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,15 +56,15 @@ class SelectManyMenu004Test extends AbstractSelectManyMenuTest {
         // Arrange
         assertSelected(page.selectManyMenu, Arrays.asList("Max", "Charles"));
         assertEquals("2 items selected", page.footer.getText());
-        assertFalse(PrimeSelenium.hasCssClass(page.toggler, "p-state-active"));
+        assertFalse(page.selectManyMenu.isAllSelected());
 
         // Act
-        page.toggler.click();
+        page.selectManyMenu.toggleAll();
 
         // Assert
         assertSelected(page.selectManyMenu, allDrivers);
         assertEquals(allDrivers.size() + " items selected", page.footer.getText());
-        assertTrue(PrimeSelenium.hasCssClass(page.toggler, "p-state-active"));
+        assertTrue(page.selectManyMenu.isAllSelected());
 
         // Act
         page.button.click();
@@ -75,15 +73,15 @@ class SelectManyMenu004Test extends AbstractSelectManyMenuTest {
         assertSelected(page.selectManyMenu, allDrivers);
         assertEquals(String.join(",", allDrivers), page.messages.getMessage(0).getDetail());
         assertEquals(allDrivers.size() + " items selected", page.footer.getText());
-        assertTrue(PrimeSelenium.hasCssClass(page.toggler, "p-state-active"));
+        assertTrue(page.selectManyMenu.isAllSelected());
 
         // Act
-        page.toggler.click();
+        page.selectManyMenu.toggleAll();
 
         // Assert
         assertSelected(page.selectManyMenu, Arrays.asList());
         assertEquals("No selected item", page.footer.getText());
-        assertFalse(PrimeSelenium.hasCssClass(page.toggler, "p-state-active"));
+        assertFalse(page.selectManyMenu.isAllSelected());
 
         // Act
         page.button.click();
@@ -98,17 +96,17 @@ class SelectManyMenu004Test extends AbstractSelectManyMenuTest {
     @DisplayName("SelectManyMenu: GitHub #12798 showToggleAll only applies to the filtered items")
     void toggleAllWithFilter(Page page) {
         // Act
-        ComponentUtils.sendKeys(page.selectManyMenu.getFilterInput(), "Lan");
+        page.selectManyMenu.filter("Lan");
 
         // Assert
-        assertFalse(PrimeSelenium.hasCssClass(page.toggler, "p-state-active"));
+        assertFalse(page.selectManyMenu.isAllSelected());
 
         // Act
-        page.toggler.click();
+        page.selectManyMenu.toggleAll();
 
         // Assert
         assertEquals("3 items selected", page.footer.getText());
-        assertTrue(PrimeSelenium.hasCssClass(page.toggler, "p-state-active"));
+        assertTrue(page.selectManyMenu.isAllSelected());
 
         // Act
         page.button.click();
@@ -125,9 +123,6 @@ class SelectManyMenu004Test extends AbstractSelectManyMenuTest {
 
         @FindBy(id = "form:selectmanymenu")
         SelectManyMenu selectManyMenu;
-
-        @FindBy(css = ".p-selectmanymenu-header .p-chkbox-box")
-        WebElement toggler;
 
         @FindBy(css = ".p-selectmanymenu-footer")
         WebElement footer;

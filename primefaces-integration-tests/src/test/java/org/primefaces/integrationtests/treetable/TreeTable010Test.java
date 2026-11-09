@@ -37,7 +37,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,17 +78,17 @@ class TreeTable010Test extends AbstractTreeTableTest {
     void checkboxSelectionDoesNotPropagateToUnselectableNode(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        assertFalse(isSelected(treeTable, UNSELECTABLE_CHILD));
+        assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isSelected());
 
         // Act - select the parent of the non-selectable node
-        selectCheckbox(treeTable, PARENT);
+        treeTable.getRow(PARENT).toggleCheckbox();
 
         // Assert - visually the non-selectable node must stay unselected, its selectable siblings must not
-        assertTrue(isSelected(treeTable, PARENT));
-        assertTrue(isSelected(treeTable, SELECTABLE_CHILD));
-        assertTrue(isSelected(treeTable, OTHER_SELECTABLE_CHILD));
-        assertFalse(isSelected(treeTable, UNSELECTABLE_CHILD));
-        assertFalse(isChecked(treeTable, UNSELECTABLE_CHILD));
+        assertTrue(treeTable.getRow(PARENT).isSelected());
+        assertTrue(treeTable.getRow(SELECTABLE_CHILD).isSelected());
+        assertTrue(treeTable.getRow(OTHER_SELECTABLE_CHILD).isSelected());
+        assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isSelected());
+        assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isChecked());
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
@@ -98,7 +97,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
     @DisplayName("TreeTable: GitHub #14798 a non-selectable child node must not be submitted as selected")
     void unselectableNodeIsNotSubmitted(Page page) {
         // Arrange
-        selectCheckbox(page.treeTable, PARENT);
+        page.treeTable.getRow(PARENT).toggleCheckbox();
 
         // Act
         page.showSelected.click();
@@ -117,17 +116,17 @@ class TreeTable010Test extends AbstractTreeTableTest {
     void recheckingChildSelectsParent(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        selectCheckbox(treeTable, PARENT);
+        treeTable.getRow(PARENT).toggleCheckbox();
 
         // Act - uncheck and re-check a selectable child
-        unselectCheckbox(treeTable, OTHER_SELECTABLE_CHILD);
-        assertTrue(isPartialSelected(treeTable, PARENT));
-        selectCheckbox(treeTable, OTHER_SELECTABLE_CHILD);
+        treeTable.getRow(OTHER_SELECTABLE_CHILD).toggleCheckbox();
+        assertTrue(treeTable.getRow(PARENT).isPartialSelected());
+        treeTable.getRow(OTHER_SELECTABLE_CHILD).toggleCheckbox();
 
         // Assert - all selectable children are selected again, so the parent must be fully selected
-        assertTrue(isSelected(treeTable, PARENT));
-        assertFalse(isPartialSelected(treeTable, PARENT));
-        assertFalse(isSelected(treeTable, UNSELECTABLE_CHILD));
+        assertTrue(treeTable.getRow(PARENT).isSelected());
+        assertFalse(treeTable.getRow(PARENT).isPartialSelected());
+        assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isSelected());
 
         page.showSelected.click();
         String selected = page.messages.getMessage(0).getDetail();
@@ -142,16 +141,16 @@ class TreeTable010Test extends AbstractTreeTableTest {
     void uncheckingParentUnselectsChildren(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        selectCheckbox(treeTable, PARENT);
+        treeTable.getRow(PARENT).toggleCheckbox();
 
         // Act
-        unselectCheckbox(treeTable, PARENT);
+        treeTable.getRow(PARENT).toggleCheckbox();
 
         // Assert
-        assertFalse(isSelected(treeTable, PARENT));
-        assertFalse(isSelected(treeTable, SELECTABLE_CHILD));
-        assertFalse(isSelected(treeTable, OTHER_SELECTABLE_CHILD));
-        assertFalse(isSelected(treeTable, UNSELECTABLE_CHILD));
+        assertFalse(treeTable.getRow(PARENT).isSelected());
+        assertFalse(treeTable.getRow(SELECTABLE_CHILD).isSelected());
+        assertFalse(treeTable.getRow(OTHER_SELECTABLE_CHILD).isSelected());
+        assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isSelected());
 
         page.showSelected.click();
         // only the preselected non-selectable nodes of the other folders are left
@@ -165,18 +164,18 @@ class TreeTable010Test extends AbstractTreeTableTest {
     void preselectedUnselectableNodeKeepsSelection(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        assertTrue(isSelected(treeTable, PRESELECTED_UNSELECTABLE_CHILD));
+        assertTrue(treeTable.getRow(PRESELECTED_UNSELECTABLE_CHILD).isSelected());
 
         // Act - check and uncheck its parent
-        selectCheckbox(treeTable, LEGACY_PARENT);
-        assertTrue(isSelected(treeTable, LEGACY_SELECTABLE_CHILD));
-        unselectCheckbox(treeTable, LEGACY_PARENT);
+        treeTable.getRow(LEGACY_PARENT).toggleCheckbox();
+        assertTrue(treeTable.getRow(LEGACY_SELECTABLE_CHILD).isSelected());
+        treeTable.getRow(LEGACY_PARENT).toggleCheckbox();
 
         // Assert - screen and submitted selection must agree: the non-selectable node is untouched
-        assertFalse(isSelected(treeTable, LEGACY_PARENT));
-        assertFalse(isSelected(treeTable, LEGACY_SELECTABLE_CHILD));
-        assertTrue(isSelected(treeTable, PRESELECTED_UNSELECTABLE_CHILD));
-        assertTrue(isChecked(treeTable, PRESELECTED_UNSELECTABLE_CHILD));
+        assertFalse(treeTable.getRow(LEGACY_PARENT).isSelected());
+        assertFalse(treeTable.getRow(LEGACY_SELECTABLE_CHILD).isSelected());
+        assertTrue(treeTable.getRow(PRESELECTED_UNSELECTABLE_CHILD).isSelected());
+        assertTrue(treeTable.getRow(PRESELECTED_UNSELECTABLE_CHILD).isChecked());
 
         page.showSelected.click();
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
@@ -191,18 +190,18 @@ class TreeTable010Test extends AbstractTreeTableTest {
         TreeTable treeTable = page.treeTable;
 
         // Act & Assert - "Archive" only has the non-selectable "Locked", so toggling "old.app" must not change it
-        selectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
-        assertTrue(isSelected(treeTable, ARCHIVE_GRANDCHILD));
-        assertFalse(isSelected(treeTable, ARCHIVE));
-        assertFalse(isPartialSelected(treeTable, ARCHIVE));
-        assertFalse(isSelected(treeTable, ARCHIVE_UNSELECTABLE_CHILD));
+        treeTable.getRow(ARCHIVE_GRANDCHILD).toggleCheckbox();
+        assertTrue(treeTable.getRow(ARCHIVE_GRANDCHILD).isSelected());
+        assertFalse(treeTable.getRow(ARCHIVE).isSelected());
+        assertFalse(treeTable.getRow(ARCHIVE).isPartialSelected());
+        assertFalse(treeTable.getRow(ARCHIVE_UNSELECTABLE_CHILD).isSelected());
 
-        unselectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
-        assertFalse(isSelected(treeTable, ARCHIVE_GRANDCHILD));
-        assertFalse(isSelected(treeTable, ARCHIVE));
-        assertFalse(isPartialSelected(treeTable, ARCHIVE));
+        treeTable.getRow(ARCHIVE_GRANDCHILD).toggleCheckbox();
+        assertFalse(treeTable.getRow(ARCHIVE_GRANDCHILD).isSelected());
+        assertFalse(treeTable.getRow(ARCHIVE).isSelected());
+        assertFalse(treeTable.getRow(ARCHIVE).isPartialSelected());
 
-        selectCheckbox(treeTable, ARCHIVE_GRANDCHILD);
+        treeTable.getRow(ARCHIVE_GRANDCHILD).toggleCheckbox();
         page.showSelected.click();
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app", "old.app");
         assertConfiguration(page.treeTable.getWidgetConfiguration());
@@ -214,11 +213,11 @@ class TreeTable010Test extends AbstractTreeTableTest {
     void collapsedPreselectedUnselectableNodeKeepsSelection(Page page) {
         // Arrange - the children of "Backup" are not rendered
         TreeTable treeTable = page.treeTable;
-        assertTrue(treeTable.findElements(By.id(treeTable.getId() + "_node_" + BACKUP + "_0")).isEmpty());
+        assertFalse(treeTable.hasRow(BACKUP + "_0"));
 
         // Act
-        selectCheckbox(treeTable, BACKUP);
-        unselectCheckbox(treeTable, BACKUP);
+        treeTable.getRow(BACKUP).toggleCheckbox();
+        treeTable.getRow(BACKUP).toggleCheckbox();
 
         // Assert
         page.showSelected.click();
@@ -247,18 +246,18 @@ class TreeTable010Test extends AbstractTreeTableTest {
     void uncheckedChildOfPreselectedUnselectableNodeStaysUnselected(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        assertTrue(isSelected(treeTable, SHARED));
-        assertTrue(isSelected(treeTable, SHARED_CHILD));
+        assertTrue(treeTable.getRow(SHARED).isSelected());
+        assertTrue(treeTable.getRow(SHARED_CHILD).isSelected());
 
         // Act - uncheck the child, then re-render the tree from the model
-        unselectCheckbox(treeTable, SHARED_CHILD);
+        treeTable.getRow(SHARED_CHILD).toggleCheckbox();
         page.showSelected.click();
 
         // Assert - the server must not propagate the kept selection of "Shared" down into its child again
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared");
-        assertTrue(isSelected(page.treeTable, SHARED));
-        assertFalse(isSelected(page.treeTable, SHARED_CHILD));
-        assertFalse(isChecked(page.treeTable, SHARED_CHILD));
+        assertTrue(page.treeTable.getRow(SHARED).isSelected());
+        assertFalse(page.treeTable.getRow(SHARED_CHILD).isSelected());
+        assertFalse(page.treeTable.getRow(SHARED_CHILD).isChecked());
         assertConfiguration(page.treeTable.getWidgetConfiguration());
     }
 
@@ -268,10 +267,9 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertEquals(Set.of(expected), selected);
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("ttWidget", cfg.getString("widgetVar"));
+    @Override
+    protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "ttWidget");
         assertEquals("checkbox", cfg.getString("selectionMode"));
     }
 

@@ -51,6 +51,7 @@ class AutoComplete009Test extends AbstractPrimePageTest {
 
         // Act - submit (queued behind the search) and type again before it is sent
         page.button.clickUnguarded();
+        // look the input up again, the queued requests may have re-rendered it
         getWebDriver().findElement(By.id("form:autocomplete_input")).sendKeys("x");
         waitForQueue();
 
@@ -65,8 +66,8 @@ class AutoComplete009Test extends AbstractPrimePageTest {
     void forceSelectionSubmitsSelectedItem(Page page) {
         // Arrange
         page.autoComplete.setValueWithoutTab("b");
-        page.autoComplete.wait4Panel();
-        page.autoComplete.getPanel().findElement(By.cssSelector(".p-autocomplete-item")).click();
+        PrimeSelenium.waitAjax().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.autoComplete.getPanel()));
+        page.autoComplete.getItemElements().get(0).click();
 
         // Act
         page.button.click();
@@ -81,7 +82,7 @@ class AutoComplete009Test extends AbstractPrimePageTest {
     private void waitForQueue() {
         // let any pending search timer fire and the slow completeMethod finish
         PrimeSelenium.wait(1500);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitAjax().until(PrimeExpectedConditions.ajaxQueueEmpty());
     }
 
     public static class Page extends AbstractPrimePage {

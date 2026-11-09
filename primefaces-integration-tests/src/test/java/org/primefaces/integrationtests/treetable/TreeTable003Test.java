@@ -69,11 +69,10 @@ class TreeTable003Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
+    @Override
+    protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "wgtTreeTable");
         assertTrue(cfg.has("paginator"));
-        assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

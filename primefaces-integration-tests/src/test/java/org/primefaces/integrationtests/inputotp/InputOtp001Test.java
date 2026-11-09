@@ -96,7 +96,7 @@ class InputOtp001Test extends AbstractPrimePageTest {
         assertTrue(summary.startsWith("OTP:"), summary);
         assertTrue(summary.contains("'4'"), summary);
         assertEquals("", page.code.getText());
-        assertTrue(otp.getAttribute("class").contains("p-state-error"));
+        assertTrue(otp.isInvalid());
         assertConfiguration(otp.getWidgetConfiguration());
     }
 

@@ -33,7 +33,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -98,8 +97,8 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
         selectOneRadio.disable();
 
         // Assert
-        for (WebElement radioButton : selectOneRadio.getRadioButtons()) {
-            assertNotClickable(radioButton.findElement(By.className("p-radiobutton-box")));
+        for (int i = 0; i < selectOneRadio.getItemsSize(); i++) {
+            assertNotClickable(selectOneRadio.getRadioButtonBox(i));
         }
         assertConfiguration(selectOneRadio.getWidgetConfiguration());
     }
@@ -117,8 +116,8 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
         selectOneRadio.enable();
 
         // Assert
-        for (WebElement radioButton : selectOneRadio.getRadioButtons()) {
-            assertClickable(radioButton.findElement(By.className("p-radiobutton-box")));
+        for (int i = 0; i < selectOneRadio.getItemsSize(); i++) {
+            assertClickable(selectOneRadio.getRadioButtonBox(i));
         }
         assertConfiguration(selectOneRadio.getWidgetConfiguration());
     }

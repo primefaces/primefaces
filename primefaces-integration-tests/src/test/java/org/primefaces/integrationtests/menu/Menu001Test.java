@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.menu;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Menu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -124,7 +125,7 @@ class Menu001Test extends AbstractPrimePageTest {
         WebElement input;
 
         @FindBy(id = "form:menu")
-        WebElement menu;
+        Menu menu;
 
         WebElement getMenuLink(String menuitemId) {
             return menu.findElement(By.id(menuitemId));

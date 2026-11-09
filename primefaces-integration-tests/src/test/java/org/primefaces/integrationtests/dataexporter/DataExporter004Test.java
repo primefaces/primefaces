@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.dataexporter;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.TreeTable;
 
@@ -35,7 +34,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -90,7 +88,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
     @DisplayName("TreeTable Exporter: GitHub #13590 selectionOnly must export the selected nodes, not the root node")
     void exportSelectionOnly(Page page) {
         // Arrange - checking "Cloud" selects it and its child "backup-1.zip"
-        PrimeSelenium.guardAjax(row(page, "1").findElement(By.cssSelector("div.p-chkbox-box"))).click();
+        page.treeTable.getRow("1").toggleCheckbox();
 
         // Act
         page.exportSelectionOnly.click();
@@ -182,10 +180,6 @@ class DataExporter004Test extends AbstractPrimePageTest {
 
     private List<String> csv(Page page) {
         return page.csv.getText().lines().map(String::trim).filter(l -> !l.isEmpty()).toList();
-    }
-
-    private WebElement row(Page page, String rowKey) {
-        return page.getWebDriver().findElement(By.id("form:treeTable_node_" + rowKey));
     }
 
     public static class Page extends AbstractPrimePage {

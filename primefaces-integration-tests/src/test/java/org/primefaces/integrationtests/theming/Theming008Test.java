@@ -65,8 +65,9 @@ class Theming008Test extends AbstractThemingTest {
     @DisplayName("Theming: toggleSwitch handle moves with --p-transition-easing and --p-toggleswitch-slide-duration")
     void easing(Page page) {
         // Arrange
-        // the theme transitions stay enabled here (setColorScheme would disable them)
+        // the theme transitions stay enabled here (setColorScheme and PrimeFaces Selenium would disable them)
         removeApplicationStyle("theming-test-no-transitions");
+        removeApplicationStyle("pfselenium-disable-transitions");
 
         // Act
         List<String> transition = PrimeSelenium.executeScript(TRANSITION_SCRIPT, page.handle, "transform");
@@ -98,8 +99,9 @@ class Theming008Test extends AbstractThemingTest {
     @DisplayName("Theming: prefers-reduced-motion reduces --p-transition-duration and the toggleSwitch handle transition")
     void reducedMotion(Page page) {
         // Arrange
-        // the theme transitions stay enabled here (setColorScheme would disable them)
+        // the theme transitions stay enabled here (setColorScheme and PrimeFaces Selenium would disable them)
         removeApplicationStyle("theming-test-no-transitions");
+        removeApplicationStyle("pfselenium-disable-transitions");
         HasCdp cdp = cdp();
         Assumptions.assumeTrue(cdp != null, "the browser cannot emulate prefers-reduced-motion (no Chrome DevTools Protocol)");
 

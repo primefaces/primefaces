@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.selectoneradio;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneRadio;
 
@@ -33,8 +34,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -53,10 +52,8 @@ class SelectOneRadio006Test extends AbstractPrimePageTest {
         assertEquals("One", selectOneRadio.getSelectedLabel());
 
         // Act
-        WebDriver webDriver = getWebDriver();
-        WebElement optionTwo = webDriver.findElement(By.cssSelector("input[value='two']"));
-        JavascriptExecutor jse = (JavascriptExecutor) webDriver;
-        jse.executeScript("arguments[0].value='three-disabled';", optionTwo);
+        WebElement optionTwo = getWebDriver().findElement(By.cssSelector("input[value='two']"));
+        PrimeSelenium.setHiddenInput(optionTwo, "three-disabled");
         selectOneRadio.select("Two");
 
         page.submit.click();

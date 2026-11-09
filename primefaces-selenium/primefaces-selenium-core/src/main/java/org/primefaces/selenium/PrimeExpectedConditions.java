@@ -99,6 +99,26 @@ public final class PrimeExpectedConditions {
         };
     }
 
+    /**
+     * Waits until the element is the document's active (focused) element.
+     *
+     * @param element the element expected to have focus
+     * @return the condition
+     */
+    public static ExpectedCondition<Boolean> elementFocused(WebElement element) {
+        return new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                return (Boolean) ((JavascriptExecutor) driver).executeScript("return document.activeElement === arguments[0];", element);
+            }
+
+            @Override
+            public String toString() {
+                return "is " + element + " focused";
+            }
+        };
+    }
+
     public static ExpectedCondition<Boolean> fileExists(String path) {
         return new ExpectedCondition<Boolean>() {
             @Override

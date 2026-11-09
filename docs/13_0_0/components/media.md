@@ -27,6 +27,7 @@ height | null | String | Height of the player.
 style | null | String | Style of the player.
 styleClass | null | String | StyleClass of the player.
 cache | true | Boolean | Controls browser caching mode of the resource.
+title | null | String | Advisory information, rendered as title of the object element and used as its accessible name.
 
 ## Getting started with Media
 In its simplest form media component requires a source to play;
@@ -59,6 +60,20 @@ using f:param tags.
 ```xhtml
 <p:media value="/media/ria_with_primefaces.mov">
     <f:param name="param1" value="value1" />
+</p:media>
+```
+
+## Accessibility
+Media is rendered as an `object` element. `title` gives it an accessible name, the `fallback` facet is rendered inside
+the `object` and shown when the media cannot be displayed (e.g. no PDF viewer), typically with a download link.
+Children (other than `f:param`) are rendered inside the `object` as well, so the fallback content can also be added
+directly as children, the facet is rendered after them.
+
+```xhtml
+<p:media value="#{bean.pdf}" player="pdf" title="Annual Report 2025" width="100%" height="500px">
+    <f:facet name="fallback">
+        <p>This PDF cannot be displayed. <h:outputLink value="#{bean.pdfUrl}">Download Annual Report 2025</h:outputLink></p>
+    </f:facet>
 </p:media>
 ```
 

@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage.ProgrammingLanguageType;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
@@ -39,10 +38,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -88,8 +85,7 @@ class DataTable043Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
         dataTable.selectPage(1);
         dataTable.sort("Name");
-        Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("p-paginator-rpp-options")));
-        PrimeSelenium.guardAjax(selectRowsPerPage).selectByValue("2");
+        dataTable.selectRowsPerPage(2);
 
         // Act
         dataTable.filter("Name", "t");
@@ -122,7 +118,7 @@ class DataTable043Test extends AbstractDataTableTest {
         dataTable.sort("Name");
 
         // Act
-        filterGlobal(globalFilter, "Python");
+        dataTable.filterGlobal(globalFilter, "Python");
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Python");
@@ -143,7 +139,7 @@ class DataTable043Test extends AbstractDataTableTest {
 
         // Act
         page.buttonGlobalFilterOnly.click();
-        filterGlobal(globalFilter, ProgrammingLanguageType.INTERPRETED.name());
+        dataTable.filterGlobal(globalFilter, ProgrammingLanguageType.INTERPRETED.name());
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);

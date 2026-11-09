@@ -31,7 +31,6 @@ import org.primefaces.selenium.component.TextEditor;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -43,7 +42,7 @@ class TextEditor004Test extends AbstractPrimePageTest {
     void noChange(Page page) {
         // Arrange
         Messages messages = page.messages;
-        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
+        WebElement quillEditor = page.editor.getContentEditable();
 
         // Act
         quillEditor.sendKeys("Hello world");
@@ -58,7 +57,7 @@ class TextEditor004Test extends AbstractPrimePageTest {
         // Arrange
         Messages messages = page.messages;
         WebElement outside = page.outside;
-        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
+        WebElement quillEditor = page.editor.getContentEditable();
 
         // Act
         quillEditor.click();

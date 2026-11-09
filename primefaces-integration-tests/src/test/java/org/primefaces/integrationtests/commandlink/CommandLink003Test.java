@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.commandlink;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandLink;
 
@@ -46,15 +47,15 @@ class CommandLink003Test extends AbstractPrimePageTest {
         setAjaxMinLoadAnimation(500);
 
         // Act
-        page.link.click();
+        page.link.clickUnguarded(); // a guarded click returns after the request, the loading state may be over by then
 
         // Assert
         // tolerant approach for slow CI infrastructure
-        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(link, "p-state-loading"));
+        PrimeSelenium.waitGui().until(driver -> link.isLoading());
 
         // Wait out min Ajax loading animation
-        PrimeSelenium.wait(1000);
-        assertFalse(PrimeSelenium.hasCssClass(link, "p-state-loading"));
+        PrimeSelenium.waitAjax().until(driver -> !link.isLoading());
+        PrimeSelenium.waitAjax().until(PrimeExpectedConditions.ajaxQueueEmpty());
     }
 
     @Test
@@ -69,7 +70,7 @@ class CommandLink003Test extends AbstractPrimePageTest {
         page.link.click();
 
         // Assert
-        assertFalse(PrimeSelenium.hasCssClass(link, "p-state-loading"));
+        assertFalse(link.isLoading());
     }
 
     public static class Page extends AbstractPrimePage {

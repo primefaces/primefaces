@@ -38,7 +38,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -86,8 +85,7 @@ class DataTable012Test extends AbstractDataTableTest {
         assertRows(dataTable, langsSorted);
 
         // Act - descending
-        PrimeSelenium.guardAjax(Objects.requireNonNull(dataTable.getHeader().getCell("Name").orElse(null)).getWebElement()
-                    .findElement(By.className("p-column-title"))).click();
+        PrimeSelenium.guardAjax(Objects.requireNonNull(dataTable.getHeader().getCell("Name").orElse(null)).getColumnTitle()).click();
 
         // Assert - descending
         Collections.reverse(langsSorted);

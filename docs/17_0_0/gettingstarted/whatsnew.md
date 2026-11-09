@@ -29,6 +29,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * Row variants `p-rows-striped` (list and table mode), `p-rows-gridlines`, `p-rows-sm` and `p-rows-lg` (table mode with `p:column` children), set with `panelStyleClass` (AutoComplete, SelectOneMenu) or `styleClass` (SelectOneListbox, SelectManyMenu).
 * SelectManyMenu
     * Added `showToggleAll` property to display a checkbox that selects or unselects all items, and `showSelectionCount` property to display the number of selected items.
+* Media
+    * Added `title` property (accessible name of the `object` element) and `fallback` facet (content shown when the media cannot be displayed).
 * New components
     * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
     * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.

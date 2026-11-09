@@ -28,13 +28,11 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.OutputLabel;
 import org.primefaces.selenium.component.Spinner;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,7 +49,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "88");
+        spinner.type("88");
         page.button1.click();
 
         // Assert
@@ -72,7 +70,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "77");
+        spinner.type("77");
         page.button2.click();
 
         // Assert
@@ -92,7 +90,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
         assertEquals(null, spinner.getWidgetValue());
 
         // Act
-        sendKeys(spinner, "99");
+        spinner.type("99");
         page.button3.click();
 
         // Assert
@@ -112,11 +110,6 @@ public class Spinner007Test extends AbstractPrimePageTest {
 
     private void assertOutputLabel(OutputLabel outputLabel, String value) {
         assertEquals(value, outputLabel.getText());
-    }
-
-    public void sendKeys(Spinner spinner, CharSequence value) {
-        WebElement input = spinner.getInput();
-        ComponentUtils.sendKeys(input, value);
     }
 
     public static class Page extends AbstractPrimePage {

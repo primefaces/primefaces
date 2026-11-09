@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datepicker;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
@@ -38,7 +37,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -62,7 +60,8 @@ class DatePicker001Test extends AbstractDatePickerTest {
         datePicker.setValue(value);
 
         // Assert Panel
-        assertDate(datePicker.showPanel(), "February", "1978");
+        datePicker.showPanel();
+        assertDate(datePicker, "February", "1978");
 
         // Assert Submit Value
         page.button.click();
@@ -142,10 +141,9 @@ class DatePicker001Test extends AbstractDatePickerTest {
         datePicker.setValue(selectedDate);
 
         //Assert panel
-        String currentDayOfMonth = ((Integer) LocalDate.now().getDayOfMonth()).toString();
-        assertDay(datePicker, currentDayOfMonth, "p-state-highlight");
-        String selectedDayOfMonth = ((Integer) selectedDate.getDayOfMonth()).toString();
-        assertDay(datePicker, selectedDayOfMonth, "p-state-active");
+        datePicker.showPanel();
+        assertTrue(PrimeSelenium.hasCssClass(datePicker.getDay(LocalDate.now().getDayOfMonth()), "p-state-highlight"));
+        assertTrue(datePicker.isDaySelected(selectedDate.getDayOfMonth()));
     }
 
     @Test
@@ -257,13 +255,6 @@ class DatePicker001Test extends AbstractDatePickerTest {
         // Assert
         assertFalse(datePicker.getPanel().isDisplayed());
         assertNoJavascriptErrors();
-    }
-
-    private void assertDay(DatePicker datePicker, String day, String styleClass) {
-        PrimeSelenium.wait(100);
-        datePicker.showPanel();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementToBeClickable(datePicker.getPanel().findElement(By.linkText(day))));
-        assertTrue(PrimeSelenium.hasCssClass(datePicker.getPanel().findElement(By.linkText(day)), styleClass));
     }
 
     private void assertConfiguration(JSONObject cfg, String defaultDate) {

@@ -229,8 +229,4 @@ class DataTable026DatesTest extends AbstractDataTableTest {
             return "datatable/dataTable026Dates.xhtml";
         }
     }
-
-    private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
-        assertRows(dataTable, employees, Employee::getId);
-    }
 }

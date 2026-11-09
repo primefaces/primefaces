@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -45,8 +46,8 @@ public abstract class DataTable extends AbstractTable<Row> {
                         && !PrimeSelenium.hasCssClass(rowElt, "p-expanded-row-content"))
                 .map(rowElt -> {
                     List<Cell> cells = rowElt.findElements(By.cssSelector("td, th[role='rowheader']")).stream()
-                            .map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-                    return new Row(rowElt, cells);
+                            .map(cellElt -> new Cell(cellElt, this)).collect(Collectors.toList());
+                    return new Row(rowElt, cells, this);
                 }).collect(Collectors.toList());
     }
 
@@ -63,5 +64,19 @@ public abstract class DataTable extends AbstractTable<Row> {
     @Override
     public Row getRow(int index) {
         return getRows().get(index);
+    }
+
+    /**
+     * Is the table empty, i.e. does it show the empty message instead of rows?
+     *
+     * @return true if the empty message is shown
+     */
+    public boolean isEmpty() {
+        try {
+            return getRowsWebElement().stream().anyMatch(rowElt -> PrimeSelenium.hasCssClass(rowElt, "p-datatable-empty-message"));
+        }
+        catch (StaleElementReferenceException e) {
+            return false;
+        }
     }
 }

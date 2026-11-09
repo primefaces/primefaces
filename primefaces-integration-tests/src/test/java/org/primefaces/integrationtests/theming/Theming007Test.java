@@ -24,11 +24,12 @@
 package org.primefaces.integrationtests.theming;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.AutoComplete;
+import org.primefaces.selenium.component.Chips;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -48,7 +49,7 @@ class Theming007Test extends AbstractThemingTest {
     void chips(Page page) {
         // Arrange
         setColorScheme("light");
-        assertFalse(page.chips.findElements(By.cssSelector(".p-chips-token")).isEmpty(), "chips have no tokens");
+        assertFalse(page.chips.getChipTokens().isEmpty(), "chips have no tokens");
 
         // Assert
         assertActive("Chips", page.chips, page.chipsLabel, page.emptyChipsLabel);
@@ -61,7 +62,7 @@ class Theming007Test extends AbstractThemingTest {
     void autoComplete(Page page) {
         // Arrange
         setColorScheme("light");
-        assertFalse(page.autoComplete.findElements(By.cssSelector(".p-autocomplete-token")).isEmpty(), "autoComplete has no tokens");
+        assertFalse(page.autoComplete.getTokens().isEmpty(), "autoComplete has no tokens");
 
         // Assert
         assertActive("AutoComplete multiple", page.autoComplete, page.autoCompleteLabel, page.emptyChipsLabel);
@@ -74,7 +75,7 @@ class Theming007Test extends AbstractThemingTest {
     void empty(Page page) {
         // Arrange
         setColorScheme("light");
-        assertTrue(page.emptyChips.findElements(By.cssSelector(".p-chips-token")).isEmpty(), "empty chips have tokens");
+        assertTrue(page.emptyChips.getChipTokens().isEmpty(), "empty chips have tokens");
 
         // Assert: the control case, the label keeps the normal font size
         assertTokenValue("Empty chips label", page.emptyChipsLabel, "font-size", "--p-floatlabel-font-size");
@@ -94,19 +95,19 @@ class Theming007Test extends AbstractThemingTest {
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:chips")
-        WebElement chips;
+        Chips chips;
 
         @FindBy(id = "form:chipsLabel")
         WebElement chipsLabel;
 
         @FindBy(id = "form:autoComplete")
-        WebElement autoComplete;
+        AutoComplete autoComplete;
 
         @FindBy(id = "form:autoCompleteLabel")
         WebElement autoCompleteLabel;
 
         @FindBy(id = "form:emptyChips")
-        WebElement emptyChips;
+        Chips emptyChips;
 
         @FindBy(id = "form:emptyChipsLabel")
         WebElement emptyChipsLabel;

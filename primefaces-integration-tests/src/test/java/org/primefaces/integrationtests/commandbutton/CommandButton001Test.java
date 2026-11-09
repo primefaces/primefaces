@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.commandbutton;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 
@@ -46,15 +47,15 @@ public class CommandButton001Test extends AbstractPrimePageTest {
         setAjaxMinLoadAnimation(500);
 
         // Act
-        page.button.click();
+        page.button.clickUnguarded(); // a guarded click returns after the request, the loading state may be over by then
 
         // Assert
         // we use an approach which should be more tolerant when CI-infrastructure is slow
-        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(button, "p-state-loading"));
+        PrimeSelenium.waitGui().until(driver -> button.isLoading());
 
         // Wait out min Ajax loading animation
-        PrimeSelenium.wait(1000);
-        assertFalse(PrimeSelenium.hasCssClass(button, "p-state-loading"));
+        PrimeSelenium.waitAjax().until(driver -> !button.isLoading());
+        PrimeSelenium.waitAjax().until(PrimeExpectedConditions.ajaxQueueEmpty());
     }
 
     @Test
@@ -69,7 +70,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        assertFalse(PrimeSelenium.hasCssClass(button, "p-state-loading"));
+        assertFalse(button.isLoading());
     }
 
     public static class Page extends AbstractPrimePage {

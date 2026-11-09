@@ -35,7 +35,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -112,13 +111,7 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
         page.btnDestroy.click();
 
         // Assert
-        try {
-            overlayPanel.isDisplayed();
-            fail("OverlayPanel should have been unrendered.");
-        }
-        catch (NoSuchElementException ex) {
-            // overlay panel should be destroyed
-        }
+        assertNotPresent(overlayPanel);
     }
 
     @Test

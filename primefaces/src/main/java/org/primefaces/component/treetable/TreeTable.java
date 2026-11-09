@@ -52,10 +52,12 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
@@ -63,12 +65,9 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.ComponentSystemEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
-import jakarta.faces.event.PostRestoreStateEvent;
 
 @FacesComponent(value = TreeTable.COMPONENT_TYPE, namespace = TreeTable.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "TreeTable is is used for displaying hierarchical data in tabular format.")
@@ -121,7 +120,9 @@ public class TreeTable extends TreeTableBaseImpl {
     public static final String LARGE_SIZE_CLASS = "p-treetable-lg";
 
     private List<UIColumn> columns;
-    private List<String> filteredRowKeys = new ArrayList<>();
+    // the nodes passing the active filters, null if no filter is active; computed once per request
+    private Set<TreeNode<?>> filteredNodes;
+    private boolean filteredNodesComputed;
     private Map<PrimeClientBehaviorEventKeys, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     @Override
@@ -240,21 +241,6 @@ public class TreeTable extends TreeTableBaseImpl {
     }
 
     @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-
-        // restore "value" from "filteredValue"
-        if (event instanceof PostRestoreStateEvent
-                && isFilteringEnabled()
-                && this == event.getComponent()) {
-            TreeNode<?> filteredValue = getFilteredValue();
-            if (filteredValue != null) {
-                setValue(filteredValue);
-            }
-        }
-    }
-
-    @Override
     public void processDecodes(FacesContext context) {
         if (isToggleRequest(context)) {
             decode(context);
@@ -330,15 +316,9 @@ public class TreeTable extends TreeTableBaseImpl {
 
     @Override
     public Object saveState(FacesContext context) {
-        // reset value when filtering is enabled
-        // filtering stores the filtered values the value property, so it needs to be reset; see #7336
-        if (isFilteringEnabled()) {
-            setValue(null);
-        }
-
         // reset component for MyFaces view pooling
         columns = null;
-        filteredRowKeys = new ArrayList<>();
+        resetFilteredNodes();
 
         return super.saveState(context);
     }
@@ -346,13 +326,71 @@ public class TreeTable extends TreeTableBaseImpl {
     @Override
     public int getRowCount() {
         TreeNode<?> root = getValue();
-        if (root == null) {
+        if (root == null || root.getChildren() == null) {
             return (-1);
         }
-        else {
-            TreeNodeChildren<?> children = root.getChildren();
-            return children == null ? -1 : children.size();
+
+        return getVisibleChildren(root).size();
+    }
+
+    /**
+     * The nodes passing the active filters together with their ancestors (and descendants, unless pruned), computed
+     * once per request.
+     *
+     * @return the displayed nodes (unmodifiable), or {@code null} if no filter is active and all nodes are displayed
+     */
+    public Set<TreeNode<?>> getFilteredNodes() {
+        if (!filteredNodesComputed) {
+            // the filters are initialized before the first rendering, there is nothing to filter before
+            if (!isFilterByAsMapDefined()) {
+                return null;
+            }
+            TreeTableFeatures.filterFeature().filter(getFacesContext(), this, getValue(), false);
         }
+        return filteredNodes;
+    }
+
+    public void setFilteredNodes(Set<TreeNode<?>> filteredNodes) {
+        this.filteredNodes = filteredNodes == null ? null : Collections.unmodifiableSet(filteredNodes);
+        this.filteredNodesComputed = true;
+    }
+
+    /**
+     * Discards the filtered nodes, so that the filters are applied again when the nodes are needed next.
+     */
+    public void resetFilteredNodes() {
+        this.filteredNodes = null;
+        this.filteredNodesComputed = false;
+    }
+
+    @Override
+    protected boolean isNodeVisible(TreeNode<?> node) {
+        Set<TreeNode<?>> nodes = getFilteredNodes();
+        return nodes == null || nodes.contains(node);
+    }
+
+    /**
+     * @param node the parent node
+     * @return the children of the given node which are displayed, i.e. not hidden by a filter
+     */
+    public List<TreeNode<?>> getVisibleChildren(TreeNode<?> node) {
+        List<? extends TreeNode<?>> children = node.getChildren();
+        if (children == null) {
+            return Collections.emptyList();
+        }
+
+        Set<TreeNode<?>> nodes = getFilteredNodes();
+        if (nodes == null) {
+            return Collections.unmodifiableList(children);
+        }
+
+        List<TreeNode<?>> visibleChildren = new ArrayList<>();
+        for (TreeNode<?> child : children) {
+            if (nodes.contains(child)) {
+                visibleChildren.add(child);
+            }
+        }
+        return visibleChildren;
     }
 
     @Override
@@ -435,25 +473,6 @@ public class TreeTable extends TreeTableBaseImpl {
         }
     }
 
-    public void updateFilteredValue(FacesContext context, TreeNode<?> node) {
-        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-
-        if (ve != null) {
-            ve.setValue(context.getELContext(), node);
-        }
-        else {
-            setFilteredValue(node);
-        }
-    }
-
-    public List<String> getFilteredRowKeys() {
-        return filteredRowKeys;
-    }
-
-    public void setFilteredRowKeys(List<String> filteredRowKeys) {
-        this.filteredRowKeys = filteredRowKeys;
-    }
-
     @Override
     protected boolean requiresColumns() {
         return true;
@@ -497,7 +516,7 @@ public class TreeTable extends TreeTableBaseImpl {
 
     public void reset() {
         setValue(null);
-        setFilteredValue(null);
+        resetFilteredNodes();
         setFirst(0);
         setSortByAsMap(null);
         setFilterByAsMap(null);
@@ -568,13 +587,13 @@ public class TreeTable extends TreeTableBaseImpl {
     }
 
     /**
-     * Recalculates filteredValue after adding, updating or removing TreeNodes to/from a filtered TreeTable.
+     * Applies the filters and the sorting again after adding, updating or removing TreeNodes to/from a filtered TreeTable.
      */
     @Override
     public void filterAndSort() {
-        setValue(null);
-        TreeTableFeatures.filterFeature().filter(FacesContext.getCurrentInstance(), this, getValue());
-        TreeTableFeatures.sortFeature().sort(FacesContext.getCurrentInstance(), this);
+        FacesContext context = getFacesContext();
+        TreeTableFeatures.filterFeature().filter(context, this, getValue(), false);
+        TreeTableFeatures.sortFeature().sort(context, this);
     }
 
     public boolean shouldEncodeFeature(FacesContext context) {
@@ -602,17 +621,18 @@ public class TreeTable extends TreeTableBaseImpl {
 
                 processColumnChildren(context, phaseId, root, rowKey);
 
+                // the page is a slice of the displayed children, the rowKey is built from the index of all children
                 TreeNodeChildren<?> children = root.getChildren();
-                int childCount = root.getChildCount();
-                int last = (first + rows);
-                if (last > childCount) {
-                    last = childCount;
-                }
-
-                for (int i = first; i < last; i++) {
+                int last = first + rows;
+                int visibleIndex = 0;
+                for (int i = 0; i < children.size() && visibleIndex < last; i++) {
                     TreeNode<?> child = children.get(i);
-                    String childRowKey = childRowKey(rowKey, i);
-                    processNode(context, phaseId, root, child, childRowKey);
+                    if (isNodeVisible(child)) {
+                        if (visibleIndex >= first) {
+                            processNode(context, phaseId, root, child, childRowKey(rowKey, i));
+                        }
+                        visibleIndex++;
+                    }
                 }
             }
         }

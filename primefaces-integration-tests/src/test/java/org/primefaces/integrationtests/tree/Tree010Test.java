@@ -33,7 +33,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,10 +46,10 @@ class Tree010Test extends AbstractTreeTest {
     @DisplayName("Tree: GitHub #14798 horizontal checkbox selection must not propagate to a non-selectable child node")
     void horizontalCheckboxSelectionDoesNotPropagateToUnselectableNode(Page page) {
         // Arrange - the selenium TreeNode only resolves the children of a vertical tree, so use the rowKeys
-        TreeNode documents = node(page.horizontalTree, "0");
-        TreeNode workDoc = node(page.horizontalTree, "0_0");
-        TreeNode privateDoc = node(page.horizontalTree, "0_1");
-        TreeNode resumeDoc = node(page.horizontalTree, "0_2");
+        TreeNode documents = page.horizontalTree.getNode("0");
+        TreeNode workDoc = page.horizontalTree.getNode("0_0");
+        TreeNode privateDoc = page.horizontalTree.getNode("0_1");
+        TreeNode resumeDoc = page.horizontalTree.getNode("0_2");
 
         // Act
         documents.select();
@@ -80,9 +79,9 @@ class Tree010Test extends AbstractTreeTest {
     @DisplayName("Tree: GitHub #14798 horizontal parent without selectable children must not be selected by a grandchild")
     void horizontalParentWithoutSelectableChildrenKeepsState(Page page) {
         // Arrange - "Archive" only has the non-selectable "Locked"
-        TreeNode archive = node(page.horizontalTree, "1");
-        TreeNode locked = node(page.horizontalTree, "1_0");
-        TreeNode oldDoc = node(page.horizontalTree, "1_0_0");
+        TreeNode archive = page.horizontalTree.getNode("1");
+        TreeNode locked = page.horizontalTree.getNode("1_0");
+        TreeNode oldDoc = page.horizontalTree.getNode("1_0_0");
 
         // Act & Assert
         oldDoc.select();
@@ -128,7 +127,7 @@ class Tree010Test extends AbstractTreeTest {
     void dynamicCollapsedPreselectedUnselectableNodeKeepsSelection(Page page) {
         // Arrange - the children of the collapsed "Backup" are not rendered
         TreeNode backup = page.dynamicTree.getChildren().get(2);
-        assertTrue(page.dynamicTree.findElements(By.cssSelector(".p-treenode[data-rowkey='2_0']")).isEmpty());
+        assertFalse(page.dynamicTree.hasNode("2_0"));
 
         // Act
         backup.select();
@@ -141,10 +140,6 @@ class Tree010Test extends AbstractTreeTest {
         page.showSelected.click();
         assertEquals("snapshot.doc", page.messages.getMessage(1).getDetail());
         assertCheckboxConfiguration(page.dynamicTree.getWidgetConfiguration(), "dynamicTreeWidget");
-    }
-
-    private TreeNode node(Tree tree, String rowKey) {
-        return new TreeNode(tree, rowKey, null);
     }
 
     private void assertCheckboxConfiguration(JSONObject cfg, String widgetVar) {

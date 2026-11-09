@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:fileUpload}.
@@ -93,7 +95,7 @@ public abstract class FileUpload extends AbstractInputComponent {
                             runnable,
                             200,
                             ConfigProvider.getInstance().getTimeoutFileUpload(),
-                            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+                            uploadFinished());
 
                     guarded.run();
                 }
@@ -144,9 +146,21 @@ public abstract class FileUpload extends AbstractInputComponent {
             element,
             200,
             ConfigProvider.getInstance().getTimeoutFileUpload(),
-            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+            uploadFinished());
 
         return guarded;
+    }
+
+    /**
+     * Waits until all files are uploaded and the requests started afterwards (e.g. an update via {@code oncomplete}) completed.
+     *
+     * @return the condition
+     */
+    private ExpectedCondition<Boolean> uploadFinished() {
+        return ExpectedConditions.and(
+                PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"),
+                PrimeExpectedConditions.ajaxQueueEmpty(),
+                PrimeExpectedConditions.animationNotActive());
     }
 
     /**

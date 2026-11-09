@@ -36,15 +36,11 @@ import org.primefaces.selenium.component.model.treetable.Row;
 import java.util.Comparator;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -212,7 +208,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         treeTable.sort("Name");
 
         // Act (filter on L3)
-        filterGlobal(page.globalFilter, "mobi");
+        treeTable.filterGlobal("mobi");
 
         // Assert
         // we try to avoid duplicating logic from TreeTableRenderer#filter, so we take the simple/stupid way
@@ -227,7 +223,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertEquals(3, rows.get(2).getLevel());
 
         // Act (filter on L1)
-        filterGlobal(page.globalFilter, "down");
+        treeTable.filterGlobal("down");
         treeTable.getRow(0).toggle();
 
         // Assert
@@ -316,9 +312,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
 
         // Act
         PrimeSelenium.guardAjax(treeTable.getRow(0).getCell(1).getWebElement()).click(); //select
-        Actions actions = new Actions(page.getWebDriver());
-        Action actionUnselect = actions.keyDown(Keys.META).click(treeTable.getRow(0).getCell(1).getWebElement()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        treeTable.getRow(0).toggleSelection(); //unselect
 
         // Assert
         assertMessage(page.messages, 0, "unselect-event", "Applications");
@@ -380,12 +374,6 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
 
         assertConfiguration(treeTable.getWidgetConfiguration());
-    }
-
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

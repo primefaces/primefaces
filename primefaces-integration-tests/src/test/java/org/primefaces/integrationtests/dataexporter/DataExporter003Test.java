@@ -24,12 +24,9 @@
 package org.primefaces.integrationtests.dataexporter;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.jupiter.api.DisplayName;
@@ -49,18 +46,11 @@ class DataExporter003Test extends AbstractDataExporterTest {
     @Tag("FirefoxExclude")
     void xml(Page page) throws IOException {
         // Arrange
-        final String actualFileName = getActualFile("languages-custom-tags.xml");
-        File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
         assertEquals(3, dataTable.getRows().size());
 
-        // Act
-        page.buttonXml.click();
-
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.fileExists(actualFileName));
-        File expected = getExpectedFile(actual.getName());
-        assertFileEquals(expected, actual, "Expected XML files to match but they did not!");
+        // Act & Assert
+        assertDownload("languages-custom-tags.xml", page.buttonXml);
     }
 
 

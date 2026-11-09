@@ -109,7 +109,7 @@ class FileUpload001Test extends AbstractFileUploadTest {
         File file = locateClientSideFile("file3.csv");
         fileUpload.setValue(file);
         page.button.click();
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
@@ -132,7 +132,7 @@ class FileUpload001Test extends AbstractFileUploadTest {
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file);
         page.button.click();
-        wait4EmptyMesssage(page.uploadedFiles);
+        wait4EmptyMessage(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();

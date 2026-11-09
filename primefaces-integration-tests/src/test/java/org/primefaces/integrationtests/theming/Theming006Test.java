@@ -34,7 +34,6 @@ import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -93,7 +92,7 @@ class Theming006Test extends AbstractThemingTest {
 
         // Assert: one ul per group with the group header and its options
         assertLists("grouped", page.grouped, 2, 6);
-        assertEquals(2, page.grouped.getItems().findElements(By.cssSelector(".p-selectonemenu-item-group")).size());
+        assertEquals(2, page.grouped.getItemGroupElements().size());
         page.grouped.hide();
         assertNoJavascriptErrors();
     }

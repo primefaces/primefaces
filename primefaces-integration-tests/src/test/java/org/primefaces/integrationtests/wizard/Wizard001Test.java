@@ -25,8 +25,9 @@ package org.primefaces.integrationtests.wizard;
 
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Wizard;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +37,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,13 +52,13 @@ class Wizard001Test extends AbstractPrimePageTest {
         assertSteps(initial, highlight);
 
         // Act
-        click("form:wizard_next");
+        wizard().next();
 
         // Assert
         assertSteps(initial + 1, highlight);
-        click("form:refresh");
+        refresh();
         assertSteps(initial + 1, highlight);
-        click("form:wizard_back");
+        wizard().back();
         assertSteps(initial, highlight);
         assertNoJavascriptErrors();
     }
@@ -80,9 +80,10 @@ class Wizard001Test extends AbstractPrimePageTest {
         // Arrange
         goTo("wizard/wizard001.xhtml?custom=true&highlight=true");
         // Act / Assert
-        for (String id : new String[] {"form:wizard_next", "form:wizard_back", "form:refresh"}) {
-            click(id);
-            String classes = PrimeSelenium.getWebDriver().findElements(By.cssSelector(".p-wizard-step-title")).get(2).getDomAttribute("class");
+        Wizard wizard = wizard();
+        for (Runnable action : new Runnable[] {wizard::next, wizard::back, this::refresh}) {
+            action.run();
+            String classes = wizard.getStepTitles().get(2).getDomAttribute("class");
             assertTrue(classes.contains("p-state-highlight"));
             assertTrue(classes.contains("custom"));
         }
@@ -95,11 +96,11 @@ class Wizard001Test extends AbstractPrimePageTest {
         // Arrange
         goTo("wizard/wizard001.xhtml?required=true&highlight=true");
         // Act
-        click("form:wizard_next");
+        wizard().next();
         // Assert
         assertSteps(0, true);
         PrimeSelenium.getWebDriver().findElement(By.id("form:value")).sendKeys("valid");
-        click("form:wizard_next");
+        wizard().next();
         assertSteps(1, true);
         assertNoJavascriptErrors();
     }
@@ -110,14 +111,14 @@ class Wizard001Test extends AbstractPrimePageTest {
         // Arrange
         goTo("wizard/wizard001.xhtml?highlight=true&effect=fade");
         // Act
-        click("form:wizard_next");
+        wizard().next();
         // Assert
         assertSteps(1, true);
-        click("form:wizard_back");
+        wizard().back();
         assertSteps(0, true);
         goTo("wizard/wizard001.xhtml?status=false");
-        click("form:wizard_next");
-        assertTrue(PrimeSelenium.getWebDriver().findElements(By.cssSelector(".p-wizard-step-title")).isEmpty());
+        wizard().next();
+        assertTrue(wizard().getStepTitles().isEmpty());
         assertNoJavascriptErrors();
     }
 
@@ -135,7 +136,7 @@ class Wizard001Test extends AbstractPrimePageTest {
                 + "}; PF('wizard').loadStep('second', 'next'); }"
                 + "finally { PrimeFaces.ajax.Request.handle = original; }");
         // Assert
-        assertEquals("first", PrimeSelenium.executeScript("return PF('wizard').currentStep;"));
+        assertEquals("first", wizard().getCurrentStep());
         assertSteps(0, true);
         PrimeSelenium.executeScript("PF('wizard').currentStep = undefined; PF('wizard').updateStepStatus();");
         assertSteps(0, true);
@@ -155,14 +156,16 @@ class Wizard001Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
-    private void click(String id) {
-        PrimeSelenium.guardAjax(PrimeSelenium.getWebDriver().findElement(By.id(id))).click();
-        new WebDriverWait(PrimeSelenium.getWebDriver(), Duration.ofSeconds(5)).until(driver ->
-                Boolean.TRUE.equals(PrimeSelenium.executeScript("return !PF('wizard').content.is(':animated');")));
+    private Wizard wizard() {
+        return PrimeSelenium.createFragment(Wizard.class, By.id("form:wizard"));
+    }
+
+    private void refresh() {
+        PrimeSelenium.createFragment(CommandButton.class, By.id("form:refresh")).click();
     }
 
     private void assertSteps(int current, boolean highlight) {
-        List<WebElement> steps = PrimeSelenium.getWebDriver().findElements(By.cssSelector("#form\\:wizard .p-wizard-step-title"));
+        List<WebElement> steps = wizard().getStepTitles();
         assertEquals(3, steps.size());
         for (int i = 0; i < steps.size(); i++) {
             String classes = steps.get(i).getDomAttribute("class");

@@ -38,7 +38,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -142,14 +141,11 @@ class DataTable007CellTest extends AbstractDataTableTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.messages));
     }
 
-    private void editCell(Row row, int cell) {
-        row.getCell(cell).getWebElement().click();
-    }
-
     private void updateCell(Row row, int cell, String value) {
-        editCell(row, cell);
-        row.getCell(cell).getWebElement().findElement(By.tagName("input")).clear();
-        row.getCell(cell).getWebElement().findElement(By.tagName("input")).sendKeys(value);
+        row.getCell(cell).startEdit();
+        WebElement input = row.getCell(cell).getEditorInput();
+        input.clear();
+        input.sendKeys(value);
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -157,8 +157,4 @@ class DataTable026NotTest extends AbstractDataTableTest {
             return "datatable/dataTable026Not.xhtml";
         }
     }
-
-    private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
-        assertRows(dataTable, employees, Employee::getId);
-    }
 }

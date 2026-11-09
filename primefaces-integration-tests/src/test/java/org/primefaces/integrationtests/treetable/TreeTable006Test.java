@@ -61,30 +61,27 @@ class TreeTable006Test extends AbstractTreeTableTest {
         treeTable.getRow(1).toggle();
 
         // Act - edit row and accept
-        treeTable.getRow(1).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-pencil")).click();
+        treeTable.getRow(1).startEdit();
 
-        String eltId = treeTable.getRow(1).getCell(0).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
-        InputText input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
+        InputText input = PrimeSelenium.createFragment(InputText.class, treeTable.getRow(1).getCell(0).getWebElement().findElement(By.cssSelector("input")));
         input.setValue("Spanish - IT");
 
-        eltId = treeTable.getRow(1).getCell(2).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
-        input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
+        input = PrimeSelenium.createFragment(InputText.class, treeTable.getRow(1).getCell(2).getWebElement().findElement(By.cssSelector("input")));
         input.setValue("Folder - IT");
 
-        PrimeSelenium.guardAjax(treeTable.getRow(1).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-check"))).click();
+        treeTable.getRow(1).saveEdit();
 
         // Assert
         PrimeSelenium.guardAjax(treeTable.getRow(1).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
         assertMessage(page.messages, 0, "selected document", "Spanish - IT;10kb;Folder - IT");
 
         // Act - edit row and undo
-        treeTable.getRow(3).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-pencil")).click();
+        treeTable.getRow(3).startEdit();
 
-        eltId = treeTable.getRow(3).getCell(0).getWebElement().findElement(By.cssSelector("input")).getAttribute("id");
-        input = PrimeSelenium.createFragment(InputText.class, By.id(eltId));
+        input = PrimeSelenium.createFragment(InputText.class, treeTable.getRow(3).getCell(0).getWebElement().findElement(By.cssSelector("input")));
         input.setValue("xxx");
 
-        PrimeSelenium.guardAjax(treeTable.getRow(3).getCell(4).getWebElement().findElement(By.cssSelector(".p-row-editor-close"))).click();
+        treeTable.getRow(3).cancelEdit();
 
         // Assert
         PrimeSelenium.guardAjax(treeTable.getRow(3).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
@@ -92,10 +89,9 @@ class TreeTable006Test extends AbstractTreeTableTest {
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
+    @Override
+    protected void assertConfiguration(JSONObject cfg) {
+        super.assertConfiguration(cfg);
         assertTrue(cfg.getBoolean("editable"));
     }
 

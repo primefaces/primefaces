@@ -30,6 +30,7 @@ import org.primefaces.model.TreeNode;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,16 +56,17 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
 
         // a page of a TreeTable is a slice of the direct children of the root, each one rendered together with the
         // descendants which are currently displayed, see TreeTableRenderer#encodeTbody.
-        // Without a paginator all children of the root are displayed.
+        // Without a paginator all children of the root are displayed. Nodes hidden by a filter are skipped.
+        List<TreeNode<?>> children = table.getVisibleChildren(root);
         int first = 0;
-        int last = root.getChildCount();
+        int last = children.size();
         if (table.isPaginator()) {
             first = table.getFirst();
             last = Math.min(first + table.getRowsToRender(), last);
         }
 
         for (int i = first; i < last; i++) {
-            exportNode(context, table, root.getChildren().get(i), true);
+            exportNode(context, table, children.get(i), true);
         }
     }
 
@@ -83,8 +85,8 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
             return;
         }
 
-        for (int i = 0; i < node.getChildCount(); i++) {
-            exportNode(context, table, node.getChildren().get(i), displayedOnly);
+        for (TreeNode<?> child : table.getVisibleChildren(node)) {
+            exportNode(context, table, child, displayedOnly);
         }
     }
 
@@ -95,9 +97,9 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
             return;
         }
 
-        // every node, regardless of the paginator and whether it is expanded; the root itself is not a row
-        for (int i = 0; i < root.getChildCount(); i++) {
-            exportNode(context, table, root.getChildren().get(i), false);
+        // every node not hidden by a filter, regardless of the paginator and whether it is expanded; the root itself is not a row
+        for (TreeNode<?> child : table.getVisibleChildren(root)) {
+            exportNode(context, table, child, false);
         }
     }
 

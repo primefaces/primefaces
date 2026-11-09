@@ -24,22 +24,18 @@
 package org.primefaces.integrationtests.csv;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Message;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectBooleanCheckbox;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
-public class Csv004Test extends AbstractPrimePageTest {
+public class Csv004Test extends AbstractCsvTest {
 
     @Test
     @Order(1)
@@ -114,15 +110,6 @@ public class Csv004Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page.msgName, "");
-    }
-
-    protected void assertMessage(Message message, String expected) {
-        // an empty p:message has no size (it is invisible), only a message is shown
-        if (!expected.isEmpty()) {
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(message));
-        }
-        Assertions.assertEquals(expected, message.getText());
-        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {

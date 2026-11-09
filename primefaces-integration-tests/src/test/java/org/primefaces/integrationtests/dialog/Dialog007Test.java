@@ -33,6 +33,7 @@ import org.primefaces.selenium.component.SelectOneMenu;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -120,7 +121,7 @@ class Dialog007Test extends AbstractPrimePageTest {
     void markerRemovalDoesNotBubble(Page page) {
         PrimeSelenium.executeScript("window.containerRemovals = 0;"
                 + "$(document.getElementById('form:container')).on('remove.test', () => window.containerRemovals++);");
-        PrimeSelenium.executeScript("PF('relocatedDialog').destroy();");
+        page.dialog.destroy();
         assertEquals(0L, PrimeSelenium.<Long>executeScript("return window.containerRemovals"));
         assertEquals(0L, count("[id=\"form:container\"] > .p-overlay-placeholder"));
         assertNoJavascriptErrors();
@@ -146,8 +147,8 @@ class Dialog007Test extends AbstractPrimePageTest {
         assertEquals(1L, count("[id=\"form:container\"] > .p-overlay-placeholder"));
     }
 
-    private static long count(String selector) {
-        return PrimeSelenium.<Long>executeScript("return document.querySelectorAll('" + selector + "').length");
+    private long count(String selector) {
+        return getWebDriver().findElements(By.cssSelector(selector)).size();
     }
 
     public static class Page extends AbstractPrimePage {

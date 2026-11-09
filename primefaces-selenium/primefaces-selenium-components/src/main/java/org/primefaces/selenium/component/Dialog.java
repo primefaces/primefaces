@@ -26,14 +26,26 @@ package org.primefaces.selenium.component;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:dialog}.
  */
 public abstract class Dialog extends AbstractComponent {
+
+    @FindBy(className = "p-dialog-box")
+    private WebElement box;
+
+    @FindBy(className = "p-dialog-titlebar")
+    private WebElement titlebar;
+
+    @FindBy(css = ".p-dialog-box > .p-resizable-se")
+    private WebElement resizeHandle;
 
     @FindBy(className = "p-dialog-content")
     private WebElement content;
@@ -84,6 +96,119 @@ public abstract class Dialog extends AbstractComponent {
 
     public void setContent(WebElement content) {
         this.content = content;
+    }
+
+    /**
+     * Gets the dialog box. The root element of a dialog is a container which may cover the whole viewport, so use the box for the
+     * visible location and size of the dialog.
+     *
+     * @return the dialog box element
+     */
+    public WebElement getBox() {
+        return box;
+    }
+
+    /**
+     * Gets the title bar, which is the drag handle of the dialog.
+     *
+     * @return the title bar element
+     */
+    public WebElement getTitlebar() {
+        return titlebar;
+    }
+
+    /**
+     * Gets the south east resize handle of a resizable dialog.
+     *
+     * @return the resize handle element
+     */
+    public WebElement getResizeHandle() {
+        return resizeHandle;
+    }
+
+    /**
+     * Is the dialog currently maximized.
+     *
+     * @return true if maximized
+     */
+    public boolean isMaximized() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".maximized === true;");
+    }
+
+    /**
+     * Is the dialog currently minimized (docked).
+     *
+     * @return true if minimized
+     */
+    public boolean isMinimized() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".minimized === true;");
+    }
+
+    /**
+     * Minimizes the dialog by clicking its minimize button, if it is not already minimized.
+     */
+    public void minimize() {
+        if (!isMinimized()) {
+            clickTitlebarIcon(getMinimizeButton(), "minimize");
+            PrimeSelenium.waitGui().until(d -> isMinimized());
+        }
+    }
+
+    /**
+     * Maximizes the dialog by clicking its maximize button, if it is not already maximized.
+     */
+    public void maximize() {
+        if (!isMaximized()) {
+            clickTitlebarIcon(getMaximizeButton(), "maximize");
+            PrimeSelenium.waitGui().until(d -> isMaximized());
+        }
+    }
+
+    /**
+     * Drags the dialog by its title bar like a user would do with the mouse.
+     *
+     * @param dx horizontal offset in pixels
+     * @param dy vertical offset in pixels
+     */
+    public void dragBy(int dx, int dy) {
+        moveBy(getTitlebar(), dx, dy, "move");
+    }
+
+    /**
+     * Resizes the dialog with its south east resize handle like a user would do with the mouse.
+     *
+     * @param dx width change in pixels
+     * @param dy height change in pixels
+     */
+    public void resizeBy(int dx, int dy) {
+        moveBy(getResizeHandle(), dx, dy, "resizeStop");
+    }
+
+    private void clickTitlebarIcon(WebElement icon, String behavior) {
+        if (ComponentUtils.hasAjaxBehavior(getRoot(), behavior)) {
+            PrimeSelenium.guardAjax(icon).click();
+        }
+        else {
+            icon.click();
+        }
+    }
+
+    private void moveBy(WebElement handle, int dx, int dy, String behavior) {
+        // move a few pixels first, so the drag starts before the actual movement
+        int startX = Integer.signum(dx) * Math.min(5, Math.abs(dx));
+        int startY = Integer.signum(dy) * Math.min(5, Math.abs(dy));
+        Action action = new Actions(getWebDriver())
+                    .clickAndHold(handle)
+                    .moveByOffset(startX, startY)
+                    .moveByOffset(dx - startX, dy - startY)
+                    .release()
+                    .build();
+        if (ComponentUtils.hasAjaxBehavior(getRoot(), behavior)) {
+            PrimeSelenium.guardAjax(action).perform();
+        }
+        else {
+            action.perform();
+        }
     }
 
     /**

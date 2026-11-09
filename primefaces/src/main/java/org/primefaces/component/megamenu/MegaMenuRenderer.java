@@ -83,20 +83,20 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             writer.writeAttribute("style", style, "style");
         }
 
+        encodeFacet(context, component, "start", Menu.START_CLASS);
+
         writer.startElement("ul", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
-
-        encodeFacet(context, component, "start", Menu.START_CLASS);
 
         if (component.getElementsCount() > 0) {
             encodeRootItems(context, component);
         }
 
+        writer.endElement("ul");
+
         encodeFacet(context, component, "options", Menu.OPTIONS_CLASS);
         encodeFacet(context, component, "end", Menu.END_CLASS);
-
-        writer.endElement("ul");
 
         writer.endElement("div");
     }

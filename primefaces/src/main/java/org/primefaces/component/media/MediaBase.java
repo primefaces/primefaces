@@ -24,8 +24,11 @@
 package org.primefaces.component.media;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.UIMediaBase;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 public abstract class MediaBase extends UIMediaBase {
@@ -48,5 +51,11 @@ public abstract class MediaBase extends UIMediaBase {
 
     @Property(description = "View mode for PDF viewer.")
     public abstract String getView();
+
+    @Property(description = "Advisory information, rendered as title of the object element and used as its accessible name.")
+    public abstract String getTitle();
+
+    @Facet(description = "Fallback content rendered inside the object element, shown when the media cannot be displayed.")
+    public abstract UIComponent getFallbackFacet();
 
 }

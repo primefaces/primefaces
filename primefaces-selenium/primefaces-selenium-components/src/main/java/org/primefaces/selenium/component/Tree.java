@@ -23,13 +23,17 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tree}.
@@ -52,6 +56,77 @@ public abstract class Tree extends AbstractComponent {
         return findElements(By.cssSelector(CHILD_SELECTOR)).stream()
                 .map(e -> new TreeNode(this, e.getDomAttribute("data-rowkey"), null))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the node with the given rowKey, e.g. to access nodes of a horizontal tree. The parent of the returned node is
+     * not resolved.
+     *
+     * @param rowKey the rowKey like "0_1"
+     * @return the node
+     */
+    public TreeNode getNode(String rowKey) {
+        return new TreeNode(this, rowKey, null);
+    }
+
+    /**
+     * Is the node with the given rowKey rendered (e.g. its parent is expanded or the children were loaded)?
+     *
+     * @param rowKey the rowKey like "0_1"
+     * @return true if the node exists
+     */
+    public boolean hasNode(String rowKey) {
+        return !findElements(By.cssSelector("." + TREE_NODE_CLASS + "[data-rowkey='" + rowKey + "']")).isEmpty();
+    }
+
+    /**
+     * Gets the filter input of the tree.
+     *
+     * @return the filter input
+     */
+    public WebElement getFilterInput() {
+        return findElement(By.cssSelector("input.p-tree-filter"));
+    }
+
+    /**
+     * Filters the tree using the widget configuration for "filterEvent", which always fires an AJAX request.
+     *
+     * @param value the filter value, {@code null} or empty to remove the filter
+     */
+    public void filter(String value) {
+        WebElement input = getFilterInput();
+        String filterEvent = getWidgetConfiguration().optString("filterEvent", "keyup").toLowerCase(Locale.ROOT);
+        CharSequence keys = (value == null || value.isEmpty()) ? Keys.BACK_SPACE : value;
+        switch (filterEvent) {
+            case "enter":
+            case "keydown":
+                // the widget turns filterEvent="enter" into "keydown" (filtering on ENTER only), so the runtime config
+                // can't tell both apart: with "enter" the ENTER fires the request, with "keydown" the typed value
+                // fires the debounced request while ENTER is ignored
+                input.clear();
+                input.sendKeys(keys);
+                PrimeSelenium.guardAjax(input).sendKeys(Keys.ENTER);
+                break;
+            case "change":
+            case "blur":
+                // no clear() as it would already fire the change event
+                input.sendKeys(Keys.chord(PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL, "a"));
+                input.sendKeys(keys);
+                PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+                break;
+            default:
+                // key events trigger the (debounced) filter, an empty filter needs a key event too
+                input.clear();
+                PrimeSelenium.guardAjax(input).sendKeys(keys);
+                break;
+        }
+    }
+
+    /**
+     * Removes the filter of the tree, which always fires an AJAX request.
+     */
+    public void clearFilter() {
+        filter(null);
     }
 
 }

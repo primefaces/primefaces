@@ -24,14 +24,12 @@
 package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.TreeTable;
 import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -64,7 +62,7 @@ class TreeTable009Test extends AbstractTreeTableTest {
         assertEquals("Downloads", rows.get(0).getCell(0).getText());
 
         // Act - clear all filters via the client-side API (sends a filter AJAX request)
-        PrimeSelenium.executeScript(true, "PF('treeTable').clearFilters()");
+        treeTable.clearFilters();
 
         // Assert - all rows are shown again and the model is restored
         assertRows(treeTable, root);
@@ -76,12 +74,6 @@ class TreeTable009Test extends AbstractTreeTableTest {
         assertRows(treeTable, rootOtherDocument);
 
         assertConfiguration(treeTable.getWidgetConfiguration());
-    }
-
-    private void assertConfiguration(JSONObject cfg) {
-        assertNoJavascriptErrors();
-        System.out.println("TreeTable Config = " + cfg);
-        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

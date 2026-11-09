@@ -461,6 +461,17 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Like {@link #waitGui()} but uses the configured AJAX timeout.
+     *
+     * @return the {@link WebDriverWait}
+     */
+    public static WebDriverWait waitAjax() {
+        ConfigProvider config = ConfigProvider.getInstance();
+        WebDriver driver = WebDriverProvider.get();
+        return new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutAjax()), Duration.ofMillis(100));
+    }
+
+    /**
      * Wait until the document is loaded.
      *
      * @return the {@link WebDriverWait}
@@ -479,14 +490,14 @@ public final class PrimeSelenium {
      * Globally disable all CSS and jQuery animations.
      */
     public static void disableAnimations() {
-        executeScript("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
+        executeScript("if (window.PrimeFaces) { PrimeFaces.utils.disableAnimations(); }");
     }
 
     /**
      * Globally enable all CSS and jQuery animations.
      */
     public static void enableAnimations() {
-        executeScript("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.enableAnimations(); }); }");
+        executeScript("if (window.PrimeFaces) { PrimeFaces.utils.enableAnimations(); }");
     }
 
     /**
@@ -497,7 +508,56 @@ public final class PrimeSelenium {
      * @see <a href="https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java">Stack Overflow</a>
      */
     public static void setHiddenInput(WebElement input, String value) {
-        executeScript(" document.getElementById('" + input.getDomAttribute("id") + "').value='" + value + "'");
+        executeScript("arguments[0].value = arguments[1];", input, value);
+    }
+
+    /**
+     * Gets the computed value of a CSS property of the element (see {@code window.getComputedStyle}).
+     *
+     * @param element the element
+     * @param property the CSS property like "background-color"
+     * @return the computed value
+     */
+    public static String getComputedStyle(WebElement element, String property) {
+        return getComputedStyle(element, null, property);
+    }
+
+    /**
+     * Gets the computed value of a CSS property of a pseudo element of the element (see {@code window.getComputedStyle}).
+     *
+     * @param element the element
+     * @param pseudoElement the pseudo element like "::before" or {@code null} for the element itself
+     * @param property the CSS property like "background-color"
+     * @return the computed value
+     */
+    public static String getComputedStyle(WebElement element, String pseudoElement, String property) {
+        return executeScript("return window.getComputedStyle(arguments[0], arguments[1]).getPropertyValue(arguments[2]);",
+                element, pseudoElement, property);
+    }
+
+    /**
+     * Gets the trimmed computed value of a CSS custom property (variable) like "--p-primary-color" as seen by the element.
+     *
+     * @param element the element
+     * @param name the custom property name including the leading "--"
+     * @return the trimmed value, empty if the variable is not defined
+     */
+    public static String getCssVariable(WebElement element, String name) {
+        String value = getComputedStyle(element, name);
+        return value == null ? "" : value.trim();
+    }
+
+    /**
+     * Is the element covered by another element (e.g. a modal mask or overlay), so a user click at its center would not reach it?
+     * The element is expected to lie in the viewport, an element outside of it counts as covered.
+     *
+     * @param element the element to check
+     * @return true if the topmost element at the element's center is neither the element nor one of its descendants
+     */
+    public static boolean isElementCovered(WebElement element) {
+        return executeScript("var el = arguments[0], box = el.getBoundingClientRect(),"
+                + " hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);"
+                + "return !(hit && (hit === el || el.contains(hit)));", element);
     }
 
     /**

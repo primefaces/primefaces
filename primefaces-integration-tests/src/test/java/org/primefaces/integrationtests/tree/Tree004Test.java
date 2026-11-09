@@ -36,11 +36,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,25 +66,21 @@ class Tree004Test extends AbstractTreeTest {
         assertMessage(page.messages, 0, "Selected nodes", "Documents");
 
         // Act Pt. 2
-        Actions actions = new Actions(page.getWebDriver());
-        Action actionSelect = actions.keyDown(Keys.META).click(children.get(2).getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionSelect).perform();
+        children.get(2).toggleSelection();
 
         // Assert Pt. 2
         PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Documents,Movies");
 
         // Act Pt. 3
-        Action actionUnselect = actions.keyDown(Keys.META).click(first.getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        first.toggleSelection();
 
         // Assert Pt. 3
         PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Movies");
 
         // Act Pt. 4
-        actionUnselect = actions.keyDown(Keys.META).click(children.get(2).getLabel()).keyUp(Keys.META).build();
-        PrimeSelenium.guardAjax(actionUnselect).perform();
+        children.get(2).toggleSelection();
 
         // Assert Pt. 4
         PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
@@ -152,8 +143,7 @@ class Tree004Test extends AbstractTreeTest {
         assertTrue(children.get(2).getWebElement().isDisplayed());
 
         // Act
-        WebElement filter = tree.findElement(By.cssSelector("input.p-tree-filter"));
-        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
+        tree.filter("Pro");
 
         // Assert
         children = tree.getChildren();
@@ -171,8 +161,7 @@ class Tree004Test extends AbstractTreeTest {
         assertFalse(children.get(1).getChildren().get(2).getWebElement().isDisplayed());
 
         // Act
-        filter.clear();
-        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        tree.clearFilter();
 
         // Assert
         children = tree.getChildren();
@@ -202,37 +191,28 @@ class Tree004Test extends AbstractTreeTest {
         assertEquals("Documents", first.getLabelText());
 
         // Act
-        WebElement filter = tree.findElement(By.cssSelector("input.p-tree-filter"));
-        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
+        tree.filter("Pro");
         children = tree.getChildren();
         tree.getChildren().get(1).getChildren().get(1).select();
 
         // Assert
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-indeterminate-icon"));
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-checked-icon"));
+        assertTrue(children.get(1).isPartialSelected());
+        assertTrue(children.get(1).getChildren().get(1).isSelected());
 
         // Act Pt. 2
-        filter.clear();
-        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        tree.clearFilter();
 
         // Assert Pt. 2
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
         children = tree.getChildren();
-        assertBlankCheckbox(children.get(0).getWebElement().findElement(By.className("p-chkbox-icon")));
+        assertBlankCheckbox(children.get(0));
         // TODO: currently broken (2021-09-12)
-        // Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("p-chkbox-icon")),
-        //         "p-checkbox-indeterminate-icon"));
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-checked-icon"));
-        assertBlankCheckbox(children.get(2).getWebElement().findElement(By.className("p-chkbox-icon")));
+        // assertTrue(children.get(1).isPartialSelected());
+        assertTrue(children.get(1).getChildren().get(1).isSelected());
+        assertBlankCheckbox(children.get(2));
 
         // Act Pt. 3
         children.get(1).getChildren().get(0).select();
@@ -241,20 +221,12 @@ class Tree004Test extends AbstractTreeTest {
         // Assert Pt. 3
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch,Meeting,Report Review,Events");
-        assertBlankCheckbox(children.get(0).getWebElement().findElement(By.className("p-chkbox-icon")));
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-checked-icon"));
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getChildren().get(0).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-checked-icon"));
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-checked-icon"));
-        assertTrue(
-                PrimeSelenium.hasCssClass(children.get(1).getChildren().get(2).getWebElement().findElement(By.className("p-chkbox-icon")),
-                        "p-checkbox-checked-icon"));
-        assertBlankCheckbox(children.get(2).getWebElement().findElement(By.className("p-chkbox-icon")));
+        assertBlankCheckbox(children.get(0));
+        assertTrue(children.get(1).isSelected());
+        assertTrue(children.get(1).getChildren().get(0).isSelected());
+        assertTrue(children.get(1).getChildren().get(1).isSelected());
+        assertTrue(children.get(1).getChildren().get(2).isSelected());
+        assertBlankCheckbox(children.get(2));
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
@@ -280,8 +252,7 @@ class Tree004Test extends AbstractTreeTest {
         assertTrue(children.get(2).getWebElement().isDisplayed());
 
         // Act
-        WebElement filter = tree.findElement(By.cssSelector("input.p-tree-filter"));
-        PrimeSelenium.guardAjax(filter).sendKeys("Blah");
+        tree.filter("Blah");
 
         // Assert
         children = tree.getChildren();
@@ -299,8 +270,7 @@ class Tree004Test extends AbstractTreeTest {
         assertFalse(children.get(1).getChildren().get(2).getWebElement().isDisplayed());
 
         // Act
-        filter.clear();
-        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+        tree.clearFilter();
 
         // Assert
         children = tree.getChildren();
@@ -312,9 +282,9 @@ class Tree004Test extends AbstractTreeTest {
         assertConfiguration(tree.getWidgetConfiguration());
     }
 
-    private static void assertBlankCheckbox(WebElement icon) {
-        assertFalse(PrimeSelenium.hasCssClass(icon, "p-checkbox-checked-icon"));
-        assertFalse(PrimeSelenium.hasCssClass(icon, "p-checkbox-indeterminate-icon"));
+    private static void assertBlankCheckbox(TreeNode node) {
+        assertFalse(node.isSelected());
+        assertFalse(node.isPartialSelected());
     }
 
     public static class Page extends AbstractPrimePage {

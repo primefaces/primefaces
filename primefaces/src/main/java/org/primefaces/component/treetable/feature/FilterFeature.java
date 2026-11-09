@@ -28,26 +28,21 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
 import org.primefaces.event.data.PostFilterEvent;
-import org.primefaces.model.CheckboxTreeNode;
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import jakarta.el.ELContext;
-import jakarta.el.ValueExpression;
-import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.PhaseId;
 
@@ -61,8 +56,7 @@ public class FilterFeature implements TreeTableFeature {
         table.updateFilterByValuesWithFilterRequest(context, filterBy);
 
         // reset state
-        table.updateFilteredValue(context, null);
-        table.setValue(null);
+        table.resetFilteredNodes();
         table.setFirst(0);
 
         // update rows with rpp value
@@ -85,9 +79,17 @@ public class FilterFeature implements TreeTableFeature {
 
     @Override
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
-        filter(context, table, table.getValue());
+        filter(context, table, table.getValue(), true);
         if (table.isSortingCurrentlyActive()) {
             TreeTableFeatures.sortFeature().sort(context, table);
+        }
+
+        // metadata for the callback, also when the filters were cleared
+        if (table.isPaginator()) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
+        }
+        if (table.getSelectedRowKeysAsString() != null) {
+            PrimeFaces.current().ajax().addCallbackParam("selection", table.getSelectedRowKeysAsString());
         }
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
@@ -95,203 +97,115 @@ public class FilterFeature implements TreeTableFeature {
         renderer.encodeTbody(context, table, table.getValue(), true);
     }
 
-    public void filter(FacesContext context, TreeTable tt, TreeNode root) {
+    /**
+     * Applies the active filters to the given tree and stores the nodes to display in the {@link TreeTable}, see
+     * {@link TreeTable#setFilteredNodes(Set)}. The tree itself is not changed, apart from expanding the ancestors of the
+     * matching nodes if requested.
+     *
+     * @param context the {@link FacesContext}
+     * @param tt the {@link TreeTable}
+     * @param root the root of the tree
+     * @param expandMatches whether to expand the ancestors of the matching nodes, so that the matches are displayed
+     */
+    public void filter(FacesContext context, TreeTable tt, TreeNode<?> root, boolean expandMatches) {
         Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
-        // After clearFilters(), stale filterBy entries remain with null values,
-        // so isEmpty() alone can't detect this case. Without the check below,
-        // filter() would run against the null root set by decode() and leave
-        // the table empty. Also restore the model value via the value expression
-        // so subsequent renders don't see the nulled local value.
-        //
-        // decode() calls setValue(null) to reset filter state before re-applying
-        // any filter values from the request. When there are no active filters,
-        // the original early return never restored the value, leaving that null
-        // in place to shadow the value expression on the next render.
-        boolean noActiveFilters = filterBy.isEmpty() || filterBy.values().stream().noneMatch(FilterMeta::isActive);
-        if (noActiveFilters) {
-            tt.updateFilteredValue(context, null);
-            ValueExpression ve = tt.getValueExpression(TreeTable.PropertyKeys.value);
-            if (ve != null) {
-                TreeNode<?> originalValue = (TreeNode<?>) ve.getValue(context.getELContext());
-                tt.setValue(originalValue);
-                if (originalValue != null) {
-                    tt.setRowKey(originalValue, null);
-                }
-            }
-            return;
+        if (root == null || filterBy.values().stream().noneMatch(FilterMeta::isActive)) {
+            tt.setFilteredNodes(null);
         }
-
-        Locale filterLocale = LocaleUtils.getCurrentLocale(context);
-
-        // collect filtered / valid node rowKeys
-        List<String> filteredRowKeys = tt.getFilteredRowKeys();
-        filteredRowKeys.clear();
-        collectFilteredRowKeys(context, tt, root, root, filterBy, filterLocale, filteredRowKeys);
-
-        // recreate tree node
-        TreeNode filteredValue = cloneTreeNode(root, root.getParent());
-        createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys, tt.isFilterPruneDescendants());
-
-        tt.updateFilteredValue(context, filteredValue);
-        tt.setValue(filteredValue);
-        tt.setRowKey(root, null);
-
-        //Metadata for callback
-        if (ComponentUtils.isRequestSource(tt, context)) {
-            if (tt.isPaginator()) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredValue.getChildCount());
+        else {
+            Set<TreeNode<?>> filteredNodes = Collections.newSetFromMap(new IdentityHashMap<>());
+            String oldRowKey = tt.getRowKey();
+            try {
+                collectFilteredNodes(context, tt, root, root, filterBy, LocaleUtils.getCurrentLocale(context), false, expandMatches,
+                        tt.isFilterPruneDescendants(), filteredNodes);
             }
-            if (tt.getSelectedRowKeysAsString() != null) {
-                PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+            finally {
+                tt.setRowKey(root, oldRowKey);
             }
+            tt.setFilteredNodes(filteredNodes);
         }
     }
 
+    /**
+     * Collects the children of the given node which are displayed: the matching nodes, their ancestors and, unless
+     * descendants are pruned, their descendants.
+     *
+     * @return whether a descendant of the given node matches
+     */
+    protected boolean collectFilteredNodes(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node, Map<String, FilterMeta> filterBy,
+            Locale filterLocale, boolean ancestorMatches, boolean expandMatches, boolean pruneDescendants, Set<TreeNode<?>> filteredNodes) {
 
-    protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node,  Map<String, FilterMeta> filterBy,
-            Locale filterLocale, List<String> filteredRowKeys) {
+        boolean descendantMatches = false;
+
+        int childCount = node.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TreeNode<?> childNode = node.getChildren().get(i);
+            boolean matches = isMatching(context, tt, root, childNode, filterBy, filterLocale);
+            boolean childDescendantMatches = collectFilteredNodes(context, tt, root, childNode, filterBy, filterLocale,
+                    ancestorMatches || matches, expandMatches, pruneDescendants, filteredNodes);
+
+            if (matches || childDescendantMatches || (ancestorMatches && !pruneDescendants)) {
+                filteredNodes.add(childNode);
+            }
+            if (childDescendantMatches && expandMatches) {
+                childNode.setExpanded(true);
+            }
+
+            descendantMatches = descendantMatches || matches || childDescendantMatches;
+        }
+
+        return descendantMatches;
+    }
+
+    protected boolean isMatching(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node, Map<String, FilterMeta> filterBy,
+            Locale filterLocale) {
 
         ELContext elContext = context.getELContext();
 
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
         boolean hasGlobalFilterFunction = globalFilter != null && globalFilter.getConstraint() instanceof FunctionFilterConstraint;
 
-        int childCount = node.getChildCount();
+        String rowKey = node.getRowKey();
+        tt.setRowKey(root, rowKey);
 
-        AtomicBoolean localMatch = new AtomicBoolean();
+        AtomicBoolean localMatch = new AtomicBoolean(true);
         AtomicBoolean globalMatch = new AtomicBoolean();
 
-        for (int i = 0; i < childCount; i++) {
-            TreeNode childNode = node.getChildren().get(i);
-            String rowKey = childNode.getRowKey();
-            tt.setRowKey(root, rowKey);
-            localMatch.set(true);
-            globalMatch.set(false);
-
-            if (hasGlobalFilterFunction) {
-                globalMatch.set(globalFilter.getConstraint().isMatching(context, childNode, globalFilter.getFilterValue(), filterLocale));
-            }
-
-            tt.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
-                }
-                Object columnValue = filter.getLocalValue(elContext, column);
-
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
-
-                if (!filter.isActive()) {
-                    return true;
-                }
-
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
-
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-
-                return localMatch.get();
-            });
-
-            boolean matches = localMatch.get();
-            if (globalFilter != null && globalFilter.isActive()) {
-                matches = matches && globalMatch.get();
-            }
-
-            if (matches) {
-                filteredRowKeys.add(rowKey);
-            }
-
-            collectFilteredRowKeys(context, tt, root, childNode, filterBy, filterLocale, filteredRowKeys);
-        }
-    }
-
-    protected void createFilteredValueFromRowKeys(TreeTable tt, TreeNode<?> node, TreeNode<?> filteredNode,
-            List<String> filteredRowKeys, boolean pruneDescendants) {
-        int childCount = node.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            TreeNode childNode = node.getChildren().get(i);
-            String rowKeyOfChildNode = childNode.getRowKey();
-
-            for (String rk : filteredRowKeys) {
-                if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_")
-                        || (!pruneDescendants && rowKeyOfChildNode.startsWith(rk + "_"))) {
-                    TreeNode newNode = cloneTreeNode(childNode, filteredNode);
-                    if (rk.startsWith(rowKeyOfChildNode + "_")) {
-                        newNode.setExpanded(true);
-                    }
-
-                    createFilteredValueFromRowKeys(tt, childNode, newNode, filteredRowKeys, pruneDescendants);
-                    break;
-                }
-            }
-        }
-    }
-
-    protected TreeNode cloneTreeNode(TreeNode<?> node, TreeNode<?> parent) {
-        TreeNode clone = null;
-
-        // equals check instead of instanceof to allow subclassing
-        if (CheckboxTreeNode.class.equals(node.getClass())) {
-            clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
-        }
-        // equals check instead of instanceof to allow subclassing
-        else if (DefaultTreeNode.class.equals(node.getClass())) {
-            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
-        }
-        else if (node instanceof Cloneable) {
-            try {
-                Method cloneMethod = node.getClass().getMethod("clone");
-                cloneMethod.setAccessible(true);
-                clone = (TreeNode) cloneMethod.invoke(node);
-            }
-            catch (ReflectiveOperationException e) {
-                throw new FacesException("Cloning using " + node.getClass().getSimpleName() + "#clone() failed", e);
-            }
-        }
-        else {
-            try {
-                Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(node.getClass());
-                clone = ctor.newInstance(node);
-                if (parent != null) {
-                    parent.getChildren().add(clone);
-                }
-            }
-            catch (ReflectiveOperationException e) {
-                if (!(e instanceof NoSuchMethodException)) {
-                    throw new FacesException("Calling copy constructor of " + node.getClass().getSimpleName() + " failed: " + e.getMessage());
-                }
-            }
-
-            if (clone == null) {
-                try {
-                    Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
-                    clone = ctor.newInstance(node.getType(), node.getData(), parent);
-                }
-                catch (ReflectiveOperationException e) {
-                    if (!(e instanceof NoSuchMethodException)) {
-                        throw new FacesException("Calling constructor " + node.getClass().getSimpleName()
-                                + "(String type, Object data, TreeNode parent) failed", e);
-                    }
-                }
-            }
-
-            if (clone == null) {
-                throw new FacesException("Custom node requires to implement either Cloneable, "
-                        + "a constructor: " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent), "
-                        + "or a copy contructor");
-            }
+        if (hasGlobalFilterFunction) {
+            globalMatch.set(globalFilter.getConstraint().isMatching(context, node, globalFilter.getFilterValue(), filterLocale));
         }
 
-        clone.setSelectable(node.isSelectable());
-        clone.setSelected(node.isSelected());
-        clone.setExpanded(node.isExpanded());
+        tt.forEachColumn(column -> {
+            FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
+            if (filter == null || filter.isGlobalFilter()) {
+                return true;
+            }
+            Object columnValue = filter.getLocalValue(elContext, column);
 
-        return clone;
+            if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                FilterConstraint constraint = globalFilter.getConstraint();
+                Object filterValue = globalFilter.getFilterValue();
+                globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+            }
+
+            if (!filter.isActive()) {
+                return true;
+            }
+
+            FilterConstraint constraint = filter.getConstraint();
+            Object filterValue = filter.getFilterValue();
+
+            localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+
+            return localMatch.get();
+        });
+
+        boolean matches = localMatch.get();
+        if (globalFilter != null && globalFilter.isActive()) {
+            matches = matches && globalMatch.get();
+        }
+
+        return matches;
     }
 
     @Override

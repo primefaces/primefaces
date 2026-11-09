@@ -39,6 +39,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InputText007Test extends AbstractPrimePageTest {
 
@@ -60,7 +61,8 @@ class InputText007Test extends AbstractPrimePageTest {
         Msg msg = messages.getAllMessages().get(0);
         assertEquals(Severity.ERROR, msg.getSeverity());
         assertEquals("Custom validator failed!", msg.getSummary());
-        assertCss(validator, "p-state-error", "p-inputtext");
+        assertCss(validator, "p-inputtext");
+        assertTrue(validator.isInvalid());
     }
 
     @Test
@@ -101,7 +103,8 @@ class InputText007Test extends AbstractPrimePageTest {
         Msg msg = messages.getAllMessages().get(0);
         assertEquals(Severity.ERROR, msg.getSeverity());
         assertEquals("Custom converter failed!", msg.getSummary());
-        assertCss(converter, "p-state-error", "p-inputtext");
+        assertCss(converter, "p-inputtext");
+        assertTrue(converter.isInvalid());
     }
 
     @Test

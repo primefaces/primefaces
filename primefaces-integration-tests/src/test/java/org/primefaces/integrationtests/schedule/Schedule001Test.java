@@ -137,14 +137,11 @@ public class Schedule001Test extends AbstractPrimePageTest {
      * schedule markup via AJAX and FullCalendar repaints its events on a later tick. Clicking before that repaint
      * finishes does not fire the eventSelect AJAX, so guardAjax runs into "Timeout while waiting for AJAX complete!".
      * Wait until the AJAX queue is empty and the event is rendered and clickable before selecting it.
-     * Also wait until the widget's double-click window (500 ms after the previous event click) has passed: a second
-     * click on the same event inside it is handled as eventDblSelect, so no eventSelect AJAX is sent.
+     * ({@link Schedule#selectEvent(int)} waits out the widget's double-click window itself.)
      */
     private void selectScheduleEvent(Schedule schedule) {
         waitForScheduledRenderedAndClickable();
-        PrimeSelenium.waitGui().until(d -> Boolean.TRUE.equals(PrimeSelenium.executeScript(
-                "return " + schedule.getWidgetByIdScript() + ".doubleClick == null;")));
-        schedule.select("fc-daygrid-event");
+        schedule.selectEvent(0);
     }
 
     private void waitForScheduledRenderedAndClickable() {
@@ -155,7 +152,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
     private void selectSlot(Page page, String time) {
         Schedule schedule = page.schedule;
-        schedule.findElement(By.className("fc-timeGridWeek-button")).click();
+        schedule.getWeekButton().click();
         List<WebElement> slotLaneElements = schedule.findElements(By.cssSelector(".fc-timegrid-slots table tr .fc-timegrid-slot-lane"));
         for (WebElement slotLaneElt : slotLaneElements) {
             if (slotLaneElt.getAttribute("data-time").equals(time)) {
@@ -236,10 +233,10 @@ public class Schedule001Test extends AbstractPrimePageTest {
         page.buttonGerman.click();
 
         // Assert
-        List<WebElement> todaysEvents = schedule.findElements(By.cssSelector(".fc-day-today .fc-daygrid-event"));
+        List<WebElement> todaysEvents = schedule.getTodaysEventElements();
         assertEquals(1, todaysEvents.size());
-        String eventTime = todaysEvents.get(0).findElement(By.className("fc-event-time")).getText();
-        String eventTitle = todaysEvents.get(0).findElement(By.className("fc-event-title")).getText();
+        String eventTime = schedule.getEventTime(todaysEvents.get(0));
+        String eventTitle = schedule.getEventTitle(todaysEvents.get(0));
 
         int eventid = LocalDateTime.now().getDayOfMonth() > 1 ? 1 : 0;
         ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(eventid);
@@ -253,10 +250,10 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Assert
         eventTime = "";
         // Don´t use .fc-day-today because this may already point to the day before or the next day in some time of day constellations
-        todaysEvents = schedule.findElements(By.cssSelector(".fc-daygrid-event"));
+        todaysEvents = schedule.getEventElements();
         for (WebElement eventElt : todaysEvents) {
-            if (eventElt.findElement(By.className("fc-event-title")).getText().equals(referenceEvent.getTitle())) {
-                eventTime = eventElt.findElement(By.className("fc-event-time")).getText();
+            if (referenceEvent.getTitle().equals(schedule.getEventTitle(eventElt))) {
+                eventTime = schedule.getEventTime(eventElt);
             }
         }
 

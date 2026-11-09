@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datepicker;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
@@ -33,7 +32,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -57,18 +55,18 @@ class DatePicker016Test extends AbstractDatePickerTest {
 
         // Assert Panel
         assertNotNull(panel);
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("16")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("17")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("18")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("21")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("22")), "p-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("15")), "p-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("23")), "p-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("24")), "p-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "p-state-active"));
-        assertEquals(7, panel.findElements(By.className("p-state-active")).size());
+        assertTrue(datePicker.isDaySelected(16));
+        assertTrue(datePicker.isDaySelected(17));
+        assertTrue(datePicker.isDaySelected(18));
+        assertTrue(datePicker.isDaySelected(19));
+        assertTrue(datePicker.isDaySelected(20));
+        assertTrue(datePicker.isDaySelected(21));
+        assertTrue(datePicker.isDaySelected(22));
+        assertFalse(datePicker.isDaySelected(15));
+        assertFalse(datePicker.isDaySelected(23));
+        assertFalse(datePicker.isDaySelected(24));
+        assertFalse(datePicker.isDaySelected(25));
+        assertEquals(7, datePicker.getSelectedDays().size());
 
         // Assert Submit Value
         page.button.click();
@@ -87,15 +85,15 @@ class DatePicker016Test extends AbstractDatePickerTest {
         // Act
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
         assertNotNull(panel);
-        panel.findElement(By.linkText("3")).click();
+        datePicker.selectDay(3);
         datePicker.hidePanel();
         datePicker.showPanel();
 
         // Assert Panel
-        assertEquals(7, panel.findElements(By.className("p-state-active")).size());
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "p-state-active"));
-        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("8")), "p-state-active"));
-        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("9")), "p-state-active"));
+        assertEquals(7, datePicker.getSelectedDays().size());
+        assertTrue(datePicker.isDaySelected(2));
+        assertTrue(datePicker.isDaySelected(8));
+        assertFalse(datePicker.isDaySelected(9));
 
         // Assert Submit Value
         page.button.click();

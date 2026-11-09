@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.theming;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.BlockUI;
 
 import java.util.Map;
 
@@ -219,9 +220,10 @@ class Theming005Test extends AbstractThemingTest {
         PrimeSelenium.disableAnimations();
 
         // Act
-        PrimeSelenium.executeScript("PF('blockLight').show(); PF('blockDefault').show();");
-        WebElement light = PrimeSelenium.executeScript("return PF('blockLight').blocker.get(0);");
-        WebElement mask = PrimeSelenium.executeScript("return PF('blockDefault').blocker.get(0);");
+        page.blockLight.show();
+        page.blockDefault.show();
+        WebElement light = page.blockLight.getOverlays().get(0);
+        WebElement mask = page.blockDefault.getOverlays().get(0);
 
         // Assert
         assertTrue(light.isDisplayed(), "light mask is not shown");
@@ -234,24 +236,23 @@ class Theming005Test extends AbstractThemingTest {
         assertSpinner("BlockUI default", mask);
 
         // Act
-        PrimeSelenium.executeScript("PF('blockLight').hide(); PF('blockDefault').hide();");
+        page.blockLight.hide();
+        page.blockDefault.hide();
         PrimeSelenium.enableAnimations();
         assertNoJavascriptErrors();
     }
 
     private void assertSpinner(String description, WebElement mask) {
-        Map<String, Object> before = PrimeSelenium.executeScript("var cs = getComputedStyle(arguments[0], '::before');"
-                + "return {content: cs.getPropertyValue('content'), animationName: cs.getPropertyValue('animation-name'),"
-                + " animationDuration: cs.getPropertyValue('animation-duration'),"
-                + " iterationCount: cs.getPropertyValue('animation-iteration-count'), width: cs.getPropertyValue('width')};", mask);
-        assertEquals("\" \"", before.get("content"), description + ": no ::before spinner");
+        assertEquals("\" \"", PrimeSelenium.getComputedStyle(mask, "::before", "content"), description + ": no ::before spinner");
         String maskImage = pseudoMaskImage(mask, "::before");
         assertTrue(maskImage != null && maskImage.startsWith("url("), description + ": spinner has no mask-image: " + maskImage);
-        assertNotEquals("none", before.get("animationName"), description + ": spinner has no animation");
-        assertEquals("infinite", before.get("iterationCount"), description + ": spinner animation is not infinite");
-        assertEquals(resolveToken(mask, "animation-duration", "--p-blockui-loading-icon-animation-duration"), before.get("animationDuration"),
+        assertNotEquals("none", PrimeSelenium.getComputedStyle(mask, "::before", "animation-name"), description + ": spinner has no animation");
+        assertEquals("infinite", PrimeSelenium.getComputedStyle(mask, "::before", "animation-iteration-count"),
+                description + ": spinner animation is not infinite");
+        assertEquals(resolveToken(mask, "animation-duration", "--p-blockui-loading-icon-animation-duration"),
+                PrimeSelenium.getComputedStyle(mask, "::before", "animation-duration"),
                 description + ": spinner animation duration is not --p-blockui-loading-icon-animation-duration");
-        assertTrue(pixels((String) before.get("width")) > 0, description + ": spinner has no size");
+        assertTrue(pixels(PrimeSelenium.getComputedStyle(mask, "::before", "width")) > 0, description + ": spinner has no size");
     }
 
     private static Map<String, Object> rect(WebElement element) {
@@ -328,6 +329,12 @@ class Theming005Test extends AbstractThemingTest {
 
         @FindBy(id = "form:floatOnLabel")
         WebElement floatOnLabel;
+
+        @FindBy(id = "form:blockLight")
+        BlockUI blockLight;
+
+        @FindBy(id = "form:blockDefault")
+        BlockUI blockDefault;
 
         @Override
         public String getLocation() {

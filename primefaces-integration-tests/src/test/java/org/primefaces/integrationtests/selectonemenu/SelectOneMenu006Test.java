@@ -37,7 +37,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -54,7 +53,7 @@ class SelectOneMenu006Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("p-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItemElements();
         assertEquals(7, options.size());
 
         // Act

@@ -37,7 +37,11 @@ import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 
 public abstract class AbstractTable<T extends Row> extends AbstractPageableData {
 
@@ -85,9 +89,19 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
      * @param headerText the header text to look for
      */
     public void sort(String headerText) {
+        sort(headerText, false);
+    }
+
+    /**
+     * Sorts the column found by its header text. It toggles to the next sort direction.
+     *
+     * @param headerText the header text to look for
+     * @param additive true to hold Cmd (macOS) / Ctrl, which adds the column to the current sorting (multiSort)
+     */
+    public void sort(String headerText, boolean additive) {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
-            PrimeSelenium.guardAjax(cell.get().getWebElement().findElement(By.className("p-sortable-column-icon"))).click();
+            sort(cell.get(), additive);
         }
         else {
             System.err.println("Header Cell '" + headerText + "' not found.");
@@ -100,13 +114,95 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
      * @param index the index of the column
      */
     public void sort(int index) {
+        sort(index, false);
+    }
+
+    /**
+     * Sorts the column found by its index. It toggles to the next sort direction.
+     *
+     * @param index the index of the column
+     * @param additive true to hold Cmd (macOS) / Ctrl, which adds the column to the current sorting (multiSort)
+     */
+    public void sort(int index, boolean additive) {
         HeaderCell cell = getHeader().getCell(index);
         if (cell != null) {
-            PrimeSelenium.guardAjax(cell.getWebElement().findElement(By.className("p-sortable-column-icon"))).click();
+            sort(cell, additive);
         }
         else {
             System.err.println("Header Cell '" + index + "' not found.");
         }
+    }
+
+    private void sort(HeaderCell cell, boolean additive) {
+        WebElement sortIcon = cell.getWebElement().findElement(By.className("p-sortable-column-icon"));
+        if (additive) {
+            Keys metaKey = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+            Action action = new Actions(getWebDriver()).keyDown(metaKey).click(sortIcon).keyUp(metaKey).build();
+            PrimeSelenium.guardAjax(action).perform();
+        }
+        else {
+            PrimeSelenium.guardAjax(sortIcon).click();
+        }
+    }
+
+    /**
+     * Gets the global filter input, which is expected to have the id {@code <tableId>:globalFilter}.
+     *
+     * @return the global filter input
+     */
+    public WebElement getGlobalFilterWebElement() {
+        return findElement(By.id(getId() + ":globalFilter"));
+    }
+
+    /**
+     * Filters globally: sets the value of the global filter input ({@code <tableId>:globalFilter}) and applies all
+     * filters. The value is set without key events, so the page's own wiring of the global filter (onkeyup, onchange, ...)
+     * doesn't fire additional requests.
+     *
+     * @param value the global filter value, {@code null} or empty to remove the global filter
+     */
+    public void filterGlobal(String value) {
+        filterGlobal(getGlobalFilterWebElement(), value);
+    }
+
+    /**
+     * Filters globally using a custom global filter input, see {@link #filterGlobal(String)}.
+     *
+     * @param globalFilterInput the global filter input
+     * @param value the global filter value, {@code null} or empty to remove the global filter
+     */
+    public void filterGlobal(WebElement globalFilterInput, String value) {
+        PrimeSelenium.executeScript("arguments[0].value = arguments[1];", globalFilterInput, value == null ? "" : value);
+        applyFilters();
+    }
+
+    /**
+     * Filters the column found by its header text like {@link #filter(String, String)}, but sets the value at once instead
+     * of typing it and applies the filters with exactly one request. Typing a value on a slow browser can fire a filter
+     * request for partial input, which matters e.g. when asserting the requests of a lazy model.
+     *
+     * @param headerText the header text to look for
+     * @param filterValue the value to filter for, {@code null} or empty to remove the filter
+     */
+    public void filterAtOnce(String headerText, String filterValue) {
+        HeaderCell cell = getHeader().getCell(headerText)
+                .orElseThrow(() -> new NoSuchElementException("Header Cell '" + headerText + "' not found."));
+        PrimeSelenium.executeScript("arguments[0].value = arguments[1];", cell.getColumnFilter(), filterValue == null ? "" : filterValue);
+        applyFilters();
+    }
+
+    /**
+     * Applies the current values of all filters (column and global filters), which always fires an AJAX request.
+     */
+    public void applyFilters() {
+        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".filter();");
+    }
+
+    /**
+     * Clears all filters (column and global filters) and re-filters, which always fires an AJAX request.
+     */
+    public void clearFilters() {
+        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".clearFilters();");
     }
 
     /**
@@ -189,6 +285,22 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
         return getHeader().getCell(0).getWebElement();
     }
 
+    /**
+     * If using multiple checkbox mode: is the Select All checkbox in the header checked? Reads {@code aria-checked}.
+     *
+     * @return true if checked
+     */
+    public boolean isSelectAllChecked() {
+        WebElement header = getSelectAllCheckBox();
+        List<WebElement> boxes = header.findElements(By.cssSelector(".p-chkbox-box, input[type='checkbox']"));
+        if (boxes.isEmpty()) {
+            return false;
+        }
+        WebElement box = boxes.get(0);
+        String ariaChecked = box.getDomAttribute("aria-checked");
+        return ariaChecked != null ? Boolean.parseBoolean(ariaChecked) : box.isSelected();
+    }
+
     public WebElement getFrozenHeaderWebElement() {
         return findElement(By.className("p-datatable-frozenlayout-left")).findElement(By.tagName("thead"));
     }
@@ -228,9 +340,9 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
         frozenBodyRows.forEach(row -> {
             List<WebElement> rowCellsTmp = row.findElements(By.cssSelector("td, th[role='rowheader']"));
             List<Cell> rowCells = rowCellsTmp.stream()
-                    .map(Cell::new)
+                    .map(cellElt -> new Cell(cellElt, this))
                     .collect(Collectors.toList());
-            rows.add(new Row(row, rowCells));
+            rows.add(new Row(row, rowCells, this));
         });
 
         return new Body(getFrozenBodyWebElement(), rows);
@@ -243,9 +355,9 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
         scrollableBodyRows.forEach(row -> {
             List<WebElement> rowCellsTmp = row.findElements(By.cssSelector("td, th[role='rowheader']"));
             List<Cell> rowCells = rowCellsTmp.stream()
-                    .map(Cell::new)
+                    .map(cellElt -> new Cell(cellElt, this))
                     .collect(Collectors.toList());
-            rows.add(new Row(row, rowCells));
+            rows.add(new Row(row, rowCells, this));
         });
 
         return new Body(getScrollableBodyWebElement(), rows);

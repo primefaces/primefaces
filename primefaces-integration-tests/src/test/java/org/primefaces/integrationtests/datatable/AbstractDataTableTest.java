@@ -25,17 +25,28 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
+import org.openqa.selenium.By;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractDataTableTest extends AbstractTableTest {
+
+    /**
+     * Summary of the selection message of our ProgrammingLanguage beans.
+     */
+    protected static final String SELECTED_LANGUAGES = "Selected ProgrammingLanguage(s)";
 
     protected final List<ProgrammingLanguage> languages = new ProgrammingLanguageService().getLangs();
     protected final ProgrammingLanguageLazyDataModel model = new ProgrammingLanguageLazyDataModel();
@@ -106,4 +117,101 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
         }
     }
 
+    protected void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
+        assertRows(dataTable, employees, Employee::getId);
+    }
+
+    /**
+     * Asserts the first message, which our selection beans render as summary and the selected ids as detail.
+     *
+     * @param messages the messages
+     * @param summary the expected summary like "Selected ProgrammingLanguage(s)", contained in the actual summary
+     * @param selections the expected comma separated ids
+     */
+    protected void assertSelections(Messages messages, String summary, String selections) {
+        Msg message = messages.getMessage(0);
+        assertTrue(message.getSummary().contains(summary));
+        assertEquals(selections, message.getDetail());
+    }
+
+    /**
+     * Asserts the first message of a ProgrammingLanguage selection, see {@link #assertSelections(Messages, String, String)}.
+     *
+     * @param messages the messages
+     * @param selections the expected comma separated ids
+     */
+    protected void assertSelections(Messages messages, String selections) {
+        assertSelections(messages, SELECTED_LANGUAGES, selections);
+    }
+
+    /**
+     * Gets the history of the {@link LazyDataModelCallTracker} of the page,
+     * rendered as hidden input {@code form:fullHistory}.
+     *
+     * @return the calls like "count() | load(first=0, size=3)"
+     */
+    protected String getLazyCallHistory() {
+        return getWebDriver().findElement(By.id("form:fullHistory")).getDomProperty("value");
+    }
+
+    /**
+     * Gets the number of calls of the {@link LazyDataModelCallTracker} of
+     * the page, rendered as hidden input {@code form:loadCallCount}.
+     *
+     * @return the number of calls
+     */
+    protected int getLazyCallCount() {
+        return Integer.parseInt(getWebDriver().findElement(By.id("form:loadCallCount")).getDomProperty("value"));
+    }
+
+    /**
+     * Asserts the full history (order and duplicates) of the {@link LazyDataModelCallTracker}
+     * of the page.
+     *
+     * @param expectedCalls the expected calls, e.g. {@link PageLoad}s or strings like "count()", "getRowData(rowKey=1)"
+     */
+    protected void assertLazyCalls(Object... expectedCalls) {
+        String history = getLazyCallHistory();
+        assertEquals(expectedCalls.length, getLazyCallCount(),
+                "Expected " + expectedCalls.length + " lazy calls but got " + getLazyCallCount() + ":\n" + history);
+
+        String expectedHistory = Arrays.stream(expectedCalls).map(String::valueOf).collect(Collectors.joining(" | "));
+        assertEquals(expectedHistory, history, "Compare of full history of expected lazy calls failed");
+    }
+
+    /**
+     * Represents a lazy data load call with first offset and page size, as recorded by the
+     * {@link LazyDataModelCallTracker}.
+     * Provides predefined constants for common page loads to improve test readability.
+     */
+    public static class PageLoad {
+
+        // Predefined page loads for common test scenarios (rows=3)
+        public static final PageLoad PAGE_1 = new PageLoad(0, 3);
+        public static final PageLoad PAGE_2 = new PageLoad(3, 3);
+        public static final PageLoad PAGE_3 = new PageLoad(6, 3);
+        // all 75 ProgrammingLanguages
+        public static final PageLoad ALL_DATA = new PageLoad(0, 75);
+
+        private final int first;
+        private final int pageSize;
+
+        public PageLoad(int first, int pageSize) {
+            this.first = first;
+            this.pageSize = pageSize;
+        }
+
+        public int getFirst() {
+            return first;
+        }
+
+        public int getPageSize() {
+            return pageSize;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("load(first=%d, size=%d)", first, pageSize);
+        }
+    }
 }

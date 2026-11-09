@@ -27,12 +27,12 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
 
+import java.time.temporal.ChronoUnit;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -48,12 +48,12 @@ class DatePicker018Test extends AbstractDatePickerTest {
     void timeInputCommit(Page page) {
         DatePicker datePicker = page.datepicker;
         assertEquals("2026-06-05 15:00:00", page.selectedValue.getText());
-        WebElement panel = datePicker.showPanel();
-        WebElement minuteInput = panel.findElement(By.cssSelector(".p-minute-picker input"));
+        datePicker.showPanel();
+        WebElement minuteInput = datePicker.getTimeInput(ChronoUnit.MINUTES);
         assertEquals("00", minuteInput.getAttribute("value"));
         assertEquals("0", page.dateSelectCount.getText());
 
-        clearInput(minuteInput);
+        PrimeSelenium.clearInput(minuteInput, false);
         minuteInput.sendKeys("05");
         assertEquals("0", page.dateSelectCount.getText());
 
@@ -64,8 +64,8 @@ class DatePicker018Test extends AbstractDatePickerTest {
         assertEquals("2026-06-05 15:05:00", page.selectedValue.getText());
         assertEquals("1", page.dateSelectCount.getText());
 
-        panel = datePicker.showPanel();
-        minuteInput = panel.findElement(By.cssSelector(".p-minute-picker input"));
+        datePicker.showPanel();
+        minuteInput = datePicker.getTimeInput(ChronoUnit.MINUTES);
         assertEquals("05", minuteInput.getAttribute("value"));
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -75,11 +75,6 @@ class DatePicker018Test extends AbstractDatePickerTest {
     private void awaitOutsideClickHandled(DatePicker datePicker) {
         PrimeSelenium.waitGui().until(d -> Boolean.FALSE.equals(PrimeSelenium.executeScript(
                 "return " + datePicker.getWidgetByIdScript() + ".datepickerClick;")));
-    }
-
-    private void clearInput(WebElement input) {
-        Keys modifier = PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL;
-        input.sendKeys(modifier, "a", Keys.BACK_SPACE);
     }
 
     private void assertConfiguration(JSONObject cfg) {
