@@ -115,18 +115,10 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
     wrapEvents() {
         var $this = this;
 
-        // get the current attached events if using CSP
-        var events = this.input[0] ? $._data(this.input[0], "events") : null;
-
-        // Helper to get original handler
-        var getOriginalHandler = function(eventName) {
-            var originalProp = $this.input.prop('on' + eventName);
-            return !originalProp && events && events[eventName] ? events[eventName][0].handler : originalProp;
-        };
-
         // Helper to wrap event handler
         var wrapEventHandler = function(eventName, additionalLogic) {
-            var originalHandler = getOriginalHandler(eventName);
+            // DOM handler if non-CSP, JQ handler if CSP
+            var originalHandler = PrimeFaces.utils.getOriginalEventHandler($this.input, eventName);
             $this.input.prop('on' + eventName, null)
                       .off(eventName)
                       .on(eventName + '.inputnumber', function(e) {
