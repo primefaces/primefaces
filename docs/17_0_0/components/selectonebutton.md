@@ -102,7 +102,7 @@ Widget: _PrimeFaces.widget.SelectOneButton_
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
 enable() | - | void | Enables the component.
-disabled() | - | void | Disables the component.
+disable() | - | void | Disables the component.
 
 ## Skinning
 SelectOneButton resides in a main container which _style_ and _styleClass_ attributes apply. As

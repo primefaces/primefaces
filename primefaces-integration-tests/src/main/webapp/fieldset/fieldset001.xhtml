@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:fieldset id="toggleable" legend="Toggleable" toggleable="true">
+                <p:ajax event="toggle" listener="#{fieldset001.onToggle}" update="form:msgs"/>
+                <h:outputText value="Toggleable content"/>
+            </p:fieldset>
+
+            <p:fieldset id="dynamic" legend="Dynamic" toggleable="true" collapsed="true" dynamic="true">
+                <h:outputText id="dynamicText" value="#{fieldset001.dynamicText}"/>
+            </p:fieldset>
+
+            <p:fieldset id="static" legend="Static">
+                <h:outputText value="Static content"/>
+            </p:fieldset>
+
+            <p:commandButton id="update" value="Update" update="toggleable"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

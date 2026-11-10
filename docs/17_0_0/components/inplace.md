@@ -88,7 +88,7 @@ Widget: _PrimeFaces.widget.Inplace_
 | --- | --- | --- | --- |
 show() | - | void | Shows content and hides display element.
 hide() | - | void | Shows display element and hides content.
-toggle() | - | void | Toggles visibility of between content and display element.
+toggle(elToShow, elToHide) | elToShow: element to show, elToHide: element to hide (the display element and the content) | void | Shows one of the display element and the content and hides the other, show() and hide() use it.
 save() | - | void | Triggers an ajax request to process inplace input.
 cancel() | - | void | Triggers an ajax request to revert inplace input.
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:outputPanel id="load" deferred="true" deferredMode="load">
+                <h:outputText id="loadText" value="#{outputPanel001.text}"/>
+            </p:outputPanel>
+
+            <div style="height: 3000px">Spacer</div>
+
+            <p:outputPanel id="visible" deferred="true" deferredMode="visible">
+                <h:outputText id="visibleText" value="#{outputPanel001.text}"/>
+            </p:outputPanel>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

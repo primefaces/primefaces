@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:selectOneListbox id="listbox" value="#{selectOneListbox001.value}" filter="true" filterMatchMode="contains">
+                <f:selectItem itemLabel="Lewis" itemValue="Lewis"/>
+                <f:selectItem itemLabel="Max" itemValue="Max"/>
+                <f:selectItem itemLabel="Charles" itemValue="Charles"/>
+                <f:selectItem itemLabel="Lando" itemValue="Lando"/>
+                <p:ajax listener="#{selectOneListbox001.onChange}" update="msgs"/>
+            </p:selectOneListbox>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
