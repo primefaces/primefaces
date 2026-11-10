@@ -46,6 +46,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatal",
       "messages.INFO": "Informação",
       "messages.WARN": "Alerta",
+      movedBottom: "Movido para o Final",
+      movedDown: "Movido para Baixo",
+      movedTop: "Movido para o Topo",
+      movedToSource: "Movido para a Fonte",
+      movedToTarget: "Movido para o Alvo",
+      movedUp: "Movido para Cima",
     },
     messages: {
       //optional for Client Side Validation
@@ -162,6 +168,12 @@ if (window.PrimeFaces) {
       "colorpicker.INSTRUCTION": "Seletor de saturação e luminosidade. Utilze as teclas de seta para cima, baixo, esquerda e direita para selecionar.",
       "spinner.INCREASE": "Aumentar Valor",
       "spinner.DECREASE": "Reduzir Valor",
+      movedBottom: "Movido para o Final",
+      movedDown: "Movido para Baixo",
+      movedTop: "Movido para o Topo",
+      movedToSource: "Movido para a Fonte",
+      movedToTarget: "Movido para o Alvo",
+      movedUp: "Movido para Cima",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: Erro de validação: é necessário um valor.",

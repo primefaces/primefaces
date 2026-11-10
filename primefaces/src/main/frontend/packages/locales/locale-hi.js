@@ -45,6 +45,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "घातक",
       "messages.INFO": "सूचना",
       "messages.WARN": "चेतावनी",
+      movedBottom: "सबसे नीचे ले जाया गया",
+      movedDown: "नीचे ले जाया गया",
+      movedTop: "शीर्ष पर ले जाया गया",
+      movedToSource: "स्रोत पर ले जाया गया",
+      movedToTarget: "लक्ष्य पर ले जाया गया",
+      movedUp: "ऊपर ले जाया गया",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: सत्यापन त्रुटि: मान आवश्यक है।",

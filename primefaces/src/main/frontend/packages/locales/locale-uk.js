@@ -44,6 +44,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Фатальний",
       "messages.INFO": "Інформація",
       "messages.WARN": "Попередження",
+      movedBottom: "Переміщено в кінець",
+      movedDown: "Переміщено вниз",
+      movedTop: "Переміщено на початок",
+      movedToSource: "Переміщено до джерела",
+      movedToTarget: "Переміщено до призначення",
+      movedUp: "Переміщено вгору",
     },
     messages: {
       //optional for Client Side Validation

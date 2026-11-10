@@ -40,6 +40,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Dødelig",
       "messages.INFO": "Informasjon",
       "messages.WARN": "Advarsel",
+      movedBottom: "Flyttet til bunnen",
+      movedDown: "Flyttet ned",
+      movedTop: "Flyttet til toppen",
+      movedToSource: "Flyttet til kilde",
+      movedToTarget: "Flyttet til mål",
+      movedUp: "Flyttet opp",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: Valideringsfeil: Verdi er påkrevd.",
