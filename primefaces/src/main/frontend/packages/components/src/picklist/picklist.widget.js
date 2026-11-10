@@ -893,6 +893,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedUp'));
+
             items.each(function() {
                 var item = $(this);
 
@@ -937,6 +939,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedTop'));
+
             items.each(function() {
                 var item = $(this);
 
@@ -979,6 +983,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedDown'));
+
             $(items.get().reverse()).each(function() {
                 var item = $(this);
 
@@ -1021,6 +1027,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedBottom'));
+
             items.each(function() {
                 var item = $(this);
 
@@ -1152,6 +1160,9 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      */
     fireTransferEvent(items, from, to, type) {
         var $this = this;
+
+        // #15492 announce the completed transfer to screen readers
+        this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource'));
 
         if(this.cfg.onTransfer) {
             var obj = {};
@@ -1469,6 +1480,20 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
     }
     
+    /**
+     * Announces the given text to screen readers via the aria live region.
+     * @private
+     * @param {string} text The text to announce.
+     */
+    announce(text) {
+        var region = this.ariaRegion;
+        // clear first, otherwise repeating the same action (e.g. move up twice) is not announced again
+        region.text('');
+        PrimeFaces.queueTask(function() {
+            region.text(text);
+        }, 100);
+    }
+
     /**
      * Updates the `aria-grion` with the focused label text.
      * @private

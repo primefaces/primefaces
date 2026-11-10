@@ -504,6 +504,35 @@ class PickList001Test extends AbstractPrimePageTest {
         assertConfiguration(page.standardPickList.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(28)
+    @DisplayName("PickList: #15492 transfer and reorder actions are announced to screen readers")
+    void ariaRegionAnnouncesActions(final Page page) {
+        WebElement region = page.standardPickList.findElement(By.id("form:standardPickList_ariaRegion"));
+
+        // Act
+        page.standardPickList.pick("Lewis", "Max");
+        PrimeSelenium.wait(500);
+
+        // Assert
+        assertEquals("Moved to Target", region.getAttribute("textContent"));
+
+        // Act
+        page.standardPickList.moveTargetItemsUp("Max");
+        PrimeSelenium.wait(500);
+
+        // Assert
+        assertEquals("Moved Up", region.getAttribute("textContent"));
+
+        // Act
+        page.standardPickList.remove("Lewis");
+        PrimeSelenium.wait(500);
+
+        // Assert
+        assertEquals("Moved to Source", region.getAttribute("textContent"));
+        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+    }
+
     private JSONObject assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Picklist Config = " + cfg);
