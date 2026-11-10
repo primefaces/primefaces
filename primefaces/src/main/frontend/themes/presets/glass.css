@@ -1384,7 +1384,7 @@
         --p-datepicker-panel-border-radius: var(--p-content-border-radius);
         --p-datepicker-panel-shadow: var(--p-overlay-popover-shadow);
         --p-datepicker-panel-padding: var(--p-overlay-popover-padding);
-        --p-datepicker-header-background: var(--p-content-background);
+        --p-datepicker-header-background: transparent;
         --p-datepicker-header-border-color: var(--p-content-border-color);
         --p-datepicker-header-color: var(--p-content-color);
         --p-datepicker-header-padding: 0 0 0.5rem 0;

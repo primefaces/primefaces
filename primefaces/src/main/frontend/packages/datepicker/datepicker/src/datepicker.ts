@@ -2247,7 +2247,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const backwardNavigator = index === 0 ? this.renderNavigator('prev', o.locale.prevMonth) : '';
         const forwardNavigator = o.numberOfMonths === 1 || index === o.numberOfMonths - 1 ? this.renderNavigator('next', o.locale.nextMonth) : '';
 
-        return '<div class="p-datepicker-group p-widget-content">'
+        return '<div class="p-datepicker-group">'
             + '<div class="p-datepicker-header p-widget-header">'
             + backwardNavigator
             + forwardNavigator
