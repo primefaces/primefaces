@@ -154,6 +154,14 @@ class Rating001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(rating.isDisabled());
         assertEquals(5L, rating.getValue());
+
+        // Act - enable again, the key handler must be bound only once
+        rating.enable();
+        PrimeSelenium.executeScript(rating.getWidgetByIdScript() + ".input.trigger($.Event('keydown', { key: 'ArrowLeft' }));");
+
+        // Assert
+        assertTrue(rating.isEnabled());
+        assertEquals(4L, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 

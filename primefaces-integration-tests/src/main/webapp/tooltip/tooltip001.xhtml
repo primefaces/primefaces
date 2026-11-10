@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <!-- the wrapper hides a tooltip by moving the mouse to the top left corner, no target there -->
+        <h1>Tooltip</h1>
+
+        <h:form id="form">
+            <p:commandButton id="button" type="button" value="Button"/>
+            <p:tooltip id="buttonTip" for="button" value="#{tooltip001.text}" showDelay="0"/>
+
+            <p:inputText id="input" title="Input title"/>
+            <p:tooltip id="inputTip" for="input" showDelay="0" position="bottom"/>
+
+            <p:commandButton id="delayButton" type="button" value="Delay"/>
+            <p:tooltip id="delayTip" for="delayButton" value="Delay tooltip" showDelay="150"/>
+
+            <p:commandButton id="update" value="Update" action="#{tooltip001.changeText}" update="@form"/>
+        </h:form>
+
+        <div style="margin-top: 50px">
+            <h:outputLink id="link" value="#" title="Link title">Link</h:outputLink>
+            <input id="dataInput" type="text" data-tooltip="Data tooltip"/>
+        </div>
+
+        <p:tooltip id="globalTip" styleClass="global-tip" showDelay="0"/>
+
+    </h:body>
+</f:view>
+
+</html>

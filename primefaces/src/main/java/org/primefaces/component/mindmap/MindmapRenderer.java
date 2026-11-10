@@ -35,6 +35,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
 
+import org.json.JSONObject;
+
 @FacesRenderer(rendererType = Mindmap.DEFAULT_RENDERER, componentFamily = Mindmap.COMPONENT_FAMILY)
 @FacesRendererInfo
 public class MindmapRenderer extends CoreRenderer<Mindmap> {
@@ -136,13 +138,13 @@ public class MindmapRenderer extends CoreRenderer<Mindmap> {
     protected void encodeNodeConfig(FacesContext context, Mindmap component, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"label\":\"" + node.getLabel() + "\"");
+        writer.write("\"label\":" + JSONObject.quote(node.getLabel()));
 
         if (nodeKey != null) {
-            writer.write(",\"key\":\"" + nodeKey + "\"");
+            writer.write(",\"key\":" + JSONObject.quote(nodeKey));
         }
         if (node.getFill() != null) {
-            writer.write(",\"fill\":\"" + node.getFill() + "\"");
+            writer.write(",\"fill\":" + JSONObject.quote(node.getFill()));
         }
         if (node.isSelectable()) {
             writer.write(",\"selectable\":true");

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:orderList id="ajax" value="#{orderList001.languages}" var="lang" itemLabel="#{lang}" itemValue="#{lang}">
+                <p:ajax event="select" listener="#{orderList001.onSelect}" update="form:msgs"/>
+                <p:ajax event="unselect" listener="#{orderList001.onUnselect}" update="form:msgs"/>
+                <p:ajax event="reorder" listener="#{orderList001.onReorder}" update="form:msgs"/>
+            </p:orderList>
+
+            <p:orderList id="basic" value="#{orderList001.basicLanguages}" var="lang" itemLabel="#{lang}" itemValue="#{lang}"
+                         controlsLocation="right"/>
+
+            <p:orderList id="disabled" value="#{orderList001.languages}" var="lang" itemLabel="#{lang}" itemValue="#{lang}"
+                         disabled="true"/>
+
+            <p:commandButton id="submit" value="Submit" process="@this basic" action="#{orderList001.submit}" update="msgs basic"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

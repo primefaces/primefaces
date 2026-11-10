@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet>
+            .drop-area {
+                width: 300px;
+                height: 200px;
+                flex-shrink: 0;
+                border: 1px solid;
+            }
+        </h:outputStylesheet>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <div style="display: flex; gap: 50px; align-items: flex-start;">
+                <h:panelGroup id="dropArea" layout="block" styleClass="drop-area">
+                    <h:outputText id="dropped" value="#{dragDrop002.droppedNames}"/>
+                </h:panelGroup>
+                <p:droppable id="drop" for="dropArea" tolerance="pointer" datasource="languages">
+                    <p:ajax listener="#{dragDrop002.onDrop}" update="msgs dropped languages"/>
+                </p:droppable>
+
+                <p:dataGrid id="languages" value="#{dragDrop002.languages}" var="lang" columns="3" style="width: 600px">
+                    <p:panel id="pnl" header="#{lang.name}">
+                        <h:outputText value="#{lang.firstAppeared}"/>
+                    </p:panel>
+                    <p:draggable id="drag" for="pnl" revert="true" handle=".p-panel-titlebar"/>
+                </p:dataGrid>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

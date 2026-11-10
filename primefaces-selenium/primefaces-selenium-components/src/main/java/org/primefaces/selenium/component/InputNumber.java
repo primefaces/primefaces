@@ -63,8 +63,14 @@ public abstract class InputNumber extends InputText {
         PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change')");
     }
 
+    /**
+     * Gets the value rendered by the server into the widget configuration.
+     *
+     * @return the rendered value, {@code null} if empty
+     */
     public Double getValueToRender() {
-        return Double.valueOf(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".valueToRender;"));
+        String value = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".cfg.valueToRender;");
+        return value == null || value.isEmpty() ? null : Double.valueOf(value);
     }
 
     /**

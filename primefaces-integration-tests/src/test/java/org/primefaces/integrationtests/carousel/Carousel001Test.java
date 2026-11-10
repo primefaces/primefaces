@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.carousel;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Carousel;
 
 import org.json.JSONObject;
@@ -93,6 +94,30 @@ class Carousel001Test extends AbstractPrimePageTest {
         assertTrue(carousel.isForwardDisabled(), "Forward button should be disabled on last page");
         assertFalse(carousel.isBackwardDisabled(), "Backward button should be enabled on last page");
 
+        assertConfiguration(carousel.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Carousel: navForward() and navBackward() of the widget API work without an event")
+    void widgetApiWithoutEvent(Page page) {
+        // Arrange
+        Carousel carousel = page.carousel;
+        assertEquals(0, carousel.getPage());
+
+        // Act
+        PrimeSelenium.executeScript(carousel.getWidgetByIdScript() + ".navForward();");
+
+        // Assert
+        assertEquals(1, carousel.getPage());
+        assertEquals("Item 2", carousel.getActiveItems().get(0).getText());
+
+        // Act
+        PrimeSelenium.executeScript(carousel.getWidgetByIdScript() + ".navBackward();");
+
+        // Assert
+        assertEquals(0, carousel.getPage());
+        assertEquals("Item 1", carousel.getActiveItems().get(0).getText());
         assertConfiguration(carousel.getWidgetConfiguration());
     }
 

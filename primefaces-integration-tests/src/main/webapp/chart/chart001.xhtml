@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:chart id="bar" widgetVar="bar" value="#{chart001.barModel}" ariaLabel="Sales per month" style="width: 600px; height: 300px;">
+                <p:ajax event="itemSelect" listener="#{chart001.onItemSelect}" update="form:msgs"/>
+            </p:chart>
+
+            <p:chart id="line" widgetVar="line" style="width: 600px; height: 300px;">
+                <f:facet name="value">
+                {
+                    type: 'line',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [
+                            { label: 'Revenue', data: [65, 59, 80, 81] },
+                            { label: 'Costs', data: [28, 48, 40, 19] }
+                        ]
+                    },
+                    options: {
+                        animation: false,
+                        maintainAspectRatio: false
+                    }
+                }
+                </f:facet>
+            </p:chart>
+
+            <p:commandButton id="update" value="Update" update="bar"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

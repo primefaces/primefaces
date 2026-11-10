@@ -24,13 +24,17 @@
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -145,6 +149,32 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         // Assert
         assertSelected(menu, 0);
         assertLabel(menu, "Cities");
+        assertConfiguration(menu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("SelectCheckboxMenu: SPACE on an item toggles it exactly once")
+    void spaceKey(Page page) {
+        // Arrange
+        SelectCheckboxMenu menu = page.selectCheckboxMenu;
+        assertSelected(menu, 0);
+        menu.show();
+        WebElement item = menu.getPanel().findElement(By.cssSelector(".p-selectcheckboxmenu-items .p-selectcheckboxmenu-item-input"));
+        PrimeSelenium.executeScript("arguments[0].focus();", item);
+
+        // Act
+        new Actions(page.getWebDriver()).sendKeys(Keys.SPACE).perform();
+
+        // Assert
+        assertSelected(menu, 1);
+        assertValue(menu.getSelectedCheckboxes().get(0), "Miami");
+
+        // Act
+        new Actions(page.getWebDriver()).sendKeys(Keys.SPACE).perform();
+
+        // Assert
+        assertSelected(menu, 0);
         assertConfiguration(menu.getWidgetConfiguration());
     }
 

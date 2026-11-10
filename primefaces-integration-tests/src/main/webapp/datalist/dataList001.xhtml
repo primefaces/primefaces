@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:dataList id="dataList" value="#{dataList001.progLanguages}" var="lang" type="ordered" rows="3"
+                        paginator="true" paginatorPosition="bottom">
+                <p:ajax event="page" listener="#{dataList001.onPage}" update=":form:msgs"/>
+                <f:facet name="header">
+                    Languages
+                </f:facet>
+
+                <h:outputText value="#{lang.id} - #{lang.name}"/>
+            </p:dataList>
+
+            <p:commandButton id="update" value="Update" update="dataList"/>
+
+            <p:dataList id="definitionList" value="#{dataList001.progLanguages}" var="lang" type="definition">
+                <h:outputText value="#{lang.name}"/>
+                <f:facet name="description">
+                    <h:outputText value="First appeared: #{lang.firstAppeared}"/>
+                </f:facet>
+            </p:dataList>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

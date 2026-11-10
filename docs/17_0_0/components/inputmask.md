@@ -32,12 +32,12 @@ Here are more samples based on different masks;
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.AccordionPanel_
+Widget: _PrimeFaces.widget.InputMask_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getValue() | none | void | Returns the current value of this input field including the mask like "12/31/1999".|
-| getValueUnmasked() | none | void | Returns the current value of this input field without the mask like "12311999".|
+| getValue() | none | string | Returns the current value of this input field including the mask like "12/31/1999".|
+| getValueUnmasked() | none | string | Returns the current value of this input field without the mask like "12311999".|
 | setValue(value) |value: the new value | void | Sets the value of this input field to the given value. If the value does not fit the mask, it is adjusted appropriately.|
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |

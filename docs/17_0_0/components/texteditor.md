@@ -79,7 +79,7 @@ Widget: _PrimeFaces.widget.Editor_
 enable() | - | void | Enables the component |
 disable() | - | void | Disables the component |
 setValue(value) | value: the new value | void | Sets the value of the TextEditor |
-getEditorValue() | - | void | Initializes a lazy editor, subsequent calls do not reinit the editor.
+getEditorValue() | - | string | Returns the current content of the editor as an HTML string.
 clear() | - | void | Clears the text in editor.
 
 ## Skinning

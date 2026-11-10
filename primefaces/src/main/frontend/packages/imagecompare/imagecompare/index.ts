@@ -1,2 +1,16 @@
 import "./src/juxtapose.js";
-import "./src/imagecompare-widget.js";
+import { ImageCompare } from "./src/imagecompare-widget.js";
+
+PrimeFaces.widget.ImageCompare = ImageCompare;
+
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            ImageCompare: typeof ImageCompare;
+        }
+    }
+
+    namespace PrimeFacesTypes.widget {
+        export type ImageCompareCfg = import("./src/imagecompare-widget.js").ImageCompareCfg;
+    }
+}

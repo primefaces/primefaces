@@ -69,7 +69,7 @@ public abstract class DataScroller extends AbstractComponent {
             PrimeSelenium.guardAjax("var c = arguments[0].querySelector('.p-datascroller-content'); c.scrollTop = c.scrollHeight;", getRoot());
         }
         else {
-            PrimeSelenium.guardAjax("window.scrollTo(0, document.body.scrollHeight);");
+            PrimeSelenium.executeScript(true, "window.scrollTo(0, document.body.scrollHeight);");
         }
     }
 }

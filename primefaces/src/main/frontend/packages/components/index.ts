@@ -2,14 +2,14 @@ import autosize from "autosize";
 
 import { InputText } from "./src/forms/forms.inputtext.widget.js";
 import { InputTextarea } from "./src/forms/forms.inputtextarea.widget.js";
-import "./src/forms/forms.selectonemenu.widget.js";
+import { SelectOneMenu } from "./src/forms/forms.selectonemenu.widget.js";
 import { SelectOneRadio } from "./src/forms/forms.selectoneradio.widget.js";
 import { SelectBooleanCheckbox } from "./src/forms/forms.selectbooleancheckbox.widget.js";
 import { SelectManyCheckbox } from "./src/forms/forms.selectmanycheckbox.widget.js";
 import { SelectListbox } from "./src/forms/forms.selectlistbox.widget.js";
 import { SelectOneListbox } from "./src/forms/forms.selectonelistbox.widget.js";
 import { SelectManyMenu } from "./src/forms/forms.selectmanymenu.widget.js";
-import "./src/forms/forms.cascadeselect.widget.js";
+import { CascadeSelect } from "./src/forms/forms.cascadeselect.widget.js";
 import { CommandButton } from "./src/forms/forms.commandbutton.widget.js";
 import { CommandLink } from "./src/forms/forms.commandlink.widget.js";
 import { Button } from "./src/forms/forms.button.widget.js";
@@ -17,8 +17,8 @@ import { LinkButton } from "./src/forms/forms.linkbutton.widget.js";
 import { SelectManyButton } from "./src/forms/forms.selectmanybutton.widget.js";
 import { SelectOneButton } from "./src/forms/forms.selectonebutton.widget.js";
 import { SelectBooleanButton } from "./src/forms/forms.selectbooleanbutton.widget.js";
-import "./src/forms/forms.selectcheckboxmenu.widget.js";
-import "./src/forms/forms.password.widget.js";
+import { SelectCheckboxMenu } from "./src/forms/forms.selectcheckboxmenu.widget.js";
+import { Password } from "./src/forms/forms.password.widget.js";
 import { DefaultCommand } from "./src/forms/forms.defaultcommand.widget.js";
 import { SplitButton } from "./src/forms/forms.splitbutton.widget.js";
 import { MultiSelectListbox } from "./src/forms/forms.multiselectlistbox.widget.js";
@@ -46,54 +46,54 @@ import { registerRipple } from "./src/ripple/ripple.js";
 import { StaticMessage } from "./src/staticmessage/staticmessage.widget.js";
 
 import { AccordionPanel } from "./src/accordion/accordion.widget.js";
-import "./src/autocomplete/autocomplete.widget.js";
+import { AutoComplete } from "./src/autocomplete/autocomplete.widget.js";
 import { BlockUI } from "./src/blockui/blockui.widget.js";
-import "./src/carousel/carousel.widget.js";
+import { Carousel } from "./src/carousel/carousel.widget.js";
 import { ConfirmPopup } from "./src/confirmpopup/confirmpopup.widget.js";
-import "./src/columntoggler/columntoggler.widget.js";
-import "./src/dashboard/dashboard.widget.js";
-import "./src/datagrid/datagrid.widget.js";
-import "./src/datalist/datalist.widget.js";
+import { ColumnToggler } from "./src/columntoggler/columntoggler.widget.js";
+import { Dashboard } from "./src/dashboard/dashboard.widget.js";
+import { DataGrid } from "./src/datagrid/datagrid.widget.js";
+import { DataList } from "./src/datalist/datalist.widget.js";
 import { DataScroller } from "./src/datascroller/datascroller.widget.js";
 
-import "./src/datatable/datatable.widget.js";
-import "./src/datatable/datatable.frozen.widget.js";
-import "./src/dragdrop/dragdrop.widget.js";
+import { DataTable } from "./src/datatable/datatable.widget.js";
+import { FrozenDataTable } from "./src/datatable/datatable.frozen.widget.js";
+import { Draggable, Droppable } from "./src/dragdrop/dragdrop.widget.js";
 import { Effect } from "./src/effect/effect.widget.js";
 import { Fieldset } from "./src/fieldset/fieldset.widget.js";
 import { Inplace } from "./src/inplace/inplace.widget.js";
-import "./src/notificationbar/notificationbar.widget.js";
+import { NotificationBar } from "./src/notificationbar/notificationbar.widget.js";
 import { Panel } from "./src/panel/panel.widget.js";
-import "./src/orderlist/orderlist.widget.js";
+import { OrderList } from "./src/orderlist/orderlist.widget.js";
 import { OutputPanel } from "./src/outputpanel/outputpanel.widget.js";
-import "./src/overlaypanel/overlaypanel.widget.js";
-import "./src/paginator/paginator.widget.js";
-import "./src/picklist/picklist.widget.js";
+import { OverlayPanel } from "./src/overlaypanel/overlaypanel.widget.js";
+import { Paginator } from "./src/paginator/paginator.widget.js";
+import { PickList } from "./src/picklist/picklist.widget.js";
 import { ProgressBar } from "./src/progressbar/progressbar.widget.js";
-import "./src/rating/rating.widget.js";
-import "./src/resizable/resizable.widget.js";
+import { Rating } from "./src/rating/rating.widget.js";
+import { Resizable } from "./src/resizable/resizable.widget.js";
 import { Slider } from "./src/slider/slider.widget.js";
 import { Spinner } from "./src/spinner/spinner.widget.js";
 import { Splitter } from "./src/splitter/splitter.widget.js";
 import { Spotlight } from "./src/spotlight/spotlight.widget.js";
 import { SpeedDial } from "./src/speeddial/speeddial.widget.js";
 import { Sticky } from "./src/sticky/sticky.widget.js";
-import "./src/tabview/tabview.widget.js";
+import { TabView } from "./src/tabview/tabview.widget.js";
 import { TagCloud } from "./src/tagcloud/tagcloud.widget.js";
-import "./src/tooltip/tooltip.widget.js";
+import { Tooltip } from "./src/tooltip/tooltip.widget.js";
 
-import "./src/tree/tree.base.widget.js";
-import "./src/tree/tree.vertical.widget.js";
-import "./src/tree/tree.horizontal.widget.js";
-import "./src/treetable/treetable.widget.js";
+import { BaseTree } from "./src/tree/tree.base.widget.js";
+import { VerticalTree } from "./src/tree/tree.vertical.widget.js";
+import { HorizontalTree } from "./src/tree/tree.horizontal.widget.js";
+import { TreeTable } from "./src/treetable/treetable.widget.js";
 
 import { Wizard } from "./src/wizard/wizard.widget.js";
-import "./src/tristatecheckbox/tristatecheckbox.widget.js";
+import { TriStateCheckbox } from "./src/tristatecheckbox/tristatecheckbox.widget.js";
 import { Chip } from "./src/chip/chip.widget.js";
 import { Chips } from "./src/chips/chips.widget.js";
 import { ScrollTop } from "./src/scrolltop/scrolltop.widget.js";
 import { Sidebar } from "./src/sidebar/sidebar.widget.js";
-import "./src/dataview/dataview.widget.js";
+import { DataView } from "./src/dataview/dataview.widget.js";
 import { ToggleSwitch } from "./src/toggleswitch/toggleswitch.widget.js";
 
 // Add widgets and dialog to the PrimeFaces global object
@@ -119,8 +119,14 @@ function exposeToGlobalScope() {
     // src/accordion
     PrimeFaces.widget.AccordionPanel = AccordionPanel;
 
+    // src/autocomplete
+    PrimeFaces.widget.AutoComplete = AutoComplete;
+
     // src/blockui
     PrimeFaces.widget.BlockUI = BlockUI;
+
+    // src/carousel
+    PrimeFaces.widget.Carousel = Carousel;
 
     // src/chip
     PrimeFaces.widget.Chip = Chip;
@@ -128,8 +134,27 @@ function exposeToGlobalScope() {
     // src/chips
     PrimeFaces.widget.Chips = Chips;
 
+    // src/columntoggler
+    PrimeFaces.widget.ColumnToggler = ColumnToggler;
+
     // src/confirmpopup
     PrimeFaces.widget.ConfirmPopup = ConfirmPopup;
+
+    // src/dashboard
+    PrimeFaces.widget.Dashboard = Dashboard;
+
+    // src/datagrid
+    PrimeFaces.widget.DataGrid = DataGrid;
+
+    // src/datalist
+    PrimeFaces.widget.DataList = DataList;
+
+    // src/datatable
+    PrimeFaces.widget.DataTable = DataTable;
+    PrimeFaces.widget.FrozenDataTable = FrozenDataTable;
+
+    // src/dataview
+    PrimeFaces.widget.DataView = DataView;
 
     // src/dialog
     PrimeFaces.dialog = dialog;
@@ -140,6 +165,10 @@ function exposeToGlobalScope() {
     // src/datascroller
     PrimeFaces.widget.DataScroller = DataScroller;
 
+    // src/dragdrop
+    PrimeFaces.widget.Draggable = Draggable;
+    PrimeFaces.widget.Droppable = Droppable;
+
     // src/effect
     PrimeFaces.widget.Effect = Effect;
 
@@ -148,6 +177,7 @@ function exposeToGlobalScope() {
 
     // src/forms
     PrimeFaces.widget.Button = Button;
+    PrimeFaces.widget.CascadeSelect = CascadeSelect;
     PrimeFaces.widget.CommandButton = CommandButton;
     PrimeFaces.widget.CommandLink = CommandLink;
     PrimeFaces.widget.DefaultCommand = DefaultCommand;
@@ -155,14 +185,17 @@ function exposeToGlobalScope() {
     PrimeFaces.widget.InputTextarea = InputTextarea;
     PrimeFaces.widget.LinkButton = LinkButton;
     PrimeFaces.widget.MultiSelectListbox = MultiSelectListbox;
+    PrimeFaces.widget.Password = Password;
     PrimeFaces.widget.SelectBooleanButton = SelectBooleanButton;
     PrimeFaces.widget.SelectBooleanCheckbox = SelectBooleanCheckbox;
+    PrimeFaces.widget.SelectCheckboxMenu = SelectCheckboxMenu;
     PrimeFaces.widget.SelectListbox = SelectListbox;
     PrimeFaces.widget.SelectManyButton = SelectManyButton;
     PrimeFaces.widget.SelectManyCheckbox = SelectManyCheckbox;
     PrimeFaces.widget.SelectManyMenu = SelectManyMenu;
     PrimeFaces.widget.SelectOneButton = SelectOneButton;
     PrimeFaces.widget.SelectOneListbox = SelectOneListbox;
+    PrimeFaces.widget.SelectOneMenu = SelectOneMenu;
     PrimeFaces.widget.SelectOneRadio = SelectOneRadio;
     PrimeFaces.widget.SplitButton = SplitButton;
 
@@ -190,14 +223,35 @@ function exposeToGlobalScope() {
     PrimeFaces.widget.Message = Message;
     PrimeFaces.widget.Messages = Messages;
 
+    // src/notificationbar
+    PrimeFaces.widget.NotificationBar = NotificationBar;
+
+    // src/orderlist
+    PrimeFaces.widget.OrderList = OrderList;
+
     // src/outputpanel
     PrimeFaces.widget.OutputPanel = OutputPanel;
+
+    // src/overlaypanel
+    PrimeFaces.widget.OverlayPanel = OverlayPanel;
+
+    // src/paginator
+    PrimeFaces.widget.Paginator = Paginator;
 
     // src/panel
     PrimeFaces.widget.Panel = Panel;
 
+    // src/picklist
+    PrimeFaces.widget.PickList = PickList;
+
     // src/progressbar
     PrimeFaces.widget.ProgressBar = ProgressBar;
+
+    // src/rating
+    PrimeFaces.widget.Rating = Rating;
+
+    // src/resizable
+    PrimeFaces.widget.Resizable = Resizable;
 
     // src/scrolltop
     PrimeFaces.widget.ScrollTop = ScrollTop;
@@ -226,11 +280,28 @@ function exposeToGlobalScope() {
     // src/sticky
     PrimeFaces.widget.Sticky = Sticky;
 
+    // src/tabview
+    PrimeFaces.widget.TabView = TabView;
+
     // src/tagcloud
     PrimeFaces.widget.TagCloud = TagCloud;
 
     // src/toggleswitch
     PrimeFaces.widget.ToggleSwitch = ToggleSwitch;
+
+    // src/tooltip
+    PrimeFaces.widget.Tooltip = Tooltip;
+
+    // src/tree
+    PrimeFaces.widget.BaseTree = BaseTree;
+    PrimeFaces.widget.HorizontalTree = HorizontalTree;
+    PrimeFaces.widget.VerticalTree = VerticalTree;
+
+    // src/treetable
+    PrimeFaces.widget.TreeTable = TreeTable;
+
+    // src/tristatecheckbox
+    PrimeFaces.widget.TriStateCheckbox = TriStateCheckbox;
 
     // src/wizard
     PrimeFaces.widget.Wizard = Wizard;
@@ -279,6 +350,56 @@ declare global {
     }
 }
 
+// Types (src/autocomplete)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            AutoComplete: typeof AutoComplete;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type AutoCompleteCfg = import("./src/autocomplete/autocomplete.widget.js").AutoCompleteCfg;
+    }
+    namespace PrimeFacesTypes.widget.AutoComplete {
+        /**
+         * Specifies the behavior of the dropdown button.
+         * - `blank`: Sends an empty string.
+         * - `current`: Send the input value.
+         */
+        export type DropdownMode = "blank" | "current";
+
+        /**
+         * Event to initiate the autocomplete search.
+         * - `enter`: Starts the search for suggestion items when the enter key is pressed.
+         * - `keyup`: Starts the search for suggestion items as soon as a key is released.
+         */
+        export type QueryEvent = "keyup" | "enter";
+
+        /**
+         * Specifies whether filter requests are evaluated by the client's browser or whether they are sent to the
+         * server.
+         */
+        export type QueryMode = "server" | "client" | "hybrid";
+
+        /**
+         * Client side callback to invoke when the value changes, the original `onchange` handler of the input. It is
+         * called with the input as `this` when the input changes, and with the widget as `this` when an item was
+         * added via {@link AutoComplete.addItem}.
+         */
+        export type OnChangeCallback = (this: HTMLElement | AutoComplete, event?: JQuery.TriggeredEvent) => unknown;
+
+        /**
+         * The JSON response of the `completeEndpoint`.
+         */
+        export interface CompleteEndpointResponse {
+            /** The suggestions, the `value` defaults to the `label`. */
+            suggestions: { label: string; value?: string }[];
+            /** Whether there are more suggestions than returned. */
+            moreAvailable?: boolean;
+        }
+    }
+}
+
 // Types (src/blockui)
 declare global {
     namespace PrimeFacesTypes {
@@ -288,6 +409,41 @@ declare global {
     }
     namespace PrimeFacesTypes.widget {
         export type BlockUICfg = import("./src/blockui/blockui.widget.js").BlockUICfg;
+    }
+}
+
+// Types (src/carousel)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Carousel: typeof Carousel;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type CarouselCfg = import("./src/carousel/carousel.widget.js").CarouselCfg;
+    }
+    namespace PrimeFacesTypes.widget.Carousel {
+        /**
+         * Layout of the carousel: items side by side or on top of each other.
+         */
+        export type Orientation = "horizontal" | "vertical";
+
+        /**
+         * Number of visible and scrolled items up to a maximum screen width.
+         */
+        export interface ResponsiveOption {
+            /** The maximum screen width, a CSS length such as `768px`. */
+            breakpoint: string;
+            /** Number of visible items up to the breakpoint. */
+            numVisible: number;
+            /** Number of items to scroll up to the breakpoint. */
+            numScroll: number;
+        }
+
+        /**
+         * Called when the page was changed, with the carousel as `this` and the 0-based index of the new page.
+         */
+        export type OnPageChangeCallback = (this: Carousel, page: number) => void;
     }
 }
 
@@ -315,6 +471,18 @@ declare global {
     }
 }
 
+// Types (src/columntoggler)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            ColumnToggler: typeof ColumnToggler;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type ColumnTogglerCfg = import("./src/columntoggler/columntoggler.widget.js").ColumnTogglerCfg;
+    }
+}
+
 // src/confirmpopup
 declare global {
     namespace PrimeFacesTypes {
@@ -335,6 +503,184 @@ declare global {
          * Callback invoked after the popup is hidden.
          */
         export type HideCallback = () => void;
+    }
+}
+
+// Types (src/dashboard)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Dashboard: typeof Dashboard;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type DashboardCfg = import("./src/dashboard/dashboard.widget.js").DashboardCfg;
+    }
+    namespace PrimeFacesTypes.widget.Dashboard {
+        /**
+         * The `ui` argument of {@link Dashboard.handleDrop}: the one of the sortable (legacy dashboard, with `item` and
+         * `sender`) or of the droppable (responsive dashboard, with `draggable`).
+         */
+        export type DropUi = Partial<Pick<PrimeFacesTypes.interactions.SortableUi, "item" | "sender">>
+            & Partial<Pick<PrimeFacesTypes.interactions.DroppableUi, "draggable">>;
+    }
+}
+
+// Types (src/datagrid)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            DataGrid: typeof DataGrid;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type DataGridCfg = import("./src/datagrid/datagrid.widget.js").DataGridCfg;
+    }
+}
+
+// Types (src/datalist)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            DataList: typeof DataList;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type DataListCfg = import("./src/datalist/datalist.widget.js").DataListCfg;
+    }
+}
+
+// Types (src/datatable)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            DataTable: typeof DataTable;
+            FrozenDataTable: typeof FrozenDataTable;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type DataTableCfg = import("./src/datatable/datatable.widget.js").DataTableCfg;
+        export type FrozenDataTableCfg = import("./src/datatable/datatable.frozen.widget.js").FrozenDataTableCfg;
+    }
+    namespace PrimeFacesTypes.widget.DataTable {
+        /**
+         * Either the 0-based index of a row, or the row element (`TR`) itself.
+         */
+        export type RowSpecifier = number | JQuery;
+
+        /**
+         * The available sort order types for the DataTable.
+         */
+        export type SortOrder = "ASCENDING" | "DESCENDING" | "UNSORTED";
+
+        /**
+         * Indicates whether multiple rows or only a single row of a DataTable can be selected.
+         */
+        export type CmSelectionMode = "single" | "multiple";
+
+        /**
+         * Indicates whether rows are selected via radio buttons or via checkboxes.
+         */
+        export type SelectionMode = "radio" | "checkbox";
+
+        /**
+         * Indicates whether a DataTable can be sorted by multiple columns or only by a single column.
+         */
+        export type SortMode = "single" | "multiple";
+
+        /**
+         * Indicates whether multiple columns of a DataTable can be expanded at the same time, or whether other
+         * expanded rows should be collapsed when a new row is expanded.
+         */
+        export type RowExpandMode = "single" | "multiple";
+
+        /**
+         * Indicates whether row editors are loaded eagerly or on-demand.
+         */
+        export type RowEditMode = "eager" | "lazy";
+
+        /**
+         * Indicates whether cell editors are loaded eagerly or on-demand.
+         */
+        export type CellEditMode = "eager" | "lazy";
+
+        /**
+         * Indicates the resize behavior of columns.
+         */
+        export type ResizeMode = "expand" | "fit";
+
+        /**
+         * Indicates how rows of a DataTable may be selected, when clicking on the row itself (not the checkbox /
+         * radiobutton from p:column). `new` always unselects other rows, `add` preserves the currently selected rows,
+         * and `none` disables row selection.
+         */
+        export type SelectionRowMode = "new" | "add" | "none";
+
+        /**
+         * When a row is editable: whether to `save` the current contents of the row or `cancel` the row edit and
+         * discard all changes.
+         */
+        export type RowEditAction = "cancel" | "save";
+
+        /**
+         * Callback that is invoked when the user clicks on a row of the DataTable. On a click, `this` is the clicked
+         * `TR` element; when the row is selected with ENTER or SPACE, `this` is the DataTable.
+         * @param row The TR row that was clicked.
+         */
+        export type OnRowClickCallback = (this: HTMLElement | DataTable, row: JQuery) => void;
+
+        /**
+         * Describes the meta information of row, such as its index and its row key.
+         */
+        export interface RowMeta {
+            /** The unique key of the row. `undefined` when no key was defined for the rows. */
+            key: string | undefined;
+            /** The 0-based index of the row in the DataTable. */
+            index: number;
+        }
+
+        /**
+         * Describes a sorting operation of the DataTable. The items of the DataTable may be sorted by multiple
+         * columns, in which case the sorting operation is described by a list of these objects.
+         */
+        export interface SortMeta {
+            /** ID of the column to sort by. */
+            col: string;
+            /** Whether to sort the items by the column value in an ascending or descending order, or unsorted. */
+            order: -1 | 0 | 1;
+        }
+
+        /**
+         * Describes the width information of a DOM element.
+         */
+        export interface WidthInfo {
+            /**
+             * The width of the element. It's either a unit-less numeric pixel value or a string containing the width
+             * including an unit.
+             */
+            width: number | string;
+            /** Tells whether the width includes the border-box or not. */
+            isOuterWidth: boolean;
+        }
+    }
+}
+
+// Types (src/dataview)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            DataView: typeof DataView;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type DataViewCfg = import("./src/dataview/dataview.widget.js").DataViewCfg;
+    }
+    namespace PrimeFacesTypes.widget.DataView {
+        /**
+         * The layout mode the data view. `grid` displays the item in a grid with cards, `list` displays the items in a
+         * vertical list.
+         */
+        export type Layout = "grid" | "list";
     }
 }
 
@@ -457,6 +803,42 @@ declare global {
     }
 }
 
+// Types (src/dragdrop)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Draggable: typeof Draggable;
+            Droppable: typeof Droppable;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type DraggableCfg = import("./src/dragdrop/dragdrop.widget.js").DraggableCfg;
+        export type DroppableCfg = import("./src/dragdrop/dragdrop.widget.js").DroppableCfg;
+    }
+    namespace PrimeFacesTypes.widget.Draggable {
+        /**
+         * Callback for when dragging starts, with the draggable as `this`. See also {@link DraggableCfg.onStart}.
+         */
+        export type OnStartCallback = (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => void;
+
+        /**
+         * Callback for when dragging ends, with the draggable as `this`. See also {@link DraggableCfg.onStop}.
+         */
+        export type OnStopCallback = (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => void;
+
+        /**
+         * Callback for when dragging, with the draggable as `this`. See also {@link DraggableCfg.onDrag}.
+         */
+        export type OnDragCallback = (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => void;
+    }
+    namespace PrimeFacesTypes.widget.Droppable {
+        /**
+         * Callback for when an items is dropped, with the droppable as `this`. See also {@link DroppableCfg.onDrop}.
+         */
+        export type OnDropCallback = (this: Droppable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DroppableUi) => void;
+    }
+}
+
 // Types (src/effect)
 declare global {
     namespace PrimeFacesTypes {
@@ -486,6 +868,7 @@ declare global {
     namespace PrimeFacesTypes {
         export interface WidgetRegistry {
             Button: typeof Button;
+            CascadeSelect: typeof CascadeSelect;
             CommandButton: typeof CommandButton;
             CommandLink: typeof CommandLink;
             DefaultCommand: typeof DefaultCommand;
@@ -493,14 +876,17 @@ declare global {
             InputTextarea: typeof InputTextarea;
             LinkButton: typeof LinkButton;
             MultiSelectListbox: typeof MultiSelectListbox;
+            Password: typeof Password;
             SelectBooleanButton: typeof SelectBooleanButton;
             SelectBooleanCheckbox: typeof SelectBooleanCheckbox;
+            SelectCheckboxMenu: typeof SelectCheckboxMenu;
             SelectListbox: typeof SelectListbox;
             SelectManyButton: typeof SelectManyButton;
             SelectManyCheckbox: typeof SelectManyCheckbox;
             SelectManyMenu: typeof SelectManyMenu;
             SelectOneButton: typeof SelectOneButton;
             SelectOneListbox: typeof SelectOneListbox;
+            SelectOneMenu: typeof SelectOneMenu;
             SelectOneRadio: typeof SelectOneRadio;
             SplitButton: typeof SplitButton;
         }
@@ -508,6 +894,7 @@ declare global {
 
     namespace PrimeFacesTypes.widget {
         export type ButtonCfg = import("./src/forms/forms.button.widget.js").ButtonCfg;
+        export type CascadeSelectCfg = import("./src/forms/forms.cascadeselect.widget.js").CascadeSelectCfg;
         export type CommandButtonCfg = import("./src/forms/forms.commandbutton.widget.js").CommandButtonCfg;
         export type CommandLinkCfg = import("./src/forms/forms.commandlink.widget.js").CommandLinkCfg;
         export type DefaultCommandCfg = import("./src/forms/forms.defaultcommand.widget.js").DefaultCommandCfg;
@@ -515,16 +902,50 @@ declare global {
         export type InputTextareaCfg = import("./src/forms/forms.inputtextarea.widget.js").InputTextareaCfg;
         export type LinkButtonCfg = import("./src/forms/forms.linkbutton.widget.js").LinkButtonCfg;
         export type MultiSelectListboxCfg = import("./src/forms/forms.multiselectlistbox.widget.js").MultiSelectListboxCfg;
+        export type PasswordCfg = import("./src/forms/forms.password.widget.js").PasswordCfg;
         export type SelectBooleanButtonCfg = import("./src/forms/forms.selectbooleanbutton.widget.js").SelectBooleanButtonCfg;
         export type SelectBooleanCheckboxCfg = import("./src/forms/forms.selectbooleancheckbox.widget.js").SelectBooleanCheckboxCfg;
+        export type SelectCheckboxMenuCfg = import("./src/forms/forms.selectcheckboxmenu.widget.js").SelectCheckboxMenuCfg;
         export type SelectListboxCfg = import("./src/forms/forms.selectlistbox.widget.js").SelectListboxCfg;
         export type SelectManyButtonCfg = import("./src/forms/forms.selectmanybutton.widget.js").SelectManyButtonCfg;
         export type SelectManyCheckboxCfg = import("./src/forms/forms.selectmanycheckbox.widget.js").SelectManyCheckboxCfg;
         export type SelectManyMenuCfg = import("./src/forms/forms.selectmanymenu.widget.js").SelectManyMenuCfg;
         export type SelectOneButtonCfg = import("./src/forms/forms.selectonebutton.widget.js").SelectOneButtonCfg;
         export type SelectOneListboxCfg = import("./src/forms/forms.selectonelistbox.widget.js").SelectOneListboxCfg;
+        export type SelectOneMenuCfg = import("./src/forms/forms.selectonemenu.widget.js").SelectOneMenuCfg;
         export type SelectOneRadioCfg = import("./src/forms/forms.selectoneradio.widget.js").SelectOneRadioCfg;
         export type SplitButtonCfg = import("./src/forms/forms.splitbutton.widget.js").SplitButtonCfg;
+    }
+
+    namespace PrimeFacesTypes.widget.SelectCheckboxMenu {
+        /**
+         * Available modes for filtering the options of a select checkbox menu. When `custom` is set, a
+         * `filterFunction` must be specified.
+         */
+        export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+        /**
+         * A function for filtering the options of a select checkbox menu.
+         * @param itemLabel The (searchable) label of an option.
+         * @param filterValue The (searchable) value to search for.
+         * @returns `true` if the item label matches the filter value, or `false` otherwise.
+         */
+        export type FilterFunction = (itemLabel: string, filterValue: string) => boolean;
+
+        /**
+         * Callback that is invoked when a checkbox option was checked or unchecked, with the widget as `this`.
+         */
+        export type OnChangeCallback = (this: SelectCheckboxMenu) => void;
+
+        /**
+         * Callback that is invoked when the overlay panel was hidden, with the widget as `this`.
+         */
+        export type OnHideCallback = (this: SelectCheckboxMenu) => void;
+
+        /**
+         * Callback that is invoked when the overlay panel was brought up, with the widget as `this`.
+         */
+        export type OnShowCallback = (this: SelectCheckboxMenu) => void;
     }
 
     namespace PrimeFacesTypes.widget.SelectListbox {
@@ -554,6 +975,27 @@ declare global {
          * Called when the value has changed, with the widget as `this`.
          */
         export type ChangeCallback = (this: SelectOneButton) => void;
+    }
+
+    namespace PrimeFacesTypes.widget.SelectOneMenu {
+        /**
+         * Duration of toggle animation of the overlay panel.
+         */
+        export type EffectSpeed = "slow" | "normal" | "fast";
+
+        /**
+         * Available modes for filtering the options of a select one menu. When `custom` is set, a `filterFunction`
+         * must be specified.
+         */
+        export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+        /**
+         * A function for filtering the options of a select one menu.
+         * @param itemLabel The (searchable) label of an option.
+         * @param filterValue The (searchable) value to search for.
+         * @returns `true` if the item label matches the filter value, or `false` otherwise.
+         */
+        export type FilterFunction = (itemLabel: string, filterValue: string) => boolean;
     }
 
     namespace PrimeFacesTypes.widget.SplitButton {
@@ -693,6 +1135,46 @@ declare global {
     }
 }
 
+// Types (src/notificationbar)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            NotificationBar: typeof NotificationBar;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type NotificationBarCfg = import("./src/notificationbar/notificationbar.widget.js").NotificationBarCfg;
+    }
+    namespace PrimeFacesTypes.widget.NotificationBar {
+        /**
+         * Possible values for the effect applied when the notification bar is shown or hidden.
+         */
+        export type Effect = "slide" | "fade" | "none";
+
+        /**
+         * Possible values for where the notification bar is shown.
+         */
+        export type Position = "top" | "bottom";
+
+        /**
+         * Possible values for speed of the effect when the notification bar is shown or hidden.
+         */
+        export type EffectSpeed = "fast" | "normal" | "slow";
+    }
+}
+
+// Types (src/orderlist)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            OrderList: typeof OrderList;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type OrderListCfg = import("./src/orderlist/orderlist.widget.js").OrderListCfg;
+    }
+}
+
 // Types (src/outputpanel)
 declare global {
     namespace PrimeFacesTypes {
@@ -709,6 +1191,60 @@ declare global {
          * was scrolled into view.
          */
         export type DeferredMode = "load" | "visible";
+    }
+}
+
+// Types (src/overlaypanel)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            OverlayPanel: typeof OverlayPanel;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type OverlayPanelCfg = import("./src/overlaypanel/overlaypanel.widget.js").OverlayPanelCfg;
+    }
+    namespace PrimeFacesTypes.widget.OverlayPanel {
+        /**
+         * Called when the panel was hidden, with the overlay panel as `this`.
+         */
+        export type OnHideCallback = (this: OverlayPanel) => void;
+
+        /**
+         * Called when the panel was shown, with the overlay panel as `this`.
+         */
+        export type OnShowCallback = (this: OverlayPanel) => void;
+    }
+}
+
+// Types (src/paginator)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Paginator: typeof Paginator;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type PaginatorCfg = import("./src/paginator/paginator.widget.js").PaginatorCfg;
+    }
+    namespace PrimeFacesTypes.widget.Paginator {
+        /**
+         * A pagination state, that is, a range of items that should be displayed.
+         */
+        export interface PaginationState {
+            /** 0-based index of the first item on the current page. */
+            first: number;
+            /** The number of rows per page, the string `*` when "show all" was selected in the rows per page dropdown. */
+            rows: number;
+            /** The current page, 0-based index. */
+            page: number;
+        }
+
+        /**
+         * Called when the pagination state changes, with the paginator as `this` and the new values for the current page
+         * and the rows per page count.
+         */
+        export type PaginateCallback = (this: Paginator, newState: PaginationState) => void;
     }
 }
 
@@ -730,6 +1266,67 @@ declare global {
     }
 }
 
+// Types (src/picklist)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            PickList: typeof PickList;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type PickListCfg = import("./src/picklist/picklist.widget.js").PickListCfg;
+    }
+    namespace PrimeFacesTypes.widget.PickList {
+        /**
+         * The type for the two lists comprising the pick list, i.e. whether a list contain the source or target items.
+         */
+        export type ListName = "source" | "target";
+
+        /**
+         * Indicates how an item was transferred from one list to the other.
+         * - `command`: The item was transferred as a result of the user clicking one of the command buttons next to the
+         *   lists.
+         * - `dblclick`: The item was transferred as a result of a double click by the user.
+         * - `dragdrop`: The item was transferred as a result of a drag&drop interaction by the user.
+         * - `checkbox`: The item was transferred as a result of a checkbox click by the user.
+         */
+        export type TransferType = "command" | "dblclick" | "dragdrop" | "checkbox";
+
+        /**
+         * Available modes for filtering the options of a pick list. When `custom` is set, a `filterFunction` must be
+         * specified.
+         */
+        export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+        /**
+         * A function for filtering the options of a pick list box.
+         * @param itemLabel The label of the currently selected text.
+         * @param filterValue The value to search for.
+         * @returns `true` if the item label matches the filter value, or `false` otherwise.
+         */
+        export type FilterFunction = (itemLabel: string, filterValue: string) => boolean;
+
+        /**
+         * Details about the pick list items that were transferred.
+         */
+        export interface TransferData {
+            /** Items that were transferred from one list to the other. */
+            items: JQuery;
+            /** List from which the items were transferred. */
+            from: JQuery;
+            /** List to which the items were transferred. */
+            to: JQuery;
+            /** Type of the action that caused the items to be transferred. */
+            type: TransferType;
+        }
+
+        /**
+         * Called when items were transferred from one list to the other, with the pick list as `this`.
+         */
+        export type OnTransferCallback = (this: PickList, transferData: TransferData) => void;
+    }
+}
+
 // Types (src/progressbar)
 declare global {
     namespace PrimeFacesTypes {
@@ -739,6 +1336,55 @@ declare global {
     }
     namespace PrimeFacesTypes.widget {
         export type ProgressBarCfg = import("./src/progressbar/progressbar.widget.js").ProgressBarCfg;
+    }
+}
+
+// Types (src/rating)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Rating: typeof Rating;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type RatingCfg = import("./src/rating/rating.widget.js").RatingCfg;
+    }
+    namespace PrimeFacesTypes.widget.Rating {
+        /**
+         * Called when the user gives a rating, with the rating as `this` and the number of rated stars.
+         */
+        export type OnRateCallback = (this: Rating, currentNumberOfStars: number) => void;
+    }
+}
+
+// Types (src/resizable)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Resizable: typeof Resizable;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type ResizableCfg = import("./src/resizable/resizable.widget.js").ResizableCfg;
+    }
+    namespace PrimeFacesTypes.widget.Resizable {
+        /**
+         * Client-side callback to execute during resizing, with the resizable as `this`. See also
+         * {@link ResizableCfg.onResize}.
+         */
+        export type OnResizeCallback = (this: Resizable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi) => void;
+
+        /**
+         * Client-side callback to execute when resizing begins, with the resizable as `this`. See also
+         * {@link ResizableCfg.onStart}.
+         */
+        export type OnStartCallback = (this: Resizable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi) => void;
+
+        /**
+         * Client-side callback to execute after resizing end, with the resizable as `this`. See also
+         * {@link ResizableCfg.onStop}.
+         */
+        export type OnStopCallback = (this: Resizable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi) => void;
     }
 }
 
@@ -920,6 +1566,36 @@ declare global {
     }
 }
 
+// Types (src/tabview)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            TabView: typeof TabView;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type TabViewCfg = import("./src/tabview/tabview.widget.js").TabViewCfg;
+    }
+    namespace PrimeFacesTypes.widget.TabView {
+        /**
+         * Called when a tab is clicked, with the tab view as `this` and the 0-based index of the tab that is about to be
+         * selected. `false` stays at the current tab.
+         */
+        export type OnTabChangeCallback = (this: TabView, index: number) => boolean | void;
+
+        /**
+         * Called when a tab is closed, with the tab view as `this` and the 0-based index of the tab that is about to be
+         * closed. `false` keeps the tab open.
+         */
+        export type OnTabCloseCallback = (this: TabView, index: number) => boolean | void;
+
+        /**
+         * Called when a tab was shown, with the tab view as `this` and the 0-based index of the tab.
+         */
+        export type OnTabShowCallback = (this: TabView, index: number) => void;
+    }
+}
+
 // Types (src/tagcloud)
 declare global {
     namespace PrimeFacesTypes {
@@ -941,6 +1617,229 @@ declare global {
     }
     namespace PrimeFacesTypes.widget {
         export type ToggleSwitchCfg = import("./src/toggleswitch/toggleswitch.widget.js").ToggleSwitchCfg;
+    }
+}
+
+// Types (src/tooltip)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            Tooltip: typeof Tooltip;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type TooltipCfg = import("./src/tooltip/tooltip.widget.js").TooltipCfg;
+    }
+    namespace PrimeFacesTypes.widget.Tooltip {
+        /**
+         * Position of the tooltip, relative to the target component.
+         */
+        export type TooltipPosition = "right" | "left" | "top" | "bottom";
+
+        /**
+         * Called before the tooltip is shown, with the tooltip as `this`. `false` prevents the tooltip from being shown.
+         */
+        export type BeforeShowCallback = (this: Tooltip) => boolean | void;
+
+        /**
+         * Called after the tooltip was hidden. It is called without a `this` context.
+         */
+        export type OnHideCallback = () => void;
+
+        /**
+         * Called after the tooltip was shown. It is called without a `this` context.
+         */
+        export type OnShowCallback = () => void;
+    }
+}
+
+// Types (src/tree)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            BaseTree: typeof BaseTree;
+            HorizontalTree: typeof HorizontalTree;
+            VerticalTree: typeof VerticalTree;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type BaseTreeCfg = import("./src/tree/tree.base.widget.js").BaseTreeCfg;
+        export type HorizontalTreeCfg = import("./src/tree/tree.horizontal.widget.js").HorizontalTreeCfg;
+        export type VerticalTreeCfg = import("./src/tree/tree.vertical.widget.js").VerticalTreeCfg;
+    }
+    namespace PrimeFacesTypes.widget.BaseTree {
+        /**
+         * Drag mode for a tree widget. Defines the parent-child relationship when a node is dragged.
+         */
+        export type DragMode = "self" | "parent" | "ancestor";
+
+        /**
+         * Mode for filtering a tree widget.
+         */
+        export type FilterMode = "lenient" | "strict";
+
+        /**
+         * How the nodes of a tree are selected. When set to `single`, only at most one node can be selected by
+         * clicking on it. When set to `multiple`, more than one node may be selected by clicking on each node. When set
+         * to `checkbox`, each node receives a checkbox next to it that may be used for selection.
+         */
+        export type SelectionMode = "single" | "multiple" | "checkbox";
+
+        /**
+         * Callback that is invoked when a node is clicked, with the tree as `this`.
+         * @param node The tree node that was clicked.
+         * @param event The mouse click (or key) event that occurred.
+         * @returns `false` to ignore the click, anything else to allow the node to be selected.
+         */
+        export type OnNodeClickCallback = (this: BaseTree, node: JQuery, event: JQuery.TriggeredEvent) => boolean | void;
+
+        /**
+         * A set of icons to be used for a certain node type.
+         */
+        export interface NodeIconSet {
+            /** Icon to be used when the node is expanded. */
+            expandedIcon: string;
+            /** Icon to be used when the node is collapsed. */
+            collapsedIcon: string;
+        }
+    }
+    namespace PrimeFacesTypes.widget.VerticalTree {
+        /**
+         * Defines parent-child restrictions when a node is dropped.
+         */
+        export type DropRestrictMode = "none" | "sibling";
+
+        /**
+         * Whether to move or copy the node on drop.
+         */
+        export type DropMode = "move" | "copy";
+
+        /**
+         * Describes a drag & drop operation when a tree node is being dragged, see
+         * {@link VerticalTree.droppedNodeParams}.
+         */
+        export interface DroppedNodeParams {
+            /** Details about the drop event. */
+            ui: PrimeFacesTypes.interactions.DroppableUi;
+            /** Tree widget of the dragged node. */
+            dragSource: VerticalTree;
+            /** The node that was dragged. */
+            dragNode: JQuery;
+            /** The node that was the target of the drag. */
+            targetDragNode: JQuery;
+            /** The drop point where the node was dropped, when it was dropped on a drop point. */
+            dropPoint?: JQuery;
+            /** The droppable where the node was dropped, when it was dropped on a node. */
+            droppable?: JQuery;
+            /** The node on which the dragged node was dropped. */
+            dropNode: JQuery;
+            /** Whether a transfer should occur, i.e. whether the node was dropped on another tree. */
+            transfer: boolean;
+        }
+
+        /**
+         * Describes a drag & drop that occurred, see {@link VerticalTree.fireDragDropEvent}.
+         */
+        export interface DragDropEvent {
+            /** Comma separated row keys of the dragged nodes. */
+            dragNodeKey: string;
+            /** Row key of the node on which the nodes were dropped. */
+            dropNodeKey: string;
+            /** ID of the tree widget of the dragged nodes. */
+            dragSource: string | string[];
+            /** Index of the dropped nodes within their new parent. */
+            dndIndex: number | undefined;
+            /** Whether the nodes were dropped on another tree. */
+            transfer: boolean;
+            /** Whether a copy of the nodes was dropped. */
+            isDroppedNodeCopy: boolean | undefined;
+        }
+    }
+}
+
+// Types (src/treetable)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            TreeTable: typeof TreeTable;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type TreeTableCfg = import("./src/treetable/treetable.widget.js").TreeTableCfg;
+    }
+    namespace PrimeFacesTypes.widget.TreeTable {
+        /**
+         * Indicates how a row may be selected.
+         * - `single`: Only a single row may be selected at any time by clicking on it. Selecting another row will
+         * unselect the currently selected row.
+         * - `multiple`: Multiple rows can be selected via clicking while holding the ctrl or shift key.
+         * - `checkbox`: One or more rows can be selected by clicking on the checkbox next to each row.
+         */
+        export type SelectionMode = "single" | "multiple" | "checkbox";
+
+        /**
+         * The available sort order types for the tree table, see {@link TreeTable.SORT_ORDER}.
+         */
+        export type SortOrder = "ASCENDING" | "DESCENDING" | "UNSORTED";
+
+        /**
+         * If cell editing mode is enabled, whether the cell editors are loaded lazily.
+         * - `eager`: Cell editors are loaded with the original page load or when the tree table is loaded.
+         * - `lazy`: Cell editors are loaded via AJAX when inline editing is requested.
+         */
+        export type CellEditMode = "eager" | "lazy";
+
+        /**
+         * How the data in a tree table can be edited.
+         * - `row`: A row is switched to edit mode and all cells can be edited at once.
+         * - `cell`: An individual cell is switched to edit mode and can be edited.
+         */
+        export type EditMode = "row" | "cell";
+
+        /**
+         * Defines which rows are expanded when the expand icon next to a row is clicked.
+         * - `self`: Only the row itself is expanded.
+         * - `children`: The row and its children are expanded.
+         */
+        export type ExpandMode = "children" | "self";
+
+        /**
+         * The resize behavior of the columns.
+         * - `fit`: The width of the next column changes, the width of the table stays the same.
+         * - `expand`: The width of the table changes.
+         */
+        export type ResizeMode = "fit" | "expand";
+
+        /**
+         * Describes a sorting operation of the tree table.
+         */
+        export interface SortMeta {
+            /** ID of the column to sort by. */
+            col: string;
+            /** How to sort by the column, one of the values of {@link TreeTable.SORT_ORDER}. */
+            order: number;
+        }
+    }
+}
+
+// Types (src/tristatecheckbox)
+declare global {
+    namespace PrimeFacesTypes {
+        export interface WidgetRegistry {
+            TriStateCheckbox: typeof TriStateCheckbox;
+        }
+    }
+    namespace PrimeFacesTypes.widget {
+        export type TriStateCheckboxCfg = import("./src/tristatecheckbox/tristatecheckbox.widget.js").TriStateCheckboxCfg;
+    }
+    namespace PrimeFacesTypes.widget.TriStateCheckbox {
+        /**
+         * A modulo operation with the result being in the range `[0,mod)`.
+         * @param number The dividend for the modulo operation.
+         * @param mod The divisor for the modulo operation.
+         * @returns The result of the modulo operation, in the range `[0,mod)`.
+         */
+        export type FixedMod = (number: number, mod: number) => number;
     }
 }
 

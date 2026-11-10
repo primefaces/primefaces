@@ -52,7 +52,7 @@ public abstract class TooltipBase extends UIOutput implements Widget, StyleAware
     @Property(description = "Effect to be used for displaying.", defaultValue = "fade")
     public abstract String getShowEffect();
 
-    @Property(description = "Delay time to show tooltip in milliseconds.", defaultValue = "150")
+    @Property(description = "Delay time to show tooltip in milliseconds.", defaultValue = "400")
     public abstract int getShowDelay();
 
     @Property(description = "Event hiding the tooltip.", implicitDefaultValue = "mouseout")
