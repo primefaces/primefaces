@@ -1,6 +1,6 @@
 import "./src/jquery.keypad.js";
 import { KeyboardUtils } from "./src/keyboard.utils.js";
-import { Keyboard } from "./src/keyboard.widget.js";
+import { Keyboard } from "./src/keyboard.js";
 
 // KeyboardUtils is not a widget, but it was always available in the widget scope
 Object.assign(PrimeFaces.widget, { KeyboardUtils });
@@ -14,7 +14,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type KeyboardCfg = import("./src/keyboard.widget.js").KeyboardCfg;
+        export type KeyboardCfg = import("./src/keyboard.js").KeyboardCfg;
 
         /**
          * Contains a few utilities for parsing and working with different keyboard layout. Used by the Keyboard

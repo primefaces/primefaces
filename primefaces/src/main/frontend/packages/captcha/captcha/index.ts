@@ -1,4 +1,4 @@
-import { Captcha } from "./src/captcha.widget.js";
+import { Captcha } from "./src/captcha.js";
 
 PrimeFaces.widget.Captcha = Captcha;
 
@@ -10,7 +10,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type CaptchaCfg = import("./src/captcha.widget.js").CaptchaCfg;
+        export type CaptchaCfg = import("./src/captcha.js").CaptchaCfg;
     }
 
     namespace PrimeFacesTypes.widget.Captcha {

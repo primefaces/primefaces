@@ -1,4 +1,4 @@
-import { Log } from "./src/log.widget.js";
+import { Log } from "./src/log.js";
 
 PrimeFaces.widget.Log = Log;
 
@@ -10,7 +10,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type LogCfg = import("./src/log.widget.js").LogCfg;
+        export type LogCfg = import("./src/log.js").LogCfg;
     }
 
     namespace PrimeFacesTypes.widget.Log {

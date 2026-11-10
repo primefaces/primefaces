@@ -1,4 +1,4 @@
-import { BaseTree, type BaseTreeCfg } from "./tree.base.widget.js";
+import { BaseTree, type BaseTreeCfg } from "./tree.base.js";
 
 /**
  * The configuration for the {@link HorizontalTree} widget.

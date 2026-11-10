@@ -1,4 +1,4 @@
-import { TieredMenu, type TieredMenuCfg } from "./menu.tieredmenu.widget.js";
+import { TieredMenu, type TieredMenuCfg } from "./tieredmenu.js";
 
 /**
  * The configuration for the {@link  MenuButton} widget.

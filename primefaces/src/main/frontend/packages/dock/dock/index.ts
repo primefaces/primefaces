@@ -1,4 +1,4 @@
-import { Dock } from "./src/dock.widget.js";
+import { Dock } from "./src/dock.js";
 
 PrimeFaces.widget.Dock = Dock;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type DockCfg = import("./src/dock.widget.js").DockCfg;
+        export type DockCfg = import("./src/dock.js").DockCfg;
     }
 }

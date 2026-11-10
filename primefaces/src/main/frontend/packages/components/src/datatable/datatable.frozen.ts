@@ -1,4 +1,4 @@
-import { DataTable, type DataTableCfg } from "./datatable.widget.js";
+import { DataTable, type DataTableCfg } from "./datatable.js";
 
 /**
  * The configuration for the {@link FrozenDataTable} widget. You can access this configuration via

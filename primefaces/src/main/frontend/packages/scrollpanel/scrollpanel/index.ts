@@ -1,4 +1,4 @@
-import { ScrollPanel } from "./src/scrollpanel.widget.js";
+import { ScrollPanel } from "./src/scrollpanel.js";
 
 PrimeFaces.widget.ScrollPanel = ScrollPanel;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ScrollPanelCfg = import("./src/scrollpanel.widget.js").ScrollPanelCfg;
+        export type ScrollPanelCfg = import("./src/scrollpanel.js").ScrollPanelCfg;
     }
 }

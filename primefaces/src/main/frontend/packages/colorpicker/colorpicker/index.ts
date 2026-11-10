@@ -1,5 +1,5 @@
 import Coloris from "@melloware/coloris";
-import { ColorPicker } from "./src/colorpicker.widget.js";
+import { ColorPicker } from "./src/colorpicker.js";
 
 PrimeFaces.widget.ColorPicker = ColorPicker;
 
@@ -15,7 +15,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ColorPickerCfg = import("./src/colorpicker.widget.js").ColorPickerCfg;
+        export type ColorPickerCfg = import("./src/colorpicker.js").ColorPickerCfg;
     }
 
     namespace PrimeFacesTypes.widget.ColorPicker {

@@ -1,4 +1,4 @@
-import { Organigram } from "./src/organigram.widget.js";
+import { Organigram } from "./src/organigram.js";
 
 PrimeFaces.widget.Organigram = Organigram;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type OrganigramCfg = import("./src/organigram.widget.js").OrganigramCfg;
+        export type OrganigramCfg = import("./src/organigram.js").OrganigramCfg;
     }
 }

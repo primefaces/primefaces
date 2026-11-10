@@ -1,4 +1,4 @@
-import { Stack } from "./src/stack.widget.js";
+import { Stack } from "./src/stack.js";
 
 PrimeFaces.widget.Stack = Stack;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type StackCfg = import("./src/stack.widget.js").StackCfg;
+        export type StackCfg = import("./src/stack.js").StackCfg;
     }
 }

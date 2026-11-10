@@ -3,7 +3,7 @@
 import "inputmask/dist/jquery.inputmask.js";
 import _Inputmask from "inputmask/dist/jquery.inputmask.js";
 
-import { InputMask } from "./src/inputmask.widget.js";
+import { InputMask } from "./src/inputmask.js";
 
 PrimeFaces.widget.InputMask = InputMask;
 
@@ -28,6 +28,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type InputMaskCfg = import("./src/inputmask.widget.js").InputMaskCfg;
+        export type InputMaskCfg = import("./src/inputmask.js").InputMaskCfg;
     }
 }

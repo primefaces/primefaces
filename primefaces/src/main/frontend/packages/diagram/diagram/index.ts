@@ -1,6 +1,6 @@
 import * as _jsPlumb from "jsplumb";
 
-import { Diagram } from "./src/diagram.widget.js";
+import { Diagram } from "./src/diagram.js";
 
 PrimeFaces.widget.Diagram = Diagram;
 
@@ -21,7 +21,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type DiagramCfg = import("./src/diagram.widget.js").DiagramCfg;
+        export type DiagramCfg = import("./src/diagram.js").DiagramCfg;
     }
 
     namespace PrimeFacesTypes.widget.Diagram {
@@ -34,9 +34,9 @@ declare global {
             /** ID of the target node where the connection end. */
             targetId: string;
             /** The point (port) where the connections starts. */
-            sourceEndpoint: import("./src/diagram.widget.js").DiagramEndpoint;
+            sourceEndpoint: import("./src/diagram.js").DiagramEndpoint;
             /** The point (port) where the connections ends. */
-            targetEndpoint: import("./src/diagram.widget.js").DiagramEndpoint;
+            targetEndpoint: import("./src/diagram.js").DiagramEndpoint;
         }
 
         /**
@@ -52,13 +52,13 @@ declare global {
             /** New ID of the target node where the connection ends. */
             newTargetId: string;
             /** Previous point (port) where the connections started. */
-            originalSourceEndpoint: import("./src/diagram.widget.js").DiagramEndpoint;
+            originalSourceEndpoint: import("./src/diagram.js").DiagramEndpoint;
             /** Previous point (port) where the connections ended. */
-            originalTargetEndpoint: import("./src/diagram.widget.js").DiagramEndpoint;
+            originalTargetEndpoint: import("./src/diagram.js").DiagramEndpoint;
             /** New point (port) where the connections starts. */
-            newSourceEndpoint: import("./src/diagram.widget.js").DiagramEndpoint;
+            newSourceEndpoint: import("./src/diagram.js").DiagramEndpoint;
             /** New point (port) where the connections ends. */
-            newTargetEndpoint: import("./src/diagram.widget.js").DiagramEndpoint;
+            newTargetEndpoint: import("./src/diagram.js").DiagramEndpoint;
         }
 
         /**

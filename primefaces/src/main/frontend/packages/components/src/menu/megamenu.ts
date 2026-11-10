@@ -1,4 +1,4 @@
-import { Menu } from "./menu.base.widget.js";
+import { Menu } from "./menu.base.js";
 
 /**
  * The configuration for the {@link  MegaMenu} widget.

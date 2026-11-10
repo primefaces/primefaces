@@ -2,7 +2,7 @@
  * The class with functionality related to working with dialogs and the dialog framework.
 */
 
-import type { Dialog, DialogCfg } from "./dialog/dialog.widget.js";
+import type { Dialog, DialogCfg } from "./dialog/dialog.js";
 
 // Note: Named "Dialogs" to avoid name collision with the "Dialog" widget class
 export class Dialogs {

@@ -1,4 +1,4 @@
-import { DatePicker } from "./src/datepicker.widget.js";
+import { DatePicker } from "./src/datepicker.js";
 
 PrimeFaces.widget.DatePicker = DatePicker;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type DatePickerCfg = import("./src/datepicker.widget.js").DatePickerCfg;
+        export type DatePickerCfg = import("./src/datepicker.js").DatePickerCfg;
     }
 }

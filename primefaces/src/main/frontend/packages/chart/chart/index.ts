@@ -3,7 +3,7 @@ import "chartjs-adapter-moment";
 import zoomPlugin from "chartjs-plugin-zoom";
 import Hammer from "hammerjs";
 
-import { Chart as ChartWidget } from "./src/chart.widget.js";
+import { Chart as ChartWidget } from "./src/chart.js";
 import { createChartJsGlobal, type ChartJsGlobal } from "./src/chart.global.js";
 
 declare global {
@@ -34,7 +34,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ChartCfg = import("./src/chart.widget.js").ChartCfg;
+        export type ChartCfg = import("./src/chart.js").ChartCfg;
     }
 
     namespace PrimeFacesTypes.widget.Chart {

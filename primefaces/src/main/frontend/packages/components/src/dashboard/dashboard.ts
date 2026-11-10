@@ -1,4 +1,4 @@
-import type { KnownInteractionOptions } from "../dragdrop/dragdrop.widget.js";
+import type { KnownInteractionOptions } from "../dragdrop/dragdrop.js";
 
 /**
  * The configuration for the {@link Dashboard} widget.

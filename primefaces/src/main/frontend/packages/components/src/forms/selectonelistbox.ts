@@ -1,4 +1,4 @@
-import { SelectListbox, type SelectListboxCfg } from "./forms.selectlistbox.widget.js";
+import { SelectListbox, type SelectListboxCfg } from "./selectlistbox.js";
 
 /**
  * The configuration for the {@link SelectOneListbox} widget.

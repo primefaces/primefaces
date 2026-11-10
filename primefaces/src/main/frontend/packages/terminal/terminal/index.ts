@@ -1,4 +1,4 @@
-import { Terminal } from "./src/terminal.widget.js";
+import { Terminal } from "./src/terminal.js";
 
 PrimeFaces.widget.Terminal = Terminal;
 
@@ -10,7 +10,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type TerminalCfg = import("./src/terminal.widget.js").TerminalCfg;
+        export type TerminalCfg = import("./src/terminal.js").TerminalCfg;
     }
 
     namespace PrimeFacesTypes.widget.Terminal {

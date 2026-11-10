@@ -1,4 +1,4 @@
-import { Timeline } from "./src/timeline.widget.js";
+import { Timeline } from "./src/timeline.js";
 import { createVisGlobal, type VisGlobal } from "./src/create-vis-global.js";
 
 import "moment/locale/de.js";
@@ -36,7 +36,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type TimelineCfg = import("./src/timeline.widget.js").TimelineCfg;
+        export type TimelineCfg = import("./src/timeline.js").TimelineCfg;
     }
 
     namespace PrimeFacesTypes.widget.Timeline {

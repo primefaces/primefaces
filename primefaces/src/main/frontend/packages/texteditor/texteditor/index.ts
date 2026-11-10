@@ -1,4 +1,4 @@
-import { TextEditor } from "./src/texteditor.widget.js";
+import { TextEditor } from "./src/texteditor.js";
 import _Quill from "quill";
 
 PrimeFaces.widget.TextEditor = TextEditor;
@@ -16,7 +16,7 @@ declare global{
     }
 
     namespace PrimeFacesTypes.widget {
-        export type TextEditorCfg = import("./src/texteditor.widget.js").TextEditorCfg;
+        export type TextEditorCfg = import("./src/texteditor.js").TextEditorCfg;
     }
 }
 

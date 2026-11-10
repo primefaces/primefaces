@@ -1,4 +1,4 @@
-import { Menu, type MenuCfg } from "./menu.base.widget.js";
+import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
  * The configuration for the {@link  SlideMenu} widget.

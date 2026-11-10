@@ -1,5 +1,5 @@
 import "./src/raphael.connection.js";
-import { Mindmap } from "./src/mindmap.widget.js";
+import { Mindmap } from "./src/mindmap.js";
 
 PrimeFaces.widget.Mindmap = Mindmap;
 
@@ -11,7 +11,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type MindmapCfg = import("./src/mindmap.widget.js").MindmapCfg;
+        export type MindmapCfg = import("./src/mindmap.js").MindmapCfg;
     }
 
     namespace PrimeFacesTypes.widget.Mindmap {

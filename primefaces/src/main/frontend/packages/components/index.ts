@@ -1,100 +1,100 @@
 import autosize from "autosize";
 
-import { InputText } from "./src/forms/forms.inputtext.widget.js";
-import { InputTextarea } from "./src/forms/forms.inputtextarea.widget.js";
-import { SelectOneMenu } from "./src/forms/forms.selectonemenu.widget.js";
-import { SelectOneRadio } from "./src/forms/forms.selectoneradio.widget.js";
-import { SelectBooleanCheckbox } from "./src/forms/forms.selectbooleancheckbox.widget.js";
-import { SelectManyCheckbox } from "./src/forms/forms.selectmanycheckbox.widget.js";
-import { SelectListbox } from "./src/forms/forms.selectlistbox.widget.js";
-import { SelectOneListbox } from "./src/forms/forms.selectonelistbox.widget.js";
-import { SelectManyMenu } from "./src/forms/forms.selectmanymenu.widget.js";
-import { CascadeSelect } from "./src/forms/forms.cascadeselect.widget.js";
-import { CommandButton } from "./src/forms/forms.commandbutton.widget.js";
-import { CommandLink } from "./src/forms/forms.commandlink.widget.js";
-import { Button } from "./src/forms/forms.button.widget.js";
-import { LinkButton } from "./src/forms/forms.linkbutton.widget.js";
-import { SelectManyButton } from "./src/forms/forms.selectmanybutton.widget.js";
-import { SelectOneButton } from "./src/forms/forms.selectonebutton.widget.js";
-import { SelectBooleanButton } from "./src/forms/forms.selectbooleanbutton.widget.js";
-import { SelectCheckboxMenu } from "./src/forms/forms.selectcheckboxmenu.widget.js";
-import { Password } from "./src/forms/forms.password.widget.js";
-import { DefaultCommand } from "./src/forms/forms.defaultcommand.widget.js";
-import { SplitButton } from "./src/forms/forms.splitbutton.widget.js";
-import { MultiSelectListbox } from "./src/forms/forms.multiselectlistbox.widget.js";
+import { InputText } from "./src/forms/inputtext.js";
+import { InputTextarea } from "./src/forms/inputtextarea.js";
+import { SelectOneMenu } from "./src/forms/selectonemenu.js";
+import { SelectOneRadio } from "./src/forms/selectoneradio.js";
+import { SelectBooleanCheckbox } from "./src/forms/selectbooleancheckbox.js";
+import { SelectManyCheckbox } from "./src/forms/selectmanycheckbox.js";
+import { SelectListbox } from "./src/forms/selectlistbox.js";
+import { SelectOneListbox } from "./src/forms/selectonelistbox.js";
+import { SelectManyMenu } from "./src/forms/selectmanymenu.js";
+import { CascadeSelect } from "./src/forms/cascadeselect.js";
+import { CommandButton } from "./src/forms/commandbutton.js";
+import { CommandLink } from "./src/forms/commandlink.js";
+import { Button } from "./src/forms/button.js";
+import { LinkButton } from "./src/forms/linkbutton.js";
+import { SelectManyButton } from "./src/forms/selectmanybutton.js";
+import { SelectOneButton } from "./src/forms/selectonebutton.js";
+import { SelectBooleanButton } from "./src/forms/selectbooleanbutton.js";
+import { SelectCheckboxMenu } from "./src/forms/selectcheckboxmenu.js";
+import { Password } from "./src/forms/password.js";
+import { DefaultCommand } from "./src/forms/defaultcommand.js";
+import { SplitButton } from "./src/forms/splitbutton.js";
+import { MultiSelectListbox } from "./src/forms/multiselectlistbox.js";
 
-import { BreadCrumb } from "./src/menu/menu.breadcrumb.widget.js";
-import { ContextMenu } from "./src/menu/menu.contextmenu.widget.js";
-import { MegaMenu } from "./src/menu/menu.megamenu.widget.js";
-import { Menu } from "./src/menu/menu.base.widget.js";
-import { Menubar } from "./src/menu/menu.menubar.widget.js";
-import { MenuButton } from "./src/menu/menu.menubutton.widget.js";
-import { PanelMenu } from "./src/menu/menu.panelmenu.widget.js";
-import { PlainMenu } from "./src/menu/menu.plainmenu.widget.js";
-import { SlideMenu } from "./src/menu/menu.slidemenu.widget.js";
-import { Steps } from "./src/menu/menu.steps.widget.js";
-import { TabMenu } from "./src/menu/menu.tabmenu.widget.js";
-import { TieredMenu } from "./src/menu/menu.tieredmenu.widget.js";
+import { BreadCrumb } from "./src/menu/breadcrumb.js";
+import { ContextMenu } from "./src/menu/contextmenu.js";
+import { MegaMenu } from "./src/menu/megamenu.js";
+import { Menu } from "./src/menu/menu.base.js";
+import { Menubar } from "./src/menu/menubar.js";
+import { MenuButton } from "./src/menu/menubutton.js";
+import { PanelMenu } from "./src/menu/panelmenu.js";
+import { PlainMenu } from "./src/menu/plainmenu.js";
+import { SlideMenu } from "./src/menu/slidemenu.js";
+import { Steps } from "./src/menu/steps.js";
+import { TabMenu } from "./src/menu/tabmenu.js";
+import { TieredMenu } from "./src/menu/tieredmenu.js";
 
 import { dialog, registerDialogHooks, type Dialogs, type DialogHandler as _DialogHandler } from "./src/core.dialog.js";
-import { ConfirmDialog, Dialog as _Dialog, DynamicDialog } from "./src/dialog/dialog.widget.js";
+import { ConfirmDialog, Dialog as _Dialog, DynamicDialog } from "./src/dialog/dialog.js";
 
-import { Growl, registerMessageRenderHookForGrowlWidget } from "./src/growl/growl.widget.js";
-import { Message, registerMessageRenderHookForMessageWidget } from "./src/message/message.widget.js";
-import { Messages, registerMessageRenderHookForMessagesWidget } from "./src/messages/messages.widget.js";
+import { Growl, registerMessageRenderHookForGrowlWidget } from "./src/growl/growl.js";
+import { Message, registerMessageRenderHookForMessageWidget } from "./src/message/message.js";
+import { Messages, registerMessageRenderHookForMessagesWidget } from "./src/messages/messages.js";
 import { registerRipple } from "./src/ripple/ripple.js";
-import { StaticMessage } from "./src/staticmessage/staticmessage.widget.js";
+import { StaticMessage } from "./src/staticmessage/staticmessage.js";
 
-import { AccordionPanel } from "./src/accordion/accordion.widget.js";
-import { AutoComplete } from "./src/autocomplete/autocomplete.widget.js";
-import { BlockUI } from "./src/blockui/blockui.widget.js";
-import { Carousel } from "./src/carousel/carousel.widget.js";
-import { ConfirmPopup } from "./src/confirmpopup/confirmpopup.widget.js";
-import { ColumnToggler } from "./src/columntoggler/columntoggler.widget.js";
-import { Dashboard } from "./src/dashboard/dashboard.widget.js";
-import { DataGrid } from "./src/datagrid/datagrid.widget.js";
-import { DataList } from "./src/datalist/datalist.widget.js";
-import { DataScroller } from "./src/datascroller/datascroller.widget.js";
+import { AccordionPanel } from "./src/accordion/accordion.js";
+import { AutoComplete } from "./src/autocomplete/autocomplete.js";
+import { BlockUI } from "./src/blockui/blockui.js";
+import { Carousel } from "./src/carousel/carousel.js";
+import { ConfirmPopup } from "./src/confirmpopup/confirmpopup.js";
+import { ColumnToggler } from "./src/columntoggler/columntoggler.js";
+import { Dashboard } from "./src/dashboard/dashboard.js";
+import { DataGrid } from "./src/datagrid/datagrid.js";
+import { DataList } from "./src/datalist/datalist.js";
+import { DataScroller } from "./src/datascroller/datascroller.js";
 
-import { DataTable } from "./src/datatable/datatable.widget.js";
-import { FrozenDataTable } from "./src/datatable/datatable.frozen.widget.js";
-import { Draggable, Droppable } from "./src/dragdrop/dragdrop.widget.js";
-import { Effect } from "./src/effect/effect.widget.js";
-import { Fieldset } from "./src/fieldset/fieldset.widget.js";
-import { Inplace } from "./src/inplace/inplace.widget.js";
-import { NotificationBar } from "./src/notificationbar/notificationbar.widget.js";
-import { Panel } from "./src/panel/panel.widget.js";
-import { OrderList } from "./src/orderlist/orderlist.widget.js";
-import { OutputPanel } from "./src/outputpanel/outputpanel.widget.js";
-import { OverlayPanel } from "./src/overlaypanel/overlaypanel.widget.js";
-import { Paginator } from "./src/paginator/paginator.widget.js";
-import { PickList } from "./src/picklist/picklist.widget.js";
-import { ProgressBar } from "./src/progressbar/progressbar.widget.js";
-import { Rating } from "./src/rating/rating.widget.js";
-import { Resizable } from "./src/resizable/resizable.widget.js";
-import { Slider } from "./src/slider/slider.widget.js";
-import { Spinner } from "./src/spinner/spinner.widget.js";
-import { Splitter } from "./src/splitter/splitter.widget.js";
-import { Spotlight } from "./src/spotlight/spotlight.widget.js";
-import { SpeedDial } from "./src/speeddial/speeddial.widget.js";
-import { Sticky } from "./src/sticky/sticky.widget.js";
-import { TabView } from "./src/tabview/tabview.widget.js";
-import { TagCloud } from "./src/tagcloud/tagcloud.widget.js";
-import { Tooltip } from "./src/tooltip/tooltip.widget.js";
+import { DataTable } from "./src/datatable/datatable.js";
+import { FrozenDataTable } from "./src/datatable/datatable.frozen.js";
+import { Draggable, Droppable } from "./src/dragdrop/dragdrop.js";
+import { Effect } from "./src/effect/effect.js";
+import { Fieldset } from "./src/fieldset/fieldset.js";
+import { Inplace } from "./src/inplace/inplace.js";
+import { NotificationBar } from "./src/notificationbar/notificationbar.js";
+import { Panel } from "./src/panel/panel.js";
+import { OrderList } from "./src/orderlist/orderlist.js";
+import { OutputPanel } from "./src/outputpanel/outputpanel.js";
+import { OverlayPanel } from "./src/overlaypanel/overlaypanel.js";
+import { Paginator } from "./src/paginator/paginator.js";
+import { PickList } from "./src/picklist/picklist.js";
+import { ProgressBar } from "./src/progressbar/progressbar.js";
+import { Rating } from "./src/rating/rating.js";
+import { Resizable } from "./src/resizable/resizable.js";
+import { Slider } from "./src/slider/slider.js";
+import { Spinner } from "./src/spinner/spinner.js";
+import { Splitter } from "./src/splitter/splitter.js";
+import { Spotlight } from "./src/spotlight/spotlight.js";
+import { SpeedDial } from "./src/speeddial/speeddial.js";
+import { Sticky } from "./src/sticky/sticky.js";
+import { TabView } from "./src/tabview/tabview.js";
+import { TagCloud } from "./src/tagcloud/tagcloud.js";
+import { Tooltip } from "./src/tooltip/tooltip.js";
 
-import { BaseTree } from "./src/tree/tree.base.widget.js";
-import { VerticalTree } from "./src/tree/tree.vertical.widget.js";
-import { HorizontalTree } from "./src/tree/tree.horizontal.widget.js";
-import { TreeTable } from "./src/treetable/treetable.widget.js";
+import { BaseTree } from "./src/tree/tree.base.js";
+import { VerticalTree } from "./src/tree/tree.vertical.js";
+import { HorizontalTree } from "./src/tree/tree.horizontal.js";
+import { TreeTable } from "./src/treetable/treetable.js";
 
-import { Wizard } from "./src/wizard/wizard.widget.js";
-import { TriStateCheckbox } from "./src/tristatecheckbox/tristatecheckbox.widget.js";
-import { Chip } from "./src/chip/chip.widget.js";
-import { Chips } from "./src/chips/chips.widget.js";
-import { ScrollTop } from "./src/scrolltop/scrolltop.widget.js";
-import { Sidebar } from "./src/sidebar/sidebar.widget.js";
-import { DataView } from "./src/dataview/dataview.widget.js";
-import { ToggleSwitch } from "./src/toggleswitch/toggleswitch.widget.js";
+import { Wizard } from "./src/wizard/wizard.js";
+import { TriStateCheckbox } from "./src/tristatecheckbox/tristatecheckbox.js";
+import { Chip } from "./src/chip/chip.js";
+import { Chips } from "./src/chips/chips.js";
+import { ScrollTop } from "./src/scrolltop/scrolltop.js";
+import { Sidebar } from "./src/sidebar/sidebar.js";
+import { DataView } from "./src/dataview/dataview.js";
+import { ToggleSwitch } from "./src/toggleswitch/toggleswitch.js";
 
 // Add widgets and dialog to the PrimeFaces global object
 exposeToGlobalScope();
@@ -324,7 +324,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type AccordionPanelCfg = import("./src/accordion/accordion.widget.js").AccordionPanelCfg;
+        export type AccordionPanelCfg = import("./src/accordion/accordion.js").AccordionPanelCfg;
     }
     namespace PrimeFacesTypes.widget.AccordionPanel {
         /**
@@ -358,7 +358,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type AutoCompleteCfg = import("./src/autocomplete/autocomplete.widget.js").AutoCompleteCfg;
+        export type AutoCompleteCfg = import("./src/autocomplete/autocomplete.js").AutoCompleteCfg;
     }
     namespace PrimeFacesTypes.widget.AutoComplete {
         /**
@@ -408,7 +408,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type BlockUICfg = import("./src/blockui/blockui.widget.js").BlockUICfg;
+        export type BlockUICfg = import("./src/blockui/blockui.js").BlockUICfg;
     }
 }
 
@@ -420,7 +420,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type CarouselCfg = import("./src/carousel/carousel.widget.js").CarouselCfg;
+        export type CarouselCfg = import("./src/carousel/carousel.js").CarouselCfg;
     }
     namespace PrimeFacesTypes.widget.Carousel {
         /**
@@ -455,7 +455,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ChipCfg = import("./src/chip/chip.widget.js").ChipCfg;
+        export type ChipCfg = import("./src/chip/chip.js").ChipCfg;
     }
 }
 
@@ -467,7 +467,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ChipsCfg = import("./src/chips/chips.widget.js").ChipsCfg;
+        export type ChipsCfg = import("./src/chips/chips.js").ChipsCfg;
     }
 }
 
@@ -479,7 +479,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ColumnTogglerCfg = import("./src/columntoggler/columntoggler.widget.js").ColumnTogglerCfg;
+        export type ColumnTogglerCfg = import("./src/columntoggler/columntoggler.js").ColumnTogglerCfg;
     }
 }
 
@@ -495,7 +495,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ConfirmPopupCfg = import("./src/confirmpopup/confirmpopup.widget.js").ConfirmPopupCfg;
+        export type ConfirmPopupCfg = import("./src/confirmpopup/confirmpopup.js").ConfirmPopupCfg;
     }
 
     namespace PrimeFacesTypes.widget.ConfirmPopup {
@@ -514,7 +514,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DashboardCfg = import("./src/dashboard/dashboard.widget.js").DashboardCfg;
+        export type DashboardCfg = import("./src/dashboard/dashboard.js").DashboardCfg;
     }
     namespace PrimeFacesTypes.widget.Dashboard {
         /**
@@ -534,7 +534,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DataGridCfg = import("./src/datagrid/datagrid.widget.js").DataGridCfg;
+        export type DataGridCfg = import("./src/datagrid/datagrid.js").DataGridCfg;
     }
 }
 
@@ -546,7 +546,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DataListCfg = import("./src/datalist/datalist.widget.js").DataListCfg;
+        export type DataListCfg = import("./src/datalist/datalist.js").DataListCfg;
     }
 }
 
@@ -559,8 +559,8 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DataTableCfg = import("./src/datatable/datatable.widget.js").DataTableCfg;
-        export type FrozenDataTableCfg = import("./src/datatable/datatable.frozen.widget.js").FrozenDataTableCfg;
+        export type DataTableCfg = import("./src/datatable/datatable.js").DataTableCfg;
+        export type FrozenDataTableCfg = import("./src/datatable/datatable.frozen.js").FrozenDataTableCfg;
     }
     namespace PrimeFacesTypes.widget.DataTable {
         /**
@@ -673,7 +673,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DataViewCfg = import("./src/dataview/dataview.widget.js").DataViewCfg;
+        export type DataViewCfg = import("./src/dataview/dataview.js").DataViewCfg;
     }
     namespace PrimeFacesTypes.widget.DataView {
         /**
@@ -712,9 +712,9 @@ declare global {
 
     }
     namespace PrimeFacesTypes.widget {
-        export type ConfirmDialogCfg = import("./src/dialog/dialog.widget.js").ConfirmDialogCfg;
-        export type DialogCfg = import("./src/dialog/dialog.widget.js").DialogCfg;
-        export type DynamicDialogCfg = import("./src/dialog/dialog.widget.js").DynamicDialogCfg;
+        export type ConfirmDialogCfg = import("./src/dialog/dialog.js").ConfirmDialogCfg;
+        export type DialogCfg = import("./src/dialog/dialog.js").DialogCfg;
+        export type DynamicDialogCfg = import("./src/dialog/dialog.js").DynamicDialogCfg;
     }
     namespace PrimeFacesTypes.dialog {
     }
@@ -788,7 +788,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DataScrollerCfg = import("./src/datascroller/datascroller.widget.js").DataScrollerCfg;
+        export type DataScrollerCfg = import("./src/datascroller/datascroller.js").DataScrollerCfg;
     }
     namespace PrimeFacesTypes.widget.DataScroller {
         /**
@@ -812,8 +812,8 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type DraggableCfg = import("./src/dragdrop/dragdrop.widget.js").DraggableCfg;
-        export type DroppableCfg = import("./src/dragdrop/dragdrop.widget.js").DroppableCfg;
+        export type DraggableCfg = import("./src/dragdrop/dragdrop.js").DraggableCfg;
+        export type DroppableCfg = import("./src/dragdrop/dragdrop.js").DroppableCfg;
     }
     namespace PrimeFacesTypes.widget.Draggable {
         /**
@@ -847,7 +847,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type EffectCfg = import("./src/effect/effect.widget.js").EffectCfg;
+        export type EffectCfg = import("./src/effect/effect.js").EffectCfg;
     }
 }
 
@@ -859,7 +859,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type FieldsetCfg = import("./src/fieldset/fieldset.widget.js").FieldsetCfg;
+        export type FieldsetCfg = import("./src/fieldset/fieldset.js").FieldsetCfg;
     }
 }
 
@@ -893,28 +893,28 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ButtonCfg = import("./src/forms/forms.button.widget.js").ButtonCfg;
-        export type CascadeSelectCfg = import("./src/forms/forms.cascadeselect.widget.js").CascadeSelectCfg;
-        export type CommandButtonCfg = import("./src/forms/forms.commandbutton.widget.js").CommandButtonCfg;
-        export type CommandLinkCfg = import("./src/forms/forms.commandlink.widget.js").CommandLinkCfg;
-        export type DefaultCommandCfg = import("./src/forms/forms.defaultcommand.widget.js").DefaultCommandCfg;
-        export type InputTextCfg = import("./src/forms/forms.inputtext.widget.js").InputTextCfg;
-        export type InputTextareaCfg = import("./src/forms/forms.inputtextarea.widget.js").InputTextareaCfg;
-        export type LinkButtonCfg = import("./src/forms/forms.linkbutton.widget.js").LinkButtonCfg;
-        export type MultiSelectListboxCfg = import("./src/forms/forms.multiselectlistbox.widget.js").MultiSelectListboxCfg;
-        export type PasswordCfg = import("./src/forms/forms.password.widget.js").PasswordCfg;
-        export type SelectBooleanButtonCfg = import("./src/forms/forms.selectbooleanbutton.widget.js").SelectBooleanButtonCfg;
-        export type SelectBooleanCheckboxCfg = import("./src/forms/forms.selectbooleancheckbox.widget.js").SelectBooleanCheckboxCfg;
-        export type SelectCheckboxMenuCfg = import("./src/forms/forms.selectcheckboxmenu.widget.js").SelectCheckboxMenuCfg;
-        export type SelectListboxCfg = import("./src/forms/forms.selectlistbox.widget.js").SelectListboxCfg;
-        export type SelectManyButtonCfg = import("./src/forms/forms.selectmanybutton.widget.js").SelectManyButtonCfg;
-        export type SelectManyCheckboxCfg = import("./src/forms/forms.selectmanycheckbox.widget.js").SelectManyCheckboxCfg;
-        export type SelectManyMenuCfg = import("./src/forms/forms.selectmanymenu.widget.js").SelectManyMenuCfg;
-        export type SelectOneButtonCfg = import("./src/forms/forms.selectonebutton.widget.js").SelectOneButtonCfg;
-        export type SelectOneListboxCfg = import("./src/forms/forms.selectonelistbox.widget.js").SelectOneListboxCfg;
-        export type SelectOneMenuCfg = import("./src/forms/forms.selectonemenu.widget.js").SelectOneMenuCfg;
-        export type SelectOneRadioCfg = import("./src/forms/forms.selectoneradio.widget.js").SelectOneRadioCfg;
-        export type SplitButtonCfg = import("./src/forms/forms.splitbutton.widget.js").SplitButtonCfg;
+        export type ButtonCfg = import("./src/forms/button.js").ButtonCfg;
+        export type CascadeSelectCfg = import("./src/forms/cascadeselect.js").CascadeSelectCfg;
+        export type CommandButtonCfg = import("./src/forms/commandbutton.js").CommandButtonCfg;
+        export type CommandLinkCfg = import("./src/forms/commandlink.js").CommandLinkCfg;
+        export type DefaultCommandCfg = import("./src/forms/defaultcommand.js").DefaultCommandCfg;
+        export type InputTextCfg = import("./src/forms/inputtext.js").InputTextCfg;
+        export type InputTextareaCfg = import("./src/forms/inputtextarea.js").InputTextareaCfg;
+        export type LinkButtonCfg = import("./src/forms/linkbutton.js").LinkButtonCfg;
+        export type MultiSelectListboxCfg = import("./src/forms/multiselectlistbox.js").MultiSelectListboxCfg;
+        export type PasswordCfg = import("./src/forms/password.js").PasswordCfg;
+        export type SelectBooleanButtonCfg = import("./src/forms/selectbooleanbutton.js").SelectBooleanButtonCfg;
+        export type SelectBooleanCheckboxCfg = import("./src/forms/selectbooleancheckbox.js").SelectBooleanCheckboxCfg;
+        export type SelectCheckboxMenuCfg = import("./src/forms/selectcheckboxmenu.js").SelectCheckboxMenuCfg;
+        export type SelectListboxCfg = import("./src/forms/selectlistbox.js").SelectListboxCfg;
+        export type SelectManyButtonCfg = import("./src/forms/selectmanybutton.js").SelectManyButtonCfg;
+        export type SelectManyCheckboxCfg = import("./src/forms/selectmanycheckbox.js").SelectManyCheckboxCfg;
+        export type SelectManyMenuCfg = import("./src/forms/selectmanymenu.js").SelectManyMenuCfg;
+        export type SelectOneButtonCfg = import("./src/forms/selectonebutton.js").SelectOneButtonCfg;
+        export type SelectOneListboxCfg = import("./src/forms/selectonelistbox.js").SelectOneListboxCfg;
+        export type SelectOneMenuCfg = import("./src/forms/selectonemenu.js").SelectOneMenuCfg;
+        export type SelectOneRadioCfg = import("./src/forms/selectoneradio.js").SelectOneRadioCfg;
+        export type SplitButtonCfg = import("./src/forms/splitbutton.js").SplitButtonCfg;
     }
 
     namespace PrimeFacesTypes.widget.SelectCheckboxMenu {
@@ -1028,7 +1028,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type GrowlCfg = import("./src/growl/growl.widget.js").GrowlCfg;
+        export type GrowlCfg = import("./src/growl/growl.js").GrowlCfg;
     }
 }
 
@@ -1040,7 +1040,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type InplaceCfg = import("./src/inplace/inplace.widget.js").InplaceCfg;
+        export type InplaceCfg = import("./src/inplace/inplace.js").InplaceCfg;
     }
     namespace PrimeFacesTypes.widget.Inplace {
         /**
@@ -1070,18 +1070,18 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type BreadCrumbCfg = import("./src/menu/menu.breadcrumb.widget.js").BreadCrumbCfg;
-        export type ContextMenuCfg = import("./src/menu/menu.contextmenu.widget.js").ContextMenuCfg;
-        export type MegaMenuCfg = import("./src/menu/menu.megamenu.widget.js").MegaMenuCfg;
-        export type MenuCfg = import("./src/menu/menu.base.widget.js").MenuCfg;
-        export type MenubarCfg = import("./src/menu/menu.menubar.widget.js").MenubarCfg;
-        export type MenuButtonCfg = import("./src/menu/menu.menubutton.widget.js").MenuButtonCfg;
-        export type PanelMenuCfg = import("./src/menu/menu.panelmenu.widget.js").PanelMenuCfg;
-        export type PlainMenuCfg = import("./src/menu/menu.plainmenu.widget.js").PlainMenuCfg;
-        export type SlideMenuCfg = import("./src/menu/menu.slidemenu.widget.js").SlideMenuCfg;
-        export type StepsCfg = import("./src/menu/menu.steps.widget.js").StepsCfg;
-        export type TabMenuCfg = import("./src/menu/menu.tabmenu.widget.js").TabMenuCfg;
-        export type TieredMenuCfg = import("./src/menu/menu.tieredmenu.widget.js").TieredMenuCfg;
+        export type BreadCrumbCfg = import("./src/menu/breadcrumb.js").BreadCrumbCfg;
+        export type ContextMenuCfg = import("./src/menu/contextmenu.js").ContextMenuCfg;
+        export type MegaMenuCfg = import("./src/menu/megamenu.js").MegaMenuCfg;
+        export type MenuCfg = import("./src/menu/menu.base.js").MenuCfg;
+        export type MenubarCfg = import("./src/menu/menubar.js").MenubarCfg;
+        export type MenuButtonCfg = import("./src/menu/menubutton.js").MenuButtonCfg;
+        export type PanelMenuCfg = import("./src/menu/panelmenu.js").PanelMenuCfg;
+        export type PlainMenuCfg = import("./src/menu/plainmenu.js").PlainMenuCfg;
+        export type SlideMenuCfg = import("./src/menu/slidemenu.js").SlideMenuCfg;
+        export type StepsCfg = import("./src/menu/steps.js").StepsCfg;
+        export type TabMenuCfg = import("./src/menu/tabmenu.js").TabMenuCfg;
+        export type TieredMenuCfg = import("./src/menu/tieredmenu.js").TieredMenuCfg;
     }
 
     namespace PrimeFacesTypes.widget.ContextMenu {
@@ -1130,8 +1130,8 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type Message = import("./src/message/message.widget.js").Message;
-        export type Messages = import("./src/messages/messages.widget.js").Messages;
+        export type Message = import("./src/message/message.js").Message;
+        export type Messages = import("./src/messages/messages.js").Messages;
     }
 }
 
@@ -1143,7 +1143,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type NotificationBarCfg = import("./src/notificationbar/notificationbar.widget.js").NotificationBarCfg;
+        export type NotificationBarCfg = import("./src/notificationbar/notificationbar.js").NotificationBarCfg;
     }
     namespace PrimeFacesTypes.widget.NotificationBar {
         /**
@@ -1171,7 +1171,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type OrderListCfg = import("./src/orderlist/orderlist.widget.js").OrderListCfg;
+        export type OrderListCfg = import("./src/orderlist/orderlist.js").OrderListCfg;
     }
 }
 
@@ -1183,7 +1183,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type OutputPanelCfg = import("./src/outputpanel/outputpanel.widget.js").OutputPanelCfg;
+        export type OutputPanelCfg = import("./src/outputpanel/outputpanel.js").OutputPanelCfg;
     }
     namespace PrimeFacesTypes.widget.OutputPanel {
         /**
@@ -1202,7 +1202,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type OverlayPanelCfg = import("./src/overlaypanel/overlaypanel.widget.js").OverlayPanelCfg;
+        export type OverlayPanelCfg = import("./src/overlaypanel/overlaypanel.js").OverlayPanelCfg;
     }
     namespace PrimeFacesTypes.widget.OverlayPanel {
         /**
@@ -1225,7 +1225,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type PaginatorCfg = import("./src/paginator/paginator.widget.js").PaginatorCfg;
+        export type PaginatorCfg = import("./src/paginator/paginator.js").PaginatorCfg;
     }
     namespace PrimeFacesTypes.widget.Paginator {
         /**
@@ -1256,7 +1256,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type PanelCfg = import("./src/panel/panel.widget.js").PanelCfg;
+        export type PanelCfg = import("./src/panel/panel.js").PanelCfg;
     }
     namespace PrimeFacesTypes.widget.Panel {
         /**
@@ -1274,7 +1274,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type PickListCfg = import("./src/picklist/picklist.widget.js").PickListCfg;
+        export type PickListCfg = import("./src/picklist/picklist.js").PickListCfg;
     }
     namespace PrimeFacesTypes.widget.PickList {
         /**
@@ -1335,7 +1335,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ProgressBarCfg = import("./src/progressbar/progressbar.widget.js").ProgressBarCfg;
+        export type ProgressBarCfg = import("./src/progressbar/progressbar.js").ProgressBarCfg;
     }
 }
 
@@ -1347,7 +1347,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type RatingCfg = import("./src/rating/rating.widget.js").RatingCfg;
+        export type RatingCfg = import("./src/rating/rating.js").RatingCfg;
     }
     namespace PrimeFacesTypes.widget.Rating {
         /**
@@ -1365,7 +1365,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ResizableCfg = import("./src/resizable/resizable.widget.js").ResizableCfg;
+        export type ResizableCfg = import("./src/resizable/resizable.js").ResizableCfg;
     }
     namespace PrimeFacesTypes.widget.Resizable {
         /**
@@ -1396,7 +1396,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ScrollTopCfg = import("./src/scrolltop/scrolltop.widget.js").ScrollTopCfg;
+        export type ScrollTopCfg = import("./src/scrolltop/scrolltop.js").ScrollTopCfg;
     }
 }
 
@@ -1408,7 +1408,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type SidebarCfg = import("./src/sidebar/sidebar.widget.js").SidebarCfg;
+        export type SidebarCfg = import("./src/sidebar/sidebar.js").SidebarCfg;
     }
     namespace PrimeFacesTypes.widget.Sidebar {
         /**
@@ -1431,8 +1431,8 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type SliderCfg = import("./src/slider/slider.widget.js").SliderCfg;
-        export type SliderEventData = import("./src/slider/slider.widget.js").SliderEventData;
+        export type SliderCfg = import("./src/slider/slider.js").SliderCfg;
+        export type SliderEventData = import("./src/slider/slider.js").SliderEventData;
     }
 }
 
@@ -1444,7 +1444,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type SpeedDialCfg = import("./src/speeddial/speeddial.widget.js").SpeedDialCfg;
+        export type SpeedDialCfg = import("./src/speeddial/speeddial.js").SpeedDialCfg;
     }
     namespace PrimeFacesTypes.widget.SpeedDial {
         /**
@@ -1487,7 +1487,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type SpinnerCfg = import("./src/spinner/spinner.widget.js").SpinnerCfg;
+        export type SpinnerCfg = import("./src/spinner/spinner.js").SpinnerCfg;
     }
 }
 
@@ -1499,7 +1499,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type SplitterCfg = import("./src/splitter/splitter.widget.js").SplitterCfg;
+        export type SplitterCfg = import("./src/splitter/splitter.js").SplitterCfg;
     }
     namespace PrimeFacesTypes.widget.Splitter {
         /**
@@ -1527,7 +1527,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type SpotlightCfg = import("./src/spotlight/spotlight.widget.js").SpotlightCfg;
+        export type SpotlightCfg = import("./src/spotlight/spotlight.js").SpotlightCfg;
     }
 }
 
@@ -1539,7 +1539,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type StaticMessageCfg = import("./src/staticmessage/staticmessage.widget.js").StaticMessageCfg;
+        export type StaticMessageCfg = import("./src/staticmessage/staticmessage.js").StaticMessageCfg;
     }
 }
 
@@ -1551,7 +1551,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type StickyCfg = import("./src/sticky/sticky.widget.js").StickyCfg;
+        export type StickyCfg = import("./src/sticky/sticky.js").StickyCfg;
     }
     namespace PrimeFacesTypes.widget.Sticky {
         /**
@@ -1574,7 +1574,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type TabViewCfg = import("./src/tabview/tabview.widget.js").TabViewCfg;
+        export type TabViewCfg = import("./src/tabview/tabview.js").TabViewCfg;
     }
     namespace PrimeFacesTypes.widget.TabView {
         /**
@@ -1604,7 +1604,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type TagCloudCfg = import("./src/tagcloud/tagcloud.widget.js").TagCloudCfg;
+        export type TagCloudCfg = import("./src/tagcloud/tagcloud.js").TagCloudCfg;
     }
 }
 
@@ -1616,7 +1616,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type ToggleSwitchCfg = import("./src/toggleswitch/toggleswitch.widget.js").ToggleSwitchCfg;
+        export type ToggleSwitchCfg = import("./src/toggleswitch/toggleswitch.js").ToggleSwitchCfg;
     }
 }
 
@@ -1628,7 +1628,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type TooltipCfg = import("./src/tooltip/tooltip.widget.js").TooltipCfg;
+        export type TooltipCfg = import("./src/tooltip/tooltip.js").TooltipCfg;
     }
     namespace PrimeFacesTypes.widget.Tooltip {
         /**
@@ -1663,9 +1663,9 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type BaseTreeCfg = import("./src/tree/tree.base.widget.js").BaseTreeCfg;
-        export type HorizontalTreeCfg = import("./src/tree/tree.horizontal.widget.js").HorizontalTreeCfg;
-        export type VerticalTreeCfg = import("./src/tree/tree.vertical.widget.js").VerticalTreeCfg;
+        export type BaseTreeCfg = import("./src/tree/tree.base.js").BaseTreeCfg;
+        export type HorizontalTreeCfg = import("./src/tree/tree.horizontal.js").HorizontalTreeCfg;
+        export type VerticalTreeCfg = import("./src/tree/tree.vertical.js").VerticalTreeCfg;
     }
     namespace PrimeFacesTypes.widget.BaseTree {
         /**
@@ -1765,7 +1765,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type TreeTableCfg = import("./src/treetable/treetable.widget.js").TreeTableCfg;
+        export type TreeTableCfg = import("./src/treetable/treetable.js").TreeTableCfg;
     }
     namespace PrimeFacesTypes.widget.TreeTable {
         /**
@@ -1830,7 +1830,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type TriStateCheckboxCfg = import("./src/tristatecheckbox/tristatecheckbox.widget.js").TriStateCheckboxCfg;
+        export type TriStateCheckboxCfg = import("./src/tristatecheckbox/tristatecheckbox.js").TriStateCheckboxCfg;
     }
     namespace PrimeFacesTypes.widget.TriStateCheckbox {
         /**
@@ -1851,7 +1851,7 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type WizardCfg = import("./src/wizard/wizard.widget.js").WizardCfg;
+        export type WizardCfg = import("./src/wizard/wizard.js").WizardCfg;
     }
     namespace PrimeFacesTypes.widget.Wizard {
         /**

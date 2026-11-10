@@ -1,4 +1,4 @@
-import { Clock, SimpleDateFormat } from "./src/clock.widget.js";
+import { Clock, SimpleDateFormat } from "./src/clock.js";
 
 PrimeFaces.widget.Clock = Clock;
 // TODO SimpleDateFormat is NOT a widget, just a class, and should not be added to the PrimeFaces.widget scope
@@ -14,8 +14,8 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ClockCfg = import("./src/clock.widget.js").ClockCfg;
-        export type SimpleDateFormatCfg = import("./src/clock.widget.js").SimpleDateFormatCfg;
+        export type ClockCfg = import("./src/clock.js").ClockCfg;
+        export type SimpleDateFormatCfg = import("./src/clock.js").SimpleDateFormatCfg;
     }
 
     namespace PrimeFacesTypes.widget.Clock {

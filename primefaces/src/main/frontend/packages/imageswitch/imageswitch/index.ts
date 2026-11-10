@@ -1,5 +1,5 @@
 import "./src/jquery.cycle.js";
-import { ImageSwitch } from "./src/imageswitch.widget.js";
+import { ImageSwitch } from "./src/imageswitch.js";
 
 PrimeFaces.widget.ImageSwitch = ImageSwitch;
 
@@ -11,6 +11,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ImageSwitchCfg = import("./src/imageswitch.widget.js").ImageSwitchCfg;
+        export type ImageSwitchCfg = import("./src/imageswitch.js").ImageSwitchCfg;
     }
 }

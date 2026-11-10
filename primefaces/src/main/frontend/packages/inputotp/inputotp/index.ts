@@ -1,4 +1,4 @@
-import { InputOtp } from "./src/inputotp.widget.js";
+import { InputOtp } from "./src/inputotp.js";
 import { InputOtpValidator } from "./src/inputotp.validator.js";
 
 PrimeFaces.widget.InputOtp = InputOtp;
@@ -12,7 +12,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type InputOtpCfg = import("./src/inputotp.widget.js").InputOtpCfg;
+        export type InputOtpCfg = import("./src/inputotp.js").InputOtpCfg;
     }
 
     namespace PrimeFacesTypes.validation {

@@ -1,4 +1,4 @@
-import { InputNumber } from "./src/inputnumber.widget.js";
+import { InputNumber } from "./src/inputnumber.js";
 import _AutoNumeric from "autonumeric";
 
 PrimeFaces.widget.InputNumber = InputNumber;
@@ -16,7 +16,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type InputNumberCfg = import("./src/inputnumber.widget.js").InputNumberCfg;
+        export type InputNumberCfg = import("./src/inputnumber.js").InputNumberCfg;
     }
 
     namespace PrimeFacesTypes.widget.InputNumber {

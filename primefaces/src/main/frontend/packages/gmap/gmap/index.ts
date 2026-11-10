@@ -1,4 +1,4 @@
-import { GMap } from "./src/gmap.widget.js";
+import { GMap } from "./src/gmap.js";
 
 PrimeFaces.widget.GMap = GMap;
 
@@ -10,7 +10,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type GMapCfg = import("./src/gmap.widget.js").GMapCfg;
+        export type GMapCfg = import("./src/gmap.js").GMapCfg;
     }
 
     namespace PrimeFacesTypes.widget.GMap {
@@ -25,16 +25,16 @@ declare global {
         /**
          * A marker, its ID is the ID of the marker in the model (it is also the ID of the marker element).
          */
-        export type Marker = import("./src/gmap.widget.js").google.maps.marker.AdvancedMarkerElement & IdProviding;
+        export type Marker = import("./src/gmap.js").google.maps.marker.AdvancedMarkerElement & IdProviding;
 
         /**
          * An overlay shape with an ID property for identifying the shape.
          */
         export type Shape = (
-            import("./src/gmap.widget.js").google.maps.Circle
-            | import("./src/gmap.widget.js").google.maps.Polyline
-            | import("./src/gmap.widget.js").google.maps.Polygon
-            | import("./src/gmap.widget.js").google.maps.Rectangle
+            import("./src/gmap.js").google.maps.Circle
+            | import("./src/gmap.js").google.maps.Polyline
+            | import("./src/gmap.js").google.maps.Polygon
+            | import("./src/gmap.js").google.maps.Rectangle
         ) & IdProviding;
 
         /**
@@ -46,7 +46,7 @@ declare global {
         /**
          * Javascript callback to execute when a point on map is clicked. See also {@link GMapCfg.onPointClick}.
          */
-        export type OnPointClickCallback = (event: import("./src/gmap.widget.js").google.maps.MapMouseEvent) => void;
+        export type OnPointClickCallback = (event: import("./src/gmap.js").google.maps.MapMouseEvent) => void;
 
         /**
          * A symbol (SVG path) used as marker icon.
@@ -84,7 +84,7 @@ declare global {
             /** The ID of the marker. */
             id: string;
             /** The position of the marker. */
-            position: import("./src/gmap.widget.js").google.maps.LatLngLiteral;
+            position: import("./src/gmap.js").google.maps.LatLngLiteral;
             /** The title of the marker. */
             title?: string;
             /** The URL of an image, or a symbol. */

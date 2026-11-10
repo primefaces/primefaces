@@ -1,7 +1,7 @@
 import "jquery-cropper";
 import Cropper from "cropperjs";
 
-import { ImageCropper } from "./src/imagecropper.widget.js";
+import { ImageCropper } from "./src/imagecropper.js";
 
 PrimeFaces.widget.ImageCropper = ImageCropper;
 
@@ -17,7 +17,7 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type ImageCropperCfg = import("./src/imagecropper.widget.js").ImageCropperCfg;
+        export type ImageCropperCfg = import("./src/imagecropper.js").ImageCropperCfg;
     }
 }
 

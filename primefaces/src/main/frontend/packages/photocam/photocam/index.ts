@@ -1,7 +1,7 @@
 /// <reference types="webcamjs" preserve="true" />
 
 import Webcam from "webcamjs";
-import { PhotoCam } from "./src/photocam.widget.js";
+import { PhotoCam } from "./src/photocam.js";
 
 // Expose webcam.js to the global scope
 Object.assign(window, { Webcam });
@@ -30,7 +30,7 @@ declare global {
          * Please note that this configuration is usually meant to be read-only and should
          * not be modified.
          */
-        export type PhotoCamCfg = import("./src/photocam.widget.js").PhotoCamCfg;
+        export type PhotoCamCfg = import("./src/photocam.js").PhotoCamCfg;
     }
 
     namespace PrimeFacesTypes.widget.PhotoCam {
