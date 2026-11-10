@@ -51,6 +51,8 @@ public class CarBean {
 
 In case no children are present in columns, value from `var` and `field` will be displayed.
 
+!> `field` is evaluated as an EL property path (`#{var.field}`). Never bind it, or the field of a `FilterMeta`/`SortMeta`, to request data. If users can choose columns, map their choice to a whitelist of known property names.
+
 
 ## Data binding
 
