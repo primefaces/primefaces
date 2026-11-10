@@ -1,4 +1,4 @@
-import { Signature } from "./src/signature.widget.js";
+import { Signature } from "./src/signature.js";
 
 PrimeFaces.widget.Signature = Signature;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type SignatureCfg = import("./src/signature.widget.js").SignatureCfg;
+        export type SignatureCfg = import("./src/signature.js").SignatureCfg;
     }
 }

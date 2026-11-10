@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:multiSelectListbox id="listbox" value="#{multiSelectListbox001.selection}" showHeaders="true" header="Region">
+                <f:selectItems value="#{multiSelectListbox001.categories}"/>
+                <p:ajax listener="#{multiSelectListbox001.onChange}" process="@this" update="msgs"/>
+            </p:multiSelectListbox>
+
+            <p:multiSelectListbox id="preselected" value="#{multiSelectListbox001.preselected}">
+                <f:selectItems value="#{multiSelectListbox001.categories}"/>
+            </p:multiSelectListbox>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

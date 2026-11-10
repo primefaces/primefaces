@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:organigram id="organigram"
+                          widgetVar="organigram"
+                          value="#{organigram001.rootNode}"
+                          var="node"
+                          selection="#{organigram001.selection}"
+                          style="width: 800px">
+                <p:ajax event="select" process="@this" listener="#{organigram001.onSelect}" update="form:msgs form:selection"/>
+                <p:ajax event="expand" process="@this" listener="#{organigram001.onExpand}" update="form:msgs"/>
+                <p:ajax event="collapse" process="@this" listener="#{organigram001.onCollapse}" update="form:msgs"/>
+
+                <p:organigramNode type="root">
+                    <h:outputText value="#{node.data}"/>
+                </p:organigramNode>
+
+                <p:organigramNode type="division" icon="pi pi-briefcase">
+                    <h:outputText value="#{node.data}"/>
+                </p:organigramNode>
+
+                <p:organigramNode type="employee" icon="pi pi-user">
+                    <h:outputText value="#{node.data}"/>
+                </p:organigramNode>
+            </p:organigram>
+
+            <h:outputText id="selection" value="#{organigram001.selection.data}"/>
+
+            <p:commandButton id="update" value="Update" process="@this" update="organigram"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

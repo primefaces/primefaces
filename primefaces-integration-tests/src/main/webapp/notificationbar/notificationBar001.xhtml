@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:notificationBar id="top" widgetVar="topBar" position="top" effect="slide" effectSpeed="fast">
+                <h:outputText id="topText" value="#{notificationBar001.text}"/>
+                <span class="p-notificationbar-close">Close</span>
+            </p:notificationBar>
+
+            <p:notificationBar id="bottom" position="bottom" effect="none" autoDisplay="true">
+                <h:outputText value="Bottom bar"/>
+            </p:notificationBar>
+
+            <!-- below the top bar, which covers the top of the page -->
+            <div style="margin-top: 250px">
+                <p:commandButton id="show" type="button" value="Show" onclick="PF('topBar').show()"/>
+                <p:commandButton id="hide" type="button" value="Hide" onclick="PF('topBar').hide()"/>
+                <p:commandButton id="update" value="Update" action="#{notificationBar001.changeText}" update="top"/>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

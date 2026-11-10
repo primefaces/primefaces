@@ -87,9 +87,9 @@ public class StackRenderer extends BaseMenuRenderer<Stack> {
                     writer.endElement("li");
                 }
             }
-        }
 
-        writer.endElement("ul");
+            writer.endElement("ul");
+        }
 
         writer.endElement("div");
     }

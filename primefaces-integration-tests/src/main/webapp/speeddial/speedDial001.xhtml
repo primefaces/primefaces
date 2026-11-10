@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <style>
+            .p-speeddial-direction-up {
+                left: 20px;
+                bottom: 20px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <div style="position: relative; height: 400px">
+                <p:speedDial id="speedDial" direction="up">
+                    <p:menuitem icon="pi pi-pencil" action="#{speedDial001.edit}" update="msgs"/>
+                    <p:menuitem icon="pi pi-refresh" url="#"/>
+                </p:speedDial>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

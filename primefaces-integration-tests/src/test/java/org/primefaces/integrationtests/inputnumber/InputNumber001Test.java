@@ -45,6 +45,7 @@ class InputNumber001Test extends AbstractPrimePageTest {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
         assertEquals("50", inputNumber.getValue());
+        assertEquals(50.0, inputNumber.getValueToRender());
 
         // Act
         inputNumber.setValue("33");

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataScroller id="inline" value="#{dataScroller001.items}" var="item" chunkSize="10" mode="inline" scrollHeight="200">
+                <div style="height: 40px">#{item}</div>
+            </p:dataScroller>
+
+            <p:dataScroller id="manual" value="#{dataScroller001.items}" var="item" chunkSize="10">
+                <div>#{item}</div>
+                <f:facet name="loader">
+                    <p:commandButton id="more" type="button" value="More"/>
+                </f:facet>
+            </p:dataScroller>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

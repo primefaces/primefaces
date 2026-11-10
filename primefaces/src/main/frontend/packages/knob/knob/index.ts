@@ -1,4 +1,4 @@
-import { Knob } from "./src/knob.widget.js";
+import { Knob } from "./src/knob.js";
 
 PrimeFaces.widget.Knob = Knob;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type KnobCfg = import("./src/knob.widget.js").KnobCfg;
+        export type KnobCfg = import("./src/knob.js").KnobCfg;
     }
 }

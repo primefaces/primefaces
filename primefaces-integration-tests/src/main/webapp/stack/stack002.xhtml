@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <h:outputText id="selected" value="#{stack002.selected}"/>
+
+            <p:stack id="stack" icon="/resources/stack/stack.png" openSpeed="50" closeSpeed="50" expanded="true">
+                <p:menuitem id="home" value="Home" icon="/resources/stack/home.png" action="#{stack002.select('Home')}" update="msgs selected"/>
+                <p:menuitem id="music" value="Music" icon="/resources/stack/music.png" action="#{stack002.select('Music')}" update="msgs selected"/>
+                <p:menuitem id="video" value="Video" icon="/resources/stack/video.png" action="#{stack002.select('Video')}" update="msgs selected"/>
+            </p:stack>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

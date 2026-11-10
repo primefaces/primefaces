@@ -25,6 +25,7 @@ package org.primefaces.component.imagecompare;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -53,9 +54,25 @@ public class ImageCompareRenderer extends CoreRenderer<ImageCompare> {
 
     protected void encodeMarkup(FacesContext context, ImageCompare component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String style = Constants.EMPTY_STRING;
+        if (component.getWidth() != null) {
+            style += "width: " + component.getWidth() + "px;";
+        }
+        if (component.getHeight() != null) {
+            style += "height: " + component.getHeight() + "px;";
+        }
+        if (component.getStyle() != null) {
+            style += component.getStyle();
+        }
+
         writer.startElement("div", component);
-        writer.writeAttribute("style", "width: " + component.getWidth() + "px;" + "height: " + component.getHeight() + "px;", null);
         writer.writeAttribute("id", component.getClientId(context), "id");
+        if (!style.isEmpty()) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
+        }
         renderDynamicPassThruAttributes(context, component);
         writer.endElement("div");
     }

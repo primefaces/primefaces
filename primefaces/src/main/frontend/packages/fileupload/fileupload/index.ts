@@ -1,8 +1,8 @@
 import "blueimp-file-upload";
 import "blueimp-file-upload/js/jquery.iframe-transport.js";
 
-import { FileUpload } from "./src/fileupload.widget.js";
-import { SimpleFileUpload } from "./src/fileupload.simple.widget.js";
+import { FileUpload } from "./src/fileupload.js";
+import { SimpleFileUpload } from "./src/fileupload.simple.js";
 
 declare global {
     namespace PrimeFacesTypes.widget.SimpleFileUpload {
@@ -109,8 +109,8 @@ declare global {
         }
     }
     namespace PrimeFacesTypes.widget {
-        export type FileUploadCfg = import("./src/fileupload.widget.js").FileUploadCfg;
-        export type SimpleFileUploadCfg = import("./src/fileupload.simple.widget.js").SimpleFileUploadCfg;
+        export type FileUploadCfg = import("./src/fileupload.js").FileUploadCfg;
+        export type SimpleFileUploadCfg = import("./src/fileupload.simple.js").SimpleFileUploadCfg;
     }
 }
 

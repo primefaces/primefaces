@@ -100,7 +100,7 @@ public class TooltipRenderer extends CoreRenderer<Tooltip> {
                 .attr("hideEvent", component.getHideEvent(), null)
                 .attr("showEffect", component.getShowEffect(), null)
                 .attr("hideEffect", component.getHideEffect(), null)
-                .attr("showDelay", component.getShowDelay(), 150)
+                .attr("showDelay", component.getShowDelay(), 400)
                 .attr("hideDelay", component.getHideDelay(), 0)
                 .attr("target", target, null)
                 .attr("globalSelector", component.getGlobalSelector(), null)

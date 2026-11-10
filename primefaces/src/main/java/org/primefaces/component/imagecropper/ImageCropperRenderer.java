@@ -124,12 +124,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         if (value != null) {
             CroppedImage croppedImage = (CroppedImage) value;
 
-            int x = croppedImage.getLeft();
-            int y = croppedImage.getTop();
-            int x2 = x + croppedImage.getWidth();
-            int y2 = y + croppedImage.getHeight();
-
-            select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
+            select = "[" + croppedImage.getLeft() + "," + croppedImage.getTop() + "," + croppedImage.getWidth() + "," + croppedImage.getHeight() + "]";
         }
         else if (LangUtils.isNotBlank(component.getInitialCoords())) {
             select = "[" + component.getInitialCoords() + "]";

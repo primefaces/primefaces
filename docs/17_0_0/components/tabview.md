@@ -130,7 +130,6 @@ Widget: _PrimeFaces.widget.TabView_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 select(index) | index: Index of tab to display | void | Activates tab with given index
-selectTab(index) | index: Index of tab to display | void | (Deprecated, use select instead) Activates tab with given index
 selectTabById(id, silent) | id: The client ID or expression | boolean | Selects the tab with the given client ID or expression. Returns true if the tab was found and selected, false otherwise.
 disable(index) | index: Index of tab to disable | void | Disables tab with given index
 enable(index) | index: Index of tab to enable | void | Enables tab with given index

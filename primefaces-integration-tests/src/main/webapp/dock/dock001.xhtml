@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <h:outputText id="selected" value="#{dock001.selected}"/>
+
+            <p:dock id="dock" animate="false">
+                <p:menuitem id="home" value="Home" icon="/resources/dock/home.png" action="#{dock001.select('Home')}" update="msgs selected"/>
+                <p:menuitem id="music" value="Music" icon="/resources/dock/music.png" action="#{dock001.select('Music')}" update="msgs selected"/>
+                <p:menuitem id="video" value="Video" icon="/resources/dock/video.png" action="#{dock001.select('Video')}" update="msgs selected"/>
+                <p:menuitem id="email" value="Email" icon="/resources/dock/email.png" action="#{dock001.select('Email')}" update="msgs selected"/>
+            </p:dock>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

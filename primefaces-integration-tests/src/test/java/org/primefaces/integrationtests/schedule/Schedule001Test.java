@@ -85,6 +85,23 @@ public class Schedule001Test extends AbstractPrimePageTest {
     }
 
     @Test
+    @Order(6)
+    @DisplayName("Schedule: GitHub #2795 the event description is the title of the event without tooltip")
+    void descriptionAsTitle(Page page) {
+        // Arrange
+        Schedule schedule = page.schedule;
+
+        // Act
+        waitForScheduledRenderedAndClickable();
+
+        // Assert
+        WebElement event = schedule.getEventElement("Birthday Party");
+        assertNotNull(event);
+        assertEquals("Aragon", event.getDomAttribute("title"));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
     @Order(2)
     @DisplayName("Schedule: dateSelect")
     void dateSelect(Page page) {

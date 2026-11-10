@@ -1,4 +1,4 @@
-import { TriStateManyCheckbox } from "./src/tristatemanycheckbox.widget.js";
+import { TriStateManyCheckbox } from "./src/tristatemanycheckbox.js";
 
 PrimeFaces.widget.TriStateManyCheckbox = TriStateManyCheckbox;
 
@@ -10,6 +10,6 @@ declare global {
     }
 
     namespace PrimeFacesTypes.widget {
-        export type TriStateManyCheckboxCfg = import("./src/tristatemanycheckbox.widget.js").TriStateManyCheckboxCfg;
+        export type TriStateManyCheckboxCfg = import("./src/tristatemanycheckbox.js").TriStateManyCheckboxCfg;
     }
 }

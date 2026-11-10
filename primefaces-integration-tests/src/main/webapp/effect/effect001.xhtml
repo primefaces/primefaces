@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton id="button" value="Hide" type="button">
+                <p:effect type="fade" event="click" for="target"/>
+            </p:commandButton>
+
+            <h:panelGroup id="target" layout="block">Target</h:panelGroup>
+
+            <h:panelGroup id="loadTarget" layout="block">
+                Load target
+                <p:effect type="fade" event="load"/>
+            </h:panelGroup>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

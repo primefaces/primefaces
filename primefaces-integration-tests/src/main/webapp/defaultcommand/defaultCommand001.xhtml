@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:inputText id="name" value="#{defaultCommand001.name}"/>
+            <p:commandButton id="other" value="Other" action="#{defaultCommand001.other}" update="msgs"/>
+            <p:commandButton id="save" value="Save" action="#{defaultCommand001.save}" update="msgs"/>
+            <p:defaultCommand target="save"/>
+
+            <h:panelGroup id="scope" layout="block">
+                <p:inputText id="scoped" value="#{defaultCommand001.scoped}"/>
+                <p:commandButton id="scopedSave" value="Scoped save" action="#{defaultCommand001.scopedSave}" update="msgs"/>
+            </h:panelGroup>
+            <p:defaultCommand target="scopedSave" scope="scope"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

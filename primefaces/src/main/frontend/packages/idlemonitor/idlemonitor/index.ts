@@ -2,7 +2,7 @@
 
 import "./src/jquery.idletimer.js";
 
-import { IdleMonitor, registerKillSwitchHookForIdleMonitor } from "./src/idlemonitor.widget.js";
+import { IdleMonitor, registerKillSwitchHookForIdleMonitor } from "./src/idlemonitor.js";
 
 // Expose widgets to the global scope
 PrimeFaces.widget.IdleMonitor = IdleMonitor;
@@ -33,7 +33,7 @@ declare global {
          * Please note that this configuration is usually meant to be read-only
          * and should not be modified.
          */
-        export type IdleMonitorCfg = import("./src/idlemonitor.widget.js").IdleMonitorCfg;
+        export type IdleMonitorCfg = import("./src/idlemonitor.js").IdleMonitorCfg;
     }
 
     namespace PrimeFacesTypes.widget.IdleMonitor {

@@ -168,7 +168,7 @@ Widget: _PrimeFaces.widget.Wizard_
 next() | - | void | Proceeds to next step.
 back() | - | void | Goes back in flow.
 reset() | - | void | Resets the wizard to its initial state.
-getStepIndex() | - | Number | Returns the index of current step.
+getStepIndex(step) | step: id of a step | Number | Returns the 0-based index of the step, -1 if there is no such step.
 showNextNav() | - | void | Shows next button.
 hideNextNav() | - | void | Hides next button.
 enableNextNav() | - | void | Enables next button.

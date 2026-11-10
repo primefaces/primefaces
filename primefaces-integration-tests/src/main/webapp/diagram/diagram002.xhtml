@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head>
+            <style>
+                .p-diagram-element {
+                    width: 6em;
+                    height: 3em;
+                    text-align: center;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+
+                <h:outputText id="connections" value="#{diagram002.connectionCount}"/>
+
+                <p:diagram id="diagram" value="#{diagram002.model}" style="height:400px">
+                    <p:ajax event="connect" listener="#{diagram002.onConnect}" update=":form:msgs :form:connections"/>
+                    <p:ajax event="disconnect" listener="#{diagram002.onDisconnect}" update=":form:msgs :form:connections"/>
+                </p:diagram>
+            </h:form>
+        </h:body>
+    </f:view>
+
+</html>
