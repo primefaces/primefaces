@@ -583,12 +583,15 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
     }
 
     /**
-     * Parses a localized integer value from a string by removing all dots and commas,
-     * then parsing the result as a base-10 integer.
+     * Parses a localized integer value from a string by converting all Unicode decimal digits (e.g. Persian or
+     * Arabic-Indic digits) to ASCII digits and removing any grouping separators, then parsing the result as a
+     * base-10 integer.
      * Example: "1.000" -> 1000
      * Example: "1,000" -> 1000
+     * Example: "1 000" -> 1000
+     * Example: "۱٬۰۰۰" -> 1000
      * Example: "1000" -> 1000
-     * @param value The string representation of a localized integer (may contain dots or commas as grouping separators).
+     * @param value The string representation of a localized integer (may contain locale specific digits and grouping separators).
      * @returns The parsed integer.
      */
     private parseLocalizedInt(value: string | number | null | undefined): number {
@@ -596,7 +599,16 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
             return NaN;
         }
         if (typeof value === 'string') {
-           value = value.replace(/[.,]/g, '');
+            value = value.replace(/\p{Nd}/gu, (digit) => {
+                // Unicode decimal digits are encoded in contiguous runs of 0-9,
+                // so the offset to the start of the run modulo 10 is the digit value
+                const codePoint = digit.codePointAt(0) as number;
+                let start = codePoint;
+                while (/\p{Nd}/u.test(String.fromCodePoint(start - 1))) {
+                    start--;
+                }
+                return String((codePoint - start) % 10);
+            }).replace(/[^\d-]/g, '');
         }
         return parseInt(value as string, 10);
     }
