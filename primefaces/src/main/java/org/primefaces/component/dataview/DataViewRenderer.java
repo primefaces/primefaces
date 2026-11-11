@@ -25,12 +25,12 @@ package org.primefaces.component.dataview;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -362,7 +362,7 @@ public class DataViewRenderer extends DataRenderer<DataView> {
     }
 
     protected void encodeScript(FacesContext context, DataView component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DataView", component);
 
         if (component.isPaginator()) {

@@ -37,10 +37,10 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -156,7 +156,7 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
         writer.endElement("div");
     }
 
-    protected void encodePaginatorConfig(FacesContext context, T pageable, WidgetBuilder wb) throws IOException {
+    protected void encodePaginatorConfig(FacesContext context, T pageable, ComponentScriptBuilder wb) throws IOException {
         String clientId = pageable.getClientId(context);
         String paginatorPosition = pageable.getPaginatorPosition();
         String paginatorContainers = null;

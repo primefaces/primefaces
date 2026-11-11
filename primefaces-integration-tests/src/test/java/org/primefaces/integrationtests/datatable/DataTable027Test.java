@@ -52,7 +52,7 @@ class DataTable027Test extends AbstractDataTableTest {
         // Assert
         assertEquals("0", page.beforeCount.getText());
         assertEquals("75", page.aferCount.getText());
-        assertCss(dataTable, "p-datatable", "p-widget", "p-datatable-scrollable");
+        assertCss(dataTable, "p-datatable", "p-component", "p-datatable-scrollable");
         assertNotNull(
                 dataTable.findElement(
                     By.cssSelector(".p-datatable-scrollable-body > .p-datatable-virtualscroll-wrapper > .p-datatable-virtualscroll-table")),

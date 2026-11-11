@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link BlockUI} widget.
+ * The configuration for the {@link BlockUI} component.
  */
-export interface BlockUICfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface BlockUICfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the blocker is shown and hidden with a fade animation, normalized to a boolean on init. */
     animate: boolean;
     /** Search expression of the component(s) to block. */
@@ -17,11 +17,11 @@ export interface BlockUICfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces BlockUI Widget__
+ * __PrimeFaces BlockUI Component__
  *
  * BlockUI is used to block interactivity of Faces components with optional AJAX integration.
  */
-export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The blocked component(s). */
     target: JQuery = $();
     /** The content shown on the blocker(s), one per target with several targets. */
@@ -33,7 +33,7 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.wid
     /** The timer ID of the delayed show. */
     timeout?: number | null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
@@ -55,8 +55,8 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.wid
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
-        // an update of this widget itself renders the new element in place, inside of the blocker in the body,
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+        // an update of this component itself renders the new element in place, inside of the blocker in the body,
         // so move it out to keep it when the blocker is removed
         this.blocker.children(this.jqId).appendTo(document.body);
         this._cleanup();
@@ -230,16 +230,16 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.wid
      * Creates a blocker for each target and moves the content into it.
      */
     private render(): void {
-        const widgetId = this.getId();
+        const componentId = this.getId();
         const shouldClone = this.hasMultipleTargets() && this.hasContent();
         // there can be 1 to N targets
         for (const targetElement of this.target) {
             const currentTarget = $(targetElement);
-            const currentTargetId = currentTarget.attr('id') || widgetId;
+            const currentTargetId = currentTarget.attr('id') || componentId;
             let currentContent = this.jq;
 
             // create a specific blocker for this target
-            const currentBlocker = $('<div id="' + widgetId + '_' + currentTargetId + '_blocker" class="p-blockui p-widget-overlay p-hidden"></div>');
+            const currentBlocker = $('<div id="' + componentId + '_' + currentTargetId + '_blocker" class="p-blockui p-component-overlay p-hidden"></div>');
 
             // style the blocker
             if (this.cfg.styleClass) {
@@ -249,12 +249,12 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.wid
             // when more than 1 target need to clone the content for each target
             if (shouldClone) {
                 currentContent = currentContent.clone();
-                currentContent.attr('id', widgetId + '_' + currentTargetId + '_blockcontent');
+                currentContent.attr('id', componentId + '_' + currentTargetId + '_blockcontent');
             }
 
-            // assign data ids to this widget
-            currentBlocker.attr('data-bui-overlay', widgetId);
-            currentContent.attr('data-bui-content', widgetId);
+            // assign data ids to this component
+            currentBlocker.attr('data-bui-overlay', componentId);
+            currentContent.attr('data-bui-content', componentId);
 
             // ARIA
             currentTarget.attr('aria-busy', String(this.cfg.blocked));
@@ -264,9 +264,9 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.wid
             currentBlocker.append(currentContent);
         }
 
-        // assign all matching blockers to widget
-        this.blocker = $('[data-bui-overlay~="' + widgetId + '"]');
-        this.content = $('[data-bui-content~="' + widgetId + '"]');
+        // assign all matching blockers to component
+        this.blocker = $('[data-bui-overlay~="' + componentId + '"]');
+        this.content = $('[data-bui-content~="' + componentId + '"]');
 
         // set the size and position to match the target
         this.alignOverlay();

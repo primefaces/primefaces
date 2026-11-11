@@ -11,10 +11,10 @@ type AutoNumericInstance = AutoNumeric & {
 };
 
 /**
- * The configuration for the {@link InputNumber} widget.
+ * The configuration for the {@link InputNumber} component.
  */
-export interface InputNumberCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, PrimeFacesTypes.widget.InputNumber.AutoNumericOptions {
-    /** Whether this widget is initially disabled. */
+export interface InputNumberCfg extends PrimeFacesTypes.component.BaseComponentCfg, PrimeFacesTypes.component.InputNumber.AutoNumericOptions {
+    /** Whether this component is initially disabled. */
     disabled: boolean;
     /** Always undefined. */
     pluginOptions: undefined;
@@ -23,20 +23,20 @@ export interface InputNumberCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, Pr
 }
 
 /**
- * __PrimeFaces InputNumber Widget__
+ * __PrimeFaces InputNumber Component__
  *
  * InputNumber formats input fields with numeric strings. It supports currency symbols, minimum and maximum value,
  * negative numbers, and a lot of round methods.
  */
-export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The configuration, the decimal places are converted to numbers by {@link init}. */
-    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & { decimalPlaces: number; decimalPlacesRawValue: number; };
+    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & { decimalPlaces: number; decimalPlacesRawValue: number; };
 
     /** The current AutoNumeric instance. */
     autonumeric?: AutoNumericInstance;
-    /** Whether this widget is currently disabled, i.e. whether the user can enter a number. */
+    /** Whether this component is currently disabled, i.e. whether the user can enter a number. */
     disabled: boolean = false;
-    /** The DOM element for the hidden input field with the current value of this widget. */
+    /** The DOM element for the hidden input field with the current value of this component. */
     hiddenInput: JQuery = $();
     /** The DOM element for the visible input field with autoNumeric. */
     input: JQuery = $();
@@ -45,7 +45,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
     /** The initial, numerical value that is displayed, such as `0.0` or `5.3`. */
     initialValue: string = "";
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.hiddenInput = $(this.jqId + '_hinput');
@@ -90,7 +90,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
         PrimeFaces.queueTask(() => { this.wrapEvents(); });
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -101,7 +101,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
     }
 
     /**
-     * Clean up this widget and remove events from the DOM.
+     * Clean up this component and remove events from the DOM.
      */
     private _cleanup(): void {
         if (this.autonumeric) {
@@ -220,7 +220,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
     }
 
     /**
-     * Writes the given value to the hidden input field that stores the actual value of this widget.
+     * Writes the given value to the hidden input field that stores the actual value of this component.
      * @param value A value to set on the hidden input.
      */
     private setValueToHiddenInput(value: string | null): void {
@@ -232,8 +232,8 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
      * Enables this input field, so that the user can enter data.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.input);
-        PrimeFaces.utils.enableInputWidget(this.hiddenInput);
+        PrimeFaces.utils.enableInputComponent(this.input);
+        PrimeFaces.utils.enableInputComponent(this.hiddenInput);
         this.disabled = false;
     }
 
@@ -241,13 +241,13 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
      * Enables this input field, so that the user cannot enter data.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.input, undefined);
-        PrimeFaces.utils.disableInputWidget(this.hiddenInput, undefined);
+        PrimeFaces.utils.disableInputComponent(this.input, undefined);
+        PrimeFaces.utils.disableInputComponent(this.hiddenInput, undefined);
         this.disabled = true;
     }
 
     /**
-     * Sets the value of this input number widget to the given value. Makes sure that the number is formatted correctly.
+     * Sets the value of this input number component to the given value. Makes sure that the number is formatted correctly.
      * @param value The new value to set. If a number, it will be formatted appropriately. If the
      * empty string, resets the value. Any other string is parsed into a number and then the number is set.
      */
@@ -259,7 +259,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
 
     /**
      * Finds the current value, which is the raw numerical value without any formatting applied.
-     * @return The current value of this input number widget, in its string representation according to the
+     * @return The current value of this input number component, in its string representation according to the
      * configured format.
      */
     getValue(): string | null {

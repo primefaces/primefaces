@@ -26,10 +26,10 @@ package org.primefaces.component.dialog;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -59,7 +59,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
     }
 
     protected void encodeScript(FacesContext context, Dialog component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Dialog", component);
 
         wb.attr("visible", component.isVisible(), false)

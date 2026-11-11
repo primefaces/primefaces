@@ -33,10 +33,10 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,7 +52,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
     @Override
     protected void encodeScript(FacesContext context, MegaMenu component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("MegaMenu", component)
                 .attr("tabIndex", component.getTabindex(), "0")
                 .attr("autoDisplay", component.isAutoDisplay())

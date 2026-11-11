@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Sidebar} widget.
+ * The configuration for the {@link Sidebar} component.
  */
-export interface SidebarCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg {
+export interface SidebarCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
     /** Whether the sidebar is modal, normalized to a boolean on init (default `true`). */
     modal: boolean;
     /** Whether the close icon is displayed, normalized to a boolean on init (default `true`). */
@@ -9,9 +9,9 @@ export interface SidebarCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetC
     /** Base z-index of the sidebar. */
     baseZIndex: number;
     /** Called when the sidebar was hidden. */
-    onHide: PrimeFacesTypes.widget.Sidebar.OnHideCallback;
+    onHide: PrimeFacesTypes.component.Sidebar.OnHideCallback;
     /** Called when the sidebar was shown. */
-    onShow: PrimeFacesTypes.widget.Sidebar.OnShowCallback;
+    onShow: PrimeFacesTypes.component.Sidebar.OnShowCallback;
     /** Whether the sidebar is shown initially. */
     visible: boolean;
     /** `true` to load the content via AJAX when the sidebar is shown the first time. */
@@ -19,11 +19,11 @@ export interface SidebarCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetC
 }
 
 /**
- * __PrimeFaces Sidebar Widget__
+ * __PrimeFaces Sidebar Component__
  *
  * Sidebar is a panel component displayed as an overlay at the edges of the screen.
  */
-export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.widget.DynamicOverlayWidget<Cfg> {
+export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.component.DynamicOverlayComponent<Cfg> {
     /** The container of the content. */
     content: JQuery = $();
     /** The close icon, only with `showCloseIcon`. */
@@ -31,7 +31,7 @@ export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.wid
     /** With dynamic loading, whether the content was already loaded. */
     loaded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.modal = (this.cfg.modal === true || this.cfg.modal === undefined);
@@ -53,7 +53,7 @@ export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.wid
         this.bindEvents();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.refresh(cfg);
 
         this.loaded = false;

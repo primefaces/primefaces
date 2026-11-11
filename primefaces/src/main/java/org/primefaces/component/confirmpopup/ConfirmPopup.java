@@ -38,9 +38,9 @@ public class ConfirmPopup extends ConfirmPopupBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmPopup";
 
-    public static final String STYLE_CLASS = "p-confirm-popup p-widget p-hidden-container";
-    public static final String CONTENT_CLASS = "p-confirm-popup-content p-widget-content";
+    public static final String STYLE_CLASS = "p-confirm-popup p-component p-hidden-container";
+    public static final String CONTENT_CLASS = "p-confirm-popup-content p-component-content";
     public static final String ICON_CLASS = "p-confirm-popup-icon";
     public static final String MESSAGE_CLASS = "p-confirm-popup-message";
-    public static final String FOOTER_CLASS = "p-confirm-popup-footer p-widget-content";
+    public static final String FOOTER_CLASS = "p-confirm-popup-footer p-component-content";
 }

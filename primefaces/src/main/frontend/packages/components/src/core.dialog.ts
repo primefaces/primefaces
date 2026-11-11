@@ -4,7 +4,7 @@
 
 import type { Dialog, DialogCfg } from "./dialog/dialog.js";
 
-// Note: Named "Dialogs" to avoid name collision with the "Dialog" widget class
+// Note: Named "Dialogs" to avoid name collision with the "Dialog" component class
 export class Dialogs {
     DialogHandler: DialogHandler = new DialogHandler();
 }
@@ -28,10 +28,10 @@ export class DialogHandler {
             return;
         }
 
-        // The widget that opens a dialog can be nested inside of a frame which might be nested again.
+        // The component that opens a dialog can be nested inside of a frame which might be nested again.
         // The dialog is put in the outermost frame to be able to fill the whole browser tab,
         // so we traverse upwards to find the root window and put the dialog DOM in there.
-        // When a dialog is closed, we need to clean up the global variables and notify the source widget for the dialog return feature.
+        // When a dialog is closed, we need to clean up the global variables and notify the source component for the dialog return feature.
         // Accessing a component nested within frames requires recursive resolving of frames.
         // Every frame has it's own contentWindow and thus also it's own document object.
         // To be able to access a DOM element from an outer frame, one needs to first resolve the containing frame,
@@ -57,15 +57,15 @@ export class DialogHandler {
         // |                                                |
         // --------------------------------------------------
         //
-        // Here "Button 1" is our source widget that opened the dialog.
+        // Here "Button 1" is our source component that opened the dialog.
         // The root window contains two frames "Frame 1" and "Frame 2".
-        // The "Frame 1" contains another frame "Frame 1_1" within which the widget lives.
+        // The "Frame 1" contains another frame "Frame 1_1" within which the component lives.
         // Since we have to install the dialog in the root window, we need to be able to get access
-        // to the source widget when closing the dialog.
+        // to the source component when closing the dialog.
         // The only way to find the DOM node, is by traversing into "Frame 1" then into "Frame 1_1" and look it up there.
         // So from the root window we do e.g. `$(rootWindow.document).find("#frame1").contentWindow` to get into "Frame 1".
         // We do the same to get into "Frame 1_1" e.g. `$(frame1Window.document).find("#frame1_1").contentWindow`.
-        // Finally, we can look up the source widget `$(frame1_1Window.document).find("#sourceWidgetId")`.
+        // Finally, we can look up the source component `$(frame1_1Window.document).find("#sourceWidgetId")`.
 
         var sourceFrames = function () {
             let w: Window = window;
@@ -135,9 +135,9 @@ export class DialogHandler {
         const dialogWidgetVar = cfg.options.widgetVar || cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
 
         const styleClass = cfg.options.styleClass || '';
-        const dialogDOM = $('<div id="' + dialogId + '" class="p-dialog p-widget p-hidden-container p-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>');
-        const box = $('<div class="p-dialog-box p-widget-content"></div>').appendTo(dialogDOM);
-        const titlebar = $('<div class="p-dialog-titlebar p-widget-header"><span id="' + dialogId + '_title" class="p-dialog-title"></span></div>').appendTo(box);
+        const dialogDOM = $('<div id="' + dialogId + '" class="p-dialog p-component p-hidden-container p-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>');
+        const box = $('<div class="p-dialog-box p-component-content"></div>').appendTo(dialogDOM);
+        const titlebar = $('<div class="p-dialog-titlebar p-component-header"><span id="' + dialogId + '_title" class="p-dialog-title"></span></div>').appendTo(box);
 
         if (cfg.options.closable !== false) {
             titlebar.append('<a class="p-dialog-titlebar-icon p-dialog-titlebar-close" href="#" role="button"><span class="p-icon p-close-icon p-dialog-close-icon"></span></a>');
@@ -152,7 +152,7 @@ export class DialogHandler {
         }
 
         var iframeStyleClass = cfg.options.iframeStyleClass || '';
-        box.append('<div class="p-dialog-content p-widget-content p-df-content" style="height: auto;">' +
+        box.append('<div class="p-dialog-content p-component-content p-df-content" style="height: auto;">' +
             '<iframe class="' + iframeStyleClass + '" style="border:0 none" frameborder="0"></iframe>' +
             '</div>');
 
@@ -186,7 +186,7 @@ export class DialogHandler {
 
             if (!$frame.data('initialized')) {
                 PrimeFaces.cw.call<
-                    PrimeFacesTypes.PrimeFaces, ["DynamicDialog", string, PrimeFacesTypes.widget.PartialCreateWidgetCfg<PrimeFacesTypes.widget.DynamicDialogCfg>], void
+                    PrimeFacesTypes.PrimeFaces, ["DynamicDialog", string, PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.DynamicDialogCfg>], void
                 >(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                     id: dialogId,
                     position: cfg.options.position || 'center',
@@ -197,8 +197,8 @@ export class DialogHandler {
                         if (cfg.options.onShow) {
                             const onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
                             const onShowCallback = rootWindow.PrimeFaces.csp.NONCE_VALUE
-                                ? PrimeFaces.csp.evalResult(onShowFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeFacesTypes.widget.Dialog.OnShowCallback | undefined
-                                : rootWindow.eval(onShowFunction) as PrimeFacesTypes.widget.Dialog.OnShowCallback | undefined;
+                                ? PrimeFaces.csp.evalResult(onShowFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeFacesTypes.component.Dialog.OnShowCallback | undefined
+                                : rootWindow.eval(onShowFunction) as PrimeFacesTypes.component.Dialog.OnShowCallback | undefined;
                             if (onShowCallback) {
                                 onShowCallback.call(this);
                             }
@@ -208,32 +208,32 @@ export class DialogHandler {
                         if (cfg.options.onHide) {
                             const onHideFunction = '(function(ext){' + cfg.options.onHide + '})';
                             const onHideCallback = rootWindow.PrimeFaces.csp.NONCE_VALUE
-                                ? PrimeFaces.csp.evalResult(onHideFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeFacesTypes.widget.Dialog.OnHideCallback | undefined
-                                : rootWindow.eval(onHideFunction) as PrimeFacesTypes.widget.Dialog.OnHideCallback | undefined;
+                                ? PrimeFaces.csp.evalResult(onHideFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow) as PrimeFacesTypes.component.Dialog.OnHideCallback | undefined
+                                : rootWindow.eval(onHideFunction) as PrimeFacesTypes.component.Dialog.OnHideCallback | undefined;
                             if (onHideCallback) {
                                 onHideCallback.call(this);
                             }
                         }
 
-                        const $dialogWidget = this,
+                        const $dialogComponent = this,
                             dialogFrame = this.content.children('iframe');
 
                         const dialogFramePF = dialogFrame.get(0)?.contentWindow?.PrimeFaces;
                         if (dialogFramePF) {
                             this.destroyIntervalId = setInterval(function () {
                                 if (dialogFramePF.ajax.Queue.isEmpty()) {
-                                    clearInterval($dialogWidget.destroyIntervalId);
+                                    clearInterval($dialogComponent.destroyIntervalId);
                                     dialogFrame.attr('src', 'about:blank');
-                                    $dialogWidget.jq.remove();
+                                    $dialogComponent.jq.remove();
                                 }
                             }, 10);
                         }
                         else {
                             dialogFrame.attr('src', 'about:blank');
-                            $dialogWidget.jq.remove();
+                            $dialogComponent.jq.remove();
                         }
 
-                        rootWindow.PrimeFaces.widgets[dialogWidgetVar] = undefined as any;
+                        rootWindow.PrimeFaces.components[dialogWidgetVar] = undefined as any;
                     },
                     getModalTabbables: function () {
                         return $frame.contents().find(':tabbable');
@@ -258,8 +258,8 @@ export class DialogHandler {
                 });
             }
 
-            const dialogWidget = rootWindow.PF(dialogWidgetVar) as PrimeFacesTypes.Widget<"Dialog"> | undefined;
-            const title = dialogWidget?.titlebar.children('span.p-dialog-title') ?? $();
+            const dialogComponent = rootWindow.PF(dialogWidgetVar) as PrimeFacesTypes.Component<"Dialog"> | undefined;
+            const title = dialogComponent?.titlebar.children('span.p-dialog-title') ?? $();
             if (headerElement.length > 0) {
                 if (isCustomHeader) {
                     title.append(headerElement);
@@ -292,7 +292,7 @@ export class DialogHandler {
 
             // fix #1290 - dialogs are not centered vertically
             dialogFrame.data('initialized', true);
-            dialogWidget?.show();
+            dialogComponent?.show();
         })
             .attr('src', frameURL);
     }
@@ -307,18 +307,18 @@ export class DialogHandler {
         const dlgsLength = dlgs.length;
         const dlg = dlgs.eq(dlgsLength - 1);
         const parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null;
-        let dialogReturnBehavior: PrimeFacesTypes.widget.Behavior | undefined = undefined;
+        let dialogReturnBehavior: PrimeFacesTypes.component.Behavior | undefined = undefined;
         let windowContext: Window | null | undefined = null;
 
-        const dlgWidget = rootWindow.PF(dlg.data('widget')) as PrimeFacesTypes.Widget<"Dialog"> | undefined;
-        if (!dlgWidget) {
+        const dlgComponent = rootWindow.PF(dlg.data('widget')) as PrimeFacesTypes.Component<"Dialog"> | undefined;
+        if (!dlgComponent) {
             // GitHub #2039 dialog may already be closed on slow internet
             PrimeFaces.error('Dialog widget was not found to close.');
             return;
         }
 
-        const sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar;
-        const sourceComponentId = dlgWidget.cfg.sourceComponentId;
+        const sourceWidgetVar = dlgComponent.cfg.sourceWidgetVar;
+        const sourceComponentId = dlgComponent.cfg.sourceComponentId;
 
         dlg.attr('data-queuedforremoval', "true");
 
@@ -327,10 +327,10 @@ export class DialogHandler {
             windowContext = parentDlgFrame?.contentWindow;
         }
         else {
-            // We have to resolve the frames from the root window to the source widget to invoke the dialog return behavior
-            // Each source frame element is a selector. We step into every nested frame until we are in the source widget frame.
+            // We have to resolve the frames from the root window to the source component to invoke the dialog return behavior
+            // Each source frame element is a selector. We step into every nested frame until we are in the source component frame.
             windowContext = rootWindow;
-            const frames = dlgWidget.cfg.sourceFrames;
+            const frames = dlgComponent.cfg.sourceFrames;
             for (const frame of frames ?? []) {
                 const foundFrame: HTMLIFrameElement | undefined = windowContext
                     ? $(windowContext.document).find(frame).get(0) as HTMLIFrameElement | undefined
@@ -340,8 +340,8 @@ export class DialogHandler {
         }
 
         if (sourceWidgetVar) {
-            const sourceWidget = windowContext?.PF(sourceWidgetVar);
-            dialogReturnBehavior = sourceWidget?.cfg.behaviors?.['dialogReturn'];
+            const sourceComponent = windowContext?.PF(sourceWidgetVar);
+            dialogReturnBehavior = sourceComponent?.cfg.behaviors?.['dialogReturn'];
         }
         else if (sourceComponentId) {
             const sourceComponent = windowContext?.document.getElementById(sourceComponentId);
@@ -350,10 +350,10 @@ export class DialogHandler {
                 const dialogFunction = '(function(ext){this.' + dialogReturnBehaviorStr + '})';
                 const nonceValue = windowContext?.PrimeFaces.csp.NONCE_VALUE;
                 if (nonceValue && windowContext) {
-                    dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction, nonceValue, windowContext) as PrimeFacesTypes.widget.Behavior | undefined;
+                    dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction, nonceValue, windowContext) as PrimeFacesTypes.component.Behavior | undefined;
                 }
                 else {
-                    dialogReturnBehavior = windowContext?.eval(dialogFunction) as PrimeFacesTypes.widget.Behavior | undefined;
+                    dialogReturnBehavior = windowContext?.eval(dialogFunction) as PrimeFacesTypes.component.Behavior | undefined;
                 }
             }
         }
@@ -365,19 +365,19 @@ export class DialogHandler {
                 ]
             };
 
-            // TODO Possible issue: All other behaviors are called with the widget
+            // TODO Possible issue: All other behaviors are called with the component
             // as the "this context". Only here are we passing "window" instead, which
             // does not type check and may also be confusing for users. We should
             // change the following line as follows, then the @ts-expect-error
             // can also be removed.
             //
-            // dialogReturnBehavior.call(dlgWidget, ext);
+            // dialogReturnBehavior.call(dlgComponent, ext);
 
             // @ts-expect-error See comment above.
             dialogReturnBehavior.call(windowContext, ext);
         }
 
-        dlgWidget.hide();
+        dlgComponent.hide();
     }
 
     /**
@@ -386,10 +386,10 @@ export class DialogHandler {
      */
     showMessageInDialog(msg: PrimeFacesTypes.hook.messageInDialog.DialogMessageData): void {
         if (!this.messageDialog) {
-            $('<div id="primefacesmessagedlg" class="p-message-dialog p-dialog p-widget p-hidden-container"></div>')
-                .append($('<div class="p-dialog-box p-widget-content"></div>').append('<div class="p-dialog-titlebar p-widget-header"><span class="p-dialog-title"></span>' +
+            $('<div id="primefacesmessagedlg" class="p-message-dialog p-dialog p-component p-hidden-container"></div>')
+                .append($('<div class="p-dialog-box p-component-content"></div>').append('<div class="p-dialog-titlebar p-component-header"><span class="p-dialog-title"></span>' +
                     '<a class="p-dialog-titlebar-icon p-dialog-titlebar-close" href="#" role="button"><span class="p-icon p-close-icon p-dialog-close-icon"></span></a></div>' +
-                    '<div class="p-dialog-content p-widget-content" style="height: auto;"></div>'))
+                    '<div class="p-dialog-content p-component-content" style="height: auto;"></div>'))
                 .appendTo(document.body);
 
             PrimeFaces.cw('Dialog', 'primefacesmessagedialog', {
@@ -455,7 +455,7 @@ export class DialogHandler {
  * Registers dialog related features with the core. In particular:
  * 
  * - `confirm` feature: Redirects the emitted messages
- * either to the ConfirmPopup widget if available and the message's
+ * either to the ConfirmPopup component if available and the message's
  * {@link PrimeFacesTypes.hook.confirm.ExtendedConfirmMessage.type | type} is
  * `popup`; or to the {@link DialogHandler | PrimeFaces.dialog.DialogHandler}
  * otherwise.

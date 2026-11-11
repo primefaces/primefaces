@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link SelectCheckboxMenu} widget.
+ * The configuration for the {@link SelectCheckboxMenu} component.
  */
-export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** The search expression for the element to which the overlay panel should be appended. */
     appendTo: string | null;
     /** Defines if filtering would be case sensitive. */
@@ -20,9 +20,9 @@ export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.widget.BaseWidget
     /** `true` if the options can be filtered, or `false` otherwise. */
     filter: boolean;
     /** A custom filter function that is used when `filterMatchMode` is set to `custom`. */
-    filterFunction: PrimeFacesTypes.widget.SelectCheckboxMenu.FilterFunction;
+    filterFunction: PrimeFacesTypes.component.SelectCheckboxMenu.FilterFunction;
     /** Mode of the filter. When set to `custom`, a `filterFunction` must be specified. */
-    filterMatchMode: PrimeFacesTypes.widget.SelectCheckboxMenu.FilterMatchMode;
+    filterMatchMode: PrimeFacesTypes.component.SelectCheckboxMenu.FilterMatchMode;
     /** Placeholder text to show when filter input is empty. */
     filterPlaceholder: string;
     /** Initial height of the item container in pixels. */
@@ -32,11 +32,11 @@ export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.widget.BaseWidget
     /** Whether to show selected items as multiple labels. */
     multiple: boolean;
     /** Callback that is invoked when a checkbox option was checked or unchecked. */
-    onChange: PrimeFacesTypes.widget.SelectCheckboxMenu.OnChangeCallback;
+    onChange: PrimeFacesTypes.component.SelectCheckboxMenu.OnChangeCallback;
     /** Callback that is invoked when the overlay panel was hidden. */
-    onHide: PrimeFacesTypes.widget.SelectCheckboxMenu.OnHideCallback;
+    onHide: PrimeFacesTypes.component.SelectCheckboxMenu.OnHideCallback;
     /** Callback that is invoked when the overlay panel was brought up. */
-    onShow: PrimeFacesTypes.widget.SelectCheckboxMenu.OnShowCallback;
+    onShow: PrimeFacesTypes.component.SelectCheckboxMenu.OnShowCallback;
     /** Inline style of the overlay panel. */
     panelStyle: string;
     /** Style class of the overlay panel */
@@ -52,18 +52,18 @@ export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.widget.BaseWidget
 }
 
 /**
- * __PrimeFaces SelectCheckboxMenu Widget__
+ * __PrimeFaces SelectCheckboxMenu Component__
  *
  * SelectCheckboxMenu is a multi select component that displays options in an overlay.
  */
-export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckboxMenuCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckboxMenuCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the checkboxes that can be selected. */
     checkboxes?: JQuery;
     /** The DOM element for the button that closes the overlay panel with the select options (when the panel is shown). */
     closer?: JQuery;
     /** The default label (text of the label on init), only with `updateLabel`. */
     defaultLabel?: string;
-    /** Whether this widget is currently disabled. */
+    /** Whether this component is currently disabled. */
     disabled: boolean = false;
     /** DOM element of the input element used for entering a filter text, if filtering is enabled. */
     filterInput?: JQuery;
@@ -72,9 +72,9 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     /** The DOM elements for the headers of each option group. */
     groupHeaders?: JQuery;
     /** The filter that was selected and is currently used. */
-    filterMatcher?: PrimeFacesTypes.widget.SelectCheckboxMenu.FilterFunction;
+    filterMatcher?: PrimeFacesTypes.component.SelectCheckboxMenu.FilterFunction;
     /** Map between the available filter types and the filter implementation. */
-    filterMatchers?: Record<PrimeFacesTypes.widget.SelectCheckboxMenu.FilterMatchMode, PrimeFacesTypes.widget.SelectCheckboxMenu.FilterFunction | undefined>;
+    filterMatchers?: Record<PrimeFacesTypes.component.SelectCheckboxMenu.FilterMatchMode, PrimeFacesTypes.component.SelectCheckboxMenu.FilterFunction | undefined>;
     /** DOM element of the header of the overlay panel with the available select items, when the overlay panel is shown. */
     header?: JQuery;
     /** Unbind callback for the hide overlay handler. */
@@ -109,7 +109,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     resizeHandler?: PrimeFacesTypes.Unbindable;
     /** Unbind callback for the scroll handler. */
     scrollHandler?: PrimeFacesTypes.Unbindable;
-    /** Tab index of this widget. */
+    /** Tab index of this component. */
     tabindex?: string;
     /**
      * The wrapping DOM element of the toggler for selecting or unselecting all options in the overlay panel with all
@@ -123,14 +123,14 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     togglerBox?: JQuery;
     /** The DOM element for the hidden input of the Select All checkbox. */
     selectAllTogglerCheckbox?: JQuery;
-    /** Handler for CSS transitions used by this widget. */
+    /** Handler for CSS transitions used by this component. */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
     /** The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the available checkbox options. */
     triggers: JQuery = $();
     /** Whether the width of the overlay panel was aligned already. */
     widthAligned: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.labelContainer = this.jq.find('.p-selectcheckboxmenu-label-container');
@@ -173,7 +173,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.refresh(cfg);
     }
 
@@ -279,7 +279,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
      * Creates the individual checkboxes for each selectable option in the overlay panel.
      */
     private renderItems(): void {
-        this.itemContainer = $('<ul id="'+this.id+'_list" class="p-selectcheckboxmenu-items p-selectcheckboxmenu-list p-widget-content p-widget"></ul>')
+        this.itemContainer = $('<ul id="'+this.id+'_list" class="p-selectcheckboxmenu-items p-selectcheckboxmenu-list p-component-content p-component"></ul>')
             .appendTo(this.itemContainerWrapper);
 
         //check if inputs must be grouped
@@ -293,7 +293,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
                 checked = input.is(':checked'),
                 title = input.attr('title'),
                 escaped = input.data('escaped');
-            let boxClass = 'p-chkbox-box p-widget p-state-default',
+            let boxClass = 'p-chkbox-box p-component p-state-default',
                 itemClass = 'p-selectcheckboxmenu-item p-selectcheckboxmenu-list-item';
 
             if (grouped.length && currentGroupName !== input.attr('data-group-label')) {
@@ -315,7 +315,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
             itemClass = checked ? itemClass + ' p-selectcheckboxmenu-checked' : itemClass + ' p-selectcheckboxmenu-unchecked';
 
             const item = $('<li class="' + itemClass + '"></li>');
-            item.append('<div class="p-chkbox p-widget"><div class="p-hidden-accessible"><input type="checkbox"></input></div>' +
+            item.append('<div class="p-chkbox p-component"><div class="p-hidden-accessible"><input type="checkbox"></input></div>' +
                 '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
 
             const uuid = PrimeFaces.uuid();
@@ -358,7 +358,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindEvents(): void {
         //Events to show/hide the panel
@@ -877,7 +877,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
+     * Implementation of a `PrimeFaces.component.SelectCheckboxMenu.FilterFunction` that matches the given option when it
      * starts with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -888,7 +888,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
+     * Implementation of a `PrimeFaces.component.SelectCheckboxMenu.FilterFunction` that matches the given option when it
      * contains the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -899,7 +899,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
+     * Implementation of a `PrimeFaces.component.SelectCheckboxMenu.FilterFunction` that matches the given option when it
      * ends with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1038,7 +1038,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     /**
      * Selects the given checkbox option.
      * @param checkbox Checkbox option to select.
-     * @param updateInput If `true`, update the hidden input field with the current value of this widget.
+     * @param updateInput If `true`, update the hidden input field with the current value of this component.
      */
     private check(checkbox: JQuery, updateInput?: boolean): void {
         if (!checkbox.hasClass('p-state-disabled')) {
@@ -1083,7 +1083,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     /**
      * Unselects the given checkbox option.
      * @param checkbox Checkbox option to unselect.
-     * @param updateInput If `true`, update the hidden input field with the current value of this widget.
+     * @param updateInput If `true`, update the hidden input field with the current value of this component.
      */
     private uncheck(checkbox: JQuery, updateInput?: boolean): void {
         if (!checkbox.hasClass('p-state-disabled')) {
@@ -1240,7 +1240,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
 
     /**
      * Select or unselect the given checkbox option.
-     * @param checkbox One of the checkbox options of this widget to toggle.
+     * @param checkbox One of the checkbox options of this component to toggle.
      * @param input (optional) input element representing the value of the checkbox
      */
     toggleItem(checkbox: JQuery, input?: JQuery): void {
@@ -1388,7 +1388,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.inputs);
         this.disabled = false;
     }
 
@@ -1396,7 +1396,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.inputs);
         this.disabled = true;
     }
 

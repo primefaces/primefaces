@@ -25,10 +25,10 @@ package org.primefaces.component.tristatecheckbox;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -210,7 +210,7 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
     }
 
     protected void encodeScript(FacesContext context, TriStateCheckbox component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TriStateCheckbox", component);
         encodeClientBehaviors(context, component);
         wb.finish();

@@ -35,7 +35,7 @@ escape option.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Messages_
+Component: _PrimeFaces.component.Messages_
 
 | Method               | Params | Return Type | Description                |
 |----------------------| --- | --- |----------------------------|

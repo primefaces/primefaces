@@ -136,10 +136,10 @@ public abstract class AbstractWidgetLifecycleTest extends AbstractPrimePageTest 
     }
 
     /**
-     * Counts the widgets with the given client id, a destroyed widget is removed from {@code PrimeFaces.widgets}.
+     * Counts the widgets with the given client id, a destroyed widget is removed from {@code PrimeFaces.components}.
      */
     protected long widgetCount(String clientId) {
-        return (Long) PrimeSelenium.executeScript("var id = arguments[0]; return Object.values(PrimeFaces.widgets)"
+        return (Long) PrimeSelenium.executeScript("var id = arguments[0]; return Object.values(PrimeFaces.components)"
                     + ".filter(function(w) { return w && w.id === id; }).length;", clientId);
     }
 

@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link InputOtp} widget.
+ * The configuration for the {@link InputOtp} component.
  */
-export interface InputOtpCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface InputOtpCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the component is disabled. */
     disabled: boolean;
     /** Whether only digits are accepted. */
@@ -13,13 +13,13 @@ export interface InputOtpCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces InputOtp Widget__
+ * __PrimeFaces InputOtp Component__
  *
  * InputOtp is an input for one-time passwords and PINs with one input per character. Typing moves to the next input,
  * Backspace in an empty input to the previous one, a pasted (or by the browser filled in) code is distributed over
  * the inputs. The value is the concatenation of the characters, kept in a hidden input.
  */
-export class InputOtp<Cfg extends InputOtpCfg = InputOtpCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class InputOtp<Cfg extends InputOtpCfg = InputOtpCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The inputs, one per character. */
     inputs: JQuery<HTMLInputElement> = $();
     /** The hidden input with the submitted value. */
@@ -33,10 +33,10 @@ export class InputOtp<Cfg extends InputOtpCfg = InputOtpCfg> extends PrimeFaces.
     private disabled: boolean = false;
 
     /**
-     * Initializes the widget: reads the characters rendered by the server and binds the events.
-     * @param cfg The configuration of the widget.
+     * Initializes the component: reads the characters rendered by the server and binds the events.
+     * @param cfg The configuration of the component.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.inputs = this.jq.children('.p-inputotp-input') as JQuery<HTMLInputElement>;

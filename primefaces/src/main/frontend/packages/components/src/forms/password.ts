@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Password} widget.
+ * The configuration for the {@link Password} component.
  */
-export interface PasswordCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface PasswordCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Enables strength indicator. */
     feedback: boolean;
     /** Label of the password prompt. */
@@ -23,12 +23,12 @@ export interface PasswordCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Password Widget__
+ * __PrimeFaces Password Component__
  *
  * Password component is an extended version of standard inputSecret component with theme integration and strength
  * indicator.
  */
-export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the informational text regarding how strong the password is. */
     infoText?: JQuery;
     /** The DOM element for mask/unmask icon */
@@ -37,14 +37,14 @@ export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.
     meter?: JQuery;
     /** The DOM element for the overlay panel with the hint regarding how strong the password is. */
     panel?: JQuery;
-    /** Handler for CSS transitions used by this widget. */
+    /** Handler for CSS transitions used by this component. */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
     /** Unbind callback for the resize handler. */
     resizeHandler?: PrimeFacesTypes.Unbindable;
     /** Unbind callback for the scroll handler. */
     scrollHandler?: PrimeFacesTypes.Unbindable;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (!this.jq.is(':disabled')) {
@@ -81,7 +81,7 @@ export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.
         const panelStyle = this.cfg.inline ? 'p-password-panel-inline' : 'p-password-panel-overlay';
 
         //create panel element
-        let panelMarkup = '<div id="' + this.id + '_panel" class="p-password-panel p-widget p-state-highlight p-hidden ' + panelStyle + '">';
+        let panelMarkup = '<div id="' + this.id + '_panel" class="p-password-panel p-component p-state-highlight p-hidden ' + panelStyle + '">';
         panelMarkup += '<div class="p-password-meter" style="background-position:0pt 0pt">&nbsp;</div>';
         panelMarkup += '<div class="p-password-info">' + PrimeFaces.escapeHTML(this.cfg.promptLabel as string) + '</div>';
         panelMarkup += '</div>';
@@ -329,14 +329,14 @@ export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq);
+        PrimeFaces.utils.enableInputComponent(this.jq);
     }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, undefined);
+        PrimeFaces.utils.disableInputComponent(this.jq, undefined);
     }
 
 }

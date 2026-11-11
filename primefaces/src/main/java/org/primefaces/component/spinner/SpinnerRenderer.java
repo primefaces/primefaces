@@ -25,10 +25,10 @@ package org.primefaces.component.spinner;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -93,7 +93,7 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
     }
 
     protected void encodeScript(FacesContext context, Spinner component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         Object value = component.getValue();
         String defaultDecimalPlaces = null;

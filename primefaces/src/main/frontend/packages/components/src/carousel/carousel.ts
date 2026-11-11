@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Carousel} widget.
+ * The configuration for the {@link Carousel} component.
  */
-export interface CarouselCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface CarouselCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** Index of the first item. */
     page: number;
     /** Number of visible items per page. */
@@ -9,9 +9,9 @@ export interface CarouselCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Number of items to scroll. */
     numScroll: number;
     /** An array of options for responsive design. */
-    responsiveOptions: PrimeFacesTypes.widget.Carousel.ResponsiveOption[];
+    responsiveOptions: PrimeFacesTypes.component.Carousel.ResponsiveOption[];
     /** Specifies the layout of the component, valid layouts are horizontal or vertical. */
-    orientation: PrimeFacesTypes.widget.Carousel.Orientation;
+    orientation: PrimeFacesTypes.component.Carousel.Orientation;
     /** Sets continuous scrolling. */
     circular: boolean;
     /** Whether to display the paginator or not. */
@@ -19,14 +19,14 @@ export interface CarouselCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. */
     autoplayInterval: number;
     /** Client side callback to execute when the page was changed. */
-    onPageChange: PrimeFacesTypes.widget.Carousel.OnPageChangeCallback;
+    onPageChange: PrimeFacesTypes.component.Carousel.OnPageChangeCallback;
 }
 
 /**
- * __PrimeFaces Carousel Widget__
+ * __PrimeFaces Carousel Component__
  * Carousel is a content slider featuring various customization options.
  */
-export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** Whether autoplay is allowed or not. */
     allowAutoplay: boolean = false;
     /** ARIA label for the page indicators, with the placeholder `{page}`. */
@@ -84,7 +84,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
     /** The number of how many items shifted. */
     totalShiftedItems: number = 0;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.content = this.jq.children('.p-carousel-content');
         this.container = this.content.children('.p-carousel-container');
@@ -140,7 +140,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.stopAutoplay();
 
         super.refresh(cfg);
@@ -170,7 +170,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindEvents(): void {
         const indicatorSelector = '.p-carousel-indicator';
@@ -382,7 +382,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
 
     /**
      * Calculates position and visible items and the number of how many items will be scrolled when screen aspect ratio
-     * changes then updates current page of the current Carousel widget.
+     * changes then updates current page of the current Carousel component.
      */
     private calculatePosition(): void {
         if (this.itemsContainer && this.cfg.responsiveOptions) {
@@ -393,7 +393,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
             };
 
             for (let i = 0; i < this.cfg.responsiveOptions.length; i++) {
-                const res = this.cfg.responsiveOptions[i] as PrimeFacesTypes.widget.Carousel.ResponsiveOption;
+                const res = this.cfg.responsiveOptions[i] as PrimeFacesTypes.component.Carousel.ResponsiveOption;
 
                 if (parseInt(res.breakpoint, 10) >= windowWidth) {
                     matchedResponsiveOptionsData = res;
@@ -601,7 +601,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
             });
 
             for (let i = 0; i < _responsiveOptions.length; i++) {
-                const res = _responsiveOptions[i] as PrimeFacesTypes.widget.Carousel.ResponsiveOption;
+                const res = _responsiveOptions[i] as PrimeFacesTypes.component.Carousel.ResponsiveOption;
 
                 innerHTML += '@media screen and (max-width: ' + res.breakpoint + ') '
                     + '{div[id*="' + this.id + '"] .p-carousel-item '
@@ -613,7 +613,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
     }
 
     /**
-     * Clones items if the carousel widget is circular
+     * Clones items if the carousel component is circular
      */
     private cloneItems(): void {
         this.itemsContainer.children('.p-carousel-item-cloned').remove();

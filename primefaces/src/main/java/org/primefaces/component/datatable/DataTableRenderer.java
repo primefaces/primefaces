@@ -41,13 +41,13 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -160,7 +160,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             throw new FacesException("Frozen columns can only be used with a table set scrollable='true'.");
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init(widgetClass, component);
 
         //Pagination

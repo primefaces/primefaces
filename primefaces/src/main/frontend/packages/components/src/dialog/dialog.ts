@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link Dialog} widget.
+ * The configuration for the {@link Dialog} component.
  * 
  * You can access this configuration via {@link Dialog.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg, PrimeFacesTypes.hook.dialog.SharedDialogOptions {
+export interface DialogCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg, PrimeFacesTypes.hook.dialog.SharedDialogOptions {
     /**
      * Whether the dialog is positioned absolutely.
      */
@@ -28,7 +28,7 @@ export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCf
     /**
      * Optional handler for obtaining additional DOM elements which are allowed to be focused via tabbing.
      */
-    getModalTabbables: PrimeFacesTypes.widget.Dialog.GetModalTabbablesHandler;
+    getModalTabbables: PrimeFacesTypes.component.Dialog.GetModalTabbablesHandler;
 
     /**
      * Whether the dialog contents contain an {@link HTMLIFrameElement}. 
@@ -64,12 +64,12 @@ export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCf
      * Client-side callback to invoke when the dialog is
      * closed.
      */
-    onHide: PrimeFacesTypes.widget.Dialog.OnHideCallback;
+    onHide: PrimeFacesTypes.component.Dialog.OnHideCallback;
 
     /**
      * Client-side callback to invoke when the dialog is opened.
      */
-    onShow: PrimeFacesTypes.widget.Dialog.OnShowCallback;
+    onShow: PrimeFacesTypes.component.Dialog.OnShowCallback;
 
     /**
      * Effect to use when showing the dialog
@@ -90,7 +90,7 @@ export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCf
 
     /**
      * Used by the dialog framework when opening dialogs within iframes. Name of the
-     * widget variable of the widget that requested the dialog to open.
+     * widget variable of the component that requested the dialog to open.
      */
     sourceWidgetVar: string;
 
@@ -101,14 +101,14 @@ export interface DialogCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCf
 }
 
 /**
- * __PrimeFaces Dialog Widget__
+ * __PrimeFaces Dialog Component__
  * 
  * Dialog is a panel component that is displayed as an overlay on top of other elements on the current page. Optionally,
  * the dialog may be modal and block the user from interacting with elements below the dialog.
  *
  * @typeParam Cfg Type of the configuration object.
  */
-export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget.DynamicOverlayWidget<Cfg> {
+export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.component.DynamicOverlayComponent<Cfg> {
     /**
      * DOM element of the icon for closing this dialog, when this dialog is closable (an `x` by
      * default).
@@ -146,7 +146,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     icons: JQuery = $();
 
     /**
-     * The native DOM element instance of the container element of this widget (same element as the
+     * The native DOM element instance of the container element of this component (same element as the
      * `jq` property).
      */
     jqEl: HTMLElement | undefined;
@@ -209,7 +209,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * The client-side state of the dialog such as its width
      * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
      */
-    state?: PrimeFacesTypes.widget.Dialog.ClientState;
+    state?: PrimeFacesTypes.component.Dialog.ClientState;
 
     /**
      * DOM element of the title bar container of this dialog.
@@ -221,7 +221,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     titleContainer?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.box = this.jq.children('.p-dialog-box');
@@ -281,7 +281,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.positionInitialized = false;
         this.loaded = false;
 
@@ -549,7 +549,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     protected bindEvents(): void {
         var $this = this;
@@ -642,7 +642,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected bindDismissibleMaskListener(): void {
         if (this.cfg.dismissibleMask && this.cfg.modal) {
             var $this = this;
-            $(".p-dialog.p-widget.p-hidden-container:visible").on('click.mask_' + this.id, function (e) {
+            $(".p-dialog.p-component.p-hidden-container:visible").on('click.mask_' + this.id, function (e) {
                 if (!e.isDefaultPrevented() && $(e.target).is(this)) {
                     $this.hide();
                     e.preventDefault();
@@ -659,7 +659,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected unbindDismissibleMaskListener(): void {
         if (this.cfg.dismissibleMask && this.cfg.modal) {
-            $(".p-dialog.p-widget.p-hidden-container").off('click.mask_' + this.id);
+            $(".p-dialog.p-component.p-hidden-container").off('click.mask_' + this.id);
         }
     }
 
@@ -740,14 +740,14 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     }
     
     /**
-     * Resets the dialog position as specified by the `position` property of this widget configuration.
+     * Resets the dialog position as specified by the `position` property of this component configuration.
      */
     protected resetPosition(): void {
        this.initPosition();
     }
 
     /**
-     * Positions this dialog on the screen as specified by the widget configuration.
+     * Positions this dialog on the screen as specified by the component configuration.
      */
     protected initPosition(): void {
         var $this = this;
@@ -1079,7 +1079,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Applies all `ARIA` attributes to the contents of this dialog.
      */
     protected applyARIA(): void {
-        var role = this instanceof PrimeFaces.widget.ConfirmDialog ? 'alertdialog' : 'dialog';
+        var role = this instanceof PrimeFaces.component.ConfirmDialog ? 'alertdialog' : 'dialog';
         this.jq.attr({
             'role': role,
             'aria-describedby': this.id + '_content',
@@ -1142,7 +1142,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
 }
 
 /**
- * The configuration for the {@link  ConfirmDialog} widget. You can access this configuration via
+ * The configuration for the {@link  ConfirmDialog} component. You can access this configuration via
  * {@link ConfirmDialog.cfg | cfg}. Please note that this configuration is usually meant to be
  * read-only and should not be modified.
  */
@@ -1154,7 +1154,7 @@ export interface ConfirmDialogCfg extends DialogCfg {
 }
 
 /**
- * __PrimeFaces ConfirmDialog Widget__
+ * __PrimeFaces ConfirmDialog Component__
  * 
  * ConfirmDialog is a replacement to the legacy JavaScript confirmation box. Skinning, customization and avoiding popup
  * blockers are notable advantages over the classic JavaScript confirmation box.
@@ -1187,7 +1187,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
      */
     yesButton: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
@@ -1363,7 +1363,7 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
 }
 
 /**
- * The configuration for the {@link DynamicDialog} widget.
+ * The configuration for the {@link DynamicDialog} component.
  * 
  * You can access this configuration via {@link DynamicDialog.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -1372,7 +1372,7 @@ export interface DynamicDialogCfg extends DialogCfg {
 }
 
 /**
- * __PrimeFaces Dynamic Dialog Widget__ 
+ * __PrimeFaces Dynamic Dialog Component__ 
  * 
  * Used by the dialog framework for displaying other Faces views or external pages in a dialog on the current.
  * 

@@ -1,11 +1,11 @@
 /**
- * The configuration for the {@link CommandButton} widget.
+ * The configuration for the {@link CommandButton} component.
  * 
  * You can access this configuration via {@link CommandButton.cfg | cfg}. Please
  * note that this configuration is usually meant to be read-only and should not
  * be modified. 
  */
-export interface CommandButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface CommandButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * When set to `true` this button is only enabled after successful client
      * side validation, otherwise classic behavior. Used together with
@@ -15,14 +15,14 @@ export interface CommandButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces CommandButton Widget__
+ * __PrimeFaces CommandButton Component__
  * 
  * CommandButton is an extended version of standard commandButton with AJAX and theming.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class CommandButton<Cfg extends CommandButtonCfg = CommandButtonCfg> extends PrimeFaces.widget.BaseWidget {
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+export class CommandButton<Cfg extends CommandButtonCfg = CommandButtonCfg> extends PrimeFaces.component.BaseComponent {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         PrimeFaces.skinButton(this.jq);
@@ -43,7 +43,7 @@ export class CommandButton<Cfg extends CommandButtonCfg = CommandButtonCfg> exte
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
 
         super.refresh(cfg);

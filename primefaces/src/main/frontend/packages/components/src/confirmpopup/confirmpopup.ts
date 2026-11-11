@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link  ConfirmPopup} widget.
+ * The configuration for the {@link  ConfirmPopup} component.
  * 
  * You can access this configuration via {@link ConfirmPopup.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface ConfirmPopupCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg {
+export interface ConfirmPopupCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
     /**
      * The search expression for the element to which the overlay panel should be
      * appended.
@@ -33,11 +33,11 @@ export interface ConfirmPopupCfg extends PrimeFacesTypes.widget.DynamicOverlayWi
 }
 
 /**
- * __PrimeFaces ConfirmPopup Widget__
+ * __PrimeFaces ConfirmPopup Component__
  * 
  * ConfirmPopup displays a confirmation overlay displayed relatively to its target.
  */
-export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends PrimeFaces.widget.DynamicOverlayWidget<Cfg> {
+export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends PrimeFaces.component.DynamicOverlayComponent<Cfg> {
     /**
      * The DOM element for the content of the confirm popup.
      */
@@ -79,7 +79,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
     scrollHandler?: PrimeFacesTypes.Unbindable;
 
     /**
-     * Handler for CSS transitions used by this widget.
+     * Handler for CSS transitions used by this component.
      */
     transition?: PrimeFacesTypes.CssTransitionHandler | null = null;
 
@@ -88,7 +88,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
      */
     yesButton: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         cfg.dismissable = cfg.dismissable !== false;
         if (!cfg.appendTo && cfg.global) {
             cfg.appendTo = '@(body)';
@@ -118,7 +118,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     protected bindEvents(): void {
         if (this.cfg.global) {
@@ -250,7 +250,7 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
      * Hides the popup.
      * @param callback Callback that is invoked after this popup was closed.
      */
-    hide(callback?: PrimeFacesTypes.widget.ConfirmPopup.HideCallback): void {
+    hide(callback?: PrimeFacesTypes.component.ConfirmPopup.HideCallback): void {
         if (this.transition) {
             this.transition.hide({
                 onExit: () => {

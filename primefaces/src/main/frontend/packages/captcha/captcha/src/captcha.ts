@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Captcha} widget.
+ * The configuration for the {@link Captcha} component.
  */
-export interface CaptchaCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface CaptchaCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Name of a function in the global scope. Callback to be executed when the user submits a successful CAPTCHA
      * response. The user's response, goggle recaptcha-response, will be the input for your callback function.
@@ -25,22 +25,22 @@ export interface CaptchaCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Position of the input element in the tabbing order. */
     tabindex: number;
     /** Theme of the captcha. */
-    theme: PrimeFacesTypes.widget.Captcha.Theme;
+    theme: PrimeFacesTypes.component.Captcha.Theme;
 }
 
 /**
- * The global variables used by the captcha widget: the init callback and the captcha API (the `executor`).
+ * The global variables used by the captcha component: the init callback and the captcha API (the `executor`).
  */
-type CaptchaGlobals = Record<string, (() => void) | PrimeFacesTypes.widget.Captcha.Executor | null | undefined>;
+type CaptchaGlobals = Record<string, (() => void) | PrimeFacesTypes.component.Captcha.Executor | null | undefined>;
 
 /**
- * __PrimeFaces Captcha Widget__
+ * __PrimeFaces Captcha Component__
  *
  * Captcha is a form validation component based on Recaptcha API V2.
  */
-export class Captcha<Cfg extends CaptchaCfg = CaptchaCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Captcha<Cfg extends CaptchaCfg = CaptchaCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.language = this.cfg.language || 'en';
         this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast(this.jq[0]);
@@ -73,10 +73,10 @@ export class Captcha<Cfg extends CaptchaCfg = CaptchaCfg> extends PrimeFaces.wid
     }
 
     /**
-     * Renders the client-side parts of this widget.
+     * Renders the client-side parts of this component.
      */
     private render(): void {
-        const captchaExecutor = (window as unknown as CaptchaGlobals)[this.cfg.executor!] as PrimeFacesTypes.widget.Captcha.Executor;
+        const captchaExecutor = (window as unknown as CaptchaGlobals)[this.cfg.executor!] as PrimeFacesTypes.component.Captcha.Executor;
         captchaExecutor.render(this.jq.get(0)!, {
             'sitekey': this.cfg.sitekey,
             'tabindex': this.cfg.tabindex,

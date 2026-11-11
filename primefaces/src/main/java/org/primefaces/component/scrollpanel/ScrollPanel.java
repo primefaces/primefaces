@@ -40,8 +40,8 @@ public class ScrollPanel extends ScrollPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollPanel";
 
-    public static final String SCROLL_PANEL_CLASS = "p-scrollpanel p-widget p-widget-content";
-    public static final String SCROLL_PANEL_NATIVE_CLASS = "p-scrollpanel p-scrollpanel-native p-widget p-widget-content";
+    public static final String SCROLL_PANEL_CLASS = "p-scrollpanel p-component p-component-content";
+    public static final String SCROLL_PANEL_NATIVE_CLASS = "p-scrollpanel p-scrollpanel-native p-component p-component-content";
     public static final String SCROLL_PANEL_CONTENT_CLASS = "p-scrollpanel-content";
     public static final String SCROLL_PANEL_TRACK_X_CLASS = "p-scrollpanel-track p-scrollpanel-track-x p-hidden";
     public static final String SCROLL_PANEL_TRACK_Y_CLASS = "p-scrollpanel-track p-scrollpanel-track-y p-hidden";

@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link OrderList} widget.
+ * The configuration for the {@link OrderList} component.
  */
-export interface OrderListCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface OrderListCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Name of animation to display. */
     effect: string;
 }
 
 /**
- * __PrimeFaces OrderList Widget__
+ * __PrimeFaces OrderList Component__
  *
  * OrderList is used to sort a collection featuring drag&drop based reordering, transition effects and POJO support.
  */
-export class OrderList<Cfg extends OrderListCfg = OrderListCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class OrderList<Cfg extends OrderListCfg = OrderListCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the hidden form field storing the current order of the items. */
     input: JQuery = $();
     /** The DOM elements for the available items that can be reordered. */
@@ -21,7 +21,7 @@ export class OrderList<Cfg extends OrderListCfg = OrderListCfg> extends PrimeFac
     /** The DOM element for the source list, when used with a pick list. */
     sourceList?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.list = this.jq.find('.p-orderlist-list');
@@ -67,7 +67,7 @@ export class OrderList<Cfg extends OrderListCfg = OrderListCfg> extends PrimeFac
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         // #4716 on mobile the list scrolls by touch, a tap on an item enables the sorting until the next touch ends

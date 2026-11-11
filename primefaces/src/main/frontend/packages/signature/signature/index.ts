@@ -1,15 +1,15 @@
 import { Signature } from "./src/signature.js";
 
-PrimeFaces.widget.Signature = Signature;
+PrimeFaces.component.Signature = Signature;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Signature: typeof Signature;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SignatureCfg = import("./src/signature.js").SignatureCfg;
     }
 }

@@ -167,7 +167,7 @@ The TimePicker pattern can be modified with the properties _hourFormat_ and _sho
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DatePicker_
+Component: _PrimeFaces.component.DatePicker_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

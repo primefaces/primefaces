@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Sticky} widget.
+ * The configuration for the {@link Sticky} component.
  */
-export interface StickyCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface StickyCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Margin to the top of the page while fixed, recalculated from `stickyTopAt`. */
     margin: number;
     /** Selector of elements fixed at the top of the page, their height is used as margin. */
@@ -11,11 +11,11 @@ export interface StickyCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Sticky Widget__
+ * __PrimeFaces Sticky Component__
  *
  * Sticky positions other components as fixed so that they stay in the window viewport during scrolling.
  */
-export class Sticky<Cfg extends StickyCfg = StickyCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Sticky<Cfg extends StickyCfg = StickyCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The component to make sticky. */
     target: JQuery = $();
     /** Whether the target is currently fixed to the top of the page. */
@@ -23,9 +23,9 @@ export class Sticky<Cfg extends StickyCfg = StickyCfg> extends PrimeFaces.widget
     /** The placeholder at the original position of the target while it is fixed. */
     ghost?: JQuery;
     /** The position and height of the target before it was fixed. */
-    initialState: PrimeFacesTypes.widget.Sticky.InitialState = { top: 0, height: 0 };
+    initialState: PrimeFacesTypes.component.Sticky.InitialState = { top: 0, height: 0 };
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target ?? ''));
         this.cfg.margin = this.cfg.margin || 0;
@@ -43,7 +43,7 @@ export class Sticky<Cfg extends StickyCfg = StickyCfg> extends PrimeFaces.widget
 
     // no super.refresh / init on purpose (#660): initialState must stay the one measured before the target was fixed,
     // and the scroll/resize handlers stay bound, so only the (updated) target is resolved again and fixed if needed
-    override refresh(_cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(_cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target ?? ''));
 
         if (this.fixed) {

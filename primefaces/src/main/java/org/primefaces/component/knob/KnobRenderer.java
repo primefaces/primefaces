@@ -25,8 +25,8 @@ package org.primefaces.component.knob;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -119,7 +119,7 @@ public class KnobRenderer extends CoreRenderer<Knob> {
     }
 
     private void encodeScript(FacesContext context, Knob component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("Knob", component)
                 .attr("min", component.getMin())

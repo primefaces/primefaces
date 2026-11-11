@@ -1,7 +1,7 @@
 import { SelectListbox, type SelectListboxCfg } from "./selectlistbox.js";
 
 /**
- * The configuration for the {@link SelectManyMenu} widget.
+ * The configuration for the {@link SelectManyMenu} component.
  */
 export interface SelectManyMenuCfg extends SelectListboxCfg {
     /** Whether the meta key (CTRL or CMD) must be held down to select several items, normalized on init (default `true`). */
@@ -11,7 +11,7 @@ export interface SelectManyMenuCfg extends SelectListboxCfg {
 }
 
 /**
- * __PrimeFaces SelectManyMenu Widget__
+ * __PrimeFaces SelectManyMenu Component__
  *
  * SelectManyMenu is an extended version of the standard SelectManyMenu.
  */
@@ -27,7 +27,7 @@ export class SelectManyMenu<Cfg extends SelectManyMenuCfg = SelectManyMenuCfg> e
     /** The footer with the number of selected items, if rendered. */
     footer: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 

@@ -45,7 +45,7 @@ Following example uses customizable Grid CSS layout.
 
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectManyCheckbox_
+Component: _PrimeFaces.component.SelectManyCheckbox_
 
 
 | Method | Params | Return Type | Description |

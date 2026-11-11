@@ -58,13 +58,13 @@ public class AccordionPanel extends AccordionPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AccordionPanel";
 
-    public static final String CONTAINER_CLASS = "p-accordion p-widget p-hidden-container";
+    public static final String CONTAINER_CLASS = "p-accordion p-component p-hidden-container";
     public static final String ACTIVE_TAB_HEADER_CLASS = "p-accordion-header p-state-default p-state-active";
     public static final String TAB_HEADER_CLASS = "p-accordion-header p-state-default";
     public static final String TAB_HEADER_ICON_CLASS = "p-accordion-toggler p-icon p-toggle-icon p-accordion-header-icon";
     public static final String TAB_HEADER_MENU_ICON_CLASS = "p-icon p-options-icon p-accordion-header-menu-icon";
-    public static final String ACTIVE_TAB_CONTENT_CLASS = "p-accordion-content p-widget-content";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "p-accordion-content p-widget-content p-hidden";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "p-accordion-content p-component-content";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "p-accordion-content p-component-content p-hidden";
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");

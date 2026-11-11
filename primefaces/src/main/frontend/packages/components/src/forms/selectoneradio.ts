@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link SelectOneRadio} widget.
+ * The configuration for the {@link SelectOneRadio} component.
  */
-export interface SelectOneRadioCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectOneRadioCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether a custom layout is used. */
     custom: boolean;
     /** Whether a click on the selected radio clears the selection. */
@@ -11,11 +11,11 @@ export interface SelectOneRadioCfg extends PrimeFacesTypes.widget.BaseWidgetCfg 
 }
 
 /**
- * __PrimeFaces SelectOneRadio Widget__
+ * __PrimeFaces SelectOneRadio Component__
  *
  * SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
  */
-export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Whether the custom layout uses a facet. */
     facet?: boolean;
     /** The original radio inputs with the value, only with a custom layout. */
@@ -31,7 +31,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
     /** The labels of the radio buttons. */
     labels: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.readonly = this.cfg.readonly === true;
 
@@ -101,7 +101,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
         input.closest('[role=radio]').attr('aria-checked', String(checked));
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.custom) {
             for (let i = 0; i < this.inputs.length; i++) {
                 const input = this.inputs.eq(i);
@@ -239,7 +239,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
 
     /**
      * Unselects the given radio button.
-     * @param radio A visible radio button of this widget.
+     * @param radio A visible radio button of this component.
      */
     unselect(radio: JQuery): void {
         if (this.cfg.readonly) {
@@ -258,7 +258,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
 
     /**
      * Selects the given radio button, the selected one is not unselected.
-     * @param radio A visible radio button of this widget.
+     * @param radio A visible radio button of this component.
      */
     select(radio: JQuery): void {
         if (this.cfg.readonly) {
@@ -341,7 +341,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
     }
 
     /**
-     * Calls the `onclick` of the radio input, with this widget as `this`.
+     * Calls the `onclick` of the radio input, with this component as `this`.
      * @param input The radio input that was clicked.
      * @param event The click event.
      */

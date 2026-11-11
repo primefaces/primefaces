@@ -26,7 +26,7 @@ package org.primefaces.component.ajaxexceptionhandler;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class AjaxExceptionHandlerRenderer extends CoreRenderer<AjaxExceptionHand
     }
 
     protected void encodeScript(FacesContext context, AjaxExceptionHandler component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("AjaxExceptionHandler", component);
         wb.attr("exceptionType", component.getType())
                 .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getUpdate()))

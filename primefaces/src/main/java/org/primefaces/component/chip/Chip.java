@@ -38,7 +38,7 @@ public class Chip extends ChipBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chip";
 
-    public static final String STYLE_CLASS = "p-chip p-widget";
+    public static final String STYLE_CLASS = "p-chip p-component";
     public static final String IMAGE_CLASS = "p-chip-image";
     public static final String ICON_CLASS = "p-chip-icon";
     public static final String TEXT_CLASS = "p-chip-text";

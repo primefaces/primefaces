@@ -25,9 +25,9 @@ package org.primefaces.component.keyboard;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -62,7 +62,7 @@ public class KeyboardRenderer extends InputRenderer<Keyboard> {
     }
 
     protected void encodeScript(FacesContext context, Keyboard component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Keyboard", component)
                 .attr("useThemeRoller", true)
                 .attr("showOn", component.getShowMode())

@@ -1,15 +1,15 @@
 /**
- * The configuration for the {@link DataScroller} widget.
+ * The configuration for the {@link DataScroller} component.
  */
-export interface DataScrollerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface DataScrollerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Buffer below the scroll position that triggers the load, sent in percent, converted to a fraction on init. */
     buffer: number;
     /** Number of items to load on each load. */
     chunkSize: number;
     /** When more items are loaded. */
-    loadEvent: PrimeFacesTypes.widget.DataScroller.LoadEvent;
+    loadEvent: PrimeFacesTypes.component.DataScroller.LoadEvent;
     /** Target of the scroll listener, defaults to `document`. */
-    mode: PrimeFacesTypes.widget.DataScroller.Mode;
+    mode: PrimeFacesTypes.component.DataScroller.Mode;
     /** Offset of the loaded items, set to `0` on init and updated on each load. */
     offset: number;
     /** Whether the items are loaded from the bottom and the scroll position starts at the bottom. */
@@ -21,11 +21,11 @@ export interface DataScrollerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces DataScroller Widget__
+ * __PrimeFaces DataScroller Component__
  *
  * DataScroller displays a collection of data with on demand loading using scrolling.
  */
-export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The container of the list. */
     content: JQuery = $();
     /** The list of items. */
@@ -47,7 +47,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
     /** The timer ID of the delayed virtual scroll. */
     scrollTimeout?: number;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.content = this.jq.children('div.p-datascroller-content');
         this.list = this.cfg.virtualScroll ? this.content.children('div').children('ul') : this.content.children('ul');
@@ -111,7 +111,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
                 this.list.css('padding-top', paddingTop + 'px');
             }
 
-            // a pending virtual scroll load must not run after the widget was updated or removed
+            // a pending virtual scroll load must not run after the component was updated or removed
             const clearScrollTimeout = () => {
                 clearTimeout(this.scrollTimeout);
             };

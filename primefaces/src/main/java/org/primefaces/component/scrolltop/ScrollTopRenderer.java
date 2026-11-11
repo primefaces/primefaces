@@ -25,7 +25,7 @@ package org.primefaces.component.scrolltop;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -65,7 +65,7 @@ public class ScrollTopRenderer extends CoreRenderer<ScrollTop> {
     }
 
     protected void encodeScript(FacesContext context, ScrollTop component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("ScrollTop", component)
                 .attr("target", component.getTarget())
                 .attr("threshold", component.getThreshold())

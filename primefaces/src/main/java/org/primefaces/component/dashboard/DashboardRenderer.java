@@ -29,9 +29,9 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -115,7 +115,7 @@ public class DashboardRenderer extends CoreRenderer<Dashboard> {
     }
 
     protected void encodeScript(FacesContext context, Dashboard component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Dashboard", component)
                 .attr("responsive", component.isResponsive(), false)
                 .attr("disabled", !component.isReordering(), false)

@@ -1,7 +1,7 @@
 import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
- * The configuration for the {@link  TabMenu} widget.
+ * The configuration for the {@link  TabMenu} component.
  * 
  * You can access this configuration via {@link TabMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -10,7 +10,7 @@ export interface TabMenuCfg extends MenuCfg {
 }
 
 /**
- * __PrimeFaces TabMenu Widget__
+ * __PrimeFaces TabMenu Component__
  * 
  * TabMenu is a navigation component that displays menuitems as tabs.
  * 
@@ -22,7 +22,7 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
      */
     items: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('> .p-tabmenu-nav > li:not(.p-state-disabled)');
@@ -32,7 +32,7 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         this.items.on('mouseover.tabmenu', function() {
@@ -47,7 +47,7 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
     }
 
     /**
-     * Sets up all keyboard event listeners that are required by this widget.
+     * Sets up all keyboard event listeners that are required by this component.
      */
     private bindKeyEvents(): void {
         /* For Keyboard accessibility and Screen Readers */

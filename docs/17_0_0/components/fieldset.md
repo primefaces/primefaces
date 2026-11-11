@@ -40,7 +40,7 @@ toggleable to true to enable this feature.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Fieldset_
+Component: _PrimeFaces.component.Fieldset_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

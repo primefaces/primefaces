@@ -25,11 +25,11 @@ package org.primefaces.component.selectmanybutton;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -289,7 +289,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
         }
         boolean custom = "custom".equals(layout);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectManyButton", component)
                 .attr("custom", custom, false)
                 .callback("change", "function()", component.getOnchange());

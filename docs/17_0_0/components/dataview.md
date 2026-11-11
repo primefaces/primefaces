@@ -164,12 +164,12 @@ template.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DataView_
+Component: _PrimeFaces.component.DataView_
 
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-| getPaginator() | - | Paginator | Returns the paginator widget.
+| getPaginator() | - | Paginator | Returns the paginator component.
 
 ## Skinning
 DataView resides in a main div container which style and styleClass attributes apply. Following is

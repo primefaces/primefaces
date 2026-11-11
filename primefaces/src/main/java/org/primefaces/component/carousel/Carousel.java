@@ -45,7 +45,7 @@ public class Carousel extends CarouselBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Carousel";
 
-    public static final String STYLE_CLASS = "p-carousel p-widget";
+    public static final String STYLE_CLASS = "p-carousel p-component";
     public static final String CONTENT_CLASS = "p-carousel-content";
     public static final String CONTAINER_CLASS = "p-carousel-container";
     public static final String INDICATORS_CONTENT_CLASS = "p-carousel-indicators p-reset";

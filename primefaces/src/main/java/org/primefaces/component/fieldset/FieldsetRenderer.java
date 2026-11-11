@@ -25,9 +25,9 @@ package org.primefaces.component.fieldset;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -123,7 +123,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
 
     protected void encodeScript(FacesContext context, Fieldset component) throws IOException {
         boolean toggleable = component.isToggleable();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Fieldset", component);
 
         if (toggleable) {

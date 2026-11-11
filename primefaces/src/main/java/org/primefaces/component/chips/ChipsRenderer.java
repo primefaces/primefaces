@@ -25,10 +25,10 @@ package org.primefaces.component.chips;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -167,7 +167,7 @@ public class ChipsRenderer extends InputRenderer<Chips> {
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", inputId, null);
-        writer.writeAttribute("class", "p-widget", null);
+        writer.writeAttribute("class", "p-component", null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
 
@@ -210,7 +210,7 @@ public class ChipsRenderer extends InputRenderer<Chips> {
     }
 
     protected void encodeScript(FacesContext context, Chips chips) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Chips", chips)
                 .attr("max", chips.getMax(), Integer.MAX_VALUE)
                 .attr("addOnBlur", chips.isAddOnBlur(), false)

@@ -38,6 +38,6 @@ public class MegaMenu extends MegaMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MegaMenu";
 
-    public static final String CONTAINER_CLASS = "p-menu p-menubar p-megamenu p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-menu p-menubar p-megamenu p-component p-component-content";
     public static final String VERTICAL_CLASS = "p-megamenu-vertical";
 }

@@ -1,20 +1,20 @@
 import { Chart as ChartJsChart, type ChartConfiguration } from "chart.js";
 
 /**
- * The configuration for the {@link Chart} widget.
+ * The configuration for the {@link Chart} component.
  */
-export interface ChartCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface ChartCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /**
      * The configuration for the [chart.js](https://www.chartjs.org/docs/latest/) chart. It can be modified within the
-     * extender function set for this chart widget.
+     * extender function set for this chart component.
      */
     config: ChartConfiguration;
     /** Extender function allows access to the underlying [chart.js](https://www.chartjs.org/docs/latest/) API. */
-    extender: PrimeFacesTypes.widget.Chart.ChartExtender;
+    extender: PrimeFacesTypes.component.Chart.ChartExtender;
 }
 
 /**
- * __PrimeFaces Chart Widget__
+ * __PrimeFaces Chart Component__
  *
  * Chart.js based components are a modern replacement for the older `<p:chart>` component. Each chart component has its
  * own model api that defines the data and the options to customize the graph.
@@ -22,17 +22,17 @@ export interface ChartCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
  * You can also define an extender function. The extender function allows access to the underlying
  * [chart.js](https://www.chartjs.org/docs/latest/) API using the `setExtender` method of the model. You need to define
  * a global function and set it on the model, see the user guide for more details. The required typing of that function
- * is given by `PrimeFacesTypes.widget.Chart.ChartExtender`.
+ * is given by `PrimeFacesTypes.component.Chart.ChartExtender`.
  */
-export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The canvas on which this chart is drawn. */
     canvas: JQuery<HTMLCanvasElement> = $();
     /** The 2D rendering context of the canvas used by this chart. */
     ctx: CanvasRenderingContext2D | null = null;
-    /** The chart.js instance creates for this chart widget. */
+    /** The chart.js instance creates for this chart component. */
     chart?: ChartJsChart;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.canvas = this.jq.children('canvas');
@@ -51,7 +51,7 @@ export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.widget.De
         this.renderDeferred();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.chart) {
             this.chart.destroy();
         }
@@ -74,7 +74,7 @@ export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.widget.De
     }
 
     /**
-     * Setups the event listeners required by this widget when an item (data point) in the chart is selected.
+     * Setups the event listeners required by this component when an item (data point) in the chart is selected.
      */
     private bindItemSelect(): void {
         this.canvas.on('click', (evt) => {

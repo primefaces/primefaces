@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link InputTextarea} widget.
+ * The configuration for the {@link InputTextarea} component.
  */
-export interface InputTextareaCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface InputTextareaCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** Whether the textarea grows with its content. */
     autoResize: boolean;
     /** Whether tokens are suggested via AJAX while typing. */
@@ -23,12 +23,12 @@ export interface InputTextareaCfg extends PrimeFacesTypes.widget.DeferredWidgetC
 }
 
 /**
- * __PrimeFaces InputTextarea Widget__
+ * __PrimeFaces InputTextarea Component__
  *
  * InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining characters counter
  * and theming features.
  */
-export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The element that displays the counter, only with `counter`. */
     counter?: JQuery | null;
     /** The panel with the suggestions, only with `autoComplete`. */
@@ -40,7 +40,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
     /** The timer ID of the delayed query. */
     timeout?: number | null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.items = $();
 
@@ -80,7 +80,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         // remove autocomplete panel
         if (cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
@@ -146,7 +146,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
      * Creates the suggestions panel and binds the keys that query and select suggestions.
      */
     private setupAutoComplete(): void {
-        const panelMarkup = '<div id="' + this.getId() + '_panel" class="p-autocomplete-panel p-widget-content p-hidden"></div>';
+        const panelMarkup = '<div id="' + this.getId() + '_panel" class="p-autocomplete-panel p-component-content p-hidden"></div>';
 
         const panel = $(panelMarkup).appendTo(document.body);
         this.panel = panel;
@@ -509,14 +509,14 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, undefined);
+        PrimeFaces.utils.disableInputComponent(this.jq, undefined);
     }
 
     /**
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq);
+        PrimeFaces.utils.enableInputComponent(this.jq);
     }
 
     /**

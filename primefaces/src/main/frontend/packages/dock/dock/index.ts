@@ -1,15 +1,15 @@
 import { Dock } from "./src/dock.js";
 
-PrimeFaces.widget.Dock = Dock;
+PrimeFaces.component.Dock = Dock;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Dock: typeof Dock;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DockCfg = import("./src/dock.js").DockCfg;
     }
 }

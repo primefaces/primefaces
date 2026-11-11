@@ -1,24 +1,24 @@
 /**
- * The configuration for the {@link Lifecycle} widget.
+ * The configuration for the {@link Lifecycle} component.
  */
-export interface LifecycleCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface LifecycleCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces Lifecycle Widget__
+ * __PrimeFaces Lifecycle Component__
  *
  * Lifecycle is a utility component which displays the execution time of each Faces phase. It also synchronizes
  * automatically after each AJAX request.
  */
-export class Lifecycle<Cfg extends LifecycleCfg = LifecycleCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
-    /** Whether this widget was initialized. */
+export class Lifecycle<Cfg extends LifecycleCfg = LifecycleCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+    /** Whether this component was initialized. */
     initialized: boolean = false;
     /** Whether the Faces AJAX event listener was registered already. */
     facesListenerAdded?: boolean;
     /** Whether the lifecycle display is currently being updated. */
     updating: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (!this.initialized) {
@@ -41,7 +41,7 @@ export class Lifecycle<Cfg extends LifecycleCfg = LifecycleCfg> extends PrimeFac
             $(document).off('pfAjaxSuccess.'+this.id);
         });
 
-        // faces listeners can't be removed, so register it only once for this widget instance which survives refreshes
+        // faces listeners can't be removed, so register it only once for this component instance which survives refreshes
         if (window.faces && window.faces.ajax && !this.facesListenerAdded) {
             this.facesListenerAdded = true;
             faces.ajax.addOnEvent((data) => {
@@ -59,7 +59,7 @@ export class Lifecycle<Cfg extends LifecycleCfg = LifecycleCfg> extends PrimeFac
     }
 
     /**
-     * Updates this lifecycle widget after an AJAX request.
+     * Updates this lifecycle component after an AJAX request.
      */
     private update(): void {
         this.updating = true;

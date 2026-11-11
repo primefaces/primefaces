@@ -1,9 +1,9 @@
 /**
- * The configuration for the {@link Tooltip} widget.
+ * The configuration for the {@link Tooltip} component.
  */
-export interface TooltipCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface TooltipCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Client side callback to execute before tooltip is shown. Returning false will prevent display. */
-    beforeShow: PrimeFacesTypes.widget.Tooltip.BeforeShowCallback;
+    beforeShow: PrimeFacesTypes.component.Tooltip.BeforeShowCallback;
     /** Whether to hide tooltip when hovering over tooltip content. */
     autoHide: boolean;
     /** Search expression for overriding the {@link Tooltip.target | target}. */
@@ -21,11 +21,11 @@ export interface TooltipCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Event hiding the tooltip. */
     hideEvent: string;
     /** Client side callback to execute after tooltip is hidden. */
-    onHide: PrimeFacesTypes.widget.Tooltip.OnHideCallback;
+    onHide: PrimeFacesTypes.component.Tooltip.OnHideCallback;
     /** Client side callback to execute after tooltip is shown. */
-    onShow: PrimeFacesTypes.widget.Tooltip.OnShowCallback;
+    onShow: PrimeFacesTypes.component.Tooltip.OnShowCallback;
     /** Position of the tooltip. */
-    position: PrimeFacesTypes.widget.Tooltip.TooltipPosition;
+    position: PrimeFacesTypes.component.Tooltip.TooltipPosition;
     /** Delay time to show tooltip in milliseconds. */
     showDelay: number;
     /** Effect to be used for displaying. */
@@ -45,12 +45,12 @@ export interface TooltipCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Tooltip Widget__
+ * __PrimeFaces Tooltip Component__
  *
  * Tooltip goes beyond the legacy HTML title attribute by providing custom effects, events, HTML content and advance
  * theme support.
  */
-export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The text that is shown as the global title. */
     globalTitle?: string | null;
     /** The mouse event that occurred for this tooltip. */
@@ -62,7 +62,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.wid
     /** Variable used to control whether the tooltip is being hovered in autoHide mode. */
     allowHide: boolean = true;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent.split(' ').map(e => e + '.tooltip').join(' ') : 'mouseenter.tooltip';
@@ -83,7 +83,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.wid
             this.bindGlobal();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.target) {
             // remove the old element, which was moved to body - an update of the tooltip itself replaces it in
             // place inside body, so it must not be removed by its id
@@ -101,7 +101,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.wid
     }
 
     /**
-     * Clean up this widget and remove elements from DOM.
+     * Clean up this component and remove elements from DOM.
      */
     private _cleanup(): void {
         if (this.cfg.target) {
@@ -131,7 +131,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.wid
      * Sets up all global event listeners that are required for the tooltip.
      */
     private bindGlobal(): void {
-        this.jq = $('<div class="p-tooltip p-tooltip-global p-widget p-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
+        this.jq = $('<div class="p-tooltip p-tooltip-global p-component p-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
             .appendTo('body');
         this.jq.append('<div class="p-tooltip-arrow"></div><div class="p-tooltip-text"></div>');
 

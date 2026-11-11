@@ -56,13 +56,13 @@ public class TabView extends TabViewBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabView";
 
-    public static final String CONTAINER_CLASS = "p-tabs p-widget p-widget-content p-hidden-container";
-    public static final String NAVIGATOR_CLASS = "p-tabs-nav p-widget-header";
+    public static final String CONTAINER_CLASS = "p-tabs p-component p-component-content p-hidden-container";
+    public static final String NAVIGATOR_CLASS = "p-tabs-nav p-component-header";
     public static final String INACTIVE_TAB_HEADER_CLASS = "p-tabs-header p-state-default";
     public static final String ACTIVE_TAB_HEADER_CLASS = "p-tabs-header p-state-default p-tabs-selected p-state-active";
     public static final String PANELS_CLASS = "p-tabs-panels";
-    public static final String ACTIVE_TAB_CONTENT_CLASS = "p-tabs-panel p-widget-content";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "p-tabs-panel p-widget-content p-hidden";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "p-tabs-panel p-component-content";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "p-tabs-panel p-component-content p-hidden";
     public static final String NAVIGATOR_SCROLLER_CLASS = "p-tabs-navscroller";
     public static final String NAVIGATOR_LEFT_CLASS = "p-tabs-navscroller-btn p-tabs-navscroller-btn-left p-state-default";
     public static final String NAVIGATOR_RIGHT_CLASS = "p-tabs-navscroller-btn p-tabs-navscroller-btn-right p-state-default";

@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.organigramnode.UIOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -122,7 +122,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
         }
 
         // render container
-        String styleClass = "p-widget p-organigram";
+        String styleClass = "p-component p-organigram";
         if (component.getStyleClass() != null) {
             styleClass += " " + component.getStyleClass();
         }
@@ -223,7 +223,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
     }
 
     protected void encodeScript(FacesContext context, Organigram component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Organigram", component)
                 .attr("zoom", component.isZoom())
                 .attr("leafNodeConnectorHeight", component.getLeafNodeConnectorHeight())

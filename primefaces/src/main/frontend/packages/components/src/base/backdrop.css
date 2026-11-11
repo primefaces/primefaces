@@ -80,6 +80,6 @@
 }
 
 /* modal mask: blurs the page behind a modal dialog / sidebar / blockUI */
-:where(.p-widget-overlay, .p-dialog-mask) {
+:where(.p-component-overlay, .p-dialog-mask) {
     backdrop-filter: var(--p-mask-backdrop-filter);
 }

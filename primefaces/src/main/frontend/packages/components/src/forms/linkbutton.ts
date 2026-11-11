@@ -1,19 +1,19 @@
 /**
- * The configuration for the {@link LinkButton} widget.
+ * The configuration for the {@link LinkButton} component.
  */
-export interface LinkButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface LinkButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces LinkButton Widget__
+ * __PrimeFaces LinkButton Component__
  *
  * LinkButton is a simple link, which is styled as a button and integrated with the Faces navigation model.
  */
-export class LinkButton<Cfg extends LinkButtonCfg = LinkButtonCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class LinkButton<Cfg extends LinkButtonCfg = LinkButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The link inside the button. */
     link: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.link = this.jq.children('a');
 

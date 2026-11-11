@@ -1,15 +1,15 @@
 import { BaseTree, type BaseTreeCfg } from "./tree.base.js";
 
 /**
- * The configuration for the {@link VerticalTree} widget.
+ * The configuration for the {@link VerticalTree} component.
  */
 export interface VerticalTreeCfg extends BaseTreeCfg {
     /** Whether drag & drop operations of this tree table are controlled. */
     controlled: boolean;
     /** Whether to `move` or `copy` the node on drop. */
-    dropMode: PrimeFacesTypes.widget.VerticalTree.DropMode;
+    dropMode: PrimeFacesTypes.component.VerticalTree.DropMode;
     /** Defines parent-child restrictions when a node is dropped. */
-    dropRestrict: PrimeFacesTypes.widget.VerticalTree.DropRestrictMode;
+    dropRestrict: PrimeFacesTypes.component.VerticalTree.DropRestrictMode;
     /** `true` if text direction is right-to-left, or `false` otherwise. */
     rtl: boolean;
     /** Client side event to invoke filtering. Default is keyup. */
@@ -19,7 +19,7 @@ export interface VerticalTreeCfg extends BaseTreeCfg {
 }
 
 /**
- * __PrimeFaces Vertical Tree Widget__
+ * __PrimeFaces Vertical Tree Component__
  *
  * Tree is used for displaying hierarchical data and creating a site navigation. This implements a vertical tree.
  */
@@ -29,7 +29,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
     /** For drag&drop with `multipleDrag`, the row keys of the dragged nodes. */
     draggedSourceKeys?: string[] | null;
     /** List of parameter describing the drag & drop operations. */
-    droppedNodeParams: PrimeFacesTypes.widget.VerticalTree.DroppedNodeParams[] = [];
+    droppedNodeParams: PrimeFacesTypes.component.VerticalTree.DroppedNodeParams[] = [];
     /** The DOM element for the filter input field that lets the user search the tree. */
     filterInput: JQuery = $();
     /** A list of row keys for rows that are not valid drag sources. */
@@ -41,7 +41,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
     /** For drag&drop, whether the shift is pressed. */
     shiftKey?: boolean;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.container = this.jq.children('.p-tree-container');
@@ -727,7 +727,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
     /**
      * Callback for when a node was dropped on a drop point.
      * @param ui Details about the drop event.
-     * @param dragSource Tree widget of the dragged node.
+     * @param dragSource Tree component of the dragged node.
      * @param dragNode Node that was dragged.
      * @param targetDragNode Node that was the target of the drag.
      * @param dropPoint The drop point where the node was dropped.
@@ -887,7 +887,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
     /**
      * Callback for when a node was dropped.
      * @param ui Details about the drop event.
-     * @param dragSource Tree widget of the dragged node.
+     * @param dragSource Tree component of the dragged node.
      * @param dragNode Node that was dragged.
      * @param targetDragNode Node that was the target of the drag.
      * @param droppable The droppable where the drop occurred.
@@ -1037,7 +1037,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * @param dragMode The current drag mode of this tree.
      * @return The resolved target drag node.
      */
-    findTargetDragNode(dragNode: JQuery, dragMode: PrimeFacesTypes.widget.BaseTree.DragMode): JQuery {
+    findTargetDragNode(dragNode: JQuery, dragMode: PrimeFacesTypes.component.BaseTree.DragMode): JQuery {
         let targetDragNode: JQuery | null = null;
 
         if (dragMode === 'self') {
@@ -1195,7 +1195,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
 
     /**
      * Updates all checkboxes after a drag&drop.
-     * @param dragSource Tree widget that is the source of the drag, when dragging between two widgets.
+     * @param dragSource Tree component that is the source of the drag, when dragging between two components.
      * @param oldParentNode Old node that was parent of the dropped node.
      * @param newParentNode New node that is to be the parent of the dropped node.
      */
@@ -1257,7 +1257,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * Callback for when a drag&drop occurred. Invokes the appropriate behaviors.
      * @param event Details about the drag&drop that occurred.
      */
-    fireDragDropEvent(event: PrimeFacesTypes.widget.VerticalTree.DragDropEvent): void {
+    fireDragDropEvent(event: PrimeFacesTypes.component.VerticalTree.DragDropEvent): void {
         const options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             process: event.transfer ? this.id + ' ' + event.dragSource : this.getId()

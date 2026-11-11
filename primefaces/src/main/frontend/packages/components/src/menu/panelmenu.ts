@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link PanelMenu} widget.
+ * The configuration for the {@link PanelMenu} component.
  * 
  * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface PanelMenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface PanelMenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Whether multiple accordion menu items are allowed to be expanded at the same time.
      */
@@ -23,13 +23,13 @@ export interface PanelMenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces PanelMenu Widget__
+ * __PrimeFaces PanelMenu Component__
  * 
  * PanelMenu is a hybrid component of accordionPanel and tree components.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * A list of IDs of the menu items that are currently expanded.
      */
@@ -71,7 +71,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     treeLinks: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.headers = this.jq.find('> .p-panelmenu-panel > h3.p-panelmenu-header:not(.p-state-disabled)');
         this.menuContent = this.jq.find('> .p-panelmenu-panel > .p-panelmenu-content');
@@ -97,7 +97,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         var $this = this;
@@ -156,7 +156,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     }
 
     /**
-     * Sets up the keyboard event listeners required by this panel menu widget.
+     * Sets up the keyboard event listeners required by this panel menu component.
      */
     private bindKeyEvents(): void {
         var $this = this;

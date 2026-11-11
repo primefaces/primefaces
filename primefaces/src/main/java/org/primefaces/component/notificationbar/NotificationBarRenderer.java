@@ -25,7 +25,7 @@ package org.primefaces.component.notificationbar;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -61,7 +61,7 @@ public class NotificationBarRenderer extends CoreRenderer<NotificationBar> {
     }
 
     private void encodeScript(FacesContext context, NotificationBar component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("NotificationBar", component)
                 .attr("position", component.getPosition())
                 .attr("effect", component.getEffect())

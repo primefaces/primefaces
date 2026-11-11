@@ -38,7 +38,7 @@
 
         <div id="#{tcId}" style="#{empty cc.attrs.style ? null : cc.attrs.style}"
              class="p-themeconfigurator p-themeconfigurator-#{cc.attrs.mode eq 'inline' ? 'inline' : 'overlay'}#{empty cc.attrs.styleClass ? '' : ' '.concat(cc.attrs.styleClass)}">
-            <button type="button" id="#{tcId}_toggle" class="p-themeconfigurator-toggle p-button p-widget p-button-icon-only"
+            <button type="button" id="#{tcId}_toggle" class="p-themeconfigurator-toggle p-button p-component p-button-icon-only"
                     aria-controls="#{tcId}_panel" aria-expanded="false" title="Theme" data-tc-toggle="">
                 <span class="p-button-icon-left p-c pi pi-palette"></span>
                 <span class="p-button-text p-c">Theme</span>
@@ -47,11 +47,11 @@
             <section id="#{tcId}_panel" class="p-themeconfigurator-panel" aria-label="Theme" tabindex="-1">
                 <div class="p-themeconfigurator-header">
                     <div class="p-themeconfigurator-title">Theme</div>
-                    <button type="button" class="p-button p-widget p-button-text-icon-left p-button-flat p-button-secondary p-button-sm"
+                    <button type="button" class="p-button p-component p-button-text-icon-left p-button-flat p-button-secondary p-button-sm"
                             title="Reset color scheme, density, input style, primary color and tokens" data-tc-reset="">
                         <span class="p-button-icon-left p-c pi pi-refresh"></span><span class="p-button-text p-c">Reset</span>
                     </button>
-                    <button type="button" class="p-themeconfigurator-close p-button p-widget p-button-icon-only p-button-flat p-button-secondary p-button-sm"
+                    <button type="button" class="p-themeconfigurator-close p-button p-component p-button-icon-only p-button-flat p-button-secondary p-button-sm"
                             title="Close" aria-label="Close" data-tc-close="">
                         <span class="p-button-icon-left p-c pi pi-times"></span><span class="p-button-text p-c">Close</span>
                     </button>
@@ -65,7 +65,7 @@
                         <fieldset class="p-themeconfigurator-presets" aria-label="Preset">
                             <ui:repeat value="#{tcPresets}" var="preset">
                                 <button type="button" aria-pressed="#{tcTheme eq preset.trim()}" data-tc-preset="#{preset.trim()}"
-                                        class="p-button p-widget p-state-default p-button-text-only #{tcTheme eq preset.trim() ? '' : 'p-button-outlined p-button-secondary'}">
+                                        class="p-button p-component p-state-default p-button-text-only #{tcTheme eq preset.trim() ? '' : 'p-button-outlined p-button-secondary'}">
                                     <span class="p-button-text p-c">#{preset.trim()}</span>
                                 </button>
                             </ui:repeat>
@@ -83,27 +83,27 @@
                     </ui:fragment>
 
                     <div class="p-themeconfigurator-label">Color scheme <span class="p-themeconfigurator-hint">color-scheme</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Color scheme">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Color scheme">
                         <ui:repeat value="#{[['light', 'Light', 'pi-sun'], ['dark', 'Dark', 'pi-moon'], ['system', 'System', 'pi-desktop']]}" var="s">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-icon-left" data-tc-scheme="#{s[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-icon-left" data-tc-scheme="#{s[0]}">
                                 <span class="p-button-icon-left p-c pi #{s[2]}"></span><span class="p-button-text p-c">#{s[1]}</span>
                             </button>
                         </ui:repeat>
                     </fieldset>
 
                     <div class="p-themeconfigurator-label">Input style <span class="p-themeconfigurator-hint">p-input-filled</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Input style">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Input style">
                         <ui:repeat value="#{[['outlined', 'Outlined'], ['filled', 'Filled']]}" var="i">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-input="#{i[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-input="#{i[0]}">
                                 <span class="p-button-text p-c">#{i[1]}</span>
                             </button>
                         </ui:repeat>
                     </fieldset>
 
                     <div class="p-themeconfigurator-label">Density <span class="p-themeconfigurator-hint">data-p-density</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Density">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Density">
                         <ui:repeat value="#{[['normal', 'Normal'], ['compact', 'Compact'], ['comfortable', 'Comfortable']]}" var="d">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-density="#{d[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-density="#{d[0]}">
                                 <span class="p-button-text p-c">#{d[1]}</span>
                             </button>
                         </ui:repeat>
@@ -111,9 +111,9 @@
 
                     <ui:fragment rendered="#{cc.attrs.direction}">
                         <div class="p-themeconfigurator-label">Direction <span class="p-themeconfigurator-hint">primefaces.DIR</span></div>
-                        <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Direction">
+                        <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Direction">
                             <ui:repeat value="#{[['ltr', 'LTR'], ['rtl', 'RTL']]}" var="d">
-                                <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-dir="#{d[0]}">
+                                <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-dir="#{d[0]}">
                                     <span class="p-button-text p-c">#{d[1]}</span>
                                 </button>
                             </ui:repeat>
@@ -133,7 +133,7 @@
                     <div class="p-themeconfigurator-field">
                         <label for="#{tcId}_primary">Custom</label>
                         <input type="color" id="#{tcId}_primary"/>
-                        <button type="button" class="p-button p-widget p-button-text-only p-button-flat p-button-sm"
+                        <button type="button" class="p-button p-component p-button-text-only p-button-flat p-button-sm"
                                 title="Primary color of the preset" data-tc-primary="">
                             <span class="p-button-text p-c">Theme</span>
                         </button>
@@ -152,36 +152,36 @@
                 <details class="p-themeconfigurator-group" open="open">
                     <summary>Shape and motion</summary>
                     <div class="p-themeconfigurator-label">Button shape <span class="p-themeconfigurator-hint">--p-button-border-radius</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Button shape">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Button shape">
                         <ui:repeat value="#{[['theme', 'Theme'], ['pill', 'Pill'], ['square', 'Square']]}" var="o">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-shape="#{o[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-shape="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
                     </fieldset>
 
                     <div class="p-themeconfigurator-label">Shadows <span class="p-themeconfigurator-hint">--p-*-shadow</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Shadows">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Shadows">
                         <ui:repeat value="#{[['none', 'None'], ['theme', 'Theme'], ['deep', 'Deep']]}" var="o">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-shadow="#{o[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-shadow="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
                     </fieldset>
 
                     <div class="p-themeconfigurator-label">Animations <span class="p-themeconfigurator-hint">--p-transition-duration</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Animations">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Animations">
                         <ui:repeat value="#{[['normal', 'Normal'], ['slow', 'Slow'], ['off', 'Off']]}" var="o">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-motion="#{o[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-motion="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
                     </fieldset>
 
                     <div class="p-themeconfigurator-label">Ripple <span class="p-themeconfigurator-hint">--p-ripple-opacity</span></div>
-                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-widget" aria-label="Ripple">
+                    <fieldset class="p-themeconfigurator-segments p-selectonebutton p-buttonset p-component" aria-label="Ripple">
                         <ui:repeat value="#{[['theme', 'Theme'], ['on', 'On'], ['off', 'Off']]}" var="o">
-                            <button type="button" class="p-button p-widget p-state-default p-button-text-only" data-tc-ripple="#{o[0]}">
+                            <button type="button" class="p-button p-component p-state-default p-button-text-only" data-tc-ripple="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
@@ -193,7 +193,7 @@
                     <summary>Border radius <span class="p-themeconfigurator-hint">--p-border-radius-*</span></summary>
                     <div class="p-themeconfigurator-chips">
                         <ui:repeat value="#{[['0,0,0,0', 'Sharp'], ['', 'Theme'], ['6,10,14,20', 'Soft'], ['10,16,22,28', 'Round']]}" var="o">
-                            <button type="button" class="p-button p-widget p-button-text-only p-button-flat p-button-sm" data-tc-radius="#{o[0]}">
+                            <button type="button" class="p-button p-component p-button-text-only p-button-flat p-button-sm" data-tc-radius="#{o[0]}">
                                 <span class="p-button-text p-c">#{o[1]}</span>
                             </button>
                         </ui:repeat>
@@ -255,7 +255,7 @@
                         <summary>CSS</summary>
                         <div class="p-themeconfigurator-note">Only the tokens that differ from the preset.</div>
                         <pre class="p-themeconfigurator-snippet" data-tc-snippet=""></pre>
-                        <button type="button" class="p-button p-widget p-button-text-icon-left p-button-sm p-button-outlined" data-tc-copy="">
+                        <button type="button" class="p-button p-component p-button-text-icon-left p-button-sm p-button-outlined" data-tc-copy="">
                             <span class="p-button-icon-left p-c pi pi-copy"></span><span class="p-button-text p-c">Copy</span>
                         </button>
                     </details>

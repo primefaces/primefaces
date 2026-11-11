@@ -60,12 +60,12 @@ public class InputPhone extends InputPhoneBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputPhone";
 
-    public static final String STYLE_CLASS = "p-inputphone p-widget";
+    public static final String STYLE_CLASS = "p-inputphone p-component";
     public static final String COUNTRY_CLASS = "p-inputphone-country";
     public static final String COUNTRY_CODE_CLASS = "p-inputphone-country-code";
     public static final String DIAL_CODE_CLASS = "p-inputphone-dial-code";
     public static final String DROPDOWN_ICON_CLASS = "p-icon p-dropdown-icon p-inputphone-dropdown-icon";
-    public static final String INPUT_CLASS = "p-inputphone-input p-inputfield p-inputtext p-widget p-state-default";
+    public static final String INPUT_CLASS = "p-inputphone-input p-inputfield p-inputtext p-component p-state-default";
 
     public static final String DEFAULT_COUNTRY = "US";
     public static final String COUNTRY_AUTO = "auto";

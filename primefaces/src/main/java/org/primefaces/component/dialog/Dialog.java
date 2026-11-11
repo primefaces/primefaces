@@ -49,9 +49,9 @@ public class Dialog extends DialogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dialog";
 
-    public static final String DIALOG_CLASS = "p-dialog p-widget p-hidden-container";
-    public static final String BOX_CLASS = "p-dialog-box p-widget-content";
-    public static final String TITLE_BAR_CLASS = "p-dialog-titlebar p-widget-header";
+    public static final String DIALOG_CLASS = "p-dialog p-component p-hidden-container";
+    public static final String BOX_CLASS = "p-dialog-box p-component-content";
+    public static final String TITLE_BAR_CLASS = "p-dialog-titlebar p-component-header";
     public static final String TITLE_CLASS = "p-dialog-title";
     public static final String TITLE_BAR_CLOSE_CLASS = "p-dialog-titlebar-icon p-dialog-titlebar-close";
     public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-dialog-close-icon";
@@ -59,8 +59,8 @@ public class Dialog extends DialogBaseImpl {
     public static final String MINIMIZE_ICON_CLASS = "p-icon p-minimize-icon p-dialog-minimize-icon";
     public static final String TITLE_BAR_MAXIMIZE_CLASS = "p-dialog-titlebar-icon p-dialog-titlebar-maximize";
     public static final String MAXIMIZE_ICON_CLASS = "p-icon p-maximize-icon p-dialog-maximize-icon";
-    public static final String CONTENT_CLASS = "p-dialog-content p-widget-content";
-    public static final String FOOTER_CLASS = "p-dialog-footer p-widget-content";
+    public static final String CONTENT_CLASS = "p-dialog-content p-component-content";
+    public static final String FOOTER_CLASS = "p-dialog-footer p-component-content";
     public static final String DIALOG_ACTIONS_CLASS = "p-dialog-actions";
 
     @Override

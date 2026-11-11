@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link  Growl} widget.
+ * The configuration for the {@link  Growl} component.
  * 
  * You can access this configuration via {@link Growl.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface GrowlCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface GrowlCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * `true` to treat the message's summary and details as plain text, `false` to treat them as
      * an HTML string.
@@ -22,7 +22,7 @@ export interface GrowlCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     life: number;
 
     /**
-     * List of messages that are shown initially when the widget is loaded or
+     * List of messages that are shown initially when the component is loaded or
      * refreshed.
      */
     msgs: PrimeFacesTypes.FacesMessage[];
@@ -34,19 +34,19 @@ export interface GrowlCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Growl Widget__
+ * __PrimeFaces Growl Component__
  *
- * Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an overlay.
+ * Growl is based on the Mac’s growl notification component and used to display FacesMessages in an overlay.
  *
  * @typeParam Cfg Type of the configuration object.
  */
-export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //create container
-        var styleClass = "p-growl p-widget";
+        var styleClass = "p-growl p-component";
         styleClass = this.cfg.sticky ? styleClass + " p-growl-sticky" : styleClass;
         this.jq = $('<div id="' + this.id + '_container" class="' + styleClass + '" aria-live="polite"></div>');
         this.jq.appendTo($(document.body));
@@ -55,7 +55,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
         this.show(this.cfg.msgs ?? []);
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.cfg = cfg;
         this.show(cfg.msgs ?? []);
 
@@ -83,7 +83,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Displays the given messages in the growl window represented by this growl widget.
+     * Displays the given messages in the growl window represented by this growl component.
      *
      * @param msgs Messages to display in this growl
      */
@@ -203,7 +203,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Starts a timeout that removes the given message after a certain delay (as defined by this widget's
+     * Starts a timeout that removes the given message after a certain delay (as defined by this component's
      * configuration).
      * @param message The message to remove, an HTML element with the class `p-growl-item-container`.
      */
@@ -215,19 +215,19 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.Ba
 
 /**
  * Registers an implementation for the message render hook that displays
- * messages inside a growl widget.
+ * messages inside a growl component.
  */
-export function registerMessageRenderHookForGrowlWidget(): void {
+export function registerMessageRenderHookForGrowlComponent(): void {
     PrimeFaces.registerHook("messageRender", {
-        clearMessagesForWidget: widget => {
-            if (widget instanceof Growl) {
-                widget.removeAll();
+        clearMessagesForComponent: component => {
+            if (component instanceof Growl) {
+                component.removeAll();
             }
         },
-        renderMessageForWidget: (widget, messages) => {
-            if (widget instanceof Growl) {
+        renderMessageForComponent: (component, messages) => {
+            if (component instanceof Growl) {
                 for (const message of messages) {
-                    widget.renderMessage(message);
+                    component.renderMessage(message);
                 }
             }
         },
@@ -255,13 +255,13 @@ export function registerMessageRenderHookForGrowlWidget(): void {
                 const globalOnly = growlComponent.data('global');
                 const showSummary = growlComponent.data('summary');
                 const showDetail = growlComponent.data('detail');
-                const growlWidget = PrimeFaces.getWidgetById(growlComponent.attr('id') ?? "");
+                const growlInstance = PrimeFaces.getComponentById(growlComponent.attr('id') ?? "");
 
-                if (!(growlWidget instanceof Growl)) {
+                if (!(growlInstance instanceof Growl)) {
                     continue;
                 }
 
-                growlWidget.removeAll();
+                growlInstance.removeAll();
 
                 for (const clientId in messages) {
                     for (const msg of messages[clientId] ?? []) {
@@ -277,7 +277,7 @@ export function registerMessageRenderHookForGrowlWidget(): void {
                             msgToRender.detail = '';
                         }
 
-                        growlWidget.renderMessage(msgToRender);
+                        growlInstance.renderMessage(msgToRender);
                         msg.rendered = true;
                     }
                 }

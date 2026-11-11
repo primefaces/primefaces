@@ -44,8 +44,8 @@ public class ColorPicker extends ColorPickerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
 
-    public static final String POPUP_STYLE_CLASS = "p-colorpicker p-inputfield p-inputtext p-widget p-state-default";
-    public static final String INLINE_STYLE_CLASS = "p-colorpicker p-widget p-state-default";
+    public static final String POPUP_STYLE_CLASS = "p-colorpicker p-inputfield p-inputtext p-component p-state-default";
+    public static final String INLINE_STYLE_CLASS = "p-colorpicker p-component p-state-default";
 
     Locale calculateLocale(FacesContext facesContext) {
         return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));

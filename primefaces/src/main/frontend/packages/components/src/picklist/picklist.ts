@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link PickList} widget.
+ * The configuration for the {@link PickList} component.
  */
-export interface PickListCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface PickListCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether items can be moved via drag and drop, `false` disables it. */
     dragDrop: boolean;
     /** Name of the animation to display. */
@@ -17,11 +17,11 @@ export interface PickListCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Defines if filtering would be done using normalized values. */
     filterNormalize: boolean;
     /** A custom filter function that is used when `filterMatchMode` is set to `custom`. */
-    filterFunction: PrimeFacesTypes.widget.PickList.FilterFunction;
+    filterFunction: PrimeFacesTypes.component.PickList.FilterFunction;
     /** Mode of the filter. When set to `custom`, a `filterFunction` must be specified. */
-    filterMatchMode: PrimeFacesTypes.widget.PickList.FilterMatchMode;
+    filterMatchMode: PrimeFacesTypes.component.PickList.FilterMatchMode;
     /** Callback that is invoked when items are transferred from one list to the other. */
-    onTransfer: PrimeFacesTypes.widget.PickList.OnTransferCallback;
+    onTransfer: PrimeFacesTypes.component.PickList.OnTransferCallback;
     /** When true, a checkbox is displayed next to each item. */
     showCheckbox: boolean;
     /** Specifies visibility of reorder buttons of source list. */
@@ -37,11 +37,11 @@ export interface PickListCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces PickList Widget__
+ * __PrimeFaces PickList Component__
  *
  * PickList is used for transferring data between two different collections.
  */
-export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the aria region with the `aria-*` attributes */
     ariaRegion: JQuery = $();
     /** The DOM elements for the checkboxes next to each pick list item. */
@@ -1121,9 +1121,6 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param type Type of the action that caused the items to be transferred.
      */
     private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.widget.PickList.TransferType): void {
-        // #15492 announce the completed transfer to screen readers
-        this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource'));
-
         if(this.cfg.onTransfer) {
             const obj = {} as PrimeFacesTypes.widget.PickList.TransferData;
             obj.items = items;

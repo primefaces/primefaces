@@ -28,10 +28,10 @@ import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -120,7 +120,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
         boolean autoResize = component.isAutoResize();
         String counter = component.getCounter();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("InputTextarea", component)
                 .attr("autoResize", autoResize)
                 .attr("maxlength", component.getMaxlength(), Integer.MIN_VALUE);

@@ -38,8 +38,8 @@ public class SelectBooleanCheckbox extends SelectBooleanCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanCheckbox";
 
-    public static final String STYLE_CLASS = "p-checkbox p-widget";
-    public static final String CHECKBOX_BOX_CLASS = "p-checkbox-box p-widget p-state-default";
+    public static final String STYLE_CLASS = "p-checkbox p-component";
+    public static final String CHECKBOX_BOX_CLASS = "p-checkbox-box p-component p-state-default";
     public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "p-hidden";
     public static final String LABEL_CLASS = "p-checkbox-label";
 

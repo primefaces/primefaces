@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link  Spotlight} widget.
+ * The configuration for the {@link  Spotlight} component.
  * 
  * You can access this configuration via {@link Spotlight.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SpotlightCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SpotlightCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Whether the spotlight is initially turned on.
      */
@@ -17,19 +17,19 @@ export interface SpotlightCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Spotlight Widget__
+ * __PrimeFaces Spotlight Component__
  * 
  * Spotlight highlights a certain component on page, drawing the user's attention to it.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The DOM element for the target component to highlight.
      */
     target: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
@@ -50,8 +50,8 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
      * Creates the mask overlay element for the spotlight effect and adds it to the DOM.
      */
     private createMasks(): void {
-        $(document.body).append('<div class="p-widget-overlay p-spotlight p-spotlight-top p-hidden"></div><div class="p-widget-overlay p-spotlight p-spotlight-bottom p-hidden"></div>' +
-            '<div class="p-widget-overlay p-spotlight p-spotlight-left p-hidden"></div><div class="p-widget-overlay p-spotlight p-spotlight-right p-hidden"></div>');
+        $(document.body).append('<div class="p-component-overlay p-spotlight p-spotlight-top p-hidden"></div><div class="p-component-overlay p-spotlight p-spotlight-bottom p-hidden"></div>' +
+            '<div class="p-component-overlay p-spotlight p-spotlight-left p-hidden"></div><div class="p-component-overlay p-spotlight p-spotlight-right p-hidden"></div>');
     }
 
     /**
@@ -114,7 +114,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         this.target.data('zindex', this.target.zIndex()).css('z-index', PrimeFaces.nextZindex());

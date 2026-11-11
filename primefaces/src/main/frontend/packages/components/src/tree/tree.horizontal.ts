@@ -1,19 +1,19 @@
 import { BaseTree, type BaseTreeCfg } from "./tree.base.js";
 
 /**
- * The configuration for the {@link HorizontalTree} widget.
+ * The configuration for the {@link HorizontalTree} component.
  */
 export interface HorizontalTreeCfg extends BaseTreeCfg {
 }
 
 /**
- * __PrimeFaces Horizontal Tree Widget__
+ * __PrimeFaces Horizontal Tree Component__
  *
  * Tree is used for displaying hierarchical data and creating a site navigation. This implements a horizontal tree.
  */
 export class HorizontalTree<Cfg extends HorizontalTreeCfg = HorizontalTreeCfg> extends BaseTree<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
     }
 

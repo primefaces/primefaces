@@ -18,7 +18,7 @@ public class Bean {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.ToggleSwitch_
+Component: _PrimeFaces.component.ToggleSwitch_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

@@ -35,15 +35,15 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
 /**
- * Helper to generate scripts for widgets.
+ * Helper to generate the scripts that create the client side components.
  */
-public class WidgetBuilder {
+public class ComponentScriptBuilder {
 
     protected boolean endFunction;
     protected FacesContext context;
     protected PrimeConfiguration configuration;
 
-    public WidgetBuilder(FacesContext context, PrimeConfiguration configuration) {
+    public ComponentScriptBuilder(FacesContext context, PrimeConfiguration configuration) {
         this.context = context;
         this.configuration = configuration;
     }
@@ -57,7 +57,7 @@ public class WidgetBuilder {
      * @throws IOException if any IO exception occurs
      * @return              The current instance.
      */
-    protected WidgetBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
+    protected ComponentScriptBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
         this.endFunction = endFunction;
 
         ResponseWriter rw = context.getResponseWriter();
@@ -72,14 +72,14 @@ public class WidgetBuilder {
         return this;
     }
 
-    public <T extends UIComponent & Widget> WidgetBuilder init(String widgetClass, T widget)
+    public <T extends UIComponent & Widget> ComponentScriptBuilder init(String widgetClass, T widget)
             throws IOException {
 
         return init(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
                 .renderLifecycleCallbacks(widget);
     }
 
-    private WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
+    private ComponentScriptBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
@@ -97,14 +97,14 @@ public class WidgetBuilder {
         return this;
     }
 
-    public <T extends UIComponent & Widget> WidgetBuilder initWithWindowLoad(String widgetClass, T widget)
+    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithWindowLoad(String widgetClass, T widget)
             throws IOException {
 
         return initWithWindowLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
                 .renderLifecycleCallbacks(widget);
     }
 
-    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id)
+    public ComponentScriptBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id)
             throws IOException {
 
         this.renderScriptBlock(id);
@@ -114,14 +114,14 @@ public class WidgetBuilder {
         return this;
     }
 
-    public <T extends UIComponent & Widget> WidgetBuilder initWithComponentLoad(String widgetClass, T widget, String targetId)
+    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithComponentLoad(String widgetClass, T widget, String targetId)
             throws IOException {
 
         return initWithComponentLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
                 .renderLifecycleCallbacks(widget);
     }
 
-    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId)
+    public ComponentScriptBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId)
             throws IOException {
 
         this.renderScriptBlock(id);
@@ -138,30 +138,38 @@ public class WidgetBuilder {
         RendererUtils.encodeScriptTypeIfNecessary(context);
     }
 
-    protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
+    protected ComponentScriptBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
         Map<String, Object> attributes = component.getAttributes();
 
-        Object preConstruct = attributes.get(Widget.CALLBACK_PRE_CONSTRUCT);
+        Object preConstruct = getLifecycleCallback(attributes, Widget.CALLBACK_PRE_CONSTRUCT, "widgetPreConstruct");
         if (preConstruct != null) {
             callback("preConstruct", "function(cfg)", preConstruct.toString());
         }
 
-        Object postConstruct = attributes.get(Widget.CALLBACK_POST_CONSTRUCT);
+        Object postConstruct = getLifecycleCallback(attributes, Widget.CALLBACK_POST_CONSTRUCT, "widgetPostConstruct");
         if (postConstruct != null) {
-            callback("postConstruct", "function(widget)", postConstruct.toString());
+            callback("postConstruct", "function(component, widget)", postConstruct.toString());
         }
 
-        Object postRefresh = attributes.get(Widget.CALLBACK_POST_REFRESH);
+        Object postRefresh = getLifecycleCallback(attributes, Widget.CALLBACK_POST_REFRESH, "widgetPostRefresh");
         if (postRefresh != null) {
-            callback("postRefresh", "function(widget)", postRefresh.toString());
+            callback("postRefresh", "function(component, widget)", postRefresh.toString());
         }
 
-        Object preDestroy = attributes.get(Widget.CALLBACK_PRE_DESTROY);
+        Object preDestroy = getLifecycleCallback(attributes, Widget.CALLBACK_PRE_DESTROY, "widgetPreDestroy");
         if (preDestroy != null) {
-            callback("preDestroy", "function(widget)", preDestroy.toString());
+            callback("preDestroy", "function(component, widget)", preDestroy.toString());
         }
 
         return this;
+    }
+
+    /**
+     * Gets a lifecycle callback attribute, falling back to its deprecated name (e.g. {@code widgetPreConstruct}).
+     */
+    private static Object getLifecycleCallback(Map<String, Object> attributes, String name, String deprecatedName) {
+        Object callback = attributes.get(name);
+        return callback != null ? callback : attributes.get(deprecatedName);
     }
 
     /**
@@ -171,10 +179,10 @@ public class WidgetBuilder {
      *
      * @param name of the attribute
      * @param value of the selector
-     * @return the WidgetBuilder
+     * @return the ComponentScriptBuilder
      * @throws IOException if any error occurs
      */
-    public WidgetBuilder selectorAttr(String name, String value) throws IOException {
+    public ComponentScriptBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -187,7 +195,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, String value) throws IOException {
+    public ComponentScriptBuilder attr(String name, String value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -200,7 +208,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder nativeAttr(String name, String value) throws IOException {
+    public ComponentScriptBuilder nativeAttr(String name, String value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -212,7 +220,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder nativeAttr(String name, String value, String defaultValue) throws IOException {
+    public ComponentScriptBuilder nativeAttr(String name, String value, String defaultValue) throws IOException {
         if (value != null && !value.equals(defaultValue)) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -224,7 +232,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, Boolean value) throws IOException {
+    public ComponentScriptBuilder attr(String name, Boolean value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -236,7 +244,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, Number value) throws IOException {
+    public ComponentScriptBuilder attr(String name, Number value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -248,7 +256,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, String value, String defaultValue) throws IOException {
+    public ComponentScriptBuilder attr(String name, String value, String defaultValue) throws IOException {
         if (value != null && !value.equals(defaultValue)) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -261,7 +269,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, double value, double defaultValue) throws IOException {
+    public ComponentScriptBuilder attr(String name, double value, double defaultValue) throws IOException {
         if (value != defaultValue) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -273,7 +281,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, int value, int defaultValue) throws IOException {
+    public ComponentScriptBuilder attr(String name, int value, int defaultValue) throws IOException {
         if (value != defaultValue) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -285,7 +293,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder attr(String name, boolean value, boolean defaultValue) throws IOException {
+    public ComponentScriptBuilder attr(String name, boolean value, boolean defaultValue) throws IOException {
         if (value != defaultValue) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -297,7 +305,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder callback(String name, String signature, String callback) throws IOException {
+    public ComponentScriptBuilder callback(String name, String signature, String callback) throws IOException {
         if (callback != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -312,7 +320,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder returnCallback(String name, String signature, String callback) throws IOException {
+    public ComponentScriptBuilder returnCallback(String name, String signature, String callback) throws IOException {
         if (callback != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -327,7 +335,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder callback(String name, String callback) throws IOException {
+    public ComponentScriptBuilder callback(String name, String callback) throws IOException {
         if (callback != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
@@ -339,19 +347,19 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder append(String str) throws IOException {
+    public ComponentScriptBuilder append(String str) throws IOException {
         context.getResponseWriter().write(str);
 
         return this;
     }
 
-    public WidgetBuilder append(char chr) throws IOException {
+    public ComponentScriptBuilder append(char chr) throws IOException {
         context.getResponseWriter().write(chr);
 
         return this;
     }
 
-    public WidgetBuilder append(Number number) throws IOException {
+    public ComponentScriptBuilder append(Number number) throws IOException {
         context.getResponseWriter().write(number.toString());
 
         return this;

@@ -1,11 +1,11 @@
 /**
- * The configuration for the {@link SimpleFileUpload} widget.
+ * The configuration for the {@link SimpleFileUpload} component.
  * 
  * You can access this configuration via
  * {@link SimpleFileUpload.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SimpleFileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SimpleFileUploadCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Whether auto upload mode is enabled. If enabled, files are uploaded
      * immediately to the server, directly after the user chose a file. If
@@ -61,7 +61,7 @@ export interface SimpleFileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCf
      * Client-side callback to invoke when the AJAX request to upload files
      * is about to begin.
      */
-    onstart: PrimeFacesTypes.widget.SimpleFileUpload.OnStartCallback;
+    onstart: PrimeFacesTypes.component.SimpleFileUpload.OnStartCallback;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
@@ -76,7 +76,7 @@ export interface SimpleFileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCf
     process: string;
 
     /**
-     * Whether to apply theming to the simple upload widget.
+     * Whether to apply theming to the simple upload component.
      */
     skinSimple: boolean;
 
@@ -87,12 +87,12 @@ export interface SimpleFileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCf
 }
 
 /**
- * __PrimeFaces Simple FileUpload Widget__
+ * __PrimeFaces Simple FileUpload Component__
  *
  * Allows uploading files to the server, either via simple mode (form submit)
  * or via AJAX.
  */
-export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The DOM element for the button for selecting a file.
      */
@@ -118,7 +118,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
      */
     input: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         
         if (this.cfg.disabled) {
@@ -153,7 +153,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
     }
 
     /**
-     * Sets up all events listeners for this file upload widget.
+     * Sets up all events listeners for this file upload component.
      */
     private bindEvents(): void {
         this.button?.on('mouseover.fileupload', function(){
@@ -215,7 +215,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
      */
     private bindDropZone(): void {
         if (this.dropZone) {
-            // the dropZone is usually not part of this widget, so it can survive an update of this widget
+            // the dropZone is usually not part of this component, so it can survive an update of this component
             const namespace = '.fileuploadDropZone' + this.getId();
             const dropZone = this.dropZone;
             this.addRefreshListener(() => dropZone.off(namespace));

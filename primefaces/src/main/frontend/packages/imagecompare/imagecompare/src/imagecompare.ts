@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link ImageCompare} widget.
+ * The configuration for the {@link ImageCompare} component.
  */
-export interface ImageCompareCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ImageCompareCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether image links are shown completely or abbreviated. */
     showFullLinks: boolean;
     /** URL of the image to the left. */
@@ -11,24 +11,24 @@ export interface ImageCompareCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces ImageCompare Widget__
+ * __PrimeFaces ImageCompare Component__
  *
  * ImageCompare provides a user interface to compare two images. Uses the `ImageCompare` library. To access an instance
  * of the image slider programmatically, you can use the list of instantiated sliders:
  *
  * ```javascript
- * const widget = PF("myImageCompareWidget");
+ * const component = PF("myImageCompareWidget");
  * const slider = juxtapose.sliders.filter(slider => slider.wrapper === a.getJQ().get(0))[0];
  *
  * // Smoothly move the slider to the right.
  * slider.updateSlider("80%", true);
  * ```
  */
-export class ImageCompare<Cfg extends ImageCompareCfg = ImageCompareCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
-    /** The image slider instance of this widget. */
+export class ImageCompare<Cfg extends ImageCompareCfg = ImageCompareCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+    /** The image slider instance of this component. */
     slider?: juxtapose.JXSlider | null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.showFullLinks = false;
 
@@ -55,7 +55,7 @@ export class ImageCompare<Cfg extends ImageCompareCfg = ImageCompareCfg> extends
 
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.destroySlider();
         super.refresh(cfg);
     }

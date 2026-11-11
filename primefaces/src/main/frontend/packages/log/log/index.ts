@@ -1,21 +1,21 @@
 import { Log } from "./src/log.js";
 
-PrimeFaces.widget.Log = Log;
+PrimeFaces.component.Log = Log;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Log: typeof Log;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type LogCfg = import("./src/log.js").LogCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Log {
+    namespace PrimeFacesTypes.component.Log {
         /**
-         * Available severity levels for log messages used by the `Log` widget.
+         * Available severity levels for log messages used by the `Log` component.
          */
         export type Severity = "all" | "info" | "warn" | "debug" | "error";
     }

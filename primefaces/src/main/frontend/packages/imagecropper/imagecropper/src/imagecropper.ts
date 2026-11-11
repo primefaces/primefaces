@@ -1,9 +1,9 @@
 import type Cropper from "cropperjs";
 
 /**
- * The configuration for the {@link ImageCropper} widget.
+ * The configuration for the {@link ImageCropper} component.
  */
-export interface ImageCropperCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg, Cropper.Options<HTMLImageElement> {
+export interface ImageCropperCfg extends PrimeFacesTypes.component.DeferredComponentCfg, Cropper.Options<HTMLImageElement> {
     /** ID of the IMAGE element. */
     image: string;
     /** Initial coordinates of the cropper area (x, y, width, height). */
@@ -19,7 +19,7 @@ export interface ImageCropperCfg extends PrimeFacesTypes.widget.DeferredWidgetCf
 }
 
 /**
- * __PrimeFaces ImageCropper Widget__
+ * __PrimeFaces ImageCropper Component__
  *
  * ImageCropper allows cropping a certain region of an image. A new image is created containing the cropped area and
  * assigned to a `CroppedImage` instanced on the server side. Uses CropperJS - to interact with the image cropper
@@ -29,9 +29,9 @@ export interface ImageCropperCfg extends PrimeFacesTypes.widget.DeferredWidgetCf
  * PF("myImageCropperWidget").image.cropper("rotate", 90);
  * ```
  */
-export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, the crop box limits are computed by {@link init}. */
-    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>
+    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>
         & { minCropBoxWidth: number; minCropBoxHeight: number; maxCropBoxWidth: number; maxCropBoxHeight: number; };
 
     /** Whether the image is currently being cropped. */
@@ -43,7 +43,7 @@ export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends
     /** DOM element of the hidden INPUT element that stores the selected crop area. */
     jqCoords: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.image = $(PrimeFaces.escapeClientId(this.cfg.image!)) as JQuery<HTMLImageElement>;
         this.jqCoords = $(this.jqId + '_coords');
@@ -90,7 +90,7 @@ export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends
         this.cropper = this.image.data('cropper');
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         // release the window/document listeners of the previous cropper instance
         if (this.cropper) {
             this.cropper.destroy();

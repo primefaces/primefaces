@@ -125,7 +125,7 @@ function handleTabChange(i) {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.TabView_
+Component: _PrimeFaces.component.TabView_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

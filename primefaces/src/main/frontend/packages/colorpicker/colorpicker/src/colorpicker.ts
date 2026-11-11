@@ -31,9 +31,9 @@ type ColorPickerSettings = Omit<Coloris.ColorisOptions, "el"> & {
 };
 
 /**
- * The configuration for the {@link ColorPicker} widget.
+ * The configuration for the {@link ColorPicker} component.
  */
-export interface ColorPickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ColorPickerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** The localized ARIA labels of the Coloris dialog. */
     a11y: Coloris.Accessibility;
     /** Whether to enable alpha support. */
@@ -65,10 +65,10 @@ export interface ColorPickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Locale used for the labels of the color picker. */
     locale: string;
     /** Whether the color picker is displayed inline or as a popup. */
-    mode: PrimeFacesTypes.widget.ColorPicker.DisplayMode;
+    mode: PrimeFacesTypes.component.ColorPicker.DisplayMode;
     /**
      * In popup mode the CSS selector of the parent dialog, set when the popup is used within a dialog. In inline mode
-     * the CSS selector of this widget.
+     * the CSS selector of this component.
      */
     parent: string;
     /** Whether the color picker is displayed right to left. */
@@ -77,7 +77,7 @@ export interface ColorPickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     selectInput: boolean;
     /** The colors of the swatches. */
     swatches: string[];
-    /** Whether to hide all the color picker widgets except the swatches. */
+    /** Whether to hide all the color picker components except the swatches. */
     swatchesOnly: boolean;
     /** The color theme of the color picker. */
     theme: Coloris.Theme;
@@ -86,7 +86,7 @@ export interface ColorPickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Color Picker Widget__
+ * __PrimeFaces Color Picker Component__
  *
  * ColorPicker is an input component with a color palette.
  *
@@ -106,7 +106,7 @@ export interface ColorPickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
  * colorPicker.setColor("00FF00");
  * ```
  */
-export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** DOM element of the INPUT element, only in popup mode. */
     input?: JQuery;
     /** True if popup mode, else inline mode. */
@@ -114,13 +114,13 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
     /** Is this component wrapped in a float label. */
     hasFloatLabel: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.setupGlobalDefaults();
         this.setupPopup();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -131,7 +131,7 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
     }
 
     /**
-     * Clean up this widget and remove events from the DOM.
+     * Clean up this component and remove events from the DOM.
      */
     private _cleanup(): void {
         if (this.input) {
@@ -272,7 +272,7 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
     }
 
     /**
-     * Sets up the event listeners required by this widget for inline mode.
+     * Sets up the event listeners required by this component for inline mode.
      */
     private bindInlineCallbacks(): void {
         if (this.hasBehavior('change')) {
@@ -292,7 +292,7 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
     }
 
     /**
-     * Sets up the event listeners required by this widget.
+     * Sets up the event listeners required by this component.
      */
     private bindInputCallbacks(): void {
         const input = this.input!;
@@ -391,13 +391,13 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
     }
 
     /**
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
     }
 }

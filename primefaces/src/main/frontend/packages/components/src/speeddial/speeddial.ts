@@ -1,21 +1,21 @@
 /**
- * The configuration for the {@link SpeedDial} widget.
+ * The configuration for the {@link SpeedDial} component.
  */
-export interface SpeedDialCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface SpeedDialCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** Direction in which the items open. */
-    direction: PrimeFacesTypes.widget.SpeedDial.OpeningDirection;
+    direction: PrimeFacesTypes.component.SpeedDial.OpeningDirection;
     /** Whether the items close on a click outside. */
     hideOnClickOutside: boolean;
     /** Whether a mask is shown behind the speed dial while open. */
     mask: boolean;
     /** Called when the button was clicked. */
-    onClick: PrimeFacesTypes.widget.SpeedDial.OnClickCallback;
+    onClick: PrimeFacesTypes.component.SpeedDial.OnClickCallback;
     /** Called when the items were closed. */
-    onHide: PrimeFacesTypes.widget.SpeedDial.OnHideCallback;
+    onHide: PrimeFacesTypes.component.SpeedDial.OnHideCallback;
     /** Called when the items were opened. */
-    onShow: PrimeFacesTypes.widget.SpeedDial.OnShowCallback;
+    onShow: PrimeFacesTypes.component.SpeedDial.OnShowCallback;
     /** Called when the items were opened or closed. */
-    onVisibleChange: PrimeFacesTypes.widget.SpeedDial.OnVisibleChangeCallback;
+    onVisibleChange: PrimeFacesTypes.component.SpeedDial.OnVisibleChangeCallback;
     /** Radius of the circle types, defaults to 20 pixels per item. */
     radius: number;
     /** Whether the items stay open when an item was clicked. */
@@ -23,17 +23,17 @@ export interface SpeedDialCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Transition delay in milliseconds between the items. */
     transitionDelay: number;
     /** How the items are arranged. */
-    type: PrimeFacesTypes.widget.SpeedDial.OpeningType;
+    type: PrimeFacesTypes.component.SpeedDial.OpeningType;
     /** Whether the items are open initially. */
     visible: boolean;
 }
 
 /**
- * __PrimeFaces SpeedDial Widget__
+ * __PrimeFaces SpeedDial Component__
  *
  * When pressed, a floating action button can display multiple primary actions that can be performed on a page.
  */
-export class SpeedDial<Cfg extends SpeedDialCfg = SpeedDialCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class SpeedDial<Cfg extends SpeedDialCfg = SpeedDialCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The mask behind the speed dial. */
     mask: JQuery = $();
     /** The container of the button and the items. */
@@ -57,7 +57,7 @@ export class SpeedDial<Cfg extends SpeedDialCfg = SpeedDialCfg> extends PrimeFac
     /** The click listener on the document, only with `hideOnClickOutside`. */
     documentClickListener: ((event: JQuery.TriggeredEvent) => void) | null = null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.mask = this.jq.children('.p-speeddial-mask');
         this.container = this.jq.children('.p-speeddial');

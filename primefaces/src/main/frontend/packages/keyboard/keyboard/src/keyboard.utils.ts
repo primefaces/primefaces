@@ -1,9 +1,9 @@
 /**
- * This object contains the keyboard layouts that are available for the keyboard widget. Each keyboard layout is
+ * This object contains the keyboard layouts that are available for the keyboard component. Each keyboard layout is
  * a list with one entry for each keyboard row. Each row is a string that contains the characters available on that
  * row.
  */
-const layouts: PrimeFacesTypes.widget.KeyboardUtils.PresetLayouts = {
+const layouts: PrimeFacesTypes.component.KeyboardUtils.PresetLayouts = {
     /**
      * A basic `qwerty` layout without many special characters. This is a list with one entry for each keyboard row.
      * Each row is a string that contains the characters available on that row.
@@ -35,7 +35,7 @@ const layouts: PrimeFacesTypes.widget.KeyboardUtils.PresetLayouts = {
 /**
  * Contains the character codes for the available control characters on the keyboard, such as space and return.
  */
-const controls: PrimeFacesTypes.widget.KeyboardUtils.Controls = {
+const controls: PrimeFacesTypes.component.KeyboardUtils.Controls = {
     /**
      * The keyboard code for the button that closes (hides) the keyboard
      */
@@ -103,7 +103,7 @@ function isDefinedControl(key: string): boolean {
  * @returns The parsed keyboard layout template. Contains one item for each row, each item contains the characters
  * on that keyboard row.
  */
-function createLayoutFromTemplate(this: PrimeFacesTypes.widget.KeyboardUtils, template: string): string[] {
+function createLayoutFromTemplate(this: PrimeFacesTypes.component.KeyboardUtils, template: string): string[] {
     // GitHub #3487: Unicode conversion
     template =  decodeURIComponent(JSON.parse('"' + template.replace(/"/g, '\\"') + '"'));
     const lines = template.split(','),
@@ -125,10 +125,10 @@ function createLayoutFromTemplate(this: PrimeFacesTypes.widget.KeyboardUtils, te
 }
 
 /**
- * Contains a few utilities for parsing and working with different keyboard layout. Used by the Keyboard widget.
- * Available as `PrimeFaces.widget.KeyboardUtils`.
+ * Contains a few utilities for parsing and working with different keyboard layout. Used by the Keyboard component.
+ * Available as `PrimeFaces.component.KeyboardUtils`.
  */
-export const KeyboardUtils: PrimeFacesTypes.widget.KeyboardUtils = {
+export const KeyboardUtils: PrimeFacesTypes.component.KeyboardUtils = {
     layouts,
     controls,
     getPresetLayout,

@@ -1,11 +1,11 @@
 
 /**
- * The configuration for the {@link  Message} widget.
+ * The configuration for the {@link  Message} component.
  * 
  * You can access this configuration via {@link Message.cfg | cfg}. Please note
  * that this configuration is usually meant to be read-only and should not be modified.
  */
-export interface MessageCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface MessageCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Client ID of the target for which to show this message.
      */
@@ -18,15 +18,15 @@ export interface MessageCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Message Widget__
+ * __PrimeFaces Message Component__
  * 
  * Message is a pre-skinned extended version of the standard Jakarta Faces message component.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         let msgSrc = this.jq.find('.p-message-error-summary');
@@ -54,7 +54,7 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
         const display = this.jq.data('display');
 
         if (display !== 'tooltip') {
-            this.jq.addClass('p-message-error p-widget');
+            this.jq.addClass('p-message-error p-component');
 
             if (display === 'both') {
                 this.jq.append('<div><span class="p-icon p-error-icon p-message-error-icon"></span><span class="p-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
@@ -78,25 +78,25 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.wid
      */
     clearMessage(): void {
         this.jq.html('');
-        this.jq.removeClass('p-message-error p-message-icon-only p-widget');
+        this.jq.removeClass('p-message-error p-message-icon-only p-component');
     }
 }
 
 /**
  * Registers an implementation for the message render hook that displays
- * messages inside a message widget.
+ * messages inside a message component.
  */
-export function registerMessageRenderHookForMessageWidget(): void {
+export function registerMessageRenderHookForMessageComponent(): void {
     PrimeFaces.registerHook("messageRender", {
-        clearMessagesForWidget: widget => {
-            if (widget instanceof Message) {
-                widget.clearMessage();
+        clearMessagesForComponent: component => {
+            if (component instanceof Message) {
+                component.clearMessage();
             }
         },
-        renderMessageForWidget: (widget, messages) => {
+        renderMessageForComponent: (component, messages) => {
             const message = messages[0];
-            if (message && widget instanceof Message) {
-                widget.renderMessage(message);
+            if (message && component instanceof Message) {
+                component.renderMessage(message);
             }
         },
         renderMessagesInContainers: (messages, containers) => {
@@ -117,13 +117,13 @@ export function registerMessageRenderHookForMessageWidget(): void {
                 const messageComponent = messageComponents.eq(i);
                 const target = messageComponent.data('target');
                 const redisplay = messageComponent.data('redisplay');
-                const messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id') ?? "");
+                const messageInstance = PrimeFaces.getComponentById(messageComponent.attr('id') ?? "");
 
-                if (!(messageWidget instanceof Message)) {
+                if (!(messageInstance instanceof Message)) {
                     continue;
                 }
 
-                messageWidget.clearMessage();
+                messageInstance.clearMessage();
 
                 for (const clientId in messages) {
                     if (target !== clientId) {
@@ -134,7 +134,7 @@ export function registerMessageRenderHookForMessageWidget(): void {
                             continue;
                         }
 
-                        messageWidget.renderMessage(msg);
+                        messageInstance.renderMessage(msg);
                         msg.rendered = true;
                     }
                 }

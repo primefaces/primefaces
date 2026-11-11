@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link TreeTable} widget.
+ * The configuration for the {@link TreeTable} component.
  */
-export interface TreeTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface TreeTableCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** When true columns can be unsorted upon clicking sort. */
     allowUnsorting: boolean;
     /** Whether cell editors are loaded lazily. */
-    cellEditMode: PrimeFacesTypes.widget.TreeTable.CellEditMode;
+    cellEditMode: PrimeFacesTypes.component.TreeTable.CellEditMode;
     /** Separator text to use in output mode of editable cells with multiple components. */
     cellSeparator: string;
     /** Disables text selection on row click. */
     disabledTextSelection: boolean;
     /** If editing is enables and whether entire rows or individual cells can be edited. */
-    editMode: PrimeFacesTypes.widget.TreeTable.EditMode;
+    editMode: PrimeFacesTypes.component.TreeTable.EditMode;
     /** Whether data in this data table can be edited. */
     editable: boolean;
     /** Event that triggers row/cell editing. */
@@ -22,7 +22,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
      * Updates children only when set to `children` or the node itself with children when set to `self` on node
      * expand.
      */
-    expandMode: PrimeFacesTypes.widget.TreeTable.ExpandMode;
+    expandMode: PrimeFacesTypes.component.TreeTable.ExpandMode;
     /** Whether filtering is enabled on this tree table. */
     filter: boolean;
     /** Delay in milliseconds the filtering. */
@@ -38,7 +38,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Type of the row nodes of this tree table. */
     nodeType: string;
     /** When pagination is enabled: The paginator configuration for the paginator. */
-    paginator: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.PaginatorCfg>;
+    paginator: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.PaginatorCfg>;
     /** Defines if selections should propagate up. */
     propagateSelectionUp: boolean;
     /** Defines if selections should propagate down. */
@@ -46,7 +46,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Defines if columns can be resized or not. */
     resizableColumns: boolean;
     /** Defines the resize behavior of the columns. */
-    resizeMode: PrimeFacesTypes.widget.TreeTable.ResizeMode;
+    resizeMode: PrimeFacesTypes.component.TreeTable.ResizeMode;
     /** Saves the changes in cell editing on blur, when set to false changes are discarded. */
     saveOnCellBlur: boolean;
     /** Height of scrollable data, e.g. `200`, `50%` or `20vh`. */
@@ -56,7 +56,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Whether or not the data should be scrollable. */
     scrollable: boolean;
     /** How rows may be selected. */
-    selectionMode: PrimeFacesTypes.widget.TreeTable.SelectionMode;
+    selectionMode: PrimeFacesTypes.component.TreeTable.SelectionMode;
     /** `true` if sorting is enabled on the data table, `false` otherwise. */
     sorting: boolean;
     /** IDs of the columns by which to order. Order by the first column, then by the second, etc. */
@@ -66,16 +66,16 @@ export interface TreeTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 }
 
 /**
- * __PrimeFaces TreeTable Widget__
+ * __PrimeFaces TreeTable Component__
  *
  * TreeTable is used for displaying hierarchical data in tabular format.
  */
-export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
 
     /**
      * Map between the sort order names and the multiplier for the comparator.
      */
-    static SORT_ORDER: Record<PrimeFacesTypes.widget.TreeTable.SortOrder, -1 | 0 | 1> = {
+    static SORT_ORDER: Record<PrimeFacesTypes.component.TreeTable.SortOrder, -1 | 0 | 1> = {
         ASCENDING: 1,
         DESCENDING: -1,
         UNSORTED: 0
@@ -114,8 +114,8 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     marginRight?: string;
     /** Localized message for displaying the rows unsorted. */
     otherMessage?: string;
-    /** The paginator widget instance used for filtering. */
-    paginator?: PrimeFacesTypes.Widget<"Paginator">;
+    /** The paginator component instance used for filtering. */
+    paginator?: PrimeFacesTypes.Component<"Paginator">;
     /** Whether the scroll height was specified in percent. */
     percentageScrollHeight?: boolean | "";
     /** Whether the scroll width was specified in percent. */
@@ -149,7 +149,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     /** The DOM elements for the list of sortable columns. */
     sortableColumns: JQuery = $();
     /** List of criteria by which to filter this table. */
-    sortMeta: PrimeFacesTypes.widget.TreeTable.SortMeta[] = [];
+    sortMeta: PrimeFacesTypes.component.TreeTable.SortMeta[] = [];
     /** The DOM element for the container with the sticky header. */
     stickyContainer: JQuery = $();
     /** The DOM element for the table body of this tree table. */
@@ -159,7 +159,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     /** The DOM element for the clone of the table header. */
     theadClone: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
@@ -201,7 +201,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
         this.bindEvents();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.columnWidthsFixed = false;
         this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() as string | undefined : null;
 
@@ -209,7 +209,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     bindEvents(): void {
         const togglerSelector = '> tr > td:first-child > .p-treetable-toggler';
@@ -245,11 +245,11 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
         }
 
         if (this.cfg.paginator) {
-            this.cfg.paginator.paginate = (newState: PrimeFacesTypes.widget.Paginator.PaginationState) => {
+            this.cfg.paginator.paginate = (newState: PrimeFacesTypes.component.Paginator.PaginationState) => {
                 this.handlePagination(newState);
             };
 
-            this.paginator = new PrimeFaces.widget.Paginator();
+            this.paginator = new PrimeFaces.component.Paginator();
             this.paginator.init(this.cfg.paginator);
             this.paginator.bindSwipeEvents(this.jq, this.cfg);
         }
@@ -303,12 +303,12 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             inputFields.val('');
         };
 
-        const resetWidget = (widgetElement: JQuery): void => {
-            const widget = PrimeFaces.getWidgetById(widgetElement.attr('id')!);
-            if (widget && 'resetValue' in widget && typeof widget.resetValue === 'function') {
-                widget.resetValue(true);
+        const resetComponent = (componentElement: JQuery): void => {
+            const component = PrimeFaces.getComponentById(componentElement.attr('id')!);
+            if (component && 'resetValue' in component && typeof component.resetValue === 'function') {
+                component.resetValue(true);
             } else {
-                resetInputFields(widgetElement.find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
+                resetInputFields(componentElement.find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
             }
         };
 
@@ -317,9 +317,9 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
 
         const customFilters = this.thead.find('> tr > th.p-filter-column > .p-column-customfilter');
         customFilters.each((_i, el) => {
-            const widgetElement = $(el).find('.p-widget');
-            if (widgetElement.length > 0) {
-                resetWidget(widgetElement);
+            const componentElement = $(el).find('.p-component');
+            if (componentElement.length > 0) {
+                resetComponent(componentElement);
             } else {
                 resetInputFields($(el).find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
             }
@@ -447,7 +447,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * Handles a pagination event by updating this tree table and invoking the appropriate behaviors.
      * @param newState The new pagination state to apply.
      */
-    handlePagination(newState: PrimeFacesTypes.widget.Paginator.PaginationState): void {
+    handlePagination(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
         const options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
@@ -484,9 +484,9 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
 
     /**
      * Returns the paginator instance if any is exists.
-     * @return The paginator instance for this widget, or `undefined` if paging is not enabled.
+     * @return The paginator instance for this component, or `undefined` if paging is not enabled.
      */
-    getPaginator(): PrimeFacesTypes.Widget<"Paginator"> | undefined {
+    getPaginator(): PrimeFacesTypes.Component<"Paginator"> | undefined {
         return this.paginator;
     }
 
@@ -633,17 +633,17 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     }
 
     override bindContextMenu(
-        menuWidget: PrimeFacesTypes.widget.ContextMenuLikeWidget,
-        targetWidget: this,
+        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg>
+        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>
     ): void {
         const targetSelector = targetId + ' .p-treetable-data > ' + (cfg.nodeType ? 'tr.p-treetable-selectable-node.' + cfg.nodeType : 'tr.p-treetable-selectable-node');
         const targetEvent = cfg.event + '.treetable' + this.id;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, (e) => {
-            const isContextMenuDelayed = targetWidget.onRowRightClick(e, $(e.currentTarget), () => {
-                menuWidget.show(e);
+            const isContextMenuDelayed = targetComponent.onRowRightClick(e, $(e.currentTarget), () => {
+                menuComponent.show(e);
             });
 
             if (isContextMenuDelayed) {
@@ -664,7 +664,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             offset = table.offset()!,
             orginTableContent = this.jq.children('table');
 
-        this.stickyContainer = $('<div class="p-treetable p-treetable-sticky p-widget"><table></table></div>');
+        this.stickyContainer = $('<div class="p-treetable p-treetable-sticky p-component"><table></table></div>');
         this.clone = this.thead.clone(false);
         this.stickyContainer.children('table').append(this.thead);
         table.append(this.clone);
@@ -1812,7 +1812,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     }
 
     /**
-     * Sets the height of the scroll body to the value of this widget's configuration.
+     * Sets the height of the scroll body to the value of this component's configuration.
      */
     applyViewPortScrollHeight(): void {
         this.scrollBody.height(this.cfg.scrollHeight!);
@@ -1849,7 +1849,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * @param width The width of the scrollbar.
      */
     setScrollWidth(width: number): void {
-        this.jq.children('.p-widget-header').each((_i, el) => {
+        this.jq.children('.p-component-header').each((_i, el) => {
             this.setOuterWidth($(el), width);
         });
         this.scrollHeader.width(width);
@@ -2177,7 +2177,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * @param rowKey the rowKey.
      */
     invalidateRow(rowKey: string): void {
-        this.tbody.children('tr').filter('[data-rk="' + rowKey + '"]').addClass('p-widget-content p-row-editing p-state-error');
+        this.tbody.children('tr').filter('[data-rk="' + rowKey + '"]').addClass('p-component-content p-row-editing p-state-error');
     }
 
     /**
@@ -2580,7 +2580,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * may be sorted by multiple columns.
      * @param meta Sorting to add.
      */
-    addSortMeta(meta: PrimeFacesTypes.widget.TreeTable.SortMeta): void {
+    addSortMeta(meta: PrimeFacesTypes.component.TreeTable.SortMeta): void {
         this.sortMeta = $.grep(this.sortMeta, (value) => {
             return value.col !== meta.col;
         });
@@ -2593,7 +2593,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * @param option Property of the sort meta to use.
      * @return All values from the current sort meta list for the given option.
      */
-    joinSortMetaOption(option: keyof PrimeFacesTypes.widget.TreeTable.SortMeta): string {
+    joinSortMetaOption(option: keyof PrimeFacesTypes.component.TreeTable.SortMeta): string {
         let value = '';
 
         for (let i = 0; i < this.sortMeta.length; i++) {

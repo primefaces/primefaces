@@ -39,11 +39,11 @@ public class Spinner extends SpinnerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spinner";
 
-    public static final String CONTAINER_CLASS = "p-spinner p-widget";
+    public static final String CONTAINER_CLASS = "p-spinner p-component";
     public static final String BUTTONS_CLASS_PREFIX = "p-spinner-";
     public static final String INPUT_CLASS = "p-spinner-input p-inputfield p-state-default";
-    public static final String UP_BUTTON_CLASS = "p-spinner-button p-spinner-up p-button p-widget p-state-default p-button-text-only";
-    public static final String DOWN_BUTTON_CLASS = "p-spinner-button p-spinner-down p-button p-widget p-state-default p-button-text-only";
+    public static final String UP_BUTTON_CLASS = "p-spinner-button p-spinner-up p-button p-component p-state-default p-button-text-only";
+    public static final String DOWN_BUTTON_CLASS = "p-spinner-button p-spinner-down p-button p-component p-state-default p-button-text-only";
     public static final String STACKED_UP_ICON_CLASS = "p-icon p-up-icon p-spinner-increment-icon p-c";
     public static final String STACKED_DOWN_ICON_CLASS = "p-icon p-down-icon p-spinner-decrement-icon p-c";
     public static final String HORIZONTAL_UP_ICON_CLASS = "p-icon p-plus-icon p-spinner-increment-icon p-c";

@@ -1,26 +1,26 @@
 import { Captcha } from "./src/captcha.js";
 
-PrimeFaces.widget.Captcha = Captcha;
+PrimeFaces.component.Captcha = Captcha;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Captcha: typeof Captcha;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type CaptchaCfg = import("./src/captcha.js").CaptchaCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Captcha {
+    namespace PrimeFacesTypes.component.Captcha {
         /**
          * Captcha features light and dark modes for theme.
          */
         export type Theme = "auto" | "light" | "dark";
 
         /**
-         * The parts of the captcha API (e.g. `grecaptcha`, see the `executor` attribute) used by the widget.
+         * The parts of the captcha API (e.g. `grecaptcha`, see the `executor` attribute) used by the component.
          */
         export interface Executor {
             /**

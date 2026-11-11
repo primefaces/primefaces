@@ -1,18 +1,18 @@
 /**
- * The configuration for the {@link SelectManyCheckbox} widget.
+ * The configuration for the {@link SelectManyCheckbox} component.
  */
-export interface SelectManyCheckboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectManyCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether a custom layout is used. */
     custom: boolean;
 }
 
 /**
- * __PrimeFaces SelectManyCheckbox Widget__
+ * __PrimeFaces SelectManyCheckbox Component__
  *
  * SelectManyCheckbox is an extended version of the standard SelectManyCheckbox.
  */
-export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCheckboxCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
-    /** Whether this widget was disabled via {@link disable}, `undefined` before. */
+export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCheckboxCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+    /** Whether this component was disabled via {@link disable}, `undefined` before. */
     disabled?: boolean;
     /** The enabled inputs. */
     enabledInputs: JQuery<HTMLInputElement> = $();
@@ -25,7 +25,7 @@ export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCh
     /** The labels of the checkboxes. */
     labels: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (this.cfg.custom) {
@@ -181,7 +181,7 @@ export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCh
      * Enables the checkboxes so that the user can check them.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.inputs);
         this.disabled = false;
     }
 
@@ -189,7 +189,7 @@ export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCh
      * Disables the checkboxes so that the user cannot check them anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.inputs);
         this.disabled = true;
     }
 
@@ -238,7 +238,7 @@ export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCh
     }
 
     /**
-     * Calls the `onclick` of the checkbox input, with this widget as `this`.
+     * Calls the `onclick` of the checkbox input, with this component as `this`.
      * @param input The checkbox input that was clicked.
      * @param event The click event.
      */

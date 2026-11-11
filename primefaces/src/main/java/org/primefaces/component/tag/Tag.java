@@ -34,7 +34,7 @@ import jakarta.faces.component.FacesComponent;
 public class Tag extends TagBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tag";
 
-    public static final String STYLE_CLASS = "p-tag p-widget";
+    public static final String STYLE_CLASS = "p-tag p-component";
     public static final String SEVERITY_INFO_CLASS = "p-tag-info";
     public static final String SEVERITY_SUCCESS_CLASS = "p-tag-success";
     public static final String SEVERITY_WARNING_CLASS = "p-tag-warning";

@@ -25,11 +25,11 @@ package org.primefaces.component.selectonebutton;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -299,7 +299,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         }
         boolean custom = "custom".equals(layout);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectOneButton", component)
                 .attr("custom", custom, false)
                 .attr("unselectable", component.isUnselectable(), true)

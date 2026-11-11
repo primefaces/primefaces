@@ -1,33 +1,33 @@
 /**
- * The configuration for the {@link TriStateCheckbox} widget.
+ * The configuration for the {@link TriStateCheckbox} component.
  */
-export interface TriStateCheckboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface TriStateCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces TriStateCheckbox Widget__
+ * __PrimeFaces TriStateCheckbox Component__
  *
  * TriStateCheckbox adds a new state to a checkbox value.
  */
-export class TriStateCheckbox<Cfg extends TriStateCheckboxCfg = TriStateCheckboxCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
-    /** The DOM element for the hidden input field storing the value of this widget. */
+export class TriStateCheckbox<Cfg extends TriStateCheckboxCfg = TriStateCheckboxCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+    /** The DOM element for the hidden input field storing the value of this component. */
     input: JQuery = $();
     /** The DOM element for the container with the label and the icon. */
     box: JQuery = $();
-    /** The DOM element for the icon showing the current state of this checkbox widget. */
+    /** The DOM element for the icon showing the current state of this checkbox component. */
     icon: JQuery = $();
     /** The DOM element for the label of the checkbox. */
     itemLabel: JQuery = $();
     /** The DOM element for the aria-label of the checkbox. */
     ariaHelper: JQuery = $();
-    /** Whether this widget is disabled, also `true` when it is read-only. */
+    /** Whether this component is disabled, also `true` when it is read-only. */
     disabled: boolean = false;
     /** Whether the user can change the state of the checkbox. */
     readonly: boolean = false;
     /** A modulo operation with the result being in the range `[0,mod)`. */
-    fixedMod: PrimeFacesTypes.widget.TriStateCheckbox.FixedMod = (number, mod) => ((number % mod) + mod) % mod;
+    fixedMod: PrimeFacesTypes.component.TriStateCheckbox.FixedMod = (number, mod) => ((number % mod) + mod) % mod;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input');
@@ -177,7 +177,7 @@ export class TriStateCheckbox<Cfg extends TriStateCheckboxCfg = TriStateCheckbox
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
         this.updateStatus();
     }
 
@@ -185,7 +185,7 @@ export class TriStateCheckbox<Cfg extends TriStateCheckboxCfg = TriStateCheckbox
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         this.updateStatus();
     }
 }

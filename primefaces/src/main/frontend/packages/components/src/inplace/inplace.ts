@@ -1,13 +1,13 @@
 /**
- * The configuration for the {@link Inplace} widget.
+ * The configuration for the {@link Inplace} component.
  */
-export interface InplaceCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface InplaceCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether switching to the inline content is disabled. */
     disabled: boolean;
     /** `true` to add save and cancel buttons to the inline content. */
     editor: boolean;
     /** Effect used when toggling. */
-    effect: PrimeFacesTypes.widget.Inplace.EffectType;
+    effect: PrimeFacesTypes.component.Inplace.EffectType;
     /** Speed of the effect, `slow`, `normal` or `fast` (`normal` is the jQuery default duration). */
     effectSpeed: string;
     /** Client side event that shows the inline content, `dblclick` is changed to `click` on touch devices. */
@@ -17,12 +17,12 @@ export interface InplaceCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Inplace Widget__
+ * __PrimeFaces Inplace Component__
  *
  * Inplace provides easy inplace editing and inline content display. It consists of a display element, the initially
  * clickable label, and the inline content, which is shown when the display element is toggled.
  */
-export class Inplace<Cfg extends InplaceCfg = InplaceCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Inplace<Cfg extends InplaceCfg = InplaceCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The display element, shown while the inline content is hidden. */
     display: JQuery = $();
     /** The inline content or inplace editor. */
@@ -30,7 +30,7 @@ export class Inplace<Cfg extends InplaceCfg = InplaceCfg> extends PrimeFaces.wid
     /** The container of the save and cancel buttons, only with `editor`. */
     editor?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.display = $(this.jqId + '_display');

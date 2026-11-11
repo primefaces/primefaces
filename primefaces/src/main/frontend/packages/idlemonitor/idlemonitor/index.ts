@@ -4,8 +4,8 @@ import "./src/jquery.idletimer.js";
 
 import { IdleMonitor, registerKillSwitchHookForIdleMonitor } from "./src/idlemonitor.js";
 
-// Expose widgets to the global scope
-PrimeFaces.widget.IdleMonitor = IdleMonitor;
+// Expose components to the global scope
+PrimeFaces.component.IdleMonitor = IdleMonitor;
 
 // Register a kill switch feature  implementation that kills active idle monitors
 registerKillSwitchHookForIdleMonitor();
@@ -13,9 +13,9 @@ registerKillSwitchHookForIdleMonitor();
 // Global types
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             /**
-             * __PrimeFaces IdleMonitor Widget__
+             * __PrimeFaces IdleMonitor Component__
              * 
              * IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.
              * 
@@ -25,18 +25,18 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         /**
-         * The configuration for the {@link  IdleMonitor} widget.
+         * The configuration for the {@link  IdleMonitor} component.
          * 
-         * You can access this configuration via the `cfg` property of the widget.
+         * You can access this configuration via the `cfg` property of the component.
          * Please note that this configuration is usually meant to be read-only
          * and should not be modified.
          */
         export type IdleMonitorCfg = import("./src/idlemonitor.js").IdleMonitorCfg;
     }
 
-    namespace PrimeFacesTypes.widget.IdleMonitor {
+    namespace PrimeFacesTypes.component.IdleMonitor {
         /**
         * Client side callback to execute when the user comes back. See
         * also {@link IdleMonitorCfg.onactive | cfg.onactive}.

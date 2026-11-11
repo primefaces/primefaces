@@ -6,7 +6,7 @@ ColumnToggler is a helper component for datatable to toggle visibility of column
 See column toggler section in datatable documentation for detailed information.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.ColumnToggler_
+Component: _PrimeFaces.component.ColumnToggler_
 
 
 | Method | Params | Return Type | Description |

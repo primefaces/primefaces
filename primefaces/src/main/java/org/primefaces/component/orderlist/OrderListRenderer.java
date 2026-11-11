@@ -26,11 +26,11 @@ package org.primefaces.component.orderlist;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -238,7 +238,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
     }
 
     protected void encodeScript(FacesContext context, OrderList ol) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("OrderList", ol)
                 .attr("effect", ol.getEffect(), null);
 

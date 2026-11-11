@@ -26,10 +26,10 @@ package org.primefaces.component.panel;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -81,7 +81,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
     }
 
     protected void encodeScript(FacesContext context, Panel component, Menu optionsMenu) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Panel", component);
 
         if (component.isToggleable()) {

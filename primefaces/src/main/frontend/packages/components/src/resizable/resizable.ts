@@ -1,37 +1,37 @@
 import type { KnownInteractionOptions } from "../dragdrop/dragdrop.js";
 
 /**
- * The configuration for the {@link Resizable} widget.
+ * The configuration for the {@link Resizable} component.
  */
-export interface ResizableCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.ResizableOptions> {
+export interface ResizableCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.ResizableOptions> {
     /** Whether AJAX requests are sent when the element is resized. */
     ajaxResize: boolean;
     /** Whether the target is constrained to its parent component, see `parentComponentId`. */
     isContainment: boolean;
     /** Client-side callback to execute during resizing. */
-    onResize: PrimeFacesTypes.widget.Resizable.OnResizeCallback;
+    onResize: PrimeFacesTypes.component.Resizable.OnResizeCallback;
     /** Client-side callback to execute when resizing begins. */
-    onStart: PrimeFacesTypes.widget.Resizable.OnStartCallback;
+    onStart: PrimeFacesTypes.component.Resizable.OnStartCallback;
     /** Client-side callback to execute after resizing end. */
-    onStop: PrimeFacesTypes.widget.Resizable.OnStopCallback;
+    onStop: PrimeFacesTypes.component.Resizable.OnStopCallback;
     /** ID of the parent of the resizable element. */
     parentComponentId: string;
-    /** ID of the target widget or element to be resized. */
+    /** ID of the target component or element to be resized. */
     target: string;
 }
 
 /**
- * __PrimeFaces Resizable Widget__
+ * __PrimeFaces Resizable Component__
  *
  * Resizable component is used to make another Faces component resizable.
  */
-export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
-    /** The DOM element for the target widget t o be resized. */
+export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+    /** The DOM element for the target component t o be resized. */
     jqTarget: JQuery = $();
     /** Target for the resizable, when using AJAX resize. */
     target?: string | JQuery | HTMLElement;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target!));
@@ -42,7 +42,7 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
     }
 
     /**
-     * Renders this widget, if the target widget is already visible, or adds a deferred renderer otherwise.
+     * Renders this component, if the target component is already visible, or adds a deferred renderer otherwise.
      */
     private renderDeferred(): void {
         if (this.jqTarget.is(':visible')) {
@@ -62,8 +62,8 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
     }
 
     /**
-     * Renders the client-side parts of this widget, if this target widget to be resized is already visible.
-     * @returns `true` if the target widget is visible, or `false` otherwise.
+     * Renders the client-side parts of this component, if this target component to be resized is already visible.
+     * @returns `true` if the target component is visible, or `false` otherwise.
      */
     private render(): boolean {
         if (this.jqTarget.is(':visible')) {
@@ -75,7 +75,7 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
     }
 
     /**
-     * Renders the client-side parts of this widget.
+     * Renders the client-side parts of this component.
      */
     private _render(): void {
         if (this.cfg.ajaxResize) {

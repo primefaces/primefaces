@@ -1,19 +1,19 @@
 import { Terminal } from "./src/terminal.js";
 
-PrimeFaces.widget.Terminal = Terminal;
+PrimeFaces.component.Terminal = Terminal;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Terminal: typeof Terminal;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TerminalCfg = import("./src/terminal.js").TerminalCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Terminal {
+    namespace PrimeFacesTypes.component.Terminal {
         /**
          * The JSON response of the server for the autocompletion of a command.
          */

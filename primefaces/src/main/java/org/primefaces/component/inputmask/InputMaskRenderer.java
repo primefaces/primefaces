@@ -25,12 +25,12 @@ package org.primefaces.component.inputmask;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -180,7 +180,7 @@ public class InputMaskRenderer extends InputRenderer<InputMask> {
 
     protected void encodeScript(FacesContext context, InputMask component) throws IOException {
         String mask = component.getMask();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("InputMask", component);
 
         if (mask != null) {

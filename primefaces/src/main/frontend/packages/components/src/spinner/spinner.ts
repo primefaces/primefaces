@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Spinner} widget.
+ * The configuration for the {@link Spinner} component.
  */
-export interface SpinnerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SpinnerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Number of decimal places, sent as string. */
     decimalPlaces: string;
     /** Separator of the integral and fractional part, defaults to `.`. */
@@ -31,11 +31,11 @@ export interface SpinnerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Spinner Widget__
+ * __PrimeFaces Spinner Component__
  *
  * Spinner is an input component to provide a numerical input via increment and decrement buttons.
  */
-export class Spinner<Cfg extends SpinnerCfg = SpinnerCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Spinner<Cfg extends SpinnerCfg = SpinnerCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The input with the value. */
     input: JQuery<HTMLInputElement> = $();
     /** The button that increments the value. */
@@ -47,7 +47,7 @@ export class Spinner<Cfg extends SpinnerCfg = SpinnerCfg> extends PrimeFaces.wid
     /** The current value, `null` if the input is empty or invalid. */
     value?: number | null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = this.jq.children('.p-spinner-input') as JQuery<HTMLInputElement>;
@@ -441,13 +441,13 @@ export class Spinner<Cfg extends SpinnerCfg = SpinnerCfg> extends PrimeFaces.wid
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
     }
 
     /**
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
     }
 }

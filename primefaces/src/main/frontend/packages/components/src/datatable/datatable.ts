@@ -1,13 +1,13 @@
 /**
- * The configuration for the {@link DataTable} widget. You can access this configuration via
- * {@link PrimeFaces.widget.BaseWidget.cfg | BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * The configuration for the {@link DataTable} component. You can access this configuration via
+ * {@link PrimeFaces.component.BaseComponent.cfg | BaseComponent.cfg}. Please note that this configuration is usually meant to be
  * read-only and should not be modified.
  */
-export interface DataTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface DataTableCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** When true columns can be unsorted upon clicking sort. */
     allowUnsorting: boolean;
     /** Defines the cell edit behavior. */
-    cellEditMode: PrimeFacesTypes.widget.DataTable.CellEditMode;
+    cellEditMode: PrimeFacesTypes.component.DataTable.CellEditMode;
     /**
      * Whether the cells can be navigated with the keyboard. Enabled by default, unless editing, reflow or row selection
      * is enabled.
@@ -63,9 +63,9 @@ export interface DataTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** `true` to use native radio button and checkbox elements, or `false` otherwise. */
     nativeElements: boolean;
     /** Callback that is invoked when the user clicked on a row of the DataTable. */
-    onRowClick: PrimeFacesTypes.widget.DataTable.OnRowClickCallback;
+    onRowClick: PrimeFacesTypes.component.DataTable.OnRowClickCallback;
     /** When pagination is enabled: The configuration of the paginator. */
-    paginator: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.PaginatorCfg>;
+    paginator: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.PaginatorCfg>;
     /** `false` to update the whole DataTable on paging, sorting and filtering, `true` to update only the body. */
     partialUpdate: boolean;
     /** Reflow mode is a responsive mode to display columns as stacked depending on screen size. */
@@ -73,13 +73,13 @@ export interface DataTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Enables column resizing. */
     resizableColumns: boolean;
     /** Defines the resize behavior. */
-    resizeMode: PrimeFacesTypes.widget.DataTable.ResizeMode;
+    resizeMode: PrimeFacesTypes.component.DataTable.ResizeMode;
     /** CSS selector for the draggable handle. */
     rowDragSelector: string;
     /** Defines the row edit. */
-    rowEditMode: PrimeFacesTypes.widget.DataTable.RowEditMode;
+    rowEditMode: PrimeFacesTypes.component.DataTable.RowEditMode;
     /** Defines row expand mode. */
-    rowExpandMode: PrimeFacesTypes.widget.DataTable.RowExpandMode;
+    rowExpandMode: PrimeFacesTypes.component.DataTable.RowExpandMode;
     /** Adds hover effect to rows. Hover is always on when selection is enabled. */
     rowHover: boolean;
     /** CSS selector find finding the rows of this DataTable. */
@@ -97,14 +97,14 @@ export interface DataTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Makes data scrollable with fixed header. */
     scrollable: boolean;
     /** Enables row selection. */
-    selectionMode: PrimeFacesTypes.widget.DataTable.CmSelectionMode | PrimeFacesTypes.widget.DataTable.SelectionMode;
+    selectionMode: PrimeFacesTypes.component.DataTable.CmSelectionMode | PrimeFacesTypes.component.DataTable.SelectionMode;
     /**
      * When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all
      * rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
      */
     selectionPageOnly: boolean;
     /** Defines row selection mode when clicking on the row itself. */
-    selectionRowMode: PrimeFacesTypes.widget.DataTable.SelectionRowMode;
+    selectionRowMode: PrimeFacesTypes.component.DataTable.SelectionRowMode;
     /** `true` if sorting is enabled on the DataTable, `false` otherwise. */
     sorting: boolean;
     /** IDs of the columns by which to order. Order by the first column, then by the second, etc. */
@@ -120,16 +120,16 @@ export interface DataTableCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 }
 
 /**
- * __PrimeFaces DataTable Widget__
+ * __PrimeFaces DataTable Component__
  *
  * DataTable displays data in tabular format.
  */
-export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
 
     /**
      * Map between the sort order names and the multiplier for the comparator.
      */
-    static SORT_ORDER: Record<PrimeFacesTypes.widget.DataTable.SortOrder, -1 | 0 | 1> = {
+    static SORT_ORDER: Record<PrimeFacesTypes.component.DataTable.SortOrder, -1 | 0 | 1> = {
         ASCENDING: 1,
         DESCENDING: -1,
         UNSORTED: 0
@@ -153,12 +153,15 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     columnWidthsFixed?: boolean;
     /** DOM element of the table cell for which the context menu was opened. */
     contextMenuCell?: JQuery;
-    /** Widget with the context menu for the DataTable. */
-    contextMenuWidget?: PrimeFacesTypes.widget.ContextMenuLikeWidget;
+    /** Component with the context menu for the DataTable. */
+    contextMenuComponent?: PrimeFacesTypes.component.ContextMenuLikeComponent;
+    /** @deprecated Use {@link contextMenuComponent} instead. */
+    get contextMenuWidget(): PrimeFacesTypes.component.ContextMenuLikeComponent | undefined { return this.contextMenuComponent; }
+    set contextMenuWidget(value: PrimeFacesTypes.component.ContextMenuLikeComponent | undefined) { this.contextMenuComponent = value; }
     /** Current cell to be edited. */
     currentCell?: JQuery | null;
     /** 0-based index of row where the the cursor is located. */
-    cursorRowMeta?: PrimeFacesTypes.widget.DataTable.RowMeta | null;
+    cursorRowMeta?: PrimeFacesTypes.component.DataTable.RowMeta | null;
     /** Localized message for sorting a column in descending order. */
     descMessage?: string;
     /** DOM element of the icon that indicates a column is draggable. */
@@ -209,11 +212,11 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /** INPUT element storing the current column / row order. */
     orderStateHolder?: JQuery;
     /** The original row index of the row that was clicked. */
-    originRowMeta?: PrimeFacesTypes.widget.DataTable.RowMeta | null;
+    originRowMeta?: PrimeFacesTypes.component.DataTable.RowMeta | null;
     /** Localized message for removing the sort order and showing rows in their original order. */
     otherMessage?: string;
-    /** When pagination is enabled: The paginator widget instance used for paging. */
-    paginator?: PrimeFacesTypes.Widget<"Paginator">;
+    /** When pagination is enabled: The paginator component instance used for paging. */
+    paginator?: PrimeFacesTypes.Component<"Paginator">;
     /** Whether the scroll height is a relative (percentage) value. */
     percentageScrollHeight?: boolean | "" | undefined;
     /** Whether the scroll width is a relative (percentage) value. */
@@ -263,7 +266,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /** Whether live scrolling is currently enabled. */
     shouldLiveScroll?: boolean;
     /** Information about how the columns are sorted, in the order of the sort priority. */
-    sortMeta?: PrimeFacesTypes.widget.DataTable.SortMeta[];
+    sortMeta?: PrimeFacesTypes.component.DataTable.SortMeta[];
     /** DOM elements for the columns that are sortable. */
     sortableColumns?: JQuery;
     /** The DOM element for the sticky container of the table. */
@@ -288,7 +291,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         return 'td' + suffix + ', th[role="rowheader"]' + suffix;
     }
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.thead = this.getThead();
@@ -470,7 +473,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.columnWidthsFixed = false;
         this.ignoreRowHoverEvent = false;
 
@@ -517,7 +520,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             }
         };
 
-        this.paginator = new PrimeFaces.widget.Paginator();
+        this.paginator = new PrimeFaces.component.Paginator();
         this.paginator.init(this.cfg.paginator!);
         this.paginator.bindSwipeEvents(this.jq, this.cfg);
 
@@ -720,7 +723,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * table may be sorted by multiple columns.
      * @param meta Sorting to add.
      */
-    addSortMeta(meta: PrimeFacesTypes.widget.DataTable.SortMeta): void {
+    addSortMeta(meta: PrimeFacesTypes.component.DataTable.SortMeta): void {
         this.sortMeta = $.grep(this.sortMeta!, function(value) {
             return value.col !== meta.col;
         });
@@ -853,7 +856,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Sets up the DataTable and adds all event listeners required for hovering over rows.
      */
     setupRowHover(): void {
-        var selector = '> tr.p-widget-content';
+        var selector = '> tr.p-component-content';
         if(!this.cfg.selectionMode || this.cfg.selectionMode === 'checkbox') {
             this.bindRowHover(selector);
         }
@@ -1017,7 +1020,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     setupSelection(): void {
         this.selectionHolder = this.jqId + '_selection';
         this.cfg.selectionRowMode = this.cfg.selectionRowMode||'new';
-        this.rowSelector = '> tr.p-widget-content.p-datatable-selectable';
+        this.rowSelector = '> tr.p-component-content.p-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
         this.cfg.selectionPageOnly = this.cfg.selectionPageOnly !== false;
         this.rowSelectorForRowClick = this.cfg.rowSelector||DataTable.cellSelector(':not(.p-column-unselectable):not(.p-grouped-column)') + ',span:not(.p-c)';
@@ -1119,9 +1122,9 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         this.getFocusableTbody().on('focus', () => {
             //ignore mouse click on row
             if(!this.mousedownOnRow) {
-                this.focusedRow = this.tbody.children('tr.p-widget-content.p-datatable-selectable.p-state-highlight').eq(0);
+                this.focusedRow = this.tbody.children('tr.p-component-content.p-datatable-selectable.p-state-highlight').eq(0);
                 if (this.focusedRow.length == 0) {
-                    this.focusedRow = this.tbody.children('tr.p-widget-content.p-datatable-selectable').eq(0);
+                    this.focusedRow = this.tbody.children('tr.p-component-content.p-datatable-selectable').eq(0);
                 }
 
                 this.highlightFocusedRow();
@@ -1146,7 +1149,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                 switch(e.code) {
                     case 'ArrowUp':
                     case 'ArrowDown':
-                        var rowSelector = 'tr.p-widget-content.p-datatable-selectable',
+                        var rowSelector = 'tr.p-component-content.p-datatable-selectable',
                         row = e.key === 'ArrowUp' ? this.focusedRow.prevAll(rowSelector).eq(0) : this.focusedRow.nextAll(rowSelector).eq(0);
 
                         if(row.length) {
@@ -1255,7 +1258,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Sets up the event listeners for radio buttons contained in this DataTable.
      */
     bindRadioEvents(): void {
-        var radioInputSelector = '> tr.p-widget-content:not(.p-datatable-empty-message) > td.p-selection-column :radio';
+        var radioInputSelector = '> tr.p-component-content:not(.p-datatable-empty-message) > td.p-selection-column :radio';
 
         if(this.cfg.nativeElements) {
             this.tbody.off('click.dataTable', radioInputSelector).on('click.dataTable', radioInputSelector, null, (e) => {
@@ -1266,7 +1269,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             });
         }
         else {
-            var radioSelector = '> tr.p-widget-content:not(.p-datatable-empty-message) > td.p-selection-column .p-radiobutton .p-radiobutton-box';
+            var radioSelector = '> tr.p-component-content:not(.p-datatable-empty-message) > td.p-selection-column .p-radiobutton .p-radiobutton-box';
             this.tbody.off('click.dataTable mouseenter.dataTable mouseleave.dataTable', radioSelector)
                 .on('mouseenter.dataTable', radioSelector, null, (e) => {
                     var radio = $(e.currentTarget);
@@ -1322,7 +1325,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         var checkboxSelector: string;
 
         if(this.cfg.nativeElements) {
-            checkboxSelector = 'tr.p-widget-content.p-datatable-selectable > td.p-selection-column :checkbox';
+            checkboxSelector = 'tr.p-component-content.p-datatable-selectable > td.p-selection-column :checkbox';
             this.checkAllToggler = this.thead.find('> tr > th.p-selection-column > :checkbox');
 
             this.checkAllToggler.on('click', () => {
@@ -1342,7 +1345,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             });
         }
         else {
-            checkboxSelector = 'tr.p-widget-content.p-datatable-selectable > td.p-selection-column > div.p-chkbox > div.p-chkbox-box';
+            checkboxSelector = 'tr.p-component-content.p-datatable-selectable > td.p-selection-column > div.p-chkbox > div.p-chkbox-box';
             this.checkAllToggler = this.thead.find('> tr > th.p-selection-column > div.p-chkbox.p-chkbox-all > div.p-chkbox-box');
 
             this.checkAllToggler.on('mouseenter', (e) => {
@@ -1510,41 +1513,41 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     }
 
     override bindContextMenu(
-        menuWidget: PrimeFacesTypes.widget.ContextMenuLikeWidget,
-        targetWidget: this,
+        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg>,
+        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
     ): void {
-        var targetSelector = targetId + ' tbody.p-datatable-data > tr.p-widget-content';
+        var targetSelector = targetId + ' tbody.p-datatable-data > tr.p-component-content';
         var targetEvent = cfg.event + '.row' + this.id;
         var containerEvent = cfg.event!.split(' ').map(e => e + '.datatable' + this.id).join(' ');
-        this.contextMenuWidget = menuWidget;
+        this.contextMenuComponent = menuComponent;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, (e: JQuery.TriggeredEvent) => {
             var row = $(e.currentTarget);
 
-            if(targetWidget.cfg.selectionMode && row.hasClass('p-datatable-selectable')) {
-                var isContextMenuDelayed = targetWidget.onRowRightClick(e, e.currentTarget, cfg.selectionMode!, () => {
-                    this.contextMenuWidget!.show(e);
+            if(targetComponent.cfg.selectionMode && row.hasClass('p-datatable-selectable')) {
+                var isContextMenuDelayed = targetComponent.onRowRightClick(e, e.currentTarget, cfg.selectionMode!, () => {
+                    this.contextMenuComponent!.show(e);
                 });
-                targetWidget.updateContextMenuCell(e, targetWidget);
+                targetComponent.updateContextMenuCell(e, targetComponent);
 
                 if(isContextMenuDelayed) {
                     e.preventDefault();
                     e.stopPropagation();
                 }
             }
-            else if(targetWidget.cfg.editMode === 'cell') {
-                targetWidget.updateContextMenuCell(e, targetWidget);
-                this.contextMenuWidget!.show(e);
+            else if(targetComponent.cfg.editMode === 'cell') {
+                targetComponent.updateContextMenuCell(e, targetComponent);
+                this.contextMenuComponent!.show(e);
             }
             else if(row.hasClass('p-datatable-empty-message') && !this.cfg.disableContextMenuIfEmpty) {
-                this.contextMenuWidget!.show(e);
+                this.contextMenuComponent!.show(e);
             }
         });
         $(document).off(containerEvent, targetId).on(containerEvent, targetId, null, (e: JQuery.TriggeredEvent) => {
-            if (e.target.id == targetWidget.id + '_data') {
-                this.contextMenuWidget!.show(e);
+            if (e.target.id == targetComponent.id + '_data') {
+                this.contextMenuComponent!.show(e);
             }
         });
         this.addDestroyListener(function() {
@@ -1553,8 +1556,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
         if(this.cfg.scrollable && this.scrollBody) {
             this.scrollBody.off('scroll.dataTable-contextmenu').on('scroll.dataTable-contextmenu', () => {
-                if(this.contextMenuWidget!.jq.is(':visible')) {
-                    this.contextMenuWidget!.hide();
+                if(this.contextMenuComponent!.jq.is(':visible')) {
+                    this.contextMenuComponent!.hide();
                 }
             });
         }
@@ -1563,28 +1566,28 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /**
      * Updates the currently selected cell based on where the context menu right click occurred.
      * @param event Event that occurred.
-     * @param targetWidget The current widget
+     * @param targetComponent The current component
      */
-    updateContextMenuCell(event: JQuery.TriggeredEvent, targetWidget: DataTable): void {
+    updateContextMenuCell(event: JQuery.TriggeredEvent, targetComponent: DataTable): void {
         var target = $(event.target),
         cell = target.closest(DataTable.cellSelector('.p-editable-column'));
 
-        if(targetWidget.contextMenuCell) {
-            targetWidget.contextMenuCell.removeClass('p-state-highlight');
+        if(targetComponent.contextMenuCell) {
+            targetComponent.contextMenuCell.removeClass('p-state-highlight');
         }
 
-        targetWidget.contextMenuCell = cell;
-        targetWidget.contextMenuCell.addClass('p-state-highlight');
+        targetComponent.contextMenuCell = cell;
+        targetComponent.contextMenuCell.addClass('p-state-highlight');
     }
 
     /**
      * Sets up the event listeners for clicking on a row.
      */
     bindRowClick(): void {
-        var rowSelector = '> tr.p-widget-content:not(.p-expanded-row-content)';
+        var rowSelector = '> tr.p-component-content:not(.p-expanded-row-content)';
         this.tbody.off('click.dataTable-rowclick', rowSelector).on('click.dataTable-rowclick', rowSelector, null, (e) => {
             var target = $(e.target),
-            row = target.is('tr.p-widget-content') ? target : target.closest('tr.p-widget-content');
+            row = target.is('tr.p-component-content') ? target : target.closest('tr.p-component-content');
 
             this.cfg.onRowClick!.call(e.currentTarget, row);
         });
@@ -1664,7 +1667,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         this.restoreScrollState();
 
         if(this.cfg.virtualScroll) {
-            var row = this.bodyTable.children('tbody').children('tr.p-widget-content');
+            var row = this.bodyTable.children('tbody').children('tr.p-component-content');
             if(row) {
                 var hasEmptyMessage = row.eq(0).hasClass('p-datatable-empty-message'),
                 scrollLimit = this.cfg.scrollLimit;
@@ -1935,7 +1938,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * exists.
      * @return The width information of the given column.
      */
-    getColumnWidthInfo(col: JQuery, isIncludeResizeableState?: boolean): PrimeFacesTypes.widget.DataTable.WidthInfo {
+    getColumnWidthInfo(col: JQuery, isIncludeResizeableState?: boolean): PrimeFacesTypes.component.DataTable.WidthInfo {
         var width: string | number | null | undefined, isOuterWidth: boolean | string | undefined;
 
         if(isIncludeResizeableState && this.resizableState) {
@@ -1964,7 +1967,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param element The element to which the width should be applied.
      * @param widthInfo The width information (retrieved using the method {@link getColumnWidthInfo}).
      */
-    applyWidthInfo(element: JQuery, widthInfo: PrimeFacesTypes.widget.DataTable.WidthInfo): void {
+    applyWidthInfo(element: JQuery, widthInfo: PrimeFacesTypes.component.DataTable.WidthInfo): void {
         if(widthInfo.isOuterWidth) {
             element.outerWidth(widthInfo.width);
         }
@@ -1978,7 +1981,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param width Scroll width in pixels to set.
      */
     setScrollWidth(width: number): void {
-        this.jq.children('.p-widget-header').each((_i, el) => {
+        this.jq.children('.p-component-header').each((_i, el) => {
             this.setOuterWidth($(el), width);
         });
         this.scrollHeader!.width(width);
@@ -2280,7 +2283,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * whether the data is already cached and loads it from the server only when not found in the cache.
      * @param newState The new values for the current page and the rows per page count.
      */
-    paginate(newState: PrimeFacesTypes.widget.Paginator.PaginationState): void {
+    paginate(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
         var options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
@@ -2357,7 +2360,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Loads next page asynchronously to keep it at viewstate and Updates viewstate
      * @param newState The new values for the current page and the rows per page count.
      */
-    fetchNextPage(newState: PrimeFacesTypes.widget.Paginator.PaginationState): void {
+    fetchNextPage(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
         var rows = newState.rows,
         first = newState.first,
         options: PrimeFacesTypes.ajax.Configuration = {
@@ -2393,7 +2396,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Updates and syncs the current pagination state with the server.
      * @param newState The new values for the current page and the rows per page count.
      */
-    updatePageState(newState: PrimeFacesTypes.widget.Paginator.PaginationState): void {
+    updatePageState(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
         var options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
@@ -2592,7 +2595,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param option Property of the sort meta to use.
      * @return All values from the current sort meta list for the given option.
      */
-    joinSortMetaOption(option: keyof PrimeFacesTypes.widget.DataTable.SortMeta): string {
+    joinSortMetaOption(option: keyof PrimeFacesTypes.component.DataTable.SortMeta): string {
         var value = '';
 
         for(var i = 0; i < this.sortMeta!.length; i++) {
@@ -2670,7 +2673,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                 }
 
                 if(this.cfg.virtualScroll) {
-                    var row = this.bodyTable!.children('tbody').children('tr.p-widget-content');
+                    var row = this.bodyTable!.children('tbody').children('tr.p-component-content');
                     if(row) {
                         var hasEmptyMessage = row.eq(0).hasClass('p-datatable-empty-message'),
                         scrollLimit = this.cfg.scrollLimit;
@@ -2793,7 +2796,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param fnShowMenu Optional callback function invoked when the menu was opened.
      * @return true to hide the native browser context menu, false to display it
      */
-    onRowRightClick(event: JQuery.TriggeredEvent, rowElement: HTMLElement | JQuery, cmSelMode: PrimeFacesTypes.widget.DataTable.CmSelectionMode, fnShowMenu?: () => void): boolean {
+    onRowRightClick(event: JQuery.TriggeredEvent, rowElement: HTMLElement | JQuery, cmSelMode: PrimeFacesTypes.component.DataTable.CmSelectionMode, fnShowMenu?: () => void): boolean {
         var row = $(rowElement),
         rowMeta = this.getRowMeta(row),
         selected = row.hasClass('p-state-highlight');
@@ -2823,7 +2826,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param r The row to convert.
      * @return The row, or an empty JQuery instance of no row was found.
      */
-    findRow(r: PrimeFacesTypes.widget.DataTable.RowSpecifier): JQuery {
+    findRow(r: PrimeFacesTypes.component.DataTable.RowSpecifier): JQuery {
         var row = r;
 
         if(PrimeFaces.isNumber(r)) {
@@ -2873,7 +2876,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param r A row of this DataTable to select.
      * @param silent `true` to prevent behaviors and event listeners from being invoked, or `false` otherwise.
      */
-    selectRow(r: PrimeFacesTypes.widget.DataTable.RowSpecifier, silent?: boolean): void {
+    selectRow(r: PrimeFacesTypes.component.DataTable.RowSpecifier, silent?: boolean): void {
         var row = this.findRow(r);
         if(!row.hasClass('p-datatable-selectable')) {
             return;
@@ -2918,7 +2921,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param r A row of this DataTable to unselect.
      * @param silent `true` to prevent behaviors and event listeners from being invoked, or `false` otherwise.
      */
-    unselectRow(r: PrimeFacesTypes.widget.DataTable.RowSpecifier, silent?: boolean): void {
+    unselectRow(r: PrimeFacesTypes.component.DataTable.RowSpecifier, silent?: boolean): void {
         var row = this.findRow(r);
         if(!row.hasClass('p-datatable-selectable')) {
             return;
@@ -4171,7 +4174,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param rowEditor The current row editor.
      * @param action Whether to save or cancel the row edit.
      */
-    doRowEditRequest(rowEditor: JQuery, action: PrimeFacesTypes.widget.DataTable.RowEditAction): void {
+    doRowEditRequest(rowEditor: JQuery, action: PrimeFacesTypes.component.DataTable.RowEditAction): void {
         var row = rowEditor.closest('tr'),
         rowIndex = this.getRowMeta(row).index,
         expanded = row.hasClass('p-expanded-row'),
@@ -4303,7 +4306,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     invalidateRow(index: number): void {
         var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
         var row =  this.tbody.children('tr[data-ri]').eq(i);
-        row.addClass('p-widget-content p-row-editing p-state-error');
+        row.addClass('p-component-content p-row-editing p-state-error');
         this.enableCellEditors(row);
     }
 
@@ -4318,9 +4321,9 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
     /**
      * Returns the paginator instance if any exists.
-     * @return The paginator instance for this widget, or `undefined` if paging is not enabled.
+     * @return The paginator instance for this component, or `undefined` if paging is not enabled.
      */
-    getPaginator(): PrimeFacesTypes.Widget<"Paginator"> | undefined {
+    getPaginator(): PrimeFacesTypes.Component<"Paginator"> | undefined {
         return this.paginator;
     }
 
@@ -4388,13 +4391,13 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             inputFields.val('');
         };
 
-        var resetWidget = function(widgetElement: JQuery): void {
+        var resetComponent = function(componentElement: JQuery): void {
             const selector = ':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])';
-            var widget = PrimeFaces.getWidgetById(widgetElement.attr('id')!);
-            if (widget && 'resetValue' in widget && typeof widget.resetValue === 'function') {
-                widget.resetValue(true);
-            } else if (widgetElement.is(selector)) {
-                resetInputFields(widgetElement);
+            var component = PrimeFaces.getComponentById(componentElement.attr('id')!);
+            if (component && 'resetValue' in component && typeof component.resetValue === 'function') {
+                component.resetValue(true);
+            } else if (componentElement.is(selector)) {
+                resetInputFields(componentElement);
             } else {
                 // was "$(this).find(selector)" with "this" being undefined in this plain function (strict mode), so
                 // this always was and still is an empty set
@@ -4407,9 +4410,9 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
         var customFilters = this.thead.find('> tr > th.p-filter-column > .p-column-customfilter');
         customFilters.each((_i, el) => {
-            var widgetElement = $(el).find('.p-widget');
-            if (widgetElement.length > 0) {
-                resetWidget(widgetElement);
+            var componentElement = $(el).find('.p-component');
+            if (componentElement.length > 0) {
+                resetComponent(componentElement);
             } else {
                 resetInputFields($(el).find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
             }
@@ -4770,7 +4773,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param row The element (`TR`) of a row of this DataTable.
      * @return The meta for the row with the index and the row key.
      */
-    getRowMeta(row: JQuery): PrimeFacesTypes.widget.DataTable.RowMeta {
+    getRowMeta(row: JQuery): PrimeFacesTypes.component.DataTable.RowMeta {
         var meta = {
             index: row.data('ri'),
             key:  row.attr('data-rk')
@@ -4850,7 +4853,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             },
             helper: function(this: HTMLElement) {
                 var header = $(this),
-                helper = $('<div class="p-widget p-state-default" style="padding:4px 10px;text-align:center;"></div>');
+                helper = $('<div class="p-component p-state-default" style="padding:4px 10px;text-align:center;"></div>');
 
                 helper.width(header.width()!);
                 helper.height(header.height()!);
@@ -4994,7 +4997,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             },
             helper: (event, ui) => {
                 var cells = ui.children(),
-                helper = $('<div class="p-datatable p-widget"><table><tbody class="p-datatable-data"></tbody></table></div>'),
+                helper = $('<div class="p-datatable p-component"><table><tbody class="p-datatable-data"></tbody></table></div>'),
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 
@@ -5049,7 +5052,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Sets the style class on each, depending whether it is an even-numbered or odd-numbered row.
      */
     syncRowParity(): void {
-        var rows = this.tbody.children('tr.p-widget-content'),
+        var rows = this.tbody.children('tr.p-component-content'),
         first: number = this.paginator ? this.paginator.getFirst(): 0;
 
         for(var i = first; i < rows.length; i++) {
@@ -5187,7 +5190,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             }, 0);
         }
 
-        this.stickyContainer = $('<div class="p-datatable p-datatable-sticky p-widget"><table></table></div>');
+        this.stickyContainer = $('<div class="p-datatable p-datatable-sticky p-component"><table></table></div>');
         this.clone = this.thead.clone(false);
         this.stickyContainer.children('table').append(this.thead);
         table.prepend(this.clone);
@@ -5275,7 +5278,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         // set original state upon loading
         updateStickyHeaderPosition();
 
-        // must clean up memory when this widget is destroyed
+        // must clean up memory when this component is destroyed
         this.addDestroyListener(() => {
             PrimeFaces.utils.cleanseDomElement(this.clone);
             PrimeFaces.utils.cleanseDomElement(this.stickyContainer);
@@ -5368,7 +5371,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * server.
      * @param newState The new values for the current page and the rows per page count.
      */
-    loadDataWithCache(newState: PrimeFacesTypes.widget.Paginator.PaginationState): void {
+    loadDataWithCache(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
         var isRppChanged = false;
         if(this.cacheRows != newState.rows) {
             this.clearCacheMap();

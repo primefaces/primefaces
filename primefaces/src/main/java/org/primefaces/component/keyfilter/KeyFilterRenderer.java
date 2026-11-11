@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -56,7 +56,7 @@ public class KeyFilterRenderer extends CoreRenderer<KeyFilter> {
 
         String targetClientId = target instanceof InputHolder ih ? ih.getInputClientId() : target.getClientId();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init(KeyFilter.class.getSimpleName(), component);
         wb.attr("target", targetClientId);
 

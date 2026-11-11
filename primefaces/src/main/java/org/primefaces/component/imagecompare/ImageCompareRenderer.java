@@ -25,8 +25,8 @@ package org.primefaces.component.imagecompare;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class ImageCompareRenderer extends CoreRenderer<ImageCompare> {
     }
 
     protected void encodeScript(FacesContext context, ImageCompare component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("ImageCompare", component)
                 .attr("leftimage", getResourceURL(context, component.getLeftImage()))
                 .attr("rightimage", getResourceURL(context, component.getRightImage()));

@@ -3,7 +3,7 @@ import "chartjs-adapter-moment";
 import zoomPlugin from "chartjs-plugin-zoom";
 import Hammer from "hammerjs";
 
-import { Chart as ChartWidget } from "./src/chart.js";
+import { Chart as ChartComponent } from "./src/chart.js";
 import { createChartJsGlobal, type ChartJsGlobal } from "./src/chart.global.js";
 
 declare global {
@@ -14,7 +14,7 @@ declare global {
     }
 }
 
-PrimeFaces.widget.Chart = ChartWidget;
+PrimeFaces.component.Chart = ChartComponent;
 
 // Register all ChartJS components
 const Chart = ChartJs.Chart
@@ -28,21 +28,21 @@ Object.assign(window, { Chart: createChartJsGlobal(), Hammer });
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
-            Chart: typeof ChartWidget;
+        export interface ComponentRegistry {
+            Chart: typeof ChartComponent;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ChartCfg = import("./src/chart.js").ChartCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Chart {
+    namespace PrimeFacesTypes.component.Chart {
         /**
          * The type of the chart extender. It is invoked when the chart is created and lets you modify the chart by
-         * using the [chart.js](https://www.chartjs.org/docs/latest/) API. The current chart widget is passed as the
+         * using the [chart.js](https://www.chartjs.org/docs/latest/) API. The current chart component is passed as the
          * this context. To modify the chart configuration, mutate the `this.cfg.config` object.
          */
-        export type ChartExtender = (this: ChartWidget) => void;
+        export type ChartExtender = (this: ChartComponent) => void;
     }
 }

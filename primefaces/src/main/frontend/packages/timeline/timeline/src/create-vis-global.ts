@@ -5,7 +5,7 @@ import { DataSet, DataView, Queue } from "vis-data/esnext";
 import * as VisUtil from "vis-util/esnext";
 
 /**
- * The global object available via the global `window.vis`, when the timeline widget
+ * The global object available via the global `window.vis`, when the timeline component
  * is used.
  */
 export interface VisGlobal {

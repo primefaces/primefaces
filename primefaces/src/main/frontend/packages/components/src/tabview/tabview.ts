@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link TabView} widget.
+ * The configuration for the {@link TabView} component.
  */
-export interface TabViewCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface TabViewCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /**
      * When tab contents are lazy loaded via AJAX toggle mode, caching only retrieves the tab contents once and
      * subsequent toggles of a cached tab does not communicate with server. If caching is turned off, tab contents are
@@ -15,11 +15,11 @@ export interface TabViewCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Duration of the transition effect. */
     effectDuration: number;
     /** Client side callback to execute when a tab is clicked. If the callback returns `false`, the tab is not selected. */
-    onTabChange: PrimeFacesTypes.widget.TabView.OnTabChangeCallback;
+    onTabChange: PrimeFacesTypes.component.TabView.OnTabChangeCallback;
     /** Client side callback to execute on tab close. When the callback returns `false`, the tab is not closed. */
-    onTabClose: PrimeFacesTypes.widget.TabView.OnTabCloseCallback;
+    onTabClose: PrimeFacesTypes.component.TabView.OnTabCloseCallback;
     /** Client side callback to execute when a tab is shown. */
-    onTabShow: PrimeFacesTypes.widget.TabView.OnTabShowCallback;
+    onTabShow: PrimeFacesTypes.component.TabView.OnTabShowCallback;
     /** When enabled, tab headers can be scrolled horizontally instead of wrapping. */
     scrollable: boolean;
     /** The currently selected tab, `-1` when no tab is selected. */
@@ -35,11 +35,11 @@ export interface TabViewCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 }
 
 /**
- * __PrimeFaces TabView Widget__
+ * __PrimeFaces TabView Component__
  *
  * TabView is a container component to group content in tabs.
  */
-export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The DOM element for the first tab, only when scrollable. */
     firstTab?: JQuery;
     /** Always `null`. */
@@ -65,7 +65,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.wid
     /** Position of the element in the tabbing order. */
     tabindex: number = 0;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panelContainer = this.jq.children('.p-tabs-panels');
@@ -137,7 +137,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.wid
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         //Tab header events
@@ -260,7 +260,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.wid
     }
 
     /**
-     * Sets up all keyboard related event listeners that are required by this widget.
+     * Sets up all keyboard related event listeners that are required by this component.
      */
     private bindKeyEvents(): void {
         let tabs = this.headerContainer;

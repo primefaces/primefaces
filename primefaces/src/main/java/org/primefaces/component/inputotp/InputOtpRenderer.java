@@ -26,11 +26,11 @@ package org.primefaces.component.inputotp;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 
 import java.io.IOException;
@@ -197,7 +197,7 @@ public class InputOtpRenderer extends InputRenderer<InputOtp> {
     }
 
     protected void encodeScript(FacesContext context, InputOtp component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("InputOtp", component)
                 .attr("integerOnly", component.isIntegerOnly(), false)
                 .attr("disabled", component.isDisabled(), false)

@@ -1,23 +1,23 @@
 /**
- * The configuration for the {@link OutputPanel} widget.
+ * The configuration for the {@link OutputPanel} component.
  */
-export interface OutputPanelCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface OutputPanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the content is loaded via AJAX after the page was loaded. */
     deferred: boolean;
     /** When the deferred content is loaded. */
-    deferredMode: PrimeFacesTypes.widget.OutputPanel.DeferredMode;
+    deferredMode: PrimeFacesTypes.component.OutputPanel.DeferredMode;
     /** Normalized to a boolean on init, not used: the load request is never global. */
     global: boolean;
 }
 
 /**
- * __PrimeFaces OutputPanel Widget__
+ * __PrimeFaces OutputPanel Component__
  *
  * OutputPanel is a panel component with the ability for deferred loading.
  */
-export class OutputPanel<Cfg extends OutputPanelCfg = OutputPanelCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class OutputPanel<Cfg extends OutputPanelCfg = OutputPanelCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.global = this.cfg.global || false;
 

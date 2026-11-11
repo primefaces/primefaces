@@ -39,5 +39,5 @@ public class NotificationBar extends NotificationBarBaseImpl {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.NotificationBar";
 
-    public static final String STYLE_CLASS = "p-notificationbar p-widget p-widget-content";
+    public static final String STYLE_CLASS = "p-notificationbar p-component p-component-content";
 }

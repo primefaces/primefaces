@@ -23,7 +23,7 @@ public class ChipsView {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Chips_
+Component: _PrimeFaces.component.Chips_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

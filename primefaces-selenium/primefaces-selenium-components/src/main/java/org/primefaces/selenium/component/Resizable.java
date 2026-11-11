@@ -54,7 +54,7 @@ public abstract class Resizable extends AbstractComponent {
      */
     @Override
     public String getWidgetByIdScript() {
-        return "PrimeFaces.getWidgetsByType(PrimeFaces.widget.Resizable).find(function(w) { return w.cfg.target === '" + getId() + "'; })";
+        return "PrimeFaces.getComponentsByType(PrimeFaces.component.Resizable).find(function(w) { return w.cfg.target === '" + getId() + "'; })";
     }
 
     @Override

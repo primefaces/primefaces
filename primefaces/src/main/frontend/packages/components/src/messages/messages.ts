@@ -1,27 +1,27 @@
 /**
- * The configuration for the {@link  Messages} widget.
+ * The configuration for the {@link  Messages} component.
  * 
  * You can access this configuration via {@link Messages.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MessagesCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface MessagesCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     closable: boolean;
 }
 
 /**
- * __PrimeFaces Messages Widget__
+ * __PrimeFaces Messages Component__
  * 
  * Messages is a pre-skinned extended version of the standard Jakarta Faces messages component.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The DOM element for the icon that closes this panel.
      */
     closer: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.closer = $('.p-messages-close');
         PrimeFaces.skinCloseAction(this.closer);
@@ -39,7 +39,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
             /*
              * jQuery's append() returns the container it was called on, not the appended element. Create the
              * severity box separately and use appendTo() so that severityContainer refers to the new box only.
-             * Otherwise the message below would be added to the <ul> of every severity box in this widget.
+             * Otherwise the message below would be added to the <ul> of every severity box in this component.
              */
             severityContainer = $(
                  '<div class="p-messages-' + msg.severity + '">' +
@@ -76,19 +76,19 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
 
 /**
  * Registers an implementation for the message render hook that displays
- * messages inside a messages widget.
+ * messages inside a messages component.
  */
-export function registerMessageRenderHookForMessagesWidget(): void {
+export function registerMessageRenderHookForMessagesComponent(): void {
     PrimeFaces.registerHook("messageRender", {
-        clearMessagesForWidget: widget => {
-            if (widget instanceof Messages) {
-                widget.clearMessages();
+        clearMessagesForComponent: component => {
+            if (component instanceof Messages) {
+                component.clearMessages();
             }
         },
-        renderMessageForWidget: (widget, messages) => {
-            if (widget instanceof Messages) {
+        renderMessageForComponent: (component, messages) => {
+            if (component instanceof Messages) {
                 for (const message of messages) {
-                    widget.appendMessage(message);
+                    component.appendMessage(message);
                 }
             }
         },
@@ -120,13 +120,13 @@ export function registerMessageRenderHookForMessagesWidget(): void {
                 const redisplay = messagesComponent.data('redisplay');
                 const showSummary = messagesComponent.data('summary');
                 const showDetail = messagesComponent.data('detail');
-                const messagesWidget = PrimeFaces.getWidgetById(messagesComponent.attr('id') ?? "");
+                const messagesInstance = PrimeFaces.getComponentById(messagesComponent.attr('id') ?? "");
 
-                if (!(messagesWidget instanceof Messages)) {
+                if (!(messagesInstance instanceof Messages)) {
                     continue;
                 }
 
-                messagesWidget.clearMessages();
+                messagesInstance.clearMessages();
 
                 for (const clientId in messages) {
                     for (const msg of messages[clientId] ?? []) {
@@ -142,7 +142,7 @@ export function registerMessageRenderHookForMessagesWidget(): void {
                             msgToRender.detail = '';
                         }
 
-                        messagesWidget.appendMessage(msgToRender);
+                        messagesInstance.appendMessage(msgToRender);
                         msg.rendered = true;
                     }
                 }

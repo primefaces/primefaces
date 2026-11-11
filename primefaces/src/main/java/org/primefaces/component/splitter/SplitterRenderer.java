@@ -25,9 +25,9 @@ package org.primefaces.component.splitter;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -145,7 +145,7 @@ public class SplitterRenderer extends CoreRenderer<Splitter> {
     }
 
     protected void encodeScript(FacesContext context, Splitter component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Splitter", component)
                 .attr("layout", component.getLayout())
                 .attr("gutterSize", component.getGutterSize())

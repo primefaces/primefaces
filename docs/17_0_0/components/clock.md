@@ -28,7 +28,7 @@ Datetime format used can be changed using pattern attribute.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Clock_
+Component: _PrimeFaces.component.Clock_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

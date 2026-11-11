@@ -112,7 +112,7 @@ public class FileUploadView {
 Each file upload request is processed in a separate thread on server side. Special care has to be taken on thread safty.<br/>
 Be aware each file upload runs through the entire Jakarta Faces lifecycle which implies that several attributes of the component
 (such as `process`, `update`, `oncomplete` and others) are processed or updated for each file. Consider to use `p:remoteCommand`
-which is called from client side after _all_ files are uploaded by checking the widgets `files` property. E.g.
+which is called from client side after _all_ files are uploaded by checking the components `files` property. E.g.
 
 ```xhtml
 <p:remoteCommand name="updateAfterAllFilesUploaded"
@@ -380,14 +380,14 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
    * **Multiple implementations**: If more than one service provider is available in classpath, all of them will be consulted and must give the green light.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SimpleFileUpload_
+Component: _PrimeFaces.component.SimpleFileUpload_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 show() | - | void | Shows file chooser dialog.
 clear() | - | void | Clears the currently selected file.
 
-Widget: _PrimeFaces.widget.FileUpload_
+Component: _PrimeFaces.component.FileUpload_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

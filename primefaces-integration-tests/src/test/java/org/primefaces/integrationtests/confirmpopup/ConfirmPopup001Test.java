@@ -90,7 +90,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("No", noButton.getText());
         assertCss(noButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat");
         assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-times");
 
         // Act
@@ -112,7 +112,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-yes p-state-focus");
+        assertCss(yesButton, "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-yes p-state-focus");
         assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-check");
 
         // Act
@@ -135,7 +135,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat bg-green-600 text-white");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat bg-green-600 text-white");
         assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-heart");
 
         // Act
@@ -180,7 +180,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
         assertCss(yesButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-yes bg-red-600 text-white p-state-focus");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-yes bg-red-600 text-white p-state-focus");
         assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-trash");
 
         // Act

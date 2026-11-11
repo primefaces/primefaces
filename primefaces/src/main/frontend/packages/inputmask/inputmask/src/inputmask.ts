@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link InputMask} widget.
+ * The configuration for the {@link InputMask} component.
  */
-export interface InputMaskCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, Inputmask.Options {
+export interface InputMaskCfg extends PrimeFacesTypes.component.BaseComponentCfg, Inputmask.Options {
     /** Whether an incomplete value is cleared on blur, mapped to the `clearIncomplete` option. */
     autoClear: boolean;
     /** The mask template to use. */
@@ -9,15 +9,15 @@ export interface InputMaskCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, Inpu
 }
 
 /**
- * __PrimeFaces InputMask Widget__
+ * __PrimeFaces InputMask Component__
  *
  * InputMask forces an input to fit in a defined mask template.
  */
-export class InputMask<Cfg extends InputMaskCfg = InputMaskCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class InputMask<Cfg extends InputMaskCfg = InputMaskCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Is this component wrapped in a float label. */
     hasFloatLabel: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
 
@@ -78,14 +78,14 @@ export class InputMask<Cfg extends InputMaskCfg = InputMaskCfg> extends PrimeFac
      */
     override disable(): void {
         this.jq.inputmask('remove');
-        PrimeFaces.utils.disableInputWidget(this.jq, undefined);
+        PrimeFaces.utils.disableInputComponent(this.jq, undefined);
     }
 
     /**
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq);
+        PrimeFaces.utils.enableInputComponent(this.jq);
         this.applyMask();
     }
 }

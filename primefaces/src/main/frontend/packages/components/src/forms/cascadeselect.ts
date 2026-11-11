@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link CascadeSelect} widget.
+ * The configuration for the {@link CascadeSelect} component.
  */
-export interface CascadeSelectCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg {
+export interface CascadeSelectCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
     /** If true, disables the component. */
     disabled: boolean;
 }
 
 /**
- * __PrimeFaces CascadeSelect Widget__
+ * __PrimeFaces CascadeSelect Component__
  *
  * CascadeSelect CascadeSelect displays a nested structure of options.
  */
-export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> extends PrimeFaces.widget.DynamicOverlayWidget<Cfg> {
+export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> extends PrimeFaces.component.DynamicOverlayComponent<Cfg> {
     /** The DOM element for the content in the available selectable options. */
     contents: JQuery = $();
     /** Unbind callback for the hide overlay handler. */
@@ -26,7 +26,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     label: JQuery = $();
     /** The DOM element for the overlay panel with the available selectable options. */
     panel: JQuery = $();
-    /** Handler for CSS transitions used by this widget. */
+    /** Handler for CSS transitions used by this component. */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
     /** Unbind callback for the resize handler. */
     resizeHandler?: PrimeFacesTypes.Unbindable;
@@ -35,7 +35,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     /** The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the available selectable options. */
     triggers: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.panel = $(PrimeFaces.escapeClientId(cfg.id as string) + '_panel');
         super.init(cfg, this.panel, cfg.id + '_panel');
 
@@ -54,7 +54,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         this.triggers.off('click.cascadeselect').on('click.cascadeselect', (e) => {
@@ -186,7 +186,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     }
 
     /**
-     * Removes some event listeners when this widget was disabled.
+     * Removes some event listeners when this component was disabled.
      */
     private unbindEvents(): void {
         this.contents.off();
@@ -195,7 +195,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     }
 
     /**
-     * Disables this widget so that the user cannot select any option.
+     * Disables this component so that the user cannot select any option.
      */
     override disable(): void {
         if (!this.cfg.disabled) {
@@ -207,7 +207,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     }
 
     /**
-     * Enables this widget so that the user can select an option.
+     * Enables this component so that the user can select an option.
      */
     override enable(): void {
         if (this.cfg.disabled) {

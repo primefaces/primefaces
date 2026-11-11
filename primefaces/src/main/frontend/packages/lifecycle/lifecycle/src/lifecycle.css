@@ -1,6 +1,6 @@
 /*
  * Lifecycle: p:lifecycle (development tool, JSF phase durations)
- * Markup: table.p-lifecycle.p-widget > tr > td > div.p-lifecycle-name + div.p-lifecycle-result.p-lifecycle-score-(0|33|66|100)
+ * Markup: table.p-lifecycle.p-component > tr > td > div.p-lifecycle-name + div.p-lifecycle-result.p-lifecycle-score-(0|33|66|100)
  * PrimeFaces only component, tokens: the lifecycle block of presets/*.css.
  */
 .p-lifecycle {

@@ -1,7 +1,7 @@
 import { TextEditor } from "./src/texteditor.js";
 import _Quill from "quill";
 
-PrimeFaces.widget.TextEditor = TextEditor;
+PrimeFaces.component.TextEditor = TextEditor;
 
 declare global{
     const Quill: typeof _Quill;
@@ -10,12 +10,12 @@ declare global{
     }
 
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             TextEditor: typeof TextEditor;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TextEditorCfg = import("./src/texteditor.js").TextEditorCfg;
     }
 }

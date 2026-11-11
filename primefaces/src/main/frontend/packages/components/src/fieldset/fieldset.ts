@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Fieldset} widget.
+ * The configuration for the {@link Fieldset} component.
  */
-export interface FieldsetCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface FieldsetCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the content can be toggled between expanded and collapsed. */
     toggleable: boolean;
     /** Whether the fieldset is currently collapsed, updated on each toggle. */
@@ -13,11 +13,11 @@ export interface FieldsetCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Fieldset Widget__
+ * __PrimeFaces Fieldset Component__
  *
  * Fieldset is a grouping component as an extension to html fieldset.
  */
-export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The legend of this fieldset. */
     legend: JQuery = $();
     /** The toggler icon, only when toggleable. */
@@ -29,7 +29,7 @@ export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.
     /** With dynamic loading, whether the content was already loaded. */
     loaded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.legend = this.jq.children('.p-fieldset-legend');
@@ -61,7 +61,7 @@ export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.refresh(cfg);
 
         this.loaded = false;

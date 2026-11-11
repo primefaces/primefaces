@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link DataView} widget.
+ * The configuration for the {@link DataView} component.
  */
-export interface DataViewCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface DataViewCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** When pagination is enabled: The paginator configuration for the paginator. */
-    paginator: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.PaginatorCfg>;
+    paginator: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.PaginatorCfg>;
 }
 
 /**
- * __PrimeFaces DataView Widget__
+ * __PrimeFaces DataView Component__
  *
  * DataView displays data in grid or list layout.
  */
-export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** DOM element of the data view header. */
     header: JQuery = $();
     /** DOM element of the content container for the data grid. */
@@ -20,10 +20,10 @@ export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.
     layoutOptions: JQuery = $();
     /** DOM elements of the buttons for switching the layout (grid or list). */
     buttons: JQuery = $();
-    /** When pagination is enabled: The paginator widget instance used for paging. */
-    paginator?: PrimeFacesTypes.Widget<"Paginator">;
+    /** When pagination is enabled: The paginator component instance used for paging. */
+    paginator?: PrimeFacesTypes.Component<"Paginator">;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.header = this.jq.children('.p-dataview-header');
@@ -39,20 +39,20 @@ export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.
     }
 
     /**
-     * Initializes the paginator, called during widget initialization.
+     * Initializes the paginator, called during component initialization.
      */
     private setupPaginator(): void {
-        this.cfg.paginator!.paginate = (newState: PrimeFacesTypes.widget.Paginator.PaginationState) => {
+        this.cfg.paginator!.paginate = (newState: PrimeFacesTypes.component.Paginator.PaginationState) => {
             this.handlePagination(newState);
         };
 
-        this.paginator = new PrimeFaces.widget.Paginator();
+        this.paginator = new PrimeFaces.component.Paginator();
         this.paginator.init(this.cfg.paginator!);
         this.paginator.bindSwipeEvents(this.jq, this.cfg);
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindEvents(): void {
         this.buttons.on('mouseover', (e) => {
@@ -97,9 +97,9 @@ export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.
      * Switches this data view to the given layout (grid or list).
      *
      * ```javascript
-     * const widget = PF("MyDataView");
+     * const component = PF("MyDataView");
      * // Switch to grid layout
-     * widget.select(widget.buttons.eq(1));
+     * component.select(component.buttons.eq(1));
      * ```
      * @param button One of the layout switch buttons (`.p-button`).
      */
@@ -108,14 +108,14 @@ export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.
 
         button.addClass('p-state-active').children(':radio').prop('checked', true);
 
-        this.loadLayoutContent(button.children(':radio').val() as PrimeFacesTypes.widget.DataView.Layout);
+        this.loadLayoutContent(button.children(':radio').val() as PrimeFacesTypes.component.DataView.Layout);
     }
 
     /**
      * Loads the content with the data items for the selected layout (grid or list).
      * @param layout The current layout of this data view.
      */
-    private loadLayoutContent(layout: PrimeFacesTypes.widget.DataView.Layout): void {
+    private loadLayoutContent(layout: PrimeFacesTypes.component.DataView.Layout): void {
         const options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
@@ -145,7 +145,7 @@ export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.
      * Handles a pagination event by updating the data grid and invoking the appropriate behaviors.
      * @param newState The new pagination state to apply.
      */
-    private handlePagination(newState: PrimeFacesTypes.widget.Paginator.PaginationState): void {
+    private handlePagination(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
         const options: PrimeFacesTypes.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
@@ -181,11 +181,11 @@ export class DataView<Cfg extends DataViewCfg = DataViewCfg> extends PrimeFaces.
     }
 
     /**
-     * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
+     * Retrieves the paginator component used by this data grid for pagination. You can use this component to switch to a
      * different page programmatically.
-     * @returns The paginator widget, or `undefined` when pagination is not enabled.
+     * @returns The paginator component, or `undefined` when pagination is not enabled.
      */
-    getPaginator(): PrimeFacesTypes.Widget<"Paginator"> | undefined {
+    getPaginator(): PrimeFacesTypes.Component<"Paginator"> | undefined {
         return this.paginator;
     }
 }

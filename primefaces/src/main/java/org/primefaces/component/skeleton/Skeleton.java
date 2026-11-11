@@ -34,7 +34,7 @@ import jakarta.faces.component.FacesComponent;
 public class Skeleton extends SkeletonBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Skeleton";
 
-    public static final String STYLE_CLASS = "p-skeleton p-widget";
+    public static final String STYLE_CLASS = "p-skeleton p-component";
     public static final String CIRCLE_CLASS = "p-skeleton-circle";
     public static final String NONE_ANIMATION_CLASS = "p-skeleton-animation-none";
 }

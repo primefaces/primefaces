@@ -25,9 +25,9 @@ package org.primefaces.component.linkbutton;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -95,7 +95,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
     }
 
     protected void encodeScript(FacesContext context, LinkButton component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("LinkButton", component);
         wb.finish();
     }

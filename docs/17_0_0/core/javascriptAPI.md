@@ -29,8 +29,8 @@ well:
 [PrimeFaces.deleteCookie(name, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#deleteCookie) | Deletes a cookie with given and and options.
 [PrimeFaces.escapeClientId(id)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#escapeClientId) | Escaped Jakarta Faces ids with semi colon to work with jQuery.
 [PrimeFaces.getCookie(name)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getCookie) | Returns cookie with given name.
-[PrimeFaces.getWidgetById(clientid)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetById) | Returns the widget instance from the client id
-[PrimeFaces.getWidgetsByType(type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetsByType) | Returns an array of widget instances of the specified type, where type is any concrete class of [`PrimeFaces.widget.*`](../jsdocs/modules/src_PrimeFaces.PrimeFaces.widget.html).
+[PrimeFaces.getComponentById(clientid)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetById) | Returns the component instance from the client id
+[PrimeFaces.getComponentsByType(type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetsByType) | Returns an array of component instances of the specified type, where type is any concrete class of [`PrimeFaces.component.*`](../jsdocs/modules/src_PrimeFaces.PrimeFaces.widget.html).
 [PrimeFaces.info(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#info), [debug(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#debug), [warn(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#warn), [error(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#error) | Client side log API.
 [PrimeFaces.queueTask(fn, delay)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#queueTask) | Queues a microtask if delay is 0 or less and setTimeout if > 0.
 [PrimeFaces.scrollTo(scrollTarget, duration, topOffset)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#scrollTo) | Scrolls to a component with given client id or jQuery element. The scroll animation can be customized with a duration and an optional offset from the top of the target element.
@@ -112,18 +112,22 @@ do not exist anymore, see the migration guide.
 [PrimeFaces.env.getThemeContrast()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#getThemeContrast) | Gets the current theme contrast mode (light or dark)
 
 
-## PrimeFaces Widget (PrimeFaces.widget.*)
+## PrimeFaces Component (PrimeFaces.component.*)
 
-Contains custom [PrimeFaces widget classes](../jsdocs/modules/src_PrimeFaces.PrimeFaces.widget.html) like;
+Contains custom [PrimeFaces component classes](../jsdocs/modules/src_PrimeFaces.PrimeFaces.widget.html) like;
 
-- [PrimeFaces.widget.DataTable](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataTable-1.html)
-- [PrimeFaces.widget.VerticalTree](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.VerticalTree-1.html)
-- [PrimeFaces.widget.Poll](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Poll-1.html)
+- [PrimeFaces.component.DataTable](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataTable-1.html)
+- [PrimeFaces.component.VerticalTree](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.VerticalTree-1.html)
+- [PrimeFaces.component.Poll](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Poll-1.html)
 - and more...
 
-Most of the components have a corresponding client side widget with same name.
+Most of the components have a corresponding client side component with same name.
 
-_PrimeFaces.widgets_ is an object with all current widget instances, with the key being the widget var.
+_PrimeFaces.components_ is an object with all current component instances, with the key being the widget var.
+
+`PrimeFaces.widget` and `PrimeFaces.widgets` are deprecated aliases of `PrimeFaces.component` and
+`PrimeFaces.components` (same objects), as are the base classes `BaseWidget`, `DeferredWidget` and
+`DynamicOverlayWidget` of `BaseComponent`, `DeferredComponent` and `DynamicOverlayComponent`.
 
 ## PrimeFaces AJAX (PrimeFaces.ajax.*)
 

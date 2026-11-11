@@ -50,7 +50,7 @@ Without `icon` the button shows the dropdown icon, the icon token `--p-button-dr
 
 
 ## Client Side API
-Widget: `PrimeFaces.widget.MenuButton`
+Component: `PrimeFaces.component.MenuButton`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

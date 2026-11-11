@@ -1,17 +1,17 @@
 import { TieredMenu, type TieredMenuCfg } from "./tieredmenu.js";
 
 /**
- * The configuration for the {@link  ContextMenu} widget.
+ * The configuration for the {@link  ContextMenu} component.
  * 
  * You can access this configuration via {@link ContextMenu.cfg |cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg {
+export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.component.ContextMenuLikeComponentCfg {
     /**
      * Client side callback invoked before the
      * context menu is shown.
      */
-    beforeShow: PrimeFacesTypes.widget.ContextMenu.BeforeShowCallback;
+    beforeShow: PrimeFacesTypes.component.ContextMenu.BeforeShowCallback;
 
     /**
      * If true, prevents menu from being shown.
@@ -26,10 +26,10 @@ export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.widget.Co
     /**
      * Defines the selection behavior.
      */
-    selectionMode: PrimeFacesTypes.widget.ContextMenu.SelectionMode;
+    selectionMode: PrimeFacesTypes.component.ContextMenu.SelectionMode;
 
     /**
-     * Client ID of the target widget.
+     * Client ID of the target component.
      */
     target: string;
 
@@ -39,19 +39,19 @@ export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.widget.Co
     targetFilter: string;
 
     /**
-     * Widget variable of the target widget.
+     * Widget variable of the target component.
      */
     targetWidgetVar: string;
 }
 
 /**
- * __PrimeFaces ContextMenu Widget__
+ * __PrimeFaces ContextMenu Component__
  * 
  * ContextMenu provides an overlay menu displayed on mouse right-click event.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends TieredMenu<Cfg> implements PrimeFacesTypes.widget.ContextMenuLikeWidget {
+export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends TieredMenu<Cfg> implements PrimeFacesTypes.component.ContextMenuLikeComponent {
     /**
      * Target element of this context menu. A right click on the target brings up this context menu.
      */
@@ -63,7 +63,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
      */
     jqTargetId: string | Document = "";
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         cfg.autoDisplay = true;
         super.init(cfg);
 
@@ -102,13 +102,13 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
             let bound = false;
 
             if (this.cfg.targetWidgetVar) {
-                const targetWidget = PrimeFaces.widgets[this.cfg.targetWidgetVar];
+                const targetComponent = PrimeFaces.components[this.cfg.targetWidgetVar];
 
-                if (targetWidget) {
-                    if (typeof targetWidget.bindContextMenu === 'function') {
+                if (targetComponent) {
+                    if (typeof targetComponent.bindContextMenu === 'function') {
                         // TODO Requires cast "as string" to encode the implicit logic
                         // that when this.cfg.target is not undefined, we set this.jqTargetId to a string. 
-                        targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId as string, this.cfg);
+                        targetComponent.bindContextMenu(this, targetComponent, this.jqTargetId as string, this.cfg);
                         // GitHub #6776 IOS needs long touch on table/tree but Android does not
                         if(PrimeFaces.env.ios) {
                             this.bindTouchEvents();
@@ -137,7 +137,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -148,7 +148,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
     }
 
     /**
-    * Clean up this widget and remove events from the DOM.
+    * Clean up this component and remove events from the DOM.
     */
     private _cleanup(): void {
         if (this.cfg.target === undefined) {

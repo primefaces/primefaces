@@ -25,10 +25,10 @@ package org.primefaces.component.button;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -91,7 +91,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer<Button> {
     }
 
     public void encodeScript(FacesContext context, Button component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Button", component);
         wb.finish();
     }

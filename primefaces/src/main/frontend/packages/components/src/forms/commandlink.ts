@@ -1,25 +1,25 @@
 /**
- * The configuration for the {@link CommandLink} widget.
+ * The configuration for the {@link CommandLink} component.
  */
-export interface CommandLinkCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface CommandLinkCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces CommandLink Widget__
+ * __PrimeFaces CommandLink Component__
  *
  * CommandLink is an extended version of standard commandLink with AJAX and theming.
  */
-export class CommandLink<Cfg extends CommandLinkCfg = CommandLinkCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class CommandLink<Cfg extends CommandLinkCfg = CommandLinkCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The tabindex of the link, restored by {@link enable}. */
     tabIndex: string = '0';
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.tabIndex = this.jq.attr('tabindex') || '0';
         this.bindTriggers();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.jq.off('click.commandlink');
         $(document).off('.link' + this.id);
 
@@ -69,13 +69,13 @@ export class CommandLink<Cfg extends CommandLinkCfg = CommandLinkCfg> extends Pr
 
     /**
      * Ends the AJAX disabled state.
-     * @param widget The widget, this link.
+     * @param component The component, this link.
      */
-    endAjaxDisabled(widget: CommandLink): void {
-        widget.jq.removeClass('p-state-loading');
+    endAjaxDisabled(component: CommandLink): void {
+        component.jq.removeClass('p-state-loading');
 
-        if (!widget.cfg.disabledAttr) {
-            widget.enable();
+        if (!component.cfg.disabledAttr) {
+            component.enable();
         }
     }
 

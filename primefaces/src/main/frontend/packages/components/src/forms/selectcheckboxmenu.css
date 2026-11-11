@@ -394,7 +394,7 @@
         }
     }
 
-    /* the lists are p-widget-content: no background of their own, the rounded panel draws it */
+    /* the lists are p-component-content: no background of their own, the rounded panel draws it */
     .p-selectcheckboxmenu-items,
     .p-selectcheckboxmenu-list {
         background: transparent;

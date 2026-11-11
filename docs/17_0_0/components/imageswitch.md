@@ -35,7 +35,7 @@ and use client side api to create controls.
 <span onclick="PF('imageswitch').next();">Next</span>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.ImageSwitch_
+Component: _PrimeFaces.component.ImageSwitch_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

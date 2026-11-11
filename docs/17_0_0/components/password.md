@@ -47,7 +47,7 @@ other password component’s id should be used to define the _match_ option.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Password_
+Component: _PrimeFaces.component.Password_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Signature} widget.
+ * The configuration for the {@link Signature} component.
  */
-export interface SignatureCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SignatureCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Label of the canvas for screen readers. */
     ariaLabel: string;
     /** ID of the label of the canvas. */
@@ -41,11 +41,11 @@ type Point = [number, number];
 const DEFAULT_COLOR = '#000';
 
 /**
- * __PrimeFaces Signature Widget__
+ * __PrimeFaces Signature Component__
  *
  * Signature is used to draw a signature as an input, with the mouse, a pen, by touch or by typing a text.
  */
-export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The canvas the signature is drawn on. */
     canvas: JQuery<HTMLCanvasElement> = $();
     /** The hidden input with the signature lines as JSON. */
@@ -67,7 +67,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
      * lines or else from the typed text.
      * @param cfg The configuration of the signature.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.inputJson = this.jq.children(this.jqId + '_value');
         this.inputText = this.jq.children(this.jqId + '_text');
@@ -96,7 +96,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
     }
 
     /**
-     * Renders the client-side parts of this widget: a canvas with the size of the widget and its accessibility
+     * Renders the client-side parts of this component: a canvas with the size of the component and its accessibility
      * attributes, filled with the background and the guideline.
      */
     private render(): void {
@@ -124,7 +124,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
             return;
         }
 
-        // the label is not part of this widget, so it can survive an update of this widget
+        // the label is not part of this component, so it can survive an update of this component
         if (this.cfg.ariaLabelledBy) {
             const label = $(PrimeFaces.escapeClientId(this.cfg.ariaLabelledBy));
             const labelClickEvent = 'click.signature.' + this.id;
@@ -312,7 +312,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
     }
 
     /**
-     * Updates the base64 value of the signature widget with the canvas as PNG data URL, if `base64` is enabled.
+     * Updates the base64 value of the signature component with the canvas as PNG data URL, if `base64` is enabled.
      * @param clear Whether to clear the base64 value.
      */
     private updateBase64(clear: boolean = false): void {
@@ -339,7 +339,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
     }
 
     /**
-     * Clears this signature widget, removing all drawn lines and the typed text, and empties the hidden inputs. Calls
+     * Clears this signature component, removing all drawn lines and the typed text, and empties the hidden inputs. Calls
      * the `onchange` callback.
      */
     clear(): void {
@@ -414,11 +414,11 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
 
     /** Disables this input so that the user cannot draw or type a signature anymore. */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.inputJson);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.inputJson);
     }
 
     /** Enables this input so that the user can draw or type a signature. */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.inputJson);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.inputJson);
     }
 }

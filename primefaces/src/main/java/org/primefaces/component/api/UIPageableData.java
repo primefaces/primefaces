@@ -38,8 +38,8 @@ import jakarta.faces.context.FacesContext;
  */
 public abstract class UIPageableData extends PrimeUIData implements Pageable, TouchAware {
 
-    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "p-paginator p-paginator-top p-widget-header";
-    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "p-paginator p-paginator-bottom p-widget-header";
+    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "p-paginator p-paginator-top p-component-header";
+    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "p-paginator p-paginator-bottom p-component-header";
     public static final String PAGINATOR_PAGES_CLASS = "p-paginator-pages";
     public static final String PAGINATOR_CENTER_CONTENT_CLASS = "p-paginator-center-content";
     public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "p-paginator-top-left-content";
@@ -49,9 +49,9 @@ public abstract class UIPageableData extends PrimeUIData implements Pageable, To
     public static final String PAGINATOR_PAGE_CLASS = "p-paginator-page p-button p-button-flat p-state-default";
     public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "p-paginator-page p-button p-button-flat p-state-default p-state-active";
     public static final String PAGINATOR_CURRENT_CLASS = "p-paginator-current";
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "p-paginator-rpp-options p-widget p-state-default";
+    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "p-paginator-rpp-options p-component p-state-default";
     public static final String PAGINATOR_RPP_LABEL_CLASS = "p-paginator-rpp-label p-hidden";
-    public static final String PAGINATOR_JTP_SELECT_CLASS = "p-paginator-jtp-select p-widget p-state-default";
+    public static final String PAGINATOR_JTP_SELECT_CLASS = "p-paginator-jtp-select p-component p-state-default";
     public static final String PAGINATOR_JTP_INPUT_CLASS = "p-paginator-jtp-input " + InputText.STYLE_CLASS;
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "p-paginator-first p-state-default";
     public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "p-paginator-prev p-state-default";

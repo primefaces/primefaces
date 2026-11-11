@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link SplitButton} widget.
+ * The configuration for the {@link SplitButton} component.
  * 
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * You can access this configuration via {@link PrimeFaces.component.BaseComponent.cfg|BaseComponent.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SplitButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SplitButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * The search expression for the element to which the overlay panel should be appended.
      */
@@ -24,7 +24,7 @@ export interface SplitButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
      * Custom JavaScript function for filtering the
      * available split button actions.
      */
-    filterFunction: PrimeFacesTypes.widget.SplitButton.FilterFunction;
+    filterFunction: PrimeFacesTypes.component.SplitButton.FilterFunction;
 
     /**
      * Defines if the filter should receive focus on overlay popup.
@@ -35,7 +35,7 @@ export interface SplitButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
      * Match mode for filtering, how the search
      * term is matched against the items.
      */
-    filterMatchMode: PrimeFacesTypes.widget.SplitButton.FilterMatchMode;
+    filterMatchMode: PrimeFacesTypes.component.SplitButton.FilterMatchMode;
 
     /**
      * Defines if filtering would be done using normalized values.
@@ -50,13 +50,13 @@ export interface SplitButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces SplitButton Widget__
+ * __PrimeFaces SplitButton Component__
  *
  * SplitButton displays a command by default and additional ones in an overlay.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The DOM element for the main button.
      */
@@ -70,13 +70,13 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     /**
      * The current filter function.
      */
-    filterMatcher?: PrimeFacesTypes.widget.SplitButton.FilterFunction;
+    filterMatcher?: PrimeFacesTypes.component.SplitButton.FilterFunction;
 
     /**
      * A map of all flter functions. The
      * key is the name of the filter function.
      */
-    filterMatchers: Partial<Record<string, PrimeFacesTypes.widget.SplitButton.FilterFunction>> = {};
+    filterMatchers: Partial<Record<string, PrimeFacesTypes.component.SplitButton.FilterFunction>> = {};
 
     /**
      * Unbind callback for the hide overlay handler.
@@ -95,7 +95,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     menuButton: JQuery = $();
 
     /**
-     * The prefix shared ny the different IDs of the components of this widget.
+     * The prefix shared ny the different IDs of the components of this component.
      */
     menuId: string = "";
 
@@ -120,7 +120,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     scrollHandler?: PrimeFacesTypes.Unbindable;
 
     /**
-     * Handler for CSS transitions used by this widget.
+     * Handler for CSS transitions used by this component.
      */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
 
@@ -129,7 +129,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
      */
     isDynamicLoaded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
          super.init(cfg);
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
@@ -154,7 +154,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.menuButton.off('click.splitbutton');
         if (this.menuitems.length > 0) {
             this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
@@ -185,7 +185,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindEvents(): void {
         PrimeFaces.skinButton(this.button).skinButton(this.menuButton);
@@ -250,7 +250,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
             }
         });
 
-        PrimeFaces.bindButtonInlineAjaxStatus(this, this.button, (widget, settings) => {
+        PrimeFaces.bindButtonInlineAjaxStatus(this, this.button, (component, settings) => {
             // Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
             var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
             if (sourceId === null) {
@@ -377,7 +377,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     private highlightNext(event: JQuery.TriggeredEvent): void {
         const highlightedItem = this.menuitems.filter('.p-state-hover');
         const nextItems = highlightedItem.length
-            ? highlightedItem.nextAll(':not(.p-divider, .p-widget-header):visible')
+            ? highlightedItem.nextAll(':not(.p-divider, .p-component-header):visible')
             : this.menuitems.filter(':visible').eq(0);
 
         if(nextItems.length) {
@@ -395,7 +395,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     private highlightPrev(event: JQuery.TriggeredEvent): void {
         const highlightedItem = this.menuitems.filter('.p-state-hover');
         const prevItems = highlightedItem.length 
-            ? highlightedItem.prevAll(':not(.p-divider, .p-widget-header):visible')
+            ? highlightedItem.prevAll(':not(.p-divider, .p-component-header):visible')
             : null;
 
         if(prevItems && prevItems.length) {
@@ -492,7 +492,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
-            this.menuitemContainer.children('.p-widget-header').show();
+            this.menuitemContainer.children('.p-component-header').show();
             this.menuitemContainer.children('.p-divider').show();
         }
         else {
@@ -512,7 +512,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
             }
 
             //groups
-            const groupHeaders = this.menuitemContainer.children('.p-widget-header');
+            const groupHeaders = this.menuitemContainer.children('.p-component-header');
             for(var g = 0; g < groupHeaders.length; g++) {
                 var group = groupHeaders.eq(g);
 
@@ -524,7 +524,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                         group.show();
                     }
                 }
-                else if(group.nextUntil('.p-widget-header').filter(':visible').length === 0) {
+                else if(group.nextUntil('.p-component-header').filter(':visible').length === 0) {
                     group.hide();
                 }
                 else {

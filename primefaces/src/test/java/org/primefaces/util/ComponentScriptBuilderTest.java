@@ -30,6 +30,8 @@ import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
 
@@ -40,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class WidgetBuilderTest {
+class ComponentScriptBuilderTest {
 
-    protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return new WidgetBuilder(context, new PrimeConfigurationMock(context, new PrimeEnvironment(context)));
+    protected ComponentScriptBuilder getComponentScriptBuilder(FacesContext context) {
+        return new ComponentScriptBuilder(context, new PrimeConfigurationMock(context, new PrimeEnvironment(context)));
     }
 
     @Test
@@ -55,7 +57,7 @@ class WidgetBuilderTest {
         when(panel.resolveWidgetVar(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
 
-        WidgetBuilder builder = getWidgetBuilder(context);
+        ComponentScriptBuilder builder = getComponentScriptBuilder(context);
         builder.init("AccordionPanel", panel);
         builder.finish();
 
@@ -72,7 +74,7 @@ class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
         PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
         config.setMoveScriptsToBottom(true);
-        WidgetBuilder builder = new WidgetBuilder(context, config);
+        ComponentScriptBuilder builder = new ComponentScriptBuilder(context, config);
 
         Panel panel = mock(Panel.class);
         when(panel.resolveWidgetVar(context)).thenReturn("acco");
@@ -90,7 +92,7 @@ class WidgetBuilderTest {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder = getWidgetBuilder(context);
+        ComponentScriptBuilder builder = getComponentScriptBuilder(context);
         builder.initWithWindowLoad("AccordionPanel", "acco", "accoId");
         builder.finish();
 
@@ -105,7 +107,7 @@ class WidgetBuilderTest {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder = getWidgetBuilder(context);
+        ComponentScriptBuilder builder = getComponentScriptBuilder(context);
         builder.initWithComponentLoad("AccordionPanel", "acco", "accoId", "test");
         builder.finish();
 
@@ -125,7 +127,7 @@ class WidgetBuilderTest {
         when(table.resolveWidgetVar(context)).thenReturn("dt");
         when(table.getClientId(context)).thenReturn("dt1");
 
-        WidgetBuilder builder = getWidgetBuilder(context);
+        ComponentScriptBuilder builder = getComponentScriptBuilder(context);
         builder.init("DataTable", table);
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
@@ -148,7 +150,7 @@ class WidgetBuilderTest {
         when(table.resolveWidgetVar(context)).thenReturn("dt");
         when(table.getClientId(context)).thenReturn("dt1");
 
-        WidgetBuilder builder = getWidgetBuilder(context);
+        ComponentScriptBuilder builder = getComponentScriptBuilder(context);
         builder.init("DataTable", table);
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
@@ -169,7 +171,7 @@ class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
         PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
         config.setMoveScriptsToBottom(true);
-        WidgetBuilder builder = new WidgetBuilder(context, config);
+        ComponentScriptBuilder builder = new ComponentScriptBuilder(context, config);
 
         Panel panel = mock(Panel.class);
         when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
@@ -195,7 +197,7 @@ class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
         PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
         config.setMoveScriptsToBottom(true);
-        WidgetBuilder builder = new WidgetBuilder(context, config);
+        ComponentScriptBuilder builder = new ComponentScriptBuilder(context, config);
 
         Panel panel = mock(Panel.class);
         when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
@@ -211,5 +213,36 @@ class WidgetBuilderTest {
                 + ".cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\","
                 + "someAttribute:\"\\x3cscript\\x3ealert(\\x27Hello\\x20World\\x21\\x27)\\x3c\\/script\\x3e\"});</script>";
         assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    void lifecycleCallbacks() throws IOException {
+        CollectingResponseWriter writer = new CollectingResponseWriter();
+        FacesContext context = new FacesContextMock(writer);
+
+        Panel panel = mock(Panel.class);
+        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(panel.getClientId(context)).thenReturn("accoId");
+        Map<String, Object> attributes = new LinkedHashMap<>();
+        attributes.put("componentPreConstruct", "a()");
+        attributes.put("componentPostConstruct", "b()");
+        attributes.put("widgetPostConstruct", "ignored()");
+        attributes.put("widgetPostRefresh", "c()");
+        attributes.put("widgetPreDestroy", "d()");
+        when(panel.getAttributes()).thenReturn(attributes);
+
+        ComponentScriptBuilder builder = getComponentScriptBuilder(context);
+        builder.init("AccordionPanel", panel);
+        builder.finish();
+
+        assertEquals(
+                "<script id=\"accoId_s\" type=\"text/javascript\">$(function(){"
+                        + "PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\""
+                        + ",preConstruct:function(cfg){a()}"
+                        + ",postConstruct:function(component, widget){b()}"
+                        + ",postRefresh:function(component, widget){c()}"
+                        + ",preDestroy:function(component, widget){d()}"
+                        + "});});</script>",
+                writer.toString());
     }
 }

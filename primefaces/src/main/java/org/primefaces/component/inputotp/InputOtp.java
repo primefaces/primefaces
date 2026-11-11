@@ -47,8 +47,8 @@ public class InputOtp extends InputOtpBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputOtp";
 
-    public static final String STYLE_CLASS = "p-inputotp p-widget";
-    public static final String INPUT_CLASS = "p-inputotp-input p-inputfield p-inputtext p-widget p-state-default";
+    public static final String STYLE_CLASS = "p-inputotp p-component";
+    public static final String INPUT_CLASS = "p-inputotp-input p-inputfield p-inputtext p-component p-state-default";
     public static final String SEPARATOR_CLASS = "p-inputotp-separator";
 
     /**

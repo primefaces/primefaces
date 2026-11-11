@@ -1,19 +1,19 @@
 /**
- * The configuration for the {@link Chip} widget.
+ * The configuration for the {@link Chip} component.
  */
-export interface ChipCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ChipCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces Chip Widget__
+ * __PrimeFaces Chip Component__
  *
  * Chip represents entities using icons, labels and images.
  */
-export class Chip<Cfg extends ChipCfg = ChipCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Chip<Cfg extends ChipCfg = ChipCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The icon for closing this chip, when this chip is closable (an `x` by default). */
     removeIcon: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.removeIcon = this.jq.children('.p-chip-remove-icon');

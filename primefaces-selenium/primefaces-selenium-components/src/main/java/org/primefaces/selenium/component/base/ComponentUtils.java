@@ -86,7 +86,7 @@ public final class ComponentUtils {
     }
 
     public static String getWidgetByIdScript(String id) {
-        return "PrimeFaces.getWidgetById('" + id + "')";
+        return "PrimeFaces.getComponentById('" + id + "')";
     }
 
     /**

@@ -26,7 +26,7 @@ package org.primefaces.component.spotlight;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -53,7 +53,7 @@ public class SpotlightRenderer extends CoreRenderer<Spotlight> {
     }
 
     private void encodeScript(FacesContext context, Spotlight component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Spotlight", component)
             .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getTarget()))
             .attr("active", component.isActive(), false)

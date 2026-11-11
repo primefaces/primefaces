@@ -9,9 +9,9 @@ export interface GalleriaResponsiveOption {
 }
 
 /**
- * The configuration for the {@link Galleria} widget.
+ * The configuration for the {@link Galleria} component.
  */
-export interface GalleriaCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface GalleriaCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** Index of the first item. */
     activeIndex: number;
     /** Whether the items change on hover of an indicator. */
@@ -90,13 +90,13 @@ function translate(vertical: boolean, percent: number): string {
 }
 
 /**
- * __PrimeFaces Galleria Widget__
+ * __PrimeFaces Galleria Component__
  *
  * Galleria is a content gallery component.
  */
-export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, with the {@link DEFAULTS} applied by {@link init}. */
-    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & GalleriaDefaults;
+    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & GalleriaDefaults;
 
     /** Index of the displayed item. */
     activeIndex: number = 0;
@@ -121,7 +121,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
      * is visible.
      * @param cfg The configuration of the gallery.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg = { ...DEFAULTS, ...this.cfg };
         this.renderDeferred();
@@ -196,7 +196,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
      * Cleans up the previous rendering (slideshow, thumbnail listeners and styles) before the gallery is updated.
      * @param cfg The new configuration of the gallery.
      */
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.cleanup();
         super.refresh(cfg);
     }
@@ -209,7 +209,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
 
     /**
      * Releases what the rendering added outside of the gallery: the scroll lock of the body (only set while shown in
-     * fullscreen, other widgets like a dialog with `blockScroll` use it too), the slideshow interval and the resize
+     * fullscreen, other components like a dialog with `blockScroll` use it too), the slideshow interval and the resize
      * listener and styles of the thumbnails. Resets the rendering state for a refresh.
      */
     private cleanup(): void {
@@ -242,7 +242,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
                 $(document.body).addClass('p-overflow-hidden');
             },
             onEntering: () => {
-                PrimeFaces.nextZindex(this.mask.addClass('p-widget-overlay'));
+                PrimeFaces.nextZindex(this.mask.addClass('p-component-overlay'));
             }
         });
     }
@@ -259,7 +259,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
                 this.mask.addClass('p-galleria-mask-leave');
             },
             onExited: () => {
-                this.mask.removeClass('p-galleria-mask-leave p-widget-overlay').css('z-index', '');
+                this.mask.removeClass('p-galleria-mask-leave p-component-overlay').css('z-index', '');
             }
         });
     }

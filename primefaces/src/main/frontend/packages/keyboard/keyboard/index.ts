@@ -2,27 +2,27 @@ import "./src/jquery.keypad.js";
 import { KeyboardUtils } from "./src/keyboard.utils.js";
 import { Keyboard } from "./src/keyboard.js";
 
-// KeyboardUtils is not a widget, but it was always available in the widget scope
-Object.assign(PrimeFaces.widget, { KeyboardUtils });
-PrimeFaces.widget.Keyboard = Keyboard;
+// KeyboardUtils is not a component, but it was always available in the component scope
+Object.assign(PrimeFaces.component, { KeyboardUtils });
+PrimeFaces.component.Keyboard = Keyboard;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Keyboard: typeof Keyboard;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type KeyboardCfg = import("./src/keyboard.js").KeyboardCfg;
 
         /**
          * Contains a few utilities for parsing and working with different keyboard layout. Used by the Keyboard
-         * widget, available as `PrimeFaces.widget.KeyboardUtils`.
+         * component, available as `PrimeFaces.component.KeyboardUtils`.
          */
         export interface KeyboardUtils {
             /**
-             * The keyboard layouts that are available for the keyboard widget.
+             * The keyboard layouts that are available for the keyboard component.
              */
             readonly layouts: KeyboardUtils.PresetLayouts;
             /**
@@ -61,9 +61,9 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.widget.KeyboardUtils {
+    namespace PrimeFacesTypes.component.KeyboardUtils {
         /**
-         * The keyboard layouts that are available for the keyboard widget. Each keyboard layout is a list with one
+         * The keyboard layouts that are available for the keyboard component. Each keyboard layout is a list with one
          * entry for each keyboard row. Each row is a string that contains the characters available on that row.
          */
         export interface PresetLayouts {

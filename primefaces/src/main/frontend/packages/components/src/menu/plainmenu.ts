@@ -1,7 +1,7 @@
 import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
- * The configuration for the {@link  PlainMenu} widget.
+ * The configuration for the {@link  PlainMenu} component.
  * 
  * You can access this configuration via {@link PlainMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -19,7 +19,7 @@ export interface PlainMenuCfg extends MenuCfg {
 }
 
 /**
- * __PrimeFaces PlainMenu Widget__
+ * __PrimeFaces PlainMenu Component__
  * 
  * Menu is a navigation component with sub menus and menu items.
  * 
@@ -47,11 +47,11 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      */
     stateKey: string = "";
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.menuitemLinks = this.jq.find('.p-menuitem-link:not(.p-state-disabled)');
-        this.headers = this.jq.find('> .p-menu-list > .p-widget-header');
+        this.headers = this.jq.find('> .p-menu-list > .p-component-header');
 
         this.bindEvents();
         this.bindToggleable();
@@ -221,7 +221,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * @param direction The direction to navigate ('prev' or 'next').
      * @param firstOrLast The first or last item to navigate to ('first' or 'last').
      */
-    private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: PrimeFacesTypes.widget.PlainMenu.NavigationDirection, firstOrLast: string): void {
+    private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: PrimeFacesTypes.component.PlainMenu.NavigationDirection, firstOrLast: string): void {
         const targetItem = currentLink.parent()[`${direction}All`]('.p-menuitem:not(:has(.p-state-disabled)):' + firstOrLast);
         if (targetItem.length) {
             this.unfocus(currentLink, event);
@@ -244,7 +244,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * be saved (in an HTML5 Local Store), `false` otherwise. 
      */
     collapseSubmenu(header: JQuery, stateful?: boolean): void {
-        const items = header.nextUntil('li.p-widget-header');
+        const items = header.nextUntil('li.p-component-header');
 
         header.attr('aria-expanded', "false");
 
@@ -263,7 +263,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * be saved (in an HTML5 Local Store), `false` otherwise. 
      */
     expandSubmenu(header: JQuery, stateful?: boolean): void {
-        var items = header.nextUntil('li.p-widget-header');
+        var items = header.nextUntil('li.p-component-header');
 
         header.attr('aria-expanded', "true");
 

@@ -286,7 +286,7 @@
     transition-property: background-color;
     transition-duration: var(--p-mask-transition-duration);
 
-    &.p-widget-overlay {
+    &.p-component-overlay {
         pointer-events: auto;
         background-color: var(--p-galleria-mask-background);
         color: var(--p-galleria-mask-color);

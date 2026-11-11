@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link BaseTree} widget.
+ * The configuration for the {@link BaseTree} component.
  */
-export interface BaseTreeCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface BaseTreeCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** `true` is the tree is animated, or `false` otherwise. */
     animate: boolean;
     /**
@@ -14,7 +14,7 @@ export interface BaseTreeCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** `true` if nodes are draggable, or `false` otherwise. */
     draggable: boolean;
     /** Defines parent-child relationship when a node is dragged. */
-    dragMode: PrimeFacesTypes.widget.BaseTree.DragMode;
+    dragMode: PrimeFacesTypes.component.BaseTree.DragMode;
     /** When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key. */
     dropCopyNode: boolean;
     /** `true` if nodes are droppable, or `false` otherwise. */
@@ -26,23 +26,23 @@ export interface BaseTreeCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** `true` if filtering is enabled, `false` otherwise. */
     filter: boolean;
     /** Mode for filtering. */
-    filterMode: PrimeFacesTypes.widget.BaseTree.FilterMode;
+    filterMode: PrimeFacesTypes.component.BaseTree.FilterMode;
     /** `true` if selected nodes are highlighted, or `false` otherwise. */
     highlight: boolean;
     /** A map between the type of a node and the icons for that node. */
-    iconStates: Record<string, PrimeFacesTypes.widget.BaseTree.NodeIconSet>;
+    iconStates: Record<string, PrimeFacesTypes.component.BaseTree.NodeIconSet>;
     /** When enabled, the selected multiple nodes can be dragged from a tree to another tree. */
     multipleDrag: boolean;
     /** Node type of nodes for which the context menu is available. */
     nodeType: string;
     /** Callback that is invoked when a node is clicked. If it returns `false`, the click on the node is ignored. */
-    onNodeClick: PrimeFacesTypes.widget.BaseTree.OnNodeClickCallback;
+    onNodeClick: PrimeFacesTypes.component.BaseTree.OnNodeClickCallback;
     /** Whether toggling a node checkbox is propagated downwards. */
     propagateDown: boolean;
     /** Whether toggling a node checkbox is propagated upwards. */
     propagateUp: boolean;
     /** How the node of this tree can be selected, if selection is enabled at all. */
-    selectionMode: PrimeFacesTypes.widget.BaseTree.SelectionMode;
+    selectionMode: PrimeFacesTypes.component.BaseTree.SelectionMode;
 }
 
 /**
@@ -70,11 +70,11 @@ export interface BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> {
 }
 
 /**
- * __PrimeFaces Base Tree Widget__
+ * __PrimeFaces Base Tree Component__
  *
  * A tree is used for displaying hierarchical data and creating a site navigation.
  */
-export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** When multiple nodes are selected, the selected node on which the user clicked most recently. */
     cursorNode?: JQuery;
     /** DOM element of the node which is currently focused, if any. */
@@ -86,7 +86,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
     /** DOM element of the hidden form element that holds the list of selected nodes. */
     selectionHolder: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.highlight = (this.cfg.highlight === false) ? false : true;
         this.focusedNode = null;
@@ -120,10 +120,10 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
     }
 
     override bindContextMenu(
-        menuWidget: PrimeFacesTypes.widget.ContextMenuLikeWidget,
-        targetWidget: this,
+        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg>
+        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>
     ): void {
         const nodeContentSelector = targetId + ' .p-tree-selectable',
             containerEvent = cfg.event + '.tree' + this.id;
@@ -134,8 +134,8 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
             const nodeContent = $(e.currentTarget);
 
             if ($(e.target).is(':not(.p-tree-toggler)') && (cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType)) {
-                const isContextMenuDelayed = targetWidget.nodeRightClick(e, nodeContent, () => {
-                    menuWidget.show(e);
+                const isContextMenuDelayed = targetComponent.nodeRightClick(e, nodeContent, () => {
+                    menuComponent.show(e);
                 });
 
                 if (isContextMenuDelayed) {
@@ -146,8 +146,8 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
         });
 
         $(document).off(containerEvent, targetId).on(containerEvent, targetId, null, (e) => {
-            if (e.target.id == targetWidget.id && targetWidget.isEmpty()) {
-                menuWidget.show(e);
+            if (e.target.id == targetComponent.id && targetComponent.isEmpty()) {
+                menuComponent.show(e);
             }
         });
         this.addDestroyListener(() => {
@@ -626,7 +626,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
     }
 
     /**
-     * Called once during widget initialization if this tree has got nodes with selectable checkboxes.
+     * Called once during component initialization if this tree has got nodes with selectable checkboxes.
      */
     preselectCheckbox(): void {
         throw "Unsupported Operation";

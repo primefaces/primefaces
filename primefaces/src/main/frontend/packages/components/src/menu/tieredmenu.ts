@@ -1,9 +1,9 @@
 import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
- * The configuration for the {@link TieredMenu} widget.
+ * The configuration for the {@link TieredMenu} component.
  * 
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * You can access this configuration via {@link PrimeFaces.component.BaseComponent.cfg|BaseComponent.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
 export interface TieredMenuCfg extends MenuCfg {
@@ -27,11 +27,11 @@ export interface TieredMenuCfg extends MenuCfg {
     /**
      * Event to toggle the submenus.
      */
-    toggleEvent: PrimeFacesTypes.widget.TieredMenu.ToggleEvent;
+    toggleEvent: PrimeFacesTypes.component.TieredMenu.ToggleEvent;
 }
 
 /**
- * __PrimeFaces TieredMenu Widget__
+ * __PrimeFaces TieredMenu Component__
  * 
  * TieredMenu is used to display nested submenus with overlays.
  * 
@@ -86,7 +86,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
      */
     timeoutId?: number;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';
@@ -103,7 +103,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     protected bindEvents(): void {
         this.bindItemEvents();
@@ -499,7 +499,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
     }
 
     /**
-     * Deactivates all items and resets the state of this widget to its original state such that only the top-level menu
+     * Deactivates all items and resets the state of this component to its original state such that only the top-level menu
      * items are shown. 
      */
     reset(): void {

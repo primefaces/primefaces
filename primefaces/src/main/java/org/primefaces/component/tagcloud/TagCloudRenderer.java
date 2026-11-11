@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -87,7 +87,7 @@ public class TagCloudRenderer extends CoreRenderer<TagCloud> {
     }
 
     protected void encodeScript(FacesContext context, TagCloud component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TagCloud", component);
 
         encodeClientBehaviors(context, component);

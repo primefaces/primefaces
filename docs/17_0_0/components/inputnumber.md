@@ -91,7 +91,7 @@ Here are some examples demonstrating various cases;
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.InputNumber_
+Component: _PrimeFaces.component.InputNumber_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

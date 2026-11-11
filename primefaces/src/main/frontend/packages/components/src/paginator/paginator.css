@@ -164,7 +164,7 @@
         height: var(--p-paginator-nav-button-height);
         background: var(--p-paginator-nav-button-background);
         color: var(--p-paginator-nav-button-color);
-        /* native <button>s (no .p-widget) do not inherit the page font */
+        /* native <button>s (no .p-component) do not inherit the page font */
         font-family: inherit;
         font-size: var(--p-paginator-nav-button-font-size);
         font-weight: var(--p-paginator-nav-button-font-weight);

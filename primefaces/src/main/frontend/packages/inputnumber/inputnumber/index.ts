@@ -1,7 +1,7 @@
 import { InputNumber } from "./src/inputnumber.js";
 import _AutoNumeric from "autonumeric";
 
-PrimeFaces.widget.InputNumber = InputNumber;
+PrimeFaces.component.InputNumber = InputNumber;
 
 declare global {
     const AutoNumeric: typeof _AutoNumeric;
@@ -10,16 +10,16 @@ declare global {
     }
 
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             InputNumber: typeof InputNumber;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type InputNumberCfg = import("./src/inputnumber.js").InputNumberCfg;
     }
 
-    namespace PrimeFacesTypes.widget.InputNumber {
+    namespace PrimeFacesTypes.component.InputNumber {
         /**
          * Alias for the AutoNumeric options, required for technical reasons.
          */

@@ -48,7 +48,7 @@ public class SelectManyMenu extends SelectManyMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyMenu";
 
-    public static final String CONTAINER_CLASS = "p-selectmanymenu p-inputfield p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-selectmanymenu p-inputfield p-component p-component-content";
     public static final String HEADER_CLASS = "p-selectmanymenu-header";
     public static final String FOOTER_CLASS = "p-selectmanymenu-footer";
     public static final String LIST_CONTAINER_CLASS = "p-selectlistbox-listcontainer";
@@ -56,7 +56,7 @@ public class SelectManyMenu extends SelectManyMenuBaseImpl {
     public static final String ITEM_CLASS = "p-selectlistbox-item";
     public static final String CHECKBOX_CLASS = "p-selectlistbox-chkbox";
     public static final String FILTER_CONTAINER_CLASS = "p-selectlistbox-filter-container";
-    public static final String FILTER_CLASS = "p-selectlistbox-filter p-inputfield p-widget p-state-default";
+    public static final String FILTER_CLASS = "p-selectlistbox-filter p-inputfield p-component p-state-default";
     public static final String FILTER_ICON_CLASS = "p-icon p-search-icon p-selectlistbox-filter-icon";
     public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick", "ondblclick");
 

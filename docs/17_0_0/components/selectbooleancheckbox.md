@@ -6,7 +6,7 @@ SelectBooleanCheckbox is an extended version of the standard checkbox with theme
 SelectBooleanCheckbox usage is same as the standard one.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectBooleanCheckbox_
+Component: _PrimeFaces.component.SelectBooleanCheckbox_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

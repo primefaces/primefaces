@@ -36,12 +36,12 @@ public class PanelGrid extends PanelGridBaseImpl {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.PanelGrid";
 
-    public static final String CONTAINER_CLASS = "p-panelgrid p-widget";
-    public static final String CONTENT_CLASS = "p-panelgrid-content p-widget-content";
+    public static final String CONTAINER_CLASS = "p-panelgrid p-component";
+    public static final String CONTENT_CLASS = "p-panelgrid-content p-component-content";
     public static final String GRID_ROW_CLASS = "ui-g";
     public static final String HEADER_CLASS = "p-panelgrid-header";
     public static final String FOOTER_CLASS = "p-panelgrid-footer";
-    public static final String TABLE_ROW_CLASS = "p-widget-content";
+    public static final String TABLE_ROW_CLASS = "p-component-content";
     public static final String EVEN_ROW_CLASS = "p-panelgrid-even";
     public static final String ODD_ROW_CLASS = "p-panelgrid-odd";
     public static final String CELL_CLASS = "p-panelgrid-cell";

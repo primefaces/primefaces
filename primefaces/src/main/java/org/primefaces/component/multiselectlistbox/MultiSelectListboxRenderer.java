@@ -25,8 +25,8 @@ package org.primefaces.component.multiselectlistbox;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -149,7 +149,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectLis
     }
 
     protected void encodeScript(FacesContext context, MultiSelectListbox component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("MultiSelectListbox", component)
                 .attr("effect", component.getEffect(), null)

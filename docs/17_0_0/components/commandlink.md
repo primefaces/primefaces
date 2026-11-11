@@ -21,7 +21,7 @@ public class BookBean {
 ```
 
 ## Client Side API
-Widget: `PrimeFaces.widget.CommandLink`
+Component: `PrimeFaces.component.CommandLink`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

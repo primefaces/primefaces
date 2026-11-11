@@ -69,7 +69,7 @@ Different color options are available as severity levels.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.ProgressBar_
+Component: _PrimeFaces.component.ProgressBar_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

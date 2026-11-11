@@ -1,12 +1,12 @@
 import { Menu } from "./menu.base.js";
 
 /**
- * The configuration for the {@link  MegaMenu} widget.
+ * The configuration for the {@link  MegaMenu} component.
  * 
  * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MegaMenuCfg extends PrimeFacesTypes.widget.MenuCfg {
+export interface MegaMenuCfg extends PrimeFacesTypes.component.MenuCfg {
     /**
      * Index of the root menu item whose highlight persists during navigation.
      */
@@ -28,7 +28,7 @@ export interface MegaMenuCfg extends PrimeFacesTypes.widget.MenuCfg {
 }
 
 /**
- * __PrimeFaces MegaMenu Widget__
+ * __PrimeFaces MegaMenu Component__
  *
  * MegaMenu is a horizontal navigation component that displays sub menus together.
  *
@@ -80,7 +80,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      */
     timeoutId?: number = undefined;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.vertical = this.jq.hasClass('p-megamenu-vertical');
@@ -97,7 +97,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
 
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         var $this = this;

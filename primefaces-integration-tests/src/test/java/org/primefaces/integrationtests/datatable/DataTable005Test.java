@@ -139,11 +139,11 @@ class DataTable005Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
 
         // make sure rows 3,4,5 are still selected and 0,1 not selected
-        assertCss(dataTable.getRow(0).getWebElement(), "p-widget-content", "p-datatable-even", "p-datatable-selectable");
-        assertCss(dataTable.getRow(1).getWebElement(), "p-widget-content", "p-datatable-odd", "p-datatable-selectable");
-        assertCss(dataTable.getRow(2).getWebElement(), "p-widget-content", "p-datatable-even", "p-datatable-selectable", "p-state-highlight");
-        assertCss(dataTable.getRow(3).getWebElement(), "p-widget-content", "p-datatable-odd", "p-datatable-selectable", "p-state-highlight");
-        assertCss(dataTable.getRow(4).getWebElement(), "p-widget-content", "p-datatable-even", "p-datatable-selectable", "p-state-highlight");
+        assertCss(dataTable.getRow(0).getWebElement(), "p-component-content", "p-datatable-even", "p-datatable-selectable");
+        assertCss(dataTable.getRow(1).getWebElement(), "p-component-content", "p-datatable-odd", "p-datatable-selectable");
+        assertCss(dataTable.getRow(2).getWebElement(), "p-component-content", "p-datatable-even", "p-datatable-selectable", "p-state-highlight");
+        assertCss(dataTable.getRow(3).getWebElement(), "p-component-content", "p-datatable-odd", "p-datatable-selectable", "p-state-highlight");
+        assertCss(dataTable.getRow(4).getWebElement(), "p-component-content", "p-datatable-even", "p-datatable-selectable", "p-state-highlight");
     }
 
     private void assertMessage(String summary, String detail) {

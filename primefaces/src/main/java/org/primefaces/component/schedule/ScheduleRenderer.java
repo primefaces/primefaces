@@ -29,11 +29,11 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -176,7 +176,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
 
     protected void encodeScript(FacesContext context, Schedule component) throws IOException {
         Locale locale = component.calculateLocale(context);
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("Schedule", component)
                 .attr("urlTarget", component.getUrlTarget(), "_blank")
@@ -294,7 +294,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
         String styleClass = getStyleClassBuilder(context)
-                .add("p-widget")
+                .add("p-component")
                 .add(component.getStyleClass())
                 .build();
         writer.writeAttribute("class", styleClass, "class");

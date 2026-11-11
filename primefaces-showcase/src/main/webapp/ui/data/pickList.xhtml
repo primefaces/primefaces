@@ -14,7 +14,7 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/picklist"/>
-    <ui:param name="widgetLink" value="PickList-1"/>
+    <ui:param name="componentLink" value="PickList-1"/>
     <ui:param name="tagName" value="pickList"/>
 
     <ui:define name="implementation">
@@ -44,7 +44,7 @@
                             targetFilterPlaceholder="Filter subscribed countries"
                             filterMatchMode="contains" converter="#{countryConverter}" responsive="true">
 
-                    <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All';" />
+                    <f:attribute name="componentPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All';" />
                     <f:facet name="sourceCaption">Unsubscribed</f:facet>
                     <f:facet name="targetCaption">Subscribed</f:facet>
 

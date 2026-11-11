@@ -1,15 +1,15 @@
 import { DataTable, type DataTableCfg } from "./datatable.js";
 
 /**
- * The configuration for the {@link FrozenDataTable} widget. You can access this configuration via
- * {@link PrimeFaces.widget.BaseWidget.cfg | BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * The configuration for the {@link FrozenDataTable} component. You can access this configuration via
+ * {@link PrimeFaces.component.BaseComponent.cfg | BaseComponent.cfg}. Please note that this configuration is usually meant to be
  * read-only and should not be modified.
  */
 export interface FrozenDataTableCfg extends DataTableCfg {
 }
 
 /**
- * __PrimeFaces DataTable with Frozen Columns Widget__
+ * __PrimeFaces DataTable with Frozen Columns Component__
  */
 export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg> extends DataTable<Cfg> {
     /** The DOM element for the frozen body. */
@@ -142,7 +142,7 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
         this.restoreScrollState();
 
         if(this.cfg.virtualScroll) {
-            var row = this.scrollTbody.children('tr.p-widget-content');
+            var row = this.scrollTbody.children('tr.p-component-content');
             if(row) {
                 this.rowHeight = row.outerHeight();
                 this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit! * this.rowHeight!) + 'px'));
@@ -268,7 +268,7 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
 
         var headerWidth = width + this.frozenLayout!.width()!;
 
-        this.jq.children('.p-widget-header').each((_i, el) => {
+        this.jq.children('.p-component-header').each((_i, el) => {
             this.setOuterWidth($(el), headerWidth);
         });
     }
@@ -424,7 +424,7 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
         this.updateColspan(expansionRow);
         expansionRow.show();
 
-        twinRow.after('<tr class="p-expanded-row-content p-widget-content"><td></td></tr>');
+        twinRow.after('<tr class="p-expanded-row-content p-component-content"><td></td></tr>');
         // was ".attr('colspan', this.updateColspan(twinRow))" in the chain: updateColspan returns nothing, and jQuery's
         // attr(name, undefined) does not change anything, so only the call of updateColspan remains (same order)
         var twinExpansionCells = twinRow.next().children('td');
@@ -462,8 +462,8 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
     }
 
     override invalidateRow(index: number): void {
-        this.frozenTbody!.children('tr').eq(index).addClass('p-widget-content p-row-editing p-state-error');
-        this.scrollTbody!.children('tr').eq(index).addClass('p-widget-content p-row-editing p-state-error');
+        this.frozenTbody!.children('tr').eq(index).addClass('p-component-content p-row-editing p-state-error');
+        this.scrollTbody!.children('tr').eq(index).addClass('p-component-content p-row-editing p-state-error');
     }
 
     override getRowEditors(row: JQuery): JQuery {

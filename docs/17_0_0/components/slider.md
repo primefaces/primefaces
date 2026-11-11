@@ -91,7 +91,7 @@ function handleSlideEnd(event, ui) {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Slider_
+Component: _PrimeFaces.component.Slider_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

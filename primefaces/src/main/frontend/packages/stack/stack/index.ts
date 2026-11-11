@@ -1,15 +1,15 @@
 import { Stack } from "./src/stack.js";
 
-PrimeFaces.widget.Stack = Stack;
+PrimeFaces.component.Stack = Stack;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Stack: typeof Stack;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type StackCfg = import("./src/stack.js").StackCfg;
     }
 }

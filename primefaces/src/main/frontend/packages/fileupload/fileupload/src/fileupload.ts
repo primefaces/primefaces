@@ -1,6 +1,6 @@
 // TODO: Bad global modifications of object shapes
 declare global {
-    // This widget sets properties on the builtin File object (that it normally
+    // This component sets properties on the builtin File object (that it normally
     // does not have). For now, we just tell TypeScript that this is what we are
     // doing. In the future, we could use e.g. a WeakMap to associate additional
     // data with a File object, instead of mutating the shape of a built-in object. 
@@ -8,7 +8,7 @@ declare global {
         ajaxRequest?: JQueryFileUpload.AddCallbackData | null;
         row?: JQuery | null;
     }
-    // In a similar manner, this widget also sets additional properties on the
+    // In a similar manner, this component also sets additional properties on the
     // JQuery XHR settings object. For now, we just tell TypeScript that this
     // is what we are doing. In the future, we need to look for a better way,
     // such as passing the data directly to the methods.
@@ -17,7 +17,7 @@ declare global {
             pfArgs?: PrimeFacesTypes.ajax.PrimeFacesArgs;
         }
     }
-    // In a similar manner, this widget also sets additional properties on the
+    // In a similar manner, this component also sets additional properties on the
     // blue imp file upload options. For now, we just tell TypeScript that this
     // is what we are doing. In the future, we need to look for a better way,
     // such as passing the data directly to the methods, or simply reading it
@@ -33,12 +33,12 @@ declare global {
 }
 
 /**
- * The configuration for the {@link FileUpload} widget.
+ * The configuration for the {@link FileUpload} component.
  * 
  * You can access this configuration via {@link FileUpload.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface FileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface FileUploadCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Regular expression for accepted file types.
      */
@@ -96,44 +96,44 @@ export interface FileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Callback invoked when an uploaded file is added.
      */
-    onAdd: PrimeFacesTypes.widget.FileUpload.OnAddCallback;
+    onAdd: PrimeFacesTypes.component.FileUpload.OnAddCallback;
 
     /**
      * Callback that is invoked when a file upload was
      * canceled.
      */
-    oncancel: PrimeFacesTypes.widget.FileUpload.OnCancelCallback;
+    oncancel: PrimeFacesTypes.component.FileUpload.OnCancelCallback;
 
     /**
      * Callback that is invoked after a file was
      * uploaded to the server successfully.
      */
-    oncomplete: PrimeFacesTypes.widget.FileUpload.OnCompleteCallback;
+    oncomplete: PrimeFacesTypes.component.FileUpload.OnCompleteCallback;
 
     /**
      * Callback that is invoked when a file could not be
      * uploaded to the server.
      */
-    onerror: PrimeFacesTypes.widget.FileUpload.OnErrorCallback;
+    onerror: PrimeFacesTypes.component.FileUpload.OnErrorCallback;
 
     /**
      * Callback that is invoked at the beginning of a file
      * upload, when a file is sent to the server.
      */
-    onstart: PrimeFacesTypes.widget.FileUpload.OnStartCallback;
+    onstart: PrimeFacesTypes.component.FileUpload.OnStartCallback;
 
     /**
      * Callback to execute before the files are sent.
      * If this callback returns false, the file upload request is not started.
      */
-    onupload: PrimeFacesTypes.widget.FileUpload.OnUploadCallback;
+    onupload: PrimeFacesTypes.component.FileUpload.OnUploadCallback;
 
     /**
      * Callback to execute when the files failed to validate, such as when the
      * file size exceed the configured limit. This callback is called once for
      * each invalid file.
      */
-    onvalidationfailure: PrimeFacesTypes.widget.FileUpload.OnValidationFailureCallback;
+    onvalidationfailure: PrimeFacesTypes.component.FileUpload.OnValidationFailureCallback;
 
     /**
      * Width for image previews in pixels.
@@ -169,14 +169,14 @@ export interface FileUploadCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces FileUpload Widget__
+ * __PrimeFaces FileUpload Component__
  *
  * FileUpload goes beyond the browser input `type="file"` functionality and features an HTML5 powered rich solution with
  * graceful degradation for legacy browsers.
  */
-export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
-     * The DOM element for the bar with the buttons of this widget.
+     * The DOM element for the bar with the buttons of this component.
      */
     buttonBar: JQuery = $();
 
@@ -197,7 +197,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     clearMessageLink: JQuery = $();
 
     /**
-     * The DOM element for the content of this widget.
+     * The DOM element for the content of this component.
      */
     content: JQuery = $();
 
@@ -247,7 +247,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     filesTbody: JQuery = $();
 
     /**
-     * The DOM element for the form containing this upload widget.
+     * The DOM element for the form containing this upload component.
      */
     form: JQuery = $();
 
@@ -289,7 +289,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
      */
     static IMAGE_TYPES: RegExp = /([./])(gif|jpe?g|png)$/i;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         
         if (this.cfg.disabled) {
@@ -510,7 +510,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                         data.context = $(this);
                     }
 
-                    // jQuery Widget Factory uses "namespace-widgetname" since version 1.10.0:
+                    // jQuery UI Widget Factory uses "namespace-widgetname" since version 1.10.0:
                     const fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
                     let retries = data.context.data('retries') || 0;
 
@@ -625,7 +625,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Adds a file selected by the user to this upload widget.
+     * Adds a file selected by the user to this upload component.
      * @param file A file to add.
      * @param data The data from the selected file.
      */
@@ -640,11 +640,11 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                 .append('<div class="p-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
                 .append('<div>' + PrimeFaces.utils.formatBytes(file.size) + '</div>')
                 .append('<div class="p-fileupload-progress"></div>')
-                .append('<div><button class="p-fileupload-cancel p-button p-widget p-state-default p-button-icon-only"><span class="p-button-icon-left p-icon p-close-icon p-fileupload-cancel-icon"></span><span class="p-button-text">p-button</span></button></div>')
+                .append('<div><button class="p-fileupload-cancel p-button p-component p-state-default p-button-icon-only"><span class="p-button-icon-left p-icon p-close-icon p-fileupload-cancel-icon"></span><span class="p-button-text">p-button</span></button></div>')
                 .appendTo(this.filesFacet);
 
         if(this.filesFacet.children('.p-fileupload-row').length > 1) {
-            $('<div class="p-widget-content"></div>').prependTo(row);
+            $('<div class="p-component-content"></div>').prependTo(row);
         }
 
         //preview
@@ -679,7 +679,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
 
         //progress
         row.children('div.p-fileupload-progress')
-                .append('<div class="p-progressbar p-widget p-widget-content" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="p-progressbar-value p-widget-header" style="display: none; width: 0%;"></div></div>');
+                .append('<div class="p-progressbar p-component p-component-content" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="p-progressbar-value p-component-header" style="display: none; width: 0%;"></div></div>');
 
         file.row = row;
         file.row.data('fileId', this.fileId++);
@@ -695,7 +695,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Called after a file was added to this upload widget. Takes care of the UI buttons.
+     * Called after a file was added to this upload component. Takes care of the UI buttons.
      * @param data Data of the selected file.
      */
     private postSelectFile(data: JQueryFileUpload.AddCallbackData): void {
@@ -711,7 +711,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Sets up all events listeners for this file upload widget.
+     * Sets up all events listeners for this file upload component.
      */
     private bindEvents(): void {
         var $this = this;
@@ -932,8 +932,8 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Removes the given uploaded file from this upload widget.
-     * @param files Files to remove from this widget.
+     * Removes the given uploaded file from this upload component.
+     * @param files Files to remove from this component.
      */
     private removeFiles(files: File[]) {
         for (const file of files) {
@@ -942,8 +942,8 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Removes the given uploaded file from this upload widget.
-     * @param file File to remove from this widget.
+     * Removes the given uploaded file from this upload component.
+     * @param file File to remove from this component.
      */
     private removeFile(file: File): void {
         this.files = $.grep(this.files, (value) => {
@@ -957,7 +957,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Removes a row with an uploaded file form this upload widget.
+     * Removes a row with an uploaded file form this upload component.
      * @param row Row of an uploaded file to remove.
      */
     private removeFileRow(row: JQuery): void {
@@ -996,10 +996,10 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Displays the current error messages on this widget.
+     * Displays the current error messages on this component.
      */
     private renderMessages(): void {
-        var markup = '<div class="p-messages p-widget p-hidden p-fileupload-messages"><div class="p-messages-error">' +
+        var markup = '<div class="p-messages p-component p-hidden p-fileupload-messages"><div class="p-messages-error">' +
                 '<a class="p-messages-close" href="#"><span class="p-icon p-close-icon p-messages-close-icon"></span></a>' +
                 '<span class="p-messages-error-icon p-icon p-error-icon"></span>' +
                 '<ul></ul>' +
@@ -1011,7 +1011,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Removes all error messages that are shown for this widget.
+     * Removes all error messages that are shown for this component.
      */
     clearMessages(): void {
         this.messageContainer.hide();

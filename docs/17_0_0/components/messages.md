@@ -44,7 +44,7 @@ Messages escapes HTML content in messages, disable escape option to display cont
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Messages_
+Component: _PrimeFaces.component.Messages_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

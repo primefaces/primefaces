@@ -17,7 +17,7 @@ requests as well as regular navigation to an external url.
 </p:splitButton>
 ```
 ## Client Side API
-Widget: `PrimeFaces.widget.SplitButton`
+Component: `PrimeFaces.component.SplitButton`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

@@ -3,7 +3,7 @@ import Cropper from "cropperjs";
 
 import { ImageCropper } from "./src/imagecropper.js";
 
-PrimeFaces.widget.ImageCropper = ImageCropper;
+PrimeFaces.component.ImageCropper = ImageCropper;
 
 declare global {
     interface Window {
@@ -11,12 +11,12 @@ declare global {
     }
 
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ImageCropper: typeof ImageCropper;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ImageCropperCfg = import("./src/imagecropper.js").ImageCropperCfg;
     }
 }

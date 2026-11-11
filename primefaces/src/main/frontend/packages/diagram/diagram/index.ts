@@ -2,7 +2,7 @@ import * as _jsPlumb from "jsplumb";
 
 import { Diagram } from "./src/diagram.js";
 
-PrimeFaces.widget.Diagram = Diagram;
+PrimeFaces.component.Diagram = Diagram;
 
 declare global {
     const jsPlumb: typeof _jsPlumb.jsPlumb;
@@ -15,16 +15,16 @@ declare global {
     }
 
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Diagram: typeof Diagram;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DiagramCfg = import("./src/diagram.js").DiagramCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Diagram {
+    namespace PrimeFacesTypes.component.Diagram {
         /**
          * Details about a connection between two nodes that was either established or dissolved.
          */

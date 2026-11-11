@@ -27,9 +27,9 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -80,7 +80,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
     }
 
     protected void encodeScript(FacesContext context, ConfirmDialog component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("ConfirmDialog", component)
                 .attr("visible", component.isVisible(), false)

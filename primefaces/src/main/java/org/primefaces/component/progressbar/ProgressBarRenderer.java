@@ -26,7 +26,7 @@ package org.primefaces.component.progressbar;
 import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -117,7 +117,7 @@ public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
     protected void encodeScript(FacesContext context, ProgressBar component) throws IOException {
         boolean isAjax = component.isAjax();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("ProgressBar", component)
                 .attr("initialValue", component.getValue())
                 .attr("ajax", isAjax)

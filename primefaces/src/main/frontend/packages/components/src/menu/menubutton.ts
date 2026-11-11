@@ -1,9 +1,9 @@
 import { TieredMenu, type TieredMenuCfg } from "./tieredmenu.js";
 
 /**
- * The configuration for the {@link  MenuButton} widget.
+ * The configuration for the {@link  MenuButton} component.
  * 
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * You can access this configuration via {@link PrimeFaces.component.BaseComponent.cfg|BaseComponent.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
 export interface MenuButtonCfg extends TieredMenuCfg {
@@ -26,7 +26,7 @@ export interface MenuButtonCfg extends TieredMenuCfg {
 }
 
 /**
- * __PrimeFaces MenuButton Widget__
+ * __PrimeFaces MenuButton Component__
  *
  * MenuButton displays different commands in a popup menu.
  *
@@ -53,7 +53,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
      */
     menuitems: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.menu = null;
@@ -68,7 +68,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
         this.setupDialogSupport();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.trigger.off('.menubutton');
         $(document).off('.' + this.id);
 
@@ -109,7 +109,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindButtonEvents(): void {
         var $this = this;
@@ -172,10 +172,10 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
             }
         });
 
-        PrimeFaces.bindButtonInlineAjaxStatus(this, this.trigger, (widget, settings) => {
+        PrimeFaces.bindButtonInlineAjaxStatus(this, this.trigger, (component, settings) => {
             // Checks whether one if its menu items equals the source ID from the provided settings.
             var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
-            if (!widget || sourceId === null) {
+            if (!component || sourceId === null) {
                 return false;
             }
             return this.links.filter('[id="' + sourceId + '"]').length > 0;

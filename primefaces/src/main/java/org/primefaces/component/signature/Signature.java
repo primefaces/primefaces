@@ -42,8 +42,8 @@ public class Signature extends SignatureBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 
-    public static final String STYLE_CLASS = "p-signature p-inputfield p-inputtextarea p-widget p-state-default";
-    public static final String READONLY_STYLE_CLASS = "p-widget p-widget-content";
+    public static final String STYLE_CLASS = "p-signature p-inputfield p-inputtextarea p-component p-state-default";
+    public static final String READONLY_STYLE_CLASS = "p-component p-component-content";
 
     @Override
     public void processUpdates(FacesContext context) {

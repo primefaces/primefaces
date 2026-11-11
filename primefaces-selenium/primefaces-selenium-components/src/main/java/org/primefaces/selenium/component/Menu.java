@@ -83,7 +83,7 @@ public abstract class Menu extends AbstractComponent {
      * @return the submenu header {@code li} elements
      */
     public List<WebElement> getSubmenuHeaders() {
-        return findElements(By.cssSelector(":scope > ul.p-menu-list > li.p-widget-header"));
+        return findElements(By.cssSelector(":scope > ul.p-menu-list > li.p-component-header"));
     }
 
     /**

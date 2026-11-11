@@ -1,32 +1,32 @@
 import { Clock, SimpleDateFormat } from "./src/clock.js";
 
-PrimeFaces.widget.Clock = Clock;
-// TODO SimpleDateFormat is NOT a widget, just a class, and should not be added to the PrimeFaces.widget scope
+PrimeFaces.component.Clock = Clock;
+// TODO SimpleDateFormat is NOT a component, just a class, and should not be added to the PrimeFaces.component scope
 // Add it for now to preserve backwards compatibility in case external code uses it.
-PrimeFaces.widget.SimpleDateFormat = SimpleDateFormat;
+PrimeFaces.component.SimpleDateFormat = SimpleDateFormat;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Clock: typeof Clock;
             SimpleDateFormat: typeof SimpleDateFormat;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ClockCfg = import("./src/clock.js").ClockCfg;
         export type SimpleDateFormatCfg = import("./src/clock.js").SimpleDateFormatCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Clock {
+    namespace PrimeFacesTypes.component.Clock {
         /**
-         * Indicates which time the clock widget uses. `client` uses the time from the client (browser), `server` uses
+         * Indicates which time the clock component uses. `client` uses the time from the client (browser), `server` uses
          * the time from the server.
          */
         export type TimeMode = "client" | "server";
 
         /**
-         * Display mode for the clock widget. `analog` displays an analog clock, `digital` a digitial clock.
+         * Display mode for the clock component. `analog` displays an analog clock, `digital` a digitial clock.
          */
         export type DisplayMode = "analog" | "digital";
 

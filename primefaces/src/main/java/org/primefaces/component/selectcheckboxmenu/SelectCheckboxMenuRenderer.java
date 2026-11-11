@@ -27,11 +27,11 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -671,7 +671,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
     }
 
     protected void encodeScript(FacesContext context, SelectCheckboxMenu component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectCheckboxMenu", component)
                 .callback("onShow", "function()", component.getOnShow())
                 .callback("onHide", "function()", component.getOnHide())

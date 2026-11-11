@@ -72,7 +72,7 @@ Header of the component is defined using header facet.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DataScroller_
+Component: _PrimeFaces.component.DataScroller_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

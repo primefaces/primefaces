@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link Menu} widget.
+ * The configuration for the {@link Menu} component.
  * 
  * You can access this configuration via {@link Menu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface MenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Search expression for the element to which the menu overlay is appended.
      */
@@ -45,13 +45,13 @@ export interface MenuCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Menu Widget__
+ * __PrimeFaces Menu Component__
  * 
- * Base class for the different menu widgets, such as the `PlainMenu` or the `TieredMenu`.
+ * Base class for the different menu components, such as the `PlainMenu` or the `TieredMenu`.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * Unbind callback for the hide overlay handler.
      */
@@ -83,7 +83,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
     tabIndex: string = "0";
 
     /**
-     * Handler for CSS transitions used by this widget.
+     * Handler for CSS transitions used by this component.
      */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
 
@@ -92,7 +92,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
      */
     trigger: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         
         this.tabIndex = this.cfg.tabIndex || "0";
@@ -324,7 +324,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
     }
 
     /**
-     * Aligns this menu as specified in its widget configuration (property `pos`).
+     * Aligns this menu as specified in its component configuration (property `pos`).
      */
     align(): void {
         PrimeFaces.utils.position(this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }), this.cfg.pos ?? {});

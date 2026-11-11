@@ -6,9 +6,9 @@ import examples from "libphonenumber-js/mobile/examples";
 import { isAllowedCountry } from "./inputphone.validator.js";
 
 /**
- * The configuration for the {@link InputPhone} widget.
+ * The configuration for the {@link InputPhone} component.
  */
-export interface InputPhoneCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg {
+export interface InputPhoneCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
     /** Whether the user can select the country. */
     allowDropdown: boolean;
     /** In the international format: whether the calling code is filled in on focus and removed if nothing else is entered. */
@@ -108,14 +108,14 @@ function isSupportedLocale(locale: string): boolean {
 }
 
 /**
- * __PrimeFaces InputPhone Widget__
+ * __PrimeFaces InputPhone Component__
  *
  * InputPhone is an input for international phone numbers. The country is selected in a panel with a filter or
  * detected from a number entered with its calling code (e.g. `+44`). The number is formatted with libphonenumber-js
  * while the user types and submitted in the E.164 format (e.g. `+4930123456`); a number that is not valid for its
  * country is submitted as entered, so the server rejects it.
  */
-export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends PrimeFaces.widget.DynamicOverlayWidget<Cfg> {
+export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends PrimeFaces.component.DynamicOverlayComponent<Cfg> {
     /** The visible input with the formatted number. */
     input: JQuery<HTMLInputElement> = $();
     /** The hidden input with the submitted number. */
@@ -155,11 +155,11 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
     private countrySelected: boolean = false;
 
     /**
-     * Initializes the widget: creates the panel, selects the country of the value (or the initial country) and
+     * Initializes the component: creates the panel, selects the country of the value (or the initial country) and
      * formats the value.
-     * @param cfg The configuration of the widget.
+     * @param cfg The configuration of the component.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         // an AJAX update calls init() again on this instance: the state of the old panel is reset
         this.items = $();
         this.highlightedItem = $();
@@ -220,10 +220,10 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
      * @returns The panel.
      */
     private createPanel(id: string): JQuery {
-        const panel = $('<div class="p-inputphone-panel p-widget p-widget-content p-input-overlay p-hidden"></div>')
+        const panel = $('<div class="p-inputphone-panel p-component p-component-content p-input-overlay p-hidden"></div>')
             .attr('id', id + '_panel');
         const filterContainer = $('<div class="p-inputphone-filter-container"></div>').appendTo(panel);
-        this.filterInput = $('<input type="text" class="p-inputphone-filter p-inputfield p-inputtext p-widget p-state-default"'
+        this.filterInput = $('<input type="text" class="p-inputphone-filter p-inputfield p-inputtext p-component p-state-default"'
             + ' autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="true">')
             .attr({ 'aria-controls': id + '_list' })
             .appendTo(filterContainer) as JQuery<HTMLInputElement>;
@@ -758,7 +758,7 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
     }
 
     /**
-     * Alias of {@link getValue}, like the widget of PrimeFaces Extensions.
+     * Alias of {@link getValue}, like the component of PrimeFaces Extensions.
      * @returns The number in the E.164 format.
      */
     getNumber(): string {
@@ -766,7 +766,7 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
     }
 
     /**
-     * Alias of {@link setValue}, like the widget of PrimeFaces Extensions.
+     * Alias of {@link setValue}, like the component of PrimeFaces Extensions.
      * @param number The number.
      */
     setNumber(number: string | null | undefined): void {
@@ -793,7 +793,7 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
      */
     override disable(): void {
         this.hide();
-        PrimeFaces.utils.disableInputWidget(this.input, null);
+        PrimeFaces.utils.disableInputComponent(this.input, null);
         this.hiddenInput.add(this.countryInput).prop('disabled', true);
         this.countryButton.prop('disabled', true);
         this.jq.addClass('p-state-disabled');
@@ -810,7 +810,7 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
             PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
             this.bindDropdownEvents();
         }
-        PrimeFaces.utils.enableInputWidget(this.input);
+        PrimeFaces.utils.enableInputComponent(this.input);
         this.hiddenInput.add(this.countryInput).prop('disabled', false);
         this.countryButton.prop('disabled', false);
         this.jq.removeClass('p-state-disabled');

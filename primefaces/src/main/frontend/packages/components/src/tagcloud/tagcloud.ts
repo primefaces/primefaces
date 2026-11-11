@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link TagCloud} widget.
+ * The configuration for the {@link TagCloud} component.
  */
-export interface TagCloudCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface TagCloudCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces TagCloud Widget__
+ * __PrimeFaces TagCloud Component__
  *
  * TagCloud displays a collection of tags with different strengths.
  */
-export class TagCloud<Cfg extends TagCloudCfg = TagCloudCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class TagCloud<Cfg extends TagCloudCfg = TagCloudCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jq.find('a').on('mouseover.tagcloud', (e) => {

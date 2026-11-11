@@ -38,7 +38,7 @@ public class PanelGridFacetRowRenderer extends CoreRenderer implements HelperRow
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("tr", row);
-        writer.writeAttribute("class", "p-widget-header", null);
+        writer.writeAttribute("class", "p-component-header", null);
         renderDynamicPassThruAttributes(context, row);
         renderChildren(context, row);
         writer.endElement("tr");

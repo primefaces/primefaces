@@ -27,9 +27,9 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class DockRenderer extends BaseMenuRenderer<Dock> {
 
     @Override
     protected void encodeScript(FacesContext context, Dock component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Dock", component)
                 .attr("position", component.getPosition())
                 .attr("halign", component.getHalign())
@@ -65,7 +65,7 @@ public class DockRenderer extends BaseMenuRenderer<Dock> {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "p-dock " + position + " p-widget", "styleClass");
+        writer.writeAttribute("class", "p-dock " + position + " p-component", "styleClass");
         renderPassThruAttributes(context, component);
 
         writer.startElement("ul", null);

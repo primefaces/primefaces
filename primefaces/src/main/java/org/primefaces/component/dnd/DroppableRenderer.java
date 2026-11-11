@@ -26,7 +26,7 @@ package org.primefaces.component.dnd;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -54,7 +54,7 @@ public class DroppableRenderer extends CoreRenderer<Droppable> {
             target = component.getParent();
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Droppable", component)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", component.isDisabled(), false)

@@ -40,5 +40,5 @@ public class ContextMenu extends ContextMenuBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContextMenu";
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public static final String CONTAINER_CLASS = "p-menu p-menu-dynamic p-contextmenu p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-menu p-menu-dynamic p-contextmenu p-component p-component-content";
 }

@@ -222,7 +222,7 @@
     }
 
     /* separator the widget prepends to every row after the first one, only shown in the stacked (small screen) layout */
-    > .p-widget-content {
+    > .p-component-content {
         display: none;
     }
 }
@@ -280,7 +280,7 @@
         display: none;
     }
 
-    .p-fileupload-row > .p-widget-content {
+    .p-fileupload-row > .p-component-content {
         display: block;
         border-bottom: 0;
     }

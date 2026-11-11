@@ -22,7 +22,7 @@ isAjaxRequest() | Returns a boolean value if current request is a PrimeFaces aja
 scrollTo(String clientId) | Scrolls to the component with given clientId after ajax request completes.
 focus(String expression) | Focus the input(s) targeted by the given search expression.
 resetInputs(Collection<String>/String... expressions) | Resets all UIInput targeted by the search expression(s).
-resolveWidget(String widgetVar, Consumer<T> callback) | Search for a Widget by the given widgetVar and invokes the callback.
+resolveWidget(String widgetVar, Consumer<T> callback) | Search for a Component by the given widgetVar and invokes the callback.
 multiViewState().clearAll() | Removes all multiViewState within the current session.
 multiViewState().clearAll(String viewId) | Removes all multiViewState in specific view within the current session.
 multiViewState().clear(String viewId, Consumer<String> clientIdConsumer) | Removes all multiViewState in specific view within the current session.
@@ -94,9 +94,9 @@ public void save() {
 ```
 
 
-### Search for a widget by the `widgetVar`
+### Search for a component by the `widgetVar`
 
-PrimeFaces provides a way on the client-side to get a widget instance by the `widgetVar`:
+PrimeFaces provides a way on the client-side to get a component instance by the `widgetVar`:
 ```js
 <script type="text/javascript">
     PF('myTreeTable').clearFilters();
@@ -107,8 +107,8 @@ this is the equivalent on the server side:
 
 ```java
 public void resetTreeTable() {
-    PrimeFaces.current().<TreeTable>resolveWidget("myTreeTable", (widget) -> {
-        widget.reset();
+    PrimeFaces.current().<TreeTable>resolveWidget("myTreeTable", (component) -> {
+        component.reset();
     });
 }
 ```

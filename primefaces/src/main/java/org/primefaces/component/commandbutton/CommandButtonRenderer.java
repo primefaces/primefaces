@@ -28,9 +28,9 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -180,7 +180,7 @@ public class CommandButtonRenderer extends CoreRenderer<CommandButton> {
     }
 
     protected void encodeScript(FacesContext context, CommandButton component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("CommandButton", component)
             .attr("disableOnAjax", component.isDisableOnAjax(), true)
             .attr("disabledAttr", component.isDisabled(), false)

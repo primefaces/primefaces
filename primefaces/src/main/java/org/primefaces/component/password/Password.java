@@ -45,7 +45,7 @@ public class Password extends PasswordBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Password";
 
     public static final String STYLE_CLASS = "p-password";
-    public static final String INPUT_CLASS = "p-inputfield p-widget p-state-default";
+    public static final String INPUT_CLASS = "p-inputfield p-component p-state-default";
     public static final String WRAPPER_CLASS = "p-inputwrapper";
     public static final String ICON_CLASS = "p-password-icon p-icon p-toggle-icon p-password-toggle-icon";
     public static final String MASKED_CLASS = "p-password-masked";

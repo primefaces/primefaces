@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link SelectOneButton} widget.
+ * The configuration for the {@link SelectOneButton} component.
  */
-export interface SelectOneButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectOneButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Requests a confirmation before the value changes, called with the component element as `this`. */
     confirmation: (this: HTMLElement) => void;
     /** Whether a custom layout is used. */
@@ -9,15 +9,15 @@ export interface SelectOneButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg
     /** Whether the selection can be cleared, normalized to a boolean on init (default `true`). */
     unselectable: boolean;
     /** Called when the value has changed. */
-    change: PrimeFacesTypes.widget.SelectOneButton.ChangeCallback;
+    change: PrimeFacesTypes.component.SelectOneButton.ChangeCallback;
 }
 
 /**
- * __PrimeFaces SelectOneButton Widget__
+ * __PrimeFaces SelectOneButton Component__
  *
  * SelectOneButton is an input component to do a single select.
  */
-export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Whether the custom layout uses a facet. */
     facet: boolean = false;
     /** The enabled radio inputs with the value. */
@@ -25,7 +25,7 @@ export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg
     /** The enabled buttons. */
     buttons: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.unselectable = this.cfg.unselectable !== false;
         // the default layout root is also a radiogroup, so the role alone doesn't identify the facet span
@@ -147,7 +147,7 @@ export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg
 
     /**
      * Selects the given button, a selected button is unselected.
-     * @param button A button of this widget.
+     * @param button A button of this component.
      */
     select(button: JQuery): void {
         const active = this.buttons.filter('.p-state-active');
@@ -174,7 +174,7 @@ export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg
 
     /**
      * Unselects the given button, if the selection can be cleared.
-     * @param button A button of this widget.
+     * @param button A button of this component.
      */
     unselect(button: JQuery): void {
         if (this.cfg.unselectable) {
@@ -206,7 +206,7 @@ export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg
         this.callBehavior('change');
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.custom) {
             for (let i = 0; i < this.buttons.length; i++) {
                 const button = this.buttons.eq(i);

@@ -104,7 +104,7 @@ are below.  For full localization see the [localization documentation](/core/loc
 !> Localization is **global** so once a locale is set on a page it is set for all ColorPicker instances.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.ColorPicker_
+Component: _PrimeFaces.component.ColorPicker_
 
 
 | Method | Params | Return Type | Description |

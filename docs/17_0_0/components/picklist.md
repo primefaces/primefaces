@@ -87,18 +87,15 @@ Caption texts for lists are defined with facets named _sourceCaption_ and _targe
 ```
 
 ## Labels
-Label texts and tooltips come from the locale configuration for your language by default. If you need to override them per component you can use `widgetPreConstruct` to manually set them.
+Label texts and tooltips come from the locale configuration for your language by default. If you need to override them per component you can use `componentPreConstruct` to manually set them.
 
 ```xhtml
 <p:pickList value="#{pickListBean.cities}" var="city" itemLabel="#{city}" itemValue="#{city}" onTransfer="handleTransfer(e)">
-    <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All'; cfg.labels.aria.movedToTarget = 'Moved to Subscribed'; cfg.labels.aria.movedToSource = 'Moved to Unsubscribed';" />
+    <f:attribute name="componentPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All'; cfg.labels.aria.movedToTarget = 'Moved to Subscribed'; cfg.labels.aria.movedToSource = 'Moved to Unsubscribed';" />
     <f:facet name="sourceCaption">Unsubscribed</f:facet>
     <f:facet name="targetCaption">Subscribed</f:facet>
 </p:pickList>
 ```
-
-After a transfer or a move up/down/top/bottom the result of the action (e.g. `movedToTarget`, `movedUp`) is announced to screen readers
-through an aria live region, these texts can be overridden the same way.
 
 ## Filtering
 PickList provides built-in client side filtering. Filtering is enabled by setting the corresponding

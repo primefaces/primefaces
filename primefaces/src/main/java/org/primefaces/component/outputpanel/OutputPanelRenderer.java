@@ -25,8 +25,8 @@ package org.primefaces.component.outputpanel;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -98,7 +98,7 @@ public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
     }
 
     protected void encodeScript(FacesContext context, OutputPanel component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("OutputPanel", component);
 
         wb.attr("deferred", true)

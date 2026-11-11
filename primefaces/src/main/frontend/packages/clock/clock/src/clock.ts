@@ -243,7 +243,7 @@ export class SimpleDateFormat {
     }
 
     /**
-     * Format sthe given given according to the pattern of the current widget configuration.
+     * Format sthe given given according to the pattern of the current component configuration.
      * @param date A date to format
      * @returns The given date as a formatted string.
      */
@@ -404,22 +404,22 @@ export class SimpleDateFormat {
 }
 
 /**
- * The configuration for the {@link Clock} widget.
+ * The configuration for the {@link Clock} component.
  */
-export interface ClockCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ClockCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * When `mode` is set to `server`: `true` to automatically sync the time with the server according to the specified
      * `syncInterval`, or `false` otherwise.
      */
     autoSync: boolean;
-    /** The date format helper for the `pattern`, created by the widget. */
+    /** The date format helper for the `pattern`, created by the component. */
     dateFormat: SimpleDateFormat;
     /** Whether the clock is displayed as an analog or digital clock. */
-    displayMode: PrimeFacesTypes.widget.Clock.DisplayMode;
+    displayMode: PrimeFacesTypes.component.Clock.DisplayMode;
     /** Locale for the clock, determines the time format. */
     locale: string;
     /** Whether the clock uses the time of the browser or the time from the server. */
-    mode: PrimeFacesTypes.widget.Clock.TimeMode;
+    mode: PrimeFacesTypes.component.Clock.TimeMode;
     /** Datetime format. */
     pattern: string;
     /** Defines the sync in ms interval in when `autoSync` is set to `true`. */
@@ -429,11 +429,11 @@ export interface ClockCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Clock Widget__
+ * __PrimeFaces Clock Component__
  *
  * Clock displays server or client datetime live.
  */
-export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The canvas for the analog clock. */
     canvas!: RaphaelPaper;
     /** The drawn element for the clock outline. */
@@ -441,7 +441,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.widget.Ba
     /** The currently displayed time. */
     current!: Date;
     /** Calculated sizes for the analog clock elements. */
-    dimensions!: PrimeFacesTypes.widget.Clock.Dimensions;
+    dimensions!: PrimeFacesTypes.component.Clock.Dimensions;
     /** The drawn elements for the hour signs (1-12). */
     hour_sign: RaphaelElement[] = [];
     /** The drawn element for the hour hand. */
@@ -457,7 +457,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.widget.Ba
     /** The drawn element for the second hand. */
     second_hand!: RaphaelElement;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
@@ -485,7 +485,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.widget.Ba
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         clearInterval(this.interval);
         clearInterval(this.syncInterval);
 
@@ -564,7 +564,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Draws this clock according the the current widget configuration.
+     * Draws this clock according the the current component configuration.
      */
     private draw(): void {
 
@@ -658,7 +658,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.widget.Ba
      * @param size Target width of the clock in pixels
      * @returns Calculated sizes for the analog clock elements.
      */
-    private getDimensions(size: number): PrimeFacesTypes.widget.Clock.Dimensions {
+    private getDimensions(size: number): PrimeFacesTypes.component.Clock.Dimensions {
         return {
             'size': size,
             'half': Math.floor(size / 2),

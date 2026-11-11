@@ -1,13 +1,13 @@
 /**
- * The configuration for the {@link Wizard} widget.
+ * The configuration for the {@link Wizard} component.
  */
-export interface WizardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface WizardCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** ID of the step shown initially. */
     initialStep: string;
     /** Called before going to the previous step, `false` stays on the current step. */
-    onback: PrimeFacesTypes.widget.Wizard.OnBackCallback;
+    onback: PrimeFacesTypes.component.Wizard.OnBackCallback;
     /** Called before going to the next step, `false` stays on the current step. */
-    onnext: PrimeFacesTypes.widget.Wizard.OnNextCallback;
+    onnext: PrimeFacesTypes.component.Wizard.OnNextCallback;
     /** Whether the step titles are displayed. */
     showStepStatus: boolean;
     /** Whether the back and next buttons are displayed. */
@@ -23,12 +23,12 @@ export interface WizardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Wizard Widget__
+ * __PrimeFaces Wizard Component__
  *
  * Wizard provides an AJAX enhanced UI to implement a workflow easily in a single page. Wizard consists of several child
  * tab components where each tab represents a step in the process.
  */
-export class Wizard<Cfg extends WizardCfg = WizardCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Wizard<Cfg extends WizardCfg = WizardCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The content of the current step. */
     content: JQuery = $();
     /** The button to the previous step. */
@@ -40,7 +40,7 @@ export class Wizard<Cfg extends WizardCfg = WizardCfg> extends PrimeFaces.widget
     /** The step titles, only with `showStepStatus`. */
     stepControls?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.content = $(this.jqId + '_content');

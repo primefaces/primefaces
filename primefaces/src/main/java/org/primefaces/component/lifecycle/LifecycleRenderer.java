@@ -25,7 +25,7 @@ package org.primefaces.component.lifecycle;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ public class LifecycleRenderer extends CoreRenderer<Lifecycle> {
 
         writer.endElement("table");
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Lifecycle", component);
         wb.finish();
     }

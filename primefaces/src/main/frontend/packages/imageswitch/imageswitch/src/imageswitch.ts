@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link ImageSwitch} widget.
+ * The configuration for the {@link ImageSwitch} component.
  */
-export interface ImageSwitchCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, JQueryCycle.Configuration {
+export interface ImageSwitchCfg extends PrimeFacesTypes.component.BaseComponentCfg, JQueryCycle.Configuration {
 }
 
 /**
@@ -15,25 +15,25 @@ type CycleContainer = HTMLElement & {
 };
 
 /**
- * __PrimeFaces ImageSwitch Widget__
+ * __PrimeFaces ImageSwitch Component__
  *
  * ImageSwitch is an image gallery component with 25+ effects. Use the JQuery cycle plugin. You can also interact with
  * the imageswitch programmatically via `$.fn.cycle`:
  *
  * ```javascript
- * const widget = PF("myImageSwitchWidget");
- * widget.getJQ().cycle("resume");
+ * const component = PF("myImageSwitchWidget");
+ * component.getJQ().cycle("resume");
  * ```
  */
-export class ImageSwitch<Cfg extends ImageSwitchCfg = ImageSwitchCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class ImageSwitch<Cfg extends ImageSwitchCfg = ImageSwitchCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jq.cycle(this.cfg);
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.stopCycleTimer();
         super.refresh(cfg);
     }

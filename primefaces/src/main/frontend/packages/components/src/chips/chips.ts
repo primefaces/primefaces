@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Chips} widget.
+ * The configuration for the {@link Chips} component.
  */
-export interface ChipsCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ChipsCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the input is added as item when it loses the focus. */
     addOnBlur: boolean;
     /** Whether pasted text is added as item(s). */
@@ -15,11 +15,11 @@ export interface ChipsCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Chips Widget__
+ * __PrimeFaces Chips Component__
  *
  * Chips is used to enter multiple values on an inputfield.
  */
-export class Chips<Cfg extends ChipsCfg = ChipsCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Chips<Cfg extends ChipsCfg = ChipsCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The visible input. */
     input: JQuery<HTMLInputElement> = $();
     /** The hidden select with the values. */
@@ -33,7 +33,7 @@ export class Chips<Cfg extends ChipsCfg = ChipsCfg> extends PrimeFaces.widget.Ba
     /** Whether this component is wrapped in a float label. */
     hasFloatLabel: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLInputElement>;
@@ -275,13 +275,13 @@ export class Chips<Cfg extends ChipsCfg = ChipsCfg> extends PrimeFaces.widget.Ba
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
     }
 
     /**
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
     }
 }

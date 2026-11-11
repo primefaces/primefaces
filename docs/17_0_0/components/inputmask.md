@@ -32,7 +32,7 @@ Here are more samples based on different masks;
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.InputMask_
+Component: _PrimeFaces.component.InputMask_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

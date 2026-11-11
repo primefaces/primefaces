@@ -25,8 +25,8 @@ package org.primefaces.component.signature;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -101,7 +101,7 @@ public class SignatureRenderer extends InputRenderer<Signature> {
     }
 
     protected void encodeScript(FacesContext context, Signature signature) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Signature", signature)
                 .attr("background", signature.getBackgroundColor(), null)
                 .attr("color", signature.getColor(), null)

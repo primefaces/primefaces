@@ -25,9 +25,9 @@ package org.primefaces.component.selectbooleanbutton;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -130,7 +130,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButt
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanButton component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectBooleanButton", component)
                     .attr("onLabel", component.getOnLabel(), null)
                     .attr("offLabel", component.getOffLabel())

@@ -25,12 +25,12 @@ package org.primefaces.component.tabview;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -108,7 +108,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
     protected void encodeScript(FacesContext context, TabView component) throws IOException {
         boolean dynamic = component.isDynamic();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TabView", component);
 
         if (dynamic) {

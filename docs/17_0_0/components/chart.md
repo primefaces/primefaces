@@ -319,7 +319,7 @@ Extender function allows access to the underlying chart.js api using the `extend
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Chart_
+Component: _PrimeFaces.component.Chart_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

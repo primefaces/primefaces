@@ -1,15 +1,15 @@
 import { TriStateManyCheckbox } from "./src/tristatemanycheckbox.js";
 
-PrimeFaces.widget.TriStateManyCheckbox = TriStateManyCheckbox;
+PrimeFaces.component.TriStateManyCheckbox = TriStateManyCheckbox;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             TriStateManyCheckbox: typeof TriStateManyCheckbox;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TriStateManyCheckboxCfg = import("./src/tristatemanycheckbox.js").TriStateManyCheckboxCfg;
     }
 }

@@ -50,10 +50,10 @@ public class OrderList extends OrderListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OrderList";
 
-    public static final String CONTAINER_CLASS = "p-orderlist p-widget";
-    public static final String LIST_CLASS = "p-widget-content p-orderlist-list";
+    public static final String CONTAINER_CLASS = "p-orderlist p-component";
+    public static final String LIST_CLASS = "p-component-content p-orderlist-list";
     public static final String CONTROLS_CLASS = "p-orderlist-controls";
-    public static final String CAPTION_CLASS = "p-orderlist-caption p-widget-header";
+    public static final String CAPTION_CLASS = "p-orderlist-caption p-component-header";
     public static final String ITEM_CLASS = "p-orderlist-item";
     public static final String MOVE_UP_BUTTON_CLASS = "p-orderlist-button-move-up";
     public static final String MOVE_DOWN_BUTTON_CLASS = "p-orderlist-button-move-down";

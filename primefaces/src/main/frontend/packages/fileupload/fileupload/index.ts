@@ -5,17 +5,17 @@ import { FileUpload } from "./src/fileupload.js";
 import { SimpleFileUpload } from "./src/fileupload.simple.js";
 
 declare global {
-    namespace PrimeFacesTypes.widget.SimpleFileUpload {
+    namespace PrimeFacesTypes.component.SimpleFileUpload {
         /**
          * Callback that is invoked at the beginning of a file upload,
          * when a file is sent to the server. See also {@link FileUploadCfg.onstart | onstart}.
          */
         export type OnStartCallback = (this: SimpleFileUpload<SimpleFileUploadCfg>) => void;
     }
-    namespace PrimeFacesTypes.widget.FileUpload {
+    namespace PrimeFacesTypes.component.FileUpload {
         /**
          * Callback invoked when file was selected and is added to this
-         * widget. See also {@link FileUploadCfg.onAdd | onAdd}.
+         * component. See also {@link FileUploadCfg.onAdd | onAdd}.
          */
         export type OnAddCallback =
             /**
@@ -103,16 +103,16 @@ declare global {
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             FileUpload: typeof FileUpload;
             SimpleFileUpload: typeof SimpleFileUpload;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type FileUploadCfg = import("./src/fileupload.js").FileUploadCfg;
         export type SimpleFileUploadCfg = import("./src/fileupload.simple.js").SimpleFileUploadCfg;
     }
 }
 
-PrimeFaces.widget.FileUpload = FileUpload;
-PrimeFaces.widget.SimpleFileUpload = SimpleFileUpload;
+PrimeFaces.component.FileUpload = FileUpload;
+PrimeFaces.component.SimpleFileUpload = SimpleFileUpload;

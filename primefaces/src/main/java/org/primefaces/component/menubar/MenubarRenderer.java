@@ -28,9 +28,9 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Menubar", menubar)
                 .attr("autoDisplay", menubar.isAutoDisplay())
                 .attr("showDelay", menubar.getShowDelay(), 0)

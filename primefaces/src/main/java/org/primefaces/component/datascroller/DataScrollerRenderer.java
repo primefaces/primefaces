@@ -27,9 +27,9 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -185,7 +185,7 @@ public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
     protected void encodeScript(FacesContext context, DataScroller component, int chunkSize) throws IOException {
         String loadEvent = component.getLoaderFacet() == null ? "scroll" : "manual";
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DataScroller", component)
                 .attr("chunkSize", chunkSize)
                 .attr("totalSize", getTotalSize(component))

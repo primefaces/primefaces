@@ -26,12 +26,12 @@ package org.primefaces.component.inplace;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.password.Password;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -183,7 +183,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
     }
 
     protected void encodeScript(FacesContext context, Inplace component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Inplace", component)
                 .attr("effect", component.getEffect())
                 .attr("effectSpeed", component.getEffectSpeed())

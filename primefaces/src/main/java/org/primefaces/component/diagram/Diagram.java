@@ -57,7 +57,7 @@ public class Diagram extends DiagramBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Diagram";
 
-    public static final String CONTAINER_CLASS = "p-diagram p-widget";
+    public static final String CONTAINER_CLASS = "p-diagram p-component";
     public static final String ELEMENT_CLASS = "p-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "p-diagram-draggable";
 

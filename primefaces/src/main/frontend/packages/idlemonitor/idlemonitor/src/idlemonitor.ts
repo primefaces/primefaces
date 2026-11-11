@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link  IdleMonitor} widget.
+ * The configuration for the {@link  IdleMonitor} component.
  * 
  * You can access this configuration via {@link IdleMonitor.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface IdleMonitorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface IdleMonitorCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * When set to true, the lastAccessed state will be shared between all browser
      * windows for the same servlet context.
@@ -15,13 +15,13 @@ export interface IdleMonitorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
      * Client side callback to execute when the user
      * comes back.
      */
-    onactive: PrimeFacesTypes.widget.IdleMonitor.OnActiveCallback;
+    onactive: PrimeFacesTypes.component.IdleMonitor.OnActiveCallback;
 
     /**
      * Client side callback to execute when the user goes
      * idle.
      */
-    onidle: PrimeFacesTypes.widget.IdleMonitor.OnIdleCallback;
+    onidle: PrimeFacesTypes.component.IdleMonitor.OnIdleCallback;
 
     /**
      * Time to wait in milliseconds until deciding if the user is idle. Default is 5 minutes.
@@ -30,19 +30,19 @@ export interface IdleMonitorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces IdleMonitor Widget__
+ * __PrimeFaces IdleMonitor Component__
  * 
  * IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The set-interval ID used for the timer.
      */
     timer: number = 0;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         $(document).on("idle.idleTimer" + this.cfg.id, () => {
@@ -100,7 +100,7 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -112,7 +112,7 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
     }
 
     /**
-     * Clean up this widget and remove the timers and events from the DOM.
+     * Clean up this component and remove the timers and events from the DOM.
      */
     private _cleanup(): void {
         clearInterval(this.timer);
@@ -150,9 +150,9 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
 export function registerKillSwitchHookForIdleMonitor(): void {
     PrimeFaces.registerHook("killSwitch", {
         kill: () => {
-            for (const widget of PrimeFaces.getWidgetsByType(IdleMonitor)) {
+            for (const component of PrimeFaces.getComponentsByType(IdleMonitor)) {
                 PrimeFaces.warn("Stopping IdleMonitor");
-                widget.pause();
+                component.pause();
             }
         },
     });

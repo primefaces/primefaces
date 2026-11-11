@@ -1,15 +1,15 @@
 import { ScrollPanel } from "./src/scrollpanel.js";
 
-PrimeFaces.widget.ScrollPanel = ScrollPanel;
+PrimeFaces.component.ScrollPanel = ScrollPanel;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ScrollPanel: typeof ScrollPanel;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ScrollPanelCfg = import("./src/scrollpanel.js").ScrollPanelCfg;
     }
 }

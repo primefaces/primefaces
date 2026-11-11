@@ -73,11 +73,11 @@ Data selection can be implemented same as in dataGrid, see selecting data sectio
 documentation for more information and an example.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DataList_
+Component: _PrimeFaces.component.DataList_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-| getPaginator() | - | Paginator | Returns the paginator widget.
+| getPaginator() | - | Paginator | Returns the paginator component.
 
 ## Skinning
 DataList resides in a main div container which style and styleClass attributes apply. Following is the

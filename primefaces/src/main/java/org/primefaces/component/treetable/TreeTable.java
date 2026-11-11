@@ -81,26 +81,26 @@ public class TreeTable extends TreeTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 
-    public static final String CONTAINER_CLASS = "p-treetable p-widget";
-    public static final String RESIZABLE_CONTAINER_CLASS = "p-treetable p-treetable-resizable p-widget";
-    public static final String HEADER_CLASS = "p-treetable-header p-widget-header";
-    public static final String DATA_CLASS = "p-treetable-data p-widget-content";
-    public static final String FOOTER_CLASS = "p-treetable-footer p-widget-header";
+    public static final String CONTAINER_CLASS = "p-treetable p-component";
+    public static final String RESIZABLE_CONTAINER_CLASS = "p-treetable p-treetable-resizable p-component";
+    public static final String HEADER_CLASS = "p-treetable-header p-component-header";
+    public static final String DATA_CLASS = "p-treetable-data p-component-content";
+    public static final String FOOTER_CLASS = "p-treetable-footer p-component-header";
     public static final String COLUMN_HEADER_CLASS = "p-state-default";
     public static final String SORTABLE_COLUMN_HEADER_CLASS = "p-state-default p-sortable-column";
-    public static final String ROW_CLASS = "p-widget-content";
-    public static final String SELECTED_ROW_CLASS = "p-widget-content p-state-highlight p-selected";
+    public static final String ROW_CLASS = "p-component-content";
+    public static final String SELECTED_ROW_CLASS = "p-component-content p-state-highlight p-selected";
     public static final String TOGGLER_CLASS = "p-treetable-toggler p-icon p-toggle-icon p-treetable-toggle-icon p-c";
     public static final String SCROLLABLE_CONTAINER_CLASS = "p-treetable-scrollable";
-    public static final String SCROLLABLE_HEADER_CLASS = "p-widget-header p-treetable-scrollable-header";
+    public static final String SCROLLABLE_HEADER_CLASS = "p-component-header p-treetable-scrollable-header";
     public static final String SCROLLABLE_HEADER_BOX_CLASS = "p-treetable-scrollable-header-box";
     public static final String SCROLLABLE_BODY_CLASS = "p-treetable-scrollable-body";
-    public static final String SCROLLABLE_FOOTER_CLASS = "p-widget-header p-treetable-scrollable-footer";
+    public static final String SCROLLABLE_FOOTER_CLASS = "p-component-header p-treetable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "p-treetable-scrollable-footer-box";
     public static final String SELECTABLE_NODE_CLASS = "p-treetable-selectable-node";
     public static final String RESIZABLE_COLUMN_CLASS = "p-resizable-column";
     public static final String INDENT_CLASS = "p-treetable-indent";
-    public static final String EMPTY_MESSAGE_ROW_CLASS = "p-widget-content p-treetable-empty-message";
+    public static final String EMPTY_MESSAGE_ROW_CLASS = "p-component-content p-treetable-empty-message";
     public static final String PARTIAL_SELECTED_CLASS = "p-treetable-partialselected";
     public static final String SORTABLE_COLUMN_ICON_CLASS = "p-sortable-column-icon p-icon p-sort-icon p-treetable-sort-icon";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = SORTABLE_COLUMN_ICON_CLASS + " p-treetable-sort-asc-icon";
@@ -108,7 +108,7 @@ public class TreeTable extends TreeTableBaseImpl {
     public static final String SORTABLE_PRIORITY_CLASS = "p-sortable-column-badge p-hidden";
     public static final String REFLOW_CLASS = "p-treetable-reflow";
     public static final String FILTER_COLUMN_CLASS = "p-filter-column";
-    public static final String COLUMN_INPUT_FILTER_CLASS = "p-column-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "p-column-filter p-inputfield p-inputtext p-component p-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "p-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "p-hidden";
     public static final String STATIC_COLUMN_CLASS = "p-static-column";

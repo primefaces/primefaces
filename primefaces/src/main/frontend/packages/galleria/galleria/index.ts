@@ -1,15 +1,15 @@
 import { Galleria } from "./src/galleria.js";
 
-PrimeFaces.widget.Galleria = Galleria;
+PrimeFaces.component.Galleria = Galleria;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Galleria: typeof Galleria;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type GalleriaCfg = import("./src/galleria.js").GalleriaCfg;
     }
 }

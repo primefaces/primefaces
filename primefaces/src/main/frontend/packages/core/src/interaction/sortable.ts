@@ -216,7 +216,7 @@ export class Sortable extends PointerInteraction<SortableOptions> implements Dra
     }
 
     /**
-     * Sets an option, new items or a new handle update the handle classes, e.g. when a widget initializes the sortable
+     * Sets an option, new items or a new handle update the handle classes, e.g. when a component initializes the sortable
      * again after an AJAX update.
      * @param key The name of the option.
      * @param value The new value.

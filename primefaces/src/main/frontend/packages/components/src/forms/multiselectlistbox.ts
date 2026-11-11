@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link MultiSelectListbox} widget.
+ * The configuration for the {@link MultiSelectListbox} component.
  */
-export interface MultiSelectListboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface MultiSelectListboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the label of a group is displayed as header of its items. */
     showHeaders: boolean;
     /** Effect of {@link PrimeFaces.effects} used when a group of items is shown. */
@@ -9,11 +9,11 @@ export interface MultiSelectListboxCfg extends PrimeFacesTypes.widget.BaseWidget
 }
 
 /**
- * __PrimeFaces MultiSelectListbox Widget__
+ * __PrimeFaces MultiSelectListbox Component__
  *
  * MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.
  */
-export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectListboxCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectListboxCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The container of the root list. */
     root: JQuery = $();
     /** The items of all lists. */
@@ -21,7 +21,7 @@ export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectL
     /** The hidden input with the selected value. */
     input: JQuery<HTMLInputElement> = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.root = this.jq.children('div.p-multiselectlistbox-listcontainer');
@@ -80,10 +80,10 @@ export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectL
 
         if (childItemsContainer.length) {
             const groupContainer = $('<div class="p-multiselectlistbox-listcontainer" style="display:none"></div>');
-            childItemsContainer.clone(true).appendTo(groupContainer).addClass('p-multiselectlistbox-list p-inputfield p-widget-content').removeClass('p-hidden');
+            childItemsContainer.clone(true).appendTo(groupContainer).addClass('p-multiselectlistbox-list p-inputfield p-component-content').removeClass('p-hidden');
 
             if (this.cfg.showHeaders) {
-                groupContainer.prepend('<div class="p-multiselectlistbox-header p-widget-header">' + PrimeFaces.escapeHTML(item.children('span').text()) + '</div>');
+                groupContainer.prepend('<div class="p-multiselectlistbox-header p-component-header">' + PrimeFaces.escapeHTML(item.children('span').text()) + '</div>');
             }
 
             this.jq.append(groupContainer);
@@ -106,7 +106,7 @@ export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectL
     override enable(): void {
         if (this.cfg.disabled) {
             this.cfg.disabled = false;
-            PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+            PrimeFaces.utils.enableInputComponent(this.jq, this.input);
             this.bindEvents();
 
             // disable() removed the lists of the selected groups
@@ -123,7 +123,7 @@ export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectL
     override disable(): void {
         if (!this.cfg.disabled) {
             this.cfg.disabled = true;
-            PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+            PrimeFaces.utils.disableInputComponent(this.jq, this.input);
             this.unbindEvents();
             this.root.nextAll().remove();
         }
@@ -151,10 +151,10 @@ export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectL
             }
             else if (ancestor.is('ul')) {
                 const groupContainer = $('<div class="p-multiselectlistbox-listcontainer" style="display:none"></div>');
-                ancestor.clone(true).appendTo(groupContainer).addClass('p-multiselectlistbox-list p-inputfield p-widget-content').removeClass('p-hidden');
+                ancestor.clone(true).appendTo(groupContainer).addClass('p-multiselectlistbox-list p-inputfield p-component-content').removeClass('p-hidden');
 
                 if (this.cfg.showHeaders) {
-                    groupContainer.prepend('<div class="p-multiselectlistbox-header p-widget-header">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>');
+                    groupContainer.prepend('<div class="p-multiselectlistbox-header p-component-header">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>');
                 }
 
                 this.jq.append(groupContainer);

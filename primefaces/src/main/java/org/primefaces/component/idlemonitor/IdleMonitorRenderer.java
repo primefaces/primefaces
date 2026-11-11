@@ -25,7 +25,7 @@ package org.primefaces.component.idlemonitor;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -49,7 +49,7 @@ public class IdleMonitorRenderer extends CoreRenderer<IdleMonitor> {
     }
 
     protected void encodeScript(FacesContext context, IdleMonitor component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("IdleMonitor", component)
                 .attr("timeout", component.getTimeout())
                 .attr("multiWindowSupport", component.isMultiWindowSupport())

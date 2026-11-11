@@ -26,9 +26,9 @@ package org.primefaces.component.carousel;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,7 +55,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     private void encodeScript(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         List<ResponsiveOption> responsiveOptions = component.getResponsiveOptions();
 
         wb.init("Carousel", component);

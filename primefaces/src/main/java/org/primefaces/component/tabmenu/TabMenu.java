@@ -38,8 +38,8 @@ public class TabMenu extends TabMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabMenu";
 
-    public static final String CONTAINER_CLASS = "p-tabmenu p-widget p-widget-content";
-    public static final String NAVIGATOR_CLASS = "p-tabmenu-nav p-widget-header";
+    public static final String CONTAINER_CLASS = "p-tabmenu p-component p-component-content";
+    public static final String NAVIGATOR_CLASS = "p-tabmenu-nav p-component-header";
     public static final String INACTIVE_TAB_HEADER_CLASS = "p-tabmenuitem";
     public static final String ACTIVE_TAB_HEADER_CLASS = "p-tabmenuitem p-state-active";
 }

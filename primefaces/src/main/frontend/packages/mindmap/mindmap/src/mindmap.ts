@@ -11,9 +11,9 @@ declare module "raphael" {
 }
 
 /**
- * The configuration for the {@link Mindmap} widget.
+ * The configuration for the {@link Mindmap} component.
  */
-export interface MindmapCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface MindmapCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** Duration for all animations with nodes, in milliseconds. */
     effectSpeed: number;
     /** Horizontal coordinate for the center of the canvas. */
@@ -23,27 +23,27 @@ export interface MindmapCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Total height of the canvas. */
     height: number;
     /** Root node shown by the mindmap. */
-    model: PrimeFacesTypes.widget.Mindmap.MindmapNode;
+    model: PrimeFacesTypes.component.Mindmap.MindmapNode;
     /** Total width of the canvas. */
     width: number;
 }
 
 /**
- * __PrimeFaces Mindmap Widget__
+ * __PrimeFaces Mindmap Component__
  *
  * Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks, animations and more.
  */
-export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** A list of all drawn mindmap nodes. */
-    nodes: PrimeFacesTypes.widget.Mindmap.MindmapElement[] = [];
+    nodes: PrimeFacesTypes.component.Mindmap.MindmapElement[] = [];
     /** The canvas on which the mindmap is drawn. */
     raphael!: RaphaelPaper;
     /** The drawn root node for the mindmap. */
-    root?: PrimeFacesTypes.widget.Mindmap.MindmapElement;
+    root?: PrimeFacesTypes.component.Mindmap.MindmapElement;
     /** The DOM element for the tooltip of a mindmap node. */
     tooltip: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.renderDeferred();
@@ -67,7 +67,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
             }
         }
 
-        const tooltip = this.tooltip = $('<div class="p-tooltip p-mindmap-tooltip p-widget p-widget-content"></div>').appendTo(document.body);
+        const tooltip = this.tooltip = $('<div class="p-tooltip p-mindmap-tooltip p-component p-component-content"></div>').appendTo(document.body);
         this.addRefreshListener(function() {
             tooltip.remove();
         });
@@ -83,8 +83,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * @param model Model with the data describing the node to be created.
      * @returns The created node.
      */
-    private createNode(x: number, y: number, model: PrimeFacesTypes.widget.Mindmap.MindmapNode): PrimeFacesTypes.widget.Mindmap.MindmapElement {
-        const node: PrimeFacesTypes.widget.Mindmap.MindmapElement = this.raphael.ellipse(x, y, 40, 25).attr('opacity', 0)
+    private createNode(x: number, y: number, model: PrimeFacesTypes.component.Mindmap.MindmapNode): PrimeFacesTypes.component.Mindmap.MindmapElement {
+        const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.raphael.ellipse(x, y, 40, 25).attr('opacity', 0)
             .data('model', model)
             .data('connections', [])
             .data('widget', this.cfg.widgetVar);
@@ -93,7 +93,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
         const nodeWidth = node.getBBox().width;
         let title: string | null = null;
 
-        const text: PrimeFacesTypes.widget.Mindmap.MindmapElement = this.raphael.text(x, y, label).attr('opacity', 0);
+        const text: PrimeFacesTypes.component.Mindmap.MindmapElement = this.raphael.text(x, y, label).attr('opacity', 0);
 
         if (nodeWidth <= text.getBBox().width) {
             title = label;
@@ -147,7 +147,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when the mouse cursor was moved over a mindmap node.
      * @param this The node.
      */
-    private mouseoverNode(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private mouseoverNode(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const _self = PF(this.data('widget')) as Mindmap;
 
         _self.showTooltip(this);
@@ -157,7 +157,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when the mouse cursor was moved away from a mindmap node.
      * @param this The node.
      */
-    private mouseoutNode(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private mouseoutNode(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const _self = PF(this.data('widget')) as Mindmap;
 
         _self.hideTooltip(this);
@@ -167,8 +167,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when the mouse cursor was moved over a text label.
      * @param this The text label.
      */
-    private mouseoverText(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
-        const node: PrimeFacesTypes.widget.Mindmap.MindmapElement = this.data('node'),
+    private mouseoverText(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
+        const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node'),
             _self = PF(node.data('widget')) as Mindmap;
 
         _self.showTooltip(node);
@@ -178,8 +178,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when the mouse cursor was moved away from a text label.
      * @param this The text label.
      */
-    private mouseoutText(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
-        const node: PrimeFacesTypes.widget.Mindmap.MindmapElement = this.data('node'),
+    private mouseoutText(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
+        const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node'),
             _self = PF(node.data('widget')) as Mindmap;
 
         _self.hideTooltip(node);
@@ -189,7 +189,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Brings up the tooltip for the given node, it it is not shown already.
      * @param node A node for which to show the tooltip.
      */
-    showTooltip(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    showTooltip(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const title = node.data('title');
 
         if (title) {
@@ -213,7 +213,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Hides the tooltip for the given node, it it is shown.
      * @param node A node for which to hide the tooltip.
      */
-    hideTooltip(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    hideTooltip(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const title = node.data('title');
 
         if (title) {
@@ -227,8 +227,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Centers the given node so that it is positioned near the center of the mindmap viewport.
      * @param node A node to center.
      */
-    centerNode(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
-        const text: PrimeFacesTypes.widget.Mindmap.MindmapElement = node.data('text');
+    centerNode(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
+        const text: PrimeFacesTypes.component.Mindmap.MindmapElement = node.data('text');
 
         text.animate({ x: this.cfg.centerX, y: this.cfg.centerY }, this.cfg.effectSpeed!, '<>');
 
@@ -248,8 +248,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Creates the mindmap nodes for all immediate children of the given node.
      * @param node A node with children.
      */
-    private createSubNodes(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
-        const nodeModel: PrimeFacesTypes.widget.Mindmap.MindmapNode = node.data('model');
+    private createSubNodes(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
+        const nodeModel: PrimeFacesTypes.component.Mindmap.MindmapNode = node.data('model');
 
         if (nodeModel.children) {
             const size = nodeModel.children.length;
@@ -304,7 +304,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when a click was performed on a mindmap node.
      * @param node The node that received the click.
      */
-    private handleNodeClick(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private handleNodeClick(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         if (node.dragged) {
             node.dragged = false;
             return;
@@ -331,7 +331,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when a click was performed on a mindmap node.
      * @param this The node.
      */
-    private clickNode(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private clickNode(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const _self = PF(this.data('widget')) as Mindmap;
 
         _self.handleNodeClick(this);
@@ -341,8 +341,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when a click was performed on a text label.
      * @param this The text label.
      */
-    private clickNodeText(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
-        const node: PrimeFacesTypes.widget.Mindmap.MindmapElement = this.data('node'),
+    private clickNodeText(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
+        const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node'),
             _self = PF(node.data('widget')) as Mindmap;
 
         _self.handleNodeClick(node);
@@ -352,7 +352,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked when a double click was performed on a mindmap node.
      * @param node Node that received the double click.
      */
-    private handleDblclickNode(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private handleDblclickNode(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         if (this.hasBehavior('dblselect')) {
             const key = node.data('model').key;
 
@@ -370,7 +370,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Expands the given mindmap node, showing it and its children.
      * @param node A node to expand.
      */
-    expandNode(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    expandNode(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const key = node.data('model').key,
             ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
                 update: this.getId(),
@@ -416,7 +416,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Removes the given node and all of its connections from this mindmap.
      * @param node Mindmap node to delete.
      */
-    removeNode(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    removeNode(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         //test
         node.data('text').remove();
 
@@ -439,7 +439,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback that is invoked once at the start when a node is dragged.
      * @param this The node.
      */
-    private nodeDragStart(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private nodeDragStart(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
     }
@@ -450,7 +450,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * @param dx Amount the node was dragged horizontally since the last call of this callback
      * @param dy Amount the node was dragged vertically since the last call of this callback
      */
-    private nodeDrag(this: PrimeFacesTypes.widget.Mindmap.MindmapElement, dx: number, dy: number): void {
+    private nodeDrag(this: PrimeFacesTypes.component.Mindmap.MindmapElement, dx: number, dy: number): void {
         //update location
         this.attr({ cx: this.ox! + dx, cy: this.oy! + dy });
 
@@ -469,14 +469,14 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback invoked after a node was dragged.
      * @param this The node.
      */
-    private nodeDragEnd(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private nodeDragEnd(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
     }
 
     /**
      * Callback that is invoked once at the start when a text label is dragged.
      * @param this The text label.
      */
-    private textDragStart(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private textDragStart(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         this.ox = this.attr("x");
         this.oy = this.attr("y");
     }
@@ -487,8 +487,8 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * @param dx Amount the text was dragged horizontally since the last call of this callback
      * @param dy Amount the text was dragged vertically since the last call of this callback
      */
-    private textDrag(this: PrimeFacesTypes.widget.Mindmap.MindmapElement, dx: number, dy: number): void {
-        const node: PrimeFacesTypes.widget.Mindmap.MindmapElement = this.data('node');
+    private textDrag(this: PrimeFacesTypes.component.Mindmap.MindmapElement, dx: number, dy: number): void {
+        const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node');
 
         //update location
         this.attr({ x: this.ox! + dx, y: this.oy! + dy });
@@ -508,14 +508,14 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.wid
      * Callback invoked after a text label was dragged.
      * @param this The text label.
      */
-    private textDragEnd(this: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private textDragEnd(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
     }
 
     /**
      * Updates the connections for the given mindmap node.
      * @param node The node for which to update the connections.
      */
-    private updateConnections(node: PrimeFacesTypes.widget.Mindmap.MindmapElement): void {
+    private updateConnections(node: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const connections: MindmapConnection[] = node.data('connections');
 
         for (let i = 0; i < connections.length; i++) {

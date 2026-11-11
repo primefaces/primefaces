@@ -38,7 +38,7 @@ public class Badge extends BadgeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Badge";
 
-    public static final String STYLE_CLASS = "p-badge p-widget";
+    public static final String STYLE_CLASS = "p-badge p-component";
     public static final String OVERLAY_CLASS = "p-overlay-badge";
     public static final String NO_GUTTER_CLASS = "p-badge-no-gutter";
     public static final String DOT_CLASS = "p-badge-dot";

@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link SelectBooleanButton} widget.
+ * The configuration for the {@link SelectBooleanButton} component.
  */
-export interface SelectBooleanButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectBooleanButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Label when the button is on, defaults to the locale. */
     onLabel: string;
     /** Icon when the button is on. */
@@ -13,11 +13,11 @@ export interface SelectBooleanButtonCfg extends PrimeFacesTypes.widget.BaseWidge
 }
 
 /**
- * __PrimeFaces SelectBooleanButton Widget__
+ * __PrimeFaces SelectBooleanButton Component__
  *
  * SelectBooleanButton is used to select a binary decision with a toggle button.
  */
-export class SelectBooleanButton<Cfg extends SelectBooleanButtonCfg = SelectBooleanButtonCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectBooleanButton<Cfg extends SelectBooleanButtonCfg = SelectBooleanButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The hidden checkbox input with the value. */
     input: JQuery<HTMLInputElement> = $();
     /** Whether this button is disabled. */
@@ -29,7 +29,7 @@ export class SelectBooleanButton<Cfg extends SelectBooleanButtonCfg = SelectBool
     /** The label when the button is off. */
     offLabel: string = '';
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLInputElement>;
@@ -145,7 +145,7 @@ export class SelectBooleanButton<Cfg extends SelectBooleanButtonCfg = SelectBool
      * Enables this button so that the user can change it.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         this.disabled = false;
         this.bindButtonEvents();
     }
@@ -155,7 +155,7 @@ export class SelectBooleanButton<Cfg extends SelectBooleanButtonCfg = SelectBool
      */
     override disable(): void {
         // the input, not the div, is disabled: a disabled input is not submitted and not focusable
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
         this.disabled = true;
     }
 }

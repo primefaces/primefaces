@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link ScrollPanel} widget.
+ * The configuration for the {@link ScrollPanel} component.
  */
-export interface ScrollPanelCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ScrollPanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /** An axis of the scroll panel. */
@@ -11,13 +11,13 @@ type Axis = "x" | "y";
 const MIN_BAR_LENGTH = 20;
 
 /**
- * __PrimeFaces ScrollPanel Widget__
+ * __PrimeFaces ScrollPanel Component__
  *
  * ScrollPanel displays scrollable content with theme aware scrollbars. The content scrolls natively (mouse wheel,
  * touch, keyboard), only the scrollbars of the browser are hidden and replaced by bars that follow the scroll
  * position and can be dragged; a click on a track scrolls by a page.
  */
-export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The element that scrolls, it contains the children of the scroll panel. */
     content: JQuery = $();
 
@@ -39,7 +39,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * observes the size of the content.
      * @param cfg The configuration of the scroll panel.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.content = this.jq.children('.p-scrollpanel-content');
@@ -88,7 +88,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
 
     /**
      * Observes the size of the panel and the children of the content, so the bars follow a changed content (e.g. an
-     * AJAX update or a panel that becomes visible). The observers are disconnected when the widget is destroyed.
+     * AJAX update or a panel that becomes visible). The observers are disconnected when the component is destroyed.
      */
     private observe(): void {
         this.resizeObserver?.disconnect();

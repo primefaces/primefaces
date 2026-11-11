@@ -44,7 +44,7 @@ overlayPanel can be used by calling show passing the client id of the component 
 positioned. See overlayPanel demo in showcase for an example.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.OverlayPanel_
+Component: _PrimeFaces.component.OverlayPanel_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

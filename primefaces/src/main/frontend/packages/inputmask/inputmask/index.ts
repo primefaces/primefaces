@@ -5,7 +5,7 @@ import _Inputmask from "inputmask/dist/jquery.inputmask.js";
 
 import { InputMask } from "./src/inputmask.js";
 
-PrimeFaces.widget.InputMask = InputMask;
+PrimeFaces.component.InputMask = InputMask;
 
 // Expose InputMask to the global scope
 Object.assign(window, { Inputmask: _Inputmask });
@@ -22,12 +22,12 @@ declare global {
     }
 
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             InputMask: typeof InputMask;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type InputMaskCfg = import("./src/inputmask.js").InputMaskCfg;
     }
 }

@@ -6,15 +6,15 @@ import { PhotoCam } from "./src/photocam.js";
 // Expose webcam.js to the global scope
 Object.assign(window, { Webcam });
 
-// Expose widgets to the global scope
-PrimeFaces.widget.PhotoCam = PhotoCam;
+// Expose components to the global scope
+PrimeFaces.component.PhotoCam = PhotoCam;
 
 // Global types
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             /**
-             * __PrimeFaces PhotoCam Widget__
+             * __PrimeFaces PhotoCam Component__
              *
              * PhotoCam is used to take photos with webcam and send them to the Faces backend model.
              */
@@ -22,18 +22,18 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         /**
-         * The configuration for the {@link PhotoCam} widget.
+         * The configuration for the {@link PhotoCam} component.
          * 
-         * You can access this configuration via {@link PhotoCam.cfg widget.cfg}.
+         * You can access this configuration via {@link PhotoCam.cfg component.cfg}.
          * Please note that this configuration is usually meant to be read-only and should
          * not be modified.
          */
         export type PhotoCamCfg = import("./src/photocam.js").PhotoCamCfg;
     }
 
-    namespace PrimeFacesTypes.widget.PhotoCam {
+    namespace PrimeFacesTypes.component.PhotoCam {
         /**
          * Callback invoked when an error is caught by the Webcam.js engine.
          * See also {@link PhotoCamCfg.onCameraError}.

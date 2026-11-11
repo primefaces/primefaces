@@ -9,9 +9,9 @@ type QuillClipboard = Quill["clipboard"] & {
 };
 
 /**
- * The configuration for the {@link TextEditor} widget.
+ * The configuration for the {@link TextEditor} component.
  */
-export interface TextEditorCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg, QuillOptions {
+export interface TextEditorCfg extends PrimeFacesTypes.component.DeferredComponentCfg, QuillOptions {
     /** Whether this text editor is initially disabled. */
     disabled: boolean;
     /** Whether the editor toolbar should be displayed. */
@@ -19,11 +19,11 @@ export interface TextEditorCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg,
 }
 
 /**
- * __PrimeFaces TextEditor Widget__
+ * __PrimeFaces TextEditor Component__
  *
  * Editor is an input component with rich text editing capabilities based on [Quill](https://quilljs.com/).
  */
-export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
 
     /**
      * The default HTML template for the toolbar of the editor. Use the appropriate CSS classes to insert a toolbar
@@ -85,7 +85,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
     /** The DOM element for the toolbar of the editor. */
     toolbar: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.disabled = (cfg.disabled === undefined) ? false : cfg.disabled;
 
@@ -244,7 +244,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
      */
     override enable(): void {
         this.editor!.enable();
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         this.disabled = false;
     }
 
@@ -253,7 +253,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
      */
     override disable(): void {
         this.editor!.disable();
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
         this.disabled = true;
     }
 

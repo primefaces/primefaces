@@ -60,7 +60,7 @@ class Theming013Test extends AbstractThemingTest {
         assertTrue(links.stream().anyMatch(l -> l.getDomAttribute("href").contains("ln=primefaces-glass")), "primefaces-glass:theme.css not rendered");
         assertBlur("dialog box", backdropFilter(page.dialog.getBox(), "::before"));
         assertEquals("none", backdropFilter(page.dialog), "the full viewport dialog container must not blur the page");
-        assertBlur("modal mask", backdropFilter(PrimeSelenium.getWebDriver().findElement(By.cssSelector(".p-widget-overlay, .p-dialog-mask"))));
+        assertBlur("modal mask", backdropFilter(PrimeSelenium.getWebDriver().findElement(By.cssSelector(".p-component-overlay, .p-dialog-mask"))));
         assertBlur("toolbar", backdropFilter(page.toolbar, "::before"));
         assertEquals("none", backdropFilter(page.toolbar), "the toolbar itself must not be a backdrop root / stacking context");
         assertBlur("button", backdropFilter(page.primary));

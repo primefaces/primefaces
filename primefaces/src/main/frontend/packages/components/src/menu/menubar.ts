@@ -14,7 +14,7 @@ export interface MenubarCfg extends TieredMenuCfg {
 }
 
 /**
- * __PrimeFaces Menubar Widget__
+ * __PrimeFaces Menubar Component__
  *
  * Menubar is a horizontal navigation component.
  * 
@@ -22,7 +22,7 @@ export interface MenubarCfg extends TieredMenuCfg {
  */
 export class Menubar<Cfg extends MenubarCfg = MenubarCfg> extends TieredMenu<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         // #13323 MenuBar only for hideDelay=0 only closes on document.click

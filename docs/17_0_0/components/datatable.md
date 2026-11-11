@@ -1287,7 +1287,7 @@ Moreover `org.primefaces.event.data.PostSortEvent`, `org.primefaces.event.data.P
 
 
 ## Client Side API
-Widget: `PrimeFaces.widget.DataTable`
+Component: `PrimeFaces.component.DataTable`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

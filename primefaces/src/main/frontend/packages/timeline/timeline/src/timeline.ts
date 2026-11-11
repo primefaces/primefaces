@@ -7,9 +7,9 @@ import * as VisUtil from "vis-util/esnext";
 type DroppableOptions = NonNullable<Parameters<typeof PrimeFaces.interactions.droppable>[1]>;
 
 /**
- * The configuration for the {@link Timeline} widget.
+ * The configuration for the {@link Timeline} component.
  */
-export interface TimelineCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface TimelineCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** `accept` option for the droppable overlay when using drag&drop. */
     accept: string;
     /** Active style class for the droppable overlay when using drag&drop. */
@@ -22,7 +22,7 @@ export interface TimelineCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
      * An extender function that may be used modify the settings of this configuration object. The {@link opts} are
      * passed directly to vis-timeline.
      */
-    extender: PrimeFacesTypes.widget.Timeline.TimelineExtender;
+    extender: PrimeFacesTypes.component.Timeline.TimelineExtender;
     /** Optional groups for the events. */
     groups: DataGroup[];
     /** Hover style class for the droppable overlay when using drag&drop. */
@@ -30,7 +30,7 @@ export interface TimelineCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
     /** Whether a menu should be present for the timeline. */
     isMenuPresent: boolean;
     /** The options for the vis timeline. */
-    opts: PrimeFacesTypes.widget.Timeline.TimelineOptions;
+    opts: PrimeFacesTypes.component.Timeline.TimelineOptions;
     /**
      * Preload factor is a positive float value or 0 which can be used for lazy loading of events. When the lazy loading
      * feature is active, the calculated time range for preloading will be multiplied by the preload factor. The result
@@ -46,25 +46,25 @@ export interface TimelineCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 }
 
 /**
- * __PrimeFaces Timeline Widget__
+ * __PrimeFaces Timeline Component__
  *
  * Timeline is an interactive graph to visualize events in time. Currently uses
  * [vis-timeline](https://github.com/visjs/vis-timeline).
  */
-export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, the server always renders `data`, `opts` and `preloadFactor`. */
-    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & Pick<TimelineCfg, "data" | "opts" | "preloadFactor">;
+    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & Pick<TimelineCfg, "data" | "opts" | "preloadFactor">;
 
     /** Callback that is invoked when an event was added to this timeline. */
-    addCallback: PrimeFacesTypes.widget.Timeline.AddCallbackCallback | null = null;
+    addCallback: PrimeFacesTypes.component.Timeline.AddCallbackCallback | null = null;
     /** Callback for when an item of the timeline has changed or was moved. */
-    changedCallback: PrimeFacesTypes.widget.Timeline.ChangedCallbackCallback | null = null;
+    changedCallback: PrimeFacesTypes.component.Timeline.ChangedCallbackCallback | null = null;
     /** Callback for when an item of the timeline was deleted. */
-    deleteCallback: PrimeFacesTypes.widget.Timeline.DeleteCallbackCallback | null = null;
+    deleteCallback: PrimeFacesTypes.component.Timeline.DeleteCallbackCallback | null = null;
     /** When the timeline is move to the right or left, whether that move was initiated by the user. */
     initiatedByUser?: boolean;
     /** The current vis-timeline instance. */
-    instance: PrimeFacesTypes.widget.Timeline.VisTimelineInstance | null = null;
+    instance: PrimeFacesTypes.component.Timeline.VisTimelineInstance | null = null;
     /** Whether the lazy loading feature is enabled, which loads events dynamically via AJAX. */
     lazy: boolean = false;
     /** If restricting the timeline to a certain range, the upper bound. */
@@ -74,11 +74,14 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
     /** The current preload factor, see {@link TimelineCfg.preloadFactor}. */
     pFactor: number = 0;
     /** Time range of the events that were loaded, set only when lazy loading is enabled. */
-    rangeLoadedEvents!: PrimeFacesTypes.widget.Timeline.TimeRange;
-    /** The context menu widget to use for the timeline, until the timeline was rendered. */
-    contextMenuWidget: PrimeFacesTypes.widget.ContextMenuLikeWidget | null = null;
+    rangeLoadedEvents!: PrimeFacesTypes.component.Timeline.TimeRange;
+    /** The context menu component to use for the timeline, until the timeline was rendered. */
+    contextMenuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent | null = null;
+    /** @deprecated Use {@link contextMenuComponent} instead. */
+    get contextMenuWidget(): PrimeFacesTypes.component.ContextMenuLikeComponent | null { return this.contextMenuComponent; }
+    set contextMenuWidget(value: PrimeFacesTypes.component.ContextMenuLikeComponent | null) { this.contextMenuComponent = value; }
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg = cfg as typeof this.cfg;
         this.id = cfg.id;
@@ -110,7 +113,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
     }
 
     /**
-     * Creates timeline widget with all initialization steps.
+     * Creates timeline component with all initialization steps.
      */
     protected override _render(): void {
         // instantiate a timeline object
@@ -126,9 +129,9 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         this._bindItemsEvents();
         // the internals are not part of the type declarations of vis-timeline
         if (this.cfg.groups) {
-            this.instance = new VisTimeline(el, items, new DataSet(this.cfg.groups), this.cfg.opts) as PrimeFacesTypes.widget.Timeline.VisTimelineInstance;
+            this.instance = new VisTimeline(el, items, new DataSet(this.cfg.groups), this.cfg.opts) as PrimeFacesTypes.component.Timeline.VisTimelineInstance;
         } else {
-            this.instance = new VisTimeline(el, items, this.cfg.opts) as PrimeFacesTypes.widget.Timeline.VisTimelineInstance;
+            this.instance = new VisTimeline(el, items, this.cfg.opts) as PrimeFacesTypes.component.Timeline.VisTimelineInstance;
         }
 
         if (this.cfg.currentTime) {
@@ -139,13 +142,13 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         this._bindTimelineEvents(el);
 
         // bind context menu
-        if (this.contextMenuWidget) {
-            this.bindContextMenu(this.contextMenuWidget, this, this.getId(), this.cfg);
-            this.contextMenuWidget = null;
+        if (this.contextMenuComponent) {
+            this.bindContextMenu(this.contextMenuComponent, this, this.getId(), this.cfg);
+            this.contextMenuComponent = null;
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
@@ -205,7 +208,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
                     this.addCallback = callback;
 
-                    this.callBehavior("add", { params: params, item: item, callback: callback } as PrimeFacesTypes.widget.Timeline.BehaviorExtender);
+                    this.callBehavior("add", { params: params, item: item, callback: callback } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
 
                     if (this.addCallback) {
                         this.addCallback(item);
@@ -243,7 +246,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                         });
                     }
 
-                    this.callBehavior("change", { params: params, item: item, callback: callback } as PrimeFacesTypes.widget.Timeline.BehaviorExtender);
+                    this.callBehavior("change", { params: params, item: item, callback: callback } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
                     callback(item);
                 };
         }
@@ -278,7 +281,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                     }
 
                     this.changedCallback = callback;
-                    this.callBehavior("changed", { params: params, item: item, callback: callback } as PrimeFacesTypes.widget.Timeline.BehaviorExtender);
+                    this.callBehavior("changed", { params: params, item: item, callback: callback } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
                     if (this.changedCallback) {
                         this.changedCallback(item);
                         this.changedCallback = null;
@@ -331,7 +334,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
     /**
      * Sets up all event listeners for the timeline's events.
-     * @param el Main element of this widget.
+     * @param el Main element of this component.
      */
     private _bindTimelineEvents(el: HTMLElement): void {
         // "select" event
@@ -354,7 +357,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
         // "rangechange" event
         if ((this.cfg.opts.zoomable || this.cfg.opts.moveable) && this.hasBehavior("rangechange")) {
-            this.instance!.on('rangechange', (properties: PrimeFacesTypes.widget.Timeline.RangeChangeProperties) => {
+            this.instance!.on('rangechange', (properties: PrimeFacesTypes.component.Timeline.RangeChangeProperties) => {
                 const options = {
                     params: [
                         { name: this.id + '_startDate', value: properties.start.toISOString() },
@@ -369,7 +372,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
         // "rangechanged" event
         if ((this.cfg.opts.zoomable || this.cfg.opts.moveable) && this.hasBehavior("rangechanged")) {
-            this.instance!.on('rangechanged', (properties: PrimeFacesTypes.widget.Timeline.RangeChangeProperties) => {
+            this.instance!.on('rangechanged', (properties: PrimeFacesTypes.component.Timeline.RangeChangeProperties) => {
                 const options = {
                     params: [
                         { name: this.id + '_startDate', value: properties.start.toISOString() },
@@ -467,7 +470,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                 // call the drop listener
                 // parameters event and ui can be accessible in "onstart" (p:ajax) via cfg.ext.event and cfg.ext.ui
                 // or in "execute" (pe:javascript) via ext.event and ext.ui
-                this.callBehavior("drop", { params: params, event: evt, ui: ui } as PrimeFacesTypes.widget.Timeline.BehaviorExtender);
+                this.callBehavior("drop", { params: params, event: evt, ui: ui } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
             };
 
             // make the timeline droppable
@@ -476,20 +479,20 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
     }
 
     override bindContextMenu(
-        menuWidget: PrimeFacesTypes.widget.ContextMenuLikeWidget,
-        targetWidget: this,
+        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg>,
+        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
     ): void {
-        // if the timeline is not yet initialized, store the menu widget and bind later
-        if (!targetWidget.instance) {
-            this.contextMenuWidget = menuWidget;
+        // if the timeline is not yet initialized, store the menu component and bind later
+        if (!targetComponent.instance) {
+            this.contextMenuComponent = menuComponent;
             return;
         }
 
-        targetWidget.instance.on('contextmenu', function (properties: { event: Event }) {
+        targetComponent.instance.on('contextmenu', function (properties: { event: Event }) {
             // the native event of vis-timeline
-            menuWidget.show(properties.event as unknown as JQuery.TriggeredEvent);
+            menuComponent.show(properties.event as unknown as JQuery.TriggeredEvent);
             properties.event.preventDefault();
         });
     }
@@ -576,7 +579,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
      *
      * @returns The time range(s) for events to be lazy loaded.
      */
-    private getLazyLoadRange(): PrimeFacesTypes.widget.Timeline.TimelineBiRange | null {
+    private getLazyLoadRange(): PrimeFacesTypes.component.Timeline.TimelineBiRange | null {
         const visibleRange = this.instance!.getWindow();
 
         if (this.rangeLoadedEvents.start == null || this.rangeLoadedEvents.end == null) {
@@ -978,7 +981,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
      *
      * @returns The current timeline instance.
      */
-    getInstance(): PrimeFacesTypes.widget.Timeline.VisTimelineInstance | null {
+    getInstance(): PrimeFacesTypes.component.Timeline.VisTimelineInstance | null {
         return this.instance;
     }
 }

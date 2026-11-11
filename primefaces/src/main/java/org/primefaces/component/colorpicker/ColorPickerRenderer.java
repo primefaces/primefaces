@@ -25,12 +25,12 @@ package org.primefaces.component.colorpicker;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -152,7 +152,7 @@ public class ColorPickerRenderer extends InputRenderer<ColorPicker> {
     }
 
     protected void encodeScript(FacesContext context, ColorPicker component, String value, String uuid) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("ColorPicker", component)
                 .attr("instance", uuid)

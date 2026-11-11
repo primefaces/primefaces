@@ -1,18 +1,18 @@
 import { core } from "../core/core.js";
-import { BaseWidget, type BaseWidgetCfg } from "../core/core.widget.js";
+import { BaseComponent, type BaseComponentCfg } from "../core/core.component.js";
 
 /**
- * The configuration for the {@link  AjaxStatus AjaxStatus widget}.
+ * The configuration for the {@link  AjaxStatus AjaxStatus component}.
  * 
- * You can access this configuration via {@link BaseWidget.cfg | cfg}. Please note that this
+ * You can access this configuration via {@link BaseComponent.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface AjaxStatusCfg extends BaseWidgetCfg {
+export interface AjaxStatusCfg extends BaseComponentCfg {
     /**
      * Client-side callback for when the AJAX behavior completes, i.e. when the request finishes, irrespective of whether it
      * succeeded or failed.
      */
-    complete: PrimeFacesTypes.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
+    complete: PrimeFacesTypes.component.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
 
     /**
      * Delay in milliseconds before displaying the AJAX status. Default is `0`, meaning immediate.
@@ -23,46 +23,46 @@ export interface AjaxStatusCfg extends BaseWidgetCfg {
      * Client-side callback
      * for when the AJAX behavior fails, i.e. when the request fails.
      */
-    error: PrimeFacesTypes.widget.AjaxStatus.PfAjaxErrorCallback | faces.ajax.OnErrorCallback;
+    error: PrimeFacesTypes.component.AjaxStatus.PfAjaxErrorCallback | faces.ajax.OnErrorCallback;
 
     /**
      * Client-side callback for when the AJAX behavior completes, i.e. when the request finishes, irrespective of whether it
      * succeeded or failed.
      */
-    facesComplete: PrimeFacesTypes.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
+    facesComplete: PrimeFacesTypes.component.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
 
     /**
      * Client-side callback
      * for when the AJAX behavior starts, i.e. the request is about to be sent.
      */
-    start: PrimeFacesTypes.widget.AjaxStatus.PfAjaxStartCallback | faces.ajax.OnEventCallback;
+    start: PrimeFacesTypes.component.AjaxStatus.PfAjaxStartCallback | faces.ajax.OnEventCallback;
 
     /**
      * Client-side
      * callback for when the AJAX  behavior completes successfully, i.e. when the request succeeds.
      */
-    success: PrimeFacesTypes.widget.AjaxStatus.PfAjaxSuccessCallback | faces.ajax.OnEventCallback;
+    success: PrimeFacesTypes.component.AjaxStatus.PfAjaxSuccessCallback | faces.ajax.OnEventCallback;
 }
 
 /**
- * __PrimeFaces AjaxStatus Widget__
+ * __PrimeFaces AjaxStatus Component__
  * 
  * AjaxStatus is a global notifier for AJAX requests.
  * 
  * For the callbacks that can be set via the `onstart`, `onsuccess`, `onerror` and `oncomplete` attributes, see
- * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxStartCallback PfAjaxStartCallback},
- * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxSuccessCallback PfAjaxSuccessCallback},
- * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxErrorCallback PfAjaxErrorCallback}, and
- * {@link PrimeFacesTypes.widget.AjaxStatus.PfAjaxCompleteCallback PfAjaxCompleteCallback}.
+ * {@link PrimeFacesTypes.component.AjaxStatus.PfAjaxStartCallback PfAjaxStartCallback},
+ * {@link PrimeFacesTypes.component.AjaxStatus.PfAjaxSuccessCallback PfAjaxSuccessCallback},
+ * {@link PrimeFacesTypes.component.AjaxStatus.PfAjaxErrorCallback PfAjaxErrorCallback}, and
+ * {@link PrimeFacesTypes.component.AjaxStatus.PfAjaxCompleteCallback PfAjaxCompleteCallback}.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseWidget<Cfg> {
+export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseComponent<Cfg> {
     private hasSuccessOrErrorFacet: boolean = false;
     private timeout: number | null | undefined = null;
     private facesListenersAdded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.hasSuccessOrErrorFacet = false;
 
@@ -120,7 +120,7 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
         // also bind to Faces (f:ajax) events
         // NOTE: PrimeFaces fires "complete" as the final event, while Faces ends with either "success" or "error", 
         // requiring us to manually trigger a "complete" event in those cases
-        // faces listeners can't be removed, so register them only once for this widget instance which survives refreshes
+        // faces listeners can't be removed, so register them only once for this component instance which survives refreshes
         if (window.faces && faces.ajax && !this.facesListenersAdded) {
             this.facesListenersAdded = true;
             faces.ajax.addOnEvent((...args) => {
@@ -156,11 +156,11 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
      * @param args Arguments that are passed to the
      * event handler.
      */
-    trigger<Event extends PrimeFacesTypes.widget.AjaxStatus.AjaxStatusEventType>(
+    trigger<Event extends PrimeFacesTypes.component.AjaxStatus.AjaxStatusEventType>(
         event: Event, 
-        args: Parameters<PrimeFacesTypes.widget.AjaxStatus.EventToCallbackMap[Event]>
+        args: Parameters<PrimeFacesTypes.component.AjaxStatus.EventToCallbackMap[Event]>
     ): void {
-        var callback = this.cfg[event satisfies PrimeFacesTypes.widget.AjaxStatus.AjaxStatusEventType];
+        var callback = this.cfg[event satisfies PrimeFacesTypes.component.AjaxStatus.AjaxStatusEventType];
         if (callback) {
             // @ts-expect-error
             callback.apply(document, args);
@@ -224,7 +224,7 @@ export class AjaxStatus<Cfg extends AjaxStatusCfg = AjaxStatusCfg> extends BaseW
      * @param event One of the supported event
      * @return {string} The ID of the facet element for the given event
      */
-    private toFacetId(event: PrimeFacesTypes.widget.AjaxStatus.AjaxStatusEventType): string {
+    private toFacetId(event: PrimeFacesTypes.component.AjaxStatus.AjaxStatusEventType): string {
         return this.jqId + '_' + event;
     }
 

@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Panel} widget.
+ * The configuration for the {@link Panel} component.
  */
-export interface PanelCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface PanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the panel is closable. */
     closable: boolean;
     /** Duration of the close effect in milliseconds. */
@@ -17,17 +17,17 @@ export interface PanelCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Whether the collapsed state is kept across views. */
     multiViewState: boolean;
     /** Orientation of the toggle effect. */
-    toggleOrientation: PrimeFacesTypes.widget.Panel.ToggleOrientation;
+    toggleOrientation: PrimeFacesTypes.component.Panel.ToggleOrientation;
     /** Duration of the toggle effect in milliseconds. */
     toggleSpeed: number;
 }
 
 /**
- * __PrimeFaces Panel Widget__
+ * __PrimeFaces Panel Component__
  *
  * Panel is a grouping component with content toggle, close and menu integration.
  */
-export class Panel<Cfg extends PanelCfg = PanelCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Panel<Cfg extends PanelCfg = PanelCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The header of this panel. */
     header: JQuery = $();
     /** The title text in the header. */
@@ -47,7 +47,7 @@ export class Panel<Cfg extends PanelCfg = PanelCfg> extends PrimeFaces.widget.Ba
     /** The width of this panel before it was collapsed horizontally. */
     originalWidth?: number;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.header = this.jq.children('div.p-panel-titlebar');
         this.title = this.header.children('span.p-panel-title');

@@ -27,9 +27,9 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -176,7 +176,7 @@ public class StepsRenderer extends BaseMenuRenderer<Steps> {
 
     @Override
     protected void encodeScript(FacesContext context, Steps component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Steps", component);
         wb.finish();
     }

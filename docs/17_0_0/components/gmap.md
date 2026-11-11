@@ -22,7 +22,7 @@ _type_ : Type of map, valid values are, "hybrid", "satellite", "hybrid" and "ter
 _style_ : Dimensions of the map.
 
 ## Asynchronous Loading of Google Maps API
-GMap supports both static and asynchronous loading of the Google Maps API. The widget automatically detects if Google Maps is already loaded and will use asynchronous loading only when needed.
+GMap supports both static and asynchronous loading of the Google Maps API. The component automatically detects if Google Maps is already loaded and will use asynchronous loading only when needed.
 
 ### Static Loading (Traditional Method)
 If you prefer to load Google Maps statically via a script tag, simply include the script in your page before the GMap component:
@@ -36,7 +36,7 @@ If you prefer to load Google Maps statically via a script tag, simply include th
 ```
 
 ### Asynchronous Loading (Dynamic Library Import)
-For better performance and on-demand loading, you can let GMap load Google Maps asynchronously. The widget uses Google's Dynamic Library Import API to load libraries only when needed.
+For better performance and on-demand loading, you can let GMap load Google Maps asynchronously. The component uses Google's Dynamic Library Import API to load libraries only when needed.
 
 To enable asynchronous loading, provide the `apiKey` attribute (and optionally `apiVersion` and `libraries`):
 
@@ -84,7 +84,7 @@ Valid values for `apiVersion`:
 - You prefer on-demand loading of Google Maps libraries
 - You're building single-page applications (SPAs) where maps may not always be needed
 
-**Note:** If Google Maps is already loaded statically, the widget will automatically use the existing instance and ignore the `apiKey`, `apiVersion`, and `libraries` attributes.
+**Note:** If Google Maps is already loaded statically, the component will automatically use the existing instance and ignore the `apiKey`, `apiVersion`, and `libraries` attributes.
 
 For more information about Google Maps Dynamic Library Import API, see the [official documentation](https://developers.google.com/maps/documentation/javascript/load-maps-js-api).
 
@@ -96,7 +96,7 @@ related model classes are available at the end of `GMap` section and also at Jav
 ## Markers
 A marker is represented by _org.primefaces.model.map.Marker._ and rendered as a Google Maps
 [AdvancedMarkerElement](https://developers.google.com/maps/documentation/javascript/advanced-markers/overview).
-The widget loads the `marker` library itself, no need to add it to `libraries`.
+The component loads the `marker` library itself, no need to add it to `libraries`.
 
 Advanced markers require a map ID. The `mapId` attribute defaults to `DEMO_MAP_ID`, which Google provides for
 testing only; [create your own map ID](https://developers.google.com/maps/documentation/get-map-id) for production.

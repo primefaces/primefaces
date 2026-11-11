@@ -55,13 +55,13 @@ public class DataGrid extends DataGridBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
 
-    public static final String DATAGRID_CLASS = "p-datagrid p-widget";
-    public static final String HEADER_CLASS = "p-datagrid-header p-widget-header";
-    public static final String FOOTER_CLASS = "p-datagrid-footer p-widget-header";
-    public static final String EMPTY_CONTENT_CLASS = "p-datagrid-content p-datagrid-content-empty p-widget-content";
+    public static final String DATAGRID_CLASS = "p-datagrid p-component";
+    public static final String HEADER_CLASS = "p-datagrid-header p-component-header";
+    public static final String FOOTER_CLASS = "p-datagrid-footer p-component-header";
+    public static final String EMPTY_CONTENT_CLASS = "p-datagrid-content p-datagrid-content-empty p-component-content";
     public static final String TABLE_CLASS = "p-datagrid-data";
     public static final String TABLE_ROW_CLASS = "p-datagrid-row";
-    public static final String GRID_CONTENT_CLASS = "p-datagrid-content p-widget-content";
+    public static final String GRID_CONTENT_CLASS = "p-datagrid-content p-component-content";
     public static final String COLUMN_CLASS = "p-datagrid-column";
 
     public void loadLazyData() {

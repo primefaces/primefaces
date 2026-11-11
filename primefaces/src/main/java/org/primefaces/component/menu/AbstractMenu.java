@@ -42,18 +42,18 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTL
 
     public static final String LIST_CLASS = "p-menu-list";
     public static final String MENU_RTL_CLASS = "p-menu-rtl";
-    public static final String MENUITEM_CLASS = "p-menuitem p-widget";
+    public static final String MENUITEM_CLASS = "p-menuitem p-component";
     public static final String MENUITEM_LINK_CLASS = "p-menuitem-link";
     public static final String MENUITEM_TEXT_CLASS = "p-menuitem-text";
     public static final String MENUITEM_ICON_CLASS = "p-menuitem-icon";
-    public static final String TIERED_SUBMENU_CLASS = "p-widget p-menuitem p-menu-parent";
-    public static final String TIERED_CHILD_SUBMENU_CLASS = "p-widget-content p-menu-list p-menu-child";
+    public static final String TIERED_SUBMENU_CLASS = "p-component p-menuitem p-menu-parent";
+    public static final String TIERED_CHILD_SUBMENU_CLASS = "p-component-content p-menu-list p-menu-child";
     public static final String SUBMENU_ICON_CLASS = "p-icon p-next-icon p-menu-submenu-icon";
     public static final String MENUBAR_SUBMENU_ICON_CLASS = "p-icon p-dropdown-icon p-menubar-submenu-icon";
     public static final String SUBMENU_LINK_CLASS = "p-menuitem-link p-submenu-link";
-    public static final String OPTIONS_CLASS = "p-menubar-options p-widget";
-    public static final String START_CLASS = "p-menubar-start p-widget";
-    public static final String END_CLASS = "p-menubar-end p-widget";
+    public static final String OPTIONS_CLASS = "p-menubar-options p-component";
+    public static final String START_CLASS = "p-menubar-start p-component";
+    public static final String END_CLASS = "p-menubar-end p-component";
 
     @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
     public abstract String getTabindex();

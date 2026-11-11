@@ -1,20 +1,20 @@
 /**
- * The configuration for the {@link  Steps} widget.
+ * The configuration for the {@link  Steps} component.
  * 
  * You can access this configuration via {@link Steps.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface StepsCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface StepsCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
     
 /**
- * __PrimeFaces Steps Widget__
+ * __PrimeFaces Steps Component__
  * 
  * Steps is a menu component that displays steps of a workflow.
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * All enabled menu item elements.
      */
@@ -25,7 +25,7 @@ export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.Ba
      */
     items: JQuery= $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('.p-steps-item');
@@ -35,7 +35,7 @@ export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.Ba
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         this.enabledItems.on('mouseover', function(_) {

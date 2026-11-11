@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Stack} widget.
+ * The configuration for the {@link Stack} component.
  */
-export interface StackCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface StackCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Duration in milliseconds it takes the stack to close. */
     closeSpeed: number;
     /** Whether the stack is currently closed or opened. */
@@ -11,13 +11,13 @@ export interface StackCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Stack Widget__
+ * __PrimeFaces Stack Component__
  *
  * Stack is a navigation component that mimics the stacks feature in Mac OS X.
  */
-export class Stack<Cfg extends StackCfg = StackCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Stack<Cfg extends StackCfg = StackCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.expanded = this.cfg.expanded||false;
 

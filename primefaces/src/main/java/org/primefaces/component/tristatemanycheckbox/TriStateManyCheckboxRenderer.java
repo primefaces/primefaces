@@ -26,12 +26,12 @@ package org.primefaces.component.tristatemanycheckbox;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.tristatecheckbox.TriStateCheckbox;
 import org.primefaces.renderkit.SelectRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -230,7 +230,7 @@ public class TriStateManyCheckboxRenderer extends SelectRenderer<TriStateManyChe
     protected void encodeScript(FacesContext context, TriStateManyCheckbox component) throws IOException {
         String[] titles = getTitles(component);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TriStateManyCheckbox", component)
                 .nativeAttr("icons", toJsArray(getIcons(component)))
                 .attr("readonly", component.isReadonly(), false);

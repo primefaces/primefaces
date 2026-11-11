@@ -266,6 +266,6 @@
 }
 
 /* inline p:message next to its input; p:staticMessage is a block of its own */
-.p-widget + .p-message:not(.p-staticmessage) {
+.p-component + .p-message:not(.p-staticmessage) {
     margin-inline-start: var(--p-message-content-gap);
 }

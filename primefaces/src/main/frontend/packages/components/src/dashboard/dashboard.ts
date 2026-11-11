@@ -1,9 +1,9 @@
 import type { KnownInteractionOptions } from "../dragdrop/dragdrop.js";
 
 /**
- * The configuration for the {@link Dashboard} widget.
+ * The configuration for the {@link Dashboard} component.
  */
-export interface DashboardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.SortableOptions> {
+export interface DashboardCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.SortableOptions> {
     /** Whether the responsive dashboard (drag and drop of the panels) is used instead of the legacy columns. */
     responsive: boolean;
     /** Selector of the draggable panels of the responsive dashboard, set on init. */
@@ -13,7 +13,7 @@ export interface DashboardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, Know
 }
 
 /**
- * __PrimeFaces Dashboard Widget__
+ * __PrimeFaces Dashboard Component__
  *
  * Dashboard provides a portal like layout with drag & drop based reorder capabilities.
  *
@@ -21,15 +21,15 @@ export interface DashboardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, Know
  * programmatically.
  *
  * ```javascript
- * const widget = PF("MyDashboardWidget");
+ * const component = PF("MyDashboardWidget");
  *
  * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
- * PrimeFaces.interactions.sortable(widget.jq.find(".p-dashboard-column"), { revert: true });
+ * PrimeFaces.interactions.sortable(component.jq.find(".p-dashboard-column"), { revert: true });
  * ```
  */
-export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (this.cfg.responsive) {
@@ -115,7 +115,7 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindSortableEvents(): void {
         const $this = this;
@@ -130,11 +130,11 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
 
     /**
      * Handle dropping a panel either from legacy sortable or responsive draggable.
-     * @param widget the Dashboard widget
+     * @param component the Dashboard component
      * @param e Event that occurred.
      * @param ui the UI element that was dragged
      */
-    handleDrop(widget: PrimeFacesTypes.Widget<"BaseWidget">, e: JQuery.TriggeredEvent, ui: PrimeFacesTypes.widget.Dashboard.DropUi): void {
+    handleDrop(component: PrimeFacesTypes.Component<"BaseComponent">, e: JQuery.TriggeredEvent, ui: PrimeFacesTypes.component.Dashboard.DropUi): void {
         const item = (ui.item || ui.draggable)!;
         const isResponsive = ui.draggable;
         const parent = item.parent();
@@ -152,22 +152,22 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
 
         const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> & Required<Pick<PrimeFacesTypes.ajax.ConfigurationExtender, "params">> = {
             params: [
-                { name: widget.id + '_reordered', value: true },
-                { name: widget.id + '_widgetId', value: item.attr('id') },
-                { name: widget.id + '_itemIndex', value: itemIndex },
-                { name: widget.id + '_receiverColumnIndex', value: receiverColumnIndex }
+                { name: component.id + '_reordered', value: true },
+                { name: component.id + '_widgetId', value: item.attr('id') },
+                { name: component.id + '_itemIndex', value: itemIndex },
+                { name: component.id + '_receiverColumnIndex', value: receiverColumnIndex }
             ]
         };
 
         if (ui.sender) {
-            ext.params.push({ name: widget.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender) });
+            ext.params.push({ name: component.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender) });
         }
         if (isResponsive) {
             const target = $(e.target);
-            ext.params.push({ name: widget.id + '_senderColumnIndex', value: grid!.children().filter(':not(script):visible').index(target.parent()) });
+            ext.params.push({ name: component.id + '_senderColumnIndex', value: grid!.children().filter(':not(script):visible').index(target.parent()) });
         }
 
-        widget.callBehavior('reorder', ext);
+        component.callBehavior('reorder', ext);
     }
 
     /**

@@ -1,7 +1,7 @@
 import { Schedule } from "./src/schedule.js";
 import { createFullCalendarGlobal, type FullCalendarGlobal } from "./src/createFullCalendarGlobal.js";
 
-PrimeFaces.widget.Schedule = Schedule;
+PrimeFaces.component.Schedule = Schedule;
 
 declare global {
     const FullCalendar: FullCalendarGlobal;
@@ -10,24 +10,24 @@ declare global {
     }
 
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Schedule: typeof Schedule;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ScheduleCfg = import("./src/schedule.js").ScheduleCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Schedule {
+    namespace PrimeFacesTypes.component.Schedule {
         /**
          * Name of JavaScript function to extend the options of the underlying FullCalendar plugin. Access the this
-         * schedule widget via the this context, and change the FullCalendar configuration stored in `this.cfg`. See
+         * schedule component via the this context, and change the FullCalendar configuration stored in `this.cfg`. See
          * also {@link ScheduleCfg.extender}.
          */
         export type ScheduleExtender =
             /**
-             * @this The schedule widget whose FullCalendar configuration is extended.
+             * @this The schedule component whose FullCalendar configuration is extended.
              */
             (this: import("./src/schedule.js").Schedule) => void;
     }

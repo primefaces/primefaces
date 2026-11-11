@@ -193,7 +193,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public void selectByValue(String value) {
-        PrimeSelenium.executeScript(String.format("PrimeFaces.getWidgetById('%s').selectValue('%s');", getId(), value));
+        PrimeSelenium.executeScript(String.format("PrimeFaces.getComponentById('%s').selectValue('%s');", getId(), value));
     }
 
     public boolean isSelected(int index) {

@@ -1,25 +1,25 @@
 /**
- * The configuration for the {@link NotificationBar} widget.
+ * The configuration for the {@link NotificationBar} component.
  */
-export interface NotificationBarCfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg {
+export interface NotificationBarCfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg {
     /** Whether the notification bar is shown by default on page load. */
     autoDisplay: boolean;
     /** Effect applied when the notification bar is shown or hidden. */
-    effect: PrimeFacesTypes.widget.NotificationBar.Effect;
+    effect: PrimeFacesTypes.component.NotificationBar.Effect;
     /** Speed of the effect when the notification bar is shown or hidden. */
-    effectSpeed: PrimeFacesTypes.widget.NotificationBar.EffectSpeed;
+    effectSpeed: PrimeFacesTypes.component.NotificationBar.EffectSpeed;
     /** Position of the bar, either top or bottom. */
-    position: PrimeFacesTypes.widget.NotificationBar.Position;
+    position: PrimeFacesTypes.component.NotificationBar.Position;
 }
 
 /**
- * __PrimeFaces NotificationBar Widget__
+ * __PrimeFaces NotificationBar Component__
  *
  * NotificationBar displays a multipurpose fixed positioned panel for notification.
  */
-export class NotificationBar<Cfg extends NotificationBarCfg = NotificationBarCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class NotificationBar<Cfg extends NotificationBarCfg = NotificationBarCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //relocate

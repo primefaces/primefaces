@@ -77,7 +77,7 @@ function hostOf(target: EventTarget | null): HTMLElement | null {
 
 /**
  * Places the container over a static host. The host is not made relative: that would move its absolute children
- * (the sublists of p:cascadeSelect are positioned by the widget against the containing block of the item).
+ * (the sublists of p:cascadeSelect are positioned by the component against the containing block of the item).
  */
 function cover(host: HTMLElement, container: HTMLElement, unbounded: boolean): void {
     const s = container.style;

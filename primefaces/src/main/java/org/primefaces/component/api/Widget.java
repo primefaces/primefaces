@@ -34,10 +34,10 @@ import jakarta.faces.context.FacesContext;
 
 public interface Widget {
 
-    String CALLBACK_PRE_CONSTRUCT = "widgetPreConstruct";
-    String CALLBACK_POST_CONSTRUCT = "widgetPostConstruct";
-    String CALLBACK_POST_REFRESH = "widgetPostRefresh";
-    String CALLBACK_PRE_DESTROY = "widgetPreDestroy";
+    String CALLBACK_PRE_CONSTRUCT = "componentPreConstruct";
+    String CALLBACK_POST_CONSTRUCT = "componentPostConstruct";
+    String CALLBACK_POST_REFRESH = "componentPostRefresh";
+    String CALLBACK_PRE_DESTROY = "componentPreDestroy";
 
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 

@@ -26,6 +26,7 @@ package org.primefaces.component.texteditor;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -33,7 +34,6 @@ import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -134,7 +134,7 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
     }
 
     private void encodeScript(FacesContext context, TextEditor component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TextEditor", component)
                 .attr("toolbarVisible", component.isToolbarVisible())
                 .attr("readOnly", component.isReadonly(), false)

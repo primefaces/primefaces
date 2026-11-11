@@ -1,19 +1,19 @@
 /**
- * The configuration for the {@link SelectManyButton} widget.
+ * The configuration for the {@link SelectManyButton} component.
  */
-export interface SelectManyButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectManyButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether a custom layout is used. */
     custom: boolean;
     /** Called when the value has changed. */
-    change: PrimeFacesTypes.widget.SelectManyButton.ChangeCallback;
+    change: PrimeFacesTypes.component.SelectManyButton.ChangeCallback;
 }
 
 /**
- * __PrimeFaces SelectManyButton Widget__
+ * __PrimeFaces SelectManyButton Component__
  *
  * SelectManyButton is a multi select component using button UI.
  */
-export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButtonCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Whether the custom layout uses a facet. */
     facet?: boolean;
     /** The buttons. */
@@ -23,7 +23,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
     /** The enabled checkbox inputs with the value. */
     inputs: JQuery<HTMLInputElement> = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.inputs = this.jq.find(':checkbox:not(:disabled)') as JQuery<HTMLInputElement>;
 
@@ -214,7 +214,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
 
     /**
      * Selects the given button.
-     * @param button A button of this widget.
+     * @param button A button of this component.
      */
     select(button: JQuery): void {
         if (this.cfg.custom) {
@@ -233,7 +233,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
 
     /**
      * Unselects the given button.
-     * @param button A button of this widget.
+     * @param button A button of this component.
      */
     unselect(button: JQuery): void {
         if (this.cfg.custom) {
@@ -261,7 +261,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
         this.callBehavior('change');
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.custom) {
             for (let i = 0; i < this.buttons.length; i++) {
                 const button = this.buttons.eq(i);
@@ -287,7 +287,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
                 this.inputs.removeAttr('disabled');
             }
             else {
-                PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
+                PrimeFaces.utils.enableInputComponent(this.jq, this.inputs);
             }
             this.disabled = false;
         }
@@ -311,7 +311,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
                 this.inputs.attr('disabled', 'disabled');
             }
             else {
-                PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
+                PrimeFaces.utils.disableInputComponent(this.jq, this.inputs);
             }
             this.disabled = true;
         }

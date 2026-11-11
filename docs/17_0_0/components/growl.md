@@ -1,6 +1,6 @@
 # Growl
 
-Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an
+Growl is based on the Mac’s growl notification component and used to display FacesMessages in an
 overlay.
 
 ## Getting Started with Growl

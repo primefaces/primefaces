@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link Paginator} widget.
+ * The configuration for the {@link Paginator} component.
  */
-export interface PaginatorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface PaginatorCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * `true` if the paginator should be displayed always, or `false` if it is allowed to be hidden under some
-     * circumstances that depend on the widget that uses the paginator.
+     * circumstances that depend on the component that uses the paginator.
      */
     alwaysVisible: boolean;
     /** Template for the paginator text. It may contain placeholders such as `{currentPage}` or `{totalPages}`. */
@@ -17,11 +17,11 @@ export interface PaginatorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     pageLinks: number;
     /**
      * A callback method that is invoked when the pagination state changes, such as when the user selects a different
-     * page or changes the current rows per page count. This property is usually provided by another widget that makes
+     * page or changes the current rows per page count. This property is usually provided by another component that makes
      * use of this paginator. You should use this callback to perform any actions required to apply the new pagination
      * state.
      */
-    paginate: PrimeFacesTypes.widget.Paginator.PaginateCallback;
+    paginate: PrimeFacesTypes.component.Paginator.PaginateCallback;
     /** The number of rows per page for the dropdown. */
     prevRows: number;
     /** Total number of rows (records) to be displayed. */
@@ -33,21 +33,21 @@ export interface PaginatorCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Paginator Widget__
+ * __PrimeFaces Paginator Component__
  *
- * A widget for handling pagination that is usually used by other widget via composition, that is, they create and save
- * an instance of this widget during initialization. After you create a new instance of this paginator, you should set
+ * A component for handling pagination that is usually used by other component via composition, that is, they create and save
+ * an instance of this component during initialization. After you create a new instance of this paginator, you should set
  * the `paginate` property to an appropriate callback function.
  *
  * ```javascript
- * const paginator = new PrimeFaces.widget.Paginator();
+ * const paginator = new PrimeFaces.component.Paginator();
  * paginator.init(paginatorCfg);
  * paginator.paginator = newState => {
  *  // handle pagination
  * };
  * ```
  */
-export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** DOM element of the container for all the navigation elements. */
     navigator: JQuery = $();
     /** DOM element of the container with the numbered page links. */
@@ -75,7 +75,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
     /** Formatter for the numbers updated on the client, created lazily for the current locale. */
     private numberFormat?: Intl.NumberFormat;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //elements
@@ -121,7 +121,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
     }
 
     /**
-     * Sets up all event listeners for this widget.
+     * Sets up all event listeners for this component.
      */
     private bindEvents(): void {
         //visuals for first,prev,next,last buttons
@@ -283,7 +283,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
      * @param owner the owner JQ element of the paginator
      * @param ownerConfig the owner configuration to check if touch enabled or not
      */
-    bindSwipeEvents(owner: JQuery, ownerConfig: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.BaseWidgetCfg>): void {
+    bindSwipeEvents(owner: JQuery, ownerConfig: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.BaseComponentCfg>): void {
         if (!PrimeFaces.env.isTouchable(ownerConfig)) {
             return;
         }
@@ -440,7 +440,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
      */
     setPage(p: number, silent?: boolean): void {
         if(p >= 0 && p < (this.cfg.pageCount as number) && this.cfg.page != p){
-            const newState: PrimeFacesTypes.widget.Paginator.PaginationState = {
+            const newState: PrimeFacesTypes.component.Paginator.PaginationState = {
                 first: (this.cfg.rows as number) * p,
                 rows: this.cfg.rows as number,
                 page: p
@@ -468,7 +468,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
             this.cfg.pageCount = 1;
             this.cfg.page = 0;
 
-            const newState: PrimeFacesTypes.widget.Paginator.PaginationState = {
+            const newState: PrimeFacesTypes.component.Paginator.PaginationState = {
                 first: 0,
                 // '*' is passed on as it is
                 rows: rpp as unknown as number,

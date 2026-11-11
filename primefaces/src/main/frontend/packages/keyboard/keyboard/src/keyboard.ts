@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Keyboard} widget.
+ * The configuration for the {@link Keyboard} component.
  */
-export interface KeyboardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, JQueryKeypad.KeypadSettings {
+export interface KeyboardCfg extends PrimeFacesTypes.component.BaseComponentCfg, JQueryKeypad.KeypadSettings {
     /**
      * The name of the built-in keyboard layout to use. Mutually exclusive with `layoutTemplate`.
      */
@@ -15,22 +15,22 @@ export interface KeyboardCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, JQuer
 }
 
 /**
- * __PrimeFaces Keyboard Widget__
+ * __PrimeFaces Keyboard Component__
  *
  * Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features are the
  * customizable layouts and skinning capabilities.
  */
-export class Keyboard<Cfg extends KeyboardCfg = KeyboardCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Keyboard<Cfg extends KeyboardCfg = KeyboardCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Unbind callback for the resize handler. */
     resizeHandler?: PrimeFacesTypes.Unbindable;
     /** Unbind callback for the scroll handler. */
     scrollHandler?: PrimeFacesTypes.Unbindable;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
-        // the utilities are looked up in the widget scope, they are not a widget
-        const keyboardUtils = (PrimeFaces.widget as PrimeFacesTypes.WidgetRegistry & { KeyboardUtils: PrimeFacesTypes.widget.KeyboardUtils }).KeyboardUtils;
+        // the utilities are looked up in the component scope, they are not a component
+        const keyboardUtils = (PrimeFaces.component as PrimeFacesTypes.ComponentRegistry & { KeyboardUtils: PrimeFacesTypes.component.KeyboardUtils }).KeyboardUtils;
         if (this.cfg.layoutTemplate)
             this.cfg.layout = keyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
         else

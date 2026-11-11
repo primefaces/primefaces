@@ -35,7 +35,7 @@ import jakarta.faces.component.FacesComponent;
 public class Avatar extends AvatarBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Avatar";
 
-    public static final String STYLE_CLASS = "p-avatar p-widget";
+    public static final String STYLE_CLASS = "p-avatar p-component";
     public static final String CIRCLE_CLASS = "p-avatar-circle";
     public static final String SIZE_LARGE_CLASS = "p-avatar-lg";
     public static final String SIZE_XLARGE_CLASS = "p-avatar-xl";

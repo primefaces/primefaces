@@ -28,11 +28,11 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -107,7 +107,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
             throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Wizard", component)
                 .attr("showStepStatus", component.isShowStepStatus())
                 .attr("showNavBar", component.isShowNavBar())
@@ -167,7 +167,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
         String styleClass = getStyleClassBuilder(facesContext)
-                .add("p-wizard p-widget")
+                .add("p-wizard p-component")
                 .add(component.getStyleClass())
                 .build();
 

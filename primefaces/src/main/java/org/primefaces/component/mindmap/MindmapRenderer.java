@@ -26,7 +26,7 @@ package org.primefaces.component.mindmap;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +63,7 @@ public class MindmapRenderer extends CoreRenderer<Mindmap> {
         ResponseWriter writer = context.getResponseWriter();
         MindmapNode root = map.getValue();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Mindmap", map)
                 .attr("effectSpeed", map.getEffectSpeed());
 

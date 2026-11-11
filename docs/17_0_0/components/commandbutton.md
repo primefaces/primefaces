@@ -86,7 +86,7 @@ html .p-state-loading :is(.p-button-icon-left, .p-button-icon-right, .p-icon):no
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.CommandButton_
+Component: _PrimeFaces.component.CommandButton_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

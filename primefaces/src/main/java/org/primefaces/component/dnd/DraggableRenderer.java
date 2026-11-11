@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class DraggableRenderer extends CoreRenderer<Draggable> {
             target = component.getParent();
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Draggable", component)
                 .attr("target", target.getClientId(context))
                 .attr("cursor", component.getCursor())

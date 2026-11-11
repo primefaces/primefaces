@@ -143,7 +143,7 @@ icons of an icon library per instance, like the `icon` of a button:
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SpeedDial_
+Component: _PrimeFaces.component.SpeedDial_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

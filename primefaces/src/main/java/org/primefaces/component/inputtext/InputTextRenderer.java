@@ -26,10 +26,10 @@ package org.primefaces.component.inputtext;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -70,7 +70,7 @@ public class InputTextRenderer extends InputRenderer<InputText> {
 
     protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
         String counter = inputText.getCounter();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("InputText", inputText)
                 .attr("maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
 

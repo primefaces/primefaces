@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link Button} widget.
+ * The configuration for the {@link Button} component.
  */
-export interface ButtonCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces Button Widget__
+ * __PrimeFaces Button Component__
  *
  * Button is an extension to the standard h:button component with skinning capabilities.
  */
-export class Button<Cfg extends ButtonCfg = ButtonCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Button<Cfg extends ButtonCfg = ButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         PrimeFaces.skinButton(this.jq);

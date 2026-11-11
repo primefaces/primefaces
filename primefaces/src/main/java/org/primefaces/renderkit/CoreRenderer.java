@@ -33,6 +33,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -42,7 +43,6 @@ import org.primefaces.util.ResourceUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.StyleBuilder;
 import org.primefaces.util.StyleClassBuilder;
-import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
@@ -765,8 +765,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 && !cbh.getClientBehaviors().isEmpty()));
     }
 
-    protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
+    protected ComponentScriptBuilder getComponentScriptBuilder(FacesContext context) {
+        return PrimeRequestContext.getCurrentInstance(context).getComponentScriptBuilder();
     }
 
     protected StyleClassBuilder getStyleClassBuilder(FacesContext context) {

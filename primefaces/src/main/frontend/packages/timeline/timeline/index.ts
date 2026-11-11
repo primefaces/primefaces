@@ -11,7 +11,7 @@ import "moment/locale/pl.js";
 import "moment/locale/ru.js";
 import "moment/locale/uk.js";
 
-PrimeFaces.widget.Timeline = Timeline;
+PrimeFaces.component.Timeline = Timeline;
 
 declare global {
     const vis: VisGlobal;
@@ -30,16 +30,16 @@ Object.assign(window, { vis: createVisGlobal(), });
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Timeline: typeof Timeline;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TimelineCfg = import("./src/timeline.js").TimelineCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Timeline {
+    namespace PrimeFacesTypes.component.Timeline {
         /**
          * Callback that is invoked when an event was added to this timeline, with the added item, or `null` to cancel.
          * See also {@link Timeline.addCallback}.
@@ -78,7 +78,7 @@ declare global {
         };
 
         /**
-         * The vis-timeline instance, with the internals used by the widget which are not part of the type declarations
+         * The vis-timeline instance, with the internals used by the component which are not part of the type declarations
          * of vis-timeline.
          */
         export type VisTimelineInstance = import("vis-timeline/esnext").Timeline & {

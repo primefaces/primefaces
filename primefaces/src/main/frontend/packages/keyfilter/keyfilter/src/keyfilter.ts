@@ -10,10 +10,10 @@ export type KeyFilterTestFunction = (this: HTMLInputElement | HTMLTextAreaElemen
 export type KeyFilterMask = "pint" | "int" | "pnum" | "money" | "num" | "hex" | "email" | "alpha" | "alphanum";
 
 /**
- * The configuration for the {@link KeyFilter} widget. The options `regEx`, `inputRegEx`, `mask` and `testFunction` are
+ * The configuration for the {@link KeyFilter} component. The options `regEx`, `inputRegEx`, `mask` and `testFunction` are
  * mutually exclusive.
  */
-export interface KeyFilterCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface KeyFilterCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** The regular expression the complete text of the input must match. */
     inputRegEx: RegExp;
     /** The predefined mask each entered character must match. */
@@ -29,14 +29,14 @@ export interface KeyFilterCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces KeyFilter Widget__
+ * __PrimeFaces KeyFilter Component__
  *
  * KeyFilter is used to filter keyboard input on specified input components.
  */
-export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The predefined masks, each a regular expression an entered character must match. Can be extended with own masks,
-     * e.g. `PrimeFaces.widget.KeyFilter.masks.upper = /[A-Z]/` (formerly `$.fn.keyfilter.defaults.masks`).
+     * e.g. `PrimeFaces.component.KeyFilter.masks.upper = /[A-Z]/` (formerly `$.fn.keyfilter.defaults.masks`).
      */
     static masks: Record<KeyFilterMask | string, RegExp> = {
         pint: /[\d]/,
@@ -57,7 +57,7 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
      * Initializes the key filter: applies it to the target input, or to the first enabled input inside the target.
      * @param cfg The configuration of the key filter.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
@@ -142,7 +142,7 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
      * Shortcuts like Ctrl+C, pasted and deleted text are not filtered.
      * @param input The input or textarea element.
      * @param test The test for a single character.
-     * @param namespace The event namespace of this widget.
+     * @param namespace The event namespace of this component.
      */
     private bindCharacterFilter(input: JQuery, test: KeyFilterTestFunction, namespace: string): void {
         const filter = (element: HTMLInputElement | HTMLTextAreaElement, text: string): string => {

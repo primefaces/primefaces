@@ -13,7 +13,7 @@ export interface SliderEventData {
 }
 
 /**
- * Callback that is invoked when a slider handle starts moving, moves or stops moving. `this` is the slider widget
+ * Callback that is invoked when a slider handle starts moving, moves or stops moving. `this` is the slider component
  * for `onSlide` / `onSlideEnd` and the slider element for `onSlideStart`.
  * @param event Like with jQuery UI a `slidestart`, `slide` or `slidestop` event wrapping the pointer or keyboard
  * event, `null` if there is none. `onSlideStart` and `onSlide` cancel the slide with `event.preventDefault()`.
@@ -22,13 +22,13 @@ export interface SliderEventData {
  */
 export type SliderCallback = (this: Slider | HTMLElement, event: JQuery.TriggeredEvent | null, data: SliderEventData) => void | boolean;
 
-/** The methods of the InputNumber / Spinner widgets the slider uses, they are not typed in this package. */
-type InputWidget = { getValue(): number; setValue(value: number): void };
+/** The methods of the InputNumber / Spinner components the slider uses, they are not typed in this package. */
+type InputComponent = { getValue(): number; setValue(value: number): void };
 
 /**
- * The configuration for the {@link Slider} widget.
+ * The configuration for the {@link Slider} component.
  */
-export interface SliderCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SliderCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether to animate the handle when the value is set by a click or programmatically. */
     animate: boolean;
     /** Whether the slider is disabled. */
@@ -62,11 +62,11 @@ export interface SliderCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Slider Widget__
+ * __PrimeFaces Slider Component__
  *
  * Slider is used to provide input with various customization options like orientation, display modes and skinning.
  */
-export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The inputs storing the value of each handle. */
     input: JQuery = $();
     /** The element displaying the value, `null` without display. */
@@ -100,7 +100,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
      * handles and binds the pointer, keyboard and input events.
      * @param cfg The configuration of the slider.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.min = Number(this.cfg.min) || 0;
@@ -178,7 +178,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Moves the handles when the value of their input changes: listens to the InputNumber / Spinner widget of the
+     * Moves the handles when the value of their input changes: listens to the InputNumber / Spinner component of the
      * input, or else to the keys of a plain input, where only digits and, if allowed, a decimal separator and a minus
      * sign can be typed.
      */
@@ -194,9 +194,9 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
             }
             else if (spinner.length) {
                 spinner.find('.p-spinner-input').off('change.slider').on('change.slider', () => {
-                    const widget = this.inputWidget(spinner);
-                    if (widget) {
-                        this.setHandleValue(index, widget.getValue());
+                    const component = this.inputComponent(spinner);
+                    if (component) {
+                        this.setHandleValue(index, component.getValue());
                     }
                 });
             }
@@ -503,7 +503,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
 
     /**
      * Notifies the inputs and the `slideEnd` behavior after a handle stopped moving: fires the `onSlideEnd` callback,
-     * triggers `change` on the inputs of InputNumber / Spinner widgets and calls the `slideEnd` behavior with the
+     * triggers `change` on the inputs of InputNumber / Spinner components and calls the `slideEnd` behavior with the
      * value of the moved handle.
      * @param event The event that ended the slide.
      * @param data The data of the moved handle.
@@ -525,14 +525,14 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Stores the value of a handle in its input, via the InputNumber / Spinner widget if the input belongs to one.
+     * Stores the value of a handle in its input, via the InputNumber / Spinner component if the input belongs to one.
      * @param input The input, or the InputNumber / Spinner wrapper of a range slider.
      * @param value The value of the handle.
      */
     private setInputValue(input: JQuery, value: number): void {
-        const widget = this.inputWidget(input);
-        if (widget) {
-            widget.setValue(value);
+        const component = this.inputComponent(input);
+        if (component) {
+            component.setValue(value);
         }
         else {
             input.val(value);
@@ -540,13 +540,13 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Finds the InputNumber / Spinner widget an input belongs to.
+     * Finds the InputNumber / Spinner component an input belongs to.
      * @param input The input, or the InputNumber / Spinner wrapper of a range slider.
-     * @returns The widget, `null` for a plain input.
+     * @returns The component, `null` for a plain input.
      */
-    private inputWidget(input: JQuery): InputWidget | null {
+    private inputComponent(input: JQuery): InputComponent | null {
         const holder = input.closest('.p-inputnumber, .p-spinner');
-        return holder.length ? PrimeFaces.getWidgetById(holder.attr('id') ?? '') as unknown as InputWidget | null : null;
+        return holder.length ? PrimeFaces.getComponentById(holder.attr('id') ?? '') as unknown as InputComponent | null : null;
     }
 
     /**
@@ -601,12 +601,12 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.widget
         this.updateUI(true);
     }
 
-    /** Enables this slider widget so that the user can move the slider. */
+    /** Enables this slider component so that the user can move the slider. */
     override enable(): void {
         this.setDisabled(false);
     }
 
-    /** Disables this slider widget so that the user cannot move the slider anymore. */
+    /** Disables this slider component so that the user cannot move the slider anymore. */
     override disable(): void {
         this.setDisabled(true);
     }

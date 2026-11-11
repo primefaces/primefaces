@@ -4,9 +4,9 @@
 export type TriStateManyCheckboxState = 0 | 1 | 2;
 
 /**
- * The configuration for the {@link TriStateManyCheckbox} widget.
+ * The configuration for the {@link TriStateManyCheckbox} component.
  */
-export interface TriStateManyCheckboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface TriStateManyCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** The style classes of the icon of each state. */
     icons: [string, string, string];
     /** Whether the component is read only. */
@@ -16,13 +16,13 @@ export interface TriStateManyCheckboxCfg extends PrimeFacesTypes.widget.BaseWidg
 }
 
 /**
- * __PrimeFaces TriStateManyCheckbox Widget__
+ * __PrimeFaces TriStateManyCheckbox Component__
  *
  * TriStateManyCheckbox is a group of checkboxes with three states each. A click on the box or the label, Space, Enter,
  * ArrowUp and ArrowRight move an item to the next state, ArrowDown and ArrowLeft to the previous one. The state of each
  * item is kept in an input.
  */
-export class TriStateManyCheckbox<Cfg extends TriStateManyCheckboxCfg = TriStateManyCheckboxCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class TriStateManyCheckbox<Cfg extends TriStateManyCheckboxCfg = TriStateManyCheckboxCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The inputs with the state of each item. */
     inputs: JQuery<HTMLInputElement> = $();
     /** The boxes showing the state of each item. */
@@ -32,14 +32,14 @@ export class TriStateManyCheckbox<Cfg extends TriStateManyCheckboxCfg = TriState
 
     /** The live region announcing a changed state to screen readers. */
     private ariaHelper: JQuery = $();
-    /** The indices of the items that are not disabled on the server, only they are disabled and enabled by the widget. */
+    /** The indices of the items that are not disabled on the server, only they are disabled and enabled by the component. */
     private enabledItems: number[] = [];
 
     /**
-     * Initializes the widget and binds the events.
-     * @param cfg The configuration of the widget.
+     * Initializes the component and binds the events.
+     * @param cfg The configuration of the component.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.inputs = this.jq.find('.p-hidden-accessible > input') as JQuery<HTMLInputElement>;

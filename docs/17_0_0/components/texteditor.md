@@ -72,7 +72,7 @@ Toolbar of editor is easy to customize using the `toolbar` facet:
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Editor_
+Component: _PrimeFaces.component.Editor_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- |

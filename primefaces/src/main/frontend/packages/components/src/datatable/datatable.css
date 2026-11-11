@@ -901,11 +901,11 @@
                 width: 100% !important;
             }
 
-            &.p-widget-content {
+            &.p-component-content {
                 border: 0 none;
             }
 
-            tr.p-widget-content {
+            tr.p-component-content {
                 border-left: 0 none;
                 border-right: 0 none;
             }

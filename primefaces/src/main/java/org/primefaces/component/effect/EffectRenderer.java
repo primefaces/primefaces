@@ -26,7 +26,7 @@ package org.primefaces.component.effect;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -54,7 +54,7 @@ public class EffectRenderer extends CoreRenderer<Effect> {
 
         String animation = getEffectBuilder(component, targetId).build();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Effect", component)
                 .attr("source", source)
                 .attr("event", event)

@@ -26,8 +26,8 @@ package org.primefaces.component.tooltip;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -94,7 +94,7 @@ public class TooltipRenderer extends CoreRenderer<Tooltip> {
     }
 
     protected void encodeScript(FacesContext context, Tooltip component, String target) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Tooltip", component)
                 .attr("showEvent", component.getShowEvent(), null)
                 .attr("hideEvent", component.getHideEvent(), null)

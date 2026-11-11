@@ -1,13 +1,13 @@
 import Webcam from "webcamjs";
 
 /**
- * The configuration for the {@link PhotoCam} widget.
+ * The configuration for the {@link PhotoCam} component.
  * 
- * You can access this configuration via {@link PhotoCam.cfg widget.cfg}.
+ * You can access this configuration via {@link PhotoCam.cfg component.cfg}.
  * Please note that this configuration is usually meant to be read-only and should
  * not be modified.
  */
-export interface PhotoCamCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface PhotoCamCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Whether access to the camera should be requested automatically upon page load.
      */
@@ -36,7 +36,7 @@ export interface PhotoCamCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /**
      * Custom error handler invoked when a snapshot could not be taken.
      */
-    onCameraError: PrimeFacesTypes.widget.PhotoCam.CameraErrorCallback;
+    onCameraError: PrimeFacesTypes.component.PhotoCam.CameraErrorCallback;
 
     /**
      * Height of the captured photo in pixels, defaults to height.
@@ -68,7 +68,7 @@ export interface PhotoCamCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
  * Default error handler for webcam events
  * @param errorObj Error object containing message, stacktrace and so on.
  */
-const defaultErrorCallback: PrimeFacesTypes.widget.PhotoCam.CameraErrorCallback = (errorObj) => {
+const defaultErrorCallback: PrimeFacesTypes.component.PhotoCam.CameraErrorCallback = (errorObj) => {
     const message = errorObj instanceof Webcam.errors.WebcamError
         ? errorObj.message
         : `Could not access webcam: ${errorObj.name}: ${errorObj.message} ${errorObj.toString()}`;
@@ -76,11 +76,11 @@ const defaultErrorCallback: PrimeFacesTypes.widget.PhotoCam.CameraErrorCallback 
 };
 
 /**
- * __PrimeFaces PhotoCam Widget__
+ * __PrimeFaces PhotoCam Component__
  *
  * PhotoCam is used to take photos with webcam and send them to the Jakarta Faces backend model.
  */
-export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * Whether the camera is currently attached and can take photos.
      */
@@ -92,11 +92,11 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
     device: string = "";
 
     /**
-     * The error hook registered with the Webcam library by this widget.
+     * The error hook registered with the Webcam library by this component.
      */
     private errorHook: ((error: Error) => void) | null = null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.width = this.cfg.width||320;
         this.cfg.height = this.cfg.height||240;
@@ -114,7 +114,7 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         // release the camera of the old element, so that it can be attached to the new one
         this.detach();
 

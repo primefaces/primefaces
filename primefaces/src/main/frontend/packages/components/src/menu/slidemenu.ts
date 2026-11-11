@@ -1,7 +1,7 @@
 import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
- * The configuration for the {@link  SlideMenu} widget.
+ * The configuration for the {@link  SlideMenu} component.
  *
  * You can access this configuration via {@link SlideMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -10,7 +10,7 @@ export interface SlideMenuCfg extends MenuCfg {
 }
 
 /**
- * __PrimeFaces SlideMenu Widget__
+ * __PrimeFaces SlideMenu Component__
  *
  * SlideMenu is used to display nested submenus with sliding animation.
  *
@@ -62,7 +62,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      */
     wrapper: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //elements
@@ -99,7 +99,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         const $this = this;
@@ -224,7 +224,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
     }
 
     /**
-     * Renders the client-side parts of this widget.
+     * Renders the client-side parts of this component.
      */
     private render(): void {
         this.menuList = this.backward.children('ul.p-menu-list');

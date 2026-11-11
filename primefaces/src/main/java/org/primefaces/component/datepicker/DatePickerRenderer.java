@@ -30,8 +30,8 @@ import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.text.DateFormatSymbols;
@@ -182,7 +182,7 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
     protected void encodeScript(FacesContext context, DatePicker component, String value) throws IOException {
         Locale locale = component.calculateLocale(context);
         String pattern = component.calculateWidgetPattern();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DatePicker", component);
 
         String defaultDate = null;
@@ -339,7 +339,7 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
         }
     }
 
-    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker component) throws IOException {
+    protected void encodeScriptDateStyleClasses(ComponentScriptBuilder wb, DatePicker component) throws IOException {
         if (component.getModel() == null) {
             return;
         }

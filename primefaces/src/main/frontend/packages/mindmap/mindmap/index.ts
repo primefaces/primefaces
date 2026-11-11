@@ -1,20 +1,20 @@
 import "./src/raphael.connection.js";
 import { Mindmap } from "./src/mindmap.js";
 
-PrimeFaces.widget.Mindmap = Mindmap;
+PrimeFaces.component.Mindmap = Mindmap;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Mindmap: typeof Mindmap;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type MindmapCfg = import("./src/mindmap.js").MindmapCfg;
     }
 
-    namespace PrimeFacesTypes.widget.Mindmap {
+    namespace PrimeFacesTypes.component.Mindmap {
         /**
          * Model that describes a node of the mindmap, such as its parent and children, its label, its geometry etc.
          */
@@ -34,7 +34,7 @@ declare global {
         }
 
         /**
-         * A drawn mindmap node (ellipse) or text label, with the properties the widget sets while dragging.
+         * A drawn mindmap node (ellipse) or text label, with the properties the component sets while dragging.
          */
         export type MindmapElement = import("raphael").RaphaelElement & {
             /** Whether the node was dragged, so that the click after the drag does not select the node. */

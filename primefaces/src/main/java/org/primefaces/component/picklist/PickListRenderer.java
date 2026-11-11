@@ -28,10 +28,10 @@ import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -142,7 +142,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
     }
 
     protected void encodeScript(FacesContext context, PickList component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("PickList", component)
                 .attr("effect", component.getEffect())
                 .attr("effectSpeed", component.getEffectSpeed())

@@ -1,12 +1,12 @@
 /**
- * The configuration for the {@link AccordionPanel} widget.
+ * The configuration for the {@link AccordionPanel} component.
  */
-export interface AccordionPanelCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface AccordionPanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * The open tab(s), read from the state input on init: with `multiple` a list of keys or indices, otherwise a key, an
      * index or `none`.
      */
-    active: PrimeFacesTypes.widget.AccordionPanel.Active;
+    active: PrimeFacesTypes.component.AccordionPanel.Active;
     /** Whether dynamically loaded tabs are not loaded again. */
     cache: boolean;
     /** Whether a tab controller decides if a tab may be opened or closed. */
@@ -24,19 +24,19 @@ export interface AccordionPanelCfg extends PrimeFacesTypes.widget.BaseWidgetCfg 
     /** Where an opened tab is scrolled into view, not scrolled if not set. */
     scrollIntoView: ScrollLogicalPosition;
     /** Called before a tab is opened, `false` keeps it closed. */
-    onTabChange: PrimeFacesTypes.widget.AccordionPanel.OnTabChangeCallback;
+    onTabChange: PrimeFacesTypes.component.AccordionPanel.OnTabChangeCallback;
     /** Called when a tab was opened. */
-    onTabShow: PrimeFacesTypes.widget.AccordionPanel.OnTabShowCallback;
+    onTabShow: PrimeFacesTypes.component.AccordionPanel.OnTabShowCallback;
     /** Called when a tab was closed. */
-    onTabClose: PrimeFacesTypes.widget.AccordionPanel.OnTabCloseCallback;
+    onTabClose: PrimeFacesTypes.component.AccordionPanel.OnTabCloseCallback;
 }
 
 /**
- * __PrimeFaces AccordionPanel Widget__
+ * __PrimeFaces AccordionPanel Component__
  *
  * The AccordionPanel is a container component that displays content in a stacked format.
  */
-export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The hidden input with the open tabs. */
     stateHolder: JQuery<HTMLInputElement> = $();
     /** The headers of the tabs. */
@@ -44,7 +44,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
     /** The contents of the tabs. */
     panels: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.stateHolder = $(this.jqId + '_active') as JQuery<HTMLInputElement>;

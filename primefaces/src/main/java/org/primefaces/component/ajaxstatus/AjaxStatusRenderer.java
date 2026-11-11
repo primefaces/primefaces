@@ -25,8 +25,8 @@ package org.primefaces.component.ajaxstatus;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
     }
 
     protected void encodeScript(FacesContext context, AjaxStatus component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context)
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context)
                 .init("AjaxStatus", component)
                 .attr("delay", component.getDelay());
 

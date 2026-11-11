@@ -44,7 +44,7 @@
                 }
 
                 const dualList = document.querySelector("[id='form:pickListCities']")
-                const targetUl = dualList.querySelector(".p-widget-content.p-picklist-list.p-picklist-target.p-sortable")
+                const targetUl = dualList.querySelector(".p-component-content.p-picklist-list.p-picklist-target.p-sortable")
                 targetUl.innerHTML = ''
                 for (let e of Object.entries(picklistData)) {
                     targetUl.appendChild(li(e[0], e[1]))

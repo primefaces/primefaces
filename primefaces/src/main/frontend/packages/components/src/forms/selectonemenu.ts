@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link SelectOneMenu} widget.
+ * The configuration for the {@link SelectOneMenu} component.
  */
-export interface SelectOneMenuCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface SelectOneMenuCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** `true` if the label of the selected item should always be set on the visible input, `false` otherwise. */
     alwaysDisplayLabel: boolean;
     /** Appends the overlay to the element defined by search expression. Defaults to the document body. */
@@ -25,13 +25,13 @@ export interface SelectOneMenuCfg extends PrimeFacesTypes.widget.DeferredWidgetC
     /** Name of the toggle animation of the overlay panel, defaults to `fade`. */
     effect: string;
     /** Duration of the toggle animation of the overlay panel, defaults to `normal`. */
-    effectSpeed: PrimeFacesTypes.widget.SelectOneMenu.EffectSpeed;
+    effectSpeed: PrimeFacesTypes.component.SelectOneMenu.EffectSpeed;
     /** `true` if the options can be filtered, or `false` otherwise. */
     filter: boolean;
     /** A custom filter function that is used when `filterMatchMode` is set to `custom`. */
-    filterFunction: PrimeFacesTypes.widget.SelectOneMenu.FilterFunction;
+    filterFunction: PrimeFacesTypes.component.SelectOneMenu.FilterFunction;
     /** Mode of the filter. When set to `custom` a `filterFunction` must be specified. */
-    filterMatchMode: PrimeFacesTypes.widget.SelectOneMenu.FilterMatchMode;
+    filterMatchMode: PrimeFacesTypes.component.SelectOneMenu.FilterMatchMode;
     /** Initial height of the overlay panel in pixels. */
     initialHeight: number;
     /** Text of the label for the input. */
@@ -53,25 +53,25 @@ export interface SelectOneMenuCfg extends PrimeFacesTypes.widget.DeferredWidgetC
 }
 
 /**
- * __PrimeFaces SelectOneMenu Widget__
+ * __PrimeFaces SelectOneMenu Component__
  *
  * SelectOneMenu is an extended version of the standard SelectOneMenu.
  */
-export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
-    /** Whether the value of this widget was changed from its original value. */
+export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
+    /** Whether the value of this component was changed from its original value. */
     changed?: boolean;
     /** Whether a custom value, which does not have to match one of the available options, was entered (editable only). */
     customInput?: boolean;
     /** The custom value that was entered by the user which does not have to match one the available options. */
     customInputVal?: string;
-    /** Whether this widget is currently disabled. */
+    /** Whether this component is currently disabled. */
     disabled: boolean = false;
     /** The DOM element for the input field that lets the user enter a search term to filter the list of available options. */
     filterInput?: JQuery;
     /** The filter that was selected and is currently used. */
-    filterMatcher?: PrimeFacesTypes.widget.SelectOneMenu.FilterFunction;
+    filterMatcher?: PrimeFacesTypes.component.SelectOneMenu.FilterFunction;
     /** Map between the available filter types and the filter implementation. */
-    filterMatchers?: Record<PrimeFacesTypes.widget.SelectOneMenu.FilterMatchMode, PrimeFacesTypes.widget.SelectOneMenu.FilterFunction | undefined>;
+    filterMatchers?: Record<PrimeFacesTypes.component.SelectOneMenu.FilterMatchMode, PrimeFacesTypes.component.SelectOneMenu.FilterFunction | undefined>;
     /** Unbind callback for the hide overlay handler. */
     hideOverlayHandler?: PrimeFacesTypes.Unbindable;
     /** The DOM element for the hidden input with the current value. */
@@ -118,14 +118,14 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     searchValue: string = "";
     /** ID of the timeout for clearing the typed letters. */
     searchTimer?: number;
-    /** Handler for CSS transitions used by this widget. */
+    /** Handler for CSS transitions used by this component. */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
     /** The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the available selectable options. */
     triggers: JQuery = $();
     /** The current value of this select one menu. */
     value?: string;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panelId = this.jqId + '_panel';
@@ -210,7 +210,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Finds and initializes the DOM elements that make up this widget.
+     * Finds and initializes the DOM elements that make up this component.
      */
     private initContents(): void {
         this.itemsContainer = this.itemsWrapper.children('.p-selectonemenu-items');
@@ -283,7 +283,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.items = null;
 
         super.refresh(cfg);
@@ -323,7 +323,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindEvents(): void {
         //Triggers
@@ -526,7 +526,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Removes some event listeners when this widget was disabled.
+     * Removes some event listeners when this component was disabled.
      */
     private unbindEvents(): void {
         if (this.items) {
@@ -605,7 +605,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Triggers the event listeners when the value of this widget changed.
+     * Triggers the event listeners when the value of this component changed.
      * @param edited Whether the value was edited by the user. If it was, checks which option is now selected.
      */
     private triggerChange(edited?: boolean): void {
@@ -1084,7 +1084,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Puts focus on this widget.
+     * Puts focus on this component.
      */
     focus(): void {
         this.keyboardTarget.trigger('focus');
@@ -1106,7 +1106,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Removes focus from this widget.
+     * Removes focus from this component.
      */
     blur(): void {
         this.keyboardTarget.trigger("blur");
@@ -1116,7 +1116,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Disables this widget so that the user cannot select any option.
+     * Disables this component so that the user cannot select any option.
      */
     override disable(): void {
         if (!this.disabled) {
@@ -1131,7 +1131,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Enables this widget so that the user can select an option.
+     * Enables this component so that the user can select an option.
      */
     override enable(): void {
         if (this.disabled) {
@@ -1328,7 +1328,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.SelectOneMenu.FilterFunction` that matches the given option when it starts
+     * Implementation of a `PrimeFaces.component.SelectOneMenu.FilterFunction` that matches the given option when it starts
      * with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1339,7 +1339,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.SelectOneMenu.FilterFunction` that matches the given option when it
+     * Implementation of a `PrimeFaces.component.SelectOneMenu.FilterFunction` that matches the given option when it
      * contains the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1350,7 +1350,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.SelectOneMenu.FilterFunction` that matches the given option when it ends
+     * Implementation of a `PrimeFaces.component.SelectOneMenu.FilterFunction` that matches the given option when it ends
      * with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1584,7 +1584,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
      */
     private renderPanelContentFromHiddenSelect(initContentsAndBindItemEvents: boolean): void {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             let panelContent = '<div id="' + this.id + '_items" class="p-selectonemenu-items p-widget-content p-widget" role="listbox">';
+             let panelContent = '<div id="' + this.id + '_items" class="p-selectonemenu-items p-component-content p-component" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
              panelContent += '</div>';
 
@@ -1611,7 +1611,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
         const hasOptgroup = opts.filter("optgroup").length > 0;
 
         if (!hasOptgroup && !isGrouped) {
-            content += '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget">';
+            content += '<ul role="group" class="p-selectonemenu-list p-component-content p-component">';
             content += opts.map((index, element) => {
                 return this.renderSelectItem(element, isGrouped);
             }).get().join('');
@@ -1623,7 +1623,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
             opts.each((index, element) => {
                 if (element.tagName === "OPTGROUP") {
                     if (pendingOptions.length > 0) {
-                        content += '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget">';
+                        content += '<ul role="group" class="p-selectonemenu-list p-component-content p-component">';
                         pendingOptions.forEach((opt) => {
                             content += this.renderSelectItem(opt, false);
                         });
@@ -1636,7 +1636,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
                 }
             });
             if (pendingOptions.length > 0) {
-                content += '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget">';
+                content += '<ul role="group" class="p-selectonemenu-list p-component-content p-component">';
                 pendingOptions.forEach((opt) => {
                     content += this.renderSelectItem(opt, false);
                 });
@@ -1674,7 +1674,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
                        (isGrouped ? " p-selectonemenu-item-group-children" : "") +
                        ($item.data("noselection-option") ? " p-noselection-option" : "");
 
-        let content = isOptgroup ? '<ul role="group" class="p-selectonemenu-list p-widget-content p-widget" aria-labelledby="' + id + '">' : '';
+        let content = isOptgroup ? '<ul role="group" class="p-selectonemenu-list p-component-content p-component" aria-labelledby="' + id + '">' : '';
 
         content += '<li id="' + id + '" class="' + cssClass + '" tabindex="-1" role="' + (isOptgroup ? "presentation" : "option") + '"';
 

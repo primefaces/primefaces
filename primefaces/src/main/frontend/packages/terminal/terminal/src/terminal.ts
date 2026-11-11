@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link Terminal} widget.
+ * The configuration for the {@link Terminal} component.
  */
-export interface TerminalCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface TerminalCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** The current prompt text, i.e. the prefix at the beginning of the line. */
     prompt: string;
 }
 
 /**
- * __PrimeFaces Terminal Widget__
+ * __PrimeFaces Terminal Component__
  *
  * Terminal is an AJAX-powered web-based terminal that brings desktop terminals to Faces.
  */
-export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the content of this terminal. */
     content: JQuery = $();
     /** List with all commands the user entered up until now. Used for a command history. */
@@ -27,7 +27,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
     /** The DOM element for the parent of the container with the prompt input. */
     promptContainerParent: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.promptContainer = this.jq.find('> div:last-child > span.p-terminal-prompt');
@@ -42,7 +42,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         this.input.on('keydown.terminal', (e) => {
@@ -156,7 +156,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
                     widget: this,
                     handle: (content) => {
                         // parse the JSON response of the matches
-                        const responseObj: PrimeFacesTypes.widget.Terminal.AutoCompleteResponse | null = JSON.parse(PrimeFaces.utils.decodeXml(content) as string);
+                        const responseObj: PrimeFacesTypes.component.Terminal.AutoCompleteResponse | null = JSON.parse(PrimeFaces.utils.decodeXml(content) as string);
 
                         if (responseObj == null) {
                             // if the response is null (no command model), do nothing

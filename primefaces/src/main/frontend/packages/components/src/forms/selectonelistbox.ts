@@ -1,13 +1,13 @@
 import { SelectListbox, type SelectListboxCfg } from "./selectlistbox.js";
 
 /**
- * The configuration for the {@link SelectOneListbox} widget.
+ * The configuration for the {@link SelectOneListbox} component.
  */
 export interface SelectOneListboxCfg extends SelectListboxCfg {
 }
 
 /**
- * __PrimeFaces SelectOneListbox Widget__
+ * __PrimeFaces SelectOneListbox Component__
  *
  * SelectOneListbox is an extended version of the standard selectOneListbox component.
  */

@@ -39,9 +39,9 @@ import { TieredMenu } from "./src/menu/tieredmenu.js";
 import { dialog, registerDialogHooks, type Dialogs, type DialogHandler as _DialogHandler } from "./src/core.dialog.js";
 import { ConfirmDialog, Dialog as _Dialog, DynamicDialog } from "./src/dialog/dialog.js";
 
-import { Growl, registerMessageRenderHookForGrowlWidget } from "./src/growl/growl.js";
-import { Message, registerMessageRenderHookForMessageWidget } from "./src/message/message.js";
-import { Messages, registerMessageRenderHookForMessagesWidget } from "./src/messages/messages.js";
+import { Growl, registerMessageRenderHookForGrowlComponent } from "./src/growl/growl.js";
+import { Message, registerMessageRenderHookForMessageComponent } from "./src/message/message.js";
+import { Messages, registerMessageRenderHookForMessagesComponent } from "./src/messages/messages.js";
 import { registerRipple } from "./src/ripple/ripple.js";
 import { StaticMessage } from "./src/staticmessage/staticmessage.js";
 
@@ -96,7 +96,7 @@ import { Sidebar } from "./src/sidebar/sidebar.js";
 import { DataView } from "./src/dataview/dataview.js";
 import { ToggleSwitch } from "./src/toggleswitch/toggleswitch.js";
 
-// Add widgets and dialog to the PrimeFaces global object
+// Add components and dialog to the PrimeFaces global object
 exposeToGlobalScope();
 
 function exposeToGlobalScope() {
@@ -106,205 +106,205 @@ function exposeToGlobalScope() {
 
     // Register hook contributions from this "components" module
     registerDialogHooks();
-    registerMessageRenderHookForGrowlWidget();
-    registerMessageRenderHookForMessageWidget()
-    registerMessageRenderHookForMessagesWidget();
+    registerMessageRenderHookForGrowlComponent();
+    registerMessageRenderHookForMessageComponent()
+    registerMessageRenderHookForMessagesComponent();
     registerRipple();
     
     // Expose autosize to the global scope
     Object.assign(window, { autosize });
 
-    // Expose widgets to the global scope
+    // Expose components to the global scope
 
     // src/accordion
-    PrimeFaces.widget.AccordionPanel = AccordionPanel;
+    PrimeFaces.component.AccordionPanel = AccordionPanel;
 
     // src/autocomplete
-    PrimeFaces.widget.AutoComplete = AutoComplete;
+    PrimeFaces.component.AutoComplete = AutoComplete;
 
     // src/blockui
-    PrimeFaces.widget.BlockUI = BlockUI;
+    PrimeFaces.component.BlockUI = BlockUI;
 
     // src/carousel
-    PrimeFaces.widget.Carousel = Carousel;
+    PrimeFaces.component.Carousel = Carousel;
 
     // src/chip
-    PrimeFaces.widget.Chip = Chip;
+    PrimeFaces.component.Chip = Chip;
 
     // src/chips
-    PrimeFaces.widget.Chips = Chips;
+    PrimeFaces.component.Chips = Chips;
 
     // src/columntoggler
-    PrimeFaces.widget.ColumnToggler = ColumnToggler;
+    PrimeFaces.component.ColumnToggler = ColumnToggler;
 
     // src/confirmpopup
-    PrimeFaces.widget.ConfirmPopup = ConfirmPopup;
+    PrimeFaces.component.ConfirmPopup = ConfirmPopup;
 
     // src/dashboard
-    PrimeFaces.widget.Dashboard = Dashboard;
+    PrimeFaces.component.Dashboard = Dashboard;
 
     // src/datagrid
-    PrimeFaces.widget.DataGrid = DataGrid;
+    PrimeFaces.component.DataGrid = DataGrid;
 
     // src/datalist
-    PrimeFaces.widget.DataList = DataList;
+    PrimeFaces.component.DataList = DataList;
 
     // src/datatable
-    PrimeFaces.widget.DataTable = DataTable;
-    PrimeFaces.widget.FrozenDataTable = FrozenDataTable;
+    PrimeFaces.component.DataTable = DataTable;
+    PrimeFaces.component.FrozenDataTable = FrozenDataTable;
 
     // src/dataview
-    PrimeFaces.widget.DataView = DataView;
+    PrimeFaces.component.DataView = DataView;
 
     // src/dialog
     PrimeFaces.dialog = dialog;
-    PrimeFaces.widget.ConfirmDialog = ConfirmDialog;
-    PrimeFaces.widget.Dialog = _Dialog;
-    PrimeFaces.widget.DynamicDialog = DynamicDialog;
+    PrimeFaces.component.ConfirmDialog = ConfirmDialog;
+    PrimeFaces.component.Dialog = _Dialog;
+    PrimeFaces.component.DynamicDialog = DynamicDialog;
 
     // src/datascroller
-    PrimeFaces.widget.DataScroller = DataScroller;
+    PrimeFaces.component.DataScroller = DataScroller;
 
     // src/dragdrop
-    PrimeFaces.widget.Draggable = Draggable;
-    PrimeFaces.widget.Droppable = Droppable;
+    PrimeFaces.component.Draggable = Draggable;
+    PrimeFaces.component.Droppable = Droppable;
 
     // src/effect
-    PrimeFaces.widget.Effect = Effect;
+    PrimeFaces.component.Effect = Effect;
 
     // src/fieldset
-    PrimeFaces.widget.Fieldset = Fieldset;
+    PrimeFaces.component.Fieldset = Fieldset;
 
     // src/forms
-    PrimeFaces.widget.Button = Button;
-    PrimeFaces.widget.CascadeSelect = CascadeSelect;
-    PrimeFaces.widget.CommandButton = CommandButton;
-    PrimeFaces.widget.CommandLink = CommandLink;
-    PrimeFaces.widget.DefaultCommand = DefaultCommand;
-    PrimeFaces.widget.InputText = InputText;
-    PrimeFaces.widget.InputTextarea = InputTextarea;
-    PrimeFaces.widget.LinkButton = LinkButton;
-    PrimeFaces.widget.MultiSelectListbox = MultiSelectListbox;
-    PrimeFaces.widget.Password = Password;
-    PrimeFaces.widget.SelectBooleanButton = SelectBooleanButton;
-    PrimeFaces.widget.SelectBooleanCheckbox = SelectBooleanCheckbox;
-    PrimeFaces.widget.SelectCheckboxMenu = SelectCheckboxMenu;
-    PrimeFaces.widget.SelectListbox = SelectListbox;
-    PrimeFaces.widget.SelectManyButton = SelectManyButton;
-    PrimeFaces.widget.SelectManyCheckbox = SelectManyCheckbox;
-    PrimeFaces.widget.SelectManyMenu = SelectManyMenu;
-    PrimeFaces.widget.SelectOneButton = SelectOneButton;
-    PrimeFaces.widget.SelectOneListbox = SelectOneListbox;
-    PrimeFaces.widget.SelectOneMenu = SelectOneMenu;
-    PrimeFaces.widget.SelectOneRadio = SelectOneRadio;
-    PrimeFaces.widget.SplitButton = SplitButton;
+    PrimeFaces.component.Button = Button;
+    PrimeFaces.component.CascadeSelect = CascadeSelect;
+    PrimeFaces.component.CommandButton = CommandButton;
+    PrimeFaces.component.CommandLink = CommandLink;
+    PrimeFaces.component.DefaultCommand = DefaultCommand;
+    PrimeFaces.component.InputText = InputText;
+    PrimeFaces.component.InputTextarea = InputTextarea;
+    PrimeFaces.component.LinkButton = LinkButton;
+    PrimeFaces.component.MultiSelectListbox = MultiSelectListbox;
+    PrimeFaces.component.Password = Password;
+    PrimeFaces.component.SelectBooleanButton = SelectBooleanButton;
+    PrimeFaces.component.SelectBooleanCheckbox = SelectBooleanCheckbox;
+    PrimeFaces.component.SelectCheckboxMenu = SelectCheckboxMenu;
+    PrimeFaces.component.SelectListbox = SelectListbox;
+    PrimeFaces.component.SelectManyButton = SelectManyButton;
+    PrimeFaces.component.SelectManyCheckbox = SelectManyCheckbox;
+    PrimeFaces.component.SelectManyMenu = SelectManyMenu;
+    PrimeFaces.component.SelectOneButton = SelectOneButton;
+    PrimeFaces.component.SelectOneListbox = SelectOneListbox;
+    PrimeFaces.component.SelectOneMenu = SelectOneMenu;
+    PrimeFaces.component.SelectOneRadio = SelectOneRadio;
+    PrimeFaces.component.SplitButton = SplitButton;
 
     // src/growl
-    PrimeFaces.widget.Growl = Growl;
+    PrimeFaces.component.Growl = Growl;
 
     // src/inplace
-    PrimeFaces.widget.Inplace = Inplace;
+    PrimeFaces.component.Inplace = Inplace;
 
     // src/menu
-    PrimeFaces.widget.BreadCrumb = BreadCrumb;
-    PrimeFaces.widget.ContextMenu = ContextMenu;
-    PrimeFaces.widget.MegaMenu = MegaMenu;
-    PrimeFaces.widget.Menu = Menu;
-    PrimeFaces.widget.MenuButton = MenuButton;
-    PrimeFaces.widget.Menubar = Menubar;
-    PrimeFaces.widget.PanelMenu = PanelMenu;
-    PrimeFaces.widget.PlainMenu = PlainMenu;
-    PrimeFaces.widget.SlideMenu = SlideMenu;
-    PrimeFaces.widget.Steps = Steps;
-    PrimeFaces.widget.TabMenu = TabMenu;
-    PrimeFaces.widget.TieredMenu = TieredMenu;
+    PrimeFaces.component.BreadCrumb = BreadCrumb;
+    PrimeFaces.component.ContextMenu = ContextMenu;
+    PrimeFaces.component.MegaMenu = MegaMenu;
+    PrimeFaces.component.Menu = Menu;
+    PrimeFaces.component.MenuButton = MenuButton;
+    PrimeFaces.component.Menubar = Menubar;
+    PrimeFaces.component.PanelMenu = PanelMenu;
+    PrimeFaces.component.PlainMenu = PlainMenu;
+    PrimeFaces.component.SlideMenu = SlideMenu;
+    PrimeFaces.component.Steps = Steps;
+    PrimeFaces.component.TabMenu = TabMenu;
+    PrimeFaces.component.TieredMenu = TieredMenu;
 
     // src/message(s)
-    PrimeFaces.widget.Message = Message;
-    PrimeFaces.widget.Messages = Messages;
+    PrimeFaces.component.Message = Message;
+    PrimeFaces.component.Messages = Messages;
 
     // src/notificationbar
-    PrimeFaces.widget.NotificationBar = NotificationBar;
+    PrimeFaces.component.NotificationBar = NotificationBar;
 
     // src/orderlist
-    PrimeFaces.widget.OrderList = OrderList;
+    PrimeFaces.component.OrderList = OrderList;
 
     // src/outputpanel
-    PrimeFaces.widget.OutputPanel = OutputPanel;
+    PrimeFaces.component.OutputPanel = OutputPanel;
 
     // src/overlaypanel
-    PrimeFaces.widget.OverlayPanel = OverlayPanel;
+    PrimeFaces.component.OverlayPanel = OverlayPanel;
 
     // src/paginator
-    PrimeFaces.widget.Paginator = Paginator;
+    PrimeFaces.component.Paginator = Paginator;
 
     // src/panel
-    PrimeFaces.widget.Panel = Panel;
+    PrimeFaces.component.Panel = Panel;
 
     // src/picklist
-    PrimeFaces.widget.PickList = PickList;
+    PrimeFaces.component.PickList = PickList;
 
     // src/progressbar
-    PrimeFaces.widget.ProgressBar = ProgressBar;
+    PrimeFaces.component.ProgressBar = ProgressBar;
 
     // src/rating
-    PrimeFaces.widget.Rating = Rating;
+    PrimeFaces.component.Rating = Rating;
 
     // src/resizable
-    PrimeFaces.widget.Resizable = Resizable;
+    PrimeFaces.component.Resizable = Resizable;
 
     // src/scrolltop
-    PrimeFaces.widget.ScrollTop = ScrollTop;
+    PrimeFaces.component.ScrollTop = ScrollTop;
 
     // src/sidebar
-    PrimeFaces.widget.Sidebar = Sidebar;
+    PrimeFaces.component.Sidebar = Sidebar;
 
     // src/slider
-    PrimeFaces.widget.Slider = Slider;
+    PrimeFaces.component.Slider = Slider;
 
     // src/speeddial
-    PrimeFaces.widget.SpeedDial = SpeedDial;
+    PrimeFaces.component.SpeedDial = SpeedDial;
 
     // src/spinner
-    PrimeFaces.widget.Spinner = Spinner;
+    PrimeFaces.component.Spinner = Spinner;
 
     // src/splitter
-    PrimeFaces.widget.Splitter = Splitter;
+    PrimeFaces.component.Splitter = Splitter;
 
     // src/spotlight
-    PrimeFaces.widget.Spotlight = Spotlight;
+    PrimeFaces.component.Spotlight = Spotlight;
 
     // src/staticmessage
-    PrimeFaces.widget.StaticMessage = StaticMessage;
+    PrimeFaces.component.StaticMessage = StaticMessage;
 
     // src/sticky
-    PrimeFaces.widget.Sticky = Sticky;
+    PrimeFaces.component.Sticky = Sticky;
 
     // src/tabview
-    PrimeFaces.widget.TabView = TabView;
+    PrimeFaces.component.TabView = TabView;
 
     // src/tagcloud
-    PrimeFaces.widget.TagCloud = TagCloud;
+    PrimeFaces.component.TagCloud = TagCloud;
 
     // src/toggleswitch
-    PrimeFaces.widget.ToggleSwitch = ToggleSwitch;
+    PrimeFaces.component.ToggleSwitch = ToggleSwitch;
 
     // src/tooltip
-    PrimeFaces.widget.Tooltip = Tooltip;
+    PrimeFaces.component.Tooltip = Tooltip;
 
     // src/tree
-    PrimeFaces.widget.BaseTree = BaseTree;
-    PrimeFaces.widget.HorizontalTree = HorizontalTree;
-    PrimeFaces.widget.VerticalTree = VerticalTree;
+    PrimeFaces.component.BaseTree = BaseTree;
+    PrimeFaces.component.HorizontalTree = HorizontalTree;
+    PrimeFaces.component.VerticalTree = VerticalTree;
 
     // src/treetable
-    PrimeFaces.widget.TreeTable = TreeTable;
+    PrimeFaces.component.TreeTable = TreeTable;
 
     // src/tristatecheckbox
-    PrimeFaces.widget.TriStateCheckbox = TriStateCheckbox;
+    PrimeFaces.component.TriStateCheckbox = TriStateCheckbox;
 
     // src/wizard
-    PrimeFaces.widget.Wizard = Wizard;
+    PrimeFaces.component.Wizard = Wizard;
 }
 
 // Global extensions
@@ -319,14 +319,14 @@ declare global {
 // Types (src/accordion)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             AccordionPanel: typeof AccordionPanel;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type AccordionPanelCfg = import("./src/accordion/accordion.js").AccordionPanelCfg;
     }
-    namespace PrimeFacesTypes.widget.AccordionPanel {
+    namespace PrimeFacesTypes.component.AccordionPanel {
         /**
          * The open tab(s): with `multiple` a list of keys or indices, otherwise a key, an index or `none`.
          */
@@ -353,14 +353,14 @@ declare global {
 // Types (src/autocomplete)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             AutoComplete: typeof AutoComplete;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type AutoCompleteCfg = import("./src/autocomplete/autocomplete.js").AutoCompleteCfg;
     }
-    namespace PrimeFacesTypes.widget.AutoComplete {
+    namespace PrimeFacesTypes.component.AutoComplete {
         /**
          * Specifies the behavior of the dropdown button.
          * - `blank`: Sends an empty string.
@@ -383,7 +383,7 @@ declare global {
 
         /**
          * Client side callback to invoke when the value changes, the original `onchange` handler of the input. It is
-         * called with the input as `this` when the input changes, and with the widget as `this` when an item was
+         * called with the input as `this` when the input changes, and with the component as `this` when an item was
          * added via {@link AutoComplete.addItem}.
          */
         export type OnChangeCallback = (this: HTMLElement | AutoComplete, event?: JQuery.TriggeredEvent) => unknown;
@@ -403,11 +403,11 @@ declare global {
 // Types (src/blockui)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             BlockUI: typeof BlockUI;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type BlockUICfg = import("./src/blockui/blockui.js").BlockUICfg;
     }
 }
@@ -415,14 +415,14 @@ declare global {
 // Types (src/carousel)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Carousel: typeof Carousel;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type CarouselCfg = import("./src/carousel/carousel.js").CarouselCfg;
     }
-    namespace PrimeFacesTypes.widget.Carousel {
+    namespace PrimeFacesTypes.component.Carousel {
         /**
          * Layout of the carousel: items side by side or on top of each other.
          */
@@ -450,11 +450,11 @@ declare global {
 // Types (src/chip)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Chip: typeof Chip;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ChipCfg = import("./src/chip/chip.js").ChipCfg;
     }
 }
@@ -462,11 +462,11 @@ declare global {
 // Types (src/chips)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Chips: typeof Chips;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ChipsCfg = import("./src/chips/chips.js").ChipsCfg;
     }
 }
@@ -474,11 +474,11 @@ declare global {
 // Types (src/columntoggler)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ColumnToggler: typeof ColumnToggler;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ColumnTogglerCfg = import("./src/columntoggler/columntoggler.js").ColumnTogglerCfg;
     }
 }
@@ -486,19 +486,19 @@ declare global {
 // src/confirmpopup
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ConfirmPopup: typeof ConfirmPopup;
         }
         export interface PrimeFaces {
-            confirmPopup?: ConfirmPopup<widget.ConfirmPopupCfg>;
+            confirmPopup?: ConfirmPopup<component.ConfirmPopupCfg>;
             confirmPopupSource?: JQuery | null;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ConfirmPopupCfg = import("./src/confirmpopup/confirmpopup.js").ConfirmPopupCfg;
     }
 
-    namespace PrimeFacesTypes.widget.ConfirmPopup {
+    namespace PrimeFacesTypes.component.ConfirmPopup {
         /**
          * Callback invoked after the popup is hidden.
          */
@@ -509,14 +509,14 @@ declare global {
 // Types (src/dashboard)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Dashboard: typeof Dashboard;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DashboardCfg = import("./src/dashboard/dashboard.js").DashboardCfg;
     }
-    namespace PrimeFacesTypes.widget.Dashboard {
+    namespace PrimeFacesTypes.component.Dashboard {
         /**
          * The `ui` argument of {@link Dashboard.handleDrop}: the one of the sortable (legacy dashboard, with `item` and
          * `sender`) or of the droppable (responsive dashboard, with `draggable`).
@@ -529,11 +529,11 @@ declare global {
 // Types (src/datagrid)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             DataGrid: typeof DataGrid;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DataGridCfg = import("./src/datagrid/datagrid.js").DataGridCfg;
     }
 }
@@ -541,11 +541,11 @@ declare global {
 // Types (src/datalist)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             DataList: typeof DataList;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DataListCfg = import("./src/datalist/datalist.js").DataListCfg;
     }
 }
@@ -553,16 +553,16 @@ declare global {
 // Types (src/datatable)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             DataTable: typeof DataTable;
             FrozenDataTable: typeof FrozenDataTable;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DataTableCfg = import("./src/datatable/datatable.js").DataTableCfg;
         export type FrozenDataTableCfg = import("./src/datatable/datatable.frozen.js").FrozenDataTableCfg;
     }
-    namespace PrimeFacesTypes.widget.DataTable {
+    namespace PrimeFacesTypes.component.DataTable {
         /**
          * Either the 0-based index of a row, or the row element (`TR`) itself.
          */
@@ -668,14 +668,14 @@ declare global {
 // Types (src/dataview)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             DataView: typeof DataView;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DataViewCfg = import("./src/dataview/dataview.js").DataViewCfg;
     }
-    namespace PrimeFacesTypes.widget.DataView {
+    namespace PrimeFacesTypes.component.DataView {
         /**
          * The layout mode the data view. `grid` displays the item in a grid with cards, `list` displays the items in a
          * vertical list.
@@ -700,7 +700,7 @@ declare global {
              */
             confirmSource?: JQuery | null;
         }
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ConfirmDialog: typeof ConfirmDialog;
             Dialog: typeof _Dialog;
             DynamicDialog: typeof DynamicDialog;
@@ -711,14 +711,14 @@ declare global {
         export type DialogHandler = _DialogHandler;
 
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ConfirmDialogCfg = import("./src/dialog/dialog.js").ConfirmDialogCfg;
         export type DialogCfg = import("./src/dialog/dialog.js").DialogCfg;
         export type DynamicDialogCfg = import("./src/dialog/dialog.js").DynamicDialogCfg;
     }
     namespace PrimeFacesTypes.dialog {
     }
-    namespace PrimeFacesTypes.widget.Dialog {
+    namespace PrimeFacesTypes.component.Dialog {
         /**
          * Client-side callback to invoke when the dialog is closed, see
          * {@link DialogCfg.onHide}.
@@ -783,14 +783,14 @@ declare global {
 // Types (src/datascroller)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             DataScroller: typeof DataScroller;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DataScrollerCfg = import("./src/datascroller/datascroller.js").DataScrollerCfg;
     }
-    namespace PrimeFacesTypes.widget.DataScroller {
+    namespace PrimeFacesTypes.component.DataScroller {
         /**
          * Target of the scroll listener: `document` listens on the document, `inline` on the content of the data scroller.
          */
@@ -806,16 +806,16 @@ declare global {
 // Types (src/dragdrop)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Draggable: typeof Draggable;
             Droppable: typeof Droppable;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type DraggableCfg = import("./src/dragdrop/dragdrop.js").DraggableCfg;
         export type DroppableCfg = import("./src/dragdrop/dragdrop.js").DroppableCfg;
     }
-    namespace PrimeFacesTypes.widget.Draggable {
+    namespace PrimeFacesTypes.component.Draggable {
         /**
          * Callback for when dragging starts, with the draggable as `this`. See also {@link DraggableCfg.onStart}.
          */
@@ -831,7 +831,7 @@ declare global {
          */
         export type OnDragCallback = (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => void;
     }
-    namespace PrimeFacesTypes.widget.Droppable {
+    namespace PrimeFacesTypes.component.Droppable {
         /**
          * Callback for when an items is dropped, with the droppable as `this`. See also {@link DroppableCfg.onDrop}.
          */
@@ -842,11 +842,11 @@ declare global {
 // Types (src/effect)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Effect: typeof Effect;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type EffectCfg = import("./src/effect/effect.js").EffectCfg;
     }
 }
@@ -854,11 +854,11 @@ declare global {
 // Types (src/fieldset)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Fieldset: typeof Fieldset;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type FieldsetCfg = import("./src/fieldset/fieldset.js").FieldsetCfg;
     }
 }
@@ -866,7 +866,7 @@ declare global {
 // Types (src/forms)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Button: typeof Button;
             CascadeSelect: typeof CascadeSelect;
             CommandButton: typeof CommandButton;
@@ -892,7 +892,7 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ButtonCfg = import("./src/forms/button.js").ButtonCfg;
         export type CascadeSelectCfg = import("./src/forms/cascadeselect.js").CascadeSelectCfg;
         export type CommandButtonCfg = import("./src/forms/commandbutton.js").CommandButtonCfg;
@@ -917,7 +917,7 @@ declare global {
         export type SplitButtonCfg = import("./src/forms/splitbutton.js").SplitButtonCfg;
     }
 
-    namespace PrimeFacesTypes.widget.SelectCheckboxMenu {
+    namespace PrimeFacesTypes.component.SelectCheckboxMenu {
         /**
          * Available modes for filtering the options of a select checkbox menu. When `custom` is set, a
          * `filterFunction` must be specified.
@@ -933,22 +933,22 @@ declare global {
         export type FilterFunction = (itemLabel: string, filterValue: string) => boolean;
 
         /**
-         * Callback that is invoked when a checkbox option was checked or unchecked, with the widget as `this`.
+         * Callback that is invoked when a checkbox option was checked or unchecked, with the component as `this`.
          */
         export type OnChangeCallback = (this: SelectCheckboxMenu) => void;
 
         /**
-         * Callback that is invoked when the overlay panel was hidden, with the widget as `this`.
+         * Callback that is invoked when the overlay panel was hidden, with the component as `this`.
          */
         export type OnHideCallback = (this: SelectCheckboxMenu) => void;
 
         /**
-         * Callback that is invoked when the overlay panel was brought up, with the widget as `this`.
+         * Callback that is invoked when the overlay panel was brought up, with the component as `this`.
          */
         export type OnShowCallback = (this: SelectCheckboxMenu) => void;
     }
 
-    namespace PrimeFacesTypes.widget.SelectListbox {
+    namespace PrimeFacesTypes.component.SelectListbox {
         /**
          * Mode of the filter of a listbox, `custom` uses the `filterFunction`.
          */
@@ -963,21 +963,21 @@ declare global {
         export type FilterFunction = (value: string, filter: string) => boolean;
     }
 
-    namespace PrimeFacesTypes.widget.SelectManyButton {
+    namespace PrimeFacesTypes.component.SelectManyButton {
         /**
-         * Called when the value has changed, with the widget as `this`.
+         * Called when the value has changed, with the component as `this`.
          */
         export type ChangeCallback = (this: SelectManyButton) => void;
     }
 
-    namespace PrimeFacesTypes.widget.SelectOneButton {
+    namespace PrimeFacesTypes.component.SelectOneButton {
         /**
-         * Called when the value has changed, with the widget as `this`.
+         * Called when the value has changed, with the component as `this`.
          */
         export type ChangeCallback = (this: SelectOneButton) => void;
     }
 
-    namespace PrimeFacesTypes.widget.SelectOneMenu {
+    namespace PrimeFacesTypes.component.SelectOneMenu {
         /**
          * Duration of toggle animation of the overlay panel.
          */
@@ -998,7 +998,7 @@ declare global {
         export type FilterFunction = (itemLabel: string, filterValue: string) => boolean;
     }
 
-    namespace PrimeFacesTypes.widget.SplitButton {
+    namespace PrimeFacesTypes.component.SplitButton {
         /**
          * Available modes for filtering the options of the available buttons actions of a split button. When `custom` is set, a
          * `filterFunction` must be specified.
@@ -1023,11 +1023,11 @@ declare global {
 // Types (src/growl)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Growl: typeof Growl;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type GrowlCfg = import("./src/growl/growl.js").GrowlCfg;
     }
 }
@@ -1035,14 +1035,14 @@ declare global {
 // Types (src/inplace)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Inplace: typeof Inplace;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type InplaceCfg = import("./src/inplace/inplace.js").InplaceCfg;
     }
-    namespace PrimeFacesTypes.widget.Inplace {
+    namespace PrimeFacesTypes.component.Inplace {
         /**
          * Effect for the transition between the display element and the inline content.
          */
@@ -1053,7 +1053,7 @@ declare global {
 // Types (src/menu)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             BreadCrumb: typeof BreadCrumb;
             ContextMenu: typeof ContextMenu;
             MegaMenu: typeof MegaMenu;
@@ -1069,7 +1069,7 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type BreadCrumbCfg = import("./src/menu/breadcrumb.js").BreadCrumbCfg;
         export type ContextMenuCfg = import("./src/menu/contextmenu.js").ContextMenuCfg;
         export type MegaMenuCfg = import("./src/menu/megamenu.js").MegaMenuCfg;
@@ -1084,7 +1084,7 @@ declare global {
         export type TieredMenuCfg = import("./src/menu/tieredmenu.js").TieredMenuCfg;
     }
 
-    namespace PrimeFacesTypes.widget.ContextMenu {
+    namespace PrimeFacesTypes.component.ContextMenu {
         /**
          * Client side callback invoked before the context menu is
          * shown.
@@ -1105,7 +1105,7 @@ declare global {
         export type SelectionMode = "single" | "multiple";
     }
 
-    namespace PrimeFacesTypes.widget.PlainMenu {
+    namespace PrimeFacesTypes.component.PlainMenu {
         /**
          * The direction in which to navigate, either to the next menu item
          * or to the previous menu item.
@@ -1113,7 +1113,7 @@ declare global {
         export type NavigationDirection = "prev" | "next";
     }
 
-    namespace PrimeFacesTypes.widget.TieredMenu {
+    namespace PrimeFacesTypes.component.TieredMenu {
         /**
          * Allowed event types for toggling a tiered menu.
          */
@@ -1124,12 +1124,12 @@ declare global {
 // Types (src/message(s))
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Message: typeof Message;
             Messages: typeof Messages;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type Message = import("./src/message/message.js").Message;
         export type Messages = import("./src/messages/messages.js").Messages;
     }
@@ -1138,14 +1138,14 @@ declare global {
 // Types (src/notificationbar)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             NotificationBar: typeof NotificationBar;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type NotificationBarCfg = import("./src/notificationbar/notificationbar.js").NotificationBarCfg;
     }
-    namespace PrimeFacesTypes.widget.NotificationBar {
+    namespace PrimeFacesTypes.component.NotificationBar {
         /**
          * Possible values for the effect applied when the notification bar is shown or hidden.
          */
@@ -1166,11 +1166,11 @@ declare global {
 // Types (src/orderlist)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             OrderList: typeof OrderList;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type OrderListCfg = import("./src/orderlist/orderlist.js").OrderListCfg;
     }
 }
@@ -1178,14 +1178,14 @@ declare global {
 // Types (src/outputpanel)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             OutputPanel: typeof OutputPanel;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type OutputPanelCfg = import("./src/outputpanel/outputpanel.js").OutputPanelCfg;
     }
-    namespace PrimeFacesTypes.widget.OutputPanel {
+    namespace PrimeFacesTypes.component.OutputPanel {
         /**
          * When the deferred content is loaded: `load` directly after the page was loaded, `visible` once the panel
          * was scrolled into view.
@@ -1197,14 +1197,14 @@ declare global {
 // Types (src/overlaypanel)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             OverlayPanel: typeof OverlayPanel;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type OverlayPanelCfg = import("./src/overlaypanel/overlaypanel.js").OverlayPanelCfg;
     }
-    namespace PrimeFacesTypes.widget.OverlayPanel {
+    namespace PrimeFacesTypes.component.OverlayPanel {
         /**
          * Called when the panel was hidden, with the overlay panel as `this`.
          */
@@ -1220,14 +1220,14 @@ declare global {
 // Types (src/paginator)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Paginator: typeof Paginator;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type PaginatorCfg = import("./src/paginator/paginator.js").PaginatorCfg;
     }
-    namespace PrimeFacesTypes.widget.Paginator {
+    namespace PrimeFacesTypes.component.Paginator {
         /**
          * A pagination state, that is, a range of items that should be displayed.
          */
@@ -1251,14 +1251,14 @@ declare global {
 // Types (src/panel)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Panel: typeof Panel;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type PanelCfg = import("./src/panel/panel.js").PanelCfg;
     }
-    namespace PrimeFacesTypes.widget.Panel {
+    namespace PrimeFacesTypes.component.Panel {
         /**
          * Orientation of the toggle effect: slide up and down, or left and right.
          */
@@ -1269,14 +1269,14 @@ declare global {
 // Types (src/picklist)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             PickList: typeof PickList;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type PickListCfg = import("./src/picklist/picklist.js").PickListCfg;
     }
-    namespace PrimeFacesTypes.widget.PickList {
+    namespace PrimeFacesTypes.component.PickList {
         /**
          * The type for the two lists comprising the pick list, i.e. whether a list contain the source or target items.
          */
@@ -1330,11 +1330,11 @@ declare global {
 // Types (src/progressbar)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ProgressBar: typeof ProgressBar;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ProgressBarCfg = import("./src/progressbar/progressbar.js").ProgressBarCfg;
     }
 }
@@ -1342,14 +1342,14 @@ declare global {
 // Types (src/rating)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Rating: typeof Rating;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type RatingCfg = import("./src/rating/rating.js").RatingCfg;
     }
-    namespace PrimeFacesTypes.widget.Rating {
+    namespace PrimeFacesTypes.component.Rating {
         /**
          * Called when the user gives a rating, with the rating as `this` and the number of rated stars.
          */
@@ -1360,14 +1360,14 @@ declare global {
 // Types (src/resizable)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Resizable: typeof Resizable;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ResizableCfg = import("./src/resizable/resizable.js").ResizableCfg;
     }
-    namespace PrimeFacesTypes.widget.Resizable {
+    namespace PrimeFacesTypes.component.Resizable {
         /**
          * Client-side callback to execute during resizing, with the resizable as `this`. See also
          * {@link ResizableCfg.onResize}.
@@ -1391,11 +1391,11 @@ declare global {
 // Types (src/scrolltop)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ScrollTop: typeof ScrollTop;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ScrollTopCfg = import("./src/scrolltop/scrolltop.js").ScrollTopCfg;
     }
 }
@@ -1403,14 +1403,14 @@ declare global {
 // Types (src/sidebar)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Sidebar: typeof Sidebar;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SidebarCfg = import("./src/sidebar/sidebar.js").SidebarCfg;
     }
-    namespace PrimeFacesTypes.widget.Sidebar {
+    namespace PrimeFacesTypes.component.Sidebar {
         /**
          * Called when the sidebar was hidden, with the sidebar as `this`. The arguments are always `undefined`.
          */
@@ -1426,11 +1426,11 @@ declare global {
 // Types (src/slider)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Slider: typeof Slider;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SliderCfg = import("./src/slider/slider.js").SliderCfg;
         export type SliderEventData = import("./src/slider/slider.js").SliderEventData;
     }
@@ -1439,14 +1439,14 @@ declare global {
 // Types (src/speeddial)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             SpeedDial: typeof SpeedDial;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SpeedDialCfg = import("./src/speeddial/speeddial.js").SpeedDialCfg;
     }
-    namespace PrimeFacesTypes.widget.SpeedDial {
+    namespace PrimeFacesTypes.component.SpeedDial {
         /**
          * Direction in which the items open, the diagonal ones for the type `quarter-circle`.
          */
@@ -1482,11 +1482,11 @@ declare global {
 // Types (src/spinner)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Spinner: typeof Spinner;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SpinnerCfg = import("./src/spinner/spinner.js").SpinnerCfg;
     }
 }
@@ -1494,14 +1494,14 @@ declare global {
 // Types (src/splitter)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Splitter: typeof Splitter;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SplitterCfg = import("./src/splitter/splitter.js").SplitterCfg;
     }
-    namespace PrimeFacesTypes.widget.Splitter {
+    namespace PrimeFacesTypes.component.Splitter {
         /**
          * Orientation of the panels: side by side or on top of each other.
          */
@@ -1522,11 +1522,11 @@ declare global {
 // Types (src/spotlight)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Spotlight: typeof Spotlight;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type SpotlightCfg = import("./src/spotlight/spotlight.js").SpotlightCfg;
     }
 }
@@ -1534,11 +1534,11 @@ declare global {
 // Types (src/staticmessage)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             StaticMessage: typeof StaticMessage;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type StaticMessageCfg = import("./src/staticmessage/staticmessage.js").StaticMessageCfg;
     }
 }
@@ -1546,14 +1546,14 @@ declare global {
 // Types (src/sticky)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Sticky: typeof Sticky;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type StickyCfg = import("./src/sticky/sticky.js").StickyCfg;
     }
-    namespace PrimeFacesTypes.widget.Sticky {
+    namespace PrimeFacesTypes.component.Sticky {
         /**
          * The position and height of the target before it was fixed.
          */
@@ -1569,14 +1569,14 @@ declare global {
 // Types (src/tabview)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             TabView: typeof TabView;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TabViewCfg = import("./src/tabview/tabview.js").TabViewCfg;
     }
-    namespace PrimeFacesTypes.widget.TabView {
+    namespace PrimeFacesTypes.component.TabView {
         /**
          * Called when a tab is clicked, with the tab view as `this` and the 0-based index of the tab that is about to be
          * selected. `false` stays at the current tab.
@@ -1599,11 +1599,11 @@ declare global {
 // Types (src/tagcloud)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             TagCloud: typeof TagCloud;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TagCloudCfg = import("./src/tagcloud/tagcloud.js").TagCloudCfg;
     }
 }
@@ -1611,11 +1611,11 @@ declare global {
 // Types (src/toggleswitch)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             ToggleSwitch: typeof ToggleSwitch;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type ToggleSwitchCfg = import("./src/toggleswitch/toggleswitch.js").ToggleSwitchCfg;
     }
 }
@@ -1623,14 +1623,14 @@ declare global {
 // Types (src/tooltip)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Tooltip: typeof Tooltip;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TooltipCfg = import("./src/tooltip/tooltip.js").TooltipCfg;
     }
-    namespace PrimeFacesTypes.widget.Tooltip {
+    namespace PrimeFacesTypes.component.Tooltip {
         /**
          * Position of the tooltip, relative to the target component.
          */
@@ -1656,25 +1656,25 @@ declare global {
 // Types (src/tree)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             BaseTree: typeof BaseTree;
             HorizontalTree: typeof HorizontalTree;
             VerticalTree: typeof VerticalTree;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type BaseTreeCfg = import("./src/tree/tree.base.js").BaseTreeCfg;
         export type HorizontalTreeCfg = import("./src/tree/tree.horizontal.js").HorizontalTreeCfg;
         export type VerticalTreeCfg = import("./src/tree/tree.vertical.js").VerticalTreeCfg;
     }
-    namespace PrimeFacesTypes.widget.BaseTree {
+    namespace PrimeFacesTypes.component.BaseTree {
         /**
-         * Drag mode for a tree widget. Defines the parent-child relationship when a node is dragged.
+         * Drag mode for a tree component. Defines the parent-child relationship when a node is dragged.
          */
         export type DragMode = "self" | "parent" | "ancestor";
 
         /**
-         * Mode for filtering a tree widget.
+         * Mode for filtering a tree component.
          */
         export type FilterMode = "lenient" | "strict";
 
@@ -1703,7 +1703,7 @@ declare global {
             collapsedIcon: string;
         }
     }
-    namespace PrimeFacesTypes.widget.VerticalTree {
+    namespace PrimeFacesTypes.component.VerticalTree {
         /**
          * Defines parent-child restrictions when a node is dropped.
          */
@@ -1721,7 +1721,7 @@ declare global {
         export interface DroppedNodeParams {
             /** Details about the drop event. */
             ui: PrimeFacesTypes.interactions.DroppableUi;
-            /** Tree widget of the dragged node. */
+            /** Tree component of the dragged node. */
             dragSource: VerticalTree;
             /** The node that was dragged. */
             dragNode: JQuery;
@@ -1745,7 +1745,7 @@ declare global {
             dragNodeKey: string;
             /** Row key of the node on which the nodes were dropped. */
             dropNodeKey: string;
-            /** ID of the tree widget of the dragged nodes. */
+            /** ID of the tree component of the dragged nodes. */
             dragSource: string | string[];
             /** Index of the dropped nodes within their new parent. */
             dndIndex: number | undefined;
@@ -1760,14 +1760,14 @@ declare global {
 // Types (src/treetable)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             TreeTable: typeof TreeTable;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TreeTableCfg = import("./src/treetable/treetable.js").TreeTableCfg;
     }
-    namespace PrimeFacesTypes.widget.TreeTable {
+    namespace PrimeFacesTypes.component.TreeTable {
         /**
          * Indicates how a row may be selected.
          * - `single`: Only a single row may be selected at any time by clicking on it. Selecting another row will
@@ -1825,14 +1825,14 @@ declare global {
 // Types (src/tristatecheckbox)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             TriStateCheckbox: typeof TriStateCheckbox;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type TriStateCheckboxCfg = import("./src/tristatecheckbox/tristatecheckbox.js").TriStateCheckboxCfg;
     }
-    namespace PrimeFacesTypes.widget.TriStateCheckbox {
+    namespace PrimeFacesTypes.component.TriStateCheckbox {
         /**
          * A modulo operation with the result being in the range `[0,mod)`.
          * @param number The dividend for the modulo operation.
@@ -1846,14 +1846,14 @@ declare global {
 // Types (src/wizard)
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Wizard: typeof Wizard;
         }
     }
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type WizardCfg = import("./src/wizard/wizard.js").WizardCfg;
     }
-    namespace PrimeFacesTypes.widget.Wizard {
+    namespace PrimeFacesTypes.component.Wizard {
         /**
          * Called before going to the previous step, with the wizard as `this`. `false` stays on the current step.
          */

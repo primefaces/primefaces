@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +42,7 @@ public class StackRenderer extends BaseMenuRenderer<Stack> {
 
     @Override
     protected void encodeScript(FacesContext context, Stack component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Stack", component)
                 .attr("openSpeed", component.getOpenSpeed())
                 .attr("closeSpeed", component.getCloseSpeed())

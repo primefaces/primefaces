@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link OverlayPanel} widget.
+ * The configuration for the {@link OverlayPanel} component.
  */
-export interface OverlayPanelCfg extends PrimeFacesTypes.widget.DynamicOverlayWidgetCfg {
+export interface OverlayPanelCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
     /** Appends the overlayPanel to the given search expression. */
     appendTo: string | null;
     /** Whether to hide overlay when hovering over overlay content when using custom show/hide. */
@@ -33,9 +33,9 @@ export interface OverlayPanelCfg extends PrimeFacesTypes.widget.DynamicOverlayWi
     /** Position of the panel relative to the target. */
     my: string;
     /** Client side callback to execute when the panel is hidden. */
-    onHide: PrimeFacesTypes.widget.OverlayPanel.OnHideCallback;
+    onHide: PrimeFacesTypes.component.OverlayPanel.OnHideCallback;
     /** Client side callback to execute when the panel is shown. */
-    onShow: PrimeFacesTypes.widget.OverlayPanel.OnShowCallback;
+    onShow: PrimeFacesTypes.component.OverlayPanel.OnShowCallback;
     /** Displays a close icon to hide the overlay, default is `false`. */
     showCloseIcon: boolean;
     /** Delay in milliseconds applied when the overlay panel is shown. */
@@ -50,11 +50,11 @@ export interface OverlayPanelCfg extends PrimeFacesTypes.widget.DynamicOverlayWi
 }
 
 /**
- * __PrimeFaces OverlayPanel Widget__
+ * __PrimeFaces OverlayPanel Component__
  *
  * OverlayPanel is a generic panel component that can be displayed on top of other content.
  */
-export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends PrimeFaces.widget.DynamicOverlayWidget<Cfg> {
+export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends PrimeFaces.component.DynamicOverlayComponent<Cfg> {
     /** The DOM element for the icon that closes the overlay panel. */
     closerIcon?: JQuery;
     /** The DOM element for the content of the overlay panel. */
@@ -75,12 +75,12 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
     targetElement?: JQuery | null;
     /** The z-index of the target component that triggers this overlay panel. */
     targetZindex?: number;
-    /** Handler for CSS transitions used by this widget. */
+    /** Handler for CSS transitions used by this component. */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
     /** Variable used to control whether the overlay is being hovered in autoHide mode. */
     allowHide: boolean = true;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, cfg.target);
             if (this.target.hasClass('p-splitbutton')) {
@@ -123,7 +123,7 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -134,7 +134,7 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
     }
 
     /**
-     * Clean up this widget and remove elements from DOM.
+     * Clean up this component and remove elements from DOM.
      */
     private _cleanup(): void {
         // fix #4307
@@ -225,7 +225,7 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
     }
 
     /**
-     * Sets up some common event listeners always required by this widget.
+     * Sets up some common event listeners always required by this component.
      */
     private bindCommonEvents(): void {
         if (this.cfg.showCloseIcon) {

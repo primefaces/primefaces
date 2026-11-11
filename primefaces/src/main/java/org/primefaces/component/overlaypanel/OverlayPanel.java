@@ -40,7 +40,7 @@ public class OverlayPanel extends OverlayPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 
-    public static final String STYLE_CLASS = "p-overlaypanel p-widget p-widget-content p-hidden-container";
+    public static final String STYLE_CLASS = "p-overlaypanel p-component p-component-content p-hidden-container";
     public static final String CONTENT_CLASS = "p-overlaypanel-content";
 
     public OverlayPanelRenderer getRenderer() {

@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link Knob} widget.
+ * The configuration for the {@link Knob} component.
  */
-export interface KnobCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface KnobCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether only a cursor is drawn at the value instead of the filled arc. */
     cursor: boolean;
     /** Whether the knob is disabled. */
@@ -32,15 +32,15 @@ const CURSOR_EXTENT = 0.3 / (2 * Math.PI) * 100;
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 /**
- * __PrimeFaces Knob Widget__
+ * __PrimeFaces Knob Component__
  *
  * Knob is an input component to insert numeric values in a range. The value is changed by dragging on the arc (mouse,
  * pen or touch), with the mouse wheel or with the keyboard, and shown as a label in the center. The knob is an SVG
  * styled with the `--p-knob-*` tokens.
  */
-export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The configuration, the server always renders `min`, `max` and `step`. */
-    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & Pick<KnobCfg, "min" | "max" | "step">;
+    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & Pick<KnobCfg, "min" | "max" | "step">;
 
     /** The hidden input with the submitted value. */
     input: JQuery = $();
@@ -74,7 +74,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.widget.BaseW
      * Initializes the knob: creates the SVG in the container rendered by the server and binds the events.
      * @param cfg The configuration of the knob.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_hidden');

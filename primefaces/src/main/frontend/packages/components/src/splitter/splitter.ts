@@ -1,27 +1,27 @@
 /**
- * The configuration for the {@link Splitter} widget.
+ * The configuration for the {@link Splitter} component.
  */
-export interface SplitterCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SplitterCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Size of the gutters in pixels. */
     gutterSize: number;
     /** Step in pixels when an arrow key is held down. */
     step: number;
     /** Orientation of the panels. */
-    layout: PrimeFacesTypes.widget.Splitter.Layout;
+    layout: PrimeFacesTypes.component.Splitter.Layout;
     /** Key of the stored panel sizes, the splitter is stateful only with a key. */
     stateKey: string;
     /** Storage of the panel sizes. */
-    stateStorage: PrimeFacesTypes.widget.Splitter.StateStorage;
+    stateStorage: PrimeFacesTypes.component.Splitter.StateStorage;
     /** Called when the resizing ended. */
-    onResizeEnd: PrimeFacesTypes.widget.Splitter.OnResizeEndCallback;
+    onResizeEnd: PrimeFacesTypes.component.Splitter.OnResizeEndCallback;
 }
 
 /**
- * __PrimeFaces Splitter Widget__
+ * __PrimeFaces Splitter Component__
  *
  * Splitter is utilized to separate and resize panels.
  */
-export class Splitter<Cfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Splitter<Cfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The panels. */
     panels: JQuery = $();
     /** The gutters between the panels. */
@@ -53,7 +53,7 @@ export class Splitter<Cfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.
     /** The interval repeating the resize while an arrow key is held down. */
     timeout: number | null = null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panels = this.jq.children('.p-splitter-panel');

@@ -31,9 +31,9 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.seo.JsonLDItem;
 import org.primefaces.model.seo.JsonLDModel;
 import org.primefaces.seo.JsonLD;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -153,7 +153,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
 
     @Override
     protected void encodeScript(FacesContext context, BreadCrumb component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("BreadCrumb", component)
                 .attr("seo", component.isSeo());
 

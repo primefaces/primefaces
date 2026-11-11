@@ -1,22 +1,22 @@
 /**
- * The configuration for the {@link Rating} widget.
+ * The configuration for the {@link Rating} component.
  */
-export interface RatingCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface RatingCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Callback that is invoked when the user gives a rating. */
-    onRate: PrimeFacesTypes.widget.Rating.OnRateCallback;
-    /** Whether this widget is in read-only mode. */
+    onRate: PrimeFacesTypes.component.Rating.OnRateCallback;
+    /** Whether this component is in read-only mode. */
     readonly: boolean;
 }
 
 /**
- * __PrimeFaces Rating Widget__
+ * __PrimeFaces Rating Component__
  *
  * Rating component features a star based rating system.
  */
-export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the cancel button. */
     cancel: JQuery = $();
-    /** The DOM element for the hidden input field storing the value of this widget. */
+    /** The DOM element for the hidden input field storing the value of this component. */
     input: JQuery = $();
     /** The DOM elements for the clickable stars. */
     stars: JQuery = $();
@@ -25,7 +25,7 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget
     /** The tabindex initially set. */
     tabindex: string | undefined = undefined;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.value = this.getValue();
@@ -47,7 +47,7 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         this.jq.attr('tabindex', this.tabindex as string);
@@ -119,7 +119,7 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Removes the event listeners that were added, called when this widget is disabled.
+     * Removes the event listeners that were added, called when this component is disabled.
      */
     private unbindEvents(): void {
         this.jq.attr('tabindex', -1);
@@ -184,25 +184,25 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget
     }
 
     /**
-     * Checks whether this widget is currently disabled. Whe disabled, the user cannot edit the value and it will not be
+     * Checks whether this component is currently disabled. Whe disabled, the user cannot edit the value and it will not be
      * sent to the server when the form is submitted.
-     * @returns `true` if this rating widget is disabled, `false` otherwise.
+     * @returns `true` if this rating component is disabled, `false` otherwise.
      */
     isDisabled(): boolean {
         return this.jq.hasClass('p-state-disabled');
     }
 
     /**
-     * Checks whether this widget is currently read-only. When read-only, the user cannot edit the value, but the value
+     * Checks whether this component is currently read-only. When read-only, the user cannot edit the value, but the value
      * will be sent to the server when the form is submitted.
-     * @returns `true` if this rating widget is read-only, `false` otherwise.
+     * @returns `true` if this rating component is read-only, `false` otherwise.
      */
     isReadOnly(): boolean | undefined {
         return this.cfg.readonly;
     }
 
     /**
-     * Enables this rating widget so the user can give a rating.
+     * Enables this rating component so the user can give a rating.
      */
     override enable(): void {
         if(!this.isDisabled() || this.isReadOnly()) {
@@ -212,11 +212,11 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget
 
         this.bindEvents();
 
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
     }
 
     /**
-     * Disables this rating widget so the user cannot give a rating anymore.
+     * Disables this rating component so the user cannot give a rating anymore.
      */
     override disable(): void {
         if(this.isDisabled()) {
@@ -226,7 +226,7 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.widget
 
         this.unbindEvents();
 
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
     }
 
     /**

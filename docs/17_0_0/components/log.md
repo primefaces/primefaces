@@ -25,7 +25,7 @@ to use the log component to display your logs.
 If project stage is development, log messages are also available at browser console.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Log_
+Component: _PrimeFaces.component.Log_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

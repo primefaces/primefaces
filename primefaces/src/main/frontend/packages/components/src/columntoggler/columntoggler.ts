@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link ColumnToggler} widget.
+ * The configuration for the {@link ColumnToggler} component.
  */
-export interface ColumnTogglerCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface ColumnTogglerCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** ID of the button that toggles this column toggler. */
     trigger: string;
     /** ID of the component (table) to which this column toggler is attached. */
@@ -11,11 +11,11 @@ export interface ColumnTogglerCfg extends PrimeFacesTypes.widget.DeferredWidgetC
 }
 
 /**
- * __PrimeFaces ColumnToggler Widget__
+ * __PrimeFaces ColumnToggler Component__
  *
  * ColumnToggler is a helper component for the data table to toggle visibility of columns.
  */
-export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** DOM element of the close button for closing the overlay with the available columns. */
     closer: JQuery = $();
     /** DOM elements for the `TH` columns of the data table. */
@@ -38,8 +38,11 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     table: JQuery = $();
     /** ID of the table to which this column toggle is attached. */
     tableId?: string;
-    /** Widget of the table to which this column toggle is attached. */
-    tableWidget?: PrimeFacesTypes.Widget<"DataTable">;
+    /** Component of the table to which this column toggle is attached. */
+    tableComponent?: PrimeFacesTypes.Component<"DataTable">;
+    /** @deprecated Use {@link tableComponent} instead. */
+    get tableWidget(): PrimeFacesTypes.Component<"DataTable"> | undefined { return this.tableComponent; }
+    set tableWidget(value: PrimeFacesTypes.Component<"DataTable"> | undefined) { this.tableComponent = value; }
     /** The DOM element for the table body of the table to which this column toggle is attached. */
     tbody: JQuery = $();
     /** The DOM element for the table foot of the table to which this column toggle is attached. */
@@ -60,7 +63,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     /** Whether the width of the overlay panel with the available columns was aligned with the width of the toggler. */
     widthAligned?: boolean;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.datasource);
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
@@ -86,7 +89,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
         this.bindEvents();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         const jqs = $('[id=' + (cfg.id as string).replace(/:/g, "\\:") + ']');
         if (jqs.length > 1) {
             $(document.body).children(this.jqId).remove();
@@ -100,7 +103,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     override render(): void {
         this.jq.empty();
         this.columns = this.thead.find('> tr > th:not(.p-static-column)');
-        this.panel = $(PrimeFaces.escapeClientId(this.cfg.id as string)).attr('role', 'dialog').addClass('p-columntoggler p-widget p-widget-content')
+        this.panel = $(PrimeFaces.escapeClientId(this.cfg.id as string)).attr('role', 'dialog').addClass('p-columntoggler p-component p-component-content')
             .append('<ul class="p-columntoggler-items" role="group"></ul>').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
 
@@ -116,8 +119,8 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
         const showSelectAll = this.cfg.showSelectAll !== false; // default to true
         if (showSelectAll) {
             this.selectAllCheckbox = $('<li class="p-columntoggler-all">' +
-                '<div class="p-chkbox p-widget">' +
-                '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="p-chkbox-box p-widget p-state-default p-state-active">' +
+                '<div class="p-chkbox p-component">' +
+                '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="p-chkbox-box p-component p-state-default p-state-active">' +
                 '<span class="p-chkbox-icon p-icon p-checkbox-icon p-checkbox-checked-icon"></span></div></div>' +
                 '</li>');
             this.selectAllCheckbox.appendTo(this.itemContainer);
@@ -130,7 +133,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
         for (let i = 0; i < this.columns.length; i++) {
             const column = this.columns.eq(i),
                 hidden = column.hasClass('p-hidden'),
-                boxClass = hidden ? 'p-chkbox-box p-widget p-state-default' : 'p-chkbox-box p-widget p-state-default p-state-active',
+                boxClass = hidden ? 'p-chkbox-box p-component p-state-default' : 'p-chkbox-box p-component p-state-default p-state-active',
                 iconClass = (hidden) ? 'p-chkbox-icon p-icon p-checkbox-icon' : 'p-chkbox-icon p-icon p-checkbox-icon p-checkbox-checked-icon',
                 columnChildren = column.children('.p-column-title').clone(),
                 columnTogglerCheckboxId = this.tableId + "_columnTogglerChkbx" + i;
@@ -146,7 +149,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
             this.hasPriorityColumns = column.is('[class*="p-column-p-"]');
 
             const item = $('<li class="p-columntoggler-item">' +
-                '<div class="p-chkbox p-widget">' +
+                '<div class="p-chkbox p-component">' +
                 '<div role="checkbox" tabindex="0" aria-checked="' + !hidden + '" aria-labelledby="' + columnTogglerCheckboxId + '" class="' + boxClass + '">' +
                 '<span class="' + iconClass + '"></span></div></div>' +
                 '<label id="' + columnTogglerCheckboxId + '">' + PrimeFaces.escapeHTML(columnTitle) + '</label></li>').data('column', column.attr('id') as string);
@@ -185,7 +188,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     }
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Sets up all event listeners required by this component.
      */
     private bindEvents(): void {
         //trigger
@@ -577,7 +580,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     }
 
     /**
-     * Aligns the overlay panel of this column toggler according to the current widget configuration.
+     * Aligns the overlay panel of this column toggler according to the current component configuration.
      */
     alignPanel(): void {
         PrimeFaces.utils.position(this.panel.css({ 'left': '', 'top': '', 'z-index': PrimeFaces.nextZindex() }), {
@@ -752,35 +755,35 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
             this.togglerStateHolder.val(stateVal.replace(oldColState, newColState));
 
             // #12195 must reset the navigable cells to keyboard accessibility of hidden/shown columns
-            const tableWidget = this.getTableWidget();
-            if (tableWidget) {
-                tableWidget.setupNavigableCells();
+            const tableComponent = this.getTableComponent();
+            if (tableComponent) {
+                tableComponent.setupNavigableCells();
             }
         }
     }
 
     /**
-     * Gets the table widget.
-     * @returns The table widget.
+     * Gets the table component.
+     * @returns The table component.
      */
-    private getTableWidget(): PrimeFacesTypes.Widget<"DataTable"> | undefined {
-        if (!this.tableWidget) {
-            this.tableWidget = PrimeFaces.getWidgetsByType(PrimeFaces.widget.DataTable).find(widget => widget.id === this.tableId);
+    private getTableComponent(): PrimeFacesTypes.Component<"DataTable"> | undefined {
+        if (!this.tableComponent) {
+            this.tableComponent = PrimeFaces.getComponentsByType(PrimeFaces.component.DataTable).find(component => component.id === this.tableId);
         }
-        return this.tableWidget;
+        return this.tableComponent;
     }
 
     /**
-     * Gets the table widget and subscribes to its saveColumnOrder method to call render() when column order changes.
+     * Gets the table component and subscribes to its saveColumnOrder method to call render() when column order changes.
      */
     private subscribeToColumnOrderChange(): void {
-        if (this.tableWidget) {
+        if (this.tableComponent) {
             return;
         }
-        const tableWidget = this.getTableWidget();
-        if (tableWidget && tableWidget.saveColumnOrder) {
-            const originalSaveColumnOrder = tableWidget.saveColumnOrder.bind(tableWidget);
-            tableWidget.saveColumnOrder = () => {
+        const tableComponent = this.getTableComponent();
+        if (tableComponent && tableComponent.saveColumnOrder) {
+            const originalSaveColumnOrder = tableComponent.saveColumnOrder.bind(tableComponent);
+            tableComponent.saveColumnOrder = () => {
                 originalSaveColumnOrder();
                 this.refresh(this.cfg);
             };

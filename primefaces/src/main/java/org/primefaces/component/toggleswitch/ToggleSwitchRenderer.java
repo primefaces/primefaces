@@ -25,10 +25,10 @@ package org.primefaces.component.toggleswitch;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -154,7 +154,7 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
     }
 
     protected void encodeScript(FacesContext context, ToggleSwitch component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("ToggleSwitch", component)
                 .callback("confirmation", "function()", component.getConfirmationScript())
                 .finish();

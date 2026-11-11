@@ -1,34 +1,34 @@
 /**
  * The options of an interaction without the index signature of the interaction options (which would hide all other
- * properties of a widget configuration that extends them).
+ * properties of a component configuration that extends them).
  * @typeParam T The options of an interaction, e.g. `PrimeFacesTypes.interactions.DraggableOptions`.
  */
 export type KnownInteractionOptions<T> = { [K in keyof T as string extends K ? never : K]: T[K] };
 
 /**
- * The configuration for the {@link Draggable} widget.
+ * The configuration for the {@link Draggable} component.
  */
-export interface DraggableCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.DraggableOptions> {
+export interface DraggableCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.DraggableOptions> {
     /** Callback for when dragging starts. */
-    onStart: PrimeFacesTypes.widget.Draggable.OnStartCallback;
+    onStart: PrimeFacesTypes.component.Draggable.OnStartCallback;
     /** Callback for when dragging ends. */
-    onStop: PrimeFacesTypes.widget.Draggable.OnStopCallback;
+    onStop: PrimeFacesTypes.component.Draggable.OnStopCallback;
     /** Callback for when dragging. */
-    onDrag: PrimeFacesTypes.widget.Draggable.OnDragCallback;
+    onDrag: PrimeFacesTypes.component.Draggable.OnDragCallback;
     /** ID of the target of this draggable. */
     target: string;
 }
 
 /**
- * __PrimeFaces Draggable Widget__
+ * __PrimeFaces Draggable Component__
  *
  * Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
  */
-export class Draggable<Cfg extends DraggableCfg = DraggableCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Draggable<Cfg extends DraggableCfg = DraggableCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element of the target that should be made draggable. */
     jqTarget: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target!));
@@ -69,25 +69,25 @@ export class Draggable<Cfg extends DraggableCfg = DraggableCfg> extends PrimeFac
 }
 
 /**
- * The configuration for the {@link Droppable} widget.
+ * The configuration for the {@link Droppable} component.
  */
-export interface DroppableCfg extends PrimeFacesTypes.widget.BaseWidgetCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.DroppableOptions> {
+export interface DroppableCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.DroppableOptions> {
     /** Callback for when an items is dropped. */
-    onDrop: PrimeFacesTypes.widget.Droppable.OnDropCallback;
+    onDrop: PrimeFacesTypes.component.Droppable.OnDropCallback;
     /** ID of the target of this droppable. */
     target: string;
 }
 
 /**
- * __PrimeFaces Droppable Widget__
+ * __PrimeFaces Droppable Component__
  *
  * Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
  */
-export class Droppable<Cfg extends DroppableCfg = DroppableCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Droppable<Cfg extends DroppableCfg = DroppableCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element of the target that should be made droppable. */
     jqTarget: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target!));
         // destroyed with the target

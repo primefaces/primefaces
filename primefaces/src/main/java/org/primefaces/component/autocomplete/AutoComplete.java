@@ -68,25 +68,25 @@ public class AutoComplete extends AutoCompleteBaseImpl {
     public static final String STYLE_CLASS = "p-autocomplete";
     public static final String MULTIPLE_STYLE_CLASS = "p-autocomplete p-autocomplete-multiple";
     public static final String DROPDOWN_SYLE_CLASS = "p-autocomplete-dd";
-    public static final String INPUT_CLASS = "p-autocomplete-input p-inputfield p-widget p-state-default";
-    public static final String INPUT_WITH_DROPDOWN_CLASS = "p-autocomplete-input p-autocomplete-dd-input p-inputfield p-widget p-state-default";
-    public static final String DROPDOWN_CLASS = "p-autocomplete-dropdown p-button p-widget p-state-default p-button-icon-only";
+    public static final String INPUT_CLASS = "p-autocomplete-input p-inputfield p-component p-state-default";
+    public static final String INPUT_WITH_DROPDOWN_CLASS = "p-autocomplete-input p-autocomplete-dd-input p-inputfield p-component p-state-default";
+    public static final String DROPDOWN_CLASS = "p-autocomplete-dropdown p-button p-component p-state-default p-button-icon-only";
     public static final String DROPDOWN_ICON_CLASS = "p-button-icon-primary p-icon p-dropdown-icon p-autocomplete-dropdown-icon";
-    public static final String PANEL_CLASS = "p-autocomplete-panel p-widget-content p-hidden p-input-overlay";
-    public static final String LIST_CLASS = "p-autocomplete-items p-autocomplete-list p-widget-content p-widget";
-    public static final String TABLE_CLASS = "p-autocomplete-items p-autocomplete-table p-widget-content p-widget";
+    public static final String PANEL_CLASS = "p-autocomplete-panel p-component-content p-hidden p-input-overlay";
+    public static final String LIST_CLASS = "p-autocomplete-items p-autocomplete-list p-component-content p-component";
+    public static final String TABLE_CLASS = "p-autocomplete-items p-autocomplete-table p-component-content p-component";
     public static final String ITEM_CLASS = "p-autocomplete-item p-autocomplete-list-item";
-    public static final String ROW_CLASS = "p-autocomplete-item p-autocomplete-row p-widget-content";
+    public static final String ROW_CLASS = "p-autocomplete-item p-autocomplete-row p-component-content";
     public static final String TOKEN_DISPLAY_CLASS = "p-autocomplete-token p-state-active";
     public static final String TOKEN_LABEL_CLASS = "p-autocomplete-token-label";
     public static final String TOKEN_LABEL_DISABLED_CLASS = "p-autocomplete-token-label-disabled";
     public static final String TOKEN_ICON_CLASS = "p-autocomplete-token-icon p-icon p-close-icon p-autocomplete-chip-remove-icon";
     public static final String TOKEN_INPUT_CLASS = "p-autocomplete-input-token";
-    public static final String MULTIPLE_CONTAINER_CLASS = "p-autocomplete-multiple-container p-widget p-inputfield p-state-default";
-    public static final String MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS = "p-autocomplete-multiple-container p-autocomplete-dd-multiple-container p-widget p-inputfield p-state-default";
+    public static final String MULTIPLE_CONTAINER_CLASS = "p-autocomplete-multiple-container p-component p-inputfield p-state-default";
+    public static final String MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS = "p-autocomplete-multiple-container p-autocomplete-dd-multiple-container p-component p-inputfield p-state-default";
     public static final String ITEMTIP_CONTENT_CLASS = "p-autocomplete-itemtip-content";
     public static final String MORE_TEXT_LIST_CLASS = "p-autocomplete-item p-autocomplete-moretext";
-    public static final String MORE_TEXT_TABLE_CLASS = "p-autocomplete-item p-autocomplete-moretext p-widget-content";
+    public static final String MORE_TEXT_TABLE_CLASS = "p-autocomplete-item p-autocomplete-moretext p-component-content";
 
     protected static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
             ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect,

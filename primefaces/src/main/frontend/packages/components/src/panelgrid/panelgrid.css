@@ -3,8 +3,8 @@
  *
  * PrimeFaces tokens (the panelgrid block of presets/*.css) that default to the PrimeUIX datatable cell tokens.
  * tabular: table > thead.p-panelgrid-header / tbody / tfoot.p-panelgrid-footer with td.p-panelgrid-cell
- *          (header and footer cells also carry p-widget-header)
- * grid/flex/tailwind: div.p-panelgrid-header.p-widget-header, div.p-panelgrid-content, div.p-panelgrid-footer.p-widget-header
+ *          (header and footer cells also carry p-component-header)
+ * grid/flex/tailwind: div.p-panelgrid-header.p-component-header, div.p-panelgrid-content, div.p-panelgrid-footer.p-component-header
  * States: p-noborder, p-panelgrid-blank, p-panelgrid-nopad (cell)
  */
 
@@ -27,7 +27,7 @@
         border: 1px solid var(--p-panelgrid-cell-border-color);
     }
 
-    .p-panelgrid-cell.p-widget-header,
+    .p-panelgrid-cell.p-component-header,
     > div.p-panelgrid-header,
     > div.p-panelgrid-footer {
         padding: var(--p-panelgrid-header-cell-padding);
@@ -52,10 +52,10 @@
         }
     }
 
-    &.p-noborder .p-widget-content,
-    &.p-noborder .p-widget-header,
+    &.p-noborder .p-component-content,
+    &.p-noborder .p-component-header,
     &.p-noborder .p-panelgrid-cell,
-    &.p-noborder .p-panelgrid-cell.p-widget-header,
+    &.p-noborder .p-panelgrid-cell.p-component-header,
     &.p-noborder > div.p-panelgrid-header,
     &.p-noborder > div.p-panelgrid-content,
     &.p-noborder > div.p-panelgrid-footer,
@@ -65,13 +65,13 @@
         border: 0 none;
     }
 
-    &.p-panelgrid-blank .p-panelgrid-content.p-widget-content,
-    &.p-panelgrid-blank .p-panelgrid-header.p-widget-header,
-    &.p-panelgrid-blank .p-panelgrid-footer.p-widget-header,
-    &.p-panelgrid-blank .p-panelgrid-header > tr.p-widget-header,
-    &.p-panelgrid-blank .p-panelgrid-footer > tr.p-widget-header,
-    &.p-panelgrid-blank tbody > tr.p-widget-content,
-    &.p-panelgrid-blank tbody > tr.p-widget-content > td.p-panelgrid-cell,
+    &.p-panelgrid-blank .p-panelgrid-content.p-component-content,
+    &.p-panelgrid-blank .p-panelgrid-header.p-component-header,
+    &.p-panelgrid-blank .p-panelgrid-footer.p-component-header,
+    &.p-panelgrid-blank .p-panelgrid-header > tr.p-component-header,
+    &.p-panelgrid-blank .p-panelgrid-footer > tr.p-component-header,
+    &.p-panelgrid-blank tbody > tr.p-component-content,
+    &.p-panelgrid-blank tbody > tr.p-component-content > td.p-panelgrid-cell,
     &.p-panelgrid-blank .p-panelgrid-cell,
     &.p-panelgrid-blank > div.p-panelgrid-header,
     &.p-panelgrid-blank > div.p-panelgrid-content,

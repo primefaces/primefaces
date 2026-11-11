@@ -46,10 +46,10 @@ public class MultiSelectListbox extends MultiSelectListboxBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
-    public static final String CONTAINER_CLASS = "p-multiselectlistbox p-widget";
+    public static final String CONTAINER_CLASS = "p-multiselectlistbox p-component";
     public static final String LIST_CONTAINER_CLASS = "p-multiselectlistbox-listcontainer";
-    public static final String LIST_HEADER_CLASS = "p-multiselectlistbox-header p-widget-header";
-    public static final String LIST_CLASS = "p-multiselectlistbox-list p-inputfield p-widget-content";
+    public static final String LIST_HEADER_CLASS = "p-multiselectlistbox-header p-component-header";
+    public static final String LIST_CLASS = "p-multiselectlistbox-list p-inputfield p-component-content";
     public static final String ITEM_CLASS = "p-multiselectlistbox-item";
 
     @Override

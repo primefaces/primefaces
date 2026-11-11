@@ -9,7 +9,7 @@ This is the documentation for the client-side JavaScript part of PrimeFaces, ple
 * [Type declarations file](#type-declarations-file)
 * [API Overview](#api-overview)
     - [Core](#core)
-    - [Widgets](#widgets)
+    - [Components](#components)
     - [JQuery extensions](#jquery-extensions)
     - [Third-party libraries](#third-party-libraries)
 
@@ -65,8 +65,8 @@ type declaration files.
 
 The main entry point of the PrimeFaces client-side JavaScript API is the global object
 [window.PrimeFaces](./modules/src_PrimeFaces.PrimeFaces.html) (or just `PrimeFaces` for short). It contains several
-utility methods as well as the [widget registry](./modules/src_PrimeFaces.PrimeFaces.widget.html) with all available
-PrimeFaces widgets.
+utility methods as well as the [component registry](./modules/src_PrimeFaces.PrimeFaces.widget.html) with all available
+PrimeFaces components.
 
 ### Core
 
@@ -91,13 +91,13 @@ generate Faces resource URLs.
 * [PrimeFaces.validation](./modules/src_PrimeFaces.PrimeFaces.validation.html) The validation submodule. It contains methods for 
 handling client side validation.
 
-### Widgets
+### Components
 
-* [PrimeFaces.widget](./modules/src_PrimeFaces.PrimeFaces.widget.html) contains all available widget classes. A widget is
-usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a widget instance via
-`instanceof`. You can also use these as a base class when you create your own widgets.
-* [`PrimeFaces.widgets`](./modules/src_PrimeFaces.PrimeFaces.html#widgets) is an object with all instantiated widgets that
-are available on the current page.
+* [PrimeFaces.component](./modules/src_PrimeFaces.PrimeFaces.widget.html) contains all available component classes. A component is
+usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a component instance via
+`instanceof`. You can also use these as a base class when you create your own components.
+* [`PrimeFaces.components`](./modules/src_PrimeFaces.PrimeFaces.html#widgets) is an object with all instantiated components that
+are available on the current page. `PrimeFaces.widget` and `PrimeFaces.widgets` are deprecated aliases of both objects.
 * [window.PF](./modules/src_PrimeFaces.html#pf) is a method for finding a widget by its widget variable. When the widget
 does not exist, it logs a warning.
 
@@ -113,7 +113,7 @@ Then you can access the widget instance from JavaScript like this:
 // Find the widget instance
 var widget = PF("tableVar");
 // Check whether it is really a data table
-if (widget instanceof PrimeFaces.widget.DataTable) {
+if (widget instanceof PrimeFaces.component.DataTable) {
     // Do something with the data table
     widget.unselectAllRows();
 }

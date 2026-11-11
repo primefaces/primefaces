@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link DefaultCommand} widget.
+ * The configuration for the {@link DefaultCommand} component.
  */
-export interface DefaultCommandCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface DefaultCommandCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Client ID of the ancestor component that limits the default command, to have several in one form. */
     scope: string;
     /** Client ID of the button or link to click on Enter. */
@@ -9,18 +9,18 @@ export interface DefaultCommandCfg extends PrimeFacesTypes.widget.BaseWidgetCfg 
 }
 
 /**
- * __PrimeFaces DefaultCommand Widget__
+ * __PrimeFaces DefaultCommand Component__
  *
  * DefaultCommand defines the command (e.g. a button or link) that submits the form when the Enter key is pressed,
  * normalizing the different browser behaviors.
  */
-export class DefaultCommand<Cfg extends DefaultCommandCfg = DefaultCommandCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class DefaultCommand<Cfg extends DefaultCommandCfg = DefaultCommandCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The button or link to click. */
     jqTarget: JQuery = $();
     /** The ancestor component that limits the default command, only with `scope`. */
     scope: JQuery | null = null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.jqTarget = this.findTarget();
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;

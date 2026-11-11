@@ -21,18 +21,18 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 type ViewOptions = NonNullable<CalendarOptions["views"]>[string];
 
 /**
- * The configuration for the {@link Schedule} widget.
+ * The configuration for the {@link Schedule} component.
  */
-export interface ScheduleCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface ScheduleCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** Format of the column header per view name, e.g. `{ dayGridMonth: "ddd" }`. */
     columnFormatOptions: Record<string, ViewOptions["dayHeaderFormat"]>;
     /** Whether the description of an event in the tooltip is HTML escaped, default is `true`. */
     escape: boolean;
     /**
      * Name of JavaScript function to extend the options of the underlying FullCalendar plugin. Access the this schedule
-     * widget via the this context, and change the FullCalendar configuration stored in `this.cfg`.
+     * component via the this context, and change the FullCalendar configuration stored in `this.cfg`.
      */
-    extender: PrimeFacesTypes.widget.Schedule.ScheduleExtender;
+    extender: PrimeFacesTypes.component.Schedule.ScheduleExtender;
     /** Locale code of the locale for the FullCalendar, such as `de` or `en`. */
     locale: string;
     /**
@@ -59,16 +59,16 @@ export interface ScheduleCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 }
 
 /**
- * __PrimeFaces Schedule Widget__
+ * __PrimeFaces Schedule Component__
  *
  * Schedule provides an Outlook Calendar, iCal like Faces component to manage events.
  */
-export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, the server always renders the FullCalendar `options`. */
-    declare cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg> & Pick<ScheduleCfg, "options">;
+    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & Pick<ScheduleCfg, "options">;
 
     /**
-     * The current full calendar instance. May be `undefined` when the widget exists, but was not yet rendered, such
+     * The current full calendar instance. May be `undefined` when the component exists, but was not yet rendered, such
      * as when inside a non-active tab.
      */
     calendar?: Calendar;
@@ -83,7 +83,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
     /** The DOM element for the hidden input storing the current view state. */
     viewNameState: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.options.themeSystem = 'standard';
         this.cfg.options.slotLabelFormat = this.cfg.options.slotLabelFormat || undefined;
@@ -106,7 +106,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
         this.configureLocale();
 
         if (this.cfg.tooltip) {
-            this.tip = $('<div class="p-tooltip p-widget p-widget-content"></div>').appendTo(document.body);
+            this.tip = $('<div class="p-tooltip p-component p-component-content"></div>').appendTo(document.body);
             this.addDestroyListener(function () { this.tip!.remove(); });
             this.addRefreshListener(function () { this.tip!.remove(); });
         }
@@ -125,7 +125,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
         this.setupTitlebarHandlers();
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.calendar) {
             this.calendar.destroy();
         }
@@ -404,7 +404,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
     }
 
     /**
-     * Creates and sets the view options for FullCalendar on this widget configuration.
+     * Creates and sets the view options for FullCalendar on this component configuration.
      */
     private setViewOptions(): void {
         const views: Record<string, ViewOptions> = {

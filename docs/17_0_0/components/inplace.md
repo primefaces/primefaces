@@ -82,7 +82,7 @@ public class InplaceBean {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Inplace_
+Component: _PrimeFaces.component.Inplace_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

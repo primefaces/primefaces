@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link SelectListbox} widget.
+ * The configuration for the {@link SelectListbox} component.
  */
-export interface SelectListboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectListboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether filtering is case-sensitive. */
     caseSensitive: boolean;
     /** Whether filtering uses normalized values (accents removed). */
@@ -9,17 +9,17 @@ export interface SelectListboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Whether the options can be filtered. */
     filter: boolean;
     /** The filter function used with `filterMatchMode` `custom`. */
-    filterFunction: PrimeFacesTypes.widget.SelectListbox.FilterFunction;
+    filterFunction: PrimeFacesTypes.component.SelectListbox.FilterFunction;
     /** Mode of the filter, normalized to `startsWith` on init if not set. */
-    filterMatchMode: PrimeFacesTypes.widget.SelectListbox.FilterMatchMode;
+    filterMatchMode: PrimeFacesTypes.component.SelectListbox.FilterMatchMode;
 }
 
 /**
- * __PrimeFaces SelectListbox Widget__
+ * __PrimeFaces SelectListbox Component__
  *
- * Base class for the listbox widgets, {@link SelectOneListbox} and {@link SelectManyMenu}.
+ * Base class for the listbox components, {@link SelectOneListbox} and {@link SelectManyMenu}.
  */
-export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The hidden select with the value. */
     input: JQuery<HTMLSelectElement> = $();
     /** The container of the list. */
@@ -35,18 +35,18 @@ export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> exte
     /** The filter input, only with `filter`. */
     filterInput?: JQuery;
     /** The filter functions per filter match mode. */
-    filterMatchers: Record<PrimeFacesTypes.widget.SelectListbox.FilterMatchMode, PrimeFacesTypes.widget.SelectListbox.FilterFunction | undefined> = {
+    filterMatchers: Record<PrimeFacesTypes.component.SelectListbox.FilterMatchMode, PrimeFacesTypes.component.SelectListbox.FilterFunction | undefined> = {
         startsWith: undefined,
         contains: undefined,
         endsWith: undefined,
         custom: undefined
     };
     /** The filter function of the current filter match mode. */
-    filterMatcher?: PrimeFacesTypes.widget.SelectListbox.FilterFunction;
+    filterMatcher?: PrimeFacesTypes.component.SelectListbox.FilterFunction;
     /** Whether this listbox was disabled via {@link disable}, `undefined` before. */
     disabled?: boolean;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLSelectElement>;
@@ -229,7 +229,7 @@ export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> exte
                 const itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize);
                 const item = this.allItems.eq(i);
 
-                if ((this.filterMatcher as PrimeFacesTypes.widget.SelectListbox.FilterFunction)(itemLabel, filterValue)) {
+                if ((this.filterMatcher as PrimeFacesTypes.component.SelectListbox.FilterFunction)(itemLabel, filterValue)) {
                     item.removeClass('p-hidden').show();
                 }
                 else {
@@ -243,7 +243,7 @@ export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> exte
      * Enables this listbox so that the user can select items.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         this.disabled = false;
         if (this.cfg.disabled) {
             // disabled at render: the items are disabled too and their events were not bound
@@ -265,7 +265,7 @@ export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> exte
      * Disables this listbox so that the user cannot select items anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
         this.disabled = true;
     }
 }

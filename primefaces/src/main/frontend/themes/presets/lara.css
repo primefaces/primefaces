@@ -3847,23 +3847,23 @@
         --p-tristatemanycheckbox-row-gap: 0.5rem;
     }
 
-    /* widget */
+    /* component */
     :root, [data-p-scope] {
-        --p-widget-content-background: var(--p-content-background);
-        --p-widget-content-color: var(--p-content-color);
-        --p-widget-content-border-color: var(--p-content-border-color);
-        --p-widget-header-background: var(--p-content-hover-background);
-        --p-widget-header-color: var(--p-text-color);
-        --p-widget-header-border-color: var(--p-content-border-color);
-        --p-widget-header-font-weight: 600;
-        --p-widget-hover-background: var(--p-content-hover-background);
-        --p-widget-hover-color: var(--p-content-hover-color);
-        --p-widget-active-background: var(--p-highlight-background);
-        --p-widget-active-color: var(--p-highlight-color);
-        --p-widget-highlight-background: var(--p-highlight-background);
-        --p-widget-highlight-color: var(--p-highlight-color);
-        --p-widget-error-color: var(--p-message-error-simple-color);
-        --p-widget-error-border-color: var(--p-form-field-invalid-border-color);
+        --p-component-content-background: var(--p-content-background);
+        --p-component-content-color: var(--p-content-color);
+        --p-component-content-border-color: var(--p-content-border-color);
+        --p-component-header-background: var(--p-content-hover-background);
+        --p-component-header-color: var(--p-text-color);
+        --p-component-header-border-color: var(--p-content-border-color);
+        --p-component-header-font-weight: 600;
+        --p-component-hover-background: var(--p-content-hover-background);
+        --p-component-hover-color: var(--p-content-hover-color);
+        --p-component-active-background: var(--p-highlight-background);
+        --p-component-active-color: var(--p-highlight-color);
+        --p-component-highlight-background: var(--p-highlight-background);
+        --p-component-highlight-color: var(--p-highlight-color);
+        --p-component-error-color: var(--p-message-error-simple-color);
+        --p-component-error-border-color: var(--p-form-field-invalid-border-color);
     }
 
     /* wizard */

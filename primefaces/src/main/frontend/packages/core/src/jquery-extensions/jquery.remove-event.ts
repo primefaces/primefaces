@@ -1,7 +1,7 @@
 /**
  * Triggers the `remove` event on removed elements, e.g. by `.remove()`, `.html()` or `.replaceWith()` (formerly the
  * jQuery UI widget factory). jQuery calls `$.cleanData` for every removed element before it deletes its data and
- * events; the event is triggered on each element that has a handler for it and does not bubble. The widgets and the
+ * events; the event is triggered on each element that has a handler for it and does not bubble. The components and the
  * interactions use it to detect that an AJAX update removed them.
  */
 export function setupRemoveEvent(): void {

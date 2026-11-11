@@ -1,11 +1,11 @@
 /**
- * The configuration for the {@link Log} widget.
+ * The configuration for the {@link Log} component.
  */
-export interface LogCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface LogCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces Log Widget__
+ * __PrimeFaces Log Component__
  *
  * Log component is a visual console to display logs on Faces pages.
  *
@@ -19,7 +19,7 @@ export interface LogCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
  * PrimeFaces.error("Error message");
  * ```
  */
-export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The DOM element for the content with the log messages. */
     content: JQuery = $();
     /** The DOM element for the header. */
@@ -29,9 +29,9 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.widget.BaseWidg
     /** The DOM elements for the filter buttons. */
     filters: JQuery = $();
     /** The current severity level that controls which log messages are shown. */
-    severity: PrimeFacesTypes.widget.Log.Severity = 'all';
+    severity: PrimeFacesTypes.component.Log.Severity = 'all';
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.header = this.jq.children('.p-log-header');
@@ -60,7 +60,7 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.widget.BaseWidg
         PrimeFaces.logger = this as PrimeFacesTypes.Logger;
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         // remove the old element, which was moved to body - an update of the log itself replaces it in place
         // inside body, so it must not be removed by its id
         this.jq.remove();
@@ -68,7 +68,7 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.widget.BaseWidg
     }
 
     /**
-     * Sets up all event listeners that are required by this widget.
+     * Sets up all event listeners that are required by this component.
      */
     private bindEvents(): void {
         //visuals
@@ -157,7 +157,7 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.widget.BaseWidg
      * @param severity Severity of the log message
      * @param icon Style classes of the icon to show near the log message
      */
-    add(msg: string, severity: PrimeFacesTypes.widget.Log.Severity, icon: string): void {
+    add(msg: string, severity: PrimeFacesTypes.component.Log.Severity, icon: string): void {
         const visible = this.severity == severity || this.severity == 'all',
             style = visible ? 'display:block' : 'display:none';
 
@@ -182,7 +182,7 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.widget.BaseWidg
      * @param severity Severity of the log message.
      * @param button The button that was pressed.
      */
-    private handleFilterClick(event: JQuery.TriggeredEvent, severityClass: string, severity: PrimeFacesTypes.widget.Log.Severity, button: JQuery): void {
+    private handleFilterClick(event: JQuery.TriggeredEvent, severityClass: string, severity: PrimeFacesTypes.component.Log.Severity, button: JQuery): void {
         this.filter(severityClass);
         this.filters.filter('.p-state-active').removeClass('p-state-active');
         button.addClass('p-state-active').removeClass('p-state-hover');

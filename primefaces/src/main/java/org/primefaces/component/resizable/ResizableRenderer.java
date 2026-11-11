@@ -26,7 +26,7 @@ package org.primefaces.component.resizable;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -55,7 +55,7 @@ public class ResizableRenderer extends CoreRenderer<Resizable> {
 
         String targetId = target.getClientId(context);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         if (target instanceof UIGraphic) {
             wb.initWithComponentLoad("Resizable", component.resolveWidgetVar(context), clientId, targetId);

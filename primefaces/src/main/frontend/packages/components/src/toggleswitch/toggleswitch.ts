@@ -1,17 +1,17 @@
 /**
- * The configuration for the {@link ToggleSwitch} widget.
+ * The configuration for the {@link ToggleSwitch} component.
  */
-export interface ToggleSwitchCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ToggleSwitchCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Requests a confirmation before the value changes, called with the switch element as `this`. */
     confirmation: (this: HTMLElement) => void;
 }
 
 /**
- * __PrimeFaces ToggleSwitch Widget__
+ * __PrimeFaces ToggleSwitch Component__
  *
  * ToggleSwitch is used to select a boolean value.
  */
-export class ToggleSwitch<Cfg extends ToggleSwitchCfg = ToggleSwitchCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class ToggleSwitch<Cfg extends ToggleSwitchCfg = ToggleSwitchCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The slider. */
     slider: JQuery = $();
     /** The handle of the slider. */
@@ -19,7 +19,7 @@ export class ToggleSwitch<Cfg extends ToggleSwitchCfg = ToggleSwitchCfg> extends
     /** The hidden checkbox input with the value. */
     input: JQuery<HTMLInputElement> = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.slider = this.jq.children('.p-toggleswitch-slider');
@@ -151,14 +151,14 @@ export class ToggleSwitch<Cfg extends ToggleSwitchCfg = ToggleSwitchCfg> extends
      * Disables this switch so that the user cannot change it anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
     }
 
     /**
      * Enables this switch so that the user can change it.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         // disabled at render, the events were not bound
         this._bindEvents();
     }

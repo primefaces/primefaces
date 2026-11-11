@@ -26,8 +26,8 @@ package org.primefaces.component.defaultcommand;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -49,7 +49,7 @@ public class DefaultCommandRenderer extends CoreRenderer<DefaultCommand> {
 
         UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, targetValue);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DefaultCommand", component)
                 .attr("target", target.getClientId(context));
 

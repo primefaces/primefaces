@@ -1,10 +1,10 @@
 /**
- * The configuration for the {@link Organigram} widget.
+ * The configuration for the {@link Organigram} component.
  */
-export interface OrganigramCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface OrganigramCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the organigram scrolls to the selected node after it was drawn. */
     autoScrollToSelection: boolean;
-    /** Base namespace for the events triggered by this widget. */
+    /** Base namespace for the events triggered by this component. */
     event: string;
     /** The height of the connector line for leaf nodes. */
     leafNodeConnectorHeight: number;
@@ -13,11 +13,11 @@ export interface OrganigramCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces Organigram Widget__
+ * __PrimeFaces Organigram Component__
  *
  * Organigram is a data component to display an organizational hierarchy.
  */
-export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Whether the organigram requires redrawing. */
     redraw: boolean = false;
     /** The DOM elements for the source nodes when drawing the lines connecting two nodes. */
@@ -27,7 +27,7 @@ export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends Prime
     /** The current zoom factor of the organigram. */
     zoomFactor?: number;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.draw();
@@ -64,22 +64,22 @@ export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends Prime
 
     /**
      * Selects the given organigram node.
-     * @param widget This widget instance.
+     * @param component This component instance.
      * @param node The node to select, with the class `.p-organigram-node`.
      * @param event Name of the event that triggered the selection, usually `select` or `contextmenu`.
      */
-    private selectNode(widget: Organigram<Cfg>, node: JQuery, event: string): void {
+    private selectNode(component: Organigram<Cfg>, node: JQuery, event: string): void {
         if (!node.hasClass("selected")) {
-            widget.target.find(".p-organigram-node.selected").removeClass("selected");
+            component.target.find(".p-organigram-node.selected").removeClass("selected");
             node.addClass("selected");
 
-            if (widget.hasBehavior(event)) {
+            if (component.hasBehavior(event)) {
                 const options = {
                     params: [
-                                { name: widget.id + "_selectNode", value: node.data("rowkey") }
+                                { name: component.id + "_selectNode", value: node.data("rowkey") }
                             ]
                 };
-                widget.cfg.behaviors![event]!.call(widget, options);
+                component.cfg.behaviors![event]!.call(component, options);
             }
         }
     }
@@ -505,10 +505,10 @@ export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends Prime
     }
 
     override bindContextMenu(
-        menuWidget: PrimeFacesTypes.widget.ContextMenuLikeWidget,
-        targetWidget: this,
+        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.widget.PartialWidgetCfg<PrimeFacesTypes.widget.ContextMenuLikeWidgetCfg>,
+        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
     ): void {
         let selector = targetId + " .p-organigram-node.selectable";
         const event = cfg.event + ".organigram" + this.id;
@@ -518,8 +518,8 @@ export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends Prime
         }
 
         $(document).off(event, selector).on(event, selector, null, (e) => {
-            targetWidget.selectNode(targetWidget, $(e.currentTarget), "contextmenu");
-            menuWidget.show(e);
+            targetComponent.selectNode(targetComponent, $(e.currentTarget), "contextmenu");
+            menuComponent.show(e);
         });
         this.addDestroyListener(() => {
             $(document).off(event);

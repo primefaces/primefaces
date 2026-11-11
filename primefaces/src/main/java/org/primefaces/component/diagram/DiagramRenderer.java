@@ -31,9 +31,9 @@ import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -182,7 +182,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
 
     protected void encodeScript(FacesContext context, Diagram component) throws IOException {
         String clientId = component.getClientId(context);
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Diagram", component);
 
         DiagramModel model = (DiagramModel) component.getValue();
@@ -198,7 +198,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         wb.finish();
     }
 
-    protected void encodeDefaults(WidgetBuilder wb, DiagramModel model) throws IOException {
+    protected void encodeDefaults(ComponentScriptBuilder wb, DiagramModel model) throws IOException {
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
 
         Connector defaultConnector = model.getDefaultConnector();
@@ -231,7 +231,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         }
     }
 
-    protected void encodeEndPoints(WidgetBuilder wb, DiagramModel model, String clientId) throws IOException {
+    protected void encodeEndPoints(ComponentScriptBuilder wb, DiagramModel model, String clientId) throws IOException {
         List<Element> elements = model.getElements();
         if (elements != null && !elements.isEmpty()) {
             int elementsSize = elements.size();
@@ -263,7 +263,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         }
     }
 
-    protected void encodeEndPoint(WidgetBuilder wb, EndPoint endPoint, String elementClientId) throws IOException {
+    protected void encodeEndPoint(ComponentScriptBuilder wb, EndPoint endPoint, String elementClientId) throws IOException {
         String type = endPoint.getType();
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
         String styleClass = endPoint.getStyleClass();
@@ -311,7 +311,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         wb.append("}");
     }
 
-    protected void encodeConnections(WidgetBuilder wb, DiagramModel model) throws IOException {
+    protected void encodeConnections(ComponentScriptBuilder wb, DiagramModel model) throws IOException {
         List<Connection> connections = model.getConnections();
         if (connections != null && !connections.isEmpty()) {
             int connectionsSize = connections.size();
@@ -357,7 +357,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         }
     }
 
-    protected void encodeOverlays(WidgetBuilder wb, List<Overlay> overlays, String propertyName) throws IOException {
+    protected void encodeOverlays(ComponentScriptBuilder wb, List<Overlay> overlays, String propertyName) throws IOException {
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
 
         if (overlays != null && !overlays.isEmpty()) {

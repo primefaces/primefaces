@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link ProgressBar} widget.
+ * The configuration for the {@link ProgressBar} component.
  */
-export interface ProgressBarCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ProgressBarCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** In AJAX mode the value is polled from the server. */
     ajax: boolean;
     /** Animation duration in milliseconds. */
@@ -17,12 +17,12 @@ export interface ProgressBarCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces ProgressBar widget__
+ * __PrimeFaces ProgressBar Component__
  *
  * ProgressBar is a process status indicator that can either work purely on client side or interact with server side
  * using AJAX.
  */
-export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The value bar. */
     jqValue: JQuery = $();
     /** The label inside the value bar. */
@@ -32,7 +32,7 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
     /** The current value, `undefined` until a valid value was set. */
     value?: number;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jqValue = this.jq.children('.p-progressbar-value');
@@ -42,7 +42,7 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
 
         this.enableARIA();
 
-        // a running poll survives a refresh (same widget instance), but must stop when the widget is gone
+        // a running poll survives a refresh (same component instance), but must stop when the component is gone
         this.addDestroyListener(() => {
             clearInterval(this.progressPoll);
         });

@@ -23,7 +23,7 @@ user status changes. If `multiWindowSupport=true` then the _active_ and _idle_ e
 active window and all other windows will only fire the _idle_ event.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.IdleMonitor_
+Component: _PrimeFaces.component.IdleMonitor_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

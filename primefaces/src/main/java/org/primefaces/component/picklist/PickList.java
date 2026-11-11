@@ -58,8 +58,8 @@ public class PickList extends PickListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
 
-    public static final String CONTAINER_CLASS = "p-picklist p-widget";
-    public static final String LIST_CLASS = "p-widget-content p-picklist-list";
+    public static final String CONTAINER_CLASS = "p-picklist p-component";
+    public static final String LIST_CLASS = "p-component-content p-picklist-list";
     public static final String LIST_WRAPPER_CLASS = "p-picklist-list-wrapper";
     public static final String SOURCE_CLASS = LIST_CLASS + " p-picklist-source";
     public static final String TARGET_CLASS = LIST_CLASS + " p-picklist-target";
@@ -69,7 +69,7 @@ public class PickList extends PickListBaseImpl {
     public static final String TARGET_CONTROLS = "p-picklist-target-controls p-picklist-buttons";
     public static final String ITEM_CLASS = "p-picklist-item";
     public static final String ITEM_DISABLED_CLASS = "p-state-disabled";
-    public static final String CAPTION_CLASS = "p-picklist-caption p-widget-header";
+    public static final String CAPTION_CLASS = "p-picklist-caption p-component-header";
     public static final String ADD_BUTTON_CLASS = "p-picklist-button-add";
     public static final String ADD_ALL_BUTTON_CLASS = "p-picklist-button-add-all";
     public static final String REMOVE_BUTTON_CLASS = "p-picklist-button-remove";
@@ -90,7 +90,7 @@ public class PickList extends PickListBaseImpl {
     public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "p-icon p-down-icon p-picklist-move-down-icon";
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "p-icon p-top-icon p-picklist-move-top-icon";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "p-icon p-bottom-icon p-picklist-move-bottom-icon";
-    public static final String FILTER_CLASS = "p-picklist-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String FILTER_CLASS = "p-picklist-filter p-inputfield p-inputtext p-component p-state-default";
     public static final String FILTER_CONTAINER = "p-picklist-filter-container";
     public static final String FILTER_ICON_CLASS = "p-icon p-search-icon p-picklist-filter-icon";
 

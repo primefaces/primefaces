@@ -128,9 +128,9 @@ export interface DatePickerLocale {
 }
 
 /**
- * The configuration for the {@link DatePicker} widget.
+ * The configuration for the {@link DatePicker} component.
  */
-export interface DatePickerCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface DatePickerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Search expression of the element to which the panel is appended. */
     appendTo: string | null;
     /** Whether to switch to the touch UI below the responsive breakpoint. */
@@ -329,7 +329,7 @@ const DEFAULT_LOCALE: DatePickerLocale = {
  * Default values of the configuration, applied to {@link DatePicker.options} for every option that is `undefined` or
  * `null`.
  */
-const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.widget.BaseWidgetCfg, "disabled"> | "appendTo" | "locale"> = {
+const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.component.BaseComponentCfg, "disabled"> | "appendTo" | "locale"> = {
     autoDetectDisplay: true,
     autoMonthFormat: true,
     buttonTabindex: '',
@@ -433,12 +433,12 @@ function eventCode(event: JQuery.TriggeredEvent): string {
 }
 
 /**
- * __PrimeFaces DatePicker Widget__
+ * __PrimeFaces DatePicker Component__
  *
  * DatePicker is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
  */
-export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The input with the selected date. */
     input: JQuery = $();
     /** The panel with the calendar. */
@@ -454,7 +454,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     /** The view date to restore after an update of a range date picker. */
     viewDateOption: Date | undefined;
 
-    /** The resolved `appendTo` element the overlay panel is appended to, or `null` to keep the panel in the widget. */
+    /** The resolved `appendTo` element the overlay panel is appended to, or `null` to keep the panel in the component. */
     private appendTarget: JQuery | null = null;
     /** Whether a `yearRange` was configured, otherwise it is derived from the view date by `updateYearNavigator`. */
     private hasCustomYearRange: boolean = false;
@@ -466,7 +466,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     private transition: PrimeFacesTypes.CssTransitionHandler | null = null;
     /** Listener that hides the overlay on a click outside of the panel, only set while the overlay is shown. */
     private documentClickListener: ((event: JQuery.TriggeredEvent) => void) | null = null;
-    /** The scrollable parents of the widget, scrolling one of them hides the overlay. */
+    /** The scrollable parents of the component, scrolling one of them hides the overlay. */
     private scrollableParents: (Window | Element)[] = [];
     /** Scroll listener bound to the scrollable parents while the overlay is shown. */
     private scrollableListener: (() => void) | null = null;
@@ -539,12 +539,12 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     }
 
     /**
-     * Initializes the widget: applies the defaults to the {@link options}, sets up the locale, input mask and
+     * Initializes the component: applies the defaults to the {@link options}, sets up the locale, input mask and
      * behaviors, parses the initial value and view date and renders the trigger button and panel. The instance is
-     * reused when the widget is refreshed.
-     * @param cfg The widget configuration from the server.
+     * reused when the component is refreshed.
+     * @param cfg The component configuration from the server.
      */
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         // the options are a copy of the configuration with the defaults applied, they also hold the runtime state
@@ -563,7 +563,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
         this.input = $(this.jqId + '_input');
 
-        // default date should be input value before widget value
+        // default date should be input value before component value
         this.options.defaultDate = String(this.input.val() ?? '') || this.options.defaultDate;
         // #6450 empty separators fall back to the defaults
         this.options.rangeSeparator = this.options.rangeSeparator || '-';
@@ -597,10 +597,10 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
     /**
      * Unbinds the global listeners of an open overlay and removes the panel appended to another element before the
-     * widget is initialized again, e.g. after an AJAX update.
-     * @param cfg The new widget configuration from the server.
+     * component is initialized again, e.g. after an AJAX update.
+     * @param cfg The new component configuration from the server.
      */
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         this.unbindOverlayListeners();
 
         if (this.panel.length && this.cfg.appendTo) {
@@ -613,7 +613,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
     /**
      * Unbinds the global and responsive listeners, removes the panel appended to another element and the input mask
-     * when the widget is destroyed.
+     * when the component is destroyed.
      */
     override destroy(): void {
         this.unbindOverlayListeners();
@@ -630,7 +630,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             this.input.inputmask('remove');
         }
 
-        // otherwise BaseWidget#destroy removes all handlers of the append target, e.g. the form
+        // otherwise BaseComponent#destroy removes all handlers of the append target, e.g. the form
         this.appendTarget = null;
 
         super.destroy();
@@ -646,7 +646,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     }
 
     // =========================
-    // === PrimeFaces widget ===
+    // === PrimeFaces component ===
     // =========================
 
     /**
@@ -973,7 +973,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     override enable(): void {
         this.options.disabled = false;
         this.updatePanel();
-        PrimeFaces.utils.enableInputWidget(this.input);
+        PrimeFaces.utils.enableInputComponent(this.input);
         if (this.triggerButton) {
             PrimeFaces.utils.enableButton(this.triggerButton);
         }
@@ -984,7 +984,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         this.hide();
         this.options.disabled = true;
         this.updatePanel();
-        PrimeFaces.utils.disableInputWidget(this.input, null);
+        PrimeFaces.utils.disableInputComponent(this.input, null);
         if (this.triggerButton) {
             PrimeFaces.utils.disableButton(this.triggerButton);
         }
@@ -1987,9 +1987,9 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     // ==============
 
     /**
-     * Renders the trigger button and the panel, appends the panel to the widget or to the `appendTo` target (removing
+     * Renders the trigger button and the panel, appends the panel to the component or to the `appendTo` target (removing
      * an old panel there), binds the events, registers the CSS transition of the overlay, sets up the trigger button and
-     * marks the widget as overlay target. Called on init and when switching between the touch UI and the overlay.
+     * marks the component as overlay target. Called on init and when switching between the touch UI and the overlay.
      */
     private renderDatePicker(): void {
         const o = this.options;
@@ -2065,11 +2065,11 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
     /**
      * Creates the trigger button for `showIcon` and stores it in {@link triggerButton}, the caller appends it to the
-     * widget.
+     * component.
      */
     private renderTriggerButton(): void {
         const aria = ' aria-haspopup="dialog" aria-expanded="false" aria-controls="' + this.id + '_panel" ';
-        this.triggerButton = $('<button type="button" ' + aria + ' class="p-datepicker-trigger p-button p-widget p-state-default p-button-icon-only'
+        this.triggerButton = $('<button type="button" ' + aria + ' class="p-datepicker-trigger p-button p-component p-state-default p-button-icon-only'
             + (this.options.disabled ? ' p-state-disabled' : '') + '" tabindex="0">'
             + '<span class="p-button-icon-left p-icon p-calendar-icon p-datepicker-dropdown-icon"></span>'
             + '<span class="p-button-text">p-button</span>'
@@ -2094,7 +2094,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         });
 
         this.panel = $('<div id="' + this.id + '_panel" role="dialog" aria-modal="true" aria-label="' + o.locale.chooseDate + '"'
-            + ' class="p-datepicker-panel p-widget p-widget-content' + classes + '"></div>');
+            + ' class="p-datepicker-panel p-component p-component-content' + classes + '"></div>');
         this.panel[0]!.innerHTML = this.renderPanelElements();
         this.panel.css({
             'display': o.inline ? 'block' : 'none',
@@ -2159,7 +2159,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             months += this.renderMonthViewMonth(i);
         }
 
-        return '<div class="p-datepicker-header p-widget-header">'
+        return '<div class="p-datepicker-header p-component-header">'
             + this.renderNavigator('prev', this.options.locale.prevYear)
             + this.renderNavigator('next', this.options.locale.nextYear)
             + '<div class="p-datepicker-title">' + this.renderTitleYearElement(this.viewDate.getFullYear(), 0) + '</div>'
@@ -2173,7 +2173,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private renderTimePicker(): string {
         const o = this.options;
-        return '<div class="p-timepicker p-widget-header' + (o.timeInput ? ' p-timepicker-timeinput' : '') + '">'
+        return '<div class="p-timepicker p-component-header' + (o.timeInput ? ' p-timepicker-timeinput' : '') + '">'
             + this.renderHourPicker()
             + this.renderTimeElements('p-divider', '<span>:</span>', -1)
             + this.renderMinutePicker()
@@ -2195,7 +2195,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const grid = o.flex ? 'grid' : 'ui-g';
         const today = o.flex ? 'col-6 text-left' : 'ui-g-6';
         const clear = o.flex ? 'col-6 text-right' : 'ui-g-6';
-        let todayStyleClass = 'p-today-button p-button p-widget p-state-default p-button-text-only ' + o.todayButtonStyleClass;
+        let todayStyleClass = 'p-today-button p-button p-component p-state-default p-button-text-only ' + o.todayButtonStyleClass;
         // only use date at 00:00 for comparison without time
         const now = o.showTime ? this.getNow() : this.truncateDate(this.getNow());
 
@@ -2203,13 +2203,13 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             todayStyleClass += ' p-hidden';
         }
 
-        return '<div class="p-datepicker-buttonbar p-widget-header">'
+        return '<div class="p-datepicker-buttonbar p-component-header">'
             + '<div class="' + grid + '">'
             + '<div class="' + today + '">'
             + '<button type="button" class="' + todayStyleClass + '"><span class="p-button-text">' + (o.showTime ? o.locale.now : o.locale.today) + '</span></button>'
             + '</div>'
             + '<div class="' + clear + '">'
-            + '<button type="button" class="p-clear-button p-button p-widget p-state-default p-button-text-only ' + o.clearButtonStyleClass + '">'
+            + '<button type="button" class="p-clear-button p-button p-component p-state-default p-button-text-only ' + o.clearButtonStyleClass + '">'
             + '<span class="p-button-text">' + o.locale.clear + '</span></button>'
             + '</div>'
             + '</div>'
@@ -2248,7 +2248,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         const forwardNavigator = o.numberOfMonths === 1 || index === o.numberOfMonths - 1 ? this.renderNavigator('next', o.locale.nextMonth) : '';
 
         return '<div class="p-datepicker-group">'
-            + '<div class="p-datepicker-header p-widget-header">'
+            + '<div class="p-datepicker-header p-component-header">'
             + backwardNavigator
             + forwardNavigator
             + this.renderTitle(monthMetadata)
@@ -3664,7 +3664,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (this.mask) {
             return;
         }
-        this.mask = $('<div class="p-widget-overlay p-datepicker-mask p-datepicker-mask-scrollblocker"></div>')
+        this.mask = $('<div class="p-component-overlay p-datepicker-mask p-datepicker-mask-scrollblocker"></div>')
             .css('z-index', String(parseInt(this.panel.css('z-index'), 10) - 1))
             .on('click.datePicker-mask', () => this.disableModality());
         $(document.body).append(this.mask).addClass('p-overflow-hidden');

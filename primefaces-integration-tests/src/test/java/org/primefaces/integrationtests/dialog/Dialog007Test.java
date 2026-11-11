@@ -60,7 +60,7 @@ class Dialog007Test extends AbstractPrimePageTest {
         // Assert
         assertNotPresent(page.dialog);
         assertEquals(0L, count("[id=\"form:choice_panel\"]"));
-        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog && !PrimeFaces.widgets.dialogChoice"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.components.relocatedDialog && !PrimeFaces.components.dialogChoice"));
         assertNoJavascriptErrors();
     }
 
@@ -111,7 +111,7 @@ class Dialog007Test extends AbstractPrimePageTest {
         assertEquals(1L, count("[id=\"form:dlg_docked\"]"));
         page.remove.click();
         assertEquals(0L, count("[id=\"form:dlg_docked\"]"));
-        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.components.relocatedDialog"));
         assertNoJavascriptErrors();
     }
 

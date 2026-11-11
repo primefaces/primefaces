@@ -2,7 +2,7 @@ import { csp } from "./core.csp.js";
 import { expressions } from "./core.expressions.js";
 import { core } from "./core.js";
 import { utils } from "./core.utils.js";
-import type { BaseWidget } from "./core.widget.js";
+import type { BaseComponent } from "./core.component.js";
 
 import { AjaxExceptionHandler } from "../ajaxexceptionhandler/ajaxexceptionhandler.js";
 
@@ -126,34 +126,34 @@ export class AjaxUtils {
     }
 
     /**
-     * Checks whether the component ID from the provided widget equals the source ID from the provided
+     * Checks whether the component ID from the provided component equals the source ID from the provided
      * settings.
      *
-     * @param widget of the component to check for being the source.
+     * @param component of the component to check for being the source.
      * @param settings containing source ID.
-     * @returns `true` if the component ID from the provided widget equals the source ID from the
+     * @returns `true` if the component ID from the provided component equals the source ID from the
      * provided settings.
      */
-    isXhrSource(widget: BaseWidget, settings: JQuery.AjaxSettings): boolean {
-        return widget.id === ajax.Utils.getSourceId(settings);
+    isXhrSource(component: BaseComponent, settings: JQuery.AjaxSettings): boolean {
+        return component.id === ajax.Utils.getSourceId(settings);
     }
 
     /**
      * Checks whether one of component's triggers equals the source ID from the provided settings.
      *
-     * @param widget of the component to check for being the source.
+     * @param component of the component to check for being the source.
      * @param settings containing source ID.
      * @param triggerMustExist flag to check if the trigger must exist
      * @returns `true` if if one of component's triggers equals the source ID from the provided settings.
      */
-    isXhrSourceATrigger(widget: BaseWidget<any>, settings: JQuery.AjaxSettings, triggerMustExist: boolean): boolean {
+    isXhrSourceATrigger(component: BaseComponent<any>, settings: JQuery.AjaxSettings, triggerMustExist: boolean): boolean {
         var sourceId = ajax.Utils.getSourceId(settings);
         if (!sourceId) {
             return false;
         }
-        var cfgTrigger = widget.cfg.trigger || widget.cfg.triggers;
+        var cfgTrigger = component.cfg.trigger || component.cfg.triggers;
         // we must evaluate it each time as the DOM might has been changed
-        var triggers = expressions.SearchExpressionFacade.resolveComponents(widget.jq, cfgTrigger);
+        var triggers = expressions.SearchExpressionFacade.resolveComponents(component.jq, cfgTrigger);
 
         // if trigger is null it has been removed from DOM so we need to hide the block UI
         if (!triggers || triggers.length === 0) {
@@ -334,7 +334,7 @@ export class AjaxUtils {
      */
     handleError(errorName: string, errorMessage: string): void {
         // always resolve the handlers, otherwise the global AjaxExceptionHandler below can never be found
-        const exceptionHandlers = core.getWidgetsByType(AjaxExceptionHandler);
+        const exceptionHandlers = core.getComponentsByType(AjaxExceptionHandler);
 
         if (errorName) {
             // try to invoke specific AjaxExceptionHandler
@@ -347,7 +347,7 @@ export class AjaxUtils {
         }
 
         // try to invoke global AjaxExceptionHandler
-        var globalExceptionHandler = exceptionHandlers.find(widget => widget.isGlobal());
+        var globalExceptionHandler = exceptionHandlers.find(component => component.isGlobal());
         if (globalExceptionHandler) {
             globalExceptionHandler.handle(errorName, errorMessage);
             return;
@@ -726,7 +726,7 @@ export class AjaxRequest {
         }
         // default == @none
         var processIds = '@none';
-        // use defined process + resolved keywords (@widget, PFS)?
+        // use defined process + resolved keywords (@widgetVar, PFS)?
         if (processArray.length > 0) {
             processIds = processArray.join(' ');
         }
@@ -1302,17 +1302,17 @@ export class AjaxResponse {
      * Also updates the specified components if any and synchronizes the client side Faces state. DOM updates are
      * implemented using jQuery which uses a very algorithm.
      *
-     * @typeParam Widget Type of the widget which triggered the AJAX request.
+     * @typeParam Component Type of the component which triggered the AJAX request.
      * @param xml The XML that was returned by the AJAX request.
      * @param status Text status of the request.
      * @param xhr The XHR request to which a response was received.
      * @param updateHandler Optional handler for `update` actions.
      */
-    handle<Widget extends BaseWidget<any>>(
+    handle<Component extends BaseComponent<any>>(
         xml: XMLDocument,
         status: JQuery.Ajax.SuccessTextStatus,
         xhr: PrimeFacesTypes.ajax.pfXHR,
-        updateHandler?: PrimeFacesTypes.ajax.UpdateHandler<Widget> | null
+        updateHandler?: PrimeFacesTypes.ajax.UpdateHandler<Component> | null
     ): void {
         // Faces spec: emptyResponse if there is no response XML
         if (xml === undefined || xml === null) {
@@ -1364,7 +1364,7 @@ export class AjaxResponse {
                     }
 
                     this.handleReFocus(activeElementId, activeElementSelection);
-                    this.destroyDetachedWidgets();
+                    this.destroyDetachedComponents();
                     break;
 
                 case "eval":
@@ -1412,7 +1412,7 @@ export class AjaxResponse {
     /**
      * Executes the scripts added via `PrimeFaces.current().executeScript(...)`, which were collected in
      * {@link PrimeFacesTypes.ajax.pfXHR.pfScripts} while handling the response. They are invoked the same way as the
-     * `oncomplete` attribute of an AJAX source. Widgets sending their own AJAX request instead of using
+     * `oncomplete` attribute of an AJAX source. Components sending their own AJAX request instead of using
      * {@link AjaxRequest.send} (e.g. FileUpload) must call this after their `oncomplete` callback.
      * @param xhr The XHR request to which a response was received.
      * @param status Text status of the request.
@@ -1485,24 +1485,31 @@ export class AjaxResponse {
     }
 
     /**
-     * Destroys all widgets that are not part of the DOM anymore, usually because they were removed by an AJAX
-     * update. Calls the `destroy` method on the widget and removes the widget from the global widget registry.
+     * Destroys all components that are not part of the DOM anymore, usually because they were removed by an AJAX
+     * update. Calls the `destroy` method on the component and removes the component from the global component registry.
      */
-    destroyDetachedWidgets(): void {
-        // destroy detached widgets
-        for (const widgetVar of core.detachedWidgets) {
-            // Do not use PF() which logs an error when the widget is missing
-            // Since the widget is detached, it may already be gone.
-            const widget = core.widgets[widgetVar];
-            if (widget && widget.isDetached() === true) {
+    destroyDetachedComponents(): void {
+        // destroy detached components
+        for (const widgetVar of core.detachedComponents) {
+            // Do not use PF() which logs an error when the component is missing
+            // Since the component is detached, it may already be gone.
+            const component = core.components[widgetVar];
+            if (component && component.isDetached() === true) {
                 try {
-                    widget.destroy();
-                    delete core.widgets[widgetVar];
+                    component.destroy();
+                    delete core.components[widgetVar];
                 } catch (e) { core.warn("Error destroying widget: " + widgetVar) }
             }
         }
 
-        core.detachedWidgets = [];
+        core.detachedComponents = [];
+    }
+
+    /**
+     * @deprecated Use {@link destroyDetachedComponents} instead.
+     */
+    destroyDetachedWidgets(): void {
+        ajax.Response.destroyDetachedComponents();
     }
 }
 
@@ -1529,12 +1536,12 @@ export class AjaxResponseProcessor {
     /**
      * Handles an `update` AJAX action by calling the given update handler. When no update handler is given,
      * replaces the HTML content of the element with the new content.
-     * @typeParam Widget Type of the widget which triggered the AJAX request.
+     * @typeParam Component Type of the component which triggered the AJAX request.
      * @param node The XML node of the `update` action.
      * @param xhr The XHR request to which a response was received.
      * @param updateHandler Optional handler for the update.
      */
-    doUpdate<Widget extends BaseWidget>(node: Node, xhr: PrimeFacesTypes.ajax.pfXHR, updateHandler?: PrimeFacesTypes.ajax.UpdateHandler<Widget> | null): void {
+    doUpdate<Component extends BaseComponent>(node: Node, xhr: PrimeFacesTypes.ajax.pfXHR, updateHandler?: PrimeFacesTypes.ajax.UpdateHandler<Component> | null): void {
         if (!(node instanceof Element)) {
             return;
         }

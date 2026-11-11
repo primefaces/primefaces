@@ -160,7 +160,7 @@ as the values of these attributes.
 </p:wizard>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.Wizard_
+Component: _PrimeFaces.component.Wizard_
 
 
 | Method | Params | Return Type | Description |
@@ -220,6 +220,6 @@ with CSS such as the example above. An explicit `p-state-highlight` in a tab's
 `titleStyleClass` is retained during navigation and refresh.
 
 The initial state classes are rendered on the server. JavaScript updates the
-widget-managed classes after successful navigation; validation failures leave
+component-managed classes after successful navigation; validation failures leave
 the current state unchanged. An unknown or unrendered current step is not
 assigned to the last visible step.

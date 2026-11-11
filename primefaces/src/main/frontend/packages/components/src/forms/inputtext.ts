@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link InputText} widget.
+ * The configuration for the {@link InputText} component.
  */
-export interface InputTextCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface InputTextCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Client ID of the component that displays the counter. */
     counter: string;
     /** Template of the counter: `{0}` remaining, `{1}` entered and `{2}` maximum characters, defaults to `{0}`. */
@@ -13,15 +13,15 @@ export interface InputTextCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces InputText Widget__
+ * __PrimeFaces InputText Component__
  *
  * InputText is an extension to standard inputText with skinning capabilities.
  */
-export class InputText<Cfg extends InputTextCfg = InputTextCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class InputText<Cfg extends InputTextCfg = InputTextCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The element that displays the counter, only with `counter`. */
     counter: JQuery | null = null;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         PrimeFaces.skinInput(this.jq);
@@ -43,14 +43,14 @@ export class InputText<Cfg extends InputTextCfg = InputTextCfg> extends PrimeFac
      * Disables this input so that the user cannot enter a value anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, undefined);
+        PrimeFaces.utils.disableInputComponent(this.jq, undefined);
     }
 
     /**
      * Enables this input so that the user can enter a value.
      */
     override enable(): void {
-        PrimeFaces.utils.enableInputWidget(this.jq);
+        PrimeFaces.utils.enableInputComponent(this.jq);
     }
 
     /**

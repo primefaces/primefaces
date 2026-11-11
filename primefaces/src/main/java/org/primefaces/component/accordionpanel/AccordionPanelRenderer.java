@@ -28,11 +28,11 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -158,7 +158,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     protected void encodeScript(FacesContext context, AccordionPanel component) throws IOException {
         boolean multiple = component.isMultiple();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("AccordionPanel", component);
 
         if (component.isDynamic()) {

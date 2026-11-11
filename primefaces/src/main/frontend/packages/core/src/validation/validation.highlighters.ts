@@ -4,7 +4,7 @@
  */
 export class ValidationHighlighter {
     /**
-     * A map between a widget type and the corresponding highlight handler for that type.
+     * A map between a component type and the corresponding highlight handler for that type.
      */
     types: Record<string, PrimeFacesTypes.validation.Highlighter> = {};
 

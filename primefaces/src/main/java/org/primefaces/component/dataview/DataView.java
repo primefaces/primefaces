@@ -54,12 +54,12 @@ public class DataView extends DataViewBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataView";
 
-    public static final String DATAVIEW_CLASS = "p-dataview p-widget";
+    public static final String DATAVIEW_CLASS = "p-dataview p-component";
     public static final String LIST_LAYOUT_CLASS = "p-dataview-list";
     public static final String GRID_LAYOUT_CLASS = "p-dataview-grid";
-    public static final String HEADER_CLASS = "p-dataview-header p-widget-header";
-    public static final String FOOTER_CLASS = "p-dataview-footer p-widget-header";
-    public static final String CONTENT_CLASS = "p-dataview-content p-widget-content";
+    public static final String HEADER_CLASS = "p-dataview-header p-component-header";
+    public static final String FOOTER_CLASS = "p-dataview-footer p-component-header";
+    public static final String CONTENT_CLASS = "p-dataview-content p-component-content";
     public static final String BUTTON_CONTAINER_CLASS = "p-dataview-layout-options p-selectonebutton p-buttonset";
     public static final String BUTTON_CLASS = "p-button p-button-icon-only p-state-default";
     public static final String LIST_LAYOUT_ICON_CLASS = "p-button-icon-left p-icon p-list-icon p-dataview-list-layout-icon p-c";

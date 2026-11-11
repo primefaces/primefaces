@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link ScrollTop} widget.
+ * The configuration for the {@link ScrollTop} component.
  */
-export interface ScrollTopCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface ScrollTopCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Scroll behavior when scrolling to the top. */
     behavior: ScrollBehavior;
     /** `window` to scroll the window, `parent` to scroll the parent element. */
@@ -11,15 +11,15 @@ export interface ScrollTopCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces ScrollTop Widget__
+ * __PrimeFaces ScrollTop Component__
  *
  * ScrollTop gets displayed after a certain scroll position and is used to navigate to the top of the page quickly.
  */
-export class ScrollTop<Cfg extends ScrollTopCfg = ScrollTopCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class ScrollTop<Cfg extends ScrollTopCfg = ScrollTopCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The window or the parent element that is scrolled. */
     scrollElement: JQuery<Element | Window> = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.scrollElement = this.cfg.target === 'window' ? $<Element | Window>(window) : this.jq.parent();

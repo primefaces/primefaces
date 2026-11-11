@@ -34,13 +34,13 @@ type DiagramCanvas = Omit<jsPlumbInstance, "doWhileSuspended" | "bind"> & {
      * @param event The name of the event.
      * @param callback The listener.
      */
-    bind(event: "connection" | "connectionDetached", callback: (info: PrimeFacesTypes.widget.Diagram.ConnectionInfo) => void): void;
+    bind(event: "connection" | "connectionDetached", callback: (info: PrimeFacesTypes.component.Diagram.ConnectionInfo) => void): void;
     /**
      * Binds a listener to a connection being moved.
      * @param event The name of the event.
      * @param callback The listener.
      */
-    bind(event: "connectionMoved", callback: (info: PrimeFacesTypes.widget.Diagram.UpdateConnectionInfo) => void): void;
+    bind(event: "connectionMoved", callback: (info: PrimeFacesTypes.component.Diagram.UpdateConnectionInfo) => void): void;
 };
 
 /**
@@ -62,9 +62,9 @@ const jsPlumbApi = jsPlumb as unknown as {
 };
 
 /**
- * The configuration for the {@link Diagram} widget.
+ * The configuration for the {@link Diagram} component.
  */
-export interface DiagramCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
+export interface DiagramCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
     /** List of initial connections to be established between nodes. */
     connections: ConnectParams[];
     /** Whether connections can be severed by the user. */
@@ -86,18 +86,18 @@ export interface DiagramCfg extends PrimeFacesTypes.widget.DeferredWidgetCfg {
 }
 
 /**
- * __PrimeFaces Diagram Widget__
+ * __PrimeFaces Diagram Component__
  *
  * Diagram is generic component to create visual elements and connect them on a web page. SVG is used on modern browsers
  * and VML on IE 8 and below. Component is highly flexible in terms of api, events and theming.
  */
-export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.widget.DeferredWidget<Cfg> {
+export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The JSPlumb instance for this diagram. */
     canvas?: DiagramCanvas;
     /** Internal state whether the connection was changed before a connect event. */
     connectionChanged?: boolean;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.renderDeferred();
@@ -158,7 +158,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.wid
     }
 
     /**
-     * Sets up all event listeners for this widget.
+     * Sets up all event listeners for this component.
      */
     private bindEvents(): void {
         this.canvas!.bind('connection', (info) => {
@@ -180,7 +180,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.wid
      * Callback for the event when two nodes are connected with each other.
      * @param info Details about the connection that was made.
      */
-    private onConnect(info: PrimeFacesTypes.widget.Diagram.ConnectionInfo): void {
+    private onConnect(info: PrimeFacesTypes.component.Diagram.ConnectionInfo): void {
         const options = {
             source: this.getId(),
             process: this.getId(),
@@ -210,7 +210,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.wid
      * Callback for the event when two nodes are disconnected from each other.
      * @param info Details about the connection that was severed.
      */
-    private onDisconnect(info: PrimeFacesTypes.widget.Diagram.ConnectionInfo): void {
+    private onDisconnect(info: PrimeFacesTypes.component.Diagram.ConnectionInfo): void {
         const options = {
             source: this.getId(),
             process: this.getId(),
@@ -235,7 +235,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.wid
      * Callback for the event when the connection between two nodes was changed.
      * @param info Details about the connection that was changed.
      */
-    private onConnectionChange(info: PrimeFacesTypes.widget.Diagram.UpdateConnectionInfo): void {
+    private onConnectionChange(info: PrimeFacesTypes.component.Diagram.UpdateConnectionInfo): void {
         this.connectionChanged = true;
 
         const options = {
@@ -266,7 +266,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.wid
      * Callback for when the location of a diagram element has changed.
      * @param info Details about the element that was changed.
      */
-    private onUpdateElementPosition(info: PrimeFacesTypes.widget.Diagram.UpdateElementInfo): void {
+    private onUpdateElementPosition(info: PrimeFacesTypes.component.Diagram.UpdateElementInfo): void {
         const options = {
             source: this.getId(),
             process: this.getId(),

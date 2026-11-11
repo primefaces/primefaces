@@ -1,19 +1,19 @@
 import { GMap } from "./src/gmap.js";
 
-PrimeFaces.widget.GMap = GMap;
+PrimeFaces.component.GMap = GMap;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             GMap: typeof GMap;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
+    namespace PrimeFacesTypes.component {
         export type GMapCfg = import("./src/gmap.js").GMapCfg;
     }
 
-    namespace PrimeFacesTypes.widget.GMap {
+    namespace PrimeFacesTypes.component.GMap {
         /**
          * Interface for objects that provide an ID that uniquely identifies the object.
          */

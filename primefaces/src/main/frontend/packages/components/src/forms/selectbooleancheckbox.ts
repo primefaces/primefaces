@@ -1,15 +1,15 @@
 /**
- * The configuration for the {@link SelectBooleanCheckbox} widget.
+ * The configuration for the {@link SelectBooleanCheckbox} component.
  */
-export interface SelectBooleanCheckboxCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface SelectBooleanCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
 }
 
 /**
- * __PrimeFaces SelectBooleanCheckbox Widget__
+ * __PrimeFaces SelectBooleanCheckbox Component__
  *
  * SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.
  */
-export class SelectBooleanCheckbox<Cfg extends SelectBooleanCheckboxCfg = SelectBooleanCheckboxCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class SelectBooleanCheckbox<Cfg extends SelectBooleanCheckboxCfg = SelectBooleanCheckboxCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The hidden checkbox input with the value. */
     input: JQuery<HTMLInputElement> = $();
     /** The visible box. */
@@ -21,7 +21,7 @@ export class SelectBooleanCheckbox<Cfg extends SelectBooleanCheckboxCfg = Select
     /** Whether this checkbox is disabled. */
     disabled: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLInputElement>;
@@ -133,7 +133,7 @@ export class SelectBooleanCheckbox<Cfg extends SelectBooleanCheckboxCfg = Select
      */
     override enable(): void {
         this.disabled = false;
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         this.bindEvents();
     }
 
@@ -141,7 +141,7 @@ export class SelectBooleanCheckbox<Cfg extends SelectBooleanCheckboxCfg = Select
      * Disables this checkbox so that the user cannot change it anymore.
      */
     override disable(): void {
-        PrimeFaces.utils.disableInputWidget(this.jq, this.input);
+        PrimeFaces.utils.disableInputComponent(this.jq, this.input);
         this.disabled = true;
     }
 

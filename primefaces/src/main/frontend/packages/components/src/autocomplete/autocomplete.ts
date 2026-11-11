@@ -1,7 +1,7 @@
 /**
- * The configuration for the {@link AutoComplete} widget.
+ * The configuration for the {@link AutoComplete} component.
  */
-export interface AutoCompleteCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
+export interface AutoCompleteCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether autocompletion search is initially active. */
     active: boolean;
     /** ID of the container to which the suggestion box is appended. */
@@ -26,7 +26,7 @@ export interface AutoCompleteCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** The delay in milliseconds before an autocomplete search is triggered. */
     delay: number;
     /** Specifies the behavior of the dropdown button. */
-    dropdownMode: PrimeFacesTypes.widget.AutoComplete.DropdownMode;
+    dropdownMode: PrimeFacesTypes.component.AutoComplete.DropdownMode;
     /**
      * Defines if dynamic loading is enabled for the element's panel. If the value is `true`, the overlay is not
      * rendered on page load to improve performance.
@@ -55,13 +55,13 @@ export interface AutoCompleteCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
     /** Defines which position on the element being positioned to align with the target element. */
     myPos: string;
     /** Client side callback to invoke when value changes, the original `onchange` handler of the input. */
-    onChange: PrimeFacesTypes.widget.AutoComplete.OnChangeCallback | null;
+    onChange: PrimeFacesTypes.component.AutoComplete.OnChangeCallback | null;
     /** Whether the hidden input with the selected value exists (POJO support), set on init. */
     pojo: boolean;
     /** Event to initiate the the autocomplete search. */
-    queryEvent: PrimeFacesTypes.widget.AutoComplete.QueryEvent;
+    queryEvent: PrimeFacesTypes.component.AutoComplete.QueryEvent;
     /** Specifies query mode, whether autocomplete contacts the server. */
-    queryMode: PrimeFacesTypes.widget.AutoComplete.QueryMode;
+    queryMode: PrimeFacesTypes.component.AutoComplete.QueryMode;
     /** Limits the number of simultaneously selected items. Default is unlimited. */
     selectLimit: number;
     /** Height of the container with the suggestion items. */
@@ -80,11 +80,11 @@ export interface AutoCompleteCfg extends PrimeFacesTypes.widget.BaseWidgetCfg {
 }
 
 /**
- * __PrimeFaces AutoComplete Widget__
+ * __PrimeFaces AutoComplete Component__
  *
  * AutoComplete provides live suggestions while the user is entering text
  */
-export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends PrimeFaces.widget.BaseWidget<Cfg> {
+export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Whether the autocomplete is active. */
     active: boolean = true;
     /** The cache for the results of an autocomplete search. */
@@ -160,7 +160,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     timeout?: number | null;
     /** Whether a touch is made on the dropdown button. */
     touchToDropdownButton: boolean = false;
-    /** Handler for CSS transitions used by this widget. */
+    /** Handler for CSS transitions used by this component. */
     transition?: PrimeFacesTypes.CssTransitionHandler | null;
     /** The starting HTML with the wrapper element of the suggestions box. */
     wrapperStartTag?: string;
@@ -171,7 +171,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     /** Text to display when there is no data to display. */
     emptyMessage?: string;
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panelId = this.jqId + '_panel';
@@ -185,7 +185,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
         this.cfg.cache = this.cfg.cache || false;
         this.cfg.dropdownMode = this.cfg.dropdownMode || 'blank';
         this.cfg.autoHighlight = this.cfg.autoHighlight === undefined ? true : this.cfg.autoHighlight;
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this as unknown as InstanceType<typeof PrimeFaces.widget.DynamicOverlayWidget>, this.jq, this.panel);
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this as unknown as InstanceType<typeof PrimeFaces.component.DynamicOverlayComponent>, this.jq, this.panel);
         this.cfg.myPos = this.cfg.myPos || 'left top';
         this.cfg.atPos = this.cfg.atPos || 'left bottom';
         this.cfg.highlightSelector = this.cfg.highlightSelector || 'span';
@@ -253,7 +253,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
 
         //itemtip
         if (this.cfg.itemtip) {
-            this.itemtip = $('<div id="' + this.id + '_itemtip" class="p-autocomplete-itemtip p-state-highlight p-widget"></div>').appendTo(document.body);
+            this.itemtip = $('<div id="' + this.id + '_itemtip" class="p-autocomplete-itemtip p-state-highlight p-component"></div>').appendTo(document.body);
             this.cfg.itemtipMyPosition = this.cfg.itemtipMyPosition || 'left top';
             this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition || 'right bottom';
             this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
@@ -270,7 +270,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
         this.status = this.jq.children('.p-autocomplete-status');
     }
 
-    override refresh(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.dynamic && this.isDynamicLoaded && this.panel.length) {
             this.unbindPanelEvents();
             this.panel.remove();
@@ -462,7 +462,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
      * Sets up all keyboard related event listeners.
      */
     private bindKeyEvents(): void {
-        // #14152 with CSP the change handler is registered by PrimeFaces.csp.register, which runs AFTER the widget
+        // #14152 with CSP the change handler is registered by PrimeFaces.csp.register, which runs AFTER the component
         // init on AJAX updates, so if it is not found yet, try again once CSP has registered it (see #13269)
         this.cfg.onChange = null;
         if (!this.captureOriginalOnchange()) {
@@ -654,19 +654,19 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     }
 
     /**
-     * Takes over the user's change handler of the input, so the widget decides when to call it (e.g. not when the
+     * Takes over the user's change handler of the input, so the component decides when to call it (e.g. not when the
      * input is blurred by clicking a suggestion item).
      * GitHub #6711 use DOM if non-CSP and JQ event if CSP.
      * @returns `true` if a change handler was found.
      */
     private captureOriginalOnchange(): boolean {
-        // skip the widget's own handler
+        // skip the component's own handler
         const originalOnchange = PrimeFaces.utils.getOriginalEventHandler(this.input, 'change', 'autoComplete');
         if (originalOnchange) {
             this.input.prop('onchange', null).off('change', originalOnchange);
         }
 
-        this.cfg.onChange = (originalOnchange || null) as PrimeFacesTypes.widget.AutoComplete.OnChangeCallback | null;
+        this.cfg.onChange = (originalOnchange || null) as PrimeFacesTypes.component.AutoComplete.OnChangeCallback | null;
         return !!originalOnchange;
     }
 
@@ -903,7 +903,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
         }
         else {
             if (this.cfg.showEmptyMessage && this.emptyMessage) {
-                const emptyText = '<div class="p-autocomplete-empty-message p-widget">' + PrimeFaces.escapeHTML(this.emptyMessage) + '</div>';
+                const emptyText = '<div class="p-autocomplete-empty-message p-component">' + PrimeFaces.escapeHTML(this.emptyMessage) + '</div>';
                 this.panel.prepend(emptyText);
             }
             else if (!this.cfg.hasFooter) {
@@ -1049,8 +1049,8 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
                 url: this.cfg.completeEndpoint,
                 data: { query: query },
                 dataType: 'json'
-            }).done((suggestions: PrimeFacesTypes.widget.AutoComplete.CompleteEndpointResponse) => {
-                let html = '<ul class="p-autocomplete-items p-autocomplete-list p-widget-content p-widget" role="listbox">';
+            }).done((suggestions: PrimeFacesTypes.component.AutoComplete.CompleteEndpointResponse) => {
+                let html = '<ul class="p-autocomplete-items p-autocomplete-list p-component-content p-component" role="listbox">';
                 suggestions.suggestions.forEach((suggestion, index) => {
                     const labelEncoded = $("<div>").text(suggestion.label).html();
                     let itemValue = labelEncoded;
@@ -1365,7 +1365,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
      */
     override disable(): void {
         this.jq.addClass("p-state-disabled");
-        PrimeFaces.utils.disableInputWidget(this.input, undefined);
+        PrimeFaces.utils.disableInputComponent(this.input, undefined);
         if (this.dropdown.length) {
             this.disableDropdown();
         }
@@ -1376,7 +1376,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
      */
     override enable(): void {
         this.jq.removeClass("p-state-disabled");
-        PrimeFaces.utils.enableInputWidget(this.input);
+        PrimeFaces.utils.enableInputComponent(this.input);
         if (this.dropdown.length) {
             this.enableDropdown();
         }
@@ -1540,10 +1540,10 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
                 this.colspan = this.items!.eq(0).children('td').length;
             }
 
-            element = $('<tr class="p-autocomplete-group p-widget-header"><td colspan="' + this.colspan + '">' + group + '</td></tr>');
+            element = $('<tr class="p-autocomplete-group p-component-header"><td colspan="' + this.colspan + '">' + group + '</td></tr>');
         }
         else {
-            element = $('<li class="p-autocomplete-group p-autocomplete-list-item p-widget-header">' + group + '</li>');
+            element = $('<li class="p-autocomplete-group p-autocomplete-list-item p-component-header">' + group + '</li>');
         }
 
         if (element) {
@@ -1677,12 +1677,12 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
      */
     private findWrapperTag(wrapper: JQuery): void {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="p-autocomplete-items p-autocomplete-list p-widget-content p-widget" role="listbox">';
+            this.wrapperStartTag = '<ul class="p-autocomplete-items p-autocomplete-list p-component-content p-component" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             const header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="p-autocomplete-items p-autocomplete-table p-widget-content p-widget" role="listbox">' +
+            this.wrapperStartTag = '<table class="p-autocomplete-items p-autocomplete-table p-component-content p-component" role="listbox">' +
                 (header.length ? header[0]!.outerHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';
