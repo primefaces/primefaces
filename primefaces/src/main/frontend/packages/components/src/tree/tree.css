@@ -59,6 +59,12 @@
     &.p-noborder {
         border: 0;
         padding: 0;
+
+        /* no tree padding to take the focus ring room from */
+        .p-tree-container {
+            padding: 0;
+            margin: 0;
+        }
     }
 
     &.p-state-disabled .p-tree-toggler,
@@ -99,11 +105,13 @@
     }
 
     /* vertical tree */
+    /* room for the node focus ring shadow (up to 5px, Glass), the scroll container would clip it; the negative margin
+       keeps the layout (it takes it from the tree padding) */
     .p-tree-container {
         white-space: nowrap;
         overflow: auto;
-        padding: 0;
-        margin: 0;
+        padding: 0.375rem;
+        margin: -0.375rem;
 
         .p-treenode {
             padding: var(--p-tree-gap) 0 0 0;

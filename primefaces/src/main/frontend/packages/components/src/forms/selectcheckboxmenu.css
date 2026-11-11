@@ -394,6 +394,12 @@
         }
     }
 
+    /* the lists are p-widget-content: no background of their own, the rounded panel draws it */
+    .p-selectcheckboxmenu-items,
+    .p-selectcheckboxmenu-list {
+        background: transparent;
+    }
+
     .p-selectcheckboxmenu-items {
         padding: var(--p-multiselect-list-padding);
 
