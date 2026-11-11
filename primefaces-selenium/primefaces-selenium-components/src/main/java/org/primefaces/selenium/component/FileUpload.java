@@ -135,9 +135,9 @@ public abstract class FileUpload extends AbstractInputComponent {
     }
 
     /**
-     * Gets the Upload button of the widget.
+     * Gets the Upload button of the component.
      * The button is only rendered in advanced mode.
-     * @return the widget's upload button
+     * @return the component's upload button
      */
     public WebElement getAdvancedUploadButton() {
         WebElement element = findElement(By.cssSelector(".p-fileupload-buttonbar button.p-fileupload-upload"));
@@ -158,25 +158,25 @@ public abstract class FileUpload extends AbstractInputComponent {
      */
     private ExpectedCondition<Boolean> uploadFinished() {
         return ExpectedConditions.and(
-                PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"),
+                PrimeExpectedConditions.script("return " + getClientComponentScript() + ".files.length === 0;"),
                 PrimeExpectedConditions.ajaxQueueEmpty(),
                 PrimeExpectedConditions.animationNotActive());
     }
 
     /**
-     * Gets the Cancel button of the widget.
+     * Gets the Cancel button of the component.
      * The button is only rendered in advanced mode.
-     * @return the widget's cancel button
+     * @return the component's cancel button
      */
     public WebElement getAdvancedCancelButton() {
         return findElement(By.cssSelector(".p-fileupload-buttonbar button.p-fileupload-cancel"));
     }
 
     /**
-     * Gets the file Cancel button of the widget.
+     * Gets the file Cancel button of the component.
      * The button is only rendered in advanced mode.
      * @param fileName the file name for which to return the cancel button
-     * @return the widget's cancel button
+     * @return the component's cancel button
      */
     public WebElement getAdvancedCancelButton(String fileName) {
         for (WebElement row : findElements(By.cssSelector(".p-fileupload-files .p-fileupload-row"))) {
@@ -191,37 +191,53 @@ public abstract class FileUpload extends AbstractInputComponent {
     /**
      * Gets the displayed filename.
      *
-     * @return the widget's value
+     * @return the component's value
      */
     public String getFilename() {
         return findElement(By.className("p-fileupload-filename")).getText();
     }
 
     /**
-     * Gets the values displayed by the widget.
+     * Gets the file names displayed by the component.
      *
-     * @return the widget's values
+     * @return the file names
      */
-    public List<String> getWidgetValues() {
+    public List<String> getFilenames() {
         return findElements(By.className("p-fileupload-filename")).stream()
                 .map(e -> e.getText()).collect(Collectors.toList());
     }
 
     /**
-     * Gets the values displayed by the widget.
-     *
-     * @return the widget's error messages
+     * @deprecated use {@link #getFilenames()} instead
      */
-    public List<String> getWidgetErrorMessages() {
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public List<String> getWidgetValues() {
+        return getFilenames();
+    }
+
+    /**
+     * Gets the error messages displayed by the component.
+     *
+     * @return the component's error messages
+     */
+    public List<String> getErrorMessages() {
         return findElements(By.className("p-messages-error-summary")).stream()
                 .map(e -> e.getText()).collect(Collectors.toList());
     }
 
+    /**
+     * @deprecated use {@link #getErrorMessages()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public List<String> getWidgetErrorMessages() {
+        return getErrorMessages();
+    }
+
     public boolean isAdvancedMode() {
-        return "advanced".equals(getWidgetConfiguration().getString("mode"));
+        return "advanced".equals(getClientConfiguration().getString("mode"));
     }
 
     public boolean isAutoUpload() {
-        return getWidgetConfiguration().has("auto") ? getWidgetConfiguration().getBoolean("auto") : false;
+        return getClientConfiguration().has("auto") ? getClientConfiguration().getBoolean("auto") : false;
     }
 }

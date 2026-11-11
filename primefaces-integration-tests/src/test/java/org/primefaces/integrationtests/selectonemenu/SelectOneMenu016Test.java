@@ -82,7 +82,7 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
         assertNoFocusedItem(selectOneMenu);
         assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -108,7 +108,7 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
         assertFocused(selectOneMenu, "Select a driver");
         assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -134,7 +134,7 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
         assertNotFocused(selectOneMenu, "Charles");
         assertSelected(selectOneMenu, "Charles");
         assertChanged(page, "Charles", "3");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -160,7 +160,7 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
         assertNotFocused(selectOneMenu, "Max");
         assertSelected(selectOneMenu, "Max");
         assertChanged(page, "Max", "2");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -182,7 +182,7 @@ class SelectOneMenu016Test extends AbstractPrimePageTest {
         assertNotFocused(selectOneMenu, "Lewis");
         assertSelected(selectOneMenu, "Lewis");
         assertUnchanged(page);
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertFocused(SelectOneMenu selectOneMenu, String label) {

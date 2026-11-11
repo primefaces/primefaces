@@ -65,7 +65,7 @@ class Resizable001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(new Dimension(170, 80), resizable.getSize());
         assertEquals("Width:170 Height:80", page.messages.getMessage(0).getDetail());
-        assertConfiguration(resizable.getWidgetConfiguration(), "form:box");
+        assertConfiguration(resizable.getClientConfiguration(), "form:box");
     }
 
     @Test
@@ -89,7 +89,7 @@ class Resizable001Test extends AbstractPrimePageTest {
         assertEquals(new Dimension(100, 60), resizable.getSize());
         assertTrue(page.messages.isEmpty());
 
-        JSONObject cfg = resizable.getWidgetConfiguration();
+        JSONObject cfg = resizable.getClientConfiguration();
         assertConfiguration(cfg, "form:limited");
         assertEquals(100, cfg.getInt("minWidth"));
         assertEquals(250, cfg.getInt("maxWidth"));
@@ -109,7 +109,7 @@ class Resizable001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(new Dimension(260, 100), resizable.getSize());
         assertTrue(page.messages.isEmpty());
-        assertConfiguration(resizable.getWidgetConfiguration(), "form:horizontal");
+        assertConfiguration(resizable.getClientConfiguration(), "form:horizontal");
     }
 
     private void assertConfiguration(JSONObject cfg, String target) {

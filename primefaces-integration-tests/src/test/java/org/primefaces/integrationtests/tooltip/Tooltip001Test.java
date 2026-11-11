@@ -62,7 +62,7 @@ class Tooltip001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(tooltip.isVisible());
-        assertConfiguration(tooltip.getWidgetConfiguration(), "form:button", "right");
+        assertConfiguration(tooltip.getClientConfiguration(), "form:button", "right");
     }
 
     @Test
@@ -88,7 +88,7 @@ class Tooltip001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(tooltip.isVisible());
-        assertConfiguration(tooltip.getWidgetConfiguration(), "form:input", "bottom");
+        assertConfiguration(tooltip.getClientConfiguration(), "form:input", "bottom");
     }
 
     @Test
@@ -118,7 +118,7 @@ class Tooltip001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(tooltip.isVisible());
-        assertConfiguration(tooltip.getWidgetConfiguration(), "form:button", "right");
+        assertConfiguration(tooltip.getClientConfiguration(), "form:button", "right");
     }
 
     @Test
@@ -171,7 +171,7 @@ class Tooltip001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(tooltip.isVisible());
         assertEquals("Delay tooltip", tooltip.getTooltipText());
-        JSONObject cfg = tooltip.getWidgetConfiguration();
+        JSONObject cfg = tooltip.getClientConfiguration();
         assertNoJavascriptErrors();
         assertEquals("form:delayButton", cfg.getString("target"));
         assertEquals(150, cfg.getInt("showDelay"));

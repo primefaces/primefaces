@@ -42,8 +42,8 @@ class Callback001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("Callback: executes the JavaScript with source, event and the params of the widget")
-    void widgetEvent(Page page) {
+    @DisplayName("Callback: executes the JavaScript with source, event and the params of the component")
+    void componentEvent(Page page) {
         // Act
         page.panel.toggle();
 

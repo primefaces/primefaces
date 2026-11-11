@@ -51,7 +51,7 @@ class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "aa-999-A999");
+        assertConfiguration(inputMask.getClientConfiguration(), "aa-999-A999");
     }
 
     @Test
@@ -68,7 +68,7 @@ class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("ab-123-C456", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "aa-999-A999");
+        assertConfiguration(inputMask.getClientConfiguration(), "aa-999-A999");
     }
 
     @Test
@@ -85,7 +85,7 @@ class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("(123) 456-7890", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
+        assertConfiguration(inputMask.getClientConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
     }
 
     @Test
@@ -102,7 +102,7 @@ class InputMask003Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("(123) 456-7890 x12345", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
+        assertConfiguration(inputMask.getClientConfiguration(), AbstractInputMaskTest.OPTIONAL_MASK);
     }
 
     private void assertConfiguration(JSONObject cfg, String mask) {

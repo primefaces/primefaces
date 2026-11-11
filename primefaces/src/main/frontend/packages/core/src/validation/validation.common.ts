@@ -302,7 +302,7 @@ export class Validation {
                 component.disable?.();
             }
         } else {
-            console.warn('No widget found for ID ' + btn.id);
+            console.warn('No component found for ID ' + btn.id);
         }
 
         this.ValidationContext.clear();

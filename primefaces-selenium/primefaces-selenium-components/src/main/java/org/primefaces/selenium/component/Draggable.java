@@ -50,7 +50,7 @@ public abstract class Draggable extends AbstractComponent {
      * @return the target element
      */
     public WebElement getTarget() {
-        return getWebDriver().findElement(By.id(getWidgetConfiguration().getString("target")));
+        return getWebDriver().findElement(By.id(getClientConfiguration().getString("target")));
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class Draggable extends AbstractComponent {
      * @return the handle
      */
     public WebElement getHandle() {
-        String handle = getWidgetConfiguration().optString("handle", null);
+        String handle = getClientConfiguration().optString("handle", null);
         WebElement target = getTarget();
         return handle == null || handle.isEmpty() ? target : target.findElement(By.cssSelector(handle));
     }
@@ -71,7 +71,7 @@ public abstract class Draggable extends AbstractComponent {
      * @return true if disabled
      */
     public boolean isDisabled() {
-        return getWidgetConfiguration().optBoolean("disabled", false);
+        return getClientConfiguration().optBoolean("disabled", false);
     }
 
     /**

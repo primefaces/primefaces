@@ -79,13 +79,13 @@ public abstract class BaseDatePickerRenderer<T extends UICalendar> extends Input
     @Override
     public void encodeEnd(FacesContext context, T component) throws IOException {
         String markupValue = CalendarUtils.getValueAsString(context, component);
-        String widgetValue = component.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, component) : markupValue;
+        String clientValue = component.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, component) : markupValue;
 
         // #6068 ensure min is before max
         component.validateMinMax(context);
 
         encodeMarkup(context, component, markupValue);
-        encodeScript(context, component, widgetValue);
+        encodeScript(context, component, clientValue);
     }
 
     protected abstract void encodeMarkup(FacesContext context, T component, String value) throws IOException;

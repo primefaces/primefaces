@@ -344,7 +344,7 @@ export class Utils {
      * component.
      *
      * @param component An overlay component instance.
-     * @param hideNamespace A click event with a namespace to listen to, such as `mousedown.widgetId`.
+     * @param hideNamespace A click event with a namespace to listen to, such as `mousedown.componentId`.
      * @param overlay The DOM element for the overlay.
      * @param resolveIgnoredElementsCallback The callback which
      * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
@@ -398,7 +398,7 @@ export class Utils {
     /**
      * Registers a callback that is invoked when the window is resized.
      * @param component A component instance for which to register a resize handler.
-     * @param resizeNamespace A resize event with a namespace to listen to, such as `resize.widgetId`.
+     * @param resizeNamespace A resize event with a namespace to listen to, such as `resize.componentId`.
      * @param element An element that prevents the callback from being invoked when it is not
      * visible, usually a child element of the component.
      * @param resizeCallback A callback that is invoked when the window is resized.
@@ -565,7 +565,7 @@ export class Utils {
     /**
      * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the component.
      * @param component A component instance for which to register a scroll handler.
-     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.componentId`.
      * @param scrollCallback A callback that is invoked when a scroll event
      * occurs on the component.
      * @return unbind callback handler
@@ -607,7 +607,7 @@ export class Utils {
      * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the component that
      * has a connected overlay.
      * @param component A component instance for which to register a scroll handler.
-     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.componentId`.
      * @param element A DOM element used to find scrollable parents.
      * @param scrollCallback A callback that is invoked when a scroll event occurs on the component.
      * @return Unbind function to remove the registered handler.
@@ -757,7 +757,7 @@ export class Utils {
     /**
      * Removes a scroll handler as registered by {@link registerScrollHandler}.
      * @param component A component instance for which a scroll handler was registered.
-     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.componentId`.
      */
     unbindScrollHandler(component: BaseComponent, scrollNamespace: string): void {
         var scrollParent = this.getScrollParent(component.getJQ());

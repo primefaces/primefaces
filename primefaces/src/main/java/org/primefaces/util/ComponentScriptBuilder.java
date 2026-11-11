@@ -50,19 +50,19 @@ public class ComponentScriptBuilder {
 
     /**
      *
-     * @param widgetClass   Constructor name of the widget
-     * @param widgetVar     Name of the client side widget
-     * @param id            Client id of the component
-     * @param endFunction   If the init script is wrapped by a method and if the endFunction parentheses should be rendered.
-     * @throws IOException if any IO exception occurs
-     * @return              The current instance.
+     * @param componentClass Name of the client side component class, e.g. {@code DataTable}
+     * @param widgetVar      Widget variable of the client side component
+     * @param id             Client id of the component
+     * @param endFunction    If the init script is wrapped by a method and if the endFunction parentheses should be rendered.
+     * @throws IOException   if any IO exception occurs
+     * @return               The current instance.
      */
-    protected ComponentScriptBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
+    protected ComponentScriptBuilder init(String componentClass, String widgetVar, String id, boolean endFunction) throws IOException {
         this.endFunction = endFunction;
 
         ResponseWriter rw = context.getResponseWriter();
         rw.write("PrimeFaces.cw(\"");
-        rw.write(widgetClass);
+        rw.write(componentClass);
         rw.write("\",\"");
         rw.write(widgetVar);
         rw.write("\",{id:\"");
@@ -72,14 +72,14 @@ public class ComponentScriptBuilder {
         return this;
     }
 
-    public <T extends UIComponent & Widget> ComponentScriptBuilder init(String widgetClass, T widget)
+    public <T extends UIComponent & Widget> ComponentScriptBuilder init(String componentClass, T widget)
             throws IOException {
 
-        return init(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+        return init(componentClass, widget.resolveWidgetVar(context), widget.getClientId(context))
                 .renderLifecycleCallbacks(widget);
     }
 
-    private ComponentScriptBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
+    private ComponentScriptBuilder init(String componentClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
@@ -87,46 +87,46 @@ public class ComponentScriptBuilder {
         // or
         // we can also skip it when MOVE_SCRIPTS_TO_BOTTOM is enabled as the scripts are already executed when everything is ready
         if ((context.isPostback() && context.getPartialViewContext().isAjaxRequest()) || configuration.isMoveScriptsToBottom()) {
-            this.init(widgetClass, widgetVar, id, false);
+            this.init(componentClass, widgetVar, id, false);
         }
         else {
             context.getResponseWriter().write("$(function(){");
-            this.init(widgetClass, widgetVar, id, true);
+            this.init(componentClass, widgetVar, id, true);
         }
 
         return this;
     }
 
-    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithWindowLoad(String widgetClass, T widget)
+    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithWindowLoad(String componentClass, T widget)
             throws IOException {
 
-        return initWithWindowLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context))
+        return initWithWindowLoad(componentClass, widget.resolveWidgetVar(context), widget.getClientId(context))
                 .renderLifecycleCallbacks(widget);
     }
 
-    public ComponentScriptBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id)
+    public ComponentScriptBuilder initWithWindowLoad(String componentClass, String widgetVar, String id)
             throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("$(window).on(\"load\",function(){");
-        this.init(widgetClass, widgetVar, id, true);
+        this.init(componentClass, widgetVar, id, true);
 
         return this;
     }
 
-    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithComponentLoad(String widgetClass, T widget, String targetId)
+    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithComponentLoad(String componentClass, T widget, String targetId)
             throws IOException {
 
-        return initWithComponentLoad(widgetClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
+        return initWithComponentLoad(componentClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
                 .renderLifecycleCallbacks(widget);
     }
 
-    public ComponentScriptBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId)
+    public ComponentScriptBuilder initWithComponentLoad(String componentClass, String widgetVar, String id, String targetId)
             throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"" + targetId + "\")),function(){");
-        this.init(widgetClass, widgetVar, id, true);
+        this.init(componentClass, widgetVar, id, true);
 
         return this;
     }

@@ -60,15 +60,15 @@ class UpdateForm001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNotNull(page.calendar.getValue());
-        assertEquals("0.00", page.inputnumber0.getWidgetValue());
+        assertEquals("0.00", page.inputnumber0.getClientValue());
         assertEquals("Text 1", page.inputtext1.getValue());
-        assertEquals("1.00", page.inputnumber1.getWidgetValue());
+        assertEquals("1.00", page.inputnumber1.getClientValue());
         assertEquals("Text 2", page.inputtext2.getValue());
-        assertEquals("2.00", page.inputnumber2.getWidgetValue());
+        assertEquals("2.00", page.inputnumber2.getClientValue());
         assertEquals("Text 3", page.inputtext3.getValue());
-        assertEquals("3.00", page.inputnumber3.getWidgetValue());
+        assertEquals("3.00", page.inputnumber3.getClientValue());
         assertEquals("Text 4", page.inputtext4.getValue());
-        assertEquals("4.00", page.inputnumber4.getWidgetValue());
+        assertEquals("4.00", page.inputnumber4.getClientValue());
         assertEquals("This is a long text", page.textarea1.getValue());
     }
 

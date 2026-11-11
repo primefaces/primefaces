@@ -65,7 +65,7 @@ export class DialogHandler {
         // The only way to find the DOM node, is by traversing into "Frame 1" then into "Frame 1_1" and look it up there.
         // So from the root window we do e.g. `$(rootWindow.document).find("#frame1").contentWindow` to get into "Frame 1".
         // We do the same to get into "Frame 1_1" e.g. `$(frame1Window.document).find("#frame1_1").contentWindow`.
-        // Finally, we can look up the source component `$(frame1_1Window.document).find("#sourceWidgetId")`.
+        // Finally, we can look up the source component `$(frame1_1Window.document).find("#sourceComponentId")`.
 
         var sourceFrames = function () {
             let w: Window = window;
@@ -313,7 +313,7 @@ export class DialogHandler {
         const dlgComponent = rootWindow.PF(dlg.data('widget')) as PrimeFacesTypes.Component<"Dialog"> | undefined;
         if (!dlgComponent) {
             // GitHub #2039 dialog may already be closed on slow internet
-            PrimeFaces.error('Dialog widget was not found to close.');
+            PrimeFaces.error('Dialog component was not found to close.');
             return;
         }
 

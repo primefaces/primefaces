@@ -64,7 +64,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
                 "\"editor.app\",\"Application\"",
                 "\"Cloud\",\"Folder\"",
                 "\"backup-1.zip\",\"Zip\""), csv(page));
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -80,7 +80,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(List.of(HEADER, "\"Desktop\",\"Folder\""), csv(page));
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -97,7 +97,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
         assertEquals(List.of(HEADER,
                 "\"Cloud\",\"Folder\"",
                 "\"backup-1.zip\",\"Zip\""), csv(page));
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -117,7 +117,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
                 "\"backup-1.zip\",\"Zip\"",
                 "\"Desktop\",\"Folder\"",
                 "\"note-todo.txt\",\"Text\""), csv(page));
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -139,7 +139,7 @@ class DataExporter004Test extends AbstractPrimePageTest {
                 "\"Cloud\",\"Folder\"",
                 "\"backup-1.zip\",\"Zip\"",
                 "\"Desktop\",\"Folder\""), csv(page));
-        assertConfiguration(page.treeTableNoPaginator.getWidgetConfiguration(), "ttNoPaginatorWidget");
+        assertConfiguration(page.treeTableNoPaginator.getClientConfiguration(), "ttNoPaginatorComponent");
     }
 
     @Test
@@ -157,11 +157,11 @@ class DataExporter004Test extends AbstractPrimePageTest {
         assertEquals(List.of(HEADER,
                 "\"Cloud\",\"Folder\"",
                 "\"backup-1.zip\",\"Zip\""), csv(page));
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg, "ttWidget");
+        assertConfiguration(cfg, "ttComponent");
     }
 
     private void assertConfiguration(JSONObject cfg, String widgetVar) {

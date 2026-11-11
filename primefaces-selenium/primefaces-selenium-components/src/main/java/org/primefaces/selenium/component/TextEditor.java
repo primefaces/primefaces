@@ -83,7 +83,7 @@ public abstract class TextEditor extends InputText {
      * @return The current contents of the editor, as an HTML string.
      */
     public String getEditorValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getEditorValue();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getEditorValue();");
     }
 
     @Override
@@ -92,7 +92,7 @@ public abstract class TextEditor extends InputText {
             value = "\"\"";
         }
 
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue('" + value.toString() + "');");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".setValue('" + value.toString() + "');");
     }
 
     /**
@@ -100,7 +100,7 @@ public abstract class TextEditor extends InputText {
      */
     @Override
     public void clear() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".clear();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".clear();");
     }
 
 }

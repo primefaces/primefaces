@@ -1,8 +1,8 @@
 /*
  * BlockUI: p:blockUI
- * Markup: mask div.p-blockui.p-component-overlay (appended to body, sized/positioned to the target by the widget)
+ * Markup: mask div.p-blockui.p-component-overlay (appended to body, sized/positioned to the target by the component)
  *         containing div.p-blockui-content.p-component.p-component-content (optional content).
- *         The widget sets aria-busy on the blocked target.
+ *         The component sets aria-busy on the blocked target.
  * Without content (no children) a spinner (--p-blockui-loading-icon) is shown centered on the mask. With several
  * targets the content is only appended to one mask, the others have no .p-blockui-content at all.
  * Supported classes (styleClass, ends up on every mask): p-blockui-light (a light translucent mask instead of the

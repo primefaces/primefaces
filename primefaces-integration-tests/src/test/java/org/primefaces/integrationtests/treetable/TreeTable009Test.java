@@ -73,7 +73,7 @@ class TreeTable009Test extends AbstractTreeTableTest {
         // Assert - the table must reflect the new model instead of staying frozen
         assertRows(treeTable, rootOtherDocument);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

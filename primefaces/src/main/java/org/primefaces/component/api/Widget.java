@@ -34,14 +34,14 @@ import jakarta.faces.context.FacesContext;
 
 public interface Widget {
 
-    String CALLBACK_PRE_CONSTRUCT = "componentPreConstruct";
-    String CALLBACK_POST_CONSTRUCT = "componentPostConstruct";
-    String CALLBACK_POST_REFRESH = "componentPostRefresh";
-    String CALLBACK_PRE_DESTROY = "componentPreDestroy";
+    String CALLBACK_PRE_CONSTRUCT = "clientPreConstruct";
+    String CALLBACK_POST_CONSTRUCT = "clientPostConstruct";
+    String CALLBACK_POST_REFRESH = "clientPostRefresh";
+    String CALLBACK_PRE_DESTROY = "clientPreDestroy";
 
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
-    @Property(description = "Name of the client side widget.", implicitDefaultValue = "generated ('widget_' + componentClientId)")
+    @Property(description = "Name of the client side component.", implicitDefaultValue = "generated ('widget_' + componentClientId)")
     String getWidgetVar();
 
     // backwards compatibility

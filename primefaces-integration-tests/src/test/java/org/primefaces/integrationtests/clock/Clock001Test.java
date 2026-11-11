@@ -67,8 +67,8 @@ class Clock001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(clock.getDateTime().matches(TIME), clock.getDateTime());
-        assertConfiguration(clock.getWidgetConfiguration());
-        assertEquals("HH:mm:ss", clock.getWidgetConfiguration().getString("pattern"));
+        assertConfiguration(clock.getClientConfiguration());
+        assertEquals("HH:mm:ss", clock.getClientConfiguration().getString("pattern"));
     }
 
     @Test
@@ -99,7 +99,7 @@ class Clock001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(clock.getDateTime().matches(DATE_TIME), clock.getDateTime());
-        JSONObject cfg = clock.getWidgetConfiguration();
+        JSONObject cfg = clock.getClientConfiguration();
         assertConfiguration(cfg);
         assertEquals("2020/01/15 10:30:00", cfg.getString("value"));
     }
@@ -121,7 +121,7 @@ class Clock001Test extends AbstractPrimePageTest {
         clock.waitForTick();
 
         // Assert
-        assertConfiguration(clock.getWidgetConfiguration());
+        assertConfiguration(clock.getClientConfiguration());
     }
 
     @Test
@@ -137,7 +137,7 @@ class Clock001Test extends AbstractPrimePageTest {
         // Assert - 2020-01-15 is in the 3rd week of January 2020 (1-4, 5-11, 12-18)
         String dateTime = clock.getDateTime();
         assertTrue(dateTime.matches("3 10:30:0[1-9]"), dateTime);
-        assertConfiguration(clock.getWidgetConfiguration());
+        assertConfiguration(clock.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

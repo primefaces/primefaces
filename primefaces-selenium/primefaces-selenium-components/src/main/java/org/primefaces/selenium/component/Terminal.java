@@ -210,11 +210,11 @@ public abstract class Terminal extends AbstractComponent {
     }
 
     /**
-     * Clears the content and the command input via the widget API.
+     * Clears the content and the command input via the client API.
      */
     @Override
     public void clear() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".clear();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".clear();");
     }
 
     private List<WebElement> getAutoCompleteMatchLinks() {

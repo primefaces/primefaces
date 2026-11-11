@@ -84,7 +84,7 @@ public abstract class Splitter extends AbstractComponent {
      * @return the sizes in percent
      */
     public List<Double> getPanelSizes() {
-        List<Object> sizes = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".panelSizes;");
+        List<Object> sizes = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".panelSizes;");
         return sizes.stream().map(size -> ((Number) size).doubleValue()).collect(Collectors.toList());
     }
 
@@ -104,7 +104,7 @@ public abstract class Splitter extends AbstractComponent {
      * @param offset offset in pixels, horizontally or vertically depending on the layout
      */
     public void dragGutter(int index, int offset) {
-        boolean horizontal = "horizontal".equals(getWidgetConfiguration().optString("layout"));
+        boolean horizontal = "horizontal".equals(getClientConfiguration().optString("layout"));
         WebElement gutter = getGutters().get(index);
         Action action = new Actions(getWebDriver())
                     .clickAndHold(gutter)

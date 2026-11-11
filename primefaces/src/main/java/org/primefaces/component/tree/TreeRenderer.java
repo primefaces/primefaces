@@ -297,10 +297,10 @@ public class TreeRenderer extends CoreRenderer<Tree> {
 
     protected void encodeScript(FacesContext context, Tree component) throws IOException {
         boolean dynamic = component.isDynamic();
-        String widget = component.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
+        String componentClass = component.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         ComponentScriptBuilder wb = getComponentScriptBuilder(context);
-        wb.init(widget, component);
+        wb.init(componentClass, component);
 
         wb.attr("dynamic", dynamic)
                 .attr("highlight", component.isHighlight(), true)

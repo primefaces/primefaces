@@ -57,7 +57,7 @@ class Dialog004Test extends AbstractPrimePageTest {
         assertCss(page.docked, "p-dialog-docked");
         assertTrue(dialog.isVisible()); // visible is true even for minimized
         assertFalse(dialog.isDisplayed()); // dialog is in DOM but hidden
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     @Test
@@ -80,7 +80,7 @@ class Dialog004Test extends AbstractPrimePageTest {
         assertNotPresent(page.docked); // docked bar removed
         assertTrue(dialog.isVisible()); // visible is true even for minimized
         assertTrue(dialog.isDisplayed()); // dialog is in displayed
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     @Test
@@ -100,7 +100,7 @@ class Dialog004Test extends AbstractPrimePageTest {
         assertTrue(dialog.isMaximized());
         assertTrue(dialog.isVisible());
         assertTrue(dialog.isDisplayed());
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

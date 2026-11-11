@@ -92,7 +92,7 @@ class AutoComplete005Test extends AbstractPrimePageTest {
         assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
         assertFalse(page.messages.getMessage(0).getDetail().contains("Chr"));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -133,7 +133,7 @@ class AutoComplete005Test extends AbstractPrimePageTest {
         assertEquals(Integer.toString(driverLando.getId()), options.get(1).getDomAttribute("value"));
         assertEquals("Chr", options.get(2).getDomAttribute("value"));
 
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -159,7 +159,7 @@ class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.messages.getAllMessages().isEmpty());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

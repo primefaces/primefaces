@@ -206,7 +206,7 @@ export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.com
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.content.html(content);
                     }

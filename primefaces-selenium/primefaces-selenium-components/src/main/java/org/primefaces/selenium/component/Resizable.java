@@ -38,7 +38,7 @@ import org.openqa.selenium.interactions.Actions;
 /**
  * Component wrapper for the PrimeFaces {@code p:resizable}. As {@code p:resizable} renders no element of its own, this
  * wrapper is bound to the element made resizable (the {@code for} target or the parent of the {@code p:resizable}); the
- * widget is looked up by that target.
+ * client component is looked up by that target.
  */
 public abstract class Resizable extends AbstractComponent {
 
@@ -48,18 +48,18 @@ public abstract class Resizable extends AbstractComponent {
     private static final int RESIZE_START_DISTANCE = 5;
 
     /**
-     * Gets the {@code p:resizable} widget whose target is the root element.
+     * Gets the {@code p:resizable} component whose target is the root element.
      *
      * @return the JS script
      */
     @Override
-    public String getWidgetByIdScript() {
+    public String getClientComponentScript() {
         return "PrimeFaces.getComponentsByType(PrimeFaces.component.Resizable).find(function(w) { return w.cfg.target === '" + getId() + "'; })";
     }
 
     @Override
-    public String getWidgetConfigurationAsString() {
-        return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript() + ".cfg, function(key, value) {"
+    public String getClientConfigurationAsString() {
+        return PrimeSelenium.executeScript("return JSON.stringify(" + getClientComponentScript() + ".cfg, function(key, value) {"
                     + " return typeof value === 'function' ? value.toString() : value; });");
     }
 
@@ -69,12 +69,12 @@ public abstract class Resizable extends AbstractComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isResizeAjaxified() {
-        String widget = getWidgetByIdScript();
-        Boolean hasBehavior = PrimeSelenium.executeScript("return " + widget + ".hasBehavior('resize');");
+        String component = getClientComponentScript();
+        Boolean hasBehavior = PrimeSelenium.executeScript("return " + component + ".hasBehavior('resize');");
         if (!Boolean.TRUE.equals(hasBehavior)) {
             return false;
         }
-        return ComponentUtils.isAjaxScript(PrimeSelenium.executeScript("return " + widget + ".getBehavior('resize').toString();"));
+        return ComponentUtils.isAjaxScript(PrimeSelenium.executeScript("return " + component + ".getBehavior('resize').toString();"));
     }
 
     /**

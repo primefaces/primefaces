@@ -113,7 +113,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         // clear input
                         this.input.val('');
@@ -153,7 +153,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         // parse the JSON response of the matches
                         const responseObj: PrimeFacesTypes.component.Terminal.AutoCompleteResponse | null = JSON.parse(PrimeFaces.utils.decodeXml(content) as string);

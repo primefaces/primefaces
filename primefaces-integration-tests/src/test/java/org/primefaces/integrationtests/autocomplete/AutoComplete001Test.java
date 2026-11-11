@@ -58,7 +58,7 @@ class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("hello", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("bye0", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -105,7 +105,7 @@ class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert - Part 2
         assertEquals("Prime", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test

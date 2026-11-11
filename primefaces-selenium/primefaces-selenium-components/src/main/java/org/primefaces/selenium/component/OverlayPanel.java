@@ -38,7 +38,7 @@ public abstract class OverlayPanel extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isVisible();");
     }
 
     /**
@@ -47,28 +47,28 @@ public abstract class OverlayPanel extends AbstractComponent {
      * @return true if visible false if not
      */
     public int getShowDelay() {
-        return getWidgetConfiguration().getInt("showDelay");
+        return getClientConfiguration().getInt("showDelay");
     }
 
     /**
      * Toggle the overlay visibility.
      */
     public void toggle() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".toggle();");
     }
 
     /**
      * Makes this overlay modal.
      */
     public void enableModality() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enableModality();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enableModality();");
     }
 
     /**
      * Makes this overlay non-modal.
      */
     public void disableModality() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disableModality();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disableModality();");
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class OverlayPanel extends AbstractComponent {
      */
     public void show() {
         if (isEnabled() && !isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             waitForDisplay();
         }
     }
@@ -86,7 +86,7 @@ public abstract class OverlayPanel extends AbstractComponent {
      */
     public void hide() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }

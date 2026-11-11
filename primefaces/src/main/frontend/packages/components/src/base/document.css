@@ -140,7 +140,7 @@
         display: none !important;
     }
 
-    /* a pinned p:sticky target prints in its place (the widget sets position fixed inline) */
+    /* a pinned p:sticky target prints in its place (the component sets position fixed inline) */
     .p-sticky {
         position: static !important;
         width: auto !important;

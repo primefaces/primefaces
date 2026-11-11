@@ -57,7 +57,7 @@ class SelectOneMenu002Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         assertEquals("Volkswagen", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act
         selectOneMenu.toggleDropdown();
@@ -74,7 +74,7 @@ class SelectOneMenu002Test extends AbstractPrimePageTest {
         options = selectOneMenu.getItemElements();
         assertEquals(11, options.size());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -98,35 +98,35 @@ class SelectOneMenu002Test extends AbstractPrimePageTest {
         assertEquals("GitHub \"9336\" Quoted", options.get(8).getText());
         assertEquals("< GitHub <i>9336</i>", options.get(9).getText());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act
         selectOneMenu.select("Ford & Lincoln");
 
         // Assert - part 2
         assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act - part 3
         page.button.click();
 
         // Assert - part 3
         assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act - part 4
         selectOneMenu.select("< GitHub <i>9336</i>");
 
         // Assert - part 4
         assertEquals("< GitHub <i>9336</i>", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act - part 5
         selectOneMenu.select("GitHub \"9336\" Quoted");
 
         // Assert - part 5
         assertEquals("GitHub \"9336\" Quoted", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -820,7 +820,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             }
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content: string) => {
                         const dateMetadata: Record<string, { disabled?: boolean; enabled?: boolean; styleClass?: string }> = JSON.parse(content).dateMetadata;
                         const disabledDates: Date[] = [];

@@ -1,7 +1,7 @@
 /*
  * ImageCropper: p:imageCropper
  *
- * The widget is cropperjs, its CSS (cropperjs/dist/cropper.css) is bundled in the vendor layer.
+ * The component uses cropperjs, its CSS (cropperjs/dist/cropper.css) is bundled in the vendor layer.
  * This file only replaces the cropperjs accent color (#39f) with the primary color. Tokens in the imagecropper block of presets/*.css.
  */
 

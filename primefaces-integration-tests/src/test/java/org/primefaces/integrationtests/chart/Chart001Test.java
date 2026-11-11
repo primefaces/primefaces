@@ -65,7 +65,7 @@ class Chart001Test extends AbstractPrimePageTest {
         assertEquals(List.of("Q1", "Q2", "Q3", "Q4"), line.getLabels());
         assertEquals(2, line.getDatasetCount());
         assertFalse(line.isItemSelectAjaxified());
-        assertConfiguration(bar.getWidgetConfiguration());
+        assertConfiguration(bar.getClientConfiguration());
     }
 
     @Test
@@ -88,7 +88,7 @@ class Chart001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("dataSetIndex=0, itemIndex=2, data=30", page.messages.getMessage(0).getDetail());
-        assertConfiguration(bar.getWidgetConfiguration());
+        assertConfiguration(bar.getClientConfiguration());
     }
 
     @Test
@@ -111,7 +111,7 @@ class Chart001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("dataSetIndex=0, itemIndex=0, data=10", page.messages.getMessage(0).getDetail());
-        assertConfiguration(bar.getWidgetConfiguration());
+        assertConfiguration(bar.getClientConfiguration());
     }
 
     @Test

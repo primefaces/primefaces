@@ -54,7 +54,7 @@ public class Spinner006Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("12345", spinner.getValue());
         assertOutputLabel(page, "12345");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class Spinner006Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("567890", spinner.getValue());
         assertOutputLabel(page, "567890");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

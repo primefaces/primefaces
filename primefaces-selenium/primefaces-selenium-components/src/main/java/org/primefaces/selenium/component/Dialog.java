@@ -132,7 +132,7 @@ public abstract class Dialog extends AbstractComponent {
      * @return true if maximized
      */
     public boolean isMaximized() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".maximized === true;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".maximized === true;");
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class Dialog extends AbstractComponent {
      * @return true if minimized
      */
     public boolean isMinimized() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".minimized === true;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".minimized === true;");
     }
 
     /**
@@ -217,21 +217,21 @@ public abstract class Dialog extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isVisible();");
     }
 
     /**
      * Minimize the dialog.
      */
     public void toggleMinimize() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleMinimize();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".toggleMinimize();");
     }
 
     /**
      * Maximize the dialog.
      */
     public void toggleMaximize() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleMaximize();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".toggleMaximize();");
     }
 
     /**
@@ -239,7 +239,7 @@ public abstract class Dialog extends AbstractComponent {
      */
     public void show() {
         if (isEnabled() && !isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         }
     }
@@ -249,7 +249,7 @@ public abstract class Dialog extends AbstractComponent {
      */
     public void hide() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }

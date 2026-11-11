@@ -46,8 +46,8 @@ class AutoComplete010Test extends AbstractPrimePageTest {
     @DisplayName("AutoComplete: GitHub #14152 itemSelect + change with update=@form submit the clicked item every time")
     void clickedItemIsSubmittedAfterAjaxUpdate(Page page) {
         // first selection works on the initially rendered page,
-        // the following ones run against a widget re-initialized by the AJAX update (with CSP the change handler
-        // was registered after the widget init and fired with the typed text instead of the selected item)
+        // the following ones run against a component re-initialized by the AJAX update (with CSP the change handler
+        // was registered after the component init and fired with the typed text instead of the selected item)
         selectItem(page, "1", "123456789");
         selectItem(page, "1", "12345");
         selectItem(page, "1", "19875");

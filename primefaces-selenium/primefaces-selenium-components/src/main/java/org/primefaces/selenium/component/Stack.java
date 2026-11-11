@@ -152,6 +152,6 @@ public abstract class Stack extends AbstractComponent {
 
     private void waitForAnimation() {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.script(
-                "return " + getWidgetByIdScript() + ".jq.find(':animated').length === 0;"));
+                "return " + getClientComponentScript() + ".jq.find(':animated').length === 0;"));
     }
 }

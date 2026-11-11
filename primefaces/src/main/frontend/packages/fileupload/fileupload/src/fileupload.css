@@ -123,7 +123,7 @@
             text-align: end;
         }
 
-        /* the widget draws the preview into a canvas */
+        /* the component draws the preview into a canvas */
         .p-fileupload-preview img,
         .p-fileupload-preview canvas {
             border-radius: var(--p-fileupload-file-thumbnail-border-radius);
@@ -221,7 +221,7 @@
         word-wrap: break-word;
     }
 
-    /* separator the widget prepends to every row after the first one, only shown in the stacked (small screen) layout */
+    /* separator the component prepends to every row after the first one, only shown in the stacked (small screen) layout */
     > .p-component-content {
         display: none;
     }

@@ -18,7 +18,7 @@
     line-height: var(--p-typography-line-height);
     text-decoration: none;
 
-    /* nested widget (= :where(.p-component) .p-component, specificity of one class): component rules with their own
+    /* nested component (= :where(.p-component) .p-component, specificity of one class): component rules with their own
        font size token (e.g. .p-badge inside a panel or toolbar) must still win */
     :where(.p-component) & {
         font-size: inherit;
@@ -170,7 +170,7 @@ input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [
 }
 
 /*
- * content a widget inserts by ajax (new messages, items of dataView / dataScroller): an animation runs when an element is
+ * content a component inserts by ajax (new messages, items of dataView / dataScroller): an animation runs when an element is
  * inserted, so it fades in (and slides by --_enter-offset) with CSS only; also on page load, reduced motion:
  * base/document.css
  */

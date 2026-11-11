@@ -44,7 +44,7 @@ public abstract class SlideMenu extends AbstractComponent {
      * @return true if overlay false if inline
      */
     public boolean isOverlay() {
-        return getWidgetConfiguration().optBoolean("overlay", false);
+        return getClientConfiguration().optBoolean("overlay", false);
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class SlideMenu extends AbstractComponent {
      */
     public void show() {
         if (isOverlay() && !isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         }
     }
@@ -62,7 +62,7 @@ public abstract class SlideMenu extends AbstractComponent {
      */
     public void hide() {
         if (isOverlay() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }
@@ -73,7 +73,7 @@ public abstract class SlideMenu extends AbstractComponent {
      * @return the current depth
      */
     public int getDepth() {
-        return ((Number) PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".stack.length;")).intValue();
+        return ((Number) PrimeSelenium.executeScript("return " + getClientComponentScript() + ".stack.length;")).intValue();
     }
 
     /**
@@ -100,7 +100,7 @@ public abstract class SlideMenu extends AbstractComponent {
      * @return the menu items
      */
     public List<WebElement> getMenuitems() {
-        WebElement list = PrimeSelenium.executeScript("var w = " + getWidgetByIdScript() + ";"
+        WebElement list = PrimeSelenium.executeScript("var w = " + getClientComponentScript() + ";"
                 + "return (w.stack.length ? w.stack[w.stack.length - 1] : w.rootList)[0];");
         return list.findElements(By.cssSelector(":scope > li.p-menuitem"));
     }
@@ -158,6 +158,6 @@ public abstract class SlideMenu extends AbstractComponent {
      */
     public void waitForSlide() {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.script(
-                "return " + getWidgetByIdScript() + ".jq.find(':animated').length === 0;"));
+                "return " + getClientComponentScript() + ".jq.find(':animated').length === 0;"));
     }
 }

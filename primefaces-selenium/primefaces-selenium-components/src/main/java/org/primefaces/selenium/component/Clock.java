@@ -43,7 +43,7 @@ public abstract class Clock extends AbstractComponent {
      * @return true in client mode, false in server mode
      */
     public boolean isClient() {
-        return "client".equals(getWidgetConfiguration().optString("mode"));
+        return "client".equals(getClientConfiguration().optString("mode"));
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class Clock extends AbstractComponent {
      * @return true in analog display mode
      */
     public boolean isAnalog() {
-        return "analog".equals(getWidgetConfiguration().optString("displayMode"));
+        return "analog".equals(getClientConfiguration().optString("displayMode"));
     }
 
     /**
@@ -95,21 +95,21 @@ public abstract class Clock extends AbstractComponent {
      * Starts the ticking of a digital clock.
      */
     public void start() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".start();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".start();");
     }
 
     /**
      * Stops the ticking of a digital clock.
      */
     public void stop() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".stop();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".stop();");
     }
 
     /**
      * Synchronizes the time with the server in server mode, a digital clock shows the server time afterwards.
      */
     public void sync() {
-        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".sync();");
+        PrimeSelenium.executeScript(true, getClientComponentScript() + ".sync();");
     }
 
     private String getSecondHandTransform() {

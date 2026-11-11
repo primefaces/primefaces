@@ -417,7 +417,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                 { name: this.id + '_encodeFeature', value: true }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.tbody.html(content);
                     }
@@ -460,7 +460,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.tbody.html(content);
                     }
@@ -845,7 +845,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.tbody.html(content);
 
@@ -917,7 +917,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                 ],
                 onsuccess: (responseXML, status, xhr) => {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             if (this.cfg.expandMode === "self")
                                 node.replaceWith(content);
@@ -986,7 +986,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: () => {
                         // do nothing
                     }
@@ -2121,7 +2121,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                     { name: this.id + '_encodeFeature', value: true }],
                 onsuccess: (responseXML, status, xhr) => {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             if (expanded) {
                                 this.collapseRow(row);
@@ -2401,7 +2401,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                 { name: cellEditorId, value: cellEditorId }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         cellEditor.children('.p-cell-editor-output').html(content);
                     }
@@ -2446,7 +2446,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                 { name: this.id + '_cellInfo', value: cellInfo }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         cellEditor.children('.p-cell-editor-input').html(content);
                     }
@@ -2487,7 +2487,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                 { name: this.id + '_cellInfo', value: cellInfo }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         cellEditor.children('.p-cell-editor-input').html(content);
                     }

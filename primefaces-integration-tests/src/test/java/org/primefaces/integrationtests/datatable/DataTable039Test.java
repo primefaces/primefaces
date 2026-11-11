@@ -88,7 +88,7 @@ class DataTable039Test extends AbstractDataTableTest {
         for (int row = 0; row < 10; row++) {
             assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
         }
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -58,7 +58,7 @@ class DataTable011Test extends AbstractDataTableTest {
         // Assert
         page.dataTable.getRows()
                     .forEach(row -> assertNotEquals("1", row.getCell(0).getText()));
-        assertConfiguration(page.dataTable.getWidgetConfiguration());
+        assertConfiguration(page.dataTable.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class DataTable011Test extends AbstractDataTableTest {
         // Assert
         page.dataTable.getRows()
                     .forEach(row -> assertNotEquals("1", row.getCell(0).getText()));
-        assertConfiguration(page.dataTable.getWidgetConfiguration());
+        assertConfiguration(page.dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

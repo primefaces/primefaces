@@ -76,7 +76,7 @@ class Log001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("<b>bold</b>", log.getMessage(log.getItems().get(4)));
         assertTrue(log.findElements(By.cssSelector(".p-log-items b")).isEmpty());
-        assertConfiguration(log.getWidgetConfiguration());
+        assertConfiguration(log.getClientConfiguration());
     }
 
     @Test
@@ -121,7 +121,7 @@ class Log001Test extends AbstractPrimePageTest {
         assertTrue(log.getItems().isEmpty());
         assertTrue(log.isFilterActive("all"));
         assertFalse(log.isFilterActive("debug"));
-        assertConfiguration(log.getWidgetConfiguration());
+        assertConfiguration(log.getClientConfiguration());
     }
 
     @Test
@@ -143,7 +143,7 @@ class Log001Test extends AbstractPrimePageTest {
         assertEquals("debug", log.getSeverity(items.get(0)));
         assertEquals("Initiating ajax request.", log.getMessage(items.get(0)));
         assertTrue(log.getVisibleMessages().stream().anyMatch(m -> m.startsWith("Post Data:") && m.contains("PrimeFaces")));
-        assertConfiguration(log.getWidgetConfiguration());
+        assertConfiguration(log.getClientConfiguration());
     }
 
     @Test
@@ -165,7 +165,7 @@ class Log001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(log.isDisplayed());
-        assertConfiguration(log.getWidgetConfiguration());
+        assertConfiguration(log.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

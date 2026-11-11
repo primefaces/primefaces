@@ -265,7 +265,7 @@ public abstract class OrderList extends AbstractComponent {
             button.click();
         }
         // the items are moved with an effect, wait until the effect queues of all items are empty
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.script("return " + getWidgetByIdScript()
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.script("return " + getClientComponentScript()
                     + ".list.children('.p-orderlist-item').filter(function() { return jQuery(this).queue('fx').length > 0; }).length === 0;"));
     }
 }

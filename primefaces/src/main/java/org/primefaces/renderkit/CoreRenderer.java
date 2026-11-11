@@ -947,10 +947,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
     }
 
     /**
-     * Used by script-only widget to fix #3265 and allow updating of the component.
+     * Used by components that only render a script to fix #3265 and allow updating of the component.
      *
      * @param context the {@link FacesContext}.
-     * @param component the widget without actual HTML markup.
+     * @param component the component without actual HTML markup.
      * @param clientId the component clientId.
      * @throws IOException if an input/ output error occurs.
      */

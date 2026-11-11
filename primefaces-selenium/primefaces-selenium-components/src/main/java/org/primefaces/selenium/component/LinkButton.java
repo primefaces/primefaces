@@ -82,13 +82,13 @@ public abstract class LinkButton extends AbstractComponent {
      * Enables the link button.
      */
     public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable();");
     }
 
     /**
      * Disables the link button.
      */
     public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable();");
     }
 }

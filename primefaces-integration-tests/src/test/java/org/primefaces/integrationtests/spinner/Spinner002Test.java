@@ -53,7 +53,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("0.20", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("4.40", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("3.40", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("1,456.89", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("2.80", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -164,7 +164,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("0.70", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

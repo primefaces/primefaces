@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
@@ -33,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Probes for the widget lifecycle: what widgets leave behind outside of their own markup (global event handlers,
+ * Probes for the component lifecycle: what components leave behind outside of their own markup (global event handlers,
  * registered droppables, panels appended to the body) must not grow when they are updated or removed by AJAX.
  */
-public abstract class AbstractWidgetLifecycleTest extends AbstractPrimePageTest {
+public abstract class AbstractComponentLifecycleTest extends AbstractPrimePageTest {
 
     /**
-     * The global state left by widgets: the jQuery handlers of document, window and body by event type, the registered
+     * The global state left by components: the jQuery handlers of document, window and body by event type, the registered
      * droppables (and whether all of them are still attached) and the number of direct children of the body.
      */
     private static final String GLOBAL_STATE = "var count = function(el) {"
@@ -136,16 +136,16 @@ public abstract class AbstractWidgetLifecycleTest extends AbstractPrimePageTest 
     }
 
     /**
-     * Counts the widgets with the given client id, a destroyed widget is removed from {@code PrimeFaces.components}.
+     * Counts the components with the given client id, a destroyed component is removed from {@code PrimeFaces.components}.
      */
-    protected long widgetCount(String clientId) {
+    protected long componentCount(String clientId) {
         return (Long) PrimeSelenium.executeScript("var id = arguments[0]; return Object.values(PrimeFaces.components)"
                     + ".filter(function(w) { return w && w.id === id; }).length;", clientId);
     }
 
-    protected void assertWidgetCount(long expected, String... clientIds) {
+    protected void assertComponentCount(long expected, String... clientIds) {
         for (String clientId : clientIds) {
-            assertEquals(expected, widgetCount(clientId), "widgets with id " + clientId);
+            assertEquals(expected, componentCount(clientId), "components with id " + clientId);
         }
     }
 }

@@ -235,7 +235,7 @@
     }
 }
 
-/* sublists are positioned by the widget (inline left / top) */
+/* sublists are positioned by the component (inline left / top) */
 .p-cascadeselect-sublist {
     position: absolute;
     min-width: 100%;

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -32,13 +32,13 @@ import jakarta.inject.Named;
 import lombok.Data;
 
 /**
- * Widgets without own markup (p:draggable, p:droppable, p:resizable, p:keyFilter, p:defaultCommand, p:effect),
+ * Components without own markup (p:draggable, p:droppable, p:resizable, p:keyFilter, p:defaultCommand, p:effect),
  * removed and updated by AJAX together with the elements they work on.
  */
 @Named
 @ViewScoped
 @Data
-public class CoreWidget003 implements Serializable {
+public class CoreComponent003 implements Serializable {
 
     @Serial private static final long serialVersionUID = 1L;
 

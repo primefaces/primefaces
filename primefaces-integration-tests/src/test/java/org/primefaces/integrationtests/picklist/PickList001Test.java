@@ -56,7 +56,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(Arrays.asList(valuesToPick), page.standardPickList.getTargetListLabels());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -71,7 +71,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(Arrays.asList(valuesToPick), page.standardPickList.getTargetListValues());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -86,7 +86,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(Arrays.asList(valuesToPick), page.checkPickList.getTargetListLabels());
-        assertConfiguration(page.checkPickList.getWidgetConfiguration());
+        assertConfiguration(page.checkPickList.getClientConfiguration());
     }
 
     @Test
@@ -101,7 +101,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(Arrays.asList(valuesToPick), page.checkPickList.getTargetListValues());
-        assertConfiguration(page.checkPickList.getWidgetConfiguration());
+        assertConfiguration(page.checkPickList.getClientConfiguration());
     }
 
     @Test
@@ -116,7 +116,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(Arrays.asList(valuesToPick), page.instantPickList.getTargetListLabels());
-        assertConfiguration(page.instantPickList.getWidgetConfiguration());
+        assertConfiguration(page.instantPickList.getClientConfiguration());
     }
 
     @Test
@@ -131,7 +131,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(Arrays.asList(valuesToPick), page.instantPickList.getTargetListValues());
-        assertConfiguration(page.instantPickList.getWidgetConfiguration());
+        assertConfiguration(page.instantPickList.getClientConfiguration());
     }
 
     @Test
@@ -148,7 +148,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.standardPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -165,7 +165,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.standardPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -182,7 +182,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.checkPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -199,7 +199,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.checkPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -216,7 +216,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.instantPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.instantPickList.getWidgetConfiguration());
+        assertConfiguration(page.instantPickList.getClientConfiguration());
     }
 
     @Test
@@ -233,7 +233,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.instantPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.instantPickList.getWidgetConfiguration());
+        assertConfiguration(page.instantPickList.getClientConfiguration());
     }
 
     @Test
@@ -248,7 +248,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.standardPickList.getSourceListElements().isEmpty());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -265,7 +265,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(page.standardPickList.getTargetListElements().isEmpty());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -282,7 +282,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Max", page.standardPickList.getSourceListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -299,7 +299,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Max", page.standardPickList.getSourceListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -316,7 +316,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Lando", page.standardPickList.getSourceListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -334,7 +334,7 @@ class PickList001Test extends AbstractPrimePageTest {
         // Assert
         sourceLabels = page.standardPickList.getSourceListLabels();
         assertEquals("Lewis", sourceLabels.get(sourceLabels.size() - 1));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -352,7 +352,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Max", page.standardPickList.getTargetListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -370,7 +370,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Max", page.standardPickList.getTargetListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -388,7 +388,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Lando", page.standardPickList.getTargetListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -407,7 +407,7 @@ class PickList001Test extends AbstractPrimePageTest {
         // Assert
         targetLabels = page.standardPickList.getTargetListLabels();
         assertEquals("Lewis", targetLabels.get(targetLabels.size() - 1));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -420,7 +420,7 @@ class PickList001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(1, page.standardPickList.getSourceListElements().size());
         assertEquals("Charles", page.standardPickList.getSourceListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -437,7 +437,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(4, page.standardPickList.getSourceListElements().size());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -453,7 +453,7 @@ class PickList001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(1, page.standardPickList.getTargetListElements().size());
         assertEquals("Charles", page.standardPickList.getTargetListLabels().get(0));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -471,7 +471,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(4, page.standardPickList.getTargetListElements().size());
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test
@@ -501,7 +501,7 @@ class PickList001Test extends AbstractPrimePageTest {
         // Assert
         announcements = PrimeSelenium.executeScript("return window.pickListAnnouncements;");
         assertEquals(1L, announcements);
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     @Test

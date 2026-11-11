@@ -64,7 +64,7 @@ public abstract class Diagram extends AbstractComponent {
      */
     public int getConnectionCount() {
         waitUntilReady();
-        Number count = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".canvas.getAllConnections().length;");
+        Number count = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".canvas.getAllConnections().length;");
         return count.intValue();
     }
 
@@ -88,7 +88,7 @@ public abstract class Diagram extends AbstractComponent {
      */
     public void connect(String sourceEndPointId, String targetEndPointId) {
         waitUntilReady();
-        PrimeSelenium.guardAjax(getWidgetByIdScript() + ".canvas.connect({uuids: [arguments[0], arguments[1]]});",
+        PrimeSelenium.guardAjax(getClientComponentScript() + ".canvas.connect({uuids: [arguments[0], arguments[1]]});",
                     sourceEndPointId, targetEndPointId);
     }
 
@@ -100,7 +100,7 @@ public abstract class Diagram extends AbstractComponent {
      */
     public void disconnect(String sourceEndPointId, String targetEndPointId) {
         waitUntilReady();
-        PrimeSelenium.guardAjax(getWidgetByIdScript() + ".canvas.deleteConnection(" + findConnectionScript() + ");",
+        PrimeSelenium.guardAjax(getClientComponentScript() + ".canvas.deleteConnection(" + findConnectionScript() + ");",
                     sourceEndPointId, targetEndPointId);
     }
 
@@ -109,12 +109,12 @@ public abstract class Diagram extends AbstractComponent {
      * {@code arguments[1]}.
      */
     private String findConnectionScript() {
-        return getWidgetByIdScript() + ".canvas.getAllConnections().filter(function(c) {"
+        return getClientComponentScript() + ".canvas.getAllConnections().filter(function(c) {"
                     + "return c.endpoints[0].getUuid() === this[0] && c.endpoints[1].getUuid() === this[1];"
                     + "}, arguments)[0]";
     }
 
     private void waitUntilReady() {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.script("var w = " + getWidgetByIdScript() + "; return !!(w && w.canvas);"));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.script("var w = " + getClientComponentScript() + "; return !!(w && w.canvas);"));
     }
 }

@@ -53,7 +53,7 @@ public abstract class ImageSwitch extends AbstractComponent {
      * @return the 0-based index
      */
     public int getActiveIndex() {
-        Number index = PrimeSelenium.executeScript("var jq = " + getWidgetByIdScript() + ".jq;"
+        Number index = PrimeSelenium.executeScript("var jq = " + getClientComponentScript() + ".jq;"
                     + "var opts = jq.data('cycle.opts');"
                     + "return opts ? opts.currSlide : jq.children(':visible').first().index();");
         return index.intValue();
@@ -72,7 +72,7 @@ public abstract class ImageSwitch extends AbstractComponent {
      * Switches to the next image.
      */
     public void next() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".next();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".next();");
         waitUntilSwitched();
     }
 
@@ -80,7 +80,7 @@ public abstract class ImageSwitch extends AbstractComponent {
      * Switches to the previous image.
      */
     public void previous() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".previous();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".previous();");
         waitUntilSwitched();
     }
 
@@ -90,7 +90,7 @@ public abstract class ImageSwitch extends AbstractComponent {
      * @param index the 0-based index
      */
     public void switchTo(int index) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".switchTo(" + index + ");");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".switchTo(" + index + ");");
         waitUntilSwitched();
     }
 
@@ -100,7 +100,7 @@ public abstract class ImageSwitch extends AbstractComponent {
      * @return true if the slideshow has a timeout
      */
     public boolean isSlideshowAuto() {
-        return getWidgetConfiguration().optInt("timeout", 0) > 0;
+        return getClientConfiguration().optInt("timeout", 0) > 0;
     }
 
     /**
@@ -109,21 +109,21 @@ public abstract class ImageSwitch extends AbstractComponent {
      * @return true if paused
      */
     public boolean isSlideshowPaused() {
-        return PrimeSelenium.executeScript("return (" + getWidgetByIdScript() + ".jq.get(0).cyclePause || 0) > 0;");
+        return PrimeSelenium.executeScript("return (" + getClientComponentScript() + ".jq.get(0).cyclePause || 0) > 0;");
     }
 
     /**
      * Pauses the slideshow.
      */
     public void pauseSlideshow() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".pauseSlideshow();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".pauseSlideshow();");
     }
 
     /**
      * Resumes the paused slideshow.
      */
     public void resumeSlideshow() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".resumeSlideshow();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".resumeSlideshow();");
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class ImageSwitch extends AbstractComponent {
 
     private void waitUntilSwitched() {
         PrimeSelenium.waitGui().until(ExpectedConditions.and(
-                    PrimeExpectedConditions.script("var opts = " + getWidgetByIdScript() + ".jq.data('cycle.opts'); return !opts || !opts.busy;"),
+                    PrimeExpectedConditions.script("var opts = " + getClientComponentScript() + ".jq.data('cycle.opts'); return !opts || !opts.busy;"),
                     PrimeExpectedConditions.animationNotActive()));
     }
 }

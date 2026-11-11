@@ -52,7 +52,7 @@ public class Mindmap001 implements Serializable {
         root.addNode(new DefaultMindmapNode("A", "Node A", "6e9ebf", true));
         root.addNode(new DefaultMindmapNode("B", "Node B", "6e9ebf", true));
         root.addNode(new DefaultMindmapNode("C", "Node C", "6e9ebf", true));
-        // label must be escaped in the widget script and in the select response
+        // label must be escaped in the component script and in the select response
         root.addNode(new DefaultMindmapNode("\"\\</script>", "Node D", "6e9ebf", true));
     }
 

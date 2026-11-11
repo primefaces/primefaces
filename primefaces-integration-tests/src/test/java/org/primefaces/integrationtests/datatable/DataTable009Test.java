@@ -89,7 +89,7 @@ class DataTable009Test extends AbstractDataTableTest {
         assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         assertEquals("JavaScript", page.messages.getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -140,7 +140,7 @@ class DataTable009Test extends AbstractDataTableTest {
         assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         assertEquals("Java,JavaScript", page.messages.getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -171,7 +171,7 @@ class DataTable009Test extends AbstractDataTableTest {
         assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
         assertEquals("2020", firstAppeared.getSelectedLabel());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void validateFirstAppeared(DataTable dataTable, SelectOneMenu firstAppearedFilter, String firstAppearedExpected) {

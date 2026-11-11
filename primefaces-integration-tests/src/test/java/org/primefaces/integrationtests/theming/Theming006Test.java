@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Regression: the widget renders the panel content of p:selectOneMenu as div.p-selectonemenu-items &gt;
+ * Regression: the component renders the panel content of p:selectOneMenu as div.p-selectonemenu-items &gt;
  * ul.p-selectonemenu-list, the ul had the browser default padding (40px) and the items were indented.
  */
 class Theming006Test extends AbstractThemingTest {
@@ -116,7 +116,7 @@ class Theming006Test extends AbstractThemingTest {
 
     private void assertLists(String description, SelectOneMenu menu, int expectedLists, int expectedItems) {
         WebElement items = menu.getItems();
-        assertEquals("div", items.getTagName(), description + ": the widget did not render div.p-selectonemenu-items");
+        assertEquals("div", items.getTagName(), description + ": the component did not render div.p-selectonemenu-items");
         assertTokenValue(description + " items container", items, "padding", "--p-select-list-padding");
 
         Map<String, Object> container = PrimeSelenium.executeScript("var cs = getComputedStyle(arguments[0]);"

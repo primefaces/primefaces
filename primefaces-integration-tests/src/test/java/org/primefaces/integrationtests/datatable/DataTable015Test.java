@@ -73,7 +73,7 @@ class DataTable015Test extends AbstractDataTableTest {
         // Assert - sort and filter must not be lost after navigating to another page and back
         assertRows(dataTable, langsFiltered);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -96,7 +96,7 @@ class DataTable015Test extends AbstractDataTableTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
         assertEquals(2, dataTable.getPaginator().getActivePage().getNumber());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

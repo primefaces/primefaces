@@ -82,7 +82,7 @@ class Tree001Test extends AbstractTreeTest {
         assertFalse(firstOfFirst.getWebElement().isDisplayed());
         assertMessage(page.messages, 0, "Collapsed", "Documents");
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     @Test
@@ -146,7 +146,7 @@ class Tree001Test extends AbstractTreeTest {
         firstOfFirst = firstChildren.get(0);
         assertTrue(firstOfFirst.getWebElement().isDisplayed());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     @Test
@@ -179,7 +179,7 @@ class Tree001Test extends AbstractTreeTest {
         assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
         assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

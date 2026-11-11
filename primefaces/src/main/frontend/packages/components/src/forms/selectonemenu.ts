@@ -1501,7 +1501,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
             params: [{name: this.id + '_dynamicload', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         const $content = $($.parseHTML(content) as Element[]);
 

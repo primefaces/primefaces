@@ -68,7 +68,7 @@ class SelectManyButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("SelectManyButton: disable and enable via widget")
+    @DisplayName("SelectManyButton: disable and enable via client API")
     void disableEnable(Page page) {
         // Arrange
         SelectManyButton button = page.selectManyButton;

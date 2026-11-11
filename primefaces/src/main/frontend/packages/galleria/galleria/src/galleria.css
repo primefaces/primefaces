@@ -322,7 +322,7 @@
 }
 
 /*
- * RTL: the widget slides the items, captions and thumbnails with a negative translate, so these strips keep the LTR
+ * RTL: the component slides the items, captions and thumbnails with a negative translate, so these strips keep the LTR
  * layout and are mirrored as a whole; each item is mirrored back (and gets its RTL direction back).
  */
 .p-galleria-items:dir(rtl),
@@ -369,7 +369,7 @@
         border-radius: 0;
     }
 
-    /* fullScreen show / hide (the widget relies on these transitions) */
+    /* fullScreen show / hide (the component relies on these transitions) */
     &.p-galleria-enter {
         opacity: 0;
         transform: scale(0.7);

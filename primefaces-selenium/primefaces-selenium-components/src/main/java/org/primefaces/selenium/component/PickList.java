@@ -219,13 +219,13 @@ public abstract class PickList extends AbstractComponent {
     }
 
     /**
-     * Filter using the Widget configuration "filterDelay" and "filterEvent" values.
+     * Filter using the client configuration "filterDelay" and "filterEvent" values.
      *
      * @param filterElement the source or target filter
      * @param filterValue the value to set the filter
      */
     public void setFilterValue(WebElement filterElement, String filterValue) {
-        JSONObject cfg = getWidgetConfiguration();
+        JSONObject cfg = getClientConfiguration();
         String filterEvent = cfg.getString("filterEvent");
         int filterDelay = cfg.getInt("filterDelay");
         setFilterValue(filterElement, filterValue, filterEvent, filterDelay);

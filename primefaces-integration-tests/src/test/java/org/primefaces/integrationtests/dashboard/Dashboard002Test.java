@@ -59,7 +59,7 @@ class Dashboard002Test extends AbstractPrimePageTest {
         assertEquals("Reordered: bar", page.messages.getMessage(0).getSummary());
         assertEquals("Sender:0 Column:2 Item:0", page.messages.getMessage(0).getDetail());
         assertEquals("line|pie|bar", page.layout.getText());
-        assertConfiguration(dashboard.getWidgetConfiguration());
+        assertConfiguration(dashboard.getClientConfiguration());
     }
 
     @Test
@@ -76,7 +76,7 @@ class Dashboard002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(List.of(List.of("form:line"), List.of("form:pie"), List.of("form:bar")), dashboard.getPanelIds());
 
-        // Act - the refreshed widget still swaps
+        // Act - the refreshed component still swaps
         dashboard.movePanel(dashboard.getPanel("form:pie"), dashboard.getPanel("form:line"));
 
         // Assert
@@ -84,7 +84,7 @@ class Dashboard002Test extends AbstractPrimePageTest {
         assertEquals("Reordered: pie", page.messages.getMessage(0).getSummary());
         assertEquals("Sender:1 Column:0 Item:0", page.messages.getMessage(0).getDetail());
         assertEquals("pie|line|bar", page.layout.getText());
-        assertConfiguration(dashboard.getWidgetConfiguration());
+        assertConfiguration(dashboard.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

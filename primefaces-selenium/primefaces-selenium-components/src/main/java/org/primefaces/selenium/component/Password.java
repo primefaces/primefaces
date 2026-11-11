@@ -47,7 +47,7 @@ public abstract class Password extends InputText {
      * Brings up the panel with the password strength indicator.
      */
     public void showFeedback() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
     }
 
@@ -55,7 +55,7 @@ public abstract class Password extends InputText {
      * Hides the panel with the password strength indicator.
      */
     public void hideFeedback() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
     }
 

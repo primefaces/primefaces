@@ -16,7 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:tree id="horizontalTree" value="#{tree010.horizontalRoot}" var="node" widgetVar="horizontalTreeWidget"
+            <p:tree id="horizontalTree" value="#{tree010.horizontalRoot}" var="node" widgetVar="horizontalTreeComponent"
                     orientation="horizontal" selectionMode="checkbox" selection="#{tree010.horizontalSelection}">
                 <p:ajax event="select" process="@this"/>
                 <p:ajax event="unselect" process="@this"/>
@@ -25,7 +25,7 @@
                 </p:treeNode>
             </p:tree>
 
-            <p:tree id="dynamicTree" value="#{tree010.dynamicRoot}" var="node" widgetVar="dynamicTreeWidget"
+            <p:tree id="dynamicTree" value="#{tree010.dynamicRoot}" var="node" widgetVar="dynamicTreeComponent"
                     dynamic="true" selectionMode="checkbox" selection="#{tree010.dynamicSelection}">
                 <p:ajax event="select" process="@this"/>
                 <p:ajax event="unselect" process="@this"/>

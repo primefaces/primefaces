@@ -49,7 +49,7 @@ public abstract class Mindmap extends AbstractComponent {
      * @return the label
      */
     public String getCenterNodeLabel() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".nodes[0].data('model').label;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".nodes[0].data('model').label;");
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class Mindmap extends AbstractComponent {
      * @return the labels
      */
     public List<String> getNodeLabels() {
-        List<Object> labels = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".nodes.map(function(node) {"
+        List<Object> labels = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".nodes.map(function(node) {"
                     + " return node.data('model').label; });");
         return labels.stream().map(String::valueOf).collect(Collectors.toList());
     }
@@ -139,7 +139,7 @@ public abstract class Mindmap extends AbstractComponent {
      * Waits until the center node is moved to the center and its child nodes and parent node are drawn.
      */
     private void waitUntilDrawn() {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.script("var w = " + getWidgetByIdScript() + ";"
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.script("var w = " + getClientComponentScript() + ";"
                     + "var model = w.nodes[0].data('model');"
                     + "return w.nodes.length === 1 + (model.children ? model.children.length : 0) + (model.parent ? 1 : 0);"));
     }

@@ -37,7 +37,7 @@ import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:columnToggler}. The root element is the overlay panel with the
- * checkboxes of the columns, it is moved to the body by the widget.
+ * checkboxes of the columns, it is moved to the body by the client component.
  */
 public abstract class ColumnToggler extends AbstractComponent {
 
@@ -49,7 +49,7 @@ public abstract class ColumnToggler extends AbstractComponent {
      * @return the trigger
      */
     public WebElement getTrigger() {
-        return getWebDriver().findElement(By.id(getWidgetConfiguration().getString("trigger")));
+        return getWebDriver().findElement(By.id(getClientConfiguration().getString("trigger")));
     }
 
     /**
@@ -72,13 +72,13 @@ public abstract class ColumnToggler extends AbstractComponent {
     }
 
     /**
-     * Hides the overlay panel via the widget API, if shown (the close icon is hidden by the theme and the panel may cover
+     * Hides the overlay panel via the client API, if shown (the close icon is hidden by the theme and the panel may cover
      * the trigger). Guards AJAX if a "close" behavior exists.
      */
     public void hide() {
         if (isPanelVisible()) {
-            // widget API: the panel may cover the trigger, e.g. after a column was hidden and the table got narrower
-            PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
+            // client API: the panel may cover the trigger, e.g. after a column was hidden and the table got narrower
+            PrimeSelenium.executeScript(isCloseAjaxified(), getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getRoot()));
         }
     }

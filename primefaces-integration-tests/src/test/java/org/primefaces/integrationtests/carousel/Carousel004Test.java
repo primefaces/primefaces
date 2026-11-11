@@ -58,7 +58,7 @@ class Carousel004Test extends AbstractPrimePageTest {
         carousel.next();
         assertTabOrder(page, 0);
 
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     private void assertTabOrder(Page page, int index) {

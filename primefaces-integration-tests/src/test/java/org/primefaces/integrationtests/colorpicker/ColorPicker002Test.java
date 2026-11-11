@@ -51,7 +51,7 @@ class ColorPicker002Test extends AbstractColorPickerTest {
         WebElement panel = colorPicker.showPanel();
 
         // Assert
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
         assertAriaLabel(panel, "clr-color-value", "Kleurwaardeveld");
         assertAriaLabel(panel, "clr-open-label", "Open kleurkiezer");
         assertAriaLabel(panel, "clr-close", "Sluit kleurkiezer");

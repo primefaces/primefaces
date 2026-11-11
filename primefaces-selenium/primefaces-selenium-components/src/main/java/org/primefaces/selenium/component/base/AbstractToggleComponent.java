@@ -95,21 +95,21 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      * Turns this switch in case it is off, or turns of off in case it is on.
      */
     public void toggle() {
-        PrimeSelenium.executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".toggle();");
+        PrimeSelenium.executeScript(isOnChangeAjaxified(), getClientComponentScript() + ".toggle();");
     }
 
     /**
      * Turns this switch on if it is not already turned on.
      */
     public void check() {
-        PrimeSelenium.executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".check();");
+        PrimeSelenium.executeScript(isOnChangeAjaxified(), getClientComponentScript() + ".check();");
     }
 
     /**
      * Turns this switch off if it is not already turned of.
      */
     public void uncheck() {
-        PrimeSelenium.executeScript(isOnChangeAjaxified(), getWidgetByIdScript() + ".uncheck();");
+        PrimeSelenium.executeScript(isOnChangeAjaxified(), getClientComponentScript() + ".uncheck();");
     }
 
 }

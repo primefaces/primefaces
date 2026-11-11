@@ -63,8 +63,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("ConfirmDialog: Button Show widget method")
-    void showWidget(Page page) {
+    @DisplayName("ConfirmDialog: Button Show client API method")
+    void showComponent(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
 
@@ -77,8 +77,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("ConfirmDialog: Button Hide widget method")
-    void hideWidget(Page page) {
+    @DisplayName("ConfirmDialog: Button Hide client API method")
+    void hideComponent(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
         dialog.show();
@@ -231,7 +231,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(dialog));
         }
 
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

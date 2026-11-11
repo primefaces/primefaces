@@ -1,7 +1,7 @@
 /*
  * ColumnToggler: p:columnToggler overlay of p:dataTable / p:treeTable (+ responsive column priorities)
  *
- * Markup (built by the widget): .p-columntoggler > ul.p-columntoggler-items > li.p-columntoggler-all / li.p-columntoggler-item
+ * Markup (built by the component): .p-columntoggler > ul.p-columntoggler-items > li.p-columntoggler-all / li.p-columntoggler-item
  *                               each with a .p-chkbox and a label
  * Tokens: the columntoggler block of presets/*.css (modelled on the PrimeUIX multiselect overlay)
  */

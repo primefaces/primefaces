@@ -54,13 +54,13 @@ public abstract class Slider extends AbstractInputComponent {
     }
 
     public Number getValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValue();");
     }
 
     public void setValue(Number value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".onSlide(null, { value: " + value + " });");
-        PrimeSelenium.executeScript(isSlideEndAjaxified(), getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".setValue(" + value + ");");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".onSlide(null, { value: " + value + " });");
+        PrimeSelenium.executeScript(isSlideEndAjaxified(), getClientComponentScript() + ".onSlideEnd(null, { value: " + value + " });");
     }
 
 }

@@ -36,8 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Float label of p:selectCheckboxMenu: the widget sets no filled class, the theme detects checked options (hidden inputs)
- * and the focus class of the widget.
+ * Float label of p:selectCheckboxMenu: the component sets no filled class, the theme detects checked options (hidden inputs)
+ * and the focus class of the component.
  */
 class Theming009Test extends AbstractThemingTest {
 
@@ -64,7 +64,7 @@ class Theming009Test extends AbstractThemingTest {
         assertTokenValue("Empty label", page.emptyLabel, "font-size", "--p-floatlabel-font-size");
         String inactiveSize = computedStyle(page.emptyLabel, "font-size");
 
-        // Act: the widget sets p-state-focus on focus
+        // Act: the component sets p-state-focus on focus
         PrimeSelenium.executeScript("arguments[0].classList.add('p-state-focus');", page.empty);
 
         // Assert
@@ -86,7 +86,7 @@ class Theming009Test extends AbstractThemingTest {
         setColorScheme("light");
         assertTokenValue("Empty label", page.emptyLabel, "font-size", "--p-floatlabel-font-size");
 
-        // Act: the widget marks the open panel on its hidden focus input, the root loses p-state-focus to the panel
+        // Act: the component marks the open panel on its hidden focus input, the root loses p-state-focus to the panel
         PrimeSelenium.executeScript("document.getElementById('form:empty_focus').setAttribute('aria-expanded', 'true');");
 
         // Assert

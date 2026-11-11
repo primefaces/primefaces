@@ -60,7 +60,7 @@ class SelectOneMenu013Test extends AbstractPrimePageTest {
         assertCss(options.get(1), "p-selectonemenu-item", "p-selectonemenu-row", "p-state-disabled");
         assertCss(options.get(2), "p-selectonemenu-item", "p-selectonemenu-row");
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

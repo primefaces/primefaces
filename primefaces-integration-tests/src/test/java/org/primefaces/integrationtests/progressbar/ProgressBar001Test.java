@@ -88,7 +88,7 @@ class ProgressBar001Test extends AbstractPrimePageTest {
         assertEquals(100, progressBar.getValue());
         assertEquals("100%", progressBar.getLabel().getText());
         assertEquals("Progress Completed", page.messages.getMessage(0).getSummary());
-        assertConfiguration(progressBar.getWidgetConfiguration());
+        assertConfiguration(progressBar.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

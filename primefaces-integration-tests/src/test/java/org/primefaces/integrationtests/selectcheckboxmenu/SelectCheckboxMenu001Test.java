@@ -60,7 +60,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         assertLabel(menu, "Item(s) Selected");
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -79,7 +79,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
 
         // Assert
         assertSelected(menu, 0);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -101,7 +101,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         assertSelected(menu, 1);
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -129,7 +129,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         assertValue(menu.getSelectedCheckboxes().get(6), "Rome");
         assertValue(menu.getSelectedCheckboxes().get(7), "Brasilia");
         assertValue(menu.getSelectedCheckboxes().get(8), "Amsterdam");
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -149,7 +149,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         // Assert
         assertSelected(menu, 0);
         assertLabel(menu, "Cities");
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -175,7 +175,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
 
         // Assert
         assertSelected(menu, 0);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     private void assertLabel(SelectCheckboxMenu menu, String label) {

@@ -68,13 +68,13 @@ class DatePicker004Test extends AbstractDatePickerTest {
         assertEquals(value, newValue);
         // #6459 showTime="true" automatically detected because of LocalDateTime
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
     @Order(2)
-    @DisplayName("DatePicker: date with time HH:mm:ss using widget setDate() API.")
-    void setDateWidgetApi(Page page) {
+    @DisplayName("DatePicker: date with time HH:mm:ss using component setDate() API.")
+    void setDateComponentApi(Page page) {
         // Arrange
         DatePicker datePicker = page.datePickerSeconds;
         assertEquals(LocalDateTime.of(2020, 8, 20, 22, 20, 19), datePicker.getValue());
@@ -95,7 +95,7 @@ class DatePicker004Test extends AbstractDatePickerTest {
         assertEquals(value, newValue);
         // #6459 showTime="true" automatically detected because of LocalDateTime
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -121,7 +121,7 @@ class DatePicker004Test extends AbstractDatePickerTest {
         LocalDateTime newValue = datePicker.getValue();
         assertEquals(value, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -201,7 +201,7 @@ class DatePicker004Test extends AbstractDatePickerTest {
         assertEquals(value, newValue);
         // #6459 showTime="true" automatically detected because of LocalDateTime
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss.SSS");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test

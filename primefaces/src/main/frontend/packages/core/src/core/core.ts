@@ -316,7 +316,7 @@ export class Core {
      *
      * - {@link BaseComponent | PrimeFaces.component.BaseComponent}: Base class that you should extend if you do not require any
      * advanced functionality.
-     * - {@link DeferredComponent | PrimeFaces.component.DeferredComponent}: When you component needs to be initialized on the client
+     * - {@link DeferredComponent | PrimeFaces.component.DeferredComponent}: When your component needs to be initialized on the client
      * in a way that requires the element to be visible, you can use this class as a base. A component may not be visible,
      * for example, when it is inside a dialog or tab. The deferred component provides the method 
      * {@link DeferredComponent.addDeferredRender | addDeferredRender} (to register a listener) and 
@@ -388,8 +388,8 @@ export class Core {
      * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
      * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
      * This is the list of renders for components that are currently waiting to become visible.
      */
@@ -1372,7 +1372,7 @@ export class Core {
      * @param widgetVar Widget variable of a component
      */
     componentNotAvailable(widgetVar: string): void {
-        this.error("Widget for var '" + widgetVar + "' not available!");
+        this.error("Component for var '" + widgetVar + "' not available!");
     }
 
     /**
@@ -1486,7 +1486,7 @@ export class Core {
 
     /**
      * Creates a new component of the given type and with the given configuration. Registers that component in the components
-     * registry {@link components}. If this method is called in response to an AJAX request and the method
+     * registry {@link components}. If this method is called in response to an AJAX request and the component
      * exists already, it is refreshed.
      * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
      * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
@@ -1530,10 +1530,10 @@ export class Core {
                 }
             }
         }
-        // widget script not loaded
+        // component script not loaded
         else {
             // should be loaded by our dynamic resource handling, log a error
-            this.error("Widget class '" + componentName + "' not found!");
+            this.error("Component class '" + componentName + "' not found!");
         }
     }
 
@@ -1970,8 +1970,8 @@ export class Core {
      * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
      * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
      * Adds a deferred render to the global list.  If this component has already been added only the last instance
      * will be added to the stack.
@@ -1984,11 +1984,11 @@ export class Core {
     addDeferredRender(componentId: string | string[], containerId: string, fn: () => boolean | undefined | void): void {
         // remove existing
         this.deferredRenders = this.deferredRenders.filter(deferredRender => {
-            return !(deferredRender.widget === componentId && deferredRender.container === containerId);
+            return !(deferredRender.componentId === componentId && deferredRender.container === containerId);
         });
 
         // add new
-        this.deferredRenders.push({ widget: componentId, container: containerId, callback: fn });
+        this.deferredRenders.push({ componentId, container: containerId, callback: fn });
     }
 
     /**
@@ -1996,15 +1996,15 @@ export class Core {
      * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
      * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
      * Removes a deferred render from the global list.
      *
      * @param componentId The ID of a deferred component.
      */
     removeDeferredRenders(componentId: string | string[]): void {
-        this.deferredRenders = this.deferredRenders.filter((deferredRender) => deferredRender.widget !== componentId);
+        this.deferredRenders = this.deferredRenders.filter((deferredRender) => deferredRender.componentId !== componentId);
     }
 
     /**
@@ -2012,8 +2012,8 @@ export class Core {
      * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
      * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
      * Invokes all deferred renders. This is usually called when an action was performed that _may_ have resulted
      * in a container now being visible. This includes actions such as an AJAX request request was made or a tab
@@ -2028,7 +2028,7 @@ export class Core {
             if(deferredRender.container === containerId) {
                 var rendered = deferredRender.callback.call(undefined);
                 if(rendered) {
-                    componentsToRemove.push(deferredRender.widget);
+                    componentsToRemove.push(deferredRender.componentId);
                 }
             }
         }

@@ -89,6 +89,6 @@ public abstract class Chips extends AbstractInputComponent {
      * values back into chips.
      */
     public void toggleEditor() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleEditor();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".toggleEditor();");
     }
 }

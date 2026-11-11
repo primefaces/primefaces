@@ -993,7 +993,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
                 formId: this.getParentFormId(),
                 onsuccess: (responseXML, status, xhr) => {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             // #8725 ensure its the same request when slow server
                             if (this.requestId !== currentRequestId) {
@@ -1628,7 +1628,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
             params: [{ name: this.id + '_clientCache', value: true }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.setCache($(content));
                     }

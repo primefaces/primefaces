@@ -43,7 +43,7 @@ public abstract class Droppable extends AbstractComponent {
      * @return the target element
      */
     public WebElement getTarget() {
-        return getWebDriver().findElement(By.id(getWidgetConfiguration().getString("target")));
+        return getWebDriver().findElement(By.id(getClientConfiguration().getString("target")));
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class Droppable extends AbstractComponent {
      * @return true if disabled
      */
     public boolean isDisabled() {
-        return getWidgetConfiguration().optBoolean("disabled", false);
+        return getClientConfiguration().optBoolean("disabled", false);
     }
 
     /**

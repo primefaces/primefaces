@@ -13,26 +13,26 @@
 
         <h:form id="form">
             <p:commandButton id="btnUpdate" value="Update" process="@this" update="wrapper"/>
-            <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreWidget001.toggle}"/>
+            <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreComponent001.toggle}"/>
 
             <h:panelGroup id="wrapper" layout="block">
-                <h:panelGroup id="container" layout="block" rendered="#{coreWidget001.rendered}">
-                    <p:orderList id="orderList" value="#{coreWidget001.orderList}" var="item" itemValue="#{item}" itemLabel="#{item}"
+                <h:panelGroup id="container" layout="block" rendered="#{coreComponent001.rendered}">
+                    <p:orderList id="orderList" value="#{coreComponent001.orderList}" var="item" itemValue="#{item}" itemLabel="#{item}"
                                  controlsLocation="none"/>
 
-                    <p:pickList id="pickList" value="#{coreWidget001.pickList}" var="item" itemValue="#{item}" itemLabel="#{item}"/>
+                    <p:pickList id="pickList" value="#{coreComponent001.pickList}" var="item" itemValue="#{item}" itemLabel="#{item}"/>
 
-                    <p:dataTable id="dataTable" value="#{coreWidget001.rows}" var="row" draggableRows="true" draggableColumns="true"
+                    <p:dataTable id="dataTable" value="#{coreComponent001.rows}" var="row" draggableRows="true" draggableColumns="true"
                                  resizableColumns="true" style="width: 400px">
                         <p:column headerText="Name">#{row}</p:column>
                         <p:column headerText="Length">#{row.length()}</p:column>
                     </p:dataTable>
 
-                    <p:tree id="tree" value="#{coreWidget001.root}" var="node" draggable="true" droppable="true">
+                    <p:tree id="tree" value="#{coreComponent001.root}" var="node" draggable="true" droppable="true">
                         <p:treeNode>#{node}</p:treeNode>
                     </p:tree>
 
-                    <p:dashboard id="dashboard" model="#{coreWidget001.dashboard}">
+                    <p:dashboard id="dashboard" model="#{coreComponent001.dashboard}">
                         <p:panel id="panel1" header="Panel 1">1</p:panel>
                         <p:panel id="panel2" header="Panel 2">2</p:panel>
                         <p:panel id="panel3" header="Panel 3">3</p:panel>

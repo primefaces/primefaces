@@ -141,7 +141,7 @@ public abstract class MegaMenu extends AbstractInputComponent {
     }
 
     public boolean isAutoDisplay() {
-        return getWidgetConfiguration().getBoolean("autoDisplay");
+        return getClientConfiguration().getBoolean("autoDisplay");
     }
 
     public boolean isVertical() {

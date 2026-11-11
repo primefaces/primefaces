@@ -49,7 +49,7 @@ export class OutputPanel<Cfg extends OutputPanelCfg = OutputPanelCfg> extends Pr
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.jq.html(content);
                     }

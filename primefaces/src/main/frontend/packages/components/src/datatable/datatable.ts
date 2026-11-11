@@ -2196,7 +2196,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                             {name: this.id + '_encodeFeature', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         //insert new rows
                         this.updateData(content, false);
@@ -2251,7 +2251,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                             {name: this.id + '_encodeFeature', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         //insert new rows
                         this.updateData(content);
@@ -2301,7 +2301,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.jq.replaceWith(content);
                         }
@@ -2313,7 +2313,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         else {
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.updateData(content);
 
@@ -2376,7 +2376,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     {name: this.id + '_clientCache', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         if(content.length) {
                             var nextFirstValue = first + rows;
@@ -2409,7 +2409,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     {name: this.id + '_rows', value: newState.rows}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         // do nothing
                     }
@@ -2447,7 +2447,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.jq.replaceWith(content);
                         }
@@ -2459,7 +2459,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         else {
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.updateData(content);
 
@@ -2629,7 +2629,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.jq.replaceWith(content);
                         }
@@ -2641,7 +2641,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         else {
             options.onsuccess = (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.updateData(content);
 
@@ -3415,7 +3415,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                      {name: this.id + '_skipChildren', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             if(content && PrimeFaces.trim(content).length) {
                                 row.addClass('p-expanded-row');
@@ -3761,7 +3761,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             cellEditor.children('.p-cell-editor-input').html(content);
                         }
@@ -4061,7 +4061,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                      {name: cellEditorId!, value: cellEditorId}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             cellEditor.children('.p-cell-editor-output').html(content);
                         }
@@ -4123,7 +4123,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                      {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             cellEditor.children('.p-cell-editor-input').html(content);
                         }
@@ -4188,7 +4188,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                      {name: this.id + '_encodeFeature', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             if(expanded) {
                                 this.collapseRow(row);
@@ -4266,7 +4266,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     {name: this.id + '_rowEditIndex', value: rowIndex}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.updateRow(row, content);
                         }
@@ -5338,7 +5338,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     {name: this.id + '_encodeFeature', value: true}],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.tbody.append(content);
                     }

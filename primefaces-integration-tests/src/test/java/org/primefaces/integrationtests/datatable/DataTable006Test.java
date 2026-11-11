@@ -66,7 +66,7 @@ class DataTable006Test extends AbstractDataTableTest {
             cnt++;
         }
 
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
 
         // Act - https://github.com/primefaces/primefaces/issues/7128
         page.buttonUnselect.click();
@@ -100,7 +100,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
         assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1 // after submit
@@ -133,7 +133,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
         assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_2, // after pagination to page 2
@@ -173,7 +173,7 @@ class DataTable006Test extends AbstractDataTableTest {
 
         // Assert
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
         assertSelections(page.messages, "1,3");
     }
 
@@ -199,7 +199,7 @@ class DataTable006Test extends AbstractDataTableTest {
 
         // Assert
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
         assertSelections(page.messages, "1,3");
         assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
@@ -230,7 +230,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelections(page.messages, "");
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
     }
 
     @Test
@@ -265,7 +265,7 @@ class DataTable006Test extends AbstractDataTableTest {
 
         // Assert - with selectionPageOnly=false, all rows except unselected one should remain selected
         assertSelections(page.messages, "2,3,4,5");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
     }
 
     @Test
@@ -310,7 +310,7 @@ class DataTable006Test extends AbstractDataTableTest {
                 "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
 
         // Assert - tracking: verify expected load calls have been made
         assertLazyCalls(
@@ -360,7 +360,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
         assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after 1st submit
@@ -395,7 +395,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelections(page.messages, "");
         assertSelectAllCheckbox(dataTable, false);
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
     }
 
     @Test
@@ -430,7 +430,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Note: selectAll checkbox remains unchecked because we manually reselected rather than using toggle all
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,2,3,4,5");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
     }
 
     @Test
@@ -465,7 +465,7 @@ class DataTable006Test extends AbstractDataTableTest {
 
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
-        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertConfiguration(dataTable.getClientConfiguration(), true);
         assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after 1st submit
@@ -508,7 +508,7 @@ class DataTable006Test extends AbstractDataTableTest {
 
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
         assertLazyCalls(
                 PageLoad.PAGE_1, // after toggleLazyMode
                 PageLoad.PAGE_1, // after toggleSelectPageOnly
@@ -560,7 +560,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertTrue(dataTable.getRow(0).isSelected());
         assertTrue(dataTable.getRow(1).isSelected());
         assertSelections(page.messages, "1,3,4,5");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
     }
 
     @Test
@@ -606,7 +606,7 @@ class DataTable006Test extends AbstractDataTableTest {
                 "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
-        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertConfiguration(dataTable.getClientConfiguration(), false);
 
         // Assert - tracking: verify expected load calls have been made
         assertLazyCalls(

@@ -80,7 +80,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertTrue(firstRow.isToggleable());
         assertEquals(1, firstRow.getLevel());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
 
         // Act
         firstRow.toggle();
@@ -96,7 +96,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         root.getChildren().get(0).setExpanded(true);
         assertRows(treeTable, root);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
 
         // Act
         firstRow.toggle();
@@ -109,7 +109,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         root.getChildren().get(0).setExpanded(false);
         assertRows(treeTable, root);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -143,7 +143,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         // Assert - sort must not be lost after update
         assertRows(treeTable, treeSortedRev);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -197,7 +197,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertEquals(2, rows.get(1).getLevel());
         assertEquals(2, rows.get(1).getLevel());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -251,7 +251,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertEquals(2, rows.get(1).getLevel());
         assertEquals(2, rows.get(1).getLevel());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -267,7 +267,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         // Assert
         assertMessage(page.messages, 0, "selected document", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -284,7 +284,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         // Assert
         assertMessage(page.messages, 0, "selected node", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -300,7 +300,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         // Assert
         assertMessage(page.messages, 0, "select-event", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -317,7 +317,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         // Assert
         assertMessage(page.messages, 0, "unselect-event", "Applications");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -338,7 +338,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertNotNull(rows);
         assertEquals(rootOtherDocument.getChildCount(), rows.size());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -373,7 +373,7 @@ class TreeTable001Test extends AbstractTreeTableTest {
         assertNotNull(rows);
         assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

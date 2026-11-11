@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.DualListModel;
@@ -43,12 +43,12 @@ import jakarta.inject.Named;
 import lombok.Data;
 
 /**
- * Widgets using the interactions (draggable, droppable, sortable, resizable), updated and removed by AJAX.
+ * Components using the interactions (draggable, droppable, sortable, resizable), updated and removed by AJAX.
  */
 @Named
 @ViewScoped
 @Data
-public class CoreWidget001 implements Serializable {
+public class CoreComponent001 implements Serializable {
 
     @Serial private static final long serialVersionUID = 1L;
 

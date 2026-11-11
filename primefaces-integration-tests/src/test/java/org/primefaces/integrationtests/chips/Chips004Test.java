@@ -72,7 +72,7 @@ class Chips004Test extends AbstractPrimePageTest {
         assertEquals("apple", values.get(0));
         assertEquals("orange", values.get(1));
         assertEquals("banana", values.get(2));
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(chips.getClientConfiguration());
     }
 
     @Test
@@ -106,7 +106,7 @@ class Chips004Test extends AbstractPrimePageTest {
         assertEquals("Excel", values.get(0));
         assertEquals("Outlook", values.get(1));
         assertEquals("Word", values.get(2));
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(chips.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

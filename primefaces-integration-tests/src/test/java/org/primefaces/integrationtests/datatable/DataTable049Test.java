@@ -78,7 +78,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(expected.get(0).getName(), rows.get(0).getCell(1).getText());
         assertEquals(expected.get(1).getName(), rows.get(1).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -118,7 +118,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(expectedDesc.get(1).getName(), rows.get(1).getCell(1).getText());
         assertEquals(expectedDesc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -143,7 +143,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(String.valueOf(expectedPage2.get(0).getId()), rows.get(0).getCell(0).getText());
         assertEquals(String.valueOf(expectedPage2.get(9).getId()), rows.get(9).getCell(0).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -170,7 +170,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(expected.get(0).getName(), rows.get(0).getCell(1).getText());
         assertEquals(expected.get(1).getName(), rows.get(1).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -192,7 +192,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(2, dataTable.getPaginator().getPages().size(),
                 "paginator must shrink to 2 pages after filtering to 14 rows");
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -220,7 +220,7 @@ class DataTable049Test extends AbstractDataTableTest {
         // first row on page 2: id=19 (Language 19, the 11th match by insertion order)
         assertEquals("19", rows.get(0).getCell(0).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -251,7 +251,7 @@ class DataTable049Test extends AbstractDataTableTest {
                 "first row must be lexicographic first of filtered set — filter must still be active after sort");
         assertEquals(filteredSortedAsc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     // ---- non-lazy tests (partialUpdate="false" with in-memory filter/sort) ----
@@ -279,7 +279,7 @@ class DataTable049Test extends AbstractDataTableTest {
                 "all filtered rows must be visible across pages");
         assertEquals(String.valueOf(expected.get(0).getId()), rows.get(0).getCell(0).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -304,7 +304,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(expectedAsc.get(0).getName(), rows.get(0).getCell(1).getText());
         assertEquals(expectedAsc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -335,7 +335,7 @@ class DataTable049Test extends AbstractDataTableTest {
                 "first row must be lexicographic first of filtered set, not insertion-order first");
         assertEquals(filteredSortedAsc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -354,7 +354,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals(2, dataTable.getPaginator().getPages().size(),
                 "paginator must shrink to 2 pages after filtering to 14 rows");
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -381,7 +381,7 @@ class DataTable049Test extends AbstractDataTableTest {
         assertEquals("19", rows.get(0).getCell(0).getText(),
                 "first row on page 2 of filtered set must be Language 19 (11th match)");
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     // ---- row commandButton tests: verify processChildren uses correct (updated) data ----

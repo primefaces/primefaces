@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Keyboard focus (:focus-visible) of menu items without the widget focus classes, and RTL.
+ * Keyboard focus (:focus-visible) of menu items without the component focus classes, and RTL.
  */
 class Theming010Test extends AbstractThemingTest {
 

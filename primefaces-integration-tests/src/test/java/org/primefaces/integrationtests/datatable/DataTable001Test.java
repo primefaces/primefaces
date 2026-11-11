@@ -98,7 +98,7 @@ class DataTable001Test extends AbstractDataTableTest {
         assertEquals(1, paginator.getPage(0).getNumber());
         assertEquals(2, paginator.getPage(1).getNumber());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
 
         // Act
         dataTable.selectPage(2);
@@ -108,7 +108,7 @@ class DataTable001Test extends AbstractDataTableTest {
         assertNotNull(rows);
         assertEquals(2, rows.size());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -142,7 +142,7 @@ class DataTable001Test extends AbstractDataTableTest {
         // Assert - sort must not be lost after update
         assertRows(getDataTable(), langsSorted);
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -169,7 +169,7 @@ class DataTable001Test extends AbstractDataTableTest {
         // Assert - filter must not be lost after update
         assertRows(getDataTable(), langsFiltered);
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -200,7 +200,7 @@ class DataTable001Test extends AbstractDataTableTest {
         // Assert - filter must not be lost after update
         assertRows(dataTable, langsFiltered.stream().skip(2).limit(2).collect(Collectors.toList()));
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -222,7 +222,7 @@ class DataTable001Test extends AbstractDataTableTest {
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Python");
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -245,7 +245,7 @@ class DataTable001Test extends AbstractDataTableTest {
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguageType.INTERPRETED);
         assertRows(getDataTable(), langsFiltered);
-        assertConfiguration(getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -282,7 +282,7 @@ class DataTable001Test extends AbstractDataTableTest {
         assertEquals(3, getDataTable().getRows().size());
         assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

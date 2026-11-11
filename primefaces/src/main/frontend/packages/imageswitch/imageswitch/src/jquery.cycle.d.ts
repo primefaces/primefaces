@@ -1,5 +1,5 @@
 /**
- * Namespace for the JQuery Cycle plugin, accessible via `$.fn.cycle`. It is used by the `ImageSwitch` widget.
+ * Namespace for the JQuery Cycle plugin, accessible via `$.fn.cycle`. It is used by the `ImageSwitch` component.
  * 
  * This namespace contains several required interfaces and types.
  */

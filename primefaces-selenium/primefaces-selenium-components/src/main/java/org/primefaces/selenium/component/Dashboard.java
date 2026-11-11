@@ -47,7 +47,7 @@ public abstract class Dashboard extends AbstractComponent {
      * @return true if responsive, false if it has the legacy columns
      */
     public boolean isResponsive() {
-        return getWidgetConfiguration().optBoolean("responsive", false);
+        return getClientConfiguration().optBoolean("responsive", false);
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class Dashboard extends AbstractComponent {
      * @return true if the panels can be dragged
      */
     public boolean isReordering() {
-        return !getWidgetConfiguration().optBoolean("disabled", false);
+        return !getClientConfiguration().optBoolean("disabled", false);
     }
 
     /**

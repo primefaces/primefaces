@@ -60,7 +60,7 @@ class SelectOneMenu007Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, 0, "Country", "Brazil");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -79,7 +79,7 @@ class SelectOneMenu007Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("<span>Turks &amp; Caicos<span>", selectOneMenu.getLabel().getText());
         assertMessage(page, 0, "Country", "Turks & Caicos");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertItems(Page page, int itemCount, int groupCount) {

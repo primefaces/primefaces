@@ -73,7 +73,7 @@ public abstract class TabView extends AbstractComponent {
      * @param index the index of the tab to expand
      */
     public void toggleTab(int index) {
-        final JSONObject cfg = getWidgetConfiguration();
+        final JSONObject cfg = getClientConfiguration();
         final boolean isDynamic = cfg.has("dynamic") && cfg.getBoolean("dynamic");
 
         if (isDynamic || ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {

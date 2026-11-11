@@ -129,18 +129,18 @@ public abstract class Log extends AbstractComponent {
     }
 
     /**
-     * Shows the log window via the widget API.
+     * Shows the log window via the client API.
      */
     public void show() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getRoot()));
     }
 
     /**
-     * Hides the log window via the widget API.
+     * Hides the log window via the client API.
      */
     public void hide() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getRoot()));
     }
 

@@ -45,12 +45,12 @@ class Dialog007Test extends AbstractPrimePageTest {
     @DisplayName("Dialog: #14287 remove relocated dialog with its original container")
     void remove(Page page) {
         // Arrange
-        assertEquals("@(body)", page.dialog.getWidgetConfiguration().getString("appendTo"));
+        assertEquals("@(body)", page.dialog.getClientConfiguration().getString("appendTo"));
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
         page.choice.select("Two");
         page.dialog.hide();
-        // the relocated panel of the nested p:selectOneMenu needs no marker, it is removed with its widget
+        // the relocated panel of the nested p:selectOneMenu needs no marker, it is removed with its component
         assertEquals(1L, count("body > [id=\"form:choice_panel\"]"));
         assertEquals(0L, count("[id=\"form:choice\"] .p-overlay-placeholder"));
 

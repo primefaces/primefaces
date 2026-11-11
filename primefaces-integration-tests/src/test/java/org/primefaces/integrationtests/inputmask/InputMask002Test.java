@@ -52,7 +52,7 @@ class InputMask002Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(inputMask.getClientConfiguration());
     }
 
     @Test
@@ -69,7 +69,7 @@ class InputMask002Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("222-22-2222", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(inputMask.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

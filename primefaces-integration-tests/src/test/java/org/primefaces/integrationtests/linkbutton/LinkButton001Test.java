@@ -43,7 +43,7 @@ class LinkButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("LinkButton: disabled state from the server and via widget")
+    @DisplayName("LinkButton: disabled state from the server and via client API")
     void disableEnable(Page page) {
         // Assert
         assertTrue(page.navigate.isEnabled());
@@ -75,7 +75,7 @@ class LinkButton001Test extends AbstractPrimePageTest {
         // Assert
         assertThrows(TimeoutException.class, () -> PrimeSelenium.waitGui().until(ExpectedConditions.urlContains("linkButton001Target")));
 
-        // Act - disabled via widget
+        // Act - disabled via client API
         page.navigate.disable();
         page.navigate.getLink().sendKeys(Keys.ENTER);
 

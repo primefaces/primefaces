@@ -60,7 +60,7 @@ class Stack001Test extends AbstractPrimePageTest {
         assertTrue(stack.isExpanded());
         assertTrue(getLabel(stack, "Home").isDisplayed());
         assertTrue(getLabel(stack, "Video").isDisplayed());
-        assertTrue(stack.getWidgetConfiguration().getBoolean("expanded"));
+        assertTrue(stack.getClientConfiguration().getBoolean("expanded"));
 
         // Act
         stack.toggle();
@@ -68,8 +68,8 @@ class Stack001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(stack.isExpanded());
         assertFalse(getLabel(stack, "Home").isDisplayed());
-        assertFalse(stack.getWidgetConfiguration().getBoolean("expanded"));
-        assertConfiguration(stack.getWidgetConfiguration());
+        assertFalse(stack.getClientConfiguration().getBoolean("expanded"));
+        assertConfiguration(stack.getClientConfiguration());
     }
 
     @Test
@@ -95,7 +95,7 @@ class Stack001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("Video", page.selected.getText());
         assertEquals("Video", page.messages.getMessage(0).getDetail());
-        assertConfiguration(stack.getWidgetConfiguration());
+        assertConfiguration(stack.getClientConfiguration());
     }
 
     private WebElement getLabel(Stack stack, String value) {

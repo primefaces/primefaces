@@ -58,7 +58,7 @@ class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Charles,Lando"));
-        assertConfiguration(selectManyMenu.getWidgetConfiguration());
+        assertConfiguration(selectManyMenu.getClientConfiguration());
 
         // Act
         selectManyMenu.deselect("Charles");
@@ -69,7 +69,7 @@ class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
-        assertConfiguration(selectManyMenu.getWidgetConfiguration());
+        assertConfiguration(selectManyMenu.getClientConfiguration());
 
         // Act
         selectManyMenu.select("Lewis", false);
@@ -80,7 +80,7 @@ class SelectManyMenu001Test extends AbstractSelectManyMenuTest {
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Lewis"));
-        assertConfiguration(selectManyMenu.getWidgetConfiguration());
+        assertConfiguration(selectManyMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

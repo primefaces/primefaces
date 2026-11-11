@@ -398,7 +398,7 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Guard the widget script which fires an AJAX request and means wait until it has completed before returning.
+     * Guard the client script which fires an AJAX request and means wait until it has completed before returning.
      *
      * @param script the script to execute
      * @param args any arguments to the script

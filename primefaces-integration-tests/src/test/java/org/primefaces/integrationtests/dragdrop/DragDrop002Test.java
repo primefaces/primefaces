@@ -63,7 +63,7 @@ class DragDrop002Test extends AbstractPrimePageTest {
         assertEquals("C#", page.messages.getMessage(0).getDetail());
         assertEquals("C#", page.dropped.getText());
         assertEquals(List.of("Java", "JavaScript", "TypeScript", "Python"), names(page.languages));
-        assertConfiguration(page.droppable.getWidgetConfiguration());
+        assertConfiguration(page.droppable.getClientConfiguration());
     }
 
     @Test
@@ -80,7 +80,7 @@ class DragDrop002Test extends AbstractPrimePageTest {
         assertEquals("Python", page.messages.getMessage(0).getDetail());
         assertEquals("C#, Python", page.dropped.getText());
         assertEquals(List.of("Java", "JavaScript", "TypeScript"), names(page.languages));
-        assertConfiguration(page.droppable.getWidgetConfiguration());
+        assertConfiguration(page.droppable.getClientConfiguration());
     }
 
     private Draggable draggable(int rowIndex) {

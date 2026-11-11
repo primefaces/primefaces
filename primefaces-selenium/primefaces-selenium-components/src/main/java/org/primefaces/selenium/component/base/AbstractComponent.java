@@ -37,34 +37,58 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
     private static final String CSP_SCRIPT = "return PrimeFaces.csp.hasRegisteredAjaxifiedEvent('%s', '%s');";
 
     /**
-     * Gets the widget by component id JS function.
+     * Gets the JS expression that looks up the client component by its id.
      *
      * @return the JS script
      */
-    public String getWidgetByIdScript() {
-        return ComponentUtils.getWidgetByIdScript(getId());
+    public String getClientComponentScript() {
+        return ComponentUtils.getClientComponentScript(getId());
     }
 
     /**
-     * Gets the current widget's configuration e.g. widget.cfg as a String.
-     *
-     * @return the String representation of the widget configuration
+     * @deprecated use {@link #getClientComponentScript()} instead
      */
-    public String getWidgetConfigurationAsString() {
-        return ComponentUtils.getWidgetConfiguration(getRoot());
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public String getWidgetByIdScript() {
+        return getClientComponentScript();
     }
 
     /**
-     * Gets the current widget's configuration e.g. widget.cfg as a JSON object.
+     * Gets the configuration ({@code cfg}) of the client component as a String.
+     *
+     * @return the String representation of the client configuration
+     */
+    public String getClientConfigurationAsString() {
+        return ComponentUtils.getClientConfiguration(getRoot());
+    }
+
+    /**
+     * @deprecated use {@link #getClientConfigurationAsString()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public String getWidgetConfigurationAsString() {
+        return getClientConfigurationAsString();
+    }
+
+    /**
+     * Gets the configuration ({@code cfg}) of the client component as a JSON object.
      *
      * @return the {@link JSONObject} representing the config, useful for assertions
      */
-    public JSONObject getWidgetConfiguration() {
-        String cfg = getWidgetConfigurationAsString();
+    public JSONObject getClientConfiguration() {
+        String cfg = getClientConfigurationAsString();
         if (cfg == null || cfg.length() == 0) {
             return null;
         }
         return new JSONObject(cfg);
+    }
+
+    /**
+     * @deprecated use {@link #getClientConfiguration()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public JSONObject getWidgetConfiguration() {
+        return getClientConfiguration();
     }
 
     /**
@@ -103,9 +127,9 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
     }
 
     /**
-     * Destroy the widget.
+     * Destroys the client component.
      */
     public void destroy() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".destroy();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".destroy();");
     }
 }

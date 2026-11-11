@@ -70,9 +70,9 @@ public class HeaderCell extends Cell {
     }
 
     /**
-     * Filter using the Widget configuration "filterDelay" and "filterEvent" values.
+     * Filter using the client configuration "filterDelay" and "filterEvent" values.
      *
-     * @param cfg the widget configuration JSON object
+     * @param cfg the client configuration JSON object
      * @param filterValue the value to set the filter
      */
     public void setFilterValue(JSONObject cfg, String filterValue) {
@@ -152,7 +152,7 @@ public class HeaderCell extends Cell {
     }
 
     /**
-     * Gets the current sort order of this column as tracked by the widget, which also works for every column of a
+     * Gets the current sort order of this column as tracked by the client component, which also works for every column of a
      * multiSort (unlike {@code aria-sort}, which is only set on one column).
      *
      * @return the sort order, {@link SortOrder#UNSORTED} if not sorted or not sortable

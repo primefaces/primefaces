@@ -16,7 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:tree id="tree" value="#{tree009.root}" var="node" widgetVar="treeWidget"
+            <p:tree id="tree" value="#{tree009.root}" var="node" widgetVar="treeComponent"
                     selectionMode="checkbox" selection="#{tree009.selectedNodes}">
                 <p:ajax event="select" process="@this"/>
                 <p:ajax event="unselect" process="@this"/>

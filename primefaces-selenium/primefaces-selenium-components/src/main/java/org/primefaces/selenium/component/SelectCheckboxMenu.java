@@ -99,7 +99,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
      * Bring up the overlay panel if it's not showing or hide it if it is showing.
      */
     public void togglePanel() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".togglePanel();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".togglePanel();");
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
@@ -119,7 +119,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }
@@ -139,7 +139,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
      */
     public void checkAll() {
         if (isEnabled()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".checkAll();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".checkAll();");
         }
     }
 
@@ -148,7 +148,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
      */
     public void uncheckAll() {
         if (isEnabled()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".uncheckAll();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".uncheckAll();");
         }
     }
 
@@ -157,7 +157,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
      */
     public void resetValue() {
         if (isEnabled()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".resetValue();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".resetValue();");
         }
     }
 
@@ -168,7 +168,7 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
      */
     public void selectValue(String value) {
         if (isEnabled()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".selectValue('" + value + "');");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".selectValue('" + value + "');");
         }
     }
 

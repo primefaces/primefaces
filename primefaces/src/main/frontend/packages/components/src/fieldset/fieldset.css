@@ -1,7 +1,7 @@
 /*
  * Fieldset: p:fieldset
  *
- * States: p-fieldset-toggleable, p-state-hover on the legend (set by the widget)
+ * States: p-fieldset-toggleable, p-state-hover on the legend (set by the component)
  */
 
 /* the toggleable legend is focusable (tabindex); keyboard focus ring below */
@@ -67,7 +67,7 @@
         color: var(--p-fieldset-toggle-icon-hover-color);
     }
 
-    /* keyboard only (the widget also sets p-state-focus on mouse focus) */
+    /* keyboard only (the component also sets p-state-focus on mouse focus) */
     .p-fieldset-legend:focus-visible {
         outline: var(--p-fieldset-legend-focus-ring-width) var(--p-fieldset-legend-focus-ring-style) var(--p-fieldset-legend-focus-ring-color);
         outline-offset: var(--p-fieldset-legend-focus-ring-offset);

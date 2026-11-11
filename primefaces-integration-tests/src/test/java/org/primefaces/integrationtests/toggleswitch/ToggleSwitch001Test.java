@@ -60,7 +60,7 @@ class ToggleSwitch001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("ToggleSwitch: Use toggle() widget API to select switch")
+    @DisplayName("ToggleSwitch: Use toggle() client API to select switch")
     void toggleTrue(Page page) {
         // Arrange
         ToggleSwitch toggleSwitch = page.toggleSwitch;
@@ -75,7 +75,7 @@ class ToggleSwitch001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("ToggleSwitch: Use toggle() widget API to de-select switch")
+    @DisplayName("ToggleSwitch: Use toggle() client API to de-select switch")
     void toggleFalse(Page page) {
         // Arrange
         ToggleSwitch toggleSwitch = page.toggleSwitch;
@@ -91,7 +91,7 @@ class ToggleSwitch001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(4)
-    @DisplayName("ToggleSwitch: Use uncheck() widget API to de-select switch")
+    @DisplayName("ToggleSwitch: Use uncheck() client API to de-select switch")
     void uncheck(Page page) {
         // Arrange
         ToggleSwitch toggleSwitch = page.toggleSwitch;
@@ -107,7 +107,7 @@ class ToggleSwitch001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(5)
-    @DisplayName("ToggleSwitch: Use check() widget API to select switch")
+    @DisplayName("ToggleSwitch: Use check() client API to select switch")
     void check(Page page) {
         // Arrange
         ToggleSwitch toggleSwitch = page.toggleSwitch;
@@ -153,7 +153,7 @@ class ToggleSwitch001Test extends AbstractPrimePageTest {
         assertEquals(checked, page.toggleSwitch.isSelected());
         Msg message = page.messages.getMessage(0);
         assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
-        assertConfiguration(page.toggleSwitch.getWidgetConfiguration());
+        assertConfiguration(page.toggleSwitch.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

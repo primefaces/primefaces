@@ -64,7 +64,7 @@ class MegaMenu001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("Contact"));
 
-        assertConfiguration(megamenu.getWidgetConfiguration());
+        assertConfiguration(megamenu.getClientConfiguration());
     }
 
     @Test
@@ -89,7 +89,7 @@ class MegaMenu001Test extends AbstractPrimePageTest {
         WebElement title = users.findElement(By.cssSelector("li.p-component-header"));
         assertEquals("User 1", title.getAttribute("textContent").trim());
 
-        assertConfiguration(megamenu.getWidgetConfiguration());
+        assertConfiguration(megamenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

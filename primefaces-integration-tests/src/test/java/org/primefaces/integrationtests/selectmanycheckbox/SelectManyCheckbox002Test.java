@@ -55,7 +55,7 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
         assertClickable(selectManyCheckbox.getCheckboxBox(1));
         assertNotClickable(selectManyCheckbox.getCheckboxBox(2));
         assertClickable(selectManyCheckbox.getCheckboxBox(3));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
     }
 
     @Test
@@ -72,7 +72,7 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
         // Assert
         assertSelected(selectManyCheckbox, Arrays.asList("Lewis", "Max", "Lando"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Lewis,Max,Lando"));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

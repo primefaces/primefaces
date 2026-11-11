@@ -94,7 +94,7 @@ public abstract class InputOtp extends AbstractInputComponent {
      * @param value the code
      */
     public void setValue(String value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".clear();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".clear();");
 
         List<WebElement> inputs = getInputs();
         int[] chars = value.codePoints().toArray();
@@ -107,19 +107,27 @@ public abstract class InputOtp extends AbstractInputComponent {
     }
 
     /**
-     * Clears all inputs with the widget, no event is called.
+     * Clears all inputs with the client API, no event is called.
      */
     @Override
     public void clear() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".clear();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".clear();");
     }
 
     /**
-     * Gets the value with the widget JS method.
+     * Gets the value with the client JS method.
      *
-     * @return the widget's value
+     * @return the component's value
      */
+    public String getClientValue() {
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValue();");
+    }
+
+    /**
+     * @deprecated use {@link #getClientValue()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return getClientValue();
     }
 }

@@ -65,7 +65,7 @@ public abstract class SpeedDial extends AbstractComponent {
      * @return true if open
      */
     public boolean isOpen() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".visible;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".visible;");
     }
 
     /**

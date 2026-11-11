@@ -105,7 +105,7 @@ public abstract class Lifecycle extends AbstractComponent {
     private void waitUntilIdle() {
         PrimeSelenium.waitAjax().until(ExpectedConditions.and(
                     PrimeExpectedConditions.ajaxQueueEmpty(),
-                    PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".updating === false;")));
+                    PrimeExpectedConditions.script("return " + getClientComponentScript() + ".updating === false;")));
     }
 
     private WebElement getResult(String phase) {

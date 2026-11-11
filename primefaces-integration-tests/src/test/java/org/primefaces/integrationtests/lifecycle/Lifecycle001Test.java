@@ -61,7 +61,7 @@ class Lifecycle001Test extends AbstractPrimePageTest {
             assertTrue(lifecycle.getDuration(PHASES.get(i)) >= 0);
             assertTrue(List.of(0, 33, 66, 100).contains(lifecycle.getScore(PHASES.get(i))));
         }
-        assertConfiguration(lifecycle.getWidgetConfiguration());
+        assertConfiguration(lifecycle.getClientConfiguration());
     }
 
     @Test
@@ -81,7 +81,7 @@ class Lifecycle001Test extends AbstractPrimePageTest {
         assertEquals(0, lifecycle.getScore("INVOKE_APPLICATION"));
         assertTrue(lifecycle.getDuration(Lifecycle.ALL) >= invokeApplication);
         assertEquals(PHASES.size(), lifecycle.getPhaseNames().size());
-        assertConfiguration(lifecycle.getWidgetConfiguration());
+        assertConfiguration(lifecycle.getClientConfiguration());
     }
 
     @Test
@@ -100,7 +100,7 @@ class Lifecycle001Test extends AbstractPrimePageTest {
         assertTrue(applyRequestValues >= 300, "APPLY_REQUEST_VALUES: " + applyRequestValues);
         assertEquals(0, lifecycle.getScore("APPLY_REQUEST_VALUES"));
         assertTrue(lifecycle.getDuration(Lifecycle.ALL) >= applyRequestValues);
-        assertConfiguration(lifecycle.getWidgetConfiguration());
+        assertConfiguration(lifecycle.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

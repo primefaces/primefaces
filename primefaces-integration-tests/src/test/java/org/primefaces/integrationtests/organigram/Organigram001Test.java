@@ -58,7 +58,7 @@ class Organigram001Test extends AbstractPrimePageTest {
         assertTrue(organigram.isExpanded("Development"));
         assertFalse(organigram.isExpanded("Alice"));
         assertNull(organigram.getSelectedNodeText());
-        assertConfiguration(organigram.getWidgetConfiguration());
+        assertConfiguration(organigram.getClientConfiguration());
     }
 
     @Test
@@ -91,7 +91,7 @@ class Organigram001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Dave", organigram.getSelectedNodeText());
-        assertConfiguration(organigram.getWidgetConfiguration());
+        assertConfiguration(organigram.getClientConfiguration());
     }
 
     @Test
@@ -129,7 +129,7 @@ class Organigram001Test extends AbstractPrimePageTest {
         assertTrue(organigram.getNode("Carol").isDisplayed());
         assertEquals("Expanded", page.messages.getMessage(0).getSummary());
         assertEquals("Development", page.messages.getMessage(0).getDetail());
-        assertConfiguration(organigram.getWidgetConfiguration());
+        assertConfiguration(organigram.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

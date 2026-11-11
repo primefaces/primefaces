@@ -34,11 +34,11 @@ import org.openqa.selenium.interactions.Actions;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tooltip}. The root element is the tooltip, it is moved to the body by
- * the widget.
+ * the component.
  * <p>
- * A global tooltip ({@code p:tooltip} without {@code for}) renders no element with its client id, the widget creates
+ * A global tooltip ({@code p:tooltip} without {@code for}) renders no element with its client id, the client component creates
  * an element with the class {@code p-tooltip-global} instead. Locate it e.g. by its {@code styleClass}; then only the
- * methods taking the target element and {@link #hide()} can be used, as the widget configuration can't be found by the
+ * methods taking the target element and {@link #hide()} can be used, as the client configuration can't be found by the
  * id.
  */
 public abstract class Tooltip extends AbstractComponent {
@@ -49,7 +49,7 @@ public abstract class Tooltip extends AbstractComponent {
      * @return the target
      */
     public WebElement getTarget() {
-        return getWebDriver().findElement(By.id(getWidgetConfiguration().getString("target")));
+        return getWebDriver().findElement(By.id(getClientConfiguration().getString("target")));
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class Tooltip extends AbstractComponent {
      * show event is not a mouse event (e.g. {@code focus}).
      */
     public void show() {
-        String showEvent = getWidgetConfiguration().optString("showEvent", "mouseenter");
+        String showEvent = getClientConfiguration().optString("showEvent", "mouseenter");
         WebElement target = getTarget();
         if (showEvent.startsWith("mouse")) {
             show(target);

@@ -235,7 +235,7 @@
     }
 }
 
-/* circle types: the widget positions the items, after the direction margins */
+/* circle types: the component positions the items, after the direction margins */
 .p-speeddial-circle,
 .p-speeddial-semi-circle,
 .p-speeddial-quarter-circle {

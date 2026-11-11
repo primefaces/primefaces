@@ -67,7 +67,7 @@ class Fieldset001Test extends AbstractPrimePageTest {
         assertFalse(fieldset.isCollapsed());
         assertTrue(fieldset.getContent().isDisplayed());
         assertEquals("Status:VISIBLE", page.messages.getMessage(0).getDetail());
-        assertConfiguration(fieldset.getWidgetConfiguration());
+        assertConfiguration(fieldset.getClientConfiguration());
     }
 
     @Test
@@ -85,13 +85,13 @@ class Fieldset001Test extends AbstractPrimePageTest {
         assertTrue(fieldset.isCollapsed());
         assertFalse(fieldset.getContent().isDisplayed());
 
-        // Act - the refreshed widget still toggles
+        // Act - the refreshed component still toggles
         fieldset.expand();
 
         // Assert
         assertFalse(fieldset.isCollapsed());
         assertTrue(fieldset.getContent().isDisplayed());
-        assertConfiguration(fieldset.getWidgetConfiguration());
+        assertConfiguration(fieldset.getClientConfiguration());
     }
 
     @Test
@@ -116,7 +116,7 @@ class Fieldset001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Dynamic content loaded", fieldset.getContent().getText());
-        assertConfiguration(fieldset.getWidgetConfiguration());
+        assertConfiguration(fieldset.getClientConfiguration());
     }
 
     @Test

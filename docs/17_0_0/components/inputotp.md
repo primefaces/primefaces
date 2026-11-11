@@ -61,7 +61,7 @@ validators of the component.
 
 ## Migration from PrimeFaces Extensions
 `pe:inputOtp` becomes `p:inputOtp` with the same attributes (`length`, `integerOnly`, `mask`, `separator` and the
-`separator` facet, `placeholder`, `ariaLabel`, `inputStyle`, `inputStyleClass`, `autocomplete`). The widget variable is
+`separator` facet, `placeholder`, `ariaLabel`, `inputStyle`, `inputStyleClass`, `autocomplete`). The client side component is
 `PrimeFaces.component.InputOtp`, `p:ajax` uses the events `change` (the focus leaves the component) and `complete` instead
 of the DOM events of each input.
 

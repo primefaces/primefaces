@@ -77,7 +77,7 @@ public class InputPhoneRenderer extends InputRenderer<InputPhone> {
             value = "";
         }
 
-        // the country of a number without one (empty or invalid), the widget selects the country of a valid number
+        // the country of a number without one (empty or invalid), the client side component selects the country of a valid number
         String country = component.resolveCountry(context);
         List<String> onlyCountries = InputPhone.toCountryCodes(component.getOnlyCountries());
         List<String> excludeCountries = InputPhone.toCountryCodes(component.getExcludeCountries());
@@ -115,7 +115,7 @@ public class InputPhoneRenderer extends InputRenderer<InputPhone> {
 
     /**
      * Encodes the country selector, a button showing the code and the calling code of the country (filled in by the
-     * widget), or a plain element if the user can not select the country.
+     * client side component), or a plain element if the user can not select the country.
      */
     protected void encodeCountry(FacesContext context, InputPhone component, String clientId, String country) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -137,7 +137,7 @@ public class InputPhoneRenderer extends InputRenderer<InputPhone> {
             renderPassThruAttributes(context, component, HTML.TAB_INDEX);
         }
         else {
-            // the widget labels it with the name and the calling code of the country, a span without role has no label
+            // the client side component labels it with the name and the calling code of the country, a span without role has no label
             writer.writeAttribute("role", "img", null);
         }
 
@@ -174,7 +174,7 @@ public class InputPhoneRenderer extends InputRenderer<InputPhone> {
             // an autocomplete attribute is rendered with the pass through attributes
             writer.writeAttribute("autocomplete", "tel", null);
         }
-        // the widget formats the number, without JavaScript the E.164 number is shown
+        // the client side component formats the number, without JavaScript the E.164 number is shown
         writer.writeAttribute("value", value, null);
         if (component.getInputStyle() != null) {
             writer.writeAttribute("style", component.getInputStyle(), null);
@@ -261,7 +261,7 @@ public class InputPhoneRenderer extends InputRenderer<InputPhone> {
 
     /**
      * The client side validation of the number (libphonenumber-js): valid for its country, which must be one of the
-     * onlyCountries and none of the excludeCountries. The widget registers it.
+     * onlyCountries and none of the excludeCountries. The client side component registers it.
      */
     protected static class PhoneClientValidator implements ClientValidator {
 

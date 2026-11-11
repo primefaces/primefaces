@@ -76,7 +76,7 @@ class Keyboard001Test extends AbstractPrimePageTest {
         assertFalse(keyboard.isKeypadVisible());
         assertEquals("12", page.pinOutput.getText());
         assertEquals("12", keyboard.getValue());
-        JSONObject cfg = keyboard.getWidgetConfiguration();
+        JSONObject cfg = keyboard.getClientConfiguration();
         assertConfiguration(cfg);
         assertFalse(cfg.has("keypadOnly"));
         assertFalse(cfg.has("layoutName"));
@@ -119,7 +119,7 @@ class Keyboard001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(keyboard.isKeypadVisible());
         assertEquals("ok", page.textOutput.getText());
-        JSONObject cfg = keyboard.getWidgetConfiguration();
+        JSONObject cfg = keyboard.getClientConfiguration();
         assertConfiguration(cfg);
         assertFalse(cfg.getBoolean("keypadOnly"));
         assertEquals("qwertyBasic", cfg.getString("layoutName"));
@@ -164,7 +164,7 @@ class Keyboard001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("face", page.customOutput.getText());
-        JSONObject cfg = keyboard.getWidgetConfiguration();
+        JSONObject cfg = keyboard.getClientConfiguration();
         assertConfiguration(cfg);
         assertEquals("prime-back,faces-clear,rocks-close", cfg.getString("layoutTemplate"));
         // numeric effectDuration must reach jQuery as number, a string is taken as unknown speed name (400ms)

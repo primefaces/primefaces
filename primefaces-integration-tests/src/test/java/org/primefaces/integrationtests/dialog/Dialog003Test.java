@@ -56,7 +56,7 @@ class Dialog003Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         assertEquals(visible, dialog.isVisible());
         assertEquals(visible, dialog.isDisplayed());
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -58,7 +58,7 @@ class Timeline002Test extends AbstractPrimePageTest {
         Msg message = page.messages.getMessage(0);
         assertEquals("Selected event:", message.getSummary());
         assertEquals("164 B.C.", message.getDetail());
-        assertConfiguration(timeline.getWidgetConfiguration());
+        assertConfiguration(timeline.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -4,7 +4,7 @@
  * Markup: .p-paginator > (left content | .p-paginator-center-content | right content), template elements in the center.
  * Page links are also .p-button.p-button-flat, so their rules are written to beat button.css by specificity.
  * Rows per page / jump to page dropdowns are native <select>s, jump to page input is a .p-inputfield.
- * States (set by the widget): p-state-hover, p-state-focus, p-state-active (current page), p-state-disabled
+ * States (set by the component): p-state-hover, p-state-focus, p-state-active (current page), p-state-disabled
  */
 .p-paginator {
     display: flex;

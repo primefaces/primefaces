@@ -49,7 +49,7 @@ public abstract class ScrollTop extends AbstractComponent {
      * @return the scroll position in pixels
      */
     public long getTargetScrollTop() {
-        Number scrollTop = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".scrollElement.scrollTop();");
+        Number scrollTop = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".scrollElement.scrollTop();");
         return Math.round(scrollTop.doubleValue());
     }
 

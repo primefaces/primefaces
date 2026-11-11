@@ -66,7 +66,7 @@
         font-weight: var(--p-panelmenu-item-label-font-weight);
         -webkit-user-select: none;
         user-select: none;
-        /* also hides the p-menuitem-outline the widget sets on every focus (click too), :focus-visible marks keyboard focus */
+        /* also hides the p-menuitem-outline the component sets on every focus (click too), :focus-visible marks keyboard focus */
         outline: 0 none;
         transition: background var(--p-panelmenu-transition-duration), color var(--p-panelmenu-transition-duration),
             outline-color var(--p-panelmenu-transition-duration), box-shadow var(--p-panelmenu-transition-duration);
@@ -201,7 +201,7 @@
             font-weight: var(--p-panelmenu-item-label-font-weight);
         }
 
-        /* hover and focused item (the widget puts p-menuitem-outline on the text of the focused item) */
+        /* hover and focused item (the component puts p-menuitem-outline on the text of the focused item) */
         &:not(.p-state-disabled):hover,
         &.p-state-hover,
         &:has(> .p-menuitem-outline),

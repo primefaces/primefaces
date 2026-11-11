@@ -60,7 +60,7 @@ class InputOtp001Test extends AbstractPrimePageTest {
         assertEquals("1234", page.code.getText());
         assertEquals("1234", otp.getValue());
         assertInputs(otp, "1", "2", "3", "4");
-        assertConfiguration(otp.getWidgetConfiguration());
+        assertConfiguration(otp.getClientConfiguration());
     }
 
     @Test
@@ -76,7 +76,7 @@ class InputOtp001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("12", otp.getValue());
         assertInputs(otp, "1", "2", "", "");
-        assertConfiguration(otp.getWidgetConfiguration());
+        assertConfiguration(otp.getClientConfiguration());
     }
 
     @Test
@@ -97,7 +97,7 @@ class InputOtp001Test extends AbstractPrimePageTest {
         assertTrue(summary.contains("'4'"), summary);
         assertEquals("", page.code.getText());
         assertTrue(otp.isInvalid());
-        assertConfiguration(otp.getWidgetConfiguration());
+        assertConfiguration(otp.getClientConfiguration());
     }
 
     @Test
@@ -111,7 +111,7 @@ class InputOtp001Test extends AbstractPrimePageTest {
 
         assertEquals("1234", page.redisplay.getValue());
         assertInputs(page.redisplay, "1", "2", "3", "4");
-        assertConfiguration(page.masked.getWidgetConfiguration());
+        assertConfiguration(page.masked.getClientConfiguration());
     }
 
     private void assertInputs(InputOtp otp, String... chars) {

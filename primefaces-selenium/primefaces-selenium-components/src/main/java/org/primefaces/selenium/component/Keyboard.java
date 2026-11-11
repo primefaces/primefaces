@@ -75,7 +75,7 @@ public abstract class Keyboard extends AbstractInputComponent {
      * @return true if keypad only
      */
     public boolean isKeypadOnly() {
-        return getWidgetConfiguration().optBoolean("keypadOnly", true);
+        return getClientConfiguration().optBoolean("keypadOnly", true);
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class Keyboard extends AbstractInputComponent {
      */
     public void showKeypad() {
         if (!isKeypadVisible()) {
-            if ("button".equals(getWidgetConfiguration().optString("showOn"))) {
+            if ("button".equals(getClientConfiguration().optString("showOn"))) {
                 findElement(By.xpath("./following-sibling::*[contains(@class, 'keypad-trigger')]")).click();
             }
             else if (Boolean.TRUE.equals(PrimeSelenium.executeScript("return document.activeElement === arguments[0];", getInput()))) {
@@ -101,7 +101,7 @@ public abstract class Keyboard extends AbstractInputComponent {
     }
 
     /**
-     * Hides the keypad overlay via the widget API, if shown.
+     * Hides the keypad overlay via the client API, if shown.
      */
     public void hideKeypad() {
         if (isKeypadVisible()) {

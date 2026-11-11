@@ -371,7 +371,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
                     ],
                     onsuccess: (responseXML, status, xhr) => {
                         PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                            widget: this,
+                            component: this,
                             handle: (content) => {
                                 successCallback(JSON.parse(content).events);
                             }

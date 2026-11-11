@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DatePicker;
@@ -41,16 +41,16 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class CoreWidget002Test extends AbstractWidgetLifecycleTest {
+class CoreComponent002Test extends AbstractComponentLifecycleTest {
 
-    private static final String[] WIDGETS = {
+    private static final String[] COMPONENTS = {
         "form:datePickerBody", "form:datePicker", "form:slider", "form:knob", "form:signature", "form:spinner"
     };
 
 
     @Test
     @Order(1)
-    @DisplayName("Widget lifecycle: AJAX updates of a DatePicker with an open overlay don't leak its global listeners")
+    @DisplayName("Component lifecycle: AJAX updates of a DatePicker with an open overlay don't leak its global listeners")
     void updateOpenDatePicker(Page page) {
         for (DatePicker datePicker : new DatePicker[] {page.datePickerBody, page.datePicker}) {
             // Arrange: open and close once, jQuery keeps an internal focus handler on the document after the first one
@@ -73,22 +73,22 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
             assertEquals(LocalDate.now().withDayOfMonth(5), datePicker.getValueAsLocalDate());
             datePicker.hidePanel();
         }
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(2)
-    @DisplayName("Widget lifecycle: removing a DatePicker with an open overlay removes its panel and global listeners")
+    @DisplayName("Component lifecycle: removing a DatePicker with an open overlay removes its panel and global listeners")
     void removeOpenDatePicker(Page page) {
-        // Arrange: the state without the widgets (after the internal focus handler of jQuery was added, see above)
+        // Arrange: the state without the components (after the internal focus handler of jQuery was added, see above)
         page.datePickerBody.showPanel();
         page.datePickerBody.hidePanel();
         toggleWrapper();
         JSONObject removed = globalState();
-        assertWidgetCount(0, WIDGETS);
+        assertComponentCount(0, COMPONENTS);
         toggleWrapper();
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
 
         // Act: remove while the overlay appended to the body is open
         page.datePickerBody.showPanel();
@@ -97,13 +97,13 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         // Assert
         assertEquals(0L, panelCount("form:datePickerBody"));
         assertSameState(removed, globalState());
-        assertWidgetCount(0, WIDGETS);
+        assertComponentCount(0, COMPONENTS);
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(3)
-    @DisplayName("Widget lifecycle: an updated KeyFilter replaces its handlers on the input that stays")
+    @DisplayName("Component lifecycle: an updated KeyFilter replaces its handlers on the input that stays")
     void updateKeyFilter(Page page) {
         // Act
         for (int i = 0; i < 3; i++) {
@@ -119,7 +119,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(4)
-    @DisplayName("Widget lifecycle: Knob, Slider, Signature and Spinner render once and still work after AJAX updates")
+    @DisplayName("Component lifecycle: Knob, Slider, Signature and Spinner render once and still work after AJAX updates")
     void updateInputs(Page page) {
         // Arrange
         JSONObject initialState = globalState();
@@ -142,7 +142,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
         page.slider.getHandle().sendKeys(Keys.ARROW_RIGHT);
         assertEquals("31", page.slider.getHandle().getAttribute("aria-valuenow"));
         assertEquals("31", page.sliderInput.getAttribute("value"));
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
         assertNoJavascriptErrors();
     }
 
@@ -176,7 +176,7 @@ class CoreWidget002Test extends AbstractWidgetLifecycleTest {
 
         @Override
         public String getLocation() {
-            return "core/widget/coreWidget002.xhtml";
+            return "core/component/coreComponent002.xhtml";
         }
     }
 }

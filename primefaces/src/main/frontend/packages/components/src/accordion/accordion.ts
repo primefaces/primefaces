@@ -368,7 +368,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         panel.html(content);
 

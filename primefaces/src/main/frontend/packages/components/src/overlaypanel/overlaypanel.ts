@@ -498,7 +498,7 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
                 ],
                 onsuccess: (responseXML, status, xhr) => {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             this.content.html(content);
                             this.loaded = this.cfg.cache;

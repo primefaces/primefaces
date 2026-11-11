@@ -61,7 +61,7 @@ class DataGrid001Test extends AbstractPrimePageTest {
         assertEquals(1, paginator.getActivePage().getNumber());
         assertEquals("3", paginator.getRowsPerPageDropdown().getFirstSelectedOption().getText());
         assertTrue(page.messages.isEmpty());
-        assertConfiguration(dataGrid.getWidgetConfiguration());
+        assertConfiguration(dataGrid.getClientConfiguration());
     }
 
     @Test
@@ -87,7 +87,7 @@ class DataGrid001Test extends AbstractPrimePageTest {
         assertEquals(List.of("1 - Java", "2 - C#", "3 - JavaScript"), dataGrid.getRowTexts());
         assertEquals(1, dataGrid.getPaginator().getActivePage().getNumber());
         assertEquals("Page:0 Rows:3", page.messages.getMessage(0).getDetail());
-        assertConfiguration(dataGrid.getWidgetConfiguration());
+        assertConfiguration(dataGrid.getClientConfiguration());
     }
 
     @Test
@@ -106,7 +106,7 @@ class DataGrid001Test extends AbstractPrimePageTest {
         assertEquals(1, paginator.getPages().size());
         assertEquals("6", paginator.getRowsPerPageDropdown().getFirstSelectedOption().getText());
         assertEquals("Page:0 Rows:6", page.messages.getMessage(0).getDetail());
-        assertConfiguration(dataGrid.getWidgetConfiguration());
+        assertConfiguration(dataGrid.getClientConfiguration());
     }
 
     @Test
@@ -124,12 +124,12 @@ class DataGrid001Test extends AbstractPrimePageTest {
         assertEquals(List.of("4 - TypeScript", "5 - Python"), dataGrid.getRowTexts());
         assertEquals(2, dataGrid.getPaginator().getActivePage().getNumber());
 
-        // Act - the refreshed widget still pages
+        // Act - the refreshed component still pages
         dataGrid.selectPage(1);
 
         // Assert
         assertEquals(List.of("1 - Java", "2 - C#", "3 - JavaScript"), dataGrid.getRowTexts());
-        assertConfiguration(dataGrid.getWidgetConfiguration());
+        assertConfiguration(dataGrid.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

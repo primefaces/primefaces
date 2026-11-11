@@ -48,7 +48,7 @@ class Dialog002Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Dialog: Close button should receive focus if no other focusable elements")
-    void showWidget(Page page) {
+    void showComponent(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
@@ -68,7 +68,7 @@ class Dialog002Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         assertEquals(visible, dialog.isVisible());
         assertEquals(visible, dialog.isDisplayed());
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

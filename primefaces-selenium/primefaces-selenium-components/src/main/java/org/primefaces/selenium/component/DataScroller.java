@@ -52,7 +52,7 @@ public abstract class DataScroller extends AbstractComponent {
      * @return the total size
      */
     public int getTotalSize() {
-        return getWidgetConfiguration().getInt("totalSize");
+        return getClientConfiguration().getInt("totalSize");
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class DataScroller extends AbstractComponent {
      * ({@code mode="inline"}) or of the page. Waits for the request, so call it only while items are left.
      */
     public void loadMore() {
-        JSONObject cfg = getWidgetConfiguration();
+        JSONObject cfg = getClientConfiguration();
         List<WebElement> loaders = findElements(By.cssSelector(".p-datascroller-loader > *"));
         if ("manual".equals(cfg.optString("loadEvent")) && !loaders.isEmpty()) {
             PrimeSelenium.guardAjax(loaders.get(0)).click();

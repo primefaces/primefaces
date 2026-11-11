@@ -129,7 +129,7 @@ class FileUpload003Test extends AbstractFileUploadTest {
     }
 
     private void assertConfiguration(FileUpload fileUpload) {
-        JSONObject cfg = fileUpload.getWidgetConfiguration();
+        JSONObject cfg = fileUpload.getClientConfiguration();
         System.out.println("FileInput Config = " + cfg);
         assertEquals("{name} {size}", cfg.getString("messageTemplate"));
         assertTrue(cfg.getBoolean("skinSimple"));

@@ -210,7 +210,7 @@ public class GMapRenderer extends CoreRenderer<GMap> {
     }
 
     /**
-     * Encodes plain marker options; the widget builds the google.maps.marker.AdvancedMarkerElement once the marker
+     * Encodes plain marker options; the client side component builds the google.maps.marker.AdvancedMarkerElement once the marker
      * library is loaded. shadow, flat, cursor and animation have no AdvancedMarkerElement equivalent and are ignored.
      */
     protected void encodeMarker(FacesContext context, Marker marker) throws IOException {

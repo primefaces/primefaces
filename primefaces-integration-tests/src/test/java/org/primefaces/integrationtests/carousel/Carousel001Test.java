@@ -74,7 +74,7 @@ class Carousel001Test extends AbstractPrimePageTest {
         assertTrue(carousel.isBackwardDisabled(), "Backward button should be disabled on first page");
         assertFalse(carousel.isForwardDisabled(), "Forward button should be enabled on first page");
 
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     @Test
@@ -94,31 +94,31 @@ class Carousel001Test extends AbstractPrimePageTest {
         assertTrue(carousel.isForwardDisabled(), "Forward button should be disabled on last page");
         assertFalse(carousel.isBackwardDisabled(), "Backward button should be enabled on last page");
 
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("Carousel: navForward() and navBackward() of the widget API work without an event")
-    void widgetApiWithoutEvent(Page page) {
+    @DisplayName("Carousel: navForward() and navBackward() of the client API work without an event")
+    void componentApiWithoutEvent(Page page) {
         // Arrange
         Carousel carousel = page.carousel;
         assertEquals(0, carousel.getPage());
 
         // Act
-        PrimeSelenium.executeScript(carousel.getWidgetByIdScript() + ".navForward();");
+        PrimeSelenium.executeScript(carousel.getClientComponentScript() + ".navForward();");
 
         // Assert
         assertEquals(1, carousel.getPage());
         assertEquals("Item 2", carousel.getActiveItems().get(0).getText());
 
         // Act
-        PrimeSelenium.executeScript(carousel.getWidgetByIdScript() + ".navBackward();");
+        PrimeSelenium.executeScript(carousel.getClientComponentScript() + ".navBackward();");
 
         // Assert
         assertEquals(0, carousel.getPage());
         assertEquals("Item 1", carousel.getActiveItems().get(0).getText());
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

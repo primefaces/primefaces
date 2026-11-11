@@ -95,7 +95,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     menuButton: JQuery = $();
 
     /**
-     * The prefix shared ny the different IDs of the components of this component.
+     * The prefix shared by the IDs of the elements of this component.
      */
     menuId: string = "";
 
@@ -597,7 +597,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
             ],
             onsuccess: function(responseXML: XMLDocument, status: string, xhr: JQueryXHR) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: $this,
+                    component: $this,
                     handle: function(content: string) {
                         // The response contains the menu element
                         const tempContainer = $('<div>').html(content);

@@ -57,7 +57,7 @@ class Carousel002Test extends AbstractPrimePageTest {
         assertEquals("1", page.messages.getMessage(0).getDetail());
         assertEquals(1, carousel.getPage());
 
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class Carousel002Test extends AbstractPrimePageTest {
         assertEquals(2, carousel.getPage());
         assertEquals("Item 3", carousel.getActiveItems().get(0).getText());
 
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

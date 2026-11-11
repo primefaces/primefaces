@@ -86,6 +86,6 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
      * Toggles between its three states. (null, true, false)
      */
     public void toggle() {
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".toggle();");
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getClientComponentScript() + ".toggle();");
     }
 }

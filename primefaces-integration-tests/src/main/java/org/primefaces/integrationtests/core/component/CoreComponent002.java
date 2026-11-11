@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -33,13 +33,13 @@ import jakarta.inject.Named;
 import lombok.Data;
 
 /**
- * Widgets with overlays and global listeners (DatePicker, Slider, Knob, KeyFilter, Signature, Spinner), updated and
+ * Components with overlays and global listeners (DatePicker, Slider, Knob, KeyFilter, Signature, Spinner), updated and
  * removed by AJAX.
  */
 @Named
 @ViewScoped
 @Data
-public class CoreWidget002 implements Serializable {
+public class CoreComponent002 implements Serializable {
 
     @Serial private static final long serialVersionUID = 1L;
 

@@ -143,7 +143,7 @@
     }
 
     /* collapsed: the header is the only visible part and closes the rounded box
-       (rendered collapsed = the content has an inline display:none, p-panel-collapsed is only set by the widget) */
+       (rendered collapsed = the content has an inline display:none, p-panel-collapsed is only set by the component) */
     &.p-panel-collapsed .p-panel-titlebar,
     &:not(:has(> .p-panel-footer)):has(> .p-panel-content[style*="display:none"]) > .p-panel-titlebar {
         border-end-start-radius: var(--p-panel-border-radius);

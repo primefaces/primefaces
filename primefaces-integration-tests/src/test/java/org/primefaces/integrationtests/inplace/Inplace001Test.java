@@ -63,7 +63,7 @@ class Inplace001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(inplace.isContentVisible());
         assertEquals("Faces", inplace.getDisplayText());
-        assertConfiguration(inplace.getWidgetConfiguration());
+        assertConfiguration(inplace.getClientConfiguration());
     }
 
     @Test
@@ -82,12 +82,12 @@ class Inplace001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(inplace.isContentVisible());
         assertEquals("PrimeFaces", inplace.getDisplayText());
-        assertConfiguration(inplace.getWidgetConfiguration());
+        assertConfiguration(inplace.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("Inplace: show and hide via widget API")
+    @DisplayName("Inplace: show and hide via client API")
     void showHide(Page page) {
         // Arrange
         Inplace inplace = page.editor;
@@ -99,7 +99,7 @@ class Inplace001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(inplace.isContentVisible());
         assertTrue(inplace.getDisplay().isDisplayed());
-        assertConfiguration(inplace.getWidgetConfiguration());
+        assertConfiguration(inplace.getClientConfiguration());
     }
 
     @Test

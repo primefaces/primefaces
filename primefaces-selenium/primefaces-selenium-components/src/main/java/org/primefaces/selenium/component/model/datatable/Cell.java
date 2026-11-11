@@ -115,7 +115,7 @@ public class Cell {
         boolean ajaxified = false;
         boolean dblclick = false;
         if (table != null) {
-            JSONObject cfg = table.getWidgetConfiguration();
+            JSONObject cfg = table.getClientConfiguration();
             ajaxified = "lazy".equals(cfg.optString("cellEditMode")) || ComponentUtils.hasBehavior(table, "cellEditInit");
             dblclick = "dblclick".equals(cfg.optString("editInitEvent"));
         }
@@ -140,7 +140,7 @@ public class Cell {
     }
 
     /**
-     * Saves the edited cell by pressing ENTER in the editor input. The widget only fires a request if a value was changed,
+     * Saves the edited cell by pressing ENTER in the editor input. The component only fires a request if a value was changed,
      * so instead of guarding a request this waits until no request is pending and no animation is running.
      */
     public void saveEdit() {

@@ -35,7 +35,7 @@ import java.util.Collection;
  * Obtrusive events are rendered directly in the HTML DOM such as onclick="alert('test');"
  * </p>
  * <p>
- * Unobtrusive events are fired by the JS widget and need to be rendered as a widget parameter. e.g. DataTable "sort".
+ * Unobtrusive events are fired by the client side component and need to be rendered as a parameter of its configuration. e.g. DataTable "sort".
  * </p>
  */
 public interface MixedClientBehaviorHolder {

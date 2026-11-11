@@ -45,7 +45,7 @@ class OutputPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Deferred content", page.load.getText());
-        assertEquals("load", page.load.getWidgetConfiguration().getString("deferredMode"));
+        assertEquals("load", page.load.getClientConfiguration().getString("deferredMode"));
         assertNoJavascriptErrors();
     }
 
@@ -63,7 +63,7 @@ class OutputPanel001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(panel.isLoading());
         assertEquals("Deferred content", panel.getText());
-        assertEquals("visible", panel.getWidgetConfiguration().getString("deferredMode"));
+        assertEquals("visible", panel.getClientConfiguration().getString("deferredMode"));
         assertNoJavascriptErrors();
     }
 

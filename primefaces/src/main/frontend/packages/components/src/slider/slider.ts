@@ -153,7 +153,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.compon
         this.jq.off('.slider')
             .on('pointerdown.slider', (e) => this.onPointerDown(e))
             // no text selection and no focus change; not on pointerdown, that would suppress the mousedown event the
-            // overlays of other widgets listen to on the document to hide
+            // overlays of other components listen to on the document to hide
             .on('mousedown.slider', (e) => e.preventDefault())
             .on('pointermove.slider', (e) => {
                 const pointer = e.originalEvent as PointerEvent | undefined;

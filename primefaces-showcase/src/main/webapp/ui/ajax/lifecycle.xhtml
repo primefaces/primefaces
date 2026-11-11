@@ -25,10 +25,10 @@
                     <div class="field col-12 md:col-6">
                         <p:outputLabel for="name" value="Name"/>
                         <p:inputText id="name" value="#{lifecycleView.text}" widgetVar="wgtName">
-                            <f:attribute name="componentPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Component Initialized'})"/>
-                            <f:attribute name="componentPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
-                            <f:attribute name="componentPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Refreshed'})"/>
-                            <f:attribute name="componentPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Destroyed'})"/>
+                            <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Component Initialized'})"/>
+                            <f:attribute name="clientPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
+                            <f:attribute name="clientPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Refreshed'})"/>
+                            <f:attribute name="clientPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Destroyed'})"/>
                         </p:inputText>
                     </div>
                 </div>

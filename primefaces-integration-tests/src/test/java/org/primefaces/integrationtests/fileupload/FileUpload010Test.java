@@ -135,9 +135,10 @@ class FileUpload010Test extends AbstractFileUploadTest {
         // Act
         File file5 = locateClientSideFile("file1.csv");
         fileUpload.setValue(file5);
-        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getFilenames().isEmpty(), fileUpload.getFilenames().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getErrorMessages().toString().contains("Maximum number of files exceeded"),
+                fileUpload.getErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -155,9 +156,9 @@ class FileUpload010Test extends AbstractFileUploadTest {
         // Act
         File file = locateClientSideFile("file3.csv");
         fileUpload.setValue(file);
-        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getFilenames().isEmpty(), fileUpload.getFilenames().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getErrorMessages().toString().contains("Invalid file size"), fileUpload.getErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -175,9 +176,9 @@ class FileUpload010Test extends AbstractFileUploadTest {
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file);
-        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getFilenames().isEmpty(), fileUpload.getFilenames().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getErrorMessages().toString().contains("Invalid file type"), fileUpload.getErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -186,7 +187,7 @@ class FileUpload010Test extends AbstractFileUploadTest {
     }
 
     private void assertConfiguration(FileUpload fileUpload) {
-        JSONObject cfg = fileUpload.getWidgetConfiguration();
+        JSONObject cfg = fileUpload.getClientConfiguration();
         System.out.println("FileInput Config = " + cfg);
         assertFalse(cfg.has("skinSimple"));
         assertTrue(cfg.getBoolean("auto"));

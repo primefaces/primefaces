@@ -4,7 +4,7 @@
  * implementing Juxtapose with HTML and Javascript but we also have a tool that lets you make a slider without needing
  * to know any code.
  * 
- * Used by the `ImageCompare` widget.
+ * Used by the `ImageCompare` component.
  */
 declare namespace juxtapose {
     /**

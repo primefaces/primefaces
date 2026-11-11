@@ -63,7 +63,7 @@ class Stack002Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(stack.isExpanded());
         assertFalse(getLabel(stack, "Home").isDisplayed());
-        assertConfiguration(stack.getWidgetConfiguration());
+        assertConfiguration(stack.getClientConfiguration());
     }
 
     private WebElement getLabel(Stack stack, String value) {

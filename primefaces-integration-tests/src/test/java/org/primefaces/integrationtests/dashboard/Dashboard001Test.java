@@ -66,7 +66,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
         assertEquals("Reordered: finance", page.messages.getMessage(0).getSummary());
         assertEquals("Sender:null Column:0 Item:0", page.messages.getMessage(0).getDetail());
         assertEquals("finance,sports|lifestyle,weather|politics", page.layout.getText());
-        assertConfiguration(dashboard.getWidgetConfiguration());
+        assertConfiguration(dashboard.getClientConfiguration());
     }
 
     @Test
@@ -99,7 +99,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
         assertEquals("Reordered: sports", page.messages.getMessage(0).getSummary());
         assertEquals("Sender:0 Column:2 Item:0", page.messages.getMessage(0).getDetail());
         assertEquals("finance|politics,lifestyle,weather|sports", page.layout.getText());
-        assertConfiguration(dashboard.getWidgetConfiguration());
+        assertConfiguration(dashboard.getClientConfiguration());
     }
 
     @Test
@@ -119,7 +119,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
                     List.of("form:lifestyle", "form:weather"),
                     List.of("form:politics")), dashboard.getPanelIds());
 
-        // Act - the refreshed widget still reorders
+        // Act - the refreshed component still reorders
         dashboard.movePanelToColumn(dashboard.getPanel("form:weather"), 2);
 
         // Assert
@@ -129,7 +129,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
                     List.of("form:politics", "form:weather")), dashboard.getPanelIds());
         assertEquals("Sender:1 Column:2 Item:1", page.messages.getMessage(0).getDetail());
         assertEquals("finance,sports|lifestyle|politics,weather", page.layout.getText());
-        assertConfiguration(dashboard.getWidgetConfiguration());
+        assertConfiguration(dashboard.getClientConfiguration());
     }
 
     @Test

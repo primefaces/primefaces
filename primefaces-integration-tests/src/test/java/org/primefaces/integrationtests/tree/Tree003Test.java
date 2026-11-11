@@ -76,7 +76,7 @@ class Tree003Test extends AbstractTreeTest {
         assertDisplayed(secondChildren.get(1).getWebElement());
         assertDisplayed(secondChildren.get(2).getWebElement());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

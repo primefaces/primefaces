@@ -3,7 +3,7 @@
  *
  * Supported classes: p-treetable-gridlines, p-treetable-striped, p-treetable-sm, p-treetable-lg, p-treetable-scrollable,
  *                    p-treetable-resizable, p-treetable-reflow, p-treetable-checkbox-all
- * States (set by the widget): th.p-state-hover / p-state-active (sorted) / p-state-focus,
+ * States (set by the component): th.p-state-hover / p-state-active (sorted) / p-state-focus,
  *                             tr.p-state-hover / p-state-highlight (selected) / p-treetable-partialselected / p-row-editing,
  *                             td.p-cell-editing
  */
@@ -91,7 +91,7 @@
             font-size: var(--p-treetable-sort-icon-size);
             transition: color var(--p-treetable-transition-duration);
 
-            /* the sort order is the state class of the icon (the widget reads it, aria-sort is on one column only) */
+            /* the sort order is the state class of the icon (the component reads it, aria-sort is on one column only) */
             &.p-treetable-sort-icon {
                 --_icon: var(--p-treetable-sort-icon);
             }

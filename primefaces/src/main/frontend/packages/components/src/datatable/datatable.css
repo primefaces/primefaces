@@ -5,7 +5,7 @@
  * Supported classes: p-datatable-striped, p-datatable-gridlines, p-datatable-sm, p-datatable-lg,
  *                    p-datatable-sticky, p-datatable-reflow, p-datatable-scrollable, p-datatable-resizable,
  *                    p-datatable-frozencolumn, p-datatable-rtl, p-filter-toggleable (filters hidden until toggleFilter())
- * States (set by the widget): th.p-state-hover / p-state-active (sorted) / p-state-focus,
+ * States (set by the component): th.p-state-hover / p-state-active (sorted) / p-state-focus,
  *                             tr.p-state-hover / p-state-highlight (selected), tr.p-datatable-odd (striped),
  *                             tr.p-row-editing, td.p-cell-editing
  */
@@ -98,7 +98,7 @@
             font-size: var(--p-datatable-sort-icon-size);
             transition: color var(--p-datatable-transition-duration);
 
-            /* the sort order is the state class of the icon (the widget reads it, aria-sort is on one column only) */
+            /* the sort order is the state class of the icon (the component reads it, aria-sort is on one column only) */
             &.p-datatable-sort-icon {
                 --_icon: var(--p-datatable-sort-icon);
             }
@@ -193,7 +193,7 @@
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
-    /* p-filter-toggleable (styleClass): the filters are hidden until the widget shows them with toggleFilter() */
+    /* p-filter-toggleable (styleClass): the filters are hidden until the component shows them with toggleFilter() */
     &.p-filter-toggleable thead :is(.p-column-filter, .p-column-customfilter) {
         display: none;
     }
@@ -412,7 +412,7 @@
             border-color: transparent;
         }
 
-        /* p-row-editor-outline: keyboard focus of a row editor link (set by the widget) */
+        /* p-row-editor-outline: keyboard focus of a row editor link (set by the component) */
         .p-row-editor > a:focus-visible,
         .p-row-editor > a.p-row-editor-outline,
         .p-row-toggler:focus-visible,
@@ -518,7 +518,7 @@
         box-sizing: content-box;
     }
 
-    /* column reorder indicators (the widget shows / positions them with inline styles) */
+    /* column reorder indicators (the component shows / positions them with inline styles) */
     > .p-datatable-column-reorder-top-icon,
     > .p-datatable-column-reorder-bottom-icon {
         color: var(--p-datatable-drop-point-color);

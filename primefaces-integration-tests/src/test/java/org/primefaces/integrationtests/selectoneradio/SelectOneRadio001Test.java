@@ -56,7 +56,7 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         assertEquals("Max", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
 
         // Act
         selectOneRadio.select(3);
@@ -64,7 +64,7 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert - part 2
         assertEquals("Lando", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
@@ -82,12 +82,12 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Lewis", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("SelectOneRadio: Disable component using widget API")
+    @DisplayName("SelectOneRadio: Disable component using client API")
     void disable(Page page) {
         // Arrange
         SelectOneRadio selectOneRadio = page.selectOneRadio;
@@ -100,12 +100,12 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
         for (int i = 0; i < selectOneRadio.getItemsSize(); i++) {
             assertNotClickable(selectOneRadio.getRadioButtonBox(i));
         }
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
     @Order(4)
-    @DisplayName("SelectOneRadio: Enable component using widget API")
+    @DisplayName("SelectOneRadio: Enable component using client API")
     void enable(Page page) {
         // Arrange
         SelectOneRadio selectOneRadio = page.selectOneRadio;
@@ -119,12 +119,12 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
         for (int i = 0; i < selectOneRadio.getItemsSize(); i++) {
             assertClickable(selectOneRadio.getRadioButtonBox(i));
         }
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
     @Order(5)
-    @DisplayName("SelectOneRadio: Disable option using widget API")
+    @DisplayName("SelectOneRadio: Disable option using client API")
     void disableOption(Page page) {
         // Arrange
         SelectOneRadio selectOneRadio = page.selectOneRadio;
@@ -137,12 +137,12 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNotClickable(radioButton);
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
     @Order(6)
-    @DisplayName("SelectOneRadio: Enable option using widget API")
+    @DisplayName("SelectOneRadio: Enable option using client API")
     void enableOption(Page page) {
         // Arrange
         SelectOneRadio selectOneRadio = page.selectOneRadio;
@@ -161,7 +161,7 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         assertClickable(radioButton);
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
@@ -179,7 +179,7 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(outputLabel.getId(), selectOneRadio.getDomAttribute("aria-labelledby"));
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

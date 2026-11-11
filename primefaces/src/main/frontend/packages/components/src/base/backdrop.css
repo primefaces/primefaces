@@ -34,7 +34,7 @@
     pointer-events: none;
 }
 
-/* behind the box: the dialog container is a stacking context (z-index of the widget), the box background paints over it */
+/* behind the box: the dialog container is a stacking context (z-index of the component), the box background paints over it */
 :where(.p-dialog-box)::before {
     z-index: -1;
     backdrop-filter: var(--p-overlay-backdrop-filter);
@@ -57,7 +57,7 @@
  * menus and cascadeselect lists: the filter on a ::before behind the content, a filter on the overlay itself would make
  * it the backdrop root of its submenus / sublists (they would only blur what lies inside their parent). The overlay
  * menus and contextmenus (.p-menu-dynamic, z-index 100000), the submenus and the cascadeselect panel and sublists are stacking contexts (z-index of the
- * widget), so z-index -1 stays inside them. Not the slidemenu lists (slides, not floating submenus) and not a
+ * component), so z-index -1 stays inside them. Not the slidemenu lists (slides, not floating submenus) and not a
  * scrolling menu (maxHeight, the ::before would scroll away with the content, no submenus): filter on the element.
  */
 :where(.p-menu-dynamic-maxheight) {

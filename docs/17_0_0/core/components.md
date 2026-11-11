@@ -32,21 +32,21 @@ For any component you can attach client side Javascript to the component lifecyc
 `PreConstruct`, `PostConstruct`, `PostRefresh`, or `PreDestroy` of the component.
 Simply assign the correct `f:attribute` to add your script.
 
-| Event | Parameters | Execution |
-| --- | --- | --- |
-| PreConstruct | cfg | Always called either on page load or Ajax update of component before the component is created.
-| PostConstruct | component | Always called either on page load or Ajax update of component after the component is created.
-| PostRefresh | component | Only called after Ajax update of the component
-| PreDestroy | component | Only called before the component is actually being destroyed
+| Event | Attribute | Parameters | Execution |
+| --- | --- | --- | --- |
+| PreConstruct | `clientPreConstruct` | cfg | Always called either on page load or Ajax update of component before the component is created.
+| PostConstruct | `clientPostConstruct` | component | Always called either on page load or Ajax update of component after the component is created.
+| PostRefresh | `clientPostRefresh` | component | Only called after Ajax update of the component
+| PreDestroy | `clientPreDestroy` | component | Only called before the component is actually being destroyed
 
 The callbacks receive the component also as parameter `widget` (former name). The former attribute names
 `widgetPreConstruct`, `widgetPostConstruct`, `widgetPostRefresh` and `widgetPreDestroy` still work but are deprecated.
 
 ```xhtml
 <p:inputText id="name" widgetVar="wgtName" value="#{basicView.text}">
-    <f:attribute name="componentPreConstruct" value="alert('Component initialized with config: ' + cfg.id);" />  
-    <f:attribute name="componentPostConstruct" value="alert('Component created with id: ' + component.id);" />  
-    <f:attribute name="componentPostRefresh" value="alert('Component refreshed! ' + component.id);" />  
-    <f:attribute name="componentPreDestroy" value="alert('Component destroyed! ' + component.id);" />  
+    <f:attribute name="clientPreConstruct" value="alert('Component initialized with config: ' + cfg.id);" />  
+    <f:attribute name="clientPostConstruct" value="alert('Component created with id: ' + component.id);" />  
+    <f:attribute name="clientPostRefresh" value="alert('Component refreshed! ' + component.id);" />  
+    <f:attribute name="clientPreDestroy" value="alert('Component destroyed! ' + component.id);" />  
 </p:inputText>
 ```

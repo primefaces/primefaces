@@ -58,7 +58,7 @@ class Diagram002Test extends AbstractPrimePageTest {
         assertTrue(diagram.isConnected("a-right", "b-left"));
         assertFalse(diagram.isConnected("a-bottom", "c-top"));
         assertEquals("1", page.connections.getText());
-        assertConfiguration(diagram.getWidgetConfiguration());
+        assertConfiguration(diagram.getClientConfiguration());
     }
 
     @Test
@@ -78,7 +78,7 @@ class Diagram002Test extends AbstractPrimePageTest {
         assertEquals("2", page.connections.getText());
         assertEquals(2, diagram.getConnectionCount());
         assertTrue(diagram.isConnected("a-bottom", "c-top"));
-        assertConfiguration(diagram.getWidgetConfiguration());
+        assertConfiguration(diagram.getClientConfiguration());
     }
 
     @Test
@@ -98,7 +98,7 @@ class Diagram002Test extends AbstractPrimePageTest {
         assertEquals("0", page.connections.getText());
         assertEquals(0, diagram.getConnectionCount());
         assertFalse(diagram.isConnected("a-right", "b-left"));
-        assertConfiguration(diagram.getWidgetConfiguration());
+        assertConfiguration(diagram.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

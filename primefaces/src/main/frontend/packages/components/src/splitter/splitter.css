@@ -1,7 +1,7 @@
 /*
  * Splitter: p:splitter (layout horizontal | vertical, nested splitters)
  *
- * The gutter size is set inline by the widget (gutterSize); .p-splitter-gutter-resizing / .p-splitter-resizing
+ * The gutter size is set inline by the component (gutterSize); .p-splitter-gutter-resizing / .p-splitter-resizing
  * are set while dragging.
  */
 

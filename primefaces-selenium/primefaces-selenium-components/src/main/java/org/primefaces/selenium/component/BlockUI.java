@@ -75,7 +75,7 @@ public abstract class BlockUI extends AbstractComponent {
      * @return true if blocking false if not
      */
     public boolean isBlocking() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isBlocking();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isBlocking();");
     }
 
     /**
@@ -84,14 +84,14 @@ public abstract class BlockUI extends AbstractComponent {
      * @return true if has content, false if not
      */
     public boolean hasContent() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".hasContent();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".hasContent();");
     }
 
     /**
      * Shows the blocker.
      */
     public void show() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
         List<WebElement> overlays = getOverlays();
         if (overlays.size() > 0) {
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(overlays.get(0)));
@@ -102,7 +102,7 @@ public abstract class BlockUI extends AbstractComponent {
      * Hides the blocker.
      */
     public void hide() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
         List<WebElement> overlays = getOverlays();
         if (overlays.size() > 0) {
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(overlays.get(0)));

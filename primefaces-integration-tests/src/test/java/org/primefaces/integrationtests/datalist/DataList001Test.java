@@ -61,7 +61,7 @@ class DataList001Test extends AbstractPrimePageTest {
         assertEquals(2, paginator.getPages().size());
         assertEquals(1, paginator.getActivePage().getNumber());
         assertTrue(page.messages.isEmpty());
-        assertConfiguration(dataList.getWidgetConfiguration());
+        assertConfiguration(dataList.getClientConfiguration());
     }
 
     @Test
@@ -86,7 +86,7 @@ class DataList001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(List.of("1 - Java", "2 - C#", "3 - JavaScript"), texts(dataList));
         assertEquals("Page:0 Rows:3", page.messages.getMessage(0).getDetail());
-        assertConfiguration(dataList.getWidgetConfiguration());
+        assertConfiguration(dataList.getClientConfiguration());
     }
 
     @Test
@@ -104,12 +104,12 @@ class DataList001Test extends AbstractPrimePageTest {
         assertEquals(List.of("4 - TypeScript", "5 - Python"), texts(dataList));
         assertEquals(2, dataList.getPaginator().getActivePage().getNumber());
 
-        // Act - the refreshed widget still pages
+        // Act - the refreshed component still pages
         dataList.selectPage(1);
 
         // Assert
         assertEquals(List.of("1 - Java", "2 - C#", "3 - JavaScript"), texts(dataList));
-        assertConfiguration(dataList.getWidgetConfiguration());
+        assertConfiguration(dataList.getClientConfiguration());
     }
 
     @Test
@@ -124,7 +124,7 @@ class DataList001Test extends AbstractPrimePageTest {
         WebElement first = dataList.getRowWebElement(0);
         assertEquals("dt", first.getTagName());
         assertEquals("First appeared: 1995", first.findElement(By.xpath("following-sibling::dd[1]")).getText());
-        assertFalse(dataList.getWidgetConfiguration().has("paginator"));
+        assertFalse(dataList.getClientConfiguration().has("paginator"));
         assertNoJavascriptErrors();
     }
 

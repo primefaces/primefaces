@@ -408,7 +408,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
             Promise.resolve(this._render()).then(() => {
                 this.postRender();
             }).catch((error) => {
-                PrimeFaces.error('Error rendering GMap widget: ' + (error.message || error));
+                PrimeFaces.error('Error rendering GMap component: ' + (error.message || error));
             });
         }
         else if (this.jq[0]) {
@@ -460,7 +460,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
 
         // Need to load Google Maps dynamically - check for API key
         if (!this.cfg.apiKey) {
-            return Promise.reject(new Error('Google Maps API key is required. Either load Google Maps statically via script tag, or provide apiKey in widget configuration.'));
+            return Promise.reject(new Error('Google Maps API key is required. Either load Google Maps statically via script tag, or provide the apiKey attribute.'));
         }
 
         // Load Google Maps using the dynamic library import bootstrap loader
@@ -608,7 +608,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
 
         // the info window is no component, only its ID is used; status and XHR are not needed
         PrimeFaces.ajax.Response.handle(responseXML, null as unknown as JQuery.Ajax.SuccessTextStatus, null as unknown as PrimeFacesTypes.ajax.pfXHR, {
-            widget: infoWindow as unknown as PrimeFacesTypes.Component<"BaseComponent">,
+            component: infoWindow as unknown as PrimeFacesTypes.Component<"BaseComponent">,
             handle: function(content) {
                 $this.cfg.infoWindowContent = content;
                 infoWindow.setContent('<div id="' + infoWindow.id + '_content">' + content + '</div>');

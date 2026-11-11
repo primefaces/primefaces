@@ -49,7 +49,7 @@ export interface BaseComponentCfg {
 
     /**
      * The client-side ID of the component, with all parent naming containers, such as
-     * `myForm:myWidget`. This is also the ID of the container HTML element for this component. In case the component needs
+     * `myForm:myComponent`. This is also the ID of the container HTML element for this component. In case the component needs
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
      */
     id: string | string[];
@@ -73,7 +73,7 @@ export interface BaseComponentCfg {
     /**
      * An optional callback that is invoked
      * before the component is created, at the start of the {@link BaseComponent.init | init} method. This is
-     * usually specified via the `componentPreConstruct` attribute on the Faces component. Note that this is also called
+     * usually specified via the `clientPreConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      */
     preConstruct: PrimeFacesTypes.component.PreConstructCallback;
@@ -81,7 +81,7 @@ export interface BaseComponentCfg {
     /**
      * An optional callback that is invoked
      * after this component was created successfully, at the end of the {@link BaseComponent.init | init} method. This is
-     * usually specified via the `componentPostConstruct` attribute on the Faces component. Note that this is also called
+     * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      */
     postConstruct: PrimeFacesTypes.component.PostConstructCallback;
@@ -89,7 +89,7 @@ export interface BaseComponentCfg {
     /**
      * An optional callback that is invoked after
      * this component was refreshed after an AJAX update, at the end of the {@link BaseComponent.refresh | refresh} method.
-     * This is usually specified via the `componentPostRefresh` attribute on the Faces component.
+     * This is usually specified via the `clientPostRefresh` attribute on the Faces component.
      */
     postRefresh: PrimeFacesTypes.component.PostRefreshCallback;
 
@@ -97,7 +97,7 @@ export interface BaseComponentCfg {
      * An optional callback that is invoked before
      * this component is about to be destroyed, e.g., when the component was removed at the end of an AJAX update. This is
      * called at the beginning of the {@link BaseComponent.destroy | destroy} method. This is usually specified via the
-     * `componentPreDestroy` attribute on the Faces component.
+     * `clientPreDestroy` attribute on the Faces component.
      */
     preDestroy: PrimeFacesTypes.component.PreDestroyCallback;
 
@@ -142,7 +142,7 @@ export interface DeferredComponentCfg extends BaseComponentCfg {
  * appropriate subclass in the following manner:
  *
  * ```js
- * class MyWidget extends PrimeFaces.component.BaseComponent {
+ * class MyComponent extends PrimeFaces.component.BaseComponent {
  *
  *   init(cfg) {
  *     super.init(cfg);
@@ -188,7 +188,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
 
     /**
      * The client-side ID of this component, with all parent naming containers, such as
-     * `myForm:myWidget`. This is also the ID of the container HTML element for this component. In case the component needs
+     * `myForm:myComponent`. This is also the ID of the container HTML element for this component. In case the component needs
      * multiple container elements (such as `Paginator`), this may also be an array if IDs.
      */
     id: string | string[] = "";
@@ -246,7 +246,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * Please make sure to call the super method first before adding your own custom logic to the init method:
      *
      * ```javascript
-     * class MyWidget extends PrimeFaces.component.BaseComponent {
+     * class MyComponent extends PrimeFaces.component.BaseComponent {
      *   init: function(cfg) {
      *     super.init(cfg);
      *     // custom initialization
@@ -314,7 +314,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @returns The event type with the namespace of this component.
      */
     private lifecycleNamespace(): string {
-        return "remove.pfwidget_" + String(this.widgetVar).replace(/\./g, "_");
+        return "remove.pfcomponent_" + String(this.widgetVar).replace(/\./g, "_");
     }
 
     /**
@@ -367,7 +367,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
             this.cfg.preDestroy.call(this, this, this);
         }
 
-        core.debug("Destroyed detached widget: " + this.widgetVar);
+        core.debug("Destroyed detached component: " + this.widgetVar);
 
         if (this.destroyListeners) {
             for (const destroyListener of this.destroyListeners) {
@@ -792,7 +792,7 @@ export class DynamicOverlayComponent<Cfg extends DynamicOverlayComponentCfg = Dy
  * throws an error.
  *
  * ```javascript
- * class MyWidget extends PrimeFaces.component.DeferredComponent {
+ * class MyComponent extends PrimeFaces.component.DeferredComponent {
  *   init(cfg) {
  *     super.init(cfg);
  *

@@ -58,7 +58,7 @@ public abstract class Schedule extends AbstractComponent {
      * Updates and refreshes the schedule view refetching all events
      */
     public void update() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".update();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".update();");
     }
 
     public WebElement getTodayButton() {
@@ -162,13 +162,13 @@ public abstract class Schedule extends AbstractComponent {
     }
 
     /**
-     * Selects (clicks) an event, guarded if the {@code eventSelect} AJAX behavior is attached. Waits until the widget's double-click
+     * Selects (clicks) an event, guarded if the {@code eventSelect} AJAX behavior is attached. Waits until the component's double-click
      * window (500 ms after the previous event click) is over first, otherwise the click is handled as {@code eventDblSelect}.
      *
      * @param event the event element, see {@link #getEventElements()}
      */
     public void selectEvent(WebElement event) {
-        PrimeSelenium.waitGui().until(d -> Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".doubleClick == null;")));
+        PrimeSelenium.waitGui().until(d -> Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getClientComponentScript() + ".doubleClick == null;")));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(event));
 
         // events with a URL open it instead of firing eventSelect

@@ -280,7 +280,7 @@ declare global {
          * are not rendered until they have become visible. A component may not be visible, for example, when it is inside a
          * tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for components to render
          * once they are visible. This is done by keeping a list of components that need to be rendered, and checking on every
-         * change (AJAX request, tab change etc.) whether any of those have become visible. A components should extend
+         * change (AJAX request, tab change etc.) whether any of those have become visible. Components should extend
          * `PrimeFaces.component.DeferredComponent` to make use of this functionality.
          */
         export interface DeferredRender {
@@ -298,7 +298,7 @@ declare global {
             /**
              * The ID of a deferred component.
              */
-            widget: string | string[];
+            componentId: string | string[];
         }
 
         export interface PFSettings {
@@ -439,11 +439,17 @@ declare global {
          * messages are rendered.
          * 
          * Default implementations are provided for rendering messages into the
-         * message, messages, and growl component.
+         * message, messages and growl components.
          */
         export interface MessageRender {
+            /**
+             * Clears the messages of the given message, messages or growl component.
+             */
             clearMessagesForComponent?: (component: BaseComponent) => void;
 
+            /**
+             * Renders the given messages into the given message, messages or growl component.
+             */
             renderMessageForComponent?: (component: BaseComponent, messages: PrimeFacesTypes.FacesMessage[]) => void;
 
             /**
@@ -1010,14 +1016,18 @@ declare global {
         /**
          * The response of an AJAX request may contain one or more actions such as executing scripts or updating DOM nodes.
          * This interface represents a handler for an `update` action.
-         * @typeParam TWidget Type of the component which
+         * @typeParam Component Type of the component which
          * triggered the AJAX request.
          */
         export interface UpdateHandler<Component extends BaseComponent = BaseComponent> {
             /**
              * The component which triggered the AJAX request.
              */
-            widget: Component;
+            component?: Component;
+            /**
+             * @deprecated Use {@link component} instead.
+             */
+            widget?: Component;
             /**
              * The handle function which is given the HTML string of the update
              * @param content The new HTML content from the update.
@@ -1739,7 +1749,7 @@ declare global {
          * A refresh listener for a PrimeFaces component. It is invoked when the
          * component is reloaded, such as during AJAX updates. Use {@link BaseComponent.addRefreshListener} to add a refresh
          * listener.
-         * @typeParam TWidget The type of the component that is being refreshed.
+         * @typeParam Component The type of the component that is being refreshed.
          */
         export type RefreshListener<Component> =
             /**
@@ -1749,7 +1759,7 @@ declare global {
 
         /**
          * A callback for a PrimeFaces component. An optional callback that is invoked before a component is created, at the
-         * beginning of the {@link BaseComponent.init | init} method. This is usually specified via the `componentPreConstruct`
+         * beginning of the {@link BaseComponent.init | init} method. This is usually specified via the `clientPreConstruct`
          * attribute on the Faces component.
          * @param The component configuration.
          */
@@ -1762,7 +1772,7 @@ declare global {
         /**
          * An optional callback that is invoked before a component is about to be
          * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
-         * of the {@link BaseComponent.destroy | destroy} method. This is usually specified via the `componentPreDestroy`
+         * of the {@link BaseComponent.destroy | destroy} method. This is usually specified via the `clientPreDestroy`
          * attribute on the Faces component.
          */
         export type PreDestroyCallback =
@@ -1775,7 +1785,7 @@ declare global {
         /**
          * An optional callback that is invoked after a component was refreshed
          * after an AJAX update, at the end of the {@link BaseComponent.refresh | refresh} method. This is usually specified
-         * via the `componentPostRefresh` attribute on the Faces component.
+         * via the `clientPostRefresh` attribute on the Faces component.
          */
         export type PostRefreshCallback =
             /**
@@ -1787,7 +1797,7 @@ declare global {
         /**
          * A callback for a PrimeFaces component. An optional callback that is
          * invoked after a component was created successfully, at the end of the {@link BaseComponent.init | init} method. This is
-         * usually specified via the `componentPostConstruct` attribute on the Faces component. Note that this is also called
+         * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
          * during a `refresh` (AJAX update).
          */
         export type PostConstructCallback =
@@ -2357,7 +2367,7 @@ declare global {
              * messages are rendered.
              * 
              * Default implementations are provided for rendering messages into the
-             * message, messages, and growl component.
+             * message, messages and growl components.
              */
             messageRender: hook.MessageRender;
 

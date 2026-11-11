@@ -51,9 +51,9 @@ class InputNumber001Test extends AbstractPrimePageTest {
         inputNumber.setValue("33");
 
         // Assert
-        assertEquals("33", inputNumber.getWidgetValue());
+        assertEquals("33", inputNumber.getClientValue());
         assertEquals("33", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     @Test
@@ -70,13 +70,13 @@ class InputNumber001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("99", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("InputNumber: Test widget getValue() function returns Integer values with the correct format")
-    void integerWidgetValue(Page page) {
+    @DisplayName("InputNumber: Test component getValue() function returns Integer values with the correct format")
+    void integerComponentValue(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
         assertEquals("50", inputNumber.getValue());
@@ -85,8 +85,8 @@ class InputNumber001Test extends AbstractPrimePageTest {
         inputNumber.setValue("42");
 
         // Assert
-        assertEquals("42", inputNumber.getWidgetValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertEquals("42", inputNumber.getClientValue());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

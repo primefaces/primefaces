@@ -3,7 +3,7 @@
  */
 /*
  * p-hidden-accessible: visually hidden, but still focusable and read by screen readers (the native inputs behind the
- * checkbox, radio, select, ... widgets).
+ * checkbox, radio, select, ... components).
  */
 .p-hidden-accessible {
     border: 0;

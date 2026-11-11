@@ -62,10 +62,10 @@ class AutoComplete007Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(0, getPanels().size());
-        assertEquals(0L, getWidgetPanelLength());
+        assertEquals(0L, getComponentPanelLength());
         assertNoJavascriptErrors();
 
-        // Act - query the refreshed widget
+        // Act - query the refreshed component
         autoComplete.search("new");
 
         // Assert - the new panel works and can be hidden
@@ -75,7 +75,7 @@ class AutoComplete007Test extends AbstractPrimePageTest {
                 autoComplete.getItemValues());
         autoComplete.hide();
         assertNotDisplayed(PANEL);
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -85,14 +85,14 @@ class AutoComplete007Test extends AbstractPrimePageTest {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
         assertEquals(0, getPanels().size());
-        assertEquals(0L, getWidgetPanelLength());
+        assertEquals(0L, getComponentPanelLength());
 
         // Act
         PrimeSelenium.executeScript(true, "refreshAutocomplete()");
 
         // Assert
         assertEquals(0, getPanels().size());
-        assertEquals(0L, getWidgetPanelLength());
+        assertEquals(0L, getComponentPanelLength());
 
         // Act - load the panel after refresh
         autoComplete.search("test");
@@ -101,14 +101,14 @@ class AutoComplete007Test extends AbstractPrimePageTest {
         assertEquals(1, getPanels().size());
         assertDisplayed(autoComplete.getPanel());
         assertEquals(10, autoComplete.getItemValues().size());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     private List<WebElement> getPanels() {
         return getWebDriver().findElements(PANEL);
     }
 
-    private Long getWidgetPanelLength() {
+    private Long getComponentPanelLength() {
         return PrimeSelenium.executeScript("return PF('autocomplete').panel.length");
     }
 

@@ -75,7 +75,7 @@ class ColumnToggler001Test extends AbstractPrimePageTest {
         assertEquals("false", toggler.getTrigger().getDomAttribute("aria-expanded"));
         assertEquals("Toggler Closed", page.messages.getMessage(0).getSummary());
         assertEquals("langId,name,year", page.messages.getMessage(0).getDetail());
-        assertConfiguration(toggler.getWidgetConfiguration());
+        assertConfiguration(toggler.getClientConfiguration());
     }
 
     @Test
@@ -124,7 +124,7 @@ class ColumnToggler001Test extends AbstractPrimePageTest {
         assertFalse(toggler.isChecked("ID"));
         assertFalse(toggler.isSelectAllChecked());
         assertColumnVisible(dataTable, 0, false);
-        assertConfiguration(toggler.getWidgetConfiguration());
+        assertConfiguration(toggler.getClientConfiguration());
     }
 
     @Test
@@ -152,13 +152,13 @@ class ColumnToggler001Test extends AbstractPrimePageTest {
         assertFalse(toggler.isChecked("Name"));
         assertTrue(toggler.isChecked("ID"));
 
-        // Act - the refreshed widget still toggles
+        // Act - the refreshed component still toggles
         toggler.check("Name");
 
         // Assert
         assertColumnVisible(dataTable, 1, true);
         assertEquals("Name VISIBLE 1", page.messages.getMessage(0).getDetail());
-        assertConfiguration(toggler.getWidgetConfiguration());
+        assertConfiguration(toggler.getClientConfiguration());
     }
 
     @Test
@@ -192,7 +192,7 @@ class ColumnToggler001Test extends AbstractPrimePageTest {
             assertColumnVisible(dataTable, i, false);
         }
         assertEquals("Column Toggled", page.messages.getMessage(0).getSummary());
-        assertConfiguration(toggler.getWidgetConfiguration());
+        assertConfiguration(toggler.getClientConfiguration());
     }
 
     private void assertColumnVisible(DataTable dataTable, int index, boolean visible) {

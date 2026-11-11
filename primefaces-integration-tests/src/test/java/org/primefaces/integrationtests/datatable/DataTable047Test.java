@@ -42,8 +42,8 @@ class DataTable047Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: frozen column JavaScript widget")
-    public void testFrozenColumnsJavaScriptWidget(Page page) {
+    @DisplayName("DataTable: frozen column client API")
+    public void testFrozenColumnsJavaScriptComponent(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         SelectBooleanButton button = page.frozenColumnToggleButton;

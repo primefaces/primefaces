@@ -58,7 +58,7 @@ public abstract class Chart extends AbstractComponent {
      * @return true if the chart is rendered
      */
     public boolean isRendered() {
-        return Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".chart != null;"));
+        return Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getClientComponentScript() + ".chart != null;"));
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class Chart extends AbstractComponent {
      * @return the type like {@code bar} or {@code line}
      */
     public String getType() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".chart.config.type;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".chart.config.type;");
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class Chart extends AbstractComponent {
      * @return the labels
      */
     public List<String> getLabels() {
-        List<Object> labels = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".chart.data.labels;");
+        List<Object> labels = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".chart.data.labels;");
         return labels.stream().map(String::valueOf).collect(Collectors.toList());
     }
 
@@ -86,7 +86,7 @@ public abstract class Chart extends AbstractComponent {
      * @return the number of datasets
      */
     public int getDatasetCount() {
-        Number count = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".chart.data.datasets.length;");
+        Number count = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".chart.data.datasets.length;");
         return count.intValue();
     }
 
@@ -108,7 +108,7 @@ public abstract class Chart extends AbstractComponent {
      */
     public void selectItem(int datasetIndex, int index) {
         WebElement canvasElement = getCanvas();
-        List<Object> offset = PrimeSelenium.executeScript("var chart = " + getWidgetByIdScript() + ".chart;"
+        List<Object> offset = PrimeSelenium.executeScript("var chart = " + getClientComponentScript() + ".chart;"
                     + "var point = chart.getDatasetMeta(arguments[0]).data[arguments[1]].getCenterPoint(true);"
                     + "var rect = arguments[2].getBoundingClientRect();"
                     + "return [point.x - rect.width / 2, point.y - rect.height / 2];",
@@ -132,6 +132,6 @@ public abstract class Chart extends AbstractComponent {
      * @return the data URL of the image, like {@code data:image/png;base64,...}
      */
     public String exportAsImage() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".exportAsImage().src;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".exportAsImage().src;");
     }
 }

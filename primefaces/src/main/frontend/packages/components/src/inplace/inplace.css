@@ -1,7 +1,7 @@
 /*
  * Inplace: p:inplace
  *
- * States of .p-inplace-display: p-state-highlight (hover, set by the widget), p-state-focus
+ * States of .p-inplace-display: p-state-highlight (hover, set by the component), p-state-focus
  * Editor mode: .p-inplace-content followed by the save / cancel buttons (.p-inplace-editor)
  */
 

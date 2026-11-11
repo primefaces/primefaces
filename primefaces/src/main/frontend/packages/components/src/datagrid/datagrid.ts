@@ -62,7 +62,7 @@ export class DataGrid<Cfg extends DataGridCfg = DataGridCfg> extends PrimeFaces.
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.content.html(content);
                     }

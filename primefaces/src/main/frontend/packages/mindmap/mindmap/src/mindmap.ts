@@ -379,7 +379,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
                 ],
                 onsuccess: (responseXML, status, xhr) => {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             const nodeModel = JSON.parse(content);
 

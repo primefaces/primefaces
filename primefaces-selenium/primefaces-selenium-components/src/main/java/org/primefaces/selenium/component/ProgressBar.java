@@ -65,7 +65,7 @@ public abstract class ProgressBar extends AbstractComponent {
      * @param value the new value
      */
     public void setValue(int value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".setValue(" + value + ");");
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class ProgressBar extends AbstractComponent {
      * @return true in AJAX mode
      */
     public boolean isAjax() {
-        return getWidgetConfiguration().optBoolean("ajax", false);
+        return getClientConfiguration().optBoolean("ajax", false);
     }
 
     /**
@@ -90,14 +90,14 @@ public abstract class ProgressBar extends AbstractComponent {
      * Starts polling the value in AJAX mode.
      */
     public void start() {
-        PrimeSelenium.executeScript(isStartAjaxified(), getWidgetByIdScript() + ".start();");
+        PrimeSelenium.executeScript(isStartAjaxified(), getClientComponentScript() + ".start();");
     }
 
     /**
      * Stops polling and resets the value to 0.
      */
     public void cancel() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".cancel();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".cancel();");
     }
 
     /**

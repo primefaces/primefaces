@@ -185,7 +185,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
                 ],
                 onsuccess: (responseXML, status, xhr) => {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             const nodeChildrenContainer = this.getNodeChildrenContainer(node);
                             nodeChildrenContainer.append(content);

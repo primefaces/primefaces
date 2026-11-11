@@ -56,7 +56,7 @@ class Timeline001Test extends AbstractPrimePageTest {
         // Assert
         long eventCount = timeline.getNumberOfEvents();
         assertEquals(15, eventCount);
-        assertConfiguration(timeline.getWidgetConfiguration());
+        assertConfiguration(timeline.getClientConfiguration());
     }
 
     @Test
@@ -72,7 +72,7 @@ class Timeline001Test extends AbstractPrimePageTest {
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
         assertTrue(page.messages.getMessage(0).getSummary().contains("Selected event:"));
-        assertConfiguration(timeline.getWidgetConfiguration());
+        assertConfiguration(timeline.getClientConfiguration());
     }
 
     @Test
@@ -136,7 +136,7 @@ class Timeline001Test extends AbstractPrimePageTest {
         Msg message = page.messages.getMessage(0);
         assertEquals(detail, message.getSummary());
         assertTrue(message.getDetail().contains(summary));
-        assertConfiguration(page.timeline.getWidgetConfiguration());
+        assertConfiguration(page.timeline.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

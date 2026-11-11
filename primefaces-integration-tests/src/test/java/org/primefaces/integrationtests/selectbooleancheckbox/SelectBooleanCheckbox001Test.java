@@ -49,7 +49,7 @@ class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(checkbox.getValue());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -63,7 +63,7 @@ class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(checkbox.getValue());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -78,7 +78,7 @@ class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(checkbox.getValue());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -93,7 +93,7 @@ class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(checkbox.getValue());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -108,7 +108,7 @@ class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(checkbox.getValue());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -56,7 +56,7 @@ public abstract class Fieldset extends AbstractComponent {
      * @return true if toggleable
      */
     public boolean isToggleable() {
-        return getWidgetConfiguration().optBoolean("toggleable", false);
+        return getClientConfiguration().optBoolean("toggleable", false);
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class Fieldset extends AbstractComponent {
     }
 
     private boolean isContentLoadPending() {
-        return isCollapsed() && getWidgetConfiguration().optBoolean("dynamic", false)
-                    && !Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".loaded;"));
+        return isCollapsed() && getClientConfiguration().optBoolean("dynamic", false)
+                    && !Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getClientComponentScript() + ".loaded;"));
     }
 }

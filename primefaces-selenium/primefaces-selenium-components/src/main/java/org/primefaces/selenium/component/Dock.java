@@ -45,7 +45,7 @@ public abstract class Dock extends AbstractComponent {
      * @return "bottom" or "top"
      */
     public String getPosition() {
-        return getWidgetConfiguration().optString("position", "bottom");
+        return getClientConfiguration().optString("position", "bottom");
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Dock extends AbstractComponent {
      * @return "left", "center" or "right"
      */
     public String getHalign() {
-        return getWidgetConfiguration().optString("halign", "center");
+        return getClientConfiguration().optString("halign", "center");
     }
 
     /**

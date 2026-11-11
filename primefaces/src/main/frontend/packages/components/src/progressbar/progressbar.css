@@ -65,7 +65,7 @@
 }
 
 .p-progressbar-determinate {
-    /* width is animated by the widget (jQuery), so no CSS transition here */
+    /* width is animated by the component (jQuery), so no CSS transition here */
     .p-progressbar-value {
         height: 100%;
         width: 0%;

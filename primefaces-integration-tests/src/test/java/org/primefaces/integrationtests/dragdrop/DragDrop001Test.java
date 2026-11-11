@@ -62,8 +62,8 @@ class DragDrop001Test extends AbstractPrimePageTest {
         assertEquals("1", page.dropCount.getText());
         // dropped on a droppable, so it does not revert
         assertCenterInside(accepted, droppable.getTarget());
-        assertConfiguration(droppable.getWidgetConfiguration());
-        assertTrue(page.dragAccepted.getWidgetConfiguration().has("revert"));
+        assertConfiguration(droppable.getClientConfiguration());
+        assertTrue(page.dragAccepted.getClientConfiguration().has("revert"));
     }
 
     @Test
@@ -81,7 +81,7 @@ class DragDrop001Test extends AbstractPrimePageTest {
         assertEquals(location, accepted.getLocation());
         assertTrue(page.messages.isEmpty());
         assertEquals("0", page.dropCount.getText());
-        assertConfiguration(page.droppable.getWidgetConfiguration());
+        assertConfiguration(page.droppable.getClientConfiguration());
     }
 
     @Test
@@ -101,7 +101,7 @@ class DragDrop001Test extends AbstractPrimePageTest {
         assertEquals(location, rejected.getLocation());
         assertTrue(page.messages.isEmpty());
         assertEquals("0", page.dropCount.getText());
-        assertConfiguration(droppable.getWidgetConfiguration());
+        assertConfiguration(droppable.getClientConfiguration());
     }
 
     @Test
@@ -111,7 +111,7 @@ class DragDrop001Test extends AbstractPrimePageTest {
         // Arrange
         WebElement horizontal = page.dragHorizontal.getTarget();
         Point location = horizontal.getLocation();
-        assertEquals("x", page.dragHorizontal.getWidgetConfiguration().getString("axis"));
+        assertEquals("x", page.dragHorizontal.getClientConfiguration().getString("axis"));
 
         // Act
         page.dragHorizontal.dragBy(100, 80);

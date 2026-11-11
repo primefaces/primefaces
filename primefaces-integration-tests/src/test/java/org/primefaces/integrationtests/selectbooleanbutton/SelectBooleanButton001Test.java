@@ -58,7 +58,7 @@ class SelectBooleanButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("SelectBooleanButton: Use toggle() widget API to select switch")
+    @DisplayName("SelectBooleanButton: Use toggle() client API to select switch")
     void toggleTrue(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
@@ -73,7 +73,7 @@ class SelectBooleanButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("SelectBooleanButton: Use toggle() widget API to de-select switch")
+    @DisplayName("SelectBooleanButton: Use toggle() client API to de-select switch")
     void toggleFalse(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
@@ -89,7 +89,7 @@ class SelectBooleanButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(4)
-    @DisplayName("SelectBooleanButton: Use uncheck() widget API to de-select switch")
+    @DisplayName("SelectBooleanButton: Use uncheck() client API to de-select switch")
     void uncheck(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
@@ -105,7 +105,7 @@ class SelectBooleanButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(5)
-    @DisplayName("SelectBooleanButton: Use check() widget API to select switch")
+    @DisplayName("SelectBooleanButton: Use check() client API to select switch")
     void check(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
@@ -170,7 +170,7 @@ class SelectBooleanButton001Test extends AbstractPrimePageTest {
         Msg message = page.messages.getMessage(0);
         assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
         assertEquals(checked ? "Yes" : "No", selectBooleanButton.getLabel());
-        assertConfiguration(selectBooleanButton.getWidgetConfiguration());
+        assertConfiguration(selectBooleanButton.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

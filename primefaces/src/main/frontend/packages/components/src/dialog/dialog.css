@@ -212,7 +212,7 @@ body.p-dialog-open {
         }
     }
 
-    /* maximized: the widget sizes the container to the window, the box follows it (!important beats the inline size) */
+    /* maximized: the component sizes the container to the window, the box follows it (!important beats the inline size) */
     &.p-dialog-maximized {
         padding: 0;
 

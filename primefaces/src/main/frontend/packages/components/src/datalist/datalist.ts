@@ -63,7 +63,7 @@ export class DataList<Cfg extends DataListCfg = DataListCfg> extends PrimeFaces.
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.content.html(content);
                     }

@@ -195,14 +195,14 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
      * Applies the current values of all filters (column and global filters), which always fires an AJAX request.
      */
     public void applyFilters() {
-        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".filter();");
+        PrimeSelenium.executeScript(true, getClientComponentScript() + ".filter();");
     }
 
     /**
      * Clears all filters (column and global filters) and re-filters, which always fires an AJAX request.
      */
     public void clearFilters() {
-        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".clearFilters();");
+        PrimeSelenium.executeScript(true, getClientComponentScript() + ".clearFilters();");
     }
 
     /**
@@ -250,13 +250,13 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     }
 
     /**
-     * Filter using the widget configuration for "filterDelay" and "filterEvent".
+     * Filter using the client configuration for "filterDelay" and "filterEvent".
      *
      * @param cell the cell to filter
      * @param filterValue the value to pass to the filter.
      */
     private void filter(HeaderCell cell, String filterValue) {
-        JSONObject cfg = getWidgetConfiguration();
+        JSONObject cfg = getClientConfiguration();
         if (filterValue != null && filterValue.isEmpty()) {
             filterValue = null;
         }

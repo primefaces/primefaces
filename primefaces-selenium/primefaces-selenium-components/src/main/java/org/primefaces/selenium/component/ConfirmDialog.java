@@ -70,7 +70,7 @@ public abstract class ConfirmDialog extends Dialog {
      * For a non-global dialog the yes button is a command of the page: it guards its own request, hiding the dialog is up to the page.
      */
     public void confirm() {
-        if (!getWidgetConfiguration().optBoolean("global", false)) {
+        if (!getClientConfiguration().optBoolean("global", false)) {
             getYesButton().click();
         }
         else {

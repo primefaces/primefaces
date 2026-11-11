@@ -1338,7 +1338,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
                 { name: this.id + '_encodeFeature', value: true }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.container.html(content);
                     }

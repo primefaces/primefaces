@@ -89,18 +89,18 @@ public abstract class Tree extends AbstractComponent {
     }
 
     /**
-     * Filters the tree using the widget configuration for "filterEvent", which always fires an AJAX request.
+     * Filters the tree using the client configuration for "filterEvent", which always fires an AJAX request.
      *
      * @param value the filter value, {@code null} or empty to remove the filter
      */
     public void filter(String value) {
         WebElement input = getFilterInput();
-        String filterEvent = getWidgetConfiguration().optString("filterEvent", "keyup").toLowerCase(Locale.ROOT);
+        String filterEvent = getClientConfiguration().optString("filterEvent", "keyup").toLowerCase(Locale.ROOT);
         CharSequence keys = (value == null || value.isEmpty()) ? Keys.BACK_SPACE : value;
         switch (filterEvent) {
             case "enter":
             case "keydown":
-                // the widget turns filterEvent="enter" into "keydown" (filtering on ENTER only), so the runtime config
+                // the client component turns filterEvent="enter" into "keydown" (filtering on ENTER only), so the runtime config
                 // can't tell both apart: with "enter" the ENTER fires the request, with "keydown" the typed value
                 // fires the debounced request while ENTER is ignored
                 input.clear();

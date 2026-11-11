@@ -51,7 +51,7 @@ class Button001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("Button: disable and enable via widget")
+    @DisplayName("Button: disable and enable via client API")
     void disableEnable(Page page) {
         // Act
         page.button.disable();

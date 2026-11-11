@@ -1,5 +1,5 @@
 /*
- * Hidden: p-hidden (set by the widgets on elements they show later, e.g. with fadeIn()) and
+ * Hidden: p-hidden (set by the components on elements they show later, e.g. with fadeIn()) and
  * p-overlay-hidden (overlays that are rendered but not shown yet, e.g. measured or loaded by the dialog framework).
  * In the behaviors layer, so they beat every display / visibility of the component CSS regardless of specificity
  * (without !important, so application CSS still wins); inline styles of jQuery show() / fadeIn() win as well.

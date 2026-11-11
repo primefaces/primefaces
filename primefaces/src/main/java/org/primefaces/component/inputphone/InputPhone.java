@@ -112,7 +112,7 @@ public class InputPhone extends InputPhoneBaseImpl {
 
     /**
      * @param context the {@link FacesContext}
-     * @return whether the widget looks up the country with geoIpLookup: initialCountry is "auto" and no country was
+     * @return whether the client side component looks up the country with geoIpLookup: initialCountry is "auto" and no country was
      *         submitted
      */
     public boolean isGeoIpLookupRequired(FacesContext context) {

@@ -55,7 +55,7 @@ class Mindmap001Test extends AbstractPrimePageTest {
         assertEquals("text", mindmap.getNode("A").getTagName());
         assertTrue(mindmap.isSelectAjaxified());
         assertTrue(mindmap.isDblselectAjaxified());
-        assertConfiguration(mindmap.getWidgetConfiguration());
+        assertConfiguration(mindmap.getClientConfiguration());
     }
 
     @Test
@@ -81,7 +81,7 @@ class Mindmap001Test extends AbstractPrimePageTest {
         assertEquals("Root", page.messages.getMessage(0).getDetail());
         assertEquals("Root", mindmap.getCenterNodeLabel());
         assertEquals(List.of("Root", "A", "B", "C", SPECIAL_LABEL), mindmap.getNodeLabels());
-        assertConfiguration(mindmap.getWidgetConfiguration());
+        assertConfiguration(mindmap.getClientConfiguration());
     }
 
     @Test
@@ -99,7 +99,7 @@ class Mindmap001Test extends AbstractPrimePageTest {
         assertEquals("B", page.messages.getMessage(0).getDetail());
         assertEquals("Root", mindmap.getCenterNodeLabel());
         assertEquals(List.of("Root", "A", "B", "C", SPECIAL_LABEL), mindmap.getNodeLabels());
-        assertConfiguration(mindmap.getWidgetConfiguration());
+        assertConfiguration(mindmap.getClientConfiguration());
     }
 
     @Test
@@ -119,7 +119,7 @@ class Mindmap001Test extends AbstractPrimePageTest {
         assertEquals(SPECIAL_LABEL, page.messages.getMessage(0).getDetail());
         assertEquals(SPECIAL_LABEL, mindmap.getCenterNodeLabel());
         assertEquals(List.of(SPECIAL_LABEL, "Root"), mindmap.getNodeLabels());
-        assertConfiguration(mindmap.getWidgetConfiguration());
+        assertConfiguration(mindmap.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

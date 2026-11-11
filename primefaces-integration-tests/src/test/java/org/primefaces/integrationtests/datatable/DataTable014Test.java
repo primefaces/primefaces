@@ -81,7 +81,7 @@ class DataTable014Test extends AbstractDataTableTest {
         // Assert
         assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "p-sticky"));
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

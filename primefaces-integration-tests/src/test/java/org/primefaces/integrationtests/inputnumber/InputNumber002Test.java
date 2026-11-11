@@ -52,7 +52,7 @@ class InputNumber002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("88.76", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -77,7 +77,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
@@ -88,7 +88,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }
@@ -159,9 +159,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
      * @return
      */
     public List<String> getLabels() {
-        JSONObject widgetConfiguration = getWidgetConfiguration();
+        JSONObject clientConfiguration = getClientConfiguration();
 
-        if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
+        if (clientConfiguration.has("filter") && clientConfiguration.getBoolean("filter")) {
             show(); //listElt.isDisplayed only works when panel is visible
 
             return getItems().findElements(By.cssSelector("li.p-selectonemenu-item")).stream()
@@ -315,6 +315,6 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public boolean isEditable() {
-        return getWidgetConfiguration().optBoolean("editable");
+        return getClientConfiguration().optBoolean("editable");
     }
 }

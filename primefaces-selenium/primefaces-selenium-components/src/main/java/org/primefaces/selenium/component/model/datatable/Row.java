@@ -172,7 +172,7 @@ public class Row {
     public void startEdit() {
         WebElement pencil = getRowEditorPencil();
         boolean ajaxified = hasTableBehavior("rowEditInit")
-                || (table != null && "lazy".equals(table.getWidgetConfiguration().optString("rowEditMode")));
+                || (table != null && "lazy".equals(table.getClientConfiguration().optString("rowEditMode")));
         if (ajaxified) {
             PrimeSelenium.guardAjax(pencil).click();
         }

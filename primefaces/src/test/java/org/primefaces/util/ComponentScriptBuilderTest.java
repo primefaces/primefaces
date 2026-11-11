@@ -224,8 +224,8 @@ class ComponentScriptBuilderTest {
         when(panel.resolveWidgetVar(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
         Map<String, Object> attributes = new LinkedHashMap<>();
-        attributes.put("componentPreConstruct", "a()");
-        attributes.put("componentPostConstruct", "b()");
+        attributes.put("clientPreConstruct", "a()");
+        attributes.put("clientPostConstruct", "b()");
         attributes.put("widgetPostConstruct", "ignored()");
         attributes.put("widgetPostRefresh", "c()");
         attributes.put("widgetPreDestroy", "d()");

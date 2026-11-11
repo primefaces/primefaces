@@ -60,9 +60,9 @@ class TriStateCheckbox002Test extends AbstractPrimePageTest {
         assertEquals(null, triStateConstantNull.getValue());
         assertEquals(Boolean.TRUE, triStateConstantTrue.getValue());
         assertEquals(Boolean.FALSE, triStateConstantFalse.getValue());
-        assertConfiguration(triStateConstantNull.getWidgetConfiguration());
-        assertConfiguration(triStateConstantTrue.getWidgetConfiguration());
-        assertConfiguration(triStateConstantFalse.getWidgetConfiguration());
+        assertConfiguration(triStateConstantNull.getClientConfiguration());
+        assertConfiguration(triStateConstantTrue.getClientConfiguration());
+        assertConfiguration(triStateConstantFalse.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

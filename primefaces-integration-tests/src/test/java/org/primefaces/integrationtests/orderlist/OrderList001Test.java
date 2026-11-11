@@ -86,7 +86,7 @@ class OrderList001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(Collections.singletonList("Java"), orderList.getSelectedValues());
         assertEquals(LANGUAGES, orderList.getItemValues());
-        assertConfiguration(orderList.getWidgetConfiguration());
+        assertConfiguration(orderList.getClientConfiguration());
     }
 
     @Test
@@ -121,7 +121,7 @@ class OrderList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(expected, orderList.getItemValues());
-        assertConfiguration(orderList.getWidgetConfiguration());
+        assertConfiguration(orderList.getClientConfiguration());
     }
 
     @Test
@@ -156,13 +156,13 @@ class OrderList001Test extends AbstractPrimePageTest {
         assertEquals(expected, orderList.getItemValues());
         assertTrue(orderList.getSelectedValues().isEmpty());
 
-        // Act - the updated widget still reorders
+        // Act - the updated component still reorders
         orderList.select("C#");
         orderList.moveTop();
 
         // Assert
         assertEquals(Arrays.asList("C#", "JavaScript", "TypeScript", "Python", "Java"), orderList.getItemValues());
-        assertConfiguration(orderList.getWidgetConfiguration());
+        assertConfiguration(orderList.getClientConfiguration());
     }
 
     @Test
@@ -173,7 +173,7 @@ class OrderList001Test extends AbstractPrimePageTest {
         OrderList orderList = page.disabled;
         assertTrue(orderList.isDisabled());
 
-        // Act - the mouse cannot reach the items (pointer-events: none), so trigger the mousedown the widget selects on
+        // Act - the mouse cannot reach the items (pointer-events: none), so trigger the mousedown the component selects on
         // by script: a disabled orderlist must not have bound it
         PrimeSelenium.executeScript("jQuery(arguments[0]).trigger('mousedown');", orderList.getItem("Java"));
 

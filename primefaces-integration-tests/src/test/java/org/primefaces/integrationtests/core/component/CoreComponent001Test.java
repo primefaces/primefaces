@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
@@ -44,16 +44,16 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class CoreWidget001Test extends AbstractWidgetLifecycleTest {
+class CoreComponent001Test extends AbstractComponentLifecycleTest {
 
-    /** The widgets with markup, the script-only widgets (p:draggable, ...) live with their target. */
-    private static final String[] WIDGETS = {
+    /** The components with markup, the script-only components (p:draggable, ...) live with their target. */
+    private static final String[] COMPONENTS = {
         "form:orderList", "form:pickList", "form:dataTable", "form:tree", "form:dashboard", "form:dlg"
     };
 
     @Test
     @Order(1)
-    @DisplayName("Widget lifecycle: AJAX updates keep the interactions and don't leak global state")
+    @DisplayName("Component lifecycle: AJAX updates keep the interactions and don't leak global state")
     void update(Page page) {
         // Arrange
         JSONObject initialInteractions = interactions();
@@ -71,13 +71,13 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         // Assert
         assertSameState(initialState, globalState());
         assertSameState(initialInteractions, interactions());
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(2)
-    @DisplayName("Widget lifecycle: sorting still works after AJAX updates")
+    @DisplayName("Component lifecycle: sorting still works after AJAX updates")
     void sortAfterUpdate(Page page) {
         // Arrange
         ajaxClick(page.btnUpdate);
@@ -103,7 +103,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(3)
-    @DisplayName("Widget lifecycle: removed widgets are destroyed with their interactions and global state")
+    @DisplayName("Component lifecycle: removed components are destroyed with their interactions and global state")
     void remove(Page page) {
         // Arrange
         JSONObject initialInteractions = interactions();
@@ -115,27 +115,27 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
         JSONObject removed = globalState();
         assertEquals(0, removed.getInt("droppables"), removed.toString());
         assertSameState(new JSONObject("{draggable:0,droppable:0,sortable:0,resizable:0}"), interactions());
-        assertWidgetCount(0, WIDGETS);
+        assertComponentCount(0, COMPONENTS);
 
         // Act: render again
         ajaxClick(page.btnToggle);
 
         // Assert
         assertSameState(initialInteractions, interactions());
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
 
         // Act: remove again
         ajaxClick(page.btnToggle);
 
         // Assert
         assertSameState(removed, globalState());
-        assertWidgetCount(0, WIDGETS);
+        assertComponentCount(0, COMPONENTS);
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(4)
-    @DisplayName("Widget lifecycle: an AJAX update during a drag ends it cleanly")
+    @DisplayName("Component lifecycle: an AJAX update during a drag ends it cleanly")
     void updateDuringDrag(Page page) {
         // Arrange
         JSONObject initialState = globalState();
@@ -158,7 +158,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(5)
-    @DisplayName("Widget lifecycle: a Dialog can still be dragged and resized after AJAX updates")
+    @DisplayName("Component lifecycle: a Dialog can still be dragged and resized after AJAX updates")
     void dialogAfterUpdate(Page page) {
         // Arrange
         ajaxClick(page.btnUpdate);
@@ -203,7 +203,7 @@ class CoreWidget001Test extends AbstractWidgetLifecycleTest {
 
         @Override
         public String getLocation() {
-            return "core/widget/coreWidget001.xhtml";
+            return "core/component/coreComponent001.xhtml";
         }
     }
 }

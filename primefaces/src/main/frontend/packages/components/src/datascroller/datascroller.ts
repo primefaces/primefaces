@@ -176,7 +176,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
                 { name: this.getId() + '_first', value: first }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         // insert new rows
                         this.updateData(content);
@@ -248,7 +248,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
             params: [{ name: this.getId() + '_load', value: true }, { name: this.getId() + '_offset', value: this.cfg.offset }],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         this.updateData(content, false, this.cfg.startAtBottom);
                     }

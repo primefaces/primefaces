@@ -393,7 +393,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: this,
+                    component: this,
                     handle: (content) => {
                         const panel = this.panel;
                         if (!panel) {

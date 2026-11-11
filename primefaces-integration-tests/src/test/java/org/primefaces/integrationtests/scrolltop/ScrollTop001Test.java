@@ -60,7 +60,7 @@ class ScrollTop001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(0, scrollTop.getTargetScrollTop());
         assertFalse(scrollTop.isVisible());
-        assertConfiguration(scrollTop.getWidgetConfiguration());
+        assertConfiguration(scrollTop.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

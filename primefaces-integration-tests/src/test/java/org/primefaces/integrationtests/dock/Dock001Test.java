@@ -69,7 +69,7 @@ class Dock001Test extends AbstractPrimePageTest {
         assertTrue(image.isDisplayed());
         assertEquals("bottom", dock.getPosition());
         assertEquals("center", dock.getHalign());
-        assertConfiguration(dock.getWidgetConfiguration());
+        assertConfiguration(dock.getClientConfiguration());
     }
 
     @Test
@@ -102,7 +102,7 @@ class Dock001Test extends AbstractPrimePageTest {
             assertFalse(PrimeSelenium.hasCssClass(item, "prev-anchor"));
             assertFalse(PrimeSelenium.hasCssClass(item, "next-anchor"));
         }
-        assertConfiguration(dock.getWidgetConfiguration());
+        assertConfiguration(dock.getClientConfiguration());
     }
 
     @Test
@@ -128,7 +128,7 @@ class Dock001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("Home", page.selected.getText());
         assertEquals("Home", page.messages.getMessage(0).getDetail());
-        assertConfiguration(dock.getWidgetConfiguration());
+        assertConfiguration(dock.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

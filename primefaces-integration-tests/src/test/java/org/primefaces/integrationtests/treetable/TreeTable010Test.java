@@ -89,7 +89,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertTrue(treeTable.getRow(OTHER_SELECTABLE_CHILD).isSelected());
         assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isSelected());
         assertFalse(treeTable.getRow(UNSELECTABLE_CHILD).isChecked());
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -107,7 +107,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertFalse(selected.contains("native.app"), () -> "non-selectable node was submitted: " + selected);
         assertTrue(selected.contains("primefaces.app"), () -> "selectable node is missing: " + selected);
         assertTrue(selected.contains("mobile.app"), () -> "selectable node is missing: " + selected);
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -132,7 +132,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         String selected = page.messages.getMessage(0).getDetail();
         assertTrue(selected.contains("Primefaces"), () -> "parent node is missing: " + selected);
         assertFalse(selected.contains("native.app"), () -> "non-selectable node was submitted: " + selected);
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -155,7 +155,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         page.showSelected.click();
         // only the preselected non-selectable nodes of the other folders are left
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -179,7 +179,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
 
         page.showSelected.click();
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -204,7 +204,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         treeTable.getRow(ARCHIVE_GRANDCHILD).toggleCheckbox();
         page.showSelected.click();
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app", "old.app");
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -222,22 +222,22 @@ class TreeTable010Test extends AbstractTreeTableTest {
         // Assert
         page.showSelected.click();
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
     @Order(8)
     @DisplayName("TreeTable: GitHub #14798 the server must reject a submitted non-selectable node")
     void serverRejectsUnselectableNode(Page page) {
-        // Arrange - bypass the widget's propagation rules
-        PrimeSelenium.executeScript("var tt = PF('ttWidget'); tt.selections.push('" + UNSELECTABLE_CHILD + "'); tt.writeSelections();");
+        // Arrange - bypass the component's propagation rules
+        PrimeSelenium.executeScript("var tt = PF('ttComponent'); tt.selections.push('" + UNSELECTABLE_CHILD + "'); tt.writeSelections();");
 
         // Act
         page.showSelected.click();
 
         // Assert
         assertSubmittedSelection(page, "legacy.app", "snapshot.app", "Shared", "shared.app");
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -258,7 +258,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
         assertTrue(page.treeTable.getRow(SHARED).isSelected());
         assertFalse(page.treeTable.getRow(SHARED_CHILD).isSelected());
         assertFalse(page.treeTable.getRow(SHARED_CHILD).isChecked());
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     private void assertSubmittedSelection(Page page, String... expected) {
@@ -269,7 +269,7 @@ class TreeTable010Test extends AbstractTreeTableTest {
 
     @Override
     protected void assertConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg, "ttWidget");
+        assertConfiguration(cfg, "ttComponent");
         assertEquals("checkbox", cfg.getString("selectionMode"));
     }
 

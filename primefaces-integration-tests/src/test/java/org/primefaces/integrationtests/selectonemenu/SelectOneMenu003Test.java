@@ -56,7 +56,7 @@ class SelectOneMenu003Test extends AbstractPrimePageTest {
         assertNull(options.get(2).getAttribute("disabled"));
         assertEquals("true", options.get(3).getAttribute("disabled"));
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -74,7 +74,7 @@ class SelectOneMenu003Test extends AbstractPrimePageTest {
         assertEquals("Wii U", options.get(4).getText());
         assertEquals("Nintendo Switch", options.get(5).getText());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

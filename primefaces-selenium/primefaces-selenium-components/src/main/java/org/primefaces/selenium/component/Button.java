@@ -80,13 +80,13 @@ public abstract class Button extends AbstractComponent {
      * Enables the button.
      */
     public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable();");
     }
 
     /**
      * Disables the button.
      */
     public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable();");
     }
 }

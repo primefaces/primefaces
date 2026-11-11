@@ -1,7 +1,7 @@
 /*
  * Spotlight: p:spotlight
  * Markup: four div.p-component-overlay.p-spotlight.p-spotlight-(top|bottom|left|right) appended to body,
- * positioned around the target by the widget (inline top/left/width/height/z-index).
+ * positioned around the target by the component (inline top/left/width/height/z-index).
  * PrimeFaces only tokens: the spotlight block of presets/*.css.
  */
 .p-spotlight.p-component-overlay {

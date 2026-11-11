@@ -60,7 +60,7 @@ public abstract class SelectOneRadio extends AbstractComponent {
     }
 
     public void select(int index) {
-        if (!getWidgetConfiguration().getBoolean("unselectable")) {
+        if (!getClientConfiguration().getBoolean("unselectable")) {
             if (getSelectedIndex() == index) {
                 return;
             }
@@ -144,32 +144,32 @@ public abstract class SelectOneRadio extends AbstractComponent {
      * Disables the entire component.
      */
     public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable();");
     }
 
     /**
      * Enables the entire component
      */
     public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable();");
     }
 
     /**
-     * Disables a given radio button option of this widget.
+     * Disables a given radio button option of this component.
      *
      * @param index Index of the radio button option to disable.
      */
     public void disableOption(int index) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable(" + index + ");");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable(" + index + ");");
     }
 
     /**
-     * Enables a given radio button option of this widget.
+     * Enables a given radio button option of this component.
      *
      * @param index Index of the radio button option to enable.
      */
     public void enableOption(int index) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable(" + index + ");");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable(" + index + ");");
     }
 
     /**
@@ -178,6 +178,6 @@ public abstract class SelectOneRadio extends AbstractComponent {
      * @return true if readonly
      */
     public boolean isReadOnly() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".cfg.readonly");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".cfg.readonly");
     }
 }

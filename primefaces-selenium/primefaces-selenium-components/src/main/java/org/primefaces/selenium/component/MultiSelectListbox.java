@@ -101,7 +101,7 @@ public abstract class MultiSelectListbox extends AbstractInputComponent {
             }
             WebElement item = findItem(lists.get(i), labels[i]);
             if (PrimeSelenium.hasCssClass(item, "p-state-highlight")) {
-                // the widget ignores clicks on selected items
+                // the client component ignores clicks on selected items
                 continue;
             }
             boolean leaf = item.findElements(By.tagName("ul")).isEmpty();

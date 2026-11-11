@@ -72,12 +72,12 @@ class NotificationBar001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(bar.isVisible());
-        assertConfiguration(bar.getWidgetConfiguration(), "top", "slide");
+        assertConfiguration(bar.getClientConfiguration(), "top", "slide");
     }
 
     @Test
     @Order(2)
-    @DisplayName("NotificationBar: auto display at the bottom, hide and show via widget API")
+    @DisplayName("NotificationBar: auto display at the bottom, hide and show via client API")
     void autoDisplayBottom(Page page) {
         // Arrange
         NotificationBar bar = page.bottom;
@@ -98,7 +98,7 @@ class NotificationBar001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(bar.isVisible());
         assertFalse(page.top.isVisible());
-        JSONObject cfg = bar.getWidgetConfiguration();
+        JSONObject cfg = bar.getClientConfiguration();
         assertConfiguration(cfg, "bottom", "none");
         assertTrue(cfg.getBoolean("autoDisplay"));
     }
@@ -124,12 +124,12 @@ class NotificationBar001Test extends AbstractPrimePageTest {
         assertTrue(bar.isVisible());
         assertTrue(bar.getText().contains("Updated text"));
 
-        // Act - the refreshed widget still closes
+        // Act - the refreshed component still closes
         bar.close();
 
         // Assert
         assertFalse(bar.isVisible());
-        assertConfiguration(bar.getWidgetConfiguration(), "top", "slide");
+        assertConfiguration(bar.getClientConfiguration(), "top", "slide");
     }
 
     @Test
@@ -149,7 +149,7 @@ class NotificationBar001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("fast,fast", durations);
         assertFalse(bar.isVisible());
-        JSONObject cfg = bar.getWidgetConfiguration();
+        JSONObject cfg = bar.getClientConfiguration();
         assertConfiguration(cfg, "top", "slide");
         assertEquals("fast", cfg.getString("effectSpeed"));
     }

@@ -13,12 +13,12 @@
 
         <h:form id="form">
             <p:commandButton id="btnUpdate" value="Update" process="@this" update="wrapper"/>
-            <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreWidget003.toggle}"/>
+            <p:commandButton id="btnToggle" value="Toggle" process="@this" update="wrapper" action="#{coreComponent003.toggle}"/>
             <p:commandButton id="btnUpdateTarget" value="Update target" process="@this" update="btnDefault"/>
 
-            <!-- the widgets without own markup are destroyed with the elements they work on, the form stays -->
+            <!-- the components without own markup are destroyed with the elements they work on, the form stays -->
             <h:panelGroup id="wrapper" layout="block">
-                <h:panelGroup id="container" layout="block" rendered="#{coreWidget003.rendered}">
+                <h:panelGroup id="container" layout="block" rendered="#{coreComponent003.rendered}">
                     <p:panel id="panel" header="Target" style="width: 200px">Content</p:panel>
                     <p:draggable id="drag" for="panel"/>
 
@@ -28,7 +28,7 @@
                     <h:panelGroup id="resizeBox" layout="block" style="width: 100px; height: 50px; border: 1px solid"/>
                     <p:resizable id="resize" for="resizeBox"/>
 
-                    <p:inputText id="input" value="#{coreWidget003.text}"/>
+                    <p:inputText id="input" value="#{coreComponent003.text}"/>
                     <p:keyFilter id="keyFilter" for="input" mask="num"/>
 
                     <p:commandButton id="btnDefault" value="Default" process="@this" type="button"

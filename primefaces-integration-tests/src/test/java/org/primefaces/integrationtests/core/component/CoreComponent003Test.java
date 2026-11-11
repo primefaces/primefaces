@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.core.widget;
+package org.primefaces.integrationtests.core.component;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
@@ -35,10 +35,10 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CoreWidget003Test extends AbstractWidgetLifecycleTest {
+class CoreComponent003Test extends AbstractComponentLifecycleTest {
 
-    /** The widgets without own markup, destroyed with the elements they work on. */
-    private static final String[] WIDGETS = {
+    /** The components without own markup, destroyed with the elements they work on. */
+    private static final String[] COMPONENTS = {
         "form:drag", "form:drop", "form:resize", "form:keyFilter", "form:effect"
     };
 
@@ -62,21 +62,21 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(1)
-    @DisplayName("Widget lifecycle: widgets without own markup are destroyed with the elements they work on")
+    @DisplayName("Component lifecycle: components without own markup are destroyed with the elements they work on")
     void remove(Page page) {
         // Arrange
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
 
         // Act
         toggleWrapper();
 
         // Assert: destroyed
-        assertWidgetCount(0, WIDGETS);
+        assertComponentCount(0, COMPONENTS);
         assertEquals(0, globalState().getInt("droppables"));
 
         // Assert: the default command stays with the form, without its target Enter is left to the browser
-        assertWidgetCount(1, DEFAULT_COMMAND);
+        assertComponentCount(1, DEFAULT_COMMAND);
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
         assertEquals(0L, enter());
         assertNoJavascriptErrors();
@@ -84,7 +84,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(2)
-    @DisplayName("Widget lifecycle: widgets without own markup rendered again by an update are refreshed, not destroyed")
+    @DisplayName("Component lifecycle: components without own markup rendered again by an update are refreshed, not destroyed")
     void update(Page page) {
         // Act
         for (int i = 0; i < 3; i++) {
@@ -92,8 +92,8 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
         }
 
         // Assert: still there, once, bound to the new elements
-        assertWidgetCount(1, WIDGETS);
-        assertWidgetCount(1, DEFAULT_COMMAND);
+        assertComponentCount(1, COMPONENTS);
+        assertComponentCount(1, DEFAULT_COMMAND);
         assertSameState(new JSONObject("{draggable:true,droppable:true,resizable:true}"), targetInteractions());
         assertEquals(1, globalState().getInt("droppables"));
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
@@ -109,7 +109,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(3)
-    @DisplayName("Widget lifecycle: removing and rendering widgets without own markup again doesn't leak")
+    @DisplayName("Component lifecycle: removing and rendering components without own markup again doesn't leak")
     void removeAgain(Page page) {
         // Arrange
         toggleWrapper();
@@ -118,12 +118,12 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
         // Act
         toggleWrapper();
-        assertWidgetCount(1, WIDGETS);
+        assertComponentCount(1, COMPONENTS);
         assertEquals(1L, enter());
         toggleWrapper();
 
         // Assert
-        assertWidgetCount(0, WIDGETS);
+        assertComponentCount(0, COMPONENTS);
         assertSameState(removed, globalState());
         assertSameState(removedFormHandlers, handlers("form"));
         assertNoJavascriptErrors();
@@ -131,14 +131,14 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
     @Test
     @Order(4)
-    @DisplayName("Widget lifecycle: a default command stays when only its target is updated")
+    @DisplayName("Component lifecycle: a default command stays when only its target is updated")
     void updateTarget(Page page) {
         // Act: e.g. an update that enables the target
         ajaxUpdate("form:btnUpdateTarget", "form:btnDefault");
         ajaxUpdate("form:btnUpdateTarget", "form:btnDefault");
 
         // Assert: Enter clicks the new target, once
-        assertWidgetCount(1, DEFAULT_COMMAND);
+        assertComponentCount(1, DEFAULT_COMMAND);
         assertEquals(1, handlers("form").getInt(DEFAULT_COMMAND_HANDLER));
         assertEquals(1L, enter());
         assertNoJavascriptErrors();
@@ -159,7 +159,7 @@ class CoreWidget003Test extends AbstractWidgetLifecycleTest {
 
         @Override
         public String getLocation() {
-            return "core/widget/coreWidget003.xhtml";
+            return "core/component/coreComponent003.xhtml";
         }
     }
 }

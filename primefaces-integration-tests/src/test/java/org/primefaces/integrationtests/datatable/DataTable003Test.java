@@ -63,7 +63,7 @@ class DataTable003Test extends AbstractDataTableTest {
         dataTable.sort(1, true);
 
         // Assert
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 1);
         assertHeaderSorted(eltSortName, "ASC", 2);
 
@@ -93,7 +93,7 @@ class DataTable003Test extends AbstractDataTableTest {
         dataTable.sort(1, true);
 
         // Assert
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
         assertHeaderSorted(eltSortFirstAppeared, "DESC", 1);
         assertHeaderSorted(eltSortName, "DESC", 2);
 

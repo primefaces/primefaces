@@ -53,7 +53,7 @@ class Password001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("", password.getValue());
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     @Test
@@ -70,7 +70,7 @@ class Password001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("encryptme!", password.getValue());
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

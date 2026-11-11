@@ -50,7 +50,7 @@ class InputTextArea001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("hello!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -66,7 +66,7 @@ class InputTextArea001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("hello safari!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

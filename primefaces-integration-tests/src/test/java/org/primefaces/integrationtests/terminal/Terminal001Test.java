@@ -67,7 +67,7 @@ class Terminal001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(Arrays.asList("greet PrimeFaces", "foo bar"), terminal.getCommands());
         assertEquals(Arrays.asList("Hello PrimeFaces", "Unknown command: foo"), terminal.getResponses());
-        assertConfiguration(terminal.getWidgetConfiguration());
+        assertConfiguration(terminal.getClientConfiguration());
     }
 
     @Test
@@ -84,7 +84,7 @@ class Terminal001Test extends AbstractPrimePageTest {
         assertEquals(List.of("greet <b>World</b>"), terminal.getCommands());
         assertEquals("Hello <b>World</b>", terminal.getLastResponse());
         assertTrue(terminal.getContent().findElements(By.tagName("b")).isEmpty());
-        assertConfiguration(terminal.getWidgetConfiguration());
+        assertConfiguration(terminal.getClientConfiguration());
     }
 
     @Test
@@ -115,7 +115,7 @@ class Terminal001Test extends AbstractPrimePageTest {
         assertTrue(terminal.getEntries().isEmpty());
         assertEquals("", terminal.getValue());
         assertEquals("Welcome to the PrimeFaces Terminal", terminal.getWelcomeMessage());
-        assertConfiguration(terminal.getWidgetConfiguration());
+        assertConfiguration(terminal.getClientConfiguration());
     }
 
     @Test
@@ -155,7 +155,7 @@ class Terminal001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("greet PrimeFaces", terminal.getCommands().get(terminal.getCommands().size() - 1));
         assertEquals("Hello PrimeFaces", terminal.getLastResponse());
-        assertConfiguration(terminal.getWidgetConfiguration());
+        assertConfiguration(terminal.getClientConfiguration());
     }
 
     @Test
@@ -192,7 +192,7 @@ class Terminal001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("git", terminal.getValue());
         assertEquals("foo", page.terminal2.getValue());
-        assertConfiguration(terminal.getWidgetConfiguration());
+        assertConfiguration(terminal.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

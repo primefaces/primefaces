@@ -140,13 +140,13 @@ class SelectOneButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(7)
-    @DisplayName("SelectOneButton: widget must track the native radios of the default layout")
-    void widgetTracksHiddenRadios(Page page) {
+    @DisplayName("SelectOneButton: component must track the native radios of the default layout")
+    void componentTracksHiddenRadios(Page page) {
         // Arrange
         SelectOneButton selectOneButton = page.selectOneButton;
 
         // Act
-        Long inputCount = PrimeSelenium.executeScript("return " + selectOneButton.getWidgetByIdScript() + ".inputs.length;");
+        Long inputCount = PrimeSelenium.executeScript("return " + selectOneButton.getClientComponentScript() + ".inputs.length;");
 
         // Assert
         assertEquals(4L, inputCount);

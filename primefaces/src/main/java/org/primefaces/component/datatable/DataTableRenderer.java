@@ -154,14 +154,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     protected void encodeScript(FacesContext context, DataTable component) throws IOException {
         String selectionMode = component.resolveSelectionMode();
         boolean isFrozenTable = (component.getFrozenColumns() > 0);
-        String widgetClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
+        String componentClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
 
         if (isFrozenTable && !component.isScrollable()) {
             throw new FacesException("Frozen columns can only be used with a table set scrollable='true'.");
         }
 
         ComponentScriptBuilder wb = getComponentScriptBuilder(context);
-        wb.init(widgetClass, component);
+        wb.init(componentClass, component);
 
         //Pagination
         if (component.isPaginator()) {

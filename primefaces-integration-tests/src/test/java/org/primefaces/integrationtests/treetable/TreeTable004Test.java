@@ -60,7 +60,7 @@ class TreeTable004Test extends AbstractTreeTableTest {
         // Assert
         assertMessage(page.messages, 0, "selected nodes", "Desktop,editor.app");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
 

@@ -43,8 +43,8 @@ class TabView005Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
 
         // Act - an unrelated button must remain responsive (regression: an uncaught init
-        // error previously aborted the surrounding widget-init script, leaving other
-        // widgets on the page unresponsive too)
+        // error previously aborted the surrounding component-init script, leaving other
+        // components on the page unresponsive too)
         page.button.click();
 
         // Assert

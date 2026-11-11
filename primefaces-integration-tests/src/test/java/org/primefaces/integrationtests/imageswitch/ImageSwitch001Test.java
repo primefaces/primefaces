@@ -72,7 +72,7 @@ class ImageSwitch001Test extends AbstractPrimePageTest {
 
         // Assert
         assertActive(imageSwitch, 0, "Bamboo Watch");
-        assertConfiguration(imageSwitch.getWidgetConfiguration(), 0);
+        assertConfiguration(imageSwitch.getClientConfiguration(), 0);
     }
 
     @Test
@@ -94,7 +94,7 @@ class ImageSwitch001Test extends AbstractPrimePageTest {
         // Assert
         assertActive(imageSwitch, 1, "Black Watch");
         assertFalse(imageSwitch.isSlideshowAuto());
-        assertConfiguration(imageSwitch.getWidgetConfiguration(), 0);
+        assertConfiguration(imageSwitch.getClientConfiguration(), 0);
     }
 
     @Test
@@ -127,7 +127,7 @@ class ImageSwitch001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(imageSwitch.isSlideshowPaused());
         assertNotEquals(index, imageSwitch.getActiveIndex());
-        assertConfiguration(imageSwitch.getWidgetConfiguration(), 500);
+        assertConfiguration(imageSwitch.getClientConfiguration(), 500);
     }
 
     private void assertActive(ImageSwitch imageSwitch, int index, String alt) {

@@ -64,7 +64,7 @@
         border-bottom-color: var(--p-tooltip-background);
     }
 
-    /* invalid: the widget marks text and arrow when the target is p-state-error (p:message display="tooltip") */
+    /* invalid: the component marks text and arrow when the target is p-state-error (p:message display="tooltip") */
     .p-tooltip-text.p-state-error {
         background: var(--p-tooltip-invalid-background);
         color: var(--p-tooltip-invalid-color);

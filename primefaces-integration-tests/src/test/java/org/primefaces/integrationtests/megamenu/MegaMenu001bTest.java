@@ -60,7 +60,7 @@ class MegaMenu001bTest extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("Video 3.2"));
 
-        assertConfiguration(megamenu.getWidgetConfiguration());
+        assertConfiguration(megamenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

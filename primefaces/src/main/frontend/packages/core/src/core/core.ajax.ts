@@ -129,7 +129,7 @@ export class AjaxUtils {
      * Checks whether the component ID from the provided component equals the source ID from the provided
      * settings.
      *
-     * @param component of the component to check for being the source.
+     * @param component The component to check for being the source.
      * @param settings containing source ID.
      * @returns `true` if the component ID from the provided component equals the source ID from the
      * provided settings.
@@ -141,7 +141,7 @@ export class AjaxUtils {
     /**
      * Checks whether one of component's triggers equals the source ID from the provided settings.
      *
-     * @param component of the component to check for being the source.
+     * @param component The component to check for being the source.
      * @param settings containing source ID.
      * @param triggerMustExist flag to check if the trigger must exist
      * @returns `true` if if one of component's triggers equals the source ID from the provided settings.
@@ -1498,7 +1498,7 @@ export class AjaxResponse {
                 try {
                     component.destroy();
                     delete core.components[widgetVar];
-                } catch (e) { core.warn("Error destroying widget: " + widgetVar) }
+                } catch (e) { core.warn("Error destroying component: " + widgetVar) }
             }
         }
 
@@ -1548,8 +1548,9 @@ export class AjaxResponseProcessor {
         const id = node.getAttribute('id') ?? "";
         const content = ajax.Utils.getContent(node);
 
-        if (updateHandler && updateHandler.widget && updateHandler.widget.id === id) {
-            updateHandler.handle.call(updateHandler.widget, content);
+        const component = updateHandler ? updateHandler.component ?? updateHandler.widget : undefined;
+        if (updateHandler && component && component.id === id) {
+            updateHandler.handle.call(component, content);
         } else {
             ajax.Utils.updateElement(id, content, xhr);
         }

@@ -76,7 +76,7 @@ public abstract class Inplace extends AbstractComponent {
      * @return true if disabled
      */
     public boolean isDisabled() {
-        return getWidgetConfiguration().optBoolean("disabled", false);
+        return getClientConfiguration().optBoolean("disabled", false);
     }
 
     /**
@@ -90,16 +90,16 @@ public abstract class Inplace extends AbstractComponent {
 
     /**
      * Shows the inline content, if hidden: clicks the display element if the inplace is toggled by click, otherwise
-     * uses the widget API. Does nothing if the inplace is disabled, its inline content is not rendered.
+     * uses the client API. Does nothing if the inplace is disabled, its inline content is not rendered.
      */
     public void show() {
         if (!isDisabled() && !isContentVisible()) {
-            JSONObject cfg = getWidgetConfiguration();
+            JSONObject cfg = getClientConfiguration();
             if (cfg.optBoolean("toggleable", false) && "click".equals(cfg.optString("event"))) {
                 display.click();
             }
             else {
-                PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+                PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(content));
         }
@@ -110,7 +110,7 @@ public abstract class Inplace extends AbstractComponent {
      */
     public void hide() {
         if (isContentVisible()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(content));
         }
     }

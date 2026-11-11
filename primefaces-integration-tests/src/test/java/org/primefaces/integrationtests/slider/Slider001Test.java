@@ -58,7 +58,7 @@ class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 8);
-        assertIntConfiguration(slider.getWidgetConfiguration());
+        assertIntConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -78,7 +78,7 @@ class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 9.9f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -98,7 +98,7 @@ class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 7);
-        assertIntConfiguration(slider.getWidgetConfiguration());
+        assertIntConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -120,7 +120,7 @@ class Slider001Test extends AbstractPrimePageTest {
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
-        assertIntConfiguration(slider.getWidgetConfiguration());
+        assertIntConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -140,7 +140,7 @@ class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, -3.87f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -160,7 +160,7 @@ class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, -4.56f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -180,7 +180,7 @@ class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, inputText, 2.98f);
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -199,7 +199,7 @@ class Slider001Test extends AbstractPrimePageTest {
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -218,7 +218,7 @@ class Slider001Test extends AbstractPrimePageTest {
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
-        assertFloatConfiguration(slider.getWidgetConfiguration());
+        assertFloatConfiguration(slider.getClientConfiguration());
     }
 
     private void assertValue(Slider slider, InputText inputText, Number value) {

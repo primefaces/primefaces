@@ -89,7 +89,7 @@ class DataTable018Test extends AbstractDataTableTest {
         assertEquals(1, paginator.getPage(0).getNumber());
         assertEquals(2, paginator.getPage(1).getNumber());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
 
         // Act
         dataTable.selectPage(2);
@@ -99,7 +99,7 @@ class DataTable018Test extends AbstractDataTableTest {
         assertNotNull(rows);
         assertEquals(2, rows.size());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -131,7 +131,7 @@ class DataTable018Test extends AbstractDataTableTest {
         // Assert - sort must not be lost after update
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -157,7 +157,7 @@ class DataTable018Test extends AbstractDataTableTest {
         // Assert - filter must not be lost after update
         assertRows(dataTable, langsFiltered);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -192,7 +192,7 @@ class DataTable018Test extends AbstractDataTableTest {
         assertEquals(3, dataTable.getRows().size());
         assertRows(dataTable, languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

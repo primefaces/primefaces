@@ -31,7 +31,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
- * Component wrapper for the PrimeFaces {@code p:notificationBar}. The bar is moved to the body by the widget.
+ * Component wrapper for the PrimeFaces {@code p:notificationBar}. The bar is moved to the body by the client component.
  */
 public abstract class NotificationBar extends AbstractComponent {
 
@@ -50,7 +50,7 @@ public abstract class NotificationBar extends AbstractComponent {
      * @return "top" or "bottom"
      */
     public String getPosition() {
-        return getWidgetConfiguration().optString("position", "top");
+        return getClientConfiguration().optString("position", "top");
     }
 
     /**
@@ -68,21 +68,21 @@ public abstract class NotificationBar extends AbstractComponent {
     }
 
     /**
-     * Shows the bar via the widget API, if hidden.
+     * Shows the bar via the client API, if hidden.
      */
     public void show() {
         if (!isVisible()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             waitUntilVisible();
         }
     }
 
     /**
-     * Hides the bar via the widget API, if shown.
+     * Hides the bar via the client API, if shown.
      */
     public void hide() {
         if (isVisible()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             waitUntilHidden();
         }
     }

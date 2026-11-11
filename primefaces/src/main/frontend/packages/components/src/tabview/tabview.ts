@@ -649,7 +649,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.com
             ],
             onsuccess: (responseXML, status, xhr) => {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: this,
+                        component: this,
                         handle: (content) => {
                             // #8994 get new tab reference in case AJAX update removed the old one from DOM
                             const updatedTab = this.panelContainer.children().eq(tabIndex);

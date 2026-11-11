@@ -91,7 +91,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return The current rating value.
      */
     public Number getValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValue();");
     }
 
     /**
@@ -100,14 +100,14 @@ public abstract class Rating extends AbstractInputComponent {
      * @param value New rating value to set (number of starts selected).
      */
     public void setValue(Number value) {
-        PrimeSelenium.executeScript(isRatingAjaxified(), getWidgetByIdScript() + ".setValue(" + value + ");");
+        PrimeSelenium.executeScript(isRatingAjaxified(), getClientComponentScript() + ".setValue(" + value + ");");
     }
 
     /**
      * Resets the rating so that no stars are selected.
      */
     public void reset() {
-        PrimeSelenium.executeScript(isCancelAjaxified(), getWidgetByIdScript() + ".reset();");
+        PrimeSelenium.executeScript(isCancelAjaxified(), getClientComponentScript() + ".reset();");
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return true if disabled
      */
     public boolean isDisabled() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isDisabled();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isDisabled();");
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @return true if readonly
      */
     public boolean isReadOnly() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isReadOnly();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isReadOnly();");
     }
 
     @Override
