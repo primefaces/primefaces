@@ -486,10 +486,10 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Act - first click gives the list focus and selects the item
         page.standardPickList.getSourceListElements().get(0).click();
-        PrimeSelenium.wait(500);
+        WebElement region = page.standardPickList.getAriaRegion();
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Lewis"));
 
         // Assert
-        WebElement region = page.standardPickList.getAriaRegion();
         assertEquals("Lewis", region.getAttribute("textContent"));
         Long announcements = PrimeSelenium.executeScript("return window.pickListAnnouncements;");
         assertEquals(1L, announcements);
@@ -506,7 +506,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(28)
-    @DisplayName("PickList: #15492 transfer and reorder actions are announced to screen readers")
+    @DisplayName("PickList: #15492 transfer and move actions are announced to screen readers")
     void ariaRegionAnnouncesActions(final Page page) {
         WebElement region = page.standardPickList.getAriaRegion();
 
