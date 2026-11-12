@@ -1436,7 +1436,7 @@
             });
 
             var ariaDisabled = disabled ? ' aria-disabled="true"' : '';
-            return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '"' + ariaDisabled + '>' + content + '</a>';
+            return '<a role="button" tabindex="0" class="ui-monthpicker-month' + monthClass + '"' + ariaDisabled + '>' + content + '</a>';
         },
 
         renderMonthViewMonths: function() {
@@ -1570,9 +1570,10 @@
 
         renderDayNames: function(weekDaysMin, weekDays) {
             var dayNamesHtml = '';
+            var colOffset = this.options.showWeek ? 1 : 0;
 
             if (this.options.showWeek) {
-                dayNamesHtml += '<th scope="col" abbr="' + this.options.locale.weekHeader + '">' +
+                dayNamesHtml += '<th scope="col" aria-colindex="1" abbr="' + this.options.locale.weekHeader + '">' +
                     '<span>' +
                     this.options.locale.weekHeader +
                     '</span>' +
@@ -1582,7 +1583,8 @@
             for (var i = 0; i < weekDaysMin.length; i++) {
                 var weekDayLabel = this.escapeHTML(weekDays[i]);
                 var weekDayMinLabel = weekDaysMin[i];
-                dayNamesHtml += '<th scope="col" abbr="' + weekDayMinLabel + '">' +
+                // screen readers announce the abbr as column header, so it holds the full week day name
+                dayNamesHtml += '<th scope="col" aria-colindex="' + (i + 1 + colOffset) + '" abbr="' + weekDayLabel + '">' +
                     '<span title="' + weekDayLabel + '">' +
                     weekDayMinLabel +
                     '</span>' +
@@ -1646,7 +1648,7 @@
                     lastDate = weekDates[6],
                     cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
 
-                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
+                weekHtml += '<td aria-colindex="1" class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
                     this.options.weekCalculator(firstDate) +
                     '</span></td>';
             }
@@ -1657,11 +1659,12 @@
                 var date = weekDates[i],
                     disabled = !weekDates[i].selectable,
                     selected = this.isSelected(date),
+                    hidden = date.otherMonth && !this.options.showOtherMonths,
                     cellClass = this.getClassesToAdd({
                         'ui-datepicker-other-month': date.otherMonth,
                         'ui-datepicker-today': date.today,
                         'ui-datepicker-week-end': i == sundayIndex || i == saturdayIndex,
-                        'ui-datepicker-other-month-hidden': date.otherMonth && !this.options.showOtherMonths
+                        'ui-datepicker-other-month-hidden': hidden
                     }).trim(),
                     dateClass = this.getClassesToAdd({
                         'ui-state-default': true,
@@ -1669,14 +1672,17 @@
                         'ui-state-disabled': disabled,
                         'ui-state-highlight': date.today
                     }).trim(),
-                    content = this.renderDateCellContent(date, dateClass);
+                    dateLabel = this.escapeHTML(this.formatDate(new Date(date.year, date.month, date.day), this.options.dateFormat)),
+                    content = this.renderDateCellContent(date, dateClass, dateLabel);
 
+                // the focusable <a> carries the full date label so screen readers announce it while navigating;
+                // cells without a link (disabled) keep the label on the cell itself, hidden cells stay unlabeled
                 weekHtml += (
-                    '<td role="gridcell"' +
-                    (cellClass ? ' class="' + cellClass + '"' : '') + 
-                    (disabled ? ' aria-disabled="true"' : '') + 
-                    (selected ? ' aria-selected="true"' : '') + 
-                    ' aria-label="' + this.options.locale.monthNames[date.month] + ' ' + date.day + '">' +
+                    '<td role="gridcell" aria-colindex="' + (i + 1 + (this.options.showWeek ? 1 : 0)) + '"' +
+                    (cellClass ? ' class="' + cellClass + '"' : '') +
+                    (disabled ? ' aria-disabled="true"' : '') +
+                    (selected ? ' aria-selected="true"' : '') +
+                    (date.selectable || hidden ? '' : ' aria-label="' + dateLabel + '"') + '>' +
                     content +
                     '</td>'
                 );
@@ -1685,7 +1691,7 @@
             return weekHtml;
         },
 
-        renderDateCellContent: function(date, dateClass) {
+        renderDateCellContent: function(date, dateClass, dateLabel) {
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
             var classes = this.options.dateStyleClasses;
 
@@ -1696,7 +1702,8 @@
                 }
             }
             if (date.selectable) {
-                return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
+                // role button, as an <a> without href has no role and its aria-label is ignored by screen readers
+                return '<a role="button" tabindex="0" class="' + dateClass + '"' + (dateLabel ? ' aria-label="' + dateLabel + '"' : '') + '>' + content + '</a>';
             }
             else {
                 return '<span class="' + dateClass + '">' + content + '</span>';

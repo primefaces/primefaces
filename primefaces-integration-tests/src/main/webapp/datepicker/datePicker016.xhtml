@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:datePicker id="date" value="#{datePicker016.date}" pattern="MM/dd/yyyy" showOnFocus="false" builtInValidation="false"
+                          mindate="#{datePicker016.minDate}" maxdate="#{datePicker016.maxDate}"
+                          disabledDates="#{datePicker016.disabledDates}" disabledDays="#{datePicker016.disabledDays}"/>
+            <p:commandButton id="dateButton" value="Submit" process="@this date" update="@form"/>
+            <h:outputText id="dateValue" value="#{datePicker016.date}"/>
+
+            <p:datePicker id="validatedDate" value="#{datePicker016.validatedDate}" pattern="MM/dd/yyyy" showOnFocus="false"
+                          mindate="#{datePicker016.minDate}" maxdate="#{datePicker016.maxDate}"
+                          disabledDates="#{datePicker016.disabledDates}" disabledDays="#{datePicker016.disabledDays}"/>
+            <p:commandButton id="validatedDateButton" value="Submit" process="@this validatedDate" update="@form"/>
+            <h:outputText id="validatedDateValue" value="#{datePicker016.validatedDate}"/>
+
+            <p:datePicker id="enabledDate" value="#{datePicker016.enabledDate}" pattern="MM/dd/yyyy" showOnFocus="false"
+                          builtInValidation="false" enabledDates="#{datePicker016.enabledDates}"/>
+            <p:commandButton id="enabledDateButton" value="Submit" process="@this enabledDate" update="@form"/>
+            <h:outputText id="enabledDateValue" value="#{datePicker016.enabledDate}"/>
+
+            <p:datePicker id="range" value="#{datePicker016.range}" pattern="MM/dd/yyyy" showOnFocus="false" selectionMode="range"
+                          builtInValidation="false" mindate="#{datePicker016.minDate}" maxdate="#{datePicker016.maxDate}"/>
+            <p:commandButton id="rangeButton" value="Submit" process="@this range" update="@form"/>
+            <h:outputText id="rangeValue" value="#{datePicker016.range}"/>
+
+            <p:datePicker id="dateTime" value="#{datePicker016.dateTime}" pattern="MM/dd/yyyy HH:mm" showTime="true" showOnFocus="false"
+                          builtInValidation="false" mindate="#{datePicker016.minDateTime}"/>
+            <p:commandButton id="dateTimeButton" value="Submit" process="@this dateTime" update="@form"/>
+            <h:outputText id="dateTimeValue" value="#{datePicker016.dateTime}"/>
+
+            <p:datePicker id="requiredDate" value="#{datePicker016.requiredDate}" pattern="MM/dd/yyyy" showOnFocus="false" required="true"
+                          builtInValidation="false" mindate="#{datePicker016.minDate}"/>
+            <p:commandButton id="requiredDateButton" value="Submit" process="@this requiredDate" update="@form"/>
+            <h:outputText id="requiredDateValue" value="#{datePicker016.requiredDate}"/>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

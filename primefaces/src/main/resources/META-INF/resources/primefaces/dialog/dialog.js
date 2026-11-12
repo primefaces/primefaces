@@ -625,6 +625,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     onHide: function(event, ui) {
         this.callBehavior('close');
 
+        // #15356 move focus out of the dialog before hiding it from assistive technology
+        const activeElement = document.activeElement;
+        if ((activeElement instanceof HTMLElement || activeElement instanceof SVGElement) && this.jq.has(activeElement).length) {
+            activeElement.blur();
+        }
+
         this.jq.attr({
             'aria-hidden': true
             ,'aria-live': 'off'

@@ -1223,7 +1223,7 @@ declare namespace JQueryPrimeDatePicker {
          * @param dateClass Style class to apply.
          * @return The rendered HTML snippet.
          */
-        renderDateCellContent(date: DayInstantSelectableRelative, dateClass: string): string;
+        renderDateCellContent(date: DayInstantSelectableRelative, dateClass: string, dateLabel?: string): string;
 
         /**
          * Creates the HTML snippet for the given dates.

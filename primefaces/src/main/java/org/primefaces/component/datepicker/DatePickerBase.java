@@ -60,6 +60,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         autoDetectDisplay,
         autoMonthFormat,
         beforeShow,
+        builtInValidation,
         buttonTabindex,
         dateTemplate,
         disabledDates,
@@ -508,6 +509,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public int getResponsiveBreakpoint() {
         return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, RESPONSIVE_BREAKPOINT_SMALL);
+    }
+
+    public boolean isBuiltInValidation() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.builtInValidation, true);
+    }
+
+    public void setBuiltInValidation(boolean builtInValidation) {
+        getStateHelper().put(PropertyKeys.builtInValidation, builtInValidation);
     }
 
     public boolean isShowMinMaxRange() {

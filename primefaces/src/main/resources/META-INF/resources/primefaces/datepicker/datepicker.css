@@ -16,7 +16,8 @@
     text-align: center;
 }
 
-.p-datepicker-panel .ui-datepicker-calendar-container td.ui-datepicker-other-month-hidden {
+/* hide only the content, a hidden cell would shift the columns announced by screen readers */
+.p-datepicker-panel .ui-datepicker-calendar-container td.ui-datepicker-other-month-hidden > * {
     visibility: hidden;
 }
 

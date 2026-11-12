@@ -33,6 +33,7 @@ ajax selection and more.
 | autoDetectDisplay | true | Boolean | Detects if mobile browser and sets optimized interface for touch devices. Default is true.
 | beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
 | buttonTabindex | null | String | Tabindex of the datepicker button
+| builtInValidation | true | Boolean | When disabled, the value is not validated against mindate / maxdate, disabledDates, enabledDates, disabledDays and the order of the range dates on the server. Required, the converter and the validators are still executed.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
@@ -270,6 +271,16 @@ public void init() {
     minDate = LocalDate.now().minusYears(1);
     maxDate = LocalDate.now().plusYears(1);
 }
+```
+
+The restrictions are also validated on the server: a submitted value outside of `mindate` / `maxdate` (incl. the time
+part with `showTime` / `timeOnly`), on a disabled date or day or not on an enabled date and, in range mode, a start date after
+the end date are rejected with a validation message. Set `builtInValidation="false"` to skip these checks, e.g. if your own
+validators should decide. `required`, the converter and your validators (incl. Bean Validation) are still executed and the
+popup still restricts the selectable dates.
+
+```xhtml
+<p:datePicker value="#{dateBean.date}" mindate="#{dateBean.minDate}" builtInValidation="false" />
 ```
 
 ## Date metadata model

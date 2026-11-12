@@ -131,7 +131,7 @@ public class DatePicker extends DatePickerBase {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
-        if (isValid() && !isEmpty(value)) {
+        if (isValid() && !isEmpty(value) && isBuiltInValidation()) {
             ValidationResult validationResult = validateValueInternal(context, value);
 
             if (!isValid()) {
