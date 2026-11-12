@@ -36,6 +36,8 @@
  * @prop {JQuery} prevLink DOM element of the link back to the previous page.
  * @prop {JQuery} rppSelect SELECT element for selection the number of pages to display (`rows per page`).
  * @prop {string} ariaPageLabel ARIA LABEL attribute for the page links.
+ * @prop {Intl.NumberFormat} [numberFormat] Formatter for the numbers updated on the client, created lazily for the
+ * current locale.
  * 
  * @interface {PrimeFaces.widget.PaginatorCfg} cfg The configuration for the {@link  Paginator| Paginator widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -343,11 +345,11 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         }
 
         var text = this.cfg.currentPageTemplate
-            .replace("{currentPage}", this.cfg.page + 1)
-            .replace("{totalPages}", this.cfg.pageCount)
-            .replace("{totalRecords}", this.cfg.rowCount)
-            .replace("{startRecord}", startRecord)
-            .replace("{endRecord}", endRecord);
+            .replace("{currentPage}", this.formatInteger(this.cfg.page + 1))
+            .replace("{totalPages}", this.formatInteger(this.cfg.pageCount))
+            .replace("{totalRecords}", this.formatInteger(this.cfg.rowCount))
+            .replace("{startRecord}", this.formatInteger(startRecord))
+            .replace("{endRecord}", this.formatInteger(endRecord));
         this.currentReport.text(text);
 
         //rows per page dropdown
@@ -367,10 +369,14 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
                 // GitHub #6929: performance improvement not using JQ html()
                 this.jtpSelect[0].innerHTML = jtpOptions;
             }
-            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
+            // option values may be localized (e.g. Persian digits) when rendered by the server
+            var $this = this;
+            this.jtpSelect.children('option').filter(function() {
+                return $this.parseLocalizedInt(this.value) === $this.cfg.page;
+            }).prop('selected','selected');
         }
 
-        //jump to page input
+        //jump to page input (type="number" only accepts ASCII digits, so it must not be localized)
         if(this.jtpInput.length > 0) {
             this.jtpInput.val(this.cfg.page + 1);
         }
@@ -419,7 +425,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
                 ariaCurrentPage = 'aria-current="page"';
             }
 
-            this.pagesContainer.append('<button class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" type="button">' + (i + 1) + '</button>');
+            this.pagesContainer.append('<button class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" type="button">' + this.formatInteger(i + 1) + '</button>');
         }
 
         if(focusContainer) {
@@ -582,6 +588,30 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
      */
     prev() {
         this.setPage(this.cfg.page - 1);
+    }
+
+    /**
+     * Formats an integer for display using the current locale (`PrimeFaces.settings.locale`), so labels updated
+     * on the client match the ones rendered by the server with `LocaleUtils.formatInteger` (e.g. Persian digits).
+     * Falls back to the browser default locale if the locale is not supported by the browser.
+     * Example: 1000 with locale "fa_IR" -> "۱٬۰۰۰"
+     * Example: 1000 with locale "de_DE" -> "1.000"
+     * @param {number} value The integer to format.
+     * @returns {string} The localized string representation of the integer.
+     * @private
+     */
+    formatInteger(value) {
+        if (!this.numberFormat) {
+            // Java locale (e.g. "fa_IR" or "sr_RS_#Latn") to language tag (e.g. "fa-IR")
+            var locale = String(PrimeFaces.settings.locale || '').split('_#')[0].replace(/_/g, '-');
+            try {
+                this.numberFormat = new Intl.NumberFormat(locale || undefined, { maximumFractionDigits: 0 });
+            }
+            catch (e) {
+                this.numberFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 });
+            }
+        }
+        return this.numberFormat.format(value);
     }
 
     /**
