@@ -44,7 +44,13 @@ if (window.PrimeFaces) {
       "messages.ERROR": "ত্রুটি",
       "messages.FATAL": "মারাত্মক",
       "messages.INFO": "তথ্য",
-      "messages.WARN": "সতর্কতা"
+      "messages.WARN": "সতর্কতা",
+      movedBottom: "একদম নীচে নামানো হয়েছে",
+      movedDown: "নীচে নামানো হয়েছে",
+      movedTop: "একদম উপরে তোলা হয়েছে",
+      movedToSource: "উৎসে সরানো হয়েছে",
+      movedToTarget: "টার্গেটে সরানো হয়েছে",
+      movedUp: "উপরে তোলা হয়েছে",
     },
     "messages": {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: বৈধতা ত্রুটি: মান প্রয়োজন।",

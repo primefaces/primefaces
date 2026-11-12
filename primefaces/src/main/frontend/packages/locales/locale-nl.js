@@ -40,6 +40,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fataal",
       "messages.INFO": "Informatie",
       "messages.WARN": "Waarschuwing",
+      movedBottom: "Naar beneden verplaatst",
+      movedDown: "Omlaag verplaatst",
+      movedTop: "Naar boven verplaatst",
+      movedToSource: "Naar bron verplaatst",
+      movedToTarget: "Naar doel verplaatst",
+      movedUp: "Omhoog verplaatst",
     },
     messages: {
       //optional for Client Side Validation

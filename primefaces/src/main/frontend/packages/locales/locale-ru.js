@@ -43,6 +43,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Фатальная Ошибка",
       "messages.INFO": "Информация",
       "messages.WARN": "Предупреждение",
+      movedBottom: "Перемещено в конец",
+      movedDown: "Перемещено вниз",
+      movedTop: "Перемещено в начало",
+      movedToSource: "Перемещено в источник",
+      movedToTarget: "Перемещено в приёмник",
+      movedUp: "Перемещено вверх",
     },
     messages: {
       //Опционально для стороны клиента

@@ -45,6 +45,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "שגיאה חמורה",
       "messages.INFO": "מידע",
       "messages.WARN": "אזהרה",
+      movedBottom: "הועבר לתחתית",
+      movedDown: "הועבר למטה",
+      movedTop: "הועבר לראש",
+      movedToSource: "הועבר למקור",
+      movedToTarget: "הועבר ליעד",
+      movedUp: "הועבר למעלה",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: שגיאת אימות: נדרש ערך.",

@@ -40,6 +40,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatal",
       "messages.INFO": "Információ",
       "messages.WARN": "Figyelem",
+      movedBottom: "Az aljára mozgatva",
+      movedDown: "Lejjebb mozgatva",
+      movedTop: "A tetejére mozgatva",
+      movedToSource: "A forráshoz mozgatva",
+      movedToTarget: "A célhoz mozgatva",
+      movedUp: "Feljebb mozgatva",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: Érvényesítési hiba: érték szükséges.",

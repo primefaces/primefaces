@@ -46,6 +46,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatalna greška",
       "messages.INFO": "Informacija",
       "messages.WARN": "Upozorenje",
+      movedBottom: "Pomjereno na dno",
+      movedDown: "Pomjereno dole",
+      movedTop: "Pomjereno na vrh",
+      movedToSource: "Pomjereno na izvor",
+      movedToTarget: "Pomjereno na cilj",
+      movedUp: "Pomjereno gore",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: Greška validacije: Vrijednost je obavezna.",

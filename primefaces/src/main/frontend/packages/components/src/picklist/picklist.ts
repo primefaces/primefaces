@@ -860,6 +860,8 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         let movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedUp'));
+
             items.each((_i, el) => {
                 const item = $(el);
 
@@ -903,6 +905,8 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         let movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedTop'));
+
             items.each((_i, el) => {
                 const item = $(el);
 
@@ -944,6 +948,8 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         let movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedDown'));
+
             $(items.get().reverse()).each((_i, el) => {
                 const item = $(el);
 
@@ -985,6 +991,8 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         let movedCount = 0;
 
         if(itemsCount) {
+            this.announce(this.getAriaLabel('movedBottom'));
+
             items.each((_i, el) => {
                 const item = $(el);
 
@@ -1113,6 +1121,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param type Type of the action that caused the items to be transferred.
      */
     private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.widget.PickList.TransferType): void {
+        // #15492 announce the completed transfer to screen readers
+        this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource'));
+
         if(this.cfg.onTransfer) {
             const obj = {} as PrimeFacesTypes.widget.PickList.TransferData;
             obj.items = items;
@@ -1415,6 +1426,19 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     private updateListRole(): void {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+    }
+
+    /**
+     * Announces the given text to screen readers via the aria live region.
+     * @param text The text to announce.
+     */
+    private announce(text: string): void {
+        const region = this.ariaRegion;
+        // clear first, otherwise repeating the same action (e.g. move up twice) is not announced again
+        region.text('');
+        PrimeFaces.queueTask(() => {
+            region.text(text);
+        }, 100);
     }
 
     /**

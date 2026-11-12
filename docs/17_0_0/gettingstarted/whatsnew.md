@@ -33,6 +33,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * Added `title` property (accessible name of the `object` element) and `fallback` facet (content shown when the media cannot be displayed).
 * DatePicker
     * Added `builtInValidation` property to skip the server side validation of `mindate` / `maxdate`, `disabledDates`, `enabledDates`, `disabledDays` and the order of the range dates.
+* PickList
+    * Transfer and move up/down/top/bottom actions are announced to screen readers (e.g. "Moved to Target", "Moved Up"), the texts are the new aria labels `movedToTarget`, `movedToSource`, `movedUp`, `movedDown`, `movedTop` and `movedBottom`, see [PickList](/components/picklist.md).
 * New components
     * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
     * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.
