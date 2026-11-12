@@ -1202,7 +1202,7 @@ export class Utils {
             }
 
             if (!isEmpty) {
-                return false;
+                break;
             }
         }
 
