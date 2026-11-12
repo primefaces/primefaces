@@ -377,7 +377,13 @@ public class HTML {
     public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "p-hidden";
     public static final String RADIOBUTTON_ICON_CLASS = "p-radiobutton-icon p-c";
 
-    public static final String WIDGET_VAR = "data-widget";
+    public static final String REF = "data-p-ref";
+
+    /**
+     * @deprecated use {@link #REF} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public static final String WIDGET_VAR = REF;
 
     public static class ValidationMetadata {
 

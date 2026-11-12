@@ -222,13 +222,13 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Mixed
             return calculateTimeOnlyPattern();
         }
         else if (isShowTime()) {
-            return calculateWidgetPattern() + " " + calculateTimeOnlyPattern();
+            return calculateClientPattern() + " " + calculateTimeOnlyPattern();
         }
-        return calculateWidgetPattern();
+        return calculateClientPattern();
     }
 
     @Override
-    public String calculateWidgetPattern() {
+    public String calculateClientPattern() {
         return CalendarUtils.removeTime(super.calculatePattern());
     }
 

@@ -65,7 +65,7 @@ type declaration files.
 
 The main entry point of the PrimeFaces client-side JavaScript API is the global object
 [window.PrimeFaces](./modules/src_PrimeFaces.PrimeFaces.html) (or just `PrimeFaces` for short). It contains several
-utility methods as well as the [component registry](./modules/src_PrimeFaces.PrimeFaces.widget.html) with all available
+utility methods as well as the [component registry](./modules/src_PrimeFaces.PrimeFaces.component.html) with all available
 PrimeFaces components.
 
 ### Core
@@ -93,7 +93,7 @@ handling client side validation.
 
 ### Components
 
-* [PrimeFaces.component](./modules/src_PrimeFaces.PrimeFaces.widget.html) contains all available component classes. A component is
+* [PrimeFaces.component](./modules/src_PrimeFaces.PrimeFaces.component.html) contains all available component classes. A component is
 usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a component instance via
 `instanceof`. You can also use these as a base class when you create your own components.
 * [`PrimeFaces.components`](./modules/src_PrimeFaces.PrimeFaces.html#widgets) is an object with all instantiated components that

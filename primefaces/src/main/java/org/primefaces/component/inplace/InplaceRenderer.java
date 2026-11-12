@@ -79,7 +79,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
             writer.writeAttribute("style", userStyle, "id");
         }
 
-        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.REF, widgetVar, null);
 
         //output
         String outputStyleClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;

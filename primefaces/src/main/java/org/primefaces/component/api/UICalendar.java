@@ -155,7 +155,20 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         return localePattern;
     }
 
-    public abstract String calculateWidgetPattern();
+    /**
+     * Calculates the date pattern of the client side component, without the time part.
+     *
+     * @return the date pattern
+     */
+    public abstract String calculateClientPattern();
+
+    /**
+     * @deprecated use {@link #calculateClientPattern()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public String calculateWidgetPattern() {
+        return calculateClientPattern();
+    }
 
     /**
      * Converts a Java date pattern to the format understood by the InputMask plugin.

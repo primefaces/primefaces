@@ -43,6 +43,7 @@ import org.primefaces.util.ResourceUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.StyleBuilder;
 import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
@@ -767,6 +768,14 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
     protected ComponentScriptBuilder getComponentScriptBuilder(FacesContext context) {
         return PrimeRequestContext.getCurrentInstance(context).getComponentScriptBuilder();
+    }
+
+    /**
+     * @deprecated use {@link #getComponentScriptBuilder(FacesContext)} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    protected WidgetBuilder getWidgetBuilder(FacesContext context) {
+        return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
 
     protected StyleClassBuilder getStyleClassBuilder(FacesContext context) {

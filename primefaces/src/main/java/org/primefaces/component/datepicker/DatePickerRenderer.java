@@ -135,7 +135,7 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
 
     protected void encodeDateMetadataAsJSON(FacesContext context, DatePicker datePicker, DateMetadataModel model) throws IOException {
         JSONObject jsonDateMetadata = new JSONObject();
-        String pattern = datePicker.calculateWidgetPattern();
+        String pattern = datePicker.calculateClientPattern();
         for (Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
             String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
             DateMetadata metadata = entry.getValue();
@@ -181,7 +181,7 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
     @Override
     protected void encodeScript(FacesContext context, DatePicker component, String value) throws IOException {
         Locale locale = component.calculateLocale(context);
-        String pattern = component.calculateWidgetPattern();
+        String pattern = component.calculateClientPattern();
         ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DatePicker", component);
 

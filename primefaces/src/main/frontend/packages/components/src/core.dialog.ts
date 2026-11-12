@@ -135,7 +135,7 @@ export class DialogHandler {
         const dialogWidgetVar = cfg.options.widgetVar || cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
 
         const styleClass = cfg.options.styleClass || '';
-        const dialogDOM = $('<div id="' + dialogId + '" class="p-dialog p-component p-hidden-container p-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>');
+        const dialogDOM = $('<div id="' + dialogId + '" class="p-dialog p-component p-hidden-container p-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-p-ref="' + dialogWidgetVar + '"></div>');
         const box = $('<div class="p-dialog-box p-component-content"></div>').appendTo(dialogDOM);
         const titlebar = $('<div class="p-dialog-titlebar p-component-header"><span id="' + dialogId + '_title" class="p-dialog-title"></span></div>').appendTo(box);
 
@@ -310,7 +310,7 @@ export class DialogHandler {
         let dialogReturnBehavior: PrimeFacesTypes.component.Behavior | undefined = undefined;
         let windowContext: Window | null | undefined = null;
 
-        const dlgComponent = rootWindow.PF(dlg.data('widget')) as PrimeFacesTypes.Component<"Dialog"> | undefined;
+        const dlgComponent = rootWindow.PF(dlg.data('pRef')) as PrimeFacesTypes.Component<"Dialog"> | undefined;
         if (!dlgComponent) {
             // GitHub #2039 dialog may already be closed on slow internet
             PrimeFaces.error('Dialog component was not found to close.');

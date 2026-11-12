@@ -30,6 +30,7 @@ import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.StyleBuilder;
 import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -167,6 +168,14 @@ public class PrimeRequestContext {
         }
 
         return componentScriptBuilder;
+    }
+
+    /**
+     * @deprecated use {@link #getComponentScriptBuilder()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public WidgetBuilder getWidgetBuilder() {
+        return new WidgetBuilder(context, getApplicationContext().getConfig());
     }
 
     /**

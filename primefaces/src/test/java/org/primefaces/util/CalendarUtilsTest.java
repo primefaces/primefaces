@@ -81,7 +81,7 @@ class CalendarUtilsTest {
         when(datePicker.getValue()).thenReturn(value);
         when(datePicker.calculatePattern()).thenCallRealMethod();
         when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
-        when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.calculateClientPattern()).thenCallRealMethod();
         when(datePicker.calculateLocalizedPattern()).thenCallRealMethod();
         when(datePicker.calculateLocale(any())).thenReturn(locale);
     }

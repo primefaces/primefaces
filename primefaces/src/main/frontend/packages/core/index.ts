@@ -1521,19 +1521,9 @@ declare global {
         export type Component<Name extends keyof ComponentRegistry> = InstanceType<PrimeFacesTypes.ComponentRegistry[Name]>;
 
         /**
-         * @deprecated Use {@link Component} instead.
-         */
-        export type Widget<Name extends keyof ComponentRegistry> = Component<Name>;
-
-        /**
          * A map of all instantiated components that are available on the current page.
          */
         export type ComponentInstanceMap = Record<string, BaseComponent<any>>;
-
-        /**
-         * @deprecated Use {@link ComponentInstanceMap} instead.
-         */
-        export type WidgetInstanceMap = ComponentInstanceMap;
 
         /**
          * This interface contains the mapping between the name of a component type and its implementing class. The key
@@ -1560,56 +1550,9 @@ declare global {
          * }
          * ```
          */
-        export interface ComponentRegistry extends WidgetRegistry { }
-
-        /**
-         * Former name of the {@link ComponentRegistry}. Components registered by extending this interface are still
-         * part of the {@link ComponentRegistry}.
-         * @deprecated Extend {@link ComponentRegistry} instead.
-         */
-        export interface WidgetRegistry { }
+        export interface ComponentRegistry { }
     }
 
-    /**
-     * Former name of the namespace {@link PrimeFacesTypes.component}, contains the types of the base components only.
-     * @deprecated Use the types in {@link PrimeFacesTypes.component} instead.
-     */
-    namespace PrimeFacesTypes.widget {
-        /** @deprecated Use {@link PrimeFacesTypes.component.BaseComponentCfg} instead. */
-        export type BaseWidgetCfg = component.BaseComponentCfg;
-        /** @deprecated Use {@link PrimeFacesTypes.component.DeferredComponentCfg} instead. */
-        export type DeferredWidgetCfg = component.DeferredComponentCfg;
-        /** @deprecated Use {@link PrimeFacesTypes.component.DynamicOverlayComponentCfg} instead. */
-        export type DynamicOverlayWidgetCfg = component.DynamicOverlayComponentCfg;
-        /** @deprecated Use {@link PrimeFacesTypes.component.ComponentCfg} instead. */
-        export type WidgetCfg<C extends PrimeFacesTypes.Newable<[], BaseComponent<any>>> = component.ComponentCfg<C>;
-        /** @deprecated Use {@link PrimeFacesTypes.component.PartialComponentCfg} instead. */
-        export type PartialWidgetCfg<Cfg extends { id: string | string[]; widgetVar: string; }> = component.PartialComponentCfg<Cfg>;
-        /** @deprecated Use {@link PrimeFacesTypes.component.PartialCreateComponentCfg} instead. */
-        export type PartialCreateWidgetCfg<Cfg extends { id: string | string[]; widgetVar: string; }> = component.PartialCreateComponentCfg<Cfg>;
-        /** @deprecated Use {@link PrimeFacesTypes.component.ContextMenuLikeComponentCfg} instead. */
-        export type ContextMenuLikeWidgetCfg = component.ContextMenuLikeComponentCfg;
-        /** @deprecated Use {@link PrimeFacesTypes.component.ContextMenuLikeComponent} instead. */
-        export type ContextMenuLikeWidget = component.ContextMenuLikeComponent;
-        /** @deprecated Use {@link PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg} instead. */
-        export type DynamicOverlayFeatureWidgetCfg = component.DynamicOverlayFeatureComponentCfg;
-        /** @deprecated Use {@link PrimeFacesTypes.component.DynamicOverlayFeatureComponent} instead. */
-        export type DynamicOverlayFeatureWidget<Cfg extends component.DynamicOverlayFeatureComponentCfg> = component.DynamicOverlayFeatureComponent<Cfg>;
-        /** @deprecated Use {@link PrimeFacesTypes.component.Behavior} instead. */
-        export type Behavior = component.Behavior;
-        /** @deprecated Use {@link PrimeFacesTypes.component.DestroyListener} instead. */
-        export type DestroyListener<W> = component.DestroyListener<W>;
-        /** @deprecated Use {@link PrimeFacesTypes.component.RefreshListener} instead. */
-        export type RefreshListener<W> = component.RefreshListener<W>;
-        /** @deprecated Use {@link PrimeFacesTypes.component.PreConstructCallback} instead. */
-        export type PreConstructCallback = component.PreConstructCallback;
-        /** @deprecated Use {@link PrimeFacesTypes.component.PreDestroyCallback} instead. */
-        export type PreDestroyCallback = component.PreDestroyCallback;
-        /** @deprecated Use {@link PrimeFacesTypes.component.PostRefreshCallback} instead. */
-        export type PostRefreshCallback = component.PostRefreshCallback;
-        /** @deprecated Use {@link PrimeFacesTypes.component.PostConstructCallback} instead. */
-        export type PostConstructCallback = component.PostConstructCallback;
-    }
     namespace PrimeFacesTypes.component {
         /**
          * Gets the configuration of a component.

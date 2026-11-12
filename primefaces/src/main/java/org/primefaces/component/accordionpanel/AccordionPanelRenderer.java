@@ -144,7 +144,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
             writer.writeAttribute("style", component.getStyle(), null);
         }
 
-        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.REF, widgetVar, null);
 
         renderDynamicPassThruAttributes(context, component);
 

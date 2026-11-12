@@ -153,7 +153,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.REF, widgetVar, null);
 
         int activeIndex = component.resolveActiveIndex();
         String active;

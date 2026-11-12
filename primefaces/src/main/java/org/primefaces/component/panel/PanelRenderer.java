@@ -130,7 +130,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.REF, widgetVar, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
 
         boolean isRenderHeader = shouldRenderHeader(context, component);

@@ -90,7 +90,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.REF, widgetVar, null);
 
         renderDynamicPassThruAttributes(context, component);
 

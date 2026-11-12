@@ -109,7 +109,7 @@ class DatePickerTest {
         datePicker = mock(MyDatePicker.class);
         when(datePicker.calculatePattern()).thenCallRealMethod();
         when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
-        when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.calculateClientPattern()).thenCallRealMethod();
         when(datePicker.getTimeSeparator()).thenCallRealMethod();
         when(datePicker.getFractionSeparator()).thenCallRealMethod();
         when(datePicker.isValid()).thenCallRealMethod();

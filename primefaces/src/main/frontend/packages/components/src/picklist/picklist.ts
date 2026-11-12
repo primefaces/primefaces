@@ -53,15 +53,15 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     /** Whether the user is currently transferring an item via drag&drop. */
     dragging?: boolean;
     /** The filter that was selected and is currently used. */
-    filterMatcher?: PrimeFacesTypes.widget.PickList.FilterFunction;
+    filterMatcher?: PrimeFacesTypes.component.PickList.FilterFunction;
     /** Map between the available filter types and the filter implementation. */
-    filterMatchers: Partial<Record<PrimeFacesTypes.widget.PickList.FilterMatchMode, PrimeFacesTypes.widget.PickList.FilterFunction>> = {};
+    filterMatchers: Partial<Record<PrimeFacesTypes.component.PickList.FilterMatchMode, PrimeFacesTypes.component.PickList.FilterFunction>> = {};
     /** The DOM element for the currently focused pick list item, if any. */
     focusedItem: JQuery | null = null;
     /** The DOM elements for the pick list items in the source and target list. */
     items: JQuery = $();
     /** When sorting items: to which list the items belong. */
-    itemListName?: PrimeFacesTypes.widget.PickList.ListName;
+    itemListName?: PrimeFacesTypes.component.PickList.ListName;
     /** The DOM element for the filter input for the source list. */
     sourceFilter?: JQuery;
     /** The DOM element for the hidden input storing the value of the source list. */
@@ -75,7 +75,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     /** The DOM element for the target list. */
     targetList: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.transferOnDblclick = this.cfg.transferOnDblclick !== false;
@@ -772,7 +772,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.PickList.FilterFunction` that matches the given option when it starts with
+     * Implementation of a `PrimeFaces.component.PickList.FilterFunction` that matches the given option when it starts with
      * the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -783,7 +783,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.PickList.FilterFunction` that matches the given option when it contains
+     * Implementation of a `PrimeFaces.component.PickList.FilterFunction` that matches the given option when it contains
      * the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -794,7 +794,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Implementation of a `PrimeFaces.widget.PickList.FilterFunction` that matches the given option when it ends with
+     * Implementation of a `PrimeFaces.component.PickList.FilterFunction` that matches the given option when it ends with
      * the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1025,7 +1025,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Saves the current state of this widget, i.e. to which list the items are currently assigned. Clears inputs and
+     * Saves the current state of this component, i.e. to which list the items are currently assigned. Clears inputs and
      * repopulates them from the list states.
      */
     private saveState(): void {
@@ -1045,7 +1045,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param type Type of the action that caused the items to be transferred.
      * @param callback after transfer finished.
      */
-    transfer(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.widget.PickList.TransferType, callback?: () => void): void {
+    transfer(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.component.PickList.TransferType, callback?: () => void): void {
         this.toggleDragDrop(false);
         const $this = this;
         const itemsCount = items.length;
@@ -1120,9 +1120,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param to List to which the items were transferred.
      * @param type Type of the action that caused the items to be transferred.
      */
-    private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.widget.PickList.TransferType): void {
+    private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.component.PickList.TransferType): void {
         if(this.cfg.onTransfer) {
-            const obj = {} as PrimeFacesTypes.widget.PickList.TransferData;
+            const obj = {} as PrimeFacesTypes.component.PickList.TransferData;
             obj.items = items;
             obj.from = from;
             obj.to = to;
@@ -1165,7 +1165,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param element A list element to check.
      * @returns Whether the element represents the source or target list.
      */
-    private getListName(element: JQuery): PrimeFacesTypes.widget.PickList.ListName {
+    private getListName(element: JQuery): PrimeFacesTypes.component.PickList.ListName {
         return element.parent().hasClass("p-picklist-source") ? "source" : "target";
     }
 
@@ -1239,7 +1239,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Applies the tab index to this pick list widget.
+     * Applies the tab index to this pick list component.
      */
     private setTabIndex(): void {
         const tabindex = (this.cfg.disabled) ? '-1' : this.getTabIndex();
@@ -1250,7 +1250,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Finds the tab index of this pick list widget.
+     * Finds the tab index of this pick list component.
      * @returns The tab index of this pick list.
      */
     private getTabIndex(): string {

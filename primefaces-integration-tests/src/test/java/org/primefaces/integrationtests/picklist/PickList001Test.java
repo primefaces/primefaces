@@ -532,7 +532,7 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Moved to Source", region.getAttribute("textContent"));
-        assertConfiguration(page.standardPickList.getWidgetConfiguration());
+        assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {
