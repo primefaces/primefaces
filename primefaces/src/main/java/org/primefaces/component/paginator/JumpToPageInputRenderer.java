@@ -25,7 +25,6 @@ package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
-import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
 
@@ -51,7 +50,8 @@ public class JumpToPageInputRenderer implements PaginatorElementRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_INPUT_CLASS, null);
         writer.writeAttribute("style", "--p-jtp-digits:" + digits, null);
-        writer.writeAttribute("value", LocaleUtils.formatInteger(context, pageable.getPage() + 1), null);
+        // type="number" only accepts ASCII digits without grouping, so the value must not be localized
+        writer.writeAttribute("value", pageable.getPage() + 1, null);
         writer.endElement("input");
     }
 

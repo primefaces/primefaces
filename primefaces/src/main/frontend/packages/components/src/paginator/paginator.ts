@@ -72,6 +72,8 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
     currentReport: JQuery = $();
     /** ARIA LABEL attribute for the page links. */
     ariaPageLabel: string = "";
+    /** Formatter for the numbers updated on the client, created lazily for the current locale. */
+    private numberFormat?: Intl.NumberFormat;
 
     override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
@@ -344,11 +346,11 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
         }
 
         const text = (this.cfg.currentPageTemplate as string)
-            .replace("{currentPage}", String(page + 1))
-            .replace("{totalPages}", String(this.cfg.pageCount))
-            .replace("{totalRecords}", String(rowCount))
-            .replace("{startRecord}", String(startRecord))
-            .replace("{endRecord}", String(endRecord));
+            .replace("{currentPage}", this.formatInteger(page + 1))
+            .replace("{totalPages}", this.formatInteger(this.cfg.pageCount as number))
+            .replace("{totalRecords}", this.formatInteger(rowCount))
+            .replace("{startRecord}", this.formatInteger(startRecord))
+            .replace("{endRecord}", this.formatInteger(endRecord));
         this.currentReport.text(text);
 
         //rows per page dropdown
@@ -369,10 +371,11 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
                 // GitHub #6929: performance improvement not using JQ html()
                 jtpSelect.innerHTML = jtpOptions;
             }
-            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
+            // option values may be localized (e.g. Persian digits) when rendered by the server
+            this.jtpSelect.children('option').filter((_, option) => this.parseLocalizedInt(option.value) === page).prop('selected','selected');
         }
 
-        //jump to page input
+        //jump to page input (type="number" only accepts ASCII digits, so it must not be localized)
         if(this.jtpInput.length > 0) {
             this.jtpInput.val(page + 1);
         }
@@ -420,7 +423,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
                 ariaCurrentPage = 'aria-current="page"';
             }
 
-            this.pagesContainer.append('<button class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" type="button">' + (i + 1) + '</button>');
+            this.pagesContainer.append('<button class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" type="button">' + this.formatInteger(i + 1) + '</button>');
         }
 
         if(focusContainer) {
@@ -580,6 +583,29 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
      */
     prev(): void {
         this.setPage((this.cfg.page as number) - 1);
+    }
+
+    /**
+     * Formats an integer for display using the current locale (`PrimeFaces.settings.locale`), so labels updated
+     * on the client match the ones rendered by the server with `LocaleUtils.formatInteger` (e.g. Persian digits).
+     * Falls back to the plain number if the locale is not supported by the browser.
+     * Example: 1000 with locale "fa_IR" -> "۱٬۰۰۰"
+     * Example: 1000 with locale "de_DE" -> "1.000"
+     * @param value The integer to format.
+     * @returns The localized string representation of the integer.
+     */
+    private formatInteger(value: number): string {
+        if (!this.numberFormat) {
+            // Java locale (e.g. "fa_IR" or "sr_RS_#Latn") to language tag (e.g. "fa-IR")
+            const locale = String(PrimeFaces.settings.locale || '').split('_#')[0]?.replace(/_/g, '-');
+            try {
+                this.numberFormat = new Intl.NumberFormat(locale || undefined, { maximumFractionDigits: 0 });
+            }
+            catch {
+                this.numberFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 });
+            }
+        }
+        return this.numberFormat.format(value);
     }
 
     /**
