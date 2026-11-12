@@ -342,6 +342,15 @@ public abstract class PickList extends AbstractComponent {
     }
 
     /**
+     * Gets the aria live region used to announce focused items and actions to screen readers.
+     *
+     * @return the aria live region element
+     */
+    public WebElement getAriaRegion() {
+        return findElement(By.id(getId() + "_ariaRegion"));
+    }
+
+    /**
      * Determines if the pick list has checkbox selection enabled
      *
      * @return true if checkbox selection is enabled, false otherwise

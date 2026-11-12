@@ -97,7 +97,7 @@ Label texts and tooltips come from the locale configuration for your language by
 </p:pickList>
 ```
 
-After a transfer or reorder the result of the action (e.g. `movedToTarget`, `movedUp`) is announced to screen readers
+After a transfer or a move up/down/top/bottom the result of the action (e.g. `movedToTarget`, `movedUp`) is announced to screen readers
 through an aria live region, these texts can be overridden the same way.
 
 ## Filtering

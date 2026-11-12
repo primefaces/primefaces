@@ -36,9 +36,9 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -489,7 +489,7 @@ class PickList001Test extends AbstractPrimePageTest {
         PrimeSelenium.wait(500);
 
         // Assert
-        WebElement region = page.standardPickList.findElement(By.id("form:standardPickList_ariaRegion"));
+        WebElement region = page.standardPickList.getAriaRegion();
         assertEquals("Lewis", region.getAttribute("textContent"));
         Long announcements = PrimeSelenium.executeScript("return window.pickListAnnouncements;");
         assertEquals(1L, announcements);
@@ -508,25 +508,27 @@ class PickList001Test extends AbstractPrimePageTest {
     @Order(28)
     @DisplayName("PickList: #15492 transfer and reorder actions are announced to screen readers")
     void ariaRegionAnnouncesActions(final Page page) {
-        WebElement region = page.standardPickList.findElement(By.id("form:standardPickList_ariaRegion"));
+        WebElement region = page.standardPickList.getAriaRegion();
 
         // Act
         page.standardPickList.pick("Lewis", "Max");
-        PrimeSelenium.wait(500);
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target"));
 
         // Assert
         assertEquals("Moved to Target", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.moveTargetItemsUp("Max");
-        PrimeSelenium.wait(500);
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Up"));
+        // move up announces before its animation, wait until the item is actually moved
+        PrimeSelenium.waitGui().until(d -> page.standardPickList.getTargetListLabels().equals(Arrays.asList("Max", "Lewis")));
 
         // Assert
         assertEquals("Moved Up", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.remove("Lewis");
-        PrimeSelenium.wait(500);
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source"));
 
         // Assert
         assertEquals("Moved to Source", region.getAttribute("textContent"));
