@@ -49,17 +49,18 @@
         max-height: none;
         overflow: visible;
         padding: 2rem 0 2rem 0;
-        margin-right: 0;
+        margin-inline-end: 0;
         max-width: var(--layout-right-rail-width);
         width: 100%;
-        border-left: 1px solid transparent;
+        border-inline-start: 1px solid transparent;
 
         .submenu-section-title {
             font-size: .75rem;
             font-weight: 700;
             letter-spacing: .08em;
             color: var(--text-color-secondary);
-            margin: 1.25rem 0 .5rem .75rem;
+            margin: 1.25rem 0 .5rem;
+            margin-inline-start: .75rem;
 
             &:first-child {
                 margin-top: 0;
@@ -71,19 +72,20 @@
             color: var(--text-color-secondary);
             font-size: 1rem;
             padding: .375rem .75rem;
-            border-left: 2px solid transparent;
+            border-inline-start: 2px solid transparent;
             text-decoration: none;
             transition: color .15s, border-color .15s;
-            border-radius: 0 3px 3px 0;
+            border-start-end-radius: 3px;
+            border-end-end-radius: 3px;
 
             &:hover {
                 color: var(--text-color);
-                border-left-color: var(--surface-d);
+                border-inline-start-color: var(--surface-d);
             }
 
             &.active {
                 color: var(--primary-color);
-                border-left-color: var(--primary-color);
+                border-inline-start-color: var(--primary-color);
                 font-weight: 600;
             }
         }
@@ -92,10 +94,10 @@
             display: flex;
             align-items: center;
             gap: .4rem;
-            border-left: none;
+            border-inline-start: none;
 
             &:hover {
-                border-left: none;
+                border-inline-start: none;
             }
 
             i {
@@ -142,7 +144,7 @@
                 white-space: nowrap;
 
                 i {
-                    margin-right: .5rem;
+                    margin-inline-end: .5rem;
                 }
             }
         }
