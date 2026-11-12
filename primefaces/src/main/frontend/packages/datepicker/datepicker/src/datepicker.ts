@@ -3102,7 +3102,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
 
     /**
      * Handles the change of the input: keeps the displayed month within min / max date, reformats the input unless
-     * `keepInvalid` is set and calls the original `onchange` handler of the input.
+     * `keepInvalid` is set and calls the original `onchange` handler of the input. The value is remembered, so the blur of
+     * a masked input does not fire the change again (#14137).
      * @param event The change event, if any.
      */
     private onInputChange(event?: JQuery.TriggeredEvent): void {
@@ -3112,6 +3113,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             this.input.val(this.getValueToRender());
         }
 
+        this.valueOnFocus = this.getDate();
         this.changeHandler?.(event as JQuery.TriggeredEvent);
     }
 
