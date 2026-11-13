@@ -65,8 +65,8 @@ public class Poll extends PollBaseImpl {
             Boolean stop = expr.getValue(facesContext.getELContext());
 
             if (Boolean.TRUE.equals(stop)) {
-                String widgetVar = resolveWidgetVar();
-                PrimeFaces.current().executeScript("PF('" + widgetVar + "').stop();");
+                String ref = resolveRef();
+                PrimeFaces.current().executeScript("PF('" + ref + "').stop();");
             }
         }
     }

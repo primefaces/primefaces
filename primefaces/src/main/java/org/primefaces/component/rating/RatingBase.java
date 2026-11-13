@@ -27,9 +27,9 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.RateEvent;
 
 @FacesComponentBase
@@ -37,7 +37,7 @@ import org.primefaces.event.RateEvent;
     @FacesBehaviorEvent(name = "rate", event = RateEvent.class, description = "Fires when a rating is selected.", defaultEvent = true),
     @FacesBehaviorEvent(name = "cancel", event = RateEvent.class, description = "Fires when the rating is canceled.")
 })
-public abstract class RatingBase extends PrimeUIInput implements Widget, StyleAware {
+public abstract class RatingBase extends PrimeUIInput implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

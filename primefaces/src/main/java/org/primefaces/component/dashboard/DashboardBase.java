@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.DashboardReorderEvent;
 
 import jakarta.faces.component.UIPanel;
@@ -36,7 +36,7 @@ import jakarta.faces.component.UIPanel;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "reorder", event = DashboardReorderEvent.class, description = "Fired when dashboard panels are reordered", defaultEvent = true)
 })
-public abstract class DashboardBase extends UIPanel implements Widget {
+public abstract class DashboardBase extends UIPanel implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -69,7 +69,7 @@ public abstract class DashboardBase extends UIPanel implements Widget {
     @Property(description = "In responsive mode, PrimeFlex can be used to dynamically size columns and responsiveness.", defaultValue = "false")
     public abstract boolean isResponsive();
 
-    @Property(description = "Name of collection iterator which will be the value of DashboardWidget.getValue().")
+    @Property(description = "Name of the request scoped variable that holds the value of the item (DashboardItem.getValue()) while its panel is rendered.")
     public abstract String getVar();
 
     @Property(description = "Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope.",

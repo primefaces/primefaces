@@ -5,7 +5,7 @@
     <h:head />
     <h:body>
         <h:form id="form">
-            <p:toggleSwitch id="toggle" widgetVar="toggle" value="#{confirmDialog003.enabled}">
+            <p:toggleSwitch id="toggle" ref="toggle" value="#{confirmDialog003.enabled}">
                 <p:ajax listener="#{confirmDialog003.changed}" update="values" />
                 <p:confirm type="#{param.popup eq 'true' ? 'popup' : 'dialog'}" message="Change switch?" />
             </p:toggleSwitch>

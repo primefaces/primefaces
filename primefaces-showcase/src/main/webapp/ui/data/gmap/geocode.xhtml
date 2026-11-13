@@ -47,7 +47,7 @@
                 </div>
                 <p:commandButton value="Geocode" icon="pi pi-search" onclick="geocode()" type="button" styleClass="mb-3"/>
 
-                <p:gmap id="geoGmap" widgetVar="geoMap" center="#{geocodeView.centerGeoMap}" zoom="2" type="ROADMAP"
+                <p:gmap id="geoGmap" ref="geoMap" center="#{geocodeView.centerGeoMap}" zoom="2" type="ROADMAP"
                         model="#{geocodeView.geoModel}" style="width:100%;height:400px">
                     <p:ajax event="geocode" listener="#{geocodeView.onGeocode}" update="@this"/>
                 </p:gmap>
@@ -68,7 +68,7 @@
                 <p:commandButton value="Reverse Geocode" icon="pi pi-search" onclick="reverseGeocode()"
                                  type="button" styleClass="mb-3"/>
 
-                <p:gmap id="revGeoGmap" widgetVar="revGeoMap" center="#{geocodeView.centerRevGeoMap}" zoom="2"
+                <p:gmap id="revGeoGmap" ref="revGeoMap" center="#{geocodeView.centerRevGeoMap}" zoom="2"
                         type="ROADMAP" model="#{geocodeView.revGeoModel}" style="width:100%;height:400px">
                     <p:ajax event="reverseGeocode" listener="#{geocodeView.onReverseGeocode}" update="@this"/>
                 </p:gmap>

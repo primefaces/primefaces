@@ -29,11 +29,11 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UIComponent;
@@ -61,7 +61,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected from the dropdown."),
     @FacesBehaviorEvent(name = "clear", event = AjaxBehaviorEvent.class, description = "Fires when the selection is cleared.")
 })
-public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware, TouchAware, StyleAware, PrimeSelect {
+public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements PrimeClientComponent, InputHolder, RTLAware, TouchAware, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

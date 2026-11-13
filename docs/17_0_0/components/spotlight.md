@@ -10,7 +10,7 @@ Spotlight is accessed using client side api. Clicking the button highlights the 
     //content
 </p:panel>
 <p:commandButton value="Highlight" onclick="PF('spot').show()" />
-<p:spotlight target="pnl" widgetVar="spot" />
+<p:spotlight target="pnl" ref="spot" />
 ```
 ## Client Side API
 Component: _PrimeFaces.component.Spotlight_

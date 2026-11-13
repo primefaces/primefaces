@@ -12,12 +12,12 @@
     <h:body>
 
         <h:form id="form">
-            <p:sidebar id="sidebar1" widgetVar="sidebar1">
+            <p:sidebar id="sidebar1" ref="sidebar1">
                 sidebar1 content
             </p:sidebar>
             <p:button id="button1" onclick="PF('sidebar1').show(); return false" value="Show sidebar1" />
             
-            <p:sidebar id="sidebar2" widgetVar="sidebar2" dynamic="true">
+            <p:sidebar id="sidebar2" ref="sidebar2" dynamic="true">
                 sidebar2 content
             </p:sidebar>
             <p:button id="button2" onclick="PF('sidebar2').show(); return false" value="Show sidebar2" />

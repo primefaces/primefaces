@@ -20,7 +20,7 @@
             <p:commandButton id="btnRemove" value="Remove dialog" process="@this" action="#{dialog006.remove}" update="wrapper" />
 
             <h:panelGroup id="wrapper" layout="block">
-                <p:dialog header="Minimizable" id="dlg" widgetVar="dlg" width="350" minimizable="true" maximizable="true"
+                <p:dialog header="Minimizable" id="dlg" ref="dlg" width="350" minimizable="true" maximizable="true"
                           rendered="#{dialog006.rendered}">
                     <p:ajax event="minimize" listener="#{dialog006.onMinimize}" />
                     <p:ajax event="restoreMinimize" listener="#{dialog006.onRestoreMinimize}" />

@@ -28,8 +28,8 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.ItemSelectEvent;
 
 import jakarta.faces.component.UIComponent;
@@ -39,7 +39,7 @@ import jakarta.faces.component.UIComponentBase;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "itemSelect", event = ItemSelectEvent.class, description = "Fires when an item is selected.", defaultEvent = true)
 })
-public abstract class ChartBase extends UIComponentBase implements Widget, StyleAware {
+public abstract class ChartBase extends UIComponentBase implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -107,7 +107,8 @@ Here is the full list of configuration options:
 
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
-| widgetVar | null | String | Custom widgetVar of the dialog, if not declared it will be automatically created as "id+dlgWidget". |
+| ref | null | String | Name of the client side component of the dialog, if not declared it is generated as "pf_" + sourceComponentId + "_dlg". |
+| widgetVar | null | String | Deprecated, use `ref` instead. |
 | modal | false | Boolean | Controls modality of the dialog. |
 | resizable | true | Boolean | When enabled, makes dialog resizable. |
 | draggable | true | Boolean | When enabled, makes dialog draggable. |

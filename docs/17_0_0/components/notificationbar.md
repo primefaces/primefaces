@@ -13,11 +13,11 @@ As notificationBar is a panel component, any content can be placed inside.
 
 ## Showing and Hiding
 To show and hide the content, notificationBar provides an easy to use client side api that can be
-accessed through the widgetVar. _show()_ displays the bar and _hide()_ hides it. _isVisible()_ and _toggle()_
+accessed through the `ref`. _show()_ displays the bar and _hide()_ hides it. _isVisible()_ and _toggle()_
 are additional client side api methods.
 
 ```xhtml
-<p:notificationBar widgetVar="nv">
+<p:notificationBar ref="nv">
     //Content
 </p:notificationBar>
 <h:outputLink value="#" onclick="PF('nv').show()">Show</h:outputLink>

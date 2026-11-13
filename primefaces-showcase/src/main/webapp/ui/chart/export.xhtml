@@ -33,13 +33,13 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:chart id="barChart" value="#{chartView.barModel}" style="width: 100%; height: 500px;" widgetVar="chart"/>
+            <p:chart id="barChart" value="#{chartView.barModel}" style="width: 100%; height: 500px;" ref="chart"/>
             <br/>
 
             <p:commandButton type="button" value="Export" icon="pi pi-home" onclick="exportChart()" styleClass="mr-2 mb-2"/>
             <p:commandButton type="button" value="Print"  icon="pi pi-print" onclick="PF('chart').print()" styleClass="mr-2 mb-2"/>
 
-            <p:dialog widgetVar="dlg" showEffect="fade" modal="true" header="Chart as an Image" resizable="false">
+            <p:dialog ref="dlg" showEffect="fade" modal="true" header="Chart as an Image" resizable="false">
                 <p:outputPanel id="output" layout="block" style="width:500px;height:300px"/>
             </p:dialog>
         </div>

@@ -131,7 +131,7 @@ PrimeFaces.locales['en'].emptySearchMessage = 'No suggestions found';
 However if you want to provide a custom empty message on a specific AutoComplete component, you can use the `clientPostConstruct` attribute to change it.
 
 ```xhtml
-<p:autoComplete completeMethod="#{bean.actionAutocomplete}"  widgetVar="autoComplete" value="#{bean.selectedValue}" > 
+<p:autoComplete completeMethod="#{bean.actionAutocomplete}"  ref="autoComplete" value="#{bean.selectedValue}" > 
    <f:attribute name="clientPostConstruct" value="component.emptyMessage = '#{bean.myCustomEmptyMessage}';"/>
 </p:autoComplete>
 ```

@@ -136,7 +136,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
     protected void encodeMarkup(FacesContext context, TabView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         String orientation = component.getOrientation();
         String styleClass = getStyleClassBuilder(context)
                 .add(TabView.CONTAINER_CLASS)
@@ -153,7 +153,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        writer.writeAttribute(HTML.REF, widgetVar, null);
+        writer.writeAttribute(HTML.REF, ref, null);
 
         int activeIndex = component.resolveActiveIndex();
         String active;

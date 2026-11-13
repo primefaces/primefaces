@@ -33,7 +33,7 @@
                 </p:growl>
                 
                 <h5 style="margin-top:0px">Basic Layout</h5>
-                <p:selectManyCheckbox id="basicAjax" value="#{checkboxView.selectedOptions}" widgetVar="blub">
+                <p:selectManyCheckbox id="basicAjax" value="#{checkboxView.selectedOptions}" ref="blub">
                     <p:ajax listener="#{checkboxView.selectedOptionsChanged}" />
                     <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
                     <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>

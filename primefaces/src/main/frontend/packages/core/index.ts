@@ -720,7 +720,12 @@ declare global {
             onShow: string;
 
             /**
-             * Widget variable name of the dialog component to target. 
+             * Name of the client side component of the dialog (`ref`).
+             */
+            ref: string;
+
+            /**
+             * @deprecated Use {@link ref} instead.
              */
             widgetVar: string;
         }
@@ -746,9 +751,9 @@ declare global {
             sourceComponentId: string;
 
             /**
-             * Widget variable of the dialog.
+             * Name (ref) of the component that requested the dialog to open.
              */
-            sourceWidgetVar: string;
+            sourceRef: string;
 
             /**
              * Source URL for the IFRAME element with the dialog.
@@ -1073,7 +1078,7 @@ declare global {
              */
             delay?: number;
             /**
-             * A PrimeFaces client-side search expression (such as `@widgetVar` or `@(.my-class)` for locating the form
+             * A PrimeFaces client-side search expression (such as `@ref(name)` or `@(.my-class)` for locating the form
              * to with the input elements that are serialized. If not given, defaults to the enclosing form.
              */
             formId?: string;
@@ -1656,24 +1661,24 @@ declare global {
         /**
          * The component configuration of each component may contain only some of the declared properties. For example, when the
          * value of a property is equal to the default value, it is not transmitted from the server to the client. Only the
-         * two properties `id` and `widgetVar` are guaranteed to be always available.
-         * @typeParam Cfg Type of a component configuration. It must have at least the two properties `id` and `widgetVar`.
-         * @return A new type with all properties in the given type made optional, except for `id` and `widgetVar`.
+         * two properties `id` and `ref` are guaranteed to be always available.
+         * @typeParam Cfg Type of a component configuration. It must have at least the two properties `id` and `ref`.
+         * @return A new type with all properties in the given type made optional, except for `id` and `ref`.
          */
         export type PartialComponentCfg<Cfg extends {
             id: string | string[];
-            widgetVar: string;
-        }> = Partial<Omit<Cfg, "id" | "widgetVar">> & Pick<Cfg, "id" | "widgetVar">;
+            ref: string;
+        }> = Partial<Omit<Cfg, "id" | "ref">> & Pick<Cfg, "id" | "ref">;
 
         /**
-         * Same as {@link PartialComponentCfg}, but with the widgetVar being optional. Used by the `PrimeFaces.cw` function
-         * when creating components, which receives the widget variable explicitly as a separate argument.
+         * Same as {@link PartialComponentCfg}, but with the ref being optional. Used by the `PrimeFaces.cw` function
+         * when creating components, which receives the ref explicitly as a separate argument.
          * @typeParam Cfg Type of a component configuration. It must have at least the on property `id`.
          * @return A new type with all properties in the given type made optional, except for `id`.
          */
         export type PartialCreateComponentCfg<Cfg extends {
             id: string | string[];
-            widgetVar: string;
+            ref: string;
         }> = Partial<Omit<Cfg, "id">> & Pick<Cfg, "id">;
 
         /**

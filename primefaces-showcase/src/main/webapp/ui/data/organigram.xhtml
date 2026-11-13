@@ -27,24 +27,18 @@
 
                 <style>
                     .p-organigram .p-organigram-node.division {
-                        background: #93e7ff;
-                        background: -moz-linear-gradient(top, #93e7ff 0%, #007efc 100%);
-                        background: -webkit-linear-gradient(top, #93e7ff 0%, #007efc 100%);
-                        background: linear-gradient(to bottom, #93e7ff 0%, #007efc 100%);
+                        background: linear-gradient(to bottom, #93e7ff 0%, #007efc 100%) border-box;
                     }
 
                     .p-organigram .p-organigram-node.employee {
-                        background: #88c048;
-                        background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
-                        background: -webkit-linear-gradient(top, #88c048 0%, #69a038 100%);
-                        background: linear-gradient(to bottom, #88c048 0%, #69a038 100%);
+                        background: linear-gradient(to bottom, #88c048 0%, #69a038 100%) border-box;
                     }
                 </style>
 
                 <p:growl id="growl"/>
 
                 <p:organigram id="organigram"
-                              widgetVar="organigram"
+                              ref="organigram"
                               value="#{organigramView.rootNode}"
                               var="node"
                               leafNodeConnectorHeight="#{organigramView.leafNodeConnectorHeight}"
@@ -105,7 +99,7 @@
                 </p:contextMenu>
 
                 <p:dialog id="addEmployeeDialog"
-                          widgetVar="addEmployeeDialog"
+                          ref="addEmployeeDialog"
                           header="Add employee">
 
                     <p:inputText value="#{organigramView.employeeName}"/>

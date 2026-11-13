@@ -6,11 +6,13 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        TreeTable <span class="subitem">Size</span>
+        TreeTable <span class="subitem">Style</span>
     </ui:define>
 
     <ui:define name="description">
-        In addition to a regular table, alternatives sizes are available.
+        Gridlines display borders between the cells, striped rows display every second row with a different background
+        (expanding and collapsing a node keeps the stripes in order) and in addition to the regular size, a small and a
+        large size are available.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/treetable"/>
@@ -20,8 +22,8 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <h5>Small TreeTable</h5>
-                <p:treeTable value="#{ttBasicView.root}" var="document" size="small">
+                <h5>Gridlines</h5>
+                <p:treeTable value="#{ttBasicView.root}" var="document" showGridlines="true">
                     <p:column headerText="Name">
                         <h:outputText value="#{document.name}"/>
                     </p:column>
@@ -37,8 +39,8 @@
 
         <div class="card">
             <h:form id="form2">
-                <h5>Regular TreeTable</h5>
-                <p:treeTable value="#{ttBasicView.root}" var="document">
+                <h5>Striped Rows</h5>
+                <p:treeTable value="#{ttBasicView.root}" var="document" stripedRows="true">
                     <p:column headerText="Name">
                         <h:outputText value="#{document.name}"/>
                     </p:column>
@@ -54,7 +56,24 @@
 
         <div class="card">
             <h:form id="form3">
-                <h5>Large TreeTable</h5>
+                <h5>Small Size</h5>
+                <p:treeTable value="#{ttBasicView.root}" var="document" size="small">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h:form id="form4">
+                <h5>Large Size</h5>
                 <p:treeTable value="#{ttBasicView.root}" var="document" size="large">
                     <p:column headerText="Name">
                         <h:outputText value="#{document.name}"/>

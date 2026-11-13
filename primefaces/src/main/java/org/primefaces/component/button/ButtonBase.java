@@ -25,13 +25,13 @@ package org.primefaces.component.button;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.html.HtmlOutcomeTargetButton;
 
 @FacesComponentBase
-public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIOutcomeTarget {
+public abstract class ButtonBase extends HtmlOutcomeTargetButton implements PrimeClientComponent, UIOutcomeTarget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

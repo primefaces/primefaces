@@ -32,7 +32,7 @@
     <ui:define name="implementation">
         <div class="card p-fluid">
             <h:form>
-                <p:treeTable widgetVar="treeTable" value="#{ttScrollableView.root1}" var="document"
+                <p:treeTable ref="treeTable" value="#{ttScrollableView.root1}" var="document"
                              style="margin-top:0">
                     <f:facet name="header">
                         <div class="flex align-items-center justify-content-between">

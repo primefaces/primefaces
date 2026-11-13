@@ -8,7 +8,7 @@ Historically, PrimeFaces just consisted of a bunch of JavaScript and CSS files, 
 module system or build process whatsoever (other than minifying each file for the release build).
 Any linking between files was done implicitly via the global scope (`window` / `globalThis`).
 
-Furthermore, all widget classes used a custom class emulation script based on functions
+Furthermore, all component classes used a custom class emulation script based on functions
 and prototypes. That works, but this kind of code structure makes it hard for tools such
 to analyze the code statically.
 
@@ -57,7 +57,7 @@ Each package folder also contains `tsconfig.json`. We use
 [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html)
 to separate the individual packages from each other. The `references` section of each
 `tsconfig.json` contains the (implicit) dependencies of each package, mirroring the
-`@ResourceDependency` annotations on each Java widget class.
+`@ResourceDependency` annotations on each Java component class.
 
 # Type checking
 
@@ -92,14 +92,14 @@ For the development build (non-minified), set the environment variable `NODE_ENV
 
 # CSS and themes
 
-__TL;DR__ The CSS of a component lives next to its widget and uses design tokens (`var(--p-...)`) only; the
+__TL;DR__ The CSS of a component lives next to its client side code and uses design tokens (`var(--p-...)`) only; the
 values come from the themes in `themes/`. See [themes/README.md](themes/README.md).
 
 - Each `index.css` imports its files into a cascade layer (`@import url("./src/x.css") layer(primefaces.components);`)
   and starts with the layer order, so the order is the same whichever PrimeFaces stylesheet loads first.
-- A widget in its own package (`packages/knob/knob`, `packages/datepicker/datepicker`, ...) has its CSS in that package
+- A component in its own package (`packages/knob/knob`, `packages/datepicker/datepicker`, ...) has its CSS in that package
   (`src/<name>.css` + `index.css`, built to `<package>/<name>.css`), loaded by the `@ResourceDependency` of the
-  component; only the widgets of `components.js` have their CSS in `components.css`.
+  component; only the components of `components.js` have their CSS in `components.css`.
 - Third-party CSS is imported by `index.css` into `@layer primefaces.vendor`; CSS that JavaScript dependencies import
   themselves (e.g. FullCalendar) is dropped by the build.
 - `themes/<theme>.css` is built to `META-INF/resources/primefaces-<theme>/theme.css`, the stylesheet of the
@@ -261,7 +261,7 @@ yarn patch-update-squash <package>
   refactored to retrieve the needed value from somewhere else, such as directly
   from the JQuery instance `on` was called, or `event.target`. This needs to be
   investigated and changed on an individual basis.
-* To allow widgets to be extended (subclassed), they should make their widget
+* To allow components to be extended (subclassed), they should make their component
   configuration type parameter changeable, e.g.:
   `export class PanelMenu<Cfg extends PanelMenuCfg> extends Menu<Cfg> { ... }`
 * Prefer to use `null` over `undefined`. JavaScript has 2 types of "missing"

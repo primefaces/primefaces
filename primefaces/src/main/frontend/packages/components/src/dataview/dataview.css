@@ -140,10 +140,12 @@
                 box-shadow: var(--p-togglebutton-content-checked-shadow);
             }
 
+            /* inside the pill: the group padding is only as wide as width + offset of the ring (Glass) or 0 (Material),
+               an outer ring would cover the group border and stick out of its rounded corners */
             &.p-state-focus,
             &:focus-visible {
                 outline: var(--p-togglebutton-focus-ring-width) var(--p-togglebutton-focus-ring-style) var(--p-togglebutton-focus-ring-color);
-                outline-offset: var(--p-togglebutton-focus-ring-offset);
+                outline-offset: calc(var(--p-togglebutton-focus-ring-width) * -1);
             }
         }
     }

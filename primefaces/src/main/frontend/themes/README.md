@@ -5,7 +5,7 @@ Developer notes of the PrimeFaces theming. The user documentation is `docs/17_0_
 Design token based themes. Pure CSS, no SASS, everything customizable through CSS variables, light and dark mode built in.
 Token naming follows the PrimeUIX convention (`--p-primary-color`, `--p-form-field-background`, `--p-button-primary-background`, ...).
 
-The CSS is part of the `primefaces` module: the CSS of the components lives next to their widgets in `packages/`, the
+The CSS is part of the `primefaces` module: the CSS of the components lives next to their scripts in `packages/`, the
 themes (the tokens of each preset) in `themes/`. Since PrimeFaces 17 these are the only themes; the legacy themes
 (`primefaces-themes`, saga, arya, ...) were removed.
 
@@ -18,7 +18,7 @@ What changed for applications compared to the legacy themes:
     expandedIcon / menuIcon`, `p:rowToggler expandIcon / collapseIcon`, `p:spinner upIcon / downIcon`,
     `p:chip removeIcon`, `p:breadCrumb homeIcon`, ...; full list in the migration guide). Configure them in CSS.
   - renderers emit semantic icon classes (`p-icon p-close-icon p-panel-close-icon`) instead of the legacy jQuery UI
-    icon classes (`ui-icon-triangle-1-e`, ...), widgets switch states (`aria-expanded`) instead of icon classes.
+    icon classes (`ui-icon-triangle-1-e`, ...), components switch states (`aria-expanded`) instead of icon classes.
 - **Style classes:** the former jQuery UI style classes `ui-*` are `p-*` now (except the Grid CSS `ui-g` / `ui-grid` and
   the classes the jQuery keypad of p:keyboard renders; the datePicker panel is `p-datepicker-panel`).
   jQuery UI is removed already (own effects, position, slider and drag and drop / sorting / resizing interactions with
@@ -93,15 +93,15 @@ primefaces/src/main/frontend/
   packages/components/src/icons/lucide.css   the icon set: one --p-icon-* token per meaning (close, expanded, ...)
   packages/components/src/base/*.css         p-component, p-state-*, core helpers, grid (ui-g), interaction base rules,
                                              document (page, reduced motion / transparency, print), scrollbar, backdrop (Glass)
-  packages/components/src/<widget>/*.css     one file per tag next to its widget (datatable/datatable.css,
+  packages/components/src/<name>/*.css       one file per tag next to its script (datatable/datatable.css,
                                              forms/selectonemenu.css, menu/tieredmenu.css, ...); building blocks of
                                              several components: forms/inputfield.css, forms/checkbox.css,
                                              forms/radiobutton.css, forms/inputgroup.css, badge/badge.css,
                                              paginator/paginator.css, menu/menu.base.css
   packages/components/src/{dragdrop,resizable,sticky}/*.css   behaviors (layer primefaces.behaviors), also
   packages/components/src/base/hidden.css                     p-hidden (wins over every display of the components)
-  packages/<name>/<name>/index.css + src/<name>.css           components whose widget is its own package (not in
-                                             components.js): CSS next to the widget, loaded with it by the
+  packages/<name>/<name>/index.css + src/<name>.css           components whose script is its own package (not in
+                                             components.js): CSS next to the script, loaded with it by the
                                              @ResourceDependency of the component (clock, colorpicker,
                                              datepicker, diagram, dock, fileupload, galleria, imagecompare,
                                              imagecropper, inputotp, inputphone, keyboard, knob, lifecycle, log,
@@ -182,7 +182,7 @@ The build (`yarn run build:bundle`, run by Maven through `frontend-maven-plugin`
     (`--p-inputgroup-addon-filled-background`) continue the field.
   - Sizes for 14px text (M3 sizes its controls for 16px body text, with 56px fields): 40px fields and buttons,
     checkbox and radio button 20px with the M3 hover state layer (a 40px circle, `--p-checkbox-state-layer-size` /
-    `--p-*-hover-state-layer-opacity`, 0% in the other presets; no focus layer, the widgets focus the input by script),
+    `--p-*-hover-state-layer-opacity`, 0% in the other presets; no focus layer, the components focus the input by script),
     switch 46x28 (M3 52x32 scaled to the text).
   - Components: switch with an outlined track, the off handle is a dot of 2/3 of the handle box (a radial gradient as
     handle background); selectOneButton / selectManyButton are segmented buttons (outlined pill, selected
@@ -250,12 +250,12 @@ as mask of a `::before`, the color is `currentColor` and the size the font size;
 the token once
 (`.p-panel-close-icon { --_icon: var(--p-panel-close-icon); }`). Icons that change with the state have one class
 (`p-panel-toggle-icon`), the CSS picks the token by the state of the component (`aria-expanded`,
-`p-state-active`, ...); the widgets do not swap icon classes. Exceptions: the checkbox icon carries the state as
+`p-state-active`, ...); the components do not swap icon classes. Exceptions: the checkbox icon carries the state as
 `p-checkbox-checked-icon` / `p-checkbox-indeterminate-icon` / `p-checkbox-crossed-icon` (tree / treeTable selection
-read it), the dataTable / treeTable sort icon as `p-datatable-sort-asc-icon` / `-desc-icon` (the widget reads the
+read it), the dataTable / treeTable sort icon as `p-datatable-sort-asc-icon` / `-desc-icon` (the component reads the
 sort order from it, `aria-sort` is only set on one column), the filter match mode picker of the dataTable
 (`filterMatchModeOptions`): its trigger shows the selected match mode with one class per mode
-(`p-filter-matchmode-gte-icon`, `-starts-with-icon`, ...), the widget copies the class of the picked menu option. These
+(`p-filter-matchmode-gte-icon`, `-starts-with-icon`, ...), the component copies the class of the picked menu option. These
 classes are not component specific and mapped once in `base/common.css` (`.p-filter-matchmode-gte-icon { --_icon:
 var(--p-icon-greater-equal); }`). There are no JSF attributes for these icons, they are configured with CSS only, on two levels:
 
@@ -307,7 +307,7 @@ them together with the duration tokens; color / border / shadow changes keep the
 on literal curves (`cubic-bezier()`, `ease*`) and literal durations in transitions (`linear`, `steps()` and `0s` are
 allowed), so new transitions use the tokens.
 
-Content that a widget inserts by ajax can animate in with CSS only: a keyframe animation runs when an element is
+Content that a component inserts by ajax can animate in with CSS only: a keyframe animation runs when an element is
 inserted (`@keyframes p-enter` in `base/common.css`, offset by `--_enter-offset`; also on page load). Used where new
 content is the point: new messages of p:messages / p:message (`--p-message-enter-duration` / `-offset`, also from the client
 side validation), the items of p:dataView on a layout switch and paging and the loaded items of p:dataScroller (not
@@ -397,7 +397,7 @@ the CSS stays as it is and the classes keep working:
 - [ ] `striped="true"` on selectOneListbox, selectManyMenu.
 - [ ] `variant="outlined|simple"` and `size="small|large"` on message, messages, staticMessage; document
       `severity="secondary|contrast"` of staticMessage.
-- [ ] `styleClass` and `variant="outlined|simple"` on growl (it has no styleClass, the widget builds the container).
+- [ ] `styleClass` and `variant="outlined|simple"` on growl (it has no styleClass, the component builds the container).
 - [ ] `size="small|large"` on toggleSwitch (today `p-toggleswitch-sm` / `-lg`).
 - [ ] `severity="contrast"` on tag and badge (their renderers only accept a fixed list of severities).
 - [ ] Float label as component: `p:floatLabel variant="over|in|on"` (PrimeReact FloatLabel / IftaLabel) instead of
@@ -478,7 +478,7 @@ same the JavaScript uses.
 - A custom theme (or the configurator CSS) written as one `:root, [data-p-scope]` block is not split like the built
   themes: its literal tokens are declared again in every scope, so a density or a `:root` override does not reach into
   scopes. Write literal tokens on `:root` (docs: "Custom theme").
-- `!important` is used only where the CSS has to beat inline styles of jQuery / the widgets (dialog maximize / minimize,
+- `!important` is used only where the CSS has to beat inline styles of jQuery / the components (dialog maximize / minimize,
   dataTable / treeTable reflow widths), for two structural rules (the header clone
   of scrollable dataTables has no height, #12908; buttons are never underlined, also not by `a:hover` of the
   application) and for the user preferences (reduced motion, print). An `!important` in a cascade layer beats unlayered
@@ -534,7 +534,7 @@ other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0
 - Clear icon (`showClear`) for selectOneMenu, selectCheckboxMenu, cascadeSelect, autoComplete, inputText.
 - Float label: p:selectCheckboxMenu, autoComplete multiple and chips get no filled class on page load (selectCheckboxMenu
   no focus class while its panel has the focus); the theme detects checked options / tokens / the open panel with
-  `:has()`, a filled / focus class of the widgets would replace that.
+  `:has()`, a filled / focus class of the components would replace that.
 - Sidebar header (title, close) and footer.
 - Forced colors (Windows contrast themes): states shown only by a background (selected options / rows, checked
   checkbox / radio / toggleSwitch, progress / slider value, focus of menu items) disappear; repeat them with system
@@ -567,7 +567,7 @@ State changes (hover, focus, colors) and loaders (skeleton, progress, spinners) 
 transition on the same property):
 - Show / hide of overlays (`fadeIn` / `fadeOut`): autoComplete, blockUI, columnToggler, growl, menus, panel / tree
   context parts, pickList, scrollTop, wizard, the overlays in `forms` → CSS enter/leave transitions with
-  `@starting-style` + `transition-behavior: allow-discrete` (display / Popover API), the widget only toggles a class.
+  `@starting-style` + `transition-behavior: allow-discrete` (display / Popover API), the component only toggles a class.
   Some overlays already work like that: autoComplete, confirmPopup, cascadeSelect, password and selectCheckboxMenu
   toggle the `.p-connected-overlay-enter/exit(-active|-done)` classes, animated in `packages/components/src/base/core.css` with
   `--p-overlay-enter/leave-duration` and `--p-transition-easing-enter/exit`.
@@ -585,7 +585,7 @@ transition on the same property):
   would make the JS animations respect reduced motion with one line in the core.
 
 **jQuery UI is removed** (done): own `:focusable` / `:tabbable` selectors, `PrimeFaces.utils.position` /
-`getScrollParent`, `PrimeFaces.effects` (Web Animations API), slider, DatePicker / Galleria / Signature as TS widgets,
+`getScrollParent`, `PrimeFaces.effects` (Web Animations API), slider, DatePicker / Galleria / Signature as TS components,
 and drag and drop / sorting / resizing with pointer events as `PrimeFaces.interactions` in `packages/core/src/interaction`
 (the options of p:draggable / p:droppable / p:resizable stay compatible, there are no jQuery plugins `$.fn.draggable`,
 ... anymore). The base rules of the generic classes and of the

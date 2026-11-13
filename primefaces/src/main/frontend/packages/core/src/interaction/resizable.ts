@@ -131,7 +131,7 @@ export class Resizable extends PointerInteraction<ResizableOptions> {
      * in the callbacks, while `p-resizable` stays on the element itself.
      * @returns The element that is resized.
      */
-    protected override widget(): JQuery<HTMLElement> {
+    protected override stateElement(): JQuery<HTMLElement> {
         return this.resizeElement;
     }
 

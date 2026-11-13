@@ -24,7 +24,7 @@ component will display the contextMenu. Following example demonstrates an integr
 contextMenu and imageSwitcher, contextMenu here is used to navigate between images.
 
 ```xhtml
-<p:imageSwitch id="images" widgetVar="gallery" slideshowAuto="false">
+<p:imageSwitch id="images" ref="gallery" slideshowAuto="false">
     <p:graphicImage value="/images/nature1.jpg" />
     <p:graphicImage value="/images/nature2.jpg" />
     <p:graphicImage value="/images/nature3.jpg" />

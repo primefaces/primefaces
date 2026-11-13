@@ -24,23 +24,18 @@
         </div>
 
         <div class="card">
-            <h5>JFreeChart</h5>
-            <p:graphicImage value="#{graphicImageView.chart}"/>
-            <p:graphicImage value="#{graphicImageView.chartAsByteArray}"/>
-            <p:graphicImage value="#{graphicImageView.chartAsStream}"/>
+            <h5>StreamedContent</h5>
+            <p:graphicImage value="#{graphicImageView.image}"/>
         </div>
 
         <div class="card">
-            <h5>JFreeChart rendered as DataURI / ViewScoped support</h5>
-            <p:graphicImage value="#{graphicImageView.chart}" stream="false"/>
-            <p:graphicImage value="#{graphicImageView.chartAsByteArray}" stream="false"/>
-            <p:graphicImage value="#{graphicImageView.chartAsStream}" stream="false"/>
+            <h5>Rendered as DataURI / ViewScoped support</h5>
+            <p:graphicImage value="#{graphicImageView.imageAsByteArray}" stream="false"/>
         </div>
 
         <div class="card">
-            <h5>JFreeChart optimized without buffering</h5>
-            <p:graphicImage value="#{graphicImageView.chartWithoutBuffering}"/>
-            <p:graphicImage value="#{graphicImageView.chartWithoutBuffering}" stream="false"/>
+            <h5>Optimized without buffering</h5>
+            <p:graphicImage value="#{graphicImageView.imageWithoutBuffering}"/>
         </div>
 
         <div class="card">

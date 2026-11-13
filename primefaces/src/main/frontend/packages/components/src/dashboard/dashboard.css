@@ -1,8 +1,9 @@
 /*
  * Dashboard: p:dashboard (legacy columns and responsive mode); the panels themselves are styled by panel.css.
  *
- * Drag states: .p-sortable-placeholder (legacy, sortable), .p-dashboard-active / .p-dashboard-hover
- * (responsive, droppable classes), .p-state-disabled (disabled dashboard).
+ * Drag states: .p-sortable-placeholder (legacy, sortable), .p-state-disabled (disabled dashboard). The drop targets of the
+ * responsive mode get .p-droppable-active / .p-droppable-hover (styled by dragdrop.css) and, as hooks for applications,
+ * .p-dashboard-active / .p-dashboard-hover.
  */
 
 .p-dashboard-column {
@@ -40,20 +41,6 @@
     .p-sortable-placeholder {
         background: var(--p-dashboard-placeholder-background);
         border: 1px dashed var(--p-dashboard-placeholder-border-color);
-        border-radius: var(--p-dashboard-placeholder-border-radius);
-    }
-
-    /* drop targets (responsive) */
-    .p-dashboard-active {
-        outline: 1px dashed var(--p-dashboard-drop-active-border-color);
-        outline-offset: calc(-1 * var(--p-dashboard-drop-outline-offset));
-        border-radius: var(--p-dashboard-placeholder-border-radius);
-    }
-
-    .p-dashboard-hover {
-        outline: 1px solid var(--p-dashboard-drop-hover-border-color);
-        outline-offset: calc(-1 * var(--p-dashboard-drop-outline-offset));
-        background: var(--p-dashboard-drop-hover-background);
         border-radius: var(--p-dashboard-placeholder-border-radius);
     }
 }

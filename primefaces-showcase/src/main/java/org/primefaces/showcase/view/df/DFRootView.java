@@ -29,6 +29,7 @@ import org.primefaces.event.SelectEvent;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
@@ -51,6 +52,6 @@ public class DFRootView {
     }
 
     public void onReturnFromLevel1(SelectEvent event) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Data Returned", event.getObject().toString()));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Data Returned", Objects.toString(event.getObject(), "")));
     }
 }

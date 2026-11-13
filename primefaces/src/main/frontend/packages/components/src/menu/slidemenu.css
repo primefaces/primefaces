@@ -119,8 +119,8 @@
         }
     }
 
+    /* the list padding of the root list (--_submenu-padding), no overlay frame */
     .p-menu-child {
-        padding: 0;
         box-shadow: none;
         border: 0 none;
     }

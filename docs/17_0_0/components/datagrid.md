@@ -121,7 +121,7 @@ datagrid and display within a dialog with ajax.
             </p:commandLink>
         </p:panel>
     </p:dataGrid>
-    <p:dialog modal="true" widgetVar="dlg">
+    <p:dialog modal="true" ref="dlg">
         <h:panelGrid id="display" columns="2">
             <f:facet name="header">
                 <p:graphicImage value="/images/cars/#{car.manufacturer}.jpg"/>

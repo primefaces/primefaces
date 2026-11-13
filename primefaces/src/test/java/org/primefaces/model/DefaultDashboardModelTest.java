@@ -23,88 +23,85 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.model.dashboard.DashboardItem;
 import org.primefaces.model.dashboard.DashboardModel;
-import org.primefaces.model.dashboard.DashboardWidget;
+import org.primefaces.model.dashboard.DefaultDashboardColumn;
+import org.primefaces.model.dashboard.DefaultDashboardItem;
 import org.primefaces.model.dashboard.DefaultDashboardModel;
-import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
-import org.junit.jupiter.api.AfterEach;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class DefaultDashboardModelTest {
 
     private DashboardModel model;
 
-    @Test
-    void columnsHaveWidgets() {
-        assertEquals(2, model.getWidget(0).getWidgetCount());
-        assertEquals(3, model.getWidget(1).getWidgetCount());
-        assertEquals(1, model.getWidget(2).getWidgetCount());
-        assertEquals("widget1", model.getWidget(0).getWidget(0));
-        assertEquals("widget5", model.getWidget(1).getWidget(2));
-    }
-
-    @Test
-    void reorderWidgetInSameColumn() {
-        //Move widget2 on top of widget1
-        DashboardWidget column1 = model.getWidget(0);
-        column1.reorderWidget(0, "widget2");
-
-        assertEquals("widget2", column1.getWidget(0));
-        assertEquals("widget1", column1.getWidget(1));
-        assertEquals(2, column1.getWidgetCount());
-
-        DashboardWidget column2 = model.getWidget(1);
-        column2.reorderWidget(0, "widget5");
-
-        assertEquals("widget5", column2.getWidget(0));
-        assertEquals("widget3", column2.getWidget(1));
-        assertEquals("widget4", column2.getWidget(2));
-        assertEquals(3, column2.getWidgetCount());
-    }
-
-    @Test
-    void transferWidgets() {
-        //Move widget3 and widget5 from column2 to column3
-        DashboardWidget column2 = model.getWidget(1);
-        DashboardWidget column3 = model.getWidget(2);
-
-        model.transferWidget(column2, column3, "widget3", 0, false);
-        model.transferWidget(column2, column3, "widget5", 2, false);
-        assertEquals("widget4", column2.getWidget(0));
-        assertEquals(1, column2.getWidgetCount());
-
-        assertEquals("widget3", column3.getWidget(0));
-        assertEquals("widget6", column3.getWidget(1));
-        assertEquals("widget5", column3.getWidget(2));
-        assertEquals(3, column3.getWidgetCount());
-    }
-
     @BeforeEach
     void setup() {
         model = new DefaultDashboardModel();
-        DefaultDashboardWidget column1 = new DefaultDashboardWidget();
-        column1.addWidget("widget1");
-        column1.addWidget("widget2");
-
-        DefaultDashboardWidget column2 = new DefaultDashboardWidget();
-        column2.addWidget("widget3");
-        column2.addWidget("widget4");
-        column2.addWidget("widget5");
-
-        DefaultDashboardWidget column3 = new DefaultDashboardWidget();
-        column3.addWidget("widget6");
-
-        model.addWidget(column1);
-        model.addWidget(column2);
-        model.addWidget(column3);
+        model.addColumn(new DefaultDashboardColumn("panel1", "panel2"));
+        model.addColumn(new DefaultDashboardColumn("panel3", "panel4", "panel5"));
+        model.addColumn(new DefaultDashboardColumn("panel6"));
     }
 
-    @AfterEach
-    void teardown() {
-        model = null;
+    @Test
+    void columnsHaveItems() {
+        assertEquals(3, model.getColumnCount());
+        assertEquals("panel1,panel2|panel3,panel4,panel5|panel6", layout(model));
+        assertEquals("panel5", model.getItem("panel5").getPanelId());
+        assertNull(model.getItem("unknown"));
+    }
+
+    @Test
+    void moveItemInSameColumn() {
+        model.moveItem(model.getItem("panel2"), 0, 0);
+        model.moveItem(model.getItem("panel3"), 1, 2);
+
+        assertEquals("panel2,panel1|panel4,panel5,panel3|panel6", layout(model));
+    }
+
+    @Test
+    void moveItemToOtherColumn() {
+        model.moveItem(model.getItem("panel3"), 2, 0);
+        model.moveItem(model.getItem("panel5"), 2, 2);
+
+        assertEquals("panel1,panel2|panel4|panel3,panel6,panel5", layout(model));
+    }
+
+    @Test
+    void emptyColumn() {
+        model.moveItem(model.getItem("panel6"), 0, 2);
+
+        assertEquals("panel1,panel2,panel6|panel3,panel4,panel5|", layout(model));
+        assertEquals("panel4", model.getItem("panel4").getPanelId());
+    }
+
+    @Test
+    void swapItemsWithStyleAndValue() {
+        DashboardModel responsive = new DefaultDashboardModel();
+        Object barValue = new Object();
+        responsive.addItem(new DefaultDashboardItem("bar", "col-4", barValue));
+        responsive.addItem(new DefaultDashboardItem("pie", "col-8"));
+        responsive.addItem(new DefaultDashboardItem("line", "col-12"));
+
+        responsive.swapItems(responsive.getItem("bar"), responsive.getItem("line"));
+
+        assertEquals(1, responsive.getColumnCount());
+        assertEquals("line,pie,bar", layout(responsive));
+        DashboardItem bar = responsive.getItem("bar");
+        assertEquals("col-4", bar.getStyleClass());
+        assertSame(barValue, bar.getValue());
+    }
+
+    private static String layout(DashboardModel model) {
+        return model.getColumns().stream()
+                .map(c -> c.getItems().stream().map(DashboardItem::getPanelId).collect(Collectors.joining(",")))
+                .collect(Collectors.joining("|"));
     }
 }

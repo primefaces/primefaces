@@ -12,7 +12,7 @@
     <h:body>
         <h:form id="form">
             <p:commandButton id="menuButton" type="button" icon="pi pi-bars"/>
-            <p:slideMenu id="menu" widgetVar="menu" overlay="true" trigger="menuButton" my="left top" at="left bottom"
+            <p:slideMenu id="menu" ref="menu" overlay="true" trigger="menuButton" my="left top" at="left bottom"
                          style="width:20em">
                 <p:submenu id="submenu" label="Submenu">
                     <p:menuitem id="item1" value="Item 1" url="#"/>

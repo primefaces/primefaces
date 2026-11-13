@@ -29,10 +29,10 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.api.UITree;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.NodeCollapseEvent;
@@ -65,7 +65,7 @@ import jakarta.faces.component.UIComponent;
     @FacesBehaviorEvent(name = "cellEditCancel", event = CellEditEvent.class, description = "Fired when cell edit is cancelled"),
     @FacesBehaviorEvent(name = "page", event = PageEvent.class, description = "Fired when pagination occurs")
 })
-public abstract class TreeTableBase extends UITree implements Widget, Pageable, StyleAware, UITable<TreeTableState> {
+public abstract class TreeTableBase extends UITree implements PrimeClientComponent, Pageable, StyleAware, UITable<TreeTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

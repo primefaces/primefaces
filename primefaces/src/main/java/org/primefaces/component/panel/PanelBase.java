@@ -29,8 +29,8 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 
@@ -43,7 +43,7 @@ import jakarta.faces.component.behavior.ClientBehaviorHolder;
     @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class, description = "Fires when panel is toggled.", defaultEvent = true),
     @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when panel is closed.")
 })
-public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder, StyleAware,
+public abstract class PanelBase extends UIPanel implements PrimeClientComponent, ClientBehaviorHolder, StyleAware,
         MultiViewStateAware<PanelState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

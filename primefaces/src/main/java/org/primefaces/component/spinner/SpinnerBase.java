@@ -27,10 +27,10 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 @FacesComponentBase
-public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
+public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements PrimeClientComponent, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

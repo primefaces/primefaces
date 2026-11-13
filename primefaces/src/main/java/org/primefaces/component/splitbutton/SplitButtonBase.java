@@ -28,8 +28,8 @@ import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
 
 import jakarta.el.MethodExpression;
@@ -37,7 +37,7 @@ import jakarta.faces.component.html.HtmlCommandButton;
 import jakarta.faces.event.ActionListener;
 
 @FacesComponentBase
-public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware, StyleAware {
+public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, PrimeClientComponent, MenuItemAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

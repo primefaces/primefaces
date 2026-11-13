@@ -90,7 +90,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
     }
 
     protected void encodeScript(FacesContext context, ImageCropper component) throws IOException {
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         String clientId = component.getClientId(context);
         String image = clientId + "_image";
         String select = null;
@@ -103,7 +103,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         }
 
         ComponentScriptBuilder wb = getComponentScriptBuilder(context);
-        wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, image)
+        wb.initWithComponentLoad("ImageCropper", ref, clientId, image)
                 .attr("image", image)
                 .attr("viewMode", viewMode)
                 .attr("aspectRatio", component.getAspectRatio(), Double.MIN_VALUE)

@@ -8,7 +8,7 @@
             <p:commandButton id="refresh" value="Refresh" update="menu" />
             <p:commandButton id="outside" value="Outside" type="button" />
 
-            <p:megaMenu id="menu" widgetVar="menu" activeIndex="#{megaMenu004.index}"
+            <p:megaMenu id="menu" ref="menu" activeIndex="#{megaMenu004.index}"
                         orientation="#{megaMenu004.orientation}"
                         autoDisplay="#{megaMenu004.autoDisplay}">
                 <p:submenu label="First">
@@ -29,7 +29,7 @@
                 <p:menuitem value="Disabled" url="#" disabled="true" />
                 <p:menuitem value="Current link" url="#" />
             </p:megaMenu>
-            <p:megaMenu id="defaultMenu" widgetVar="defaultMenu">
+            <p:megaMenu id="defaultMenu" ref="defaultMenu">
                 <p:submenu label="Default"><p:column><p:menuitem value="Item" url="#" /></p:column></p:submenu>
             </p:megaMenu>
         </h:form>

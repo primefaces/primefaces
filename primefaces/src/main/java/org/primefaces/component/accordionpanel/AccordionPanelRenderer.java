@@ -127,7 +127,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     protected void encodeMarkup(FacesContext context, AccordionPanel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 
@@ -144,7 +144,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
             writer.writeAttribute("style", component.getStyle(), null);
         }
 
-        writer.writeAttribute(HTML.REF, widgetVar, null);
+        writer.writeAttribute(HTML.REF, ref, null);
 
         renderDynamicPassThruAttributes(context, component);
 

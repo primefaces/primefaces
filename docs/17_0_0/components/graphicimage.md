@@ -54,53 +54,8 @@ you used the _org.primefaces.model.StreamedContent_ version of GraphicImage.
 <p:graphicImage value="#{varInUIRepeat.inputStream}" stream="false" />
 ```
 
-## Displaying charts with JFreeChart
-
-Server side generated charts of JFreeChart can be easily rendered as image:
-
-```xhtml
-<p:graphicImage value="#{jFreeChartView.chart}" />
-```
-
-```java
-public class JFreeChartView {
-    private StreamedContent chart;
-
-    public JFreeChartView() {
-        chart = DefaultStreamedContent.builder()
-                    .contentType("image/png")
-                    .stream(() -> {
-                        try {
-                            JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
-                            File chartFile = new File("dynamichart");
-                            ChartUtilities.saveChartAsPNG(chartFile, jfreechart, 375, 300);
-                            return new FileInputStream(chartFile);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    })
-                    .build();
-    }
-
-    public StreamedContent getChart() {
-        return model;
-    }
-
-    private PieDataset createDataset() {
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("New York", new Double(45.0));
-        dataset.setValue("London", new Double(15.0));
-        dataset.setValue("Paris", new Double(25.2));
-        dataset.setValue("Berlin", new Double(14.8));
-        return dataset;
-    }
-}
-```
-
 ## Displaying a Barcode
-Similar to the chart example, a barcode can be generated as well.
+A barcode can be generated on the server side as well.
 This sample uses barbecue project for the barcode API:
 
 ```xhtml

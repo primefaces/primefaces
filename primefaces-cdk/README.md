@@ -176,7 +176,7 @@ Defines client behavior events for components and generates `PrimeClientBehavior
     @FacesBehaviorEvent(name = "close", event = CloseEvent.class)
 })
 public abstract class PanelBase extends UIPanel 
-        implements Widget, ClientBehaviorHolder {
+        implements PrimeClientComponent, ClientBehaviorHolder {
     // ...
 }
 ```
@@ -210,20 +210,20 @@ Exposes static methods as EL functions.
 
 ```java
 @Function
-public static String closestWidgetVar(UIComponent component) {
-    return SearchExpressionUtils.resolveWidgetVar(component);
+public static String closestRef(UIComponent component) {
+    return SearchExpressionUtils.closestRef(component);
 }
 
-@Function(name = "getVar")  // Custom EL name
-public static String getWidgetVar(UIComponent component) {
-    return ((Widget) component).resolveWidgetVar();
+@Function(name = "getRef")  // Custom EL name
+public static String resolveRef(UIComponent component) {
+    return ((PrimeClientComponent) component).resolveRef();
 }
 ```
 
 **Usage in XHTML:**
 ```xml
-<h:outputText value="#{p:closestWidgetVar(component)}" />
-<h:outputText value="#{p:getVar(component)}" />
+<h:outputText value="#{p:closestRef(component)}" />
+<h:outputText value="#{p:getRef(component)}" />
 ```
 
 ## Annotation Processor
@@ -320,9 +320,9 @@ Generates JSF taglib XML from compiled classes.
     
     <!-- EL Function -->
     <function>
-        <function-name>closestWidgetVar</function-name>
+        <function-name>closestRef</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String closestWidgetVar(jakarta.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.String closestRef(jakarta.faces.component.UIComponent)</function-signature>
     </function>
 </facelet-taglib>
 ```

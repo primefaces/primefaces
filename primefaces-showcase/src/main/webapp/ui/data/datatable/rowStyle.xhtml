@@ -6,14 +6,22 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
+        <style>
+            .cheap {
+                background-color: #54a90a !important;
+                background-image: none !important;
+                color: #ffffff !important;
+            }
+        </style>
     </ui:define>
 
     <ui:define name="title">
-        DataTable <span class="subitem">Row Title</span>
+        DataTable <span class="subitem">Row Style</span>
     </ui:define>
 
     <ui:define name="description">
-        Certain rows can have a row-specific title attribute using rowTitle. Table below has a title showing the price for all products that are cheaper than $50.
+        Certain rows can be styled with rowStyleClass and get a row-specific title with rowTitle, based on a condition.
+        Table below highlights products that are cheaper than $50 and shows their price as title.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>
@@ -23,6 +31,7 @@
     <ui:define name="implementation">
         <div class="card">
             <p:dataTable var="product" value="#{dtBasicView.products}"
+                         rowStyleClass="#{product.price le 50.0 ? 'cheap' : null}"
                          rowTitle="#{product.price le 50.0 ? product.price : null}">
 
                 <p:column headerText="Code">

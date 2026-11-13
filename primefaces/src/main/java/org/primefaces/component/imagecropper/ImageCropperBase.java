@@ -25,11 +25,11 @@ package org.primefaces.component.imagecropper;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeUIInput;
-import org.primefaces.component.api.Widget;
 
 @FacesComponentBase
-public abstract class ImageCropperBase extends PrimeUIInput implements Widget {
+public abstract class ImageCropperBase extends PrimeUIInput implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

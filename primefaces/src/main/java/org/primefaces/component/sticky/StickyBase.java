@@ -25,12 +25,12 @@ package org.primefaces.component.sticky;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIPanel;
 
 @FacesComponentBase
-public abstract class StickyBase extends UIPanel implements Widget {
+public abstract class StickyBase extends UIPanel implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

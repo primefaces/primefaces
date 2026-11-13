@@ -14,11 +14,11 @@
         <h:form id="form">
             <p:messages id="msgs" showDetail="true"/>
 
-            <p:chart id="bar" widgetVar="bar" value="#{chart001.barModel}" ariaLabel="Sales per month" style="width: 600px; height: 300px;">
+            <p:chart id="bar" ref="bar" value="#{chart001.barModel}" ariaLabel="Sales per month" style="width: 600px; height: 300px;">
                 <p:ajax event="itemSelect" listener="#{chart001.onItemSelect}" update="form:msgs"/>
             </p:chart>
 
-            <p:chart id="line" widgetVar="line" style="width: 600px; height: 300px;">
+            <p:chart id="line" ref="line" style="width: 600px; height: 300px;">
                 <f:facet name="value">
                 {
                     type: 'line',

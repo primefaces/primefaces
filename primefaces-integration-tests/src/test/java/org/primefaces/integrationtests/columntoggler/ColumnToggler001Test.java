@@ -204,7 +204,7 @@ class ColumnToggler001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("form:datatable:toggler", cfg.getString("trigger"));
         assertEquals("form:datatable", cfg.getString("datasource"));
     }

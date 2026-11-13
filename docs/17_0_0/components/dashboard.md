@@ -16,18 +16,18 @@ Dashboard is backed by a DashboardModel and consists of panel components.
     //more panels like lifestyle, weather, politics...
 </p:dashboard>
 ```
-Dashboard model simply defines the number of columns and the widgets to be placed in each
-column. See the end of this section for the detailed Dashboard API.
+The dashboard model defines the columns and the items (panels) of each column, an item references its panel by id.
+See the end of this section for the detailed Dashboard API.
 
 ```java
 public class Bean {
-    private DashboardModel legacyModel;
+    private DashboardModel model;
 
     public Bean() {
-        legacyModel = new DefaultDashboardModel();
-        legacyModel.addColumn(new DefaultDashboardColumn(List.of("sports", "finance")));
-        legacyModel.addColumn(new DefaultDashboardColumn(List.of("lifestyle", "weather")));
-        legacyModel.addColumn(new DefaultDashboardColumn(List.of("politics")));
+        model = new DefaultDashboardModel();
+        model.addColumn(new DefaultDashboardColumn("sports", "finance"));
+        model.addColumn(new DefaultDashboardColumn("lifestyle", "weather"));
+        model.addColumn(new DefaultDashboardColumn("politics"));
     }
 }
 ```
@@ -37,7 +37,7 @@ Dashboard can be switched to `responsive="true"` mode to allow using PrimeFlex C
 are 1) drag and drop swaps panel locations 2) different size panels 3) responsive reordering based on browser size.
 
 ```xhtml
-<p:dashboard model="#{bean.model}">
+<p:dashboard model="#{bean.model}" responsive="true">
     <p:panel id="bar">
         //Bar Chart Content
     </p:panel>
@@ -47,51 +47,51 @@ are 1) drag and drop swaps panel locations 2) different size panels 3) responsiv
     //more panels like lifestyle, weather, politics...
 </p:dashboard>
 ```
-Dashboard model in this mode wants `one` widget per column and should be given a PrimeFlex responsive CSS options.
+In this mode each item is a cell of the grid, its style class gives the PrimeFlex responsive CSS options. `addItem` adds
+the items to one column, the items of all columns are rendered as cells.
 
 ```java
 public class Bean {
     private DashboardModel model;
 
     public Bean() {
-        responsiveModel = new DefaultDashboardModel();
-        responsiveModel.addWidget(new DefaultDashboardWidget("bar", "col-12 lg:col-6 xl:col-4"));
-        responsiveModel.addWidget(new DefaultDashboardWidget("stacked", "col-12 lg:col-6 xl:col-8"));
+        model = new DefaultDashboardModel();
+        model.addItem(new DefaultDashboardItem("bar", "col-12 lg:col-6 xl:col-4"));
+        model.addItem(new DefaultDashboardItem("stacked", "col-12 lg:col-6 xl:col-8"));
     }
 }
 ```
 
 ## Dynamic
-Dashboard can be dynamic using `var="widget"` mode to allow dynamic panels.  The `value` must be set in your
-DashboardWidget model.
+An item can have a `value`, which is available via the `var` of the dashboard while its panel is rendered. The value
+belongs to the panel and moves with it.
 
 ```xhtml
-<p:dashboard model="#{bean.model}" var="dash">
+<p:dashboard model="#{bean.model}" var="dash" responsive="true">
     <p:panel id="bar" rendered="#{dash.visible}">
-        #{dash.name} 
+        #{dash.name}
     </p:panel>
     <p:panel id="stacked" rendered="#{dash.visible}">
-        #{dash.name} 
+        #{dash.name}
     </p:panel>
     //more panels like lifestyle, weather, politics...
 </p:dashboard>
 ```
-Dashboard model in this mode wants `one` widget per column and you can pass an `Object` value to put put in the `var` context.
 
 ```java
 public class Bean {
     private DashboardModel model;
 
     public Bean() {
-        responsiveModel = new DefaultDashboardModel();
-        responsiveModel.addWidget(new DefaultDashboardWidget("bar", "col-12 lg:col-6 xl:col-4", yourObject1));
-        responsiveModel.addWidget(new DefaultDashboardWidget("stacked", "col-12 lg:col-6 xl:col-8", yourObject2));
+        model = new DefaultDashboardModel();
+        model.addItem(new DefaultDashboardItem("bar", "col-12 lg:col-6 xl:col-4", yourObject1));
+        model.addItem(new DefaultDashboardItem("stacked", "col-12 lg:col-6 xl:col-8", yourObject2));
     }
 }
 ```
 
 ## State
-Dashboard is a stateful component, whenever a widget is reordered dashboard model will be
+Dashboard is a stateful component, whenever a panel is reordered the dashboard model is
 updated, by persisting the user changes so you can easily create a stateful dashboard.
 
 ## Listen to reorder
@@ -113,17 +113,18 @@ Following dashboard displays a message about the reorder event
 public class Bean {
     ...
     public void handleReorder(DashboardReorderEvent event) {
-        String widgetId = event.getWidgetId();
-        int widgetIndex = event.getItemIndex();
+        String panelId = event.getPanelId();
         int columnIndex = event.getColumnIndex();
+        int itemIndex = event.getItemIndex();
         int senderColumnIndex = event.getSenderColumnIndex();
+        int senderItemIndex = event.getSenderItemIndex();
         //Add facesmessage
     }
 }
 ```
-If a widget is reordered in the same column, _senderColumnIndex_ will be null. This field is
-populated only when a widget is transferred to a column from another column. Also when the
-listener is invoked, dashboard has already updated it’s model.
+_columnIndex_ / _itemIndex_ are the position of the panel after the reorder, _senderColumnIndex_ / _senderItemIndex_
+the position before. In the responsive mode the dragged panel swaps its position with the panel it was dropped on.
+When the listener is invoked, dashboard has already updated its model.
 
 ## Disabling Dashboard
 If you’d like to disable reordering feature, set _disabled_ option to true.
@@ -134,7 +135,7 @@ If you’d like to disable reordering feature, set _disabled_ option to true.
 </p:dashboard>
 ```
 ## Toggle, Close and Options Menu
-Widgets presented in dashboard can be closable, toggleable and have options menu as well,
+Panels presented in dashboard can be closable, toggleable and have options menu as well,
 dashboard doesn’t implement these by itself as these features are already provided by the panel
 component. See panel component section for more information.
 
@@ -145,8 +146,8 @@ component. See panel component section for more information.
     </p:panel>
 </p:dashboard>
 ```
-## New Widgets
-Draggable component is used to add new widgets to the dashboard. This way you can add new
+## New Panels
+Draggable component is used to add new panels to the dashboard (classic mode only). This way you can add new
 panels from outside of the dashboard.
 
 
@@ -154,8 +155,8 @@ panels from outside of the dashboard.
 <p:dashboard model="#{dashboardBean.model}" id="board">
     //panels
 </p:dashboard>
-<p:panel id="newwidget" />
-<p:draggable for="newwidget" helper="clone" dashboard="board" />
+<p:panel id="newpanel" />
+<p:draggable for="newpanel" helper="clone" dashboard="board" />
 ```
 ## Skinning
 Dashboard resides in a container element which style and styleClass options apply. Following is the
@@ -165,6 +166,7 @@ list of structural style classes;
 | --- | --- | 
 | .p-dashboard | Container element of dashboard
 | .p-dashboard-column | Each column in dashboard
+| .p-dashboard-panel | Each cell in responsive mode
 | .p-dashboard-active | In responsive mode highlights which components are allowed to be dropped upon
 | .p-dashboard-hover | In responsive mode change styling of the active drop zone when hovering
 | div.p-state-hover | Placeholder (in legacy mode)
@@ -173,33 +175,39 @@ As skinning style classes are global, see the main theming section for more info
 example based on a different theme;
 
 **Tips**: Provide a column width using _p-dashboard-column_ style class otherwise empty columns might
-    not receive new widgets.
+    not receive new panels.
 
 ## Dashboard Model API
-_org.primefaces.model.DashboardModel_ ( _org.primefaces.model.map.DefaultDashboardModel_ is the default implementation)
-
+_org.primefaces.model.dashboard.DashboardModel_ ( _org.primefaces.model.dashboard.DefaultDashboardModel_ is the default implementation)
 
 | Method | Description |
 | --- | --- |
+| List<DashboardColumn> getColumns() | Returns the columns of the dashboard
 | void addColumn(DashboardColumn column) | Adds a column to the dashboard
-| List<DashboardColumn> getColumns() | Returns all columns in dashboard
-| int getColumnCount() | Returns the number of columns in dashboard
-| DashboardColumn getColumn(int index) | Returns the dashboard column at given index
-| void transferWidget(DashboardColumn from, DashboardColumn to, String widgetId, int index) |Relocates the widget identified with widget id to the given index of the new column from old column.
+| DashboardColumn getColumn(int index) | Returns the column at the given index
+| int getColumnCount() | Returns the number of columns
+| void addItem(DashboardItem item) | Adds the item to the last column, creates a column when there is none (responsive mode)
+| DashboardItem getItem(String panelId) | Returns the item of the panel with the given id or null
+| void moveItem(DashboardItem item, int columnIndex, int itemIndex) | Moves the item to the given index of the given column
+| void swapItems(DashboardItem item1, DashboardItem item2) | Swaps the positions of two items
 
-_org.primefaces.model.DashboardColumn_ ( _org.primefaces.model.map.DefaultDashboardModel_ is
-the default implementation)
-
+_org.primefaces.model.dashboard.DashboardColumn_ ( _org.primefaces.model.dashboard.DefaultDashboardColumn_ is the default
+implementation, `new DefaultDashboardColumn("sports", "finance")` creates a column with an item for each panel id)
 
 | Method | Description |
 | --- | --- |
-| void removeWidget(String widgetId) | Removes the widget with the given id
-| List<String> getWidgets() | Returns the ids of widgets in column
-| int getWidgetCount() | Returns the count of widgets in column
-| String getWidget(int index) | Returns the widget id with the given index
-| void addWidget(String widgetId) | Adds a new widget with the given id
-| void addWidget(int index, String widgetId) | Adds a new widget at given index
-| void reorderWidget(int index, String widgetId) | Updates the index of widget in column
+| List<DashboardItem> getItems() | Returns the items of the column in the order they are rendered
+| void addItem(DashboardItem item) | Adds an item to the column
+| String getStyle() / getStyleClass() | Inline style and style class of the column (classic mode)
+
+_org.primefaces.model.dashboard.DashboardItem_ ( _org.primefaces.model.dashboard.DefaultDashboardItem_ is the default
+implementation)
+
+| Method | Description |
+| --- | --- |
+| String getPanelId() | Returns the id of the panel of the item
+| String getStyle() / getStyleClass() | Inline style and style class of the cell (responsive mode, e.g. `col-12 lg:col-6`)
+| Object getValue() | Value of the item, available via `var` while its panel is rendered
 
 ## Client Side API
 Component: _PrimeFaces.component.Dashboard_

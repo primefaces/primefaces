@@ -175,7 +175,7 @@
                 </p:dataTable>
             </div>
 
-            <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade"
+            <p:dialog header="Product Info" ref="productDialog" modal="true" showEffect="fade"
                       hideEffect="fade" resizable="false">
                 <p:outputPanel id="productDetail" style="text-align:center;">
                     <p:column rendered="#{not empty dtSelectionView.selectedProduct}">

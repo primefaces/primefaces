@@ -23,21 +23,21 @@
  */
 package org.primefaces.expression;
 
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.visit.VisitCallback;
 import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.component.visit.VisitResult;
 
-public class WidgetVarVisitCallback implements VisitCallback {
+public class RefVisitCallback implements VisitCallback {
 
-    private final String widgetVar;
+    private final String ref;
 
     private UIComponent component;
 
-    public WidgetVarVisitCallback(String widgetVar) {
-        this.widgetVar = widgetVar;
+    public RefVisitCallback(String ref) {
+        this.ref = ref;
 
         this.component = null;
     }
@@ -45,9 +45,9 @@ public class WidgetVarVisitCallback implements VisitCallback {
     @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
 
-        if (target instanceof Widget widget) {
-            String targetWidgetVar = widget.resolveWidgetVar(context.getFacesContext());
-            if (widgetVar.equalsIgnoreCase(targetWidgetVar)) {
+        if (target instanceof PrimeClientComponent clientComponent) {
+            String targetRef = clientComponent.resolveRef(context.getFacesContext());
+            if (ref.equalsIgnoreCase(targetRef)) {
                 component = target;
                 return VisitResult.COMPLETE;
             }

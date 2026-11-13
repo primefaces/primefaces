@@ -164,10 +164,10 @@ class DataExporter004Test extends AbstractPrimePageTest {
         assertConfiguration(cfg, "ttComponent");
     }
 
-    private void assertConfiguration(JSONObject cfg, String widgetVar) {
+    private void assertConfiguration(JSONObject cfg, String ref) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        assertEquals(widgetVar, cfg.getString("widgetVar"));
+        assertEquals(ref, cfg.getString("ref"));
     }
 
     private List<String> displayedNames(Page page) {

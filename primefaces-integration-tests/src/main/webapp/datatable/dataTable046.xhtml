@@ -15,7 +15,7 @@
         <h:form id="form">
             <p:messages id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
             
-            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001Dynamic.progLanguages}" var="lang" paginator="true" rows="3"
+            <p:dataTable id="datatable" ref="wgtTable" value="#{dataTable001Dynamic.progLanguages}" var="lang" paginator="true" rows="3"
                          filteredValue="#{dataTable001Dynamic.filteredProgLanguages}"
                          filterEvent="enter"
                          globalFilterOnly="#{dataTable001Dynamic.globalFilterOnly}"

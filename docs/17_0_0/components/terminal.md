@@ -29,7 +29,7 @@ terminal nested inside a dialog;
 
 ```xhtml
 <p:commandButton type="button" Value="Apply Focus" onclick="PF('term').focus();"/>
-<p:terminal widgetVar="term" commandHandler="#{terminalBean.handleCommand}" />
+<p:terminal ref="term" commandHandler="#{terminalBean.handleCommand}" />
 ```
 
 ## Skinning

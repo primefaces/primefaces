@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.DragDropEvent;
 
 import jakarta.faces.component.UIComponentBase;
@@ -36,7 +36,7 @@ import jakarta.faces.component.UIComponentBase;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "drop", event = DragDropEvent.class, description = "Fires when an element is dropped.", defaultEvent = true)
 })
-public abstract class DroppableBase extends UIComponentBase implements Widget {
+public abstract class DroppableBase extends UIComponentBase implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

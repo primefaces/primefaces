@@ -30,7 +30,7 @@ import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -39,7 +39,7 @@ import org.primefaces.event.UnselectEvent;
     @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
     @FacesBehaviorEvent(name = "itemUnselect", event = UnselectEvent.class, description = "Fires when an item is unselected.")
 })
-public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements PrimeClientComponent, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -76,7 +76,7 @@ right keys will switch the images displayed via the `p:imageSwitch` component.
 ```xhtml
 <p:hotkey bind="left" handler="PF('switcher').previous();" />
 <p:hotkey bind="right" handler="PF('switcher').next();" />
-<p:imageSwitch widgetVar="switcher">
+<p:imageSwitch ref="switcher">
     //content
 </p:imageSwitch>
 ```

@@ -15,7 +15,7 @@ Dialog is a panel component containing other components, note that by default di
 Showing and hiding the dialog is easy using the client side api.
 
 ```xhtml
-<p:dialog header="Header Text" widgetVar="dlg">//Content</p:dialog>
+<p:dialog header="Header Text" ref="dlg">//Content</p:dialog>
 <p:commandButton value="Show" type="button" onclick="PF('dlg').show()" />
 <p:commandButton value="Hide" type="button" onclick="PF('dlg').hide()" />
 ```
@@ -84,7 +84,7 @@ dialog is moved:
 ```xhtml
 <h:form>
     <p:commandButton onclick="PF('dialog').show()" value="Open dialog" />
-    <p:dialog widgetVar="dialog" appendTo="@(body)">
+    <p:dialog ref="dialog" appendTo="@(body)">
         <h:form>
             <p:inputText value="#{testBean.text}">
                 <p:ajax event="keyup" update="button" delay="1000" />
@@ -216,7 +216,7 @@ function hideModal() {
     <!-- Dialogs outside of main -->
     <div>
         <h:form>
-            <p:dialog widgetVar="modalDlg" modal="true" onShow="showModal();" onHide="hideModal();">
+            <p:dialog ref="modalDlg" modal="true" onShow="showModal();" onHide="hideModal();">
                 <p:inputText value="test" />
                 <h:outputLabel value="test" />
             </p:dialog>

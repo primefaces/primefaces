@@ -8,7 +8,7 @@ invoke when an image is captured. Sample below captures an image and saves it to
 
 ```xhtml
 <h:form>
-    <p:photoCam widgetVar="pc" listener="#{photoCamBean.oncapture}" update="photos"/>
+    <p:photoCam ref="pc" listener="#{photoCamBean.oncapture}" update="photos"/>
     <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>
 </h:form>
 ```
@@ -75,7 +75,7 @@ Lucky, `onCameraError` fallback can be defined to indicate a custom handler to d
     }
 ```
 ```xhtml
-    <p:photoCam widgetVar="photoCam" onCameraError="myCustomErrorHandler(errorObj);"/>
+    <p:photoCam ref="photoCam" onCameraError="myCustomErrorHandler(errorObj);"/>
 ```
 will swept to console any error thrown by the PhotoCam underlying engine.
 

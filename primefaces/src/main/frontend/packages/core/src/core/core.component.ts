@@ -107,8 +107,13 @@ export interface BaseComponentCfg {
     touchable: boolean;
 
     /**
-     * The name of the component variables of this component. The component variable can be used to
-     * access a component instance by calling `PF("myWidgetVar")`.
+     * The name of this component, used to access the component instance via `PF("name")`. It is set with the `ref`
+     * attribute or generated when not set.
+     */
+    ref: string;
+
+    /**
+     * @deprecated Use {@link ref} instead.
      */
     widgetVar: string;
 }
@@ -177,7 +182,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * This is partly because the value of a property is not transmitted from the server to the client when it equals
      * the default.
      */
-    cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> = { id: "", widgetVar: "" } as PrimeFacesTypes.component.PartialComponentCfg<Cfg>;
+    cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> = { id: "", ref: "" } as PrimeFacesTypes.component.PartialComponentCfg<Cfg>;
 
     /**
      * Array of registered listeners invoked when this component is destroyed. You should normally not use modify this
@@ -221,10 +226,21 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
     refreshListeners: PrimeFacesTypes.component.RefreshListener<any>[] = [];
 
     /**
-     * The name of the component variables of this component. The component variable can be used to
-     * access a component instance by calling `PF('myWidgetVar')`.
+     * The name of this component, used to access the component instance via `PF('name')`. It is set with the `ref`
+     * attribute or generated when not set.
      */
-    widgetVar: string = "";
+    ref: string = "";
+
+    /**
+     * @deprecated Use {@link ref} instead.
+     */
+    get widgetVar(): string {
+        return this.ref;
+    }
+
+    set widgetVar(ref: string) {
+        this.ref = ref;
+    }
 
     /**
      * Creates a new instance of this component. Please note that you should __NOT__ override this constructor.
@@ -269,7 +285,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
             this.jqId = core.escapeClientId(this.id);
         }
         this.jq = $(this.jqId);
-        this.widgetVar = cfg.widgetVar;
+        this.ref = cfg.ref;
         this.destroyListeners = [];
         this.refreshListeners = [];
 
@@ -278,7 +294,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
         //remove script tag
         this.removeScriptElement(this.id);
 
-        if (this.widgetVar) {
+        if (this.ref) {
             this.jq.on("remove", () => this.markDetached());
         }
     }
@@ -292,7 +308,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      */
     protected bindLifecycleTo(element: JQuery<any> | Element | null | undefined): void {
         const el = element instanceof Element ? element : element?.get(0);
-        if (!el || !this.widgetVar) {
+        if (!el || !this.ref) {
             return;
         }
         this.lifecycleElement = el;
@@ -304,8 +320,8 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * Marks this component as detached, it is destroyed after the AJAX update unless it was rendered again.
      */
     private markDetached(): void {
-        if (!core.detachedComponents.includes(this.widgetVar)) {
-            core.detachedComponents.push(this.widgetVar);
+        if (!core.detachedComponents.includes(this.ref)) {
+            core.detachedComponents.push(this.ref);
         }
     }
 
@@ -314,7 +330,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @returns The event type with the namespace of this component.
      */
     private lifecycleNamespace(): string {
-        return "remove.pfcomponent_" + String(this.widgetVar).replace(/\./g, "_");
+        return "remove.pfcomponent_" + String(this.ref).replace(/\./g, "_");
     }
 
     /**
@@ -367,7 +383,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
             this.cfg.preDestroy.call(this, this, this);
         }
 
-        core.debug("Destroyed detached component: " + this.widgetVar);
+        core.debug("Destroyed detached component: " + this.ref);
 
         if (this.destroyListeners) {
             for (const destroyListener of this.destroyListeners) {

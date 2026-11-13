@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.api.Widget;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 
@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 @FacesComponentBase
-public abstract class DatePickerBase extends UICalendar implements Widget, MixedClientBehaviorHolder, FlexAware {
+public abstract class DatePickerBase extends UICalendar implements PrimeClientComponent, MixedClientBehaviorHolder, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

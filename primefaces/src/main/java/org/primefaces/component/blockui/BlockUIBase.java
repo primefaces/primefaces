@@ -25,13 +25,13 @@ package org.primefaces.component.blockui;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
 
 @FacesComponentBase
-public abstract class BlockUIBase extends UIPanel implements Widget, StyleAware {
+public abstract class BlockUIBase extends UIPanel implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -271,14 +271,14 @@ Charts are canvas based and can be exported as static images with client side ap
 //]]>
 </script>
 
-<p:chart id="barChart" value="#{chartView.barModel}" style="width: 100%; height: 500px;" widgetVar="chart"/>
+<p:chart id="barChart" value="#{chartView.barModel}" style="width: 100%; height: 500px;" ref="chart"/>
 
 <p:commandButton type="button" value="Export" icon="pi pi-home" onclick="exportChart()" styleClass="mr-2 mb-2"/>
 <p:commandButton type="button" value="Print"  icon="pi pi-print" styleClass="mr-2 mb-2">
    <p:printer target="barChart" title="Bar Chart" />
 </p:commandButton>
 
-<p:dialog widgetVar="dlg" showEffect="fade" modal="true" header="Chart as an Image" resizable="false">
+<p:dialog ref="dlg" showEffect="fade" modal="true" header="Chart as an Image" resizable="false">
     <p:outputPanel id="output" layout="block" style="width:500px;height:300px"/>
 </p:dialog>
 ```

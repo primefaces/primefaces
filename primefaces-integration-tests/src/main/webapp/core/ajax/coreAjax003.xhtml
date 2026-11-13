@@ -8,7 +8,7 @@
 
     <h:body>
         <h:form id="form1">
-            <p:poll id="poll" widgetVar="poll" autoStart="false"
+            <p:poll id="poll" ref="poll" autoStart="false"
                 listener="#{coreAjax003.increment}"
                 update="count"
                 oncomplete="$('#output1').text('#{coreAjax003.count}');" />

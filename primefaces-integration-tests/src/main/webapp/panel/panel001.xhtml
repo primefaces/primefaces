@@ -17,7 +17,7 @@
 				skipDetailIfEqualsSummary="true" />
 
 			<p:panel id="panel" header="Header" toggleable="true" toggleableHeader="true" closable="true"
-				toggleSpeed="500" closeSpeed="500" widgetVar="panel">
+				toggleSpeed="500" closeSpeed="500" ref="panel">
 
 				<p:ajax event="close" listener="#{panel001.onClose}" update="msgs" />
 				<p:ajax event="toggle" listener="#{panel001.onToggle}"	update="msgs" />

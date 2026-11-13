@@ -54,9 +54,9 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
                 VisitContext visitContext = VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null,
                         context.getSearchExpressionContext().getVisitHints());
 
-                String widgetVar = matcher.group(1);
+                String ref = matcher.group(1);
 
-                WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(widgetVar);
+                RefVisitCallback visitCallback = new RefVisitCallback(ref);
                 facesContext.getViewRoot().visitTree(
                         visitContext,
                         visitCallback);

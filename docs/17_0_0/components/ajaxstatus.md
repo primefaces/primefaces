@@ -58,7 +58,7 @@ A comman usage of programmatic approach is to implement a custom status dialog;
 
 ```xhtml
 <p:ajaxStatus onstart="PF('status').show()" oncomplete="PF('status').hide()"/>
-<p:dialog widgetVar="status" modal="true" closable="false">
+<p:dialog ref="status" modal="true" closable="false">
     Please Wait
 </p:dialog>
 ```

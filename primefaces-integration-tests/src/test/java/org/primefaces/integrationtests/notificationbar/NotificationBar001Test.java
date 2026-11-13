@@ -156,7 +156,7 @@ class NotificationBar001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg, String position, String effect) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals(position, cfg.getString("position"));
         assertEquals(effect, cfg.getString("effect"));
     }

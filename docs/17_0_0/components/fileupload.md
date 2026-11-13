@@ -118,7 +118,7 @@ which is called from client side after _all_ files are uploaded by checking the 
 <p:remoteCommand name="updateAfterAllFilesUploaded"
     update="..." actionListener="..."/>
 <p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true"
-    widgetVar="fileUpload"
+    ref="fileUpload"
     oncomplete="if (!PF('fileUpload').files.length) updateAfterAllFilesUploaded();"/>
 ```
 

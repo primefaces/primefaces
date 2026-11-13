@@ -93,7 +93,7 @@ class ProgressBar001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertTrue(cfg.getBoolean("ajax"));
         assertEquals(200, cfg.getInt("interval"));
         assertFalse(cfg.getBoolean("global"));

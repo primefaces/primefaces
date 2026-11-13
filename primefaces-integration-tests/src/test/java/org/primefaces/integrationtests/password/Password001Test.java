@@ -76,7 +76,7 @@ class Password001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
     }
 
     public static class Page extends AbstractPrimePage {

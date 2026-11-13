@@ -12,7 +12,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable008.progLanguages}" var="lang" paginator="true" rows="3" filteredValue="#{dataTable008.filteredProgLanguages}">
+            <p:dataTable id="datatable" ref="datatable" value="#{dataTable008.progLanguages}" var="lang" paginator="true" rows="3" filteredValue="#{dataTable008.filteredProgLanguages}">
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}" />
                 </p:column>

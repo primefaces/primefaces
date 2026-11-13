@@ -39,9 +39,9 @@ export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.component
     targetFilter: string;
 
     /**
-     * Widget variable of the target component.
+     * Name (ref) of the target component.
      */
-    targetWidgetVar: string;
+    targetRef: string;
 }
 
 /**
@@ -101,8 +101,8 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         else {
             let bound = false;
 
-            if (this.cfg.targetWidgetVar) {
-                const targetComponent = PrimeFaces.components[this.cfg.targetWidgetVar];
+            if (this.cfg.targetRef) {
+                const targetComponent = PrimeFaces.components[this.cfg.targetRef];
 
                 if (targetComponent) {
                     if (typeof targetComponent.bindContextMenu === 'function') {
@@ -117,7 +117,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
                     }
                 }
                 else {
-                    PrimeFaces.warn("ContextMenu targets a widget which is not available yet. Please place the contextMenu after the target component. targetWidgetVar: " + this.cfg.targetWidgetVar);
+                    PrimeFaces.warn("ContextMenu targets a component which is not available yet. Please place the contextMenu after the target component. targetRef: " + this.cfg.targetRef);
                 }
             }
 

@@ -12,7 +12,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:treeTable value="#{treeTable013.root}" var="document" id="treeTable" widgetVar="treeTable"
+            <p:treeTable value="#{treeTable013.root}" var="document" id="treeTable" ref="treeTable"
                          filterEvent="enter" filterPrune="descendants">
                 <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">
                     <h:outputText value="#{document.name}"/>

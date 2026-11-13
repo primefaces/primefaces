@@ -17,7 +17,7 @@ export interface ImageCompareCfg extends PrimeFacesTypes.component.BaseComponent
  * of the image slider programmatically, you can use the list of instantiated sliders:
  *
  * ```javascript
- * const component = PF("myImageCompareWidget");
+ * const component = PF("myImageCompare");
  * const slider = juxtapose.sliders.filter(slider => slider.wrapper === a.getJQ().get(0))[0];
  *
  * // Smoothly move the slider to the right.

@@ -32,48 +32,65 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
-public interface Widget {
+public interface PrimeClientComponent {
 
     String CALLBACK_PRE_CONSTRUCT = "clientPreConstruct";
     String CALLBACK_POST_CONSTRUCT = "clientPostConstruct";
     String CALLBACK_POST_REFRESH = "clientPostRefresh";
     String CALLBACK_PRE_DESTROY = "clientPreDestroy";
 
-    String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
+    String ATTR_REF_PATTERN = PrimeClientComponent.class.getName() + ".ATTR_REF_PATTERN";
 
-    @Property(description = "Name of the client side component.", implicitDefaultValue = "generated ('widget_' + componentClientId)")
+    @Property(description = "Name of the client side component, e.g. to access it via PF('name').",
+            implicitDefaultValue = "generated ('pf_' + componentClientId)")
+    default String getRef() {
+        return null;
+    }
+
+    /**
+     * The attribute {@code widgetVar} is deprecated in favor of {@link #getRef()}, use {@link #resolveRef()} to get
+     * the name of the client side component.
+     *
+     * @return the name of the client side component set via {@code widgetVar}
+     */
+    @Property(description = "Deprecated, use ref instead. Name of the client side component.")
     String getWidgetVar();
 
-    // backwards compatibility
-    default String resolveWidgetVar() {
-        return resolveWidgetVar(FacesContext.getCurrentInstance());
+    default String resolveRef() {
+        return resolveRef(FacesContext.getCurrentInstance());
     }
+
     /**
-     * Resolves the widget variable name for the component.
+     * Resolves the name (ref) of the client side component.
      *
      * @param context The FacesContext for the current request.
-     * @return The resolved widget variable name.
+     * @return The resolved name of the client side component.
      */
-    default String resolveWidgetVar(FacesContext context) {
+    default String resolveRef(FacesContext context) {
         UIComponent component = (UIComponent) this;
 
-        // Check if a custom widget variable name is set
-        String userWidgetVar = getWidgetVar();
-        if (LangUtils.isNotBlank(userWidgetVar)) {
-            return userWidgetVar;
+        // Check if a custom name is set, ref wins over the deprecated widgetVar
+        String ref = getRef();
+        if (LangUtils.isNotBlank(ref)) {
+            return ref;
         }
 
-        // Get or create the pattern for widget variable name sanitization
-        Pattern pattern = (Pattern) context.getAttributes().get(ATTR_WIDGET_VAR_PATTERN);
+        String widgetVar = getWidgetVar();
+        if (LangUtils.isNotBlank(widgetVar)) {
+            return widgetVar;
+        }
+
+        // Get or create the pattern for the sanitization of the generated name
+        Pattern pattern = (Pattern) context.getAttributes().get(ATTR_REF_PATTERN);
         if (pattern == null) {
             // Create a pattern to replace naming container separator with '_'
             pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
-            context.getAttributes().put(ATTR_WIDGET_VAR_PATTERN, pattern);
+            context.getAttributes().put(ATTR_REF_PATTERN, pattern);
         }
 
-        // Generate a default widget variable name based on the component's client ID
-        String widgetVar = "widget_" + component.getClientId(context);
-        // Sanitize the widget variable name by replacing invalid characters with '_'
-        return pattern.matcher(widgetVar).replaceAll("_");
+        // Generate a default ref based on the component's client ID
+        String generatedRef = "pf_" + component.getClientId(context);
+        // Sanitize the ref by replacing invalid characters with '_'
+        return pattern.matcher(generatedRef).replaceAll("_");
     }
 }

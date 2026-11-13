@@ -25,12 +25,12 @@ package org.primefaces.component.speeddial;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
 @FacesComponentBase
-public abstract class SpeedDialBase extends AbstractMenu implements Widget, StyleAware {
+public abstract class SpeedDialBase extends AbstractMenu implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

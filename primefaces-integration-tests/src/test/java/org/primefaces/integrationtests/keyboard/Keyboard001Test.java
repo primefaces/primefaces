@@ -173,7 +173,7 @@ class Keyboard001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("focus", cfg.getString("showOn"));
         assertEquals("fadeIn", cfg.getString("showAnim"));
         assertTrue(cfg.getBoolean("useThemeRoller"));

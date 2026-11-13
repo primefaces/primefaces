@@ -24525,7 +24525,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Widget variable of the target widget.
          */
-        targetWidgetVar: string;
+        targetRef: string;
     }
 }
 declare namespace PrimeFaces.widget.ContextMenu {

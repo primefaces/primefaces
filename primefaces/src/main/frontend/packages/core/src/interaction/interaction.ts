@@ -186,14 +186,14 @@ export abstract class Interaction<O extends InteractionOptions> {
      * callbacks, like the widget element of jQuery UI.
      * @returns The element of the interaction.
      */
-    protected widget(): JQuery<HTMLElement> {
+    protected stateElement(): JQuery<HTMLElement> {
         return this.element;
     }
 
     /** Adds the classes of the interaction, called by the subclass once its elements are set up. */
     protected addClasses(): void {
         this.element.addClass('p-' + this.name);
-        this.widget().toggleClass('p-' + this.name + '-disabled', !!this.options.disabled);
+        this.stateElement().toggleClass('p-' + this.name + '-disabled', !!this.options.disabled);
     }
 
     /**
@@ -233,7 +233,7 @@ export abstract class Interaction<O extends InteractionOptions> {
     /** Removes the interaction from the element. */
     destroy(): void {
         this.element.off(this.namespace).removeClass('p-' + this.name);
-        this.widget().removeClass('p-' + this.name + '-disabled');
+        this.stateElement().removeClass('p-' + this.name + '-disabled');
         this.element.removeData(dataKey(this.name));
     }
 
@@ -245,7 +245,7 @@ export abstract class Interaction<O extends InteractionOptions> {
     protected setOption(key: string, value: unknown): void {
         (this.options as Record<string, unknown>)[key] = value;
         if (key === 'disabled') {
-            this.widget().toggleClass('p-' + this.name + '-disabled', !!value);
+            this.stateElement().toggleClass('p-' + this.name + '-disabled', !!value);
         }
     }
 
@@ -260,16 +260,16 @@ export abstract class Interaction<O extends InteractionOptions> {
      */
     trigger(type: string, event: JQuery.TriggeredEvent | null, ui: unknown): boolean {
         const name = (type === this.eventPrefix ? type : this.eventPrefix + type).toLowerCase();
-        const widget = this.widget();
+        const stateElement = this.stateElement();
         const jqEvent = $.Event(name) as JQuery.TriggeredEvent;
         if (event?.originalEvent) {
             // jQuery reads pageX, clientX, ... from the original event
             jqEvent.originalEvent = event.originalEvent;
         }
-        widget.trigger(jqEvent, [ui]);
+        stateElement.trigger(jqEvent, [ui]);
 
         const callback = this.options[type] as Callback;
-        const result = typeof callback === 'function' ? callback.call(widget[0]!, jqEvent, ui) : undefined;
+        const result = typeof callback === 'function' ? callback.call(stateElement[0]!, jqEvent, ui) : undefined;
         return result !== false && !jqEvent.isDefaultPrevented();
     }
 }

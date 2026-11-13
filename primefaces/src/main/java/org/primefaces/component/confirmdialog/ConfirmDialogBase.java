@@ -26,15 +26,15 @@ package org.primefaces.component.confirmdialog;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 
 @FacesComponentBase
-public abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware, StyleAware {
+public abstract class ConfirmDialogBase extends UIPanel implements PrimeClientComponent, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

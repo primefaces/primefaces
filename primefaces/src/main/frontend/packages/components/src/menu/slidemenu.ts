@@ -231,8 +231,12 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         this.menuItem = this.menuList.children('li.p-menuitem ');
         this.backButton = this.menuItem.children('a.p-menuitem-link');
 
-        this.submenus.outerWidth(this.jq.outerWidth() ?? 0);
-        this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.backButton.outerHeight(true) ?? 0));
+        // the content width (without the border), which is also the slide offset; measured here, not only on init,
+        // because the deferred render of a hidden container runs once it is visible
+        this.jqWidth = this.jq.width() ?? 0;
+        this.submenus.outerWidth(this.jqWidth);
+        // the whole back list, including its list padding
+        this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.menuList.outerHeight(true) ?? 0));
         this.content.height(this.rootList.outerHeight(true) ?? 0);
         this.backward.attr('style', 'display: none;');
         this.rendered = true;

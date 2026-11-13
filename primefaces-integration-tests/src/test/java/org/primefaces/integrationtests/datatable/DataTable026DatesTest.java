@@ -191,7 +191,7 @@ class DataTable026DatesTest extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertEquals("wgtTable", cfg.getString("widgetVar"));
+        assertEquals("wgtTable", cfg.getString("ref"));
         assertEquals(0, cfg.getInt("tabindex"));
     }
 

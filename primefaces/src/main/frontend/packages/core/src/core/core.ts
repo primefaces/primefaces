@@ -338,7 +338,7 @@ export class Core {
 
     /**
      * A map of all instantiated components that are available on the current page.
-     * The key is the widget variable of the component, the value the instantiated component.
+     * The key is the name (ref) of the component, the value the instantiated component.
      */
     components: PrimeFacesTypes.ComponentInstanceMap = {};
 
@@ -367,7 +367,7 @@ export class Core {
     }
 
     /**
-     * A list of widget variable IDs (widgetVar) that were once instantiated, but are now removed from the DOM, such as
+     * A list of component names (ref) that were once instantiated, but are now removed from the DOM, such as
      * due to the result of an AJAX update request.
      */
     detachedComponents: string[] = [];
@@ -379,8 +379,8 @@ export class Core {
         return this.detachedComponents;
     }
 
-    set detachedWidgets(widgetVars: string[]) {
-        this.detachedComponents = widgetVars;
+    set detachedWidgets(refs: string[]) {
+        this.detachedComponents = refs;
     }
 
     /**
@@ -700,8 +700,8 @@ export class Core {
      * found.
      */
     getComponentById(id: string): BaseComponent | null {
-        for (var widgetVar in this.components) {
-            var component = this.components[widgetVar];
+        for (var ref in this.components) {
+            var component = this.components[ref];
             if (component && component.id === id) {
                 return component;
             }
@@ -1369,17 +1369,17 @@ export class Core {
     /**
      * Handles the error case when a component was requested that is not available. Currently just logs an error
      * message.
-     * @param widgetVar Widget variable of a component
+     * @param ref Name of a component (ref)
      */
-    componentNotAvailable(widgetVar: string): void {
-        this.error("Component for var '" + widgetVar + "' not available!");
+    componentNotAvailable(ref: string): void {
+        this.error("Component for ref '" + ref + "' not available!");
     }
 
     /**
      * @deprecated Use {@link componentNotAvailable} instead.
      */
-    widgetNotAvailable(widgetVar: string): void {
-        this.componentNotAvailable(widgetVar);
+    widgetNotAvailable(ref: string): void {
+        this.componentNotAvailable(ref);
     }
 
     /**
@@ -1461,15 +1461,15 @@ export class Core {
      * A shortcut for {@link createComponent}.
      * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
      * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
-     * @param widgetVar Widget variable of the component
+     * @param ref Name of the component (ref)
      * @param cfg Configuration for the component
      */
     cw<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
         componentName: ComponentName,
-        widgetVar: string,
+        ref: string,
         cfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
     ): void {
-        this.createComponent(componentName, widgetVar, cfg);
+        this.createComponent(componentName, ref, cfg);
     }
 
     /**
@@ -1490,19 +1490,19 @@ export class Core {
      * exists already, it is refreshed.
      * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
      * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
-     * @param widgetVar Widget variable of the component
-     * @param cfg Configuration for the component, without the `widgetVar` property.
+     * @param ref Name of the component (ref)
+     * @param cfg Configuration for the component, without the `ref` property.
      */
     createComponent<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
         componentName: ComponentName,
-        widgetVar: string,
+        ref: string,
         partialCfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
     ): void {
-        const cfg = Object.assign(partialCfg, { widgetVar });
+        const cfg = Object.assign(partialCfg, { ref, widgetVar: ref });
 
         const componentType = this.component[componentName] as PrimeFacesTypes.Newable<[], InstanceType<PrimeFacesTypes.ComponentRegistry[ComponentName]>> | undefined;
         if(componentType) {
-            const component = this.components[widgetVar];
+            const component = this.components[ref];
 
             //ajax update
             if(component && (component.constructor === this.component[componentName])) {
@@ -1524,7 +1524,7 @@ export class Core {
                 }
                 const newComponent = new componentType();
                 newComponent.init(cfg);
-                this.components[widgetVar] = newComponent;
+                this.components[ref] = newComponent;
                 if (cfg.postConstruct) {
                     cfg.postConstruct.call(newComponent, newComponent, newComponent);
                 }
@@ -1542,10 +1542,10 @@ export class Core {
      */
     createWidget<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
         componentName: ComponentName,
-        widgetVar: string,
+        ref: string,
         partialCfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
     ): void {
-        this.createComponent(componentName, widgetVar, partialCfg);
+        this.createComponent(componentName, ref, partialCfg);
     }
     
     /**
@@ -2278,22 +2278,22 @@ export const core: Core = new Core();
 /**
  * Finds and returns a component
  *
- * Note to TypeScript users: You might want to define a method that takes a widget variable and component constructor, and
+ * Note to TypeScript users: You might want to define a method that takes a ref and component constructor, and
  * check whether the component is of the given type. If so, you can return the component and cast it to the desired type:
  * ```ts
- * function getComponent<T extends BaseComponent>(widgetVar: string, componentClass: PrimeFacesTypes.Newable<[], T>): T | undefined {
- *   const component = PrimeFaces.components[widgetVar];
+ * function getComponent<T extends BaseComponent>(ref: string, componentClass: PrimeFacesTypes.Newable<[], T>): T | undefined {
+ *   const component = PrimeFaces.components[ref];
  *   return component instanceof componentClass ? component : undefined;
  * }
  * ```
- * @param widgetVar The widget variable of a component.
+ * @param ref The name of a component (ref).
  * @return The component instance, or `undefined` if no such component exists currently.
  */
-export function PF(widgetVar: string): BaseComponent | undefined {
-    const componentInstance = core.components[widgetVar];
+export function PF(ref: string): BaseComponent | undefined {
+    const componentInstance = core.components[ref];
 
     if (!componentInstance) {
-        core.componentNotAvailable(widgetVar);
+        core.componentNotAvailable(ref);
     }
 
     return componentInstance;

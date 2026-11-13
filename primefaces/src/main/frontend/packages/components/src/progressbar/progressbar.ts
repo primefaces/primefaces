@@ -58,12 +58,13 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
             return;
         }
         let valueWidth = value;
+        const labelText = this.cfg.labelTemplate ? this.cfg.labelTemplate.replace(/{value}/gi, String(value)) : '';
 
-        // the value bar must be at least as wide as the label
+        // the value bar must be at least as wide as the label (text and padding)
         if (this.cfg.labelTemplate) {
-            // invisible copy of the label with the same font to measure its width
+            // invisible copy of the new label with the same font and padding to measure its width
             const $span = $('<span></span>')
-                .text(this.jqLabel.text())
+                .text(labelText)
                 .css({
                     visibility: 'hidden',
                     position: 'absolute',
@@ -72,6 +73,8 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
                     fontSize: this.jqLabel.css('fontSize'),
                     fontWeight: this.jqLabel.css('fontWeight'),
                     fontFamily: this.jqLabel.css('fontFamily'),
+                    paddingLeft: this.jqLabel.css('paddingLeft'),
+                    paddingRight: this.jqLabel.css('paddingRight'),
                 })
                 .appendTo(document.body);
 
@@ -105,7 +108,7 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
 
         if (this.cfg.labelTemplate) {
             this.jqLabel.css(styles.label);
-            this.jqLabel.text(this.cfg.labelTemplate.replace(/{value}/gi, String(value))).show();
+            this.jqLabel.text(labelText).show();
         }
 
         this.value = value;

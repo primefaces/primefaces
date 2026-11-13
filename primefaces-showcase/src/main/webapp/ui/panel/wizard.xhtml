@@ -25,7 +25,7 @@
 
                 <p:growl id="growl" sticky="true" showDetail="true"/>
 
-                <p:wizard flowListener="#{userWizard.onFlowProcess}" widgetVar="wizard">
+                <p:wizard flowListener="#{userWizard.onFlowProcess}" ref="wizard">
                     <p:tab id="personal" title="Personal">
                         <p:focus context="@next"/>
                         <p:panel header="Personal Details">

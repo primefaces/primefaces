@@ -31,7 +31,7 @@
                     <li><i>git pus</i> + TAB + TAB + TAB</li>
                 </ul>
 
-                <p:terminal id="terminal" widgetVar="term" styleClass="mt-5"
+                <p:terminal id="terminal" ref="term" styleClass="mt-5"
                             commandHandler="#{terminalAutoCompleteView.handleCommand}"
                             autoCompleteModel="#{terminalAutoCompleteView.autoCompleteModel}"
                             welcomeMessage="Welcome to PrimeFaces Terminal, how are you today?"/>

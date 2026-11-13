@@ -39,7 +39,7 @@ the `statefulGlobal="true"` attribute to enable it.
 
 ### Client-side Component Methods
 
-PanelMenu provides client-side JavaScript methods via its component API. Use the `widgetVar` to access the component instance.
+PanelMenu provides client-side JavaScript methods via its component API. Use the `ref` to access the component instance.
 
 #### `expandAll()`
 
@@ -68,7 +68,7 @@ PF('myPanelMenu').clearState();
 #### Example
 
 ```xhtml
-<p:panelMenu widgetVar="myPanelMenu">
+<p:panelMenu ref="myPanelMenu">
     ...
 </p:panelMenu>
 
@@ -83,9 +83,6 @@ PF('myPanelMenu').clearState();
     PF('myPanelMenu').clearState();
 </script>
 ```
-
-For advanced usage, refer to the component JavaScript API in the [PrimeFaces PanelMenu Component documentation](https://primefaces.github.io/primefaces/15_0_0/#/components/panelmenu?id=client-side-widget-methods).
-
 
 ## Skinning
 PanelMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the

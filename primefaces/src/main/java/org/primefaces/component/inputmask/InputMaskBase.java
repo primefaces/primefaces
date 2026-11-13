@@ -26,10 +26,10 @@ package org.primefaces.component.inputmask;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 @FacesComponentBase
-public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implements Widget {
+public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

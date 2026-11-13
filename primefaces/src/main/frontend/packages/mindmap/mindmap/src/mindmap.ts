@@ -87,7 +87,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
         const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.raphael.ellipse(x, y, 40, 25).attr('opacity', 0)
             .data('model', model)
             .data('connections', [])
-            .data('pRef', this.cfg.widgetVar);
+            .data('p-ref', this.cfg.ref);
 
         let label = model.label;
         const nodeWidth = node.getBBox().width;
@@ -148,7 +148,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
      * @param this The node.
      */
     private mouseoverNode(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
-        const _self = PF(this.data('pRef')) as Mindmap;
+        const _self = PF(this.data('p-ref')) as Mindmap;
 
         _self.showTooltip(this);
     }
@@ -158,7 +158,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
      * @param this The node.
      */
     private mouseoutNode(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
-        const _self = PF(this.data('pRef')) as Mindmap;
+        const _self = PF(this.data('p-ref')) as Mindmap;
 
         _self.hideTooltip(this);
     }
@@ -169,7 +169,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
      */
     private mouseoverText(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node'),
-            _self = PF(node.data('pRef')) as Mindmap;
+            _self = PF(node.data('p-ref')) as Mindmap;
 
         _self.showTooltip(node);
     }
@@ -180,7 +180,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
      */
     private mouseoutText(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node'),
-            _self = PF(node.data('pRef')) as Mindmap;
+            _self = PF(node.data('p-ref')) as Mindmap;
 
         _self.hideTooltip(node);
     }
@@ -193,7 +193,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
         const title = node.data('title');
 
         if (title) {
-            const _self = PF(node.data('pRef')) as Mindmap,
+            const _self = PF(node.data('p-ref')) as Mindmap,
                 offset = _self.jq.offset()!;
 
             _self.tooltip.text(title)
@@ -217,7 +217,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
         const title = node.data('title');
 
         if (title) {
-            const _self = PF(node.data('pRef')) as Mindmap;
+            const _self = PF(node.data('p-ref')) as Mindmap;
 
             _self.tooltip.hide();
         }
@@ -332,7 +332,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
      * @param this The node.
      */
     private clickNode(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
-        const _self = PF(this.data('pRef')) as Mindmap;
+        const _self = PF(this.data('p-ref')) as Mindmap;
 
         _self.handleNodeClick(this);
     }
@@ -343,7 +343,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
      */
     private clickNodeText(this: PrimeFacesTypes.component.Mindmap.MindmapElement): void {
         const node: PrimeFacesTypes.component.Mindmap.MindmapElement = this.data('node'),
-            _self = PF(node.data('pRef')) as Mindmap;
+            _self = PF(node.data('p-ref')) as Mindmap;
 
         _self.handleNodeClick(node);
     }
@@ -458,7 +458,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
         this.data('text').attr({ x: this.attr('cx'), y: this.attr('cy') });
 
         //update connections
-        const _self = PF(this.data('pRef')) as Mindmap;
+        const _self = PF(this.data('p-ref')) as Mindmap;
         _self.updateConnections(this);
 
         //flag to prevent drag to invoke nodeClick
@@ -497,7 +497,7 @@ export class Mindmap<Cfg extends MindmapCfg = MindmapCfg> extends PrimeFaces.com
         node.attr({ cx: this.attr('x'), cy: this.attr('y') });
 
         //update connections
-        const _self = PF(node.data('pRef')) as Mindmap;
+        const _self = PF(node.data('p-ref')) as Mindmap;
         _self.updateConnections(node);
 
         //flag to prevent drag to invoke nodeClick

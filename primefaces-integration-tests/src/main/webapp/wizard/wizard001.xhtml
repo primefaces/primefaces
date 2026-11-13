@@ -4,7 +4,7 @@
     <h:head />
     <h:body>
         <h:form id="form">
-            <p:wizard id="wizard" widgetVar="wizard" highlightCompletedSteps="#{wizard001.highlight}"
+            <p:wizard id="wizard" ref="wizard" highlightCompletedSteps="#{wizard001.highlight}"
                       step="#{wizard001.step}" showStepStatus="#{wizard001.status}"
                       onnext="return !#{wizard001.blockNext}" onback="return !#{wizard001.blockBack}"
                       effect="#{wizard001.effect}" effectDuration="100">

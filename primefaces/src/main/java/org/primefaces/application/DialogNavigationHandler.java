@@ -72,7 +72,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
             StringBuilder sb = new StringBuilder();
             String sourceComponentId = (String) attrs.get(Constants.DialogFramework.SOURCE_COMPONENT);
-            String sourceWidget = (String) attrs.get(Constants.DialogFramework.SOURCE_WIDGET);
+            String sourceRef = (String) attrs.get(Constants.DialogFramework.SOURCE_REF);
             String pfdlgcid = requestParams.get(Constants.DialogFramework.CONVERSATION_PARAM);
             if (pfdlgcid == null) {
                 pfdlgcid = UUID.randomUUID().toString();
@@ -82,8 +82,8 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
                     .append("',sourceComponentId:'").append(sourceComponentId).append("'");
 
-            if (sourceWidget != null) {
-                sb.append(",sourceWidgetVar:'").append(sourceWidget).append("'");
+            if (sourceRef != null) {
+                sb.append(",sourceRef:'").append(sourceRef).append("'");
             }
 
             sb.append(",options:{");

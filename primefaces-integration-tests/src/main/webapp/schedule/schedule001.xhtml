@@ -16,7 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:schedule id="schedule" value="#{schedule001.eventModel}" widgetVar="myschedule" locale="#{schedule001.locale}"
+            <p:schedule id="schedule" value="#{schedule001.eventModel}" ref="myschedule" locale="#{schedule001.locale}"
                         timeZone="#{schedule001.timeZone}" clientTimeZone="#{schedule001.clientTimeZone}">
 
                 <p:ajax event="dateSelect" listener="#{schedule001.onDateSelect}" update="panelSelectedEvent"/>

@@ -25,14 +25,14 @@ package org.primefaces.component.message;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UINotification;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIMessage;
 
 @FacesComponentBase
-public abstract class MessageBase extends UIMessage implements UINotification, Widget, StyleAware {
+public abstract class MessageBase extends UIMessage implements UINotification, PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

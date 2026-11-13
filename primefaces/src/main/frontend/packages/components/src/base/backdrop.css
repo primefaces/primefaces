@@ -3,7 +3,7 @@
  * in the other presets.
  *
  * Only elements that float or form a bar get a backdrop filter: overlays (dialogs, minimized dialogs in the docking
- * zone, popovers, dropdown panels, menus, tooltips, growl), the toolbar and buttons. An element with a backdrop filter
+ * zone, popovers, dropdown panels, menus, tooltips, growl, log), the toolbar and buttons. An element with a backdrop filter
  * is the backdrop root of its descendants (a nested overlay would only blur what lies inside its parent), so overlays
  * with nested overlays (menus with submenus, cascadeselect lists) blur with a ::before (see below). CascadeSelect: the
  * root panel is only the anchor (no height, its first list is absolutely positioned) and gets no filter.
@@ -14,7 +14,7 @@
  */
 :where(.p-sidebar, .p-overlaypanel, .p-confirm-popup, .p-input-overlay:not(.p-cascadeselect-panel),
     .p-selectonemenu-panel, .p-selectcheckboxmenu-panel, .p-autocomplete-panel, .p-tooltip-text, .p-growl-item-container,
-    .p-password-panel, .p-columntoggler, .p-datatable-filter-matchmode-menu, .p-dialog-docked) {
+    .p-password-panel, .p-columntoggler, .p-datatable-filter-matchmode-menu, .p-dialog-docked, .p-log) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 

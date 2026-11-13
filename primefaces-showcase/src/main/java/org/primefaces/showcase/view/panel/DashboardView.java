@@ -26,14 +26,14 @@ package org.primefaces.showcase.view.panel;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.dashboard.DashboardItem;
 import org.primefaces.model.dashboard.DashboardModel;
-import org.primefaces.model.dashboard.DashboardWidget;
+import org.primefaces.model.dashboard.DefaultDashboardColumn;
+import org.primefaces.model.dashboard.DefaultDashboardItem;
 import org.primefaces.model.dashboard.DefaultDashboardModel;
-import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Arrays;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -55,24 +55,24 @@ public class DashboardView implements Serializable {
     public void init() {
         // responsive
         responsiveModel = new DefaultDashboardModel();
-        responsiveModel.addWidget(new DefaultDashboardWidget("bar", RESPONSIVE_CLASS));
-        responsiveModel.addWidget(new DefaultDashboardWidget("stacked", RESPONSIVE_CLASS));
-        responsiveModel.addWidget(new DefaultDashboardWidget("donut", RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-4")));
-        responsiveModel.addWidget(new DefaultDashboardWidget("cartesian", RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-8")));
+        responsiveModel.addItem(new DefaultDashboardItem("bar", RESPONSIVE_CLASS));
+        responsiveModel.addItem(new DefaultDashboardItem("stacked", RESPONSIVE_CLASS));
+        responsiveModel.addItem(new DefaultDashboardItem("donut", RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-4")));
+        responsiveModel.addItem(new DefaultDashboardItem("cartesian", RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-8")));
 
         // legacy
         legacyModel = new DefaultDashboardModel();
-        legacyModel.addWidget(new DefaultDashboardWidget(Arrays.asList("sports", "finance")));
-        legacyModel.addWidget(new DefaultDashboardWidget(Arrays.asList("lifestyle", "weather")));
-        legacyModel.addWidget(new DefaultDashboardWidget(Arrays.asList("politics")));
+        legacyModel.addColumn(new DefaultDashboardColumn("sports", "finance"));
+        legacyModel.addColumn(new DefaultDashboardColumn("lifestyle", "weather"));
+        legacyModel.addColumn(new DefaultDashboardColumn("politics"));
     }
 
     public void handleReorder(DashboardReorderEvent event) {
         FacesMessage message = new FacesMessage();
         message.setSeverity(FacesMessage.SEVERITY_INFO);
-        message.setSummary("Reordered: " + event.getWidgetId());
-        String result = String.format("Dragged index: %d, Dropped Index: %d, Widget Index: %d",
-                event.getSenderColumnIndex(),  event.getColumnIndex(), event.getItemIndex());
+        message.setSummary("Reordered: " + event.getPanelId());
+        String result = String.format("From column %d, index %d to column %d, index %d",
+                event.getSenderColumnIndex(), event.getSenderItemIndex(), event.getColumnIndex(), event.getItemIndex());
         message.setDetail(result);
 
         addMessage(message);
@@ -95,14 +95,14 @@ public class DashboardView implements Serializable {
     /**
      * Dashboard panel has been resized.
      *
-     * @param widget the DashboardPanel
+     * @param panelId the id of the panel
      * @param size the new size CSS
      */
-    public void onDashboardResize(final String widget, final String size) {
-        final DashboardWidget dashboard = responsiveModel.getWidget(widget);
-        if (dashboard != null) {
-            final String newCss = dashboard.getStyleClass().replaceFirst("xl:col-\\d+", size);
-            dashboard.setStyleClass(newCss);
+    public void onDashboardResize(final String panelId, final String size) {
+        final DashboardItem item = responsiveModel.getItem(panelId);
+        if (item != null) {
+            final String newCss = item.getStyleClass().replaceFirst("xl:col-\\d+", size);
+            item.setStyleClass(newCss);
         }
     }
 

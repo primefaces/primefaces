@@ -88,7 +88,7 @@
                     <p:ajax listener="#{dndProductsView.onProductDrop}" update="dropArea availableProducts"/>
                 </p:droppable>
 
-                <p:dialog header="Product Detail" widgetVar="productDialog" resizable="false" draggable="false"
+                <p:dialog header="Product Detail" ref="productDialog" resizable="false" draggable="false"
                           showEffect="fade" hideEffect="fade" modal="true">
                     <p:outputPanel id="display">
                         <p:column rendered="#{not empty dndProductsView.selectedProduct}">

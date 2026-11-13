@@ -30,7 +30,7 @@ import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.CountCharactersAware;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.el.MethodExpression;
@@ -41,7 +41,8 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
     @FacesBehaviorEvent(name = "query", event = AjaxBehaviorEvent.class, description = "Fires when a search query is triggered.")
 })
-public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, CountCharactersAware, MixedClientBehaviorHolder {
+public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements PrimeClientComponent, CountCharactersAware,
+        MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

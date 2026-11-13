@@ -25,12 +25,12 @@ package org.primefaces.component.effect;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
-public abstract class EffectBase extends UIComponentBase implements Widget {
+public abstract class EffectBase extends UIComponentBase implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

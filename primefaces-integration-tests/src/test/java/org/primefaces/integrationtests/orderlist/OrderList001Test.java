@@ -186,7 +186,7 @@ class OrderList001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("fade", cfg.getString("effect"));
     }
 

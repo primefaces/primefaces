@@ -25,8 +25,8 @@ package org.primefaces.integrationtests.dashboard;
 
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DefaultDashboardItem;
 import org.primefaces.model.dashboard.DefaultDashboardModel;
-import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -51,9 +51,9 @@ public class Dashboard002 implements Serializable {
     @PostConstruct
     public void init() {
         model = new DefaultDashboardModel();
-        model.addWidget(new DefaultDashboardWidget("bar", "col-12"));
-        model.addWidget(new DefaultDashboardWidget("pie", "col-12"));
-        model.addWidget(new DefaultDashboardWidget("line", "col-12"));
+        model.addItem(new DefaultDashboardItem("bar", "col-12"));
+        model.addItem(new DefaultDashboardItem("pie", "col-12"));
+        model.addItem(new DefaultDashboardItem("line", "col-12"));
     }
 
     /**
@@ -62,12 +62,14 @@ public class Dashboard002 implements Serializable {
      * @return the panel ids of the cells
      */
     public String getLayout() {
-        return Dashboard001.toLayout(model);
+        // responsive: all items are in one column, each is a cell of the grid
+        return Dashboard001.toLayout(model).replace(',', '|');
     }
 
     public void onReorder(DashboardReorderEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reordered: " + event.getWidgetId(),
-                    "Sender:" + event.getSenderColumnIndex() + " Column:" + event.getColumnIndex() + " Item:" + event.getItemIndex());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reordered: " + event.getPanelId(),
+                    "Column:" + event.getColumnIndex() + " Item:" + event.getItemIndex()
+                    + " SenderColumn:" + event.getSenderColumnIndex() + " SenderItem:" + event.getSenderItemIndex());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

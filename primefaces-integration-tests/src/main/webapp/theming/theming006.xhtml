@@ -11,17 +11,17 @@
     <h:body>
         <h:form id="form">
             <!-- the component renders the panel content: div.p-selectonemenu-items > ul.p-selectonemenu-list -->
-            <p:selectOneMenu id="plain" widgetVar="plain" value="#{theming006.plain}">
+            <p:selectOneMenu id="plain" ref="plain" value="#{theming006.plain}">
                 <f:selectItem itemLabel="One" itemValue="One" />
                 <f:selectItem itemLabel="Two" itemValue="Two" />
                 <f:selectItem itemLabel="Three" itemValue="Three" />
             </p:selectOneMenu>
 
-            <p:selectOneMenu id="grouped" widgetVar="grouped" value="#{theming006.grouped}">
+            <p:selectOneMenu id="grouped" ref="grouped" value="#{theming006.grouped}">
                 <f:selectItems value="#{theming006.groups}" />
             </p:selectOneMenu>
 
-            <p:selectOneMenu id="dynamic" widgetVar="dynamic" value="#{theming006.dynamic}" dynamic="true">
+            <p:selectOneMenu id="dynamic" ref="dynamic" value="#{theming006.dynamic}" dynamic="true">
                 <f:selectItem itemLabel="One" itemValue="One" />
                 <f:selectItem itemLabel="Two" itemValue="Two" />
                 <f:selectItem itemLabel="Three" itemValue="Three" />

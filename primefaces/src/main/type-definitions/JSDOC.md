@@ -96,15 +96,15 @@ handling client side validation.
 * [PrimeFaces.component](./modules/src_PrimeFaces.PrimeFaces.component.html) contains all available component classes. A component is
 usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a component instance via
 `instanceof`. You can also use these as a base class when you create your own components.
-* [`PrimeFaces.components`](./modules/src_PrimeFaces.PrimeFaces.html#widgets) is an object with all instantiated components that
+* [`PrimeFaces.components`](./modules/src_PrimeFaces.PrimeFaces.html#components) is an object with all instantiated components that
 are available on the current page. `PrimeFaces.widget` and `PrimeFaces.widgets` are deprecated aliases of both objects.
-* [window.PF](./modules/src_PrimeFaces.html#pf) is a method for finding a component by its widget variable. When the component
+* [window.PF](./modules/src_PrimeFaces.html#pf) is a method for finding a component by its name (`ref`). When the component
 does not exist, it logs a warning.
 
 For example, if you have got a data table component defined in your XHTML view like this:
 
 ```xml
-<p:dataTable id="table" widgetVar="tableVar" />
+<p:dataTable id="table" ref="tableVar" />
 ```
 
 Then you can access the component instance from JavaScript like this:

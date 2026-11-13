@@ -45,7 +45,7 @@
 
             <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
 
-            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:dialog ref="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
                 <div class="text-center">
                     <i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
                 </div>

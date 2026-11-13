@@ -27,9 +27,9 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
 import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
@@ -48,7 +48,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "viewChange", event = SelectEvent.class, description = "Fires when the calendar view is changed."),
     @FacesBehaviorEvent(name = "rangeSelect", event = ScheduleRangeEvent.class, description = "Fires when a time range is selected.")
 })
-public abstract class ScheduleBase extends UIComponentBase implements Widget, RTLAware, StyleAware {
+public abstract class ScheduleBase extends UIComponentBase implements PrimeClientComponent, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

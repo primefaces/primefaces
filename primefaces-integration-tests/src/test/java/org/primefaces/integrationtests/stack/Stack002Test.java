@@ -72,7 +72,7 @@ class Stack002Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertFalse(cfg.getBoolean("expanded"));
         assertEquals(50, cfg.getInt("openSpeed"));
         assertEquals(50, cfg.getInt("closeSpeed"));

@@ -17,7 +17,7 @@
             </p:messages>
 
             <p:dataTable id="datatable" value="#{dataTable009.progLanguages}" var="lang" filteredValue="#{dataTable009.filteredProgLanguages}"
-                         filterEvent="enter" widgetVar="progLanguagesTables">
+                         filterEvent="enter" ref="progLanguagesTables">
                 <p:ajax event="filter" listener="#{dataTable009.filterListener}" update="form:msgs"></p:ajax>
 
                 <p:column headerText="ID" sortBy="#{lang.id}">

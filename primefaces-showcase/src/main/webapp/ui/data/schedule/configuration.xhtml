@@ -74,11 +74,6 @@
                                 <p:ajax update="schedule"/>
                             </p:selectBooleanCheckbox>
                         </div>
-                        <div class="col-12 md:col-6 xl:col-4">
-                            <p:selectBooleanCheckbox value="#{scheduleJava8View.rtl}" itemLabel="right to left">
-                                <p:ajax update="schedule"/>
-                            </p:selectBooleanCheckbox>
-                        </div>
                     </div>
 
                     <div class="formgrid grid p-fluid">
@@ -252,7 +247,7 @@
                     </div>
                 </p:panel>
 
-                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule" styleClass="mt-6"
+                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" ref="myschedule" styleClass="mt-6"
                             view="#{scheduleJava8View.view}"
                             locale="#{scheduleJava8View.locale}" timeZone="#{scheduleJava8View.timeZone}"
                             clientTimeZone="#{scheduleJava8View.clientTimeZone}"
@@ -279,7 +274,7 @@
                             leftHeaderTemplate="#{scheduleJava8View.leftHeaderTemplate}"
                             centerHeaderTemplate="#{scheduleJava8View.centerHeaderTemplate}"
                             rightHeaderTemplate="#{scheduleJava8View.rightHeaderTemplate}"
-                            dir="#{scheduleJava8View.rtl ? 'rtl' : 'ltr'}" height="#{scheduleJava8View.height}">
+                            height="#{scheduleJava8View.height}">
 
                     <p:ajax event="dateSelect" listener="#{scheduleJava8View.onDateSelect}" update="eventDetails"
                             oncomplete="PF('eventDialog').show();"/>
@@ -292,7 +287,7 @@
 
                 </p:schedule>
 
-                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
+                <p:dialog ref="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
                     <h:panelGroup id="eventDetails" layout="block" styleClass="formgrid grid p-fluid">
                         <div class="field col-12">
                             <p:outputLabel for="title" value="Titles" styleClass="font-bold"/>

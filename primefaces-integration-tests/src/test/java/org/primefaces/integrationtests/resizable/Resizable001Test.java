@@ -114,7 +114,7 @@ class Resizable001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg, String target) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals(target, cfg.getString("target"));
     }
 

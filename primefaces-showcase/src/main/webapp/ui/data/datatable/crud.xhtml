@@ -42,7 +42,7 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{crudView.products}"
+                <p:dataTable id="dt-products" ref="dtProducts" var="product" value="#{crudView.products}"
                     reflow="true" styleClass="products-table" selectionMode="multiple" selection="#{crudView.selectedProducts}"
                     rowKey="#{product.code}" paginator="true" rows="10" selectionRowMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
@@ -105,7 +105,7 @@
             </h:form>
 
             <h:form id="dialogs">
-                <p:dialog header="Product Details" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                <p:dialog header="Product Details" showEffect="fade" modal="true" ref="manageProductDialog"
                     responsive="true">
                     <p:outputPanel id="manage-product-content" class="p-fluid">
                         <p:outputPanel rendered="#{not empty crudView.selectedProduct}">
@@ -151,7 +151,7 @@
                     </f:facet>
                 </p:dialog>
 
-                <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                <p:confirmDialog ref="deleteProductDialog" showEffect="fade" width="300"
                     message="Delete the product?" header="Confirm" severity="warn">
                     <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProduct}"
                         process="@this" update=":form:delete-products-button"

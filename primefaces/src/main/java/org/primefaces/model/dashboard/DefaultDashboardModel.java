@@ -30,58 +30,76 @@ import java.util.List;
 
 public class DefaultDashboardModel implements DashboardModel, Serializable {
 
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private List<DashboardWidget> widgets;
+    private final List<DashboardColumn> columns = new ArrayList<>();
 
-    public DefaultDashboardModel() {
-        widgets = new ArrayList<>();
+    @Override
+    public List<DashboardColumn> getColumns() {
+        return columns;
     }
 
     @Override
-    public List<DashboardWidget> getWidgets() {
-        return widgets;
+    public void addColumn(DashboardColumn column) {
+        columns.add(column);
     }
 
     @Override
-    public void addWidget(DashboardWidget widget) {
-        widgets.add(widget);
+    public DashboardColumn getColumn(int index) {
+        return columns.get(index);
     }
 
     @Override
-    public int getWidgetCount() {
-        return widgets.size();
+    public int getColumnCount() {
+        return columns.size();
     }
 
     @Override
-    public DashboardWidget getWidget(int index) {
-        return widgets.get(index);
-    }
-
-    @Override
-    public DashboardWidget getWidget(String widgetId) {
-        return widgets.stream().filter(w -> w.getWidget(0).equalsIgnoreCase(widgetId))
-                .findFirst().orElse(null);
-    }
-
-    @Override
-    public void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean responsive) {
-        if (responsive) {
-            String fromWidgetId = fromWidget.getWidget(0);
-            String toWidgetId = toWidget.getWidget(0);
-            String fromCss = fromWidget.getStyleClass();
-            String toCss = toWidget.getStyleClass();
-            fromWidget.removeWidget(fromWidgetId);
-            fromWidget.addWidget(index, toWidgetId);
-            toWidget.removeWidget(toWidgetId);
-            toWidget.addWidget(index, fromWidgetId);
-            fromWidget.setStyleClass(toCss);
-            toWidget.setStyleClass(fromCss);
+    public void addItem(DashboardItem item) {
+        if (columns.isEmpty()) {
+            columns.add(new DefaultDashboardColumn());
         }
-        else {
-            fromWidget.removeWidget(widgetId);
-            toWidget.addWidget(index, widgetId);
-        }
+        columns.get(columns.size() - 1).addItem(item);
     }
 
+    @Override
+    public DashboardItem getItem(String panelId) {
+        for (DashboardColumn column : columns) {
+            for (DashboardItem item : column.getItems()) {
+                if (item.getPanelId().equals(panelId)) {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void moveItem(DashboardItem item, int columnIndex, int itemIndex) {
+        for (DashboardColumn column : columns) {
+            column.getItems().remove(item);
+        }
+        List<DashboardItem> target = columns.get(columnIndex).getItems();
+        target.add(Math.min(itemIndex, target.size()), item);
+    }
+
+    @Override
+    public void swapItems(DashboardItem item1, DashboardItem item2) {
+        List<DashboardItem> list1 = findColumnItems(item1);
+        List<DashboardItem> list2 = findColumnItems(item2);
+        int index1 = list1.indexOf(item1);
+        int index2 = list2.indexOf(item2);
+        list1.set(index1, item2);
+        list2.set(index2, item1);
+    }
+
+    private List<DashboardItem> findColumnItems(DashboardItem item) {
+        for (DashboardColumn column : columns) {
+            if (column.getItems().contains(item)) {
+                return column.getItems();
+            }
+        }
+        throw new IllegalArgumentException("Item of panel " + item.getPanelId() + " is not part of the model");
+    }
 }

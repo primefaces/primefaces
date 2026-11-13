@@ -25,18 +25,48 @@ package org.primefaces.model.dashboard;
 
 import java.util.List;
 
+/**
+ * The layout of a dashboard: columns that hold the items (panels). The responsive dashboard renders the items of all
+ * columns as cells of a grid, it usually has one column (see {@link #addItem(DashboardItem)}).
+ */
 public interface DashboardModel {
 
-    void addWidget(DashboardWidget widget);
+    List<DashboardColumn> getColumns();
 
-    List<DashboardWidget> getWidgets();
+    void addColumn(DashboardColumn column);
 
-    int getWidgetCount();
+    DashboardColumn getColumn(int index);
 
-    DashboardWidget getWidget(String widgetId);
+    int getColumnCount();
 
-    DashboardWidget getWidget(int index);
+    /**
+     * Adds the item to the last column, a column is created when there is none yet. This is the usual way to fill the
+     * model of a responsive dashboard.
+     *
+     * @param item the item to add
+     */
+    void addItem(DashboardItem item);
 
-    void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean swap);
+    /**
+     * @param panelId the id of the panel
+     * @return the item of the panel or {@code null}
+     */
+    DashboardItem getItem(String panelId);
 
+    /**
+     * Moves the item to the given index of the given column (classic dashboard).
+     *
+     * @param item the item to move
+     * @param columnIndex the index of the target column
+     * @param itemIndex the index in the target column
+     */
+    void moveItem(DashboardItem item, int columnIndex, int itemIndex);
+
+    /**
+     * Swaps the positions of two items (responsive dashboard).
+     *
+     * @param item1 the first item
+     * @param item2 the second item
+     */
+    void swapItems(DashboardItem item1, DashboardItem item2);
 }

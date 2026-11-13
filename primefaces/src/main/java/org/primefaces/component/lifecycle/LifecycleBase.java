@@ -24,12 +24,12 @@
 package org.primefaces.component.lifecycle;
 
 import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
-public abstract class LifecycleBase extends UIComponentBase implements Widget {
+public abstract class LifecycleBase extends UIComponentBase implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

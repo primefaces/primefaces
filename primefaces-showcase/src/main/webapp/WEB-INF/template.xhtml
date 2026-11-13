@@ -101,7 +101,7 @@
                         </div>
                     </ui:insert>
                     <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="viewExpiredDialog" onexception="PF('viewExpiredDialog').show();" />
-                    <p:dialog id="viewExpiredDialog" header="Session expired" widgetVar="viewExpiredDialog" height="500px" onShow="document.location.href = document.location.href;">
+                    <p:dialog id="viewExpiredDialog" header="Session expired" ref="viewExpiredDialog" height="500px" onShow="document.location.href = document.location.href;">
                         <h3>Reloading page</h3>
                         Message: #{pfExceptionHandler.message} <br/>
                         StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />

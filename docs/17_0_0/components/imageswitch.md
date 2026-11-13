@@ -28,7 +28,7 @@ ImageSwitch is in slideShow mode by default, if you’d like manual transitions 
 and use client side api to create controls.
 
 ```xhtml
-<p:imageSwitch effect="FlyIn" widgetVar="imageswitch">
+<p:imageSwitch effect="FlyIn" ref="imageswitch">
     //images
 </p:imageSwitch>
 <span onclick="PF('imageswitch').previous();">Previous</span>

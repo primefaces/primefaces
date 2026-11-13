@@ -127,7 +127,7 @@ public class GroupingTimelineView implements Serializable {
         // update the dialog's content and show the dialog
         PrimeFaces primefaces = PrimeFaces.current();
         primefaces.ajax().update("form:overlappedOrdersInner");
-        primefaces.executeScript("PF('overlapEventsWdgt').show()");
+        primefaces.executeScript("PF('overlapEvents').show()");
     }
 
     public void onDelete(TimelineModificationEvent<Order> e) {

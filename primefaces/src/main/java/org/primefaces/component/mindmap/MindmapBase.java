@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UIComponentBase;
@@ -38,7 +38,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "select", event = SelectEvent.class, description = "Fires when a node is selected.", defaultEvent = true),
     @FacesBehaviorEvent(name = "dblselect", event = SelectEvent.class, description = "Fires when a node is double-clicked.")
 })
-public abstract class MindmapBase extends UIComponentBase implements Widget, StyleAware {
+public abstract class MindmapBase extends UIComponentBase implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

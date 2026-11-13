@@ -19,6 +19,13 @@
 
     <ui:define name="implementation">
         <h:form>
+            <style>
+                /* absolute by default (docks to its positioned parent): stick to the viewport while the page scrolls */
+                .p-dock {
+                    position: fixed;
+                }
+            </style>
+
             <p:dock position="bottom">
                 <p:menuitem value="Home" icon="/resources/demo/images/dock/home.png"/>
                 <p:menuitem value="Music" icon="/resources/demo/images/dock/music.png"/>

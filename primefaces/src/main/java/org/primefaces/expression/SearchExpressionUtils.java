@@ -24,7 +24,7 @@
 package org.primefaces.expression;
 
 import org.primefaces.cdk.api.Function;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
 
@@ -204,33 +204,58 @@ public class SearchExpressionUtils {
         return resolveClientIdsAsString(FacesContext.getCurrentInstance(), source, expressions);
     }
 
-    // used by p:resolveWidgetVar
-    @Function(description = "Returns the widgetVar of the resolved component for the given expression.")
-    public static String resolveWidgetVar(String expression, UIComponent component) {
+    // used by p:resolveRef
+    @Function(description = "Returns the name (ref) of the client side component of the resolved component for the given expression.")
+    public static String resolveRef(String expression, UIComponent component) {
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent resolvedComponent = contextlessResolveComponent(FacesContext.getCurrentInstance(), component, expression);
 
         if (resolvedComponent != null) {
-            if (resolvedComponent instanceof Widget widget) {
-                return widget.resolveWidgetVar(context);
+            if (resolvedComponent instanceof PrimeClientComponent clientComponent) {
+                return clientComponent.resolveRef(context);
             }
             else {
-                throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
+                throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " has no client side component");
             }
         }
 
         return null; // won't occur, a ComponentNotFoundException will be thrown
     }
 
-    // used by p:closestWidgetVar
-    @Function(description = "Returns the widgetVar of the closest parent widget of the given component.")
-    public static String closestWidgetVar(UIComponent component) {
-        Widget widget = ComponentTraversalUtils.closest(Widget.class, component, true);
-        if (widget != null) {
-            return widget.resolveWidgetVar(FacesContext.getCurrentInstance());
+    // used by p:closestRef
+    @Function(description = "Returns the name (ref) of the client side component of the closest parent component of the given component.")
+    public static String closestRef(UIComponent component) {
+        PrimeClientComponent clientComponent = ComponentTraversalUtils.closest(PrimeClientComponent.class, component, true);
+        if (clientComponent != null) {
+            return clientComponent.resolveRef(FacesContext.getCurrentInstance());
         }
         else {
-            throw new FacesException("Component with clientId " + component.getClientId() + " has no Widget as parent");
+            throw new FacesException("Component with clientId " + component.getClientId() + " has no client side component as parent");
         }
+    }
+
+    /**
+     * @deprecated use {@link #resolveRef(String, UIComponent)} (p:resolveRef) instead
+     * @param expression the search expression
+     * @param component the source component
+     * @return the name (ref) of the client side component
+     */
+    // used by p:resolveWidgetVar
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    @Function(description = "Deprecated, use p:resolveRef instead.")
+    public static String resolveWidgetVar(String expression, UIComponent component) {
+        return resolveRef(expression, component);
+    }
+
+    /**
+     * @deprecated use {@link #closestRef(UIComponent)} (p:closestRef) instead
+     * @param component the component
+     * @return the name (ref) of the client side component
+     */
+    // used by p:closestWidgetVar
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    @Function(description = "Deprecated, use p:closestRef instead.")
+    public static String closestWidgetVar(UIComponent component) {
+        return closestRef(component);
     }
 }

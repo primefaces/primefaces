@@ -27,17 +27,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.SlideEndEvent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "slideEnd", event = SlideEndEvent.class, description = "Fired when slide ends.", defaultEvent = true)
 })
-public abstract class SliderBase extends PrimeUIInput implements Widget, TouchAware, StyleAware {
+public abstract class SliderBase extends PrimeUIInput implements PrimeClientComponent, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

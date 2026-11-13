@@ -27,10 +27,10 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITree;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
@@ -49,7 +49,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "contextMenu", event = NodeSelectEvent.class, description = "Fires when context menu is invoked on a node."),
     @FacesBehaviorEvent(name = "filter", event = AjaxBehaviorEvent.class, description = "Fires when data is filtered.")
 })
-public abstract class TreeBase extends UITree implements Widget, RTLAware, StyleAware {
+public abstract class TreeBase extends UITree implements PrimeClientComponent, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

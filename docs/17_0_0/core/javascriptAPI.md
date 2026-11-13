@@ -123,7 +123,7 @@ Contains custom [PrimeFaces component classes](../jsdocs/modules/src_PrimeFaces.
 
 Most of the components have a corresponding client side component with same name.
 
-_PrimeFaces.components_ is an object with all current component instances, with the key being the widget var.
+_PrimeFaces.components_ is an object with all current component instances, with the key being the name of the component (`ref`).
 
 `PrimeFaces.widget` and `PrimeFaces.widgets` are deprecated aliases of `PrimeFaces.component` and
 `PrimeFaces.components` (same objects), as are the base classes `BaseWidget`, `DeferredWidget` and

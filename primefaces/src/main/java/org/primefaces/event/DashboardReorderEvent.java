@@ -25,40 +25,66 @@ package org.primefaces.event;
 
 import java.io.Serial;
 
-
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
+/**
+ * Fired when a panel of a dashboard was moved (classic dashboard) or swapped with another panel (responsive dashboard).
+ * The model of the dashboard is already updated when the listener is called.
+ */
 public class DashboardReorderEvent extends AbstractAjaxBehaviorEvent {
 
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private String widgetId;
-    private Integer itemIndex;
-    private Integer columnIndex;
-    private Integer senderColumnIndex;
+    private final String panelId;
+    private final int columnIndex;
+    private final int itemIndex;
+    private final int senderColumnIndex;
+    private final int senderItemIndex;
 
-    public DashboardReorderEvent(UIComponent component, Behavior behavior, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {
+    public DashboardReorderEvent(UIComponent component, Behavior behavior, String panelId, int columnIndex, int itemIndex,
+            int senderColumnIndex, int senderItemIndex) {
         super(component, behavior);
-        this.widgetId = widgetId;
-        this.itemIndex = itemIndex;
+        this.panelId = panelId;
         this.columnIndex = columnIndex;
+        this.itemIndex = itemIndex;
         this.senderColumnIndex = senderColumnIndex;
+        this.senderItemIndex = senderItemIndex;
     }
 
-    public String getWidgetId() {
-        return widgetId;
+    /**
+     * @return the id of the moved panel
+     */
+    public String getPanelId() {
+        return panelId;
     }
 
-    public Integer getItemIndex() {
-        return itemIndex;
-    }
-
-    public Integer getColumnIndex() {
+    /**
+     * @return the index of the column the panel is in now
+     */
+    public int getColumnIndex() {
         return columnIndex;
     }
 
-    public Integer getSenderColumnIndex() {
+    /**
+     * @return the index of the panel in its column now
+     */
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    /**
+     * @return the index of the column the panel was in before, -1 for a new panel dropped from outside of the dashboard
+     */
+    public int getSenderColumnIndex() {
         return senderColumnIndex;
+    }
+
+    /**
+     * @return the index of the panel in its column before, -1 for a new panel dropped from outside of the dashboard
+     */
+    public int getSenderItemIndex() {
+        return senderItemIndex;
     }
 }

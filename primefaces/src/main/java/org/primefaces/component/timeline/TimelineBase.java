@@ -28,9 +28,9 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.timeline.TimelineAddEvent;
 import org.primefaces.event.timeline.TimelineDragDropEvent;
 import org.primefaces.event.timeline.TimelineLazyLoadEvent;
@@ -58,7 +58,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "lazyload", event = TimelineLazyLoadEvent.class, description = "Fired when lazy loading is triggered to fetch events."),
     @FacesBehaviorEvent(name = "drop", event = TimelineDragDropEvent.class, description = "Fired when a draggable item is dropped onto the timeline.")
 })
-public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, StyleAware {
+public abstract class TimelineBase extends UIComponentBase implements PrimeClientComponent, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

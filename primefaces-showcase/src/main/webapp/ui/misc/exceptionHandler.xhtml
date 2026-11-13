@@ -57,7 +57,7 @@
                                         onexception="PF('exceptionDialog').show()"/>
 
                 <p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occurred!"
-                          widgetVar="exceptionDialog"
+                          ref="exceptionDialog"
                           height="500px">
                     Message: #{pfExceptionHandler.message} <br/>
                     StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false"/> <br/>

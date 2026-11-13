@@ -103,7 +103,7 @@ class Diagram002Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals(4, cfg.getJSONArray("endPoints").length());
         assertEquals(1, cfg.getJSONArray("connections").length());
         assertEquals(1, cfg.getInt("maxConnections"));

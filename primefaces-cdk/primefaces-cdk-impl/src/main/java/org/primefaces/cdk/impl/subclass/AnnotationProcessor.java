@@ -207,7 +207,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Sort alphabetically — stable, predictable generated output.
-        List<String> priority = List.of("id", "rendered", "binding", "widgetVar");
+        List<String> priority = List.of("id", "rendered", "binding", "ref", "widgetVar");
         List<PropertyInfo> props = propsMap.values().stream()
                 .sorted(Comparator
                         // 1. priority order

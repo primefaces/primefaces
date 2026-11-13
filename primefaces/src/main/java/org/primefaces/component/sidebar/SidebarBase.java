@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.CloseEvent;
 
 import jakarta.faces.component.UIComponentBase;
@@ -41,7 +41,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "open", event = AjaxBehaviorEvent.class, description = "Fires when the sidebar is opened."),
     @FacesBehaviorEvent(name = "loadContent", event = AjaxBehaviorEvent.class, description = "Fires when the content of the sidebar is loaded."),
 })
-public abstract class SidebarBase extends UIComponentBase implements Widget, StyleAware {
+public abstract class SidebarBase extends UIComponentBase implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

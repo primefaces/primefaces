@@ -93,7 +93,7 @@ export interface ColorPickerCfg extends PrimeFacesTypes.component.BaseComponentC
  * This uses Coloris written in vanilla ES6. To interact with the color picker, you can use the following code.
  *
  * ```javascript
- * // Assuming the widget variable of the color picker was set to "myColorPicker"
+ * // Assuming the ref of the color picker was set to "myColorPicker"
  * const colorPicker = PF("myColorPicker");
  *
  * // Brings up the color picker (if "mode" was set to "popup")

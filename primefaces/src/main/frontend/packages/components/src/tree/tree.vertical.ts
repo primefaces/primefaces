@@ -600,7 +600,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
             start: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
                 if (ui.helper) {
                     const element = $(event.target),
-                        source = PF($(element.data('dragsourceid')).data('pRef')) as VerticalTree;
+                        source = PF($(element.data('dragsourceid')).attr('data-p-ref')) as VerticalTree;
                     let height = 20;
 
                     if (source.cfg.multipleDrag && element.hasClass('p-treenode-content') && element.hasClass('p-state-highlight')) {
@@ -642,7 +642,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
             tolerance: 'pointer',
             scope: dragdropScope,
             drop: (event, ui: PrimeFacesTypes.interactions.DroppableUi) => {
-                const dragSource = PF($(ui.draggable.data('dragsourceid')).data('pRef')) as VerticalTree,
+                const dragSource = PF($(ui.draggable.data('dragsourceid')).attr('data-p-ref')) as VerticalTree,
                     dropSource = this,
                     dropPoint = $(event.target),
                     dropNode = dropPoint.closest('li.p-treenode-parent'),
@@ -798,7 +798,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
                 $(event.target).children('.p-treenode-content').removeClass('p-state-hover');
             },
             drop: (event, ui: PrimeFacesTypes.interactions.DroppableUi) => {
-                const dragSource = PF($(ui.draggable.data('dragsourceid')).data('pRef')) as VerticalTree,
+                const dragSource = PF($(ui.draggable.data('dragsourceid')).attr('data-p-ref')) as VerticalTree,
                     dropSource = this,
                     droppable = $(event.target),
                     dropNode = droppable.closest('li.p-treenode'),
