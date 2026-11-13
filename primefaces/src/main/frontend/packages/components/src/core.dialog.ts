@@ -171,6 +171,13 @@ export class DialogHandler {
 
         dialogFrame.on('load', function () {
             const $frame = $(this);
+
+            // the framed page loads the theme too: no page background (Glass wallpaper), the dialog background shows through
+            const frameRoot = this.contentDocument?.documentElement;
+            if (frameRoot) {
+                frameRoot.style.background = 'transparent';
+            }
+
             let headerElement: JQuery = $frame.contents().find('title');
             let isCustomHeader = false;
 
