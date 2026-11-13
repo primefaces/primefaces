@@ -259,6 +259,10 @@ public abstract class DataTableBase extends UIPageableData implements PrimeClien
     @Property(defaultValue = "false", description = "When enables, cell borders are displayed.")
     public abstract boolean isShowGridlines();
 
+    @Property(description = "Default filterMatchModeOptions for all columns, see the column attribute. Columns may override it,"
+            + " e.g. with \"none\".")
+    public abstract Object getFilterMatchModeOptions();
+
     @Property(defaultValue = "regular", description = "Size of the table content, valid values are \"small\", \"regular\" and \"large\".")
     public abstract String getSize();
 

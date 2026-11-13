@@ -253,7 +253,11 @@ the token once
 `p-state-active`, ...); the components do not swap icon classes. Exceptions: the checkbox icon carries the state as
 `p-checkbox-checked-icon` / `p-checkbox-indeterminate-icon` / `p-checkbox-crossed-icon` (tree / treeTable selection
 read it), the dataTable / treeTable sort icon as `p-datatable-sort-asc-icon` / `-desc-icon` (the component reads the
-sort order from it, `aria-sort` is only set on one column). There are no JSF attributes for these icons, they are configured with CSS only, on two levels:
+sort order from it, `aria-sort` is only set on one column), the filter match mode picker of the dataTable
+(`filterMatchModeOptions`): its trigger shows the selected match mode with one class per mode
+(`p-filter-matchmode-gte-icon`, `-starts-with-icon`, ...), the component copies the class of the picked menu option. These
+classes are not component specific and mapped once in `base/common.css` (`.p-filter-matchmode-gte-icon { --_icon:
+var(--p-icon-greater-equal); }`). There are no JSF attributes for these icons, they are configured with CSS only, on two levels:
 
 ```css
 /* the icon set: one token per meaning, packages/components/src/icons/lucide.css (Lucide, ISC) */

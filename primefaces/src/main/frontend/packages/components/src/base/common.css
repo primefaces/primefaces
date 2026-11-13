@@ -128,6 +128,22 @@
     }
 }
 
+/* filter match modes (MatchMode), not component specific: <span class="p-icon p-filter-matchmode-gte-icon ..."> */
+.p-filter-matchmode-starts-with-icon { --_icon: var(--p-icon-starts-with); }
+.p-filter-matchmode-not-starts-with-icon { --_icon: var(--p-icon-not-starts-with); }
+.p-filter-matchmode-ends-with-icon { --_icon: var(--p-icon-ends-with); }
+.p-filter-matchmode-not-ends-with-icon { --_icon: var(--p-icon-not-ends-with); }
+.p-filter-matchmode-contains-icon { --_icon: var(--p-icon-contains); }
+.p-filter-matchmode-not-contains-icon { --_icon: var(--p-icon-not-contains); }
+.p-filter-matchmode-exact-icon { --_icon: var(--p-icon-equal); }
+.p-filter-matchmode-not-exact-icon { --_icon: var(--p-icon-not-equal); }
+.p-filter-matchmode-equals-icon { --_icon: var(--p-icon-equal); }
+.p-filter-matchmode-not-equals-icon { --_icon: var(--p-icon-not-equal); }
+.p-filter-matchmode-lt-icon { --_icon: var(--p-icon-less); }
+.p-filter-matchmode-lte-icon { --_icon: var(--p-icon-less-equal); }
+.p-filter-matchmode-gt-icon { --_icon: var(--p-icon-greater); }
+.p-filter-matchmode-gte-icon { --_icon: var(--p-icon-greater-equal); }
+
 .p-component-overlay {
     background: var(--p-mask-background);
     color: var(--p-mask-color);

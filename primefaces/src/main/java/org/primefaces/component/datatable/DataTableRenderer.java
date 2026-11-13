@@ -38,6 +38,9 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
+import org.primefaces.model.MatchModeOptions;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -702,11 +705,13 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
             if ("bottom".equals(filterPosition)) {
                 encodeColumnHeaderContent(context, table, column, sortMeta);
+                encodeFilterMatchModePicker(context, table, column);
                 encodeFilter(context, table, column);
             }
             else if ("top".equals(filterPosition)) {
                 encodeFilter(context, table, column);
                 encodeColumnHeaderContent(context, table, column, sortMeta);
+                encodeFilterMatchModePicker(context, table, column);
             }
             else {
                 throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
@@ -803,6 +808,84 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 }
             }
         }
+    }
+
+    /**
+     * Encodes the match mode picker of a column filter (see {@link MatchModeOptions}): a hidden input with the selected
+     * match mode, a trigger button showing its icon and the menu of the match modes, which the widget moves to the body.
+     */
+    protected void encodeFilterMatchModePicker(FacesContext context, DataTable component, UIColumn column) throws IOException {
+        FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
+        if (component.isGlobalFilterOnly() || filterMeta == null || filterMeta.getMatchModeOptions().isEmpty()) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        String inputId = column.getContainerClientId(context) + separator + "filterMatchMode";
+        String menuId = inputId + "_menu";
+        List<MatchMode> options = filterMeta.getMatchModeOptions();
+        MatchMode selected = filterMeta.getMatchMode();
+        String label = MessageFactory.getMessage(context, "primefaces.datatable.FILTER_MATCH_MODE");
+        String selectedLabel = getMatchModeLabel(context, selected);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("class", DataTable.FILTER_MATCH_MODE_INPUT_CLASS, null);
+        writer.writeAttribute("value", selected.operator(), null);
+        // the initial match mode, restored by clearFilters()
+        writer.writeAttribute("data-default", MatchModeOptions.initialMatchMode(column, options).operator(), null);
+        writer.endElement("input");
+
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("id", inputId + "_trigger", null);
+        writer.writeAttribute("class", DataTable.FILTER_MATCH_MODE_TRIGGER_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, label + ": " + selectedLabel, null);
+        writer.writeAttribute("title", selectedLabel, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "menu", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+        if (component.getScrollWidth() != null) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+        encodeMatchModeIcon(writer, selected);
+        writer.endElement("button");
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("id", menuId, null);
+        writer.writeAttribute("class", DataTable.FILTER_MATCH_MODE_MENU_CLASS, null);
+        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, label, null);
+        for (MatchMode option : options) {
+            boolean active = option == selected;
+            writer.startElement("li", null);
+            writer.writeAttribute("class", DataTable.FILTER_MATCH_MODE_OPTION_CLASS + (active ? " p-state-active" : ""), null);
+            writer.writeAttribute("role", "menuitemradio", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(active), null);
+            writer.writeAttribute("tabindex", "-1", null);
+            writer.writeAttribute("data-match-mode", option.operator(), null);
+            encodeMatchModeIcon(writer, option);
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.FILTER_MATCH_MODE_LABEL_CLASS, null);
+            writer.writeText(getMatchModeLabel(context, option), null);
+            writer.endElement("span");
+            writer.endElement("li");
+        }
+        writer.endElement("ul");
+    }
+
+    protected void encodeMatchModeIcon(ResponseWriter writer, MatchMode matchMode) throws IOException {
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "p-icon " + MatchModeOptions.iconClass(matchMode) + " " + DataTable.FILTER_MATCH_MODE_ICON_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        writer.endElement("span");
+    }
+
+    protected String getMatchModeLabel(FacesContext context, MatchMode matchMode) {
+        return MessageFactory.getMessage(context, "primefaces.datatable.filterMatchMode." + matchMode.name());
     }
 
     protected void encodeFilter(FacesContext context, DataTable component, UIColumn column) throws IOException {

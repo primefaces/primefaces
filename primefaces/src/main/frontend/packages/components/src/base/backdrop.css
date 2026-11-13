@@ -14,7 +14,7 @@
  */
 :where(.p-sidebar, .p-overlaypanel, .p-confirm-popup, .p-input-overlay:not(.p-cascadeselect-panel),
     .p-selectonemenu-panel, .p-selectcheckboxmenu-panel, .p-autocomplete-panel, .p-tooltip-text, .p-growl-item-container,
-    .p-password-panel, .p-columntoggler, .p-dialog-docked, .p-log) {
+    .p-password-panel, .p-columntoggler, .p-datatable-filter-matchmode-menu, .p-dialog-docked, .p-log) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 

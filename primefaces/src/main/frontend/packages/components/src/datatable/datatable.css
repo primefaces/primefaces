@@ -193,8 +193,39 @@
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
+    /* filter match mode picker (filterMatchModeOptions): the trigger shows the icon of the selected match mode */
+    .p-datatable-filter-matchmode-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        margin: 0;
+        margin-inline-start: var(--p-datatable-header-cell-gap);
+        padding: 0;
+        border: 0 none;
+        background: transparent;
+        color: var(--p-datatable-sort-icon-color);
+        font: inherit;
+        cursor: pointer;
+        transition: color var(--p-datatable-transition-duration);
+
+        &:hover,
+        &[aria-expanded="true"] {
+            color: var(--p-datatable-sort-icon-hover-color);
+        }
+
+        &:focus-visible {
+            outline: var(--p-datatable-header-cell-focus-ring-width) var(--p-datatable-header-cell-focus-ring-style) var(--p-datatable-header-cell-focus-ring-color);
+            outline-offset: var(--p-focus-ring-offset);
+        }
+
+        .p-datatable-filter-matchmode-icon {
+            font-size: var(--p-datatable-sort-icon-size);
+        }
+    }
+
     /* p-filter-toggleable (styleClass): the filters are hidden until the component shows them with toggleFilter() */
-    &.p-filter-toggleable thead :is(.p-column-filter, .p-column-customfilter) {
+    &.p-filter-toggleable thead :is(.p-column-filter, .p-column-customfilter, .p-datatable-filter-matchmode-trigger) {
         display: none;
     }
 
@@ -719,6 +750,50 @@
 
 .p-datatable-summary {
     display: none;
+}
+
+/* filter match mode menu: moved to the body by the widget, positioned when shown */
+.p-datatable-filter-matchmode-menu {
+    position: absolute;
+    min-width: 10rem;
+    margin: 0;
+    padding: var(--p-menu-list-padding);
+    list-style: none;
+    background: var(--p-overlay-select-background);
+    color: var(--p-overlay-select-color);
+    border: 1px solid var(--p-overlay-select-border-color);
+    border-radius: var(--p-overlay-select-border-radius);
+    box-shadow: var(--p-overlay-select-shadow);
+
+    .p-datatable-filter-matchmode-option {
+        display: flex;
+        align-items: center;
+        gap: var(--p-menu-item-gap);
+        padding: var(--p-menu-item-padding);
+        border-radius: var(--p-menu-item-border-radius);
+        color: var(--p-menu-item-color);
+        white-space: nowrap;
+        cursor: pointer;
+        outline: 0 none;
+
+        .p-datatable-filter-matchmode-icon {
+            color: var(--p-menu-item-icon-color);
+        }
+
+        &:hover,
+        &:focus {
+            background: var(--p-menu-item-focus-background);
+            color: var(--p-menu-item-focus-color);
+
+            .p-datatable-filter-matchmode-icon {
+                color: var(--p-menu-item-icon-focus-color);
+            }
+        }
+
+        &.p-state-active {
+            font-weight: 600;
+        }
+    }
 }
 
 .p-datatable-scrollable-body {

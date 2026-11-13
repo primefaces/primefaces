@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- table-level default "text", overridden per column -->
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable061.employees}" var="employee"
+                         filteredValue="#{dataTable061.filteredEmployees}" filterMatchModeOptions="text">
+
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+
+                <p:column headerText="First name" field="firstName"/>
+
+                <p:column headerText="Last name" field="lastName" filterMatchModeOptions="contains,startsWith,exact"/>
+
+                <p:column headerText="Salary" field="salary" filterMatchModeOptions="numeric" filterMatchMode="gte"
+                          converter="jakarta.faces.Integer"/>
+
+                <p:column headerText="Birth date" field="birthDate" filterMatchModeOptions="date"
+                          converter="#{dataTable061.birthDateConverter}"/>
+
+                <p:column headerText="Role (EL)" field="role" filterMatchModeOptions="#{dataTable061.roleMatchModes}"/>
+
+                <p:column headerText="Last login" field="lastLoginDateTime" filterMatchModeOptions="none"/>
+
+                <p:column headerText="Facet" field="firstName">
+                    <f:facet name="filter">
+                        <h:inputText onchange="PF('wgtTable').filter()"/>
+                    </f:facet>
+                </p:column>
+
+                <p:column headerText="Function" field="lastName" filterFunction="#{dataTable061.filterNothing}"/>
+
+            </p:dataTable>
+
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+
+            <!-- the presets derived from the value types -->
+            <p:dataTable id="datatableAuto" value="#{dataTable061.employees}" var="employee"
+                         filteredValue="#{dataTable061.filteredEmployeesAuto}" filterMatchModeOptions="auto">
+                <p:column headerText="ID" field="id" converter="jakarta.faces.Integer"/>
+                <p:column headerText="First name" field="firstName"/>
+                <p:column headerText="Salary" field="salary"/>
+                <p:column headerText="Birth date" field="birthDate"/>
+                <p:column headerText="Role" field="role"/>
+            </p:dataTable>
+
+            <!-- no filterMatchModeOptions -->
+            <p:dataTable id="datatablePlain" value="#{dataTable061.employees}" var="employee"
+                         filteredValue="#{dataTable061.filteredEmployeesPlain}">
+                <p:column headerText="ID" field="id" converter="jakarta.faces.Integer" filterMatchMode="gte"/>
+                <p:column headerText="First name" field="firstName"/>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

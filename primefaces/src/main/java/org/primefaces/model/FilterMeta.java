@@ -37,6 +37,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.el.ELContext;
@@ -55,6 +57,7 @@ public class FilterMeta implements Serializable {
     private ValueExpression filterBy;
     private Object filterValue; // null if blank string; an empty collection/array is kept, see #isActive()
     private MatchMode matchMode = MatchMode.CONTAINS;
+    private List<MatchMode> matchModeOptions = Collections.emptyList();
     private FilterConstraint constraint;
     private boolean normalize = false;
     private boolean filterByGenerated;
@@ -218,6 +221,19 @@ public class FilterMeta implements Serializable {
 
     public void setMatchMode(MatchMode matchMode) {
         this.matchMode = matchMode;
+    }
+
+    /**
+     * The match modes an end user may pick for this filter, see {@link MatchModeOptions}.
+     *
+     * @return the match modes, empty if the match mode cannot be picked
+     */
+    public List<MatchMode> getMatchModeOptions() {
+        return matchModeOptions;
+    }
+
+    public void setMatchModeOptions(List<MatchMode> matchModeOptions) {
+        this.matchModeOptions = matchModeOptions == null ? Collections.emptyList() : matchModeOptions;
     }
 
     public boolean isGlobalFilter() {

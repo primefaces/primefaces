@@ -54,6 +54,8 @@
  *
  * Values are url()s of SVG files: "package/path.svg" is resolved in node_modules and inlined as data URI by
  * build/scripts/bundle.mjs, "?fill" fills the outline. The SVG only serves as mask, the color is currentColor.
+ * Not in Lucide, drawn in its style as data URI: --p-icon-less-equal, --p-icon-greater-equal, --p-icon-not-starts-with,
+ * --p-icon-not-ends-with (filter match modes).
  */
 @layer primefaces.tokens {
     :root, [data-p-scope] {
@@ -101,6 +103,19 @@
         --p-icon-zoom-out: url("lucide-static/icons/zoom-out.svg");
         --p-icon-star: url("lucide-static/icons/star.svg");
         --p-icon-star-filled: url("lucide-static/icons/star.svg?fill");
+
+        --p-icon-equal: url("lucide-static/icons/equal.svg");
+        --p-icon-not-equal: url("lucide-static/icons/equal-not.svg");
+        --p-icon-less: url("lucide-static/icons/chevron-left.svg");
+        --p-icon-less-equal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m17 4-10 5 10 5'/%3E%3Cpath d='M7 19h10'/%3E%3C/svg%3E");
+        --p-icon-greater: url("lucide-static/icons/chevron-right.svg");
+        --p-icon-greater-equal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 4 10 5-10 5'/%3E%3Cpath d='M7 19h10'/%3E%3C/svg%3E");
+        --p-icon-starts-with: url("lucide-static/icons/arrow-right-from-line.svg");
+        --p-icon-not-starts-with: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5v14'/%3E%3Cpath d='M21 12H7'/%3E%3Cpath d='m15 18 6-6-6-6'/%3E%3Cpath d='M18 3 8 21'/%3E%3C/svg%3E");
+        --p-icon-ends-with: url("lucide-static/icons/arrow-right-to-line.svg");
+        --p-icon-not-ends-with: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 12H3'/%3E%3Cpath d='m11 18 6-6-6-6'/%3E%3Cpath d='M21 5v14'/%3E%3Cpath d='M16 3 6 21'/%3E%3C/svg%3E");
+        --p-icon-contains: url("lucide-static/icons/text-search.svg");
+        --p-icon-not-contains: url("lucide-static/icons/search-x.svg");
 
         --p-icon-info: url("lucide-static/icons/info.svg");
         --p-icon-success: url("lucide-static/icons/circle-check.svg");

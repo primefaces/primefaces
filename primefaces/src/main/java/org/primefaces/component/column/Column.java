@@ -103,4 +103,13 @@ public class Column extends ColumnBaseImpl {
     public String getFilterMatchMode() {
         return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
+
+    /**
+     * Whether {@code filterMatchMode} is set, {@link #getFilterMatchMode()} returns the default otherwise.
+     *
+     * @return {@code true} if set as value or expression
+     */
+    public boolean isFilterMatchModeSet() {
+        return getStateHelper().get(PropertyKeys.filterMatchMode) != null || getValueExpression(PropertyKeys.filterMatchMode.name()) != null;
+    }
 }
