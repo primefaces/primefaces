@@ -2396,6 +2396,9 @@ $.widget("prime.datePicker", {
 
         !this.options.keepInvalid && this.inputfield.val(this.getValueToRender());
 
+        // #14137 remember the value so the blur of a masked input does not fire the change again
+        this.valueOnFocus = this.getDate();
+
         if (this.options.onChange) {
             this.options.onChange.call(this, event);
         }
