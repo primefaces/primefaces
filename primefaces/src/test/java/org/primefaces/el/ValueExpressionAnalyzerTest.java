@@ -38,7 +38,6 @@ import jakarta.faces.context.FacesContext;
 import org.apache.el.ExpressionFactoryImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -183,7 +182,6 @@ public class ValueExpressionAnalyzerTest {
     }
 
     @Test
-    @Disabled // not supported by EL?
     void secondAndThirdLevelMethodExpression() {
         ExpressionFactory factory = newExpressionFactory();
 
