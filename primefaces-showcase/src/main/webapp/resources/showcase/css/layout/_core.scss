@@ -59,10 +59,11 @@ a {
     text-decoration: none;
 }
 
-// :where(:not(.p-component)): not the component headers that are headings (p:panelMenu: h3.p-panelmenu-header), the theme
-// styles them; the specificity stays the one of the type selector
+// :where(:not(...)): not the component headers that are headings (p:panelMenu: h3.p-panelmenu-header) and not the headings
+// in component headers (p:menu: li.p-component-header > h3), the theme styles them; the specificity stays the one of the
+// type selector
 h1, h2, h3, h4, h5, h6 {
-    &:where(:not(.p-component)) {
+    &:where(:not(.p-component, .p-component-header *)) {
         margin: 1.5rem 0 1rem 0;
         font-family: inherit;
         font-weight: 600;
@@ -75,27 +76,27 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-h1:where(:not(.p-component)) {
+h1:where(:not(.p-component, .p-component-header *)) {
     font-size: 2.5rem;
 }
 
-h2:where(:not(.p-component)) {
+h2:where(:not(.p-component, .p-component-header *)) {
     font-size: 2rem;
 }
 
-h3:where(:not(.p-component)) {
+h3:where(:not(.p-component, .p-component-header *)) {
     font-size: 1.75rem;
 }
 
-h4:where(:not(.p-component)) {
+h4:where(:not(.p-component, .p-component-header *)) {
     font-size: 1.5rem;
 }
 
-h5:where(:not(.p-component)) {
+h5:where(:not(.p-component, .p-component-header *)) {
     font-size: 1.25rem;
 }
 
-h6:where(:not(.p-component)) {
+h6:where(:not(.p-component, .p-component-header *)) {
     font-size: 1rem;
 }
 

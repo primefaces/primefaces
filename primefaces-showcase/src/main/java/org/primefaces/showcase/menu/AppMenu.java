@@ -224,7 +224,6 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("RowGroup", "/ui/data/datatable/rowGroup"));
         dataTableMenuItems.add(new MenuItem("RowHeader", "/ui/data/datatable/rowHeader"));
         dataTableMenuItems.add(new MenuItem("RowTitle", "/ui/data/datatable/rowTitle"));
-        dataTableMenuItems.add(new MenuItem("RTL", "/ui/data/datatable/rtl"));
         dataTableMenuItems.add(new MenuItem("Scroll", "/ui/data/datatable/scroll"));
         dataTableMenuItems.add(new MenuItem("Selection", "/ui/data/datatable/selection"));
         dataTableMenuItems.add(new MenuItem("Size", "/ui/data/datatable/size"));
@@ -319,7 +318,6 @@ public class AppMenu {
         treeMenuItems.add(new MenuItem("DragDrop", "/ui/data/tree/dragdrop"));
         treeMenuItems.add(new MenuItem("ContextMenu", "/ui/data/tree/contextMenu"));
         treeMenuItems.add(new MenuItem("Animate", "/ui/data/tree/animate"));
-        treeMenuItems.add(new MenuItem("RTL", "/ui/data/tree/rtl"));
         treeMenuItems.add(new MenuItem("Filter", "/ui/data/tree/filter"));
         treeMenuItems.add(new MenuItem("Lazy Loading", "/ui/data/tree/lazyloading"));
         dataMenuItems.add(new MenuItem("Tree", treeMenuItems));

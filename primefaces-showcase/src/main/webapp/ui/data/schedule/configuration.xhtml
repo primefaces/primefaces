@@ -74,11 +74,6 @@
                                 <p:ajax update="schedule"/>
                             </p:selectBooleanCheckbox>
                         </div>
-                        <div class="col-12 md:col-6 xl:col-4">
-                            <p:selectBooleanCheckbox value="#{scheduleJava8View.rtl}" itemLabel="right to left">
-                                <p:ajax update="schedule"/>
-                            </p:selectBooleanCheckbox>
-                        </div>
                     </div>
 
                     <div class="formgrid grid p-fluid">
@@ -279,7 +274,7 @@
                             leftHeaderTemplate="#{scheduleJava8View.leftHeaderTemplate}"
                             centerHeaderTemplate="#{scheduleJava8View.centerHeaderTemplate}"
                             rightHeaderTemplate="#{scheduleJava8View.rightHeaderTemplate}"
-                            dir="#{scheduleJava8View.rtl ? 'rtl' : 'ltr'}" height="#{scheduleJava8View.height}">
+                            height="#{scheduleJava8View.height}">
 
                     <p:ajax event="dateSelect" listener="#{scheduleJava8View.onDateSelect}" update="eventDetails"
                             oncomplete="PF('eventDialog').show();"/>

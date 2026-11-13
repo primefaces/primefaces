@@ -81,6 +81,8 @@
         position: absolute;
         display: none;
         white-space: nowrap;
+        /* keeps the text off the rounded ends (a pill at most); the component includes it in the minimum value width */
+        padding-inline: calc(var(--p-progressbar-height) / 2);
     }
 }
 

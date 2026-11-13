@@ -43,7 +43,6 @@ import jakarta.inject.Named;
 public class SelectOneMenuView {
 
     private String selectedOption;
-    private String rtl;
     private String hideNoSelectOption;
 
     private String countryGroup;
@@ -123,20 +122,12 @@ public class SelectOneMenuView {
         this.selectedOption = selectedOption;
     }
 
-    public String getRtl() {
-        return rtl;
-    }
-
     public String getHideNoSelectOption() {
         return hideNoSelectOption;
     }
 
     public void setHideNoSelectOption(String hideNoSelectOption) {
         this.hideNoSelectOption = hideNoSelectOption;
-    }
-
-    public void setRtl(String rtl) {
-        this.rtl = rtl;
     }
 
     public String getCountryGroup() {

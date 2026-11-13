@@ -49,7 +49,6 @@ public class ColorView {
     private String rgb = "rgb(244,162,97)";
     private String square = "rgb(0, 183, 255)";
     private String circle = "#cc458faa";
-    private String rtl = "#A427AE";
 
     public void onColorChange(AjaxBehaviorEvent e) {
         ColorPicker picker = (ColorPicker) e.getComponent();
@@ -184,13 +183,5 @@ public class ColorView {
 
     public void setLight(String light) {
         this.light = light;
-    }
-
-    public String getRtl() {
-        return rtl;
-    }
-
-    public void setRtl(String rtl) {
-        this.rtl = rtl;
     }
 }

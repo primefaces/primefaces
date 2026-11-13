@@ -77,7 +77,6 @@ public class ScheduleJava8View implements Serializable {
     private boolean showWeekends = true;
     private boolean tooltip = true;
     private boolean allDaySlot = true;
-    private boolean rtl = false;
 
     private double aspectRatio = Double.MIN_VALUE;
 
@@ -411,14 +410,6 @@ public class ScheduleJava8View implements Serializable {
 
     public void setTooltip(boolean tooltip) {
         this.tooltip = tooltip;
-    }
-
-    public boolean isRtl() {
-        return rtl;
-    }
-
-    public void setRtl(boolean rtl) {
-        this.rtl = rtl;
     }
 
     public boolean isAllDaySlot() {
