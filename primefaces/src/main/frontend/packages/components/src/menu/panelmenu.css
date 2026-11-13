@@ -7,8 +7,8 @@
  *           + .p-panelmenu-content (p-hidden when collapsed) > ul.p-menu-list
  *             > li.p-menuitem > a.p-menuitem-link (p-state-hover) > span.p-menuitem-icon + span.p-menuitem-text
  *               (p-menuitem-outline on the text = keyboard / click focus)
- *             > li.p-menu-parent > a.p-menuitem-link > .p-panelmenu-submenu-icon (toggle) + span.p-submenu-icon
- *               + span.p-menuitem-text[aria-expanded]
+ *             > li.p-menu-parent > a.p-menuitem-link[aria-expanded] > .p-panelmenu-submenu-icon (toggle)
+ *               + span.p-submenu-icon + span.p-menuitem-text
  *               + ul.p-menu-list (p-hidden when collapsed)
  * Like PrimeUIX: separate bordered panels with a gap, the headers look like items.
  */
@@ -180,18 +180,18 @@
             font-size: var(--p-panelmenu-item-icon-size);
         }
 
-        /* submenu toggle icon, the state is the aria-expanded of the label (the focused element) */
+        /* submenu toggle icon, the state is the aria-expanded of the link (the focused element) */
         > .p-panelmenu-submenu-icon {
             --_icon: var(--p-panelmenu-submenu-collapsed-icon);
             font-size: var(--p-panelmenu-item-icon-size);
             color: var(--p-panelmenu-submenu-icon-color);
         }
 
-        &:has(> .p-menuitem-text[aria-expanded="true"]) > .p-panelmenu-submenu-icon {
+        &[aria-expanded="true"] > .p-panelmenu-submenu-icon {
             --_icon: var(--p-panelmenu-submenu-expanded-icon);
         }
 
-        &:not(:has(> .p-menuitem-text[aria-expanded="true"])) > .p-panelmenu-submenu-icon:dir(rtl) {
+        &:not([aria-expanded="true"]) > .p-panelmenu-submenu-icon:dir(rtl) {
             scale: -1 1;
         }
 

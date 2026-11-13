@@ -81,10 +81,6 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
 
         //keyboard support
         this.focusedItem = null;
-        this.menuText.attr('tabindex', -1);
-
-        //ScreenReader support
-        this.menuText.attr('role', 'menuitem');
 
         this.bindEvents();
 
@@ -354,7 +350,9 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     focusItem(item: JQuery): void {
         this.removeFocusedItem();
-        this.getItemText(item).addClass('p-menuitem-outline').trigger('focus');
+        this.getItemText(item).addClass('p-menuitem-outline');
+        // focus the link (role=menuitem), it carries the aria state for screen readers
+        item.children('.p-menuitem-link').trigger('focus');
         this.focusedItem = item;
     }
 
@@ -418,7 +416,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @param restoring Whether this method was called from `restoreState`.
      */
     expandTreeItem(submenu: JQuery, restoring?: boolean): void {
-        submenu.find('> .p-menuitem-link > .p-menuitem-text').attr('aria-expanded', "true");
+        submenu.children('.p-menuitem-link').attr('aria-expanded', "true");
         submenu.children('.p-menu-list').removeClass('p-hidden').show();
 
         if(!restoring) {
@@ -431,7 +429,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * @param submenu A sub menu tree item to collapse.
      */
     collapseTreeItem(submenu: JQuery): void {
-        submenu.find('> .p-menuitem-link > .p-menuitem-text').attr('aria-expanded', "false");
+        submenu.children('.p-menuitem-link').attr('aria-expanded', "false");
         submenu.children('.p-menu-list').addClass('p-hidden').hide();
 
         this.updateExpandedNodes();
