@@ -61,7 +61,7 @@ attribute; blind, bounce, clip, drop, explode, fold, highlight, puff, pulsate, s
 (suggested).
 
 ## Client Side API
-Widget: _PrimeFaces.widget.MultiSelectListbox_
+Component: _PrimeFaces.component.MultiSelectListbox_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

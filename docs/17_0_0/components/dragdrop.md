@@ -115,7 +115,7 @@ it’s parent.
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Variable name of the client side widget
+| widgetVar | null | String | Variable name of the client side component
 | for | null | String | Id of the component to add droppable behavior
 | disabled | false | Boolean | Disables of enables droppable behavior
 | hoverStyleClass | null | String | Style class to apply when an acceptable draggable is dragged over.

@@ -153,7 +153,7 @@
         outline: 0 none;
     }
 
-    /* empty label of the chips mode (li added by the widget when nothing is selected) */
+    /* empty label of the chips mode (li added by the component when nothing is selected) */
     .p-selectcheckboxmenu-multiple-container .p-selectcheckboxmenu-emptylabel {
         color: var(--p-multiselect-placeholder-color);
         white-space: nowrap;
@@ -392,6 +392,12 @@
                 --_icon: var(--p-multiselect-close-icon);
             }
         }
+    }
+
+    /* the lists are p-component-content: no background of their own, the rounded panel draws it */
+    .p-selectcheckboxmenu-items,
+    .p-selectcheckboxmenu-list {
+        background: transparent;
     }
 
     .p-selectcheckboxmenu-items {

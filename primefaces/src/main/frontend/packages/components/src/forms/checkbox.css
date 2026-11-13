@@ -36,7 +36,7 @@
             box-shadow var(--p-checkbox-transition-duration), outline-color var(--p-checkbox-transition-duration);
 
         /* readonly (p-state-readonly on the box or a parent, p-chkbox-readonly): no hover feedback, also not from the
-           p-state-hover the widgets set on mouseenter */
+           p-state-hover the components set on mouseenter */
         &.p-state-hover:not(.p-chkbox-readonly, .p-state-readonly, .p-state-readonly *),
         &:not(.p-state-disabled, .p-chkbox-readonly, .p-state-readonly, .p-state-readonly *):hover {
             border-color: var(--p-checkbox-hover-border-color);
@@ -179,7 +179,7 @@
 /*
  * State layer (Material 3): a circle of --p-checkbox-state-layer-size around the box on hover, in the hover border
  * color, checked in the checked border color (--p-checkbox-hover-state-layer-opacity, 0% in the presets without it).
- * The ripple of the press draws the same circle (ripple/ripple.css). No focus layer: the widget focuses the input by
+ * The ripple of the press draws the same circle (ripple/ripple.css). No focus layer: the component focuses the input by
  * script, so it would stay after a click (:focus-visible); keyboard focus has the focus ring.
  */
 .p-chkbox .p-chkbox-box {

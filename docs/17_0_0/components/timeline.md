@@ -119,7 +119,7 @@ For examples on editing, grouping, styling, ranges, linked timelines and lazy lo
 https://www.primefaces.org/showcase/ui/data/timeline/basic.xhtml
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Timeline_
+Component: _PrimeFaces.component.Timeline_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

@@ -25,10 +25,10 @@ package org.primefaces.component.password;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -63,7 +63,7 @@ public class PasswordRenderer extends InputRenderer<Password> {
 
     protected void encodeScript(FacesContext context, Password component) throws IOException {
         boolean feedback = component.isFeedback();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Password", component);
         wb.attr("unmaskable", component.isToggleMask(), false);
 

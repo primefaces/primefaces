@@ -26,9 +26,9 @@ package org.primefaces.component.growl;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,7 +62,7 @@ public class GrowlRenderer extends UINotificationRenderer<Growl> {
 
         writer.endElement("span");
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Growl", component)
                 .attr("sticky", component.isSticky())
                 .attr("life", component.getLife())

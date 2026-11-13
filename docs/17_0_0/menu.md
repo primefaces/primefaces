@@ -50,7 +50,7 @@
   - [Tailwind CSS](/core/tailwind.md)
   - [Theming](/core/theming.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
-  - [Widgets](/core/widgets.md)
+  - [Client Side Components](/core/components.md)
   - [Misc](/core/misc.md)
 
 - Validators

@@ -24,13 +24,17 @@
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +60,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         assertLabel(menu, "Item(s) Selected");
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -75,7 +79,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
 
         // Assert
         assertSelected(menu, 0);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -97,7 +101,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         assertSelected(menu, 1);
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -125,7 +129,7 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         assertValue(menu.getSelectedCheckboxes().get(6), "Rome");
         assertValue(menu.getSelectedCheckboxes().get(7), "Brasilia");
         assertValue(menu.getSelectedCheckboxes().get(8), "Amsterdam");
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     @Test
@@ -145,7 +149,33 @@ class SelectCheckboxMenu001Test extends AbstractSelectCheckboxMenuTest {
         // Assert
         assertSelected(menu, 0);
         assertLabel(menu, "Cities");
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("SelectCheckboxMenu: SPACE on an item toggles it exactly once")
+    void spaceKey(Page page) {
+        // Arrange
+        SelectCheckboxMenu menu = page.selectCheckboxMenu;
+        assertSelected(menu, 0);
+        menu.show();
+        WebElement item = menu.getPanel().findElement(By.cssSelector(".p-selectcheckboxmenu-items .p-selectcheckboxmenu-item-input"));
+        PrimeSelenium.executeScript("arguments[0].focus();", item);
+
+        // Act
+        new Actions(page.getWebDriver()).sendKeys(Keys.SPACE).perform();
+
+        // Assert
+        assertSelected(menu, 1);
+        assertValue(menu.getSelectedCheckboxes().get(0), "Miami");
+
+        // Act
+        new Actions(page.getWebDriver()).sendKeys(Keys.SPACE).perform();
+
+        // Assert
+        assertSelected(menu, 0);
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     private void assertLabel(SelectCheckboxMenu menu, String label) {

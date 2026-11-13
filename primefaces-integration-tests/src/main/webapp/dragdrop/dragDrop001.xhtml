@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet>
+            .drag-item {
+                width: 120px;
+                height: 40px;
+                margin-bottom: 20px;
+                border: 1px solid;
+            }
+
+            .drop-area {
+                width: 300px;
+                height: 200px;
+                border: 1px solid;
+            }
+        </h:outputStylesheet>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+            <h:outputText id="dropCount" value="#{dragDrop001.dropCount}"/>
+
+            <div style="display: flex; gap: 100px; align-items: flex-start;">
+                <div>
+                    <h:panelGroup id="accepted" layout="block" styleClass="drag-item accepted">Accepted</h:panelGroup>
+                    <p:draggable id="dragAccepted" for="accepted" revert="true"/>
+
+                    <h:panelGroup id="rejected" layout="block" styleClass="drag-item">Rejected</h:panelGroup>
+                    <p:draggable id="dragRejected" for="rejected" revert="true"/>
+
+                    <h:panelGroup id="horizontal" layout="block" styleClass="drag-item">Horizontal</h:panelGroup>
+                    <p:draggable id="dragHorizontal" for="horizontal" axis="x"/>
+                </div>
+
+                <h:panelGroup id="dropArea" layout="block" styleClass="drop-area">Drop here</h:panelGroup>
+                <p:droppable id="drop" for="dropArea" accept=".accepted" activeStyleClass="drop-active">
+                    <p:ajax listener="#{dragDrop001.onDrop}" update="msgs dropCount"/>
+                </p:droppable>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

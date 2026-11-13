@@ -60,7 +60,7 @@ class DataTable057Test extends AbstractPrimePageTest {
         assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(dataTable));
         assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
 
-        PrimeSelenium.executeScript(true, "PF('dtWidget').loadLiveRows()");
+        PrimeSelenium.executeScript(true, "PF('dtComponent').loadLiveRows()");
 
         // Assert - the rows loaded by the scroll must follow the dragged column order, like the already visible ones
         assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
@@ -78,7 +78,7 @@ class DataTable057Test extends AbstractPrimePageTest {
         assertEquals(List.of("1", "Language 1", "1991"), dataTable.getRow(0).getCellTexts());
 
         // Act
-        PrimeSelenium.executeScript(true, "PF('dtWidget').loadLiveRows()");
+        PrimeSelenium.executeScript(true, "PF('dtComponent').loadLiveRows()");
 
         // Assert
         assertEquals(List.of("6", "Language 6", "1996"), dataTable.getRow(5).getCellTexts());
@@ -98,7 +98,7 @@ class DataTable057Test extends AbstractPrimePageTest {
         assertEquals(List.of("Name", "ID", "First Appeared"), headerTexts(dataTable));
         assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());
 
-        PrimeSelenium.executeScript(true, "PF('dtDynamicWidget').loadLiveRows()");
+        PrimeSelenium.executeScript(true, "PF('dtDynamicComponent').loadLiveRows()");
 
         // Assert - the rows loaded by the scroll must follow the dragged column order, like the already visible ones
         assertEquals(List.of("Language 1", "1", "1991"), dataTable.getRow(0).getCellTexts());

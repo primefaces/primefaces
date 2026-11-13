@@ -38,7 +38,7 @@ public class SpeedDial extends SpeedDialBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SpeedDial";
 
-    public static final String CONTAINER_CLASS = "p-speeddial p-widget";
+    public static final String CONTAINER_CLASS = "p-speeddial p-component";
     public static final String MASK_CLASS = "p-speeddial-mask";
     public static final String BUTTON_CLASS = "p-speeddial-button rounded-button";
     public static final String LIST_CLASS = "p-speeddial-list";

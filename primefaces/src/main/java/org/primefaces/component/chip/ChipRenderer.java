@@ -25,7 +25,7 @@ package org.primefaces.component.chip;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -108,7 +108,7 @@ public class ChipRenderer extends CoreRenderer<Chip> {
     }
 
     protected void encodeScript(FacesContext context, Chip component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Chip", component);
         encodeClientBehaviors(context, component);
         wb.finish();

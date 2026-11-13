@@ -60,7 +60,7 @@ class Slider002Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, spinner, 800);
-        assertConfiguration(slider.getWidgetConfiguration());
+        assertConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -78,7 +78,7 @@ class Slider002Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, spinner, 1000); // rounded to nearest step interval 1000
-        assertConfiguration(slider.getWidgetConfiguration());
+        assertConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -99,7 +99,7 @@ class Slider002Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, spinner, 800); // should stop at min of 800 even though not on step
-        assertConfiguration(slider.getWidgetConfiguration());
+        assertConfiguration(slider.getClientConfiguration());
     }
 
     @Test
@@ -120,7 +120,7 @@ class Slider002Test extends AbstractPrimePageTest {
 
         // Assert
         assertValue(slider, spinner, 15000); // kept to max 15000
-        assertConfiguration(slider.getWidgetConfiguration());
+        assertConfiguration(slider.getClientConfiguration());
     }
 
     private void assertValue(Slider slider, Spinner spinner, Number value) {

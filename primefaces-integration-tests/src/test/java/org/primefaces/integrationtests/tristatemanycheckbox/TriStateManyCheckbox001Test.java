@@ -81,7 +81,7 @@ class TriStateManyCheckbox001Test extends AbstractPrimePageTest {
         assertEquals("{A=2, B=2, C=0}", page.value.getText());
         assertEquals(List.of(2, 2, 0), checkbox.getStates());
         assertIcons(checkbox, "p-checkbox-crossed-icon", "p-checkbox-crossed-icon", null);
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -118,23 +118,23 @@ class TriStateManyCheckbox001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(1, checkbox.getState(2));
         assertEquals("{A=1}", page.value.getText());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("TriStateManyCheckbox: widget toggle and setState")
-    void widget(Page page) {
+    @DisplayName("TriStateManyCheckbox: client API toggle and setState")
+    void clientApi(Page page) {
         // Arrange
         TriStateManyCheckbox checkbox = page.checkbox;
 
         // Act
-        checkbox.toggleWithWidget(0, -1);
-        PrimeSelenium.executeScript(checkbox.getWidgetByIdScript() + ".setState(1, 2);");
+        checkbox.toggleWithClientApi(0, -1);
+        PrimeSelenium.executeScript(checkbox.getClientComponentScript() + ".setState(1, 2);");
 
         // Assert
         assertEquals(List.of(0, 2, 0), checkbox.getStates());
-        List<Object> states = PrimeSelenium.executeScript("return " + checkbox.getWidgetByIdScript() + ".getStates();");
+        List<Object> states = PrimeSelenium.executeScript("return " + checkbox.getClientComponentScript() + ".getStates();");
         assertEquals(List.of(0L, 2L, 0L), states);
         assertFalse(PrimeSelenium.hasCssClass(checkbox.getBoxes().get(0), "p-state-active"));
         assertTrue(PrimeSelenium.hasCssClass(checkbox.getBoxes().get(1), "p-state-active"));
@@ -144,7 +144,7 @@ class TriStateManyCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("{A=0, B=2, C=0}", page.value.getText());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -172,7 +172,7 @@ class TriStateManyCheckbox001Test extends AbstractPrimePageTest {
         assertEquals("{A=2, B=1}", page.msgs.getMessage(0).getDetail());
         assertEquals(List.of(2, 1), checkbox.getStates());
         assertEquals("no", checkbox.getBoxes().get(0).getDomAttribute("title"));
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -192,7 +192,7 @@ class TriStateManyCheckbox001Test extends AbstractPrimePageTest {
         assertTrue(page.msgs.isEmpty());
         assertEquals(List.of(2, 1), checkbox.getStates());
         assertEquals("3", page.convertedSum.getText());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     private void assertIcons(TriStateManyCheckbox checkbox, String... stateClasses) {

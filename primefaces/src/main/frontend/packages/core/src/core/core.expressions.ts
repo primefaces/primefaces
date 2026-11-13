@@ -46,15 +46,15 @@ export class SearchExpressionFacade {
                 // @widget
                 else if (expression.indexOf("@widgetVar(") == 0) {
                     var widgetVar = expression.substring("@widgetVar(".length, expression.length - 1);
-                    var widget = core.widgets[widgetVar];
+                    var component = core.components[widgetVar];
 
-                    if (widget) {
-                        const element = document.getElementById(widget.getId());
+                    if (component) {
+                        const element = document.getElementById(component.getId());
                         if (element !== null) {
                             elements = elements.add($(element));
                         }
                     } else {
-                        core.widgetNotAvailable(widgetVar);
+                        core.componentNotAvailable(widgetVar);
                     }
                 }
                 // PFS
@@ -104,18 +104,18 @@ export class SearchExpressionFacade {
                 // @widget
                 else if (expression.indexOf("@widgetVar(") == 0) {
                     var widgetVar = expression.substring(11, expression.length - 1),
-                    widget = core.widgets[widgetVar];
+                    component = core.components[widgetVar];
 
-                    if (widget) {
-                        if (!core.inArray(ids, widget.id)) {
-                            if (Array.isArray(widget.id)) {
-                                ids.push(...widget.id);
+                    if (component) {
+                        if (!core.inArray(ids, component.id)) {
+                            if (Array.isArray(component.id)) {
+                                ids.push(...component.id);
                             } else {
-                                ids.push(widget.id);
+                                ids.push(component.id);
                             }
                         }
                     } else {
-                        core.widgetNotAvailable(widgetVar);
+                        core.componentNotAvailable(widgetVar);
                     }
                 }
                 // PFS

@@ -72,7 +72,7 @@ public class MenuBean {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectCheckBoxMenu_
+Component: _PrimeFaces.component.SelectCheckBoxMenu_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

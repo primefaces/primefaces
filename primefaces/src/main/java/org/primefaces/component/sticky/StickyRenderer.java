@@ -26,7 +26,7 @@ package org.primefaces.component.sticky;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -53,7 +53,7 @@ public class StickyRenderer extends CoreRenderer<Sticky> {
 
     protected void encodeScript(FacesContext context, Sticky component) throws IOException {
         String target = component.getTarget();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Sticky", component)
             .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, target))
             .attr("margin", component.getMargin(), 0)

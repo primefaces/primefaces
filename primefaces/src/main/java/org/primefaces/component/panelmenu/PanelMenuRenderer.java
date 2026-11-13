@@ -29,8 +29,8 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +45,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
     @Override
     protected void encodeScript(FacesContext context, PanelMenu component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("PanelMenu", component)
                 .attr("stateful", component.isStateful())
                 .attr("statefulGlobal", component.isStatefulGlobal(), false)

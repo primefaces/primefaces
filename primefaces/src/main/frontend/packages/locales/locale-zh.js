@@ -43,6 +43,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "严重错误",
       "messages.INFO": "信息",
       "messages.WARN": "警告",
+      movedBottom: "已移至底部",
+      movedDown: "已下移",
+      movedTop: "已移至顶部",
+      movedToSource: "已移至源列表",
+      movedToTarget: "已移至目标列表",
+      movedUp: "已上移",
       "spinner.DECREASE": "减少价值",
       "spinner.INCREASE": "增加价值",
       "switch.OFF": "关",
@@ -136,4 +142,14 @@ if (window.PrimeFaces) {
 
   /* Traditional Chinese (zh_TW) */
   PrimeFaces.locales["zh_TW"] = $.extend(true, {}, PrimeFaces.locales["zh"], zh_TW);
+  PrimeFaces.locales["zh_TW"] = $.extend(true, {}, PrimeFaces.locales["zh_TW"], {
+    aria: {
+      movedBottom: "已移至底部",
+      movedDown: "已下移",
+      movedTop: "已移至頂部",
+      movedToSource: "已移至來源清單",
+      movedToTarget: "已移至目標清單",
+      movedUp: "已上移",
+    },
+  });
 }

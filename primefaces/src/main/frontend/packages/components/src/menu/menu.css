@@ -2,16 +2,16 @@
  * Menu: p:menu
  *
  * The common .p-menu markup is styled by menu/menu.base.css, this file only has the toggleable p:menu
- * (.p-menu-toggleable): li.p-widget-header[aria-expanded] > h3 > [.p-menu-toggle-icon] [.p-submenu-icon] label.
+ * (.p-menu-toggleable): li.p-component-header[aria-expanded] > h3 > [.p-menu-toggle-icon] [.p-submenu-icon] label.
  */
 .p-menu.p-menu-toggleable {
-    li.p-widget-header {
+    li.p-component-header {
         position: relative;
         min-height: 0;
         cursor: pointer;
     }
 
-    .p-menu-list .p-widget-header {
+    .p-menu-list .p-component-header {
         .p-menu-toggle-icon {
             --_icon: var(--p-menu-toggle-collapsed-icon);
             color: var(--_submenu-icon-color);

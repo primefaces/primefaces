@@ -97,7 +97,7 @@ class DataView002Test extends AbstractDataTableTest {
         assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getId().toString()));
         assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getName()));
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(dataView.getClientConfiguration());
     }
 
     @Test
@@ -123,7 +123,7 @@ class DataView002Test extends AbstractDataTableTest {
         assertEquals(8, dataView.getPaginator().getActivePage().getNumber());
         assertEquals(9, dataView.getRowsWebElement().size());
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(dataView.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

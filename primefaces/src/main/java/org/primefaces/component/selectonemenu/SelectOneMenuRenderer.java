@@ -27,12 +27,12 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -532,7 +532,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectOneMenu", component)
                 .attr("editable", component.isEditable(), false)
                 .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
@@ -675,7 +675,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
         writer.writeAttribute("class", "p-selectonemenu-filter-container", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", "p-selectonemenu-filter p-inputfield p-inputtext p-widget p-state-default", null);
+        writer.writeAttribute("class", "p-selectonemenu-filter p-inputfield p-inputtext p-component p-state-default", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);

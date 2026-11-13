@@ -39,26 +39,34 @@ public final class ComponentUtils {
         }
 
         String id = element.getDomAttribute("id");
-        String result = PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".getBehavior('" + behavior + "').toString();");
+        String result = PrimeSelenium.executeScript("return " + getClientComponentScript(id) + ".getBehavior('" + behavior + "').toString();");
         return isAjaxScript(result);
     }
 
     public static boolean hasBehavior(WebElement element, String behavior) {
-        if (!isWidget(element)) {
+        if (!isClientComponent(element)) {
             return false;
         }
 
         String id = element.getDomAttribute("id");
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".hasBehavior('" + behavior + "');");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript(id) + ".hasBehavior('" + behavior + "');");
     }
 
-    public static boolean isWidget(WebElement element) {
+    public static boolean isClientComponent(WebElement element) {
         String id = element.getDomAttribute("id");
         if (id == null || id.isEmpty()) {
             return false;
         }
 
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + " != null;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript(id) + " != null;");
+    }
+
+    /**
+     * @deprecated use {@link #isClientComponent(WebElement)} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public static boolean isWidget(WebElement element) {
+        return isClientComponent(element);
     }
 
     public static boolean isAjaxScript(String script) {
@@ -72,9 +80,9 @@ public final class ComponentUtils {
                 || script.contains("faces.ajax.request");
     }
 
-    public static String getWidgetConfiguration(WebElement element) {
+    public static String getClientConfiguration(WebElement element) {
         String id = element.getDomAttribute("id");
-        return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
+        return PrimeSelenium.executeScript("return JSON.stringify(" + getClientComponentScript(id) + ".cfg, function(key, value) {\n" +
                     "  if (typeof value === 'function') {\n" +
                     "    return value.toString();\n" +
                     "  } else if (value && value.constructor && value.constructor.name === 'RegExp') {\n" +
@@ -85,8 +93,24 @@ public final class ComponentUtils {
                     "});");
     }
 
+    /**
+     * @deprecated use {@link #getClientConfiguration(WebElement)} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public static String getWidgetConfiguration(WebElement element) {
+        return getClientConfiguration(element);
+    }
+
+    public static String getClientComponentScript(String id) {
+        return "PrimeFaces.getComponentById('" + id + "')";
+    }
+
+    /**
+     * @deprecated use {@link #getClientComponentScript(String)} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public static String getWidgetByIdScript(String id) {
-        return "PrimeFaces.getWidgetById('" + id + "')";
+        return getClientComponentScript(id);
     }
 
     /**

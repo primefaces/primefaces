@@ -69,7 +69,7 @@ class DataTable017Test extends AbstractDataTableTest {
         assertEquals("3", dataTable.getCell(2, 0).getWebElement().getAttribute("rowspan"));
         assertEquals("INTERPRETED", dataTable.getCell(2, 0).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

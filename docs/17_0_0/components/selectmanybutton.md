@@ -69,7 +69,7 @@ This is implemented by adding custom components to a facet named `custom`.
 Custom buttons should have `role="checkbox"` attribute and be placed within the custom facet. The order of buttons should match the order of selectItems. When a custom facet is present, the layout is automatically set to "custom".
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectManyButton_
+Component: _PrimeFaces.component.SelectManyButton_
 
 
 | Method | Params | Return Type | Description |

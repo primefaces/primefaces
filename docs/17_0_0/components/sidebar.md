@@ -4,7 +4,7 @@ Sidebar is a panel component displayed as an overlay at the edges of the screen.
 
 ## Getting started with the Sidebar
 Sidebar is used a container to other components and display is toggle using the show() and hide()
-methods of the widget.
+methods of the component.
 
 ```xhtml
 <p:sidebar widgetVar="sb">
@@ -49,7 +49,7 @@ content specify baseZIndex property. In example below, initial zIndex of the sid
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Sidebar_
+Component: _PrimeFaces.component.Sidebar_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

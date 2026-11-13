@@ -67,14 +67,14 @@ class DatePicker018Test extends AbstractDatePickerTest {
         datePicker.showPanel();
         minuteInput = datePicker.getTimeInput(ChronoUnit.MINUTES);
         assertEquals("05", minuteInput.getAttribute("value"));
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     // showOverlay ignores document clicks for 200ms after the panel opens (datepickerClick), so an
     // outside click sent sooner leaves the panel open and the typed minutes are never committed.
     private void awaitOutsideClickHandled(DatePicker datePicker) {
         PrimeSelenium.waitGui().until(d -> Boolean.FALSE.equals(PrimeSelenium.executeScript(
-                "return " + datePicker.getWidgetByIdScript() + ".datepickerClick;")));
+                "return " + datePicker.getClientComponentScript() + ".datepickerClick;")));
     }
 
     private void assertConfiguration(JSONObject cfg) {

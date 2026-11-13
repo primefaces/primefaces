@@ -112,7 +112,7 @@
         --_border-color: var(--p-select-hover-border-color);
     }
 
-    /* the widget sets p-state-focus; an editable label focused with tab does not get it */
+    /* the component sets p-state-focus; an editable label focused with tab does not get it */
     &.p-state-focus,
     &:has(> .p-selectonemenu-label:focus-visible) {
         --_border-color: var(--p-select-focus-border-color);
@@ -256,7 +256,7 @@
         cursor: pointer;
     }
 
-    /* the server renders ul.p-selectonemenu-items.p-selectonemenu-list, the widget (dynamic / grouped options)
+    /* the server renders ul.p-selectonemenu-items.p-selectonemenu-list, the component (dynamic / grouped options)
        div.p-selectonemenu-items > ul.p-selectonemenu-list; the items padding below wins when both are one element */
     .p-selectonemenu-list {
         display: flex;
@@ -293,6 +293,12 @@
             border-width: 1px;
             border-style: solid;
         }
+    }
+
+    /* the lists are p-component-content: no background of their own, the rounded panel draws it */
+    .p-selectonemenu-items,
+    .p-selectonemenu-list {
+        background: transparent;
     }
 
     .p-selectonemenu-items {

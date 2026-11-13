@@ -3,19 +3,18 @@
  * in the other presets.
  *
  * Only elements that float or form a bar get a backdrop filter: overlays (dialogs, minimized dialogs in the docking
- * zone, popovers, dropdown panels, menus, tooltips, growl), the toolbar and buttons. Nested overlays (submenus inside a menu) only blur what lies inside their
- * parent overlay (backdrop root), so the overlay backgrounds stay mostly opaque. CascadeSelect: the root panel is only
- * the anchor (no height, its first list is absolutely positioned), so the first list gets the filter.
+ * zone, popovers, dropdown panels, menus, tooltips, growl), the toolbar and buttons. An element with a backdrop filter
+ * is the backdrop root of its descendants (a nested overlay would only blur what lies inside its parent), so overlays
+ * with nested overlays (menus with submenus, cascadeselect lists) blur with a ::before (see below). CascadeSelect: the
+ * root panel is only the anchor (no height, its first list is absolutely positioned) and gets no filter.
  * Content containers (panel, card, table) stay without one: a backdrop filter makes the element the containing block
  * of its absolutely / fixed positioned descendants (overlays appended inside it would be positioned wrong), and
  * translucency belongs to the controls layer above the content (Apple HIG).
  * Zero specificity (:where), so component rules and application CSS win.
  */
-:where(.p-sidebar, .p-overlaypanel, .p-confirm-popup, .p-input-overlay, .p-selectonemenu-panel,
-    .p-selectcheckboxmenu-panel, .p-autocomplete-panel,
-    .p-cascadeselect-items-wrapper > .p-cascadeselect-items,
-    .p-menu-dynamic, .p-menu-child, .p-contextmenu, .p-tooltip-text, .p-growl-item-container, .p-password-panel,
-    .p-columntoggler, .p-datatable-filter-matchmode-menu, .p-dialog-docked) {
+:where(.p-sidebar, .p-overlaypanel, .p-confirm-popup, .p-input-overlay:not(.p-cascadeselect-panel),
+    .p-selectonemenu-panel, .p-selectcheckboxmenu-panel, .p-autocomplete-panel, .p-tooltip-text, .p-growl-item-container,
+    .p-password-panel, .p-columntoggler, .p-datatable-filter-matchmode-menu, .p-dialog-docked) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
@@ -35,7 +34,7 @@
     pointer-events: none;
 }
 
-/* behind the box: the dialog container is a stacking context (z-index of the widget), the box background paints over it */
+/* behind the box: the dialog container is a stacking context (z-index of the component), the box background paints over it */
 :where(.p-dialog-box)::before {
     z-index: -1;
     backdrop-filter: var(--p-overlay-backdrop-filter);
@@ -54,11 +53,33 @@
     backdrop-filter: var(--p-navigation-backdrop-filter);
 }
 
+/*
+ * menus and cascadeselect lists: the filter on a ::before behind the content, a filter on the overlay itself would make
+ * it the backdrop root of its submenus / sublists (they would only blur what lies inside their parent). The overlay
+ * menus and contextmenus (.p-menu-dynamic, z-index 100000), the submenus and the cascadeselect panel and sublists are stacking contexts (z-index of the
+ * component), so z-index -1 stays inside them. Not the slidemenu lists (slides, not floating submenus) and not a
+ * scrolling menu (maxHeight, the ::before would scroll away with the content, no submenus): filter on the element.
+ */
+:where(.p-menu-dynamic-maxheight) {
+    backdrop-filter: var(--p-overlay-backdrop-filter);
+}
+
+:where(.p-menu-dynamic:not(.p-menu-dynamic-maxheight), .p-menu-child:not(.p-slidemenu *),
+    .p-cascadeselect-items)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    backdrop-filter: var(--p-overlay-backdrop-filter);
+}
+
 :where(.p-button) {
     backdrop-filter: var(--p-button-backdrop-filter);
 }
 
 /* modal mask: blurs the page behind a modal dialog / sidebar / blockUI */
-:where(.p-widget-overlay, .p-dialog-mask) {
+:where(.p-component-overlay, .p-dialog-mask) {
     backdrop-filter: var(--p-mask-backdrop-filter);
 }

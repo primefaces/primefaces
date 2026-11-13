@@ -52,7 +52,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("1", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("-2", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("34", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -121,7 +121,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("1,456", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

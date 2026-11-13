@@ -66,7 +66,7 @@ class TreeTable003Test extends AbstractTreeTableTest {
         rootPage2.setChildren(root.getChildren().subList(0, 3));
         assertRows(treeTable, rootPage2);
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Override

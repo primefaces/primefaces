@@ -63,8 +63,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("ConfirmDialog: Button Show widget method")
-    void showWidget(Page page) {
+    @DisplayName("ConfirmDialog: Button Show client API method")
+    void showComponent(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
 
@@ -77,8 +77,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("ConfirmDialog: Button Hide widget method")
-    void hideWidget(Page page) {
+    @DisplayName("ConfirmDialog: Button Hide client API method")
+    void hideComponent(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
         dialog.show();
@@ -101,7 +101,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton noButton = dialog.getNoButton();
         assertEquals("No", noButton.getText());
-        assertCss(noButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-no p-button-flat");
+        assertCss(noButton, "p-button p-component p-state-default p-button-text-icon-left p-confirmdialog-no p-button-flat");
         assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-times");
 
         // Act
@@ -122,7 +122,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         assertTrue(dialog.isVisible());
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-yes");
+        assertCss(yesButton, "p-button p-component p-state-default p-button-text-icon-left p-confirmdialog-yes");
         assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-check");
 
         // Act
@@ -144,7 +144,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton noButton = dialog.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-no p-button-flat bg-green-600 text-white");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirmdialog-no p-button-flat bg-green-600 text-white");
         assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-heart");
 
         // Act
@@ -168,7 +168,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.delete.click();
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
-        assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirmdialog-yes bg-red-600 text-white");
+        assertCss(yesButton, "p-button p-component p-state-default p-button-text-icon-left p-confirmdialog-yes bg-red-600 text-white");
         assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-trash");
 
         // Act
@@ -231,7 +231,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(dialog));
         }
 
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

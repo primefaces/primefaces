@@ -38,5 +38,5 @@ public class Menubar extends MenubarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menubar";
 
-    public static final String CONTAINER_CLASS = "p-menu p-menubar p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-menu p-menubar p-component p-component-content";
 }

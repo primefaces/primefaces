@@ -61,7 +61,7 @@ class TreeTable012Test extends AbstractTreeTableTest {
 
         // Assert
         assertMessage(page.messages, 0, "selected node", "Downloads in model");
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -97,7 +97,7 @@ class TreeTable012Test extends AbstractTreeTableTest {
 
         // Assert - the node was expanded in the model
         assertEquals(List.of("Downloads", "Spanish", "Travel", "Main"), names(treeTable));
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     @Test
@@ -139,7 +139,7 @@ class TreeTable012Test extends AbstractTreeTableTest {
         // Assert
         assertTrue(treeTable.isEmpty());
         assertEquals(1, treeTable.getPaginator().getPages().size());
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

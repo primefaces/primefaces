@@ -63,7 +63,7 @@ class DatePicker007Test extends AbstractDatePickerTest {
         // Assert (new time should be 11:04 PM)
         assertTime(datePicker, "11", "04", null);
         assertEquals("PM", datePicker.getAmPm());
-        assertConfiguration(datePicker.getWidgetConfiguration(), "12:04 AM");
+        assertConfiguration(datePicker.getClientConfiguration(), "12:04 AM");
     }
 
     private void assertConfiguration(JSONObject cfg, String defaultDate) {

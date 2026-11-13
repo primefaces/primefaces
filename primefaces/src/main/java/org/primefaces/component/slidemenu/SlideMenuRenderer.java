@@ -28,8 +28,8 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         SlideMenu menu = (SlideMenu) abstractMenu;
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SlideMenu", menu);
 
         if (menu.isOverlay()) {

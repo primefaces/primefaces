@@ -104,7 +104,7 @@ are below.  For full localization see the [localization documentation](/core/loc
 !> Localization is **global** so once a locale is set on a page it is set for all ColorPicker instances.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.ColorPicker_
+Component: _PrimeFaces.component.ColorPicker_
 
 
 | Method | Params | Return Type | Description |
@@ -113,7 +113,7 @@ Widget: _PrimeFaces.widget.ColorPicker_
 | enable() | - | void | Enables the input field |
 | show() | - | void | Shows the popup panel only in popup mode |
 | hide(revert) | boolean | void | Hides the popup panel only in popup mode. If revert is true revert back to original color |
-| getColor() | void | String | Gets the current color value |
+| getColor() | - | String | Gets the current color value |
 | setColor(color) | String | void | Sets the current color value |
 
 ## Skinning

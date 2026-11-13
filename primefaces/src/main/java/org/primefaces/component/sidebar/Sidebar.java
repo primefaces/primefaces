@@ -43,8 +43,8 @@ public class Sidebar extends SidebarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Sidebar";
 
-    public static final String STYLE_CLASS = "p-sidebar p-widget p-widget-content";
-    public static final String CONTENT_CLASS = "p-sidebar-content p-widget-content";
+    public static final String STYLE_CLASS = "p-sidebar p-component p-component-content";
+    public static final String CONTENT_CLASS = "p-sidebar-content p-component-content";
     public static final String TITLE_BAR_CLOSE_CLASS = "p-sidebar-close";
     public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-sidebar-close-icon";
     public static final String FULL_BAR_CLASS = "p-sidebar-full";

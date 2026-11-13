@@ -26,8 +26,8 @@ package org.primefaces.component.confirmpopup;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -114,7 +114,7 @@ public class ConfirmPopupRenderer extends CoreRenderer<ConfirmPopup> {
     }
 
     protected void encodeScript(FacesContext context, ConfirmPopup component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("ConfirmPopup", component)
             .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))

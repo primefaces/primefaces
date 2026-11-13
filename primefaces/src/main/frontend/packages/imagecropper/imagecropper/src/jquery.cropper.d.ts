@@ -1,5 +1,5 @@
 // /**
-//  * Namespace for Cropper jQuery plugin It is used by the {@link PrimeFaces.widget.ImageCropper} widget.
+//  * Namespace for Cropper jQuery plugin It is used by the {@link PrimeFaces.component.ImageCropper} component.
 //  * 
 //  * This namespace contains several required interfaces and types.
 //  */

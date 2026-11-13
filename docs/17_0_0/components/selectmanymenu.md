@@ -48,7 +48,7 @@ selected items in the footer, using the `selectionMessage` and `emptySelectionMe
 
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectManyMenu_
+Component: _PrimeFaces.component.SelectManyMenu_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

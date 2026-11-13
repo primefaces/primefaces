@@ -91,7 +91,7 @@ primefaces/src/main/frontend/
   packages/components/index.css    components.css: layer order, icon set, interaction CSS, then base -> shared -> components
                                    -> behaviors (alphabetical inside each group, see the comments there)
   packages/components/src/icons/lucide.css   the icon set: one --p-icon-* token per meaning (close, expanded, ...)
-  packages/components/src/base/*.css         p-widget, p-state-*, core helpers, grid (ui-g), interaction base rules,
+  packages/components/src/base/*.css         p-component, p-state-*, core helpers, grid (ui-g), interaction base rules,
                                              document (page, reduced motion / transparency, print), scrollbar, backdrop (Glass)
   packages/components/src/<widget>/*.css     one file per tag next to its widget (datatable/datatable.css,
                                              forms/selectonemenu.css, menu/tieredmenu.css, ...); building blocks of

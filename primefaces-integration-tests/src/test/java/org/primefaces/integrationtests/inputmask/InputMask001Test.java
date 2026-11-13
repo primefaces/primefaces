@@ -51,7 +51,7 @@ class InputMask001Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("123-45-6789", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(inputMask.getClientConfiguration());
     }
 
     @Test
@@ -67,7 +67,7 @@ class InputMask001Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("123-45-____", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(inputMask.getClientConfiguration());
     }
 
     @Test
@@ -84,24 +84,24 @@ class InputMask001Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertConfiguration(inputMask.getClientConfiguration());
     }
 
     @Test
     @Order(4)
-    @DisplayName("InputMask: Client side widget get and set value methods")
-    void widgetGetSet(final Page page) {
+    @DisplayName("InputMask: Client side component get and set value methods")
+    void componentGetSet(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
         assertEquals("", inputMask.getValue());
 
         // Act
-        inputMask.setWidgetValue("45678");
+        inputMask.setClientValue("45678");
 
         // Assert
-        assertEquals("456-78-____", inputMask.getWidgetValue());
-        assertEquals("45678", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(inputMask.getWidgetConfiguration());
+        assertEquals("456-78-____", inputMask.getClientValue());
+        assertEquals("45678", inputMask.getClientValueUnmasked());
+        assertConfiguration(inputMask.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

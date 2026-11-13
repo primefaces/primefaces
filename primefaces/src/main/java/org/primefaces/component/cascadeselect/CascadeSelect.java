@@ -44,9 +44,9 @@ public class CascadeSelect extends CascadeSelectBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CascadeSelect";
 
-    public static final String STYLE_CLASS = "p-cascadeselect p-widget p-state-default";
+    public static final String STYLE_CLASS = "p-cascadeselect p-component p-state-default";
     public static final String LABEL_CLASS = "p-cascadeselect-label p-inputfield";
-    public static final String PANEL_CLASS = "p-cascadeselect-panel p-widget p-widget-content p-hidden p-input-overlay";
+    public static final String PANEL_CLASS = "p-cascadeselect-panel p-component p-component-content p-hidden p-input-overlay";
     public static final String ITEMS_WRAPPER_CLASS = "p-cascadeselect-items-wrapper";
     public static final String PANEL_ITEMS_CLASS = "p-cascadeselect-panel p-cascadeselect-items";
     public static final String TRIGGER_CLASS = "p-cascadeselect-trigger";

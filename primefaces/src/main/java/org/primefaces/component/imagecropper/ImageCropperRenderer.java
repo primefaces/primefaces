@@ -28,13 +28,13 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.ResourceUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -102,7 +102,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
             viewMode = 1;
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, image)
                 .attr("image", image)
                 .attr("viewMode", viewMode)
@@ -124,12 +124,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         if (value != null) {
             CroppedImage croppedImage = (CroppedImage) value;
 
-            int x = croppedImage.getLeft();
-            int y = croppedImage.getTop();
-            int x2 = x + croppedImage.getWidth();
-            int y2 = y + croppedImage.getHeight();
-
-            select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
+            select = "[" + croppedImage.getLeft() + "," + croppedImage.getTop() + "," + croppedImage.getWidth() + "," + croppedImage.getHeight() + "]";
         }
         else if (LangUtils.isNotBlank(component.getInitialCoords())) {
             select = "[" + component.getInitialCoords() + "]";

@@ -40,7 +40,7 @@ public class SelectBooleanButton extends SelectBooleanButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 
-    public static final String STYLE_CLASS = "p-selectbooleanbutton p-widget";
+    public static final String STYLE_CLASS = "p-selectbooleanbutton p-component";
 
     @Override
     public String getInputClientId() {

@@ -67,7 +67,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 new ExpectedCountry(2, "Algeria"),
                 new ExpectedCountry(3, "Angola")));
         assertLazyCalls("count()", "load(first=0, size=3)");
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "load(first=0, size=3)",
                 "count()",
                 "load(first=3, size=3)");
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -114,7 +114,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "getRowData(rowKey=3)",
                 "count()",
                 "load(first=0, size=3)"); // after submit (full-form re-render)
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -146,7 +146,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "load(first=3, size=3)", // after page 2
                 "count()",
                 "load(first=0, size=3)"); // after page 1
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -170,7 +170,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "getRowData(rowKey=3)",
                 "count()",
                 "load(first=0, size=3)"); // after submit (full-form re-render)
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -195,7 +195,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "load(first=0, size=98)", // select-all loads all rows to resolve selection
                 "count()",
                 "load(first=0, size=3)"); // after submit (full-form re-render)
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -240,7 +240,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "load(first=0, size=3)", // after removeFilter
                 "count()",
                 "load(first=0, size=3)"); // after 3rd submit
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -281,7 +281,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "load(first=0, size=3)", // after page 1
                 "count()",
                 "load(first=0, size=3)"); // after 2nd submit
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private static String buildIds(int from, int to) {

@@ -53,7 +53,7 @@ class AutoComplete004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Nintendo", page.output.getText());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -71,7 +71,7 @@ class AutoComplete004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("", page.output.getText());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

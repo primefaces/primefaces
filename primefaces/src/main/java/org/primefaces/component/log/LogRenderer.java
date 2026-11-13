@@ -25,7 +25,7 @@ package org.primefaces.component.log;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -89,7 +89,7 @@ public class LogRenderer extends CoreRenderer<Log> {
     }
 
     protected void encodeScript(FacesContext context, Log component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Log", component);
         wb.finish();
     }

@@ -45,7 +45,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
     void required(Page page) {
         // Arrange
         Spinner spinner = page.spinnerBv;
-        assertEquals(null, spinner.getWidgetValue());
+        assertEquals(null, spinner.getClientValue());
         assertEquals("", spinner.getValue());
 
         // Act
@@ -57,7 +57,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
         assertOutputLabel(page.output1, "");
 
         assertNoJavascriptErrors();
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
     void notRequired(Page page) {
         // Arrange
         Spinner spinner = page.spinnerNotRequired;
-        assertEquals(null, spinner.getWidgetValue());
+        assertEquals(null, spinner.getClientValue());
         assertEquals("", spinner.getValue());
 
         // Act
@@ -78,7 +78,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
         assertOutputLabel(page.output2, "10");
 
         assertNoJavascriptErrors();
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
     void beanValidation(Page page) {
         // Arrange
         Spinner spinner = page.spinnerBv;
-        assertEquals(null, spinner.getWidgetValue());
+        assertEquals(null, spinner.getClientValue());
 
         // Act
         spinner.type("99");
@@ -98,7 +98,7 @@ public class Spinner007Test extends AbstractPrimePageTest {
         assertOutputLabel(page.output3, "10");
 
         assertNoJavascriptErrors();
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

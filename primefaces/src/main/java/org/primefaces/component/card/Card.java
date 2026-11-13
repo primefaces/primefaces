@@ -34,7 +34,7 @@ import jakarta.faces.component.FacesComponent;
 public class Card extends CardBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";
 
-    public static final String STYLE_CLASS = "p-card p-widget p-widget-content";
+    public static final String STYLE_CLASS = "p-card p-component p-component-content";
     public static final String HEADER_CLASS = "p-card-header";
     public static final String BODY_CLASS = "p-card-body";
     public static final String TITLE_CLASS = "p-card-title";

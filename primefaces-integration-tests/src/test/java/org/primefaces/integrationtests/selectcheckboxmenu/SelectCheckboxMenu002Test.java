@@ -54,7 +54,7 @@ class SelectCheckboxMenu002Test extends AbstractSelectCheckboxMenuTest {
         assertSelected(menu, 1);
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
-        assertConfiguration(menu.getWidgetConfiguration());
+        assertConfiguration(menu.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

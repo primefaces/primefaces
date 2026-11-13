@@ -62,7 +62,7 @@ class SelectOneMenu006Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, 0, "Console", "PS5");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -80,7 +80,7 @@ class SelectOneMenu006Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, 0, "Console", "Sega Genesis");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test

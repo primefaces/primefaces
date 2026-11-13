@@ -64,7 +64,7 @@ TieredMenu supports `start` and `end` facets to control UI output or add logos o
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.TieredMenu_
+Component: _PrimeFaces.component.TieredMenu_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

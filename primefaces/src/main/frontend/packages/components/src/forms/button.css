@@ -183,7 +183,7 @@
 
 /* button groups: .p-button-group (joined buttons) */
 /*
- * first / last are counted among the buttons only ("of .p-button"): every PrimeFaces button renders its widget
+ * first / last are counted among the buttons only ("of .p-button"): every PrimeFaces button renders its component
  * <script> right after itself, so :last-child would never be the last button.
  */
 .p-button-group {
@@ -551,7 +551,7 @@ button.p-button::-moz-focus-inner {
     }
 }
 
-/* p:commandLink inline ajax status: the widget adds p-state-loading (+ p-state-disabled) while its request runs,
+/* p:commandLink inline ajax status: the component adds p-state-loading (+ p-state-disabled) while its request runs,
    a spinner follows the text (the inline ajax status tokens, ajaxstatus/ajaxstatus.css) */
 .p-commandlink.p-state-loading {
     cursor: progress;

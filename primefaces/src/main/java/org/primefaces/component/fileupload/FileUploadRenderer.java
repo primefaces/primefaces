@@ -27,11 +27,11 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -73,7 +73,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
     protected void encodeScript(FacesContext context, FileUpload component) throws IOException {
         String update = component.getUpdate();
         String process = component.getProcess();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         if (component.getMode().equals("advanced")) {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);

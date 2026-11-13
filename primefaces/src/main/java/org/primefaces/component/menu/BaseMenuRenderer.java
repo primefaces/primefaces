@@ -30,12 +30,12 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
@@ -231,7 +231,7 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
         }
     }
 
-    protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {
+    protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, ComponentScriptBuilder wb) throws IOException {
         wb.attr("overlay", true)
                 .attr("my", menu.getMy())
                 .attr("at", menu.getAt());

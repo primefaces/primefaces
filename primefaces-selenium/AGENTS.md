@@ -38,7 +38,7 @@ deployment/test runner. Keep that dependency direction intact.
   `WebElement` + `WrapsElement`). `getRoot()` lazily resolves the underlying element via its
   `ElementLocator`.
 - **`AbstractComponent extends AbstractPrimePageFragment`** — base for all PrimeFaces component
-  wrappers; adds widget helpers (`getWidgetByIdScript()`, `getWidgetConfiguration()` → `JSONObject`,
+  wrappers; adds client component helpers (`getClientComponentScript()`, `getClientConfiguration()` → `JSONObject`,
   `isAjaxified(event)`, `destroy()`). `AbstractInputComponent`, `AbstractTable`,
   `AbstractPageableData`, etc. specialize further.
 
@@ -61,7 +61,7 @@ PrimeFaces tests must wait for AJAX/navigation to settle deterministically. The 
    `window.pfselenium` object that monkey-patches `XMLHttpRequest.send`, `HTMLFormElement.submit`,
    and the PrimeFaces validation hook to track in-flight state (`xhr`, `submitting`, `navigating`,
    `validationFailed`).
-2. **`PrimeSelenium.guardAjax(target)` / `guardHttp(target)`** wrap an element (or widget script) in
+2. **`PrimeSelenium.guardAjax(target)` / `guardHttp(target)`** wrap an element (or client script) in
    a byte-buddy proxy (`Guard`). After the wrapped call, they block until the page is quiescent
    (`document.readyState === 'complete'`, `jQuery.active == 0`, `PrimeFaces.ajax.Queue` empty, no
    animation, `pfselenium` flags cleared) or the configured timeout fires.
@@ -133,7 +133,7 @@ Implement these to plug the framework into an environment (all in `org.primeface
 2. Wrappers are **abstract** classes — they are instantiated as byte-buddy proxies by the factories,
    never with `new`. Constructors must be the default no-arg (or `WebElement`-arg for `Select`-style).
 3. Guard every server round-trip (see `CommandButton`). Detect AJAX via `isAjaxified(event)` /
-   `ComponentUtils.hasAjaxBehavior(...)`; read widget config via `getWidgetConfiguration()`.
+   `ComponentUtils.hasAjaxBehavior(...)`; read the client configuration via `getClientConfiguration()`.
 4. Prefer `ComponentUtils.sendKeys(input, value)` for typing — it sends one char at a time on Chrome
    to avoid dropped keystrokes.
 5. Update the component list in [`README.md`](README.md) if you add a new public component.
@@ -148,13 +148,13 @@ Component-agnostic helpers go into `PrimeSelenium` / `PrimeExpectedConditions`.
 
 - **Name methods by user intent**, not by DOM: `row.select()`, `row.isSelected()`,
   `dialog.isMaximized()` — not `getChkboxBox()` / `hasHighlightClass()`.
-- **Read state from ARIA or the widget** (`aria-selected`, `aria-checked`, `aria-sort`,
-  widget cfg) before falling back to CSS classes, so themes and markup changes don't break it.
+- **Read state from ARIA or the client component** (`aria-selected`, `aria-checked`, `aria-sort`,
+  client component cfg) before falling back to CSS classes, so themes and markup changes don't break it.
 - **Guard inside the method** when the action can trigger a request (detect-then-guard, see
   rule 3), so callers never need `guardAjax` or waits.
 - **Platform details live in the wrapper** (e.g. `COMMAND` vs `CONTROL` for multi-select clicks).
 - **Keep test-suite specifics out**: assertions on concrete messages/beans, theming token
-  checks or widget internals (jQuery handler counts) stay in the integration tests'
+  checks or client component internals (jQuery handler counts) stay in the integration tests'
   `Abstract*Test` classes.
 
 ## Usage pattern (consumer side)

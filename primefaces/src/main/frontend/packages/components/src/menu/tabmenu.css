@@ -97,7 +97,7 @@
                 }
             }
 
-            /* the widget adds p-menuitem-outline on every focus of the item, also after a click: ring for keyboard focus only */
+            /* the component adds p-menuitem-outline on every focus of the item, also after a click: ring for keyboard focus only */
             &.p-menuitem-outline:focus-visible,
             &:has(> a:focus-visible) {
                 outline: var(--p-tabmenu-item-focus-ring-width) var(--p-tabmenu-item-focus-ring-style) var(--p-tabmenu-item-focus-ring-color);

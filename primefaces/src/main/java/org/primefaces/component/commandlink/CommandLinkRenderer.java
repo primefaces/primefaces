@@ -29,11 +29,11 @@ import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -172,7 +172,7 @@ public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
     }
 
     protected void encodeScript(FacesContext context, CommandLink component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("CommandLink", component)
                 .attr("disableOnAjax", component.isDisableOnAjax(), true)
                 .attr("disabledAttr", component.isDisabled(), false);

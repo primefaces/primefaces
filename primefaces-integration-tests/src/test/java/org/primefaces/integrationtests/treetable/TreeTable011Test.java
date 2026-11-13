@@ -55,7 +55,7 @@ class TreeTable011Test extends AbstractTreeTableTest {
         // Assert
         assertTrue(page.treeTable.getRow(PARENT).isSelected());
         assertFalse(page.treeTable.getRow(CHILD).isSelected());
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Test
@@ -70,12 +70,12 @@ class TreeTable011Test extends AbstractTreeTableTest {
 
         // Assert - only the clicked node, the children must not be propagated behind the scenes
         assertEquals("Primefaces", page.messages.getMessage(0).getDetail());
-        assertConfiguration(page.treeTable.getWidgetConfiguration());
+        assertConfiguration(page.treeTable.getClientConfiguration());
     }
 
     @Override
     protected void assertConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg, "ttWidget");
+        assertConfiguration(cfg, "ttComponent");
         assertEquals("checkbox", cfg.getString("selectionMode"));
         assertFalse(cfg.getBoolean("propagateSelectionDown"));
     }

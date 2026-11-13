@@ -39,7 +39,7 @@ public class OnloadScriptsEventListener implements WebDriverListener {
     @Override
     public void afterGet(WebDriver driver, String url) {
         // install right away: if it got installed by a later call, it could disable the CSS transitions of an animation a
-        // widget already started, whose transitionend then never fires (PrimeFaces.animationActive stays true)
+        // client component already started, whose transitionend then never fires (PrimeFaces.animationActive stays true)
         OnloadScripts.execute();
     }
 

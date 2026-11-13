@@ -1,5 +1,5 @@
 /*
- * Knob: p:knob (an SVG drawn by the widget)
+ * Knob: p:knob (an SVG drawn by the component)
  *
  * The colors come from the --p-knob-* tokens; the foregroundColor / backgroundColor attributes set
  * --p-knob-value-background / --p-knob-range-background inline. The width / height attributes set the size inline,

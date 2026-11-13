@@ -27,7 +27,7 @@ browser scrollbars.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.ScrollPanel_
+Component: _PrimeFaces.component.ScrollPanel_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

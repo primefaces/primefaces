@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:dataTable id="datatable" value="#{columnToggler001.progLanguages}" var="lang">
+                <f:facet name="header">
+                    <span>Programming Languages</span>
+                    <p:commandButton id="toggler" type="button" value="Columns"/>
+                    <p:columnToggler id="columnToggler" datasource="datatable" trigger="toggler">
+                        <p:ajax event="toggle" listener="#{columnToggler001.onToggle}" update=":form:msgs"/>
+                        <p:ajax event="close" listener="#{columnToggler001.onClose}" update=":form:msgs"/>
+                    </p:columnToggler>
+                </f:facet>
+
+                <p:column id="langId" headerText="ID">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column id="name" headerText="Name">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column id="year" headerText="First appeared">
+                    <h:outputText value="#{lang.firstAppeared}"/>
+                </p:column>
+
+                <p:column id="type" headerText="Type" visible="false">
+                    <h:outputText value="#{lang.type}"/>
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton id="update" value="Update" update="datatable"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

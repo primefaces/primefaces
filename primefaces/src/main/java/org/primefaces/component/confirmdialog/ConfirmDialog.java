@@ -38,9 +38,9 @@ public class ConfirmDialog extends ConfirmDialogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmDialog";
 
-    public static final String DIALOG_CLASS = "p-confirm-dialog p-dialog p-widget p-hidden-container";
-    public static final String BOX_CLASS = "p-dialog-box p-widget-content";
-    public static final String BUTTONPANE_CLASS = "p-dialog-buttonpane p-dialog-footer p-widget-content";
+    public static final String DIALOG_CLASS = "p-confirm-dialog p-dialog p-component p-hidden-container";
+    public static final String BOX_CLASS = "p-dialog-box p-component-content";
+    public static final String BUTTONPANE_CLASS = "p-dialog-buttonpane p-dialog-footer p-component-content";
     public static final String SEVERITY_ICON_CLASS = "p-confirm-dialog-severity";
     public static final String MESSAGE_CLASS = "p-confirm-dialog-message";
 

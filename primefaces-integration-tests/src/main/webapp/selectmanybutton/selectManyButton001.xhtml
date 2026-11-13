@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:selectManyButton id="selectManyButton" value="#{selectManyButton001.values}">
+                <f:selectItem itemLabel="Option 1" itemValue="1"/>
+                <f:selectItem itemLabel="Option 2" itemValue="2"/>
+                <f:selectItem itemLabel="Option 3" itemValue="3"/>
+                <p:ajax listener="#{selectManyButton001.onChange}" update="msgs"/>
+            </p:selectManyButton>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

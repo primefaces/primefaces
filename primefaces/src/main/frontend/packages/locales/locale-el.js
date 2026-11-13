@@ -38,6 +38,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Καίριο",
       "messages.INFO": "Πληροφορία",
       "messages.WARN": "Προείδοποίηση",
+      movedBottom: "Μετακινήθηκε στο τέλος",
+      movedDown: "Μετακινήθηκε προς τα κάτω",
+      movedTop: "Μετακινήθηκε στην κορυφή",
+      movedToSource: "Μετακινήθηκε στην πηγή",
+      movedToTarget: "Μετακινήθηκε στον στόχο",
+      movedUp: "Μετακινήθηκε προς τα επάνω",
     },
     messages: {
       "jakarta.faces.component.UIInput.CONVERSION": "{0}: Παρουσιάστηκε σφάλμα μετατροπής.",

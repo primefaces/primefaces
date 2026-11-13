@@ -55,7 +55,7 @@ class DatePicker006Test extends AbstractDatePickerTest {
 
         // Assert
         assertEquals(value.toString(), page.messages.getMessage(0).getDetail());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

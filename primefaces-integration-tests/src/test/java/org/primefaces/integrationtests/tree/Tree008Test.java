@@ -56,7 +56,7 @@ class Tree008Test extends AbstractTreeTest {
         // Assert
         assertEquals("after=[]", page.after.getText());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

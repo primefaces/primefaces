@@ -75,18 +75,18 @@ public abstract class Panel extends AbstractComponent {
     }
 
     public void close() {
-        PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".close();");
+        PrimeSelenium.executeScript(isCloseAjaxified(), getClientComponentScript() + ".close();");
     }
 
     public void expand() {
-        PrimeSelenium.executeScript(isToggleAjaxified(), getWidgetByIdScript() + ".expand();");
+        PrimeSelenium.executeScript(isToggleAjaxified(), getClientComponentScript() + ".expand();");
     }
 
     public void collapse() {
-        PrimeSelenium.executeScript(isToggleAjaxified(), getWidgetByIdScript() + ".collapse();");
+        PrimeSelenium.executeScript(isToggleAjaxified(), getClientComponentScript() + ".collapse();");
     }
 
     public void toggle() {
-        PrimeSelenium.executeScript(isToggleAjaxified(), getWidgetByIdScript() + ".toggle();");
+        PrimeSelenium.executeScript(isToggleAjaxified(), getClientComponentScript() + ".toggle();");
     }
 }

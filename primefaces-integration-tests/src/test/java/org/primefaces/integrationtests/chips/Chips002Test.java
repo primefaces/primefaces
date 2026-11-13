@@ -69,7 +69,7 @@ class Chips002Test extends AbstractPrimePageTest {
         assertEquals("Defect", values.get(0));
         assertEquals("Feature", values.get(1));
         assertEquals("Enhancement", values.get(2));
-        assertConfiguration(chips.getWidgetConfiguration());
+        assertConfiguration(chips.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

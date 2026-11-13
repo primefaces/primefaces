@@ -35,7 +35,7 @@ public class Chronoline extends ChronolineBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chronoline";
 
-    public static final String STYLE_CLASS = "p-chronoline p-widget";
+    public static final String STYLE_CLASS = "p-chronoline p-component";
     public static final String ALIGN_LEFT_CLASS = "p-chronoline-left";
     public static final String ALIGN_RIGHT_CLASS = "p-chronoline-right";
     public static final String ALIGN_TOP_CLASS = "p-chronoline-top";

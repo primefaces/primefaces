@@ -61,7 +61,7 @@ class MegaMenu003Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("Delete"));
 
-        assertConfiguration(megamenu.getWidgetConfiguration());
+        assertConfiguration(megamenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

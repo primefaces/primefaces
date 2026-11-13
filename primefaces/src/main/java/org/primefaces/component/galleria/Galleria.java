@@ -40,7 +40,7 @@ public class Galleria extends GalleriaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
 
-    public static final String CONTAINER_CLASS = "p-galleria p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-galleria p-component p-component-content";
     public static final String CONTENT_CLASS = "p-galleria-content";
     public static final String HEADER_CLASS = "p-galleria-header";
     public static final String FOOTER_CLASS = "p-galleria-footer";

@@ -37,7 +37,7 @@ import jakarta.faces.component.FacesComponent;
 public class ScrollTop extends ScrollTopBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollTop";
 
-    public static final String STYLE_CLASS = "p-scrolltop p-widget";
+    public static final String STYLE_CLASS = "p-scrolltop p-component";
     public static final String STICKY_CLASS = "p-scrolltop-sticky";
     public static final String ICON_CLASS = "p-icon p-up-icon p-scrolltop-icon";
 }

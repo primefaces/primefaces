@@ -38,7 +38,7 @@ public class BreadCrumb extends BreadCrumbBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.BreadCrumb";
 
-    public static final String CONTAINER_CLASS = "p-breadcrumb p-module p-widget p-widget-header";
+    public static final String CONTAINER_CLASS = "p-breadcrumb p-module p-component p-component-header";
     public static final String ITEMS_CLASS = "p-breadcrumb-items";
     public static final String OPTIONS_CLASS = "p-breadcrumb-options";
     public static final String HOME_ICON_CLASS = "p-icon p-home-icon p-breadcrumb-home-icon";

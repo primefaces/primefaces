@@ -58,7 +58,7 @@ class InputTextArea003Test extends AbstractPrimePageTest {
         assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         assertEquals("four", inputText.getValue());
         assertEquals("6 characters remaining.", page.display.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class InputTextArea003Test extends AbstractPrimePageTest {
         assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         assertEquals("four\uD83D\uDE00", inputText.getValue());
         assertEquals("4 characters remaining.", page.display.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -97,7 +97,7 @@ class InputTextArea003Test extends AbstractPrimePageTest {
         assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         assertEquals("four\uD83D\uDE00", inputText.getValue());
         assertEquals("2 characters remaining.", page.display.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -116,7 +116,7 @@ class InputTextArea003Test extends AbstractPrimePageTest {
         assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
         assertEquals("1234567890", inputText.getValue());
         assertEquals("0 characters remaining.", page.display.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

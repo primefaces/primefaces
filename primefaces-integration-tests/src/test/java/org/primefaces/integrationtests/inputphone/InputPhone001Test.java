@@ -52,9 +52,9 @@ class InputPhone001Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("US", preset.getCountry());
         assertEquals("(201) 555-0123", preset.getValue());
-        assertEquals("+12015550123", preset.getWidgetValue());
+        assertEquals("+12015550123", preset.getClientValue());
         assertTrue(preset.isValidNumber());
-        assertConfiguration(preset.getWidgetConfiguration());
+        assertConfiguration(preset.getClientConfiguration());
     }
 
     @Test
@@ -72,9 +72,9 @@ class InputPhone001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.msgs.isEmpty());
         assertEquals("+4930123456", page.phoneValue.getText());
-        assertEquals("+4930123456", phone.getWidgetValue());
+        assertEquals("+4930123456", phone.getClientValue());
         assertEquals("030 123456", phone.getValue());
-        assertConfiguration(phone.getWidgetConfiguration());
+        assertConfiguration(phone.getClientConfiguration());
     }
 
     @Test
@@ -95,7 +95,7 @@ class InputPhone001Test extends AbstractPrimePageTest {
         assertEquals("", page.phoneValue.getText());
         assertEquals("123", phone.getValue());
         assertTrue(phone.isInvalid());
-        assertConfiguration(phone.getWidgetConfiguration());
+        assertConfiguration(phone.getClientConfiguration());
     }
 
     @Test
@@ -113,7 +113,7 @@ class InputPhone001Test extends AbstractPrimePageTest {
         assertEquals("AT", country.getCountry());
         assertEquals("AT", page.selectedCountry.getText());
         assertEquals("+43", country.getDialCode());
-        assertConfiguration(country.getWidgetConfiguration());
+        assertConfiguration(country.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

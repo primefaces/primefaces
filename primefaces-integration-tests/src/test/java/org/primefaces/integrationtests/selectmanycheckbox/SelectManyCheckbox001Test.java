@@ -61,7 +61,7 @@ class SelectManyCheckbox001Test extends AbstractSelectManyCheckboxTest {
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Charles,Lando"));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
 
         // Act - deselect item
         selectManyCheckbox.deselect(2);
@@ -70,7 +70,7 @@ class SelectManyCheckbox001Test extends AbstractSelectManyCheckboxTest {
         // Assert - part 2
         assertSelected(selectManyCheckbox, Arrays.asList("Max", "Lando"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
     }
 
     @Test
@@ -88,7 +88,7 @@ class SelectManyCheckbox001Test extends AbstractSelectManyCheckboxTest {
         // Assert - all selected
         assertSelected(selectManyCheckbox, Arrays.asList("Lewis", "Max", "Charles", "Lando"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Lewis,Max,Charles,Lando"));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
 
         // Act - deselect all
         selectManyCheckbox.deselectAll();
@@ -97,7 +97,7 @@ class SelectManyCheckbox001Test extends AbstractSelectManyCheckboxTest {
         // Assert - none selected
         assertSelected(selectManyCheckbox, Collections.emptyList());
         assertTrue(page.messages.getMessage(0).getDetail().contains("no driver selected"));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
     }
 
     @Test
@@ -119,7 +119,7 @@ class SelectManyCheckbox001Test extends AbstractSelectManyCheckboxTest {
 
         // Assert
         assertEquals(false, selectManyCheckbox.isSelected(0));
-        assertConfiguration(selectManyCheckbox.getWidgetConfiguration());
+        assertConfiguration(selectManyCheckbox.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

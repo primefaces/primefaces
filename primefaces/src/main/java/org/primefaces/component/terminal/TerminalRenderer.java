@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -117,7 +117,7 @@ public class TerminalRenderer extends CoreRenderer<Terminal> {
     }
 
     protected void encodeScript(FacesContext context, Terminal component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Terminal", component);
         encodeClientBehaviors(context, component);
         wb.finish();

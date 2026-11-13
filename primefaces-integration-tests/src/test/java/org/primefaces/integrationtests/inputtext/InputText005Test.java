@@ -56,7 +56,7 @@ class InputText005Test extends AbstractPrimePageTest {
         // Assert - 4 entered, 10 max, 6 remaining
         assertEquals("four", inputText.getValue());
         assertEquals("Entered 4 of 10, 6 left", page.displayTemplate.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -74,7 +74,7 @@ class InputText005Test extends AbstractPrimePageTest {
         // Assert - "four" (4 bytes) + emoji (4 bytes) = 8 bytes, maxlength 10 -> 2 remaining
         assertEquals("four😀", inputText.getValue());
         assertEquals("2", page.displayBytes.getText());
-        JSONObject cfg = inputText.getWidgetConfiguration();
+        JSONObject cfg = inputText.getClientConfiguration();
         assertConfiguration(cfg);
         assertTrue(cfg.getBoolean("countBytesAsChars"));
     }
@@ -91,10 +91,10 @@ class InputText005Test extends AbstractPrimePageTest {
         inputText.setValue("hello");
         page.button.click();
 
-        // Assert - without a maxlength the widget never writes counter text
+        // Assert - without a maxlength the component never writes counter text
         assertEquals("hello", inputText.getValue());
         assertEquals("", page.displayNoMax.getText());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

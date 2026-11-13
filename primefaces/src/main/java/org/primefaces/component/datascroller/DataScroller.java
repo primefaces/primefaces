@@ -39,10 +39,10 @@ import jakarta.faces.event.PhaseId;
 public class DataScroller extends DataScrollerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
-    public static final String CONTAINER_CLASS = "p-datascroller p-widget";
-    public static final String INLINE_CONTAINER_CLASS = "p-datascroller p-datascroller-inline p-widget";
-    public static final String HEADER_CLASS = "p-datascroller-header p-widget-header";
-    public static final String CONTENT_CLASS = "p-datascroller-content p-widget-content";
+    public static final String CONTAINER_CLASS = "p-datascroller p-component";
+    public static final String INLINE_CONTAINER_CLASS = "p-datascroller p-datascroller-inline p-component";
+    public static final String HEADER_CLASS = "p-datascroller-header p-component-header";
+    public static final String CONTENT_CLASS = "p-datascroller-content p-component-content";
     public static final String LIST_CLASS = "p-datascroller-list";
     public static final String ITEM_CLASS = "p-datascroller-item";
     public static final String LOADER_CLASS = "p-datascroller-loader";

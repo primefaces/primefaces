@@ -1,13 +1,13 @@
 import { ajax } from "../core/core.ajax.js";
-import { BaseWidget, type BaseWidgetCfg } from "../core/core.widget.js";
+import { BaseComponent, type BaseComponentCfg } from "../core/core.component.js";
 
 /**
- * The configuration for the {@link  AjaxExceptionHandler} widget.
+ * The configuration for the {@link  AjaxExceptionHandler} component.
  * 
- * You can access this configuration via {@link BaseWidget.cfg | cfg}. Please note that this
+ * You can access this configuration via {@link BaseComponent.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface AjaxExceptionHandlerCfg extends BaseWidgetCfg {
+export interface AjaxExceptionHandlerCfg extends BaseComponentCfg {
     /**
      * The type of the exception.
      */
@@ -19,24 +19,24 @@ export interface AjaxExceptionHandlerCfg extends BaseWidgetCfg {
     /**
      * Callback to invoke when an AJAX request fails.
      */
-    onexception: PrimeFacesTypes.widget.AjaxExceptionHandler.OnExceptionCallback;
+    onexception: PrimeFacesTypes.component.AjaxExceptionHandler.OnExceptionCallback;
 }
 
 /**
- * __PrimeFaces AjaxExceptionHandler Widget__
+ * __PrimeFaces AjaxExceptionHandler Component__
  *
- * A widget that keeps tracks of errors during AJAX requests and invokes a
+ * A component that keeps tracks of errors during AJAX requests and invokes a
  * JavaScript callback and/or updates Faces components when an error occurs.
  */
-export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExceptionHandlerCfg> extends BaseWidget<AjaxExceptionHandlerCfg> {
-    override init(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<Cfg>): void {
+export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExceptionHandlerCfg> extends BaseComponent<AjaxExceptionHandlerCfg> {
+    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
     }
 
     /**
-     * If the widget handles the passed error.
+     * If the component handles the passed error.
      * @param errorName The error name.
-     * @return If the widget handles the passed error.
+     * @return If the component handles the passed error.
      */
     handles(errorName: string): boolean {
         // strip off class prefix if existing
@@ -98,8 +98,8 @@ export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExce
     }
 
     /**
-     * Returns if the current widget is not registered to a specific exception type.
-     * Global exception handlers should be called, if no widget is available for a specific exception type.
+     * Returns if the current component is not registered to a specific exception type.
+     * Global exception handlers should be called, if no component is available for a specific exception type.
      * @returns `true` if global, `false` if not.
      */
     isGlobal(): boolean {

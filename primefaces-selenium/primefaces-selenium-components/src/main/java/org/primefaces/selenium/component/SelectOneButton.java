@@ -161,7 +161,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public boolean isUnselectable() {
-        return "true".equals(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".cfg.unselectable"));
+        return Boolean.TRUE.equals(PrimeSelenium.executeScript("return " + getClientComponentScript() + ".cfg.unselectable;"));
     }
 
     protected void click(WebElement element) {

@@ -120,7 +120,7 @@ execute custom javascript.
 | footer | content which will be rendered in the footer; alternative to the `footer` attribute |
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Dialog_
+Component: _PrimeFaces.component.Dialog_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

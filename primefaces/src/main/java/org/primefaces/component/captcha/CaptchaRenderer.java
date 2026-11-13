@@ -25,8 +25,8 @@ package org.primefaces.component.captcha;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -89,7 +89,7 @@ public class CaptchaRenderer extends CoreRenderer<Captcha> {
     }
 
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Captcha", captcha);
 
         wb.attr("sitekey", publicKey)

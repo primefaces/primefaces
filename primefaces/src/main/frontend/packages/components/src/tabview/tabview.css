@@ -6,7 +6,7 @@
  * The tablist is a flex container, so the li.p-tabs-actions (global and per tab) are flex items (order/margin, no floats).
  * States: p-tabs-top | -bottom | -left | -right, p-tabs-scrollable,
  *         p-state-active, p-state-hover, p-state-disabled, p-state-error on a tab,
- *         p-tabs-rtl, p-tabs-outline (keyboard focus, set by the widget)
+ *         p-tabs-rtl, p-tabs-outline (keyboard focus, set by the component)
  */
 .p-tabs {
     /* containing block of the vertical actions and the scroller */

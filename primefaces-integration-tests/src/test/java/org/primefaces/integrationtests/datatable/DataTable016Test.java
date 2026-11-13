@@ -89,7 +89,7 @@ class DataTable016Test extends AbstractDataTableTest {
 
         assertRows(rows, languages);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

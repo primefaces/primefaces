@@ -60,7 +60,7 @@ class DatePicker005Test extends AbstractDatePickerTest {
         // Assert Submit Value
         page.button.click();
         assertEquals("08/20/2020 - 08/25/2020", page.messages.getMessage(0).getDetail());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
@@ -86,7 +86,7 @@ class DatePicker005Test extends AbstractDatePickerTest {
         // Assert Submit Value
         page.button.click();
         assertEquals("08/03/2020 - 08/05/2020", page.messages.getMessage(0).getDetail());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

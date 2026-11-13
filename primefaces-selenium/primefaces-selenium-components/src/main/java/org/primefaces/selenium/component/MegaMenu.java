@@ -50,7 +50,7 @@ public abstract class MegaMenu extends AbstractInputComponent {
 
     /**
      * Finds a menuitem (or submenu) by its label/value within the given parent element.
-     * Column titles ({@code li.p-widget-header}) are not {@code p-menuitem}s and are therefore ignored.
+     * Column titles ({@code li.p-component-header}) are not {@code p-menuitem}s and are therefore ignored.
      * @param parentElt element to search within
      * @param value the visible label of the menuitem
      * @return the matching {@code li.p-menuitem} element
@@ -141,7 +141,7 @@ public abstract class MegaMenu extends AbstractInputComponent {
     }
 
     public boolean isAutoDisplay() {
-        return getWidgetConfiguration().getBoolean("autoDisplay");
+        return getClientConfiguration().getBoolean("autoDisplay");
     }
 
     public boolean isVertical() {

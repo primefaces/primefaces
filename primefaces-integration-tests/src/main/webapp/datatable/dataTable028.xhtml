@@ -34,7 +34,7 @@
 		<p:commandButton value="Save" action="#{dataTable028.doSaveAll()}" id="cmdSave"
 			process="@this referenceTable" update="result referenceTable" />
 		<div class="card">
-			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter" filteredValue="#{dataTable028.referencesFiltered}"
+			<p:dataTable id="referenceTable" widgetVar="referenceTableComponent" filterEvent="enter" filteredValue="#{dataTable028.referencesFiltered}"
 				var="reference" value="#{dataTable028.references}"
 				paginator="true" rows="10" paginatorPosition="bottom" size="small">
 				<p:column field="id" />
@@ -43,7 +43,7 @@
 						<h:outputText value="Domain" />
 					</f:facet>
 					<f:facet name="filter">
-						<p:inputText styleClass="filter" onchange="PF('referenceTableWidget').filter()" />
+						<p:inputText styleClass="filter" onchange="PF('referenceTableComponent').filter()" />
 					</f:facet>
 					<p:selectOneMenu value="#{reference.domain}" label="Domain">
 						<f:selectItem itemLabel="EUR" itemValue="EUR" />

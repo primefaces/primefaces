@@ -26,8 +26,8 @@ package org.primefaces.component.messages;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class MessagesRenderer extends UINotificationRenderer<Messages> {
     }
 
     protected void encodeScript(FacesContext context, Messages component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Messages", component)
                 .attr("closable", component.isClosable())
                 .finish();

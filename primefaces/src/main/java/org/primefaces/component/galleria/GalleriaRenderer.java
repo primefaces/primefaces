@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.IterationStatus;
 import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -346,7 +346,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     public void encodeScript(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         List<ResponsiveOption> responsiveOptions = component.getResponsiveOptions();
 
         wb.init("Galleria", component);

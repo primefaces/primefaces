@@ -202,7 +202,7 @@ the default implementation)
 | void reorderWidget(int index, String widgetId) | Updates the index of widget in column
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Dashboard_
+Component: _PrimeFaces.component.Dashboard_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

@@ -66,7 +66,7 @@ class Tree009Test extends AbstractTreeTest {
         assertFalse(selected.contains("private.doc"), () -> "non-selectable node was submitted: " + selected);
         assertTrue(selected.contains("work.doc"), () -> "selectable node is missing: " + selected);
         assertTrue(selected.contains("resume.doc"), () -> "selectable node is missing: " + selected);
-        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+        assertCheckboxConfiguration(page.tree.getClientConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ class Tree009Test extends AbstractTreeTest {
         page.showSelected.click();
         String selected = page.messages.getMessage(0).getDetail();
         assertTrue(selected.contains("Documents"), () -> "parent node is missing: " + selected);
-        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+        assertCheckboxConfiguration(page.tree.getClientConfiguration());
     }
 
     @Test
@@ -115,7 +115,7 @@ class Tree009Test extends AbstractTreeTest {
 
         page.showSelected.click();
         assertEquals("legacy.doc", page.messages.getMessage(0).getDetail());
-        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+        assertCheckboxConfiguration(page.tree.getClientConfiguration());
     }
 
     @Test
@@ -141,26 +141,26 @@ class Tree009Test extends AbstractTreeTest {
 
         page.showSelected.click();
         assertEquals("legacy.doc", page.messages.getMessage(0).getDetail());
-        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+        assertCheckboxConfiguration(page.tree.getClientConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("Tree: GitHub #14798 the server must reject a submitted non-selectable node")
     void serverRejectsUnselectableNode(Page page) {
-        // Arrange - bypass the widget's propagation rules and select "private.doc"
-        PrimeSelenium.executeScript("var tree = PF('treeWidget'); tree.addToSelection('0_1'); tree.writeSelections();");
+        // Arrange - bypass the component's propagation rules and select "private.doc"
+        PrimeSelenium.executeScript("var tree = PF('treeComponent'); tree.addToSelection('0_1'); tree.writeSelections();");
 
         // Act
         page.showSelected.click();
 
         // Assert
         assertEquals("legacy.doc", page.messages.getMessage(0).getDetail());
-        assertCheckboxConfiguration(page.tree.getWidgetConfiguration());
+        assertCheckboxConfiguration(page.tree.getClientConfiguration());
     }
 
     private void assertCheckboxConfiguration(JSONObject cfg) {
-        assertConfiguration(cfg, "treeWidget");
+        assertConfiguration(cfg, "treeComponent");
         assertEquals("checkbox", cfg.getString("selectionMode"));
     }
 

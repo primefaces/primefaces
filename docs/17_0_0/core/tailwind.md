@@ -263,7 +263,7 @@ cells with `contentStyleClass="p-0 *:p-0"`.
 
 `styleClass` goes to the root element of a component. For components that wrap an input (`p:inputNumber`,
 `p:datePicker`, ...), `w-full` sizes the wrapper; use `inputStyleClass` for the input itself. Size `p:dialog` with
-its `width` attribute: the widget positions the dialog itself, size utilities on it fight with that.
+its `width` attribute: the component positions the dialog itself, size utilities on it fight with that.
 
 ### Comments in Facelets
 

@@ -11,7 +11,7 @@ This file focuses on **how to add a test and keep component coverage healthy**.
 This module is the **browser-based regression suite** for the PrimeFaces component
 library. Each test boots a real Faces application (embedded Tomcat + Weld + Mojarra or
 MyFaces), drives a page with Selenium, and asserts component behavior, rendered markup,
-widget configuration, and the absence of JavaScript errors. It is the primary guard
+client configuration, and the absence of JavaScript errors. It is the primary guard
 against regressions in real component rendering and client-side behavior — unit tests in
 `primefaces` cover server-side logic only.
 
@@ -113,7 +113,7 @@ class Rating001Test extends AbstractPrimePageTest {
         Rating rating = page.ratingAjax;
         rating.setValue(4);
         assertEquals(4L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -151,8 +151,8 @@ void basicAndPaginator(String xhtml) {
   guard internally) or wrap raw clicks with `PrimeSelenium.guardAjax(...)`. Never assert
   immediately after an un-guarded click — the request may still be in flight. See the
   framework's guard mechanism in [`primefaces-selenium/AGENTS.md`](../primefaces-selenium/AGENTS.md).
-- **Assert the widget configuration** via a private `assertConfiguration(JSONObject cfg)`
-  that reads `getWidgetConfiguration()` and calls `assertNoJavascriptErrors()`. This
+- **Assert the client configuration** via a private `assertConfiguration(JSONObject cfg)`
+  that reads `getClientConfiguration()` and calls `assertNoJavascriptErrors()`. This
   catches client-side JS errors that wouldn't otherwise fail the test.
 - Use **component wrapper APIs** (`dataTable.sort("Name")`, `rating.setValue(4)`) instead
   of hand-rolled `WebElement` clicks — see [Wrapper first](#wrapper-first-where-test-code-belongs).
@@ -181,12 +181,12 @@ Decide in this order:
 3. **It's specific to this suite** → put it in the component's `Abstract<Component>Test`
    (or `AbstractTableTest` for table-wide helpers), not in the individual test. Examples:
    assertions against our beans/messages, lazy-load call history, theming token/contrast
-   checks, widget-lifecycle internals (jQuery handler counts).
+   checks, component-lifecycle internals (jQuery handler counts).
 4. **It's genuinely one-off** → keep it local in the test. Examples: deliberately tampering
-   with widget state via JS to test server-side rejection, asserting a mid-animation state.
+   with client component state via JS to test server-side rejection, asserting a mid-animation state.
 
 Red flags that usually mean step 2 was skipped: `executeScript("PF('x')…")` to drive a
-widget, `By.className`/`By.cssSelector` into component internals (`p-chkbox-box`,
+component, `By.className`/`By.cssSelector` into component internals (`p-chkbox-box`,
 `p-row-editor-pencil`, `p-datepicker-next`, …), `new Actions()` for meta/shift clicks or drag,
 `PrimeSelenium.wait(ms)` / `Thread.sleep`, try/catch around clicks, and a private helper
 copied from another test class.
@@ -283,7 +283,7 @@ behaviors** are exercised, not just line count.
   scenarios (AJAX vs non-AJAX, converters, disabled/readonly, keyboard interaction,
   validation, multi-instance, state restoration after update) rather than piling
   assertions into one view.
-- **Good coverage for a component generally exercises**: initial render + widget config,
+- **Good coverage for a component generally exercises**: initial render + client config,
   the primary interaction (select/sort/filter/toggle/upload…), AJAX events firing the
   expected listeners (assert via `p:messages`), **state surviving an AJAX update**
   (a recurring bug class — see the "must not be lost after update" assertions in

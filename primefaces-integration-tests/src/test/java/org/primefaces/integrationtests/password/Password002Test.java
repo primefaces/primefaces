@@ -43,7 +43,7 @@ class Password002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("Password: Show feedback panel with widget method")
+    @DisplayName("Password: Show feedback panel with client API method")
     void feedbackShow(Page page) {
         // Arrange
         Password password = page.password;
@@ -55,12 +55,12 @@ class Password002Test extends AbstractPrimePageTest {
         WebElement feedback = password.getFeedbackPanel();
         assertEquals("block", feedback.getCssValue("display"));
         assertText(feedback, "Enter a password");
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("Password: Hide feedback panel with widget method")
+    @DisplayName("Password: Hide feedback panel with client API method")
     void feedbackHide(Page page) {
         // Arrange
         Password password = page.password;
@@ -72,7 +72,7 @@ class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertEquals("none", feedback.getCssValue("display"));
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     @Test
@@ -89,7 +89,7 @@ class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Weak");
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     @Test
@@ -106,7 +106,7 @@ class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Medium");
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     @Test
@@ -123,7 +123,7 @@ class Password002Test extends AbstractPrimePageTest {
         // Assert
         WebElement feedback = password.getFeedbackPanel();
         assertText(feedback, "Strong");
-        assertConfiguration(password.getWidgetConfiguration());
+        assertConfiguration(password.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

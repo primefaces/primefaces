@@ -57,7 +57,7 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         page.button.click();
 
         // Assert
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
         assertMessage(page, "Selected ProgrammingLanguage(s)", "1,2,3");
 
         // Act
@@ -65,7 +65,7 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         page.button.click();
 
         // Assert - selection must not be lost after update
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
         assertMessage(page, "Selected ProgrammingLanguage(s)", "1,2,3");
     }
 
@@ -84,7 +84,7 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         page.button.click();
 
         // Assert
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
         assertMessage(page, "Selected ProgrammingLanguage(s)", "4,5");
 
         // Act
@@ -92,7 +92,7 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         page.button.click();
 
         // Assert - selection must not be lost after update
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
         assertMessage(page, "Selected ProgrammingLanguage(s)", "4,5");
     }
 

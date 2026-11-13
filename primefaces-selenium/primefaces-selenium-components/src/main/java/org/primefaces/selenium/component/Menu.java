@@ -45,7 +45,7 @@ public abstract class Menu extends AbstractComponent {
      * @return true if overlay false if inline
      */
     public boolean isOverlay() {
-        return getWidgetConfiguration().optBoolean("overlay", false);
+        return getClientConfiguration().optBoolean("overlay", false);
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class Menu extends AbstractComponent {
      */
     public void show() {
         if (isOverlay() && !isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         }
     }
@@ -63,7 +63,7 @@ public abstract class Menu extends AbstractComponent {
      */
     public void hide() {
         if (isOverlay() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }
@@ -74,7 +74,7 @@ public abstract class Menu extends AbstractComponent {
      * @return true if toggleable
      */
     public boolean isToggleable() {
-        return getWidgetConfiguration().optBoolean("toggleable", false);
+        return getClientConfiguration().optBoolean("toggleable", false);
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class Menu extends AbstractComponent {
      * @return the submenu header {@code li} elements
      */
     public List<WebElement> getSubmenuHeaders() {
-        return findElements(By.cssSelector(":scope > ul.p-menu-list > li.p-widget-header"));
+        return findElements(By.cssSelector(":scope > ul.p-menu-list > li.p-component-header"));
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class Menu extends AbstractComponent {
      * state rendered by the server.
      */
     public void clearState() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".clearState();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".clearState();");
     }
 
     /**

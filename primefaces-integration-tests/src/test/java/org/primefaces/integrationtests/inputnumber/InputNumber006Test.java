@@ -63,7 +63,7 @@ class InputNumber006Test extends AbstractPrimePageTest {
         assertFalse(page.messages.isEmpty());
         assertEquals("some action; value: 1234", page.messages.getMessage(0).getSummary());
 
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     @Test
@@ -86,7 +86,7 @@ class InputNumber006Test extends AbstractPrimePageTest {
         assertFalse(page.messages.isEmpty());
         assertEquals("some second action; value: 5678", page.messages.getMessage(0).getSummary());
 
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -44,7 +44,7 @@ arc the border color. The tokens can be overridden for a single knob with `style
 The size is set with `width` / `height` in pixels or as CSS length (e.g. `50%`); if only one is set, the knob is a
 square. The default size is 200px.
 ## Client Side API
-Widget: _PrimeFaces.widget.Knob_
+Component: _PrimeFaces.component.Knob_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

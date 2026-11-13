@@ -57,7 +57,7 @@ class InputText001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("hello!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -73,7 +73,7 @@ class InputText001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("hello safari!", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -100,7 +100,7 @@ class InputText001Test extends AbstractPrimePageTest {
         assertEquals("safari", inputText.getValue());
         assertFalse(inputText.isEnabled());
         assertCss(inputText, "p-state-disabled");
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     @Test
@@ -120,7 +120,7 @@ class InputText001Test extends AbstractPrimePageTest {
         assertClickable(inputText);
         assertTrue(inputText.isEnabled());
         assertEquals("testing re-enabled", inputText.getValue());
-        assertConfiguration(inputText.getWidgetConfiguration());
+        assertConfiguration(inputText.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

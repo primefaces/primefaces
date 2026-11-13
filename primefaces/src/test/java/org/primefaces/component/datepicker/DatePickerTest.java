@@ -109,7 +109,7 @@ class DatePickerTest {
         datePicker = mock(MyDatePicker.class);
         when(datePicker.calculatePattern()).thenCallRealMethod();
         when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
-        when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.calculateClientPattern()).thenCallRealMethod();
         when(datePicker.getTimeSeparator()).thenCallRealMethod();
         when(datePicker.getFractionSeparator()).thenCallRealMethod();
         when(datePicker.isValid()).thenCallRealMethod();
@@ -126,6 +126,7 @@ class DatePickerTest {
         when(datePicker.validateDateValue(eq(context), any(), any())).thenCallRealMethod();
         when(datePicker.validateTimeOnlyValue(eq(context), any())).thenCallRealMethod();
         when(datePicker.validateValueInternal(eq(context), any())).thenCallRealMethod();
+        when(datePicker.isDateView()).thenCallRealMethod();
 
         externalContext = mock(ExternalContext.class);
         elContext = mock(ELContext.class);
@@ -705,6 +706,25 @@ class DatePickerTest {
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_disabledDays_sunday_wrong() {
+        // 0 is Sunday like in JavaScript
+        when(datePicker.getDisabledDays()).thenReturn(Arrays.asList(0));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 21));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_disabledDays_weekView() {
+        // the week view selects the first and last day of the week, even if they are disabled
+        when(datePicker.getView()).thenReturn("week");
+        when(datePicker.getDisabledDays()).thenReturn(Arrays.asList(0, 6));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 21));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test

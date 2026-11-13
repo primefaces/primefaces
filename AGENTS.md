@@ -160,12 +160,12 @@ yarn tsc -b             # TypeScript type check only
 - CSS: design tokens only (`var(--p-...)`, no literal colors), in cascade layers; the themes (token values per preset)
   are in `themes/` and built to `primefaces-<theme>/theme.css`. Conventions and structure: `themes/README.md`;
   `yarn run build:themes:check` enforces them (also part of `build:bundle`).
-- A widget in its own package (e.g. `packages/knob/knob`) keeps its CSS there (`index.css` -> `<package>/<name>.css`, added
-  as `@ResourceDependency` of the component), only the widgets of `components.js` go into `components.css`.
+- A component in its own package (e.g. `packages/knob/knob`) keeps its CSS there (`index.css` -> `<package>/<name>.css`, added
+  as `@ResourceDependency` of the component), only the components of `components.js` go into `components.css`.
 - Minified output unless `NODE_ENV=development`: the Maven build passes `development` by default and `production` with
   `-Pminify`; running `yarn run build:bundle` directly without `NODE_ENV` builds minified.
 
-Key frontend dependencies: jQuery 4 (no jQuery UI: drag and drop, sorting and resizing are PrimeFaces' own pointer event interactions `PrimeFaces.interactions` in `packages/core/src/interaction`; widgets call them directly, there are no jQuery plugins `$.fn.draggable`, ... anymore), Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
+Key frontend dependencies: jQuery 4 (no jQuery UI: drag and drop, sorting and resizing are PrimeFaces' own pointer event interactions `PrimeFaces.interactions` in `packages/core/src/interaction`; components call them directly, there are no jQuery plugins `$.fn.draggable`, ... anymore), Chart.js 4, FullCalendar 5, Moment.js, Quill 2.
 
 ## Code Generation (CDK)
 

@@ -79,7 +79,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         File file2 = locateClientSideFile("file2.csv");
         fileUpload.setValue(file1, file2);
 
-        // the widget shows only the first file name and the number of additional files
+        // the component shows only the first file name and the number of additional files
         assertTrue(fileUpload.getFilename().startsWith(file1.getName()), fileUpload.getFilename());
         assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
@@ -103,7 +103,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         File file2 = locateClientSideFile("file2.csv");
         fileUpload.setValue(file1, file2);
 
-        // the widget shows only the first file name and the number of additional files
+        // the component shows only the first file name and the number of additional files
         assertTrue(fileUpload.getFilename().startsWith(file1.getName()), fileUpload.getFilename());
         assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
@@ -118,7 +118,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         File file4 = locateClientSideFile("file1.csv");
         fileUpload.setValue(file3, file4);
 
-        // the widget shows only the first file name and the number of additional files
+        // the component shows only the first file name and the number of additional files
         assertTrue(fileUpload.getFilename().startsWith(file3.getName()), fileUpload.getFilename());
         assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
@@ -205,7 +205,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
     }
 
     private void assertConfiguration(FileUpload fileUpload) {
-        JSONObject cfg = fileUpload.getWidgetConfiguration();
+        JSONObject cfg = fileUpload.getClientConfiguration();
         System.out.println("FileInput Config = " + cfg);
         assertEquals("{name} {size}", cfg.getString("messageTemplate"));
         assertTrue(cfg.getBoolean("skinSimple"));

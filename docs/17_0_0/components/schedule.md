@@ -56,7 +56,7 @@ textColor | Color of the text inside the event.
 
 ## Ajax Updates
 Schedule has a quite complex UI which is generated on-the-fly by the client side
-PrimeFaces.widget.Schedule widget to save bandwidth and increase page load performance. As a
+PrimeFaces.component.Schedule component to save bandwidth and increase page load performance. As a
 result when you try to update schedule like with a regular PrimeFacess PPR, you may notice a UI
 lag as the DOM will be regenerated and replaced. Instead, Schedule provides a simple client side
 api and the _update_ method.

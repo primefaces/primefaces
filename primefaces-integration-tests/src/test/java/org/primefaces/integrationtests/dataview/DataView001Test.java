@@ -78,7 +78,7 @@ class DataView001Test extends AbstractDataTableTest {
         assertEquals(1, paginator.getPage(0).getNumber());
         assertEquals(2, paginator.getPage(1).getNumber());
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(dataView.getClientConfiguration());
 
         // Act
         dataView.selectPage(2);
@@ -92,7 +92,7 @@ class DataView001Test extends AbstractDataTableTest {
         assertTrue(firstRowElt.getText().contains(langs.get(3).getId().toString()));
         assertTrue(firstRowElt.getText().contains(langs.get(3).getName()));
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(dataView.getClientConfiguration());
     }
 
     @Test
@@ -123,7 +123,7 @@ class DataView001Test extends AbstractDataTableTest {
         firstRowElt = dataView.getRowWebElement(0);
         assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "p-dataview-row"));
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(dataView.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

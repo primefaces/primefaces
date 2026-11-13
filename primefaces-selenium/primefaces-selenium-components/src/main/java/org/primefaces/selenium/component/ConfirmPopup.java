@@ -69,7 +69,7 @@ public abstract class ConfirmPopup extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isVisible();");
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class ConfirmPopup extends AbstractComponent {
      * For a non-global popup the yes button is a command of the page: it guards its own request, hiding the popup is up to the page.
      */
     public void confirm() {
-        if (!getWidgetConfiguration().optBoolean("global", false)) {
+        if (!getClientConfiguration().optBoolean("global", false)) {
             getYesButton().click();
         }
         else {
@@ -100,7 +100,7 @@ public abstract class ConfirmPopup extends AbstractComponent {
      */
     public void hidePopup() {
         if (isEnabled() && isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }

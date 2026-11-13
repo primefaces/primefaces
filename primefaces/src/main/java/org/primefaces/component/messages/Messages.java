@@ -38,8 +38,8 @@ public class Messages extends MessagesBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Messages";
 
-    public static final String CONTAINER_CLASS = "p-messages p-widget";
-    public static final String ICONLESS_CONTAINER_CLASS = "p-messages p-messages-noicon p-widget";
+    public static final String CONTAINER_CLASS = "p-messages p-component";
+    public static final String ICONLESS_CONTAINER_CLASS = "p-messages p-messages-noicon p-component";
     public static final String CLOSE_LINK_CLASS = "p-messages-close";
     public static final String CLOSE_ICON_CLASS = "p-icon p-close-icon p-messages-close-icon";
     public static final String SEVERITY_PREFIX_CLASS = "p-messages-";

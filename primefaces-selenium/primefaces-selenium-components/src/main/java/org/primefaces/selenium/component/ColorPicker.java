@@ -71,21 +71,21 @@ public abstract class ColorPicker extends AbstractInputComponent {
     }
 
     /**
-     * Set the current color using the widget.
+     * Set the current color using the client API.
      *
      * @param color the Hex/RGB/HSL color
      */
     public void setColor(String color) {
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".setColor('" + color + "');");
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getClientComponentScript() + ".setColor('" + color + "');");
     }
 
     /**
-     * Gets the current color from the widget.
+     * Gets the current color from the client component.
      *
      * @return the Hex/RGB/HSL color or null
      */
     public String getColor() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getColor();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getColor();");
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class ColorPicker extends AbstractInputComponent {
     public WebElement showPanel() {
         if (isEnabled()) {
             if (!getPanel().isDisplayed()) {
-                PrimeSelenium.executeScript(isOpenAjaxified(), getWidgetByIdScript() + ".show()");
+                PrimeSelenium.executeScript(isOpenAjaxified(), getClientComponentScript() + ".show()");
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
         }
@@ -110,7 +110,7 @@ public abstract class ColorPicker extends AbstractInputComponent {
     public void hidePanel(boolean revert) {
         if (isEnabled()) {
             if (getPanel().isDisplayed()) {
-                PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide(" + Boolean.toString(revert) + ");");
+                PrimeSelenium.executeScript(isCloseAjaxified(), getClientComponentScript() + ".hide(" + Boolean.toString(revert) + ");");
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
         }

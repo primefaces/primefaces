@@ -53,7 +53,7 @@ class Spinner003Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("2", spinner.getValue());
         assertOutputLabel(page, "2");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -74,12 +74,12 @@ class Spinner003Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("0", spinner.getValue());
         assertOutputLabel(page, "0");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("Spinner: AJAX setting value with widget method")
+    @DisplayName("Spinner: AJAX setting value with client API method")
     void ajaxSetValue(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
@@ -91,7 +91,7 @@ class Spinner003Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("4", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -108,7 +108,7 @@ class Spinner003Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("1", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -127,7 +127,7 @@ class Spinner003Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("2", spinner.getValue());
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

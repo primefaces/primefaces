@@ -148,9 +148,9 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     }
 
     public List<String> getLabels() {
-        JSONObject widgetConfiguration = getWidgetConfiguration();
+        JSONObject clientConfiguration = getClientConfiguration();
 
-        if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
+        if (clientConfiguration.has("filter") && clientConfiguration.getBoolean("filter")) {
             return getSelectlistbox().findElements(By.cssSelector("li.p-selectlistbox-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getDomProperty("innerHTML"))

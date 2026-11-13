@@ -38,5 +38,5 @@ public class InputText extends InputTextBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputText";
 
-    public static final String STYLE_CLASS = "p-inputfield p-inputtext p-widget p-state-default";
+    public static final String STYLE_CLASS = "p-inputfield p-inputtext p-component p-state-default";
 }

@@ -38,7 +38,7 @@ The tag attribute `device` allows the suggestion of a device to be used by the i
 the client-side operational system & browser will choose the preferred device to use with. Usually, in mobile devices the value `"user"`
 will be resolved as the front camera and `"environment"` will be resolved as the rear camera.
 
-A specific device can be also addressed. For this purpose, the PhotoCam widget is shipped with a `getAvailableDevices()` utility to retrieve the browser native 
+A specific device can be also addressed. For this purpose, the PhotoCam component is shipped with a `getAvailableDevices()` utility to retrieve the browser native 
 `InputDeviceInfo` objects. These objects can provide the required `deviceId` hash for each video input device attached to the system.
 The code below shows how to fill this information into a HTML select dropdown:
 

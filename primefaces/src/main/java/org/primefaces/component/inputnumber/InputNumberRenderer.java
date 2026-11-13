@@ -26,11 +26,11 @@ package org.primefaces.component.inputnumber;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.bean.NegativeClientValidationConstraint;
 import org.primefaces.validate.bean.PositiveClientValidationConstraint;
 
@@ -245,7 +245,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
         boolean isIntegral = isIntegral(context, component, value);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), component);
         wb.attr("disabled", component.isDisabled())
             .attr("valueToRender", valueToRender)

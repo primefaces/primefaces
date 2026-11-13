@@ -47,8 +47,8 @@ public class InputOtp extends InputOtpBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputOtp";
 
-    public static final String STYLE_CLASS = "p-inputotp p-widget";
-    public static final String INPUT_CLASS = "p-inputotp-input p-inputfield p-inputtext p-widget p-state-default";
+    public static final String STYLE_CLASS = "p-inputotp p-component";
+    public static final String INPUT_CLASS = "p-inputotp-input p-inputfield p-inputtext p-component p-state-default";
     public static final String SEPARATOR_CLASS = "p-inputotp-separator";
 
     /**
@@ -91,7 +91,7 @@ public class InputOtp extends InputOtpBaseImpl {
     protected boolean validateCode(FacesContext context, String submittedValue) {
         FacesMessage message = null;
         String customMessage = null;
-        // one character per input: a character outside the BMP (e.g. an emoji) is one code point like in the widget
+        // one character per input: a character outside the BMP (e.g. an emoji) is one code point like in the client side component
         int length = submittedValue.codePointCount(0, submittedValue.length());
         if (length != getLength()) {
             message = MessageFactory.getFacesMessage(context,

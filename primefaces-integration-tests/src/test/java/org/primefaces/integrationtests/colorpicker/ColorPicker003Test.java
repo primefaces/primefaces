@@ -50,7 +50,7 @@ class ColorPicker003Test extends AbstractColorPickerTest {
         WebElement panel = colorPicker.showPanel();
 
         // Assert
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
         assertDisplayed(panel);
         assertMessage(page.messages, "Popup Opened", "#d62828");
     }
@@ -67,7 +67,7 @@ class ColorPicker003Test extends AbstractColorPickerTest {
         colorPicker.hidePanel(false);
 
         // Assert
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
         assertNotDisplayed(panel);
         assertMessage(page.messages, "Popup Closed", "#d62828");
     }
@@ -84,7 +84,7 @@ class ColorPicker003Test extends AbstractColorPickerTest {
         colorPicker.setColor("#ff00ff");
 
         // Assert
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
         assertMessage(page.messages, "Color Changed", "#ff00ff");
     }
 
@@ -101,7 +101,7 @@ class ColorPicker003Test extends AbstractColorPickerTest {
         PrimeSelenium.wait(300);
 
         // Assert
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
         assertMessage(page.messages, "Color Changed", "rgb(0, 183, 255)");
     }
 

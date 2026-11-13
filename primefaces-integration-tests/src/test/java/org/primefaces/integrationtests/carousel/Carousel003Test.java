@@ -67,7 +67,7 @@ class Carousel003Test extends AbstractPrimePageTest {
         assertFalse(carousel.isBackwardDisabled(), "Backward button should be enabled in circular mode");
         assertFalse(carousel.isForwardDisabled(), "Forward button should be enabled in circular mode");
 
-        assertConfiguration(carousel.getWidgetConfiguration());
+        assertConfiguration(carousel.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

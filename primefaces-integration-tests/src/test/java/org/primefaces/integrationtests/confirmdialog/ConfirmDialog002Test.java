@@ -61,8 +61,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("ConfirmDialog: Link Show widget method")
-    void showWidget(Page page) {
+    @DisplayName("ConfirmDialog: Link Show client API method")
+    void showComponent(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
 
@@ -75,8 +75,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("ConfirmDialog: Link Hide widget method")
-    void hideWidget(Page page) {
+    @DisplayName("ConfirmDialog: Link Hide client API method")
+    void hideComponent(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
         dialog.show();
@@ -214,7 +214,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         assertDialog(page, true);
         assertEquals("Do you like cats?", dialog.getMessage().getText());
         assertEquals("p-confirm-dialog-severity p-icon p-warn-icon p-dialog-warn-icon", dialog.getIcon().getDomAttribute("class"));
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertDialog(Page page, boolean visible) {
@@ -230,7 +230,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
             assertClickableOrLoading(page.delete);
         }
 
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

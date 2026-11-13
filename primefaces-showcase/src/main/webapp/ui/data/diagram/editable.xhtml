@@ -35,7 +35,7 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/diagram"/>
-    <ui:param name="widgetLink" value="Diagram-1"/>
+    <ui:param name="componentLink" value="Diagram-1"/>
     <ui:param name="tagName" value="diagram"/>
 
     <ui:define name="implementation">
@@ -43,7 +43,7 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
-                <p:diagram value="#{diagramEditableView.model}" style="height:600px" styleClass="p-widget-content"
+                <p:diagram value="#{diagramEditableView.model}" style="height:600px" styleClass="p-component-content"
                            var="el">
                     <f:facet name="element">
                         <h:outputText value="#{el.data.name}" style="display:block;margin-top:1em;"/>

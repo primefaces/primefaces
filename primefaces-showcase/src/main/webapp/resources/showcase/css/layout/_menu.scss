@@ -7,7 +7,7 @@
     height: calc(100vh - var(--layout-topbar-height));
     background-color: transparent;
     width: var(--layout-sidebar-width);
-    border-right: 0 none;
+    border-inline-end: 0 none;
     user-select: none;
     transition: transform .4s cubic-bezier(.05,.74,.2,.99);
     display: flex;
@@ -72,7 +72,7 @@
                 .p-tag {
                     padding-top:.125rem;
                     padding-bottom: .125rem;
-                    margin-left: .5rem;
+                    margin-inline-start: .5rem;
                 }
 
                 &.hidden {
@@ -129,7 +129,7 @@
         padding: 0.5rem 0;
 
         .p-autocomplete-table {
-            .p-widget-header td {
+            .p-component-header td {
                 border: 1px solid transparent;
                 padding: 3px 5px;
             }
@@ -148,7 +148,7 @@
                         .p-tag {
                             padding-top:.125rem;
                             padding-bottom: .125rem;
-                            margin-left: .5rem;
+                            margin-inline-start: .5rem;
                         }
                     }
                 }

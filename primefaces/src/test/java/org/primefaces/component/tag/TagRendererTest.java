@@ -54,7 +54,7 @@ class TagRendererTest {
 
         renderer.encodeEnd(context, tag);
 
-        verify(writer).writeAttribute("class", "p-tag p-widget", "styleClass");
+        verify(writer).writeAttribute("class", "p-tag p-component", "styleClass");
     }
 
     @Test
@@ -66,7 +66,7 @@ class TagRendererTest {
 
         renderer.encodeEnd(context, tag);
 
-        verify(writer).writeAttribute("class", "p-tag p-widget p-tag-success p-tag-outlined", "styleClass");
+        verify(writer).writeAttribute("class", "p-tag p-component p-tag-success p-tag-outlined", "styleClass");
     }
 
     @Test
@@ -79,6 +79,6 @@ class TagRendererTest {
 
         renderer.encodeEnd(context, tag);
 
-        verify(writer).writeAttribute("class", "p-tag p-widget p-tag-warning p-tag-rounded p-tag-outlined", "styleClass");
+        verify(writer).writeAttribute("class", "p-tag p-component p-tag-warning p-tag-rounded p-tag-outlined", "styleClass");
     }
 }

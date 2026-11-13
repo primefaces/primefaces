@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -84,7 +84,7 @@ public class PhotoCamRenderer extends CoreRenderer<PhotoCam> {
 
     protected void encodeScript(FacesContext context, PhotoCam component) throws IOException {
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("PhotoCam", component)
                 .attr("width", component.getWidth(), 320)
                 .attr("height", component.getHeight(), 240)

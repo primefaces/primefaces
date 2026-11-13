@@ -38,7 +38,7 @@ itself.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SlideMenu_
+Component: _PrimeFaces.component.SlideMenu_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

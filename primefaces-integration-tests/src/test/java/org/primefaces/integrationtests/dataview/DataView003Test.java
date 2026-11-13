@@ -92,7 +92,7 @@ class DataView003Test extends AbstractDataTableTest {
         assertTrue(firstRowElt.getText().contains(langs.get(0).getId().toString()));
         assertTrue(firstRowElt.getText().contains(langs.get(0).getName()));
 
-        assertConfiguration(dataView.getWidgetConfiguration());
+        assertConfiguration(dataView.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

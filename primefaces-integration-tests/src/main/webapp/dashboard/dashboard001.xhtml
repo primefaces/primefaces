@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+            <h:outputText id="layout" value="#{dashboard001.layout}"/>
+
+            <p:dashboard id="dashboard" model="#{dashboard001.model}">
+                <p:ajax event="reorder" listener="#{dashboard001.onReorder}" update="msgs layout"/>
+
+                <p:panel id="sports" header="Sports">Sports content</p:panel>
+                <p:panel id="finance" header="Finance">Finance content</p:panel>
+                <p:panel id="lifestyle" header="Lifestyle">Lifestyle content</p:panel>
+                <p:panel id="weather" header="Weather">Weather content</p:panel>
+                <p:panel id="politics" header="Politics">Politics content</p:panel>
+            </p:dashboard>
+
+            <p:commandButton id="update" value="Update" update="dashboard layout"/>
+
+            <p:dashboard id="locked" model="#{dashboard001.lockedModel}" reordering="false">
+                <p:ajax event="reorder" listener="#{dashboard001.onReorder}" update="msgs"/>
+
+                <p:panel id="news" header="News">News content</p:panel>
+                <p:panel id="music" header="Music">Music content</p:panel>
+            </p:dashboard>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

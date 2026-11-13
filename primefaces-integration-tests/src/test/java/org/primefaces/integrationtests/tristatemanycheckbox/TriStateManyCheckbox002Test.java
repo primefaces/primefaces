@@ -54,7 +54,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         assertEquals(List.of(1, 2), checkbox.getStates());
 
         // Act
-        checkbox.toggleWithWidget(0, 1);
+        checkbox.toggleWithClientApi(0, 1);
 
         // Assert
         for (int i = 0; i < 2; i++) {
@@ -72,7 +72,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         assertTrue(page.msgs.isEmpty());
         assertEquals("{A=1, B=2}", page.disabledValue.getText());
         assertEquals(List.of(1, 2), checkbox.getStates());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -86,7 +86,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         // Act
         checkbox.toggle(0);
         checkbox.getLabelElements().get(1).click();
-        checkbox.toggleWithWidget(1, -1);
+        checkbox.toggleWithClientApi(1, -1);
 
         // Assert
         assertEquals(List.of(1, 2), checkbox.getStates());
@@ -98,7 +98,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.msgs.isEmpty());
         assertEquals("{A=1, B=2}", page.readonlyValue.getText());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -119,7 +119,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         assertTrue(page.msgs.isEmpty());
         assertEquals("{A=1, B=0}", page.itemDisabledValue.getText());
         assertEquals(List.of(1, 0), checkbox.getStates());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -147,19 +147,19 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         assertTrue(page.requiredMsgs.isEmpty());
         assertFalse(PrimeSelenium.hasCssClass(checkbox.getBoxes().get(0), "p-state-error"));
         assertEquals("{A=0, B=2}", page.requiredValue.getText());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
     @Order(5)
-    @DisplayName("TriStateManyCheckbox: widget disable and enable")
+    @DisplayName("TriStateManyCheckbox: client API disable and enable")
     void disableEnable(Page page) {
         // Arrange
         TriStateManyCheckbox checkbox = page.required;
 
         // Act
         checkbox.disable();
-        checkbox.toggleWithWidget(0, 1);
+        checkbox.toggleWithClientApi(0, 1);
 
         // Assert
         assertFalse(checkbox.isItemEnabled(0));
@@ -174,7 +174,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         assertTrue(checkbox.isItemEnabled(0));
         assertFalse(PrimeSelenium.hasCssClass(checkbox.getBoxes().get(0), "p-state-disabled"));
         assertEquals(List.of(1, 0), checkbox.getStates());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     @Test
@@ -203,7 +203,7 @@ class TriStateManyCheckbox002Test extends AbstractPrimePageTest {
         assertTrue(page.msgs.isEmpty());
         assertEquals("{A=1, B=0}", page.itemDisabledValue.getText());
         assertEquals(List.of(1, 0), checkbox.getStates());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

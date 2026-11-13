@@ -49,7 +49,7 @@ class TextEditor001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("<p>hello!</p>", editor.getValue());
-        assertConfiguration(editor.getWidgetConfiguration());
+        assertConfiguration(editor.getClientConfiguration());
     }
 
     @Test
@@ -63,7 +63,7 @@ class TextEditor001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("", editor.getEditorValue());
-        assertConfiguration(editor.getWidgetConfiguration());
+        assertConfiguration(editor.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -1,9 +1,29 @@
 import Coloris from "@melloware/coloris";
-import "./src/colorpicker.widget.js";
+import { ColorPicker } from "./src/colorpicker.js";
+
+PrimeFaces.component.ColorPicker = ColorPicker;
 
 declare global {
     interface Window {
         Coloris: typeof Coloris;
+    }
+
+    namespace PrimeFacesTypes {
+        export interface ComponentRegistry {
+            ColorPicker: typeof ColorPicker;
+        }
+    }
+
+    namespace PrimeFacesTypes.component {
+        export type ColorPickerCfg = import("./src/colorpicker.js").ColorPickerCfg;
+    }
+
+    namespace PrimeFacesTypes.component.ColorPicker {
+        /**
+         * Display mode of a color picker. `inline` renders the color picker within the normal content flow, `popup`
+         * creates an overlay that is displayed when the user clicks on the color.
+         */
+        export type DisplayMode = "inline" | "popup";
     }
 }
 

@@ -13,7 +13,7 @@ Spotlight is accessed using client side api. Clicking the button highlights the 
 <p:spotlight target="pnl" widgetVar="spot" />
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.Spotlight_
+Component: _PrimeFaces.component.Spotlight_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

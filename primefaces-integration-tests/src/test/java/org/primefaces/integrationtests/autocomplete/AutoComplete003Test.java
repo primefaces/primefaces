@@ -66,7 +66,7 @@ class AutoComplete003Test extends AbstractPrimePageTest {
         assertEquals("Ringo", values.get(0));
         assertEquals("John", values.get(1));
         assertEquals("George", values.get(2));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ class AutoComplete003Test extends AbstractPrimePageTest {
         values = autoComplete.getValues();
         assertEquals(1, values.size());
         assertEquals("Paul", values.get(0));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -115,7 +115,7 @@ class AutoComplete003Test extends AbstractPrimePageTest {
         values = autoComplete.getValues();
         assertEquals(1, values.size());
         assertEquals("Ringo", values.get(0));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     @Test
@@ -143,7 +143,7 @@ class AutoComplete003Test extends AbstractPrimePageTest {
         values = autoComplete.getValues();
         assertEquals(1, values.size());
         assertEquals("George", values.get(0));
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -54,7 +54,7 @@ class DataTable013Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsSorted = sortByNoLimit(new ProgrammingLanguageSorterFirstAppearedDescNameAsc());
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

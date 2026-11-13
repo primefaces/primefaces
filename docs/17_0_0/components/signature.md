@@ -177,7 +177,7 @@ public class SigGen {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Signature_
+Component: _PrimeFaces.component.Signature_
 
 
 | Method | Params | Return Type | Description |

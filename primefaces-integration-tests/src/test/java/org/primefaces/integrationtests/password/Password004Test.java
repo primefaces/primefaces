@@ -64,7 +64,7 @@ class Password004Test extends AbstractPrimePageTest {
         assertEquals("", pwd2.getValue());
         assertTrue(pwd1.isInvalid());
         assertTrue(pwd2.isInvalid());
-        assertConfiguration(pwd1.getWidgetConfiguration());
+        assertConfiguration(pwd1.getClientConfiguration());
     }
 
     @Test
@@ -91,7 +91,7 @@ class Password004Test extends AbstractPrimePageTest {
         assertEquals("", pwd2.getValue());
         assertTrue(pwd1.isInvalid());
         assertTrue(pwd2.isInvalid());
-        assertConfiguration(pwd1.getWidgetConfiguration());
+        assertConfiguration(pwd1.getClientConfiguration());
     }
 
     @Test
@@ -114,7 +114,7 @@ class Password004Test extends AbstractPrimePageTest {
         assertNull(message1);
         assertEquals("", pwd1.getValue());
         assertEquals("", pwd2.getValue());
-        assertConfiguration(pwd1.getWidgetConfiguration());
+        assertConfiguration(pwd1.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

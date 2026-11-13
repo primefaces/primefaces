@@ -36,11 +36,11 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -233,7 +233,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
     }
 
     protected void encodeScript(FacesContext context, SplitButton component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SplitButton", component)
             .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()));
 
@@ -435,7 +435,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         writer.writeAttribute("class", "p-splitbuttonmenu-filter-container", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", "p-splitbuttonmenu-filter p-inputfield p-inputtext p-widget p-state-default", null);
+        writer.writeAttribute("class", "p-splitbuttonmenu-filter p-inputfield p-inputtext p-component p-state-default", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);

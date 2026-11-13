@@ -239,7 +239,7 @@ Another use case of carousel is tab based content display.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Carousel_
+Component: _PrimeFaces.component.Carousel_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

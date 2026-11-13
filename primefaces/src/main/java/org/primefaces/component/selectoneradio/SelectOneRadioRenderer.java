@@ -25,12 +25,12 @@ package org.primefaces.component.selectoneradio;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,7 +90,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
         }
         boolean custom = "custom".equals(layout);
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectOneRadio", component)
                 .attr("custom", custom, false)
                 .attr("unselectable", component.isUnselectable())

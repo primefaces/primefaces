@@ -49,7 +49,7 @@ At the moment p:confirm is supported by p:commandButton, p:commandLink and p:men
 </p:confirmDialog>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.ConfirmDialog_
+Component: _PrimeFaces.component.ConfirmDialog_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

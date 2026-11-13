@@ -1,9 +1,9 @@
 /*
  * Signature: p:signature (a canvas inside a .p-inputfield.p-inputtextarea)
  *
- * Border, hover, focus, invalid and disabled come from forms/inputfield.css; the canvas itself is painted by the widget
+ * Border, hover, focus, invalid and disabled come from forms/inputfield.css; the canvas itself is painted by the component
  * (background / color / guideline attributes of the component), so only the frame is themed.
- * Supported classes: p-state-error, p-state-disabled, readonly (p-widget-content)
+ * Supported classes: p-state-error, p-state-disabled, readonly (p-component-content)
  */
 .p-signature {
     display: inline-block;

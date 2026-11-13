@@ -33,12 +33,12 @@ import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -297,10 +297,10 @@ public class TreeRenderer extends CoreRenderer<Tree> {
 
     protected void encodeScript(FacesContext context, Tree component) throws IOException {
         boolean dynamic = component.isDynamic();
-        String widget = component.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
+        String componentClass = component.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widget, component);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
+        wb.init(componentClass, component);
 
         wb.attr("dynamic", dynamic)
                 .attr("highlight", component.isHighlight(), true)
@@ -823,7 +823,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.endElement("li");
     }
 
-    protected void encodeIconStates(FacesContext context, Tree component, WidgetBuilder wb) throws IOException {
+    protected void encodeIconStates(FacesContext context, Tree component, ComponentScriptBuilder wb) throws IOException {
         Map<String, UITreeNode> nodes = component.getTreeNodes();
 
         wb.append(",iconStates:{");

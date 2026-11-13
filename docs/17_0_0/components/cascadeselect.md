@@ -77,7 +77,7 @@ public class MenuBean {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.CascadeSelect_
+Component: _PrimeFaces.component.CascadeSelect_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

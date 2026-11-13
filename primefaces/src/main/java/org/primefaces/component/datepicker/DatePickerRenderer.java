@@ -30,8 +30,8 @@ import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.text.DateFormatSymbols;
@@ -135,7 +135,7 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
 
     protected void encodeDateMetadataAsJSON(FacesContext context, DatePicker datePicker, DateMetadataModel model) throws IOException {
         JSONObject jsonDateMetadata = new JSONObject();
-        String pattern = datePicker.calculateWidgetPattern();
+        String pattern = datePicker.calculateClientPattern();
         for (Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
             String date = CalendarUtils.getValueAsString(context, datePicker, entry.getKey(), pattern);
             DateMetadata metadata = entry.getValue();
@@ -181,8 +181,8 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
     @Override
     protected void encodeScript(FacesContext context, DatePicker component, String value) throws IOException {
         Locale locale = component.calculateLocale(context);
-        String pattern = component.calculateWidgetPattern();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        String pattern = component.calculateClientPattern();
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DatePicker", component);
 
         String defaultDate = null;
@@ -339,7 +339,7 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
         }
     }
 
-    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker component) throws IOException {
+    protected void encodeScriptDateStyleClasses(ComponentScriptBuilder wb, DatePicker component) throws IOException {
         if (component.getModel() == null) {
             return;
         }

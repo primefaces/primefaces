@@ -423,7 +423,7 @@
     position: absolute;
     display: none;
 
-    &.p-widget {
+    &.p-component {
         padding: var(--p-autocomplete-itemtip-padding);
         background: var(--p-autocomplete-itemtip-background);
         color: var(--p-autocomplete-itemtip-color);

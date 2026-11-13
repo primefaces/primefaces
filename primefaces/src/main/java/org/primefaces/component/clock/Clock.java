@@ -44,8 +44,8 @@ public class Clock extends ClockBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Clock";
 
-    public static final String STYLE_CLASS = "p-clock p-widget p-widget-header";
-    public static final String ANALOG_STYLE_CLASS = "p-analog-clock p-widget";
+    public static final String STYLE_CLASS = "p-clock p-component p-component-header";
+    public static final String ANALOG_STYLE_CLASS = "p-analog-clock p-component";
 
     public boolean isSyncRequest() {
         FacesContext context = getFacesContext();

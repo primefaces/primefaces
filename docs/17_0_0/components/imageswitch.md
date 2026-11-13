@@ -35,17 +35,17 @@ and use client side api to create controls.
 <span onclick="PF('imageswitch').next();">Next</span>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.ImageSwitch_
+Component: _PrimeFaces.component.ImageSwitch_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-resumelideshow() | - | void | Starts slideshow mode.
-stopSlideshow() | - | void | Stops slideshow mode.
-toggleSlideshow() | - | void | Toggles slideshow mode.
-pauseSlideshow() | - | void | Pauses slideshow mode.
-next() | - | void | Switches to next image.
-previous() | - | void | Switches to previous image.
-switchTo(index) | index | void | Displays image with given index.
+| resumeSlideshow() | - | void | Starts slideshow mode.
+| stopSlideshow() | - | void | Stops slideshow mode.
+| toggleSlideshow() | - | void | Toggles slideshow mode.
+| pauseSlideshow() | - | void | Pauses slideshow mode.
+| next() | - | void | Switches to next image.
+| previous() | - | void | Switches to previous image.
+| switchTo(index) | index | void | Displays image with given index.
 
 ## Effect Speed
 The speed is considered in terms of milliseconds and specified via the speed attribute.

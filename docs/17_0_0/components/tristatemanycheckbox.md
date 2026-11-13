@@ -103,7 +103,7 @@ only, client side validation skips it.
 `pe:triStateManyCheckbox` becomes `p:triStateManyCheckbox` with the same attributes (`layout`, `stateOneIcon`,
 `stateTwoIcon`, `stateThreeIcon`, `stateOneTitle`, `stateTwoTitle`, `stateThreeTitle`) and the same value (a Map of
 the item values to the states, converted by the converter of the component). Differences:
-- The widget is `PrimeFaces.widget.TriStateManyCheckbox` (was `PrimeFaces.widget.ExtTriStateManyCheckbox`).
+- The component is `PrimeFaces.component.TriStateManyCheckbox` (was `PrimeFaces.widget.ExtTriStateManyCheckbox`).
 - `p:ajax` supports only the event `change` (the default): `event="valueChange"` and DOM events like `click` or
   `focus` must become `change` or be removed.
 - The markup changed: a `div` per item instead of a `table`, one input per item (named `clientId:index`) and the
@@ -142,7 +142,7 @@ locale.
 | `arrow down` / `arrow left` | Moves the item to the previous state. |
 
 ## Client Side API
-Widget: _PrimeFaces.widget.TriStateManyCheckbox_
+Component: _PrimeFaces.component.TriStateManyCheckbox_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

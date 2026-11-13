@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:clock id="client" pattern="HH:mm:ss"/>
+
+            <p:clock id="server" mode="server" pattern="dd.MM.yyyy HH:mm:ss" value="#{clock001.dateTime}"/>
+
+            <p:clock id="week" mode="server" pattern="W HH:mm:ss" value="#{clock001.dateTime}"/>
+
+            <div style="width: 200px;">
+                <p:clock id="analog" displayMode="analog"/>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

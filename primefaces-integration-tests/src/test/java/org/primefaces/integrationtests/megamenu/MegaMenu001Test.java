@@ -64,7 +64,7 @@ class MegaMenu001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("Contact"));
 
-        assertConfiguration(megamenu.getWidgetConfiguration());
+        assertConfiguration(megamenu.getClientConfiguration());
     }
 
     @Test
@@ -86,10 +86,10 @@ class MegaMenu001Test extends AbstractPrimePageTest {
         assertEquals(3, users.findElements(By.cssSelector("ul.p-menu-child td")).size());
 
         // Assert - column group titles render as non-clickable headers
-        WebElement title = users.findElement(By.cssSelector("li.p-widget-header"));
+        WebElement title = users.findElement(By.cssSelector("li.p-component-header"));
         assertEquals("User 1", title.getAttribute("textContent").trim());
 
-        assertConfiguration(megamenu.getWidgetConfiguration());
+        assertConfiguration(megamenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

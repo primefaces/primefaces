@@ -3,7 +3,7 @@
  * and mode="inline" (div .p-colorpicker with an inline .clr-picker).
  *
  * coloris.css is in the vendor layer; these rules adjust it and apply the tokens.
- * Supported classes: clr-rtl, p-state-error, clr-dark (set by the widget, the tokens already follow the color scheme),
+ * Supported classes: clr-rtl, p-state-error, clr-dark (set by the component, the tokens already follow the color scheme),
  *                    .thumbnail (swatch only)
  */
 .clr-field {

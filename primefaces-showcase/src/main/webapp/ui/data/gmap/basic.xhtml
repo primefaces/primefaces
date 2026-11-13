@@ -19,17 +19,17 @@
         <br/>
         <strong>Asynchronous vs Synchronous Loading:</strong>
         <br/>
-        GMap supports both static and asynchronous loading of the Google Maps API. The widget automatically detects if Google Maps is already loaded and will use asynchronous loading only when needed.
+        GMap supports both static and asynchronous loading of the Google Maps API. The component automatically detects if Google Maps is already loaded and will use asynchronous loading only when needed.
         <br/>
         <br/>
         <strong>Static Loading (Traditional Method):</strong> Include the script tag before the GMap component if you prefer to load Google Maps statically. This is more efficient when you have multiple GMap components on the same page.
         <br/>
         <br/>
-        <strong>Asynchronous Loading (Dynamic Library Import):</strong> For better performance and on-demand loading, provide the apiKey attribute (and optionally apiVersion and libraries). The widget uses Google's Dynamic Library Import API to load libraries only when needed. If Google Maps is already loaded statically, the widget will automatically use the existing instance and ignore the apiKey, apiVersion, and libraries attributes.
+        <strong>Asynchronous Loading (Dynamic Library Import):</strong> For better performance and on-demand loading, provide the apiKey attribute (and optionally apiVersion and libraries). The component uses Google's Dynamic Library Import API to load libraries only when needed. If Google Maps is already loaded statically, the component will automatically use the existing instance and ignore the apiKey, apiVersion, and libraries attributes.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>
-    <ui:param name="widgetLink" value="GMap-1"/>
+    <ui:param name="componentLink" value="GMap-1"/>
     <ui:param name="tagName" value="gmap"/>
 
     <ui:define name="implementation">

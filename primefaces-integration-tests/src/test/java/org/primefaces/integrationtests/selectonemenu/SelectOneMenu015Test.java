@@ -42,7 +42,7 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: GitHub #15435 item clicked during the fade-in of a never opened panel is selected")
-    void clickDuringFadeInOfFreshWidget(Page page) {
+    void clickDuringFadeInOfFreshComponent(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -51,7 +51,7 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(selectOneMenu, "Two", "2");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -68,13 +68,13 @@ class SelectOneMenu015Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(selectOneMenu, "Two", "2");
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void clickItemDuringFadeIn(SelectOneMenu selectOneMenu, int index) {
         // the panel only fades in with animations enabled, which the test framework turns off
         try {
-            PrimeSelenium.executeScript("PrimeFaces.utils.enableAnimations(); var w = " + selectOneMenu.getWidgetByIdScript()
+            PrimeSelenium.executeScript("PrimeFaces.utils.enableAnimations(); var w = " + selectOneMenu.getClientComponentScript()
                         + "; w.show(); w.items.eq(" + index + ").trigger('click');");
         }
         finally {

@@ -91,11 +91,11 @@ Here are some examples demonstrating various cases;
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.InputNumber_
+Component: _PrimeFaces.component.InputNumber_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 | enable() | none | void | Enables the component |
-| disabled() | none | void | Disables the component |
+| disable() | none | void | Disables the component |
 | setValue(value) | value: the numeric value to set | void | Sets the value of the InputNumber|
 | getValue() | none | String | Gets the current value of the InputNumber as a String. Formatted if formatted=true attribute.|

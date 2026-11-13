@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:dataGrid id="dataGrid" value="#{dataGrid001.progLanguages}" var="lang" columns="3" rows="3"
+                        paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="3,6"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                <p:ajax event="page" listener="#{dataGrid001.onPage}" update=":form:msgs"/>
+                <f:facet name="header">
+                    Languages
+                </f:facet>
+
+                <h:outputText value="#{lang.id} - #{lang.name}"/>
+            </p:dataGrid>
+
+            <p:commandButton id="update" value="Update" update="dataGrid"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

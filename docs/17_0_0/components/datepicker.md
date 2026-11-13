@@ -96,6 +96,16 @@ public void init() {
 }
 ```
 
+The restrictions are also validated on the server: a submitted value outside of `mindate` / `maxdate` (incl. the time
+part with `showTime` / `timeOnly`), on a disabled date or day or not on an enabled date and, in range mode, a start date after
+the end date are rejected with a validation message. Set `builtInValidation="false"` to skip these checks, e.g. if your own
+validators should decide. `required`, the converter and your validators (incl. Bean Validation) are still executed and the
+popup still restricts the selectable dates.
+
+```xhtml
+<p:datePicker value="#{dateBean.date}" mindate="#{dateBean.minDate}" builtInValidation="false" />
+```
+
 ## Date metadata model
 
 You can use the `model` attribute to set metadata per date in the calendar. Metadata currently contains `disabled` and `styleClass`.
@@ -157,7 +167,7 @@ The TimePicker pattern can be modified with the properties _hourFormat_ and _sho
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DatePicker_
+Component: _PrimeFaces.component.DatePicker_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

@@ -15,7 +15,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
 * MoveScriptsToBottom
     * Scripts with the attribute `data-p-no-move` are not moved to the bottom.
 * Style classes
-    * The style classes of the components use the prefix `p-` instead of the jQuery UI prefix `ui-` (e.g. `ui-widget` -> `p-widget`, `ui-state-active` -> `p-state-active`, `ui-datatable` -> `p-datatable`), only the Grid CSS (`ui-g`, `ui-grid`, ...) keeps its names, see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=style-classes).
+    * The style classes of the components use the prefix `p-` instead of the jQuery UI prefix `ui-` (e.g. `ui-widget` -> `p-component`, `ui-state-active` -> `p-state-active`, `ui-datatable` -> `p-datatable`), only the Grid CSS (`ui-g`, `ui-grid`, ...) keeps its names, see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=style-classes).
+* Client side components
+    * The client side API is `PrimeFaces.component` (e.g. `PrimeFaces.component.DataTable`) instead of `PrimeFaces.widget`, the instances are in `PrimeFaces.components`; the old names are deprecated aliases, see [Client Side Components](/core/components.md).
 * jQuery UI removed
     * PrimeFaces does not ship jQuery UI and jQuery UI Touch Punch anymore. Drag and drop, sorting and resizing are PrimeFaces' own implementation based on pointer events (mouse, pen and touch): `PrimeFaces.interactions`; positioning and effects are `PrimeFaces.utils.position` and `PrimeFaces.effects` (Web Animations API), see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=jquery-ui).
     * The resource `jquery/jquery-plugins.js` was removed, its remaining jQuery extensions are part of `core.js`.
@@ -31,6 +33,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * Added `showToggleAll` property to display a checkbox that selects or unselects all items, and `showSelectionCount` property to display the number of selected items.
 * Media
     * Added `title` property (accessible name of the `object` element) and `fallback` facet (content shown when the media cannot be displayed).
+* DatePicker
+    * Added `builtInValidation` property to skip the server side validation of `mindate` / `maxdate`, `disabledDates`, `enabledDates`, `disabledDays` and the order of the range dates.
+* PickList
+    * Transfer and move up/down/top/bottom actions are announced to screen readers (e.g. "Moved to Target", "Moved Up"), the texts are the new aria labels `movedToTarget`, `movedToSource`, `movedUp`, `movedDown`, `movedTop` and `movedBottom`, see [PickList](/components/picklist.md).
 * New components
     * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
     * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.

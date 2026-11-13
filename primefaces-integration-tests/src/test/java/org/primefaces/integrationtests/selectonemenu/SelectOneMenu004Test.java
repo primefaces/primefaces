@@ -60,7 +60,7 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getItemElements();
         assertEquals(6, options.size());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -97,7 +97,7 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getItemElements();
         assertEquals(5, options.size());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

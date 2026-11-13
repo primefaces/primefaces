@@ -1,6 +1,6 @@
 import { expressions } from "../core/core.expressions.js";
 import { core, type Core } from "../core/core.js";
-import type { BaseWidget } from "../core/core.widget.js";
+import type { BaseComponent } from "../core/core.component.js";
 import { toMessageOrErrorList } from "./validation.helper.js";
 import { validationHighlighter } from "./validation.highlighters.js";
 
@@ -289,20 +289,20 @@ export class Validation {
         const process = this.Utils.resolveProcess(cfg, $source);
         const update = this.Utils.resolveUpdate(cfg, $source);
 
-        const widget = core.getWidgetById(btn.id);
+        const component = core.getComponentById(btn.id);
 
-        if (widget) {
+        if (component) {
             if (this.validate($source, process, update, false, false, false, false, false).valid) {
-                widget.jq.addClass('p-state-csv-valid');
-                widget.jq.removeClass('p-state-csv-invalid');
-                widget.enable?.();
+                component.jq.addClass('p-state-csv-valid');
+                component.jq.removeClass('p-state-csv-invalid');
+                component.enable?.();
             } else {
-                widget.jq.addClass('p-state-csv-invalid');
-                widget.jq.removeClass('p-state-csv-valid');
-                widget.disable?.();
+                component.jq.addClass('p-state-csv-invalid');
+                component.jq.removeClass('p-state-csv-valid');
+                component.disable?.();
             }
         } else {
-            console.warn('No widget found for ID ' + btn.id);
+            console.warn('No component found for ID ' + btn.id);
         }
 
         this.ValidationContext.clear();
@@ -350,10 +350,10 @@ export class Validation {
             }
 
             if (messageComponent) {
-                const messageWidget = core.getWidgetById(messageComponent.attr('id') ?? "");
-                if (messageWidget) {
+                const messageInstance = core.getComponentById(messageComponent.attr('id') ?? "");
+                if (messageInstance) {
                     for (const messageRenderHook of core.getHook("messageRender")) {
-                        messageRenderHook.clearMessagesForWidget(messageWidget);
+                        (messageRenderHook.clearMessagesForComponent ?? messageRenderHook.clearMessagesForWidget)?.call(messageRenderHook, messageInstance);
                     }
                 }
             }
@@ -365,10 +365,10 @@ export class Validation {
 
         if (!vc.isEmpty()) {
             if (messageComponent) {
-                const messageWidget = core.getWidgetById(messageComponent.attr('id') ?? "");
-                if (messageWidget) {
+                const messageInstance = core.getComponentById(messageComponent.attr('id') ?? "");
+                if (messageInstance) {
                     for (const messageRenderHook of core.getHook("messageRender")) {
-                        messageRenderHook.renderMessageForWidget(messageWidget, vc.messages[clientId] ?? []);
+                        (messageRenderHook.renderMessageForComponent ?? messageRenderHook.renderMessageForWidget)?.call(messageRenderHook, messageInstance, vc.messages[clientId] ?? []);
                     }
                 }
             }
@@ -633,11 +633,11 @@ export class ValidationContext {
     elementGroups: string[] = [];
 
     /**
-     * Highlights the passed widget as invalid.
+     * Highlights the passed component as invalid.
      *
-     * @param target The target widget / element.
+     * @param target The target component / element.
      */
-    highlight(target: string | HTMLElement | JQuery | BaseWidget): void {
+    highlight(target: string | HTMLElement | JQuery | BaseComponent): void {
         const element = core.resolveAs$(target);
         const highlighterType = element.data('p-hl') || 'default';
         const highlighter = validationHighlighter.types[highlighterType];
@@ -647,11 +647,11 @@ export class ValidationContext {
     }
 
     /**
-     * Un-Highlights the passed widget as invalid.
+     * Un-Highlights the passed component as invalid.
      *
-     * @param target The target widget / element.
+     * @param target The target component / element.
      */
-    unhighlight(target: string | HTMLElement | JQuery | BaseWidget): void {
+    unhighlight(target: string | HTMLElement | JQuery | BaseComponent): void {
         const element = core.resolveAs$(target);
         const highlighterType = element.data('p-hl') || 'default';
         const highlighter = validationHighlighter.types[highlighterType];
@@ -662,10 +662,10 @@ export class ValidationContext {
 
     /**
      * Adds a faces message to the given element.
-     * @param target Element or widget to which to add the message.
+     * @param target Element or component to which to add the message.
      * @param msg Message to add to the given message.
      */
-    addMessage(target: string | HTMLElement | JQuery | BaseWidget, msg: Error | PrimeFacesTypes.BaseFacesMessage): void {
+    addMessage(target: string | HTMLElement | JQuery | BaseComponent, msg: Error | PrimeFacesTypes.BaseFacesMessage): void {
         const clientId = core.resolveAsId(target);
 
         this.messages[clientId] ??= [];

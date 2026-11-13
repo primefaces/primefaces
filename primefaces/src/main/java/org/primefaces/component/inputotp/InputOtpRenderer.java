@@ -26,11 +26,11 @@ package org.primefaces.component.inputotp;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 
 import java.io.IOException;
@@ -105,7 +105,7 @@ public class InputOtpRenderer extends InputRenderer<InputOtp> {
         boolean hasSeparatorFacet = FacetUtils.shouldRenderFacet(separatorFacet);
         String separator = component.getSeparator();
 
-        // one character per input, a character outside the BMP (e.g. an emoji) is one code point like in the widget
+        // one character per input, a character outside the BMP (e.g. an emoji) is one code point like in the client side component
         int[] chars = value.codePoints().toArray();
         for (int i = 0; i < component.getLength(); i++) {
             if (i > 0 && (hasSeparatorFacet || LangUtils.isNotEmpty(separator))) {
@@ -138,7 +138,7 @@ public class InputOtpRenderer extends InputRenderer<InputOtp> {
         writer.writeAttribute("type", component.isMask() ? "password" : "text", null);
         writer.writeAttribute("class", inputClass, null);
         writer.writeAttribute("value", value, null);
-        // no maxlength: a code filled in by the browser (one-time-code, e.g. "123-456") arrives in one input, the widget
+        // no maxlength: a code filled in by the browser (one-time-code, e.g. "123-456") arrives in one input, the client side component
         // distributes it; a maxlength would cut it before
         writer.writeAttribute("autocomplete", index == 0 ? component.getAutocomplete() : "off", null);
         if (component.isIntegerOnly()) {
@@ -197,7 +197,7 @@ public class InputOtpRenderer extends InputRenderer<InputOtp> {
     }
 
     protected void encodeScript(FacesContext context, InputOtp component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("InputOtp", component)
                 .attr("integerOnly", component.isIntegerOnly(), false)
                 .attr("disabled", component.isDisabled(), false)
@@ -215,7 +215,7 @@ public class InputOtpRenderer extends InputRenderer<InputOtp> {
     }
 
     /**
-     * The client side validation of the length (a value that is not empty must have all characters), the widget
+     * The client side validation of the length (a value that is not empty must have all characters), the client side component
      * registers it.
      */
     protected static class OtpClientValidator implements ClientValidator {

@@ -28,8 +28,8 @@ import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +44,7 @@ public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
 
     @Override
     protected void encodeScript(FacesContext context, TabMenu component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TabMenu", component);
         wb.finish();
     }

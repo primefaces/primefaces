@@ -88,7 +88,7 @@ class SelectOneMenu009Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Charles", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

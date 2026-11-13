@@ -34,7 +34,7 @@ _onRate_ is called when a star is selected with _value_ as the only parameter.
 <p:rating value="#{ratingBean.rating}" onRate="alert('You rated: ' + value)" />
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.Rating_
+Component: _PrimeFaces.component.Rating_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

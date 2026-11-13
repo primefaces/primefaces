@@ -54,7 +54,7 @@ class InputText004Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("cannot change me", readonly.getValue());
         assertCss(readonly, "p-state-readonly");
-        assertConfiguration(readonly.getWidgetConfiguration());
+        assertConfiguration(readonly.getClientConfiguration());
     }
 
     @Test
@@ -67,7 +67,7 @@ class InputText004Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("", placeholder.getValue());
         assertEquals("Type here...", placeholder.getInput().getDomAttribute("placeholder"));
-        assertConfiguration(placeholder.getWidgetConfiguration());
+        assertConfiguration(placeholder.getClientConfiguration());
     }
 
     @Test
@@ -81,7 +81,7 @@ class InputText004Test extends AbstractPrimePageTest {
         assertEquals("My Tooltip", passthrough.getInput().getDomAttribute("title"));
         assertEquals("30", passthrough.getInput().getDomAttribute("size"));
         assertEquals("off", passthrough.getInput().getDomAttribute("autocomplete"));
-        assertConfiguration(passthrough.getWidgetConfiguration());
+        assertConfiguration(passthrough.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

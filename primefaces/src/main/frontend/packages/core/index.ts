@@ -13,7 +13,7 @@ import "./src/jquery-extensions/jquery.zindex.js";
 
 import type { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
 import type { AjaxStatus } from "./src/ajaxstatus/ajaxstatus.js";
-import type { BaseWidget, DeferredWidget, DynamicOverlayWidget } from "./src/core/core.widget.js";
+import type { BaseComponent, DeferredComponent, DynamicOverlayComponent } from "./src/core/core.component.js";
 import type { Poll } from "./src/poll/poll.js";
 
 import { registerKillSwitchHookForPoll } from "./src/poll/poll.js";
@@ -32,7 +32,7 @@ function exposeToGlobalScope() {
         return;
     }
 
-    // the jQuery extensions first, the rest of PrimeFaces uses them (e.g. the remove event to destroy widgets)
+    // the jQuery extensions first, the rest of PrimeFaces uses them (e.g. the remove event to destroy components)
     globalJQueryExtensionsSetup();
 
     // Expose js-cookie to the global scope
@@ -88,7 +88,7 @@ declare global {
 
         /**
          * A callback that is invoked when the user clicks on an element outside
-         * an overlay widget.
+         * an overlay component.
          */
         export type OverlayHideCallback =
             /**
@@ -232,8 +232,8 @@ declare global {
 
         /**
          * A 'FacesMessage' with a short summary message and a more detailed message, as well as a severity level that
-         * indicates the type of this message. Used by the client-side validation framework and some widgets such as the
-         * growl widget.
+         * indicates the type of this message. Used by the client-side validation framework and some components such as the
+         * growl component.
          */
         export interface BaseFacesMessage {
             /**
@@ -257,8 +257,8 @@ declare global {
 
         /**
          * A 'FacesMessage' with a short summary message and a more detailed message, as well as a severity level that
-         * indicates the type of this message. Used by the client-side validation framework and some widgets such as the
-         * growl widget.
+         * indicates the type of this message. Used by the client-side validation framework and some components such as the
+         * growl component.
          * 
          * Similar to {@link BaseFacesMessage}, but `severity` and `rendered` are guaranteed to be present.
          */
@@ -275,30 +275,30 @@ declare global {
         }
 
         /**
-         * Represents a deferred render added for a deferred widget.
-         * Some widgets need to compute their dimensions based on their parent element(s). This requires that such widgets
-         * are not rendered until they have become visible. A widget may not be visible, for example, when it is inside a
-         * tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for widgets to render
-         * once they are visible. This is done by keeping a list of widgets that need to be rendered, and checking on every
-         * change (AJAX request, tab change etc.) whether any of those have become visible. A widgets should extend
-         * `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+         * Represents a deferred render added for a deferred component.
+         * Some components need to compute their dimensions based on their parent element(s). This requires that such components
+         * are not rendered until they have become visible. A component may not be visible, for example, when it is inside a
+         * tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for components to render
+         * once they are visible. This is done by keeping a list of components that need to be rendered, and checking on every
+         * change (AJAX request, tab change etc.) whether any of those have become visible. Components should extend
+         * `PrimeFaces.component.DeferredComponent` to make use of this functionality.
          */
         export interface DeferredRender {
             /**
-             * Callback that is invoked when the widget _may_ possibly have become visible.
-             * Checks whether the widget can be rendered and if so, renders it.
-             * @return `true` when the widget was rendered, or `false` when the widget still
+             * Callback that is invoked when the component _may_ possibly have become visible.
+             * Checks whether the component can be rendered and if so, renders it.
+             * @return `true` when the component was rendered, or `false` when the component still
              * needs to be rendered later.
              */
             callback(): boolean | undefined | void;
             /**
-             * ID of the container that should be visible before the widget can be rendered.
+             * ID of the container that should be visible before the component can be rendered.
              */
             container: string | string[];
             /**
-             * The ID of a deferred widget.
+             * The ID of a deferred component.
              */
-            widget: string | string[];
+            componentId: string | string[];
         }
 
         export interface PFSettings {
@@ -439,12 +439,28 @@ declare global {
          * messages are rendered.
          * 
          * Default implementations are provided for rendering messages into the
-         * message, messages, and growl widget.
+         * message, messages and growl components.
          */
         export interface MessageRender {
-            clearMessagesForWidget: (widget: BaseWidget) => void;
+            /**
+             * Clears the messages of the given message, messages or growl component.
+             */
+            clearMessagesForComponent?: (component: BaseComponent) => void;
 
-            renderMessageForWidget: (widget: BaseWidget, messages: PrimeFacesTypes.FacesMessage[]) => void;
+            /**
+             * Renders the given messages into the given message, messages or growl component.
+             */
+            renderMessageForComponent?: (component: BaseComponent, messages: PrimeFacesTypes.FacesMessage[]) => void;
+
+            /**
+             * @deprecated Implement {@link clearMessagesForComponent} instead, this one is only called when that is missing.
+             */
+            clearMessagesForWidget?: (component: BaseComponent) => void;
+
+            /**
+             * @deprecated Implement {@link renderMessageForComponent} instead, this one is only called when that is missing.
+             */
+            renderMessageForWidget?: (component: BaseComponent, messages: PrimeFacesTypes.FacesMessage[]) => void;
 
             /**
              * Renders all given messages in the given containers.
@@ -559,7 +575,7 @@ declare global {
         /**
          * Interface with the options shared by the open / close methods of the
          * `PrimeFaces.dialog.DialogHandler` and the configuration of the
-         * `PrimeFaces.widget.Dialog` widget. 
+         * `PrimeFaces.component.Dialog` component. 
          */
         export interface SharedDialogOptions {
             /**
@@ -704,7 +720,7 @@ declare global {
             onShow: string;
 
             /**
-             * Widget variable name of the dialog widget to target. 
+             * Widget variable name of the dialog component to target. 
              */
             widgetVar: string;
         }
@@ -1000,19 +1016,23 @@ declare global {
         /**
          * The response of an AJAX request may contain one or more actions such as executing scripts or updating DOM nodes.
          * This interface represents a handler for an `update` action.
-         * @typeParam TWidget Type of the widget which
+         * @typeParam Component Type of the component which
          * triggered the AJAX request.
          */
-        export interface UpdateHandler<Widget extends BaseWidget = BaseWidget> {
+        export interface UpdateHandler<Component extends BaseComponent = BaseComponent> {
             /**
-             * The widget which triggered the AJAX request.
+             * The component which triggered the AJAX request.
              */
-            widget: Widget;
+            component?: Component;
+            /**
+             * @deprecated Use {@link component} instead.
+             */
+            widget?: Component;
             /**
              * The handle function which is given the HTML string of the update
              * @param content The new HTML content from the update.
              */
-            handle(this: Widget, content: string): void;
+            handle(this: Component, content: string): void;
         }
         /**
          * Represents the selection of an INPUT or TEXTAREA element.
@@ -1387,7 +1407,7 @@ declare global {
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
          * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
-         * handler is usually registered for a particular type of element or widget.
+         * handler is usually registered for a particular type of element or component.
          */
         export interface Highlighter {
             /**
@@ -1484,81 +1504,82 @@ declare global {
     }
 }
 
-// Base widget types
+// Base component types
 declare global {
     namespace PrimeFacesTypes {
         /**
-         * Shortcut for the type of a specific widget. For example, if you want to
+         * Shortcut for the type of a specific component. For example, if you want to
          * write a function that takes a single parameter named `commandButton`
          * that must be a CommandButton instance:
          * 
          * ```ts
-         * function processCommandButton(widget: PrimeFacesTypes.Widget<"CommandButton">): void {
+         * function processCommandButton(component: PrimeFacesTypes.Component<"CommandButton">): void {
          *   // do something with command button
          * }
          * ```
          */
-        export type Widget<Name extends keyof WidgetRegistry> = InstanceType<PrimeFacesTypes.WidgetRegistry[Name]>;
+        export type Component<Name extends keyof ComponentRegistry> = InstanceType<PrimeFacesTypes.ComponentRegistry[Name]>;
 
         /**
-         * A map of all instantiated widgets that are available on the current page.
+         * A map of all instantiated components that are available on the current page.
          */
-        export type WidgetInstanceMap = Record<string, BaseWidget<any>>;
+        export type ComponentInstanceMap = Record<string, BaseComponent<any>>;
 
         /**
-         * This interface contains the mapping between the name of a widget type and its implementing class. The key
-         * is the name of the widget, the value the class (constructor) of the widget. Please note that widgets are
+         * This interface contains the mapping between the name of a component type and its implementing class. The key
+         * is the name of the component, the value the class (constructor) of the component. Please note that components are
          * usually created by the PrimeFaces framework and should not be created manually.
          * 
-         * At runtime, the widget registry is available via `PrimeFaces.widget`, see {@link PrimeFaces.widget} for
+         * At runtime, the component registry is available via `PrimeFaces.component`, see {@link PrimeFaces.component} for
          * more details.
          * 
-         * If you are authoring custom widgets, you can make your widgets available to consumer by extending this
+         * If you are authoring custom components, you can make your components available to consumer by extending this
          * interface:
          * 
          * ```ts
-         * import { YourWidget } from "./src/widgets/your-widget.js";
+         * import { YourComponent } from "./src/components/your-component.js";
          * declare global {
          *   namespace PrimeFacesTypes {
-         *     export interface WidgetRegistry {
-         *       YourWidget: typeof YourWidget;
+         *     export interface ComponentRegistry {
+         *       YourComponent: typeof YourComponent;
          *     }
          *   }
-         *   namespace PrimeFacesTypes.widget {
-         *     export type YourWidgetCfg = import("./src/widgets/your-widget.js").YourWidgetCfg;
+         *   namespace PrimeFacesTypes.component {
+         *     export type YourComponentCfg = import("./src/components/your-component.js").YourComponentCfg;
          *   }
          * }
-         * ```  
-         */
-        export interface WidgetRegistry { }
-    }
-    namespace PrimeFacesTypes.widget {
-        /**
-         * Gets the configuration of a widget.
-         * 
-         * ```ts
-         * // PrimeFacesTypes.widget.AjaxStatusCfg
-         * type Cfg = PrimeFacesTypes.widget.WidgetCfg<PrimeFacesTypes.WidgetRegistry["AjaxStatus"]>
          * ```
          */
-        export type WidgetCfg<Widget extends PrimeFacesTypes.Newable<[], BaseWidget<any>>> = Widget extends PrimeFacesTypes.Newable<[], BaseWidget<infer Cfg>> ? Cfg : never;
+        export interface ComponentRegistry { }
+    }
+
+    namespace PrimeFacesTypes.component {
+        /**
+         * Gets the configuration of a component.
+         * 
+         * ```ts
+         * // PrimeFacesTypes.component.AjaxStatusCfg
+         * type Cfg = PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry["AjaxStatus"]>
+         * ```
+         */
+        export type ComponentCfg<Component extends PrimeFacesTypes.Newable<[], BaseComponent<any>>> = Component extends PrimeFacesTypes.Newable<[], BaseComponent<infer Cfg>> ? Cfg : never;
 
         /**
-         * Interface of the context menu widget configuration available to other
-         * widgets that wish to provide custom context menu integration.
+         * Interface of the context menu component configuration available to other
+         * components that wish to provide custom context menu integration.
          * 
-         * Other widgets can implement the
-         * {@link BaseWidget.bindContextMenu bindContextMenu} method to do so.
-         * If they do, they get passed the widget instance and its configuration.
+         * Other components can implement the
+         * {@link BaseComponent.bindContextMenu bindContextMenu} method to do so.
+         * If they do, they get passed the component instance and its configuration.
          */
-        export interface ContextMenuLikeWidgetCfg extends BaseWidgetCfg {
+        export interface ContextMenuLikeComponentCfg extends BaseComponentCfg {
             /**
              * Event that triggers this context menu, usually a (right) mouse click.
              */
             event: string;
 
             /**
-             * Type of the target nodes to attach to. Used e.g. by the tree table widget.
+             * Type of the target nodes to attach to. Used e.g. by the tree table component.
              * 
              * TreeTable has special integration with context menu, you can even
              * match different context menus with different tree nodes using
@@ -1568,7 +1589,7 @@ declare global {
             nodeType: string;
 
             /**
-             * Type of the selection mode, used e.g. by the data table widget.
+             * Type of the selection mode, used e.g. by the data table component.
              * 
              * DataTable has special integration with the context menu.
              */
@@ -1576,24 +1597,24 @@ declare global {
         }
 
         /**
-         * Interface of the context menu widget available to other widgets that
+         * Interface of the context menu component available to other components that
          * wish to provide custom context menu integration. 
          * 
-         * Other widgets can implement the
-         * {@link BaseWidget.bindContextMenu bindContextMenu} method to do so.
-         * If they do, they get passed the widget instance and its configuration.
+         * Other components can implement the
+         * {@link BaseComponent.bindContextMenu bindContextMenu} method to do so.
+         * If they do, they get passed the component instance and its configuration.
          */
-        export interface ContextMenuLikeWidget extends BaseWidget<ContextMenuLikeWidgetCfg> {
+        export interface ContextMenuLikeComponent extends BaseComponent<ContextMenuLikeComponentCfg> {
             show(e: JQuery.TriggeredEvent): void;
             hide(): void;
         }
 
         /**
-         * Configuration for a {@link BaseWidget widget} with the dynamic overlay feature. The
-         * {@link DynamicOverlayFeatureWidgetCfg.appendTo | appendTo} attribute specifies a target
+         * Configuration for a {@link BaseComponent component} with the dynamic overlay feature. The
+         * {@link DynamicOverlayFeatureComponentCfg.appendTo | appendTo} attribute specifies a target
          * where the overlay should be appended to.
          */
-        export interface DynamicOverlayFeatureWidgetCfg extends BaseWidgetCfg {
+        export interface DynamicOverlayFeatureComponentCfg extends BaseComponentCfg {
             /**
              * The search expression for the element to which the overlay panel should be appended. Defaults to the
              * body.
@@ -1602,20 +1623,20 @@ declare global {
         }
 
         /**
-         * A {@link BaseWidget widget} with the dynamic overlay feature. The {@link DynamicOverlayFeatureWidgetCfg.appendTo | appendTo}
+         * A {@link BaseComponent component} with the dynamic overlay feature. The {@link DynamicOverlayFeatureComponentCfg.appendTo | appendTo}
          * attribute specifies a target where the overlay should be appended to.
-         * @typeParam Cfg Type of the widget configuration.
+         * @typeParam Cfg Type of the component configuration.
          */
-        export interface DynamicOverlayFeatureWidget<Cfg extends DynamicOverlayFeatureWidgetCfg> extends BaseWidget<Cfg> { }
+        export interface DynamicOverlayFeatureComponent<Cfg extends DynamicOverlayFeatureComponentCfg> extends BaseComponent<Cfg> { }
 
         /*
          * __Note__: Do not parametrize the this context via a type parameter. This would require changing the return type
-         * of BaseWidget#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
-         * possible to assign, for example, an object of type AccordionPanel to a variable of type BaseWidget - as that
-         * would allow calling "getBehavior" on the AccordionPanel and only passing a BaseWidget as the this context.
+         * of BaseComponent#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
+         * possible to assign, for example, an object of type AccordionPanel to a variable of type BaseComponent - as that
+         * would allow calling "getBehavior" on the AccordionPanel and only passing a BaseComponent as the this context.
          */
         /**
-         * A callback function for a behavior of a widget. A behavior is a way for associating client-side scripts with UI
+         * A callback function for a behavior of a component. A behavior is a way for associating client-side scripts with UI
          * components that opens all sorts of possibilities, including client-side validation, DOM and style manipulation,
          * keyboard handling, and more. When the behavior is triggered, the configured JavaScript gets executed.
          *
@@ -1625,106 +1646,109 @@ declare global {
          */
         export type Behavior =
             /**
-             * @this This callback takes the widget instance as the this context. This must be the widget instance that owns
-             * the behavior. The type is only required to be a {@link BaseWidget} as only common widget properties such as
+             * @this This callback takes the component instance as the this context. This must be the component instance that owns
+             * the behavior. The type is only required to be a {@link BaseComponent} as only common component properties such as
              * its ID are used.
              * @param ext Additional data to be sent with the AJAX request that is made to the server.
              */
-            (this: BaseWidget, ext?: Partial<ajax.ConfigurationExtender>) => void;
+            (this: BaseComponent, ext?: Partial<ajax.ConfigurationExtender>) => void;
 
         /**
-         * The widget configuration of each widget may contain only some of the declared properties. For example, when the
+         * The component configuration of each component may contain only some of the declared properties. For example, when the
          * value of a property is equal to the default value, it is not transmitted from the server to the client. Only the
          * two properties `id` and `widgetVar` are guaranteed to be always available.
-         * @typeParam Cfg Type of a widget configuration. It must have at least the two properties `id` and `widgetVar`.
+         * @typeParam Cfg Type of a component configuration. It must have at least the two properties `id` and `widgetVar`.
          * @return A new type with all properties in the given type made optional, except for `id` and `widgetVar`.
          */
-        export type PartialWidgetCfg<Cfg extends {
+        export type PartialComponentCfg<Cfg extends {
             id: string | string[];
             widgetVar: string;
         }> = Partial<Omit<Cfg, "id" | "widgetVar">> & Pick<Cfg, "id" | "widgetVar">;
 
         /**
-         * Same as {@link PartialWidgetCfg}, but with the widgetVar being optional. Used by the `PrimeFaces.cw` function
-         * when creating widgets, which receives the widget variable explicitly as a separate argument.
-         * @typeParam Cfg Type of a widget configuration. It must have at least the on property `id`.
+         * Same as {@link PartialComponentCfg}, but with the widgetVar being optional. Used by the `PrimeFaces.cw` function
+         * when creating components, which receives the widget variable explicitly as a separate argument.
+         * @typeParam Cfg Type of a component configuration. It must have at least the on property `id`.
          * @return A new type with all properties in the given type made optional, except for `id`.
          */
-        export type PartialCreateWidgetCfg<Cfg extends {
+        export type PartialCreateComponentCfg<Cfg extends {
             id: string | string[];
             widgetVar: string;
         }> = Partial<Omit<Cfg, "id">> & Pick<Cfg, "id">;
 
         /**
-         * A destroy listener for a PrimeFaces widget. It is invoked when the
-         * widget is removed, such as during AJAX updates. Use {@link BaseWidget.addDestroyListener} to add a destroy
+         * A destroy listener for a PrimeFaces component. It is invoked when the
+         * component is removed, such as during AJAX updates. Use {@link BaseComponent.addDestroyListener} to add a destroy
          * listener.
-         * @typeParam Widget The type of the widget that is being destroyed.
+         * @typeParam Component The type of the component that is being destroyed.
          */
-        export type DestroyListener<Widget> =
+        export type DestroyListener<Component> =
             /**
-             * @param widget The widget that is being destroyed.
+             * @param component The component that is being destroyed.
              */
-            (this: Widget, widget: Widget) => void;
+            (this: Component, component: Component) => void;
 
         /**
-         * A refresh listener for a PrimeFaces widget. It is invoked when the
-         * widget is reloaded, such as during AJAX updates. Use {@link BaseWidget.addRefreshListener} to add a refresh
+         * A refresh listener for a PrimeFaces component. It is invoked when the
+         * component is reloaded, such as during AJAX updates. Use {@link BaseComponent.addRefreshListener} to add a refresh
          * listener.
-         * @typeParam TWidget The type of the widget that is being refreshed.
+         * @typeParam Component The type of the component that is being refreshed.
          */
-        export type RefreshListener<Widget> =
+        export type RefreshListener<Component> =
             /**
-             * @param widget The widget that is being refreshed.
+             * @param component The component that is being refreshed.
              */
-            (this: Widget, widget: Widget) => void;
+            (this: Component, component: Component) => void;
 
         /**
-         * A callback for a PrimeFaces widget. An optional callback that is invoked before a widget is created, at the
-         * beginning of the {@link BaseWidget.init | init} method. This is usually specified via the `widgetPreConstruct`
+         * A callback for a PrimeFaces component. An optional callback that is invoked before a component is created, at the
+         * beginning of the {@link BaseComponent.init | init} method. This is usually specified via the `clientPreConstruct`
          * attribute on the Faces component.
-         * @param The widget configuration.
+         * @param The component configuration.
          */
         export type PreConstructCallback =
             /**
-             * @param widgetCfg The configuration of the widget that is about to be constructed.
+             * @param componentCfg The configuration of the component that is about to be constructed.
              */
-            (this: null, widgetCfg: PrimeFacesTypes.widget.PartialWidgetCfg<import("./src/core/core.widget.js").BaseWidgetCfg>) => void;
+            (this: null, componentCfg: PrimeFacesTypes.component.PartialComponentCfg<import("./src/core/core.component.js").BaseComponentCfg>) => void;
 
         /**
-         * An optional callback that is invoked before a widget is about to be
+         * An optional callback that is invoked before a component is about to be
          * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
-         * of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the `widgetPreDestroy`
+         * of the {@link BaseComponent.destroy | destroy} method. This is usually specified via the `clientPreDestroy`
          * attribute on the Faces component.
          */
         export type PreDestroyCallback =
             /**
-             * @param widget The widget that is about to be destroyed.
+             * @param component The component that is about to be destroyed.
+             * @param widget The same component, deprecated name of the parameter for existing scripts.
              */
-            (this: BaseWidget, widget: BaseWidget) => void;
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
 
         /**
-         * An optional callback that is invoked after a widget was refreshed
-         * after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method. This is usually specified
-         * via the `widgetPostRefresh` attribute on the Faces component.
+         * An optional callback that is invoked after a component was refreshed
+         * after an AJAX update, at the end of the {@link BaseComponent.refresh | refresh} method. This is usually specified
+         * via the `clientPostRefresh` attribute on the Faces component.
          */
         export type PostRefreshCallback =
             /**
-             * @param widget The widget that was refreshed.
+             * @param component The component that was refreshed.
+             * @param widget The same component, deprecated name of the parameter for existing scripts.
              */
-            (this: BaseWidget, widget: BaseWidget) => void;
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
 
         /**
-         * A callback for a PrimeFaces widget. An optional callback that is
-         * invoked after a widget was created successfully, at the end of the {@link BaseWidget.init | init} method. This is
-         * usually specified via the `widgetPostConstruct` attribute on the Faces component. Note that this is also called
+         * A callback for a PrimeFaces component. An optional callback that is
+         * invoked after a component was created successfully, at the end of the {@link BaseComponent.init | init} method. This is
+         * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
          * during a `refresh` (AJAX update).
          */
         export type PostConstructCallback =
             /**
-             * @param widget The widget that was constructed.
+             * @param component The component that was constructed.
+             * @param widget The same component, deprecated name of the parameter for existing scripts.
              */
-            (this: BaseWidget, widget: BaseWidget) => void;
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
 
     }
 }
@@ -1761,6 +1785,12 @@ declare global {
             "moveToTarget"?: string;
             "moveTop"?: string;
             "moveUp"?: string;
+            "movedBottom"?: string;
+            "movedDown"?: string;
+            "movedTop"?: string;
+            "movedToSource"?: string;
+            "movedToTarget"?: string;
+            "movedUp"?: string;
             "navigation"?: string;
             "next"?: string;
             "nextPageLabel"?: string;
@@ -1985,9 +2015,9 @@ declare global {
     }
 }
 
-// AJAX status widget
+// AJAX status component
 declare global {
-    namespace PrimeFacesTypes.widget.AjaxStatus {
+    namespace PrimeFacesTypes.component.AjaxStatus {
         /**
          * Available
          * types of AJAX related events to which you can listen.
@@ -2072,9 +2102,9 @@ declare global {
     }
 }
 
-// AJAX exception handler widget
+// AJAX exception handler component
 declare global {
-    namespace PrimeFacesTypes.widget.AjaxExceptionHandler {
+    namespace PrimeFacesTypes.component.AjaxExceptionHandler {
         /**
          * Callback invoked when an AJAX request fails.
          */
@@ -2088,9 +2118,9 @@ declare global {
     }
 }
 
-// Poll widget
+// Poll component
 declare global {
-    namespace PrimeFacesTypes.widget.Poll {
+    namespace PrimeFacesTypes.component.Poll {
         /**
          * Time unit for the polling interval.
          */
@@ -2229,15 +2259,21 @@ declare global {
         }
     }
 
-    // Extend widget registry (available widget types)
+    // Extend component registry (available component types)
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             AjaxExceptionHandler: typeof AjaxExceptionHandler;
             AjaxStatus: typeof AjaxStatus;
-            BaseWidget: typeof BaseWidget;
-            DeferredWidget: typeof DeferredWidget;
-            DynamicOverlayWidget: typeof DynamicOverlayWidget;
+            BaseComponent: typeof BaseComponent;
+            DeferredComponent: typeof DeferredComponent;
+            DynamicOverlayComponent: typeof DynamicOverlayComponent;
             Poll: typeof Poll;
+            /** @deprecated Use {@link BaseComponent} instead, both names point to the same class. */
+            BaseWidget: typeof BaseComponent;
+            /** @deprecated Use {@link DeferredComponent} instead, both names point to the same class. */
+            DeferredWidget: typeof DeferredComponent;
+            /** @deprecated Use {@link DynamicOverlayComponent} instead, both names point to the same class. */
+            DynamicOverlayWidget: typeof DynamicOverlayComponent;
         }
     }
 
@@ -2250,7 +2286,7 @@ declare global {
              * feature to show the confirmation message to the user.
              * 
              * The default implementation is provided by either the ConfirmDialog
-             * widget or PrimeFaces's dialog framework.
+             * component or PrimeFaces's dialog framework.
              */
             confirm: hook.Confirm;
 
@@ -2274,7 +2310,7 @@ declare global {
              * messages are rendered.
              * 
              * Default implementations are provided for rendering messages into the
-             * message, messages, and growl widget.
+             * message, messages and growl components.
              */
             messageRender: hook.MessageRender;
 
@@ -2327,12 +2363,12 @@ declare global {
         }
     }
 
-    // Extend widget configurations
-    namespace PrimeFacesTypes.widget {
+    // Extend component configurations
+    namespace PrimeFacesTypes.component {
         export type AjaxStatusCfg = import("./src/ajaxstatus/ajaxstatus.js").AjaxStatusCfg;
-        export type BaseWidgetCfg = import("./src/core/core.widget.js").BaseWidgetCfg;
-        export type DeferredWidgetCfg = import("./src/core/core.widget.js").DeferredWidgetCfg;
-        export type DynamicOverlayWidgetCfg = import("./src/core/core.widget.js").DynamicOverlayWidgetCfg;
+        export type BaseComponentCfg = import("./src/core/core.component.js").BaseComponentCfg;
+        export type DeferredComponentCfg = import("./src/core/core.component.js").DeferredComponentCfg;
+        export type DynamicOverlayComponentCfg = import("./src/core/core.component.js").DynamicOverlayComponentCfg;
         export type PollCfg = import("./src/poll/poll.js").PollCfg;
     }
 

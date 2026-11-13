@@ -56,7 +56,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model without behaviour")
     void metaDataNoBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker0, page, DatePickerBehaviour._none);
-        assertConfiguration(page.datePicker0.getWidgetConfiguration(), DatePickerBehaviour._none, 3);
+        assertConfiguration(page.datePicker0.getClientConfiguration(), DatePickerBehaviour._none, 3);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with dateSelect behaviour")
     void metaDataDateSelectBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker1, page, DatePickerBehaviour.dateSelect);
-        assertConfiguration(page.datePicker1.getWidgetConfiguration(), DatePickerBehaviour.dateSelect, 3);
+        assertConfiguration(page.datePicker1.getClientConfiguration(), DatePickerBehaviour.dateSelect, 3);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with viewChange behaviour")
     void metaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker2, page, DatePickerBehaviour.viewChange);
-        assertConfiguration(page.datePicker2.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 3);
+        assertConfiguration(page.datePicker2.getClientConfiguration(), DatePickerBehaviour.viewChange, 3);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with close behaviour")
     void metaDataCloseBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker3, page, DatePickerBehaviour.close);
-        assertConfiguration(page.datePicker3.getWidgetConfiguration(), DatePickerBehaviour.close, 3);
+        assertConfiguration(page.datePicker3.getClientConfiguration(), DatePickerBehaviour.close, 3);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model without behaviour")
     void lazyMetaDataNoBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker4, page, DatePickerBehaviour._none);
-        assertConfiguration(page.datePicker4.getWidgetConfiguration(), DatePickerBehaviour._none, 0);
+        assertConfiguration(page.datePicker4.getClientConfiguration(), DatePickerBehaviour._none, 0);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model with viewChange behaviour")
     void lazyMetaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker6, page, DatePickerBehaviour.viewChange);
-        assertConfiguration(page.datePicker6.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 0);
+        assertConfiguration(page.datePicker6.getClientConfiguration(), DatePickerBehaviour.viewChange, 0);
     }
 
     @Test

@@ -2,7 +2,7 @@
  * AjaxStatus: p:ajaxStatus + the inline ajax status of the components (PrimeFaces only tokens: the ajaxstatus block
  * of presets/*.css)
  *
- * Markup: div#id (styleClass) > div#id_start | _success | _complete | _error (display:none, the widget shows the
+ * Markup: div#id (styleClass) > div#id_start | _success | _complete | _error (display:none, the component shows the
  *         facet of the current request phase) and div#id_default (always shown).
  *
  * Supported classes:

@@ -226,7 +226,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             wait4Panel();
         }
     }
@@ -237,7 +237,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }
@@ -246,14 +246,14 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * Activates search behavior
      */
     public void activate() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".activate();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".activate();");
     }
 
     /**
      * Deactivates search behavior
      */
     public void deactivate() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".deactivate();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".deactivate();");
     }
 
     /**
@@ -262,7 +262,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @param item the item to add to the tokens
      */
     public void addItem(String item) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".addItem('" + item + "');");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".addItem('" + item + "');");
     }
 
     /**
@@ -271,7 +271,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @param item the item to remove from the tokens
      */
     public void removeItem(String item) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".removeItem('" + item + "');");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".removeItem('" + item + "');");
     }
 
     /**
@@ -281,7 +281,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void search(String value) {
         // search always uses AJAX no matter what
-        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".search(arguments[0]);", value);
+        PrimeSelenium.executeScript(true, getClientComponentScript() + ".search(arguments[0]);", value);
         wait4Panel();
     }
 
@@ -291,6 +291,6 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @return Delay in milliseconds.
      */
     public int getDelay() {
-        return getWidgetConfiguration().getInt("delay");
+        return getClientConfiguration().getInt("delay");
     }
 }

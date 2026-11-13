@@ -56,7 +56,7 @@ class SelectOneMenu008Test extends AbstractPrimePageTest {
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act
         selectOneMenu.select(4);
@@ -67,7 +67,7 @@ class SelectOneMenu008Test extends AbstractPrimePageTest {
         assertEquals(1, page.messages.getAllMessages().size());
         assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

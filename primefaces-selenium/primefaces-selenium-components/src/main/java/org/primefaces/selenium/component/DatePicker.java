@@ -451,7 +451,7 @@ public abstract class DatePicker extends AbstractInputComponent {
 
     /**
      * Guards a target which selects a date or clears the selection. Its requests ("viewChange", "dateSelect", "change",
-     * lazy model) are sent within the click. If the selection closes the panel, the widget does so 100ms later, which
+     * lazy model) are sent within the click. If the selection closes the panel, the client component does so 100ms later, which
      * sends further requests ("close", "viewChange" or lazy model). So it waits out that delay and then until the AJAX
      * queue is empty and no animation is running. No request has to be sent at all, unlike
      * {@link PrimeSelenium#guardAjax(Object)}.
@@ -470,7 +470,7 @@ public abstract class DatePicker extends AbstractInputComponent {
             return null;
         }
 
-        Number epoch = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getTime();");
+        Number epoch = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getDate().getTime();");
         // Move epoch into server-timezone
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch.longValue()), ZoneId.systemDefault());
         return dateTime;
@@ -480,9 +480,9 @@ public abstract class DatePicker extends AbstractInputComponent {
         if (hasDate() == false) {
             return null;
         }
-        Long dayOfMonth = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
-        Long month = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getMonth();");
-        Long year = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getFullYear();");
+        Long dayOfMonth = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getDate().getDate();");
+        Long month = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getDate().getMonth();");
+        Long year = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getDate().getFullYear();");
         return LocalDate.of(year.intValue(), month.intValue() + 1, dayOfMonth.intValue());
     }
 
@@ -501,11 +501,11 @@ public abstract class DatePicker extends AbstractInputComponent {
 
     public String millisAsFormattedDate(long millis) {
         return PrimeSelenium.executeScript(
-                    "return " + getWidgetByIdScript() + ".formatDateTime(new Date(" + millis + "));");
+                    "return " + getClientComponentScript() + ".formatDateTime(new Date(" + millis + "));");
     }
 
     /**
-     * Widget API call to set date to this LocalDateTime.
+     * Client API call to set date to this LocalDateTime.
      *
      * @param dateTime the LocalDateTime to set to
      */
@@ -515,21 +515,29 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Widget API call to set date to this epoch in millis.
+     * Client API call to set date to this epoch in millis.
      *
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(isDateSelectAjaxified(), getClientComponentScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**
-     * Gets the JS date value from the widget.
+     * Gets the JS date value from the client component.
      *
      * @return the JS date value or null
      */
+    public String getClientDate() {
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getDate();");
+    }
+
+    /**
+     * @deprecated use {@link #getClientDate()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetDate() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
+        return getClientDate();
     }
 
     /**
@@ -538,7 +546,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if a date is selected.
      */
     public boolean hasDate() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".hasDate();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".hasDate();");
     }
 
     /**
@@ -547,26 +555,26 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if lazy
      */
     public boolean isLazy() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript()
-                + ".cfg.lazyModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyModel");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript()
+                + ".cfg.lazyModel === undefined ? false : " + getClientComponentScript() + ".cfg.lazyModel");
     }
 
     /**
-     * Gets the input value from the widget.
+     * Gets the input value from the client component.
      *
      * @return the input value or null
      */
     public String getInputValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".input.val();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".input.val();");
     }
 
     /**
-     * Widget API call to update the overlay popup to this epoch in millis.
+     * Client API call to update the overlay popup to this epoch in millis.
      *
      * @param epoch epoch in milliseconds
      */
     public void updateViewDate(long epoch) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".updateViewDate(null, new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".updateViewDate(null, new Date(" + epoch + "));");
     }
 
     /**
@@ -578,7 +586,7 @@ public abstract class DatePicker extends AbstractInputComponent {
         if (isEnabled()) {
             PrimeSelenium.wait(110); // due to an async setTimeout in hideOverlay
             if (!getPanel().isDisplayed()) {
-                PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
+                PrimeSelenium.executeScript(getClientComponentScript() + ".show()");
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
         }
@@ -591,7 +599,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     public void hidePanel() {
         if (isEnabled()) {
             if (getPanel().isDisplayed()) {
-                PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
+                PrimeSelenium.executeScript(isCloseAjaxified(), getClientComponentScript() + ".hide();");
                 PrimeSelenium.wait(110); // due to an async setTimeout in hideOverlay
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));

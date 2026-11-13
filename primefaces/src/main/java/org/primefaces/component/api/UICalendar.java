@@ -55,7 +55,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware, MixedClientBehaviorHolder {
 
     public static final String CONTAINER_CLASS = "p-calendar";
-    public static final String INPUT_STYLE_CLASS = "p-inputfield p-widget p-state-default";
+    public static final String INPUT_STYLE_CLASS = "p-inputfield p-component p-state-default";
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.datepicker.OUT_OF_RANGE";
     public static final String DATE_MIN_DATE_ID = "primefaces.datepicker.MIN_DATE";
     public static final String DATE_MAX_DATE_ID = "primefaces.datepicker.MAX_DATE";
@@ -155,7 +155,20 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         return localePattern;
     }
 
-    public abstract String calculateWidgetPattern();
+    /**
+     * Calculates the date pattern of the client side component, without the time part.
+     *
+     * @return the date pattern
+     */
+    public abstract String calculateClientPattern();
+
+    /**
+     * @deprecated use {@link #calculateClientPattern()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public String calculateWidgetPattern() {
+        return calculateClientPattern();
+    }
 
     /**
      * Converts a Java date pattern to the format understood by the InputMask plugin.

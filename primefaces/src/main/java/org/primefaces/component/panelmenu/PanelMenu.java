@@ -38,14 +38,14 @@ public class PanelMenu extends PanelMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PanelMenu";
 
-    public static final String CONTAINER_CLASS = "p-panelmenu p-widget";
-    public static final String INACTIVE_HEADER_CLASS = "p-widget p-panelmenu-header p-state-default";
-    public static final String ACTIVE_HEADER_CLASS = "p-widget p-panelmenu-header p-state-default p-state-active";
+    public static final String CONTAINER_CLASS = "p-panelmenu p-component";
+    public static final String INACTIVE_HEADER_CLASS = "p-component p-panelmenu-header p-state-default";
+    public static final String ACTIVE_HEADER_CLASS = "p-component p-panelmenu-header p-state-default p-state-active";
     public static final String TAB_HEADER_ICON_CLASS = "p-icon p-toggle-icon p-panelmenu-header-icon";
-    public static final String INACTIVE_ROOT_SUBMENU_CONTENT = "p-panelmenu-content p-widget-content p-hidden";
-    public static final String ACTIVE_ROOT_SUBMENU_CONTENT = "p-panelmenu-content p-widget-content";
-    public static final String MENUITEM_CLASS = "p-menuitem p-widget";
-    public static final String DESCENDANT_SUBMENU_CLASS = "p-widget p-menuitem p-menu-parent";
+    public static final String INACTIVE_ROOT_SUBMENU_CONTENT = "p-panelmenu-content p-component-content p-hidden";
+    public static final String ACTIVE_ROOT_SUBMENU_CONTENT = "p-panelmenu-content p-component-content";
+    public static final String MENUITEM_CLASS = "p-menuitem p-component";
+    public static final String DESCENDANT_SUBMENU_CLASS = "p-component p-menuitem p-menu-parent";
     public static final String DESCENDANT_SUBMENU_ICON_CLASS = "p-panelmenu-icon p-icon p-toggle-icon p-panelmenu-submenu-icon";
     public static final String DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS = "p-menu-list";
     public static final String DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS = "p-menu-list p-hidden";

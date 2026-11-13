@@ -1,12 +1,12 @@
 /*
  * ScrollPanel: p:scrollPanel (themed bars and mode="native")
  *
- * The content scrolls natively with hidden browser scrollbars, the widget positions the bars of the tracks.
+ * The content scrolls natively with hidden browser scrollbars, the component positions the bars of the tracks.
  * Structure: div.p-scrollpanel > div.p-scrollpanel-content (tabindex 0 while it overflows)
  *            + div.p-scrollpanel-track.p-scrollpanel-track-y > div.p-scrollpanel-bar
  *            + div.p-scrollpanel-track.p-scrollpanel-track-x > div.p-scrollpanel-bar
  * mode="native": div.p-scrollpanel.p-scrollpanel-native, the browser scrollbars styled with the same tokens.
- * Supported classes: p-scrollpanel-scrollable-x / -y (on .p-scrollpanel, set by the widget),
+ * Supported classes: p-scrollpanel-scrollable-x / -y (on .p-scrollpanel, set by the component),
  *                    p-scrollpanel-bar-active (on .p-scrollpanel-bar while it is dragged)
  */
 
@@ -102,7 +102,7 @@
     }
 }
 
-/* the widget sets the length and the offset of the bar along its track */
+/* the component sets the length and the offset of the bar along its track */
 .p-scrollpanel-track-y > .p-scrollpanel-bar {
     height: auto;
 }

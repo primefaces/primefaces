@@ -54,7 +54,7 @@ public class Spinner004Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("€0,33", spinner.getValue());
         assertOutputLabel(page, "0.33");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class Spinner004Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("€1.456,78", spinner.getValue());
         assertOutputLabel(page, "1456.78");
-        assertConfiguration(spinner.getWidgetConfiguration());
+        assertConfiguration(spinner.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

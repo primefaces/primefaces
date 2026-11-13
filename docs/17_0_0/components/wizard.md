@@ -160,7 +160,7 @@ as the values of these attributes.
 </p:wizard>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.Wizard_
+Component: _PrimeFaces.component.Wizard_
 
 
 | Method | Params | Return Type | Description |
@@ -168,7 +168,7 @@ Widget: _PrimeFaces.widget.Wizard_
 next() | - | void | Proceeds to next step.
 back() | - | void | Goes back in flow.
 reset() | - | void | Resets the wizard to its initial state.
-getStepIndex() | - | Number | Returns the index of current step.
+getStepIndex(step) | step: id of a step | Number | Returns the 0-based index of the step, -1 if there is no such step.
 showNextNav() | - | void | Shows next button.
 hideNextNav() | - | void | Hides next button.
 enableNextNav() | - | void | Enables next button.
@@ -220,6 +220,6 @@ with CSS such as the example above. An explicit `p-state-highlight` in a tab's
 `titleStyleClass` is retained during navigation and refresh.
 
 The initial state classes are rendered on the server. JavaScript updates the
-widget-managed classes after successful navigation; validation failures leave
+component-managed classes after successful navigation; validation failures leave
 the current state unchanged. An unknown or unrendered current step is not
 assigned to the last visible step.

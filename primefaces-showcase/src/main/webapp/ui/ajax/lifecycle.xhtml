@@ -10,10 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Attach events to the Widget lifecycle so you can call client side Javascript during PostConstruct, PostRefresh, or PreDestroy of the widget.
+        Attach events to the component lifecycle so you can call client side Javascript during PostConstruct, PostRefresh, or PreDestroy of the component.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/core/widgets?id=widget-lifecycle-events"/>
+    <ui:param name="documentationLink" value="/core/components?id=component-lifecycle-events"/>
     <ui:param name="tagName" value="ajax"/>
 
     <ui:define name="implementation">
@@ -25,10 +25,10 @@
                     <div class="field col-12 md:col-6">
                         <p:outputLabel for="name" value="Name"/>
                         <p:inputText id="name" value="#{lifecycleView.text}" widgetVar="wgtName">
-                            <f:attribute name="widgetPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Widget Initialized'})"/>
-                            <f:attribute name="widgetPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: widget.id + ' Widget Created'})"/>
-                            <f:attribute name="widgetPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: widget.id + ' Widget Refreshed'})"/>
-                            <f:attribute name="widgetPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: widget.id + ' Widget Destroyed'})"/>
+                            <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Component Initialized'})"/>
+                            <f:attribute name="clientPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
+                            <f:attribute name="clientPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Refreshed'})"/>
+                            <f:attribute name="clientPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Destroyed'})"/>
                         </p:inputText>
                     </div>
                 </div>

@@ -26,7 +26,7 @@ package org.primefaces.component.mindmap;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +34,8 @@ import java.util.List;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
+
+import org.json.JSONObject;
 
 @FacesRenderer(rendererType = Mindmap.DEFAULT_RENDERER, componentFamily = Mindmap.COMPONENT_FAMILY)
 @FacesRendererInfo
@@ -61,7 +63,7 @@ public class MindmapRenderer extends CoreRenderer<Mindmap> {
         ResponseWriter writer = context.getResponseWriter();
         MindmapNode root = map.getValue();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Mindmap", map)
                 .attr("effectSpeed", map.getEffectSpeed());
 
@@ -136,13 +138,13 @@ public class MindmapRenderer extends CoreRenderer<Mindmap> {
     protected void encodeNodeConfig(FacesContext context, Mindmap component, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"label\":\"" + node.getLabel() + "\"");
+        writer.write("\"label\":" + JSONObject.quote(node.getLabel()));
 
         if (nodeKey != null) {
-            writer.write(",\"key\":\"" + nodeKey + "\"");
+            writer.write(",\"key\":" + JSONObject.quote(nodeKey));
         }
         if (node.getFill() != null) {
-            writer.write(",\"fill\":\"" + node.getFill() + "\"");
+            writer.write(",\"fill\":" + JSONObject.quote(node.getFill()));
         }
         if (node.isSelectable()) {
             writer.write(",\"selectable\":true");

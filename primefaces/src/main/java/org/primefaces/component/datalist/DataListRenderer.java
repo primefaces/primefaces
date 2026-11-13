@@ -25,8 +25,8 @@ package org.primefaces.component.datalist;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -146,7 +146,7 @@ public class DataListRenderer extends DataRenderer<DataList> {
     }
 
     protected void encodeScript(FacesContext context, DataList component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DataList", component);
 
         if (component.isPaginator()) {

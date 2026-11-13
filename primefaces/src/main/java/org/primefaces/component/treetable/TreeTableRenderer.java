@@ -40,11 +40,11 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -112,7 +112,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
     protected void encodeScript(FacesContext context, TreeTable component) throws IOException {
         String selectionMode = component.getSelectionMode();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("TreeTable", component)
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", component.isResizableColumns(), false)

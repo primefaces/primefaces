@@ -29,10 +29,10 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -274,7 +274,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
             throw new FacesException("SpeedDial : \"" + clientId + "\" must be inside a form element");
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SpeedDial", component)
                 .attr("visible", component.isVisible(), false)
                 .attr("direction", component.getDirection(), "up")

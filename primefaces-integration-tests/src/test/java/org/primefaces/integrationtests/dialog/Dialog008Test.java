@@ -59,7 +59,7 @@ class Dialog008Test extends AbstractPrimePageTest {
     void removeNestedOverlays(Page page) {
         page.remove.click();
         assertEquals(0L, count("[id=\"form:dlg\"], [id=\"form:sidebar\"]"));
-        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.nestedDialog && !PrimeFaces.widgets.relocatedSidebar"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.components.nestedDialog && !PrimeFaces.components.relocatedSidebar"));
         assertNoJavascriptErrors();
     }
 

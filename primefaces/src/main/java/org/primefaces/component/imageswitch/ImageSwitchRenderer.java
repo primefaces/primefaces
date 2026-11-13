@@ -25,7 +25,7 @@ package org.primefaces.component.imageswitch;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -60,7 +60,7 @@ public class ImageSwitchRenderer extends CoreRenderer<ImageSwitch> {
 
         writer.endElement("div");
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("ImageSwitch", component)
                 .attr("fx", component.getEffect())
                 .attr("speed", component.getSpeed())

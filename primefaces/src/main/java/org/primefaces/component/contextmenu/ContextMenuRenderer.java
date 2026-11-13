@@ -28,9 +28,9 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ContextMenu menu = (ContextMenu) abstractMenu;
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("ContextMenu", menu);
 
         UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, menu, menu.getFor());

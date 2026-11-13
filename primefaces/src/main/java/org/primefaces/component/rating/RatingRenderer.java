@@ -25,10 +25,10 @@ package org.primefaces.component.rating;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -72,7 +72,7 @@ public class RatingRenderer extends InputRenderer<Rating> {
     }
 
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Rating", rating)
                 .callback("onRate", "function(value)", rating.getOnRate())
                 .attr("readonly", rating.isReadonly(), false)

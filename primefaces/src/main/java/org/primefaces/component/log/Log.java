@@ -40,8 +40,8 @@ public class Log extends LogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Log";
 
-    public static final String CONTAINER_CLASS = "p-log p-widget p-widget-content";
-    public static final String HEADER_CLASS = "p-log-header p-widget-header";
+    public static final String CONTAINER_CLASS = "p-log p-component p-component-content";
+    public static final String HEADER_CLASS = "p-log-header p-component-header";
     public static final String CONTENT_CLASS = "p-log-content";
     public static final String ITEMS_CLASS = "p-log-items";
     public static final String CLEAR_BUTTON_CLASS = "p-log-button p-log-clear";

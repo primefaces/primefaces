@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TextEditor005Test extends AbstractPrimePageTest {
 
     /**
-     * Fires a real `copy` event at the editor and returns what the widget put onto the clipboard, so the
+     * Fires a real `copy` event at the editor and returns what the component put onto the clipboard, so the
      * whole Quill copy path (onCaptureCopy -> onCopy -> setData) is exercised without OS clipboard access.
      * <p>
      * GitHub #15240: Firefox ignores the `clipboardData` member of the ClipboardEvent constructor - its
@@ -48,12 +48,12 @@ class TextEditor005Test extends AbstractPrimePageTest {
      */
     private String copyToClipboard(String mimeType) {
         return PrimeSelenium.executeScript(
-                    "var widget = PF('wgtEditor');"
-                                + "widget.editor.setSelection(0, widget.editor.getLength());"
+                    "var component = PF('wgtEditor');"
+                                + "component.editor.setSelection(0, component.editor.getLength());"
                                 + "var data = new DataTransfer();"
                                 + "var event = new ClipboardEvent('copy', {bubbles: true, cancelable: true});"
                                 + "Object.defineProperty(event, 'clipboardData', {value: data});"
-                                + "widget.editor.root.dispatchEvent(event);"
+                                + "component.editor.root.dispatchEvent(event);"
                                 + "return data.getData('" + mimeType + "');");
     }
 

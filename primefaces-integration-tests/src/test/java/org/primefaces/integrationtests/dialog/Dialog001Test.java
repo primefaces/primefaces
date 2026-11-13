@@ -44,8 +44,8 @@ class Dialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("Dialog: Show widget method")
-    void showWidget(Page page) {
+    @DisplayName("Dialog: Show client API method")
+    void showComponent(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
@@ -60,8 +60,8 @@ class Dialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("Dialog: Hide widget method")
-    void hideWidget(Page page) {
+    @DisplayName("Dialog: Hide client API method")
+    void hideComponent(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
@@ -115,7 +115,7 @@ class Dialog001Test extends AbstractPrimePageTest {
         assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("text2: test123"));
         assertEquals("test123", page.inputText2Readonly.getValue());
-        assertConfiguration(page.dialog.getWidgetConfiguration());
+        assertConfiguration(page.dialog.getClientConfiguration());
     }
 
     @Test
@@ -144,14 +144,14 @@ class Dialog001Test extends AbstractPrimePageTest {
         assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("text2: null"));
         assertEquals("", page.inputText2Readonly.getValue());
-        assertConfiguration(page.dialog.getWidgetConfiguration());
+        assertConfiguration(page.dialog.getClientConfiguration());
     }
 
     private void assertDialog(Page page, boolean visible) {
         Dialog dialog = page.dialog;
         assertEquals(visible, dialog.isVisible());
         assertEquals(visible, dialog.isDisplayed());
-        assertConfiguration(dialog.getWidgetConfiguration());
+        assertConfiguration(dialog.getClientConfiguration());
 
         if (visible) {
             // modal dialog should block clickability of button

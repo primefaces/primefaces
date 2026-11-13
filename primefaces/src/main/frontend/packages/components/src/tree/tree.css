@@ -48,10 +48,6 @@
         display: inline-block;
     }
 
-    .p-chkbox {
-        display: inline-block;
-    }
-
     .p-chkbox-box {
         cursor: pointer;
     }
@@ -63,6 +59,12 @@
     &.p-noborder {
         border: 0;
         padding: 0;
+
+        /* no tree padding to take the focus ring room from */
+        .p-tree-container {
+            padding: 0;
+            margin: 0;
+        }
     }
 
     &.p-state-disabled .p-tree-toggler,
@@ -80,7 +82,7 @@
 
     .p-treenode-content.p-tree-selectable .p-chkbox.p-selection,
     &.p-tree-checkbox-all .p-treenode-content .p-chkbox.p-selection {
-        display: inline-block;
+        display: inline-flex;
     }
 
     &.p-tree-rtl {
@@ -103,11 +105,13 @@
     }
 
     /* vertical tree */
+    /* room for the node focus ring shadow (up to 5px, Glass), the scroll container would clip it; the negative margin
+       keeps the layout (it takes it from the tree padding) */
     .p-tree-container {
         white-space: nowrap;
         overflow: auto;
-        padding: 0;
-        margin: 0;
+        padding: 0.375rem;
+        margin: -0.375rem;
 
         .p-treenode {
             padding: var(--p-tree-gap) 0 0 0;
@@ -420,7 +424,6 @@
         }
 
         .p-chkbox {
-            vertical-align: bottom;
             margin-inline-end: var(--p-tree-node-gap);
         }
 

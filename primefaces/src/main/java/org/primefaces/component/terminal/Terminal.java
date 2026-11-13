@@ -49,7 +49,7 @@ public class Terminal extends TerminalBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Terminal";
 
-    public static final String CONTAINER_CLASS = "p-terminal p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-terminal p-component p-component-content";
     public static final String WELCOME_MESSAGE_CLASS = "p-terminal-welcome";
     public static final String CONTENT_CLASS = "p-terminal-content";
     public static final String PROMPT_CLASS = "p-terminal-prompt";

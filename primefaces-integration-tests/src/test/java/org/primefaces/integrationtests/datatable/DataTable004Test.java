@@ -82,7 +82,7 @@ class DataTable004Test extends AbstractDataTableTest {
         // Assert (no row selected)
         dataTable.getRows().forEach(r -> assertFalse(r.isSelected(), "Found a selected row!"));
         assertMessage(page, "NO ProgrammingLanguage selected", "");
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -108,7 +108,7 @@ class DataTable004Test extends AbstractDataTableTest {
         // Assert (no row selected)
         dataTable.getRows().forEach(r -> assertFalse(r.isSelected(), "Found a selected row!"));
         assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -141,7 +141,7 @@ class DataTable004Test extends AbstractDataTableTest {
         // Assert (still no row selected)
         assertMessage(page, "NO ProgrammingLanguage selected", "");
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -173,7 +173,7 @@ class DataTable004Test extends AbstractDataTableTest {
             }
         }
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertMessage(Page page, String summary, String detail) {

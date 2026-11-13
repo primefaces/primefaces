@@ -30,7 +30,7 @@ Without an attached `p:outputLabel`, the `label` attribute is rendered as `aria-
 </p:selectOneButton>
 ```
 
-Keyboard focus lands on the hidden radio inputs; the widget reflects it by adding the `p-state-focus` class to the
+Keyboard focus lands on the hidden radio inputs; the component reflects it by adding the `p-state-focus` class to the
 corresponding button container.
 
 ## Custom Layout
@@ -97,12 +97,12 @@ This is implemented by adding custom components to a facet named `custom`.
 Custom buttons should have `role="radio"` attribute and be placed within the custom facet. The order of buttons should match the order of selectItems. When a custom facet is present, the layout is automatically set to "custom".
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectOneButton_
+Component: _PrimeFaces.component.SelectOneButton_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
 enable() | - | void | Enables the component.
-disabled() | - | void | Disables the component.
+disable() | - | void | Disables the component.
 
 ## Skinning
 SelectOneButton resides in a main container which _style_ and _styleClass_ attributes apply. As

@@ -53,13 +53,13 @@ public class Panel extends PanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Panel";
 
-    public static final String PANEL_CLASS = "p-panel p-widget p-widget-content";
-    public static final String PANEL_TITLEBAR_CLASS = "p-panel-titlebar p-widget-header";
+    public static final String PANEL_CLASS = "p-panel p-component p-component-content";
+    public static final String PANEL_TITLEBAR_CLASS = "p-panel-titlebar p-component-header";
     public static final String PANEL_TITLEBAR_TOGGLEABLE_CLASS = "p-panel-titlebar-toggleable";
     public static final String PANEL_TITLE_CLASS = "p-panel-title";
     public static final String PANEL_TITLE_ICON_CLASS = "p-panel-titlebar-icon p-state-default";
-    public static final String PANEL_CONTENT_CLASS = "p-panel-content p-widget-content";
-    public static final String PANEL_FOOTER_CLASS = "p-panel-footer p-widget-content";
+    public static final String PANEL_CONTENT_CLASS = "p-panel-content p-component-content";
+    public static final String PANEL_FOOTER_CLASS = "p-panel-footer p-component-content";
     public static final String PANEL_ACTIONS_CLASS = "p-panel-actions";
     public static final String PANEL_COLLAPSED_CLASS = "p-hidden-container";
     public static final String PANEL_COLLAPSED_HORIZONTAL_CLASS = "p-panel-collapsed-h";

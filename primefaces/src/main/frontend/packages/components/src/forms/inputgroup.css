@@ -131,20 +131,20 @@
         }
     }
 
-    > .p-widget,
-    > .p-float-label > .p-widget {
+    > .p-component,
+    > .p-float-label > .p-component {
         border-radius: 0;
     }
 
-    /* outer corners of widgets that are not a plain input / button (p:selectOneMenu, p:selectCheckboxMenu, ...), like PrimeUIX */
-    > .p-widget:first-child,
-    > .p-float-label:first-child > .p-widget {
+    /* outer corners of components that are not a plain input / button (p:selectOneMenu, p:selectCheckboxMenu, ...), like PrimeUIX */
+    > .p-component:first-child,
+    > .p-float-label:first-child > .p-component {
         border-start-start-radius: var(--p-inputgroup-addon-border-radius);
         border-end-start-radius: var(--p-inputgroup-addon-border-radius);
     }
 
-    > .p-widget:last-child,
-    > .p-float-label:last-child > .p-widget {
+    > .p-component:last-child,
+    > .p-float-label:last-child > .p-component {
         border-start-end-radius: var(--p-inputgroup-addon-border-radius);
         border-end-end-radius: var(--p-inputgroup-addon-border-radius);
     }
@@ -181,17 +181,17 @@
         }
     }
 
-    > .p-widget.p-state-focus,
-    > .p-widget:focus,
-    > .p-float-label > .p-widget.p-state-focus,
-    > .p-float-label > .p-widget:focus {
+    > .p-component.p-state-focus,
+    > .p-component:focus,
+    > .p-float-label > .p-component.p-state-focus,
+    > .p-float-label > .p-component:focus {
         z-index: 1;
     }
 
-    > .p-widget.p-state-focus ~ label,
-    > .p-widget:focus ~ label,
-    > .p-float-label > .p-widget.p-state-focus ~ label,
-    > .p-float-label > .p-widget:focus ~ label {
+    > .p-component.p-state-focus ~ label,
+    > .p-component:focus ~ label,
+    > .p-float-label > .p-component.p-state-focus ~ label,
+    > .p-float-label > .p-component:focus ~ label {
         z-index: 1;
     }
 
@@ -234,12 +234,12 @@
     }
 
     > :first-child,
-    > :first-child > :is(.p-inputfield, .p-widget, input, textarea):first-child {
+    > :first-child > :is(.p-inputfield, .p-component, input, textarea):first-child {
         border-end-start-radius: var(--p-form-field-filled-bottom-border-radius);
     }
 
     > :last-child,
-    > :last-child > :is(.p-inputfield, .p-widget, input, textarea):last-child {
+    > :last-child > :is(.p-inputfield, .p-component, input, textarea):last-child {
         border-end-end-radius: var(--p-form-field-filled-bottom-border-radius);
     }
 }

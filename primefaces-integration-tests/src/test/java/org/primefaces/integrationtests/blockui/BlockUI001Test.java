@@ -56,7 +56,7 @@ class BlockUI001Test extends AbstractPrimePageTest {
         assertTrue(blockUI.isBlocking());
         assertNotClickable(page.panel1);
         assertNotClickable(page.panel2);
-        assertConfiguration(blockUI.getWidgetConfiguration());
+        assertConfiguration(blockUI.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class BlockUI001Test extends AbstractPrimePageTest {
         assertClickable(page.panel1);
         assertClickable(page.panel2);
         assertFalse(blockUI.isBlocking());
-        assertConfiguration(blockUI.getWidgetConfiguration());
+        assertConfiguration(blockUI.getClientConfiguration());
     }
 
     @Test

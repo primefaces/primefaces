@@ -62,7 +62,7 @@ class SelectOneMenu005Test extends AbstractPrimePageTest {
         options = selectOneMenu.getItemElements();
         assertEquals(4, options.size());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

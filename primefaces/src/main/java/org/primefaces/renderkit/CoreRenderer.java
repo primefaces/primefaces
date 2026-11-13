@@ -33,6 +33,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -765,6 +766,14 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 && !cbh.getClientBehaviors().isEmpty()));
     }
 
+    protected ComponentScriptBuilder getComponentScriptBuilder(FacesContext context) {
+        return PrimeRequestContext.getCurrentInstance(context).getComponentScriptBuilder();
+    }
+
+    /**
+     * @deprecated use {@link #getComponentScriptBuilder(FacesContext)} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
         return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
@@ -947,10 +956,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
     }
 
     /**
-     * Used by script-only widget to fix #3265 and allow updating of the component.
+     * Used by components that only render a script to fix #3265 and allow updating of the component.
      *
      * @param context the {@link FacesContext}.
-     * @param component the widget without actual HTML markup.
+     * @param component the component without actual HTML markup.
      * @param clientId the component clientId.
      * @throws IOException if an input/ output error occurs.
      */

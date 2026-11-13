@@ -168,7 +168,7 @@ public class DatePicker extends DatePickerBaseImpl {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
-        if (isValid() && !isEmpty(value)) {
+        if (isValid() && !isEmpty(value) && isBuiltInValidation()) {
             ValidationResult validationResult = validateValueInternal(context, value);
 
             if (!isValid()) {
@@ -281,6 +281,12 @@ public class DatePicker extends DatePickerBaseImpl {
             }
         }
 
+        // like the popup: the day based restrictions only apply to the date view, the week view selects the first and last day
+        // of the week and the month view the first day of the month, even if they are disabled
+        if (!isDateView()) {
+            return ValidationResult.OK;
+        }
+
         if (isValid()) {
             List<Object> disabledDates = getDisabledDates();
             if (disabledDates != null) {
@@ -342,7 +348,8 @@ public class DatePicker extends DatePickerBaseImpl {
         if (isValid()) {
             List<Integer> disabledDays = getDisabledDays();
             if (disabledDays != null) {
-                if (disabledDays.contains(date.getDayOfWeek().getValue())) {
+                // disabledDays are 0 (Sunday) - 6 (Saturday) like in JavaScript, DayOfWeek is 1 (Monday) - 7 (Sunday)
+                if (disabledDays.contains(date.getDayOfWeek().getValue() % 7)) {
                     setValid(false);
                     return ValidationResult.INVALID_DISABLED_DATE;
                 }
@@ -350,6 +357,11 @@ public class DatePicker extends DatePickerBaseImpl {
         }
 
         return ValidationResult.OK;
+    }
+
+    protected boolean isDateView() {
+        String view = getView();
+        return view == null || "date".equals(view);
     }
 
     protected ValidationResult validateTimeOnlyValue(FacesContext context, LocalTime time) {

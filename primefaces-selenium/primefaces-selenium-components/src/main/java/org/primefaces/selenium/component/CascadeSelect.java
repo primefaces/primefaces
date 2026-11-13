@@ -73,7 +73,7 @@ public abstract class CascadeSelect extends AbstractInputComponent {
     public void show() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
@@ -84,7 +84,7 @@ public abstract class CascadeSelect extends AbstractInputComponent {
     public void hide() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }

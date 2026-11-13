@@ -54,7 +54,7 @@ class CascadeSelect001Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "RTX 2080");
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getClientConfiguration());
 
         // Act
         page.button.click();
@@ -62,7 +62,7 @@ class CascadeSelect001Test extends BaseCascadeSelectTest {
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "RTX 2080");
         assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getClientConfiguration());
     }
 
     @Test
@@ -78,7 +78,7 @@ class CascadeSelect001Test extends BaseCascadeSelectTest {
 
             // Assert
             assertDisplayed(cascadeSelect.getPanel());
-            assertConfiguration(cascadeSelect.getWidgetConfiguration());
+            assertConfiguration(cascadeSelect.getClientConfiguration());
         });
     }
 
@@ -96,7 +96,7 @@ class CascadeSelect001Test extends BaseCascadeSelectTest {
 
             // Assert
             assertNotDisplayed(cascadeSelect.getPanel());
-            assertConfiguration(cascadeSelect.getWidgetConfiguration());
+            assertConfiguration(cascadeSelect.getClientConfiguration());
         });
     }
 
@@ -114,7 +114,7 @@ class CascadeSelect001Test extends BaseCascadeSelectTest {
         // Assert - value should not be accepted
         assertNotClickable(cascadeSelect);
         assertEquals("Select a GPU", cascadeSelect.getSelectedLabel());
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getClientConfiguration());
     }
 
     @Test
@@ -134,7 +134,7 @@ class CascadeSelect001Test extends BaseCascadeSelectTest {
         // Assert
         assertClickable(cascadeSelect);
         assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

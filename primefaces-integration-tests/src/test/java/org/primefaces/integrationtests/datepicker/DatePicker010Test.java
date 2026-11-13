@@ -69,7 +69,7 @@ class DatePicker010Test extends AbstractDatePickerTest {
         assertEquals(11, datePicker.getOtherMonthDays().size());
         assertEquals(11, datePicker.getDisabledOtherMonthDays().size());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
@@ -93,7 +93,7 @@ class DatePicker010Test extends AbstractDatePickerTest {
         // Assert
         assertEquals(LocalDate.of(2021, 5, 29), datePicker.getValue().toLocalDate());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
@@ -117,7 +117,7 @@ class DatePicker010Test extends AbstractDatePickerTest {
         // Assert
         assertEquals(LocalDate.of(2021, 5, 27), datePicker.getValue().toLocalDate());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test

@@ -62,7 +62,7 @@ class SelectOneRadio002Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Charles", selectOneRadio.getSelectedLabel());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     @Test
@@ -89,7 +89,7 @@ class SelectOneRadio002Test extends AbstractPrimePageTest {
         assertEquals("Charles", selectOneRadio.getSelectedLabel());
         assertEquals("3", page.messages.getMessage(0).getDetail());
         assertEquals("3", page.messages.getMessage(0).getSummary());
-        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+        assertConfiguration(selectOneRadio.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

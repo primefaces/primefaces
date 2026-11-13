@@ -319,11 +319,11 @@ Extender function allows access to the underlying chart.js api using the `extend
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Chart_
+Component: _PrimeFaces.component.Chart_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-| exportAsImage() | - | void | Return this chart as an image with a data source URL (`<img src="data:url" />`)
+| exportAsImage() | - | HTMLImageElement | Return this chart as an image with a data source URL (`<img src="data:url" />`)
 | print() | - | void | Send this chart to the printer.
 
 

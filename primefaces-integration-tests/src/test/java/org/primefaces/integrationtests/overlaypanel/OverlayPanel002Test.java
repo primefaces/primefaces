@@ -54,13 +54,13 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getClientConfiguration(), "@(body)");
     }
 
     @Test
     @Order(2)
     @DisplayName("OverlayPanel: Dialog Show/Hide panel using API methods")
-    void dialogWidgetShowHide(Page page) {
+    void dialogComponentShowHide(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         page.btnDialog.click();
@@ -77,7 +77,7 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getClientConfiguration(), "@(body)");
     }
 
     @Test
@@ -96,7 +96,7 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getClientConfiguration(), "@(body)");
     }
 
     @Test
@@ -137,7 +137,7 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.dialog.isDisplayed());
         assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration(), "form:btnDestroy");
+        assertConfiguration(overlayPanel.getClientConfiguration(), "form:btnDestroy");
     }
 
     private void assertConfiguration(JSONObject cfg, String appendTo) {
@@ -145,12 +145,12 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
         System.out.println("OverlayPanel Config = " + cfg);
 
         if (cfg.has("appendTo")) {
-            String widgetAppendTo = cfg.getString("appendTo");
-            if (widgetAppendTo.length() > 0) {
-                assertEquals(appendTo, widgetAppendTo);
+            String componentAppendTo = cfg.getString("appendTo");
+            if (componentAppendTo.length() > 0) {
+                assertEquals(appendTo, componentAppendTo);
             }
             else {
-                assertEquals("", widgetAppendTo);
+                assertEquals("", componentAppendTo);
             }
         }
         assertTrue(cfg.getBoolean("dismissable"));

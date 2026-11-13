@@ -74,7 +74,7 @@ class Tree002Test extends AbstractTreeTest {
         PrimeSelenium.guardAjax(page.buttonShowSelectedNode).click();
         assertMessage(page.messages, 0, "No node selected!", "");
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

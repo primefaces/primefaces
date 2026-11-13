@@ -3,26 +3,26 @@ import { ajax } from "./core.ajax.js";
 import { env } from "./core.env.js";
 import { expressions } from "./core.expressions.js";
 import { position } from "./core.position.js";
-import type { BaseWidget, DynamicOverlayWidget } from "./core.widget.js";
+import type { BaseComponent, DynamicOverlayComponent } from "./core.component.js";
 import { scrollParent as closestScrollParent } from "../interaction/interaction.js";
 
 /**
  * The class with various utilities needed by PrimeFaces.
  */
 export class Utils {
-    /** Original source positions of relocated overlay widgets, retained across direct AJAX updates. */
-    private overlayPlaceholders = new WeakMap<BaseWidget, JQuery>();
+    /** Original source positions of relocated overlay components, retained across direct AJAX updates. */
+    private overlayPlaceholders = new WeakMap<BaseComponent, JQuery>();
 
     /**
-     * Removes the source marker of a relocated overlay widget without removing the overlay itself (its `remove`
+     * Removes the source marker of a relocated overlay component without removing the overlay itself (its `remove`
      * handler).
-     * @param widget The relocated overlay widget.
+     * @param component The relocated overlay component.
      */
-    removeOverlayPlaceholder(widget: BaseWidget): void {
-        const placeholder = this.overlayPlaceholders.get(widget);
+    removeOverlayPlaceholder(component: BaseComponent): void {
+        const placeholder = this.overlayPlaceholders.get(component);
         placeholder?.off('remove.pfOverlay');
         placeholder?.[0]?.remove();
-        this.overlayPlaceholders.delete(widget);
+        this.overlayPlaceholders.delete(component);
     }
 
     /**
@@ -36,13 +36,13 @@ export class Utils {
     /**
      * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
      * panel to the body.
-     * @param widget A widget that has a panel to be appended.
+     * @param component A component that has a panel to be appended.
      * @param target The DOM element that is the target of this overlay
      * @param overlay The DOM element for the overlay.
      * @return The search expression for the element to which the overlay panel should be appended.
      */
-    resolveAppendTo(widget: DynamicOverlayWidget, target: JQuery, overlay: JQuery): string | null | undefined {
-        if (widget && target && target[0]) {
+    resolveAppendTo(component: DynamicOverlayComponent, target: JQuery, overlay: JQuery): string | null | undefined {
+        if (component && target && target[0]) {
             var dialog = target[0].closest('.p-dialog');
 
             if (dialog && overlay && overlay.length) {
@@ -54,32 +54,32 @@ export class Utils {
                 }
 
                 //append to body if not already appended by user choice
-                if(!widget.cfg.appendTo) {
-                    widget.cfg.appendTo = "@(body)";
-                    return widget.cfg.appendTo;
+                if(!component.cfg.appendTo) {
+                    component.cfg.appendTo = "@(body)";
+                    return component.cfg.appendTo;
                 }
             }
 
-            return widget.cfg.appendTo;
+            return component.cfg.appendTo;
         }
 
         return null;
     }
 
     /**
-     * Finds the container element to which an overlay widget should be appended. This is either the element
-     * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget.
-     * @param widget A widget to be displayed as an overlay.
+     * Finds the container element to which an overlay component should be appended. This is either the element
+     * specified by the component configurations's `appendTo` attribute, or the document BODY element otherwise.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component.
+     * @param component A component to be displayed as an overlay.
      * @return The container DOM element to which the overlay is to be appended.
      */
     resolveDynamicOverlayContainer<
-        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
-    >(widget: Widget): JQuery {
-        return widget.cfg.appendTo
-            ? expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.jq, widget.cfg.appendTo)
+        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+    >(component: Component): JQuery {
+        return component.cfg.appendTo
+            ? expressions.SearchExpressionFacade.resolveComponentsAsSelector(component.jq, component.cfg.appendTo)
             : $(document.body);
     }
 
@@ -103,18 +103,18 @@ export class Utils {
      * 1. The old, detached overlay, as a child of the element specified by `appendTo` attribute
      *
      * We now need to remove the detached overlay. This is done by this function.
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget.
-     * @param widget The (old) overlay widget instance.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component.
+     * @param component The (old) overlay component instance.
      * @param overlay The DOM element for the overlay.
-     * @param overlayId ID of the overlay, usually the widget ID.
+     * @param overlayId ID of the overlay, usually the component ID.
      * @param appendTo The container to which the overlay is appended.
      */
     cleanupDynamicOverlay<
-        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
-    >(widget: Widget, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
-        if (widget.cfg.appendTo) {
+        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+    >(component: Component, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
+        if (component.cfg.appendTo) {
             var overlays = $("[id='" + overlayId + "']");
             if (overlays.length > 1) {
                 appendTo.children("[id='" + overlayId + "']").remove();
@@ -124,35 +124,35 @@ export class Utils {
 
     /**
      * Removes the overlay from the overlay container as specified by the `appendTo` attribute.
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget.
-     * @param widget The overlay widget instance.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component.
+     * @param component The overlay component instance.
      * @param overlay The (new) DOM element of the overlay. These will not be
      * removed. Pass null to remove all overlays with the matching ID.
-     * @param overlayId ID of the the overlay, usually the widget ID.
+     * @param overlayId ID of the the overlay, usually the component ID.
      * @param appendTo The container to which the overlay is appended.
      */
     removeDynamicOverlay<
-        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
-    >(widget: Widget, overlay: JQuery | null, overlayId: string, appendTo: JQuery): void {
+        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+    >(component: Component, overlay: JQuery | null, overlayId: string, appendTo: JQuery): void {
         appendTo.children("[id='" +  overlayId + "']").not(overlay ?? (() => false)).remove();
     }
 
     /**
-     * An overlay widget is moved in the DOM to the position as specified by the `appendTo` attribute. This function
-     * moves the widget to its position in the DOM and removes old elements from previous AJAX updates.
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget.
-     * @param widget The overlay widget instance.
+     * An overlay component is moved in the DOM to the position as specified by the `appendTo` attribute. This function
+     * moves the component to its position in the DOM and removes old elements from previous AJAX updates.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component.
+     * @param component The overlay component instance.
      * @param overlay The DOM element for the overlay.
-     * @param overlayId ID of the overlay, usually the widget ID.
+     * @param overlayId ID of the overlay, usually the component ID.
      * @param appendTo The container to which the overlay is appended.
      */
     appendDynamicOverlay<
-        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
-    >(widget: Widget, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
+        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+    >(component: Component, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         var elementParent = overlay.parent();
 
         // skip when the parent currently is already the same
@@ -161,12 +161,12 @@ export class Utils {
         if (!elementParent.is(appendTo)
                 && !appendTo.is(overlay)) {
 
-            this.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
-            this.removeOverlayPlaceholder(widget);
-            // only the widget element itself leaves its source container, a panel (e.g. of p:selectOneMenu) is
-            // removed when its widget is destroyed
-            if (overlay.is(widget.jq)) {
-                this.overlayPlaceholders.set(widget, $('<span hidden class="p-overlay-placeholder"></span>').insertBefore(overlay));
+            this.removeDynamicOverlay(component, overlay, overlayId, appendTo);
+            this.removeOverlayPlaceholder(component);
+            // only the component element itself leaves its source container, a panel (e.g. of p:selectOneMenu) is
+            // removed when its component is destroyed
+            if (overlay.is(component.jq)) {
+                this.overlayPlaceholders.set(component, $('<span hidden class="p-overlay-placeholder"></span>').insertBefore(overlay));
             }
 
             overlay.appendTo(appendTo);
@@ -176,17 +176,17 @@ export class Utils {
     /**
      * Creates a new (empty) container for a modal overlay. A modal overlay is an overlay that blocks the content
      * below it. To remove the modal overlay, use {@link removeModal}.
-     * @param widget An overlay widget instance.
+     * @param component An overlay component instance.
      * @param overlay The modal overlay element should be a DIV.
      * @param tabbablesCallback A supplier function that return a list of tabbable elements. A
      * tabbable element is an element to which the user can navigate to via the tab key.
      * @return The DOM element for the newly added modal overlay container.
      */
-    addModal(widget: BaseWidget, overlay: JQuery, tabbablesCallback: () => JQuery): JQuery {
-        const id = widget.getId();
+    addModal(component: BaseComponent, overlay: JQuery, tabbablesCallback: () => JQuery): JQuery {
+        const id = component.getId();
         const zIndex = parseInt(overlay.css('z-index')) - 1;
 
-        const role = core.isWidgetOfTypeName(widget, "ConfirmDialog") ? 'alertdialog' : 'dialog';
+        const role = core.isComponentOfTypeName(component, "ConfirmDialog") ? 'alertdialog' : 'dialog';
         overlay.attr({
             'role': role,
             'aria-hidden': false,
@@ -194,14 +194,14 @@ export class Utils {
             'aria-live': 'polite',
         });
 
-        this.preventTabbing(widget, id, zIndex, tabbablesCallback);
+        this.preventTabbing(component, id, zIndex, tabbablesCallback);
 
-        if (widget.cfg.blockScroll) {
+        if (component.cfg.blockScroll) {
             this.preventScrolling();
         }
 
         var modalId = id + '_modal';
-        var modalOverlay = $('<div id="' + modalId + '" class="p-widget-overlay p-dialog-mask"></div>');
+        var modalOverlay = $('<div id="' + modalId + '" class="p-component-overlay p-dialog-mask"></div>');
         modalOverlay.appendTo($(document.body));
         modalOverlay.css('z-index' , String(zIndex));
 
@@ -211,15 +211,15 @@ export class Utils {
     /**
      * Given a modal overlay, prevents navigating via the tab key to elements outside of that modal overlay. Use
      * {@link enableTabbing} to restore the original behavior.
-     * @param widget An overlay widget instance.
-     * @param id ID of a modal overlay widget.
+     * @param component An overlay component instance.
+     * @param id ID of a modal overlay component.
      * @param zIndex The z-index of the modal overlay.
      * @param tabbablesCallback A supplier function that return a list of tabbable elements. A
      * tabbable element is an element to which the user can navigate to via the tab key.
      */
-    preventTabbing(widget: BaseWidget | undefined, id: string, zIndex: number, tabbablesCallback: () => JQuery): void {
+    preventTabbing(component: BaseComponent | undefined, id: string, zIndex: number, tabbablesCallback: () => JQuery): void {
         //Disable tabbing out of modal and stop events from targets outside of the overlay element
-        var $documentInIframe = widget && widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0)?.contentWindow?.document : undefined;
+        var $documentInIframe = component && component.cfg && component.cfg.iframe ? component.cfg.iframe.get(0)?.contentWindow?.document : undefined;
         var $document = $($documentInIframe ? [document, $documentInIframe] : document);
         $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, (event) => {
             var target = $(event.target);
@@ -273,13 +273,13 @@ export class Utils {
     }
 
     /**
-     * Given a modal overlay widget, removes the modal overlay element from the DOM. This reverts the changes as
+     * Given a modal overlay component, removes the modal overlay element from the DOM. This reverts the changes as
      * made by {@link addModal}.
-     * @param widget A modal overlay widget instance.
+     * @param component A modal overlay component instance.
      * @param overlay The modal overlay element should be a DIV.
      */
-    removeModal(widget: BaseWidget, overlay?: JQuery | null): void {
-        const id = widget.getId();
+    removeModal(component: BaseComponent, overlay?: JQuery | null): void {
+        const id = component.getId();
         const modalId = id + '_modal';
 
         if (overlay) {
@@ -296,21 +296,21 @@ export class Utils {
         // if the id does NOT contain a ':'
         $(document.body).children("[id='" + modalId + "']").remove();
 
-        if (widget.cfg.blockScroll) {
+        if (component.cfg.blockScroll) {
             this.enableScrolling();
         }
 
-        this.enableTabbing(widget, id);
+        this.enableTabbing(component, id);
     }
 
     /**
-     * Enables navigating to an element via the tab key outside an overlay widget. Usually called when a modal
+     * Enables navigating to an element via the tab key outside an overlay component. Usually called when a modal
      * overlay is removed. This reverts the changes as made by {@link preventTabbing}.
-     * @param widget A modal overlay widget instance.
-     * @param id ID of a modal overlay, usually the widget ID.
+     * @param component A modal overlay component instance.
+     * @param id ID of a modal overlay, usually the component ID.
      */
-    enableTabbing(widget: BaseWidget | undefined, id: string): void {
-        var $documentInIframe = widget && widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0)?.contentWindow?.document : undefined;
+    enableTabbing(component: BaseComponent | undefined, id: string): void {
+        var $documentInIframe = component && component.cfg && component.cfg.iframe ? component.cfg.iframe.get(0)?.contentWindow?.document : undefined;
         var $document = $($documentInIframe ? [document, $documentInIframe] : document);
 
         $document.off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
@@ -318,7 +318,7 @@ export class Utils {
 
     /**
      * Checks if a modal with the given ID is currently displayed.
-     * @param id The base ID of a modal overlay, usually the widget ID.
+     * @param id The base ID of a modal overlay, usually the component ID.
      * @return Whether the modal with the given ID is displayed.
      */
     isModalActive(id: string): boolean {
@@ -341,19 +341,19 @@ export class Utils {
 
     /**
      * Registers a callback on the document that is invoked when the user clicks on an element outside the overlay
-     * widget.
+     * component.
      *
-     * @param widget An overlay widget instance.
-     * @param hideNamespace A click event with a namespace to listen to, such as `mousedown.widgetId`.
+     * @param component An overlay component instance.
+     * @param hideNamespace A click event with a namespace to listen to, such as `mousedown.componentId`.
      * @param overlay The DOM element for the overlay.
      * @param resolveIgnoredElementsCallback The callback which
      * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
      * when the user clicks on one those elements.
-     * @param hideCallback A callback that is invoked when the user clicks on an element outside the overlay widget.
+     * @param hideCallback A callback that is invoked when the user clicks on an element outside the overlay component.
      * @returns Object that can be used to remove the registered handler.
      */
     registerHideOverlayHandler(
-        widget: BaseWidget,
+        component: BaseComponent,
         hideNamespace: string,
         overlay: JQuery,
         resolveIgnoredElementsCallback: PrimeFacesTypes.OverlayResolveIgnoredElementCallback | undefined | null,
@@ -364,8 +364,8 @@ export class Utils {
             $(document).off(hideNamespace);
         };
 
-        widget.addDestroyListener(unbindHideHandler);
-        widget.addRefreshListener(unbindHideHandler);
+        component.addDestroyListener(unbindHideHandler);
+        component.addRefreshListener(unbindHideHandler);
 
         $(document).off(hideNamespace).on(hideNamespace, (e) => {
             if (overlay.is(':hidden') || overlay.css('visibility') === 'hidden') {
@@ -397,17 +397,17 @@ export class Utils {
 
     /**
      * Registers a callback that is invoked when the window is resized.
-     * @param widget A widget instance for which to register a resize handler.
-     * @param resizeNamespace A resize event with a namespace to listen to, such as `resize.widgetId`.
+     * @param component A component instance for which to register a resize handler.
+     * @param resizeNamespace A resize event with a namespace to listen to, such as `resize.componentId`.
      * @param element An element that prevents the callback from being invoked when it is not
-     * visible, usually a child element of the widget.
+     * visible, usually a child element of the component.
      * @param resizeCallback A callback that is invoked when the window is resized.
      * @param params Optional CSS selector. If given, the callback is invoked only when the resize event
      * is triggered on an element the given selector.
      * @returns Object that can be used to remove the registered handler.
      */
     registerResizeHandler(
-        widget: BaseWidget,
+        component: BaseComponent,
         resizeNamespace: string,
         element: JQuery | undefined | null,
         resizeCallback: PrimeFacesTypes.ResizeCallback,
@@ -423,8 +423,8 @@ export class Utils {
             return { unbind: unbindResizeHandler };
         }
 
-        widget.addDestroyListener(unbindResizeHandler);
-        widget.addRefreshListener(unbindResizeHandler);
+        component.addDestroyListener(unbindResizeHandler);
+        component.addRefreshListener(unbindResizeHandler);
 
         $(window).off(resizeNamespace).on(resizeNamespace, params || null, (e) => {
             if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
@@ -440,14 +440,14 @@ export class Utils {
     /**
      * Registers a MutationObserver and ResizeObserver to watch for DOM changes
      * that may affect element's position and dimensions.
-     * @param widget The widget instance to register the observer for
+     * @param component The component instance to register the observer for
      * @param element The element to observe for changes
      * @param mutationCallback Callback function to execute when relevant
      * mutations occur.
      * @return Object containing bind and unbind functions for the observer
      */
     registerMutationObserver(
-        widget: BaseWidget,
+        component: BaseComponent,
         element: JQuery | HTMLElement,
         mutationCallback: PrimeFacesTypes.MutationCallback,
     ): PrimeFacesTypes.Controllable {
@@ -495,9 +495,9 @@ export class Utils {
         };
 
 
-        // Add cleanup handlers to widget lifecycle
-        widget.addDestroyListener(unbindMutationObserver);
-        widget.addRefreshListener(unbindMutationObserver);
+        // Add cleanup handlers to component lifecycle
+        component.addDestroyListener(unbindMutationObserver);
+        component.addRefreshListener(unbindMutationObserver);
 
         // Start observing DOM mutations
         const bindMutationObserver = () => {
@@ -520,62 +520,62 @@ export class Utils {
     }
 
     /**
-     * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
-     * attribute. Also makes sure the overlay widget is handled properly during AJAX updates.
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget.
-     * @param widget An overlay widget instance.
+     * Sets up an overlay component. Appends the overlay component to the element as specified by the `appendTo`
+     * attribute. Also makes sure the overlay component is handled properly during AJAX updates.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component.
+     * @param component An overlay component instance.
      * @param overlay The DOM element for the overlay.
-     * @param overlayId The ID of the overlay, usually the widget ID.
+     * @param overlayId The ID of the overlay, usually the component ID.
      * @return The overlay that was passed to this function.
      */
     registerDynamicOverlay<
-        Cfg extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidgetCfg,
-        Widget extends PrimeFacesTypes.widget.DynamicOverlayFeatureWidget<Cfg>
-    >(widget: Widget, overlay: JQuery, overlayId: string): JQuery {
+        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+    >(component: Component, overlay: JQuery, overlayId: string): JQuery {
 
-        if (widget.cfg.appendTo) {
-            var appendTo = this.resolveDynamicOverlayContainer(widget);
-            this.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+        if (component.cfg.appendTo) {
+            var appendTo = this.resolveDynamicOverlayContainer(component);
+            this.appendDynamicOverlay(component, overlay, overlayId, appendTo);
 
             // A direct update reuses the source marker but must track the new DOM element.
             // A container update creates a new marker, even if the old container is still connected.
-            const placeholder = this.overlayPlaceholders.get(widget);
+            const placeholder = this.overlayPlaceholders.get(component);
             placeholder?.off('remove.pfOverlay').on('remove.pfOverlay', () => overlay.remove());
 
-            widget.addDestroyListener(() => {
-                var appendTo = this.resolveDynamicOverlayContainer(widget);
-                // pass null as overlay - as every! overlay with this overlayId can be removed on destroying the whole widget
-                this.removeOverlayPlaceholder(widget);
-                this.removeDynamicOverlay(widget, null, overlayId, appendTo);
+            component.addDestroyListener(() => {
+                var appendTo = this.resolveDynamicOverlayContainer(component);
+                // pass null as overlay - as every! overlay with this overlayId can be removed on destroying the whole component
+                this.removeOverlayPlaceholder(component);
+                this.removeDynamicOverlay(component, null, overlayId, appendTo);
             });
 
-            widget.addRefreshListener(() => {
-                var appendTo = this.resolveDynamicOverlayContainer(widget);
-                this.cleanupDynamicOverlay(widget, overlay, overlayId, appendTo);
+            component.addRefreshListener(() => {
+                var appendTo = this.resolveDynamicOverlayContainer(component);
+                this.cleanupDynamicOverlay(component, overlay, overlayId, appendTo);
             });
         }
         else {
-            this.removeOverlayPlaceholder(widget);
+            this.removeOverlayPlaceholder(component);
         }
 
         return overlay;
     }
 
     /**
-     * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the widget.
-     * @param widget A widget instance for which to register a scroll handler.
-     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * Registers a callback that is invoked when a scroll event is triggered on the DOM element for the component.
+     * @param component A component instance for which to register a scroll handler.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.componentId`.
      * @param scrollCallback A callback that is invoked when a scroll event
-     * occurs on the widget.
+     * occurs on the component.
      * @return unbind callback handler
      */
     registerScrollHandler(
-        widget: BaseWidget,
+        component: BaseComponent,
         scrollNamespace: string,
         scrollCallback: PrimeFacesTypes.ScrollCallback,
     ): PrimeFacesTypes.Unbindable {
-        let scrollParent: JQuery<any> | null = this.getScrollParent(widget.getJQ());
+        let scrollParent: JQuery<any> | null = this.getScrollParent(component.getJQ());
 
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
             scrollParent = $(window);
@@ -589,10 +589,10 @@ export class Utils {
 
         scrollParent.off(scrollNamespace).on(scrollNamespace, scrollHandler);
 
-        widget.addDestroyListener(() => {
+        component.addDestroyListener(() => {
             scrollParent.off(scrollNamespace, scrollHandler);
         });
-        widget.addRefreshListener(() => {
+        component.addRefreshListener(() => {
             scrollParent.off(scrollNamespace, scrollHandler);
         });
 
@@ -604,21 +604,21 @@ export class Utils {
     }
 
     /**
-     * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget that
+     * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the component that
      * has a connected overlay.
-     * @param widget A widget instance for which to register a scroll handler.
-     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param component A component instance for which to register a scroll handler.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.componentId`.
      * @param element A DOM element used to find scrollable parents.
-     * @param scrollCallback A callback that is invoked when a scroll event occurs on the widget.
+     * @param scrollCallback A callback that is invoked when a scroll event occurs on the component.
      * @return Unbind function to remove the registered handler.
      */
     registerConnectedOverlayScrollHandler(
-        widget: BaseWidget,
+        component: BaseComponent,
         scrollNamespace: string,
         element: JQuery | undefined,
         scrollCallback: PrimeFacesTypes.ScrollCallback
     ): PrimeFacesTypes.Unbindable {
-        const scrollableParents = this.getScrollableParents((element ?? widget.getJQ()).get(0));
+        const scrollableParents = this.getScrollableParents((element ?? component.getJQ()).get(0));
 
         const scrollHandler = (e: JQuery.TriggeredEvent) => {
             scrollCallback(e);
@@ -630,8 +630,8 @@ export class Utils {
             }
         };
 
-        widget.addDestroyListener(unbindScrollHandler);
-        widget.addRefreshListener(unbindScrollHandler);
+        component.addDestroyListener(unbindScrollHandler);
+        component.addRefreshListener(unbindScrollHandler);
 
         for (const scrollParent of scrollableParents) {
             $(scrollParent).off(scrollNamespace, scrollHandler).on(scrollNamespace, scrollHandler);
@@ -655,6 +655,34 @@ export class Utils {
         }
         const parent = closestScrollParent(jq);
         return parent ? $(parent) : $(jq[0]!.ownerDocument || document);
+    }
+
+    /**
+     * Finds the original handler of a DOM event of an element, so a component can take it over, e.g. the `onchange`
+     * handler of an input. Without CSP this is the inline `on<event>` property, with CSP it is the first jQuery
+     * handler, which was registered by `PrimeFaces.csp.register`. Removing the handler is up to the caller.
+     * @param jq The element whose handler to find.
+     * @param event The name of the event, e.g. `change` or `click`.
+     * @param ignoreNamespace Optional namespace of handlers to skip, e.g. the ones bound by the component itself.
+     * @returns The original handler, or `null` if there is none.
+     * @since 17.0.0
+     */
+    getOriginalEventHandler(jq: JQuery | undefined | null, event: string, ignoreNamespace?: string): ((this: HTMLElement, e: JQuery.TriggeredEvent) => unknown) | null {
+        const element = jq?.[0];
+        if (!jq || !element) {
+            return null;
+        }
+
+        const inlineHandler: unknown = jq.prop('on' + event);
+        if (typeof inlineHandler === 'function') {
+            return inlineHandler as (this: HTMLElement, e: JQuery.TriggeredEvent) => unknown;
+        }
+
+        type HandleObject = { namespace: string, handler: (this: HTMLElement, e: JQuery.TriggeredEvent) => unknown };
+        const events = ($ as unknown as { _data(element: Element, key: string): Record<string, HandleObject[]> | undefined })
+            ._data(element, 'events');
+        const handleObject = events?.[event]?.find((h) => !ignoreNamespace || h.namespace !== ignoreNamespace);
+        return handleObject?.handler ?? null;
     }
 
     /**
@@ -728,11 +756,11 @@ export class Utils {
 
     /**
      * Removes a scroll handler as registered by {@link registerScrollHandler}.
-     * @param widget A widget instance for which a scroll handler was registered.
-     * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+     * @param component A component instance for which a scroll handler was registered.
+     * @param scrollNamespace A scroll event with a namespace, such as `scroll.componentId`.
      */
-    unbindScrollHandler(widget: BaseWidget, scrollNamespace: string): void {
-        var scrollParent = this.getScrollParent(widget.getJQ());
+    unbindScrollHandler(component: BaseComponent, scrollNamespace: string): void {
+        var scrollParent = this.getScrollParent(component.getJQ());
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
             $(window).off(scrollNamespace); // Unbind directly from window
         } else {
@@ -978,12 +1006,12 @@ export class Utils {
     }
 
     /**
-     * Enables a widget for editing and sets it style as enabled.
+     * Enables a component for editing and sets it style as enabled.
      *
      * @param jq a required jQuery element to enable
      * @param input an optional jQuery input to enable (will use jq if null)
      */
-    enableInputWidget(jq: JQuery, input?: JQuery | undefined | null): void {
+    enableInputComponent(jq: JQuery, input?: JQuery | undefined | null): void {
         if(!input) {
             input = jq;
         }
@@ -994,12 +1022,12 @@ export class Utils {
     }
 
     /**
-     * Disables a widget from editing and sets it style as disabled.
+     * Disables a component from editing and sets it style as disabled.
      *
      * @param jq a required jQuery element to disable
      * @param input an optional jQuery input to disable (will use jq if null)
      */
-    disableInputWidget(jq: JQuery, input: JQuery | undefined | null): void {
+    disableInputComponent(jq: JQuery, input: JQuery | undefined | null): void {
         if(!input) {
             input = jq;
         }
@@ -1007,6 +1035,20 @@ export class Utils {
             input.prop('disabled', true);
         }
         jq.addClass('p-state-disabled');
+    }
+
+    /**
+     * @deprecated Use {@link enableInputComponent} instead.
+     */
+    enableInputWidget(jq: JQuery, input?: JQuery | undefined | null): void {
+        utils.enableInputComponent(jq, input);
+    }
+
+    /**
+     * @deprecated Use {@link disableInputComponent} instead.
+     */
+    disableInputWidget(jq: JQuery, input: JQuery | undefined | null): void {
+        utils.disableInputComponent(jq, input);
     }
 
     /**
@@ -1331,7 +1373,7 @@ export class Utils {
             }
 
             if (!isEmpty) {
-                return false;
+                break;
             }
         }
 
@@ -1412,7 +1454,7 @@ export class Utils {
         var highestStickyZIndex = this.roundTowardsZero($('.p-sticky:visible').last().zIndex()) || parseInt(core.nextZindex()) + 1;
 
         // GitHub #9295 Adjust z-index based on overlays
-        var overlays = $('.p-widget-overlay:visible');
+        var overlays = $('.p-component-overlay:visible');
         if (overlays.length) {
             for (const overlay of overlays) {
                 var overlayZIndex = this.roundTowardsZero($(overlay).zIndex()) - 1;
@@ -1458,7 +1500,7 @@ export class Utils {
             }
         }
 
-        // Trigger onRemove events for widget.destroy and remove the element from the DOM
+        // Trigger onRemove events for component.destroy and remove the element from the DOM
         // IMPORTANT: This must occur before jq.off() to ensure the on("remove") events remain registered.
         if (removeElement) {
             jq.triggerHandler("remove");

@@ -78,10 +78,27 @@ public class Schedule001Test extends AbstractPrimePageTest {
         Schedule schedule = page.schedule;
 
         // Act
-        schedule.update(); // widget method
+        schedule.update(); // client API method
 
         // Assert
-        assertConfiguration(schedule.getWidgetConfiguration(), "en");
+        assertConfiguration(schedule.getClientConfiguration(), "en");
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Schedule: GitHub #2795 the event description is the title of the event without tooltip")
+    void descriptionAsTitle(Page page) {
+        // Arrange
+        Schedule schedule = page.schedule;
+
+        // Act
+        waitForScheduledRenderedAndClickable();
+
+        // Assert
+        WebElement event = schedule.getEventElement("Birthday Party");
+        assertNotNull(event);
+        assertEquals("Aragon", event.getDomAttribute("title"));
+        assertNoJavascriptErrors();
     }
 
     @Test
@@ -97,7 +114,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Date selected");
-        assertConfiguration(schedule.getWidgetConfiguration(), "en");
+        assertConfiguration(schedule.getClientConfiguration(), "en");
 
         // Act
         selectSlot(page, "10:00:00");
@@ -137,7 +154,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
      * schedule markup via AJAX and FullCalendar repaints its events on a later tick. Clicking before that repaint
      * finishes does not fire the eventSelect AJAX, so guardAjax runs into "Timeout while waiting for AJAX complete!".
      * Wait until the AJAX queue is empty and the event is rendered and clickable before selecting it.
-     * ({@link Schedule#selectEvent(int)} waits out the widget's double-click window itself.)
+     * ({@link Schedule#selectEvent(int)} waits out the component's double-click window itself.)
      */
     private void selectScheduleEvent(Schedule schedule) {
         waitForScheduledRenderedAndClickable();
@@ -194,7 +211,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
         assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
 
-        assertConfiguration(schedule.getWidgetConfiguration(), "en");
+        assertConfiguration(schedule.getClientConfiguration(), "en");
     }
 
     @Test
@@ -221,7 +238,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         assertButton(schedule.getMonthButton(), "Mois");
         assertButton(schedule.getWeekButton(), "Semaine");
         assertButton(schedule.getDayButton(), "Jour");
-        assertConfiguration(schedule.getWidgetConfiguration(), "fr");
+        assertConfiguration(schedule.getClientConfiguration(), "fr");
     }
 
     @Test

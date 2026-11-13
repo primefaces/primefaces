@@ -71,7 +71,7 @@ class Tree010Test extends AbstractTreeTest {
 
         page.showSelected.click();
         assertEquals("Documents,resume.doc,snapshot.doc,work.doc", page.messages.getMessage(0).getDetail());
-        assertCheckboxConfiguration(page.horizontalTree.getWidgetConfiguration(), "horizontalTreeWidget");
+        assertCheckboxConfiguration(page.horizontalTree.getClientConfiguration(), "horizontalTreeComponent");
     }
 
     @Test
@@ -97,7 +97,7 @@ class Tree010Test extends AbstractTreeTest {
 
         page.showSelected.click();
         assertEquals("snapshot.doc", page.messages.getMessage(0).getDetail());
-        assertCheckboxConfiguration(page.horizontalTree.getWidgetConfiguration(), "horizontalTreeWidget");
+        assertCheckboxConfiguration(page.horizontalTree.getClientConfiguration(), "horizontalTreeComponent");
     }
 
     @Test
@@ -118,7 +118,7 @@ class Tree010Test extends AbstractTreeTest {
 
         page.showSelected.click();
         assertEquals("Documents,resume.doc,snapshot.doc,work.doc", page.messages.getMessage(1).getDetail());
-        assertCheckboxConfiguration(page.dynamicTree.getWidgetConfiguration(), "dynamicTreeWidget");
+        assertCheckboxConfiguration(page.dynamicTree.getClientConfiguration(), "dynamicTreeComponent");
     }
 
     @Test
@@ -139,7 +139,7 @@ class Tree010Test extends AbstractTreeTest {
 
         page.showSelected.click();
         assertEquals("snapshot.doc", page.messages.getMessage(1).getDetail());
-        assertCheckboxConfiguration(page.dynamicTree.getWidgetConfiguration(), "dynamicTreeWidget");
+        assertCheckboxConfiguration(page.dynamicTree.getClientConfiguration(), "dynamicTreeComponent");
     }
 
     private void assertCheckboxConfiguration(JSONObject cfg, String widgetVar) {

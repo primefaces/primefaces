@@ -54,7 +54,7 @@ class Panel001Test extends AbstractPrimePageTest {
         assertFalse(page.messages.isEmpty());
         assertEquals("Panel Closed", page.messages.getMessage(0).getSummary());
         assertEquals("Closed panel id:'panel'", page.messages.getMessage(0).getDetail());
-        assertConfiguration(panel.getWidgetConfiguration());
+        assertConfiguration(panel.getClientConfiguration());
     }
 
     @Test
@@ -73,7 +73,7 @@ class Panel001Test extends AbstractPrimePageTest {
         assertFalse(page.messages.isEmpty());
         assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
-        assertConfiguration(panel.getWidgetConfiguration());
+        assertConfiguration(panel.getClientConfiguration());
     }
 
     @Test
@@ -95,7 +95,7 @@ class Panel001Test extends AbstractPrimePageTest {
         assertFalse(page.messages.isEmpty());
         assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         assertEquals("Status:VISIBLE", page.messages.getMessage(0).getDetail());
-        assertConfiguration(panel.getWidgetConfiguration());
+        assertConfiguration(panel.getClientConfiguration());
     }
 
     @Test
@@ -116,7 +116,7 @@ class Panel001Test extends AbstractPrimePageTest {
         assertFalse(page.messages.isEmpty());
         assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
         assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
-        assertConfiguration(panel.getWidgetConfiguration());
+        assertConfiguration(panel.getClientConfiguration());
     }
 
 

@@ -176,6 +176,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Mixed
     @Property(description = "List of disabled days of week (0=Sunday, 6=Saturday).")
     public abstract List<Integer> getDisabledDays();
 
+    @Property(description = "When disabled, the value is not validated against mindate / maxdate, disabledDates, enabledDates, disabledDays"
+            + " and the order of the range dates on the server. Required, the converter and the validators are still executed.",
+            defaultValue = "true")
+    public abstract boolean isBuiltInValidation();
+
     @Property(description = "JavaScript callback for month change event.")
     public abstract String getOnMonthChange();
 
@@ -217,13 +222,13 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Mixed
             return calculateTimeOnlyPattern();
         }
         else if (isShowTime()) {
-            return calculateWidgetPattern() + " " + calculateTimeOnlyPattern();
+            return calculateClientPattern() + " " + calculateTimeOnlyPattern();
         }
-        return calculateWidgetPattern();
+        return calculateClientPattern();
     }
 
     @Override
-    public String calculateWidgetPattern() {
+    public String calculateClientPattern() {
         return CalendarUtils.removeTime(super.calculatePattern());
     }
 

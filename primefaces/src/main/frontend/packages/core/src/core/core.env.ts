@@ -1,5 +1,5 @@
 import { core } from "./core.js";
-import type { BaseWidgetCfg } from "./core.widget.js";
+import type { BaseComponentCfg } from "./core.component.js";
 
 /**
  * The browser and platform of the user agent, see {@link Environment.browser}. Only the flags of the detected
@@ -165,15 +165,15 @@ export class Environment {
     }
 
     /**
-     * A widget is touch enabled if the browser supports touch AND the widget has the touchable property enabled.
-     * The default will be true if it widget status can't be determined.
+     * A component is touch enabled if the browser supports touch AND the component has the touchable property enabled.
+     * The default will be true if it component status can't be determined.
      * 
-     * @param cfg the widget configuration.
+     * @param cfg the component configuration.
      * @return `true` if touch is enabled, false if disabled
      */
-    isTouchable(cfg: PrimeFacesTypes.widget.PartialWidgetCfg<BaseWidgetCfg>): boolean {
-        var widgetTouchable = (cfg == undefined) || (cfg.touchable != undefined ? cfg.touchable : true);
-        return this.touch && widgetTouchable;
+    isTouchable(cfg: PrimeFacesTypes.component.PartialComponentCfg<BaseComponentCfg>): boolean {
+        var componentTouchable = (cfg == undefined) || (cfg.touchable != undefined ? cfg.touchable : true);
+        return this.touch && componentTouchable;
     }
 
     /**
@@ -190,7 +190,7 @@ export class Environment {
      * Determines if light or dark contrast is being applied. The themes switch between light and dark with the CSS
      * `color-scheme`: `light`, `dark` or `light dark` (the preferred color scheme of the operating system).
      *
-     * @param element The element whose color scheme is used (e.g. a widget inside a dark sidebar), default: the page.
+     * @param element The element whose color scheme is used (e.g. a component inside a dark sidebar), default: the page.
      * @return The theme contrast, either 'dark' or 'light'.
      */
     getThemeContrast(element?: Element): PrimeFacesTypes.ThemeKind {

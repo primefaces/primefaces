@@ -10,7 +10,7 @@ import { expressions, type Expressions } from "./core.expressions.js";
 import { resources, type Resources } from "./core.resources.js";
 import { utils, type Utils } from "./core.utils.js";
 
-import { BaseWidget, DeferredWidget, DynamicOverlayWidget, type BaseWidgetCfg } from "./core.widget.js";
+import { BaseComponent, DeferredComponent, DynamicOverlayComponent, type BaseComponentCfg } from "./core.component.js";
 import { AjaxExceptionHandler } from "../ajaxexceptionhandler/ajaxexceptionhandler.js";
 import { AjaxStatus } from "../ajaxstatus/ajaxstatus.js";
 import { Poll } from "../poll/poll.js";
@@ -143,6 +143,12 @@ const LocaleEnUs: PrimeFacesTypes.Locale = {
         "moveToTarget": "Move to Target",
         "moveTop": "Move Top",
         "moveUp": "Move Up",
+        "movedBottom": "Moved to Bottom",
+        "movedDown": "Moved Down",
+        "movedTop": "Moved to Top",
+        "movedToSource": "Moved to Source",
+        "movedToTarget": "Moved to Target",
+        "movedUp": "Moved Up",
         "navigation": "Navigation",
         "next": "Next",
         "nextPageLabel": "Next Page",
@@ -231,10 +237,10 @@ function toArticulateValidationConfiguration(cfg: PrimeFacesTypes.validation.Sho
  * - {@link Expressions | PrimeFaces.expressions} The search expressions module with functionality for working with search expression
  * - {@link Resources | PrimeFaces.resources} The resources module with functionality for creating resource links
  * - {@link Utils | PrimeFaces.utils} The utility module with functionality that does not fit anywhere else
- * - {{@link widget | PrimeFaces.widget} The registry with all available widget classes
- * - {@link widgets | PrimeFaces.widgets} The registry with all currently instantiated widgets
+ * - {@link component | PrimeFaces.component} The registry with all available component classes
+ * - {@link components | PrimeFaces.components} The registry with all currently instantiated components
  * - Several other utility methods defined directly on the `PrimeFaces` object, such as
- * {@link getWidgetById | PrimeFaces.getWidgetById}, or {@link escapeHTML | PrimeFaces.escapeHTML}.
+ * {@link getComponentById | PrimeFaces.getComponentById}, or {@link escapeHTML | PrimeFaces.escapeHTML}.
  */
 export class Core {
     /**
@@ -299,53 +305,93 @@ export class Core {
     };
 
     /**
-     * This object contains the  widget classes that are currently available. The key is the name of the widget, the
-     * value the class (constructor) of the widget. Please note that widgets are usually created by the PrimeFaces
-     * framework and should not be created manually.
+     * This object contains the component classes that are currently available. The key is the name of the component,
+     * the value the class (constructor) of the component. Please note that components are usually created by the
+     * PrimeFaces framework and should not be created manually. `PrimeFaces.widget` is a deprecated alias of this
+     * registry, the base classes are also available under their deprecated names `BaseWidget`, `DeferredWidget` and
+     * `DynamicOverlayWidget`.
      *
      * There are a few base classes defined by PrimeFaces that you can use when writing the client-side part of your
-     * custom widget:
+     * custom component:
      *
-     * - {@link BaseWidget | PrimeFaces.widget.BaseWidget}: Base class that you should extend if you do not require any
+     * - {@link BaseComponent | PrimeFaces.component.BaseComponent}: Base class that you should extend if you do not require any
      * advanced functionality.
-     * - {@link DeferredWidget | PrimeFaces.widget.DeferredWidget}: When you widget needs to be initialized on the client
-     * in a way that requires the element to be visible, you can use this class as a base. A widget may not be visible,
-     * for example, when it is inside a dialog or tab. The deferred widget provides the method 
-     * {@link DeferredWidget.addDeferredRender | addDeferredRender} (to register a listener) and 
-     * {@link DeferredWidget.renderDeferred | renderDeferred} (to render the widget once it is visible).
-     * - {@link DynamicOverlayWidget | PrimeFaces.widget.DynamicOverlayWidget}: When your widget is an overlay with
+     * - {@link DeferredComponent | PrimeFaces.component.DeferredComponent}: When your component needs to be initialized on the client
+     * in a way that requires the element to be visible, you can use this class as a base. A component may not be visible,
+     * for example, when it is inside a dialog or tab. The deferred component provides the method 
+     * {@link DeferredComponent.addDeferredRender | addDeferredRender} (to register a listener) and 
+     * {@link DeferredComponent.renderDeferred | renderDeferred} (to render the component once it is visible).
+     * - {@link DynamicOverlayComponent | PrimeFaces.component.DynamicOverlayComponent}: When your component is an overlay with
      * dynamically loaded content, you can use this base class.
      */
-    widget: PrimeFacesTypes.WidgetRegistry  = {
+    component: PrimeFacesTypes.ComponentRegistry  = {
         AjaxExceptionHandler,
         AjaxStatus,
-        BaseWidget,
-        DeferredWidget,
-        DynamicOverlayWidget,
+        BaseComponent,
+        DeferredComponent,
+        DynamicOverlayComponent,
         Poll,
+        BaseWidget: BaseComponent,
+        DeferredWidget: DeferredComponent,
+        DynamicOverlayWidget: DynamicOverlayComponent,
     };
 
     /**
-     * A map of all instantiated widgets that are available on the current page.
-     * The key is the widget variable of the widget, the value the instantiated widget.
+     * A map of all instantiated components that are available on the current page.
+     * The key is the widget variable of the component, the value the instantiated component.
      */
-    widgets: PrimeFacesTypes.WidgetInstanceMap = {};
+    components: PrimeFacesTypes.ComponentInstanceMap = {};
+
+    /**
+     * Alias of {@link component | PrimeFaces.component}, both names point to the same registry.
+     * @deprecated Use {@link component | PrimeFaces.component} instead.
+     */
+    get widget(): PrimeFacesTypes.ComponentRegistry {
+        return this.component;
+    }
+
+    set widget(registry: PrimeFacesTypes.ComponentRegistry) {
+        this.component = registry;
+    }
+
+    /**
+     * Alias of {@link components | PrimeFaces.components}, both names point to the same map.
+     * @deprecated Use {@link components | PrimeFaces.components} instead.
+     */
+    get widgets(): PrimeFacesTypes.ComponentInstanceMap {
+        return this.components;
+    }
+
+    set widgets(instances: PrimeFacesTypes.ComponentInstanceMap) {
+        this.components = instances;
+    }
 
     /**
      * A list of widget variable IDs (widgetVar) that were once instantiated, but are now removed from the DOM, such as
      * due to the result of an AJAX update request.
      */
-    detachedWidgets: string[] = [];
+    detachedComponents: string[] = [];
 
     /**
-     * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
-     * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+     * @deprecated Use {@link detachedComponents} instead, both names point to the same list.
+     */
+    get detachedWidgets(): string[] {
+        return this.detachedComponents;
+    }
+
+    set detachedWidgets(widgetVars: string[]) {
+        this.detachedComponents = widgetVars;
+    }
+
+    /**
+     * Some components need to compute their dimensions based on their parent element(s). This requires that such
+     * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
-     * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+     * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
-     * This is the list of renders for widgets that are currently waiting to become visible.
+     * This is the list of renders for components that are currently waiting to become visible.
      */
     deferredRenders: PrimeFacesTypes.DeferredRender[]= [];
 
@@ -648,16 +694,16 @@ export class Core {
     }
 
     /**
-     * Finds a widget in the current page with the given ID.
-     * @param id ID of the widget to retrieve.
-     * @return The widget with the given ID, of `null` if no such widget was
+     * Finds a component in the current page with the given ID.
+     * @param id ID of the component to retrieve.
+     * @return The component with the given ID, of `null` if no such component was
      * found.
      */
-    getWidgetById(id: string): BaseWidget | null {
-        for (var widgetVar in this.widgets) {
-            var widget = this.widgets[widgetVar];
-            if (widget && widget.id === id) {
-                return widget;
+    getComponentById(id: string): BaseComponent | null {
+        for (var widgetVar in this.components) {
+            var component = this.components[widgetVar];
+            if (component && component.id === id) {
+                return component;
             }
         }
 
@@ -665,61 +711,100 @@ export class Core {
     }
 
     /**
-     * Finds all widgets in the current page that are of the given type.
-     * @typeParam Widget Type of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
-     * @param type The type (constructor) of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
-     * @return An array of widgets that are of the requested type. If no suitable widgets
+     * Finds all components in the current page that are of the given type.
+     * @typeParam Component Type of the components of interest, e.g. `PrimeFaces.component.DataTable`.
+     * @param type The type (constructor) of the components of interest, e.g. `PrimeFaces.component.DataTable`.
+     * @return An array of components that are of the requested type. If no suitable components
      * are found on the current page, an empty array will be returned.
      */
-    getWidgetsByType<Widget extends PrimeFacesTypes.AnyNewable>(type: Widget): InstanceType<Widget>[] {
-        return $.map(this.widgets, (widget) => {
-            return widget instanceof type ? widget as InstanceType<Widget> : null;
+    getComponentsByType<Component extends PrimeFacesTypes.AnyNewable>(type: Component): InstanceType<Component>[] {
+        return $.map(this.components, (component) => {
+            return component instanceof type ? component as InstanceType<Component> : null;
         });
     }
 
     /**
-     * Finds all widgets in the current page that are of the given type.
-     * @typeParam TypeName Type of the widgets of interest, e.g. `DataTable`.
-     * @param type The type (name) of the widgets of interest, e.g. `DataTable`.
-     * @return An array of widgets that are of the requested type. If no suitable widgets
+     * Finds all components in the current page that are of the given type.
+     * @typeParam TypeName Type of the components of interest, e.g. `DataTable`.
+     * @param type The type (name) of the components of interest, e.g. `DataTable`.
+     * @return An array of components that are of the requested type. If no suitable components
      * are found on the current page, an empty array will be returned.
      */
-    getWidgetsByTypeName<
-        TypeName extends keyof PrimeFacesTypes.WidgetRegistry,
-    >(type: TypeName): InstanceType<PrimeFacesTypes.WidgetRegistry[TypeName]>[] {
-        const widgetType = this.getWidgetTypeByName(type);
-        return widgetType !== undefined ? this.getWidgetsByType(widgetType) : [];
+    getComponentsByTypeName<
+        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
+    >(type: TypeName): InstanceType<PrimeFacesTypes.ComponentRegistry[TypeName]>[] {
+        const componentType = this.getComponentTypeByName(type);
+        return componentType !== undefined ? this.getComponentsByType(componentType) : [];
     }
 
     /**
-     * Finds the type of the widget with the given name. Returns undefined when
-     * no such widget was loaded and registered yet.
-     * @typeParam TypeName Type name of the widget of interest, e.g. `DataTable`.
-     * @param type The type name of the widget of interest, e.g. `DataTable`.
-     * @return The type of the widget with the given name. If no suitable widgets
+     * Finds the type of the component with the given name. Returns undefined when
+     * no such component was loaded and registered yet.
+     * @typeParam TypeName Type name of the component of interest, e.g. `DataTable`.
+     * @param type The type name of the component of interest, e.g. `DataTable`.
+     * @return The type of the component with the given name. If no suitable components
      * are found on the current page, returns undefined.
      */
-    getWidgetTypeByName<
-        TypeName extends keyof PrimeFacesTypes.WidgetRegistry,
-    >(type: TypeName): PrimeFacesTypes.WidgetRegistry[TypeName] | undefined {
-        return this.widget[type];
+    getComponentTypeByName<
+        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
+    >(type: TypeName): PrimeFacesTypes.ComponentRegistry[TypeName] | undefined {
+        return this.component[type];
     }
 
     /**
-     * Checks if the widget class with the given name was loaded and registered,
-     * and, if it was, the given widget is an instance of that class.
+     * Checks if the component class with the given name was loaded and registered,
+     * and, if it was, the given component is an instance of that class.
      * 
-     * If possible, simply check against `PrimeFaces.widget.<name>` if you are
-     * certain the widget class was loaded already.
-     * @param widget A widget to check.
-     * @param typeName The name of a widget class to check against, e.g. `DataTable`.
-     * @returns If the widget is an instance of the given widget type. Returns false
-     * when the widget class was not yet loaded or registered (in which case you
+     * If possible, simply check against `PrimeFaces.component.<name>` if you are
+     * certain the component class was loaded already.
+     * @param component A component to check.
+     * @param typeName The name of a component class to check against, e.g. `DataTable`.
+     * @returns If the component is an instance of the given component type. Returns false
+     * when the component class was not yet loaded or registered (in which case you
      * could not possibly have an instance of it...)
      */
-    isWidgetOfTypeName(widget: BaseWidget, typeName: string): boolean {
-        const type = (this.widget as unknown as Record<string, typeof BaseWidget<any>>)[typeName];
-        return type !== undefined ? widget instanceof type : false;
+    isComponentOfTypeName(component: BaseComponent, typeName: string): boolean {
+        const type = (this.component as unknown as Record<string, typeof BaseComponent<any>>)[typeName];
+        return type !== undefined ? component instanceof type : false;
+    }
+
+    /**
+     * @deprecated Use {@link getComponentById} instead.
+     */
+    getWidgetById(id: string): BaseComponent | null {
+        return this.getComponentById(id);
+    }
+
+    /**
+     * @deprecated Use {@link getComponentsByType} instead.
+     */
+    getWidgetsByType<Component extends PrimeFacesTypes.AnyNewable>(type: Component): InstanceType<Component>[] {
+        return this.getComponentsByType(type);
+    }
+
+    /**
+     * @deprecated Use {@link getComponentsByTypeName} instead.
+     */
+    getWidgetsByTypeName<
+        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
+    >(type: TypeName): InstanceType<PrimeFacesTypes.ComponentRegistry[TypeName]>[] {
+        return this.getComponentsByTypeName(type);
+    }
+
+    /**
+     * @deprecated Use {@link getComponentTypeByName} instead.
+     */
+    getWidgetTypeByName<
+        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
+    >(type: TypeName): PrimeFacesTypes.ComponentRegistry[TypeName] | undefined {
+        return this.getComponentTypeByName(type);
+    }
+
+    /**
+     * @deprecated Use {@link isComponentOfTypeName} instead.
+     */
+    isWidgetOfTypeName(component: BaseComponent, typeName: string): boolean {
+        return this.isComponentOfTypeName(component, typeName);
     }
 
     /**
@@ -730,15 +815,15 @@ export class Core {
      *   JQuery instance otherwise.
      * - JQuery instance: returns that instance unchanged.
      * - HTML element: returns that element wrapped in a JQuery instance
-     * - Widget instance: Returns the main element ({@link BaseWidget.getJQ}) of
-     *   the widget. 
+     * - Component instance: Returns the main element ({@link BaseComponent.getJQ}) of
+     *   the component. 
      *
      * @param target Either an ID, an HTML element or jQuery instance, or a PrimeFaces
-     * widget.
+     * component.
      * @return The resolved JQuery instance.
      */
-    resolveAs$(target: string | HTMLElement | JQuery | BaseWidget): JQuery {
-        if (target instanceof BaseWidget) {
+    resolveAs$(target: string | HTMLElement | JQuery | BaseComponent): JQuery {
+        if (target instanceof BaseComponent) {
             return target.getJQ();
         }
         else if (target instanceof $) {
@@ -763,16 +848,16 @@ export class Core {
      * - ID of an element: uses the first element with that ID
      * - jQuery instance: uses the first element of the jQuery instance
      * - HTML element: uses that element
-     * - Widget instance: uses the base element ({@link BaseWidget.getJQ}) of the widget
+     * - Component instance: uses the base element ({@link BaseComponent.getJQ}) of the component
      *
      * @param target Either an ID, an HTML element, a jQuery instance, or a
-     * PrimeFaces widget.
+     * PrimeFaces component.
      * @return The ID of the target.
      */
-    resolveAsId(target: string | HTMLElement | JQuery | BaseWidget): string {
-        if (target instanceof BaseWidget) {
-            var widgetJq = target.getJQ();
-            return widgetJq.data(this.CLIENT_ID_DATA) || widgetJq.attr('id');
+    resolveAsId(target: string | HTMLElement | JQuery | BaseComponent): string {
+        if (target instanceof BaseComponent) {
+            var componentJq = target.getJQ();
+            return componentJq.data(this.CLIENT_ID_DATA) || componentJq.attr('id');
         }
         else if (target instanceof $) {
             const $target = target as JQuery;
@@ -1090,47 +1175,47 @@ export class Core {
     }
 
     /**
-     * Applies the inline AJAX status (p-state-loading) to the given widget / button.
+     * Applies the inline AJAX status (p-state-loading) to the given component / button.
      * 
-     * If the widget defines a {@link BaseWidget.disable disable} method, it will
+     * If the component defines a {@link BaseComponent.disable disable} method, it will
      * be disabled during the AJAX call, if the
-     * {@link BaseWidgetCfg.disableOnAjax disableOnAjax} property of its
+     * {@link BaseComponentCfg.disableOnAjax disableOnAjax} property of its
      * configuration is set to `true`.
      * 
-     * It it also defines an {@link BaseWidget.enable enable} method, the widget
+     * It it also defines an {@link BaseComponent.enable enable} method, the component
      * will be enabled again once the request finishes.
      *
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget
-     * @param widget The widget.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component
+     * @param component The component.
      * @param button The button DOM element.
-     * @param isXhrSource Callback that checks if the widget is the source of the current AJAX request.
+     * @param isXhrSource Callback that checks if the component is the source of the current AJAX request.
      */
     bindButtonInlineAjaxStatus<
-        Cfg extends BaseWidgetCfg,
-        Widget extends BaseWidget<Cfg>
+        Cfg extends BaseComponentCfg,
+        Component extends BaseComponent<Cfg>
     >(
-        widget: Widget,
+        component: Component,
         button: JQuery,
-        isXhrSource?: (widget: Widget, settings: JQuery.AjaxSettings) => boolean
+        isXhrSource?: (component: Component, settings: JQuery.AjaxSettings) => boolean
     ): void {
-        isXhrSource ??= (widget, settings) => ajax.Utils.isXhrSource(widget, settings);
+        isXhrSource ??= (component, settings) => ajax.Utils.isXhrSource(component, settings);
 
         const $this = this;
-        widget.ajaxCount = 0;
-        const namespace = '.' + widget.id;
+        component.ajaxCount = 0;
+        const namespace = '.' + component.id;
         $(document).off('pfAjaxSend' + namespace + ' pfAjaxComplete' + namespace).on('pfAjaxSend' + namespace, function(_, __, settings) {
-            if (isXhrSource.call(this, widget, settings)) {
-                widget.ajaxCount++;
-                if (widget.ajaxCount > 1) {
+            if (isXhrSource.call(this, component, settings)) {
+                component.ajaxCount++;
+                if (component.ajaxCount > 1) {
                     return;
                 }
 
                 button.addClass('p-state-loading');
-                widget.ajaxStart = Date.now();
+                component.ajaxStart = Date.now();
 
-                if (widget.cfg.disableOnAjax !== false) {
-                    widget.disable?.();
+                if (component.cfg.disableOnAjax !== false) {
+                    component.disable?.();
                 }
 
                 const loadIcon = $('<span class="p-icon-loading p-icon p-loading-icon p-ajaxstatus-loading-icon p-c"></span>');
@@ -1142,46 +1227,46 @@ export class Core {
                 button.prepend(loadIcon);
             }
         }).on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
-            if (isXhrSource.call(this, widget, settings)) {
-                widget.ajaxCount--;
-                if (widget.ajaxCount > 0 || args?.redirect) {
+            if (isXhrSource.call(this, component, settings)) {
+                component.ajaxCount--;
+                if (component.ajaxCount > 0 || args?.redirect) {
                     return;
                 }
 
                 $this.queueTask(
-                    () => $this.buttonEndAjaxDisabled(widget, button),
-                    Math.max(ajax.minLoadAnimation + (widget.ajaxStart ?? 0) - Date.now(), 0)
+                    () => $this.buttonEndAjaxDisabled(component, button),
+                    Math.max(ajax.minLoadAnimation + (component.ajaxStart ?? 0) - Date.now(), 0)
                 );
-                widget.ajaxStart = null;
+                component.ajaxStart = null;
             }
         });
-        widget.addDestroyListener(function() {
+        component.addDestroyListener(function() {
             $(document).off(namespace);
         });
     }
 
     /**
-     * Ends the AJAX disabled state. If the widget defines an
-     * {@link BaseWidget.enable enable} method, it will be enabled at the end
+     * Ends the AJAX disabled state. If the component defines an
+     * {@link BaseComponent.enable enable} method, it will be enabled at the end
      * of the AJAX request, if the
-     * {@link BaseWidgetCfg.disableOnAjax disableOnAjax} property of its
+     * {@link BaseComponentCfg.disableOnAjax disableOnAjax} property of its
      * configuration is set to `true`.
      *
-     * @typeParam Cfg Type of the widget configuration.
-     * @typeParam Widget Type of the widget.
-     * @param widget the widget.
+     * @typeParam Cfg Type of the component configuration.
+     * @typeParam Component Type of the component.
+     * @param component the component.
      * @param button The button DOM element.
      */
     buttonEndAjaxDisabled<
-        Cfg extends BaseWidgetCfg,
-        Widget extends BaseWidget<Cfg>
-    >(widget: Widget, button: JQuery): void {
+        Cfg extends BaseComponentCfg,
+        Component extends BaseComponent<Cfg>
+    >(component: Component, button: JQuery): void {
         button.removeClass('p-state-loading');
 
-        if (typeof widget.enable === 'function'
-            && widget.cfg.disableOnAjax !== false
-            && !widget.cfg.disabledAttr) {
-            widget.enable();
+        if (typeof component.enable === 'function'
+            && component.cfg.disableOnAjax !== false
+            && !component.cfg.disabledAttr) {
+            component.enable();
         }
 
         button.find('.p-icon-loading').remove();
@@ -1282,12 +1367,19 @@ export class Core {
     }
 
     /**
-     * Handles the error case when a widget was requested that is not available. Currently just logs an error
+     * Handles the error case when a component was requested that is not available. Currently just logs an error
      * message.
-     * @param widgetVar Widget variables of a widget
+     * @param widgetVar Widget variable of a component
+     */
+    componentNotAvailable(widgetVar: string): void {
+        this.error("Component for var '" + widgetVar + "' not available!");
+    }
+
+    /**
+     * @deprecated Use {@link componentNotAvailable} instead.
      */
     widgetNotAvailable(widgetVar: string): void {
-        this.error("Widget for var '" + widgetVar + "' not available!");
+        this.componentNotAvailable(widgetVar);
     }
 
     /**
@@ -1366,18 +1458,18 @@ export class Core {
     }
 
     /**
-     * A shortcut for {@link createWidget}.
-     * @typeParam WidgetName Name of the widget class, as registered in {@link PrimeFacesTypes.WidgetRegistry}
-     * @param widgetName Name of the widget class, as registered in {@link widget PrimeFaces.widget}
-     * @param widgetVar Widget variable of the widget
-     * @param cfg Configuration for the widget
+     * A shortcut for {@link createComponent}.
+     * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
+     * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
+     * @param widgetVar Widget variable of the component
+     * @param cfg Configuration for the component
      */
-    cw<WidgetName extends keyof PrimeFacesTypes.WidgetRegistry>(
-        widgetName: WidgetName,
+    cw<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
+        componentName: ComponentName,
         widgetVar: string,
-        cfg: PrimeFacesTypes.widget.PartialCreateWidgetCfg<PrimeFacesTypes.widget.WidgetCfg<PrimeFacesTypes.WidgetRegistry[WidgetName]>>
+        cfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
     ): void {
-        this.createWidget(widgetName, widgetVar, cfg);
+        this.createComponent(componentName, widgetVar, cfg);
     }
 
     /**
@@ -1393,30 +1485,30 @@ export class Core {
     }
 
     /**
-     * Creates a new widget of the given type and with the given configuration. Registers that widget in the widgets
-     * registry {@link widgets}. If this method is called in response to an AJAX request and the method
+     * Creates a new component of the given type and with the given configuration. Registers that component in the components
+     * registry {@link components}. If this method is called in response to an AJAX request and the component
      * exists already, it is refreshed.
-     * @typeParam WidgetName Name of the widget class, as registered in {@link PrimeFacesTypes.WidgetRegistry}
-     * @param widgetName Name of the widget class, as registered in {@link widget | PrimeFaces.widget}
-     * @param widgetVar Widget variable of the widget
-     * @param cfg Configuration for the widget, without the `widgetVar` property.
+     * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
+     * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
+     * @param widgetVar Widget variable of the component
+     * @param cfg Configuration for the component, without the `widgetVar` property.
      */
-    createWidget<WidgetName extends keyof PrimeFacesTypes.WidgetRegistry>(
-        widgetName: WidgetName,
+    createComponent<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
+        componentName: ComponentName,
         widgetVar: string,
-        partialCfg: PrimeFacesTypes.widget.PartialCreateWidgetCfg<PrimeFacesTypes.widget.WidgetCfg<PrimeFacesTypes.WidgetRegistry[WidgetName]>>
+        partialCfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
     ): void {
         const cfg = Object.assign(partialCfg, { widgetVar });
 
-        const widgetType = this.widget[widgetName] as PrimeFacesTypes.Newable<[], InstanceType<PrimeFacesTypes.WidgetRegistry[WidgetName]>> | undefined;
-        if(widgetType) {
-            const widget = this.widgets[widgetVar];
+        const componentType = this.component[componentName] as PrimeFacesTypes.Newable<[], InstanceType<PrimeFacesTypes.ComponentRegistry[ComponentName]>> | undefined;
+        if(componentType) {
+            const component = this.components[widgetVar];
 
             //ajax update
-            if(widget && (widget.constructor === this.widget[widgetName])) {
-                widget.refresh(cfg);
+            if(component && (component.constructor === this.component[componentName])) {
+                component.refresh(cfg);
                 if (cfg.postRefresh) {
-                    cfg.postRefresh.call(widget, widget);
+                    cfg.postRefresh.call(component, component, component);
                 }
             }
             //page init
@@ -1430,19 +1522,30 @@ export class Core {
                     }
                     cfg.preConstruct.call(null, cfg);
                 }
-                const newWidget = new widgetType();
-                newWidget.init(cfg);
-                this.widgets[widgetVar] = newWidget;
+                const newComponent = new componentType();
+                newComponent.init(cfg);
+                this.components[widgetVar] = newComponent;
                 if (cfg.postConstruct) {
-                    cfg.postConstruct.call(newWidget, newWidget);
+                    cfg.postConstruct.call(newComponent, newComponent, newComponent);
                 }
             }
         }
-        // widget script not loaded
+        // component script not loaded
         else {
             // should be loaded by our dynamic resource handling, log a error
-            this.error("Widget class '" + widgetName + "' not found!");
+            this.error("Component class '" + componentName + "' not found!");
         }
+    }
+
+    /**
+     * @deprecated Use {@link createComponent} instead.
+     */
+    createWidget<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
+        componentName: ComponentName,
+        widgetVar: string,
+        partialCfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
+    ): void {
+        this.createComponent(componentName, widgetVar, partialCfg);
     }
     
     /**
@@ -1648,7 +1751,7 @@ export class Core {
 
 
     /**
-     * Aligns container scrollbar to keep item in container viewport, algorithm copied from JQueryUI menu widget.
+     * Aligns container scrollbar to keep item in container viewport, algorithm copied from the jQuery UI menu widget.
      * @param container The container with a scrollbar that contains the item.
      * @param item The item to scroll into view.
      */
@@ -1863,54 +1966,54 @@ export class Core {
     }
 
     /**
-     * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
-     * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+     * Some components need to compute their dimensions based on their parent element(s). This requires that such
+     * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
-     * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+     * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
-     * Adds a deferred render to the global list.  If this widget has already been added only the last instance
+     * Adds a deferred render to the global list.  If this component has already been added only the last instance
      * will be added to the stack.
      *
-     * @param widgetId The ID of a deferred widget.
-     * @param containerId ID of the container that should be visible before the widget can be rendered.
-     * @param fn Callback that is invoked when the widget _may_ possibly have become visible. Should
-     * return `true` when the widget was rendered, or `false` when the widget still needs to be rendered later.
+     * @param componentId The ID of a deferred component.
+     * @param containerId ID of the container that should be visible before the component can be rendered.
+     * @param fn Callback that is invoked when the component _may_ possibly have become visible. Should
+     * return `true` when the component was rendered, or `false` when the component still needs to be rendered later.
      */
-    addDeferredRender(widgetId: string | string[], containerId: string, fn: () => boolean | undefined | void): void {
+    addDeferredRender(componentId: string | string[], containerId: string, fn: () => boolean | undefined | void): void {
         // remove existing
         this.deferredRenders = this.deferredRenders.filter(deferredRender => {
-            return !(deferredRender.widget === widgetId && deferredRender.container === containerId);
+            return !(deferredRender.componentId === componentId && deferredRender.container === containerId);
         });
 
         // add new
-        this.deferredRenders.push({ widget: widgetId, container: containerId, callback: fn });
+        this.deferredRenders.push({ componentId, container: containerId, callback: fn });
     }
 
     /**
-     * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
-     * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+     * Some components need to compute their dimensions based on their parent element(s). This requires that such
+     * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
-     * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+     * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
      * Removes a deferred render from the global list.
      *
-     * @param widgetId The ID of a deferred widget.
+     * @param componentId The ID of a deferred component.
      */
-    removeDeferredRenders(widgetId: string | string[]): void {
-        this.deferredRenders = this.deferredRenders.filter((deferredRender) => deferredRender.widget !== widgetId);
+    removeDeferredRenders(componentId: string | string[]): void {
+        this.deferredRenders = this.deferredRenders.filter((deferredRender) => deferredRender.componentId !== componentId);
     }
 
     /**
-     * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
-     * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+     * Some components need to compute their dimensions based on their parent element(s). This requires that such
+     * components are not rendered until they have become visible. A component may not be visible, for example, when it
      * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
-     * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
-     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
-     * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+     * components to render once they are visible. This is done by keeping a list of components that need to be rendered,
+     * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible.
+     * Components should extend `PrimeFaces.component.DeferredComponent` to make use of this functionality.
      *
      * Invokes all deferred renders. This is usually called when an action was performed that _may_ have resulted
      * in a container now being visible. This includes actions such as an AJAX request request was made or a tab
@@ -1919,19 +2022,19 @@ export class Core {
      * @param containerId ID of the container that _may_ have become visible.
      */
     invokeDeferredRenders(containerId: string | string[]): void {
-        var widgetsToRemove = [];
+        var componentsToRemove = [];
         for (const deferredRender of this.deferredRenders) {
 
             if(deferredRender.container === containerId) {
                 var rendered = deferredRender.callback.call(undefined);
                 if(rendered) {
-                    widgetsToRemove.push(deferredRender.widget);
+                    componentsToRemove.push(deferredRender.componentId);
                 }
             }
         }
 
-        for (const widget of widgetsToRemove) {
-            this.removeDeferredRenders(widget);
+        for (const component of componentsToRemove) {
+            this.removeDeferredRenders(component);
         }
     }
 
@@ -1939,14 +2042,14 @@ export class Core {
      * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
      * as specified by {@link PrimeFacesTypes.PFSettings.locale | PrimeFaces.settings.locale}. When no locale was found for
      * the given locale, falls back to the default English locale.
-     * @param cfgLocale Optional configuration locale from the widget
+     * @param cfgLocale Optional configuration locale from the component
      * @return The current locale with the key-value pairs.
      */
     getLocaleSettings(cfgLocale?: string): PrimeFacesTypes.Locale {
         let locale: PrimeFacesTypes.Locale | undefined;
 
         if(cfgLocale) {
-            // widget locale must not be cached since it can change per widget
+            // component locale must not be cached since it can change per component
             locale = this.locales[cfgLocale];
         } else {
             // global settings so return cached value if already loaded
@@ -2119,10 +2222,10 @@ export class Core {
         utils.killswitch();
 
         this.zindex = 1000;
-        this.detachedWidgets = [];
+        this.detachedComponents = [];
         this.animationActive = false;
         this.customFocus = false;
-        this.widgets = {};            
+        this.components = {};            
     }
 
     /**
@@ -2173,25 +2276,25 @@ export class Core {
 export const core: Core = new Core();
 
 /**
- * Finds and returns a widget
+ * Finds and returns a component
  *
- * Note to TypeScript users: You might want to define a method that takes a widget variables and widget constructor, and
- * check whether the widget is of the given type. If so, you can return the widget and cast it to the desired type:
+ * Note to TypeScript users: You might want to define a method that takes a widget variable and component constructor, and
+ * check whether the component is of the given type. If so, you can return the component and cast it to the desired type:
  * ```ts
- * function getWidget<T extends PrimeFacesTypes.widget.BaseWidget>(widgetVar: string, widgetClass: PrimeFacesTypes.Newable<[], T>): T | undefined {
- *   const widget = PrimeFaces.widget[widgetVar];
- *   return widget !== undefined && widget instanceof constructor ? widgetClass : undefined;
+ * function getComponent<T extends BaseComponent>(widgetVar: string, componentClass: PrimeFacesTypes.Newable<[], T>): T | undefined {
+ *   const component = PrimeFaces.components[widgetVar];
+ *   return component instanceof componentClass ? component : undefined;
  * }
  * ```
- * @param widgetVar The widget variable of a widget.
- * @return The widget instance, or `undefined` if no such widget exists currently.
+ * @param widgetVar The widget variable of a component.
+ * @return The component instance, or `undefined` if no such component exists currently.
  */
-export function PF(widgetVar: string): BaseWidget | undefined {
-    const widgetInstance = core.widgets[widgetVar];
+export function PF(widgetVar: string): BaseComponent | undefined {
+    const componentInstance = core.components[widgetVar];
 
-    if (!widgetInstance) {
-        core.widgetNotAvailable(widgetVar);
+    if (!componentInstance) {
+        core.componentNotAvailable(widgetVar);
     }
 
-    return widgetInstance;
+    return componentInstance;
 }

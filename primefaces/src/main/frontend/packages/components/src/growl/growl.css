@@ -6,7 +6,7 @@
  * Severity classes only switch the private --_* variables: p-growl-info | -success | -warn | -error | -fatal
  * States: p-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css
  * Variants: p-growl-outlined | p-growl-simple, on the .p-growl container or any ancestor. p:growl has no styleClass
- * and appends its container to the body, so today: on the body (all growls) or added to the widget container
+ * and appends its container to the body, so today: on the body (all growls) or added to the component container
  * (PF('growl').jq.addClass('p-growl-outlined')); a styleClass / variant attribute in the core would set it there.
  */
 
@@ -103,9 +103,9 @@
             padding: var(--p-toast-content-padding);
         }
 
-        /* close icon (shown on hover by the widget) */
+        /* close icon (shown on hover by the component) */
         .p-growl-icon-close {
-            display: inline-flex; /* the inline display:none of the widget still hides it */
+            display: inline-flex; /* the inline display:none of the component still hides it */
             position: absolute;
             top: calc(var(--p-toast-content-gap) / 2);
             inset-inline-end: calc(var(--p-toast-content-gap) / 2);

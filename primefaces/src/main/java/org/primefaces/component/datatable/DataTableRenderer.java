@@ -44,13 +44,13 @@ import org.primefaces.model.MatchModeOptions;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -157,14 +157,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     protected void encodeScript(FacesContext context, DataTable component) throws IOException {
         String selectionMode = component.resolveSelectionMode();
         boolean isFrozenTable = (component.getFrozenColumns() > 0);
-        String widgetClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
+        String componentClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
 
         if (isFrozenTable && !component.isScrollable()) {
             throw new FacesException("Frozen columns can only be used with a table set scrollable='true'.");
         }
 
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widgetClass, component);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
+        wb.init(componentClass, component);
 
         //Pagination
         if (component.isPaginator()) {

@@ -86,7 +86,7 @@ class Tree004Test extends AbstractTreeTest {
         PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "No node selected!", "");
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     @Test
@@ -119,7 +119,7 @@ class Tree004Test extends AbstractTreeTest {
         PrimeSelenium.guardAjax(page.buttonShowSelectedNodes).click();
         assertMessage(page.messages, 0, "Selected nodes", "Movies");
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     @Test
@@ -170,7 +170,7 @@ class Tree004Test extends AbstractTreeTest {
         assertTrue(children.get(1).getWebElement().isDisplayed());
         assertTrue(children.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     @Test
@@ -228,7 +228,7 @@ class Tree004Test extends AbstractTreeTest {
         assertTrue(children.get(1).getChildren().get(2).isSelected());
         assertBlankCheckbox(children.get(2));
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     @Test
@@ -279,7 +279,7 @@ class Tree004Test extends AbstractTreeTest {
         assertTrue(children.get(1).getWebElement().isDisplayed());
         assertTrue(children.get(2).getWebElement().isDisplayed());
 
-        assertConfiguration(tree.getWidgetConfiguration());
+        assertConfiguration(tree.getClientConfiguration());
     }
 
     private static void assertBlankCheckbox(TreeNode node) {

@@ -53,8 +53,8 @@ class InputNumber003Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("1.230000", inputNumber.getValue());
-        assertEquals("1.230000", inputNumber.getWidgetValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), true);
+        assertEquals("1.230000", inputNumber.getClientValue());
+        assertConfiguration(inputNumber.getClientConfiguration(), true);
     }
 
     @Test
@@ -72,8 +72,8 @@ class InputNumber003Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("4.56", inputNumber.getValue());
-        assertEquals("4.56", inputNumber.getWidgetValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), false);
+        assertEquals("4.56", inputNumber.getClientValue());
+        assertConfiguration(inputNumber.getClientConfiguration(), false);
     }
 
     private void assertConfiguration(JSONObject cfg, boolean allowDecimalPadding) {

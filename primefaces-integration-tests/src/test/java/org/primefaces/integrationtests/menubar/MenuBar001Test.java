@@ -65,7 +65,7 @@ class MenuBar001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
 
-        assertConfiguration(menubar.getWidgetConfiguration());
+        assertConfiguration(menubar.getClientConfiguration());
     }
 
     @Test
@@ -88,7 +88,7 @@ class MenuBar001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
 
-        assertConfiguration(menubar.getWidgetConfiguration());
+        assertConfiguration(menubar.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

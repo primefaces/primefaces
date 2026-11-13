@@ -38,8 +38,8 @@ public class SlideMenu extends SlideMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SlideMenu";
 
-    public static final String STATIC_CONTAINER_CLASS = "p-menu p-slidemenu p-widget p-widget-content";
-    public static final String DYNAMIC_CONTAINER_CLASS = "p-menu p-slidemenu p-menu-dynamic p-widget p-widget-content";
+    public static final String STATIC_CONTAINER_CLASS = "p-menu p-slidemenu p-component p-component-content";
+    public static final String DYNAMIC_CONTAINER_CLASS = "p-menu p-slidemenu p-menu-dynamic p-component p-component-content";
     public static final String WRAPPER_CLASS = "p-slidemenu-wrapper";
     public static final String CONTENT_CLASS = "p-slidemenu-content";
     public static final String BACKWARD_CLASS = "p-slidemenu-backward";

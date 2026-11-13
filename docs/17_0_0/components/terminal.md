@@ -24,7 +24,7 @@ Whenever a command is sent to the server, handleCommand method is invoked with t
 name and the command arguments as a | String | array.
 
 ## Client Side API
-Client side widget exposes _clear()_ and _focus()_ methods. Following shows how to add focus on a
+Client side component exposes _clear()_ and _focus()_ methods. Following shows how to add focus on a
 terminal nested inside a dialog;
 
 ```xhtml

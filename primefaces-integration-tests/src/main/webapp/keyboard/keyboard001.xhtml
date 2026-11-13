@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton id="submit" value="Submit" update="pinOutput textOutput customOutput"/>
+
+            <h:panelGrid columns="2">
+                <p:keyboard id="pin" value="#{keyboard001.pin}" keypadOnly="true"/>
+                <h:outputText id="pinOutput" value="#{keyboard001.pin}"/>
+
+                <p:keyboard id="text" value="#{keyboard001.text}" layout="qwertyBasic" closeLabel="Done"/>
+                <h:outputText id="textOutput" value="#{keyboard001.text}"/>
+
+                <p:keyboard id="custom" value="#{keyboard001.custom}" layout="custom" layoutTemplate="prime-back,faces-clear,rocks-close"
+                            effectDuration="200"/>
+                <h:outputText id="customOutput" value="#{keyboard001.custom}"/>
+            </h:panelGrid>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

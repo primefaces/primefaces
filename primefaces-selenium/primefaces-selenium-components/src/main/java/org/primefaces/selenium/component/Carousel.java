@@ -140,10 +140,10 @@ public abstract class Carousel extends AbstractComponent {
     }
 
     /**
-     * Stops the autoplay slideshow via the widget API.
+     * Stops the autoplay slideshow via the client API.
      */
     public void stopAutoplay() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".stopAutoplay();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".stopAutoplay();");
     }
 
     private void click(WebElement element) {

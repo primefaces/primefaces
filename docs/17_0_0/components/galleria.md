@@ -104,7 +104,7 @@ public class GalleriaView {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Galleria_
+Component: _PrimeFaces.component.Galleria_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

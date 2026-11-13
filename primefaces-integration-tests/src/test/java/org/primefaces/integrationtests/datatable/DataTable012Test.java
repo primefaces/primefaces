@@ -66,7 +66,7 @@ class DataTable012Test extends AbstractDataTableTest {
         Collections.reverse(langsSorted);
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -91,7 +91,7 @@ class DataTable012Test extends AbstractDataTableTest {
         Collections.reverse(langsSorted);
         assertRows(dataTable, langsSorted);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

@@ -10,8 +10,8 @@ JavaScript in `execute` is the body of a function with these arguments:
 | --- | --- |
 | `source` | Client id of the component. |
 | `event` | Name of the event, e.g. `page`. |
-| `params` | Parameters of the event that the widget passes (`[{name, value}]`), `null` if there are none. |
-| `ext` | Options the widget passes for the behavior, `null` if there are none (e.g. for DOM events like `click`). |
+| `params` | Parameters of the event that the component passes (`[{name, value}]`), `null` if there are none. |
+| `ext` | Options the component passes for the behavior, `null` if there are none (e.g. for DOM events like `click`). |
 
 ```xhtml
 <p:dataTable value="#{bean.cars}" var="car" paginator="true" rows="10">

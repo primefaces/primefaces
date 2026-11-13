@@ -24,12 +24,12 @@
     white-space: nowrap;
 
     /* badge used as plain styleClass (e.g. <span class="p-badge">) */
-    &:not(.p-widget) {
+    &:not(.p-component) {
         display: inline-block;
         border-radius: 50%;
     }
 
-    /* after :not(.p-widget) (same specificity) */
+    /* after :not(.p-component) (same specificity) */
     &.p-state-hidden {
         display: none;
     }

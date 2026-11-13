@@ -99,10 +99,10 @@ public abstract class Menubar extends AbstractInputComponent {
     }
 
     public boolean isToggleEventHover() {
-        return "hover".equals(getWidgetConfiguration().getString("toggleEvent"));
+        return "hover".equals(getClientConfiguration().getString("toggleEvent"));
     }
 
     public boolean isToggleEventClick() {
-        return "click".equals(getWidgetConfiguration().getString("toggleEvent"));
+        return "click".equals(getClientConfiguration().getString("toggleEvent"));
     }
 }

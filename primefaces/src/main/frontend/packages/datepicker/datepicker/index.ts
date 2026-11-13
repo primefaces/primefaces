@@ -1,15 +1,15 @@
-import { DatePicker } from "./src/datepicker.widget.js";
+import { DatePicker } from "./src/datepicker.js";
 
-PrimeFaces.widget.DatePicker = DatePicker;
+PrimeFaces.component.DatePicker = DatePicker;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             DatePicker: typeof DatePicker;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
-        export type DatePickerCfg = import("./src/datepicker.widget.js").DatePickerCfg;
+    namespace PrimeFacesTypes.component {
+        export type DatePickerCfg = import("./src/datepicker.js").DatePickerCfg;
     }
 }

@@ -79,7 +79,7 @@ keeps its highlight, `aria-selected` and the label, and the value only changes w
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectOneMenu_
+Component: _PrimeFaces.component.SelectOneMenu_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

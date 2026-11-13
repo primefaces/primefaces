@@ -64,7 +64,7 @@ class TreeTable013Test extends AbstractTreeTableTest {
         assertEquals(List.of("Applications", "Cloud", "Desktop", "Documents", "Downloads", "Spanish", "Travel", "Main", "Other",
                 "Pictures", "Videos"), names(treeTable));
         assertTrue(treeTable.getRow(5).getToggler().isDisplayed());
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {

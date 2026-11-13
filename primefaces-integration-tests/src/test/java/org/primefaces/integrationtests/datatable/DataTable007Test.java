@@ -66,7 +66,7 @@ class DataTable007Test extends AbstractDataTableTest {
         assertEquals("6", row.getCell(0).getText());
         assertEquals("New Language added", page.messages.getMessage(0).getSummary());
         assertEquals("Smalltalk", page.messages.getMessage(0).getDetail());
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -121,7 +121,7 @@ class DataTable007Test extends AbstractDataTableTest {
         assertEquals("abc", row.getCell(1).getText());
         assertEquals("2020", row.getCell(2).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -156,7 +156,7 @@ class DataTable007Test extends AbstractDataTableTest {
         assertEquals("abc", row.getCell(1).getText());
         assertEquals("2020", row.getCell(2).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

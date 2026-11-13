@@ -45,7 +45,7 @@ class InputNumber008Test extends AbstractPrimePageTest {
     void integer(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        assertEquals("12.345678", inputNumber.getWidgetValue());
+        assertEquals("12.345678", inputNumber.getClientValue());
         assertEquals("12.35", inputNumber.getValue());
 
         // Act
@@ -53,9 +53,9 @@ class InputNumber008Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        assertEquals("561.7891", inputNumber.getWidgetValue());
+        assertEquals("561.7891", inputNumber.getClientValue());
         assertEquals("561.79", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
 

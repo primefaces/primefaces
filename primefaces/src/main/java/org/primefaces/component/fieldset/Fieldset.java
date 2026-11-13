@@ -45,7 +45,7 @@ public class Fieldset extends FieldsetBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Fieldset";
 
-    public static final String FIELDSET_CLASS = "p-fieldset p-widget p-widget-content p-hidden-container";
+    public static final String FIELDSET_CLASS = "p-fieldset p-component p-component-content p-hidden-container";
     public static final String TOGGLEABLE_FIELDSET_CLASS = FIELDSET_CLASS + " p-fieldset-toggleable";
     public static final String CONTENT_CLASS = "p-fieldset-content";
     public static final String LEGEND_CLASS = "p-fieldset-legend p-state-default";

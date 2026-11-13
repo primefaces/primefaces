@@ -72,7 +72,7 @@ public abstract class Timeline extends AbstractComponent {
      * Force render the timeline component.
      */
     public void update() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".renderTimeline();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".renderTimeline();");
     }
 
     /**
@@ -81,7 +81,7 @@ public abstract class Timeline extends AbstractComponent {
      * @return The number of event in the timeline.
      */
     public long getNumberOfEvents() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getNumberOfEvents();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getNumberOfEvents();");
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class Timeline extends AbstractComponent {
      * @param zoomFactor a number between 0 and 1
      */
     public void zoom(double zoomFactor) {
-        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
+        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getClientComponentScript() + ".zoom(" + zoomFactor + ");");
     }
 
     /**
@@ -99,6 +99,6 @@ public abstract class Timeline extends AbstractComponent {
      * @param moveFactor a number between 0 and 1
      */
     public void move(double moveFactor) {
-        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".move(" + moveFactor + ");");
+        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getClientComponentScript() + ".move(" + moveFactor + ");");
     }
 }

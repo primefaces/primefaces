@@ -25,7 +25,7 @@ package org.primefaces.component.scrollpanel;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -64,7 +64,7 @@ public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
             renderChildren(context, component);
         }
         else {
-            // the content scrolls natively with hidden browser scrollbars, the widget positions the bars
+            // the content scrolls natively with hidden browser scrollbars, the client side component positions the bars
             writer.startElement("div", null);
             writer.writeAttribute("class", ScrollPanel.SCROLL_PANEL_CONTENT_CLASS, null);
             renderChildren(context, component);
@@ -91,7 +91,7 @@ public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
     protected void encodeScript(FacesContext context, ScrollPanel component) throws IOException {
         boolean nativeMode = component.getMode().equals("native");
         if (!nativeMode) {
-            WidgetBuilder wb = getWidgetBuilder(context);
+            ComponentScriptBuilder wb = getComponentScriptBuilder(context);
             wb.init("ScrollPanel", component).finish();
         }
     }

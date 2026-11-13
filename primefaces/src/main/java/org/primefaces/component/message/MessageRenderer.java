@@ -27,11 +27,11 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -110,7 +110,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
 
             if (shouldRender(component, msg, severityName)) {
 
-                styleClassBuilder.add("p-message-" + severityName + " p-widget");
+                styleClassBuilder.add("p-message-" + severityName + " p-component");
                 styleClassBuilder.add(iconOnly, "p-message-icon-only");
 
                 writer.writeAttribute("class", styleClassBuilder.build(), null);
@@ -179,7 +179,7 @@ public class MessageRenderer extends UINotificationRenderer<Message> {
     protected void encodeScript(FacesContext context, Message component, String targetClientId) throws IOException {
         boolean tooltip = "tooltip".equals(component.getDisplay());
         if (tooltip || component.isShowDetail()) {
-            WidgetBuilder wb = getWidgetBuilder(context);
+            ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
             wb.init("Message", component)
                     .attr("target", targetClientId)

@@ -26,8 +26,8 @@ package org.primefaces.component.staticmessage;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.messages.Messages;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -57,7 +57,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = getStyleClassBuilder(context)
-                .add("p-message p-staticmessage p-widget p-message-" + severity)
+                .add("p-message p-staticmessage p-component p-message-" + severity)
                 .add(iconOnly, "p-message-icon-only")
                 .add(component.getStyleClass())
                 .build();
@@ -138,7 +138,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
     }
 
     protected void encodeScript(FacesContext context, StaticMessage component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("StaticMessage", component);
 
         encodeClientBehaviors(context, component);

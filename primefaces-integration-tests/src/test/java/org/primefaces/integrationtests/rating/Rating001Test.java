@@ -64,12 +64,12 @@ class Rating001Test extends AbstractPrimePageTest {
         assertNull(rating.getValue());
         assertEquals("Cancel Event", messages.getMessage(0).getSummary());
         assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("Rating: widget reset() method")
+    @DisplayName("Rating: component reset() method")
     void ajaxReset(Page page) {
         // Arrange
         Rating rating = page.ratingAjax;
@@ -91,7 +91,7 @@ class Rating001Test extends AbstractPrimePageTest {
         assertNull(rating.getValue());
         assertEquals("Cancel Event", messages.getMessage(0).getSummary());
         assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -108,7 +108,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(3L, rating.getValue());
-        JSONObject cfg = assertConfiguration(rating.getWidgetConfiguration());
+        JSONObject cfg = assertConfiguration(rating.getClientConfiguration());
         assertTrue(cfg.getBoolean("readonly"));
     }
 
@@ -126,7 +126,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(3L, rating.getValue());
-        JSONObject cfg = assertConfiguration(rating.getWidgetConfiguration());
+        JSONObject cfg = assertConfiguration(rating.getClientConfiguration());
         assertTrue(cfg.getBoolean("disabled"));
     }
 
@@ -154,7 +154,15 @@ class Rating001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(rating.isDisabled());
         assertEquals(5L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+
+        // Act - enable again, the key handler must be bound only once
+        rating.enable();
+        PrimeSelenium.executeScript(rating.getClientComponentScript() + ".input.trigger($.Event('keydown', { key: 'ArrowLeft' }));");
+
+        // Assert
+        assertTrue(rating.isEnabled());
+        assertEquals(4L, rating.getValue());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -166,11 +174,11 @@ class Rating001Test extends AbstractPrimePageTest {
         assertEquals(2L, rating.getValue());
 
         // Act
-        PrimeSelenium.executeScript(rating.getWidgetByIdScript() + ".setValue('abc');");
+        PrimeSelenium.executeScript(rating.getClientComponentScript() + ".setValue('abc');");
 
         // Assert
         assertNull(rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -186,7 +194,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNull(rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -202,7 +210,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(8L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -220,7 +228,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(null, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -238,7 +246,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(8L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -295,7 +303,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(5L, rating.getValue());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     @Test
@@ -314,7 +322,7 @@ class Rating001Test extends AbstractPrimePageTest {
         // Assert
         assertNull(rating.getValue());
         assertEquals("Please rate us!", page.messages.getMessage(0).getDetail());
-        assertConfiguration(rating.getWidgetConfiguration());
+        assertConfiguration(rating.getClientConfiguration());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {

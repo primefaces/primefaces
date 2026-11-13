@@ -16,7 +16,7 @@ public class Bean {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectBooleanButton_
+Component: _PrimeFaces.component.SelectBooleanButton_
 
 
 | Method | Params | Return Type | Description |

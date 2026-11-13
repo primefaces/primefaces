@@ -26,7 +26,7 @@ package org.primefaces.component.blockui;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class BlockUIRenderer extends CoreRenderer<BlockUI> {
     }
 
     protected void encodeScript(FacesContext context, BlockUI component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("BlockUI", component);
 
         wb.attr("block", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getBlock()))
@@ -64,7 +64,7 @@ public class BlockUIRenderer extends CoreRenderer<BlockUI> {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "p-blockui-content p-widget p-widget-content p-hidden", null);
+        writer.writeAttribute("class", "p-blockui-content p-component p-component-content p-hidden", null);
 
         renderChildren(context, component);
 

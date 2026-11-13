@@ -153,7 +153,7 @@ If you’d like to add custom actions to a tab header, use actions facet with ic
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.AccordionPanel_
+Component: _PrimeFaces.component.AccordionPanel_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

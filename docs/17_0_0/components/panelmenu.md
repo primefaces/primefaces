@@ -37,9 +37,9 @@ If you use `stateful="true"` to keep the state of the menu by default it is per 
 not remembered across page navigations.  If you would like it to be global and remembered across pages then set
 the `statefulGlobal="true"` attribute to enable it.
 
-### Client-side Widget Methods
+### Client-side Component Methods
 
-PanelMenu provides client-side JavaScript methods via its widget API. Use the `widgetVar` to access the widget instance.
+PanelMenu provides client-side JavaScript methods via its component API. Use the `widgetVar` to access the component instance.
 
 #### `expandAll()`
 
@@ -84,7 +84,7 @@ PF('myPanelMenu').clearState();
 </script>
 ```
 
-For advanced usage, refer to the widget JavaScript API in the [PrimeFaces PanelMenu Widget documentation](https://primefaces.github.io/primefaces/15_0_0/#/components/panelmenu?id=widget).
+For advanced usage, refer to the component JavaScript API in the [PrimeFaces PanelMenu Component documentation](https://primefaces.github.io/primefaces/15_0_0/#/components/panelmenu?id=client-side-widget-methods).
 
 
 ## Skinning

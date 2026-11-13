@@ -149,12 +149,12 @@ On a smaller screen, grid mode adjusts the content for the optimal view.
 
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DataGrid_
+Component: _PrimeFaces.component.DataGrid_
 
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-| getPaginator() | - | Paginator | Returns the paginator widget.
+| getPaginator() | - | Paginator | Returns the paginator component.
 
 ## Skinning
 DataGrid resides in a main div container which style and styleClass attributes apply. Following is

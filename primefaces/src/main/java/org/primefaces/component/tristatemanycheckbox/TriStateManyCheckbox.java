@@ -55,7 +55,7 @@ public class TriStateManyCheckbox extends TriStateManyCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TriStateManyCheckbox";
 
-    public static final String STYLE_CLASS = "p-tristatemanycheckbox p-widget";
+    public static final String STYLE_CLASS = "p-tristatemanycheckbox p-component";
     public static final String VERTICAL_CLASS = "p-tristatemanycheckbox-vertical";
     public static final String ICON_CLASS = "p-chkbox-icon";
 

@@ -73,7 +73,7 @@ class TriStateManyCheckbox003Test extends AbstractPrimePageTest {
         assertFalse(PrimeSelenium.hasCssClass(checkbox.getBoxes().get(1), "p-state-error"));
         assertEquals(List.of(1, 2), checkbox.getStates());
         assertEquals("{A=1, B=2}", page.value.getText());
-        assertConfiguration(checkbox.getWidgetConfiguration());
+        assertConfiguration(checkbox.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

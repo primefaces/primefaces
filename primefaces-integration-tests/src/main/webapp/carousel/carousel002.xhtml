@@ -16,7 +16,7 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:carousel id="carousel" widgetVar="carouselWidget" value="#{carousel002.items}" var="item"
+            <p:carousel id="carousel" widgetVar="carouselComponent" value="#{carousel002.items}" var="item"
                         page="#{carousel002.page}" numVisible="1" numScroll="1" style="max-width: 400px;">
                 <p:ajax event="pageChange" listener="#{carousel002.onPageChange}" />
                 <div class="carousel-item-content">

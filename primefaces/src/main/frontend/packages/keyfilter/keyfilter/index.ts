@@ -1,17 +1,17 @@
-import { KeyFilter } from "./src/keyfilter.widget.js";
+import { KeyFilter } from "./src/keyfilter.js";
 
-PrimeFaces.widget.KeyFilter = KeyFilter;
+PrimeFaces.component.KeyFilter = KeyFilter;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             KeyFilter: typeof KeyFilter;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
-        export type KeyFilterCfg = import("./src/keyfilter.widget.js").KeyFilterCfg;
-        export type KeyFilterMask = import("./src/keyfilter.widget.js").KeyFilterMask;
-        export type KeyFilterTestFunction = import("./src/keyfilter.widget.js").KeyFilterTestFunction;
+    namespace PrimeFacesTypes.component {
+        export type KeyFilterCfg = import("./src/keyfilter.js").KeyFilterCfg;
+        export type KeyFilterMask = import("./src/keyfilter.js").KeyFilterMask;
+        export type KeyFilterTestFunction = import("./src/keyfilter.js").KeyFilterTestFunction;
     }
 }

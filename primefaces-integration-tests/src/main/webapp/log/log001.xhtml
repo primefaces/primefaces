@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <p:log id="log"/>
+
+        <!-- keep the form out of the fixed log window -->
+        <div style="margin-left: 500px">
+            <h:form id="form">
+                <p:inputText id="name" value="#{log001.name}"/>
+                <p:commandButton id="submit" value="Submit" update="output"/>
+                <h:outputText id="output" value="#{log001.name}"/>
+            </h:form>
+        </div>
+
+    </h:body>
+</f:view>
+
+</html>

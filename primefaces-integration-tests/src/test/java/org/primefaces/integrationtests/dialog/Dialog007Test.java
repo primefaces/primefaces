@@ -45,12 +45,12 @@ class Dialog007Test extends AbstractPrimePageTest {
     @DisplayName("Dialog: #14287 remove relocated dialog with its original container")
     void remove(Page page) {
         // Arrange
-        assertEquals("@(body)", page.dialog.getWidgetConfiguration().getString("appendTo"));
+        assertEquals("@(body)", page.dialog.getClientConfiguration().getString("appendTo"));
         page.dialog.show();
         assertTrue(page.dialog.isVisible());
         page.choice.select("Two");
         page.dialog.hide();
-        // the relocated panel of the nested p:selectOneMenu needs no marker, it is removed with its widget
+        // the relocated panel of the nested p:selectOneMenu needs no marker, it is removed with its component
         assertEquals(1L, count("body > [id=\"form:choice_panel\"]"));
         assertEquals(0L, count("[id=\"form:choice\"] .p-overlay-placeholder"));
 
@@ -60,7 +60,7 @@ class Dialog007Test extends AbstractPrimePageTest {
         // Assert
         assertNotPresent(page.dialog);
         assertEquals(0L, count("[id=\"form:choice_panel\"]"));
-        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog && !PrimeFaces.widgets.dialogChoice"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.components.relocatedDialog && !PrimeFaces.components.dialogChoice"));
         assertNoJavascriptErrors();
     }
 
@@ -111,7 +111,7 @@ class Dialog007Test extends AbstractPrimePageTest {
         assertEquals(1L, count("[id=\"form:dlg_docked\"]"));
         page.remove.click();
         assertEquals(0L, count("[id=\"form:dlg_docked\"]"));
-        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.widgets.relocatedDialog"));
+        assertEquals(Boolean.TRUE, PrimeSelenium.executeScript("return !PrimeFaces.components.relocatedDialog"));
         assertNoJavascriptErrors();
     }
 

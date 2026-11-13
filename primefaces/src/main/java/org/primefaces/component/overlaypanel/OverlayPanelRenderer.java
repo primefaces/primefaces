@@ -26,7 +26,7 @@ package org.primefaces.component.overlaypanel;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -81,7 +81,7 @@ public class OverlayPanelRenderer extends CoreRenderer<OverlayPanel> {
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
         String target = SearchExpressionUtils.resolveClientId(context, panel, panel.getFor());
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("OverlayPanel", panel)
                 .attr("target", target)
                 .attr("showEvent", panel.getShowEvent(), null)

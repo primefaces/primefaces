@@ -9,7 +9,7 @@
  * The component classes only switch the private --_* variables, the visual rules exist once:
  *   .p-menu (menu, slidemenu, menubutton) -> menu tokens
  *   .p-tieredmenu -> tieredmenu, .p-contextmenu -> contextmenu, .p-menubar -> menubar, .p-megamenu -> megamenu
- * State classes set by the widgets: p-state-hover / p-state-focus (keyboard + mouse), p-menuitem-active (open submenu).
+ * State classes set by the components: p-state-hover / p-state-focus (keyboard + mouse), p-menuitem-active (open submenu).
  */
 .p-menu {
     --_bg: var(--p-menu-background);
@@ -66,7 +66,7 @@
     border: 1px solid var(--_border-color);
     border-radius: var(--_border-radius);
 
-    /* PrimeUIX min-width, only without an inline width (style="width: ..." or the width the slidemenu widget writes) */
+    /* PrimeUIX min-width, only without an inline width (style="width: ..." or the width the slidemenu component writes) */
     &:not(.p-menubar):not([style*="width"]) {
         min-width: 12.5rem;
     }
@@ -84,7 +84,7 @@
         overflow-y: auto;
     }
 
-    .p-menu-list .p-widget-header {
+    .p-menu-list .p-component-header {
         clear: both;
     }
 
@@ -106,7 +106,7 @@
         display: inline-block;
     }
 
-    .p-widget-header {
+    .p-component-header {
         h1,
         h2,
         h3,
@@ -121,7 +121,7 @@
     .p-menu-parent {
         position: relative;
 
-        /* min-width only without an inline width (the slidemenu widget writes one on its lists) */
+        /* min-width only without an inline width (the slidemenu component writes one on its lists) */
         .p-menu-child {
             display: none;
             width: auto;
@@ -144,13 +144,13 @@
         margin: 0;
 
         /* submenu header content (p:menu): [toggle icon] [submenu icon] label */
-        .p-widget-header h3 {
+        .p-component-header h3 {
             display: flex;
             align-items: center;
             gap: var(--_item-gap);
         }
 
-        .p-widget-header .p-submenu-icon {
+        .p-component-header .p-submenu-icon {
             position: static;
             float: none;
             margin: 0;
@@ -159,7 +159,7 @@
     }
 
     /* submenu headers */
-    .p-menu-list .p-widget-header {
+    .p-menu-list .p-component-header {
         margin: 0;
         width: 100%;
         background: var(--_submenu-label-background);
@@ -231,7 +231,7 @@
                 background: var(--_item-focus-background);
             }
 
-            /* keyboard focus (tab to a link with href): the background is the indicator, as for the widget focus */
+            /* keyboard focus (tab to a link with href): the background is the indicator, as for the component focus */
             &:focus-visible {
                 outline: 0 none;
             }
@@ -321,7 +321,7 @@
 
     /*
      * list gap: PrimeUIX lists are flex columns with gap: <menu>.list.gap (menubar / megamenu: submenu.gap). Here it is a
-     * margin between the list children instead, because the widgets open the overlay submenus with jQuery .show(),
+     * margin between the list children instead, because the components open the overlay submenus with jQuery .show(),
      * which writes an inline "display: block" that would drop a display: flex of the list. Same visual result.
      * Must come after the item / header "margin: 0" rules (same specificity).
      */
@@ -339,7 +339,7 @@
     }
 
     /* separators (p:divider inside menus) */
-    .p-divider.p-widget.p-divider-vertical {
+    .p-divider.p-component.p-divider-vertical {
         display: inline-flex;
         vertical-align: middle;
         margin: var(--p-menu-list-gap) 0;
@@ -349,7 +349,7 @@
         }
     }
 
-    .p-divider.p-widget.p-divider-horizontal {
+    .p-divider.p-component.p-divider-horizontal {
         margin: 0;
 
         &::before {
@@ -505,12 +505,12 @@
         left: 0;
     }
 
-    .p-widget-header {
+    .p-component-header {
         clear: none;
     }
 }
 
-/* keyboard focus outline used by the panelmenu / tabmenu widgets */
+/* keyboard focus outline used by the panelmenu / tabmenu components */
 .p-menuitem-outline {
     outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
     outline-offset: var(--p-focus-ring-offset);

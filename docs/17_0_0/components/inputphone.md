@@ -126,7 +126,7 @@ has the focus and while the panel is open. `inputStyleClass="p-inputtext-sm"` / 
 | `tab` (filter) | Closes the panel and moves to the number. |
 
 ## Client Side API
-Widget: _PrimeFaces.widget.InputPhone_
+Component: _PrimeFaces.component.InputPhone_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
@@ -148,7 +148,7 @@ Widget: _PrimeFaces.widget.InputPhone_
 `nationalMode`, `allowDropdown`, `separateDialCode`, `autoHideDialCode`, `autoPlaceholder`, `formatOnDisplay`,
 `formatAsYouType`, `fixDropdownWidth`, `inputStyle`, `inputStyleClass` and the `countrySelect` event (with the ISO code
 as `SelectEvent<String>`). Differences:
-- The value is the number in the E.164 format, the widget variable is `PrimeFaces.widget.InputPhone`.
+- The value is the number in the E.164 format, the component is `PrimeFaces.component.InputPhone`.
 - There are no flags, the selector shows the country code (and the calling code).
 - `separateDialCode` defaults to `true`.
 - `geoIpLookup` is the body of a `function(success, failure)` instead of a function.

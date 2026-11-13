@@ -43,7 +43,7 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
     @Test
     @Order(2)
-    @DisplayName("ColorPicker: Inline Hex setColor widget method")
+    @DisplayName("ColorPicker: Inline Hex setColor client API method")
     void setHexColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -58,12 +58,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
         WebElement panel = colorPicker.getPanel();
         assertDisplayed(panel);
         assertClickable(panel);
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("ColorPicker: Inline Hex Alpha setColor widget method")
+    @DisplayName("ColorPicker: Inline Hex Alpha setColor client API method")
     void setHexAlphaColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -75,12 +75,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertMessage(page.messages, "Color Saved", "#0080009e");
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(4)
-    @DisplayName("ColorPicker: Inline RGB setColor widget method")
+    @DisplayName("ColorPicker: Inline RGB setColor client API method")
     void setRgbColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -92,12 +92,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertMessage(page.messages, "Color Saved", "rgb(0, 48, 108)");
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(5)
-    @DisplayName("ColorPicker: Inline RGB Alpha setColor widget method")
+    @DisplayName("ColorPicker: Inline RGB Alpha setColor client API method")
     void setRgbAlphaColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -109,12 +109,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertMessage(page.messages, "Color Saved", "rgba(255, 0, 0, 0.68)");
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(6)
-    @DisplayName("ColorPicker: Inline HSL setColor widget method")
+    @DisplayName("ColorPicker: Inline HSL setColor client API method")
     void setHslColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -126,12 +126,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertMessage(page.messages, "Color Saved", "hsl(171, 55%, 20%)");
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(7)
-    @DisplayName("ColorPicker: Inline HSL Alpha setColor widget method")
+    @DisplayName("ColorPicker: Inline HSL Alpha setColor client API method")
     void setHslAlphaColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -143,7 +143,7 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertMessage(page.messages, "Color Saved", "hsla(0, 100%, 50%, 0.68)");
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
@@ -160,12 +160,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertMessage(page.messages, "Color Saved", "#000000");
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(9)
-    @DisplayName("ColorPicker: Inline Use disable() widget method to disable component")
+    @DisplayName("ColorPicker: Inline Use disable() client API method to disable component")
     void disable(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -177,12 +177,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
         // Assert
         assertFalse(colorPicker.isEnabled());
         assertNotClickable(colorPicker);
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(10)
-    @DisplayName("ColorPicker: Inline Use enable() widget method to enable component")
+    @DisplayName("ColorPicker: Inline Use enable() client API method to enable component")
     void enable(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -196,12 +196,12 @@ class ColorPicker004Test extends AbstractColorPickerTest {
         // Assert
         assertTrue(colorPicker.isEnabled());
         assertClickable(panel);
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
     @Order(11)
-    @DisplayName("ColorPicker: Inline Destroy the widget and make sure its no longer a picker")
+    @DisplayName("ColorPicker: Inline Destroy the component and make sure its no longer a picker")
     void destroy(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
@@ -213,7 +213,7 @@ class ColorPicker004Test extends AbstractColorPickerTest {
 
         // Assert
         assertNotPresent(panel);
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     @Test
@@ -237,7 +237,7 @@ class ColorPicker004Test extends AbstractColorPickerTest {
         assertAriaLabel(panel, "clr-color-area", "Saturation and brightness selector. Use up, down, left and right arrow keys to select.");
         assertAriaLabel(panel, "clr-color-marker", "Saturation: 73. Brightness: 62.");
 
-        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertConfiguration(colorPicker.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

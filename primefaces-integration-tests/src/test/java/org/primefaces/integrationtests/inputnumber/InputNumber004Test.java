@@ -56,7 +56,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("87", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
+        assertConfiguration(inputNumber.getClientConfiguration(), "0", "0", "999999");
     }
 
     @Test
@@ -112,7 +112,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("", inputNumber.getValue());
 
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
+        assertConfiguration(inputNumber.getClientConfiguration(), "0", "0", "999999");
     }
 
     @Test
@@ -129,7 +129,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("31.90", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0", "999999.99");
+        assertConfiguration(inputNumber.getClientConfiguration(), "2", "0", "999999.99");
     }
 
     @Test

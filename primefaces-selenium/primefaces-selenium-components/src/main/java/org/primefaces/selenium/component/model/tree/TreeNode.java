@@ -82,7 +82,8 @@ public class TreeNode {
         boolean ajaxified;
         if (selecting) {
             ajaxified = ComponentUtils.hasBehavior(tree, "select")
-                    || (tree.getWidgetConfiguration().optBoolean("dynamic") && "checkbox".equals(tree.getWidgetConfiguration().optString("selectionMode")));
+                    || (tree.getClientConfiguration().optBoolean("dynamic")
+                            && "checkbox".equals(tree.getClientConfiguration().optString("selectionMode")));
         }
         else {
             ajaxified = ComponentUtils.hasBehavior(tree, "unselect");

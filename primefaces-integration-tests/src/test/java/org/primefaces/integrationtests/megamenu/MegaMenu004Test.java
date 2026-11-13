@@ -53,7 +53,7 @@ class MegaMenu004Test extends AbstractPrimePageTest {
         // Arrange
         goTo("megamenu/megaMenu004.xhtml?orientation=" + orientation + "&auto=" + auto + "&index=" + index);
         MegaMenu menu = menu();
-        assertEquals(index, menu.getWidgetConfiguration().getInt("activeIndex"));
+        assertEquals(index, menu.getClientConfiguration().getInt("activeIndex"));
         WebElement selected = menu.getRootMenuitems().get(index);
         assertTrue(PrimeSelenium.hasCssClass(selected, "p-menuitem-selected"));
         assertEquals("page", selected.findElement(By.tagName("a")).getDomAttribute("aria-current"));
@@ -106,7 +106,7 @@ class MegaMenu004Test extends AbstractPrimePageTest {
         goTo("megamenu/megaMenu004.xhtml");
         MegaMenu menu = PrimeSelenium.createFragment(MegaMenu.class, By.id("form:defaultMenu"));
         // Assert
-        assertFalse(menu.getWidgetConfiguration().has("activeIndex"));
+        assertFalse(menu.getClientConfiguration().has("activeIndex"));
         assertTrue(menu.findElements(By.cssSelector(".p-menuitem-active, .p-menuitem-selected, [aria-current]")).isEmpty());
         assertNoJavascriptErrors();
     }

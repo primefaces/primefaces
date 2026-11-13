@@ -63,7 +63,7 @@ A comman usage of programmatic approach is to implement a custom status dialog;
 </p:dialog>
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.AjaxStatus_
+Component: _PrimeFaces.component.AjaxStatus_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- |

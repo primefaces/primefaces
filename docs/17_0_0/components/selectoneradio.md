@@ -71,7 +71,7 @@ For the better accessibility support, you might want to wrap each custom radio b
 with a `role="radio"` attribute.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.SelectOneRadio_
+Component: _PrimeFaces.component.SelectOneRadio_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

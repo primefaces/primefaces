@@ -38,38 +38,62 @@ public abstract class InputMask extends InputText {
     public void setValue(Serializable value) {
         WebElement input = getInput();
         input.clear();
-        setWidgetValue(value.toString());
+        setClientValue(value.toString());
     }
 
     /**
-     * Client side widget method to set the current value.
+     * Client side component method to set the current value.
      *
      * @param value the value to set the input to
      */
-    public void setWidgetValue(Serializable value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue('" + value + "');");
+    public void setClientValue(Serializable value) {
+        PrimeSelenium.executeScript(getClientComponentScript() + ".setValue('" + value + "');");
         boolean isAjaxified = isOnchangeAjaxified();
         if (isAjaxified) {
-            PrimeSelenium.executeScript(isAjaxified, getWidgetByIdScript() + ".jq.trigger('change');");
+            PrimeSelenium.executeScript(isAjaxified, getClientComponentScript() + ".jq.trigger('change');");
         }
     }
 
     /**
-     * Client side widget method to get the current value.
-     *
-     * @return the current value
+     * @deprecated use {@link #setClientValue(Serializable)} instead
      */
-    public String getWidgetValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public void setWidgetValue(Serializable value) {
+        setClientValue(value);
     }
 
     /**
-     * Client side widget method to get the unmasked value.
+     * Client side component method to get the current value.
+     *
+     * @return the current value
+     */
+    public String getClientValue() {
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValue();");
+    }
+
+    /**
+     * @deprecated use {@link #getClientValue()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public String getWidgetValue() {
+        return getClientValue();
+    }
+
+    /**
+     * Client side component method to get the unmasked value.
      *
      * @return the unmasked value
      * @since 9.0
      */
+    public String getClientValueUnmasked() {
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValueUnmasked();");
+    }
+
+    /**
+     * @deprecated use {@link #getClientValueUnmasked()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetValueUnmasked() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValueUnmasked();");
+        return getClientValueUnmasked();
     }
 }

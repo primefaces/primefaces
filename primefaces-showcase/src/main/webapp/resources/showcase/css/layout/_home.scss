@@ -417,6 +417,11 @@
     overflow: hidden;
     border: 1px solid var(--surface-d);
     box-shadow: 0 4px 24px rgba(0,0,0,.08);
+
+    // no gap between tab bar and code (global pre.shiki has a margin)
+    pre.shiki {
+        margin: 0;
+    }
 }
 
 .landing-code-caption {

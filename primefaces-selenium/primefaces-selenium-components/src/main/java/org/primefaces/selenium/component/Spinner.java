@@ -70,7 +70,7 @@ public abstract class Spinner extends InputText {
     }
 
     /**
-     * Sets the value with the widget JS method (no "change" event is fired, see {@link #change()}). A {@link Number} is passed as JS number, a numeric
+     * Sets the value with the client JS method (no "change" event is fired, see {@link #change()}). A {@link Number} is passed as JS number, a numeric
      * string like {@code "4.7"} is converted to a JS number, anything else is passed as string.
      *
      * @param value the numeric value, {@code null} clears the input
@@ -89,31 +89,39 @@ public abstract class Spinner extends InputText {
                 newValue = value.toString();
             }
         }
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(arguments[0]);", newValue);
+        PrimeSelenium.executeScript(getClientComponentScript() + ".setValue(arguments[0]);", newValue);
     }
 
+    public String getClientValue() {
+        return PrimeSelenium.executeScript(getClientComponentScript() + ".getValue()");
+    }
+
+    /**
+     * @deprecated use {@link #getClientValue()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetValue() {
-        return PrimeSelenium.executeScript(getWidgetByIdScript() + ".getValue()");
+        return getClientValue();
     }
 
     /**
      * Increments this spinner by one SpinnerCfg.step
      */
     public void increment() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".spin(1);");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".spin(1);");
     }
 
     /**
      * Decrements this spinner by one SpinnerCfg.step
      */
     public void decrement() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".spin(-1);");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".spin(-1);");
     }
 
     /**
      * Fire the change event for the spinner
      */
     public void change() {
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change');");
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getClientComponentScript() + ".input.trigger('change');");
     }
 }

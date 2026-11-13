@@ -55,7 +55,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         assertEquals("Max", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act
         selectOneMenu.select(3);
@@ -63,7 +63,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert - part 2
         assertEquals("Charles", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -81,7 +81,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         assertEquals("Lando", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
 
         // Act
         selectOneMenu.getLabel().sendKeys("Le");
@@ -90,7 +90,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert - part 2
         assertEquals("Lewis", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -106,7 +106,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDisplayed(selectOneMenu.getPanel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -123,7 +123,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNotDisplayed(selectOneMenu.getPanel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -141,7 +141,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         // Assert - value should not be accepted
         assertNotClickable(selectOneMenu);
         assertEquals("Lewis", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -160,7 +160,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         // Assert
         assertClickable(selectOneMenu);
         assertEquals("Max", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -177,7 +177,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Max", selectOneMenu.getSelectedLabel());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -194,7 +194,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         // Assert - part 1
         assertEquals("2", page.messages.getMessage(0).getDetail());
         assertEquals("Driver-ID (itemSelect)", page.messages.getMessage(0).getSummary());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -211,7 +211,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         // Assert - part 1
         assertEquals("2", page.messages.getMessage(0).getDetail());
         assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -236,7 +236,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         page.alwaysDisplayLabel.uncheck();
         assertEquals("Max", selectOneMenu.getSelectedLabel());
 
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test
@@ -263,7 +263,7 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(outputLabel.getId(), selectOneMenu.getLabel().getDomAttribute("aria-labelledby"));
-        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(selectOneMenu.getClientConfiguration());
     }
 
     @Test

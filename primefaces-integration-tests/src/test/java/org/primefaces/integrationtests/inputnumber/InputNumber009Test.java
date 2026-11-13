@@ -51,7 +51,7 @@ class InputNumber009Test extends AbstractPrimePageTest {
         assertEquals("000050", inputNumber.getValue());
         assertEquals("000050", inputNumber.getHiddenInput().getDomProperty("value"));
         assertEquals("000050", page.output.getText());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     @Test
@@ -73,13 +73,13 @@ class InputNumber009Test extends AbstractPrimePageTest {
         assertEquals("000123", inputNumber.getValue());
         assertEquals("000123", inputNumber.getHiddenInput().getDomProperty("value"));
         assertEquals("000123", page.output.getText());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     @Test
     @Order(3)
-    @DisplayName("InputNumber: leadingZero=keep preserves leading zeros when set via widget API")
-    void widgetSetValuePreservesLeadingZeros(Page page) {
+    @DisplayName("InputNumber: leadingZero=keep preserves leading zeros when set via client API")
+    void componentSetValuePreservesLeadingZeros(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
 
@@ -91,7 +91,7 @@ class InputNumber009Test extends AbstractPrimePageTest {
         assertEquals("000456", inputNumber.getValue());
         assertEquals("000456", inputNumber.getHiddenInput().getDomProperty("value"));
         assertEquals("000456", page.output.getText());
-        assertConfiguration(inputNumber.getWidgetConfiguration());
+        assertConfiguration(inputNumber.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

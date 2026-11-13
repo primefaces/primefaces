@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.component.api.UITable;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 
 import java.io.IOException;
 
@@ -67,7 +67,7 @@ public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
     }
 
     protected void encodeScript(FacesContext context, ColumnToggler component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         wb.init("ColumnToggler", component);
         wb.attr("trigger", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getTrigger()));

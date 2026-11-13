@@ -86,7 +86,7 @@ public abstract class Wizard extends AbstractComponent {
      * @return the id of the current step tab
      */
     public String getCurrentStep() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".currentStep;");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".currentStep;");
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class Wizard extends AbstractComponent {
      * @return the 0-based index of the current step, -1 if the current step is unknown
      */
     public int getCurrentStepIndex() {
-        return ((Number) PrimeSelenium.executeScript("var w = " + getWidgetByIdScript() + "; return w.getStepIndex(w.currentStep);")).intValue();
+        return ((Number) PrimeSelenium.executeScript("var w = " + getClientComponentScript() + "; return w.getStepIndex(w.currentStep);")).intValue();
     }
 
     /**
@@ -103,6 +103,6 @@ public abstract class Wizard extends AbstractComponent {
      */
     public void waitForAnimations() {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.script(
-                "return " + getWidgetByIdScript() + ".jq.find(':animated').length === 0;"));
+                "return " + getClientComponentScript() + ".jq.find(':animated').length === 0;"));
     }
 }

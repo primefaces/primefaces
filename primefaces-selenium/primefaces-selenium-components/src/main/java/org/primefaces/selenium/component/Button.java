@@ -75,4 +75,18 @@ public abstract class Button extends AbstractComponent {
     public WebElement getLabelElement() {
         return findElement(By.className("p-button-text"));
     }
+
+    /**
+     * Enables the button.
+     */
+    public void enable() {
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable();");
+    }
+
+    /**
+     * Disables the button.
+     */
+    public void disable() {
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable();");
+    }
 }

@@ -111,7 +111,7 @@ public class DataTable extends DataTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
-    public static final String CONTAINER_CLASS = "p-datatable p-widget";
+    public static final String CONTAINER_CLASS = "p-datatable p-component";
     public static final String TABLE_WRAPPER_CLASS = "p-datatable-tablewrapper";
     public static final String REFLOW_CLASS = "p-datatable-reflow";
     public static final String RTL_CLASS = "p-datatable-rtl";
@@ -120,12 +120,12 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_HEADER_CONTAINER_CLASS = "p-header-column";
     public static final String COLUMN_FOOTER_CLASS = "p-state-default";
     public static final String COLUMN_FOOTER_CONTAINER_CLASS = "p-footer-column";
-    public static final String DATA_CLASS = "p-datatable-data p-widget-content";
-    public static final String ROW_CLASS = "p-widget-content";
+    public static final String DATA_CLASS = "p-datatable-data p-component-content";
+    public static final String ROW_CLASS = "p-component-content";
     public static final String SELECTABLE_ROW_CLASS = "p-datatable-selectable";
-    public static final String EMPTY_MESSAGE_ROW_CLASS = "p-widget-content p-datatable-empty-message";
-    public static final String HEADER_CLASS = "p-datatable-header p-widget-header";
-    public static final String FOOTER_CLASS = "p-datatable-footer p-widget-header";
+    public static final String EMPTY_MESSAGE_ROW_CLASS = "p-component-content p-datatable-empty-message";
+    public static final String HEADER_CLASS = "p-datatable-header p-component-header";
+    public static final String FOOTER_CLASS = "p-datatable-footer p-component-header";
     public static final String SORTABLE_COLUMN_CLASS = "p-sortable-column";
     public static final String SORTABLE_COLUMN_ICON_CLASS = "p-sortable-column-icon p-icon p-sort-icon p-datatable-sort-icon";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = SORTABLE_COLUMN_ICON_CLASS + " p-datatable-sort-asc-icon";
@@ -136,8 +136,8 @@ public class DataTable extends DataTableBaseImpl {
     public static final String HIDDEN_COLUMN_CLASS = "p-hidden";
     public static final String FILTER_COLUMN_CLASS = "p-filter-column";
     public static final String COLUMN_TITLE_CLASS = "p-column-title";
-    public static final String COLUMN_FILTER_CLASS = "p-column-filter p-widget p-state-default";
-    public static final String COLUMN_INPUT_FILTER_CLASS = "p-column-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String COLUMN_FILTER_CLASS = "p-column-filter p-component p-state-default";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "p-column-filter p-inputfield p-inputtext p-component p-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "p-column-customfilter";
     public static final String FILTER_MATCH_MODE_INPUT_CLASS = "p-datatable-filter-matchmode-input";
     public static final String FILTER_MATCH_MODE_TRIGGER_CLASS = "p-datatable-filter-matchmode-trigger";
@@ -163,10 +163,10 @@ public class DataTable extends DataTableBaseImpl {
     public static final String EVEN_ROW_CLASS = "p-datatable-even";
     public static final String ODD_ROW_CLASS = "p-datatable-odd";
     public static final String SCROLLABLE_CONTAINER_CLASS = "p-datatable-scrollable";
-    public static final String SCROLLABLE_HEADER_CLASS = "p-widget-header p-datatable-scrollable-header";
+    public static final String SCROLLABLE_HEADER_CLASS = "p-component-header p-datatable-scrollable-header";
     public static final String SCROLLABLE_HEADER_BOX_CLASS = "p-datatable-scrollable-header-box";
     public static final String SCROLLABLE_BODY_CLASS = "p-datatable-scrollable-body";
-    public static final String SCROLLABLE_FOOTER_CLASS = "p-widget-header p-datatable-scrollable-footer";
+    public static final String SCROLLABLE_FOOTER_CLASS = "p-component-header p-datatable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "p-datatable-scrollable-footer-box";
     public static final String VIRTUALSCROLL_WRAPPER_CLASS = "p-datatable-virtualscroll-wrapper";
     public static final String VIRTUALSCROLL_TABLE_CLASS = "p-datatable-virtualscroll-table";
@@ -174,8 +174,8 @@ public class DataTable extends DataTableBaseImpl {
     public static final String RESIZABLE_CONTAINER_CLASS = "p-datatable-resizable";
     public static final String SUBTABLE_HEADER = "p-datatable-subtable-header";
     public static final String SUBTABLE_FOOTER = "p-datatable-subtable-footer";
-    public static final String SUMMARY_ROW_CLASS = "p-datatable-summaryrow p-widget-header";
-    public static final String HEADER_ROW_CLASS = "p-rowgroup-header p-datatable-headerrow p-widget-header";
+    public static final String SUMMARY_ROW_CLASS = "p-datatable-summaryrow p-component-header";
+    public static final String HEADER_ROW_CLASS = "p-rowgroup-header p-datatable-headerrow p-component-header";
     public static final String ROW_GROUP_TOGGLER_CLASS = "p-rowgroup-toggler";
     public static final String ROW_GROUP_TOGGLER_ICON_CLASS = "p-rowgroup-toggler-icon p-icon p-toggle-icon p-datatable-row-toggle-icon";
     public static final String EDITING_ROW_CLASS = "p-row-editing";

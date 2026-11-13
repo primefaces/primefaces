@@ -57,7 +57,7 @@ class PickList002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("form:pickListCities: An error occurred when processing your submitted information.", page.messages.getMessage(0).getSummary());
         assertEquals("[]", page.output.getText());
-        assertConfiguration(page.pickListCities.getWidgetConfiguration());
+        assertConfiguration(page.pickListCities.getClientConfiguration());
     }
 
     @Test
@@ -75,7 +75,7 @@ class PickList002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(0, page.messages.getAllMessages().size());
         assertEquals("[San Francisco, London, Istanbul, Berlin, Barcelona, Rome]", page.output.getText());
-        assertConfiguration(page.pickListCities.getWidgetConfiguration());
+        assertConfiguration(page.pickListCities.getClientConfiguration());
     }
 
 
@@ -96,7 +96,7 @@ class PickList002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("form:pickListCities: An error occurred when processing your submitted information.", page.messages.getMessage(0).getSummary());
         assertEquals("[]", page.output.getText());
-        assertConfiguration(page.pickListCities.getWidgetConfiguration());
+        assertConfiguration(page.pickListCities.getClientConfiguration());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {

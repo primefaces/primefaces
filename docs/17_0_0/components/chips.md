@@ -23,13 +23,13 @@ public class ChipsView {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Chips_
+Component: _PrimeFaces.component.Chips_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 | toggleEditor() | none | void | Converts the current list into a separator delimited list for mass editing while keeping original order of the items or closes the editor turning the values back into chips.|
 | addItem(value) | value: to add | void | Adds a new item (chip) to the list of currently displayed items. |
-| removeItem(value) | value: to remove | void | Removes an item (chip) from the list of currently displayed items. |
+| removeItem(item, silent) | item: the item (LI element) to remove, silent: true to remove it without animation and without the itemUnselect event | void | Removes an item (chip) from the list of currently displayed items. |
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
 

@@ -57,7 +57,7 @@ public class AutoCompleteBean {
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.InputTextarea_
+Component: _PrimeFaces.component.InputTextarea_
 
 
 | Method | Params | Return Type | Description |

@@ -132,19 +132,22 @@
     content: "\200b";
 }
 
-/* overlay: the root panel and every (sub)list carry p-cascadeselect-panel */
+/*
+ * overlay: the root panel and every (sub)list carry p-cascadeselect-panel. The root panel is only the anchor (no
+ * height, its first list is absolutely positioned), so only the lists draw the overlay.
+ */
 .p-cascadeselect-panel {
     min-width: 100%;
     position: absolute;
+}
+
+.p-cascadeselect-panel.p-cascadeselect-items {
+    padding: var(--p-cascadeselect-list-padding);
     background: var(--p-cascadeselect-overlay-background);
     color: var(--p-cascadeselect-overlay-color);
     border: 1px solid var(--p-cascadeselect-overlay-border-color);
     border-radius: var(--p-cascadeselect-overlay-border-radius);
     box-shadow: var(--p-cascadeselect-overlay-shadow);
-
-    .p-cascadeselect-items {
-        padding: var(--p-cascadeselect-list-padding);
-    }
 }
 
 .p-cascadeselect-items {
@@ -232,7 +235,7 @@
     }
 }
 
-/* sublists are positioned by the widget (inline left / top) */
+/* sublists are positioned by the component (inline left / top) */
 .p-cascadeselect-sublist {
     position: absolute;
     min-width: 100%;

@@ -80,7 +80,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
         assertDisabledDayStyleClass(page.datePicker2, "tst-disabled", "5");
-        JSONObject cfg2 = page.datePicker2.getWidgetConfiguration();
+        JSONObject cfg2 = page.datePicker2.getClientConfiguration();
 
         // Act - 5th elect 6th of current month
         page.datePicker2.selectDay(6);
@@ -96,7 +96,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
         assertDisabledDayStyleClass(page.datePicker1, "tst-disabled", "6");
-        JSONObject cfg1 = page.datePicker2.getWidgetConfiguration();
+        JSONObject cfg1 = page.datePicker2.getClientConfiguration();
 
         assertConfiguration(cfg1);
         assertConfiguration(cfg2);

@@ -35,5 +35,5 @@ public class Toolbar extends ToolbarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
-    public static final String CONTAINER_CLASS = "p-toolbar p-widget p-widget-header";
+    public static final String CONTAINER_CLASS = "p-toolbar p-component p-component-header";
 }

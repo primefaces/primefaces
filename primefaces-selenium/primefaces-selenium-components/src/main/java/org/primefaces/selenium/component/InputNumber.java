@@ -51,7 +51,7 @@ public abstract class InputNumber extends InputText {
     }
 
     /**
-     * Sets the value with the widget JS method and fires the "change" event (guarded if AJAX). A {@link Number} is passed as JS number, anything else as
+     * Sets the value with the client JS method and fires the "change" event (guarded if AJAX). A {@link Number} is passed as JS number, anything else as
      * string, so leading zeros of e.g. {@code "000456"} are kept.
      *
      * @param value the numeric value, {@code null} clears the input
@@ -59,20 +59,34 @@ public abstract class InputNumber extends InputText {
     @Override
     public void setValue(Serializable value) {
         Object newValue = value instanceof Number ? value : (value == null ? "" : value.toString());
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(arguments[0]);", newValue);
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change')");
-    }
-
-    public Double getValueToRender() {
-        return Double.valueOf(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".valueToRender;"));
+        PrimeSelenium.executeScript(getClientComponentScript() + ".setValue(arguments[0]);", newValue);
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getClientComponentScript() + ".input.trigger('change')");
     }
 
     /**
-     * Gets the value stored using the widget JS method.
+     * Gets the value rendered by the server into the client configuration.
      *
-     * @return the widget's value
+     * @return the rendered value, {@code null} if empty
      */
+    public Double getValueToRender() {
+        String value = PrimeSelenium.executeScript("return " + getClientComponentScript() + ".cfg.valueToRender;");
+        return value == null || value.isEmpty() ? null : Double.valueOf(value);
+    }
+
+    /**
+     * Gets the value stored using the client JS method.
+     *
+     * @return the component's value
+     */
+    public String getClientValue() {
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValue();");
+    }
+
+    /**
+     * @deprecated use {@link #getClientValue()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return getClientValue();
     }
 }

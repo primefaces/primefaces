@@ -1,5 +1,5 @@
 /*
- * NotificationBar: p:notificationBar (position top | bottom, set inline by the widget)
+ * NotificationBar: p:notificationBar (position top | bottom, set inline by the component)
  *
  * A page wide neutral content bar (PrimeFaces tokens); an element with the class p-notificationbar-close inside
  * the bar is styled like the message close button.

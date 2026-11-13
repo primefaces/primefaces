@@ -35,8 +35,8 @@ import org.primefaces.model.map.Polyline;
 import org.primefaces.model.map.Rectangle;
 import org.primefaces.model.map.Symbol;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -85,7 +85,7 @@ public class GMapRenderer extends CoreRenderer<GMap> {
         GMapInfoWindow infoWindow = component.getInfoWindow();
 
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("GMap", component)
                 .attr("mapTypeId", component.getType().toUpperCase())
                 .attr("center", component.getCenter())
@@ -210,7 +210,7 @@ public class GMapRenderer extends CoreRenderer<GMap> {
     }
 
     /**
-     * Encodes plain marker options; the widget builds the google.maps.marker.AdvancedMarkerElement once the marker
+     * Encodes plain marker options; the client side component builds the google.maps.marker.AdvancedMarkerElement once the marker
      * library is loaded. shadow, flat, cursor and animation have no AdvancedMarkerElement equivalent and are ignored.
      */
     protected void encodeMarker(FacesContext context, Marker marker) throws IOException {

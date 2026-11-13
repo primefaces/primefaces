@@ -39,7 +39,7 @@ public class ToggleSwitch extends ToggleSwitchBaseImpl implements Confirmable {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToggleSwitch";
 
-    public static final String CONTAINER_CLASS = "p-toggleswitch p-widget";
+    public static final String CONTAINER_CLASS = "p-toggleswitch p-component";
     public static final String SLIDER_CLASS = "p-toggleswitch-slider";
     public static final String HANDLER_CLASS = "p-toggleswitch-handler";
     public static final String CHECKED_CLASS = "p-toggleswitch-checked";

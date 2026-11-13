@@ -24,7 +24,7 @@
     }
 
     /* tag used as plain styleClass (e.g. <span class="p-tag">) */
-    &:not(.p-widget) {
+    &:not(.p-component) {
         display: inline-block;
         text-align: center;
         line-height: 1;
@@ -118,7 +118,7 @@
     }
 
     /* inline-block variant has no flex gap */
-    &:not(.p-widget) .p-tag-icon {
+    &:not(.p-component) .p-tag-icon {
         margin-inline-end: var(--p-tag-gap);
     }
 }

@@ -144,14 +144,22 @@ public abstract class TriStateManyCheckbox extends AbstractComponent {
     }
 
     /**
-     * Moves an item to the next or previous state with the widget, like the keyboard.
+     * Moves an item to the next or previous state with the client API, like the keyboard.
      *
      * @param index the index of the item
      * @param direction 1 for the next state, -1 for the previous state
      */
-    public void toggleWithWidget(int index, int direction) {
+    public void toggleWithClientApi(int index, int direction) {
         PrimeSelenium.executeScript(isOnchangeAjaxified() && isItemEnabled(index) && !isReadonly(),
-                getWidgetByIdScript() + ".toggle(" + index + ", " + direction + ");");
+                getClientComponentScript() + ".toggle(" + index + ", " + direction + ");");
+    }
+
+    /**
+     * @deprecated use {@link #toggleWithClientApi(int, int)} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public void toggleWithWidget(int index, int direction) {
+        toggleWithClientApi(index, direction);
     }
 
     /**
@@ -170,20 +178,20 @@ public abstract class TriStateManyCheckbox extends AbstractComponent {
      * @return true if the states can't be changed
      */
     public boolean isReadonly() {
-        return getWidgetConfiguration().optBoolean("readonly", false);
+        return getClientConfiguration().optBoolean("readonly", false);
     }
 
     /**
-     * Enables the items with the widget, the ones disabled on the server stay disabled.
+     * Enables the items with the client API, the ones disabled on the server stay disabled.
      */
     public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable();");
     }
 
     /**
-     * Disables the items with the widget.
+     * Disables the items with the client API.
      */
     public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable();");
     }
 }

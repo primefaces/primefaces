@@ -47,7 +47,7 @@ The icon is rendered as `<span class="p-chkbox-icon p-icon p-checkbox-icon">` pl
 `p-checkbox-checked-icon` or `p-checkbox-crossed-icon`.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.TriStateCheckbox_
+Component: _PrimeFaces.component.TriStateCheckbox_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

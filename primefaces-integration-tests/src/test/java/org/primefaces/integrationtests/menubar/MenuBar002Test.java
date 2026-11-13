@@ -55,7 +55,7 @@ class MenuBar002Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Data updated");
-        assertConfiguration(menubar.getWidgetConfiguration());
+        assertConfiguration(menubar.getClientConfiguration());
     }
 
     @Test
@@ -71,7 +71,7 @@ class MenuBar002Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Data saved");
-        assertConfiguration(menubar.getWidgetConfiguration());
+        assertConfiguration(menubar.getClientConfiguration());
     }
 
     private void assertMessage(Page page, String message) {

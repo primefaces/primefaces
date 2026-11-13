@@ -44,7 +44,7 @@ and DataGrid where paginator is enabled by setting paginator=”true” and defi
 to define the number of nodes to be displayed per page.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.TreeTable_
+Component: _PrimeFaces.component.TreeTable_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

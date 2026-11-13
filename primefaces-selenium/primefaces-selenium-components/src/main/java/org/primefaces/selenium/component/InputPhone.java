@@ -108,8 +108,16 @@ public abstract class InputPhone extends InputText {
      *
      * @return the number
      */
+    public String getClientValue() {
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getValue();");
+    }
+
+    /**
+     * @deprecated use {@link #getClientValue()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetValue() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+        return getClientValue();
     }
 
     /**
@@ -118,7 +126,7 @@ public abstract class InputPhone extends InputText {
      * @return the ISO 3166-1 alpha-2 code
      */
     public String getCountry() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getCountry();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".getCountry();");
     }
 
     /**
@@ -127,7 +135,7 @@ public abstract class InputPhone extends InputText {
      * @return true if the number is valid
      */
     public boolean isValidNumber() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isValid();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isValid();");
     }
 
     /**
@@ -135,7 +143,7 @@ public abstract class InputPhone extends InputText {
      */
     public void show() {
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
@@ -145,7 +153,7 @@ public abstract class InputPhone extends InputText {
      */
     public void hide() {
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
     }

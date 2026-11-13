@@ -112,7 +112,7 @@ class ConfirmDialog003Test extends AbstractPrimePageTest {
         element("form:disable").click();
         assertFalse(element("form:toggle_input").isEnabled());
 
-        // Act: disabled widgets use pointer-events:none, so click their screen position.
+        // Act: disabled components use pointer-events:none, so click their screen position.
         new Actions(PrimeSelenium.getWebDriver())
                 .moveToElement(element("form:toggle")).click().perform();
 

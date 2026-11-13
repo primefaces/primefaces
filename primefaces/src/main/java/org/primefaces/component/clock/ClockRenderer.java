@@ -27,9 +27,9 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -80,7 +80,7 @@ public class ClockRenderer extends CoreRenderer<Clock> {
 
     protected void encodeScript(FacesContext context, Clock component) throws IOException {
         String mode = component.getMode();
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         Locale locale = LocaleUtils.getCurrentLocale(context);
 
         wb.init("Clock", component);

@@ -16,7 +16,7 @@ public class Bean {
 }
 ```
 ## Client Side API
-Widget: _PrimeFaces.widget.InputText_
+Component: _PrimeFaces.component.InputText_
 
 | Method | Params | Return Type | Description |
 | --- | --- |-------------| --- |

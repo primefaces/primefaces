@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Regression: the float label of p:chips / p:autoComplete multiple with values on page load must be in its active state
- * without any interaction (the widgets do not mark them as filled, the theme detects the tokens).
+ * without any interaction (the components do not mark them as filled, the theme detects the tokens).
  */
 class Theming007Test extends AbstractThemingTest {
 

@@ -157,7 +157,7 @@
 /*
  * State layer (Material 3): a circle of --p-radiobutton-state-layer-size around the box on hover, in the hover border
  * color, checked in the checked border color (--p-radiobutton-hover-state-layer-opacity, 0% in the presets without it).
- * The ripple of the press draws the same circle (ripple/ripple.css). No focus layer: the widget focuses the input by
+ * The ripple of the press draws the same circle (ripple/ripple.css). No focus layer: the component focuses the input by
  * script, so it would stay after a click (:focus-visible); keyboard focus has the focus ring.
  */
 .p-radiobutton .p-radiobutton-box {

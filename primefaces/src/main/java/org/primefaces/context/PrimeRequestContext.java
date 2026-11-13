@@ -26,6 +26,7 @@ package org.primefaces.context;
 import org.primefaces.cdk.api.Function;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.StyleBuilder;
 import org.primefaces.util.StyleClassBuilder;
@@ -61,7 +62,7 @@ public class PrimeRequestContext {
     private static final String EXECUTE_SCRIPTS_KEY = "EXECUTE_SCRIPTS";
     private static final Class<?>[] EMPTY_PARAMS = new Class<?>[0];
 
-    private WidgetBuilder widgetBuilder;
+    private ComponentScriptBuilder componentScriptBuilder;
     private StyleClassBuilder styleClassBuilder;
     private StyleBuilder styleBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
@@ -159,14 +160,22 @@ public class PrimeRequestContext {
     }
 
     /**
-     * @return Shared WidgetBuilder instance of the current request
+     * @return Shared ComponentScriptBuilder instance of the current request
      */
-    public WidgetBuilder getWidgetBuilder() {
-        if (this.widgetBuilder == null) {
-            this.widgetBuilder = new WidgetBuilder(context, getApplicationContext().getConfig());
+    public ComponentScriptBuilder getComponentScriptBuilder() {
+        if (this.componentScriptBuilder == null) {
+            this.componentScriptBuilder = new ComponentScriptBuilder(context, getApplicationContext().getConfig());
         }
 
-        return widgetBuilder;
+        return componentScriptBuilder;
+    }
+
+    /**
+     * @deprecated use {@link #getComponentScriptBuilder()} instead
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public WidgetBuilder getWidgetBuilder() {
+        return new WidgetBuilder(context, getApplicationContext().getConfig());
     }
 
     /**
@@ -228,7 +237,7 @@ public class PrimeRequestContext {
      * Clear resources.
      */
     public void release() {
-        widgetBuilder = null;
+        componentScriptBuilder = null;
         ajaxRequestBuilder = null;
         context = null;
         applicationContext = null;

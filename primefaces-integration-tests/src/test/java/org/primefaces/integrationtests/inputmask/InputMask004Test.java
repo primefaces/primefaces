@@ -52,8 +52,8 @@ class InputMask004Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("1", inputMask.getValue());
-        assertEquals("1", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
+        assertEquals("1", inputMask.getClientValueUnmasked());
+        assertConfiguration(inputMask.getClientConfiguration(), "9[999]");
     }
 
     @Test
@@ -69,9 +69,9 @@ class InputMask004Test extends AbstractInputMaskTest {
         page.button.click();
 
         // Assert
-        assertEquals("12", inputMask.getWidgetValueUnmasked());
+        assertEquals("12", inputMask.getClientValueUnmasked());
         assertEquals("12__", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
+        assertConfiguration(inputMask.getClientConfiguration(), "9[999]");
     }
 
     @Test
@@ -87,9 +87,9 @@ class InputMask004Test extends AbstractInputMaskTest {
         page.button.click();
 
         // Assert
-        assertEquals("123", inputMask.getWidgetValueUnmasked());
+        assertEquals("123", inputMask.getClientValueUnmasked());
         assertEquals("123_", inputMask.getValue());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
+        assertConfiguration(inputMask.getClientConfiguration(), "9[999]");
     }
 
     @Test
@@ -106,8 +106,8 @@ class InputMask004Test extends AbstractInputMaskTest {
 
         // Assert
         assertEquals("1234", inputMask.getValue());
-        assertEquals("1234", inputMask.getWidgetValueUnmasked());
-        assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
+        assertEquals("1234", inputMask.getClientValueUnmasked());
+        assertConfiguration(inputMask.getClientConfiguration(), "9[999]");
     }
 
     private void assertConfiguration(JSONObject cfg, String mask) {

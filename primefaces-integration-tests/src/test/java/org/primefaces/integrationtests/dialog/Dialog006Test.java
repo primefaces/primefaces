@@ -208,7 +208,7 @@ class Dialog006Test extends AbstractPrimePageTest {
         dialog.show();
 
         // Act
-        PrimeSelenium.executeScript("PrimeFaces.utils.enableAnimations(); " + dialog.getWidgetByIdScript() + ".toggleMinimize();");
+        PrimeSelenium.executeScript("PrimeFaces.utils.enableAnimations(); " + dialog.getClientComponentScript() + ".toggleMinimize();");
 
         // Assert: from the dialog to the docking zone
         assertEquals(1L, countElements(".p-effect-transfer.p-dialog-minimizing"));
@@ -216,7 +216,7 @@ class Dialog006Test extends AbstractPrimePageTest {
         assertFalse(dialog.isDisplayed());
 
         // Act
-        PrimeSelenium.executeScript("PrimeFaces.utils.enableAnimations(); " + dialog.getWidgetByIdScript() + ".show();");
+        PrimeSelenium.executeScript("PrimeFaces.utils.enableAnimations(); " + dialog.getClientComponentScript() + ".show();");
 
         // Assert: from the docked bar to the dialog, which appears when the animation finished
         assertEquals(1L, countElements(".p-effect-transfer.p-dialog-minimizing"));

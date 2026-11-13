@@ -60,7 +60,7 @@ public abstract class Sidebar extends AbstractComponent {
      * @return true if visible false if not
      */
     public boolean isVisible() {
-        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+        return PrimeSelenium.executeScript("return " + getClientComponentScript() + ".isVisible();");
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class Sidebar extends AbstractComponent {
      */
     public void show() {
         if (!isVisible()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         }
     }
@@ -78,7 +78,7 @@ public abstract class Sidebar extends AbstractComponent {
      */
     public void hide() {
         if (isVisible()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.executeScript(getClientComponentScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
         }
     }

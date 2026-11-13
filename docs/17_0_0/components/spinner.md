@@ -75,7 +75,7 @@ They are rendered as `<span class="p-icon p-up-icon p-spinner-increment-icon p-c
 layouts); the former `upIcon` / `downIcon` attributes are gone.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.Spinner_
+Component: _PrimeFaces.component.Spinner_
 
 
 | Method | Params | Return Type | Description |

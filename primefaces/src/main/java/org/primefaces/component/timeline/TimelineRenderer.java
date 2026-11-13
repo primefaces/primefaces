@@ -29,12 +29,12 @@ import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -123,7 +123,7 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         FastStringWriter fsw = new FastStringWriter();
         FastStringWriter fswHtml = new FastStringWriter();
 
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Timeline", component);
 
         List<TimelineEvent<Object>> events = model.getEvents();

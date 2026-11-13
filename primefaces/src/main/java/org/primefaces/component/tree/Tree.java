@@ -62,12 +62,12 @@ public class Tree extends TreeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
-    public static final String FILTER_CLASS = "p-tree-filter p-inputfield p-inputtext p-widget p-state-default";
+    public static final String FILTER_CLASS = "p-tree-filter p-inputfield p-inputtext p-component p-state-default";
     public static final String FILTER_CONTAINER = "p-tree-filter-container";
-    public static final String CONTAINER_CLASS = "p-tree p-widget p-widget-content";
-    public static final String CONTAINER_RTL_CLASS = "p-tree p-tree-rtl p-widget p-widget-content";
-    public static final String HORIZONTAL_CONTAINER_CLASS = "p-tree p-tree-horizontal p-widget p-widget-content";
-    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "p-tree p-tree-horizontal p-tree-rtl p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-tree p-component p-component-content";
+    public static final String CONTAINER_RTL_CLASS = "p-tree p-tree-rtl p-component p-component-content";
+    public static final String HORIZONTAL_CONTAINER_CLASS = "p-tree p-tree-horizontal p-component p-component-content";
+    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "p-tree p-tree-horizontal p-tree-rtl p-component p-component-content";
     public static final String ROOT_NODES_CLASS = "p-tree-container";
     public static final String PARENT_NODE_CLASS = "p-treenode p-treenode-parent";
     public static final String LEAF_NODE_CLASS = "p-treenode p-treenode-leaf";

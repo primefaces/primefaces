@@ -89,14 +89,14 @@ class AutoComplete006Test extends AbstractPrimePageTest {
 
         // Assert - Part 4
         assertEquals("Driver No. 0", autoComplete.getValue());
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
 
         Msg message = page.messages.getMessage(0);
         assertNotNull(message);
         assertEquals("Driver", message.getSummary());
         assertEquals("id: 0, name: Driver No. 0", message.getDetail());
 
-        assertConfiguration(autoComplete.getWidgetConfiguration());
+        assertConfiguration(autoComplete.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

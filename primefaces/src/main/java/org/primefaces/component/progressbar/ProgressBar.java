@@ -42,14 +42,14 @@ public class ProgressBar extends ProgressBarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ProgressBar";
 
-    public static final String CONTAINER_CLASS = "p-progressbar p-widget p-widget-content";
+    public static final String CONTAINER_CLASS = "p-progressbar p-component p-component-content";
     public static final String DETERMINATE_CLASS = "p-progressbar-determinate";
     public static final String INDETERMINATE_CLASS = "p-progressbar-indeterminate";
     public static final String SEVERITY_INFO_CLASS = "p-progressbar-info";
     public static final String SEVERITY_SUCCESS_CLASS = "p-progressbar-success";
     public static final String SEVERITY_WARNING_CLASS = "p-progressbar-warning";
     public static final String SEVERITY_DANGER_CLASS = "p-progressbar-danger";
-    public static final String VALUE_CLASS = "p-progressbar-value p-widget-header";
+    public static final String VALUE_CLASS = "p-progressbar-value p-component-header";
     public static final String LABEL_CLASS = "p-progressbar-label";
 
     @Override

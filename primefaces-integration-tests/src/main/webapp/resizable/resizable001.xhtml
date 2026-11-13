@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet>
+            .box {
+                width: 200px;
+                height: 100px;
+                margin-bottom: 40px;
+                background: lightgray;
+            }
+        </h:outputStylesheet>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <h:panelGroup id="box" layout="block" styleClass="box">Resize me</h:panelGroup>
+            <p:resizable id="resizable" for="box">
+                <p:ajax event="resize" listener="#{resizable001.onResize}" update="msgs"/>
+            </p:resizable>
+
+            <h:panelGroup id="limited" layout="block" styleClass="box">Limited</h:panelGroup>
+            <p:resizable id="resizableLimited" for="limited" minWidth="100" minHeight="60" maxWidth="250" maxHeight="150"/>
+
+            <h:panelGroup id="horizontal" layout="block" styleClass="box">Horizontal</h:panelGroup>
+            <p:resizable id="resizableHorizontal" for="horizontal" handles="e"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

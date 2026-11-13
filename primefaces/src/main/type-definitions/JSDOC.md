@@ -9,7 +9,7 @@ This is the documentation for the client-side JavaScript part of PrimeFaces, ple
 * [Type declarations file](#type-declarations-file)
 * [API Overview](#api-overview)
     - [Core](#core)
-    - [Widgets](#widgets)
+    - [Components](#components)
     - [JQuery extensions](#jquery-extensions)
     - [Third-party libraries](#third-party-libraries)
 
@@ -65,8 +65,8 @@ type declaration files.
 
 The main entry point of the PrimeFaces client-side JavaScript API is the global object
 [window.PrimeFaces](./modules/src_PrimeFaces.PrimeFaces.html) (or just `PrimeFaces` for short). It contains several
-utility methods as well as the [widget registry](./modules/src_PrimeFaces.PrimeFaces.widget.html) with all available
-PrimeFaces widgets.
+utility methods as well as the [component registry](./modules/src_PrimeFaces.PrimeFaces.component.html) with all available
+PrimeFaces components.
 
 ### Core
 
@@ -86,47 +86,47 @@ methods to resolve search expressions such as `@form` on the client.
 * [PrimeFaces.resources](./modules/src_PrimeFaces.PrimeFaces.resources.html) The resources submodule. It contains some methods to
 generate Faces resource URLs.
 * [PrimeFaces.settings](./modules/src_PrimeFaces.PrimeFaces.settings.html) The settings module which contains the locale
-(translations) shared by all widgets.
+(translations) shared by all components.
 * [PrimeFaces.utils](./modules/src_PrimeFaces.PrimeFaces.utils.html) The utility module with more advanced utility methods.
 * [PrimeFaces.validation](./modules/src_PrimeFaces.PrimeFaces.validation.html) The validation submodule. It contains methods for 
 handling client side validation.
 
-### Widgets
+### Components
 
-* [PrimeFaces.widget](./modules/src_PrimeFaces.PrimeFaces.widget.html) contains all available widget classes. A widget is
-usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a widget instance via
-`instanceof`. You can also use these as a base class when you create your own widgets.
-* [`PrimeFaces.widgets`](./modules/src_PrimeFaces.PrimeFaces.html#widgets) is an object with all instantiated widgets that
-are available on the current page.
-* [window.PF](./modules/src_PrimeFaces.html#pf) is a method for finding a widget by its widget variable. When the widget
+* [PrimeFaces.component](./modules/src_PrimeFaces.PrimeFaces.component.html) contains all available component classes. A component is
+usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a component instance via
+`instanceof`. You can also use these as a base class when you create your own components.
+* [`PrimeFaces.components`](./modules/src_PrimeFaces.PrimeFaces.html#widgets) is an object with all instantiated components that
+are available on the current page. `PrimeFaces.widget` and `PrimeFaces.widgets` are deprecated aliases of both objects.
+* [window.PF](./modules/src_PrimeFaces.html#pf) is a method for finding a component by its widget variable. When the component
 does not exist, it logs a warning.
 
-For example, if you have got a data table widget defined in your XHTML view like this:
+For example, if you have got a data table component defined in your XHTML view like this:
 
 ```xml
 <p:dataTable id="table" widgetVar="tableVar" />
 ```
 
-Then you can access the widget instance from JavaScript like this:
+Then you can access the component instance from JavaScript like this:
 
 ```javascript
-// Find the widget instance
-var widget = PF("tableVar");
+// Find the component instance
+var component = PF("tableVar");
 // Check whether it is really a data table
-if (widget instanceof PrimeFaces.widget.DataTable) {
+if (component instanceof PrimeFaces.component.DataTable) {
     // Do something with the data table
-    widget.unselectAllRows();
+    component.unselectAllRows();
 }
 ```
 
 ### JQuery extensions
 
 PrimeFaces relies heavily on [JQuery](https://jquery.com/) for interacting with the DOM. Many JQuery plugins are
-included that are used by the various widgets. You can make use of these plugins, but please note that they are not
+included that are used by the various components. You can make use of these plugins, but please note that they are not
 parts of the officially supported API and may be removed or replaced at any time.
 
-Also, as most JQuery plugins are specific to a certain widget, please note that some plugins may only be available when
-that widget is included in the page.
+Also, as most JQuery plugins are specific to a certain component, please note that some plugins may only be available when
+that component is included in the page.
 
 * See the [JQuery](./interfaces/src_PrimeFaces.JQuery-1.html) interface for methods that can be called on JQuery instances
 (`$.fn`). This includes methods from jQuery plugins added by the various libraries used by PrimeFaces.

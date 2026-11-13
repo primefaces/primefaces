@@ -44,13 +44,13 @@ overlayPanel can be used by calling show passing the client id of the component 
 positioned. See overlayPanel demo in showcase for an example.
 
 ## Client Side API
-Widget: _PrimeFaces.widget.OverlayPanel_
+Component: _PrimeFaces.component.OverlayPanel_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 | show(target) | - | void | Displays the OverlayPanel. The target parameter is optional and can be used to dynamically overwrite the _for_ attribute.
 | hide() | - | void | Closes the OverlayPanel.
-| isVisible() | - | void | Returns visibility as a boolean.
+| isVisible() | - | boolean | Returns visibility as a boolean.
 
 ## Skinning
 Panel resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list of

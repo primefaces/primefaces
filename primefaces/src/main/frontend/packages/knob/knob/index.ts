@@ -1,15 +1,15 @@
-import { Knob } from "./src/knob.widget.js";
+import { Knob } from "./src/knob.js";
 
-PrimeFaces.widget.Knob = Knob;
+PrimeFaces.component.Knob = Knob;
 
 declare global {
     namespace PrimeFacesTypes {
-        export interface WidgetRegistry {
+        export interface ComponentRegistry {
             Knob: typeof Knob;
         }
     }
 
-    namespace PrimeFacesTypes.widget {
-        export type KnobCfg = import("./src/knob.widget.js").KnobCfg;
+    namespace PrimeFacesTypes.component {
+        export type KnobCfg = import("./src/knob.js").KnobCfg;
     }
 }

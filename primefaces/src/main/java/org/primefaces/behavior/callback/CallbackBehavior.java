@@ -49,7 +49,7 @@ public class CallbackBehavior extends CallbackBehaviorBaseImpl {
             source = behaviorContext.getComponent().getClientId(behaviorContext.getFacesContext());
         }
 
-        // ext is only defined if the widget calls the behavior, not in a DOM event handler (e.g. onclick)
+        // ext is only defined if the client side component calls the behavior, not in a DOM event handler (e.g. onclick)
         return "return (function(source,event,params,ext){" + execute + "\n}).call(this,"
                 + JSONObject.quote(source) + ","
                 + JSONObject.quote(behaviorContext.getEventName()) + ","

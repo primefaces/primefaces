@@ -219,13 +219,13 @@ public abstract class PickList extends AbstractComponent {
     }
 
     /**
-     * Filter using the Widget configuration "filterDelay" and "filterEvent" values.
+     * Filter using the client configuration "filterDelay" and "filterEvent" values.
      *
      * @param filterElement the source or target filter
      * @param filterValue the value to set the filter
      */
     public void setFilterValue(WebElement filterElement, String filterValue) {
-        JSONObject cfg = getWidgetConfiguration();
+        JSONObject cfg = getClientConfiguration();
         String filterEvent = cfg.getString("filterEvent");
         int filterDelay = cfg.getInt("filterDelay");
         setFilterValue(filterElement, filterValue, filterEvent, filterDelay);
@@ -339,6 +339,15 @@ public abstract class PickList extends AbstractComponent {
     public List<WebElement> getTargetListElements() {
         return targetList.findElements(By.tagName("li")).stream().filter(e -> PrimeSelenium.isElementDisplayed(e))
                     .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the aria live region used to announce focused items and actions to screen readers.
+     *
+     * @return the aria live region element
+     */
+    public WebElement getAriaRegion() {
+        return findElement(By.id(getId() + "_ariaRegion"));
     }
 
     /**

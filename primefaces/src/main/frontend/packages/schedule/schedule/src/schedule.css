@@ -224,7 +224,7 @@
     }
 }
 
-/* tooltip of p:schedule (tooltip="true"), created by the widget without role (the p:mindmap tooltip has no role either) */
+/* tooltip of p:schedule (tooltip="true"), created by the component without role (the p:mindmap tooltip has no role either) */
 .p-tooltip:not([role], .p-mindmap-tooltip) {
     background: var(--p-schedule-tooltip-background);
     color: var(--p-schedule-tooltip-color);

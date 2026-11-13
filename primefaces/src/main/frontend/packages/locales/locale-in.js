@@ -47,6 +47,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatal",
       "messages.INFO": "Informasi",
       "messages.WARN": "Peringatan",
+      movedBottom: "Dipindahkan ke paling bawah",
+      movedDown: "Dipindahkan ke bawah",
+      movedTop: "Dipindahkan ke paling atas",
+      movedToSource: "Dipindahkan ke Sumber",
+      movedToTarget: "Dipindahkan ke Target",
+      movedUp: "Dipindahkan ke atas",
     },
     messages: {
       //optional for Client Side Validation

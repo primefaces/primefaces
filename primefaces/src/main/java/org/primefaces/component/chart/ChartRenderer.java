@@ -25,11 +25,11 @@ package org.primefaces.component.chart;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -85,7 +85,7 @@ public class ChartRenderer extends CoreRenderer<Chart> {
     }
 
     protected void encodeScript(FacesContext context, Chart component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("Chart", component)
                 .nativeAttr("config", renderConfig(context, component))
                 .nativeAttr("extender", component.getExtender());

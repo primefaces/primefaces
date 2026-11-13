@@ -141,7 +141,7 @@ public class Row extends org.primefaces.selenium.component.model.datatable.Row {
     protected boolean isSelectionAjaxified(boolean selecting) {
         if (selecting) {
             return hasTableBehavior("select")
-                    || (getTable() != null && "checkbox".equals(getTable().getWidgetConfiguration().optString("selectionMode")));
+                    || (getTable() != null && "checkbox".equals(getTable().getClientConfiguration().optString("selectionMode")));
         }
         return hasTableBehavior("unselect");
     }

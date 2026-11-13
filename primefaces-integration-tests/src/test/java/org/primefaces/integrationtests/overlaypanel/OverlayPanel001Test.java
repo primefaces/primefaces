@@ -56,13 +56,13 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration());
+        assertConfiguration(overlayPanel.getClientConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("OverlayPanel: Show/Hide panel using API methods")
-    void widgetShowHide(Page page) {
+    void componentShowHide(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         assertFalse(overlayPanel.isVisible());
@@ -78,7 +78,7 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration());
+        assertConfiguration(overlayPanel.getClientConfiguration());
     }
 
     @Test
@@ -95,7 +95,7 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration());
+        assertConfiguration(overlayPanel.getClientConfiguration());
     }
 
     @Test
@@ -116,7 +116,7 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(5)
-    @DisplayName("OverlayPanel: Destroy widget and make sure DOM elements removed")
+    @DisplayName("OverlayPanel: Destroy component and make sure DOM elements removed")
     void destroy(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;

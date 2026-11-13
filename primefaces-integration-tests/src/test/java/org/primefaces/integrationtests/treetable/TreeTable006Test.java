@@ -87,7 +87,7 @@ class TreeTable006Test extends AbstractTreeTableTest {
         PrimeSelenium.guardAjax(treeTable.getRow(3).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
         assertMessage(page.messages, 0, "selected document", "tutorial-a2.txt;5kb;Text");
 
-        assertConfiguration(treeTable.getWidgetConfiguration());
+        assertConfiguration(treeTable.getClientConfiguration());
     }
     @Override
     protected void assertConfiguration(JSONObject cfg) {

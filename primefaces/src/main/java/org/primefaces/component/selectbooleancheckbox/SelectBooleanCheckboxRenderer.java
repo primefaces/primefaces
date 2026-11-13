@@ -25,9 +25,9 @@ package org.primefaces.component.selectbooleancheckbox;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -170,7 +170,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCh
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("SelectBooleanCheckbox", checkbox).finish();
     }
 

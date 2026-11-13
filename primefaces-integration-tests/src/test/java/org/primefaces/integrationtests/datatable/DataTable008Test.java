@@ -68,7 +68,7 @@ class DataTable008Test extends AbstractDataTableTest {
                     .collect(Collectors.toList());
         assertRows(dataTable, langsFiltered);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -95,7 +95,7 @@ class DataTable008Test extends AbstractDataTableTest {
                     .collect(Collectors.toList());
         assertRows(dataTable, langsUnfilteredPage2);
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private static WebElement getFirstAppearedFilterElt(DataTable dataTable) {

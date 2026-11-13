@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:progressBar id="client" value="0" labelTemplate="{value}%"/>
+
+            <p:progressBar id="ajax" ajax="true" interval="200" value="#{progressBar001.progress}" labelTemplate="{value}%" global="false">
+                <p:ajax event="start" listener="#{progressBar001.onStart}"/>
+                <p:ajax event="complete" listener="#{progressBar001.onComplete}" update="form:msgs"/>
+            </p:progressBar>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -75,7 +75,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertEquals("1", firstRow.getCell(0).getText());
         assertEquals("Language 1", firstRow.getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
 
         // Act - second page
         dataTable.selectPage(2);
@@ -89,7 +89,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertEquals("11", firstRow.getCell(0).getText());
         assertEquals("Language 11", firstRow.getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
 
         // Act - last page
         dataTable.selectPage(8);
@@ -99,7 +99,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertNotNull(rows);
         assertEquals(5, rows.size());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -140,7 +140,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertEquals(langsDesc.get(1).getName(), rows.get(1).getCell(1).getText());
         assertEquals(langsDesc.get(9).getName(), rows.get(9).getCell(1).getText());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -178,7 +178,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertEquals(10, rows.size()); //one page
         assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
         assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -221,7 +221,7 @@ class DataTable002Test extends AbstractDataTableTest {
         for (int row = 0; row < 10; row++) {
             assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
         }
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -243,7 +243,7 @@ class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -268,7 +268,7 @@ class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
         assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -294,7 +294,7 @@ class DataTable002Test extends AbstractDataTableTest {
         String row3ProgLang = getDataTable().getRow(3).getCell(0).getText();
         assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getClientConfiguration());
     }
 
     @ParameterizedTest
@@ -336,7 +336,7 @@ class DataTable002Test extends AbstractDataTableTest {
         assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         assertEquals(9, getDataTable().getRows().size());
 
-        assertConfiguration(getDataTable().getWidgetConfiguration());
+        assertConfiguration(getDataTable().getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

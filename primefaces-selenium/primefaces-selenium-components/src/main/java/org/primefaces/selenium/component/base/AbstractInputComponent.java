@@ -148,14 +148,14 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      * Enables the input/
      */
     public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".enable();");
     }
 
     /**
      * Disables the input.
      */
     public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+        PrimeSelenium.executeScript(getClientComponentScript() + ".disable();");
     }
 
     /**

@@ -47,7 +47,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("ConfirmPopup: Show the popup")
-    void showWidget(Page page) {
+    void showComponent(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
@@ -59,13 +59,13 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         assertTrue(popup.isVisible());
         assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
         assertEquals("p-confirm-popup-icon pi pi-exclamation-triangle", popup.getIcon().getAttribute("class"));
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("ConfirmPopup: Show widget method")
-    void hideWidget(Page page) {
+    @DisplayName("ConfirmPopup: Show client API method")
+    void hideComponent(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
         page.confirm.click();
@@ -76,7 +76,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
 
         // Assert
         assertFalse(popup.isVisible());
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
     }
 
     @Test
@@ -90,7 +90,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("No", noButton.getText());
         assertCss(noButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat");
         assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-times");
 
         // Act
@@ -99,7 +99,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(popup.isVisible());
         assertTrue(page.messages.isEmpty());
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
     }
 
     @Test
@@ -112,7 +112,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-yes p-state-focus");
+        assertCss(yesButton, "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-yes p-state-focus");
         assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-check");
 
         // Act
@@ -121,7 +121,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(popup.isVisible());
         assertMessage(page, "You have accepted");
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
     }
 
     @Test
@@ -135,7 +135,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat bg-green-600 text-white");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-no p-button-flat bg-green-600 text-white");
         assertCss(noButton.getIcon(), "p-button-icon-left p-c pi pi-heart");
 
         // Act
@@ -144,7 +144,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(popup.isVisible());
         assertTrue(page.messages.isEmpty());
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
 
         // assert the buttons are back to normal
         confirmNo(page);
@@ -166,7 +166,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         assertTrue(popup.isVisible());
         assertTrue(page.messages.isEmpty());
         assertCss(popup.getIcon(), "p-confirm-popup-icon pi pi-question-circle");
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
     }
 
     @Test
@@ -180,7 +180,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
         assertCss(yesButton,
-                "p-button p-widget p-state-default p-button-text-icon-left p-confirm-popup-yes bg-red-600 text-white p-state-focus");
+                "p-button p-component p-state-default p-button-text-icon-left p-confirm-popup-yes bg-red-600 text-white p-state-focus");
         assertCss(yesButton.getIcon(), "p-button-icon-left p-c pi pi-trash");
 
         // Act
@@ -189,7 +189,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertFalse(popup.isVisible());
         assertMessage(page, "Record deleted");
-        assertConfiguration(popup.getWidgetConfiguration());
+        assertConfiguration(popup.getClientConfiguration());
         // assert the buttons are back to normal
         confirmYes(page);
     }

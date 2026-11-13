@@ -62,7 +62,7 @@ class DatePicker008Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
@@ -81,7 +81,7 @@ class DatePicker008Test extends AbstractDatePickerTest {
 
         // Assert
         assertNotDisplayed(panel);
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
@@ -104,7 +104,7 @@ class DatePicker008Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(expectedDate, newValue);
         assertMessage(page, "1985-08-31");
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
@@ -127,13 +127,13 @@ class DatePicker008Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(expectedDate, newValue);
         assertMessage(page, "1985-06-08");
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     @Test
     @Order(5)
-    @DisplayName("DatePicker: AJAX date using widget setDate() API.")
-    void ajaxSetDateWidgetApi(Page page) {
+    @DisplayName("DatePicker: AJAX date using component setDate() API.")
+    void ajaxSetDateComponentApi(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
@@ -149,7 +149,7 @@ class DatePicker008Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     private void assertMessage(Page page, String message) {

@@ -58,7 +58,7 @@ class DataTable019Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
         assertEquals(2, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -77,7 +77,7 @@ class DataTable019Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.COMPILED);
         assertEquals(2, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -96,7 +96,7 @@ class DataTable019Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByName("Clojure");
         assertEquals(0, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -112,7 +112,7 @@ class DataTable019Test extends AbstractDataTableTest {
 
         // Assert
         assertEquals(5, languages.size());
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     @Test
@@ -131,7 +131,7 @@ class DataTable019Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED);
         assertEquals(3, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
-        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

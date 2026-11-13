@@ -34,7 +34,7 @@ import jakarta.faces.component.FacesComponent;
 public class Divider extends DividerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
 
-    public static final String STYLE_CLASS = "p-divider p-widget";
+    public static final String STYLE_CLASS = "p-divider p-component";
     public static final String CONTENT_CLASS = "p-divider-content";
     public static final String HORIZONTAL_CLASS = "p-divider-horizontal";
     public static final String VERTICAL_CLASS = "p-divider-vertical";

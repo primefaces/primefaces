@@ -4,7 +4,7 @@
  * Renders the tiered .p-menu markup (styled by menu/menu.base.css) as an overlay; this file maps the contextmenu tokens.
  */
 
-/* set by the widget on the target: disables the mobile browser context menu */
+/* set by the component on the target: disables the mobile browser context menu */
 .p-touch-selection-disabled {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

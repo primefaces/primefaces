@@ -68,7 +68,7 @@ class DatePicker001Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(value, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -94,7 +94,7 @@ class DatePicker001Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(expectedDate, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -120,7 +120,7 @@ class DatePicker001Test extends AbstractDatePickerTest {
         LocalDate newValue = datePicker.getValueAsLocalDate();
         assertEquals(expectedDate, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), newValue.format(dateTimeFormatter));
     }
 
     @Test
@@ -148,7 +148,7 @@ class DatePicker001Test extends AbstractDatePickerTest {
 
     @Test
     @Order(5)
-    @DisplayName("DatePicker: Use disable() widget method to disable DatePicker")
+    @DisplayName("DatePicker: Use disable() client API method to disable DatePicker")
     void disable(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
@@ -162,12 +162,12 @@ class DatePicker001Test extends AbstractDatePickerTest {
         assertFalse(datePicker.isEnabled());
         assertNotDisplayed(panel);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), LocalDate.now().format(dateTimeFormatter));
     }
 
     @Test
     @Order(6)
-    @DisplayName("DatePicker: Use enable() widget method to enable DatePicker")
+    @DisplayName("DatePicker: Use enable() client API method to enable DatePicker")
     void enable(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
@@ -182,7 +182,7 @@ class DatePicker001Test extends AbstractDatePickerTest {
         assertTrue(datePicker.isEnabled());
         assertDisplayed(panel);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        assertConfiguration(datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
+        assertConfiguration(datePicker.getClientConfiguration(), LocalDate.now().format(dateTimeFormatter));
     }
 
     @Test

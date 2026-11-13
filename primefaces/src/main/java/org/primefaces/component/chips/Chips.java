@@ -49,7 +49,7 @@ import jakarta.faces.event.FacesEvent;
 public class Chips extends ChipsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
-    public static final String STYLE_CLASS = "p-chips p-widget";
+    public static final String STYLE_CLASS = "p-chips p-component";
     public static final String CONTAINER_CLASS = "p-chips-container p-inputfield p-state-default";
     public static final String TOKEN_DISPLAY_CLASS = "p-chips-token p-state-active";
     public static final String TOKEN_LABEL_CLASS = "p-chips-token-label";

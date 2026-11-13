@@ -25,11 +25,11 @@ package org.primefaces.component.datagrid;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
@@ -75,7 +75,7 @@ public class DataGridRenderer extends DataRenderer<DataGrid> {
     }
 
     protected void encodeScript(FacesContext context, DataGrid component) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
+        ComponentScriptBuilder wb = getComponentScriptBuilder(context);
         wb.init("DataGrid", component);
 
         if (component.isPaginator()) {

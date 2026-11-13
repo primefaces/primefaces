@@ -71,7 +71,7 @@ class DatePicker003Test extends AbstractDatePickerTest {
         assertEquals(5, datePicker.getOtherMonthDays().size());
         assertEquals(5, datePicker.getDisabledOtherMonthDays().size());
 
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

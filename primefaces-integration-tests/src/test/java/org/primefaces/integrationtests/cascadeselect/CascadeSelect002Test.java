@@ -53,7 +53,7 @@ class CascadeSelect002Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "2080");
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getClientConfiguration());
 
         // Act
         page.button.click();
@@ -61,7 +61,7 @@ class CascadeSelect002Test extends BaseCascadeSelectTest {
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "2080");
         assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        assertConfiguration(cascadeSelect.getClientConfiguration());
     }
 
     public static class Page extends AbstractPrimePage {
