@@ -1121,6 +1121,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param type Type of the action that caused the items to be transferred.
      */
     private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.component.PickList.TransferType): void {
+        // #15492 announce the completed transfer to screen readers
+        this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource'));
+
         if(this.cfg.onTransfer) {
             const obj = {} as PrimeFacesTypes.component.PickList.TransferData;
             obj.items = items;
