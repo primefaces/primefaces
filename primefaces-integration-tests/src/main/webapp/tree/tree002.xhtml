@@ -13,7 +13,7 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:tree id="tree" value="#{tree002.root}" var="document" widgetVar="tree" selectionMode="single"
+            <p:tree id="tree" value="#{tree002.root}" var="document" ref="tree" selectionMode="single"
                 selection="#{tree002.selectedNode}">
                 <p:ajax event="select" update=":form:msgs" listener="#{tree002.onNodeSelect}" />
                 <p:ajax event="unselect" update=":form:msgs" listener="#{tree002.onNodeUnselect}" />

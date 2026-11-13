@@ -27,7 +27,7 @@
             <p:commandButton id="btn" type="button" icon="pi pi-globe" value="Show Map" onclick="PF('dlg').show();"/>
         </div>
 
-        <p:dialog id="gmapDialog" widgetVar="dlg" width="625" height="400" modal="true">
+        <p:dialog id="gmapDialog" ref="dlg" width="625" height="400" modal="true">
             <p:gmap id="gmap" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/>
         </p:dialog>
 

@@ -37,10 +37,10 @@ public abstract class AbstractTreeTest extends AbstractPrimePageTest {
         assertConfiguration(cfg, "tree");
     }
 
-    protected void assertConfiguration(JSONObject cfg, String widgetVar) {
+    protected void assertConfiguration(JSONObject cfg, String ref) {
         assertNoJavascriptErrors();
         System.out.println("Tree Config = " + cfg);
-        assertEquals(widgetVar, cfg.getString("widgetVar"));
+        assertEquals(ref, cfg.getString("ref"));
     }
 
     protected void assertMessage(Messages messages, int index, String summary, String detail) {

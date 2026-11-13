@@ -26,16 +26,16 @@ package org.primefaces.component.galleria;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITabPanel;
-import org.primefaces.component.api.Widget;
 
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
-public abstract class GalleriaBase extends UITabPanel implements Widget, StyleAware {
+public abstract class GalleriaBase extends UITabPanel implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

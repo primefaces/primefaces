@@ -26,7 +26,7 @@
                             oncomplete="PF('details').show();"/>
                 </p:mindmap>
 
-                <p:dialog widgetVar="details" header="Node Details" resizable="false" modal="true" showEffect="fade"
+                <p:dialog ref="details" header="Node Details" resizable="false" modal="true" showEffect="fade"
                           hideEffect="fade">
                     <h:outputText id="output" value="#{mindmapView.selectedNode.data}"/>
                 </p:dialog>

@@ -73,7 +73,7 @@
                     <p:divider />
                 </p:dataList>
 
-                <p:dialog header="Customer Info" widgetVar="customerDialog" modal="true" showEffect="blind"
+                <p:dialog header="Customer Info" ref="customerDialog" modal="true" showEffect="blind"
                           hideEffect="explode" resizable="false">
                     <p:outputPanel id="customerDetail">
                         <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty dtLazyView.selectedCustomer}">

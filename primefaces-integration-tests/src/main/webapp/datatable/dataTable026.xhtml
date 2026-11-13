@@ -17,7 +17,7 @@
                 td, th { white-space: nowrap; max-width: 120px; font-size: .75rem; }
             </style>
 
-            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable026.employees}" var="employee"
+            <p:dataTable id="datatable" ref="wgtTable" value="#{dataTable026.employees}" var="employee"
                          filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
 
                 <p:column headerText="ID lt" field="id" filterMatchMode="lt"

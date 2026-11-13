@@ -56,7 +56,7 @@ public class OrganigramView implements Serializable {
 ```
 
 ```xhtml
-<p:organigram id="organigram" widgetVar="organigram" value="#{organigramView.rootNode}" var="node" leafNodeConnectorHeight="#{organigramView.leafNodeConnectorHeight}"
+<p:organigram id="organigram" ref="organigram" value="#{organigramView.rootNode}" var="node" leafNodeConnectorHeight="#{organigramView.leafNodeConnectorHeight}"
     autoScrollToSelection="#{organigramView.autoScrollToSelection}" zoom="#{organigramView.zoom}" selection="#{organigramView.selection}" 
     style="#{organigramView.style}">
     <p:organigramNode>

@@ -27,7 +27,7 @@
                 <p:commandButton value="Clear MultiViewState" action="#{ttMultiViewStateView.clearMultiViewState}"
                                  update="@form" styleClass="mb-3" />
 
-                <p:treeTable widgetVar="treeTable" value="#{ttMultiViewStateView.root}" var="document"
+                <p:treeTable ref="treeTable" value="#{ttMultiViewStateView.root}" var="document"
                                 styleClass="p-fluid" multiViewState="true">
                     <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains"
                               sortBy="#{document.name}">

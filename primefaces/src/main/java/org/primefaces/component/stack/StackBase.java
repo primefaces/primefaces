@@ -25,11 +25,11 @@ package org.primefaces.component.stack;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.menu.AbstractMenu;
 
 @FacesComponentBase
-public abstract class StackBase extends AbstractMenu implements Widget {
+public abstract class StackBase extends AbstractMenu implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

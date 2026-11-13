@@ -197,7 +197,7 @@ copied from another test class.
    and `src/test/java/.../integrationtests`. If the component has no package yet, create
    all three (this is the common case for closing a coverage gap — see below).
 2. **Create the view** `src/main/webapp/<component>/<component><NNN>.xhtml`. Use a single
-   `<h:form id="form">`, give the component a stable `id` and `widgetVar`, and include
+   `<h:form id="form">`, give the component a stable `id` and `ref`, and include
    `p:messages`/`p:commandButton`s the test needs to drive/observe behavior. Copy an
    existing view in the package as a template (license header + namespaces matter).
 3. **Create the backing bean** (if the scenario needs server state)

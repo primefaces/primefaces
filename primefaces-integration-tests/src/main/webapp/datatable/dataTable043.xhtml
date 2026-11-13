@@ -13,7 +13,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001.progLanguages}" var="lang" paginator="true" rows="#{dataTable001.rows}"
+            <p:dataTable id="datatable" ref="wgtTable" value="#{dataTable001.progLanguages}" var="lang" paginator="true" rows="#{dataTable001.rows}"
                          filteredValue="#{dataTable001.filteredProgLanguages}" 
                          filterEvent="enter"
                          globalFilterOnly="#{dataTable001.globalFilterOnly}"
@@ -22,7 +22,7 @@
                 <f:facet name="header">
                     <div class="p-d-flex p-ai-center p-jc-between">
                         <span>Composite Filter</span>
-                        <composite:dataTableFilter id="globalFilter" tableWidgetVar="wgtTable" />
+                        <composite:dataTableFilter id="globalFilter" tableRef="wgtTable" />
                     </div>
                 </f:facet>
 
@@ -35,7 +35,7 @@
                 <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
                     <h:outputText value="#{lang.name}"/>
                     <f:facet name="filter">
-                       <composite:dataTableFilter id="nameFilter" tableWidgetVar="wgtTable"/>
+                       <composite:dataTableFilter id="nameFilter" tableRef="wgtTable"/>
                     </f:facet>
                 </p:column>
 

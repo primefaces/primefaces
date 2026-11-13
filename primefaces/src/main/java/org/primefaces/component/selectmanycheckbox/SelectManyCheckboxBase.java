@@ -29,9 +29,9 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlSelectManyCheckbox;
@@ -55,7 +55,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
     @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element.")
 })
-public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware, StyleAware, PrimeSelect {
+public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements PrimeClientComponent, FlexAware, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

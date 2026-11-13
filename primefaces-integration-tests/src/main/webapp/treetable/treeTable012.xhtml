@@ -16,7 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:treeTable value="#{treeTable012.root}" var="document" id="treeTable" widgetVar="treeTable"
+            <p:treeTable value="#{treeTable012.root}" var="document" id="treeTable" ref="treeTable"
                          selectionMode="single" selection="#{treeTable012.selectedNode}" filterEvent="enter"
                          paginator="true" rows="2">
                 <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">

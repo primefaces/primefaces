@@ -26,7 +26,7 @@ export interface ImageCropperCfg extends PrimeFacesTypes.component.DeferredCompo
  * programmatically, use the Cropper JQuery plugin. For example:
  *
  * ```javascript
- * PF("myImageCropperWidget").image.cropper("rotate", 90);
+ * PF("myImageCropper").image.cropper("rotate", 90);
  * ```
  */
 export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {

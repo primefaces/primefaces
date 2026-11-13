@@ -9,7 +9,7 @@ dialog component or overlaypanel component used with a simple client side api, _
 ```xhtml
 <h:form>
     <p:commandButton type="button" onclick="PF('cp').show(this)" />
-    <p:confirmPopup message="Are you sure about destroying the world?" header="Initiating destroy process" severity="alert" widgetVar="cp">
+    <p:confirmPopup message="Are you sure about destroying the world?" header="Initiating destroy process" severity="alert" ref="cp">
         <p:commandButton value="Yes Sure" action="#{buttonBean.destroyWorld}" update="messages" oncomplete="PF('cp').hide()"/>
         <p:commandButton value="Not Yet" onclick="PF('cp').hide();" type="button" />
     </p:confirmPopup>
@@ -20,7 +20,7 @@ Message can be defined in two ways, either via message option or message facet. 
 useful if you need to place custom content instead of simple text.
 
 ```xhtml
-<p:confirmPopup widgetVar="cp" header="Confirm">
+<p:confirmPopup ref="cp" header="Confirm">
     <f:facet name="message">
         <h:outputText value="Are you sure?" />
     </f:facet>

@@ -37,12 +37,12 @@ public class TimelineListener implements SystemEventListener {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Timeline timeline = (Timeline) cse.getSource();
-        String widgetVar = timeline.resolveWidgetVar(context);
+        String ref = timeline.resolveRef(context);
 
         boolean alreadyRegistred = false;
         for (PhaseListener listener : context.getViewRoot().getPhaseListeners()) {
             if (listener instanceof DefaultTimelineUpdater updater
-                    && updater.getWidgetVar().equals(widgetVar)) {
+                    && updater.getRef().equals(ref)) {
                 alreadyRegistred = true;
                 break;
             }
@@ -50,7 +50,7 @@ public class TimelineListener implements SystemEventListener {
 
         if (!alreadyRegistred) {
             DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater(
-                    timeline.getClientId(context), widgetVar);
+                    timeline.getClientId(context), ref);
             context.getViewRoot().addPhaseListener(timelineUpdater);
         }
     }

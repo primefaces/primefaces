@@ -16,7 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:dataTable id="datatable" widgetVar="dtComponent" value="#{dataTable057.lazyDataModel}" var="lang"
+            <p:dataTable id="datatable" ref="dtComponent" value="#{dataTable057.lazyDataModel}" var="lang"
                          lazy="true" scrollable="true" liveScroll="true" scrollRows="5" scrollHeight="150"
                          draggableColumns="true">
 
@@ -28,7 +28,7 @@
 
             </p:dataTable>
 
-            <p:dataTable id="datatableDynamic" widgetVar="dtDynamicComponent" value="#{dataTable057.dynamicLazyDataModel}" var="lang"
+            <p:dataTable id="datatableDynamic" ref="dtDynamicComponent" value="#{dataTable057.dynamicLazyDataModel}" var="lang"
                          lazy="true" scrollable="true" liveScroll="true" scrollRows="5" scrollHeight="150"
                          draggableColumns="true">
 

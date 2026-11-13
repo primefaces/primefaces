@@ -102,7 +102,7 @@
             <h:form id="dropZone" enctype="multipart/form-data">
                 <div class="p-fluid">
                     <div class="field">
-                        <p:inputTextarea id="customDropZone" widgetVar="textarea"
+                        <p:inputTextarea id="customDropZone" ref="textarea"
                                          rows="5" value="#{fileUploadView.dropZoneText}"/>
                         <small>
                             Drop on the text area to upload, or
@@ -111,7 +111,7 @@
                     </div>
                 </div>
 
-                <p:fileUpload id="upload" widgetVar="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
+                <p:fileUpload id="upload" ref="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
                               mode="advanced" auto="true"
                               dropZone="customDropZone"
                               update="@form"
@@ -168,7 +168,7 @@
 
                 <p:outputPanel id="tooltipsPanel">
                     <p:tooltip id="uploaderChooseFileBeforeUploadToolTip"
-                               widgetVar="chooseWV" position="top"
+                               ref="chooseWV" position="top"
                                for="@(#tooltips\:uploader1 > .p-fileupload-buttonbar > .p-fileupload-choose)"
                                value="Choose button tooltip"/>
 

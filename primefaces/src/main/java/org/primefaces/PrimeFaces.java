@@ -24,7 +24,7 @@
 package org.primefaces;
 
 import org.primefaces.component.api.MultiViewStateAware;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -222,14 +222,14 @@ public class PrimeFaces {
     }
 
     /**
-     * Search for a {@code Widget} by the given widgetVar and invokes the callback.
+     * Search for a {@link PrimeClientComponent} by its name (ref) and invokes the callback.
      *
-     * @param widgetVar the widgetVar.
+     * @param ref the name of the client side component (ref).
      * @param callback the callback.
-     * @param <T> the type of the widget.
-     * @throws ComponentNotFoundException if the widget can't be found.
+     * @param <T> the type of the component.
+     * @throws ComponentNotFoundException if the component can't be found.
      */
-    public <T extends UIComponent & Widget> void resolveWidget(String widgetVar, Consumer<T> callback) {
+    public <T extends UIComponent & PrimeClientComponent> void resolveClientComponent(String ref, Consumer<T> callback) {
         FacesContext facesContext = getFacesContext();
 
         SearchExpressionContext context = SearchExpressionContext.createSearchExpressionContext(facesContext,
@@ -239,10 +239,21 @@ public class PrimeFaces {
 
         facesContext.getApplication().getSearchExpressionHandler().resolveComponent(
                 context,
-                "@widgetVar(" + widgetVar + ")",
+                "@ref(" + ref + ")",
                 (ctx, target) -> {
                     callback.accept((T) target);
                 });
+    }
+
+    /**
+     * @deprecated use {@link #resolveClientComponent(String, Consumer)} instead
+     * @param ref the name of the client side component (ref).
+     * @param callback the callback.
+     * @param <T> the type of the component.
+     */
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public <T extends UIComponent & PrimeClientComponent> void resolveWidget(String ref, Consumer<T> callback) {
+        resolveClientComponent(ref, callback);
     }
 
     /**

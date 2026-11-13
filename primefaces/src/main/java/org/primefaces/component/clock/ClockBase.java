@@ -25,12 +25,12 @@ package org.primefaces.component.clock;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIOutput;
 
 @FacesComponentBase
-public abstract class ClockBase extends UIOutput implements Widget {
+public abstract class ClockBase extends UIOutput implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

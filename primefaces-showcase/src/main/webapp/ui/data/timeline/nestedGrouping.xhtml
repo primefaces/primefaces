@@ -51,10 +51,10 @@
 
                 <p:timeline id="timeline" value="#{nestedGroupingTimelineView.model}" var="order" varGroup="truck"
                             editable="true" eventMargin="0" eventMarginAxis="0" stackEvents="false"
-                            orientationAxis="top" widgetVar="timelineWdgt">
+                            orientationAxis="top" ref="timeline">
                     <p:ajax event="changed" update="@none" listener="#{nestedGroupingTimelineView.onChange}"/>
                     <p:ajax event="delete" update="@none" listener="#{nestedGroupingTimelineView.onDelete}"/>
-                    <p:ajax event="add" update="@none" onstart="PF('timelineWdgt').cancelAdd()"/>
+                    <p:ajax event="add" update="@none" onstart="PF('timeline').cancelAdd()"/>
 
                     <f:facet name="group">
                         <h:graphicImage library="demo" name="images/timeline/truck.png" style="vertical-align:middle;"
@@ -68,7 +68,7 @@
                 </p:timeline>
 
                 <!-- Dialog with overlapped timeline events -->
-                <p:dialog id="overlapEventsDlg" header="Overlapped Orders" widgetVar="overlapEventsWdgt"
+                <p:dialog id="overlapEventsDlg" header="Overlapped Orders" ref="overlapEvents"
                           showEffect="clip" hideEffect="clip">
                     <h:panelGroup id="overlappedOrdersInner" layout="block" style="padding:10px;">
                         <strong>
@@ -89,8 +89,8 @@
                         <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
                             <p:commandButton value="Merge" process="overlapEventsDlg" update="@none"
                                              action="#{nestedGroupingTimelineView.merge}"
-                                             oncomplete="PF('overlapEventsWdgt').hide()"/>
-                            <p:commandButton type="button" value="Close" onclick="PF('overlapEventsWdgt').hide()"/>
+                                             oncomplete="PF('overlapEvents').hide()"/>
+                            <p:commandButton type="button" value="Close" onclick="PF('overlapEvents').hide()"/>
                         </h:panelGroup>
                     </f:facet>
                 </p:dialog>

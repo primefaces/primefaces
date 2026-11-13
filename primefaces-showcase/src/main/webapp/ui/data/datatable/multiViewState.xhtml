@@ -39,7 +39,7 @@
             <div class="card">
                 <h5>Basic</h5>
                 <p:dataTable id="tableStateDT" var="customer" value="#{dtMultiViewStateView.customers}"
-                             widgetVar="customersTable" multiViewState="true" rows="10" paginator="true"
+                             ref="customersTable" multiViewState="true" rows="10" paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15" selectionMode="single"
                              selection="#{dtMultiViewStateView.selectedCustomer}" rowKey="#{customer.id}"
@@ -129,7 +129,7 @@
                 </p:dataTable>
             </div>
 
-            <p:dialog header="Customer Info" widgetVar="customerDialog" modal="true" showEffect="fade" hideEffect="fade"
+            <p:dialog header="Customer Info" ref="customerDialog" modal="true" showEffect="fade" hideEffect="fade"
                       resizable="false">
                 <p:outputPanel id="customerDetail">
                     <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty dtMultiViewStateView.selectedCustomer}">

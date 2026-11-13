@@ -252,7 +252,7 @@
                     </div>
                 </p:panel>
 
-                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule" styleClass="mt-6"
+                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" ref="myschedule" styleClass="mt-6"
                             view="#{scheduleJava8View.view}"
                             locale="#{scheduleJava8View.locale}" timeZone="#{scheduleJava8View.timeZone}"
                             clientTimeZone="#{scheduleJava8View.clientTimeZone}"
@@ -292,7 +292,7 @@
 
                 </p:schedule>
 
-                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
+                <p:dialog ref="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
                     <h:panelGroup id="eventDetails" layout="block" styleClass="formgrid grid p-fluid">
                         <div class="field col-12">
                             <p:outputLabel for="title" value="Titles" styleClass="font-bold"/>

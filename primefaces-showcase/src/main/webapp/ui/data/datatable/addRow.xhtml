@@ -22,7 +22,7 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>
 
-                <p:dataTable id="products1" widgetVar="products1" var="product" value="#{dtAddRowView.products1}"
+                <p:dataTable id="products1" ref="products1" var="product" value="#{dtAddRowView.products1}"
                              editable="true">
                     <f:facet name="header">
                         Row Editing with add functionality

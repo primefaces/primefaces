@@ -26,12 +26,12 @@ package org.primefaces.component.poll;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
-public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
+public abstract class PollBase extends UIComponentBase implements AjaxSource, PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

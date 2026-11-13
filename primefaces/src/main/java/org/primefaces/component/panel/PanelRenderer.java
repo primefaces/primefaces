@@ -110,7 +110,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
     protected void encodeMarkup(FacesContext context, Panel component, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         boolean collapsed = component.isCollapsed();
         boolean visible = component.isVisible();
 
@@ -130,7 +130,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        writer.writeAttribute(HTML.REF, widgetVar, null);
+        writer.writeAttribute(HTML.REF, ref, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
 
         boolean isRenderHeader = shouldRenderHeader(context, component);

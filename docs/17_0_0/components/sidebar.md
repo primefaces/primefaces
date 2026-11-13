@@ -7,7 +7,7 @@ Sidebar is used a container to other components and display is toggle using the 
 methods of the component.
 
 ```xhtml
-<p:sidebar widgetVar="sb">
+<p:sidebar ref="sb">
     <h1>Sidebar</h1>
     <p:commandButton value="Cancel" onclick="PF('sb').hide()"/>
 </p:sidebar>
@@ -19,7 +19,7 @@ Four positions are available to display the sidebar at the edges of the screen. 
 _right_ , _top_ and _bottom_.
 
 ```xhtml
-<p:sidebar widgetVar="sb" position="top">
+<p:sidebar ref="sb" position="top">
     <h1>Sidebar</h1>
     <p:commandButton value="Cancel" onclick="PF('sb').hide()"/>
 </p:sidebar>
@@ -30,7 +30,7 @@ Instead of aligning the sidebar to an edge of the screen, enable fullScreen prop
 the whole page.
 
 ```xhtml
-<p:sidebar widgetVar="sb" fullScreen="true">
+<p:sidebar ref="sb" fullScreen="true">
     <h1>Sidebar</h1>
     <p:commandButton value="Cancel" onclick="PF('sb').hide()"/>
 </p:sidebar>
@@ -42,7 +42,7 @@ content specify baseZIndex property. In example below, initial zIndex of the sid
 1500 and will be incremented after each display.
 
 ```xhtml
-<p:sidebar widgetVar="sb" baseZIndex="500">
+<p:sidebar ref="sb" baseZIndex="500">
     <h1>Sidebar</h1>
     <p:commandButton value="Cancel" onclick="PF('sb').hide()"/>
 </p:sidebar>

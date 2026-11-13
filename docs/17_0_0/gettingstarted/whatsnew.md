@@ -18,6 +18,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
     * The style classes of the components use the prefix `p-` instead of the jQuery UI prefix `ui-` (e.g. `ui-widget` -> `p-component`, `ui-state-active` -> `p-state-active`, `ui-datatable` -> `p-datatable`), only the Grid CSS (`ui-g`, `ui-grid`, ...) keeps its names, see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=style-classes).
 * Client side components
     * The client side API is `PrimeFaces.component` (e.g. `PrimeFaces.component.DataTable`) instead of `PrimeFaces.widget`, the instances are in `PrimeFaces.components`; the old names are deprecated aliases, see [Client Side Components](/core/components.md).
+    * The name of the client side component is set with the new attribute `ref` (e.g. `<p:dialog ref="dlg">`), `widgetVar` is deprecated.
 * jQuery UI removed
     * PrimeFaces does not ship jQuery UI and jQuery UI Touch Punch anymore. Drag and drop, sorting and resizing are PrimeFaces' own implementation based on pointer events (mouse, pen and touch): `PrimeFaces.interactions`; positioning and effects are `PrimeFaces.utils.position` and `PrimeFaces.effects` (Web Animations API), see [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../migrationguide/17_0_0?id=jquery-ui).
     * The resource `jquery/jquery-plugins.js` was removed, its remaining jQuery extensions are part of `core.js`.

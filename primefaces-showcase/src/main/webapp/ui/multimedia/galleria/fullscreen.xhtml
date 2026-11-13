@@ -23,7 +23,7 @@
             
             <div class="card">
                 <h5>With Thumbnails</h5>
-                <p:galleria widgetVar="galleria1" value="#{galleriaView.photos}" var="photo" numVisible="9" responsiveOptions="#{galleriaView.responsiveOptions3}"
+                <p:galleria ref="galleria1" value="#{galleriaView.photos}" var="photo" numVisible="9" responsiveOptions="#{galleriaView.responsiveOptions3}"
                             circular="true" fullScreen="true" showItemNavigators="true" style="max-width: 50%">
                     <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                     <f:facet name="thumbnail">
@@ -36,7 +36,7 @@
 
             <div class="card">
                 <h5>Without Thumbnails</h5>
-                <p:galleria widgetVar="galleria2" value="#{galleriaView.photos}" var="photo" numVisible="7" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                <p:galleria ref="galleria2" value="#{galleriaView.photos}" var="photo" numVisible="7" responsiveOptions="#{galleriaView.responsiveOptions1}"
                             circular="true" fullScreen="true" showItemNavigators="true" showThumbnails="false" style="max-width: 850px">
                     <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                 </p:galleria>
@@ -46,7 +46,7 @@
 
             <div class="card">
                 <h5>Custom Content</h5>
-                <p:galleria id="custom" widgetVar="galleria3" value="#{galleriaView.photos}" var="photo" activeIndex="#{galleriaView.activeIndex}" numVisible="7" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                <p:galleria id="custom" ref="galleria3" value="#{galleriaView.photos}" var="photo" activeIndex="#{galleriaView.activeIndex}" numVisible="7" responsiveOptions="#{galleriaView.responsiveOptions1}"
                             circular="true" fullScreen="true" showItemNavigators="true" showThumbnails="false" style="max-width: 850px">
                     <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                 </p:galleria>

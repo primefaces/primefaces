@@ -56,17 +56,17 @@
                             start="#{editServerTimelineView.start}"
                             end="#{editServerTimelineView.end}"
                             editable="true" editableTime="#{editServerTimelineView.editableTime}"
-                            editableOverrideItems="true" minHeight="200" widgetVar="timelineWdgt">
+                            editableOverrideItems="true" minHeight="200" ref="timeline">
                     <p:ajax event="changed" update="@none" listener="#{editServerTimelineView.onChange}"/>
                     <p:ajax event="edit" update="detailsBookingInner"
                             listener="#{editServerTimelineView.onEdit}"
-                            oncomplete="PF('detailsBookingWdgt').show()"/>
+                            oncomplete="PF('detailsBooking').show()"/>
                     <p:ajax event="add" update="detailsBookingInner"
                             listener="#{editServerTimelineView.onAdd}"
-                            oncomplete="PF('detailsBookingWdgt').show()"/>
+                            oncomplete="PF('detailsBooking').show()"/>
                     <p:ajax event="delete" update="deleteBookingInner"
                             listener="#{editServerTimelineView.onDelete}"
-                            onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteBookingWdgt').show()"/>
+                            onstart="PF('timeline').cancelDelete()" oncomplete="PF('deleteBooking').show()"/>
 
                     <f:facet name="loading">
                          <h1>Loading please wait...</h1>
@@ -83,7 +83,7 @@
                                  action="#{editServerTimelineView.toggleEditableTime}"/>
 
                 <!-- Booking details dialog -->
-                <p:dialog id="detailsBookingDlg" header="Booking Details" widgetVar="detailsBookingWdgt"
+                <p:dialog id="detailsBookingDlg" header="Booking Details" ref="detailsBooking"
                           showEffect="clip" hideEffect="clip">
                     <h:panelGroup id="detailsBookingInner" layout="block">
                         <div class="formgrid grid p-fluid">
@@ -133,14 +133,14 @@
                         <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
                             <p:commandButton value="Save" process="detailsBookingDlg" update="@none"
                                              action="#{editServerTimelineView.saveDetails}"
-                                             oncomplete="if(!args.validationFailed){PF('detailsBookingWdgt').hide();}"/>
-                            <p:commandButton type="button" value="Close" onclick="PF('detailsBookingWdgt').hide()"/>
+                                             oncomplete="if(!args.validationFailed){PF('detailsBooking').hide();}"/>
+                            <p:commandButton type="button" value="Close" onclick="PF('detailsBooking').hide()"/>
                         </h:panelGroup>
                     </f:facet>
                 </p:dialog>
 
                 <!-- Booking delete dialog -->
-                <p:dialog id="deleteBookingDlg" header="Booking Details" widgetVar="deleteBookingWdgt"
+                <p:dialog id="deleteBookingDlg" header="Booking Details" ref="deleteBooking"
                           showEffect="clip" hideEffect="clip" dynamic="true">
                     <h:panelGroup id="deleteBookingInner" layout="block" style="margin:10px;">
                         <h:outputText value="#{editServerTimelineView.deleteMessage}"/>
@@ -150,8 +150,8 @@
                         <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
                             <p:commandButton value="Delete" process="deleteBookingDlg" update="@none"
                                              action="#{editServerTimelineView.delete}"
-                                             oncomplete="PF('deleteBookingWdgt').hide()"/>
-                            <p:commandButton type="button" value="Close" onclick="PF('deleteBookingWdgt').hide()"/>
+                                             oncomplete="PF('deleteBooking').hide()"/>
+                            <p:commandButton type="button" value="Close" onclick="PF('deleteBooking').hide()"/>
                         </h:panelGroup>
                     </f:facet>
                 </p:dialog>

@@ -160,7 +160,7 @@ public class EditServerTimelineView implements Serializable {
         // delete booking in DB...
 
         // if everything was ok, delete the TimelineEvent in the model and update UI with the same response.
-        // otherwise no server-side delete is necessary (see timelineWdgt.cancelDelete() in the p:ajax onstart).
+        // otherwise no server-side delete is necessary (see timeline.cancelDelete() in the p:ajax onstart).
         // we assume, delete in DB was successful
         TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":form:timeline");
         model.delete(event, timelineUpdater);

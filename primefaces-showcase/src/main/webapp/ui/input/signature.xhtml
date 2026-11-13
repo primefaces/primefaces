@@ -23,7 +23,7 @@
 
                 <p:outputPanel id="input">
                     <p:outputLabel for="@next" value="Signature:" style="font-size:1.5rem" styleClass="block mb-2" />
-                    <p:signature id="signature" widgetVar="sig" style="width:400px;height:200px" value="#{signatureView.value}" required="true" guideline="true"
+                    <p:signature id="signature" ref="sig" style="width:400px;height:200px" value="#{signatureView.value}" required="true" guideline="true"
                          textValue="#{signatureView.text}" base64Value="#{signatureView.base64}" />
                 </p:outputPanel>
 
@@ -34,7 +34,7 @@
 
                 <p:outputPanel id="output">
                     <h:outputText rendered="#{not empty signatureView.value}" style="font-size:1.5rem" styleClass="block mb-2" value="Your Signature" />
-                    <p:signature id="signed" widgetVar="signed" style="width:400px;height:200px;" value="#{signatureView.value}"
+                    <p:signature id="signed" ref="signed" style="width:400px;height:200px;" value="#{signatureView.value}"
                         textValue="#{signatureView.text}" readonly="true" rendered="#{not empty signatureView.value}" backgroundColor="#eaeaea"
                         color="#1769aa" />
                 </p:outputPanel>

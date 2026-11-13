@@ -24,7 +24,7 @@
                 <div class="grid">
                     <div class="col-12 md:col-6">
                         <p:outputPanel id="photoCamPnl">
-                            <p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}" update="photo" styleClass="max-w-full"/>
+                            <p:photoCam ref="pc" listener="#{photoCamView.oncapture}" update="photo" styleClass="max-w-full"/>
                             <select onchange="reload()" class="photoCamDevices mt-3">
                                 <option value="">Select device</option>
                                 <option value="user">"user" device</option>

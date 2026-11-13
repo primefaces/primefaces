@@ -113,7 +113,7 @@ public class Constants {
         public static final String OPTIONS = "dialog.options";
         public static final String PARAMS = "dialog.params";
         public static final String SOURCE_COMPONENT = "dialog.source.component";
-        public static final String SOURCE_WIDGET = "dialog.source.widget";
+        public static final String SOURCE_REF = "dialog.source.ref";
         public static final String CONVERSATION_PARAM = "pfdlgcid";
         public static final String INCLUDE_VIEW_PARAMS = "includeViewParams";
 

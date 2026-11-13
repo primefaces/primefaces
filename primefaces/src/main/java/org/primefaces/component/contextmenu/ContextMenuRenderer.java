@@ -24,7 +24,7 @@
 package org.primefaces.component.contextmenu;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -53,8 +53,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         if (target != null) {
             wb.attr("target", target.getClientId(context));
 
-            if (target instanceof Widget widget) {
-                wb.attr("targetWidgetVar", widget.resolveWidgetVar(context));
+            if (target instanceof PrimeClientComponent clientComponent) {
+                wb.attr("targetRef", clientComponent.resolveRef(context));
             }
         }
 

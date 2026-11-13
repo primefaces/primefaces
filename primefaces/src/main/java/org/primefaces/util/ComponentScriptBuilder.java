@@ -23,7 +23,7 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.renderkit.RendererUtils;
 
@@ -51,20 +51,20 @@ public class ComponentScriptBuilder {
     /**
      *
      * @param componentClass Name of the client side component class, e.g. {@code DataTable}
-     * @param widgetVar      Widget variable of the client side component
+     * @param ref            Name (ref) of the client side component
      * @param id             Client id of the component
      * @param endFunction    If the init script is wrapped by a method and if the endFunction parentheses should be rendered.
      * @throws IOException   if any IO exception occurs
      * @return               The current instance.
      */
-    protected ComponentScriptBuilder init(String componentClass, String widgetVar, String id, boolean endFunction) throws IOException {
+    protected ComponentScriptBuilder init(String componentClass, String ref, String id, boolean endFunction) throws IOException {
         this.endFunction = endFunction;
 
         ResponseWriter rw = context.getResponseWriter();
         rw.write("PrimeFaces.cw(\"");
         rw.write(componentClass);
         rw.write("\",\"");
-        rw.write(widgetVar);
+        rw.write(ref);
         rw.write("\",{id:\"");
         rw.write(id);
         rw.write("\"");
@@ -72,14 +72,14 @@ public class ComponentScriptBuilder {
         return this;
     }
 
-    public <T extends UIComponent & Widget> ComponentScriptBuilder init(String componentClass, T widget)
+    public <T extends UIComponent & PrimeClientComponent> ComponentScriptBuilder init(String componentClass, T component)
             throws IOException {
 
-        return init(componentClass, widget.resolveWidgetVar(context), widget.getClientId(context))
-                .renderLifecycleCallbacks(widget);
+        return init(componentClass, component.resolveRef(context), component.getClientId(context))
+                .renderLifecycleCallbacks(component);
     }
 
-    private ComponentScriptBuilder init(String componentClass, String widgetVar, String id) throws IOException {
+    private ComponentScriptBuilder init(String componentClass, String ref, String id) throws IOException {
         this.renderScriptBlock(id);
 
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
@@ -87,46 +87,46 @@ public class ComponentScriptBuilder {
         // or
         // we can also skip it when MOVE_SCRIPTS_TO_BOTTOM is enabled as the scripts are already executed when everything is ready
         if ((context.isPostback() && context.getPartialViewContext().isAjaxRequest()) || configuration.isMoveScriptsToBottom()) {
-            this.init(componentClass, widgetVar, id, false);
+            this.init(componentClass, ref, id, false);
         }
         else {
             context.getResponseWriter().write("$(function(){");
-            this.init(componentClass, widgetVar, id, true);
+            this.init(componentClass, ref, id, true);
         }
 
         return this;
     }
 
-    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithWindowLoad(String componentClass, T widget)
+    public <T extends UIComponent & PrimeClientComponent> ComponentScriptBuilder initWithWindowLoad(String componentClass, T component)
             throws IOException {
 
-        return initWithWindowLoad(componentClass, widget.resolveWidgetVar(context), widget.getClientId(context))
-                .renderLifecycleCallbacks(widget);
+        return initWithWindowLoad(componentClass, component.resolveRef(context), component.getClientId(context))
+                .renderLifecycleCallbacks(component);
     }
 
-    public ComponentScriptBuilder initWithWindowLoad(String componentClass, String widgetVar, String id)
+    public ComponentScriptBuilder initWithWindowLoad(String componentClass, String ref, String id)
             throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("$(window).on(\"load\",function(){");
-        this.init(componentClass, widgetVar, id, true);
+        this.init(componentClass, ref, id, true);
 
         return this;
     }
 
-    public <T extends UIComponent & Widget> ComponentScriptBuilder initWithComponentLoad(String componentClass, T widget, String targetId)
+    public <T extends UIComponent & PrimeClientComponent> ComponentScriptBuilder initWithComponentLoad(String componentClass, T component, String targetId)
             throws IOException {
 
-        return initWithComponentLoad(componentClass, widget.resolveWidgetVar(context), widget.getClientId(context), targetId)
-                .renderLifecycleCallbacks(widget);
+        return initWithComponentLoad(componentClass, component.resolveRef(context), component.getClientId(context), targetId)
+                .renderLifecycleCallbacks(component);
     }
 
-    public ComponentScriptBuilder initWithComponentLoad(String componentClass, String widgetVar, String id, String targetId)
+    public ComponentScriptBuilder initWithComponentLoad(String componentClass, String ref, String id, String targetId)
             throws IOException {
 
         this.renderScriptBlock(id);
         context.getResponseWriter().write("PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"" + targetId + "\")),function(){");
-        this.init(componentClass, widgetVar, id, true);
+        this.init(componentClass, ref, id, true);
 
         return this;
     }
@@ -141,22 +141,22 @@ public class ComponentScriptBuilder {
     protected ComponentScriptBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
         Map<String, Object> attributes = component.getAttributes();
 
-        Object preConstruct = getLifecycleCallback(attributes, Widget.CALLBACK_PRE_CONSTRUCT, "widgetPreConstruct");
+        Object preConstruct = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_PRE_CONSTRUCT, "widgetPreConstruct");
         if (preConstruct != null) {
             callback("preConstruct", "function(cfg)", preConstruct.toString());
         }
 
-        Object postConstruct = getLifecycleCallback(attributes, Widget.CALLBACK_POST_CONSTRUCT, "widgetPostConstruct");
+        Object postConstruct = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_POST_CONSTRUCT, "widgetPostConstruct");
         if (postConstruct != null) {
             callback("postConstruct", "function(component, widget)", postConstruct.toString());
         }
 
-        Object postRefresh = getLifecycleCallback(attributes, Widget.CALLBACK_POST_REFRESH, "widgetPostRefresh");
+        Object postRefresh = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_POST_REFRESH, "widgetPostRefresh");
         if (postRefresh != null) {
             callback("postRefresh", "function(component, widget)", postRefresh.toString());
         }
 
-        Object preDestroy = getLifecycleCallback(attributes, Widget.CALLBACK_PRE_DESTROY, "widgetPreDestroy");
+        Object preDestroy = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_PRE_DESTROY, "widgetPreDestroy");
         if (preDestroy != null) {
             callback("preDestroy", "function(component, widget)", preDestroy.toString());
         }

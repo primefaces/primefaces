@@ -81,7 +81,7 @@ public class GMapRenderer extends CoreRenderer<GMap> {
     }
 
     protected void encodeScript(FacesContext context, GMap component) throws IOException {
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         GMapInfoWindow infoWindow = component.getInfoWindow();
 
 
@@ -143,14 +143,14 @@ public class GMapRenderer extends CoreRenderer<GMap> {
             List<ClientBehavior> overlaySelectBehaviors = behaviorEvents.get("overlaySelect");
             if (overlaySelectBehaviors != null) {
                 for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
-                    ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+                    ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + ref + "').openWindow(data)");
                 }
             }
 
             List<ClientBehavior> overlayDblSelectBehaviors = behaviorEvents.get("overlayDblSelect");
             if (overlayDblSelectBehaviors != null) {
                 for (ClientBehavior clientBehavior : overlayDblSelectBehaviors) {
-                    ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+                    ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + ref + "').openWindow(data)");
                 }
             }
         }

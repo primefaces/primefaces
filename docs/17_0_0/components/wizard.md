@@ -118,7 +118,7 @@ By default wizard displays right and left arrows to navigate between steps, if y
 with your own UI, set _showNavBar_ to false and use the provided the client side api.
 
 ```xhtml
-<p:wizard showNavBar="false" widgetVar="wiz">
+<p:wizard showNavBar="false" ref="wiz">
 ...
 </p:wizard>
 <p:outputPanel id="pnlNav">

@@ -26,15 +26,15 @@ package org.primefaces.component.tieredmenu;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.OverlayMenu;
 
 import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
-public abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMenu, StyleAware {
+public abstract class TieredMenuBase extends AbstractMenu implements PrimeClientComponent, OverlayMenu, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -39,7 +39,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "hide", event = AjaxBehaviorEvent.class, description = "Fires when overlay panel is hidden."),
     @FacesBehaviorEvent(name = "loadContent", event = AjaxBehaviorEvent.class, description = "Fires when overlay panel content is loaded.")
 })
-public abstract class OverlayPanelBase extends UIPanel implements Widget, StyleAware {
+public abstract class OverlayPanelBase extends UIPanel implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

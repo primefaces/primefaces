@@ -254,7 +254,7 @@ Filtering is triggered with keyup event and filter inputs can be styled using `f
 Following is a basic filtering datatable with these options demonstrated:
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}" widgetVar="carsTable">
+<p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}" ref="carsTable">
 
     <f:facet name="header">
         <h:outputText value="Search all fields:" />
@@ -299,7 +299,7 @@ In case you want to filter `LocalDateTime` or `Date` values, use the converter t
 component.
 
 ```xhtml
-<p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
+<p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" ref="carsTable" filteredValue="#{tableBean.filteredCars}">
 
 <p:column field="model" headerText="Model" footerText="contains" filterMatchMode="contains" />
 
@@ -1179,7 +1179,7 @@ When a new data needs to be added to the datatable, instead of updating the whol
 just call `addRow()` client side method and it will append the `tr` element only.
 
 ```xhtml
-<p:dataTable var="car" value="#{dtBasicView.cars}" widgetVar="dt">
+<p:dataTable var="car" value="#{dtBasicView.cars}" ref="dt">
     <p:column headerText="Id">
         <h:inputText value="#{car.id}" />
     </p:column>

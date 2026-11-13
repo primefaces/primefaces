@@ -19,12 +19,12 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:growl widgetVar="msgs" />
+                <p:growl ref="msgs" />
 
                 <div class="formgrid grid p-fluid">
                     <div class="field col-12 md:col-6">
                         <p:outputLabel for="name" value="Name"/>
-                        <p:inputText id="name" value="#{lifecycleView.text}" widgetVar="wgtName">
+                        <p:inputText id="name" value="#{lifecycleView.text}" ref="name">
                             <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Component Initialized'})"/>
                             <f:attribute name="clientPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
                             <f:attribute name="clientPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Refreshed'})"/>
@@ -34,7 +34,7 @@
                 </div>
 
                 <p:commandButton value="Submit" update="@form" icon="pi pi-check" styleClass="mr-2" />
-                <p:commandButton value="Destroy" icon="pi pi-times" onclick="PF('wgtName').destroy(); return false" styleClass="p-button-danger" />
+                <p:commandButton value="Destroy" icon="pi pi-times" onclick="PF('name').destroy(); return false" styleClass="p-button-danger" />
             </h:form>
         </div>
     </ui:define>

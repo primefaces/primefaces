@@ -259,11 +259,11 @@ PrimeFaces.validator['MyComplexValidator'] = {
 
         <h:panelGrid id="grid" columns="3" cellpadding="5">
             <p:outputLabel for="@next" value="Name required"/>
-            <p:selectBooleanCheckbox id="nameRequired" widgetVar="nameRequired" value="#{complexValidationView.nameRequired}"/>
+            <p:selectBooleanCheckbox id="nameRequired" ref="nameRequired" value="#{complexValidationView.nameRequired}"/>
             <p:message for="@previous"/>
 
             <p:outputLabel for="@next" value="Name"/>
-            <p:inputText id="name" widgetVar="name" value="#{complexValidationView.name}" label="Name"/>
+            <p:inputText id="name" ref="name" value="#{complexValidationView.name}" label="Name"/>
             <p:message for="@previous"/>
 
             <p:outputLabel for="@next" value="Accept Terms And Conditions"/>

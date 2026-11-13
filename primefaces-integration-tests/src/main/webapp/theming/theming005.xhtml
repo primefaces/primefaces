@@ -67,9 +67,9 @@
 
             <!-- blockUI without content: light mask and default mask, both with the spinner -->
             <p:panel id="lightTarget" header="Light">Content</p:panel>
-            <p:blockUI id="blockLight" widgetVar="blockLight" block="lightTarget" styleClass="p-blockui-light" />
+            <p:blockUI id="blockLight" ref="blockLight" block="lightTarget" styleClass="p-blockui-light" />
             <p:panel id="defaultTarget" header="Default">Content</p:panel>
-            <p:blockUI id="blockDefault" widgetVar="blockDefault" block="defaultTarget" />
+            <p:blockUI id="blockDefault" ref="blockDefault" block="defaultTarget" />
         </h:form>
     </h:body>
 </f:view>

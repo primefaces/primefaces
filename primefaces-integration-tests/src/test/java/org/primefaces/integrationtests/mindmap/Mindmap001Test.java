@@ -124,7 +124,7 @@ class Mindmap001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals(0, cfg.getInt("effectSpeed"));
         assertEquals("Root", cfg.getJSONObject("model").getString("label"));
         assertEquals(4, cfg.getJSONObject("model").getJSONArray("children").length());

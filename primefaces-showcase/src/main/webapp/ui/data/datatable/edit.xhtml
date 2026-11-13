@@ -86,7 +86,7 @@
             <div class="card">
                 <h5>Cell Editing with Click and RightClick</h5>
                 <p:dataTable id="products2" var="product" value="#{dtEditView.products2}" editable="true"
-                             editMode="cell" widgetVar="cellProducts">
+                             editMode="cell" ref="cellProducts">
 
                     <p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}" update=":form:msgs"/>
 
@@ -144,7 +144,7 @@
             <div class="card">
                 <h5>Cell Editing with Double Click Event (dblclick)</h5>
                 <p:dataTable id="products3" var="product" value="#{dtEditView.products3}" editable="true" editMode="cell"
-                             widgetVar="cellCars2" editInitEvent="dblclick" style="margin-bottom:20px">
+                             ref="cellCars2" editInitEvent="dblclick" style="margin-bottom:20px">
 
                     <p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}" update=":form:msgs"/>
 
@@ -199,7 +199,7 @@
                 </p:dataTable>
             </div>
 
-            <p:contextMenu for="products2" widgetVar="cMenu">
+            <p:contextMenu for="products2" ref="cMenu">
                 <p:menuitem value="Edit Cell" icon="pi pi-search"
                             onclick="PF('cellProducts').showCellEditor();return false;"/>
                 <p:menuitem value="Hide Menu" icon="pi pi-times" onclick="PF('cMenu').hide()"/>

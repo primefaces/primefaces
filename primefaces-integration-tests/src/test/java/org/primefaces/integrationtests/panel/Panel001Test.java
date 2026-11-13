@@ -123,7 +123,7 @@ class Panel001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Panel Config = " + cfg);
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertTrue(cfg.getBoolean("closable"));
         assertTrue(cfg.getBoolean("toggleable"));
         assertEquals(500, cfg.getInt("closeSpeed"));

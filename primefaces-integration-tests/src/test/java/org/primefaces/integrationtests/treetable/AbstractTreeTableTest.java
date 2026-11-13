@@ -129,9 +129,9 @@ public class AbstractTreeTableTest extends AbstractTableTest {
         assertConfiguration(cfg, "treeTable");
     }
 
-    protected void assertConfiguration(JSONObject cfg, String widgetVar) {
+    protected void assertConfiguration(JSONObject cfg, String ref) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        assertEquals(widgetVar, cfg.getString("widgetVar"));
+        assertEquals(ref, cfg.getString("ref"));
     }
 }

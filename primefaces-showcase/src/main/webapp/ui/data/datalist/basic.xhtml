@@ -82,7 +82,7 @@
                 </p:dataList>
             </div>
 
-            <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="blind"
+            <p:dialog header="Product Info" ref="productDialog" modal="true" showEffect="blind"
                       hideEffect="explode" resizable="false">
                 <p:outputPanel id="productDetail" style="text-align:center;">
                     <p:column rendered="#{not empty dataListView.selectedProduct}">

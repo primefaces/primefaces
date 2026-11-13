@@ -6,7 +6,7 @@
         <!-- filter, sort, paginator, checkbox selection -->
         <div class="demo-card">
             <h2>DataTable</h2>
-            <p:dataTable id="customers" var="customer" value="#{themingDataTableView.customers}" widgetVar="dtCustomers"
+            <p:dataTable id="customers" var="customer" value="#{themingDataTableView.customers}" ref="dtCustomers"
                          filteredValue="#{themingDataTableView.filteredCustomers}" rowKey="#{customer.id}"
                          selection="#{themingDataTableView.selectedCustomers}" selectionMode="multiple" selectionRowMode="none"
                          rows="5" paginator="true" rowsPerPageTemplate="5,10,25"

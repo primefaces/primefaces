@@ -89,10 +89,10 @@ export interface DialogCfg extends PrimeFacesTypes.component.DynamicOverlayCompo
     sourceFrames: string[];
 
     /**
-     * Used by the dialog framework when opening dialogs within iframes. Name of the
-     * widget variable of the component that requested the dialog to open.
+     * Used by the dialog framework when opening dialogs within iframes. Name (ref) of the
+     * component that requested the dialog to open.
      */
-    sourceWidgetVar: string;
+    sourceRef: string;
 
     /**
      * When enabled, dialog is visible by default.

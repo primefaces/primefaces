@@ -28,14 +28,14 @@ import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeSelect;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlSelectOneRadio;
 
 @FacesComponentBase
-public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware, InputHolder, PrimeSelect {
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements PrimeClientComponent, FlexAware, InputHolder, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

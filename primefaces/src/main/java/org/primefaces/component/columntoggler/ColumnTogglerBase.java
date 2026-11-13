@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.ColumnToggleEvent;
 import org.primefaces.event.ToggleCloseEvent;
 
@@ -38,7 +38,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "toggle", event = ColumnToggleEvent.class, description = "Fires when the column toggler is toggled.", defaultEvent = true),
     @FacesBehaviorEvent(name = "close", event = ToggleCloseEvent.class, description = "Fires when the column toggler is closed."),
 })
-public abstract class ColumnTogglerBase extends UIComponentBase implements Widget {
+public abstract class ColumnTogglerBase extends UIComponentBase implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -24,7 +24,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:growl id="messages" widgetVar="messagesGrowl" showDetail="true"
+                <p:growl id="messages" ref="messagesGrowl" showDetail="true"
                          globalOnly="true"/>
 
                 <p:panel id="settings" header="Extender settings" styleClass="mb-6">
@@ -126,7 +126,7 @@
 
                     <!-- The actual schedule component -->
                     <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}"
-                                widgetVar="schedule" extender="window.ExtenderShowcase"
+                                ref="schedule" extender="window.ExtenderShowcase"
                                 timeZone="#{scheduleJava8View.serverTimeZone}" clientTimeZone="#{scheduleJava8View.serverTimeZone}"/>
                 </p:outputPanel>
             </h:form>

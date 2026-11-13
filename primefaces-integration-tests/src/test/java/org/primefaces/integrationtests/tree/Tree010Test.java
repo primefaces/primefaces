@@ -142,8 +142,8 @@ class Tree010Test extends AbstractTreeTest {
         assertCheckboxConfiguration(page.dynamicTree.getClientConfiguration(), "dynamicTreeComponent");
     }
 
-    private void assertCheckboxConfiguration(JSONObject cfg, String widgetVar) {
-        assertConfiguration(cfg, widgetVar);
+    private void assertCheckboxConfiguration(JSONObject cfg, String ref) {
+        assertConfiguration(cfg, ref);
         assertEquals("checkbox", cfg.getString("selectionMode"));
     }
 

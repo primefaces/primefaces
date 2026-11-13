@@ -133,7 +133,7 @@ class Dock001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("bottom", cfg.getString("position"));
         assertEquals("center", cfg.getString("halign"));
         assertFalse(cfg.getBoolean("animate"));

@@ -9,7 +9,7 @@
     <div class="layout-submenu">
 
         <ui:fragment rendered="#{not empty tagName}">
-            <p:sidebar widgetVar="currentTagLib" styleClass="taglib-sidebar" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+            <p:sidebar ref="currentTagLib" styleClass="taglib-sidebar" appendTo="@(body)" modal="true" position="right" blockScroll="true">
                 <h:form>
                     <h3>#{tagLibController.getTagName(tagName)} Tag Documentation</h3>
                     <mycomposites:tagDocumentation value="#{tagLibProvider.tags[tagName]}" />
@@ -18,7 +18,7 @@
         </ui:fragment>
 
         <ui:fragment rendered="#{not empty documentationLink}">
-            <p:sidebar widgetVar="currentDocumentation" style="width: 1200px; overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+            <p:sidebar ref="currentDocumentation" style="width: 1200px; overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
                 <div id="md-output">Loading...</div>
                 <script>
                     async function renderRemoteMarkdown(url, targetId) {

@@ -58,7 +58,7 @@ public class ResizableRenderer extends CoreRenderer<Resizable> {
         ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         if (target instanceof UIGraphic) {
-            wb.initWithComponentLoad("Resizable", component.resolveWidgetVar(context), clientId, targetId);
+            wb.initWithComponentLoad("Resizable", component.resolveRef(context), clientId, targetId);
         }
         else {
             wb.init("Resizable", component);

@@ -80,7 +80,7 @@ Example below displays a modal dialog when download begins and hides it on compl
 
 ```xhtml
 <h:form>
-    <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">
+    <p:dialog modal="true" ref="statusDialog" header="Status" draggable="false" closable="false">
         <p:graphicImage value="/design/ajaxloadingbar.gif" />
     </p:dialog>
     <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(showStatus, hideStatus)">

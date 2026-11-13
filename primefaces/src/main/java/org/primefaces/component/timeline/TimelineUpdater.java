@@ -62,7 +62,7 @@ public abstract class TimelineUpdater {
             return null;
         }
 
-        AtomicReference<String> widgetVar = new AtomicReference<>();
+        AtomicReference<String> ref = new AtomicReference<>();
 
         SearchExpressionContext sec = SearchExpressionContext.createSearchExpressionContext(context,
                 context.getViewRoot(), EnumSet.of(SearchExpressionHint.RESOLVE_SINGLE_COMPONENT), null);
@@ -71,10 +71,10 @@ public abstract class TimelineUpdater {
                 expression,
                 (ctx, target) -> {
                     Timeline timeline = (Timeline) target;
-                    widgetVar.set(timeline.resolveWidgetVar(context));
+                    ref.set(timeline.resolveRef(context));
                 });
 
-        return map.get(widgetVar.get());
+        return map.get(ref.get());
     }
 
     public abstract void add(TimelineEvent<?> event);

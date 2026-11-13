@@ -68,7 +68,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
     protected void encodeMarkup(FacesContext context, Fieldset component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         boolean toggleable = component.isToggleable();
         String title = component.getTitle();
 
@@ -90,7 +90,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        writer.writeAttribute(HTML.REF, widgetVar, null);
+        writer.writeAttribute(HTML.REF, ref, null);
 
         renderDynamicPassThruAttributes(context, component);
 

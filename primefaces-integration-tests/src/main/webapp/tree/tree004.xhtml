@@ -21,7 +21,7 @@
                 <p:ajax update="form:tree" />
             </p:selectOneRadio>
 
-            <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree"
+            <p:tree id="tree" value="#{tree004.root}" var="document" ref="tree"
                     selectionMode="#{tree004.selection}" selection="#{tree004.selectedNodes}"
                     filterBy="#{document}">
                 <p:ajax event="select" />

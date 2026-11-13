@@ -21,11 +21,11 @@
         <h:form>
             <div class="card">
                 <div class="py-2">
-                    <p:commandButton icon="pi pi-minus" onclick="PF('galleriaWidget').prev()" class="p-button-secondary" />
-                    <p:commandButton icon="pi pi-plus" onclick="PF('galleriaWidget').next()" class="p-button-secondary ml-2" />
+                    <p:commandButton icon="pi pi-minus" onclick="PF('galleria').prev()" class="p-button-secondary" />
+                    <p:commandButton icon="pi pi-plus" onclick="PF('galleria').next()" class="p-button-secondary ml-2" />
                 </div>
 
-                <p:galleria widgetVar="galleriaWidget" value="#{galleriaView.photos}" var="photo" activeIndex="2" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">
+                <p:galleria ref="galleria" value="#{galleriaView.photos}" var="photo" activeIndex="2" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">
                     <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                     <f:facet name="thumbnail">
                         <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block" />

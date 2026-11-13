@@ -20,7 +20,7 @@
     <ui:define name="implementation">
         <div class="product card">
             <h:form>
-                <p:dataScroller widgetVar="ds" value="#{dataScrollerView.products}" var="product" chunkSize="5">
+                <p:dataScroller ref="ds" value="#{dataScrollerView.products}" var="product" chunkSize="5">
                     <f:facet name="loading">
                         <div class="product">
                             <div class="product-list-item p-5">

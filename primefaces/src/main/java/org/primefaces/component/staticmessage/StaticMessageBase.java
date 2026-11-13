@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
@@ -38,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fired when the message gets closed.", defaultEvent = true)
 })
-public abstract class StaticMessageBase extends UIComponentBase implements Widget, ClientBehaviorHolder, StyleAware {
+public abstract class StaticMessageBase extends UIComponentBase implements PrimeClientComponent, ClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

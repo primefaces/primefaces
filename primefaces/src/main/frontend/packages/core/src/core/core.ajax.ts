@@ -726,7 +726,7 @@ export class AjaxRequest {
         }
         // default == @none
         var processIds = '@none';
-        // use defined process + resolved keywords (@widgetVar, PFS)?
+        // use defined process + resolved keywords (@ref, @widgetVar, PFS)?
         if (processArray.length > 0) {
             processIds = processArray.join(' ');
         }
@@ -1490,15 +1490,15 @@ export class AjaxResponse {
      */
     destroyDetachedComponents(): void {
         // destroy detached components
-        for (const widgetVar of core.detachedComponents) {
+        for (const ref of core.detachedComponents) {
             // Do not use PF() which logs an error when the component is missing
             // Since the component is detached, it may already be gone.
-            const component = core.components[widgetVar];
+            const component = core.components[ref];
             if (component && component.isDetached() === true) {
                 try {
                     component.destroy();
-                    delete core.components[widgetVar];
-                } catch (e) { core.warn("Error destroying component: " + widgetVar) }
+                    delete core.components[ref];
+                } catch (e) { core.warn("Error destroying component: " + ref) }
             }
         }
 

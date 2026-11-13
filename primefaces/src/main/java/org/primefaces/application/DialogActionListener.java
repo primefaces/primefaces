@@ -23,7 +23,7 @@
  */
 package org.primefaces.application;
 
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.util.Constants;
 
 import java.util.Map;
@@ -45,11 +45,11 @@ public class DialogActionListener implements ActionListener {
     public void processAction(ActionEvent event) throws AbortProcessingException {
         UIComponent source = event.getComponent();
         Map<Object, Object> attrs = event.getFacesContext().getAttributes();
-        if (source instanceof Widget widget) {
-            attrs.put(Constants.DialogFramework.SOURCE_WIDGET, widget.resolveWidgetVar());
+        if (source instanceof PrimeClientComponent clientComponent) {
+            attrs.put(Constants.DialogFramework.SOURCE_REF, clientComponent.resolveRef(event.getFacesContext()));
         }
 
-        attrs.put(Constants.DialogFramework.SOURCE_COMPONENT, source.getClientId());
+        attrs.put(Constants.DialogFramework.SOURCE_COMPONENT, source.getClientId(event.getFacesContext()));
 
         base.processAction(event);
     }

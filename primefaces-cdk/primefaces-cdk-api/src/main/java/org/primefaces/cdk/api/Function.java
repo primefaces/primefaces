@@ -34,11 +34,11 @@ import java.lang.annotation.Target;
  * <p>Example:</p>
  * <pre>{@code
  * @Function
- * public static String closestWidgetVar(UIComponent component) {
+ * public static String closestRef(UIComponent component) {
  *     // implementation
  * }
  *
- * // Usage in EL: #{p:closestWidgetVar(component)}
+ * // Usage in EL: #{p:closestRef(component)}
  * }</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)

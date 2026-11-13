@@ -176,7 +176,7 @@
                  <p:commandButton value="Open Dialog" type="button" icon="pi pi-external-link" onclick="PF('dlg').show()"/>
             </div>
 
-            <p:dialog header="Pick Color" widgetVar="dlg" minHeight="50" width="350" showEffect="fade" modal="true">
+            <p:dialog header="Pick Color" ref="dlg" minHeight="50" width="350" showEffect="fade" modal="true">
                 <div style="height: 300px">
                 <p:outputLabel for="@next" value="Pick Color:" />
                 <p:colorPicker id="dialogPicker" clearButton="true" closeButton="true" alpha="false" />

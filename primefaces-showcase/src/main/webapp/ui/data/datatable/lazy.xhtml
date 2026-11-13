@@ -49,7 +49,7 @@
                     </p:column>
                 </p:dataTable>
 
-                <p:dialog header="Customer Detail" widgetVar="customerDialog" modal="true" showEffect="fade"
+                <p:dialog header="Customer Detail" ref="customerDialog" modal="true" showEffect="fade"
                           hideEffect="fade" resizable="false">
                     <p:outputPanel id="customerDetail">
                         <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty dtLazyView.selectedCustomer}">

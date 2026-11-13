@@ -25,11 +25,11 @@ package org.primefaces.component.menu;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 @FacesComponentBase
-public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu, StyleAware {
+public abstract class MenuBase extends AbstractMenu implements PrimeClientComponent, OverlayMenu, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

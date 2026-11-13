@@ -132,10 +132,10 @@ export class DialogHandler {
             return sourceFrames;
         }();
 
-        const dialogWidgetVar = cfg.options.widgetVar || cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
+        const dialogRef = cfg.options.ref || cfg.options.widgetVar || 'pf_' + cfg.sourceComponentId.replace(/[:-]/g, '_') + '_dlg';
 
         const styleClass = cfg.options.styleClass || '';
-        const dialogDOM = $('<div id="' + dialogId + '" class="p-dialog p-component p-hidden-container p-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-p-ref="' + dialogWidgetVar + '"></div>');
+        const dialogDOM = $('<div id="' + dialogId + '" class="p-dialog p-component p-hidden-container p-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-p-ref="' + dialogRef + '"></div>');
         const box = $('<div class="p-dialog-box p-component-content"></div>').appendTo(dialogDOM);
         const titlebar = $('<div class="p-dialog-titlebar p-component-header"><span id="' + dialogId + '_title" class="p-dialog-title"></span></div>').appendTo(box);
 
@@ -187,12 +187,12 @@ export class DialogHandler {
             if (!$frame.data('initialized')) {
                 PrimeFaces.cw.call<
                     PrimeFacesTypes.PrimeFaces, ["DynamicDialog", string, PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.DynamicDialogCfg>], void
-                >(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
+                >(rootWindow.PrimeFaces, 'DynamicDialog', dialogRef, {
                     id: dialogId,
                     position: cfg.options.position || 'center',
                     sourceFrames: sourceFrames,
                     sourceComponentId: cfg.sourceComponentId,
-                    sourceWidgetVar: cfg.sourceWidgetVar,
+                    sourceRef: cfg.sourceRef,
                     onShow: function () {
                         if (cfg.options.onShow) {
                             const onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
@@ -233,7 +233,7 @@ export class DialogHandler {
                             $dialogComponent.jq.remove();
                         }
 
-                        rootWindow.PrimeFaces.components[dialogWidgetVar] = undefined as any;
+                        rootWindow.PrimeFaces.components[dialogRef] = undefined as any;
                     },
                     getModalTabbables: function () {
                         return $frame.contents().find(':tabbable');
@@ -258,7 +258,7 @@ export class DialogHandler {
                 });
             }
 
-            const dialogComponent = rootWindow.PF(dialogWidgetVar) as PrimeFacesTypes.Component<"Dialog"> | undefined;
+            const dialogComponent = rootWindow.PF(dialogRef) as PrimeFacesTypes.Component<"Dialog"> | undefined;
             const title = dialogComponent?.titlebar.children('span.p-dialog-title') ?? $();
             if (headerElement.length > 0) {
                 if (isCustomHeader) {
@@ -310,14 +310,14 @@ export class DialogHandler {
         let dialogReturnBehavior: PrimeFacesTypes.component.Behavior | undefined = undefined;
         let windowContext: Window | null | undefined = null;
 
-        const dlgComponent = rootWindow.PF(dlg.data('pRef')) as PrimeFacesTypes.Component<"Dialog"> | undefined;
+        const dlgComponent = rootWindow.PF(dlg.attr('data-p-ref')) as PrimeFacesTypes.Component<"Dialog"> | undefined;
         if (!dlgComponent) {
             // GitHub #2039 dialog may already be closed on slow internet
             PrimeFaces.error('Dialog component was not found to close.');
             return;
         }
 
-        const sourceWidgetVar = dlgComponent.cfg.sourceWidgetVar;
+        const sourceRef = dlgComponent.cfg.sourceRef;
         const sourceComponentId = dlgComponent.cfg.sourceComponentId;
 
         dlg.attr('data-queuedforremoval', "true");
@@ -339,8 +339,8 @@ export class DialogHandler {
             }
         }
 
-        if (sourceWidgetVar) {
-            const sourceComponent = windowContext?.PF(sourceWidgetVar);
+        if (sourceRef) {
+            const sourceComponent = windowContext?.PF(sourceRef);
             dialogReturnBehavior = sourceComponent?.cfg.behaviors?.['dialogReturn'];
         }
         else if (sourceComponentId) {

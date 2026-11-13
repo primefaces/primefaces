@@ -67,10 +67,4 @@ public interface PrimeComponent {
     List<UIComponent> getChildren();
 
     int getChildCount();
-
-    /* not needed yet - maybe a alternative name to widgetVar
-    @Property
-    String getRef();
-    void setRef(String ref);
-    */
 }

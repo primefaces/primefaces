@@ -134,7 +134,7 @@ class DragDrop001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("form:dropArea", cfg.getString("target"));
         assertEquals(".accepted", cfg.getString("accept"));
     }

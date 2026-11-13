@@ -15,7 +15,7 @@
             <h1>Dialog</h1>
             <p:commandButton id="btnDialog" value="Dialog" type="button" icon="pi pi-external-link" onclick="PF('dlg1').show()"/>
 
-            <p:dialog id="dialog" header="Header" widgetVar="dlg1" minHeight="40" width="500">
+            <p:dialog id="dialog" header="Header" ref="dlg1" minHeight="40" width="500">
                 <p:outputPanel id="dialogPanel">
                     <p:commandButton id="btnShow" value="Show" type="button"/>
                     <p:commandButton id="btnUpdate" value="Update" update="dialogPanel"/>

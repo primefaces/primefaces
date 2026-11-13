@@ -43,10 +43,10 @@ export class SearchExpressionFacade {
                         elements = elements.add($(element));
                     }
                 }
-                // @widget
-                else if (expression.indexOf("@widgetVar(") == 0) {
-                    var widgetVar = expression.substring("@widgetVar(".length, expression.length - 1);
-                    var component = core.components[widgetVar];
+                // @ref, @widgetVar (deprecated)
+                else if (expression.indexOf("@ref(") == 0 || expression.indexOf("@widgetVar(") == 0) {
+                    var ref = expression.substring(expression.indexOf("(") + 1, expression.length - 1);
+                    var component = core.components[ref];
 
                     if (component) {
                         const element = document.getElementById(component.getId());
@@ -54,7 +54,7 @@ export class SearchExpressionFacade {
                             elements = elements.add($(element));
                         }
                     } else {
-                        core.componentNotAvailable(widgetVar);
+                        core.componentNotAvailable(ref);
                     }
                 }
                 // PFS
@@ -101,10 +101,10 @@ export class SearchExpressionFacade {
                         ids.push(expression);
                     }
                 }
-                // @widget
-                else if (expression.indexOf("@widgetVar(") == 0) {
-                    var widgetVar = expression.substring(11, expression.length - 1),
-                    component = core.components[widgetVar];
+                // @ref, @widgetVar (deprecated)
+                else if (expression.indexOf("@ref(") == 0 || expression.indexOf("@widgetVar(") == 0) {
+                    var ref = expression.substring(expression.indexOf("(") + 1, expression.length - 1),
+                    component = core.components[ref];
 
                     if (component) {
                         if (!core.inArray(ids, component.id)) {
@@ -115,7 +115,7 @@ export class SearchExpressionFacade {
                             }
                         }
                     } else {
-                        core.componentNotAvailable(widgetVar);
+                        core.componentNotAvailable(ref);
                     }
                 }
                 // PFS

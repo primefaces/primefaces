@@ -64,7 +64,7 @@
                 <p:growl id="msgs" showDetail="true" />
 
                 <p:commandButton id="movieBtn" value="Find" type="button" icon="pi pi-search" />
-                <p:overlayPanel for="movieBtn" dynamic="true" style="width:600px" widgetVar="moviePicker">
+                <p:overlayPanel for="movieBtn" dynamic="true" style="width:600px" ref="moviePicker">
                     <p:dataTable var="movie" value="#{movieView.movieList}" rows="5" paginator="true" selectionMode="single"
                         selection="#{movieView.movie}" rowKey="#{movie.movie}">
                         <p:ajax event="rowSelect" listener="#{movieView.onRowSelect}" update=":form:msgs" oncomplete="PF('moviePicker').hide()"/>
@@ -111,7 +111,7 @@
                     </p:column>
                 </p:dataTable>
 
-                <p:overlayPanel widgetVar="productOP" dismissable="false" showCloseIcon="true" dynamic="true">
+                <p:overlayPanel ref="productOP" dismissable="false" showCloseIcon="true" dynamic="true">
                     <p:outputPanel id="productDetail" style="text-align:center;">
                         <p:column rendered="#{not empty dtSelectionView.selectedProduct}">
                             <div class="product">

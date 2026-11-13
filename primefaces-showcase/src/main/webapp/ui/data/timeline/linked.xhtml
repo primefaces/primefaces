@@ -9,27 +9,27 @@
         <script>
             //<![CDATA[
             function onrangechange1() {
-                var second = PF('timelineSecondWdgt');
+                var second = PF('timelineSecond');
                 if (second.jq.data("rangeFired")) {
                     second.jq.data("rangeFired", null);
                     return;
                 }
-                var first = PF('timelineFirstWdgt');
+                var first = PF('timelineFirst');
                 var range = first.getVisibleRange();
                 first.jq.data("rangeFired", true);
-                PF('timelineSecondWdgt').setVisibleRange(range.start, range.end);
+                PF('timelineSecond').setVisibleRange(range.start, range.end);
             }
 
             function onrangechange2() {
-                var first = PF('timelineFirstWdgt');
+                var first = PF('timelineFirst');
                 if (first.jq.data("rangeFired")) {
                     first.jq.data("rangeFired", null);
                     return;
                 }
-                var second = PF('timelineSecondWdgt');
+                var second = PF('timelineSecond');
                 var range = second.getVisibleRange();
                 second.jq.data("rangeFired", true);
-                PF('timelineFirstWdgt').setVisibleRange(range.start, range.end);
+                PF('timelineFirst').setVisibleRange(range.start, range.end);
             }
 
             //]]>
@@ -59,7 +59,7 @@
             <div class="card">
                 <h5 style="margin-top: 0">Events</h5>
                 <p:timeline id="timelineFirst" value="#{linkedTimelinesView.modelFirst}" var="task"
-                            height="250px" widgetVar="timelineFirstWdgt"
+                            height="250px" ref="timelineFirst"
                             start="#{linkedTimelinesView.start}" end="#{linkedTimelinesView.end}">
                     <p:ajax event="rangechange" process="@none" onstart="onrangechange1(); return false;"/>
                     <p:ajax event="select" listener="#{linkedTimelinesView.onSelect}"/>
@@ -77,7 +77,7 @@
             <div class="card">
                 <h5>Projects</h5>
                 <p:timeline id="timelineSecond" value="#{linkedTimelinesView.modelSecond}"
-                            height="150px" widgetVar="timelineSecondWdgt">
+                            height="150px" ref="timelineSecond">
                     <p:ajax event="rangechange" process="@none" onstart="onrangechange2(); return false;"/>
                 </p:timeline>
             </div>

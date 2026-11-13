@@ -30,7 +30,8 @@ provides more along with composite expression support.
 | --- | --- |
 @row(n) | nth row.
 @obs(event) | targeting a event. See [Event/Observer Pattern](/components/autoupdate.md)
-@widgetVar(name) | Component with given widgetVar.
+@ref(name) | Component with the given name of its client side component (`ref`).
+@widgetVar(name) | Deprecated, use `@ref(name)` instead.
 @(selector) | PFS / PrimeFaces Selectors.
 
 Consider the following case where ids are used for referencing;

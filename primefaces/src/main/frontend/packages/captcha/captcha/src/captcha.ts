@@ -69,7 +69,7 @@ export class Captcha<Cfg extends CaptchaCfg = CaptchaCfg> extends PrimeFaces.com
      * @returns Name for the global callback.
      */
     private getInitCallbackName(): string {
-        return this.cfg.widgetVar + '_initCallback';
+        return this.cfg.ref + '_initCallback';
     }
 
     /**

@@ -132,7 +132,7 @@ class Chart001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("bar", cfg.getJSONObject("config").getString("type"));
         assertFalse(cfg.getJSONObject("config").getJSONObject("options").getBoolean("animation"));
         assertTrue(cfg.getJSONObject("behaviors").has("itemSelect"));

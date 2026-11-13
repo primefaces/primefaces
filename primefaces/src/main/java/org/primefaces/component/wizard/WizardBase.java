@@ -27,8 +27,8 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -38,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "next", event = AjaxBehaviorEvent.class, description = "When \"next\" is triggered."),
     @FacesBehaviorEvent(name = "back", event = AjaxBehaviorEvent.class, description = "When \"back\" is triggered.")
 })
-public abstract class WizardBase extends UIComponentBase implements Widget, StyleAware {
+public abstract class WizardBase extends UIComponentBase implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

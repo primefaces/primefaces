@@ -4,13 +4,13 @@
       xmlns:p="primefaces">
 
 <cc:interface>
-    <cc:attribute name="tableWidgetVar" required="true" type="java.lang.String" />
+    <cc:attribute name="tableRef" required="true" type="java.lang.String" />
     <cc:editableValueHolder name="filter" />
 </cc:interface>
 
 <cc:implementation>
     <p:inputText id="filter" type="search"
-                 onchange="PF('#{cc.attrs.tableWidgetVar}').filter()"
+                 onchange="PF('#{cc.attrs.tableRef}').filter()"
                  style="width:15rem; border-color: red;"
                  placeholder="Composite filter..."/>
 </cc:implementation>

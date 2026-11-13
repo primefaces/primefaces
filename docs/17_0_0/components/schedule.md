@@ -64,7 +64,7 @@ api and the _update_ method.
 Whenever you call update, schedule will query its server side ScheduleModel instance to check for
 updates, transport method used to load events dynamically is JSON, as a result this approach is
 much more effective then updating with regular PPR. An example of this is demonstrated at editable
-schedule example, save button is calling PF(' _widgetvar').update()_ at oncomplete event handler.
+schedule example, save button is calling _PF('ref').update()_ at oncomplete event handler.
 
 ## TimeZone
 By default, schedule takes care of timezone differences by calculating the client's browser timezone
@@ -77,11 +77,11 @@ Let’s put it altogether to come up a fully editable and complex schedule.
 
 ```xhtml
 <h:form>
-    <p:schedule value="#{bean.eventModel}" editable="true" widgetVar="myschedule">
+    <p:schedule value="#{bean.eventModel}" editable="true" ref="myschedule">
         <p:ajax event="dateSelect" listener="#{bean.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />
         <p:ajax event="eventSelect" listener="#{bean.onEventSelect}" />
     </p:schedule>
-    <p:dialog widgetVar="eventDialog" header="Event Details">
+    <p:dialog ref="eventDialog" header="Event Details">
         <h:panelGrid id="eventDetails" columns="2">
             <p:outputLabel for="title" value="Titles:" />
             <p:inputText id="title" value="#{bean.event.title}" required="true" />

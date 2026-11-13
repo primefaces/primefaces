@@ -15,24 +15,24 @@
             <p:messages id="msgs"/>
             <h:outputText id="output" value="-"/>
 
-            <p:panel id="panel" widgetVar="panel" header="Panel" toggleable="true">
+            <p:panel id="panel" ref="panel" header="Panel" toggleable="true">
                 <p:callback event="toggle" execute="document.getElementById('form:output').textContent = source + '|' + event + '|' + JSON.stringify(params);"/>
                 Content
             </p:panel>
 
-            <p:panel id="chained" widgetVar="chained" header="Chained" toggleable="true">
+            <p:panel id="chained" ref="chained" header="Chained" toggleable="true">
                 <p:callback event="toggle" execute="document.getElementById('form:output').textContent = 'chained';"/>
                 <p:ajax event="toggle" listener="#{callback001.onAjax}" update="msgs"/>
                 Content
             </p:panel>
 
-            <p:panel id="stopped" widgetVar="stopped" header="Stopped" toggleable="true">
+            <p:panel id="stopped" ref="stopped" header="Stopped" toggleable="true">
                 <p:callback event="toggle" execute="document.getElementById('form:output').textContent = 'stopped'; return false;"/>
                 <p:ajax event="toggle" listener="#{callback001.onAjax}" update="msgs"/>
                 Content
             </p:panel>
 
-            <p:panel id="disabled" widgetVar="disabled" header="Disabled" toggleable="true">
+            <p:panel id="disabled" ref="disabled" header="Disabled" toggleable="true">
                 <p:callback event="toggle" disabled="true" execute="document.getElementById('form:output').textContent = 'disabled';"/>
                 Content
             </p:panel>

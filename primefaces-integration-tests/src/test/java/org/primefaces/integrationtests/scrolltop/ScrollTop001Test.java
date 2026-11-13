@@ -65,7 +65,7 @@ class ScrollTop001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals("window", cfg.getString("target"));
         assertEquals(400, cfg.getInt("threshold"));
     }

@@ -13,7 +13,7 @@ Following example shows the exception in a dialog on the same page:
 
 ```xhtml
 <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occurred!" widgetVar="exceptionDialog" height="500px">
+<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occurred!" ref="exceptionDialog" height="500px">
     Message: #{pfExceptionHandler.message} <br/>
     StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
     <p:button onclick="document.location.href = document.location.href;" value="Reload!"/>

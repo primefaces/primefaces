@@ -58,7 +58,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
     protected void encodeMarkup(FacesContext context, Inplace component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        String widgetVar = component.resolveWidgetVar(context);
+        String ref = component.resolveRef(context);
         String userStyle = component.getStyle();
         boolean disabled = component.isDisabled();
         boolean validationFailed = context.isValidationFailed() && !component.isValid();
@@ -79,7 +79,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
             writer.writeAttribute("style", userStyle, "id");
         }
 
-        writer.writeAttribute(HTML.REF, widgetVar, null);
+        writer.writeAttribute(HTML.REF, ref, null);
 
         //output
         String outputStyleClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;

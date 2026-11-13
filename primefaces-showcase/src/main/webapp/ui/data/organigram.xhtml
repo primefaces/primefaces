@@ -44,7 +44,7 @@
                 <p:growl id="growl"/>
 
                 <p:organigram id="organigram"
-                              widgetVar="organigram"
+                              ref="organigram"
                               value="#{organigramView.rootNode}"
                               var="node"
                               leafNodeConnectorHeight="#{organigramView.leafNodeConnectorHeight}"
@@ -105,7 +105,7 @@
                 </p:contextMenu>
 
                 <p:dialog id="addEmployeeDialog"
-                          widgetVar="addEmployeeDialog"
+                          ref="addEmployeeDialog"
                           header="Add employee">
 
                     <p:inputText value="#{organigramView.employeeName}"/>

@@ -29,7 +29,7 @@
                 <p:remoteCommand name="rc" update="msgs" action="#{remoteCommandView.execute}"/>
 
                 <p:remoteCommand name="rc2" update="msgs" action="#{remoteCommandView.execute}"
-                                 oncomplete="PF('msgsWidget').renderMessage({severity: 'info', summary: 'Data Received', detail: args.serverTime})"/>
+                                 oncomplete="PF('msgs').renderMessage({severity: 'info', summary: 'Data Received', detail: args.serverTime})"/>
 
                 <h5>Basic</h5>
                 <p>Execute a simple remote command by calling a javascript function.</p>
@@ -58,7 +58,7 @@
                     }
                 </script>
 
-                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" widgetVar="msgsWidget" />
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" ref="msgs" />
             </h:form>
         </div>
     </ui:define>

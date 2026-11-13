@@ -123,7 +123,7 @@ class Inplace001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertTrue(cfg.getBoolean("editor"));
         assertEquals("click", cfg.getString("event"));
         assertEquals("fade", cfg.getString("effect"));

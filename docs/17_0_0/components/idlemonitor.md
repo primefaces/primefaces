@@ -9,7 +9,7 @@ becomes active again. Example below toggles visibility of a dialog to respond th
 
 ```xhtml
 <p:idleMonitor onidle="PF('idleDialog').show();" onactive="PF('idleDialog').hide();"/>
-<p:dialog header="What's happening?" widgetVar="idleDialog" modal="true">
+<p:dialog header="What's happening?" ref="idleDialog" modal="true">
     <h:outputText value="Dude, are you there?" />
 </p:dialog>
 ```

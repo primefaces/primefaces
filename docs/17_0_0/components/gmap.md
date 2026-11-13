@@ -230,7 +230,7 @@ Geocoding support is provided by client side API. Results are then passed to the
 _GeocodeEvent_ and _ReverseGeocodeEvent_ instances via ajax behavior callbacks.
 
 ```xhtml
-<p:gmap widgetVar="pmap">
+<p:gmap ref="pmap">
     <p:ajax event="geocode" listener="#{bean.onGeocode}" />
 </p:map>
 
@@ -299,7 +299,7 @@ Alternatively setting _disableDefaultUI_ to true will remove all controls at onc
 In case you need to access native google maps API with javascript, use provided _getMap()_ method.
 
 ```js
-var gmap = PF('yourWidgetVar').getMap();
+var gmap = PF('yourRef').getMap();
 //gmap is a google.maps.Map instance
 ```
 Full map API is provided at;

@@ -28,11 +28,11 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.UITable;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.NodeSelectEvent;
@@ -77,7 +77,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "virtualScroll", event = PageEvent.class, description = "Fired when a node is expanded"),
     @FacesBehaviorEvent(name = "liveScroll", event = PageEvent.class, description = "Fired when a node is collapsed")
 })
-public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, StyleAware, UITable<DataTableState> {
+public abstract class DataTableBase extends UIPageableData implements PrimeClientComponent, RTLAware, StyleAware, UITable<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

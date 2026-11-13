@@ -98,7 +98,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
 
             this.bindEvents();
 
-            this.jq.data('pRef', cfg.widgetVar);
+            this.jq.attr('data-p-ref', cfg.ref);
         }
     }
 

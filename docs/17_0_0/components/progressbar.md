@@ -7,7 +7,7 @@ server side using ajax.
 ProgressBar has two modes, "client"(default) or "ajax". Following is a pure client side progressBar.
 
 ```xhtml
-<p:progressBar widgetVar="pb" />
+<p:progressBar ref="pb" />
 <p:commandButton value="Start" type="button" onclick="start()" />
 <p:commandButton value="Cancel" type="button" onclick="cancel()" />
 ```

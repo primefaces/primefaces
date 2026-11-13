@@ -45,7 +45,7 @@ for further customization. Following sample, displays the details of the subnode
     <p:ajax event="select" listener="#{mindmapBean.onNodeSelect}" />
     <p:ajax event="dblselect" listener="#{mindmapBean.onNodeDblselect}" update="output" oncomplete="PF('details').show()"/>
 </p:mindmap>
-<p:dialog widgetVar="details" header="Node Details" resizable="false" modal="true" showEffect="fade" hideEffect="fade">
+<p:dialog ref="details" header="Node Details" resizable="false" modal="true" showEffect="fade" hideEffect="fade">
     <h:outputText id="output" value="#{mindmapBean.selectedNode.data}" />
 </p:dialog>
 ```

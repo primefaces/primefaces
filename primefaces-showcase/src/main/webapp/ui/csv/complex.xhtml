@@ -50,12 +50,12 @@
                     <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
                         <div class="field col-12 md:col-4">
                             <p:outputLabel for="@next" value="Name required"/>
-                            <p:selectBooleanCheckbox id="nameRequired" widgetVar="nameRequired" value="#{complexValidationView.nameRequired}"/>
+                            <p:selectBooleanCheckbox id="nameRequired" ref="nameRequired" value="#{complexValidationView.nameRequired}"/>
                             <p:message for="@previous"/>
                         </div>
                         <div class="field col-12 md:col-4">
                             <p:outputLabel for="@next" value="Name"/>
-                            <p:inputText id="name" widgetVar="name" value="#{complexValidationView.name}" label="Name"/>
+                            <p:inputText id="name" ref="name" value="#{complexValidationView.name}" label="Name"/>
                             <p:message for="@previous"/>
                         </div>
                         <div class="field col-12 md:col-4">

@@ -25,13 +25,13 @@ package org.primefaces.component.contextmenu;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
 @FacesComponentBase
-public abstract class ContextMenuBase extends AbstractMenu implements Widget, TouchAware, StyleAware {
+public abstract class ContextMenuBase extends AbstractMenu implements PrimeClientComponent, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

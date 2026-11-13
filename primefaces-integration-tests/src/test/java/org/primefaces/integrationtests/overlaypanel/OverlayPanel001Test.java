@@ -139,7 +139,7 @@ class OverlayPanel001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("OverlayPanel Config = " + cfg);
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertFalse(cfg.has("appendTo"));
         assertTrue(cfg.getBoolean("dismissable"));
         assertEquals("form:btnShow", cfg.getString("target"));

@@ -14,7 +14,7 @@
         <h:form id="form">
             <p:messages id="msgs" showDetail="true"/>
 
-            <p:mindmap id="mindmap" widgetVar="mindmap" value="#{mindmap001.root}" effectSpeed="0" style="width: 600px; height: 400px;">
+            <p:mindmap id="mindmap" ref="mindmap" value="#{mindmap001.root}" effectSpeed="0" style="width: 600px; height: 400px;">
                 <p:ajax event="select" listener="#{mindmap001.onSelect}" update="form:msgs"/>
                 <p:ajax event="dblselect" listener="#{mindmap001.onDblselect}" update="form:msgs"/>
             </p:mindmap>

@@ -8,8 +8,9 @@ PrimeFaces provides built-in EL extensions that are helpers to common use cases.
 | --- | --- |
 resolveClientId(String expression, UIComponent source) | Returns the clientId of the resolved component for the given expression.
 resolveClientIds(String expression, UIComponent source) | Returns the clientIds of the resolved components for the given expression.
-resolveWidgetVar(String expression, UIComponent source) | Returns the widgetVar of the resolved component for the given expression.
-closestWidgetVar(UIComponent) | Returns the widgetVar of the closest parent component of the given component.
+resolveRef(String expression, UIComponent source) | Returns the name (`ref`) of the client side component of the resolved component for the given expression.
+closestRef(UIComponent) | Returns the name (`ref`) of the client side component of the closest parent component of the given component.
+resolveWidgetVar / closestWidgetVar | Deprecated, use `resolveRef` / `closestRef` instead.
 resolveComponent(String expression, UIComponent source) | Returns the resolved UIComponent for the given expression.
 resolveFirstComponentWithId(String id, UIComponent source) | Returns the first UIComponent with the same id (not clientId!) as the requested id. This method ignores any algorithm or NamingContainers.
 escapeJavaScriptVarName(String str) | Escapes a string for a JS var name (e.g. ':' in a clientId). This is useful if you need to use a clientId in the `name` of a `p:remoteCommand`.
@@ -27,16 +28,16 @@ var clientId = #{p:resolveClientId('form:tabView:myDataTable', view)};
 <p:commandButton onclick="#{p:resolveClientId('@parent', component)}">
 ```
 
-### resolveWidgetVar
+### resolveRef
 
 NOTE: this example passes "cc" as component to start the search. To start from root, can you simply pass "view".
 
 ```xhtml
 <cc:implementation>
-    <p:dialog id="dlg" widgetVar="dlg">
+    <p:dialog id="dlg" ref="dlg">
         //contents
     </p:dialog>
-    <p:commandButton type="button" value="Show" onclick="PF(`#{p:resolveWidgetVar('dlg', cc)}`).show()" />
+    <p:commandButton type="button" value="Show" onclick="PF(`#{p:resolveRef('dlg', cc)}`).show()" />
 </cc:implementation>
 ```
 

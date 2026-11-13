@@ -86,12 +86,12 @@
                 <p:timeline id="timeline" value="#{customTimelineView.model}"
                     editable="true" eventMargin="10" eventMarginAxis="0"
                     start="#{customTimelineView.start}" end="#{customTimelineView.end}"
-                    stackEvents="false" widgetVar="timelineWdgt">
+                    stackEvents="false" ref="timeline">
                     <f:facet name="menu">
-                        <p:commandButton type="button" icon="pi pi-chevron-left" styleClass="ml-2" onclick="PF('timelineWdgt').move(-0.3);" />
-                        <p:commandButton type="button" icon="pi pi-chevron-right" styleClass="ml-2" onclick="PF('timelineWdgt').move(0.3);" />
-                        <p:commandButton type="button" icon="pi pi-search-minus" styleClass="ml-2" onclick="PF('timelineWdgt').zoom(-0.5);" />
-                        <p:commandButton type="button" icon="pi pi-search-plus" styleClass="ml-2" onclick="PF('timelineWdgt').zoom(0.5);" />
+                        <p:commandButton type="button" icon="pi pi-chevron-left" styleClass="ml-2" onclick="PF('timeline').move(-0.3);" />
+                        <p:commandButton type="button" icon="pi pi-chevron-right" styleClass="ml-2" onclick="PF('timeline').move(0.3);" />
+                        <p:commandButton type="button" icon="pi pi-search-minus" styleClass="ml-2" onclick="PF('timeline').zoom(-0.5);" />
+                        <p:commandButton type="button" icon="pi pi-search-plus" styleClass="ml-2" onclick="PF('timeline').zoom(0.5);" />
                     </f:facet>
 
                     <f:facet name="loading">

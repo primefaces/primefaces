@@ -30,7 +30,7 @@ import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.SelectEvent;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ import java.util.Map;
     @FacesBehaviorEvent(name = "countrySelect", event = SelectEvent.class,
             description = "Fires when the user selects a country, the event carries the ISO 3166-1 alpha-2 code.")
 })
-public abstract class InputPhoneBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class InputPhoneBase extends AbstractPrimeHtmlInputText implements PrimeClientComponent, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -24,12 +24,12 @@
 package org.primefaces.component.log;
 
 import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
-public abstract class LogBase extends UIComponentBase implements Widget {
+public abstract class LogBase extends UIComponentBase implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

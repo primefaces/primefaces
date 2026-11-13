@@ -54,7 +54,7 @@ class ComponentScriptBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(panel.resolveRef(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
 
         ComponentScriptBuilder builder = getComponentScriptBuilder(context);
@@ -77,7 +77,7 @@ class ComponentScriptBuilderTest {
         ComponentScriptBuilder builder = new ComponentScriptBuilder(context, config);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(panel.resolveRef(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
         builder.init("AccordionPanel", panel);
         builder.finish();
@@ -124,7 +124,7 @@ class ComponentScriptBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel table = mock(Panel.class);
-        when(table.resolveWidgetVar(context)).thenReturn("dt");
+        when(table.resolveRef(context)).thenReturn("dt");
         when(table.getClientId(context)).thenReturn("dt1");
 
         ComponentScriptBuilder builder = getComponentScriptBuilder(context);
@@ -147,7 +147,7 @@ class ComponentScriptBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel table = mock(Panel.class);
-        when(table.resolveWidgetVar(context)).thenReturn("dt");
+        when(table.resolveRef(context)).thenReturn("dt");
         when(table.getClientId(context)).thenReturn("dt1");
 
         ComponentScriptBuilder builder = getComponentScriptBuilder(context);
@@ -174,7 +174,7 @@ class ComponentScriptBuilderTest {
         ComponentScriptBuilder builder = new ComponentScriptBuilder(context, config);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
+        when(panel.resolveRef(context)).thenReturn("myComponent");
         when(panel.getClientId(context)).thenReturn("myComponent1");
 
         builder.init("MyComponent", panel);
@@ -200,7 +200,7 @@ class ComponentScriptBuilderTest {
         ComponentScriptBuilder builder = new ComponentScriptBuilder(context, config);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("myComponent");
+        when(panel.resolveRef(context)).thenReturn("myComponent");
         when(panel.getClientId(context)).thenReturn("myComponent1");
 
         builder.init("MyComponent", panel);
@@ -221,7 +221,7 @@ class ComponentScriptBuilderTest {
         FacesContext context = new FacesContextMock(writer);
 
         Panel panel = mock(Panel.class);
-        when(panel.resolveWidgetVar(context)).thenReturn("acco");
+        when(panel.resolveRef(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
         Map<String, Object> attributes = new LinkedHashMap<>();
         attributes.put("clientPreConstruct", "a()");

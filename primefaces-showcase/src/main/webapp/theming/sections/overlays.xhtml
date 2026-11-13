@@ -17,7 +17,7 @@
                 </p:commandButton>
             </div>
 
-            <p:dialog widgetVar="dlgDemo" header="Edit profile" modal="true" responsive="true" width="420" maximizable="true">
+            <p:dialog ref="dlgDemo" header="Edit profile" modal="true" responsive="true" width="420" maximizable="true">
                 <div style="display: flex; flex-direction: column; gap: .5rem">
                     <p:outputLabel for="dlgName" value="Name"/>
                     <p:inputText id="dlgName" value="#{themingOverlaysView.name}"/>
@@ -52,7 +52,7 @@
                 <h3 style="margin-top: 0">OverlayPanel</h3>
                 <p style="margin: 0">An overlay anchored to its target.</p>
             </p:overlayPanel>
-            <p:sidebar widgetVar="sbDemo" position="right">
+            <p:sidebar ref="sbDemo" position="right">
                 <h2>Sidebar</h2>
                 <p>A panel that slides in from an edge of the window.</p>
             </p:sidebar>

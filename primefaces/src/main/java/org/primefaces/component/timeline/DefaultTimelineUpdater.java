@@ -56,7 +56,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     private static final Logger LOGGER = Logger.getLogger(DefaultTimelineUpdater.class.getName());
 
-    private String widgetVar;
+    private String ref;
     private List<CrudOperationData> crudOperationDatas;
 
     // serialization
@@ -64,9 +64,9 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         super();
     }
 
-    public DefaultTimelineUpdater(String clientId, String widgetVar) {
+    public DefaultTimelineUpdater(String clientId, String ref) {
         super(clientId);
-        this.widgetVar = widgetVar;
+        this.ref = ref;
     }
 
     enum CrudOperation {
@@ -137,8 +137,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
-        if (!map.containsKey(widgetVar)) {
-            map.put(widgetVar, this);
+        if (!map.containsKey(ref)) {
+            map.put(ref, this);
         }
     }
 
@@ -184,7 +184,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                             //If groups was not set in model then order by content.
                             orderGroup = model.getGroups() != null ? orderGroup : null;
                             sb.append(";PF('");
-                            sb.append(widgetVar);
+                            sb.append(ref);
                             sb.append("').updateGroup(");
                             try {
                                 sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
@@ -204,7 +204,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                             updateGroupIfNecessary.accept(crudOperationData);
 
                             sb.append(";PF('");
-                            sb.append(widgetVar);
+                            sb.append(ref);
                             sb.append("').addEvent(");
                             sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
                                     groups, crudOperationData.getEvent())));
@@ -216,7 +216,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                             updateGroupIfNecessary.accept(crudOperationData);
 
                             sb.append(";PF('");
-                            sb.append(widgetVar);
+                            sb.append(ref);
                             sb.append("').changeEvent(");
                             sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
                                     groups, crudOperationData.getEvent())));
@@ -227,7 +227,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         case DELETE:
 
                             sb.append(";PF('");
-                            sb.append(widgetVar);
+                            sb.append(ref);
                             sb.append("').deleteEvent(\"");
                             sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
                             sb.append("\")");
@@ -237,7 +237,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         case SELECT:
 
                             sb.append(";PF('");
-                            sb.append(widgetVar);
+                            sb.append(ref);
                             sb.append("').setSelection(\"");
                             sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
                             sb.append("\")");
@@ -246,7 +246,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         case CLEAR:
 
                             sb.append(";PF('");
-                            sb.append(widgetVar);
+                            sb.append(ref);
                             sb.append("').deleteAllEvents()");
                             break;
                     }
@@ -254,7 +254,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
                 if (renderComponent) {
                     sb.append(";PF('");
-                    sb.append(widgetVar);
+                    sb.append(ref);
                     sb.append("').renderTimeline()");
                 }
 
@@ -272,12 +272,12 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         // NOOP.
     }
 
-    public String getWidgetVar() {
-        return widgetVar;
+    public String getRef() {
+        return ref;
     }
 
-    public void setWidgetVar(String widgetVar) {
-        this.widgetVar = widgetVar;
+    public void setRef(String ref) {
+        this.ref = ref;
     }
 
     private void checkCrudOperationDataList() {
@@ -298,12 +298,12 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
         DefaultTimelineUpdater that = (DefaultTimelineUpdater) o;
 
-        return !(widgetVar != null ? !widgetVar.equals(that.widgetVar) : that.widgetVar != null);
+        return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
     }
 
     @Override
     public int hashCode() {
-        return widgetVar != null ? widgetVar.hashCode() : 0;
+        return ref != null ? ref.hashCode() : 0;
     }
 
     static class CrudOperationData implements Serializable {

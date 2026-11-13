@@ -21,7 +21,7 @@
         <div class="card">
             <h5>Column Filtering</h5>
             <h:form>
-                <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
+                <p:dataTable var="customer" value="#{dtFilterView.customers1}" ref="customersTable"
                     emptyMessage="No customers found with given criteria"
                     filteredValue="#{dtFilterView.filteredCustomers1}"
                     globalFilterOnly="#{dtFilterView.globalFilterOnly}" partialUpdate="false">
@@ -94,7 +94,7 @@
         <div class="card">
             <h5>Default Filter</h5>
             <h:form>
-                <p:dataTable var="customer" value="#{dtFilterView.customers2}" widgetVar="customersTable2"
+                <p:dataTable var="customer" value="#{dtFilterView.customers2}" ref="customersTable2"
                     emptyMessage="No customers found with given criteria"
                     filteredValue="#{dtFilterView.filteredCustomers2}" filterBy="#{dtFilterView.filterBy}">
 
@@ -152,7 +152,7 @@
         <div class="card">
             <h5>Global Filter Function</h5>
             <h:form>
-                <p:dataTable var="customer" value="#{dtFilterView.customers3}" widgetVar="customersTable3"
+                <p:dataTable var="customer" value="#{dtFilterView.customers3}" ref="customersTable3"
                              emptyMessage="No customers found with given criteria"
                              filteredValue="#{dtFilterView.filteredCustomers3}"
                              globalFilterFunction="#{dtFilterView.globalFilterFunction}">
@@ -195,7 +195,7 @@
             <p>1. Hide filter components initially by adding <code>p-filter-toggleable</code> as <em>styleClass</em> to the datatable. <br/>
                 2. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code>.</p>
             <h:form id="customersForm4">
-                <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable4"
+                <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" ref="customersTable4"
                              emptyMessage="No customers found with given criteria" stickyHeader="true" stickyTopAt=".layout-topbar"
                              filteredValue="#{dtFilterView.filteredCustomers1}" styleClass="p-filter-toggleable">
 

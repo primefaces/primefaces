@@ -179,7 +179,7 @@ class Tooltip001Test extends AbstractPrimePageTest {
 
     private void assertConfiguration(JSONObject cfg, String target, String position) {
         assertNoJavascriptErrors();
-        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("ref"));
         assertEquals(target, cfg.getString("target"));
         assertEquals(position, cfg.getString("position"));
         assertEquals(0, cfg.getInt("showDelay"));

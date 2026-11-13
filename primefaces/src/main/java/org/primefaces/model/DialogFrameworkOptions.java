@@ -34,7 +34,7 @@ public class DialogFrameworkOptions implements Serializable {
 
     @Serial private static final long serialVersionUID = 8394142502801415235L;
 
-    private String widgetVar;
+    private String ref;
     private boolean modal = false;
     private boolean resizable = true;
     private boolean draggable = true;
@@ -66,12 +66,22 @@ public class DialogFrameworkOptions implements Serializable {
     private boolean resizeObserver = false;
     private boolean resizeObserverCenter = false;
 
+    @Deprecated(since = "17.0.0", forRemoval = true)
     public String getWidgetVar() {
-        return widgetVar;
+        return ref;
     }
 
-    public void setWidgetVar(String widgetVar) {
-        this.widgetVar = widgetVar;
+    @Deprecated(since = "17.0.0", forRemoval = true)
+    public void setWidgetVar(String ref) {
+        this.ref = ref;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
     }
 
     public boolean isModal() {
@@ -317,8 +327,8 @@ public class DialogFrameworkOptions implements Serializable {
     public Map<String, Object> toMap() {
         Map<String, Object> opts = new HashMap<>();
 
-        if (LangUtils.isNotBlank(widgetVar)) {
-            opts.put("widgetVar", widgetVar);
+        if (LangUtils.isNotBlank(ref)) {
+            opts.put("ref", ref);
         }
         opts.put("modal", modal);
         opts.put("resizable", resizable);
@@ -399,12 +409,24 @@ public class DialogFrameworkOptions implements Serializable {
         }
 
         /**
-         * Custom widgetVar of the dialog, if not declared it will be automatically created as "id+dlgWidget".
+         * Deprecated, use {@link #ref(String)} instead.
          * @param widgetVar
          * @return
+         * @deprecated use {@link #ref(String)} instead
          */
+        @Deprecated(since = "17.0.0", forRemoval = true)
         public DialogFrameworkOptions.Builder widgetVar(String widgetVar) {
             options.setWidgetVar(widgetVar);
+            return this;
+        }
+
+        /**
+         * Name of the client side component of the dialog (ref), if not declared it is generated as "pf_" + sourceComponentId + "_dlg".
+         * @param ref
+         * @return
+         */
+        public DialogFrameworkOptions.Builder ref(String ref) {
+            options.setRef(ref);
             return this;
         }
 

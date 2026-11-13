@@ -10,7 +10,7 @@ dialog component used with a simple client side api, _show()_ and _hide()_.
 ```xhtml
 <h:form>
     <p:commandButton type="button" onclick="PF('cd').show()" />
-    <p:confirmDialog message="Are you sure about destroying the world?" header="Initiating destroy process" severity="alert" widgetVar="cd">
+    <p:confirmDialog message="Are you sure about destroying the world?" header="Initiating destroy process" severity="alert" ref="cd">
         <p:commandButton value="Yes Sure" action="#{buttonBean.destroyWorld}" update="messages" oncomplete="PF('cd').hide()"/>
         <p:commandButton value="Not Yet" onclick="PF('cd').hide();" type="button" />
     </p:confirmDialog>
@@ -23,7 +23,7 @@ defined using the _header_ attribute or the _header_ facet. Severity defines the
 the message, default severity is _alert_ and the other option is _info_.
 
 ```xhtml
-<p:confirmDialog widgetVar="cd" header="Confirm">
+<p:confirmDialog ref="cd" header="Confirm">
     <f:facet name="message">
         <h:outputText value="Are you sure?" />
     </f:facet>

@@ -21,7 +21,7 @@ type CycleContainer = HTMLElement & {
  * the imageswitch programmatically via `$.fn.cycle`:
  *
  * ```javascript
- * const component = PF("myImageSwitchWidget");
+ * const component = PF("myImageSwitch");
  * component.getJQ().cycle("resume");
  * ```
  */

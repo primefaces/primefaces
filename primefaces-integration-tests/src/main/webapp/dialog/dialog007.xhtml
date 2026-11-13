@@ -11,9 +11,9 @@
             <p:commandButton id="refresh" value="Refresh container" update="container" />
             <p:commandButton id="refreshDialog" value="Refresh dialog" update="dlg" />
             <h:panelGroup id="container" layout="block">
-                <p:dialog id="dlg" widgetVar="relocatedDialog" header="Relocated dialog"
+                <p:dialog id="dlg" ref="relocatedDialog" header="Relocated dialog"
                           minimizable="true" appendTo="@(body)" rendered="#{dialog007.rendered}">
-                    <p:selectOneMenu id="choice" widgetVar="dialogChoice">
+                    <p:selectOneMenu id="choice" ref="dialogChoice">
                         <f:selectItem itemLabel="One" itemValue="1" />
                         <f:selectItem itemLabel="Two" itemValue="2" />
                     </p:selectOneMenu>

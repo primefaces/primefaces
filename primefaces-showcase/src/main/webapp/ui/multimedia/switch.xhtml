@@ -26,7 +26,7 @@
             <p:commandButton type="button" onclick="PF('switcher').next()"
                              icon="pi pi-chevron-right" id="next" styleClass="mr-2 mb-3" />
 
-            <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+            <p:imageSwitch effect="wipe" ref="switcher" id="manuelSwitcher"
                            slideshowAuto="false">
                 <ui:repeat value="#{imagesView.images}" var="image" id="manuelSwitcherImages">
                     <p:graphicImage name="/demo/images/nature/#{image}" id="image"/>
@@ -74,7 +74,7 @@
             <h5>Dialog Integration</h5>
             <p:commandButton type="button" value="Show" onclick="PF('dlg').show()" icon="pi pi-home"/>
 
-            <p:dialog header="Images" widgetVar="dlg" modal="true"
+            <p:dialog header="Images" ref="dlg" modal="true"
                       draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
 
                 <p:imageSwitch effect="fade">

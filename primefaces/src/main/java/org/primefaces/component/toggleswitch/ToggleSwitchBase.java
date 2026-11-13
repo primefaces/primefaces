@@ -28,9 +28,9 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.event.AjaxBehaviorEvent;
 
@@ -38,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fired when the value changes.", defaultEvent = true)
 })
-public abstract class ToggleSwitchBase extends PrimeUIInput implements Widget, StyleAware, InputHolder {
+public abstract class ToggleSwitchBase extends PrimeUIInput implements PrimeClientComponent, StyleAware, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

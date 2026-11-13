@@ -43,7 +43,7 @@
                                 icon="pi pi-times"/>
                 </p:contextMenu>
 
-                <p:dialog id="dialog" header="Document Detail" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false" width="250">
+                <p:dialog id="dialog" header="Document Detail" showEffect="fade" ref="documentDialog" modal="true" resizable="false" width="250">
                     <p:outputPanel id="documentPanel">
                         <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty ttContextMenuView.selectedNode}">
                             <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">

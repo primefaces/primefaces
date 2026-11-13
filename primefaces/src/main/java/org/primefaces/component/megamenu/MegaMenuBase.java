@@ -26,14 +26,14 @@ package org.primefaces.component.megamenu;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
 import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
-public abstract class MegaMenuBase extends AbstractMenu implements Widget, StyleAware {
+public abstract class MegaMenuBase extends AbstractMenu implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -28,9 +28,9 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -45,7 +45,7 @@ import jakarta.faces.component.UIComponent;
     @FacesBehaviorEvent(name = "connectionChange", event = ConnectionChangeEvent.class, description = "Fires when a connection is changed."),
     @FacesBehaviorEvent(name = "positionChange", event = PositionChangeEvent.class, description = "Fires when an element position is changed.")
 })
-public abstract class DiagramBase extends PrimeUIData implements Widget, StyleAware {
+public abstract class DiagramBase extends PrimeUIData implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -22,7 +22,7 @@
             <h:form>
                 <p:focus for="terminal"/>
 
-                <p:terminal id="terminal" widgetVar="term" commandHandler="#{terminalBasicView.handleCommand}"
+                <p:terminal id="terminal" ref="term" commandHandler="#{terminalBasicView.handleCommand}"
                             welcomeMessage="Welcome to PrimeFaces Terminal"/>
 
                 <p:commandButton type="button" value="Clear" icon="pi pi-trash" onclick="PF('term').clear()" styleClass="mt-3" />

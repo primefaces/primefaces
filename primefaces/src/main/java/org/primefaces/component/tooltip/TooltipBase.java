@@ -25,13 +25,13 @@ package org.primefaces.component.tooltip;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIOutput;
 
 @FacesComponentBase
-public abstract class TooltipBase extends UIOutput implements Widget, StyleAware {
+public abstract class TooltipBase extends UIOutput implements PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

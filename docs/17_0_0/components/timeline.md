@@ -26,7 +26,7 @@ public class BasicTimelineView implements Serializable {
 A custom menu can be defined using menu facet.
 
 ```xhtml
-<p:timeline id="timeline" value="#{basicTimelineView.model}" widgetVar="timeline">
+<p:timeline id="timeline" value="#{basicTimelineView.model}" ref="timeline">
     <f:facet name="menu">
         <p:commandButton type="button" icon="fa fa-arrow-left" onclick="PF('timeline').move(-0.2);" />
         <p:commandButton type="button" icon="fa fa-arrow-right" onclick="PF('timeline').move(0.2);" />

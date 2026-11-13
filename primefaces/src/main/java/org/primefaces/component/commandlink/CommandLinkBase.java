@@ -30,7 +30,7 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.el.MethodExpression;
@@ -43,7 +43,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "click", event = AjaxBehaviorEvent.class, description = "Fires when the button is clicked.", defaultEvent = true),
     @FacesBehaviorEvent(name = "dialogReturn", event = SelectEvent.class, description = "Fired when a dialog is closed.")
 })
-public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Widget, Confirmable {
+public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, PrimeClientComponent, Confirmable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -25,11 +25,11 @@ package org.primefaces.component.growl;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.UINotifications;
-import org.primefaces.component.api.Widget;
 
 @FacesComponentBase
-public abstract class GrowlBase extends UINotifications implements Widget {
+public abstract class GrowlBase extends UINotifications implements PrimeClientComponent {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
