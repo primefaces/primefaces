@@ -24,19 +24,19 @@
 package org.primefaces.component.dashboard;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
-import org.primefaces.component.panel.Panel;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.dashboard.DashboardColumn;
+import org.primefaces.model.dashboard.DashboardItem;
 import org.primefaces.model.dashboard.DashboardModel;
-import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
@@ -77,41 +77,49 @@ public class DashboardRenderer extends CoreRenderer<Dashboard> {
 
         DashboardModel model = component.getModel();
         if (model != null) {
-            List<DashboardWidget> widgets = model.getWidgets();
-            for (int i = 0; i < widgets.size(); i++) {
-                DashboardWidget column = widgets.get(i);
-                String columnStyle = column.getStyle();
-                String columnStyleClass = getStyleClassBuilder(context)
-                        .add(!responsive, Dashboard.COLUMN_CLASS)
-                        .add(responsive, Dashboard.PANEL_CLASS)
-                        .add(column.getStyleClass())
-                        .build();
-
-                writer.startElement("div", null);
-                writer.writeAttribute("class", columnStyleClass, null);
-                if (columnStyle != null) {
-                    writer.writeAttribute("style", columnStyle, null);
-                }
-
-                for (String widgetId : column.getWidgets()) {
-                    Panel widget = (Panel) SearchExpressionUtils.contextlessResolveComponent(context, component, widgetId);
-                    if (widget != null) {
-                        ComponentUtils.executeInRequestScope(context, var, column.getValue(), () -> {
-                            try {
-                                return renderChild(context, widget);
-                            }
-                            catch (IOException e) {
-                                throw new FacesException(e);
-                            }
-                        });
+            for (DashboardColumn column : model.getColumns()) {
+                if (responsive) {
+                    // the items of all columns are the cells of the grid
+                    for (DashboardItem item : column.getItems()) {
+                        encodeContainer(context, Dashboard.PANEL_CLASS, item.getStyle(), item.getStyleClass());
+                        encodeItem(context, component, var, item);
+                        writer.endElement("div");
                     }
                 }
-
-                writer.endElement("div");
+                else {
+                    encodeContainer(context, Dashboard.COLUMN_CLASS, column.getStyle(), column.getStyleClass());
+                    for (DashboardItem item : column.getItems()) {
+                        encodeItem(context, component, var, item);
+                    }
+                    writer.endElement("div");
+                }
             }
         }
 
         writer.endElement("div");
+    }
+
+    protected void encodeContainer(FacesContext context, String baseClass, String style, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        writer.writeAttribute("class", getStyleClassBuilder(context).add(baseClass).add(styleClass).build(), null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+    }
+
+    protected void encodeItem(FacesContext context, Dashboard component, String var, DashboardItem item) {
+        UIComponent panel = SearchExpressionUtils.contextlessResolveComponent(context, component, item.getPanelId());
+        if (panel != null) {
+            ComponentUtils.executeInRequestScope(context, var, item.getValue(), () -> {
+                try {
+                    return renderChild(context, panel);
+                }
+                catch (IOException e) {
+                    throw new FacesException(e);
+                }
+            });
+        }
     }
 
     protected void encodeScript(FacesContext context, Dashboard component) throws IOException {

@@ -27,8 +27,8 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DefaultDashboardColumn;
 import org.primefaces.model.dashboard.DefaultDashboardModel;
-import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -73,8 +73,8 @@ public class CoreComponent001 implements Serializable {
         folder.setExpanded(true);
 
         dashboard = new DefaultDashboardModel();
-        dashboard.addWidget(new DefaultDashboardWidget(Arrays.asList("panel1", "panel2")));
-        dashboard.addWidget(new DefaultDashboardWidget(Arrays.asList("panel3")));
+        dashboard.addColumn(new DefaultDashboardColumn("panel1", "panel2"));
+        dashboard.addColumn(new DefaultDashboardColumn("panel3"));
     }
 
     public void toggle() {

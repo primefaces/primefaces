@@ -57,7 +57,7 @@ class Dashboard002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(List.of(List.of("form:line"), List.of("form:pie"), List.of("form:bar")), dashboard.getPanelIds());
         assertEquals("Reordered: bar", page.messages.getMessage(0).getSummary());
-        assertEquals("Sender:0 Column:2 Item:0", page.messages.getMessage(0).getDetail());
+        assertEquals("Column:0 Item:2 SenderColumn:0 SenderItem:0", page.messages.getMessage(0).getDetail());
         assertEquals("line|pie|bar", page.layout.getText());
         assertConfiguration(dashboard.getClientConfiguration());
     }
@@ -82,7 +82,7 @@ class Dashboard002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals(List.of(List.of("form:pie"), List.of("form:line"), List.of("form:bar")), dashboard.getPanelIds());
         assertEquals("Reordered: pie", page.messages.getMessage(0).getSummary());
-        assertEquals("Sender:1 Column:0 Item:0", page.messages.getMessage(0).getDetail());
+        assertEquals("Column:0 Item:0 SenderColumn:0 SenderItem:1", page.messages.getMessage(0).getDetail());
         assertEquals("pie|line|bar", page.layout.getText());
         assertConfiguration(dashboard.getClientConfiguration());
     }

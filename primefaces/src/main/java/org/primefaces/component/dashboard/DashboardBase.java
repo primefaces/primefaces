@@ -69,7 +69,7 @@ public abstract class DashboardBase extends UIPanel implements PrimeClientCompon
     @Property(description = "In responsive mode, PrimeFlex can be used to dynamically size columns and responsiveness.", defaultValue = "false")
     public abstract boolean isResponsive();
 
-    @Property(description = "Name of collection iterator which will be the value of DashboardWidget.getValue().")
+    @Property(description = "Name of the request scoped variable that holds the value of the item (DashboardItem.getValue()) while its panel is rendered.")
     public abstract String getVar();
 
     @Property(description = "Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope.",

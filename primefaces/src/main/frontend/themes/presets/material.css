@@ -1220,10 +1220,6 @@
         --p-dashboard-placeholder-background: var(--p-highlight-background);
         --p-dashboard-placeholder-border-color: var(--p-primary-color);
         --p-dashboard-placeholder-border-radius: var(--p-panel-border-radius);
-        --p-dashboard-drop-active-border-color: var(--p-primary-color);
-        --p-dashboard-drop-hover-border-color: var(--p-primary-color);
-        --p-dashboard-drop-hover-background: var(--p-highlight-background);
-        --p-dashboard-drop-outline-offset: 2px;
     }
 
     /* datatable */

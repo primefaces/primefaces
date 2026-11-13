@@ -64,7 +64,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
                     List.of("form:lifestyle", "form:weather"),
                     List.of("form:politics")), dashboard.getPanelIds());
         assertEquals("Reordered: finance", page.messages.getMessage(0).getSummary());
-        assertEquals("Sender:null Column:0 Item:0", page.messages.getMessage(0).getDetail());
+        assertEquals("Column:0 Item:0 SenderColumn:0 SenderItem:1", page.messages.getMessage(0).getDetail());
         assertEquals("finance,sports|lifestyle,weather|politics", page.layout.getText());
         assertConfiguration(dashboard.getClientConfiguration());
     }
@@ -85,7 +85,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
                     List.of("form:politics", "form:lifestyle", "form:weather"),
                     List.of()), dashboard.getPanelIds());
         assertEquals("Reordered: politics", page.messages.getMessage(0).getSummary());
-        assertEquals("Sender:2 Column:1 Item:0", page.messages.getMessage(0).getDetail());
+        assertEquals("Column:1 Item:0 SenderColumn:2 SenderItem:0", page.messages.getMessage(0).getDetail());
         assertEquals("sports,finance|politics,lifestyle,weather|", page.layout.getText());
 
         // Act - into the now empty column
@@ -97,7 +97,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
                     List.of("form:politics", "form:lifestyle", "form:weather"),
                     List.of("form:sports")), dashboard.getPanelIds());
         assertEquals("Reordered: sports", page.messages.getMessage(0).getSummary());
-        assertEquals("Sender:0 Column:2 Item:0", page.messages.getMessage(0).getDetail());
+        assertEquals("Column:2 Item:0 SenderColumn:0 SenderItem:0", page.messages.getMessage(0).getDetail());
         assertEquals("finance|politics,lifestyle,weather|sports", page.layout.getText());
         assertConfiguration(dashboard.getClientConfiguration());
     }
@@ -127,7 +127,7 @@ class Dashboard001Test extends AbstractPrimePageTest {
                     List.of("form:finance", "form:sports"),
                     List.of("form:lifestyle"),
                     List.of("form:politics", "form:weather")), dashboard.getPanelIds());
-        assertEquals("Sender:1 Column:2 Item:1", page.messages.getMessage(0).getDetail());
+        assertEquals("Column:2 Item:1 SenderColumn:1 SenderItem:1", page.messages.getMessage(0).getDetail());
         assertEquals("finance,sports|lifestyle|politics,weather", page.layout.getText());
         assertConfiguration(dashboard.getClientConfiguration());
     }

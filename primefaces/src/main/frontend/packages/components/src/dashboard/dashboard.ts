@@ -21,7 +21,7 @@ export interface DashboardCfg extends PrimeFacesTypes.component.BaseComponentCfg
  * programmatically.
  *
  * ```javascript
- * const component = PF("MyDashboardWidget");
+ * const component = PF("myDashboard");
  *
  * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
  * PrimeFaces.interactions.sortable(component.jq.find(".p-dashboard-column"), { revert: true });
@@ -136,35 +136,22 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
      */
     handleDrop(component: PrimeFacesTypes.Component<"BaseComponent">, e: JQuery.TriggeredEvent, ui: PrimeFacesTypes.component.Dashboard.DropUi): void {
         const item = (ui.item || ui.draggable)!;
-        const isResponsive = ui.draggable;
-        const parent = item.parent();
-        let grid: JQuery | undefined;
-        let itemIndex: number, receiverColumnIndex: number;
-        if (isResponsive) {
-            grid = parent.parent();
-            itemIndex = 0;
-            receiverColumnIndex = grid.children().filter(':not(script):visible').index(parent);
-        }
-        else {
-            itemIndex = parent.children().filter(':not(script):visible').index(item);
-            receiverColumnIndex = parent.parent().children().index(parent);
-        }
-
         const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> & Required<Pick<PrimeFacesTypes.ajax.ConfigurationExtender, "params">> = {
             params: [
                 { name: component.id + '_reordered', value: true },
-                { name: component.id + '_widgetId', value: item.attr('id') },
-                { name: component.id + '_itemIndex', value: itemIndex },
-                { name: component.id + '_receiverColumnIndex', value: receiverColumnIndex }
+                { name: component.id + '_panelId', value: item.attr('id') }
             ]
         };
 
-        if (ui.sender) {
-            ext.params.push({ name: component.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender) });
+        if (ui.draggable) {
+            // responsive: the dragged panel swapped its position with the panel it was dropped on
+            ext.params.push({ name: component.id + '_targetPanelId', value: $(e.target).attr('id') });
         }
-        if (isResponsive) {
-            const target = $(e.target);
-            ext.params.push({ name: component.id + '_senderColumnIndex', value: grid!.children().filter(':not(script):visible').index(target.parent()) });
+        else {
+            // classic: the panel was moved to the given index of the given column
+            const column = item.parent();
+            ext.params.push({ name: component.id + '_columnIndex', value: column.parent().children('.p-dashboard-column').index(column) });
+            ext.params.push({ name: component.id + '_itemIndex', value: column.children().filter(':not(script):visible').index(item) });
         }
 
         component.callBehavior('reorder', ext);

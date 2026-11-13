@@ -25,31 +25,23 @@ package org.primefaces.model.dashboard;
 
 import java.util.List;
 
-public interface DashboardWidget {
+/**
+ * A column of a {@link DashboardModel}, holds the items (panels) of the column.
+ */
+public interface DashboardColumn {
 
-    void removeWidget(String widgetId);
+    /**
+     * @return the items of the column, in the order they are rendered
+     */
+    List<DashboardItem> getItems();
 
-    List<String> getWidgets();
-
-    int getWidgetCount();
-
-    String getWidget(int index);
-
-    void addWidget(String widgetId);
-
-    void addWidget(int index, String widgetId);
-
-    void reorderWidget(int index, String widgetId);
+    void addItem(DashboardItem item);
 
     String getStyle();
 
-    String getStyleClass();
-
     void setStyle(String style);
 
+    String getStyleClass();
+
     void setStyleClass(String styleClass);
-
-    Object getValue();
-
-    void setValue(Object value);
 }

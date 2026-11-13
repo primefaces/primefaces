@@ -24,14 +24,14 @@
 package org.primefaces.integrationtests.dashboard;
 
 import org.primefaces.event.DashboardReorderEvent;
+import org.primefaces.model.dashboard.DashboardColumn;
+import org.primefaces.model.dashboard.DashboardItem;
 import org.primefaces.model.dashboard.DashboardModel;
-import org.primefaces.model.dashboard.DashboardWidget;
+import org.primefaces.model.dashboard.DefaultDashboardColumn;
 import org.primefaces.model.dashboard.DefaultDashboardModel;
-import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.annotation.PostConstruct;
@@ -57,12 +57,12 @@ public class Dashboard001 implements Serializable {
     @PostConstruct
     public void init() {
         model = new DefaultDashboardModel();
-        model.addWidget(new DefaultDashboardWidget(COLUMN_STYLE, null, List.of("sports", "finance")));
-        model.addWidget(new DefaultDashboardWidget(COLUMN_STYLE, null, List.of("lifestyle", "weather")));
-        model.addWidget(new DefaultDashboardWidget(COLUMN_STYLE, null, List.of("politics")));
+        model.addColumn(column("sports", "finance"));
+        model.addColumn(column("lifestyle", "weather"));
+        model.addColumn(column("politics"));
 
         lockedModel = new DefaultDashboardModel();
-        lockedModel.addWidget(new DefaultDashboardWidget(COLUMN_STYLE, null, List.of("news", "music")));
+        lockedModel.addColumn(column("news", "music"));
     }
 
     /**
@@ -75,15 +75,21 @@ public class Dashboard001 implements Serializable {
     }
 
     public void onReorder(DashboardReorderEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reordered: " + event.getWidgetId(),
-                    "Sender:" + event.getSenderColumnIndex() + " Column:" + event.getColumnIndex() + " Item:" + event.getItemIndex());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reordered: " + event.getPanelId(),
+                    "Column:" + event.getColumnIndex() + " Item:" + event.getItemIndex()
+                    + " SenderColumn:" + event.getSenderColumnIndex() + " SenderItem:" + event.getSenderItemIndex());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     static String toLayout(DashboardModel model) {
-        return model.getWidgets().stream()
-                    .map(DashboardWidget::getWidgets)
-                    .map(widgets -> String.join(",", widgets))
+        return model.getColumns().stream()
+                    .map(column -> column.getItems().stream().map(DashboardItem::getPanelId).collect(Collectors.joining(",")))
                     .collect(Collectors.joining("|"));
+    }
+
+    private static DashboardColumn column(String... panelIds) {
+        DashboardColumn column = new DefaultDashboardColumn(panelIds);
+        column.setStyle(COLUMN_STYLE);
+        return column;
     }
 }

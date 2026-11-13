@@ -25,11 +25,13 @@ package org.primefaces.component.dashboard;
 
 import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.DashboardReorderEvent;
+import org.primefaces.model.dashboard.DashboardItem;
 import org.primefaces.model.dashboard.DashboardModel;
-import org.primefaces.model.dashboard.DashboardWidget;
+import org.primefaces.model.dashboard.DefaultDashboardItem;
 
 import java.util.Map;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UINamingContainer;
@@ -61,25 +63,37 @@ public class Dashboard extends DashboardBaseImpl {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.reorder)) {
-                String widgetClientId = params.get(clientId + "_widgetId");
-                Integer itemIndex = Integer.valueOf(params.get(clientId + "_itemIndex"));
-                Integer receiverColumnIndex = Integer.valueOf(params.get(clientId + "_receiverColumnIndex"));
-                String senderIndexParam = clientId + "_senderColumnIndex";
-                Integer senderColumnIndex = null;
-
-                if (params.containsKey(senderIndexParam)) {
-                    senderColumnIndex = Integer.valueOf(params.get(senderIndexParam));
+                DashboardModel model = getModel();
+                String panelId = toPanelId(context, params.get(clientId + "_panelId"));
+                DashboardItem item = model.getItem(panelId);
+                int[] sender;
+                if (item == null) {
+                    // a new panel, dropped from outside of the dashboard (p:draggable with dashboard attribute)
+                    item = new DefaultDashboardItem(panelId);
+                    sender = new int[] {-1, -1};
+                }
+                else {
+                    sender = findPosition(model, item);
                 }
 
-                String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
-                String[] idTokens = widgetClientId.split(separator);
-                String widgetId = idTokens.length == 1 ? idTokens[0] : idTokens[idTokens.length - 1];
+                String targetPanelId = params.get(clientId + "_targetPanelId");
+                if (targetPanelId != null) {
+                    // responsive: the panels swap their positions
+                    DashboardItem target = model.getItem(toPanelId(context, targetPanelId));
+                    if (target == null) {
+                        throw new FacesException("Panel " + targetPanelId + " is not part of the dashboard model");
+                    }
+                    model.swapItems(item, target);
+                }
+                else {
+                    model.moveItem(item, Integer.parseInt(params.get(clientId + "_columnIndex")),
+                            Integer.parseInt(params.get(clientId + "_itemIndex")));
+                }
+                int[] receiver = findPosition(model, item);
 
-                DashboardReorderEvent reorderEvent =
-                        new DashboardReorderEvent(this, behaviorEvent.getBehavior(), widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
+                DashboardReorderEvent reorderEvent = new DashboardReorderEvent(this, behaviorEvent.getBehavior(), item.getPanelId(),
+                        receiver[0], receiver[1], sender[0], sender[1]);
                 reorderEvent.setPhaseId(behaviorEvent.getPhaseId());
-
-                updateDashboardModel(getModel(), widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
 
                 super.queueEvent(reorderEvent);
             }
@@ -89,18 +103,30 @@ public class Dashboard extends DashboardBaseImpl {
         }
     }
 
-    protected void updateDashboardModel(DashboardModel model, String widgetId, Integer itemIndex, Integer receiverColumnIndex, Integer senderColumnIndex) {
-        if (senderColumnIndex == null) {
-            //Reorder widget in same column
-            DashboardWidget column = model.getWidget(receiverColumnIndex);
-            column.reorderWidget(itemIndex, widgetId);
+    /**
+     * @param context the FacesContext
+     * @param panelClientId the client id of a panel
+     * @return the id of the panel (the last part of the client id)
+     */
+    protected String toPanelId(FacesContext context, String panelClientId) {
+        String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
+        String[] idTokens = panelClientId.split(separator);
+        return idTokens[idTokens.length - 1];
+    }
+
+    /**
+     * @param model the model
+     * @param item the item
+     * @return the index of the column and the index of the item in the column
+     */
+    protected int[] findPosition(DashboardModel model, DashboardItem item) {
+        for (int c = 0; c < model.getColumnCount(); c++) {
+            int i = model.getColumn(c).getItems().indexOf(item);
+            if (i >= 0) {
+                return new int[] {c, i};
+            }
         }
-        else {
-            //Transfer widget
-            DashboardWidget oldColumn = model.getWidget(senderColumnIndex);
-            DashboardWidget newColumn = model.getWidget(receiverColumnIndex);
-            model.transferWidget(oldColumn, newColumn, widgetId, itemIndex, this.isResponsive());
-        }
+        throw new FacesException("Panel " + item.getPanelId() + " is not part of the dashboard model");
     }
 
 
