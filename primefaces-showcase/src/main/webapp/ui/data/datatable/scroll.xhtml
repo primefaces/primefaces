@@ -2,6 +2,7 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:p="primefaces"
+                xmlns:f="jakarta.faces.core"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -21,7 +22,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Both vertical and horizontal scrolling of the data is supported with optional frozen rows-columns and on-demand loading features.
+        Both vertical and horizontal scrolling of the data is supported with optional frozen rows-columns and on-demand loading features. With the page, a sticky header stays in the viewport.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>
@@ -168,6 +169,26 @@
                     </p:column>
                     <p:column headerText="Status" footerText="Status">
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Sticky Header</h5>
+                <p:dataTable var="product" value="#{dtStickyView.products}" stickyHeader="true" stickyTopAt=".layout-topbar">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}"/>
+                    </p:column>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+                    <p:column headerText="Price">
+                        <h:outputText value="#{product.price}">
+                            <f:convertNumber type="currency" currencySymbol="$"/>
+                        </h:outputText>
                     </p:column>
                 </p:dataTable>
             </div>

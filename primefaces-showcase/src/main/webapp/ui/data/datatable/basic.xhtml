@@ -3,6 +3,7 @@
     xmlns:h="jakarta.faces.html"
     xmlns:p="primefaces"
     xmlns:f="jakarta.faces.core"
+    xmlns:fn="jakarta.tags.functions"
     template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -10,7 +11,7 @@
     </ui:define>
 
     <ui:define name="description">
-        DataTable displays data in tabular format.
+        DataTable displays data in tabular format, header and footer sections are defined using facets.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable" />
@@ -21,6 +22,10 @@
         <h:form>
             <div class="card">
                 <p:dataTable var="product" value="#{dtBasicView.products}">
+                    <f:facet name="header">
+                        List of Products
+                    </f:facet>
+
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
                     </p:column>
@@ -36,6 +41,10 @@
                     <p:column headerText="Quantity">
                         <h:outputText value="#{product.quantity}" />
                     </p:column>
+
+                    <f:facet name="footer">
+                        <span class="font-bold">In total there are #{fn:length(dtBasicView.products)} products.</span>
+                    </f:facet>
                 </p:dataTable>
             </div>
         </h:form>

@@ -207,10 +207,8 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("DisplayPriority", "/ui/data/datatable/displayPriority"));
         dataTableMenuItems.add(new MenuItem("Dynamic Columns", "/ui/data/datatable/columns"));
         dataTableMenuItems.add(new MenuItem("Edit", "/ui/data/datatable/edit"));
-        dataTableMenuItems.add(new MenuItem("Facets", "/ui/data/datatable/facets"));
         dataTableMenuItems.add(new MenuItem("Field", "/ui/data/datatable/field"));
         dataTableMenuItems.add(new MenuItem("Filter", "/ui/data/datatable/filter"));
-        dataTableMenuItems.add(new MenuItem("Gridlines", "/ui/data/datatable/gridlines"));
         dataTableMenuItems.add(new MenuItem("Group", "/ui/data/datatable/group"));
         dataTableMenuItems.add(new MenuItem("Lazy", "/ui/data/datatable/lazy"));
         dataTableMenuItems.add(new MenuItem("MultiViewState", "/ui/data/datatable/multiViewState"));
@@ -218,18 +216,14 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("Reorder", "/ui/data/datatable/reorder"));
         dataTableMenuItems.add(new MenuItem("Resize", "/ui/data/datatable/columnResize"));
         dataTableMenuItems.add(new MenuItem("Responsive", "/ui/data/datatable/responsive"));
-        dataTableMenuItems.add(new MenuItem("RowAdd", "/ui/data/datatable/addRow"));
-        dataTableMenuItems.add(new MenuItem("RowColor", "/ui/data/datatable/rowColor"));
         dataTableMenuItems.add(new MenuItem("RowExpansion", "/ui/data/datatable/expansion"));
         dataTableMenuItems.add(new MenuItem("RowGroup", "/ui/data/datatable/rowGroup"));
         dataTableMenuItems.add(new MenuItem("RowHeader", "/ui/data/datatable/rowHeader"));
-        dataTableMenuItems.add(new MenuItem("RowTitle", "/ui/data/datatable/rowTitle"));
+        dataTableMenuItems.add(new MenuItem("RowStyle", "/ui/data/datatable/rowStyle"));
         dataTableMenuItems.add(new MenuItem("Scroll", "/ui/data/datatable/scroll"));
         dataTableMenuItems.add(new MenuItem("Selection", "/ui/data/datatable/selection"));
-        dataTableMenuItems.add(new MenuItem("Size", "/ui/data/datatable/size"));
         dataTableMenuItems.add(new MenuItem("Sort", "/ui/data/datatable/sort"));
-        dataTableMenuItems.add(new MenuItem("StickyHeader", "/ui/data/datatable/sticky"));
-        dataTableMenuItems.add(new MenuItem("StripedRows", "/ui/data/datatable/striped"));
+        dataTableMenuItems.add(new MenuItem("Style", "/ui/data/datatable/style"));
         dataTableMenuItems.add(new MenuItem("SubTable", "/ui/data/datatable/subtable"));
         //dataTableMenuItems.add(new MenuItem("SummaryRow", "/ui/data/datatable/summaryRow"));
         dataMenuItems.add(new MenuItem("DataTable", dataTableMenuItems));
@@ -325,9 +319,7 @@ public class AppMenu {
         //TreeTable Nested MenuItem
         List<MenuItem> treeTableMenuItems = new ArrayList<>();
         treeTableMenuItems.add(new MenuItem("Basic", "/ui/data/treetable/basic"));
-        treeTableMenuItems.add(new MenuItem("Size", "/ui/data/treetable/size"));
-        treeTableMenuItems.add(new MenuItem("Gridlines", "/ui/data/treetable/gridlines"));
-        treeTableMenuItems.add(new MenuItem("StripedRows", "/ui/data/treetable/striped"));
+        treeTableMenuItems.add(new MenuItem("Style", "/ui/data/treetable/style"));
         treeTableMenuItems.add(new MenuItem("Selection", "/ui/data/treetable/selection"));
         treeTableMenuItems.add(new MenuItem("Events", "/ui/data/treetable/events"));
         treeTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));

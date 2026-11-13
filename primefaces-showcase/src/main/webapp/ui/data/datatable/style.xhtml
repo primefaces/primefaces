@@ -1,16 +1,17 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="jakarta.faces.facelets"
-                xmlns:h="jakarta.faces.html"
-                xmlns:p="primefaces"
-                xmlns:f="jakarta.faces.core"
-                template="/WEB-INF/template.xhtml">
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="primefaces"
+    xmlns:f="jakarta.faces.core"
+    template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        DataTable <span class="subitem">Size</span>
+        DataTable <span class="subitem">Style</span>
     </ui:define>
 
     <ui:define name="description">
-        In addition to a regular table, alternatives sizes are available.
+        Gridlines display borders between the cells, striped rows help the visual separation of the content and
+        in addition to the regular size, a small and a large size are available.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable" />
@@ -20,7 +21,49 @@
     <ui:define name="implementation">
         <h:form>
             <div class="card">
-                <h5>Small Table</h5>
+                <h5>Gridlines</h5>
+                <p:dataTable var="product" value="#{dtBasicView.products}" showGridlines="true">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Striped Rows</h5>
+                <p:dataTable var="product" value="#{dtBasicView.products}" stripedRows="true">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Small Size</h5>
                 <p:dataTable var="product" value="#{dtBasicView.products}" size="small">
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
@@ -41,28 +84,7 @@
             </div>
 
             <div class="card">
-                <h5>Regular Table</h5>
-                <p:dataTable var="product" value="#{dtBasicView.products}">
-                    <p:column headerText="Code">
-                        <h:outputText value="#{product.code}" />
-                    </p:column>
-
-                    <p:column headerText="Name">
-                        <h:outputText value="#{product.name}" />
-                    </p:column>
-
-                    <p:column headerText="Category">
-                        <h:outputText value="#{product.category}" />
-                    </p:column>
-
-                    <p:column headerText="Quantity">
-                        <h:outputText value="#{product.quantity}" />
-                    </p:column>
-                </p:dataTable>
-            </div>
-
-            <div class="card">
-                <h5>Large Table</h5>
+                <h5>Large Size</h5>
                 <p:dataTable var="product" value="#{dtBasicView.products}" size="large">
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
