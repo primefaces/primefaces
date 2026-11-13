@@ -75,8 +75,8 @@ export class Utils {
      * @return The container DOM element to which the overlay is to be appended.
      */
     resolveDynamicOverlayContainer<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component): JQuery {
         return component.cfg.appendTo
             ? expressions.SearchExpressionFacade.resolveComponentsAsSelector(component.jq, component.cfg.appendTo)
@@ -111,8 +111,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     cleanupDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         if (component.cfg.appendTo) {
             var overlays = $("[id='" + overlayId + "']");
@@ -133,8 +133,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     removeDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery | null, overlayId: string, appendTo: JQuery): void {
         appendTo.children("[id='" +  overlayId + "']").not(overlay ?? (() => false)).remove();
     }
@@ -150,8 +150,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     appendDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         var elementParent = overlay.parent();
 
@@ -356,9 +356,9 @@ export class Utils {
         component: BaseComponent,
         hideNamespace: string,
         overlay: JQuery,
-        resolveIgnoredElementsCallback: PrimeFacesTypes.OverlayResolveIgnoredElementCallback | undefined | null,
-        hideCallback: PrimeFacesTypes.OverlayHideCallback
-    ): PrimeFacesTypes.Unbindable {
+        resolveIgnoredElementsCallback: PrimeFaces.OverlayResolveIgnoredElementCallback | undefined | null,
+        hideCallback: PrimeFaces.OverlayHideCallback
+    ): PrimeFaces.Unbindable {
 
         const unbindHideHandler = () => {
             $(document).off(hideNamespace);
@@ -410,9 +410,9 @@ export class Utils {
         component: BaseComponent,
         resizeNamespace: string,
         element: JQuery | undefined | null,
-        resizeCallback: PrimeFacesTypes.ResizeCallback,
+        resizeCallback: PrimeFaces.ResizeCallback,
         params?: string
-    ): PrimeFacesTypes.Unbindable {
+    ): PrimeFaces.Unbindable {
 
         const unbindResizeHandler = () => {
             $(window).off(resizeNamespace);
@@ -449,8 +449,8 @@ export class Utils {
     registerMutationObserver(
         component: BaseComponent,
         element: JQuery | HTMLElement,
-        mutationCallback: PrimeFacesTypes.MutationCallback,
-    ): PrimeFacesTypes.Controllable {
+        mutationCallback: PrimeFaces.MutationCallback,
+    ): PrimeFaces.Controllable {
         const domElement = this.isJQuery(element) ? element.get(0) : element;
 
         if (domElement === undefined) {
@@ -530,8 +530,8 @@ export class Utils {
      * @return The overlay that was passed to this function.
      */
     registerDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery, overlayId: string): JQuery {
 
         if (component.cfg.appendTo) {
@@ -573,8 +573,8 @@ export class Utils {
     registerScrollHandler(
         component: BaseComponent,
         scrollNamespace: string,
-        scrollCallback: PrimeFacesTypes.ScrollCallback,
-    ): PrimeFacesTypes.Unbindable {
+        scrollCallback: PrimeFaces.ScrollCallback,
+    ): PrimeFaces.Unbindable {
         let scrollParent: JQuery<any> | null = this.getScrollParent(component.getJQ());
 
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
@@ -616,8 +616,8 @@ export class Utils {
         component: BaseComponent,
         scrollNamespace: string,
         element: JQuery | undefined,
-        scrollCallback: PrimeFacesTypes.ScrollCallback
-    ): PrimeFacesTypes.Unbindable {
+        scrollCallback: PrimeFaces.ScrollCallback
+    ): PrimeFaces.Unbindable {
         const scrollableParents = this.getScrollableParents((element ?? component.getJQ()).get(0));
 
         const scrollHandler = (e: JQuery.TriggeredEvent) => {
@@ -697,7 +697,7 @@ export class Utils {
      * @returns The given elements, for chaining.
      * @since 17.0.0
      */
-    position<T extends JQuery<any>>(element: T, options: PrimeFacesTypes.utils.PositionOptions | null | undefined): T {
+    position<T extends JQuery<any>>(element: T, options: PrimeFaces.utils.PositionOptions | null | undefined): T {
         return position(element, options);
     }
 
@@ -846,7 +846,7 @@ export class Utils {
      * `null` if there is no element or it doesn't support a text selection (e.g. `type="number"` or a checkbox).
      * @since 17.0.0
      */
-    getTextSelection(element: JQuery<any> | Element | null | undefined): PrimeFacesTypes.utils.TextSelection | null {
+    getTextSelection(element: JQuery<any> | Element | null | undefined): PrimeFaces.utils.TextSelection | null {
         const el = this.toTextField(element);
         if (!el || el.selectionStart === null || el.selectionEnd === null) {
             return null;
@@ -1105,7 +1105,7 @@ export class Utils {
      * when the element gets shown and hidden. If the given element or className property is `undefined` or `null`,
      * this function returns `null`.
      */
-    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFacesTypes.CssTransitionHandler | null {
+    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFaces.CssTransitionHandler | null {
         if (element && className != null) {
             const classNameStates = {
                'enter': className + '-enter',
@@ -1115,10 +1115,10 @@ export class Utils {
                'exitActive': className + '-exit-active',
                'exitDone': className + '-exit-done'
             };
-            const callTransitionEvent = <K extends keyof PrimeFacesTypes.CssTransitionCallback>(
-                callbacks: PrimeFacesTypes.CssTransitionCallback | null | undefined,
+            const callTransitionEvent = <K extends keyof PrimeFaces.CssTransitionCallback>(
+                callbacks: PrimeFaces.CssTransitionCallback | null | undefined,
                 key: K,
-                param: ThisParameterType<Exclude<PrimeFacesTypes.CssTransitionCallback[K], undefined>>
+                param: ThisParameterType<Exclude<PrimeFaces.CssTransitionCallback[K], undefined>>
             ) => {
                 callbacks?.[key]?.call(param as any);
             };
@@ -1612,7 +1612,7 @@ export function globalUtilsSetup(): void {
 }
 
 declare global {
-    namespace PrimeFacesTypes.utils {
+    namespace PrimeFaces.utils {
         /**
          * The selected text of a text input or textarea, see {@link Utils.getTextSelection}.
          * @since 17.0.0
@@ -1626,6 +1626,117 @@ declare global {
             length: number;
             /** The selected text. */
             text: string;
+        }
+    }
+}
+
+// Overlay, resize and CSS transition callbacks
+declare global {
+    namespace PrimeFaces {
+        /**
+         * A callback that is invoked when the user clicks on an element outside
+         * an overlay component.
+         */
+        export type OverlayHideCallback =
+            /**
+             * @param event The event that caused the overlay to be hidden.
+             * @param eventTarget The target of the event, wrapped in a JQuery instance.
+             */
+            (event: JQuery.TriggeredEvent, eventTarget: JQuery) => void;
+
+        /**
+         * Used when registering overlay {@link OverlayHideCallback}.
+         * 
+         * The callback which resolves the elements to ignore when the user
+         * clicks outside the overlay. The {@link OverlayHideCallback} is not
+         * invoked when the user clicks on one those elements.
+         */
+        export type OverlayResolveIgnoredElementCallback =
+            /**
+             * @param event The event that occurred, with the element that was clicked.
+             * @returns An optional set of elements to ignore.
+             */
+            (event: JQuery.TriggeredEvent) => JQuery | null | undefined;
+
+        /**
+         * Callback invoked when an element or the window was resized.
+         */
+        export type ResizeCallback =
+            /**
+             * @param event The resize event that occurred.
+             */
+            (event: JQuery.TriggeredEvent) => void;
+
+        /**
+         * Callback invoked when a scroll event occurred.
+         */
+        export type ScrollCallback =
+            /**
+             * @param event The scroll event that occurred.
+             */
+            (event: JQuery.TriggeredEvent) => void;
+
+        /**
+         * Callback invoked when changes occur that may affect an element's
+         * position or dimensions, such as a resize or DOM mutation event.
+         */
+        export type MutationCallback = () => void;
+
+
+        /**
+         * CSS transition callbacks that can be passed to the methods in {@link CssTransitionHandler}.
+         * @since 10.0.0
+         */
+        export interface CssTransitionCallback {
+            /**
+             * Called when the entering process is about to start.
+             */
+            onEnter?: (this: Window) => void;
+            /**
+             * Called during the entering process.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onEntering?: (this: JQuery.TriggeredEvent | Window) => void;
+            /**
+             * Called when the entering process has finished.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onEntered?: (this: JQuery.TriggeredEvent | Window) => void;
+            /**
+             * Called when the exiting process is about to start.
+             */
+            onExit?: (this: Window) => void;
+            /**
+             * Called during the exiting process.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onExiting?: (this: JQuery.TriggeredEvent | Window) => void;
+            /**
+             * Called when the exiting process has finished.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onExited?: (this: JQuery.TriggeredEvent | Window) => void;
+        }
+
+        /**
+         * Methods for a CSS transition that are returned by {@link PrimeFaces.utils.registerCSSTransition}.
+         * @since 10.0.0
+         */
+        export interface CssTransitionHandler {
+            /**
+             * Should be called when an element gets shown.
+             * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+             */
+            show(callbacks?: CssTransitionCallback): void;
+            /**
+             * Should be called when an element gets hidden.
+             * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+             */
+            hide(callbacks?: CssTransitionCallback): void;
         }
     }
 }

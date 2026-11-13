@@ -5,17 +5,13 @@ PrimeFaces.component.InputOtp = InputOtp;
 PrimeFaces.validator["primefaces.InputOtp"] = new InputOtpValidator();
 
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             InputOtp: typeof InputOtp;
         }
     }
 
-    namespace PrimeFacesTypes.component {
-        export type InputOtpCfg = import("./src/inputotp.js").InputOtpCfg;
-    }
-
-    namespace PrimeFacesTypes.validation {
+    namespace PrimeFaces.validation {
         interface ValidatorInstanceMap {
             "primefaces.InputOtp"?: Validator;
         }

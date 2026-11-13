@@ -73,7 +73,7 @@
         <junit.version>6.1.3</junit.version>
         <poi.version>6.0.0</poi.version>
         <jacoco.version>0.8.16</jacoco.version>
-        <tomcat.version>11.0.27</tomcat.version>
+        <tomcat.version>11.0.29</tomcat.version>
         <slf4j.version>2.0.20</slf4j.version>
         <dart-sass.version>1.79.6</dart-sass.version>
 
@@ -506,7 +506,7 @@
             <dependency>
                 <groupId>uk.org.okapibarcode</groupId>
                 <artifactId>okapibarcode</artifactId>
-                <version>0.5.6</version>
+                <version>0.5.7</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.beust</groupId>

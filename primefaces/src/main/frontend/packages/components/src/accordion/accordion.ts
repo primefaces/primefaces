@@ -1,12 +1,17 @@
 /**
+ * The open tab(s): with `multiple` a list of keys or indices, otherwise a key, an index or `none`.
+ */
+export type Active = string | number | (string | number)[];
+
+/**
  * The configuration for the {@link AccordionPanel} component.
  */
-export interface AccordionPanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface AccordionPanelCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * The open tab(s), read from the state input on init: with `multiple` a list of keys or indices, otherwise a key, an
      * index or `none`.
      */
-    active: PrimeFacesTypes.component.AccordionPanel.Active;
+    active: Active;
     /** Whether dynamically loaded tabs are not loaded again. */
     cache: boolean;
     /** Whether a tab controller decides if a tab may be opened or closed. */
@@ -23,12 +28,22 @@ export interface AccordionPanelCfg extends PrimeFacesTypes.component.BaseCompone
     toggleSpeed: number;
     /** Where an opened tab is scrolled into view, not scrolled if not set. */
     scrollIntoView: ScrollLogicalPosition;
-    /** Called before a tab is opened, `false` keeps it closed. */
-    onTabChange: PrimeFacesTypes.component.AccordionPanel.OnTabChangeCallback;
-    /** Called when a tab was opened. */
-    onTabShow: PrimeFacesTypes.component.AccordionPanel.OnTabShowCallback;
-    /** Called when a tab was closed. */
-    onTabClose: PrimeFacesTypes.component.AccordionPanel.OnTabCloseCallback;
+    /**
+     * Called before a tab is opened, with the accordion as `this`. `false` keeps it closed.
+     * @param panel The content of the tab.
+     */
+    onTabChange: (this: AccordionPanel, panel: JQuery) => boolean | void;
+    /**
+     * Called when a tab was opened, with the accordion as `this`.
+     * @param panel The content of the tab.
+     */
+    onTabShow: (this: AccordionPanel, panel: JQuery) => void;
+    /**
+     * Called when a tab was closed, with the accordion as `this`.
+     * @param panel The content of the closed tab, or, when a tab is closed because another one is opened, the content
+     * of the opened tab.
+     */
+    onTabClose: (this: AccordionPanel, panel: JQuery) => void;
 }
 
 /**
@@ -44,7 +59,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
     /** The contents of the tabs. */
     panels: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.stateHolder = $(this.jqId + '_active') as JQuery<HTMLInputElement>;
@@ -354,7 +369,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
      * @param panel The content of the tab.
      */
     loadDynamicTab(panel: JQuery): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -399,7 +414,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
      */
     private fireTabChangeEvent(panel: JQuery): void {
         if (this.hasBehavior('tabChange')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     { name: this.getId() + '_currentTab', value: panel.attr('id') },
                     { name: this.getId() + '_tabindex', value: Math.floor(panel.index() / 2) }
@@ -417,7 +432,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
             this.callBehavior('tabChange', ext);
         }
         else if (this.cfg.multiViewState) {
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 partialSubmit: true,
                 process: this.getId(),
@@ -441,7 +456,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
     private fireTabCloseEvent(index: number): void {
         const panel = this.panels.eq(index);
         if (this.hasBehavior('tabClose')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     { name: this.getId() + '_currentTab', value: panel.attr('id') },
                     { name: this.getId() + '_tabindex', value: Math.floor(index) }
@@ -459,7 +474,7 @@ export class AccordionPanel<Cfg extends AccordionPanelCfg = AccordionPanelCfg> e
             this.callBehavior('tabClose', ext);
         }
         else if (this.cfg.multiViewState) {
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 partialSubmit: true,
                 process: this.getId(),

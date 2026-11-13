@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Chips} component.
  */
-export interface ChipsCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ChipsCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the input is added as item when it loses the focus. */
     addOnBlur: boolean;
     /** Whether pasted text is added as item(s). */
@@ -33,7 +33,7 @@ export class Chips<Cfg extends ChipsCfg = ChipsCfg> extends PrimeFaces.component
     /** Whether this component is wrapped in a float label. */
     hasFloatLabel: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLInputElement>;

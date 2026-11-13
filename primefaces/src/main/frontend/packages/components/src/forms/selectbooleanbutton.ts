@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link SelectBooleanButton} component.
  */
-export interface SelectBooleanButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectBooleanButtonCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Label when the button is on, defaults to the locale. */
     onLabel: string;
     /** Icon when the button is on. */
@@ -29,7 +29,7 @@ export class SelectBooleanButton<Cfg extends SelectBooleanButtonCfg = SelectBool
     /** The label when the button is off. */
     offLabel: string = '';
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLInputElement>;

@@ -62,7 +62,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      */
     wrapper: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //elements
@@ -158,8 +158,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         });
         // after the swap of changeTabindex(), which would flip the back link too: reachable inside a submenu
         this.changeTabindex();
-        this.backwardButton = _self.backward.find('a.p-menuitem-link');
-        this.backwardButton.attr('tabindex', 0);
+        _self.backward.find('a.p-menuitem-link').attr('tabindex', 0);
     }
 
     /**
@@ -187,8 +186,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         }
         // after the swap of changeTabindex(), which would flip the back link too: reachable as long as a submenu is shown
         this.changeTabindex();
-        this.backwardButton = this.backward.find('a.p-menuitem-link');
-        this.backwardButton.attr('tabindex', this.depth() > 0 ? 0 : -1);
+        this.backward.find('a.p-menuitem-link').attr('tabindex', this.depth() > 0 ? 0 : -1);
     }
 
     /**
@@ -227,16 +225,14 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      * Renders the client-side parts of this component.
      */
     private render(): void {
-        this.menuList = this.backward.children('ul.p-menu-list');
-        this.menuItem = this.menuList.children('li.p-menuitem ');
-        this.backButton = this.menuItem.children('a.p-menuitem-link');
+        const menuList = this.backward.children('ul.p-menu-list');
 
         // the content width (without the border), which is also the slide offset; measured here, not only on init,
         // because the deferred render of a hidden container runs once it is visible
         this.jqWidth = this.jq.width() ?? 0;
         this.submenus.outerWidth(this.jqWidth);
         // the whole back list, including its list padding
-        this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.menuList.outerHeight(true) ?? 0));
+        this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (menuList.outerHeight(true) ?? 0));
         this.content.height(this.rootList.outerHeight(true) ?? 0);
         this.backward.attr('style', 'display: none;');
         this.rendered = true;
@@ -247,11 +243,11 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      * @private
      */
     private changeTabindex() {
-        this.linksActive = this.jq.find('a.p-menuitem-link[tabindex=0]');
-        this.linksInactive = this.jq.find('a.p-menuitem-link[tabindex=-1]');
+        const linksActive = this.jq.find('a.p-menuitem-link[tabindex=0]');
+        const linksInactive = this.jq.find('a.p-menuitem-link[tabindex=-1]');
 
-        this.linksActive.attr('tabindex', -1);
-        this.linksInactive.attr('tabindex', 0);
+        linksActive.attr('tabindex', -1);
+        linksInactive.attr('tabindex', 0);
     }
 
     override show(): void {

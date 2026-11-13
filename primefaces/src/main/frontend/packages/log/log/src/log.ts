@@ -1,7 +1,12 @@
 /**
+ * Available severity levels for log messages used by the `Log` component.
+ */
+export type Severity = "all" | "info" | "warn" | "debug" | "error";
+
+/**
  * The configuration for the {@link Log} component.
  */
-export interface LogCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface LogCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -29,9 +34,9 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.component.BaseC
     /** The DOM elements for the filter buttons. */
     filters: JQuery = $();
     /** The current severity level that controls which log messages are shown. */
-    severity: PrimeFacesTypes.component.Log.Severity = 'all';
+    severity: Severity = 'all';
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.header = this.jq.children('.p-log-header');
@@ -57,10 +62,10 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.component.BaseC
         this.jq.appendTo('body');
 
         //attach
-        PrimeFaces.logger = this as PrimeFacesTypes.Logger;
+        PrimeFaces.logger = this as PrimeFaces.Logger;
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // remove the old element, which was moved to body - an update of the log itself replaces it in place
         // inside body, so it must not be removed by its id
         this.jq.remove();
@@ -157,7 +162,7 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.component.BaseC
      * @param severity Severity of the log message
      * @param icon Style classes of the icon to show near the log message
      */
-    add(msg: string, severity: PrimeFacesTypes.component.Log.Severity, icon: string): void {
+    add(msg: string, severity: Severity, icon: string): void {
         const visible = this.severity == severity || this.severity == 'all',
             style = visible ? 'display:block' : 'display:none';
 
@@ -182,7 +187,7 @@ export class Log<Cfg extends LogCfg = LogCfg> extends PrimeFaces.component.BaseC
      * @param severity Severity of the log message.
      * @param button The button that was pressed.
      */
-    private handleFilterClick(event: JQuery.TriggeredEvent, severityClass: string, severity: PrimeFacesTypes.component.Log.Severity, button: JQuery): void {
+    private handleFilterClick(event: JQuery.TriggeredEvent, severityClass: string, severity: Severity, button: JQuery): void {
         this.filter(severityClass);
         this.filters.filter('.p-state-active').removeClass('p-state-active');
         button.addClass('p-state-active').removeClass('p-state-hover');

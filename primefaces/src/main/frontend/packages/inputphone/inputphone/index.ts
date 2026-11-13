@@ -5,17 +5,13 @@ PrimeFaces.component.InputPhone = InputPhone;
 PrimeFaces.validator["primefaces.InputPhone"] = new InputPhoneValidator();
 
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             InputPhone: typeof InputPhone;
         }
     }
 
-    namespace PrimeFacesTypes.component {
-        export type InputPhoneCfg = import("./src/inputphone.js").InputPhoneCfg;
-    }
-
-    namespace PrimeFacesTypes.validation {
+    namespace PrimeFaces.validation {
         interface ValidatorInstanceMap {
             "primefaces.InputPhone"?: Validator;
         }

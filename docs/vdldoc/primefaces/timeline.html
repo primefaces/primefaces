@@ -317,163 +317,169 @@
                                 (<i>must evaluate to </i><code>java.lang.Float</code>)
                     </td><td class="colLast">Preload factor is a positive float value or 0 which can be used for lazy loading of events. When the lazy loading feature is active, the calculated time range for preloading will be multiplicated by the preload factor. The result of this multiplication specifies the additional time range which will be considered for the preloading during moving / zooming too. For example, if the calculated time range for preloading is 5 days and the preload factor is 0.2, the result is 5 * 0.2 = 1 day. That means, 1 day backwards and / or 1 day onwards will be added to the original calculated time range. The event's area to be preloaded is wider then. This helps to avoid frequently, time-consuming fetching of events.Default is 0.0f.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="ref" class="altColor">
+                            <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
+                        </tr>
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="responsive" class="rowColor">
+                        <tr id="responsive" class="altColor">
                             <td class="colFirst"><a href="#responsive"><code>responsive</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Check if the timeline container is resized, and if so, resize the timeline. Useful when the webpage (browser window) or a layout pane / unit containing the timeline component is resized.Default is true.</td>
                         </tr>
-                        <tr id="selectable" class="altColor">
+                        <tr id="selectable" class="rowColor">
                             <td class="colFirst"><a href="#selectable"><code>selectable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, events on the timeline are selectable. Selectable events can fire AJAX "select" events.Default is true.</td>
                         </tr>
-                        <tr id="showCurrentTime" class="rowColor">
+                        <tr id="showCurrentTime" class="altColor">
                             <td class="colFirst"><a href="#showCurrentTime"><code>showCurrentTime</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, the timeline shows a red, vertical line displaying the current time.Default is true.</td>
                         </tr>
-                        <tr id="showMajorLabels" class="altColor">
+                        <tr id="showMajorLabels" class="rowColor">
                             <td class="colFirst"><a href="#showMajorLabels"><code>showMajorLabels</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">By default, the timeline shows both minor and major date labels on the horizontal axis. For example the minor labels show minutes and the major labels show hours. When "showMajorLabels" is false, no major labels are shown.Default is true.</td>
                         </tr>
-                        <tr id="showMinorLabels" class="rowColor">
+                        <tr id="showMinorLabels" class="altColor">
                             <td class="colFirst"><a href="#showMinorLabels"><code>showMinorLabels</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">By default, the timeline shows both minor and major date labels on the horizontal axis. For example the minor labels show minutes and the major labels show hours. When "showMinorLabels" is false, no minor labels are shown. When both "showMajorLabels" and "showMinorLabels" are false, no horizontal axis will be visible.Default is true.</td>
                         </tr>
-                        <tr id="showNested" class="altColor">
+                        <tr id="showNested" class="rowColor">
                             <td class="colFirst"><a href="#showNested"><code>showNested</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">By default, the timeline shows nested groups without collapsed. When "showNested" is false, all nested groups shown as collapsed. If "showNested" is set different in TimelineGroup model, it will override this.Default is true.</td>
                         </tr>
-                        <tr id="showTooltips" class="rowColor">
+                        <tr id="showTooltips" class="altColor">
                             <td class="colFirst"><a href="#showTooltips"><code>showTooltips</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, items with titles will display a tooltip. If false, item tooltips are prevented from showing.Default is true.</td>
                         </tr>
-                        <tr id="snap" class="altColor">
+                        <tr id="snap" class="rowColor">
                             <td class="colFirst"><a href="#snap"><code>snap</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale. The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping. The signature of the snap function is: function snap(date: Date, scale: string, step: number) : Date or number. The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'. The parameter step is a number like 1, 2, 4, 5.</td>
                         </tr>
-                        <tr id="stackEvents" class="rowColor">
+                        <tr id="stackEvents" class="altColor">
                             <td class="colFirst"><a href="#stackEvents"><code>stackEvents</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, the events are stacked above each other to prevent overlapping events.Default is true.</td>
                         </tr>
-                        <tr id="start" class="altColor">
+                        <tr id="start" class="rowColor">
                             <td class="colFirst"><a href="#start"><code>start</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.time.LocalDateTime</code>)
                     </td><td class="colLast">The initial start date for the axis of the timeline. If not provided, the earliest date present in the events is taken as start date.</td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style of the component.</td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the component.</td>
                         </tr>
-                        <tr id="timeZone" class="rowColor">
+                        <tr id="timeZone" class="altColor">
                             <td class="colFirst"><a href="#timeZone"><code>timeZone</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Target time zone to convert start / end dates of TimelineEvent's in server side. The attribute can be either a String, TimeZone object or null.Default is Server's time zone..</td>
                         </tr>
-                        <tr id="tooltipDelay" class="altColor">
+                        <tr id="tooltipDelay" class="rowColor">
                             <td class="colFirst"><a href="#tooltipDelay"><code>tooltipDelay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Set a value (in ms) that the tooltip is delayed before showing.Default is 500.</td>
                         </tr>
-                        <tr id="tooltipFollowMouse" class="rowColor">
+                        <tr id="tooltipFollowMouse" class="altColor">
                             <td class="colFirst"><a href="#tooltipFollowMouse"><code>tooltipFollowMouse</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, tooltips will follow the mouse as they move around in the item.Default is false.</td>
                         </tr>
-                        <tr id="tooltipOverflowMethod" class="altColor">
+                        <tr id="tooltipOverflowMethod" class="rowColor">
                             <td class="colFirst"><a href="#tooltipOverflowMethod"><code>tooltipOverflowMethod</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Set how the tooltip should act if it is about to overflow out of the timeline. Choose from 'cap', 'flip' and 'none'. If it is set to 'cap', the tooltip will just cap its position to inside to timeline. If set to 'flip', the position of the tooltip will flip around the cursor so that a corner is at the cursor, and the rest of it is visible. If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden or stick ouf of the timeline, depending how CSS overflow is defined for the timeline (by default it's hidden).Default is flip.</td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>true</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>org.primefaces.model.timeline.TimelineModel</code>)
                     </td><td class="colLast">An instance of TimelineModel representing the backing model.</td>
                         </tr>
-                        <tr id="var" class="altColor">
+                        <tr id="var" class="rowColor">
                             <td class="colFirst"><a href="#var"><code>var</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Name of the request-scoped variable for underlaying object in the TimelineEvent for each iteration.</td>
                         </tr>
-                        <tr id="varGroup" class="rowColor">
+                        <tr id="varGroup" class="altColor">
                             <td class="colFirst"><a href="#varGroup"><code>varGroup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Name of the request-scoped variable for underlaying object in the TimelineGroup for each iteration.</td>
                         </tr>
-                        <tr id="verticalScroll" class="altColor">
+                        <tr id="verticalScroll" class="rowColor">
                             <td class="colFirst"><a href="#verticalScroll"><code>verticalScroll</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies the vertical scrollable.Default is false.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Name of the client side component.Default is generated ('widget_' + componentClientId).</td>
+                    </td><td class="colLast">Deprecated, use ref instead. Name of the client side component.</td>
                         </tr>
-                        <tr id="width" class="altColor">
+                        <tr id="width" class="rowColor">
                             <td class="colFirst"><a href="#width"><code>width</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">The width of the timeline in pixels or as a percentage.Default is 100%.</td>
                         </tr>
-                        <tr id="zoomable" class="rowColor">
+                        <tr id="zoomable" class="altColor">
                             <td class="colFirst"><a href="#zoomable"><code>zoomable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, the timeline is zoomable. When the timeline is zoomed, AJAX "rangechange" events are fired.Default is true.</td>
                         </tr>
-                        <tr id="zoomKey" class="altColor">
+                        <tr id="zoomKey" class="rowColor">
                             <td class="colFirst"><a href="#zoomKey"><code>zoomKey</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specifies whether the Timeline is only zoomed when an additional key is down. Available values are '' (does not apply), 'altKey', 'ctrlKey', 'shiftKey' or 'metaKey'. Only applicable when option moveable is set true.</td>
                         </tr>
-                        <tr id="zoomMax" class="rowColor">
+                        <tr id="zoomMax" class="altColor">
                             <td class="colFirst"><a href="#zoomMax"><code>zoomMax</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Long</code>)
                     </td><td class="colLast">Set a maximum zoom interval for the visible range in milliseconds. It will not be possible to zoom out further than this maximum. Default value equals 315360000000000 ms (about 10000 years).Default is 315360000000000L.</td>
                         </tr>
-                        <tr id="zoomMin" class="altColor">
+                        <tr id="zoomMin" class="rowColor">
                             <td class="colFirst"><a href="#zoomMin"><code>zoomMin</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Long</code>)

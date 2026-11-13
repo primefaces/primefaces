@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link InputMask} component.
  */
-export interface InputMaskCfg extends PrimeFacesTypes.component.BaseComponentCfg, Inputmask.Options {
+export interface InputMaskCfg extends PrimeFaces.component.BaseComponentCfg, Inputmask.Options {
     /** Whether an incomplete value is cleared on blur, mapped to the `clearIncomplete` option. */
     autoClear: boolean;
     /** The mask template to use. */
@@ -17,7 +17,7 @@ export class InputMask<Cfg extends InputMaskCfg = InputMaskCfg> extends PrimeFac
     /** Is this component wrapped in a float label. */
     hasFloatLabel: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
 

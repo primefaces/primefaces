@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ProgressBar} component.
  */
-export interface ProgressBarCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ProgressBarCfg extends PrimeFaces.component.BaseComponentCfg {
     /** In AJAX mode the value is polled from the server. */
     ajax: boolean;
     /** Animation duration in milliseconds. */
@@ -32,7 +32,7 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
     /** The current value, `undefined` until a valid value was set. */
     value?: number;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jqValue = this.jq.children('.p-progressbar-value');
@@ -132,7 +132,7 @@ export class ProgressBar<Cfg extends ProgressBarCfg = ProgressBarCfg> extends Pr
 
             clearInterval(this.progressPoll);
             this.progressPoll = window.setInterval(() => {
-                const options: PrimeFacesTypes.ajax.Configuration = {
+                const options: PrimeFaces.ajax.Configuration = {
                     source: this.getId(),
                     process: this.getId(),
                     formId: this.getParentFormId(),

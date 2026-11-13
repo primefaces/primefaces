@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ColumnToggler} component.
  */
-export interface ColumnTogglerCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface ColumnTogglerCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** ID of the button that toggles this column toggler. */
     trigger: string;
     /** ID of the component (table) to which this column toggler is attached. */
@@ -39,10 +39,10 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     /** ID of the table to which this column toggle is attached. */
     tableId?: string;
     /** Component of the table to which this column toggle is attached. */
-    tableComponent?: PrimeFacesTypes.Component<"DataTable">;
+    tableComponent?: PrimeFaces.Component<"DataTable">;
     /** @deprecated Use {@link tableComponent} instead. */
-    get tableWidget(): PrimeFacesTypes.Component<"DataTable"> | undefined { return this.tableComponent; }
-    set tableWidget(value: PrimeFacesTypes.Component<"DataTable"> | undefined) { this.tableComponent = value; }
+    get tableWidget(): PrimeFaces.Component<"DataTable"> | undefined { return this.tableComponent; }
+    set tableWidget(value: PrimeFaces.Component<"DataTable"> | undefined) { this.tableComponent = value; }
     /** The DOM element for the table body of the table to which this column toggle is attached. */
     tbody: JQuery = $();
     /** The DOM element for the table foot of the table to which this column toggle is attached. */
@@ -63,7 +63,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
     /** Whether the width of the overlay panel with the available columns was aligned with the width of the toggler. */
     widthAligned?: boolean;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.datasource);
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
@@ -89,7 +89,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
         this.bindEvents();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         const jqs = $('[id=' + (cfg.id as string).replace(/:/g, "\\:") + ']');
         if (jqs.length > 1) {
             $(document.body).children(this.jqId).remove();
@@ -646,7 +646,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
      */
     private fireToggleEvent(visible: boolean, index: number): void {
         if (index >= 0 && this.hasBehavior('toggle')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     { name: this.id + '_visibility', value: visible ? 'VISIBLE' : 'HIDDEN' },
                     { name: this.id + '_index', value: index }
@@ -677,7 +677,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
                 }
 
             }
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     { name: this.id + '_visibleColumnIds', value: columnIds }
                 ]
@@ -766,7 +766,7 @@ export class ColumnToggler<Cfg extends ColumnTogglerCfg = ColumnTogglerCfg> exte
      * Gets the table component.
      * @returns The table component.
      */
-    private getTableComponent(): PrimeFacesTypes.Component<"DataTable"> | undefined {
+    private getTableComponent(): PrimeFaces.Component<"DataTable"> | undefined {
         if (!this.tableComponent) {
             this.tableComponent = PrimeFaces.getComponentsByType(PrimeFaces.component.DataTable).find(component => component.id === this.tableId);
         }

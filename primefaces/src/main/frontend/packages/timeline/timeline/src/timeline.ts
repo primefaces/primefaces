@@ -1,15 +1,128 @@
 import { Timeline as VisTimeline, type DataGroup, type DataItem, type DateType, type IdType, type TimelineAnimationOptions,
-    type TimelineItem, type TimelineItemEditableType, type TimelineWindow } from "vis-timeline/esnext";
-import { DataSet } from "vis-data/esnext";
+    type TimelineEditableOption, type TimelineItem, type TimelineItemEditableType, type TimelineOptions as VisTimelineOptions,
+    type TimelineWindow } from "vis-timeline/esnext";
+import { DataSet, type DataView } from "vis-data/esnext";
 import * as VisUtil from "vis-util/esnext";
 
 /** The options of a droppable, see {@link PrimeFaces.interactions.droppable}. */
 type DroppableOptions = NonNullable<Parameters<typeof PrimeFaces.interactions.droppable>[1]>;
 
 /**
+ * The options for the vis timeline, as rendered by the server: `editable` is always an object, `min` and `max`
+ * are dates.
+ */
+export type TimelineOptions = VisTimelineOptions & {
+    /** Which items can be added, changed and removed. */
+    editable: TimelineEditableOption;
+    /** The upper bound of the timeline. */
+    max?: Date;
+    /** The lower bound of the timeline. */
+    min?: Date;
+};
+
+/**
+ * The vis-timeline instance, with the internals used by the component which are not part of the type declarations
+ * of vis-timeline.
+ */
+export type VisTimelineInstance = VisTimeline & {
+    /** The items: a wrapper of the data set that converts `start` and `end` to dates. */
+    itemsData: Pick<DataSet<DataItem, "id">, "add" | "clear" | "get" | "length" | "remove" | "update">;
+    /** The groups, `null` when the timeline has no groups. */
+    groupsData: DataView<DataGroup, "id"> | null;
+    /** The DOM elements of the timeline. */
+    dom: {
+        /** The center panel with the items. */
+        center: HTMLElement;
+        /** The container of the timeline. */
+        container: HTMLElement;
+    };
+    /** The item set of the timeline. */
+    itemSet: {
+        /** The options of the items. */
+        options: {
+            /** Snaps dates of items to nice values. */
+            snap?: ((date: Date, scale: string, step: number) => Date | number) | null;
+        };
+        /** Finds the group at the position of the event. */
+        groupFromTarget(event: unknown): { groupId: IdType } | null | undefined;
+        /** Finds the item with the given ID. */
+        getItemById(id: IdType): { editable?: TimelineItemEditableType } | undefined;
+    };
+    /** Internals of the timeline. */
+    body: {
+        /** Utilities of the timeline. */
+        util: {
+            /** The current scale of the time axis, e.g. `day`. */
+            getScale(): string;
+            /** The current step of the time axis. */
+            getStep(): number;
+        };
+    };
+    /**
+     * Converts a horizontal position to a time.
+     * @param x The position in pixels, relative to the center panel.
+     * @returns The time at the position.
+     */
+    _toTime(x: number): Date;
+};
+
+/**
+ * The `ext` passed to the behaviors: besides the AJAX options also the item and callback of vis-timeline, or
+ * the event and `ui` of the drop. They can be accessed in `onstart` via `cfg.ext`.
+ */
+export type BehaviorExtender = Partial<PrimeFaces.ajax.ConfigurationExtender> & {
+    /** The item that is added, changed or deleted. */
+    item?: TimelineItem;
+    /** The callback of vis-timeline for the item, `null` cancels the change. */
+    callback?: (item: TimelineItem | null) => void;
+    /** The drop event. */
+    event?: JQuery.TriggeredEvent;
+    /** The `ui` of the drop, with the dropped `draggable`. */
+    ui?: { draggable: JQuery };
+};
+
+/**
+ * The properties of the `rangechange` and `rangechanged` events of vis-timeline.
+ */
+export interface RangeChangeProperties {
+    /** Start of the visible range. */
+    start: Date;
+    /** End of the visible range. */
+    end: Date;
+    /** Whether the change was initiated by the user. */
+    byUser: boolean;
+    /** The original event. */
+    event?: Event;
+}
+
+/**
+ * Represents a time range between two points in time.
+ */
+export interface TimeRange {
+    /** Lower bound of the time range. */
+    start: number | null;
+    /** Upper bound of the time range. */
+    end: number | null;
+}
+
+/**
+ * Represents one or two time ranges.
+ */
+export interface TimelineBiRange {
+    /** Start of the first time range. */
+    startFirst: number;
+    /** End of the first time range. */
+    endFirst: number;
+    /** Start of the second time range. */
+    startSecond: number | null;
+    /** End of the second time range. */
+    endSecond: number | null;
+}
+
+/**
  * The configuration for the {@link Timeline} component.
  */
-export interface TimelineCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface TimelineCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** `accept` option for the droppable overlay when using drag&drop. */
     accept: string;
     /** Active style class for the droppable overlay when using drag&drop. */
@@ -22,7 +135,7 @@ export interface TimelineCfg extends PrimeFacesTypes.component.DeferredComponent
      * An extender function that may be used modify the settings of this configuration object. The {@link opts} are
      * passed directly to vis-timeline.
      */
-    extender: PrimeFacesTypes.component.Timeline.TimelineExtender;
+    extender: (this: Timeline) => void;
     /** Optional groups for the events. */
     groups: DataGroup[];
     /** Hover style class for the droppable overlay when using drag&drop. */
@@ -30,7 +143,7 @@ export interface TimelineCfg extends PrimeFacesTypes.component.DeferredComponent
     /** Whether a menu should be present for the timeline. */
     isMenuPresent: boolean;
     /** The options for the vis timeline. */
-    opts: PrimeFacesTypes.component.Timeline.TimelineOptions;
+    opts: TimelineOptions;
     /**
      * Preload factor is a positive float value or 0 which can be used for lazy loading of events. When the lazy loading
      * feature is active, the calculated time range for preloading will be multiplied by the preload factor. The result
@@ -53,18 +166,18 @@ export interface TimelineCfg extends PrimeFacesTypes.component.DeferredComponent
  */
 export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, the server always renders `data`, `opts` and `preloadFactor`. */
-    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & Pick<TimelineCfg, "data" | "opts" | "preloadFactor">;
+    declare cfg: PrimeFaces.component.PartialComponentCfg<Cfg> & Pick<TimelineCfg, "data" | "opts" | "preloadFactor">;
 
-    /** Callback that is invoked when an event was added to this timeline. */
-    addCallback: PrimeFacesTypes.component.Timeline.AddCallbackCallback | null = null;
-    /** Callback for when an item of the timeline has changed or was moved. */
-    changedCallback: PrimeFacesTypes.component.Timeline.ChangedCallbackCallback | null = null;
-    /** Callback for when an item of the timeline was deleted. */
-    deleteCallback: PrimeFacesTypes.component.Timeline.DeleteCallbackCallback | null = null;
+    /** Callback that is invoked when an event was added to this timeline, with the added item, or `null` to cancel. */
+    addCallback: ((item: TimelineItem | null) => void) | null = null;
+    /** Callback for when an item of the timeline has changed or was moved, with the changed item, or `null` to cancel. */
+    changedCallback: ((item: TimelineItem | null) => void) | null = null;
+    /** Callback for when an item of the timeline was deleted, with the deleted item, or `null` to cancel. */
+    deleteCallback: ((item: TimelineItem | null) => void) | null = null;
     /** When the timeline is move to the right or left, whether that move was initiated by the user. */
     initiatedByUser?: boolean;
     /** The current vis-timeline instance. */
-    instance: PrimeFacesTypes.component.Timeline.VisTimelineInstance | null = null;
+    instance: VisTimelineInstance | null = null;
     /** Whether the lazy loading feature is enabled, which loads events dynamically via AJAX. */
     lazy: boolean = false;
     /** If restricting the timeline to a certain range, the upper bound. */
@@ -74,14 +187,14 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
     /** The current preload factor, see {@link TimelineCfg.preloadFactor}. */
     pFactor: number = 0;
     /** Time range of the events that were loaded, set only when lazy loading is enabled. */
-    rangeLoadedEvents!: PrimeFacesTypes.component.Timeline.TimeRange;
+    rangeLoadedEvents!: TimeRange;
     /** The context menu component to use for the timeline, until the timeline was rendered. */
-    contextMenuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent | null = null;
+    contextMenuComponent: PrimeFaces.component.ContextMenuLikeComponent | null = null;
     /** @deprecated Use {@link contextMenuComponent} instead. */
-    get contextMenuWidget(): PrimeFacesTypes.component.ContextMenuLikeComponent | null { return this.contextMenuComponent; }
-    set contextMenuWidget(value: PrimeFacesTypes.component.ContextMenuLikeComponent | null) { this.contextMenuComponent = value; }
+    get contextMenuWidget(): PrimeFaces.component.ContextMenuLikeComponent | null { return this.contextMenuComponent; }
+    set contextMenuWidget(value: PrimeFaces.component.ContextMenuLikeComponent | null) { this.contextMenuComponent = value; }
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg = cfg as typeof this.cfg;
         this.id = cfg.id;
@@ -129,9 +242,9 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         this._bindItemsEvents();
         // the internals are not part of the type declarations of vis-timeline
         if (this.cfg.groups) {
-            this.instance = new VisTimeline(el, items, new DataSet(this.cfg.groups), this.cfg.opts) as PrimeFacesTypes.component.Timeline.VisTimelineInstance;
+            this.instance = new VisTimeline(el, items, new DataSet(this.cfg.groups), this.cfg.opts) as VisTimelineInstance;
         } else {
-            this.instance = new VisTimeline(el, items, this.cfg.opts) as PrimeFacesTypes.component.Timeline.VisTimelineInstance;
+            this.instance = new VisTimeline(el, items, this.cfg.opts) as VisTimelineInstance;
         }
 
         if (this.cfg.currentTime) {
@@ -148,7 +261,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
@@ -176,7 +289,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         if (this.cfg.opts.selectable && this.cfg.opts.editable.add && this.hasBehavior("add")) {
             this.cfg.opts.onAdd =
                 (item, callback) => {
-                    const params: PrimeFacesTypes.ajax.RequestParameter[] = [];
+                    const params: PrimeFaces.ajax.RequestParameter[] = [];
                     if (!item.id) {
                         //item.undefined until https://github.com/visjs/vis-timeline/issues/97 is fixed.
                         item.id = (item as TimelineItem & { undefined: IdType }).undefined;
@@ -208,7 +321,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
                     this.addCallback = callback;
 
-                    this.callBehavior("add", { params: params, item: item, callback: callback } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
+                    this.callBehavior("add", { params: params, item: item, callback: callback } as BehaviorExtender);
 
                     if (this.addCallback) {
                         this.addCallback(item);
@@ -221,7 +334,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.hasBehavior("change")) {
             this.cfg.opts.onMoving =
                 (item, callback) => {
-                    const params: PrimeFacesTypes.ajax.RequestParameter[] = [];
+                    const params: PrimeFaces.ajax.RequestParameter[] = [];
                     params.push({
                         name: this.id + '_eventId',
                         value: item.id
@@ -246,7 +359,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                         });
                     }
 
-                    this.callBehavior("change", { params: params, item: item, callback: callback } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
+                    this.callBehavior("change", { params: params, item: item, callback: callback } as BehaviorExtender);
                     callback(item);
                 };
         }
@@ -255,7 +368,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
         if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.groups && this.cfg.opts.editable.updateGroup) && this.hasBehavior("changed")) {
             this.cfg.opts.onMove =
                 (item, callback) => {
-                    const params: PrimeFacesTypes.ajax.RequestParameter[] = [];
+                    const params: PrimeFaces.ajax.RequestParameter[] = [];
                     params.push({
                         name: this.id + '_eventId',
                         value: item.id
@@ -281,7 +394,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                     }
 
                     this.changedCallback = callback;
-                    this.callBehavior("changed", { params: params, item: item, callback: callback } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
+                    this.callBehavior("changed", { params: params, item: item, callback: callback } as BehaviorExtender);
                     if (this.changedCallback) {
                         this.changedCallback(item);
                         this.changedCallback = null;
@@ -357,7 +470,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
         // "rangechange" event
         if ((this.cfg.opts.zoomable || this.cfg.opts.moveable) && this.hasBehavior("rangechange")) {
-            this.instance!.on('rangechange', (properties: PrimeFacesTypes.component.Timeline.RangeChangeProperties) => {
+            this.instance!.on('rangechange', (properties: RangeChangeProperties) => {
                 const options = {
                     params: [
                         { name: this.id + '_startDate', value: properties.start.toISOString() },
@@ -372,7 +485,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
 
         // "rangechanged" event
         if ((this.cfg.opts.zoomable || this.cfg.opts.moveable) && this.hasBehavior("rangechanged")) {
-            this.instance!.on('rangechanged', (properties: PrimeFacesTypes.component.Timeline.RangeChangeProperties) => {
+            this.instance!.on('rangechanged', (properties: RangeChangeProperties) => {
                 const options = {
                     params: [
                         { name: this.id + '_startDate', value: properties.start.toISOString() },
@@ -433,7 +546,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                 const snappedStart = snap ? new Date(snap(xstart, scale, step)) : xstart;
                 const snappedEnd = snap ? new Date(snap(xend, scale, step)) : xend;
 
-                const params: PrimeFacesTypes.ajax.RequestParameter[] = [];
+                const params: PrimeFaces.ajax.RequestParameter[] = [];
                 params.push({
                     name: this.id + '_startDate',
                     value: snappedStart.toISOString()
@@ -470,7 +583,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                 // call the drop listener
                 // parameters event and ui can be accessible in "onstart" (p:ajax) via cfg.ext.event and cfg.ext.ui
                 // or in "execute" (pe:javascript) via ext.event and ext.ui
-                this.callBehavior("drop", { params: params, event: evt, ui: ui } as PrimeFacesTypes.component.Timeline.BehaviorExtender);
+                this.callBehavior("drop", { params: params, event: evt, ui: ui } as BehaviorExtender);
             };
 
             // make the timeline droppable
@@ -479,10 +592,10 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
     }
 
     override bindContextMenu(
-        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        menuComponent: PrimeFaces.component.ContextMenuLikeComponent,
         targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
+        cfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.ContextMenuLikeComponentCfg>,
     ): void {
         // if the timeline is not yet initialized, store the menu component and bind later
         if (!targetComponent.instance) {
@@ -555,7 +668,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
             return;
         }
 
-        const options: { params: PrimeFacesTypes.ajax.RequestParameter[] } = {
+        const options: { params: PrimeFaces.ajax.RequestParameter[] } = {
             params: []
         };
 
@@ -579,7 +692,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
      *
      * @returns The time range(s) for events to be lazy loaded.
      */
-    private getLazyLoadRange(): PrimeFacesTypes.component.Timeline.TimelineBiRange | null {
+    private getLazyLoadRange(): TimelineBiRange | null {
         const visibleRange = this.instance!.getWindow();
 
         if (this.rangeLoadedEvents.start == null || this.rangeLoadedEvents.end == null) {
@@ -981,7 +1094,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
      *
      * @returns The current timeline instance.
      */
-    getInstance(): PrimeFacesTypes.component.Timeline.VisTimelineInstance | null {
+    getInstance(): VisTimelineInstance | null {
         return this.instance;
     }
 }

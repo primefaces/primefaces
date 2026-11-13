@@ -470,7 +470,7 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
         return row.find('div.p-cell-editor').add(this.getTwinRow(row).find('div.p-cell-editor'));
     }
 
-    override findGroupResizer(ui: PrimeFacesTypes.interactions.DraggableUi): JQuery | null {
+    override findGroupResizer(ui: PrimeFaces.interactions.DraggableUi): JQuery | null {
         var resizer = this._findGroupResizer(ui, this.frozenGroupResizers!);
         if(resizer) {
             return resizer;
@@ -486,7 +486,7 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
      * @param resizers List of all available resizers.
      * @return DOM element of the resizer.
      */
-    _findGroupResizer(ui: PrimeFacesTypes.interactions.DraggableUi, resizers: JQuery): JQuery | null {
+    _findGroupResizer(ui: PrimeFaces.interactions.DraggableUi, resizers: JQuery): JQuery | null {
         for(var i = 0; i < resizers.length; i++) {
             var groupResizer = resizers.eq(i);
             if(groupResizer.offset()!.left === ui.helper.data('originalposition').left) {
@@ -515,7 +515,7 @@ export class FrozenDataTable<Cfg extends FrozenDataTableCfg = FrozenDataTableCfg
         }
     }
 
-    override resize(event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi): void {
+    override resize(event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi): void {
         var columnHeader: JQuery | null = null,
         change: number | null = null,
         newWidth: number | null = null,

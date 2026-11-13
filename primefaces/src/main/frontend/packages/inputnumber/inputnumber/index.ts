@@ -9,21 +9,10 @@ declare global {
         AutoNumeric: typeof _AutoNumeric;
     }
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             InputNumber: typeof InputNumber;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type InputNumberCfg = import("./src/inputnumber.js").InputNumberCfg;
-    }
-
-    namespace PrimeFacesTypes.component.InputNumber {
-        /**
-         * Alias for the AutoNumeric options, required for technical reasons.
-         */
-        export type AutoNumericOptions = import("autonumeric").Options;
     }
 }
 

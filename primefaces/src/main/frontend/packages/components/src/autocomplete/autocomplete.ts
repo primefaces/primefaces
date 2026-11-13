@@ -1,7 +1,37 @@
 /**
+ * Specifies the behavior of the dropdown button.
+ * - `blank`: Sends an empty string.
+ * - `current`: Send the input value.
+ */
+export type DropdownMode = "blank" | "current";
+
+/**
+ * Event to initiate the autocomplete search.
+ * - `enter`: Starts the search for suggestion items when the enter key is pressed.
+ * - `keyup`: Starts the search for suggestion items as soon as a key is released.
+ */
+export type QueryEvent = "keyup" | "enter";
+
+/**
+ * Specifies whether filter requests are evaluated by the client's browser or whether they are sent to the
+ * server.
+ */
+export type QueryMode = "server" | "client" | "hybrid";
+
+/**
+ * The JSON response of the `completeEndpoint`.
+ */
+export interface CompleteEndpointResponse {
+    /** The suggestions, the `value` defaults to the `label`. */
+    suggestions: { label: string; value?: string }[];
+    /** Whether there are more suggestions than returned. */
+    moreAvailable?: boolean;
+}
+
+/**
  * The configuration for the {@link AutoComplete} component.
  */
-export interface AutoCompleteCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface AutoCompleteCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether autocompletion search is initially active. */
     active: boolean;
     /** ID of the container to which the suggestion box is appended. */
@@ -26,7 +56,7 @@ export interface AutoCompleteCfg extends PrimeFacesTypes.component.BaseComponent
     /** The delay in milliseconds before an autocomplete search is triggered. */
     delay: number;
     /** Specifies the behavior of the dropdown button. */
-    dropdownMode: PrimeFacesTypes.component.AutoComplete.DropdownMode;
+    dropdownMode: DropdownMode;
     /**
      * Defines if dynamic loading is enabled for the element's panel. If the value is `true`, the overlay is not
      * rendered on page load to improve performance.
@@ -54,14 +84,19 @@ export interface AutoCompleteCfg extends PrimeFacesTypes.component.BaseComponent
     multiple: boolean;
     /** Defines which position on the element being positioned to align with the target element. */
     myPos: string;
-    /** Client side callback to invoke when value changes, the original `onchange` handler of the input. */
-    onChange: PrimeFacesTypes.component.AutoComplete.OnChangeCallback | null;
+    /**
+     * Client side callback to invoke when value changes, the original `onchange` handler of the input. It is called
+     * with the input as `this` when the input changes, and with the component as `this` when an item was added via
+     * {@link AutoComplete.addItem}.
+     * @param event The change event, if any.
+     */
+    onChange: ((this: HTMLElement | AutoComplete, event?: JQuery.TriggeredEvent) => unknown) | null;
     /** Whether the hidden input with the selected value exists (POJO support), set on init. */
     pojo: boolean;
     /** Event to initiate the the autocomplete search. */
-    queryEvent: PrimeFacesTypes.component.AutoComplete.QueryEvent;
+    queryEvent: QueryEvent;
     /** Specifies query mode, whether autocomplete contacts the server. */
-    queryMode: PrimeFacesTypes.component.AutoComplete.QueryMode;
+    queryMode: QueryMode;
     /** Limits the number of simultaneously selected items. Default is unlimited. */
     selectLimit: number;
     /** Height of the container with the suggestion items. */
@@ -106,7 +141,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     /** The DOM element for the container with the dropdown suggestions. */
     dropdown: JQuery = $();
     /** Unbind callback for the hide overlay handler. */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
     /** The DOM element for the input element. */
     input: JQuery<HTMLInputElement> = $();
     /** If dynamic loading is enabled, whether the content was loaded already. */
@@ -147,9 +182,9 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     /** Whether an AJAX request for the autocompletion items is currently in progress. */
     querying?: boolean;
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
     /** Tracking number to make sure search requests match up in query mode */
     requestId?: number;
     /** The DOM element for the autocomplete status ARIA element. */
@@ -161,7 +196,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     /** Whether a touch is made on the dropdown button. */
     touchToDropdownButton: boolean = false;
     /** Handler for CSS transitions used by this component. */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
     /** The starting HTML with the wrapper element of the suggestions box. */
     wrapperStartTag?: string;
     /** The finishing HTML with the wrapper element of the suggestions box. */
@@ -171,7 +206,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
     /** Text to display when there is no data to display. */
     emptyMessage?: string;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panelId = this.jqId + '_panel';
@@ -270,7 +305,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
         this.status = this.jq.children('.p-autocomplete-status');
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.dynamic && this.isDynamicLoaded && this.panel.length) {
             this.unbindPanelEvents();
             this.panel.remove();
@@ -666,7 +701,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
             this.input.prop('onchange', null).off('change', originalOnchange);
         }
 
-        this.cfg.onChange = (originalOnchange || null) as PrimeFacesTypes.component.AutoComplete.OnChangeCallback | null;
+        this.cfg.onChange = (originalOnchange || null) as AutoCompleteCfg["onChange"];
         return !!originalOnchange;
     }
 
@@ -978,7 +1013,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
             this.itemtip.hide();
         }
 
-        let options: PrimeFacesTypes.ajax.Configuration | undefined;
+        let options: PrimeFaces.ajax.Configuration | undefined;
 
         if (!this.cfg.completeEndpoint) {
             this.requestId = (this.requestId as number) + 1 || 1;
@@ -1049,7 +1084,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
                 url: this.cfg.completeEndpoint,
                 data: { query: query },
                 dataType: 'json'
-            }).done((suggestions: PrimeFacesTypes.component.AutoComplete.CompleteEndpointResponse) => {
+            }).done((suggestions: CompleteEndpointResponse) => {
                 let html = '<ul class="p-autocomplete-items p-autocomplete-list p-component-content p-component" role="listbox">';
                 suggestions.suggestions.forEach((suggestion, index) => {
                     const labelEncoded = $("<div>").text(suggestion.label).html();
@@ -1457,7 +1492,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
                 , at: this.cfg.atPos
                 , of: this.cfg.multiple ? this.jq : this.input
                 , collision: 'flipfit'
-                , using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+                , using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }
             });
@@ -1619,7 +1654,7 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
      * Fetches the suggestion items for the current query from the server.
      */
     private fetchItems(): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

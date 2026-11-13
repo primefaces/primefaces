@@ -11,7 +11,7 @@ type QuillClipboard = Quill["clipboard"] & {
 /**
  * The configuration for the {@link TextEditor} component.
  */
-export interface TextEditorCfg extends PrimeFacesTypes.component.DeferredComponentCfg, QuillOptions {
+export interface TextEditorCfg extends PrimeFaces.component.DeferredComponentCfg, QuillOptions {
     /** Whether this text editor is initially disabled. */
     disabled: boolean;
     /** Whether the editor toolbar should be displayed. */
@@ -85,7 +85,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
     /** The DOM element for the toolbar of the editor. */
     toolbar: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.disabled = (cfg.disabled === undefined) ? false : cfg.disabled;
 

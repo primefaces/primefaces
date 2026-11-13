@@ -1,15 +1,25 @@
 /**
+ * Target of the scroll listener: `document` listens on the document, `inline` on the content of the data scroller.
+ */
+export type Mode = "document" | "inline";
+
+/**
+ * When more items are loaded: `scroll` while scrolling down, `manual` on a click on the `more` button.
+ */
+export type LoadEvent = "scroll" | "manual";
+
+/**
  * The configuration for the {@link DataScroller} component.
  */
-export interface DataScrollerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface DataScrollerCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Buffer below the scroll position that triggers the load, sent in percent, converted to a fraction on init. */
     buffer: number;
     /** Number of items to load on each load. */
     chunkSize: number;
     /** When more items are loaded. */
-    loadEvent: PrimeFacesTypes.component.DataScroller.LoadEvent;
+    loadEvent: LoadEvent;
     /** Target of the scroll listener, defaults to `document`. */
-    mode: PrimeFacesTypes.component.DataScroller.Mode;
+    mode: Mode;
     /** Offset of the loaded items, set to `0` on init and updated on each load. */
     offset: number;
     /** Whether the items are loaded from the bottom and the scroll position starts at the bottom. */
@@ -47,7 +57,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
     /** The timer ID of the delayed virtual scroll. */
     scrollTimeout?: number;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.content = this.jq.children('div.p-datascroller-content');
         this.list = this.cfg.virtualScroll ? this.content.children('div').children('ul') : this.content.children('ul');
@@ -167,7 +177,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
         this.virtualScrollActive = true;
 
         const first = (page - 1) * (this.cfg.chunkSize as number);
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -239,7 +249,7 @@ export class DataScroller<Cfg extends DataScrollerCfg = DataScrollerCfg> extends
             this.loadTrigger.hide();
         }
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

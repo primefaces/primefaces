@@ -1,11 +1,11 @@
 /**
  * The configuration for the {@link SelectManyButton} component.
  */
-export interface SelectManyButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectManyButtonCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether a custom layout is used. */
     custom: boolean;
-    /** Called when the value has changed. */
-    change: PrimeFacesTypes.component.SelectManyButton.ChangeCallback;
+    /** Called when the value has changed, with the component as `this`. */
+    change: (this: SelectManyButton) => void;
 }
 
 /**
@@ -23,7 +23,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
     /** The enabled checkbox inputs with the value. */
     inputs: JQuery<HTMLInputElement> = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.inputs = this.jq.find(':checkbox:not(:disabled)') as JQuery<HTMLInputElement>;
 
@@ -261,7 +261,7 @@ export class SelectManyButton<Cfg extends SelectManyButtonCfg = SelectManyButton
         this.callBehavior('change');
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.custom) {
             for (let i = 0; i < this.buttons.length; i++) {
                 const button = this.buttons.eq(i);

@@ -1,9 +1,12 @@
 /**
  * The configuration for the {@link Rating} component.
  */
-export interface RatingCfg extends PrimeFacesTypes.component.BaseComponentCfg {
-    /** Callback that is invoked when the user gives a rating. */
-    onRate: PrimeFacesTypes.component.Rating.OnRateCallback;
+export interface RatingCfg extends PrimeFaces.component.BaseComponentCfg {
+    /**
+     * Callback that is invoked when the user gives a rating, with the rating as `this`.
+     * @param currentNumberOfStars The number of rated stars.
+     */
+    onRate: (this: Rating, currentNumberOfStars: number) => void;
     /** Whether this component is in read-only mode. */
     readonly: boolean;
 }
@@ -25,7 +28,7 @@ export class Rating<Cfg extends RatingCfg = RatingCfg> extends PrimeFaces.compon
     /** The tabindex initially set. */
     tabindex: string | undefined = undefined;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.value = this.getValue();

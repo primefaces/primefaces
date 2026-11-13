@@ -27,7 +27,7 @@ export class SelectManyMenu<Cfg extends SelectManyMenuCfg = SelectManyMenuCfg> e
     /** The footer with the number of selected items, if rendered. */
     footer: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 

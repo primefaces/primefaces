@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Fieldset} component.
  */
-export interface FieldsetCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface FieldsetCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the content can be toggled between expanded and collapsed. */
     toggleable: boolean;
     /** Whether the fieldset is currently collapsed, updated on each toggle. */
@@ -29,7 +29,7 @@ export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.
     /** With dynamic loading, whether the content was already loaded. */
     loaded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.legend = this.jq.children('.p-fieldset-legend');
@@ -61,7 +61,7 @@ export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.refresh(cfg);
 
         this.loaded = false;
@@ -107,7 +107,7 @@ export class Fieldset<Cfg extends FieldsetCfg = FieldsetCfg> extends PrimeFaces.
     }
 
     private loadContents(): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

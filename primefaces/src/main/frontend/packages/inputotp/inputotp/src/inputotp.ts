@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link InputOtp} component.
  */
-export interface InputOtpCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface InputOtpCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the component is disabled. */
     disabled: boolean;
     /** Whether only digits are accepted. */
@@ -36,7 +36,7 @@ export class InputOtp<Cfg extends InputOtpCfg = InputOtpCfg> extends PrimeFaces.
      * Initializes the component: reads the characters rendered by the server and binds the events.
      * @param cfg The configuration of the component.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.inputs = this.jq.children('.p-inputotp-input') as JQuery<HTMLInputElement>;

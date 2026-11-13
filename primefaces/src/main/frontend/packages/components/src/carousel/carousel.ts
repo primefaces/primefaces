@@ -1,7 +1,24 @@
 /**
+ * Layout of the carousel: items side by side or on top of each other.
+ */
+export type Orientation = "horizontal" | "vertical";
+
+/**
+ * Number of visible and scrolled items up to a maximum screen width.
+ */
+export interface ResponsiveOption {
+    /** The maximum screen width, a CSS length such as `768px`. */
+    breakpoint: string;
+    /** Number of visible items up to the breakpoint. */
+    numVisible: number;
+    /** Number of items to scroll up to the breakpoint. */
+    numScroll: number;
+}
+
+/**
  * The configuration for the {@link Carousel} component.
  */
-export interface CarouselCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface CarouselCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** Index of the first item. */
     page: number;
     /** Number of visible items per page. */
@@ -9,17 +26,20 @@ export interface CarouselCfg extends PrimeFacesTypes.component.DeferredComponent
     /** Number of items to scroll. */
     numScroll: number;
     /** An array of options for responsive design. */
-    responsiveOptions: PrimeFacesTypes.component.Carousel.ResponsiveOption[];
+    responsiveOptions: ResponsiveOption[];
     /** Specifies the layout of the component, valid layouts are horizontal or vertical. */
-    orientation: PrimeFacesTypes.component.Carousel.Orientation;
+    orientation: Orientation;
     /** Sets continuous scrolling. */
     circular: boolean;
     /** Whether to display the paginator or not. */
     paginator: boolean;
     /** Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. */
     autoplayInterval: number;
-    /** Client side callback to execute when the page was changed. */
-    onPageChange: PrimeFacesTypes.component.Carousel.OnPageChangeCallback;
+    /**
+     * Client side callback to execute when the page was changed, with the carousel as `this`.
+     * @param page The 0-based index of the new page.
+     */
+    onPageChange: (this: Carousel, page: number) => void;
 }
 
 /**
@@ -84,7 +104,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
     /** The number of how many items shifted. */
     totalShiftedItems: number = 0;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.content = this.jq.children('.p-carousel-content');
         this.container = this.content.children('.p-carousel-container');
@@ -140,7 +160,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.stopAutoplay();
 
         super.refresh(cfg);
@@ -358,7 +378,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
 
         //Call ajax pageChange behaviour
         if(this.hasBehavior('pageChange')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     {name: this.id + '_pageValue', value: page},
                 ]
@@ -393,7 +413,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
             };
 
             for (let i = 0; i < this.cfg.responsiveOptions.length; i++) {
-                const res = this.cfg.responsiveOptions[i] as PrimeFacesTypes.component.Carousel.ResponsiveOption;
+                const res = this.cfg.responsiveOptions[i] as ResponsiveOption;
 
                 if (parseInt(res.breakpoint, 10) >= windowWidth) {
                     matchedResponsiveOptionsData = res;
@@ -601,7 +621,7 @@ export class Carousel<Cfg extends CarouselCfg = CarouselCfg> extends PrimeFaces.
             });
 
             for (let i = 0; i < _responsiveOptions.length; i++) {
-                const res = _responsiveOptions[i] as PrimeFacesTypes.component.Carousel.ResponsiveOption;
+                const res = _responsiveOptions[i] as ResponsiveOption;
 
                 innerHTML += '@media screen and (max-width: ' + res.breakpoint + ') '
                     + '{div[id*="' + this.id + '"] .p-carousel-item '

@@ -6,7 +6,7 @@ export type TriStateManyCheckboxState = 0 | 1 | 2;
 /**
  * The configuration for the {@link TriStateManyCheckbox} component.
  */
-export interface TriStateManyCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface TriStateManyCheckboxCfg extends PrimeFaces.component.BaseComponentCfg {
     /** The style classes of the icon of each state. */
     icons: [string, string, string];
     /** Whether the component is read only. */
@@ -39,7 +39,7 @@ export class TriStateManyCheckbox<Cfg extends TriStateManyCheckboxCfg = TriState
      * Initializes the component and binds the events.
      * @param cfg The configuration of the component.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.inputs = this.jq.find('.p-hidden-accessible > input') as JQuery<HTMLInputElement>;

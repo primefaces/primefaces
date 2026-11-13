@@ -167,71 +167,77 @@
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Whether to keep component state across views.Default is false.</td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="ref" class="rowColor">
+                            <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
+                        </tr>
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="renderEmptyFacets" class="altColor">
+                        <tr id="renderEmptyFacets" class="rowColor">
                             <td class="colFirst"><a href="#renderEmptyFacets"><code>renderEmptyFacets</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Render facets even if their children are not rendered.Default is false.</td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style of the component.</td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the component.</td>
                         </tr>
-                        <tr id="toggleable" class="rowColor">
+                        <tr id="toggleable" class="altColor">
                             <td class="colFirst"><a href="#toggleable"><code>toggleable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Makes panel toggleable.Default is false.</td>
                         </tr>
-                        <tr id="toggleableHeader" class="altColor">
+                        <tr id="toggleableHeader" class="rowColor">
                             <td class="colFirst"><a href="#toggleableHeader"><code>toggleableHeader</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines if the panel is toggleable by clicking on the whole panel header.Default is false.</td>
                         </tr>
-                        <tr id="toggleOrientation" class="rowColor">
+                        <tr id="toggleOrientation" class="altColor">
                             <td class="colFirst"><a href="#toggleOrientation"><code>toggleOrientation</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines the orientation of the toggle animation, valid values are "vertical" and "horizontal".Default is vertical.</td>
                         </tr>
-                        <tr id="toggleSpeed" class="altColor">
+                        <tr id="toggleSpeed" class="rowColor">
                             <td class="colFirst"><a href="#toggleSpeed"><code>toggleSpeed</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Speed of toggling in milliseconds.Default is 500.</td>
                         </tr>
-                        <tr id="toggleTitle" class="rowColor">
+                        <tr id="toggleTitle" class="altColor">
                             <td class="colFirst"><a href="#toggleTitle"><code>toggleTitle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Title attribute for toggler element of toggleable panel.</td>
                         </tr>
-                        <tr id="visible" class="altColor">
+                        <tr id="visible" class="rowColor">
                             <td class="colFirst"><a href="#visible"><code>visible</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Renders panel as hidden.Default is true.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Name of the client side component.Default is generated ('widget_' + componentClientId).</td>
+                    </td><td class="colLast">Deprecated, use ref instead. Name of the client side component.</td>
                         </tr>
                     </tbody>
                 </table>

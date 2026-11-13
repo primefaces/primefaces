@@ -1,7 +1,17 @@
 /**
+ * The JSON response of the server for the autocompletion of a command.
+ */
+export interface AutoCompleteResponse {
+    /** The command entered so far, without the argument that is completed. */
+    baseCommand: string;
+    /** The commands or arguments matching the entered text. */
+    matches: string[];
+}
+
+/**
  * The configuration for the {@link Terminal} component.
  */
-export interface TerminalCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface TerminalCfg extends PrimeFaces.component.BaseComponentCfg {
     /** The current prompt text, i.e. the prefix at the beginning of the line. */
     prompt: string;
 }
@@ -27,7 +37,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
     /** The DOM element for the parent of the container with the prompt input. */
     promptContainerParent: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.promptContainer = this.jq.find('> div:last-child > span.p-terminal-prompt');
@@ -104,7 +114,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
         // hide the prompt until the command finishes
         this.promptContainerParent.hide();
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -144,7 +154,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
      */
     private autoCompleteCommand(): void {
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -156,7 +166,7 @@ export class Terminal<Cfg extends TerminalCfg = TerminalCfg> extends PrimeFaces.
                     component: this,
                     handle: (content) => {
                         // parse the JSON response of the matches
-                        const responseObj: PrimeFacesTypes.component.Terminal.AutoCompleteResponse | null = JSON.parse(PrimeFaces.utils.decodeXml(content) as string);
+                        const responseObj: AutoCompleteResponse | null = JSON.parse(PrimeFaces.utils.decodeXml(content) as string);
 
                         if (responseObj == null) {
                             // if the response is null (no command model), do nothing

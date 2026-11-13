@@ -13,7 +13,7 @@ export type KeyFilterMask = "pint" | "int" | "pnum" | "money" | "num" | "hex" | 
  * The configuration for the {@link KeyFilter} component. The options `regEx`, `inputRegEx`, `mask` and `testFunction` are
  * mutually exclusive.
  */
-export interface KeyFilterCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface KeyFilterCfg extends PrimeFaces.component.BaseComponentCfg {
     /** The regular expression the complete text of the input must match. */
     inputRegEx: RegExp;
     /** The predefined mask each entered character must match. */
@@ -57,7 +57,7 @@ export class KeyFilter<Cfg extends KeyFilterCfg = KeyFilterCfg> extends PrimeFac
      * Initializes the key filter: applies it to the target input, or to the first enabled input inside the target.
      * @param cfg The configuration of the key filter.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);

@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Growl.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface GrowlCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface GrowlCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * `true` to treat the message's summary and details as plain text, `false` to treat them as
      * an HTML string.
@@ -25,7 +25,7 @@ export interface GrowlCfg extends PrimeFacesTypes.component.BaseComponentCfg {
      * List of messages that are shown initially when the component is loaded or
      * refreshed.
      */
-    msgs: PrimeFacesTypes.FacesMessage[];
+    msgs: PrimeFaces.FacesMessage[];
 
     /**
      * Specifies if the message should stay instead of hidden automatically.
@@ -42,7 +42,7 @@ export interface GrowlCfg extends PrimeFacesTypes.component.BaseComponentCfg {
  */
 export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //create container
@@ -55,7 +55,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component
         this.show(this.cfg.msgs ?? []);
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.cfg = cfg;
         this.show(cfg.msgs ?? []);
 
@@ -67,7 +67,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component
      *
      * @param msg A message to translate into an HTML element.
      */
-    add(msg: PrimeFacesTypes.FacesMessage): void {
+    add(msg: PrimeFaces.FacesMessage): void {
         this.renderMessage(msg);
     }
 
@@ -76,7 +76,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component
      *
      * @param msgs The messages to translate into HTML elements.
      */
-    addAll(msgs: readonly PrimeFacesTypes.FacesMessage[]): void {
+    addAll(msgs: readonly PrimeFaces.FacesMessage[]): void {
         for (const msg of msgs ?? []) {
             this.renderMessage(msg);
         }
@@ -87,7 +87,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component
      *
      * @param msgs Messages to display in this growl
      */
-    show(msgs: PrimeFacesTypes.FacesMessage[]): void {
+    show(msgs: PrimeFaces.FacesMessage[]): void {
         PrimeFaces.nextZindex(this.jq);
 
         if (!this.cfg.keepAlive) {
@@ -111,7 +111,7 @@ export class Growl<Cfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.component
      * Creates the HTML elements for the given faces message, and adds it to the DOM.
      * @param msg A message to translate into an HTML element.
      */
-    renderMessage(msg: PrimeFacesTypes.FacesMessage): void {
+    renderMessage(msg: PrimeFaces.FacesMessage): void {
         let markup = '<div class="p-growl-item-container p-state-highlight p-hidden p-growl-' + msg.severity + '">';
         markup += '<div role="alert" class="p-growl-item">';
         markup += '<div class="p-growl-icon-close p-icon p-close-icon p-growl-close-icon" style="display:none"></div>';

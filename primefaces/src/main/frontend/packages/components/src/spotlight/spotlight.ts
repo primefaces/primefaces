@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Spotlight.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SpotlightCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SpotlightCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Whether the spotlight is initially turned on.
      */
@@ -29,7 +29,7 @@ export class Spotlight<Cfg extends SpotlightCfg = SpotlightCfg> extends PrimeFac
      */
     target: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 

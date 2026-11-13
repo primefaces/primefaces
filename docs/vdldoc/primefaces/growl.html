@@ -167,47 +167,53 @@
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines if already rendered messages should be displayed.Default is true.</td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="ref" class="rowColor">
+                            <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
+                        </tr>
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="severity" class="altColor">
+                        <tr id="severity" class="rowColor">
                             <td class="colFirst"><a href="#severity"><code>severity</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Comma separated list of severities to display only.</td>
                         </tr>
-                        <tr id="showDetail" class="rowColor">
+                        <tr id="showDetail" class="altColor">
                             <td class="colFirst"><a href="#showDetail"><code>showDetail</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies if the detail of the FacesMessage should be displayed.Default is false.</td>
                         </tr>
-                        <tr id="showSummary" class="altColor">
+                        <tr id="showSummary" class="rowColor">
                             <td class="colFirst"><a href="#showSummary"><code>showSummary</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies if the summary of the FacesMessage should be displayed.Default is true.</td>
                         </tr>
-                        <tr id="skipDetailIfEqualsSummary" class="rowColor">
+                        <tr id="skipDetailIfEqualsSummary" class="altColor">
                             <td class="colFirst"><a href="#skipDetailIfEqualsSummary"><code>skipDetailIfEqualsSummary</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines if rendering of the detail text should be skipped, if the detail and summary are equals.Default is false.</td>
                         </tr>
-                        <tr id="sticky" class="altColor">
+                        <tr id="sticky" class="rowColor">
                             <td class="colFirst"><a href="#sticky"><code>sticky</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies if the message should stay instead of hidden automatically.Default is false.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Name of the client side component.Default is generated ('widget_' + componentClientId).</td>
+                    </td><td class="colLast">Deprecated, use ref instead. Name of the client side component.</td>
                         </tr>
                     </tbody>
                 </table>

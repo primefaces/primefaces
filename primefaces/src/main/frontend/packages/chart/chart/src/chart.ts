@@ -3,14 +3,18 @@ import { Chart as ChartJsChart, type ChartConfiguration } from "chart.js";
 /**
  * The configuration for the {@link Chart} component.
  */
-export interface ChartCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface ChartCfg extends PrimeFaces.component.DeferredComponentCfg {
     /**
      * The configuration for the [chart.js](https://www.chartjs.org/docs/latest/) chart. It can be modified within the
      * extender function set for this chart component.
      */
     config: ChartConfiguration;
-    /** Extender function allows access to the underlying [chart.js](https://www.chartjs.org/docs/latest/) API. */
-    extender: PrimeFacesTypes.component.Chart.ChartExtender;
+    /**
+     * Extender function allows access to the underlying [chart.js](https://www.chartjs.org/docs/latest/) API. It is
+     * invoked when the chart is created and lets you modify the chart. The current chart component is passed as the
+     * this context. To modify the chart configuration, mutate the `this.cfg.config` object.
+     */
+    extender: (this: Chart) => void;
 }
 
 /**
@@ -22,7 +26,7 @@ export interface ChartCfg extends PrimeFacesTypes.component.DeferredComponentCfg
  * You can also define an extender function. The extender function allows access to the underlying
  * [chart.js](https://www.chartjs.org/docs/latest/) API using the `setExtender` method of the model. You need to define
  * a global function and set it on the model, see the user guide for more details. The required typing of that function
- * is given by `PrimeFacesTypes.component.Chart.ChartExtender`.
+ * is given by {@link ChartCfg.extender}.
  */
 export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The canvas on which this chart is drawn. */
@@ -32,7 +36,7 @@ export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.component
     /** The chart.js instance creates for this chart component. */
     chart?: ChartJsChart;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.canvas = this.jq.children('canvas');
@@ -51,7 +55,7 @@ export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.component
         this.renderDeferred();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.chart) {
             this.chart.destroy();
         }
@@ -84,7 +88,7 @@ export class Chart<Cfg extends ChartCfg = ChartCfg> extends PrimeFaces.component
                 const point = activePoints[0]!;
                 const itemSelectCallback = this.cfg.behaviors['itemSelect'];
                 if (itemSelectCallback) {
-                    const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+                    const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                         params: [
                             {name: 'itemIndex', value: point.index}
                             ,{name: 'dataSetIndex', value: point.datasetIndex}

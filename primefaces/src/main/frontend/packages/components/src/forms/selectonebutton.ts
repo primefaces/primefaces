@@ -1,15 +1,15 @@
 /**
  * The configuration for the {@link SelectOneButton} component.
  */
-export interface SelectOneButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectOneButtonCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Requests a confirmation before the value changes, called with the component element as `this`. */
     confirmation: (this: HTMLElement) => void;
     /** Whether a custom layout is used. */
     custom: boolean;
     /** Whether the selection can be cleared, normalized to a boolean on init (default `true`). */
     unselectable: boolean;
-    /** Called when the value has changed. */
-    change: PrimeFacesTypes.component.SelectOneButton.ChangeCallback;
+    /** Called when the value has changed, with the component as `this`. */
+    change: (this: SelectOneButton) => void;
 }
 
 /**
@@ -25,7 +25,7 @@ export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg
     /** The enabled buttons. */
     buttons: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.unselectable = this.cfg.unselectable !== false;
         // the default layout root is also a radiogroup, so the role alone doesn't identify the facet span
@@ -206,7 +206,7 @@ export class SelectOneButton<Cfg extends SelectOneButtonCfg = SelectOneButtonCfg
         this.callBehavior('change');
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.custom) {
             for (let i = 0; i < this.buttons.length; i++) {
                 const button = this.buttons.eq(i);

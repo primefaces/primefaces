@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link MultiSelectListbox} component.
  */
-export interface MultiSelectListboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface MultiSelectListboxCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the label of a group is displayed as header of its items. */
     showHeaders: boolean;
     /** Effect of {@link PrimeFaces.effects} used when a group of items is shown. */
@@ -21,7 +21,7 @@ export class MultiSelectListbox<Cfg extends MultiSelectListboxCfg = MultiSelectL
     /** The hidden input with the selected value. */
     input: JQuery<HTMLInputElement> = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.root = this.jq.children('div.p-multiselectlistbox-listcontainer');

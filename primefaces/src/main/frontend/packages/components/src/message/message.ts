@@ -5,7 +5,7 @@
  * You can access this configuration via {@link Message.cfg | cfg}. Please note
  * that this configuration is usually meant to be read-only and should not be modified.
  */
-export interface MessageCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface MessageCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Client ID of the target for which to show this message.
      */
@@ -26,7 +26,7 @@ export interface MessageCfg extends PrimeFacesTypes.component.BaseComponentCfg {
  */
 export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         let msgSrc = this.jq.find('.p-message-error-summary');
@@ -50,7 +50,7 @@ export class Message<Cfg extends MessageCfg = MessageCfg> extends PrimeFaces.com
      * Renders the given msg.
      * @param msg Message to render.
      */
-    renderMessage(msg: PrimeFacesTypes.FacesMessage): void {
+    renderMessage(msg: PrimeFaces.FacesMessage): void {
         const display = this.jq.data('display');
 
         if (display !== 'tooltip') {

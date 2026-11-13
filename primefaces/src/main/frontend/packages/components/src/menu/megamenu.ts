@@ -1,12 +1,12 @@
-import { Menu } from "./menu.base.js";
+import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
  * The configuration for the {@link  MegaMenu} component.
  * 
- * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
+ * You can access this configuration via {@link MegaMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MegaMenuCfg extends PrimeFacesTypes.component.MenuCfg {
+export interface MegaMenuCfg extends MenuCfg {
     /**
      * Index of the root menu item whose highlight persists during navigation.
      */
@@ -80,7 +80,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      */
     timeoutId?: number = undefined;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.vertical = this.jq.hasClass('p-megamenu-vertical');
@@ -228,7 +228,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
             let prevItem = null;
             let nextItem = null;
 
-            switch ("code" in e ? e.code : e.key) {
+            switch (e.code) {
                 case 'ArrowLeft':
                     if (isRootLink && !this.cfg.vertical) {
                         prevItem = this.findPrevItem(currentItem);
@@ -497,7 +497,7 @@ export class MegaMenu<Cfg extends MegaMenuCfg = MegaMenuCfg> extends Menu<Cfg> {
      * @param submenu One of the submenus of the given menu item to show.
      */
     private showSubmenu(menuItem: JQuery, submenu: JQuery): void {
-        let pos: PrimeFacesTypes.utils.PositionOptions | undefined;
+        let pos: PrimeFaces.utils.PositionOptions | undefined;
 
         if (this.cfg.vertical) {
             pos = {

@@ -8,7 +8,7 @@ import { isAllowedCountry } from "./inputphone.validator.js";
 /**
  * The configuration for the {@link InputPhone} component.
  */
-export interface InputPhoneCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
+export interface InputPhoneCfg extends PrimeFaces.component.DynamicOverlayComponentCfg {
     /** Whether the user can select the country. */
     allowDropdown: boolean;
     /** In the international format: whether the calling code is filled in on focus and removed if nothing else is entered. */
@@ -142,13 +142,13 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
     /** The highlighted item (mouse or keyboard). */
     private highlightedItem: JQuery = $();
     /** Shows and hides the panel with the connected overlay transition. */
-    private transition: PrimeFacesTypes.CssTransitionHandler | null = null;
+    private transition: PrimeFaces.CssTransitionHandler | null = null;
     /** Unbind callback of the handler that hides the panel on a click outside. */
-    private hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    private hideOverlayHandler?: PrimeFaces.Unbindable;
     /** Unbind callback of the resize handler. */
-    private resizeHandler?: PrimeFacesTypes.Unbindable;
+    private resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback of the scroll handler. */
-    private scrollHandler?: PrimeFacesTypes.Unbindable;
+    private scrollHandler?: PrimeFaces.Unbindable;
     /** The placeholder rendered by the server, `null` if there is none. */
     private placeholder: string | null = null;
     /** Whether the user selected a country, a looked up country (geoIpLookup) does not replace it then. */
@@ -159,7 +159,7 @@ export class InputPhone<Cfg extends InputPhoneCfg = InputPhoneCfg> extends Prime
      * formats the value.
      * @param cfg The configuration of the component.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // an AJAX update calls init() again on this instance: the state of the old panel is reset
         this.items = $();
         this.highlightedItem = $();

@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link InputText} component.
  */
-export interface InputTextCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface InputTextCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Client ID of the component that displays the counter. */
     counter: string;
     /** Template of the counter: `{0}` remaining, `{1}` entered and `{2}` maximum characters, defaults to `{0}`. */
@@ -21,7 +21,7 @@ export class InputText<Cfg extends InputTextCfg = InputTextCfg> extends PrimeFac
     /** The element that displays the counter, only with `counter`. */
     counter: JQuery | null = null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         PrimeFaces.skinInput(this.jq);

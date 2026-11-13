@@ -1,4 +1,55 @@
-import { BaseTree, type BaseTreeCfg } from "./tree.base.js";
+import { BaseTree, type BaseTreeCfg, type DragMode } from "./tree.base.js";
+
+/**
+ * Defines parent-child restrictions when a node is dropped.
+ */
+export type DropRestrictMode = "none" | "sibling";
+
+/**
+ * Whether to move or copy the node on drop.
+ */
+export type DropMode = "move" | "copy";
+
+/**
+ * Describes a drag & drop operation when a tree node is being dragged, see
+ * {@link VerticalTree.droppedNodeParams}.
+ */
+export interface DroppedNodeParams {
+    /** Details about the drop event. */
+    ui: PrimeFaces.interactions.DroppableUi;
+    /** Tree component of the dragged node. */
+    dragSource: VerticalTree;
+    /** The node that was dragged. */
+    dragNode: JQuery;
+    /** The node that was the target of the drag. */
+    targetDragNode: JQuery;
+    /** The drop point where the node was dropped, when it was dropped on a drop point. */
+    dropPoint?: JQuery;
+    /** The droppable where the node was dropped, when it was dropped on a node. */
+    droppable?: JQuery;
+    /** The node on which the dragged node was dropped. */
+    dropNode: JQuery;
+    /** Whether a transfer should occur, i.e. whether the node was dropped on another tree. */
+    transfer: boolean;
+}
+
+/**
+ * Describes a drag & drop that occurred, see {@link VerticalTree.fireDragDropEvent}.
+ */
+export interface DragDropEvent {
+    /** Comma separated row keys of the dragged nodes. */
+    dragNodeKey: string;
+    /** Row key of the node on which the nodes were dropped. */
+    dropNodeKey: string;
+    /** ID of the tree component of the dragged nodes. */
+    dragSource: string | string[];
+    /** Index of the dropped nodes within their new parent. */
+    dndIndex: number | undefined;
+    /** Whether the nodes were dropped on another tree. */
+    transfer: boolean;
+    /** Whether a copy of the nodes was dropped. */
+    isDroppedNodeCopy: boolean | undefined;
+}
 
 /**
  * The configuration for the {@link VerticalTree} component.
@@ -7,9 +58,9 @@ export interface VerticalTreeCfg extends BaseTreeCfg {
     /** Whether drag & drop operations of this tree table are controlled. */
     controlled: boolean;
     /** Whether to `move` or `copy` the node on drop. */
-    dropMode: PrimeFacesTypes.component.VerticalTree.DropMode;
+    dropMode: DropMode;
     /** Defines parent-child restrictions when a node is dropped. */
-    dropRestrict: PrimeFacesTypes.component.VerticalTree.DropRestrictMode;
+    dropRestrict: DropRestrictMode;
     /** `true` if text direction is right-to-left, or `false` otherwise. */
     rtl: boolean;
     /** Client side event to invoke filtering. Default is keyup. */
@@ -29,7 +80,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
     /** For drag&drop with `multipleDrag`, the row keys of the dragged nodes. */
     draggedSourceKeys?: string[] | null;
     /** List of parameter describing the drag & drop operations. */
-    droppedNodeParams: PrimeFacesTypes.component.VerticalTree.DroppedNodeParams[] = [];
+    droppedNodeParams: DroppedNodeParams[] = [];
     /** The DOM element for the filter input field that lets the user search the tree. */
     filterInput: JQuery = $();
     /** A list of row keys for rows that are not valid drag sources. */
@@ -41,7 +92,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
     /** For drag&drop, whether the shift is pressed. */
     shiftKey?: boolean;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.container = this.jq.children('.p-tree-container');
@@ -597,10 +648,10 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
         const dragdropScope = this.cfg.dragdropScope || this.getId();
 
         PrimeFaces.interactions.draggable(elements, {
-            start: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+            start: (event, ui: PrimeFaces.interactions.DraggableUi) => {
                 if (ui.helper) {
                     const element = $(event.target),
-                        source = PF($(element.data('dragsourceid')).attr('data-p-ref')) as VerticalTree;
+                        source = PF($(element.data('dragsourceid')).attr('data-p-ref') ?? "") as VerticalTree;
                     let height = 20;
 
                     if (source.cfg.multipleDrag && element.hasClass('p-treenode-content') && element.hasClass('p-state-highlight')) {
@@ -641,8 +692,8 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
             accept: '.p-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
-            drop: (event, ui: PrimeFacesTypes.interactions.DroppableUi) => {
-                const dragSource = PF($(ui.draggable.data('dragsourceid')).attr('data-p-ref')) as VerticalTree,
+            drop: (event, ui: PrimeFaces.interactions.DroppableUi) => {
+                const dragSource = PF($(ui.draggable.data('dragsourceid')).attr('data-p-ref') ?? "") as VerticalTree,
                     dropSource = this,
                     dropPoint = $(event.target),
                     dropNode = dropPoint.closest('li.p-treenode-parent'),
@@ -734,7 +785,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * @param dropNode The node on which the dragged node was dropped.
      * @param transfer Whether a transfer should occur, i.e. whether the node was not dropped on itself.
      */
-    onDropPoint(ui: PrimeFacesTypes.interactions.DroppableUi, dragSource: VerticalTree, dragNode: JQuery, targetDragNode: JQuery, dropPoint: JQuery, dropNode: JQuery, transfer: boolean): void {
+    onDropPoint(ui: PrimeFaces.interactions.DroppableUi, dragSource: VerticalTree, dragNode: JQuery, targetDragNode: JQuery, dropPoint: JQuery, dropNode: JQuery, transfer: boolean): void {
         const dragNodeDropPoint = targetDragNode.next('li.p-tree-droppoint'),
             oldParentNode = targetDragNode.parent().closest('li.p-treenode-parent');
 
@@ -797,8 +848,8 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
             out: (event) => {
                 $(event.target).children('.p-treenode-content').removeClass('p-state-hover');
             },
-            drop: (event, ui: PrimeFacesTypes.interactions.DroppableUi) => {
-                const dragSource = PF($(ui.draggable.data('dragsourceid')).attr('data-p-ref')) as VerticalTree,
+            drop: (event, ui: PrimeFaces.interactions.DroppableUi) => {
+                const dragSource = PF($(ui.draggable.data('dragsourceid')).attr('data-p-ref') ?? "") as VerticalTree,
                     dropSource = this,
                     droppable = $(event.target),
                     dropNode = droppable.closest('li.p-treenode'),
@@ -894,7 +945,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * @param dropNode The node on which the dragged node was dropped.
      * @param transfer Whether a transfer should occur.
      */
-    onDropNode(ui: PrimeFacesTypes.interactions.DroppableUi, dragSource: VerticalTree, dragNode: JQuery, targetDragNode: JQuery, droppable: JQuery, dropNode: JQuery, transfer: boolean): void {
+    onDropNode(ui: PrimeFaces.interactions.DroppableUi, dragSource: VerticalTree, dragNode: JQuery, targetDragNode: JQuery, droppable: JQuery, dropNode: JQuery, transfer: boolean): void {
         const dragNodeDropPoint = targetDragNode.next('li.p-tree-droppoint'),
             oldParentNode = targetDragNode.parent().closest('li.p-treenode-parent'),
             childrenContainer = dropNode.children('.p-treenode-children');
@@ -1037,7 +1088,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * @param dragMode The current drag mode of this tree.
      * @return The resolved target drag node.
      */
-    findTargetDragNode(dragNode: JQuery, dragMode: PrimeFacesTypes.component.BaseTree.DragMode): JQuery {
+    findTargetDragNode(dragNode: JQuery, dragMode: DragMode): JQuery {
         let targetDragNode: JQuery | null = null;
 
         if (dragMode === 'self') {
@@ -1257,8 +1308,8 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * Callback for when a drag&drop occurred. Invokes the appropriate behaviors.
      * @param event Details about the drag&drop that occurred.
      */
-    fireDragDropEvent(event: PrimeFacesTypes.component.VerticalTree.DragDropEvent): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+    fireDragDropEvent(event: DragDropEvent): void {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: event.transfer ? this.id + ' ' + event.dragSource : this.getId()
         };
@@ -1328,7 +1379,7 @@ export class VerticalTree<Cfg extends VerticalTreeCfg = VerticalTreeCfg> extends
      * Applies the current filter value by sending an AJAX to the server.
      */
     filter(): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),

@@ -1,17 +1,71 @@
+import type { PaginationState, PaginatorCfg } from "../paginator/paginator.js";
+
+/**
+ * Indicates how a row may be selected.
+ * - `single`: Only a single row may be selected at any time by clicking on it. Selecting another row will
+ * unselect the currently selected row.
+ * - `multiple`: Multiple rows can be selected via clicking while holding the ctrl or shift key.
+ * - `checkbox`: One or more rows can be selected by clicking on the checkbox next to each row.
+ */
+export type SelectionMode = "single" | "multiple" | "checkbox";
+
+/**
+ * The available sort order types for the tree table, see {@link TreeTable.SORT_ORDER}.
+ */
+export type SortOrder = "ASCENDING" | "DESCENDING" | "UNSORTED";
+
+/**
+ * If cell editing mode is enabled, whether the cell editors are loaded lazily.
+ * - `eager`: Cell editors are loaded with the original page load or when the tree table is loaded.
+ * - `lazy`: Cell editors are loaded via AJAX when inline editing is requested.
+ */
+export type CellEditMode = "eager" | "lazy";
+
+/**
+ * How the data in a tree table can be edited.
+ * - `row`: A row is switched to edit mode and all cells can be edited at once.
+ * - `cell`: An individual cell is switched to edit mode and can be edited.
+ */
+export type EditMode = "row" | "cell";
+
+/**
+ * Defines which rows are expanded when the expand icon next to a row is clicked.
+ * - `self`: Only the row itself is expanded.
+ * - `children`: The row and its children are expanded.
+ */
+export type ExpandMode = "children" | "self";
+
+/**
+ * The resize behavior of the columns.
+ * - `fit`: The width of the next column changes, the width of the table stays the same.
+ * - `expand`: The width of the table changes.
+ */
+export type ResizeMode = "fit" | "expand";
+
+/**
+ * Describes a sorting operation of the tree table.
+ */
+export interface SortMeta {
+    /** ID of the column to sort by. */
+    col: string;
+    /** How to sort by the column, one of the values of {@link TreeTable.SORT_ORDER}. */
+    order: number;
+}
+
 /**
  * The configuration for the {@link TreeTable} component.
  */
-export interface TreeTableCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface TreeTableCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** When true columns can be unsorted upon clicking sort. */
     allowUnsorting: boolean;
     /** Whether cell editors are loaded lazily. */
-    cellEditMode: PrimeFacesTypes.component.TreeTable.CellEditMode;
+    cellEditMode: CellEditMode;
     /** Separator text to use in output mode of editable cells with multiple components. */
     cellSeparator: string;
     /** Disables text selection on row click. */
     disabledTextSelection: boolean;
     /** If editing is enables and whether entire rows or individual cells can be edited. */
-    editMode: PrimeFacesTypes.component.TreeTable.EditMode;
+    editMode: EditMode;
     /** Whether data in this data table can be edited. */
     editable: boolean;
     /** Event that triggers row/cell editing. */
@@ -22,7 +76,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.component.DeferredComponen
      * Updates children only when set to `children` or the node itself with children when set to `self` on node
      * expand.
      */
-    expandMode: PrimeFacesTypes.component.TreeTable.ExpandMode;
+    expandMode: ExpandMode;
     /** Whether filtering is enabled on this tree table. */
     filter: boolean;
     /** Delay in milliseconds the filtering. */
@@ -38,7 +92,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.component.DeferredComponen
     /** Type of the row nodes of this tree table. */
     nodeType: string;
     /** When pagination is enabled: The paginator configuration for the paginator. */
-    paginator: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.PaginatorCfg>;
+    paginator: PrimeFaces.component.PartialComponentCfg<PaginatorCfg>;
     /** Defines if selections should propagate up. */
     propagateSelectionUp: boolean;
     /** Defines if selections should propagate down. */
@@ -46,7 +100,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.component.DeferredComponen
     /** Defines if columns can be resized or not. */
     resizableColumns: boolean;
     /** Defines the resize behavior of the columns. */
-    resizeMode: PrimeFacesTypes.component.TreeTable.ResizeMode;
+    resizeMode: ResizeMode;
     /** Saves the changes in cell editing on blur, when set to false changes are discarded. */
     saveOnCellBlur: boolean;
     /** Height of scrollable data, e.g. `200`, `50%` or `20vh`. */
@@ -56,7 +110,7 @@ export interface TreeTableCfg extends PrimeFacesTypes.component.DeferredComponen
     /** Whether or not the data should be scrollable. */
     scrollable: boolean;
     /** How rows may be selected. */
-    selectionMode: PrimeFacesTypes.component.TreeTable.SelectionMode;
+    selectionMode: SelectionMode;
     /** `true` if sorting is enabled on the data table, `false` otherwise. */
     sorting: boolean;
     /** IDs of the columns by which to order. Order by the first column, then by the second, etc. */
@@ -75,7 +129,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     /**
      * Map between the sort order names and the multiplier for the comparator.
      */
-    static SORT_ORDER: Record<PrimeFacesTypes.component.TreeTable.SortOrder, -1 | 0 | 1> = {
+    static SORT_ORDER: Record<SortOrder, -1 | 0 | 1> = {
         ASCENDING: 1,
         DESCENDING: -1,
         UNSORTED: 0
@@ -115,7 +169,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     /** Localized message for displaying the rows unsorted. */
     otherMessage?: string;
     /** The paginator component instance used for filtering. */
-    paginator?: PrimeFacesTypes.Component<"Paginator">;
+    paginator?: PrimeFaces.Component<"Paginator">;
     /** Whether the scroll height was specified in percent. */
     percentageScrollHeight?: boolean | "";
     /** Whether the scroll width was specified in percent. */
@@ -149,7 +203,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     /** The DOM elements for the list of sortable columns. */
     sortableColumns: JQuery = $();
     /** List of criteria by which to filter this table. */
-    sortMeta: PrimeFacesTypes.component.TreeTable.SortMeta[] = [];
+    sortMeta: SortMeta[] = [];
     /** The DOM element for the container with the sticky header. */
     stickyContainer: JQuery = $();
     /** The DOM element for the table body of this tree table. */
@@ -159,7 +213,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     /** The DOM element for the clone of the table header. */
     theadClone: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
@@ -201,7 +255,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
         this.bindEvents();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.columnWidthsFixed = false;
         this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() as string | undefined : null;
 
@@ -245,7 +299,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
         }
 
         if (this.cfg.paginator) {
-            this.cfg.paginator.paginate = (newState: PrimeFacesTypes.component.Paginator.PaginationState) => {
+            this.cfg.paginator.paginate = (newState: PaginationState) => {
                 this.handlePagination(newState);
             };
 
@@ -408,7 +462,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * server and updates this tree table with the result. Also invokes the appropriate behaviors.
      */
     filter(): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -447,8 +501,8 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * Handles a pagination event by updating this tree table and invoking the appropriate behaviors.
      * @param newState The new pagination state to apply.
      */
-    handlePagination(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+    handlePagination(newState: PaginationState): void {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -486,7 +540,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * Returns the paginator instance if any is exists.
      * @return The paginator instance for this component, or `undefined` if paging is not enabled.
      */
-    getPaginator(): PrimeFacesTypes.Component<"Paginator"> | undefined {
+    getPaginator(): PrimeFaces.Component<"Paginator"> | undefined {
         return this.paginator;
     }
 
@@ -633,10 +687,10 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
     }
 
     override bindContextMenu(
-        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        menuComponent: PrimeFaces.component.ContextMenuLikeComponent,
         targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>
+        cfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.ContextMenuLikeComponentCfg>
     ): void {
         const targetSelector = targetId + ' .p-treetable-data > ' + (cfg.nodeType ? 'tr.p-treetable-selectable-node.' + cfg.nodeType : 'tr.p-treetable-selectable-node');
         const targetEvent = cfg.event + '.treetable' + this.id;
@@ -834,7 +888,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * @param multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      */
     sort(columnHeader: JQuery, order: number, multi?: boolean): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -907,7 +961,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      */
     expandNode(node: JQuery): void {
         const nodeKey = node.attr('data-rk'),
-            options: PrimeFacesTypes.ajax.Configuration = {
+            options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId(),
                 update: this.getId(),
@@ -976,7 +1030,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             this.alignScrollBody();
         }
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -1115,7 +1169,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      */
     fireSelectEvent(nodeKey: string, behaviorEvent: string, fnShowMenu?: () => void): void {
         if (this.hasBehavior(behaviorEvent)) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [{ name: this.id + '_instantSelection', value: nodeKey }
                 ],
                 oncomplete: () => {
@@ -1514,7 +1568,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      */
     fireSelectNodeEvent(nodeKey: string): void {
         if (this.isCheckboxSelection()) {
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId()
             };
@@ -1929,7 +1983,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                     this.resizerHelper.show();
                 }
             },
-            drag: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+            drag: (event, ui: PrimeFaces.interactions.DraggableUi) => {
                 if (this.cfg.liveResize) {
                     this.resize(event, ui);
                 }
@@ -1940,7 +1994,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                     });
                 }
             },
-            stop: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+            stop: (event, ui: PrimeFaces.interactions.DraggableUi) => {
                 const columnHeader = ui.helper.parent();
                 ui.helper.css('left', '');
 
@@ -1951,7 +2005,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
                     this.resizerHelper.hide();
                 }
 
-                const options: PrimeFacesTypes.ajax.Configuration = {
+                const options: PrimeFaces.ajax.Configuration = {
                     source: this.getId(),
                     process: this.getId(),
                     params: [
@@ -1979,7 +2033,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * @param event Event that triggered the resize.
      * @param ui Details about the resize.
      */
-    resize(event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi): void {
+    resize(event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi): void {
         const columnHeader = ui.helper.parent(),
             nextColumnHeader = columnHeader.next(),
             table = this.thead.parent(),
@@ -2111,7 +2165,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
         const row = rowEditor.closest('tr'),
             rowKey = row.data('rk'),
             expanded = row.hasClass('p-expanded-row'),
-            options: PrimeFacesTypes.ajax.Configuration = {
+            options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId(),
                 update: this.getId(),
@@ -2392,7 +2446,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
             cellEditorId = cellEditor.attr('id')!,
             cellInfo = this.getCellMeta(cell);
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2437,7 +2491,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
 
         this.currentCell = null;
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2477,7 +2531,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
         const cellEditor = cell.children('.p-cell-editor'),
             cellInfo = this.getCellMeta(cell);
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2580,7 +2634,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * may be sorted by multiple columns.
      * @param meta Sorting to add.
      */
-    addSortMeta(meta: PrimeFacesTypes.component.TreeTable.SortMeta): void {
+    addSortMeta(meta: SortMeta): void {
         this.sortMeta = $.grep(this.sortMeta, (value) => {
             return value.col !== meta.col;
         });
@@ -2593,7 +2647,7 @@ export class TreeTable<Cfg extends TreeTableCfg = TreeTableCfg> extends PrimeFac
      * @param option Property of the sort meta to use.
      * @return All values from the current sort meta list for the given option.
      */
-    joinSortMetaOption(option: keyof PrimeFacesTypes.component.TreeTable.SortMeta): string {
+    joinSortMetaOption(option: keyof SortMeta): string {
         let value = '';
 
         for (let i = 0; i < this.sortMeta.length; i++) {

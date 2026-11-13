@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link LinkButton} component.
  */
-export interface LinkButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface LinkButtonCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -13,7 +13,7 @@ export class LinkButton<Cfg extends LinkButtonCfg = LinkButtonCfg> extends Prime
     /** The link inside the button. */
     link: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.link = this.jq.children('a');
 

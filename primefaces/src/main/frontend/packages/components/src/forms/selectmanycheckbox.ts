@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link SelectManyCheckbox} component.
  */
-export interface SelectManyCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectManyCheckboxCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether a custom layout is used. */
     custom: boolean;
 }
@@ -25,7 +25,7 @@ export class SelectManyCheckbox<Cfg extends SelectManyCheckboxCfg = SelectManyCh
     /** The labels of the checkboxes. */
     labels: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (this.cfg.custom) {

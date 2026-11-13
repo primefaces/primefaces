@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ScrollTop} component.
  */
-export interface ScrollTopCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ScrollTopCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Scroll behavior when scrolling to the top. */
     behavior: ScrollBehavior;
     /** `window` to scroll the window, `parent` to scroll the parent element. */
@@ -19,7 +19,7 @@ export class ScrollTop<Cfg extends ScrollTopCfg = ScrollTopCfg> extends PrimeFac
     /** The window or the parent element that is scrolled. */
     scrollElement: JQuery<Element | Window> = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.scrollElement = this.cfg.target === 'window' ? $<Element | Window>(window) : this.jq.parent();

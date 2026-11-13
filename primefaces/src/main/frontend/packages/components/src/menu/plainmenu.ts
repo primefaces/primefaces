@@ -1,6 +1,12 @@
 import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
+ * The direction in which to navigate, either to the next menu item
+ * or to the previous menu item.
+ */
+export type NavigationDirection = "prev" | "next";
+
+/**
  * The configuration for the {@link  PlainMenu} component.
  * 
  * You can access this configuration via {@link PlainMenu.cfg | cfg}. Please note that this
@@ -47,7 +53,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      */
     stateKey: string = "";
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.menuitemLinks = this.jq.find('.p-menuitem-link:not(.p-state-disabled)');
@@ -165,7 +171,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         // Bind keyboard navigation events
         this.menuitemLinks.on('keydown.menu', function(e) {
             var currentLink = $this.menuitemLinks.filter('.p-state-active:first');
-            switch ("code" in e ? e.code : e.key) {
+            switch (e.code) {
                 case 'Home':
                 case 'PageUp':
                     $this.navigateMenu(e, currentLink, 'prev', 'last');
@@ -221,7 +227,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      * @param direction The direction to navigate ('prev' or 'next').
      * @param firstOrLast The first or last item to navigate to ('first' or 'last').
      */
-    private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: PrimeFacesTypes.component.PlainMenu.NavigationDirection, firstOrLast: string): void {
+    private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: NavigationDirection, firstOrLast: string): void {
         const targetItem = currentLink.parent()[`${direction}All`]('.p-menuitem:not(:has(.p-state-disabled)):' + firstOrLast);
         if (targetItem.length) {
             this.unfocus(currentLink, event);

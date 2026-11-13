@@ -1,17 +1,27 @@
 import { TieredMenu, type TieredMenuCfg } from "./tieredmenu.js";
 
 /**
+ * Selection mode for the context, whether the user may select only
+ * one or multiple items at the same time.
+ */
+export type SelectionMode = "single" | "multiple";
+
+/**
  * The configuration for the {@link  ContextMenu} component.
  * 
  * You can access this configuration via {@link ContextMenu.cfg |cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.component.ContextMenuLikeComponentCfg {
+export interface ContextMenuCfg extends TieredMenuCfg, PrimeFaces.component.ContextMenuLikeComponentCfg {
     /**
      * Client side callback invoked before the
      * context menu is shown.
+     * @param event Event that triggered the context menu to
+     * be shown (e.g. a mouse click).
+     * @return `true` to show the context menu, `false` to
+     * prevent it from getting displayed.
      */
-    beforeShow: PrimeFacesTypes.component.ContextMenu.BeforeShowCallback;
+    beforeShow: (this: ContextMenu, event: JQuery.TriggeredEvent) => boolean;
 
     /**
      * If true, prevents menu from being shown.
@@ -26,7 +36,7 @@ export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.component
     /**
      * Defines the selection behavior.
      */
-    selectionMode: PrimeFacesTypes.component.ContextMenu.SelectionMode;
+    selectionMode: SelectionMode;
 
     /**
      * Client ID of the target component.
@@ -51,7 +61,7 @@ export interface ContextMenuCfg extends TieredMenuCfg, PrimeFacesTypes.component
  * 
  * @typeParam Cfg Type of the configuration object.
  */
-export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends TieredMenu<Cfg> implements PrimeFacesTypes.component.ContextMenuLikeComponent {
+export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends TieredMenu<Cfg> implements PrimeFaces.component.ContextMenuLikeComponent {
     /**
      * Target element of this context menu. A right click on the target brings up this context menu.
      */
@@ -63,7 +73,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
      */
     jqTargetId: string | Document = "";
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         cfg.autoDisplay = true;
         super.init(cfg);
 
@@ -137,7 +147,7 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }

@@ -1,10 +1,16 @@
 /**
+ * Available modes for filtering the options of the available buttons actions of a split button. When `custom` is set, a
+ * `filterFunction` must be specified.
+ */
+export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+/**
  * The configuration for the {@link SplitButton} component.
- * 
+ *
  * You can access this configuration via {@link PrimeFaces.component.BaseComponent.cfg|BaseComponent.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SplitButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SplitButtonCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * The search expression for the element to which the overlay panel should be appended.
      */
@@ -23,8 +29,12 @@ export interface SplitButtonCfg extends PrimeFacesTypes.component.BaseComponentC
     /**
      * Custom JavaScript function for filtering the
      * available split button actions.
+     * @param value A value to check.
+     * @param query A search term against which the value is checked.
+     * @return `true` if the search term matches the value, or `false`
+     * otherwise.
      */
-    filterFunction: PrimeFacesTypes.component.SplitButton.FilterFunction;
+    filterFunction: (value: string, query: string) => boolean;
 
     /**
      * Defines if the filter should receive focus on overlay popup.
@@ -35,7 +45,7 @@ export interface SplitButtonCfg extends PrimeFacesTypes.component.BaseComponentC
      * Match mode for filtering, how the search
      * term is matched against the items.
      */
-    filterMatchMode: PrimeFacesTypes.component.SplitButton.FilterMatchMode;
+    filterMatchMode: FilterMatchMode;
 
     /**
      * Defines if filtering would be done using normalized values.
@@ -70,18 +80,18 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     /**
      * The current filter function.
      */
-    filterMatcher?: PrimeFacesTypes.component.SplitButton.FilterFunction;
+    filterMatcher?: SplitButtonCfg["filterFunction"];
 
     /**
      * A map of all flter functions. The
      * key is the name of the filter function.
      */
-    filterMatchers: Partial<Record<string, PrimeFacesTypes.component.SplitButton.FilterFunction>> = {};
+    filterMatchers: Partial<Record<string, SplitButtonCfg["filterFunction"]>> = {};
 
     /**
      * Unbind callback for the hide overlay handler.
      */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
 
     /**
      * The DOM element for the additional buttons actions.
@@ -112,24 +122,24 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     /**
      * Unbind callback for the resize handler.
      */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
 
     /**
      * Unbind callback for the scroll handler.
      */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
 
     /**
      * Handler for CSS transitions used by this component.
      */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
 
     /**
      * If dynamic loading is enabled, whether the menu content was loaded already.
      */
     isDynamicLoaded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
          super.init(cfg);
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
@@ -154,7 +164,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.menuButton.off('click.splitbutton');
         if (this.menuitems.length > 0) {
             this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
@@ -223,7 +233,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
             if (this.cfg.disabled) {
                 return;
             }
-            switch("code" in e ? e.code : e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     this.highlightPrev(e);
                     break;
@@ -589,13 +599,13 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     private loadDynamicMenu(): void {
         const $this = this;
         const options: PrimeFaces.ajax.Configuration = {
-            source: this.id,
-            update: this.id,
-            process: this.id,
+            source: this.getId(),
+            update: this.getId(),
+            process: this.getId(),
             params: [
-                { name: this.id + '_dynamicload', value: true }
+                { name: this.getId() + '_dynamicload', value: true }
             ],
-            onsuccess: function(responseXML: XMLDocument, status: string, xhr: JQueryXHR) {
+            onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     component: $this,
                     handle: function(content: string) {
@@ -692,7 +702,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 at: 'left bottom',
                 of: this.jq,
                 collision: 'flipfit',
-                using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+                using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 },
             });

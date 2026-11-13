@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link InputTextarea} component.
  */
-export interface InputTextareaCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface InputTextareaCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** Whether the textarea grows with its content. */
     autoResize: boolean;
     /** Whether tokens are suggested via AJAX while typing. */
@@ -40,7 +40,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
     /** The timer ID of the delayed query. */
     timeout?: number | null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.items = $();
 
@@ -80,7 +80,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // remove autocomplete panel
         if (cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
@@ -384,7 +384,7 @@ export class InputTextarea<Cfg extends InputTextareaCfg = InputTextareaCfg> exte
     search(query: string): void {
         this.query = query;
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),

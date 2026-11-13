@@ -6,7 +6,7 @@
  */
 
 declare global {
-    namespace PrimeFacesTypes.utils {
+    namespace PrimeFaces.utils {
         /**
          * Target of {@link PositionOptions.of}: a CSS selector, a DOM element, the window, the document, a jQuery
          * instance or a mouse event (positions at the mouse cursor).
@@ -100,11 +100,11 @@ interface Dimensions {
     /** The outer height in pixels, `0` for a mouse event. */
     height: number;
     /** The offset relative to the document; the scroll position for the window, the mouse position for an event. */
-    offset: PrimeFacesTypes.utils.PositionCoordinates;
+    offset: PrimeFaces.utils.PositionCoordinates;
 }
 
 /**
- * Information about the container used for the collision detection, see {@link PrimeFacesTypes.utils.PositionOptions.within}.
+ * Information about the container used for the collision detection, see {@link PrimeFaces.utils.PositionOptions.within}.
  */
 interface WithinInfo {
     /** The container, the window by default. */
@@ -114,7 +114,7 @@ interface WithinInfo {
     /** Whether the container is the document. */
     isDocument: boolean;
     /** The offset of the container relative to the document, `0` / `0` for the window and the document. */
-    offset: PrimeFacesTypes.utils.PositionCoordinates;
+    offset: PrimeFaces.utils.PositionCoordinates;
     /** The horizontal scroll position of the container. */
     scrollLeft: number;
     /** The vertical scroll position of the container. */
@@ -155,11 +155,11 @@ interface CollisionData {
 
 /**
  * Adjusts the computed position of an element along one axis when it overflows its container, see
- * {@link PrimeFacesTypes.utils.PositionCollision}.
+ * {@link PrimeFaces.utils.PositionCollision}.
  * @param position The position of the element relative to the document, modified in place.
  * @param data The dimensions of the element, the target and the container.
  */
-type CollisionHandler = (position: PrimeFacesTypes.utils.PositionCoordinates, data: CollisionData) => void;
+type CollisionHandler = (position: PrimeFaces.utils.PositionCoordinates, data: CollisionData) => void;
 
 /** Matches the horizontal keywords of a `my` / `at` position. */
 const R_HORIZONTAL = /left|center|right/;
@@ -264,7 +264,7 @@ function getScrollInfo(within: WithinInfo): { width: number; height: number } {
  * @param element The `within` option, defaults to the window.
  * @returns The offset, scroll position and size of the container.
  */
-function getWithinInfo(element: PrimeFacesTypes.utils.PositionOptions["within"]): WithinInfo {
+function getWithinInfo(element: PrimeFaces.utils.PositionOptions["within"]): WithinInfo {
     const withinElement: JQuery<any> = $((element || window) as any);
     const isElemWindow = isWindow(withinElement[0]);
     const isDocument = !!withinElement[0] && withinElement[0].nodeType === 9;
@@ -448,7 +448,7 @@ const flip: Record<"left" | "top", CollisionHandler> = {
 };
 
 /**
- * The collision handlers by the name used in {@link PrimeFacesTypes.utils.PositionOptions.collision}, with one handler for the
+ * The collision handlers by the name used in {@link PrimeFaces.utils.PositionOptions.collision}, with one handler for the
  * horizontal (`left`) and one for the vertical (`top`) axis. `none` has no handler, so nothing is adjusted.
  */
 const collisionHandlers: Record<string, Record<"left" | "top", CollisionHandler>> = {
@@ -502,7 +502,7 @@ function parseAlignment(value: string | undefined): { position: [string, string]
 }
 
 /**
- * Positions the given elements relative to the target given by {@link PrimeFacesTypes.utils.PositionOptions.of}, a replacement
+ * Positions the given elements relative to the target given by {@link PrimeFaces.utils.PositionOptions.of}, a replacement
  * for the former jQuery UI `$.fn.position(options)`.
  *
  * The `my` point of each element is aligned with the `at` point of the target, then the `collision` handling moves
@@ -517,7 +517,7 @@ function parseAlignment(value: string | undefined): { position: [string, string]
  * @param options The options for positioning. Without options, a target or elements, nothing is positioned.
  * @returns The given elements, for chaining.
  */
-export function position<T extends JQuery<any>>(element: T, options: PrimeFacesTypes.utils.PositionOptions | null | undefined): T {
+export function position<T extends JQuery<any>>(element: T, options: PrimeFaces.utils.PositionOptions | null | undefined): T {
     if (!options || !options.of || !element || !element.length) {
         return element;
     }
@@ -618,12 +618,12 @@ export function position<T extends JQuery<any>>(element: T, options: PrimeFacesT
              * element relative to the target and passes it to the `using` callback of the options.
              * @param props The CSS `top` / `left` to apply, computed by `$.fn.offset` from the document offset.
              */
-            offsetOptions.using = function(this: HTMLElement, props: PrimeFacesTypes.utils.PositionCoordinates) {
+            offsetOptions.using = function(this: HTMLElement, props: PrimeFaces.utils.PositionCoordinates) {
                 const left = targetOffset.left - pos.left;
                 const right = left + targetWidth - elemWidth;
                 const top = targetOffset.top - pos.top;
                 const bottom = top + targetHeight - elemHeight;
-                const feedback: PrimeFacesTypes.utils.PositionFeedback = {
+                const feedback: PrimeFaces.utils.PositionFeedback = {
                     target: { element: target, left: targetOffset.left, top: targetOffset.top, width: targetWidth, height: targetHeight },
                     element: { element: elem, left: pos.left, top: pos.top, width: elemWidth, height: elemHeight },
                     horizontal: right < 0 ? "left" : left > 0 ? "right" : "center",

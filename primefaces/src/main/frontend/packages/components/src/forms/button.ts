@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Button} component.
  */
-export interface ButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ButtonCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -11,7 +11,7 @@ export interface ButtonCfg extends PrimeFacesTypes.component.BaseComponentCfg {
  */
 export class Button<Cfg extends ButtonCfg = ButtonCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         PrimeFaces.skinButton(this.jq);

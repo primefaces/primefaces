@@ -1,7 +1,28 @@
 /**
+ * Captcha features light and dark modes for theme.
+ */
+export type Theme = "auto" | "light" | "dark";
+
+/**
+ * The parts of the captcha API (e.g. `grecaptcha`, see the `executor` attribute) used by the component.
+ */
+export interface Executor {
+    /**
+     * Renders the captcha into the given container.
+     * @param container The container of the captcha.
+     * @param parameters The parameters of the captcha, such as the `sitekey`.
+     */
+    render(container: HTMLElement, parameters: Record<string, unknown>): unknown;
+    /**
+     * Invokes the challenge, for an invisible captcha.
+     */
+    execute(): unknown;
+}
+
+/**
  * The configuration for the {@link Captcha} component.
  */
-export interface CaptchaCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface CaptchaCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Name of a function in the global scope. Callback to be executed when the user submits a successful CAPTCHA
      * response. The user's response, goggle recaptcha-response, will be the input for your callback function.
@@ -25,13 +46,13 @@ export interface CaptchaCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Position of the input element in the tabbing order. */
     tabindex: number;
     /** Theme of the captcha. */
-    theme: PrimeFacesTypes.component.Captcha.Theme;
+    theme: Theme;
 }
 
 /**
  * The global variables used by the captcha component: the init callback and the captcha API (the `executor`).
  */
-type CaptchaGlobals = Record<string, (() => void) | PrimeFacesTypes.component.Captcha.Executor | null | undefined>;
+type CaptchaGlobals = Record<string, (() => void) | Executor | null | undefined>;
 
 /**
  * __PrimeFaces Captcha Component__
@@ -40,7 +61,7 @@ type CaptchaGlobals = Record<string, (() => void) | PrimeFacesTypes.component.Ca
  */
 export class Captcha<Cfg extends CaptchaCfg = CaptchaCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.language = this.cfg.language || 'en';
         this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast(this.jq[0]);
@@ -76,7 +97,7 @@ export class Captcha<Cfg extends CaptchaCfg = CaptchaCfg> extends PrimeFaces.com
      * Renders the client-side parts of this component.
      */
     private render(): void {
-        const captchaExecutor = (window as unknown as CaptchaGlobals)[this.cfg.executor!] as PrimeFacesTypes.component.Captcha.Executor;
+        const captchaExecutor = (window as unknown as CaptchaGlobals)[this.cfg.executor!] as Executor;
         captchaExecutor.render(this.jq.get(0)!, {
             'sitekey': this.cfg.sitekey,
             'tabindex': this.cfg.tabindex,

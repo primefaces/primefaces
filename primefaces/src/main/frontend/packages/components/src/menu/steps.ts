@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Steps.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface StepsCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface StepsCfg extends PrimeFaces.component.BaseComponentCfg {
 }
     
 /**
@@ -25,7 +25,7 @@ export class Steps<Cfg extends StepsCfg = StepsCfg> extends PrimeFaces.component
      */
     items: JQuery= $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('.p-steps-item');

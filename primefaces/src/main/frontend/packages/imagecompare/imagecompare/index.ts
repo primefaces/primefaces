@@ -4,13 +4,9 @@ import { ImageCompare } from "./src/imagecompare.js";
 PrimeFaces.component.ImageCompare = ImageCompare;
 
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             ImageCompare: typeof ImageCompare;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type ImageCompareCfg = import("./src/imagecompare.js").ImageCompareCfg;
     }
 }

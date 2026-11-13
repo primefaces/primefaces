@@ -1,7 +1,19 @@
 /**
+ * A pagination state, that is, a range of items that should be displayed.
+ */
+export interface PaginationState {
+    /** 0-based index of the first item on the current page. */
+    first: number;
+    /** The number of rows per page, the string `*` when "show all" was selected in the rows per page dropdown. */
+    rows: number;
+    /** The current page, 0-based index. */
+    page: number;
+}
+
+/**
  * The configuration for the {@link Paginator} component.
  */
-export interface PaginatorCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface PaginatorCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * `true` if the paginator should be displayed always, or `false` if it is allowed to be hidden under some
      * circumstances that depend on the component that uses the paginator.
@@ -19,9 +31,10 @@ export interface PaginatorCfg extends PrimeFacesTypes.component.BaseComponentCfg
      * A callback method that is invoked when the pagination state changes, such as when the user selects a different
      * page or changes the current rows per page count. This property is usually provided by another component that makes
      * use of this paginator. You should use this callback to perform any actions required to apply the new pagination
-     * state.
+     * state. Called with the paginator as `this`.
+     * @param newState The new values for the current page and the rows per page count.
      */
-    paginate: PrimeFacesTypes.component.Paginator.PaginateCallback;
+    paginate: (this: Paginator, newState: PaginationState) => void;
     /** The number of rows per page for the dropdown. */
     prevRows: number;
     /** Total number of rows (records) to be displayed. */
@@ -75,7 +88,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
     /** Formatter for the numbers updated on the client, created lazily for the current locale. */
     private numberFormat?: Intl.NumberFormat;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //elements
@@ -283,7 +296,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
      * @param owner the owner JQ element of the paginator
      * @param ownerConfig the owner configuration to check if touch enabled or not
      */
-    bindSwipeEvents(owner: JQuery, ownerConfig: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.BaseComponentCfg>): void {
+    bindSwipeEvents(owner: JQuery, ownerConfig: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.BaseComponentCfg>): void {
         if (!PrimeFaces.env.isTouchable(ownerConfig)) {
             return;
         }
@@ -440,7 +453,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
      */
     setPage(p: number, silent?: boolean): void {
         if(p >= 0 && p < (this.cfg.pageCount as number) && this.cfg.page != p){
-            const newState: PrimeFacesTypes.component.Paginator.PaginationState = {
+            const newState: PaginationState = {
                 first: (this.cfg.rows as number) * p,
                 rows: this.cfg.rows as number,
                 page: p
@@ -468,7 +481,7 @@ export class Paginator<Cfg extends PaginatorCfg = PaginatorCfg> extends PrimeFac
             this.cfg.pageCount = 1;
             this.cfg.page = 0;
 
-            const newState: PrimeFacesTypes.component.Paginator.PaginationState = {
+            const newState: PaginationState = {
                 first: 0,
                 // '*' is passed on as it is
                 rows: rpp as unknown as number,

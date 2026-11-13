@@ -1,7 +1,9 @@
+import type { KeyboardUtils } from "./keyboard.utils.js";
+
 /**
  * The configuration for the {@link Keyboard} component.
  */
-export interface KeyboardCfg extends PrimeFacesTypes.component.BaseComponentCfg, JQueryKeypad.KeypadSettings {
+export interface KeyboardCfg extends PrimeFaces.component.BaseComponentCfg, JQueryKeypad.KeypadSettings {
     /**
      * The name of the built-in keyboard layout to use. Mutually exclusive with `layoutTemplate`.
      */
@@ -22,15 +24,15 @@ export interface KeyboardCfg extends PrimeFacesTypes.component.BaseComponentCfg,
  */
 export class Keyboard<Cfg extends KeyboardCfg = KeyboardCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         // the utilities are looked up in the component scope, they are not a component
-        const keyboardUtils = (PrimeFaces.component as PrimeFacesTypes.ComponentRegistry & { KeyboardUtils: PrimeFacesTypes.component.KeyboardUtils }).KeyboardUtils;
+        const keyboardUtils = (PrimeFaces.component as PrimeFaces.ComponentRegistry & { KeyboardUtils: KeyboardUtils }).KeyboardUtils;
         if (this.cfg.layoutTemplate)
             this.cfg.layout = keyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
         else

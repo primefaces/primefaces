@@ -53,7 +53,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
      */
     menuitems: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.menu = null;
@@ -68,7 +68,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
         this.setupDialogSupport();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.trigger.off('.menubutton');
         $(document).off('.' + this.id);
 
@@ -156,7 +156,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
             if (this.cfg.disabled) {
                 return;
             }
-            switch ("code" in e ? e.code : e.key) {
+            switch (e.code) {
                 case 'Enter':
                 case 'NumpadEnter':
                 case 'Space':
@@ -249,7 +249,7 @@ export class MenuButton<Cfg extends MenuButtonCfg = MenuButtonCfg> extends Tiere
                 at: 'left bottom',
                 of: this.trigger,
                 collision: this.cfg.collision || 'flip',
-                using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+                using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }
             });

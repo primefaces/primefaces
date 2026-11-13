@@ -1,21 +1,37 @@
 /**
+ * Direction in which the items open, the diagonal ones for the type `quarter-circle`.
+ */
+export type OpeningDirection = "up" | "down" | "left" | "right" | "up-left" | "up-right" | "down-left" | "down-right";
+
+/**
+ * How the items are arranged.
+ */
+export type OpeningType = "linear" | "circle" | "semi-circle" | "quarter-circle";
+
+/**
  * The configuration for the {@link SpeedDial} component.
  */
-export interface SpeedDialCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface SpeedDialCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** Direction in which the items open. */
-    direction: PrimeFacesTypes.component.SpeedDial.OpeningDirection;
+    direction: OpeningDirection;
     /** Whether the items close on a click outside. */
     hideOnClickOutside: boolean;
     /** Whether a mask is shown behind the speed dial while open. */
     mask: boolean;
-    /** Called when the button was clicked. */
-    onClick: PrimeFacesTypes.component.SpeedDial.OnClickCallback;
-    /** Called when the items were closed. */
-    onHide: PrimeFacesTypes.component.SpeedDial.OnHideCallback;
-    /** Called when the items were opened. */
-    onShow: PrimeFacesTypes.component.SpeedDial.OnShowCallback;
-    /** Called when the items were opened or closed. */
-    onVisibleChange: PrimeFacesTypes.component.SpeedDial.OnVisibleChangeCallback;
+    /**
+     * Called when the button was clicked, with the speed dial as `this`.
+     * @param event The click event.
+     */
+    onClick: (this: SpeedDial, event: JQuery.TriggeredEvent) => void;
+    /** Called when the items were closed, with the speed dial as `this`. */
+    onHide: (this: SpeedDial) => void;
+    /** Called when the items were opened, with the speed dial as `this`. */
+    onShow: (this: SpeedDial) => void;
+    /**
+     * Called when the items were opened or closed, with the speed dial as `this`.
+     * @param visible Whether the items are open now.
+     */
+    onVisibleChange: (this: SpeedDial, visible: boolean) => void;
     /** Radius of the circle types, defaults to 20 pixels per item. */
     radius: number;
     /** Whether the items stay open when an item was clicked. */
@@ -23,7 +39,7 @@ export interface SpeedDialCfg extends PrimeFacesTypes.component.DeferredComponen
     /** Transition delay in milliseconds between the items. */
     transitionDelay: number;
     /** How the items are arranged. */
-    type: PrimeFacesTypes.component.SpeedDial.OpeningType;
+    type: OpeningType;
     /** Whether the items are open initially. */
     visible: boolean;
 }
@@ -57,7 +73,7 @@ export class SpeedDial<Cfg extends SpeedDialCfg = SpeedDialCfg> extends PrimeFac
     /** The click listener on the document, only with `hideOnClickOutside`. */
     documentClickListener: ((event: JQuery.TriggeredEvent) => void) | null = null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.mask = this.jq.children('.p-speeddial-mask');
         this.container = this.jq.children('.p-speeddial');

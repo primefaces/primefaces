@@ -193,6 +193,9 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         writer.startElement("a", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         writer.writeAttribute("class", linkClass, null);
+        writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
 
         //toggle icon
         writer.startElement("span", null);
@@ -209,7 +212,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         //submenu label
         writer.startElement("span", null);
         writer.writeAttribute("class", PanelMenu.MENUITEM_TEXT_CLASS, null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
         writer.writeText(submenu.getLabel(), null);
         writer.endElement("span");
 

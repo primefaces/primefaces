@@ -1,19 +1,32 @@
 /**
+ * Orientation of the panels: side by side or on top of each other.
+ */
+export type Layout = "horizontal" | "vertical";
+
+/**
+ * Storage of the panel sizes of a stateful splitter.
+ */
+export type StateStorage = "local" | "session";
+
+/**
  * The configuration for the {@link Splitter} component.
  */
-export interface SplitterCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SplitterCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Size of the gutters in pixels. */
     gutterSize: number;
     /** Step in pixels when an arrow key is held down. */
     step: number;
     /** Orientation of the panels. */
-    layout: PrimeFacesTypes.component.Splitter.Layout;
+    layout: Layout;
     /** Key of the stored panel sizes, the splitter is stateful only with a key. */
     stateKey: string;
     /** Storage of the panel sizes. */
-    stateStorage: PrimeFacesTypes.component.Splitter.StateStorage;
-    /** Called when the resizing ended. */
-    onResizeEnd: PrimeFacesTypes.component.Splitter.OnResizeEndCallback;
+    stateStorage: StateStorage;
+    /**
+     * Called when the resizing ended, with the splitter as `this`.
+     * @param panelSizes The panel sizes in percent.
+     */
+    onResizeEnd: (this: Splitter, panelSizes: number[]) => void;
 }
 
 /**
@@ -53,7 +66,7 @@ export class Splitter<Cfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.
     /** The interval repeating the resize while an arrow key is held down. */
     timeout: number | null = null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panels = this.jq.children('.p-splitter-panel');

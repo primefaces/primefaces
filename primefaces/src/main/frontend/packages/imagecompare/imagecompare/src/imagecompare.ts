@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ImageCompare} component.
  */
-export interface ImageCompareCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ImageCompareCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether image links are shown completely or abbreviated. */
     showFullLinks: boolean;
     /** URL of the image to the left. */
@@ -28,7 +28,7 @@ export class ImageCompare<Cfg extends ImageCompareCfg = ImageCompareCfg> extends
     /** The image slider instance of this component. */
     slider?: juxtapose.JXSlider | null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.showFullLinks = false;
 
@@ -55,7 +55,7 @@ export class ImageCompare<Cfg extends ImageCompareCfg = ImageCompareCfg> extends
 
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.destroySlider();
         super.refresh(cfg);
     }

@@ -1,5 +1,5 @@
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         /**
          * The identity, just returns the type it is given. Useful e.g. for
          * the `extends` clause:
@@ -96,7 +96,7 @@ declare global {
         }
     }
 
-    interface Window extends PrimeFacesTypes.WindowExtensions {}
+    interface Window extends PrimeFaces.WindowExtensions {}
 
     // Type declarations for the Faces core, see for example
     // https://docs.oracle.com/javaee/7/javaserver-faces-2-2/jsdocs/symbols/jsf.html

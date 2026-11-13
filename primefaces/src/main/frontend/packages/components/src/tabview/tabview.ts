@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link TabView} component.
  */
-export interface TabViewCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface TabViewCfg extends PrimeFaces.component.DeferredComponentCfg {
     /**
      * When tab contents are lazy loaded via AJAX toggle mode, caching only retrieves the tab contents once and
      * subsequent toggles of a cached tab does not communicate with server. If caching is turned off, tab contents are
@@ -14,12 +14,23 @@ export interface TabViewCfg extends PrimeFacesTypes.component.DeferredComponentC
     effect: string;
     /** Duration of the transition effect. */
     effectDuration: number;
-    /** Client side callback to execute when a tab is clicked. If the callback returns `false`, the tab is not selected. */
-    onTabChange: PrimeFacesTypes.component.TabView.OnTabChangeCallback;
-    /** Client side callback to execute on tab close. When the callback returns `false`, the tab is not closed. */
-    onTabClose: PrimeFacesTypes.component.TabView.OnTabCloseCallback;
-    /** Client side callback to execute when a tab is shown. */
-    onTabShow: PrimeFacesTypes.component.TabView.OnTabShowCallback;
+    /**
+     * Client side callback to execute when a tab is clicked, with the tab view as `this`. If the callback returns
+     * `false`, the tab is not selected.
+     * @param index The 0-based index of the tab that is about to be selected.
+     */
+    onTabChange: (this: TabView, index: number) => boolean | void;
+    /**
+     * Client side callback to execute on tab close, with the tab view as `this`. When the callback returns `false`, the
+     * tab is not closed.
+     * @param index The 0-based index of the tab that is about to be closed.
+     */
+    onTabClose: (this: TabView, index: number) => boolean | void;
+    /**
+     * Client side callback to execute when a tab is shown, with the tab view as `this`.
+     * @param index The 0-based index of the tab.
+     */
+    onTabShow: (this: TabView, index: number) => void;
     /** When enabled, tab headers can be scrolled horizontally instead of wrapping. */
     scrollable: boolean;
     /** The currently selected tab, `-1` when no tab is selected. */
@@ -65,7 +76,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.com
     /** Position of the element in the tabbing order. */
     tabindex: number = 0;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panelContainer = this.jq.children('.p-tabs-panels');
@@ -533,7 +544,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.com
                     this.fireTabChangeEvent(newPanel);
                 }
                 else if (this.cfg.multiViewState) {
-                    const options: PrimeFacesTypes.ajax.Configuration = {
+                    const options: PrimeFaces.ajax.Configuration = {
                         source: this.id as string,
                         partialSubmit: true,
                         partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_active'),
@@ -637,7 +648,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.com
      */
     private loadDynamicTab(newPanel: JQuery): void {
         const tabIndex = newPanel.data('index'),
-        options: PrimeFacesTypes.ajax.Configuration = {
+        options: PrimeFaces.ajax.Configuration = {
             source: this.id as string,
             process: this.id as string,
             update: this.id as string,
@@ -748,7 +759,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.com
      * @param panel The tab that was selected.
      */
     private fireTabChangeEvent(panel: JQuery): void {
-        const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+        const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
             params: [
                 {name: this.id + '_currentTab', value: panel.attr('id')},
                 {name: this.id + '_tabindex', value: panel.data('index')}
@@ -765,7 +776,7 @@ export class TabView<Cfg extends TabViewCfg = TabViewCfg> extends PrimeFaces.com
      */
     private fireTabCloseEvent(id: string | undefined, index: number): void {
         if(this.hasBehavior('tabClose')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     {name: this.id + '_currentTab', value: id},
                     {name: this.id + '_tabindex', value: index}

@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Effect} component.
  */
-export interface EffectCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface EffectCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Client ID of the element that triggers the effect. */
     source: string;
     /** Delay before the effect runs, in milliseconds. */
@@ -25,7 +25,7 @@ export class Effect<Cfg extends EffectCfg = EffectCfg> extends PrimeFaces.compon
     /** The timer ID of the scheduled run. */
     timeoutId?: number;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // a refresh does not run the destroy listeners: a run scheduled by the previous initialization is cancelled here
         if (this.timeoutId) {
             clearTimeout(this.timeoutId);

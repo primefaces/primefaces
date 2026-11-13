@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link OverlayPanel} component.
  */
-export interface OverlayPanelCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
+export interface OverlayPanelCfg extends PrimeFaces.component.DynamicOverlayComponentCfg {
     /** Appends the overlayPanel to the given search expression. */
     appendTo: string | null;
     /** Whether to hide overlay when hovering over overlay content when using custom show/hide. */
@@ -32,10 +32,10 @@ export interface OverlayPanelCfg extends PrimeFacesTypes.component.DynamicOverla
     modal: boolean;
     /** Position of the panel relative to the target. */
     my: string;
-    /** Client side callback to execute when the panel is hidden. */
-    onHide: PrimeFacesTypes.component.OverlayPanel.OnHideCallback;
-    /** Client side callback to execute when the panel is shown. */
-    onShow: PrimeFacesTypes.component.OverlayPanel.OnShowCallback;
+    /** Client side callback to execute when the panel is hidden, with the overlay panel as `this`. */
+    onHide: (this: OverlayPanel) => void;
+    /** Client side callback to execute when the panel is shown, with the overlay panel as `this`. */
+    onShow: (this: OverlayPanel) => void;
     /** Displays a close icon to hide the overlay, default is `false`. */
     showCloseIcon: boolean;
     /** Delay in milliseconds applied when the overlay panel is shown. */
@@ -60,13 +60,13 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
     /** The DOM element for the content of the overlay panel. */
     content: JQuery = $();
     /** Unbind callback for the hide overlay handler. */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
     /** When dynamic loading is enabled, whether the content was already loaded. */
     loaded?: boolean;
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
     /** The set-timeout timer ID of the timer used for showing the overlay panel. */
     showTimeout?: number;
     /** The DOM element for the target component that triggers this overlay panel. */
@@ -76,11 +76,11 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
     /** The z-index of the target component that triggers this overlay panel. */
     targetZindex?: number;
     /** Handler for CSS transitions used by this component. */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
     /** Variable used to control whether the overlay is being hovered in autoHide mode. */
     allowHide: boolean = true;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, cfg.target);
             if (this.target.hasClass('p-splitbutton')) {
@@ -123,7 +123,7 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'p-connected-overlay');
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -488,7 +488,7 @@ export class OverlayPanel<Cfg extends OverlayPanelCfg = OverlayPanelCfg> extends
      * @param target ID or DOM element of the target component that triggers this overlay panel.
      */
     private loadContents(target?: string | JQuery): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
                 source: this.id as string,
                 process: this.id as string,
                 update: this.id as string,

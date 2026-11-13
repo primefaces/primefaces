@@ -7,7 +7,7 @@ import Webcam from "webcamjs";
  * Please note that this configuration is usually meant to be read-only and should
  * not be modified.
  */
-export interface PhotoCamCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface PhotoCamCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Whether access to the camera should be requested automatically upon page load.
      */
@@ -34,9 +34,11 @@ export interface PhotoCamCfg extends PrimeFacesTypes.component.BaseComponentCfg 
     jpegQuality: number;
 
     /**
-     * Custom error handler invoked when a snapshot could not be taken.
+     * Custom error handler invoked when a snapshot could not be taken, i.e. when an error is caught by the Webcam.js
+     * engine.
+     * @param errorObj The error object containing the error information.
      */
-    onCameraError: PrimeFacesTypes.component.PhotoCam.CameraErrorCallback;
+    onCameraError: (this: PhotoCam, errorObj: Error) => void;
 
     /**
      * Height of the captured photo in pixels, defaults to height.
@@ -68,7 +70,7 @@ export interface PhotoCamCfg extends PrimeFacesTypes.component.BaseComponentCfg 
  * Default error handler for webcam events
  * @param errorObj Error object containing message, stacktrace and so on.
  */
-const defaultErrorCallback: PrimeFacesTypes.component.PhotoCam.CameraErrorCallback = (errorObj) => {
+const defaultErrorCallback: PhotoCamCfg["onCameraError"] =(errorObj) => {
     const message = errorObj instanceof Webcam.errors.WebcamError
         ? errorObj.message
         : `Could not access webcam: ${errorObj.name}: ${errorObj.message} ${errorObj.toString()}`;
@@ -96,7 +98,7 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
      */
     private errorHook: ((error: Error) => void) | null = null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.width = this.cfg.width||320;
         this.cfg.height = this.cfg.height||240;
@@ -114,7 +116,7 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // release the camera of the old element, so that it can be attached to the new one
         this.detach();
 
@@ -175,7 +177,7 @@ export class PhotoCam<Cfg extends PhotoCamCfg = PhotoCamCfg> extends PrimeFaces.
     capture(): void {
         if (this.attached) {
             Webcam.snap((data) => {
-                const options: PrimeFacesTypes.ajax.Configuration = {
+                const options: PrimeFaces.ajax.Configuration = {
                     source: this.getId(),
                     process: this.cfg.process ? this.getId() + ' ' + this.cfg.process : this.getId(),
                     update: this.cfg.update,

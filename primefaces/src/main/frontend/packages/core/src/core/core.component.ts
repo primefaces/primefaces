@@ -16,7 +16,7 @@ export interface BaseComponentCfg {
      * were defined for this component. The key is the name of the behavior, the value is the callback function that is
      * invoked when the behavior is called.
      */
-    behaviors: Record<string, PrimeFacesTypes.component.Behavior>;
+    behaviors: Record<string, PrimeFaces.component.Behavior>;
 
     /**
      * `true` to block scrolling when a certain condition is satisfied, or `false` otherwise.
@@ -76,7 +76,7 @@ export interface BaseComponentCfg {
      * usually specified via the `clientPreConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      */
-    preConstruct: PrimeFacesTypes.component.PreConstructCallback;
+    preConstruct: PrimeFaces.component.PreConstructCallback;
 
     /**
      * An optional callback that is invoked
@@ -84,14 +84,14 @@ export interface BaseComponentCfg {
      * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      */
-    postConstruct: PrimeFacesTypes.component.PostConstructCallback;
+    postConstruct: PrimeFaces.component.PostConstructCallback;
 
     /**
      * An optional callback that is invoked after
      * this component was refreshed after an AJAX update, at the end of the {@link BaseComponent.refresh | refresh} method.
      * This is usually specified via the `clientPostRefresh` attribute on the Faces component.
      */
-    postRefresh: PrimeFacesTypes.component.PostRefreshCallback;
+    postRefresh: PrimeFaces.component.PostRefreshCallback;
 
     /**
      * An optional callback that is invoked before
@@ -99,7 +99,7 @@ export interface BaseComponentCfg {
      * called at the beginning of the {@link BaseComponent.destroy | destroy} method. This is usually specified via the
      * `clientPreDestroy` attribute on the Faces component.
      */
-    preDestroy: PrimeFacesTypes.component.PreDestroyCallback;
+    preDestroy: PrimeFaces.component.PreDestroyCallback;
 
     /**
      * Whether the component supports touch devices (usually via pointer events etc.).
@@ -125,7 +125,7 @@ export interface BaseComponentCfg {
  * that this configuration is usually meant to be read-only and should not be
  * modified.
  */
-export interface DynamicOverlayComponentCfg extends BaseComponentCfg, PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg {
+export interface DynamicOverlayComponentCfg extends BaseComponentCfg, PrimeFaces.component.DynamicOverlayFeatureComponentCfg {
 }
 
 /**
@@ -182,14 +182,14 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * This is partly because the value of a property is not transmitted from the server to the client when it equals
      * the default.
      */
-    cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> = { id: "", ref: "" } as PrimeFacesTypes.component.PartialComponentCfg<Cfg>;
+    cfg: PrimeFaces.component.PartialComponentCfg<Cfg> = { id: "", ref: "" } as PrimeFaces.component.PartialComponentCfg<Cfg>;
 
     /**
      * Array of registered listeners invoked when this component is destroyed. You should normally not use modify this
      * directly, use {@link addDestroyListener} instead.
      */
     // Need to use any as the type parameter as TypeScript does not have existential types / wildcards (DestroyListener<?>)
-    destroyListeners: PrimeFacesTypes.component.DestroyListener<any>[] = [];
+    destroyListeners: PrimeFaces.component.DestroyListener<any>[] = [];
 
     /**
      * The client-side ID of this component, with all parent naming containers, such as
@@ -223,7 +223,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * modify this directly, use {@link addRefreshListener} instead.
      */
     // Need to use any as the type parameter as TypeScript does not have existential types / wildcards (RefreshListener<?>)
-    refreshListeners: PrimeFacesTypes.component.RefreshListener<any>[] = [];
+    refreshListeners: PrimeFaces.component.RefreshListener<any>[] = [];
 
     /**
      * The name of this component, used to access the component instance via `PF('name')`. It is set with the `ref`
@@ -273,7 +273,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @param cfg The component configuration to be used for this component instance. This component configuration is usually
      * created on the server by the `jakarta.faces.render.Renderer` for this component.
      */
-    init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.cfg = cfg;
         this.id = cfg.id;
         if (Array.isArray(this.id)) {
@@ -351,7 +351,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @param cfg The new component configuration from the server.
      * @return {unknown} The value as returned by the `init` method, which is often `undefined`.
      */
-    refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): unknown {
+    refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): unknown {
         this.destroyListeners = [];
 
         if (this.refreshListeners) {
@@ -531,7 +531,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @param fallbackToDomEvent Whether to fallback to the DOM event if no behavior is defined.
      * @since 7.0
      */
-    callBehavior(event: string, ext?: Partial<PrimeFacesTypes.ajax.ConfigurationExtender>, fallbackToDomEvent = true): void {
+    callBehavior(event: string, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>, fallbackToDomEvent = true): void {
         if (this.hasBehavior(event)) {
             this.cfg.behaviors?.[event]?.call(this, ext);
         }
@@ -561,7 +561,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @return The behavior with the given name, `undefined` if no such behavior exists, and `null` if this
      * component does not have a behaviors map configured.
      */
-    getBehavior(name: string): PrimeFacesTypes.component.Behavior | null | undefined {
+    getBehavior(name: string): PrimeFaces.component.Behavior | null | undefined {
         return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
     }
 
@@ -582,7 +582,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @param listener A destroy listener to be registered.
      * @since 7.0
      */
-    addDestroyListener(listener: PrimeFacesTypes.component.DestroyListener<this>): void {
+    addDestroyListener(listener: PrimeFaces.component.DestroyListener<this>): void {
         if (!this.destroyListeners) {
             this.destroyListeners = [];
         }
@@ -606,7 +606,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @param listener A refresh listener to be registered.
      * @since 7.0.0
      */
-    addRefreshListener(listener: PrimeFacesTypes.component.RefreshListener<this>): void {
+    addRefreshListener(listener: PrimeFaces.component.RefreshListener<this>): void {
         if (!this.refreshListeners) {
             this.refreshListeners = [];
         }
@@ -650,7 +650,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @returns The label text - either from the component configuration if specified,
      * or from the PrimeFaces global labels
      */
-    getLabel<K extends keyof PrimeFacesTypes.Locale>(label: K): PrimeFacesTypes.Locale[K] {
+    getLabel<K extends keyof PrimeFaces.Locale>(label: K): PrimeFaces.Locale[K] {
         if (this.cfg.labels && typeof this.cfg.labels[label] === "string") {
             return this.cfg.labels[label];
         }
@@ -663,7 +663,7 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @returns The ARIA label text - either from the component configuration if specified, 
      * or from the PrimeFaces global ARIA labels
      */
-    getAriaLabel(label: keyof PrimeFacesTypes.LocaleAria): string {
+    getAriaLabel(label: keyof PrimeFaces.LocaleAria): string {
         if (this.cfg.labels && this.cfg.labels.aria && this.cfg.labels.aria[label]) {
             return this.cfg.labels.aria[label];
         }
@@ -683,10 +683,10 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @param cfg The configuration of the context menu component.
      */
     bindContextMenu?(
-        contextMenu: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        contextMenu: PrimeFaces.component.ContextMenuLikeComponent,
         targetComponent: this,
         jqTargetId: string,
-        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
+        cfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.ContextMenuLikeComponentCfg>,
     ): void;
 }
 
@@ -715,7 +715,7 @@ export class DynamicOverlayComponent<Cfg extends DynamicOverlayComponentCfg = Dy
      * @param The ID of the overlay, usually the component ID.
      * @param The DOM element that is the target of this overlay
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>, overlay?: JQuery, overlayId?: string, target?: JQuery): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>, overlay?: JQuery, overlayId?: string, target?: JQuery): void {
         super.init(cfg);
 
         // do not bind overlay if component disabled
@@ -743,7 +743,7 @@ export class DynamicOverlayComponent<Cfg extends DynamicOverlayComponentCfg = Dy
         utils.registerDynamicOverlay(this, overlay, overlayId);
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         utils.removeModal(this, this.modalOverlay);
 
         this.appendTo = null;
@@ -911,5 +911,251 @@ export class DeferredComponent<Cfg extends DeferredComponentCfg = DeferredCompon
                 this.addDeferredRender(componentId, container.parent().closest('.p-hidden-container'), callback);
             }
         }
+    }
+}
+
+// Base component types
+declare global {
+    namespace PrimeFaces {
+        /**
+         * Shortcut for the type of a specific component. For example, if you want to
+         * write a function that takes a single parameter named `commandButton`
+         * that must be a CommandButton instance:
+         * 
+         * ```ts
+         * function processCommandButton(component: PrimeFaces.Component<"CommandButton">): void {
+         *   // do something with command button
+         * }
+         * ```
+         */
+        export type Component<Name extends keyof ComponentRegistry> = InstanceType<PrimeFaces.ComponentRegistry[Name]>;
+
+        /**
+         * Shortcut for the configuration type of a specific component. For example, to get the type of a callback of
+         * the configuration:
+         * 
+         * ```ts
+         * const onAdd: PrimeFaces.ComponentCfg<"FileUpload">["onAdd"] = function(file, callback) { callback(file); };
+         * ```
+         */
+        export type ComponentCfg<Name extends keyof ComponentRegistry> = PrimeFaces.ComponentRegistry[Name] extends PrimeFaces.Newable<[], BaseComponent<infer Cfg>> ? Cfg : never;
+
+        /**
+         * A map of all instantiated components that are available on the current page.
+         */
+        export type ComponentInstanceMap = Record<string, BaseComponent<any>>;
+
+        /**
+         * This interface contains the mapping between the name of a component type and its implementing class. The key
+         * is the name of the component, the value the class (constructor) of the component. Please note that components are
+         * usually created by the PrimeFaces framework and should not be created manually.
+         * 
+         * At runtime, the component registry is available via `PrimeFaces.component`, see {@link PrimeFaces.component} for
+         * more details.
+         * 
+         * If you are authoring custom components, you can make your components available to consumer by extending this
+         * interface:
+         * 
+         * ```ts
+         * import { YourComponent } from "./src/components/your-component.js";
+         * declare global {
+         *   namespace PrimeFaces {
+         *     export interface ComponentRegistry {
+         *       YourComponent: typeof YourComponent;
+         *     }
+         *   }
+         * }
+         * ```
+         */
+        export interface ComponentRegistry { }
+    }
+
+    namespace PrimeFaces.component {
+        /**
+         * Interface of the context menu component configuration available to other
+         * components that wish to provide custom context menu integration.
+         * 
+         * Other components can implement the
+         * {@link BaseComponent.bindContextMenu bindContextMenu} method to do so.
+         * If they do, they get passed the component instance and its configuration.
+         */
+        export interface ContextMenuLikeComponentCfg extends BaseComponentCfg {
+            /**
+             * Event that triggers this context menu, usually a (right) mouse click.
+             */
+            event: string;
+
+            /**
+             * Type of the target nodes to attach to. Used e.g. by the tree table component.
+             * 
+             * TreeTable has special integration with context menu, you can even
+             * match different context menus with different tree nodes using
+             * this `nodeType` option of context menu that matches the tree node
+             * type.
+             */
+            nodeType: string;
+
+            /**
+             * Type of the selection mode, used e.g. by the data table component.
+             * 
+             * DataTable has special integration with the context menu.
+             */
+            selectionMode: "single" | "multiple";
+        }
+
+        /**
+         * Interface of the context menu component available to other components that
+         * wish to provide custom context menu integration. 
+         * 
+         * Other components can implement the
+         * {@link BaseComponent.bindContextMenu bindContextMenu} method to do so.
+         * If they do, they get passed the component instance and its configuration.
+         */
+        export interface ContextMenuLikeComponent extends BaseComponent<ContextMenuLikeComponentCfg> {
+            show(e: JQuery.TriggeredEvent): void;
+            hide(): void;
+        }
+
+        /**
+         * Configuration for a {@link BaseComponent component} with the dynamic overlay feature. The
+         * {@link DynamicOverlayFeatureComponentCfg.appendTo | appendTo} attribute specifies a target
+         * where the overlay should be appended to.
+         */
+        export interface DynamicOverlayFeatureComponentCfg extends BaseComponentCfg {
+            /**
+             * The search expression for the element to which the overlay panel should be appended. Defaults to the
+             * body.
+             */
+            appendTo: string | null;
+        }
+
+        /**
+         * A {@link BaseComponent component} with the dynamic overlay feature. The {@link DynamicOverlayFeatureComponentCfg.appendTo | appendTo}
+         * attribute specifies a target where the overlay should be appended to.
+         * @typeParam Cfg Type of the component configuration.
+         */
+        export interface DynamicOverlayFeatureComponent<Cfg extends DynamicOverlayFeatureComponentCfg> extends BaseComponent<Cfg> { }
+
+        /*
+         * __Note__: Do not parametrize the this context via a type parameter. This would require changing the return type
+         * of BaseComponent#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
+         * possible to assign, for example, an object of type AccordionPanel to a variable of type BaseComponent - as that
+         * would allow calling "getBehavior" on the AccordionPanel and only passing a BaseComponent as the this context.
+         */
+        /**
+         * A callback function for a behavior of a component. A behavior is a way for associating client-side scripts with UI
+         * components that opens all sorts of possibilities, including client-side validation, DOM and style manipulation,
+         * keyboard handling, and more. When the behavior is triggered, the configured JavaScript gets executed.
+         *
+         * Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server and
+         * processes the response once it is received. This enables several features such as updating or replacing elements
+         * dynamically. You can add an AJAX behavior via `<p:ajax event="name" actionListener="#{...}" onstart="..." />`.
+         */
+        export type Behavior =
+            /**
+             * @this This callback takes the component instance as the this context. This must be the component instance that owns
+             * the behavior. The type is only required to be a {@link BaseComponent} as only common component properties such as
+             * its ID are used.
+             * @param ext Additional data to be sent with the AJAX request that is made to the server.
+             */
+            (this: BaseComponent, ext?: Partial<ajax.ConfigurationExtender>) => void;
+
+        /**
+         * The component configuration of each component may contain only some of the declared properties. For example, when the
+         * value of a property is equal to the default value, it is not transmitted from the server to the client. Only the
+         * two properties `id` and `ref` are guaranteed to be always available.
+         * @typeParam Cfg Type of a component configuration. It must have at least the two properties `id` and `ref`.
+         * @return A new type with all properties in the given type made optional, except for `id` and `ref`.
+         */
+        export type PartialComponentCfg<Cfg extends {
+            id: string | string[];
+            ref: string;
+        }> = Partial<Omit<Cfg, "id" | "ref">> & Pick<Cfg, "id" | "ref">;
+
+        /**
+         * Same as {@link PartialComponentCfg}, but with the ref being optional. Used by the `PrimeFaces.cw` function
+         * when creating components, which receives the ref explicitly as a separate argument.
+         * @typeParam Cfg Type of a component configuration. It must have at least the on property `id`.
+         * @return A new type with all properties in the given type made optional, except for `id`.
+         */
+        export type PartialCreateComponentCfg<Cfg extends {
+            id: string | string[];
+            ref: string;
+        }> = Partial<Omit<Cfg, "id">> & Pick<Cfg, "id">;
+
+        /**
+         * A destroy listener for a PrimeFaces component. It is invoked when the
+         * component is removed, such as during AJAX updates. Use {@link BaseComponent.addDestroyListener} to add a destroy
+         * listener.
+         * @typeParam Component The type of the component that is being destroyed.
+         */
+        export type DestroyListener<Component> =
+            /**
+             * @param component The component that is being destroyed.
+             */
+            (this: Component, component: Component) => void;
+
+        /**
+         * A refresh listener for a PrimeFaces component. It is invoked when the
+         * component is reloaded, such as during AJAX updates. Use {@link BaseComponent.addRefreshListener} to add a refresh
+         * listener.
+         * @typeParam Component The type of the component that is being refreshed.
+         */
+        export type RefreshListener<Component> =
+            /**
+             * @param component The component that is being refreshed.
+             */
+            (this: Component, component: Component) => void;
+
+        /**
+         * A callback for a PrimeFaces component. An optional callback that is invoked before a component is created, at the
+         * beginning of the {@link BaseComponent.init | init} method. This is usually specified via the `clientPreConstruct`
+         * attribute on the Faces component.
+         * @param The component configuration.
+         */
+        export type PreConstructCallback =
+            /**
+             * @param componentCfg The configuration of the component that is about to be constructed.
+             */
+            (this: null, componentCfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.BaseComponentCfg>) => void;
+
+        /**
+         * An optional callback that is invoked before a component is about to be
+         * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
+         * of the {@link BaseComponent.destroy | destroy} method. This is usually specified via the `clientPreDestroy`
+         * attribute on the Faces component.
+         */
+        export type PreDestroyCallback =
+            /**
+             * @param component The component that is about to be destroyed.
+             * @param widget The same component, deprecated name of the parameter for existing scripts.
+             */
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
+
+        /**
+         * An optional callback that is invoked after a component was refreshed
+         * after an AJAX update, at the end of the {@link BaseComponent.refresh | refresh} method. This is usually specified
+         * via the `clientPostRefresh` attribute on the Faces component.
+         */
+        export type PostRefreshCallback =
+            /**
+             * @param component The component that was refreshed.
+             * @param widget The same component, deprecated name of the parameter for existing scripts.
+             */
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
+
+        /**
+         * A callback for a PrimeFaces component. An optional callback that is
+         * invoked after a component was created successfully, at the end of the {@link BaseComponent.init | init} method. This is
+         * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
+         * during a `refresh` (AJAX update).
+         */
+        export type PostConstructCallback =
+            /**
+             * @param component The component that was constructed.
+             * @param widget The same component, deprecated name of the parameter for existing scripts.
+             */
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
+
     }
 }

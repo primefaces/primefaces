@@ -1,9 +1,11 @@
+import type { PaginationState, PaginatorCfg } from "../paginator/paginator.js";
+
 /**
  * The configuration for the {@link DataGrid} component.
  */
-export interface DataGridCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface DataGridCfg extends PrimeFaces.component.BaseComponentCfg {
     /** When pagination is enabled: The paginator configuration for the paginator. */
-    paginator: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.PaginatorCfg>;
+    paginator: PrimeFaces.component.PartialComponentCfg<PaginatorCfg>;
 }
 
 /**
@@ -19,9 +21,9 @@ export class DataGrid<Cfg extends DataGridCfg = DataGridCfg> extends PrimeFaces.
     /** DOM element of the content container for the data grid. */
     content: JQuery = $();
     /** When pagination is enabled: The paginator component instance used for paging. */
-    paginator?: PrimeFacesTypes.Component<"Paginator">;
+    paginator?: PrimeFaces.Component<"Paginator">;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.content = $(this.jqId + '_content');
@@ -35,7 +37,7 @@ export class DataGrid<Cfg extends DataGridCfg = DataGridCfg> extends PrimeFaces.
      * Initializes the paginator, called during component initialization.
      */
     private setupPaginator(): void {
-        this.cfg.paginator!.paginate = (newState: PrimeFacesTypes.component.Paginator.PaginationState) => {
+        this.cfg.paginator!.paginate = (newState: PaginationState) => {
             this.handlePagination(newState);
         };
 
@@ -48,8 +50,8 @@ export class DataGrid<Cfg extends DataGridCfg = DataGridCfg> extends PrimeFaces.
      * Handles a pagination event by updating the data grid and invoking the appropriate behaviors.
      * @param newState The new pagination state to apply.
      */
-    private handlePagination(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+    private handlePagination(newState: PaginationState): void {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -89,7 +91,7 @@ export class DataGrid<Cfg extends DataGridCfg = DataGridCfg> extends PrimeFaces.
      * different page programmatically.
      * @returns The paginator component, or `undefined` when pagination is not enabled.
      */
-    getPaginator(): PrimeFacesTypes.Component<"Paginator"> | undefined {
+    getPaginator(): PrimeFaces.Component<"Paginator"> | undefined {
         return this.paginator;
     }
 }

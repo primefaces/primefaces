@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Messages.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MessagesCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface MessagesCfg extends PrimeFaces.component.BaseComponentCfg {
     closable: boolean;
 }
 
@@ -21,7 +21,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
      */
     closer: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.closer = $('.p-messages-close');
         PrimeFaces.skinCloseAction(this.closer);
@@ -31,7 +31,7 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
      * Creates the HTML elements for the given faces message, and adds it to the DOM.
      * @param msg A message to translate into an HTML element.
      */
-    appendMessage(msg: PrimeFacesTypes.FacesMessage): void {
+    appendMessage(msg: PrimeFaces.FacesMessage): void {
         const closeLabel = this.getAriaLabel('close');
 
         let severityContainer =  this.jq.children('div.p-messages-' + msg.severity);

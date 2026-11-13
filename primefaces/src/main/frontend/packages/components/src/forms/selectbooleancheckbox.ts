@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link SelectBooleanCheckbox} component.
  */
-export interface SelectBooleanCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectBooleanCheckboxCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -21,7 +21,7 @@ export class SelectBooleanCheckbox<Cfg extends SelectBooleanCheckboxCfg = Select
     /** Whether this checkbox is disabled. */
     disabled: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLInputElement>;

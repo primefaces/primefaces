@@ -1,9 +1,17 @@
 /**
+ * Position of the tooltip, relative to the target component.
+ */
+export type TooltipPosition = "right" | "left" | "top" | "bottom";
+
+/**
  * The configuration for the {@link Tooltip} component.
  */
-export interface TooltipCfg extends PrimeFacesTypes.component.BaseComponentCfg {
-    /** Client side callback to execute before tooltip is shown. Returning false will prevent display. */
-    beforeShow: PrimeFacesTypes.component.Tooltip.BeforeShowCallback;
+export interface TooltipCfg extends PrimeFaces.component.BaseComponentCfg {
+    /**
+     * Client side callback to execute before tooltip is shown, with the tooltip as `this`. Returning false will
+     * prevent display.
+     */
+    beforeShow: (this: Tooltip) => boolean | void;
     /** Whether to hide tooltip when hovering over tooltip content. */
     autoHide: boolean;
     /** Search expression for overriding the {@link Tooltip.target | target}. */
@@ -20,12 +28,12 @@ export interface TooltipCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     hideEffectDuration: number;
     /** Event hiding the tooltip. */
     hideEvent: string;
-    /** Client side callback to execute after tooltip is hidden. */
-    onHide: PrimeFacesTypes.component.Tooltip.OnHideCallback;
-    /** Client side callback to execute after tooltip is shown. */
-    onShow: PrimeFacesTypes.component.Tooltip.OnShowCallback;
+    /** Client side callback to execute after tooltip is hidden. It is called without a `this` context. */
+    onHide: () => void;
+    /** Client side callback to execute after tooltip is shown. It is called without a `this` context. */
+    onShow: () => void;
     /** Position of the tooltip. */
-    position: PrimeFacesTypes.component.Tooltip.TooltipPosition;
+    position: TooltipPosition;
     /** Delay time to show tooltip in milliseconds. */
     showDelay: number;
     /** Effect to be used for displaying. */
@@ -62,7 +70,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.com
     /** Variable used to control whether the tooltip is being hovered in autoHide mode. */
     allowHide: boolean = true;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent.split(' ').map(e => e + '.tooltip').join(' ') : 'mouseenter.tooltip';
@@ -83,7 +91,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.com
             this.bindGlobal();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.target) {
             // remove the old element, which was moved to body - an update of the tooltip itself replaces it in
             // place inside body, so it must not be removed by its id
@@ -343,7 +351,7 @@ export class Tooltip<Cfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.com
      * @param feedback Feedback about the position and dimensions of both elements, as well as calculations to their
      * relative position.
      */
-    private alignUsing(position: PrimeFacesTypes.utils.PositionCoordinates, feedback: PrimeFacesTypes.utils.PositionFeedback): void {
+    private alignUsing(position: PrimeFaces.utils.PositionCoordinates, feedback: PrimeFaces.utils.PositionFeedback): void {
         // Determine the position of the tooltip
         // If trackMouse is enabled, use cfg.position
         // Otherwise, use cfg.atPos if available, or fall back to cfg.position

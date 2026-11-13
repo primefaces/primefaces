@@ -1,20 +1,32 @@
 /**
  * The options of an interaction without the index signature of the interaction options (which would hide all other
  * properties of a component configuration that extends them).
- * @typeParam T The options of an interaction, e.g. `PrimeFacesTypes.interactions.DraggableOptions`.
+ * @typeParam T The options of an interaction, e.g. `PrimeFaces.interactions.DraggableOptions`.
  */
 export type KnownInteractionOptions<T> = { [K in keyof T as string extends K ? never : K]: T[K] };
 
 /**
  * The configuration for the {@link Draggable} component.
  */
-export interface DraggableCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.DraggableOptions> {
-    /** Callback for when dragging starts. */
-    onStart: PrimeFacesTypes.component.Draggable.OnStartCallback;
-    /** Callback for when dragging ends. */
-    onStop: PrimeFacesTypes.component.Draggable.OnStopCallback;
-    /** Callback for when dragging. */
-    onDrag: PrimeFacesTypes.component.Draggable.OnDragCallback;
+export interface DraggableCfg extends PrimeFaces.component.BaseComponentCfg, KnownInteractionOptions<PrimeFaces.interactions.DraggableOptions> {
+    /**
+     * Callback for when dragging starts, with the draggable as `this`.
+     * @param event The event that triggered the drag start.
+     * @param ui Details about the drag operation.
+     */
+    onStart: (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi) => void;
+    /**
+     * Callback for when dragging ends, with the draggable as `this`.
+     * @param event The event that triggered the drag stop.
+     * @param ui Details about the drag operation.
+     */
+    onStop: (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi) => void;
+    /**
+     * Callback for when dragging, with the draggable as `this`.
+     * @param event The event that triggered the drag.
+     * @param ui Details about the drag operation.
+     */
+    onDrag: (this: Draggable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi) => void;
     /** ID of the target of this draggable. */
     target: string;
 }
@@ -28,7 +40,7 @@ export class Draggable<Cfg extends DraggableCfg = DraggableCfg> extends PrimeFac
     /** The DOM element of the target that should be made draggable. */
     jqTarget: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target!));
@@ -40,19 +52,19 @@ export class Draggable<Cfg extends DraggableCfg = DraggableCfg> extends PrimeFac
             this.cfg.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.appendTo as string | HTMLElement | JQuery);
         }
 
-        this.cfg.start = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+        this.cfg.start = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi) => {
             if (this.cfg.onStart) {
                 this.cfg.onStart.call(this, event, ui);
             }
         };
 
-        this.cfg.stop = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+        this.cfg.stop = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi) => {
             if (this.cfg.onStop) {
                 this.cfg.onStop.call(this, event, ui);
             }
         };
 
-        this.cfg.drag = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+        this.cfg.drag = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi) => {
             if (this.cfg.onDrag) {
                 this.cfg.onDrag.call(this, event, ui);
             }
@@ -71,9 +83,13 @@ export class Draggable<Cfg extends DraggableCfg = DraggableCfg> extends PrimeFac
 /**
  * The configuration for the {@link Droppable} component.
  */
-export interface DroppableCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.DroppableOptions> {
-    /** Callback for when an items is dropped. */
-    onDrop: PrimeFacesTypes.component.Droppable.OnDropCallback;
+export interface DroppableCfg extends PrimeFaces.component.BaseComponentCfg, KnownInteractionOptions<PrimeFaces.interactions.DroppableOptions> {
+    /**
+     * Callback for when an items is dropped, with the droppable as `this`.
+     * @param event The event that triggered the drop.
+     * @param ui Details about the drop operation, such as the dragged element.
+     */
+    onDrop: (this: Droppable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DroppableUi) => void;
     /** ID of the target of this droppable. */
     target: string;
 }
@@ -87,7 +103,7 @@ export class Droppable<Cfg extends DroppableCfg = DroppableCfg> extends PrimeFac
     /** The DOM element of the target that should be made droppable. */
     jqTarget: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target!));
         // destroyed with the target
@@ -108,7 +124,7 @@ export class Droppable<Cfg extends DroppableCfg = DroppableCfg> extends PrimeFac
      * Sets up the vent listener for when an item is dropped.
      */
     private bindDropListener(): void {
-        this.cfg.drop = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DroppableUi) => {
+        this.cfg.drop = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DroppableUi) => {
             if (this.cfg.onDrop) {
                 this.cfg.onDrop.call(this, event, ui);
             }
@@ -116,7 +132,7 @@ export class Droppable<Cfg extends DroppableCfg = DroppableCfg> extends PrimeFac
                 const dropBehavior = this.cfg.behaviors['drop'];
 
                 if (dropBehavior) {
-                    const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+                    const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                         params: [
                             { name: this.getId() + '_dragId', value: ui.draggable.attr('id') },
                             { name: this.getId() + '_dropId', value: this.cfg.target }

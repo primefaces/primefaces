@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Signature} component.
  */
-export interface SignatureCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SignatureCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Label of the canvas for screen readers. */
     ariaLabel: string;
     /** ID of the label of the canvas. */
@@ -67,7 +67,7 @@ export class Signature<Cfg extends SignatureCfg = SignatureCfg> extends PrimeFac
      * lines or else from the typed text.
      * @param cfg The configuration of the signature.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.inputJson = this.jq.children(this.jqId + '_value');
         this.inputText = this.jq.children(this.jqId + '_text');

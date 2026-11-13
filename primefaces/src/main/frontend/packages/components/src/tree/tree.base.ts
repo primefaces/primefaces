@@ -1,7 +1,34 @@
 /**
+ * Drag mode for a tree component. Defines the parent-child relationship when a node is dragged.
+ */
+export type DragMode = "self" | "parent" | "ancestor";
+
+/**
+ * Mode for filtering a tree component.
+ */
+export type FilterMode = "lenient" | "strict";
+
+/**
+ * How the nodes of a tree are selected. When set to `single`, only at most one node can be selected by
+ * clicking on it. When set to `multiple`, more than one node may be selected by clicking on each node. When set
+ * to `checkbox`, each node receives a checkbox next to it that may be used for selection.
+ */
+export type SelectionMode = "single" | "multiple" | "checkbox";
+
+/**
+ * A set of icons to be used for a certain node type.
+ */
+export interface NodeIconSet {
+    /** Icon to be used when the node is expanded. */
+    expandedIcon: string;
+    /** Icon to be used when the node is collapsed. */
+    collapsedIcon: string;
+}
+
+/**
  * The configuration for the {@link BaseTree} component.
  */
-export interface BaseTreeCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface BaseTreeCfg extends PrimeFaces.component.BaseComponentCfg {
     /** `true` is the tree is animated, or `false` otherwise. */
     animate: boolean;
     /**
@@ -14,7 +41,7 @@ export interface BaseTreeCfg extends PrimeFacesTypes.component.BaseComponentCfg 
     /** `true` if nodes are draggable, or `false` otherwise. */
     draggable: boolean;
     /** Defines parent-child relationship when a node is dragged. */
-    dragMode: PrimeFacesTypes.component.BaseTree.DragMode;
+    dragMode: DragMode;
     /** When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key. */
     dropCopyNode: boolean;
     /** `true` if nodes are droppable, or `false` otherwise. */
@@ -26,23 +53,29 @@ export interface BaseTreeCfg extends PrimeFacesTypes.component.BaseComponentCfg 
     /** `true` if filtering is enabled, `false` otherwise. */
     filter: boolean;
     /** Mode for filtering. */
-    filterMode: PrimeFacesTypes.component.BaseTree.FilterMode;
+    filterMode: FilterMode;
     /** `true` if selected nodes are highlighted, or `false` otherwise. */
     highlight: boolean;
     /** A map between the type of a node and the icons for that node. */
-    iconStates: Record<string, PrimeFacesTypes.component.BaseTree.NodeIconSet>;
+    iconStates: Record<string, NodeIconSet>;
     /** When enabled, the selected multiple nodes can be dragged from a tree to another tree. */
     multipleDrag: boolean;
     /** Node type of nodes for which the context menu is available. */
     nodeType: string;
-    /** Callback that is invoked when a node is clicked. If it returns `false`, the click on the node is ignored. */
-    onNodeClick: PrimeFacesTypes.component.BaseTree.OnNodeClickCallback;
+    /**
+     * Callback that is invoked when a node is clicked, with the tree as `this`. If it returns `false`, the click on
+     * the node is ignored.
+     * @param node The tree node that was clicked.
+     * @param event The mouse click (or key) event that occurred.
+     * @returns `false` to ignore the click, anything else to allow the node to be selected.
+     */
+    onNodeClick: (this: BaseTree, node: JQuery, event: JQuery.TriggeredEvent) => boolean | void;
     /** Whether toggling a node checkbox is propagated downwards. */
     propagateDown: boolean;
     /** Whether toggling a node checkbox is propagated upwards. */
     propagateUp: boolean;
     /** How the node of this tree can be selected, if selection is enabled at all. */
-    selectionMode: PrimeFacesTypes.component.BaseTree.SelectionMode;
+    selectionMode: SelectionMode;
 }
 
 /**
@@ -86,7 +119,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
     /** DOM element of the hidden form element that holds the list of selected nodes. */
     selectionHolder: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.highlight = (this.cfg.highlight === false) ? false : true;
         this.focusedNode = null;
@@ -120,10 +153,10 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
     }
 
     override bindContextMenu(
-        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        menuComponent: PrimeFaces.component.ContextMenuLikeComponent,
         targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>
+        cfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.ContextMenuLikeComponentCfg>
     ): void {
         const nodeContentSelector = targetId + ' .p-tree-selectable',
             containerEvent = cfg.event + '.tree' + this.id;
@@ -175,7 +208,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
 
             node.data('processing', true);
 
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId(),
                 update: this.getId(),
@@ -285,7 +318,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
      */
     fireNodeSelectEvent(node: JQuery): void {
         if (this.isCheckboxSelection() && this.cfg.dynamic) {
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId()
             };
@@ -347,7 +380,7 @@ export class BaseTree<Cfg extends BaseTreeCfg = BaseTreeCfg> extends PrimeFaces.
      */
     fireContextMenuEvent(node: JQuery, fnShowMenu: () => void): void {
         if (this.hasBehavior('contextMenu')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     { name: this.id + '_contextMenuNode', value: this.getRowKey(node) }
                 ],

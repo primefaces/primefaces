@@ -1,6 +1,11 @@
 import { Menu, type MenuCfg } from "./menu.base.js";
 
 /**
+ * Allowed event types for toggling a tiered menu.
+ */
+export type ToggleEvent = "hover" | "click";
+
+/**
  * The configuration for the {@link TieredMenu} component.
  * 
  * You can access this configuration via {@link PrimeFaces.component.BaseComponent.cfg|BaseComponent.cfg}. Please note that this
@@ -27,7 +32,7 @@ export interface TieredMenuCfg extends MenuCfg {
     /**
      * Event to toggle the submenus.
      */
-    toggleEvent: PrimeFacesTypes.component.TieredMenu.ToggleEvent;
+    toggleEvent: ToggleEvent;
 }
 
 /**
@@ -86,7 +91,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
      */
     timeoutId?: number;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';
@@ -293,7 +298,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
                 }
             }
 
-            switch ("code" in e ? e.code : e.key) {
+            switch (e.code) {
                 case 'Home':
                 case 'PageUp':
                     navigateTo(menuitem.prevAll('.p-menuitem:last'));

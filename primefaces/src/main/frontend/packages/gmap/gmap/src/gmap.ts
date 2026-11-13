@@ -315,14 +315,107 @@ declare global {
     }
 }
 
-/** Exported for the types in the index. */
+/** Exported for the types of the Google Maps API used by the exported types of this module. */
 export type { google };
+
+/**
+ * Interface for objects that provide an ID that uniquely identifies the object.
+ */
+export interface IdProviding {
+    /** The ID that uniquely identifies this object. */
+    id: string;
+}
+
+/**
+ * A marker, its ID is the ID of the marker in the model (it is also the ID of the marker element).
+ */
+export type Marker = google.maps.marker.AdvancedMarkerElement & IdProviding;
+
+/**
+ * An overlay shape with an ID property for identifying the shape.
+ */
+export type Shape = (
+    google.maps.Circle
+    | google.maps.Polyline
+    | google.maps.Polygon
+    | google.maps.Rectangle
+) & IdProviding;
+
+/**
+ * An overlay shape or marker that extends the shapes and markers as defined by the maps API. Adds an ID
+ * property for identifying the shape or marker.
+ */
+export type Overlay = Marker | Shape;
+
+/**
+ * A symbol (SVG path) used as marker icon.
+ */
+export interface GMapSymbol {
+    /** The SVG path. */
+    path: string;
+    /** The position of the symbol relative to the marker position. */
+    anchor?: {
+        /** Horizontal position. */
+        x: number;
+        /** Vertical position. */
+        y: number;
+    };
+    /** The fill color. */
+    fillColor?: string;
+    /** The fill opacity. */
+    fillOpacity?: number;
+    /** The rotation in degrees. */
+    rotation?: number;
+    /** The scale. */
+    scale?: number;
+    /** The stroke color. */
+    strokeColor?: string;
+    /** The stroke opacity. */
+    strokeOpacity?: number;
+    /** The stroke width. */
+    strokeWeight?: number;
+}
+
+/**
+ * The options of a marker, as rendered by the server.
+ */
+export interface MarkerCfg {
+    /** The ID of the marker. */
+    id: string;
+    /** The position of the marker. */
+    position: google.maps.LatLngLiteral;
+    /** The title of the marker. */
+    title?: string;
+    /** The URL of an image, or a symbol. */
+    icon?: string | GMapSymbol;
+    /** Whether the marker can be dragged. */
+    gmpDraggable?: boolean;
+    /** `false` if the marker is hidden. */
+    visible?: boolean;
+    /** The z-index of the marker. */
+    zIndex?: number;
+    /** The label shown in the pin of the marker. */
+    label?: {
+        /** The text of the label. */
+        text: string;
+        /** The color of the text of the label. */
+        color?: string;
+        /** The style class of the label (not supported by the marker). */
+        className?: string;
+        /** The font family of the label (not supported by the marker). */
+        fontFamily?: string;
+        /** The font size of the label (not supported by the marker). */
+        fontSize?: string;
+        /** The font weight of the label (not supported by the marker). */
+        fontWeight?: string;
+    };
+}
 
 /**
  * The configuration for the {@link GMap} component. Besides these properties, it contains the map options, they are
  * passed to the `google.maps.Map`.
  */
-export interface GMapCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface GMapCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded. */
     apiKey: string;
     /** Google Maps API version. Defaults to 'weekly'. Only used for asynchronous loading. */
@@ -330,7 +423,7 @@ export interface GMapCfg extends PrimeFacesTypes.component.DeferredComponentCfg 
     /** The center of the map: `lat,lng` as rendered, replaced with a `google.maps.LatLng` when the map is rendered. */
     center: string | google.maps.LatLng;
     /** List of overlay circular shapes added to this map. */
-    circles: (google.maps.Circle & PrimeFacesTypes.component.GMap.IdProviding)[];
+    circles: (google.maps.Circle & IdProviding)[];
     /** Whether the default UI of the map is disabled. */
     disableDefaultUI: boolean;
     /** Whether zooming by double click is disabled. */
@@ -359,17 +452,17 @@ export interface GMapCfg extends PrimeFacesTypes.component.DeferredComponentCfg 
      * The markers to display on the map: the options as rendered, replaced with the created markers when the map is
      * rendered.
      */
-    markers: PrimeFacesTypes.component.GMap.MarkerCfg[] | PrimeFacesTypes.component.GMap.Marker[];
+    markers: MarkerCfg[] | Marker[];
     /** Whether the navigation control is shown. */
     navigationControl: boolean;
     /** Javascript callback to execute when a point on map is clicked. */
-    onPointClick: PrimeFacesTypes.component.GMap.OnPointClickCallback;
+    onPointClick: (event: google.maps.MapMouseEvent) => void;
     /** List of overlay polygonal shapes added to this map. */
-    polygons: (google.maps.Polygon & PrimeFacesTypes.component.GMap.IdProviding)[];
+    polygons: (google.maps.Polygon & IdProviding)[];
     /** List of overlay polyline shapes added to this map. */
-    polylines: (google.maps.Polyline & PrimeFacesTypes.component.GMap.IdProviding)[];
+    polylines: (google.maps.Polyline & IdProviding)[];
     /** List of overlay rectangular shapes added to this map. */
-    rectangles: (google.maps.Rectangle & PrimeFacesTypes.component.GMap.IdProviding)[];
+    rectangles: (google.maps.Rectangle & IdProviding)[];
     /** Whether the map can be zoomed with the mouse wheel. */
     scrollwheel: boolean;
     /** Whether the street view control is shown. */
@@ -387,13 +480,13 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
     /** The current google maps instance. */
     map!: google.maps.Map;
     /** The currently selected and active overlay shape. */
-    selectedOverlay?: PrimeFacesTypes.component.GMap.Overlay;
+    selectedOverlay?: Overlay;
     /**
      * The spherical portion of the earth's surface that is currently shown in the map viewport.
      */
     viewport?: google.maps.LatLngBounds;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.renderDeferred();
@@ -607,8 +700,8 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
         const $this = this;
 
         // the info window is no component, only its ID is used; status and XHR are not needed
-        PrimeFaces.ajax.Response.handle(responseXML, null as unknown as JQuery.Ajax.SuccessTextStatus, null as unknown as PrimeFacesTypes.ajax.pfXHR, {
-            component: infoWindow as unknown as PrimeFacesTypes.Component<"BaseComponent">,
+        PrimeFaces.ajax.Response.handle(responseXML, null as unknown as JQuery.Ajax.SuccessTextStatus, null as unknown as PrimeFaces.ajax.pfXHR, {
+            component: infoWindow as unknown as PrimeFaces.Component<"BaseComponent">,
             handle: function(content) {
                 $this.cfg.infoWindowContent = content;
                 infoWindow.setContent('<div id="' + infoWindow.id + '_content">' + content + '</div>');
@@ -627,7 +720,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
     private async createMarkers(): Promise<void> {
         const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary('marker');
 
-        this.cfg.markers = (this.cfg.markers as PrimeFacesTypes.component.GMap.MarkerCfg[]).map((cfg) => {
+        this.cfg.markers = (this.cfg.markers as MarkerCfg[]).map((cfg) => {
             const options: google.maps.marker.AdvancedMarkerElementOptions = { position: cfg.position, map: cfg.visible === false ? null : this.map };
             if (cfg.title) {
                 options.title = cfg.title;
@@ -664,7 +757,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
      * @param symbol The symbol to render.
      * @returns The SVG element to use as marker content.
      */
-    private createSymbolContent(symbol: PrimeFacesTypes.component.GMap.Symbol): SVGSVGElement {
+    private createSymbolContent(symbol: GMapSymbol): SVGSVGElement {
         const ns = 'http://www.w3.org/2000/svg',
             svg = document.createElementNS(ns, 'svg'),
             path = document.createElementNS(ns, 'path'),
@@ -696,7 +789,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
 
         for(let i=0; i < this.cfg.markers!.length; i++) {
             // the markers were created by createMarkers
-            const marker = (this.cfg.markers as PrimeFacesTypes.component.GMap.Marker[])[i]!;
+            const marker = (this.cfg.markers as Marker[])[i]!;
 
             //extend viewport
             if(this.cfg.fitBounds)
@@ -708,7 +801,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
             });
             //AdvancedMarkerElement has no dblclick map event, listen on its DOM element instead
             marker.addEventListener('dblclick', function(event) {
-                _self.fireOverlaySelectEvent(event, this as PrimeFacesTypes.component.GMap.Marker, 2);
+                _self.fireOverlaySelectEvent(event, this as Marker, 2);
             });
 
             //marker drag
@@ -723,7 +816,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
      * @param event Event that occurred.
      * @param marker The marker that was dragged.
      */
-    private fireMarkerDragEvent(event: google.maps.MapMouseEvent, marker: PrimeFacesTypes.component.GMap.Marker): void {
+    private fireMarkerDragEvent(event: google.maps.MapMouseEvent, marker: Marker): void {
         if(this.hasBehavior('markerDrag')) {
             const ext = {
                 params: [
@@ -864,7 +957,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
      * @param overlay The shape that was selected.
      * @param clickCount whether it was single or double click
      */
-    private fireOverlaySelectEvent(event: google.maps.MapMouseEvent | MouseEvent, overlay: PrimeFacesTypes.component.GMap.Overlay, clickCount: number): void {
+    private fireOverlaySelectEvent(event: google.maps.MapMouseEvent | MouseEvent, overlay: Overlay, clickCount: number): void {
         this.selectedOverlay = overlay;
 
         const ext = {
@@ -973,7 +1066,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
      * Adds an overlay shape (circle, polyline, or polygon) to this map.
      * @param overlay Overlay shape to add to this map.
      */
-    addOverlay(overlay: PrimeFacesTypes.component.GMap.Overlay): void {
+    addOverlay(overlay: Overlay): void {
         if(overlay.setMap) {
             overlay.setMap(this.map);
         }
@@ -986,7 +1079,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
      * Adds all overlay shapes (circle, polyline, or polygon) to this map.
      * @param overlays A list of overlay shapes to add to this map.
      */
-    addOverlays(overlays: PrimeFacesTypes.component.GMap.Shape[]): void {
+    addOverlays(overlays: Shape[]): void {
         const _self = this;
 
         $.each(overlays, (index, item) => {
@@ -1009,7 +1102,7 @@ export class GMap<Cfg extends GMapCfg = GMapCfg> extends PrimeFaces.component.De
      * Adjusts (zooms out) the viewport of this map so that it fully shows the given shape.
      * @param overlay A shape for which to adjust the viewport.
      */
-    private extendView(overlay: PrimeFacesTypes.component.GMap.Overlay): void {
+    private extendView(overlay: Overlay): void {
         if( this.cfg.fitBounds && overlay){
             const _self = this;
             this.viewport = this.viewport || new google.maps.LatLngBounds();

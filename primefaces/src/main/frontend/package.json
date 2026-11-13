@@ -1,6 +1,7 @@
 {
   "name": "@primefaces/primefaces",
   "version": "16.0.0-SNAPSHOT",
+  "type": "module",
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
   "main": "src/index.js",
@@ -16,7 +17,7 @@
     "build:themes:check": "node build/scripts/themes/check.mjs && node build/scripts/themes/generate-density.mjs --check",
     "build:themes:density": "node build/scripts/themes/generate-density.mjs",
     "build:themes:tokens": "node build/scripts/themes/export-tokens.mjs",
-    "verify": "node build/scripts/verify.mjs"
+    "verify": "node build/scripts/verify.mjs && tsc -b"
   },
   "jsdocs": {},
   "dependencies": {

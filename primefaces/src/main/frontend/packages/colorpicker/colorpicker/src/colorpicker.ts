@@ -31,9 +31,15 @@ type ColorPickerSettings = Omit<Coloris.ColorisOptions, "el"> & {
 };
 
 /**
+ * Display mode of a color picker. `inline` renders the color picker within the normal content flow, `popup`
+ * creates an overlay that is displayed when the user clicks on the color.
+ */
+export type DisplayMode = "inline" | "popup";
+
+/**
  * The configuration for the {@link ColorPicker} component.
  */
-export interface ColorPickerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ColorPickerCfg extends PrimeFaces.component.BaseComponentCfg {
     /** The localized ARIA labels of the Coloris dialog. */
     a11y: Coloris.Accessibility;
     /** Whether to enable alpha support. */
@@ -65,7 +71,7 @@ export interface ColorPickerCfg extends PrimeFacesTypes.component.BaseComponentC
     /** Locale used for the labels of the color picker. */
     locale: string;
     /** Whether the color picker is displayed inline or as a popup. */
-    mode: PrimeFacesTypes.component.ColorPicker.DisplayMode;
+    mode: DisplayMode;
     /**
      * In popup mode the CSS selector of the parent dialog, set when the popup is used within a dialog. In inline mode
      * the CSS selector of this component.
@@ -114,13 +120,13 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
     /** Is this component wrapped in a float label. */
     hasFloatLabel: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.setupGlobalDefaults();
         this.setupPopup();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }
@@ -232,7 +238,7 @@ export class ColorPicker<Cfg extends ColorPickerCfg = ColorPickerCfg> extends Pr
      * @param a11y the a11y JSON object for Coloris
      * @param property the JSON property to set in a11y
      */
-    private configureAriaLabel(label: keyof PrimeFacesTypes.LocaleAria, a11y: Partial<Coloris.Accessibility>, property: keyof Coloris.Accessibility): void {
+    private configureAriaLabel(label: keyof PrimeFaces.LocaleAria, a11y: Partial<Coloris.Accessibility>, property: keyof Coloris.Accessibility): void {
         const ariaLabel = this.getAriaLabel(label);
         if (ariaLabel) {
             a11y[property] = ariaLabel;
