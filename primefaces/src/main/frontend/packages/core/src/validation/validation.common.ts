@@ -1000,3 +1000,175 @@ export class ValidationUtils {
  * The object for enabling client side validation of form fields.
  */
 export const validation: Validation = new Validation();
+
+// Validation types
+declare global {
+    /**
+     * Namespace for functionality related to validation, such as client-side
+     * validation logic.
+     */
+    namespace PrimeFaces.validation {
+        /**
+         * Type of the value of an element that is about to be submitted, passed
+         * e.g. to {@link Converter.convert}.
+         */
+        export type SubmittedValue = string | number | string[] | FileList | null;
+
+        /**
+         * Type of the parameters when formatting messages with placeholders such
+         * as `{0}` or `{2}`. Can be either a string or a number. Non-strings
+         * are converted to strings as appropriate. See e.g.
+         * {@link ValidationUtils.getMessage getMessage}
+         */
+        export type MessageFormatParameter = string | number;
+
+        /**
+         * A converter for converting string values to the correct data type.
+         * @typeParam T Type of the converted value returned by the converter.
+         */
+        export interface Converter<T = unknown> {
+            /**
+             * Converts a string value to the correct data type.
+             * @param element Element for which the value was submitted.
+             * @param submittedValue The submitted string value
+             * @return The converted value, `null` when no value is present.
+             */
+            convert(element: JQuery, submittedValue: SubmittedValue): T | null;
+        }
+
+        /**
+         * A validator for checking whether the value of an element confirms to certain restrictions.
+         */
+        export interface Validator {
+            /**
+             * Validates the given element. If it is not valid, an error message
+             * of type {@link BaseFacesMessage} (or an array thereof) should be
+             * thrown (via a `throw ...` statement).
+             * @param element Element to validate
+             * @param value Current value of the element
+             * @throws The error message when the element with its current value
+             * is not valid. Can be either a {@link BaseFacesMessage} or an
+             * array thereof.
+             */
+            // TODO: Would it not be more idiomatic to create a new class
+            // ValidationError that extends from Error and throw that?
+            validate(element: JQuery, value?: unknown): void;
+        }
+
+        /**
+         * The validation result.
+         */
+        export interface ValidationResult {
+            /**
+             * A map between the client ID of an element and a list of faces message for that element.
+             */
+            messages: Record<string, FacesMessage[]>;
+            /**
+             * If the result is valid / if it has any validation errors.
+             */
+            valid: boolean;
+            /**
+             * If the result has any unrendered message.
+             */
+            hasUnrenderedMessage: boolean;
+        }
+
+        /**
+         * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
+         * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
+         * handler is usually registered for a particular type of element or component.
+         */
+        export interface Highlighter {
+            /**
+             * When an element is invalid due to a validation error, the user needs to be informed. This method must
+             * highlight the given element in a way that makes the user notice that the element is invalid.
+             * @param element An element to highlight.
+             */
+            highlight(element: JQuery): void;
+            /**
+             * When an element is invalid due to a validation error, the user needs to be informed. This method must
+             * remove the highlighting of the given element that was added by `highlight`.
+             * @param element An element to unhighlight.
+             */
+            unhighlight(element: JQuery): void;
+        }
+
+        /**
+         * The options that can be passed to the Validation method. Note that you do not have to provide a value
+         * for all these property. Most methods such as `PrimeFaces.vb` have got sensible defaults in case you
+         * do not.
+         */
+        export interface Configuration {
+            /**
+             * The source that triggered the validation.
+             */
+            source?: string | JQuery | HTMLElement;
+            /**
+             * `true` if the validation is triggered by AJAXified component. Defaults to `false`.
+             */
+            ajax?: boolean;
+            /**
+             * A (client-side) PrimeFaces search expression for the components to process in the validation.
+             */
+            process?: string;
+            /**
+             * A (client-side) PrimeFaces search expression for the components to update in the validation.
+             */
+            update?: string;
+            /**
+             * `true` if invalid elements should be highlighted as invalid. Default is `true`.
+             */
+            highlight?: boolean;
+            /**
+             * `true` if the first invalid element should be focussed. Default is `true`.
+             */
+            focus?: boolean;
+            /**
+             * `true` to log messages that do not have a valid target and are thus not shown on the UI.
+             */
+            logUnrenderedMessages?: boolean;
+            /**
+             * `true` if messages should be rendered. Default is `true`.
+             */
+            renderMessages?: boolean;
+            /**
+             * `true` if invisible elements should be validated. Default is `false`.
+             */
+            validateInvisibleElements?: boolean;
+        }
+
+        /**
+         * A map with all registered validator. Key is the name of the validator,
+         * the value is the validator implementation.
+         * 
+         * @implNote This really should be just a `Record<string, Validator>`.
+         * However, for legacy reasons, PrimeFaces also includes the
+         * {@link ValidationHighlighter} in this "map" as
+         * `PrimeFaces.validation.Highlighter`. A Validator is incompatible with
+         * a ValidationHighlighter, so we need to spell out the keys explicitly.
+         */
+        export interface ValidatorInstanceMap {
+            /**
+             * When an element is invalid due to a validation error, the user needs to be informed. This highlighter is
+             * responsible for changing the visual state of an element so that the user notices the invalid element.
+             */
+            Highlighter: ValidationHighlighter;
+        }
+
+        /**
+         * Options passed to `PrimeFaces.vb` as shortcut. This is the same as `Configuration`, but with shorter
+         * option names and is used mainly by the method `PrimeFaces.vb`. See `Configuration` for a detailed description
+         * of these options.
+         */
+        export type ShorthandConfiguration = RenameKeys<Configuration, {
+            source: "s";
+            ajax: "a";
+            process: "p";
+            update: "u";
+            highlight: "h";
+            focus: "f";
+            renderMessages: "r";
+            validateInvisibleElements: "v";
+        }>;
+    }
+}

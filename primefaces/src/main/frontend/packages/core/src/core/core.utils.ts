@@ -1629,3 +1629,114 @@ declare global {
         }
     }
 }
+
+// Overlay, resize and CSS transition callbacks
+declare global {
+    namespace PrimeFaces {
+        /**
+         * A callback that is invoked when the user clicks on an element outside
+         * an overlay component.
+         */
+        export type OverlayHideCallback =
+            /**
+             * @param event The event that caused the overlay to be hidden.
+             * @param eventTarget The target of the event, wrapped in a JQuery instance.
+             */
+            (event: JQuery.TriggeredEvent, eventTarget: JQuery) => void;
+
+        /**
+         * Used when registering overlay {@link OverlayHideCallback}.
+         * 
+         * The callback which resolves the elements to ignore when the user
+         * clicks outside the overlay. The {@link OverlayHideCallback} is not
+         * invoked when the user clicks on one those elements.
+         */
+        export type OverlayResolveIgnoredElementCallback =
+            /**
+             * @param event The event that occurred, with the element that was clicked.
+             * @returns An optional set of elements to ignore.
+             */
+            (event: JQuery.TriggeredEvent) => JQuery | null | undefined;
+
+        /**
+         * Callback invoked when an element or the window was resized.
+         */
+        export type ResizeCallback =
+            /**
+             * @param event The resize event that occurred.
+             */
+            (event: JQuery.TriggeredEvent) => void;
+
+        /**
+         * Callback invoked when a scroll event occurred.
+         */
+        export type ScrollCallback =
+            /**
+             * @param event The scroll event that occurred.
+             */
+            (event: JQuery.TriggeredEvent) => void;
+
+        /**
+         * Callback invoked when changes occur that may affect an element's
+         * position or dimensions, such as a resize or DOM mutation event.
+         */
+        export type MutationCallback = () => void;
+
+
+        /**
+         * CSS transition callbacks that can be passed to the methods in {@link CssTransitionHandler}.
+         * @since 10.0.0
+         */
+        export interface CssTransitionCallback {
+            /**
+             * Called when the entering process is about to start.
+             */
+            onEnter?: (this: Window) => void;
+            /**
+             * Called during the entering process.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onEntering?: (this: JQuery.TriggeredEvent | Window) => void;
+            /**
+             * Called when the entering process has finished.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onEntered?: (this: JQuery.TriggeredEvent | Window) => void;
+            /**
+             * Called when the exiting process is about to start.
+             */
+            onExit?: (this: Window) => void;
+            /**
+             * Called during the exiting process.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onExiting?: (this: JQuery.TriggeredEvent | Window) => void;
+            /**
+             * Called when the exiting process has finished.
+             * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
+             * no event is passed and the this context is the Window.
+             */
+            onExited?: (this: JQuery.TriggeredEvent | Window) => void;
+        }
+
+        /**
+         * Methods for a CSS transition that are returned by {@link PrimeFaces.utils.registerCSSTransition}.
+         * @since 10.0.0
+         */
+        export interface CssTransitionHandler {
+            /**
+             * Should be called when an element gets shown.
+             * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+             */
+            show(callbacks?: CssTransitionCallback): void;
+            /**
+             * Should be called when an element gets hidden.
+             * @param callbacks Optional callbacks that will be invoked at the appropriate time.
+             */
+            hide(callbacks?: CssTransitionCallback): void;
+        }
+    }
+}

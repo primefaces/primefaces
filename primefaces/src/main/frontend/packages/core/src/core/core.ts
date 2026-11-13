@@ -2298,3 +2298,947 @@ export function PF(ref: string): BaseComponent | undefined {
 
     return componentInstance;
 }
+
+// General types
+declare global {
+    namespace PrimeFaces {
+        export type EntityMap = Record<string, string>;
+
+        /**
+         * The kind of a theme, either "light" or "dark".
+         */
+        export type ThemeKind = "light" | "dark";
+
+        /**
+         * These string constants represent the current state of the running Faces application in a typical product
+         * development lifecycle. The value of this state may be queried at any time after application startup by
+         * calling {@link PFSettings.projectStage}.
+         * - `Development` - This value indicates the currently running application is right now, at this moment, being
+         * developed.
+         * - `UnitTest` - This value indicates the currently running application is undergoing unit testing.
+         * - `SystemTest` - This value indicates the currently running application is undergoing system testing.
+         * - `Production` - This value indicates the currently running application is deployed in production.
+         */
+        export type ProjectStage = "Development" | "UnitTest" | "SystemTest" | "Production";
+
+
+        /**
+         * Custom logger for logging messages. Set your custom logger via
+         * `PrimeFaces.logger = ...`.
+         */
+        export interface Logger {
+            /**
+             * Logs a message at the debug level.
+             * @param message Message or error to log.
+             */
+            debug: (message: unknown) => void;
+            /**
+             * Logs a message at the error level.
+             * @param message Message or error to log.
+             */
+            error: (message: unknown) => void;
+            /**
+             * Logs a message at the info level.
+             * @param log Message or error to log
+             */
+            info: (message: unknown) => void;
+            /**
+             * Logs a message at the warn level.
+             * @param log Message or error to log
+             */
+            warn: (message: unknown) => void;
+        }
+
+
+        /**
+         * Defines the possible severity levels of a faces message (a message shown to the user).
+         *
+         * - fatal: Indicates that the message reports a grave error that needs the immediate attention of the reader.
+         * - error: Indicates that the message reports an error that occurred, such as invalid user input or database
+         * connection failures etc.
+         * - warn: Indicates that the message reports a possible issue, but it does not prevent the normal operation of the
+         * system.
+         * - info: Indicates that the message provides additional information, if the reader is interested.
+         */
+        export type FacesMessageSeverity = "fatal" | "error" | "warn" | "info";
+
+        /**
+         * A 'FacesMessage' with a short summary message and a more detailed message, as well as a severity level that
+         * indicates the type of this message. Used by the client-side validation framework and some components such as the
+         * growl component.
+         */
+        export interface BaseFacesMessage {
+            /**
+             * A short summary of the message.
+             */
+            summary: string;
+            /**
+             * In-depth details of the message.
+             */
+            detail: string;
+            /**
+             * The severity of this message, i.e. whether it is an information message, a warning message, or an error
+             * message.
+             */
+            severity?: FacesMessageSeverity;
+            /**
+             * If the message was successfully rendered by a message/growl component.
+             */
+            rendered?: boolean;
+        }
+
+        /**
+         * A 'FacesMessage' with a short summary message and a more detailed message, as well as a severity level that
+         * indicates the type of this message. Used by the client-side validation framework and some components such as the
+         * growl component.
+         * 
+         * Similar to {@link BaseFacesMessage}, but `severity` and `rendered` are guaranteed to be present.
+         */
+        export interface FacesMessage extends BaseFacesMessage {
+            /**
+             * The severity of this message, i.e. whether it is an information message, a warning message, or an error
+             * message.
+             */
+            severity: FacesMessageSeverity;
+            /**
+             * If the message was successfully rendered by a message/growl component.
+             */
+            rendered: boolean;
+        }
+
+        /**
+         * Represents a deferred render added for a deferred component.
+         * Some components need to compute their dimensions based on their parent element(s). This requires that such components
+         * are not rendered until they have become visible. A component may not be visible, for example, when it is inside a
+         * tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for components to render
+         * once they are visible. This is done by keeping a list of components that need to be rendered, and checking on every
+         * change (AJAX request, tab change etc.) whether any of those have become visible. Components should extend
+         * `PrimeFaces.component.DeferredComponent` to make use of this functionality.
+         */
+        export interface DeferredRender {
+            /**
+             * Callback that is invoked when the component _may_ possibly have become visible.
+             * Checks whether the component can be rendered and if so, renders it.
+             * @return `true` when the component was rendered, or `false` when the component still
+             * needs to be rendered later.
+             */
+            callback(): boolean | undefined | void;
+            /**
+             * ID of the container that should be visible before the component can be rendered.
+             */
+            container: string | string[];
+            /**
+             * The ID of a deferred component.
+             */
+            componentId: string | string[];
+        }
+
+        export interface PFSettings {
+            /**
+             * `true` if the empty string and `null` should be treated the same way, or
+             * `false` otherwise.
+             */
+            considerEmptyStringNull: boolean;
+
+            /**
+             * The current servlet context path.
+             */
+            contextPath: string;
+
+            /**
+             * If cookies are secured (allowed only via HTTPS).
+             */
+            cookiesSecure: boolean;
+
+            /**
+             * The `same-site` attribute for cookies.
+             */
+            cookiesSameSite?: "strict" | "Strict" | "lax" | "Lax" | "none" | "None" | undefined;
+
+            /**
+             * If AJAX post params are evaluated early.
+             */
+            earlyPostParamEvaluation?: boolean;
+
+            /**
+             * Contains the error pages that may be shown when an error occurs.
+             *
+             * The key is the name of the error page, e.g. `java.lang.Throwable`, the
+             * value the URL of the error page.
+             */
+            errorPages?: Record<string, string>;
+
+            /**
+            * The current locale, such as `en`,`en_US`, or `ja`.
+            */
+            locale: string;
+
+            /**
+             * If AJAX partial-submit is enabled.
+             */
+            partialSubmit?: boolean;
+
+            /**
+             * The Faces project stage.
+             */
+            projectStage?: ProjectStage;
+
+            /**
+             * `true` if empty (input etc.) fields should be validated, or `false` otherwise.
+             */
+            validateEmptyFields: boolean;
+
+            /**
+             * The Faces ID of the current view.
+             */
+            viewId: string;
+        }
+    }
+}
+
+// Features for the core
+declare global {
+    namespace PrimeFaces {
+        /**
+         * Registry for hooks. Hooks are a way for external code to interact
+         * with and adjust core functions. The core provides entry points
+         * external code can hook into. 
+         *  
+         * Includes hooks such as showing confirmation messages in dialogs.
+         * The PrimeFaces core does not know about dialogs, but additional
+         * scripts may add such functionality.
+         */
+        export interface HookRegistry { }
+    }
+
+    namespace PrimeFaces.hook {
+        /**
+         * The confirm hook. Lets external scripts subscribe to emitted
+         * confirmation messages. Implementations usually make use of this
+         * feature to show confirmation messages, such as in a confirm popup
+         * or a confirm dialog.
+         */
+        export interface Confirm {
+            /**
+             * Handles an emitted confirmation message, such as by showing it
+             * to the user.
+             * @param message Message to handle.
+             * @returns Whether the message was handled. If true, subsequent
+             * registered implementations will not be called anymore.
+             */
+            handleMessage: (message: confirm.ExtendedConfirmMessage) => boolean;
+        }
+
+        /**
+         * The dialog hook. Lets external scripts react to requests for
+         * opening and closing a dialog. The default implementation is provided
+         * by PrimeFace's dialog framework.
+         */
+        export interface Dialog {
+            /**
+             * Opens a dialog with the given configuration.
+             * @param cfg Dialog configuration to use.
+             * @returns Whether the request was handled. If true, subsequent
+             * registered implementations will not be called anymore.
+             */
+            openDialog: (cfg: dialog.DialogConfiguration) => boolean;
+            /**
+             * Closes a dialog with the given configuration.
+             * @param cfg Dialog configuration to use.
+             * @returns Whether the request was handled. If true, subsequent
+             * registered implementations will not be called anymore.
+             */
+            closeDialog: (cfg: dialog.DialogConfiguration) => boolean;
+        }
+
+        /**
+         * The kill switch hook. Lets external scripts react to a kill signal
+         * and stop ongoing operations, such as AJAX requests, polling operations
+         * etc.
+         */
+        export interface KillSwitch {
+            /**
+             * Kills all ongoing actions. Implementations might stop running
+             * polling operations, idle monitor listeners, etc.
+             * 
+             * Errors are caught, logged, and ignored otherwise.
+             */
+            kill: () => void;
+        }
+
+        /**
+         * The message render hook. Lets external code hook into how and where
+         * messages are rendered.
+         * 
+         * Default implementations are provided for rendering messages into the
+         * message, messages and growl components.
+         */
+        export interface MessageRender {
+            /**
+             * Clears the messages of the given message, messages or growl component.
+             */
+            clearMessagesForComponent?: (component: BaseComponent) => void;
+
+            /**
+             * Renders the given messages into the given message, messages or growl component.
+             */
+            renderMessageForComponent?: (component: BaseComponent, messages: PrimeFaces.FacesMessage[]) => void;
+
+            /**
+             * @deprecated Implement {@link clearMessagesForComponent} instead, this one is only called when that is missing.
+             */
+            clearMessagesForWidget?: (component: BaseComponent) => void;
+
+            /**
+             * @deprecated Implement {@link renderMessageForComponent} instead, this one is only called when that is missing.
+             */
+            renderMessageForWidget?: (component: BaseComponent, messages: PrimeFaces.FacesMessage[]) => void;
+
+            /**
+             * Renders all given messages in the given containers.
+             * @param messages The messages to render.
+             * @param containers The container for the messages. Note that this JQuery
+             * instance may contain multiple elements -- you should iterate over them. 
+             */
+            renderMessagesInContainers: (messages: Record<string, PrimeFaces.FacesMessage[]>, containers: JQuery) => void;
+        }
+
+        /**
+         * The message-in-dialog hook that lets external scripts subscribe
+         * to requests to the core for showing messages within a dialog.
+         */
+        export interface MessageInDialog {
+            /**
+             * Shows the given message in a dialog.
+             * @param message Message to show.
+             * @returns Whether the message was handled. If true, subsequent
+             * registered implementations will not be called anymore.
+             */
+            showMessage: (message: PrimeFaces.hook.messageInDialog.DialogMessageData) => boolean;
+        }
+    }
+
+    namespace PrimeFaces.hook.confirm {
+        /**
+         * Interface for a confirmation message to show, such as in a confirm
+         * popup or a confirm dialog. Used by the {@link ConfirmCoreFeature}.
+         */
+        export interface ConfirmMessage {
+            /**
+             * Optional code that is run before the message is shown. Must be valid JavaScript code.
+             * It is evaluated via {@link PrimeFaces.csp.eval}.
+             */
+            beforeShow?: string;
+
+            /**
+             * If `true`, the message is escaped for HTML. If `false`, the message is
+             * interpreted as an HTML string.
+             */
+            escape?: boolean;
+
+            /**
+             * Header of the dialog message.
+             */
+            header: string;
+
+            /**
+             * Optional icon that is shown to the left of the confirm dialog. When not given, defaults to
+             * the severity icon of the confirm dialog. Must be a style class of some icon font.
+             */
+            icon?: string;
+
+            /**
+             * Main content of the dialog message.
+             */
+            message: string;
+
+            /**
+             * The CSS class for the yes (deny) button.
+             */
+            noButtonClass?: string;
+
+            /**
+             * The icon for the no (deny) button, a CSS class to add.
+             */
+            noButtonIcon?: string;
+
+            /**
+             * The label for the no (deny) button.
+             */
+            noButtonLabel?: string;
+
+            /**
+             * Optional type of the message that specified its intended use,
+             * e.g. `popup`.
+             */
+            type?: string;
+
+            /**
+             * The CSS class for the yes (confirm) button.
+             */
+            yesButtonClass?: string;
+
+            /**
+             * The icon for the yes (confirm) button, a CSS class to add.
+             */
+            yesButtonIcon?: string;
+
+            /**
+             * The label for the yes (confirm) button.
+             */
+            yesButtonLabel?: string;
+        }
+
+        /**
+         * An extended {@link ConfirmMessage} with an additional `source` attribute
+         * for specifying the source component or form.
+         */
+        export interface ExtendedConfirmMessage extends ConfirmMessage {
+            /**
+             * The source component (command button, AJAX callback etc) that triggered the confirmation.
+             * When a string, it is interpreted as the client ID of the component. Otherwise, it must be
+             * the main DOM element of the source component.
+             */
+            source: string | HTMLElement | JQuery;
+        }
+    }
+
+    namespace PrimeFaces.hook.dialog {
+        /**
+         * Interface with the options shared by the open / close methods of the
+         * `PrimeFaces.dialog.DialogHandler` and the configuration of the
+         * `PrimeFaces.component.Dialog` component. 
+         */
+        export interface SharedDialogOptions {
+            /**
+             * Whether the dialog can be closed by the user.
+             */
+            closable: boolean;
+
+            /**
+             * Whether the dialog is closed when the user presses the escape button.
+             */
+            closeOnEscape: boolean;
+
+            /**
+             * Whether the dialog is closed when the user clicks on the modal background mask.
+             */
+            dismissibleMask: boolean;
+
+            /**
+             * Whether the dialog is draggable.
+             */
+            draggable: boolean;
+
+            /**
+             * Dialog size might exceed the viewport if the content is taller than viewport in terms
+             * of height or wider in terms of width. When this is set to `true`, automatically adjust
+             * the height and width to fit the dialog within the viewport.
+             */
+            fitViewport: boolean;
+
+            /**
+             * Used by the dialog framework when showing dialogs in iframes. The IFrame to use.
+             */
+            iframe: JQuery<HTMLIFrameElement>;
+
+            /**
+             * One or more CSS classes for the iframe within the dialog.
+             */
+            iframeStyleClass: string;
+
+            /**
+             * The title of the iframe with the dialog.
+             */
+            iframeTitle: string;
+
+            /**
+             * The height of the dialog in pixels. Can also be a CSS string such as "auto".
+             */
+            height: number | string;
+
+            /**
+             * Whether the dialog is maximizable.
+             */
+            maximizable: boolean;
+
+            /**
+             * Whether the dialog is minimizable.
+             */
+            minimizable: boolean;
+
+            /**
+             * Whether the dialog is modal and blocks the main content and other dialogs.
+             */
+            modal: boolean;
+
+            /**
+             * Defines where the dialog should be displayed
+             */
+            position: string;
+
+            /**
+             * Whether the dialog can be resized by the user.
+             */
+            resizable: boolean;
+
+            /**
+             * Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates. Resizable must be set to false
+             * to use this option. (Known limitation: Dialog does not automatically resize yet when resizing the browser
+             * window.)
+             */
+            resizeObserver: boolean;
+
+            /**
+             * Can be used together with resizeObserver = true. Centers the dialog again after it was resized to ensure the
+             * whole dialog is visible onscreen.
+             */
+            resizeObserverCenter: boolean;
+
+            /**
+             * Whether the dialog is responsive. In responsive mode, the dialog adjusts itself based
+             * on the screen width.
+             */
+            responsive: boolean;
+
+            /**
+             * One or more CSS classes for the dialog.
+             */
+            styleClass: string;
+
+            /**
+             * The width of the dialog in pixels. Can also be a CSS string such as "auto".
+             */
+            width: number | string;
+        }
+
+        /**
+         * Interface of the configuration object for a dialog of the
+         * dialog framework. Used by `PrimeFaces.dialog.DialogHandlerCfg`.
+         */
+        export interface DialogOptions extends SharedDialogOptions {
+            /**
+             * `true` to prevent the body from being scrolled, `false` otherwise.
+             */
+            blockScroll: boolean;
+
+            /**
+             * Height of the iframe in pixels.
+             */
+            contentHeight: number;
+
+            /**
+             * Width of the iframe in pixels.
+             */
+            contentWidth: number;
+
+            /**
+             * ID of the header element of the dialog.
+             */
+            headerElement: string;
+
+            /**
+             * Client-side callback to invoke when the dialog is
+             * closed. Must be a valid JavaScript expression or statement. The
+             * this context will point to the DialogHandler instance.
+             */
+            onHide: string;
+
+            /**
+             * Client-side callback to invoke when the dialog is
+             * opened. Must be a valid JavaScript expression or statement. The
+             * this context will point to the DialogHandler instance.
+             */
+            onShow: string;
+
+            /**
+             * Name of the client side component of the dialog (`ref`).
+             */
+            ref: string;
+
+            /**
+             * @deprecated Use {@link ref} instead.
+             */
+            widgetVar: string;
+        }
+
+        /**
+         * Interface of the configuration object for a dialog of the dialog framework.
+         * Used by `PrimeFaces.dialog.DialogHandler.openDialog`.
+         */
+        export interface DialogConfiguration {
+            /**
+             * The options for the dialog.
+             */
+            options: Partial<DialogOptions>;
+
+            /**
+             * PrimeFaces dialog client ID.
+             */
+            pfdlgcid: string;
+
+            /**
+             * ID of the dialog.
+             */
+            sourceComponentId: string;
+
+            /**
+             * Name (ref) of the component that requested the dialog to open.
+             */
+            sourceRef: string;
+
+            /**
+             * Source URL for the IFRAME element with the dialog.
+             */
+            url: string;
+        }
+    }
+
+    namespace PrimeFaces.hook.messageInDialog {
+        /**
+         * Interface for a message received from the server that is to be shown
+         * in a dialog, via the dialog framework.
+         */
+        export interface DialogMessageData {
+            /**
+             * If `true`, the message is escaped for HTML. If `false`, the message is
+             * interpreted as an HTML string.
+             */
+            escape: boolean;
+
+            /**
+             * A short summary of the message.
+             */
+            summary: string;
+
+            /**
+             * In-depth details of the message.
+             */
+            detail: string;
+
+            /**
+             * The severity of this message, i.e. whether it is an information message, a warning message, or an error
+             * message.
+             * 
+             * This is the stringified representation of a FacesMessage's severity, with
+             * the severity level's name and its ordinal value, i.e.:
+             * - `INFO 0`
+             * - `WARN 1`
+             * - `ERROR 2`
+             * - `FATAL 3` 
+             */
+            severity: string;
+        }
+    }
+}
+
+// Hook registry
+declare global {
+    namespace PrimeFaces {
+        export interface HookRegistry {
+            /**
+             * The confirm feature that lets external scripts subscribe to emitted
+             * confirmation messages. Implementations usually make use of this
+             * feature to show the confirmation message to the user.
+             * 
+             * The default implementation is provided by either the ConfirmDialog
+             * component or PrimeFaces's dialog framework.
+             */
+            confirm: hook.Confirm;
+
+            /**
+             * The dialog feature. Lets external scripts react to requests for
+             * opening and closing a dialog.
+             * 
+             * The default implementation is provided by PrimeFace's dialog framework.
+             */
+            dialog: hook.Dialog;
+
+            /**
+             * The kill switch features. Lets external scripts react to a kill signal
+             * and stop ongoing operations, such as AJAX requests, polling operations
+             * etc.
+             */
+            killSwitch: hook.KillSwitch;
+
+            /**
+             * The message render hook. Lets external code hook into how and where
+             * messages are rendered.
+             * 
+             * Default implementations are provided for rendering messages into the
+             * message, messages and growl components.
+             */
+            messageRender: hook.MessageRender;
+
+            /**
+             * The message-in-dialog feature that lets external scripts subscribe
+             * to requests to the core for showing messages within a dialog.
+             * 
+             * The default implementation is provided by PrimeFaces's dialog framework.
+             */
+            messageInDialog: hook.MessageInDialog;
+        }
+    }
+}
+
+// Locale types
+declare global {
+    namespace PrimeFaces {
+        export interface LocaleAria {
+            "cancelEdit"?: string;
+            "close"?: string;
+            "collapseLabel"?: string;
+            "collapseRow"?: string;
+            "editRow"?: string;
+            "expandLabel"?: string;
+            "expandRow"?: string;
+            "falseLabel"?: string;
+            "filterConstraint"?: string;
+            "filterOperator"?: string;
+            "firstPageLabel"?: string;
+            "gridView"?: string;
+            "hideFilterMenu"?: string;
+            "jumpToPageDropdownLabel"?: string;
+            "jumpToPageInputLabel"?: string;
+            "lastPageLabel"?: string;
+            "listLabel"?: string;
+            "listView"?: string;
+            "maximizeLabel"?: string;
+            "minimizeLabel"?: string;
+            "moveAllToSource"?: string;
+            "moveAllToTarget"?: string;
+            "moveBottom"?: string;
+            "moveDown"?: string;
+            "moveToSource"?: string;
+            "moveToTarget"?: string;
+            "moveTop"?: string;
+            "moveUp"?: string;
+            "movedBottom"?: string;
+            "movedDown"?: string;
+            "movedTop"?: string;
+            "movedToSource"?: string;
+            "movedToTarget"?: string;
+            "movedUp"?: string;
+            "navigation"?: string;
+            "next"?: string;
+            "nextPageLabel"?: string;
+            "nullLabel"?: string;
+            "pageLabel"?: string;
+            "otpLabel"?: string;
+            "passwordHide"?: string;
+            "passwordShow"?: string;
+            "previous"?: string;
+            "prevPageLabel"?: string;
+            "rotateLeft"?: string;
+            "rotateRight"?: string;
+            "rowsPerPageLabel"?: string;
+            "saveEdit"?: string;
+            "scrollTop"?: string;
+            "selectColor"?: string;
+            "selectAll"?: string;
+            "selectLabel"?: string;
+            "selectRow"?: string;
+            "showFilterMenu"?: string;
+            "slide"?: string;
+            "slideNumber"?: string;
+            "star"?: string;
+            "stars"?: string;
+            "trueLabel"?: string;
+            "unselectAll"?: string;
+            "unselectLabel"?: string;
+            "unselectRow"?: string;
+            "zoomImage"?: string;
+            "zoomIn"?: string;
+            "zoomOut"?: string;
+            "datatable.sort.ASC"?: string;
+            "datatable.sort.DESC"?: string;
+            "datatable.sort.NONE"?: string;
+            "colorpicker.OPEN"?: string;
+            "colorpicker.CLOSE"?: string;
+            "colorpicker.CLEAR"?: string;
+            "colorpicker.MARKER"?: string;
+            "colorpicker.HUESLIDER"?: string;
+            "colorpicker.ALPHASLIDER"?: string;
+            "colorpicker.INPUT"?: string;
+            "colorpicker.FORMAT"?: string;
+            "colorpicker.SWATCH"?: string;
+            "colorpicker.INSTRUCTION"?: string;
+            "spinner.INCREASE"?: string;
+            "spinner.DECREASE"?: string;
+            "switch.ON"?: string;
+            "switch.OFF"?: string;
+            "messages.ERROR"?: string;
+            "messages.FATAL"?: string;
+            "messages.INFO"?: string;
+            "messages.WARN"?: string;
+        }
+
+        /**
+         * An object with all localized strings required on the client side.
+         */
+        export interface Locale {
+            accept?: string;
+            addRule?: string;
+            am?: string;
+            apply?: string;
+            cancel?: string;
+            choose?: string;
+            chooseDate?: string;
+            chooseMonth?: string;
+            chooseYear?: string;
+            clear?: string;
+            completed?: string;
+            contains?: string;
+            custom?: string;
+            dateAfter?: string;
+            dateBefore?: string;
+            dateFormat?: string;
+            dateIs?: string;
+            dateIsNot?: string;
+            dayNames?: [
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string
+            ];
+            dayNamesMin?: [
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string
+            ];
+            dayNamesShort?: [
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string
+            ];
+            decimalSeparator?: string;
+            emptyFilterMessage?: string;
+            emptyMessage?: string;
+            emptySearchMessage?: string;
+            emptySelectionMessage?: string;
+            endsWith?: string;
+            equals?: string;
+            fileSizeTypes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+            filter?: string;
+            firstDayOfWeek: number,
+            groupingSeparator?: string;
+            gt?: string;
+            gte?: string;
+            lt?: string;
+            lte?: string;
+            matchAll?: string;
+            matchAny?: string;
+            medium?: string;
+            monthNames: [
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string
+            ];
+            monthNamesShort: [
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string,
+                string
+            ];
+            nextDecade?: string;
+            nextHour?: string;
+            nextMinute?: string;
+            nextMonth?: string;
+            nextSecond?: string;
+            nextYear?: string;
+            noFilter?: string;
+            notContains?: string;
+            notEquals?: string;
+            now?: string;
+            passwordPrompt?: string;
+            pending?: string;
+            pm?: string;
+            prevDecade?: string;
+            prevHour?: string;
+            prevMinute?: string;
+            prevMonth?: string;
+            prevSecond?: string;
+            prevYear?: string;
+            reject?: string;
+            removeRule?: string;
+            searchMessage?: string;
+            selectionMessage?: string;
+            showMonthAfterYear: boolean;
+            startsWith?: string;
+            strong?: string;
+            today?: string;
+            upload?: string;
+            weak?: string;
+            weekHeader?: string;
+            weekNumberTitle?: string;
+            isRTL: boolean,
+            yearSuffix: string;
+            timeOnlyTitle?: string;
+            timeText?: string;
+            hourText?: string;
+            minuteText?: string;
+            secondText?: string;
+            millisecondText?: string;
+            year?: string;
+            month?: string;
+            week?: string;
+            day?: string;
+            list?: string;
+            allDayText?: string;
+            moreLinkText?: string;
+            noEventsText?: string;
+            aria: LocaleAria;
+
+            unexpectedError: string;
+
+            /**
+             * Messages for client-side validation.
+             */
+            messages?: Record<string, string>;
+
+            // legacy
+            closeText?: string;
+            prevText?: string;
+            nextText?: string;
+            firstDay?: number;
+            currentText?: string;
+            ampm?: boolean;
+
+            // generic
+            [i18nKey: string]: unknown;
+        }
+
+        /**
+         * Map from the name of a locale to the localized values for that value.
+         */
+        export type Locales = Record<string, Locale>;
+    }
+}
