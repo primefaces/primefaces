@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Spinner} component.
  */
-export interface SpinnerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SpinnerCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Number of decimal places, sent as string. */
     decimalPlaces: string;
     /** Separator of the integral and fractional part, defaults to `.`. */
@@ -47,7 +47,7 @@ export class Spinner<Cfg extends SpinnerCfg = SpinnerCfg> extends PrimeFaces.com
     /** The current value, `null` if the input is empty or invalid. */
     value?: number | null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = this.jq.children('.p-spinner-input') as JQuery<HTMLInputElement>;

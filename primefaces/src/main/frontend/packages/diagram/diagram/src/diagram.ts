@@ -20,6 +20,54 @@ export type DiagramEndpoint = Endpoint & {
 };
 
 /**
+ * Details about a connection between two nodes that was either established or dissolved.
+ */
+export interface ConnectionInfo {
+    /** ID of the source node where the connection starts. */
+    sourceId: string;
+    /** ID of the target node where the connection end. */
+    targetId: string;
+    /** The point (port) where the connections starts. */
+    sourceEndpoint: DiagramEndpoint;
+    /** The point (port) where the connections ends. */
+    targetEndpoint: DiagramEndpoint;
+}
+
+/**
+ * Details about a connection between two nodes that was changed.
+ */
+export interface UpdateConnectionInfo extends ConnectionInfo {
+    /** Previous ID of the source node where the connection started. */
+    originalSourceId: string;
+    /** Previous ID of the target node where the connection ended. */
+    originalTargetId: string;
+    /** New ID of the source node where the connection starts. */
+    newSourceId: string;
+    /** New ID of the target node where the connection ends. */
+    newTargetId: string;
+    /** Previous point (port) where the connections started. */
+    originalSourceEndpoint: DiagramEndpoint;
+    /** Previous point (port) where the connections ended. */
+    originalTargetEndpoint: DiagramEndpoint;
+    /** New point (port) where the connections starts. */
+    newSourceEndpoint: DiagramEndpoint;
+    /** New point (port) where the connections ends. */
+    newTargetEndpoint: DiagramEndpoint;
+}
+
+/**
+ * Details about an element when its location was changed.
+ */
+export interface UpdateElementInfo {
+    /** ID of the element that was changed. */
+    elementId: string;
+    /** New horizontal position of the element. */
+    x: number;
+    /** New vertical position of the element. */
+    y: number;
+}
+
+/**
  * The jsPlumb instance of a diagram, with the methods that exist at runtime but are missing or typed differently in
  * the jsPlumb typings.
  */
@@ -34,13 +82,13 @@ type DiagramCanvas = Omit<jsPlumbInstance, "doWhileSuspended" | "bind"> & {
      * @param event The name of the event.
      * @param callback The listener.
      */
-    bind(event: "connection" | "connectionDetached", callback: (info: PrimeFacesTypes.component.Diagram.ConnectionInfo) => void): void;
+    bind(event: "connection" | "connectionDetached", callback: (info: ConnectionInfo) => void): void;
     /**
      * Binds a listener to a connection being moved.
      * @param event The name of the event.
      * @param callback The listener.
      */
-    bind(event: "connectionMoved", callback: (info: PrimeFacesTypes.component.Diagram.UpdateConnectionInfo) => void): void;
+    bind(event: "connectionMoved", callback: (info: UpdateConnectionInfo) => void): void;
 };
 
 /**
@@ -64,7 +112,7 @@ const jsPlumbApi = jsPlumb as unknown as {
 /**
  * The configuration for the {@link Diagram} component.
  */
-export interface DiagramCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface DiagramCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** List of initial connections to be established between nodes. */
     connections: ConnectParams[];
     /** Whether connections can be severed by the user. */
@@ -97,7 +145,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.com
     /** Internal state whether the connection was changed before a connect event. */
     connectionChanged?: boolean;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.renderDeferred();
@@ -180,7 +228,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.com
      * Callback for the event when two nodes are connected with each other.
      * @param info Details about the connection that was made.
      */
-    private onConnect(info: PrimeFacesTypes.component.Diagram.ConnectionInfo): void {
+    private onConnect(info: ConnectionInfo): void {
         const options = {
             source: this.getId(),
             process: this.getId(),
@@ -210,7 +258,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.com
      * Callback for the event when two nodes are disconnected from each other.
      * @param info Details about the connection that was severed.
      */
-    private onDisconnect(info: PrimeFacesTypes.component.Diagram.ConnectionInfo): void {
+    private onDisconnect(info: ConnectionInfo): void {
         const options = {
             source: this.getId(),
             process: this.getId(),
@@ -235,7 +283,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.com
      * Callback for the event when the connection between two nodes was changed.
      * @param info Details about the connection that was changed.
      */
-    private onConnectionChange(info: PrimeFacesTypes.component.Diagram.UpdateConnectionInfo): void {
+    private onConnectionChange(info: UpdateConnectionInfo): void {
         this.connectionChanged = true;
 
         const options = {
@@ -266,7 +314,7 @@ export class Diagram<Cfg extends DiagramCfg = DiagramCfg> extends PrimeFaces.com
      * Callback for when the location of a diagram element has changed.
      * @param info Details about the element that was changed.
      */
-    private onUpdateElementPosition(info: PrimeFacesTypes.component.Diagram.UpdateElementInfo): void {
+    private onUpdateElementPosition(info: UpdateElementInfo): void {
         const options = {
             source: this.getId(),
             process: this.getId(),

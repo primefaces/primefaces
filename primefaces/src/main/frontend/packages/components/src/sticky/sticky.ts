@@ -1,7 +1,17 @@
 /**
+ * The position and height of the target before it was fixed.
+ */
+export interface InitialState {
+    /** The height of the target. */
+    height: number;
+    /** The top position of the target. */
+    top: number;
+}
+
+/**
  * The configuration for the {@link Sticky} component.
  */
-export interface StickyCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface StickyCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Margin to the top of the page while fixed, recalculated from `stickyTopAt`. */
     margin: number;
     /** Selector of elements fixed at the top of the page, their height is used as margin. */
@@ -23,9 +33,9 @@ export class Sticky<Cfg extends StickyCfg = StickyCfg> extends PrimeFaces.compon
     /** The placeholder at the original position of the target while it is fixed. */
     ghost?: JQuery;
     /** The position and height of the target before it was fixed. */
-    initialState: PrimeFacesTypes.component.Sticky.InitialState = { top: 0, height: 0 };
+    initialState: InitialState ={ top: 0, height: 0 };
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target ?? ''));
         this.cfg.margin = this.cfg.margin || 0;
@@ -43,7 +53,7 @@ export class Sticky<Cfg extends StickyCfg = StickyCfg> extends PrimeFaces.compon
 
     // no super.refresh / init on purpose (#660): initialState must stay the one measured before the target was fixed,
     // and the scroll/resize handlers stay bound, so only the (updated) target is resolved again and fixed if needed
-    override refresh(_cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(_cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target ?? ''));
 
         if (this.fixed) {

@@ -146,7 +146,7 @@ export class Validation {
         renderMessages: boolean,
         validateInvisibleElements: boolean,
         logUnrenderedMessages: boolean,
-    ): PrimeFacesTypes.validation.ValidationResult {
+    ): PrimeFaces.validation.ValidationResult {
         const vc = this.ValidationContext;
 
         process = expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, process);
@@ -281,7 +281,7 @@ export class Validation {
      */
     validateButtonCsvRequirements(btn: HTMLElement): void {
         const $source = $(btn);
-        const cfg: PrimeFacesTypes.validation.Configuration = {
+        const cfg: PrimeFaces.validation.Configuration = {
             ajax: toBoolean(btn.dataset.pfValidateclientAjax),
             process: btn.dataset.pfValidateclientProcess,
             update: btn.dataset.pfValidateclientUpdate
@@ -422,7 +422,7 @@ export class Validation {
             }
         }
 
-        let submittedValue: PrimeFacesTypes.validation.SubmittedValue | null = this.Utils.getSubmittedValue(element);
+        let submittedValue: PrimeFaces.validation.SubmittedValue | null = this.Utils.getSubmittedValue(element);
         let valid = true;
         const converterId = element.data('p-con');
 
@@ -624,7 +624,7 @@ export class ValidationContext {
     /**
      * A map between the client ID of an element and a list of faces message for that element.
      */
-    messages: Record<string, PrimeFacesTypes.FacesMessage[]> = {};
+    messages: Record<string, PrimeFaces.FacesMessage[]> = {};
 
     /**
      * A list of element groups to be validated. Usually corresponds to the name of single form element. For some
@@ -665,13 +665,13 @@ export class ValidationContext {
      * @param target Element or component to which to add the message.
      * @param msg Message to add to the given message.
      */
-    addMessage(target: string | HTMLElement | JQuery | BaseComponent, msg: Error | PrimeFacesTypes.BaseFacesMessage): void {
+    addMessage(target: string | HTMLElement | JQuery | BaseComponent, msg: Error | PrimeFaces.BaseFacesMessage): void {
         const clientId = core.resolveAsId(target);
 
         this.messages[clientId] ??= [];
 
         // in case of a exception -> lets wrap it into an 'unexpected error'
-        const newMessage: PrimeFacesTypes.FacesMessage = msg instanceof Error
+        const newMessage: PrimeFaces.FacesMessage = msg instanceof Error
             ? {
                 detail : msg.toString(),
                 rendered: false,
@@ -731,7 +731,7 @@ export class ValidationContext {
      * @returns The localized faces message for the given key, or `null` if no
      * translation was found for the key.
      */
-    getMessage(key: string, ...params: PrimeFacesTypes.validation.MessageFormatParameter[]): PrimeFacesTypes.BaseFacesMessage {
+    getMessage(key: string, ...params: PrimeFaces.validation.MessageFormatParameter[]): PrimeFaces.BaseFacesMessage {
         return validation.Utils.getMessage(key, params);
     }
 
@@ -745,7 +745,7 @@ export class ValidationContext {
      * are indices enclosed in braces, e.g. `{0}` or `{1}`.
      * @returns A faces message with the given key for the given element.
      */
-    getMessageBV(element: JQuery, defaultKey?: string, msg?: string, ...params: PrimeFacesTypes.validation.MessageFormatParameter[]): PrimeFacesTypes.BaseFacesMessage {
+    getMessageBV(element: JQuery, defaultKey?: string, msg?: string, ...params: PrimeFaces.validation.MessageFormatParameter[]): PrimeFaces.BaseFacesMessage {
         return validation.Utils.getMessageBV(element, defaultKey, msg, ...params);
     }
     
@@ -798,7 +798,7 @@ export class ValidationUtils {
      * @returns The localized faces message for the given key, or `null` if no
      * translation was found for the key.
      */
-    getMessage(key: string, params: PrimeFacesTypes.validation.MessageFormatParameter[]): PrimeFacesTypes.BaseFacesMessage {
+    getMessage(key: string, params: PrimeFaces.validation.MessageFormatParameter[]): PrimeFaces.BaseFacesMessage {
         const locale = core.getLocaleSettings();
         const bundle = (locale.messages && locale.messages[key]) ? locale : core.locales['en_US'];
 
@@ -832,7 +832,7 @@ export class ValidationUtils {
      * are indices enclosed in braces, e.g. `{0}` or `{1}`.
      * @returns A faces message with the given key for the given element.
      */
-    getMessageBV(element: JQuery, defaultKey?: string, msg?: string, ...params: PrimeFacesTypes.validation.MessageFormatParameter[]): PrimeFacesTypes.BaseFacesMessage {
+    getMessageBV(element: JQuery, defaultKey?: string, msg?: string, ...params: PrimeFaces.validation.MessageFormatParameter[]): PrimeFaces.BaseFacesMessage {
         if (msg && msg.charAt(0) !== '{') {
             return { summary : msg, detail : msg };
         }
@@ -881,7 +881,7 @@ export class ValidationUtils {
      * @param params A list of parameters for the placeholders.
      * @returns The string with the placeholders replaced with the given params.
      */
-    format(str: string, params: PrimeFacesTypes.validation.MessageFormatParameter[]): string {
+    format(str: string, params: PrimeFaces.validation.MessageFormatParameter[]): string {
         let s = str;
         for (let i = 0; i < params.length; i++) {
             const reg = new RegExp('\\{' + i + '\\}', 'gm');
@@ -909,8 +909,8 @@ export class ValidationUtils {
      * @param element A form element for which to find its value.
      * @returns The value of the form element, or the empty string when it does not have a value.
      */
-    getSubmittedValue(element: JQuery): PrimeFacesTypes.validation.SubmittedValue {
-        let value: PrimeFacesTypes.validation.SubmittedValue | undefined;
+    getSubmittedValue(element: JQuery): PrimeFaces.validation.SubmittedValue {
+        let value: PrimeFaces.validation.SubmittedValue | undefined;
 
         if (element.is(':radio')) {
             value = $('input:radio[name="' + CSS.escape(element.attr('name') ?? "") + '"]:checked').val();
@@ -954,7 +954,7 @@ export class ValidationUtils {
      * @param containers The container for the messages. Note that this JQuery
      * instance may contain multiple elements -- you should iterate over them. 
      */
-    renderMessages(messages: Record<string, PrimeFacesTypes.FacesMessage[]>, containers: JQuery): void {
+    renderMessages(messages: Record<string, PrimeFaces.FacesMessage[]>, containers: JQuery): void {
         for (const messageDisplayHook of core.getHook("messageRender")) {
             try {
                 messageDisplayHook.renderMessagesInContainers(messages, containers);
@@ -971,7 +971,7 @@ export class ValidationUtils {
      * @param source The source element.
      * @returns Resolved jQuery instance.
      */
-    resolveProcess(cfg: PrimeFacesTypes.validation.Configuration, source: JQuery): JQuery {
+    resolveProcess(cfg: PrimeFaces.validation.Configuration, source: JQuery): JQuery {
         if (cfg.ajax && cfg.process) {
             return expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.process);
         } else {
@@ -985,7 +985,7 @@ export class ValidationUtils {
      * @param source The source element.
      * @returns Resolved jQuery instance.
      */
-    resolveUpdate(cfg: PrimeFacesTypes.validation.Configuration, source: JQuery): JQuery {
+    resolveUpdate(cfg: PrimeFaces.validation.Configuration, source: JQuery): JQuery {
         if (cfg.ajax && cfg.update) {
             return expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.update);
         } else {

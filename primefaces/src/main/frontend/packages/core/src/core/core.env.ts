@@ -171,7 +171,7 @@ export class Environment {
      * @param cfg the component configuration.
      * @return `true` if touch is enabled, false if disabled
      */
-    isTouchable(cfg: PrimeFacesTypes.component.PartialComponentCfg<BaseComponentCfg>): boolean {
+    isTouchable(cfg: PrimeFaces.component.PartialComponentCfg<BaseComponentCfg>): boolean {
         var componentTouchable = (cfg == undefined) || (cfg.touchable != undefined ? cfg.touchable : true);
         return this.touch && componentTouchable;
     }
@@ -181,7 +181,7 @@ export class Environment {
      * 
      * @return The preferred color scheme, either 'dark' or 'light'
      */
-    getOSPreferredColorScheme(): PrimeFacesTypes.ThemeKind {
+    getOSPreferredColorScheme(): PrimeFaces.ThemeKind {
         // evaluated now, the setting can change while the page is open
         return this.evaluateMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     }
@@ -193,7 +193,7 @@ export class Environment {
      * @param element The element whose color scheme is used (e.g. a component inside a dark sidebar), default: the page.
      * @return The theme contrast, either 'dark' or 'light'.
      */
-    getThemeContrast(element?: Element): PrimeFacesTypes.ThemeKind {
+    getThemeContrast(element?: Element): PrimeFaces.ThemeKind {
         var schemes = (window.getComputedStyle(element || document.documentElement).colorScheme || '').split(/\s+/);
         var light = schemes.indexOf('light') >= 0;
         var dark = schemes.indexOf('dark') >= 0;

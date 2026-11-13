@@ -18,8 +18,11 @@ export interface AjaxExceptionHandlerCfg extends BaseComponentCfg {
     update: string;
     /**
      * Callback to invoke when an AJAX request fails.
+     * @param type Name of the AJAX error, e.g. the exception type or `httpError`.
+     * @param message Message with details regarding the AJAX error.
+     * @param timestamp Timestamp of the AJAX error, formatted as `yyyy-MM-dd HH:mm:ss`.
      */
-    onexception: PrimeFacesTypes.component.AjaxExceptionHandler.OnExceptionCallback;
+    onexception: (this: AjaxExceptionHandler, type: string, message: string, timestamp: string) => void;
 }
 
 /**
@@ -29,7 +32,7 @@ export interface AjaxExceptionHandlerCfg extends BaseComponentCfg {
  * JavaScript callback and/or updates Faces components when an error occurs.
  */
 export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExceptionHandlerCfg> extends BaseComponent<AjaxExceptionHandlerCfg> {
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
     }
 
@@ -56,7 +59,7 @@ export class AjaxExceptionHandler<Cfg extends AjaxExceptionHandlerCfg = AjaxExce
         const timestamp = this.formatTimestamp(new Date());
 
         if (this.cfg.update) {
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 process: this.getId(),
                 update: this.cfg.update,

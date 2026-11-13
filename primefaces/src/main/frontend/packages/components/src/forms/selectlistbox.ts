@@ -1,17 +1,27 @@
 /**
+ * Mode of the filter of a listbox, `custom` uses the `filterFunction`.
+ */
+export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+/**
  * The configuration for the {@link SelectListbox} component.
  */
-export interface SelectListboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectListboxCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether filtering is case-sensitive. */
     caseSensitive: boolean;
     /** Whether filtering uses normalized values (accents removed). */
     filterNormalize: boolean;
     /** Whether the options can be filtered. */
     filter: boolean;
-    /** The filter function used with `filterMatchMode` `custom`. */
-    filterFunction: PrimeFacesTypes.component.SelectListbox.FilterFunction;
+    /**
+     * The filter function used with `filterMatchMode` `custom`.
+     * @param value The (searchable) text of an option.
+     * @param filter The (searchable) filter value.
+     * @returns `true` if the option matches the filter.
+     */
+    filterFunction: (value: string, filter: string) => boolean;
     /** Mode of the filter, normalized to `startsWith` on init if not set. */
-    filterMatchMode: PrimeFacesTypes.component.SelectListbox.FilterMatchMode;
+    filterMatchMode: FilterMatchMode;
 }
 
 /**
@@ -35,18 +45,18 @@ export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> exte
     /** The filter input, only with `filter`. */
     filterInput?: JQuery;
     /** The filter functions per filter match mode. */
-    filterMatchers: Record<PrimeFacesTypes.component.SelectListbox.FilterMatchMode, PrimeFacesTypes.component.SelectListbox.FilterFunction | undefined> = {
+    filterMatchers: Record<FilterMatchMode, SelectListboxCfg["filterFunction"] | undefined> = {
         startsWith: undefined,
         contains: undefined,
         endsWith: undefined,
         custom: undefined
     };
     /** The filter function of the current filter match mode. */
-    filterMatcher?: PrimeFacesTypes.component.SelectListbox.FilterFunction;
+    filterMatcher?: SelectListboxCfg["filterFunction"];
     /** Whether this listbox was disabled via {@link disable}, `undefined` before. */
     disabled?: boolean;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input') as JQuery<HTMLSelectElement>;
@@ -229,7 +239,7 @@ export class SelectListbox<Cfg extends SelectListboxCfg = SelectListboxCfg> exte
                 const itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize);
                 const item = this.allItems.eq(i);
 
-                if ((this.filterMatcher as PrimeFacesTypes.component.SelectListbox.FilterFunction)(itemLabel, filterValue)) {
+                if ((this.filterMatcher as SelectListboxCfg["filterFunction"])(itemLabel, filterValue)) {
                     item.removeClass('p-hidden').show();
                 }
                 else {

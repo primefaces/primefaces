@@ -10,14 +10,10 @@ declare global {
         Cropper: typeof Cropper;
     }
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             ImageCropper: typeof ImageCropper;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type ImageCropperCfg = import("./src/imagecropper.js").ImageCropperCfg;
     }
 }
 

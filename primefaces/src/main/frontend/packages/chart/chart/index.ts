@@ -27,22 +27,9 @@ ChartJs.Chart.register(zoomPlugin);
 Object.assign(window, { Chart: createChartJsGlobal(), Hammer });
 
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             Chart: typeof ChartComponent;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type ChartCfg = import("./src/chart.js").ChartCfg;
-    }
-
-    namespace PrimeFacesTypes.component.Chart {
-        /**
-         * The type of the chart extender. It is invoked when the chart is created and lets you modify the chart by
-         * using the [chart.js](https://www.chartjs.org/docs/latest/) API. The current chart component is passed as the
-         * this context. To modify the chart configuration, mutate the `this.cfg.config` object.
-         */
-        export type ChartExtender = (this: ChartComponent) => void;
     }
 }

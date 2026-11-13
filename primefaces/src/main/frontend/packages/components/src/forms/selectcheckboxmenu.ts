@@ -1,7 +1,13 @@
 /**
+ * Available modes for filtering the options of a select checkbox menu. When `custom` is set, a
+ * `filterFunction` must be specified.
+ */
+export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+/**
  * The configuration for the {@link SelectCheckboxMenu} component.
  */
-export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectCheckboxMenuCfg extends PrimeFaces.component.BaseComponentCfg {
     /** The search expression for the element to which the overlay panel should be appended. */
     appendTo: string | null;
     /** Defines if filtering would be case sensitive. */
@@ -19,10 +25,15 @@ export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.component.BaseCom
     selectedLabel: string;
     /** `true` if the options can be filtered, or `false` otherwise. */
     filter: boolean;
-    /** A custom filter function that is used when `filterMatchMode` is set to `custom`. */
-    filterFunction: PrimeFacesTypes.component.SelectCheckboxMenu.FilterFunction;
+    /**
+     * A custom filter function that is used when `filterMatchMode` is set to `custom`.
+     * @param itemLabel The (searchable) label of an option.
+     * @param filterValue The (searchable) value to search for.
+     * @returns `true` if the item label matches the filter value, or `false` otherwise.
+     */
+    filterFunction: (itemLabel: string, filterValue: string) => boolean;
     /** Mode of the filter. When set to `custom`, a `filterFunction` must be specified. */
-    filterMatchMode: PrimeFacesTypes.component.SelectCheckboxMenu.FilterMatchMode;
+    filterMatchMode: FilterMatchMode;
     /** Placeholder text to show when filter input is empty. */
     filterPlaceholder: string;
     /** Initial height of the item container in pixels. */
@@ -31,12 +42,12 @@ export interface SelectCheckboxMenuCfg extends PrimeFacesTypes.component.BaseCom
     labelSeparator: string;
     /** Whether to show selected items as multiple labels. */
     multiple: boolean;
-    /** Callback that is invoked when a checkbox option was checked or unchecked. */
-    onChange: PrimeFacesTypes.component.SelectCheckboxMenu.OnChangeCallback;
-    /** Callback that is invoked when the overlay panel was hidden. */
-    onHide: PrimeFacesTypes.component.SelectCheckboxMenu.OnHideCallback;
-    /** Callback that is invoked when the overlay panel was brought up. */
-    onShow: PrimeFacesTypes.component.SelectCheckboxMenu.OnShowCallback;
+    /** Callback that is invoked when a checkbox option was checked or unchecked, with the component as `this`. */
+    onChange: (this: SelectCheckboxMenu) => void;
+    /** Callback that is invoked when the overlay panel was hidden, with the component as `this`. */
+    onHide: (this: SelectCheckboxMenu) => void;
+    /** Callback that is invoked when the overlay panel was brought up, with the component as `this`. */
+    onShow: (this: SelectCheckboxMenu) => void;
     /** Inline style of the overlay panel. */
     panelStyle: string;
     /** Style class of the overlay panel */
@@ -72,13 +83,13 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     /** The DOM elements for the headers of each option group. */
     groupHeaders?: JQuery;
     /** The filter that was selected and is currently used. */
-    filterMatcher?: PrimeFacesTypes.component.SelectCheckboxMenu.FilterFunction;
+    filterMatcher?: SelectCheckboxMenuCfg["filterFunction"];
     /** Map between the available filter types and the filter implementation. */
-    filterMatchers?: Record<PrimeFacesTypes.component.SelectCheckboxMenu.FilterMatchMode, PrimeFacesTypes.component.SelectCheckboxMenu.FilterFunction | undefined>;
+    filterMatchers?: Record<FilterMatchMode, SelectCheckboxMenuCfg["filterFunction"] | undefined>;
     /** DOM element of the header of the overlay panel with the available select items, when the overlay panel is shown. */
     header?: JQuery;
     /** Unbind callback for the hide overlay handler. */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
     /** The DOM elements for the hidden inputs for each checkbox option. */
     inputs: JQuery<HTMLInputElement> = $();
     /** When loading the panel with the available options lazily: if they have been loaded already. */
@@ -106,9 +117,9 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     /** ID of the DOM element for the overlay panel with the available checkbox options. */
     panelId: string = "";
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
     /** Tab index of this component. */
     tabindex?: string;
     /**
@@ -124,13 +135,13 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     /** The DOM element for the hidden input of the Select All checkbox. */
     selectAllTogglerCheckbox?: JQuery;
     /** Handler for CSS transitions used by this component. */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
     /** The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the available checkbox options. */
     triggers: JQuery = $();
     /** Whether the width of the overlay panel was aligned already. */
     widthAligned: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.labelContainer = this.jq.find('.p-selectcheckboxmenu-label-container');
@@ -173,7 +184,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.refresh(cfg);
     }
 
@@ -877,7 +888,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.SelectCheckboxMenu.FilterFunction` that matches the given option when it
+     * Implementation of a {@link SelectCheckboxMenuCfg.filterFunction | filter function} that matches the given option when it
      * starts with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -888,7 +899,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.SelectCheckboxMenu.FilterFunction` that matches the given option when it
+     * Implementation of a {@link SelectCheckboxMenuCfg.filterFunction | filter function} that matches the given option when it
      * contains the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -899,7 +910,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.SelectCheckboxMenu.FilterFunction` that matches the given option when it
+     * Implementation of a {@link SelectCheckboxMenuCfg.filterFunction | filter function} that matches the given option when it
      * ends with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1226,7 +1237,7 @@ export class SelectCheckboxMenu<Cfg extends SelectCheckboxMenuCfg = SelectCheckb
                 , at: 'left bottom'
                 , of: this.jq
                 , collision: 'flipfit'
-                , using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+                , using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }
             });

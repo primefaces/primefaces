@@ -5,7 +5,7 @@
  * {@link SimpleFileUpload.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface SimpleFileUploadCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SimpleFileUploadCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Whether auto upload mode is enabled. If enabled, files are uploaded
      * immediately to the server, directly after the user chose a file. If
@@ -49,25 +49,25 @@ export interface SimpleFileUploadCfg extends PrimeFacesTypes.component.BaseCompo
      * Client-side callback to invoke when the AJAX request to upload files
      * completes (either successfully or with an error).
      */
-    oncomplete: PrimeFacesTypes.ajax.CallbackOncomplete;
+    oncomplete: PrimeFaces.ajax.CallbackOncomplete;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
      * fails.
      */
-    onerror: PrimeFacesTypes.ajax.CallbackOnerror;
+    onerror: PrimeFaces.ajax.CallbackOnerror;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
      * is about to begin.
      */
-    onstart: PrimeFacesTypes.component.SimpleFileUpload.OnStartCallback;
+    onstart: (this: SimpleFileUpload) => void;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
      * succeeds.
      */
-    onsuccess: PrimeFacesTypes.ajax.CallbackOnsuccess;
+    onsuccess: PrimeFaces.ajax.CallbackOnsuccess;
 
     /**
      * List of components to process (include in the request) when files
@@ -92,7 +92,7 @@ export interface SimpleFileUploadCfg extends PrimeFacesTypes.component.BaseCompo
  * Allows uploading files to the server, either via simple mode (form submit)
  * or via AJAX.
  */
-export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUploadCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /**
      * The DOM element for the button for selecting a file.
      */
@@ -118,7 +118,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
      */
     input: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         
         if (this.cfg.disabled) {
@@ -313,7 +313,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
             }
         }
 
-        const xhrOptions: PrimeFacesTypes.ajax.PrimeFacesSettings = {
+        const xhrOptions: PrimeFaces.ajax.PrimeFacesSettings = {
             url: PrimeFaces.ajax.Utils.getPostUrl(this.form),
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix ?? ""),
             source: this.getId(),
@@ -335,7 +335,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
         };
 
         const jqXhr = $.ajax(xhrOptions)
-            .fail(function(this: PrimeFacesTypes.ajax.PrimeFacesSettings, xhr, status, errorThrown) {
+            .fail(function(this: PrimeFaces.ajax.PrimeFacesSettings, xhr, status, errorThrown) {
                 var location = xhr.getResponseHeader("Location");
                 if (xhr.status === 401 && location) {
                     PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
@@ -353,7 +353,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
 
                 PrimeFaces.error('Request return with error:' + status + '.');
             })
-            .done(function(this: PrimeFacesTypes.ajax.PrimeFacesSettings, data, status, xhr: PrimeFacesTypes.ajax.pfXHR) {
+            .done(function(this: PrimeFaces.ajax.PrimeFacesSettings, data, status, xhr: PrimeFaces.ajax.pfXHR) {
                 PrimeFaces.debug('Response received successfully.');
                 try {
                     var parsed;
@@ -381,7 +381,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg> extends PrimeFace
 
                 PrimeFaces.debug('DOM is updated.');
             })
-            .always(function(this: PrimeFacesTypes.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeFacesTypes.ajax.pfXHR) {
+            .always(function(this: PrimeFaces.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeFaces.ajax.pfXHR) {
                 const pfArgs = typeof xhr === "string" ? undefined : xhr.pfArgs;
 
                 if($this.cfg.oncomplete) {

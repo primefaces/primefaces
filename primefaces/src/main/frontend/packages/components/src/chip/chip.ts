@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Chip} component.
  */
-export interface ChipCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ChipCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -13,7 +13,7 @@ export class Chip<Cfg extends ChipCfg = ChipCfg> extends PrimeFaces.component.Ba
     /** The icon for closing this chip, when this chip is closable (an `x` by default). */
     removeIcon: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.removeIcon = this.jq.children('.p-chip-remove-icon');

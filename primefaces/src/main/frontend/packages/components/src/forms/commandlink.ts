@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link CommandLink} component.
  */
-export interface CommandLinkCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface CommandLinkCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -13,13 +13,13 @@ export class CommandLink<Cfg extends CommandLinkCfg = CommandLinkCfg> extends Pr
     /** The tabindex of the link, restored by {@link enable}. */
     tabIndex: string = '0';
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.tabIndex = this.jq.attr('tabindex') || '0';
         this.bindTriggers();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.jq.off('click.commandlink');
         $(document).off('.link' + this.id);
 

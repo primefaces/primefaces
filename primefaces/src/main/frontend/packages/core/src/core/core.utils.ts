@@ -75,8 +75,8 @@ export class Utils {
      * @return The container DOM element to which the overlay is to be appended.
      */
     resolveDynamicOverlayContainer<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component): JQuery {
         return component.cfg.appendTo
             ? expressions.SearchExpressionFacade.resolveComponentsAsSelector(component.jq, component.cfg.appendTo)
@@ -111,8 +111,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     cleanupDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         if (component.cfg.appendTo) {
             var overlays = $("[id='" + overlayId + "']");
@@ -133,8 +133,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     removeDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery | null, overlayId: string, appendTo: JQuery): void {
         appendTo.children("[id='" +  overlayId + "']").not(overlay ?? (() => false)).remove();
     }
@@ -150,8 +150,8 @@ export class Utils {
      * @param appendTo The container to which the overlay is appended.
      */
     appendDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery, overlayId: string, appendTo: JQuery): void {
         var elementParent = overlay.parent();
 
@@ -356,9 +356,9 @@ export class Utils {
         component: BaseComponent,
         hideNamespace: string,
         overlay: JQuery,
-        resolveIgnoredElementsCallback: PrimeFacesTypes.OverlayResolveIgnoredElementCallback | undefined | null,
-        hideCallback: PrimeFacesTypes.OverlayHideCallback
-    ): PrimeFacesTypes.Unbindable {
+        resolveIgnoredElementsCallback: PrimeFaces.OverlayResolveIgnoredElementCallback | undefined | null,
+        hideCallback: PrimeFaces.OverlayHideCallback
+    ): PrimeFaces.Unbindable {
 
         const unbindHideHandler = () => {
             $(document).off(hideNamespace);
@@ -410,9 +410,9 @@ export class Utils {
         component: BaseComponent,
         resizeNamespace: string,
         element: JQuery | undefined | null,
-        resizeCallback: PrimeFacesTypes.ResizeCallback,
+        resizeCallback: PrimeFaces.ResizeCallback,
         params?: string
-    ): PrimeFacesTypes.Unbindable {
+    ): PrimeFaces.Unbindable {
 
         const unbindResizeHandler = () => {
             $(window).off(resizeNamespace);
@@ -449,8 +449,8 @@ export class Utils {
     registerMutationObserver(
         component: BaseComponent,
         element: JQuery | HTMLElement,
-        mutationCallback: PrimeFacesTypes.MutationCallback,
-    ): PrimeFacesTypes.Controllable {
+        mutationCallback: PrimeFaces.MutationCallback,
+    ): PrimeFaces.Controllable {
         const domElement = this.isJQuery(element) ? element.get(0) : element;
 
         if (domElement === undefined) {
@@ -530,8 +530,8 @@ export class Utils {
      * @return The overlay that was passed to this function.
      */
     registerDynamicOverlay<
-        Cfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg,
-        Component extends PrimeFacesTypes.component.DynamicOverlayFeatureComponent<Cfg>
+        Cfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg,
+        Component extends PrimeFaces.component.DynamicOverlayFeatureComponent<Cfg>
     >(component: Component, overlay: JQuery, overlayId: string): JQuery {
 
         if (component.cfg.appendTo) {
@@ -573,8 +573,8 @@ export class Utils {
     registerScrollHandler(
         component: BaseComponent,
         scrollNamespace: string,
-        scrollCallback: PrimeFacesTypes.ScrollCallback,
-    ): PrimeFacesTypes.Unbindable {
+        scrollCallback: PrimeFaces.ScrollCallback,
+    ): PrimeFaces.Unbindable {
         let scrollParent: JQuery<any> | null = this.getScrollParent(component.getJQ());
 
         if (!scrollParent || this.isScrollParentWindow(scrollParent)) {
@@ -616,8 +616,8 @@ export class Utils {
         component: BaseComponent,
         scrollNamespace: string,
         element: JQuery | undefined,
-        scrollCallback: PrimeFacesTypes.ScrollCallback
-    ): PrimeFacesTypes.Unbindable {
+        scrollCallback: PrimeFaces.ScrollCallback
+    ): PrimeFaces.Unbindable {
         const scrollableParents = this.getScrollableParents((element ?? component.getJQ()).get(0));
 
         const scrollHandler = (e: JQuery.TriggeredEvent) => {
@@ -697,7 +697,7 @@ export class Utils {
      * @returns The given elements, for chaining.
      * @since 17.0.0
      */
-    position<T extends JQuery<any>>(element: T, options: PrimeFacesTypes.utils.PositionOptions | null | undefined): T {
+    position<T extends JQuery<any>>(element: T, options: PrimeFaces.utils.PositionOptions | null | undefined): T {
         return position(element, options);
     }
 
@@ -846,7 +846,7 @@ export class Utils {
      * `null` if there is no element or it doesn't support a text selection (e.g. `type="number"` or a checkbox).
      * @since 17.0.0
      */
-    getTextSelection(element: JQuery<any> | Element | null | undefined): PrimeFacesTypes.utils.TextSelection | null {
+    getTextSelection(element: JQuery<any> | Element | null | undefined): PrimeFaces.utils.TextSelection | null {
         const el = this.toTextField(element);
         if (!el || el.selectionStart === null || el.selectionEnd === null) {
             return null;
@@ -1105,7 +1105,7 @@ export class Utils {
      * when the element gets shown and hidden. If the given element or className property is `undefined` or `null`,
      * this function returns `null`.
      */
-    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFacesTypes.CssTransitionHandler | null {
+    registerCSSTransition(element: JQuery | undefined | null, className: string | undefined | null): PrimeFaces.CssTransitionHandler | null {
         if (element && className != null) {
             const classNameStates = {
                'enter': className + '-enter',
@@ -1115,10 +1115,10 @@ export class Utils {
                'exitActive': className + '-exit-active',
                'exitDone': className + '-exit-done'
             };
-            const callTransitionEvent = <K extends keyof PrimeFacesTypes.CssTransitionCallback>(
-                callbacks: PrimeFacesTypes.CssTransitionCallback | null | undefined,
+            const callTransitionEvent = <K extends keyof PrimeFaces.CssTransitionCallback>(
+                callbacks: PrimeFaces.CssTransitionCallback | null | undefined,
                 key: K,
-                param: ThisParameterType<Exclude<PrimeFacesTypes.CssTransitionCallback[K], undefined>>
+                param: ThisParameterType<Exclude<PrimeFaces.CssTransitionCallback[K], undefined>>
             ) => {
                 callbacks?.[key]?.call(param as any);
             };
@@ -1612,7 +1612,7 @@ export function globalUtilsSetup(): void {
 }
 
 declare global {
-    namespace PrimeFacesTypes.utils {
+    namespace PrimeFaces.utils {
         /**
          * The selected text of a text input or textarea, see {@link Utils.getTextSelection}.
          * @since 17.0.0

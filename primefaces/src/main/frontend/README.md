@@ -61,11 +61,57 @@ to separate the individual packages from each other. The `references` section of
 
 # Type checking
 
-Types are checked during the Maven build. To do it manually, run:
+Types are checked during the Maven build (phase `verify`, `yarn run verify`). To do it manually, run:
 
 ```sh
 yarn tsc -b
 ```
+
+# Component types
+
+__TL;DR__ Declare the types of a component once, in its module. The only global declaration is the registry entry.
+
+`PrimeFaces` is both the global runtime object and the global namespace of the types (`PrimeFaces.ajax.*`,
+`PrimeFaces.validation.*`, `PrimeFaces.component.BaseComponentCfg`, ...). A component is a plain module:
+
+```ts
+// src/idlemonitor.ts
+export interface IdleMonitorCfg extends PrimeFaces.component.BaseComponentCfg {
+    /** Client side callback to execute when the user goes idle. */
+    onidle: (this: IdleMonitor) => void;
+    /** Time to wait in milliseconds until deciding if the user is idle. */
+    timeout: number;
+}
+
+export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void { /* ... */ }
+}
+```
+
+```ts
+// index.ts
+import { IdleMonitor } from "./src/idlemonitor.js";
+
+PrimeFaces.component.IdleMonitor = IdleMonitor;
+
+declare global {
+    namespace PrimeFaces {
+        export interface ComponentRegistry {
+            IdleMonitor: typeof IdleMonitor;
+        }
+    }
+}
+```
+
+- Callbacks are inline function types on the cfg property, parameters are described with `@param` in the JSDoc of
+  the property. Other types of the component are top-level exports of its module, no namespaces, no `import()` aliases.
+- The class has a default type argument (`Cfg extends XCfg = XCfg`), so `this: X` works without type arguments.
+- The cfg properties are not optional (the cfg is made partial via `PartialComponentCfg`), so `XCfg["onfoo"]` is the
+  exact callback type.
+- The `PrimeFaces` namespace must only contain types (no `const`, `function`, `class`, `enum`), otherwise it does not
+  merge with the global `let PrimeFaces` anymore.
+- Users get the types of a component via `PrimeFaces.Component<"IdleMonitor">` and
+  `PrimeFaces.ComponentCfg<"IdleMonitor">` (e.g. `PrimeFaces.ComponentCfg<"IdleMonitor">["onidle"]`).
 
 # Building
 
@@ -263,7 +309,7 @@ yarn patch-update-squash <package>
   investigated and changed on an individual basis.
 * To allow components to be extended (subclassed), they should make their component
   configuration type parameter changeable, e.g.:
-  `export class PanelMenu<Cfg extends PanelMenuCfg> extends Menu<Cfg> { ... }`
+  `export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends Menu<Cfg> { ... }`
 * Prefer to use `null` over `undefined`. JavaScript has 2 types of "missing"
   values, which produces additional overhead. It helps to use only 1 of these.
   As `undefined` is avoidable, as opposed to `null` which needs to be used

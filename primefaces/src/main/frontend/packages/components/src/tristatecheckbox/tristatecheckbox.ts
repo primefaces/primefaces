@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link TriStateCheckbox} component.
  */
-export interface TriStateCheckboxCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface TriStateCheckboxCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -25,9 +25,9 @@ export class TriStateCheckbox<Cfg extends TriStateCheckboxCfg = TriStateCheckbox
     /** Whether the user can change the state of the checkbox. */
     readonly: boolean = false;
     /** A modulo operation with the result being in the range `[0,mod)`. */
-    fixedMod: PrimeFacesTypes.component.TriStateCheckbox.FixedMod = (number, mod) => ((number % mod) + mod) % mod;
+    fixedMod = (number: number, mod: number): number => ((number % mod) + mod) % mod;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_input');

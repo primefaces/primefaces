@@ -1,13 +1,13 @@
 /**
  * The configuration for the {@link Wizard} component.
  */
-export interface WizardCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface WizardCfg extends PrimeFaces.component.BaseComponentCfg {
     /** ID of the step shown initially. */
     initialStep: string;
-    /** Called before going to the previous step, `false` stays on the current step. */
-    onback: PrimeFacesTypes.component.Wizard.OnBackCallback;
-    /** Called before going to the next step, `false` stays on the current step. */
-    onnext: PrimeFacesTypes.component.Wizard.OnNextCallback;
+    /** Called before going to the previous step, with the wizard as `this`. `false` stays on the current step. */
+    onback: (this: Wizard) => boolean | void;
+    /** Called before going to the next step, with the wizard as `this`. `false` stays on the current step. */
+    onnext: (this: Wizard) => boolean | void;
     /** Whether the step titles are displayed. */
     showStepStatus: boolean;
     /** Whether the back and next buttons are displayed. */
@@ -40,7 +40,7 @@ export class Wizard<Cfg extends WizardCfg = WizardCfg> extends PrimeFaces.compon
     /** The step titles, only with `showStepStatus`. */
     stepControls?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.content = $(this.jqId + '_content');
@@ -154,7 +154,7 @@ export class Wizard<Cfg extends WizardCfg = WizardCfg> extends PrimeFaces.compon
      * @param event `back` or `next`, also the behavior that is called.
      */
     loadStep(stepToGo: string, event: 'back' | 'next'): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

@@ -21,13 +21,9 @@ declare global {
         inputmask(method: "setvalue", value: string): void;
     }
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             InputMask: typeof InputMask;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type InputMaskCfg = import("./src/inputmask.js").InputMaskCfg;
     }
 }

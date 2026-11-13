@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Password} component.
  */
-export interface PasswordCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface PasswordCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Enables strength indicator. */
     feedback: boolean;
     /** Label of the password prompt. */
@@ -38,13 +38,13 @@ export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.
     /** The DOM element for the overlay panel with the hint regarding how strong the password is. */
     panel?: JQuery;
     /** Handler for CSS transitions used by this component. */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (!this.jq.is(':disabled')) {
@@ -280,7 +280,7 @@ export class Password<Cfg extends PasswordCfg = PasswordCfg> extends PrimeFaces.
             , at: 'left bottom'
             , of: this.jq
             , collision: 'flipfit'
-            , using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+            , using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         });

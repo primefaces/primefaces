@@ -1,7 +1,42 @@
 /**
+ * The type for the two lists comprising the pick list, i.e. whether a list contain the source or target items.
+ */
+export type ListName = "source" | "target";
+
+/**
+ * Indicates how an item was transferred from one list to the other.
+ * - `command`: The item was transferred as a result of the user clicking one of the command buttons next to the
+ *   lists.
+ * - `dblclick`: The item was transferred as a result of a double click by the user.
+ * - `dragdrop`: The item was transferred as a result of a drag&drop interaction by the user.
+ * - `checkbox`: The item was transferred as a result of a checkbox click by the user.
+ */
+export type TransferType = "command" | "dblclick" | "dragdrop" | "checkbox";
+
+/**
+ * Available modes for filtering the options of a pick list. When `custom` is set, a `filterFunction` must be
+ * specified.
+ */
+export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+/**
+ * Details about the pick list items that were transferred.
+ */
+export interface TransferData {
+    /** Items that were transferred from one list to the other. */
+    items: JQuery;
+    /** List from which the items were transferred. */
+    from: JQuery;
+    /** List to which the items were transferred. */
+    to: JQuery;
+    /** Type of the action that caused the items to be transferred. */
+    type: TransferType;
+}
+
+/**
  * The configuration for the {@link PickList} component.
  */
-export interface PickListCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface PickListCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether items can be moved via drag and drop, `false` disables it. */
     dragDrop: boolean;
     /** Name of the animation to display. */
@@ -16,12 +51,20 @@ export interface PickListCfg extends PrimeFacesTypes.component.BaseComponentCfg 
     filterEvent: string;
     /** Defines if filtering would be done using normalized values. */
     filterNormalize: boolean;
-    /** A custom filter function that is used when `filterMatchMode` is set to `custom`. */
-    filterFunction: PrimeFacesTypes.component.PickList.FilterFunction;
+    /**
+     * A custom filter function that is used when `filterMatchMode` is set to `custom`.
+     * @param itemLabel The label of the currently selected text.
+     * @param filterValue The value to search for.
+     * @returns `true` if the item label matches the filter value, or `false` otherwise.
+     */
+    filterFunction: (itemLabel: string, filterValue: string) => boolean;
     /** Mode of the filter. When set to `custom`, a `filterFunction` must be specified. */
-    filterMatchMode: PrimeFacesTypes.component.PickList.FilterMatchMode;
-    /** Callback that is invoked when items are transferred from one list to the other. */
-    onTransfer: PrimeFacesTypes.component.PickList.OnTransferCallback;
+    filterMatchMode: FilterMatchMode;
+    /**
+     * Callback that is invoked when items are transferred from one list to the other, with the pick list as `this`.
+     * @param transferData Details about the pick list items that were transferred.
+     */
+    onTransfer: (this: PickList, transferData: TransferData) => void;
     /** When true, a checkbox is displayed next to each item. */
     showCheckbox: boolean;
     /** Specifies visibility of reorder buttons of source list. */
@@ -53,15 +96,15 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     /** Whether the user is currently transferring an item via drag&drop. */
     dragging?: boolean;
     /** The filter that was selected and is currently used. */
-    filterMatcher?: PrimeFacesTypes.component.PickList.FilterFunction;
+    filterMatcher?: PickListCfg["filterFunction"];
     /** Map between the available filter types and the filter implementation. */
-    filterMatchers: Partial<Record<PrimeFacesTypes.component.PickList.FilterMatchMode, PrimeFacesTypes.component.PickList.FilterFunction>> = {};
+    filterMatchers: Partial<Record<FilterMatchMode, PickListCfg["filterFunction"]>> = {};
     /** The DOM element for the currently focused pick list item, if any. */
     focusedItem: JQuery | null = null;
     /** The DOM elements for the pick list items in the source and target list. */
     items: JQuery = $();
     /** When sorting items: to which list the items belong. */
-    itemListName?: PrimeFacesTypes.component.PickList.ListName;
+    itemListName?: ListName;
     /** The DOM element for the filter input for the source list. */
     sourceFilter?: JQuery;
     /** The DOM element for the hidden input storing the value of the source list. */
@@ -75,7 +118,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     /** The DOM element for the target list. */
     targetList: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.transferOnDblclick = this.cfg.transferOnDblclick !== false;
@@ -159,7 +202,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
             helper: 'clone',
             placeholder: "p-picklist-item p-state-highlight",
             forcePlaceholderSize: true,
-            update: (_event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            update: (_event, ui: PrimeFaces.interactions.SortableUi) => {
                 this.unselectItem(ui.item);
 
                 this.saveState();
@@ -168,7 +211,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
                     reordered = false;
                 }
             },
-            receive: (_event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            receive: (_event, ui: PrimeFaces.interactions.SortableUi) => {
                 const parentList = ui.item.parents('ul.p-picklist-list:first');
                 const item = ui.item;
 
@@ -184,7 +227,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
                 this.fireTransferEvent(item, ui.sender!, parentList, 'dragdrop');
             },
 
-            start: (_event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            start: (_event, ui: PrimeFaces.interactions.SortableUi) => {
                 this.itemListName = this.getListName(ui.item);
                 this.dragging = true;
             },
@@ -193,7 +236,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
                 this.dragging = false;
             },
 
-            beforeStop: (_event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            beforeStop: (_event, ui: PrimeFaces.interactions.SortableUi) => {
                 if(this.itemListName !== this.getListName(ui.item)) {
                     reordered = false;
                 }
@@ -772,7 +815,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.PickList.FilterFunction` that matches the given option when it starts with
+     * Implementation of a {@link PickListCfg.filterFunction} that matches the given option when it starts with
      * the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -783,7 +826,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.PickList.FilterFunction` that matches the given option when it contains
+     * Implementation of a {@link PickListCfg.filterFunction} that matches the given option when it contains
      * the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -794,7 +837,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.PickList.FilterFunction` that matches the given option when it ends with
+     * Implementation of a {@link PickListCfg.filterFunction} that matches the given option when it ends with
      * the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1045,7 +1088,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param type Type of the action that caused the items to be transferred.
      * @param callback after transfer finished.
      */
-    transfer(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.component.PickList.TransferType, callback?: () => void): void {
+    transfer(items: JQuery, from: JQuery, to: JQuery, type: TransferType, callback?: () => void): void {
         this.toggleDragDrop(false);
         const $this = this;
         const itemsCount = items.length;
@@ -1120,12 +1163,12 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param to List to which the items were transferred.
      * @param type Type of the action that caused the items to be transferred.
      */
-    private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: PrimeFacesTypes.component.PickList.TransferType): void {
+    private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: TransferType): void {
         // #15492 announce the completed transfer to screen readers
         this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource'));
 
         if(this.cfg.onTransfer) {
-            const obj = {} as PrimeFacesTypes.component.PickList.TransferData;
+            const obj = {} as TransferData;
             obj.items = items;
             obj.from = from;
             obj.to = to;
@@ -1140,7 +1183,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
             const options = {
                 params: [
                     {name: this.id + '_add', value: isAdd}
-                ] as PrimeFacesTypes.ajax.RequestParameter[],
+                ] as PrimeFaces.ajax.RequestParameter[],
                 oncomplete: () => {
                     this.refilterSource();
                     this.refilterTarget();
@@ -1168,7 +1211,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      * @param element A list element to check.
      * @returns Whether the element represents the source or target list.
      */
-    private getListName(element: JQuery): PrimeFacesTypes.component.PickList.ListName {
+    private getListName(element: JQuery): ListName {
         return element.parent().hasClass("p-picklist-source") ? "source" : "target";
     }
 

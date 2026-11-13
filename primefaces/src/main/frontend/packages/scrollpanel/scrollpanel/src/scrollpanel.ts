@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ScrollPanel} component.
  */
-export interface ScrollPanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ScrollPanelCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /** An axis of the scroll panel. */
@@ -39,7 +39,7 @@ export class ScrollPanel<Cfg extends ScrollPanelCfg = ScrollPanelCfg> extends Pr
      * observes the size of the content.
      * @param cfg The configuration of the scroll panel.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.content = this.jq.children('.p-scrollpanel-content');

@@ -2,6 +2,11 @@ import { core } from "../core/core.js";
 import { BaseComponent, type BaseComponentCfg } from "../core/core.component.js";
 
 /**
+ * Time unit for the polling interval.
+ */
+export type IntervalType = "millisecond" | "second";
+
+/**
  * The configuration for the {@link  Poll| Poll component}.
  * 
  * You can access this configuration via {@link Poll.cfg | cfg}. Please note that this
@@ -16,7 +21,7 @@ export interface PollCfg extends BaseComponentCfg {
     /**
      * Callback that performs the polling action.
      */
-    fn: PrimeFacesTypes.component.Poll.PollingAction;
+    fn: () => void;
     /**
      * Duration between two successive AJAX poll request, either in milliseconds or seconds,
      * depending on the configure `intervalType`.
@@ -25,15 +30,17 @@ export interface PollCfg extends BaseComponentCfg {
     /**
      * Time unit for the frequency.
      */
-    intervalType: PrimeFacesTypes.component.Poll.IntervalType;
+    intervalType: IntervalType;
     /**
      * Optional callback invoked when polling starts.
+     * @returns `false` to cancel polling, any other value to proceed.
      */
-    onActivated: PrimeFacesTypes.component.Poll.OnActivatedCallback;
+    onActivated: (this: Poll) => boolean | undefined | void;
     /**
      * Optional callback invoked when polling stops.
+     * @returns `false` to continue polling, any other value to stop.
      */
-    onDeactivated: PrimeFacesTypes.component.Poll.OnDeactivatedCallback;
+    onDeactivated: (this: Poll) => boolean | undefined | void;
 }
 
 /**
@@ -52,7 +59,7 @@ export class Poll<Cfg extends PollCfg = PollCfg> extends BaseComponent<Cfg> {
      */
     timer: number = 0;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.active = false;
@@ -62,7 +69,7 @@ export class Poll<Cfg extends PollCfg = PollCfg> extends BaseComponent<Cfg> {
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.stop();
 
         super.refresh(cfg);

@@ -11,7 +11,7 @@ export interface GalleriaResponsiveOption {
 /**
  * The configuration for the {@link Galleria} component.
  */
-export interface GalleriaCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface GalleriaCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** Index of the first item. */
     activeIndex: number;
     /** Whether the items change on hover of an indicator. */
@@ -96,7 +96,7 @@ function translate(vertical: boolean, percent: number): string {
  */
 export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, with the {@link DEFAULTS} applied by {@link init}. */
-    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & GalleriaDefaults;
+    declare cfg: PrimeFaces.component.PartialComponentCfg<Cfg> & GalleriaDefaults;
 
     /** Index of the displayed item. */
     activeIndex: number = 0;
@@ -108,7 +108,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
     /** The mask around the gallery in fullscreen mode, empty otherwise. */
     private mask: JQuery = $();
     /** Handler for the CSS transitions when showing / hiding the gallery in fullscreen mode. */
-    private transition: PrimeFacesTypes.CssTransitionHandler | null = null;
+    private transition: PrimeFaces.CssTransitionHandler | null = null;
     /** ID of the interval of the running slideshow, `undefined` when the slideshow is stopped. */
     private interval: number | undefined;
     /** The number of items. */
@@ -121,7 +121,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
      * is visible.
      * @param cfg The configuration of the gallery.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg = { ...DEFAULTS, ...this.cfg };
         this.renderDeferred();
@@ -196,7 +196,7 @@ export class Galleria<Cfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.
      * Cleans up the previous rendering (slideshow, thumbnail listeners and styles) before the gallery is updated.
      * @param cfg The new configuration of the gallery.
      */
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.cleanup();
         super.refresh(cfg);
     }

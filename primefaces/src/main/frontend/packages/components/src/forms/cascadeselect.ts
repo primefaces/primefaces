@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link CascadeSelect} component.
  */
-export interface CascadeSelectCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
+export interface CascadeSelectCfg extends PrimeFaces.component.DynamicOverlayComponentCfg {
     /** If true, disables the component. */
     disabled: boolean;
 }
@@ -15,7 +15,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     /** The DOM element for the content in the available selectable options. */
     contents: JQuery = $();
     /** Unbind callback for the hide overlay handler. */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
     /** The DOM element for the hidden input with the current value. */
     input: JQuery = $();
     /** The DOM elements for the the available selectable options. */
@@ -27,15 +27,15 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
     /** The DOM element for the overlay panel with the available selectable options. */
     panel: JQuery = $();
     /** Handler for CSS transitions used by this component. */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
     /** The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the available selectable options. */
     triggers: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.panel = $(PrimeFaces.escapeClientId(cfg.id as string) + '_panel');
         super.init(cfg, this.panel, cfg.id + '_panel');
 
@@ -360,7 +360,7 @@ export class CascadeSelect<Cfg extends CascadeSelectCfg = CascadeSelectCfg> exte
                 ,at: 'left bottom'
                 ,of: this.jq
                 ,collision: 'flipfit'
-                ,using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+                ,using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }
             });

@@ -1,13 +1,108 @@
+import type { PaginationState, PaginatorCfg } from "../paginator/paginator.js";
+
+/**
+ * Either the 0-based index of a row, or the row element (`TR`) itself.
+ */
+export type RowSpecifier = number | JQuery;
+
+/**
+ * The available sort order types for the DataTable.
+ */
+export type SortOrder = "ASCENDING" | "DESCENDING" | "UNSORTED";
+
+/**
+ * Indicates whether multiple rows or only a single row of a DataTable can be selected.
+ */
+export type CmSelectionMode = "single" | "multiple";
+
+/**
+ * Indicates whether rows are selected via radio buttons or via checkboxes.
+ */
+export type SelectionMode = "radio" | "checkbox";
+
+/**
+ * Indicates whether a DataTable can be sorted by multiple columns or only by a single column.
+ */
+export type SortMode = "single" | "multiple";
+
+/**
+ * Indicates whether multiple columns of a DataTable can be expanded at the same time, or whether other
+ * expanded rows should be collapsed when a new row is expanded.
+ */
+export type RowExpandMode = "single" | "multiple";
+
+/**
+ * Indicates whether row editors are loaded eagerly or on-demand.
+ */
+export type RowEditMode = "eager" | "lazy";
+
+/**
+ * Indicates whether cell editors are loaded eagerly or on-demand.
+ */
+export type CellEditMode = "eager" | "lazy";
+
+/**
+ * Indicates the resize behavior of columns.
+ */
+export type ResizeMode = "expand" | "fit";
+
+/**
+ * Indicates how rows of a DataTable may be selected, when clicking on the row itself (not the checkbox /
+ * radiobutton from p:column). `new` always unselects other rows, `add` preserves the currently selected rows,
+ * and `none` disables row selection.
+ */
+export type SelectionRowMode = "new" | "add" | "none";
+
+/**
+ * When a row is editable: whether to `save` the current contents of the row or `cancel` the row edit and
+ * discard all changes.
+ */
+export type RowEditAction = "cancel" | "save";
+
+/**
+ * Describes the meta information of row, such as its index and its row key.
+ */
+export interface RowMeta {
+    /** The unique key of the row. `undefined` when no key was defined for the rows. */
+    key: string | undefined;
+    /** The 0-based index of the row in the DataTable. */
+    index: number;
+}
+
+/**
+ * Describes a sorting operation of the DataTable. The items of the DataTable may be sorted by multiple
+ * columns, in which case the sorting operation is described by a list of these objects.
+ */
+export interface SortMeta {
+    /** ID of the column to sort by. */
+    col: string;
+    /** Whether to sort the items by the column value in an ascending or descending order, or unsorted. */
+    order: -1 | 0 | 1;
+}
+
+/**
+ * Describes the width information of a DOM element.
+ */
+export interface WidthInfo {
+    /**
+     * The width of the element. It's either a unit-less numeric pixel value or a string containing the width
+     * including an unit.
+     */
+    width: number | string;
+    /** Tells whether the width includes the border-box or not. */
+    isOuterWidth: boolean;
+}
+
 /**
  * The configuration for the {@link DataTable} component. You can access this configuration via
  * {@link PrimeFaces.component.BaseComponent.cfg | BaseComponent.cfg}. Please note that this configuration is usually meant to be
  * read-only and should not be modified.
  */
-export interface DataTableCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface DataTableCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** When true columns can be unsorted upon clicking sort. */
     allowUnsorting: boolean;
     /** Defines the cell edit behavior. */
-    cellEditMode: PrimeFacesTypes.component.DataTable.CellEditMode;
+    cellEditMode: CellEditMode;
     /**
      * Whether the cells can be navigated with the keyboard. Enabled by default, unless editing, reflow or row selection
      * is enabled.
@@ -62,10 +157,14 @@ export interface DataTableCfg extends PrimeFacesTypes.component.DeferredComponen
     multiViewState: boolean;
     /** `true` to use native radio button and checkbox elements, or `false` otherwise. */
     nativeElements: boolean;
-    /** Callback that is invoked when the user clicked on a row of the DataTable. */
-    onRowClick: PrimeFacesTypes.component.DataTable.OnRowClickCallback;
+    /**
+     * Callback that is invoked when the user clicked on a row of the DataTable. On a click, `this` is the clicked
+     * `TR` element; when the row is selected with ENTER or SPACE, `this` is the DataTable.
+     * @param row The TR row that was clicked.
+     */
+    onRowClick: (this: HTMLElement | DataTable, row: JQuery) => void;
     /** When pagination is enabled: The configuration of the paginator. */
-    paginator: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.PaginatorCfg>;
+    paginator: PrimeFaces.component.PartialComponentCfg<PaginatorCfg>;
     /** `false` to update the whole DataTable on paging, sorting and filtering, `true` to update only the body. */
     partialUpdate: boolean;
     /** Reflow mode is a responsive mode to display columns as stacked depending on screen size. */
@@ -73,13 +172,13 @@ export interface DataTableCfg extends PrimeFacesTypes.component.DeferredComponen
     /** Enables column resizing. */
     resizableColumns: boolean;
     /** Defines the resize behavior. */
-    resizeMode: PrimeFacesTypes.component.DataTable.ResizeMode;
+    resizeMode: ResizeMode;
     /** CSS selector for the draggable handle. */
     rowDragSelector: string;
     /** Defines the row edit. */
-    rowEditMode: PrimeFacesTypes.component.DataTable.RowEditMode;
+    rowEditMode: RowEditMode;
     /** Defines row expand mode. */
-    rowExpandMode: PrimeFacesTypes.component.DataTable.RowExpandMode;
+    rowExpandMode: RowExpandMode;
     /** Adds hover effect to rows. Hover is always on when selection is enabled. */
     rowHover: boolean;
     /** CSS selector find finding the rows of this DataTable. */
@@ -97,14 +196,14 @@ export interface DataTableCfg extends PrimeFacesTypes.component.DeferredComponen
     /** Makes data scrollable with fixed header. */
     scrollable: boolean;
     /** Enables row selection. */
-    selectionMode: PrimeFacesTypes.component.DataTable.CmSelectionMode | PrimeFacesTypes.component.DataTable.SelectionMode;
+    selectionMode: CmSelectionMode | SelectionMode;
     /**
      * When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all
      * rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
      */
     selectionPageOnly: boolean;
     /** Defines row selection mode when clicking on the row itself. */
-    selectionRowMode: PrimeFacesTypes.component.DataTable.SelectionRowMode;
+    selectionRowMode: SelectionRowMode;
     /** `true` if sorting is enabled on the DataTable, `false` otherwise. */
     sorting: boolean;
     /** IDs of the columns by which to order. Order by the first column, then by the second, etc. */
@@ -129,7 +228,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /**
      * Map between the sort order names and the multiplier for the comparator.
      */
-    static SORT_ORDER: Record<PrimeFacesTypes.component.DataTable.SortOrder, -1 | 0 | 1> = {
+    static SORT_ORDER: Record<SortOrder, -1 | 0 | 1> = {
         ASCENDING: 1,
         DESCENDING: -1,
         UNSORTED: 0
@@ -154,14 +253,14 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /** DOM element of the table cell for which the context menu was opened. */
     contextMenuCell?: JQuery;
     /** Component with the context menu for the DataTable. */
-    contextMenuComponent?: PrimeFacesTypes.component.ContextMenuLikeComponent;
+    contextMenuComponent?: PrimeFaces.component.ContextMenuLikeComponent;
     /** @deprecated Use {@link contextMenuComponent} instead. */
-    get contextMenuWidget(): PrimeFacesTypes.component.ContextMenuLikeComponent | undefined { return this.contextMenuComponent; }
-    set contextMenuWidget(value: PrimeFacesTypes.component.ContextMenuLikeComponent | undefined) { this.contextMenuComponent = value; }
+    get contextMenuWidget(): PrimeFaces.component.ContextMenuLikeComponent | undefined { return this.contextMenuComponent; }
+    set contextMenuWidget(value: PrimeFaces.component.ContextMenuLikeComponent | undefined) { this.contextMenuComponent = value; }
     /** Current cell to be edited. */
     currentCell?: JQuery | null;
     /** 0-based index of row where the the cursor is located. */
-    cursorRowMeta?: PrimeFacesTypes.component.DataTable.RowMeta | null;
+    cursorRowMeta?: RowMeta | null;
     /** Localized message for sorting a column in descending order. */
     descMessage?: string;
     /** DOM element of the icon that indicates a column is draggable. */
@@ -212,11 +311,11 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /** INPUT element storing the current column / row order. */
     orderStateHolder?: JQuery;
     /** The original row index of the row that was clicked. */
-    originRowMeta?: PrimeFacesTypes.component.DataTable.RowMeta | null;
+    originRowMeta?: RowMeta | null;
     /** Localized message for removing the sort order and showing rows in their original order. */
     otherMessage?: string;
     /** When pagination is enabled: The paginator component instance used for paging. */
-    paginator?: PrimeFacesTypes.Component<"Paginator">;
+    paginator?: PrimeFaces.Component<"Paginator">;
     /** Whether the scroll height is a relative (percentage) value. */
     percentageScrollHeight?: boolean | "" | undefined;
     /** Whether the scroll width is a relative (percentage) value. */
@@ -266,7 +365,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     /** Whether live scrolling is currently enabled. */
     shouldLiveScroll?: boolean;
     /** Information about how the columns are sorted, in the order of the sort priority. */
-    sortMeta?: PrimeFacesTypes.component.DataTable.SortMeta[];
+    sortMeta?: SortMeta[];
     /** DOM elements for the columns that are sortable. */
     sortableColumns?: JQuery;
     /** The DOM element for the sticky container of the table. */
@@ -291,7 +390,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         return 'td' + suffix + ', th[role="rowheader"]' + suffix;
     }
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.thead = this.getThead();
@@ -473,7 +572,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.columnWidthsFixed = false;
         this.ignoreRowHoverEvent = false;
 
@@ -723,7 +822,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * table may be sorted by multiple columns.
      * @param meta Sorting to add.
      */
-    addSortMeta(meta: PrimeFacesTypes.component.DataTable.SortMeta): void {
+    addSortMeta(meta: SortMeta): void {
         this.sortMeta = $.grep(this.sortMeta!, function(value) {
             return value.col !== meta.col;
         });
@@ -1513,10 +1612,10 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     }
 
     override bindContextMenu(
-        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        menuComponent: PrimeFaces.component.ContextMenuLikeComponent,
         targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
+        cfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.ContextMenuLikeComponentCfg>,
     ): void {
         var targetSelector = targetId + ' tbody.p-datatable-data > tr.p-component-content';
         var targetEvent = cfg.event + '.row' + this.id;
@@ -1938,7 +2037,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * exists.
      * @return The width information of the given column.
      */
-    getColumnWidthInfo(col: JQuery, isIncludeResizeableState?: boolean): PrimeFacesTypes.component.DataTable.WidthInfo {
+    getColumnWidthInfo(col: JQuery, isIncludeResizeableState?: boolean): WidthInfo {
         var width: string | number | null | undefined, isOuterWidth: boolean | string | undefined;
 
         if(isIncludeResizeableState && this.resizableState) {
@@ -1967,7 +2066,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param element The element to which the width should be applied.
      * @param widthInfo The width information (retrieved using the method {@link getColumnWidthInfo}).
      */
-    applyWidthInfo(element: JQuery, widthInfo: PrimeFacesTypes.component.DataTable.WidthInfo): void {
+    applyWidthInfo(element: JQuery, widthInfo: WidthInfo): void {
         if(widthInfo.isOuterWidth) {
             element.outerWidth(widthInfo.width);
         }
@@ -2184,7 +2283,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             this.shouldLiveScroll = false;
         }
 
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2240,7 +2339,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         this.virtualScrollActive = true;
 
         var first = (page - 1) * this.cfg.scrollStep!,
-        options: PrimeFacesTypes.ajax.Configuration = {
+        options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2283,8 +2382,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * whether the data is already cached and loads it from the server only when not found in the cache.
      * @param newState The new values for the current page and the rows per page count.
      */
-    paginate(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
-        var options: PrimeFacesTypes.ajax.Configuration = {
+    paginate(newState: PaginationState): void {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -2360,10 +2459,10 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Loads next page asynchronously to keep it at viewstate and Updates viewstate
      * @param newState The new values for the current page and the rows per page count.
      */
-    fetchNextPage(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
+    fetchNextPage(newState: PaginationState): void {
         var rows = newState.rows,
         first = newState.first,
-        options: PrimeFacesTypes.ajax.Configuration = {
+        options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2396,8 +2495,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Updates and syncs the current pagination state with the server.
      * @param newState The new values for the current page and the rows per page count.
      */
-    updatePageState(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
-        var options: PrimeFacesTypes.ajax.Configuration = {
+    updatePageState(newState: PaginationState): void {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -2430,7 +2529,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      */
     sort(columnHeader: JQuery, order: -1 | 0 | 1, multi?: boolean): void {
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -2595,7 +2694,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param option Property of the sort meta to use.
      * @return All values from the current sort meta list for the given option.
      */
-    joinSortMetaOption(option: keyof PrimeFacesTypes.component.DataTable.SortMeta): string {
+    joinSortMetaOption(option: keyof SortMeta): string {
         var value = '';
 
         for(var i = 0; i < this.sortMeta!.length; i++) {
@@ -2614,7 +2713,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * sent.
      */
     filter(): void {
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -2796,7 +2895,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param fnShowMenu Optional callback function invoked when the menu was opened.
      * @return true to hide the native browser context menu, false to display it
      */
-    onRowRightClick(event: JQuery.TriggeredEvent, rowElement: HTMLElement | JQuery, cmSelMode: PrimeFacesTypes.component.DataTable.CmSelectionMode, fnShowMenu?: () => void): boolean {
+    onRowRightClick(event: JQuery.TriggeredEvent, rowElement: HTMLElement | JQuery, cmSelMode: CmSelectionMode, fnShowMenu?: () => void): boolean {
         var row = $(rowElement),
         rowMeta = this.getRowMeta(row),
         selected = row.hasClass('p-state-highlight');
@@ -2826,7 +2925,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param r The row to convert.
      * @return The row, or an empty JQuery instance of no row was found.
      */
-    findRow(r: PrimeFacesTypes.component.DataTable.RowSpecifier): JQuery {
+    findRow(r: RowSpecifier): JQuery {
         var row = r;
 
         if(PrimeFaces.isNumber(r)) {
@@ -2876,7 +2975,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param r A row of this DataTable to select.
      * @param silent `true` to prevent behaviors and event listeners from being invoked, or `false` otherwise.
      */
-    selectRow(r: PrimeFacesTypes.component.DataTable.RowSpecifier, silent?: boolean): void {
+    selectRow(r: RowSpecifier, silent?: boolean): void {
         var row = this.findRow(r);
         if(!row.hasClass('p-datatable-selectable')) {
             return;
@@ -2921,7 +3020,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param r A row of this DataTable to unselect.
      * @param silent `true` to prevent behaviors and event listeners from being invoked, or `false` otherwise.
      */
-    unselectRow(r: PrimeFacesTypes.component.DataTable.RowSpecifier, silent?: boolean): void {
+    unselectRow(r: RowSpecifier, silent?: boolean): void {
         var row = this.findRow(r);
         if(!row.hasClass('p-datatable-selectable')) {
             return;
@@ -3000,7 +3099,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      */
     fireRowSelectEvent(rowKey: string | undefined, behaviorEvent: string, fnShowMenu?: () => void): void {
         if(this.hasBehavior(behaviorEvent)) {
-            var ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            var ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                     params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
                 ],
                 oncomplete: function() {
@@ -3403,7 +3502,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         }
 
         var rowMeta = this.getRowMeta(row),
-        options: PrimeFacesTypes.ajax.Configuration = {
+        options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -3751,7 +3850,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         var cellInfo = this.getCellMeta(cell),
         cellEditor = cell.children('.p-cell-editor');
 
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -4052,7 +4151,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
 
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -4114,7 +4213,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
         this.currentCell = null;
 
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -4174,11 +4273,11 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param rowEditor The current row editor.
      * @param action Whether to save or cancel the row edit.
      */
-    doRowEditRequest(rowEditor: JQuery, action: PrimeFacesTypes.component.DataTable.RowEditAction): void {
+    doRowEditRequest(rowEditor: JQuery, action: RowEditAction): void {
         var row = rowEditor.closest('tr'),
         rowIndex = this.getRowMeta(row).index,
         expanded = row.hasClass('p-expanded-row'),
-        options: PrimeFacesTypes.ajax.Configuration = {
+        options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -4256,7 +4355,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     lazyRowEditInit(row: JQuery): void {
         var rowIndex = this.getRowMeta(row).index;
 
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -4323,7 +4422,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Returns the paginator instance if any exists.
      * @return The paginator instance for this component, or `undefined` if paging is not enabled.
      */
-    getPaginator(): PrimeFacesTypes.Component<"Paginator"> | undefined {
+    getPaginator(): PrimeFaces.Component<"Paginator"> | undefined {
         return this.paginator;
     }
 
@@ -4452,7 +4551,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
         PrimeFaces.interactions.draggable(resizers, {
             axis: 'x',
-            start: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+            start: (event, ui: PrimeFaces.interactions.DraggableUi) => {
                 ui.helper.data('originalposition', ui.helper.offset()!);
 
                 if(this.cfg.liveResize) {
@@ -4470,7 +4569,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     this.resizerHelper!.show();
                 }
             },
-            drag: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+            drag: (event, ui: PrimeFaces.interactions.DraggableUi) => {
                 if(this.cfg.liveResize) {
                     this.resize(event, ui);
                 }
@@ -4481,7 +4580,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     });
                 }
             },
-            stop: (event, ui: PrimeFacesTypes.interactions.DraggableUi) => {
+            stop: (event, ui: PrimeFaces.interactions.DraggableUi) => {
                 ui.helper.css({
                     'left': '',
                     'top': '0px'
@@ -4595,7 +4694,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param ui Data for the drag event.
      * @return The resizer DOM element.
      */
-    findGroupResizer(ui: PrimeFacesTypes.interactions.DraggableUi): JQuery | null {
+    findGroupResizer(ui: PrimeFaces.interactions.DraggableUi): JQuery | null {
         for(var i = 0; i < this.groupResizers!.length; i++) {
             var groupResizer = this.groupResizers!.eq(i);
             if(groupResizer.offset()!.left === ui.helper.data('originalposition').left) {
@@ -4628,7 +4727,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param event Event triggered for the drag.
      * @param ui Data for the drag event.
      */
-    resize(event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DraggableUi): void {
+    resize(event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DraggableUi): void {
         var columnHeader: JQuery, nextColumnHeader: JQuery, change: number | null = null, newWidth: number | null = null, nextColumnWidth: number | null = null,
         expandMode = (this.cfg.resizeMode === 'expand'),
         table = this.thead.parent();
@@ -4773,7 +4872,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param row The element (`TR`) of a row of this DataTable.
      * @return The meta for the row with the index and the row key.
      */
-    getRowMeta(row: JQuery): PrimeFacesTypes.component.DataTable.RowMeta {
+    getRowMeta(row: JQuery): RowMeta {
         var meta = {
             index: row.data('ri'),
             key:  row.attr('data-rk')
@@ -4801,10 +4900,10 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             cursor: 'move',
             scope: this.getId(),
             cancel: ':input,.p-column-resizer',
-            start: function(event, ui: PrimeFacesTypes.interactions.DraggableUi) {
+            start: function(event, ui: PrimeFaces.interactions.DraggableUi) {
                 PrimeFaces.nextZindex(ui.helper);
             },
-            drag: function(event, ui: PrimeFacesTypes.interactions.DraggableUi) {
+            drag: function(event, ui: PrimeFaces.interactions.DraggableUi) {
                 var droppable: JQuery | undefined = ui.helper.data('droppable-column');
 
                 if(droppable) {
@@ -4839,7 +4938,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     }).show();
                 }
             },
-            stop: function(event, ui: PrimeFacesTypes.interactions.DraggableUi) {
+            stop: function(event, ui: PrimeFaces.interactions.DraggableUi) {
                 //hide dnd arrows
                 $this.dragIndicatorTop!.css({
                     'left':'0px',
@@ -4868,10 +4967,10 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             hoverClass:'p-state-highlight',
             tolerance:'pointer',
             scope: this.getId(),
-            over: function(this: HTMLElement, event, ui: PrimeFacesTypes.interactions.DroppableUi) {
+            over: function(this: HTMLElement, event, ui: PrimeFaces.interactions.DroppableUi) {
                 ui.helper!.data('droppable-column', $(this));
             },
-            drop: function(this: HTMLElement, event, ui: PrimeFacesTypes.interactions.DroppableUi) {
+            drop: function(this: HTMLElement, event, ui: PrimeFaces.interactions.DroppableUi) {
                 var draggedColumnHeader = ui.draggable,
                 dropLocation = ui.helper!.data('drop-location'),
                 droppedColumnHeader =  $(this),
@@ -4942,7 +5041,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                 //fire colReorder event
                 if($this.hasBehavior('colReorder')) {
                     // was null before, callBehavior only accepts undefined
-                    var ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> | undefined = undefined;
+                    var ext: Partial<PrimeFaces.ajax.ConfigurationExtender> | undefined = undefined;
 
                     if($this.cfg.multiViewState) {
                         ext = {
@@ -4992,7 +5091,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             cursor: 'move',
             handle: draggableHandle,
             appendTo: document.body,
-            start: (event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            start: (event, ui: PrimeFaces.interactions.SortableUi) => {
                 PrimeFaces.nextZindex(ui.helper!);
             },
             helper: (event, ui) => {
@@ -5012,7 +5111,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
                 return helper;
             },
-            update: (event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            update: (event, ui: PrimeFaces.interactions.SortableUi) => {
                 var fromIndex = ui.item.data('ri');
 
                 // #5296 must not count header group rows
@@ -5022,7 +5121,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
                 this.syncRowParity();
 
-                var options: PrimeFacesTypes.ajax.Configuration = {
+                var options: PrimeFaces.ajax.Configuration = {
                     source: this.getId(),
                     process: this.getId(),
                     params: [
@@ -5040,7 +5139,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                     PrimeFaces.ajax.Request.handle(options);
                 }
             },
-            change: (event, ui: PrimeFacesTypes.interactions.SortableUi) => {
+            change: (event, ui: PrimeFaces.interactions.SortableUi) => {
                 if(this.cfg.scrollable) {
                     PrimeFaces.scrollInView(this.scrollBody!, ui.placeholder);
                 }
@@ -5329,7 +5428,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Fetches the last row from the backend and inserts a row instead of updating the table itself.
      */
     addRow(): void {
-        var options: PrimeFacesTypes.ajax.Configuration = {
+        var options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
@@ -5371,7 +5470,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * server.
      * @param newState The new values for the current page and the rows per page count.
      */
-    loadDataWithCache(newState: PrimeFacesTypes.component.Paginator.PaginationState): void {
+    loadDataWithCache(newState: PaginationState): void {
         var isRppChanged = false;
         if(this.cacheRows != newState.rows) {
             this.clearCacheMap();

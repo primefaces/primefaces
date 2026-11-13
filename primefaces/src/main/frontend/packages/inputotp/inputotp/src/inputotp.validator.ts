@@ -2,7 +2,7 @@
  * Client side validator of p:inputOtp (`primefaces.InputOtp`): a value that is not empty must have all characters,
  * like the server side validation. The renderer adds it to the hidden input with the value.
  */
-export class InputOtpValidator implements PrimeFacesTypes.validation.Validator {
+export class InputOtpValidator implements PrimeFaces.validation.Validator {
     private readonly MINIMUM_MESSAGE_ID = 'jakarta.faces.validator.LengthValidator.MINIMUM';
     private readonly MAXIMUM_MESSAGE_ID = 'jakarta.faces.validator.LengthValidator.MAXIMUM';
 

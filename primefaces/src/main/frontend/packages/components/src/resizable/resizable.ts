@@ -3,17 +3,29 @@ import type { KnownInteractionOptions } from "../dragdrop/dragdrop.js";
 /**
  * The configuration for the {@link Resizable} component.
  */
-export interface ResizableCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.ResizableOptions> {
+export interface ResizableCfg extends PrimeFaces.component.BaseComponentCfg, KnownInteractionOptions<PrimeFaces.interactions.ResizableOptions> {
     /** Whether AJAX requests are sent when the element is resized. */
     ajaxResize: boolean;
     /** Whether the target is constrained to its parent component, see `parentComponentId`. */
     isContainment: boolean;
-    /** Client-side callback to execute during resizing. */
-    onResize: PrimeFacesTypes.component.Resizable.OnResizeCallback;
-    /** Client-side callback to execute when resizing begins. */
-    onStart: PrimeFacesTypes.component.Resizable.OnStartCallback;
-    /** Client-side callback to execute after resizing end. */
-    onStop: PrimeFacesTypes.component.Resizable.OnStopCallback;
+    /**
+     * Client-side callback to execute during resizing, with the resizable as `this`.
+     * @param event The event that triggered the resize.
+     * @param ui Details about the resize operation.
+     */
+    onResize: (this: Resizable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi) => void;
+    /**
+     * Client-side callback to execute when resizing begins, with the resizable as `this`.
+     * @param event The event that triggered the resize start.
+     * @param ui Details about the resize operation.
+     */
+    onStart: (this: Resizable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi) => void;
+    /**
+     * Client-side callback to execute after resizing end, with the resizable as `this`.
+     * @param event The event that triggered the resize stop.
+     * @param ui Details about the resize operation.
+     */
+    onStop: (this: Resizable, event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi) => void;
     /** ID of the parent of the resizable element. */
     parentComponentId: string;
     /** ID of the target component or element to be resized. */
@@ -31,7 +43,7 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
     /** Target for the resizable, when using AJAX resize. */
     target?: string | JQuery | HTMLElement;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target!));
@@ -86,7 +98,7 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
             this.cfg.containment = PrimeFaces.escapeClientId(this.cfg.parentComponentId!);
         }
 
-        this.cfg.stop = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi) => {
+        this.cfg.stop = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi) => {
             if (this.cfg.onStop) {
                 this.cfg.onStop.call(this, event, ui);
             }
@@ -94,13 +106,13 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
             this.fireAjaxResizeEvent(event, ui);
         };
 
-        this.cfg.start = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi) => {
+        this.cfg.start = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi) => {
             if (this.cfg.onStart) {
                 this.cfg.onStart.call(this, event, ui);
             }
         };
 
-        this.cfg.resize = (event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi) => {
+        this.cfg.resize = (event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi) => {
             if (this.cfg.onResize) {
                 this.cfg.onResize.call(this, event, ui);
             }
@@ -122,9 +134,9 @@ export class Resizable<Cfg extends ResizableCfg = ResizableCfg> extends PrimeFac
      * @param event Event that triggered the resize.
      * @param ui Data of the resize event.
      */
-    private fireAjaxResizeEvent(event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.ResizableUi): void {
+    private fireAjaxResizeEvent(event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.ResizableUi): void {
         if (this.hasBehavior('resize')) {
-            const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> = {
+            const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> = {
                 params: [
                     { name: this.getId() + '_width', value: parseInt(String(ui.helper.width())) },
                     { name: this.getId() + '_height', value: parseInt(String(ui.helper.height())) }

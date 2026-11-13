@@ -22,7 +22,7 @@ export class TabMenu<Cfg extends TabMenuCfg = TabMenuCfg> extends Menu<Cfg> {
      */
     items: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('> .p-tabmenu-nav > li:not(.p-state-disabled)');

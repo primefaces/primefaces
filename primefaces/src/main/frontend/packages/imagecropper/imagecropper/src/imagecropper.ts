@@ -3,7 +3,7 @@ import type Cropper from "cropperjs";
 /**
  * The configuration for the {@link ImageCropper} component.
  */
-export interface ImageCropperCfg extends PrimeFacesTypes.component.DeferredComponentCfg, Cropper.Options<HTMLImageElement> {
+export interface ImageCropperCfg extends PrimeFaces.component.DeferredComponentCfg, Cropper.Options<HTMLImageElement> {
     /** ID of the IMAGE element. */
     image: string;
     /** Initial coordinates of the cropper area (x, y, width, height). */
@@ -31,7 +31,7 @@ export interface ImageCropperCfg extends PrimeFacesTypes.component.DeferredCompo
  */
 export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, the crop box limits are computed by {@link init}. */
-    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>
+    declare cfg: PrimeFaces.component.PartialComponentCfg<Cfg>
         & { minCropBoxWidth: number; minCropBoxHeight: number; maxCropBoxWidth: number; maxCropBoxHeight: number; };
 
     /** Whether the image is currently being cropped. */
@@ -43,7 +43,7 @@ export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends
     /** DOM element of the hidden INPUT element that stores the selected crop area. */
     jqCoords: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.image = $(PrimeFaces.escapeClientId(this.cfg.image!)) as JQuery<HTMLImageElement>;
         this.jqCoords = $(this.jqId + '_coords');
@@ -90,7 +90,7 @@ export class ImageCropper<Cfg extends ImageCropperCfg = ImageCropperCfg> extends
         this.cropper = this.image.data('cropper');
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // release the window/document listeners of the previous cropper instance
         if (this.cropper) {
             this.cropper.destroy();

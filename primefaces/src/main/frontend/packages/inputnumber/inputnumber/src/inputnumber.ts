@@ -1,4 +1,9 @@
-import AutoNumeric from "autonumeric";
+import AutoNumeric, { type Options } from "autonumeric";
+
+/**
+ * Alias for the AutoNumeric options.
+ */
+export type AutoNumericOptions = Options;
 
 /**
  * The AutoNumeric instance, with the fields that exist at runtime but are missing in the AutoNumeric typings.
@@ -13,7 +18,7 @@ type AutoNumericInstance = AutoNumeric & {
 /**
  * The configuration for the {@link InputNumber} component.
  */
-export interface InputNumberCfg extends PrimeFacesTypes.component.BaseComponentCfg, PrimeFacesTypes.component.InputNumber.AutoNumericOptions {
+export interface InputNumberCfg extends PrimeFaces.component.BaseComponentCfg, AutoNumericOptions {
     /** Whether this component is initially disabled. */
     disabled: boolean;
     /** Always undefined. */
@@ -30,7 +35,7 @@ export interface InputNumberCfg extends PrimeFacesTypes.component.BaseComponentC
  */
 export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The configuration, the decimal places are converted to numbers by {@link init}. */
-    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & { decimalPlaces: number; decimalPlacesRawValue: number; };
+    declare cfg: PrimeFaces.component.PartialComponentCfg<Cfg> & { decimalPlaces: number; decimalPlacesRawValue: number; };
 
     /** The current AutoNumeric instance. */
     autonumeric?: AutoNumericInstance;
@@ -45,7 +50,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
     /** The initial, numerical value that is displayed, such as `0.0` or `5.3`. */
     initialValue: string = "";
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.hiddenInput = $(this.jqId + '_hinput');
@@ -90,7 +95,7 @@ export class InputNumber<Cfg extends InputNumberCfg = InputNumberCfg> extends Pr
         PrimeFaces.queueTask(() => { this.wrapEvents(); });
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this._cleanup();
         super.refresh(cfg);
     }

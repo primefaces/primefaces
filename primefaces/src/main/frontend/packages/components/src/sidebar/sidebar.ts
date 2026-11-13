@@ -1,17 +1,21 @@
 /**
  * The configuration for the {@link Sidebar} component.
  */
-export interface SidebarCfg extends PrimeFacesTypes.component.DynamicOverlayComponentCfg {
+export interface SidebarCfg extends PrimeFaces.component.DynamicOverlayComponentCfg {
     /** Whether the sidebar is modal, normalized to a boolean on init (default `true`). */
     modal: boolean;
     /** Whether the close icon is displayed, normalized to a boolean on init (default `true`). */
     showCloseIcon: boolean;
     /** Base z-index of the sidebar. */
     baseZIndex: number;
-    /** Called when the sidebar was hidden. */
-    onHide: PrimeFacesTypes.component.Sidebar.OnHideCallback;
-    /** Called when the sidebar was shown. */
-    onShow: PrimeFacesTypes.component.Sidebar.OnShowCallback;
+    /**
+     * Called when the sidebar was hidden, with the sidebar as `this`.
+     * @param event Always `undefined`.
+     * @param ui Always `undefined`.
+     */
+    onHide: (this: Sidebar, event?: JQuery.TriggeredEvent, ui?: unknown) => void;
+    /** Called when the sidebar was shown, with the sidebar as `this`. */
+    onShow: (this: Sidebar) => void;
     /** Whether the sidebar is shown initially. */
     visible: boolean;
     /** `true` to load the content via AJAX when the sidebar is shown the first time. */
@@ -31,7 +35,7 @@ export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.com
     /** With dynamic loading, whether the content was already loaded. */
     loaded: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.modal = (this.cfg.modal === true || this.cfg.modal === undefined);
@@ -53,7 +57,7 @@ export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.com
         this.bindEvents();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.refresh(cfg);
 
         this.loaded = false;
@@ -196,7 +200,7 @@ export class Sidebar<Cfg extends SidebarCfg = SidebarCfg> extends PrimeFaces.com
     }
 
     private loadContents(): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

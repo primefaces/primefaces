@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Organigram} component.
  */
-export interface OrganigramCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface OrganigramCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the organigram scrolls to the selected node after it was drawn. */
     autoScrollToSelection: boolean;
     /** Base namespace for the events triggered by this component. */
@@ -27,7 +27,7 @@ export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends Prime
     /** The current zoom factor of the organigram. */
     zoomFactor?: number;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.draw();
@@ -505,10 +505,10 @@ export class Organigram<Cfg extends OrganigramCfg = OrganigramCfg> extends Prime
     }
 
     override bindContextMenu(
-        menuComponent: PrimeFacesTypes.component.ContextMenuLikeComponent,
+        menuComponent: PrimeFaces.component.ContextMenuLikeComponent,
         targetComponent: this,
         targetId: string,
-        cfg: PrimeFacesTypes.component.PartialComponentCfg<PrimeFacesTypes.component.ContextMenuLikeComponentCfg>,
+        cfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.ContextMenuLikeComponentCfg>,
     ): void {
         let selector = targetId + " .p-organigram-node.selectable";
         const event = cfg.event + ".organigram" + this.id;

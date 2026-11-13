@@ -22,7 +22,7 @@ export interface MenubarCfg extends TieredMenuCfg {
  */
 export class Menubar<Cfg extends MenubarCfg = MenubarCfg> extends TieredMenu<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         // #13323 MenuBar only for hideDelay=0 only closes on document.click
@@ -30,7 +30,7 @@ export class Menubar<Cfg extends MenubarCfg = MenubarCfg> extends TieredMenu<Cfg
     }
 
     override showSubmenu(menuitem: JQuery, submenu: JQuery, focus?: boolean): void {
-        let pos: PrimeFacesTypes.utils.PositionOptions | null = null;
+        let pos: PrimeFaces.utils.PositionOptions | null = null;
 
         if (menuitem.parent().hasClass('p-menu-child')) {
             pos = {

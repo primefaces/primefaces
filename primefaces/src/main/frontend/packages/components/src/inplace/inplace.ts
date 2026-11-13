@@ -1,13 +1,18 @@
 /**
+ * Effect for the transition between the display element and the inline content.
+ */
+export type EffectType = "fade" | "none" | "slide";
+
+/**
  * The configuration for the {@link Inplace} component.
  */
-export interface InplaceCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface InplaceCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether switching to the inline content is disabled. */
     disabled: boolean;
     /** `true` to add save and cancel buttons to the inline content. */
     editor: boolean;
     /** Effect used when toggling. */
-    effect: PrimeFacesTypes.component.Inplace.EffectType;
+    effect: EffectType;
     /** Speed of the effect, `slow`, `normal` or `fast` (`normal` is the jQuery default duration). */
     effectSpeed: string;
     /** Client side event that shows the inline content, `dblclick` is changed to `click` on touch devices. */
@@ -30,7 +35,7 @@ export class Inplace<Cfg extends InplaceCfg = InplaceCfg> extends PrimeFaces.com
     /** The container of the save and cancel buttons, only with `editor`. */
     editor?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.display = $(this.jqId + '_display');
@@ -167,7 +172,7 @@ export class Inplace<Cfg extends InplaceCfg = InplaceCfg> extends PrimeFaces.com
      * @param _e The event which triggered the saving, unused.
      */
     save(_e?: JQuery.TriggeredEvent): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),
@@ -187,7 +192,7 @@ export class Inplace<Cfg extends InplaceCfg = InplaceCfg> extends PrimeFaces.com
      * @param _e The event which triggered the cancellation, unused.
      */
     cancel(_e?: JQuery.TriggeredEvent): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             update: this.getId(),
             process: this.getId(),

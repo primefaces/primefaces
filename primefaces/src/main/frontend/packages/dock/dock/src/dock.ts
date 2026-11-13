@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Dock} component.
  */
-export interface DockCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface DockCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether opening and closing the dock should be animated. */
     animate: boolean;
     /** The duration for the opening and closing animation in milliseconds. */
@@ -21,7 +21,7 @@ export class Dock<Cfg extends DockCfg = DockCfg> extends PrimeFaces.component.Ba
     /** The DOM elements for the clickable anchors of the dock items. */
     links: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.items = this.jq.find('ul li');

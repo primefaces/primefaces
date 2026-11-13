@@ -1,7 +1,18 @@
 /**
+ * Duration of toggle animation of the overlay panel.
+ */
+export type EffectSpeed = "slow" | "normal" | "fast";
+
+/**
+ * Available modes for filtering the options of a select one menu. When `custom` is set, a `filterFunction`
+ * must be specified.
+ */
+export type FilterMatchMode = "startsWith" | "contains" | "endsWith" | "custom";
+
+/**
  * The configuration for the {@link SelectOneMenu} component.
  */
-export interface SelectOneMenuCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface SelectOneMenuCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** `true` if the label of the selected item should always be set on the visible input, `false` otherwise. */
     alwaysDisplayLabel: boolean;
     /** Appends the overlay to the element defined by search expression. Defaults to the document body. */
@@ -25,13 +36,18 @@ export interface SelectOneMenuCfg extends PrimeFacesTypes.component.DeferredComp
     /** Name of the toggle animation of the overlay panel, defaults to `fade`. */
     effect: string;
     /** Duration of the toggle animation of the overlay panel, defaults to `normal`. */
-    effectSpeed: PrimeFacesTypes.component.SelectOneMenu.EffectSpeed;
+    effectSpeed: EffectSpeed;
     /** `true` if the options can be filtered, or `false` otherwise. */
     filter: boolean;
-    /** A custom filter function that is used when `filterMatchMode` is set to `custom`. */
-    filterFunction: PrimeFacesTypes.component.SelectOneMenu.FilterFunction;
+    /**
+     * A custom filter function that is used when `filterMatchMode` is set to `custom`.
+     * @param itemLabel The (searchable) label of an option.
+     * @param filterValue The (searchable) value to search for.
+     * @returns `true` if the item label matches the filter value, or `false` otherwise.
+     */
+    filterFunction: (itemLabel: string, filterValue: string) => boolean;
     /** Mode of the filter. When set to `custom` a `filterFunction` must be specified. */
-    filterMatchMode: PrimeFacesTypes.component.SelectOneMenu.FilterMatchMode;
+    filterMatchMode: FilterMatchMode;
     /** Initial height of the overlay panel in pixels. */
     initialHeight: number;
     /** Text of the label for the input. */
@@ -69,11 +85,11 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     /** The DOM element for the input field that lets the user enter a search term to filter the list of available options. */
     filterInput?: JQuery;
     /** The filter that was selected and is currently used. */
-    filterMatcher?: PrimeFacesTypes.component.SelectOneMenu.FilterFunction;
+    filterMatcher?: SelectOneMenuCfg["filterFunction"];
     /** Map between the available filter types and the filter implementation. */
-    filterMatchers?: Record<PrimeFacesTypes.component.SelectOneMenu.FilterMatchMode, PrimeFacesTypes.component.SelectOneMenu.FilterFunction | undefined>;
+    filterMatchers?: Record<FilterMatchMode, SelectOneMenuCfg["filterFunction"] | undefined>;
     /** Unbind callback for the hide overlay handler. */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
     /** The DOM element for the hidden input with the current value. */
     input: JQuery = $();
     /** Whether the contents of the overlay panel were loaded. */
@@ -111,21 +127,21 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     /** The DOM element for the label connected to he SelectOneMenu. */
     labeledBy?: JQuery | null;
     /** Unbind callback for the resize handler. */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
     /** Unbind callback for the scroll handler. */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
     /** Letters typed for selection. (#4682, only used with editable="false") */
     searchValue: string = "";
     /** ID of the timeout for clearing the typed letters. */
     searchTimer?: number;
     /** Handler for CSS transitions used by this component. */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
     /** The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the available selectable options. */
     triggers: JQuery = $();
     /** The current value of this select one menu. */
     value?: string;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.panelId = this.jqId + '_panel';
@@ -283,7 +299,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.items = null;
 
         super.refresh(cfg);
@@ -1166,7 +1182,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
                 ,at: 'left bottom'
                 ,of: this.jq
                 ,collision: 'flipfit'
-                ,using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+                ,using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }
             });
@@ -1328,7 +1344,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.SelectOneMenu.FilterFunction` that matches the given option when it starts
+     * Implementation of a {@link SelectOneMenuCfg.filterFunction | filter function} that matches the given option when it starts
      * with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1339,7 +1355,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.SelectOneMenu.FilterFunction` that matches the given option when it
+     * Implementation of a {@link SelectOneMenuCfg.filterFunction | filter function} that matches the given option when it
      * contains the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1350,7 +1366,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     }
 
     /**
-     * Implementation of a `PrimeFaces.component.SelectOneMenu.FilterFunction` that matches the given option when it ends
+     * Implementation of a {@link SelectOneMenuCfg.filterFunction | filter function} that matches the given option when it ends
      * with the given search text.
      * @param value Text of an option.
      * @param filter Value of the filter.
@@ -1493,7 +1509,7 @@ export class SelectOneMenu<Cfg extends SelectOneMenuCfg = SelectOneMenuCfg> exte
     private dynamicPanelLoad(): void {
         this.setQuerying(true);
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

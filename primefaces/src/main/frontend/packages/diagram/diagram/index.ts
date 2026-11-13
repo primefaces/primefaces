@@ -14,63 +14,9 @@ declare global {
         jsPlumbUtil: typeof _jsPlumb.jsPlumbUtil;
     }
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             Diagram: typeof Diagram;
-        }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type DiagramCfg = import("./src/diagram.js").DiagramCfg;
-    }
-
-    namespace PrimeFacesTypes.component.Diagram {
-        /**
-         * Details about a connection between two nodes that was either established or dissolved.
-         */
-        export interface ConnectionInfo {
-            /** ID of the source node where the connection starts. */
-            sourceId: string;
-            /** ID of the target node where the connection end. */
-            targetId: string;
-            /** The point (port) where the connections starts. */
-            sourceEndpoint: import("./src/diagram.js").DiagramEndpoint;
-            /** The point (port) where the connections ends. */
-            targetEndpoint: import("./src/diagram.js").DiagramEndpoint;
-        }
-
-        /**
-         * Details about a connection between two nodes that was changed.
-         */
-        export interface UpdateConnectionInfo extends ConnectionInfo {
-            /** Previous ID of the source node where the connection started. */
-            originalSourceId: string;
-            /** Previous ID of the target node where the connection ended. */
-            originalTargetId: string;
-            /** New ID of the source node where the connection starts. */
-            newSourceId: string;
-            /** New ID of the target node where the connection ends. */
-            newTargetId: string;
-            /** Previous point (port) where the connections started. */
-            originalSourceEndpoint: import("./src/diagram.js").DiagramEndpoint;
-            /** Previous point (port) where the connections ended. */
-            originalTargetEndpoint: import("./src/diagram.js").DiagramEndpoint;
-            /** New point (port) where the connections starts. */
-            newSourceEndpoint: import("./src/diagram.js").DiagramEndpoint;
-            /** New point (port) where the connections ends. */
-            newTargetEndpoint: import("./src/diagram.js").DiagramEndpoint;
-        }
-
-        /**
-         * Details about an element when its location was changed.
-         */
-        export interface UpdateElementInfo {
-            /** ID of the element that was changed. */
-            elementId: string;
-            /** New horizontal position of the element. */
-            x: number;
-            /** New vertical position of the element. */
-            y: number;
         }
     }
 }

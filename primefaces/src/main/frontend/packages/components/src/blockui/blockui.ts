@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link BlockUI} component.
  */
-export interface BlockUICfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface BlockUICfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the blocker is shown and hidden with a fade animation, normalized to a boolean on init. */
     animate: boolean;
     /** Search expression of the component(s) to block. */
@@ -29,11 +29,11 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.com
     /** The blocker(s), one per target. */
     blocker: JQuery = $();
     /** Aligns the blocker when the target changes. */
-    resizeHandler?: PrimeFacesTypes.Controllable;
+    resizeHandler?: PrimeFaces.Controllable;
     /** The timer ID of the delayed show. */
     timeout?: number | null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
@@ -55,7 +55,7 @@ export class BlockUI<Cfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.com
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         // an update of this component itself renders the new element in place, inside of the blocker in the body,
         // so move it out to keep it when the blocker is removed
         this.blocker.children(this.jqId).appendTo(document.body);

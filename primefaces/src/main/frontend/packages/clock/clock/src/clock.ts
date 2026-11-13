@@ -404,9 +404,52 @@ export class SimpleDateFormat {
 }
 
 /**
+ * Indicates which time the clock component uses. `client` uses the time from the client (browser), `server` uses
+ * the time from the server.
+ */
+export type TimeMode = "client" | "server";
+
+/**
+ * Display mode for the clock component. `analog` displays an analog clock, `digital` a digitial clock.
+ */
+export type DisplayMode = "analog" | "digital";
+
+/**
+ * Computed dimensions for the individual parts of the analog clock, all in pixels.
+ */
+export interface Dimensions {
+    /** Width of the clock element in pixels. */
+    size: number;
+    /** Half width of the clock element in pixels. */
+    half: number;
+    /** Width of the clock face in pixels. */
+    clock_width: number;
+    /** Distance in pixels from the center of the circle where the hour mark starts. */
+    hour_sign_min_size: number;
+    /** Distance in pixels from the center of the circle where the hour mark ends. */
+    hour_sign_max_size: number;
+    /** Stroke width in pixels of the hour marks. */
+    hour_sign_stroke_width: number;
+    /** Radial distance in pixels from the circumference of the circle where the hour hand starts. */
+    hour_hand_start_position: number;
+    /** Stroke width in pixels of the hour hand. */
+    hour_hand_stroke_width: number;
+    /** Radial distance in pixels from the circumference of the circle where the minute hand starts. */
+    minute_hand_start_position: number;
+    /** Stroke width in pixels of the minute hand. */
+    minute_hand_stroke_width: number;
+    /** Radial distance in pixels from the circumference of the circle where the seconds hand starts. */
+    second_hand_start_position: number;
+    /** Stroke width in pixels of the seconds hand. */
+    second_hand_stroke_width: number;
+    /** Radius in pixels of the pin at the center of the clock face. */
+    pin_width: number;
+}
+
+/**
  * The configuration for the {@link Clock} component.
  */
-export interface ClockCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ClockCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * When `mode` is set to `server`: `true` to automatically sync the time with the server according to the specified
      * `syncInterval`, or `false` otherwise.
@@ -415,11 +458,11 @@ export interface ClockCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** The date format helper for the `pattern`, created by the component. */
     dateFormat: SimpleDateFormat;
     /** Whether the clock is displayed as an analog or digital clock. */
-    displayMode: PrimeFacesTypes.component.Clock.DisplayMode;
+    displayMode: DisplayMode;
     /** Locale for the clock, determines the time format. */
     locale: string;
     /** Whether the clock uses the time of the browser or the time from the server. */
-    mode: PrimeFacesTypes.component.Clock.TimeMode;
+    mode: TimeMode;
     /** Datetime format. */
     pattern: string;
     /** Defines the sync in ms interval in when `autoSync` is set to `true`. */
@@ -441,7 +484,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.component
     /** The currently displayed time. */
     current!: Date;
     /** Calculated sizes for the analog clock elements. */
-    dimensions!: PrimeFacesTypes.component.Clock.Dimensions;
+    dimensions!: Dimensions;
     /** The drawn elements for the hour signs (1-12). */
     hour_sign: RaphaelElement[] = [];
     /** The drawn element for the hour hand. */
@@ -457,7 +500,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.component
     /** The drawn element for the second hand. */
     second_hand!: RaphaelElement;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
@@ -485,7 +528,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.component
         }
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         clearInterval(this.interval);
         clearInterval(this.syncInterval);
 
@@ -539,7 +582,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.component
             this.stop();
         }
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             async: true,
@@ -658,7 +701,7 @@ export class Clock<Cfg extends ClockCfg = ClockCfg> extends PrimeFaces.component
      * @param size Target width of the clock in pixels
      * @returns Calculated sizes for the analog clock elements.
      */
-    private getDimensions(size: number): PrimeFacesTypes.component.Clock.Dimensions {
+    private getDimensions(size: number): Dimensions {
         return {
             'size': size,
             'half': Math.floor(size / 2),

@@ -4,7 +4,7 @@
  * You can access this configuration via {@link PanelMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface PanelMenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface PanelMenuCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Whether multiple accordion menu items are allowed to be expanded at the same time.
      */
@@ -71,7 +71,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     treeLinks: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.headers = this.jq.find('> .p-panelmenu-panel > h3.p-panelmenu-header:not(.p-state-disabled)');
         this.menuContent = this.jq.find('> .p-panelmenu-panel > .p-panelmenu-content');
@@ -186,7 +186,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
             }
             var itemToFocus = null;
 
-            switch("code" in e ? e.code : e.key) {
+            switch(e.code) {
                 case 'ArrowLeft':
                     if($this.isExpanded($this.focusedItem)) {
                         $this.focusedItem.children('.p-menuitem-link').trigger('click');

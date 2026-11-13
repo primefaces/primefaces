@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link DefaultCommand} component.
  */
-export interface DefaultCommandCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface DefaultCommandCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Client ID of the ancestor component that limits the default command, to have several in one form. */
     scope: string;
     /** Client ID of the button or link to click on Enter. */
@@ -20,7 +20,7 @@ export class DefaultCommand<Cfg extends DefaultCommandCfg = DefaultCommandCfg> e
     /** The ancestor component that limits the default command, only with `scope`. */
     scope: JQuery | null = null;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.jqTarget = this.findTarget();
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;

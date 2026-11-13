@@ -1,11 +1,17 @@
 /**
+ * When the deferred content is loaded: `load` directly after the page was loaded, `visible` once the panel
+ * was scrolled into view.
+ */
+export type DeferredMode = "load" | "visible";
+
+/**
  * The configuration for the {@link OutputPanel} component.
  */
-export interface OutputPanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface OutputPanelCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the content is loaded via AJAX after the page was loaded. */
     deferred: boolean;
     /** When the deferred content is loaded. */
-    deferredMode: PrimeFacesTypes.component.OutputPanel.DeferredMode;
+    deferredMode: DeferredMode;
     /** Normalized to a boolean on init, not used: the load request is never global. */
     global: boolean;
 }
@@ -17,7 +23,7 @@ export interface OutputPanelCfg extends PrimeFacesTypes.component.BaseComponentC
  */
 export class OutputPanel<Cfg extends OutputPanelCfg = OutputPanelCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.global = this.cfg.global || false;
 
@@ -37,7 +43,7 @@ export class OutputPanel<Cfg extends OutputPanelCfg = OutputPanelCfg> extends Pr
     }
 
     private loadContent(): void {
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),

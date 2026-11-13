@@ -13,7 +13,7 @@ export interface HorizontalTreeCfg extends BaseTreeCfg {
  */
 export class HorizontalTree<Cfg extends HorizontalTreeCfg = HorizontalTreeCfg> extends BaseTree<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
     }
 

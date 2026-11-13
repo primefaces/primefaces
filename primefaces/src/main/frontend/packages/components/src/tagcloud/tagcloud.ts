@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link TagCloud} component.
  */
-export interface TagCloudCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface TagCloudCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -11,7 +11,7 @@ export interface TagCloudCfg extends PrimeFacesTypes.component.BaseComponentCfg 
  */
 export class TagCloud<Cfg extends TagCloudCfg = TagCloudCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jq.find('a').on('mouseover.tagcloud', (e) => {

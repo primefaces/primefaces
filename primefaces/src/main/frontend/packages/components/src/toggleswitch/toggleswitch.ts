@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ToggleSwitch} component.
  */
-export interface ToggleSwitchCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface ToggleSwitchCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Requests a confirmation before the value changes, called with the switch element as `this`. */
     confirmation: (this: HTMLElement) => void;
 }
@@ -19,7 +19,7 @@ export class ToggleSwitch<Cfg extends ToggleSwitchCfg = ToggleSwitchCfg> extends
     /** The hidden checkbox input with the value. */
     input: JQuery<HTMLInputElement> = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.slider = this.jq.children('.p-toggleswitch-slider');

@@ -9,27 +9,10 @@ declare global {
         FullCalendar: FullCalendarGlobal;
     }
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             Schedule: typeof Schedule;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type ScheduleCfg = import("./src/schedule.js").ScheduleCfg;
-    }
-
-    namespace PrimeFacesTypes.component.Schedule {
-        /**
-         * Name of JavaScript function to extend the options of the underlying FullCalendar plugin. Access the this
-         * schedule component via the this context, and change the FullCalendar configuration stored in `this.cfg`. See
-         * also {@link ScheduleCfg.extender}.
-         */
-        export type ScheduleExtender =
-            /**
-             * @this The schedule component whose FullCalendar configuration is extended.
-             */
-            (this: import("./src/schedule.js").Schedule) => void;
     }
 }
 

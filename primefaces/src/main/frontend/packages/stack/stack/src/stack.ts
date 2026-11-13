@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Stack} component.
  */
-export interface StackCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface StackCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Duration in milliseconds it takes the stack to close. */
     closeSpeed: number;
     /** Whether the stack is currently closed or opened. */
@@ -17,7 +17,7 @@ export interface StackCfg extends PrimeFacesTypes.component.BaseComponentCfg {
  */
 export class Stack<Cfg extends StackCfg = StackCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.expanded = this.cfg.expanded||false;
 

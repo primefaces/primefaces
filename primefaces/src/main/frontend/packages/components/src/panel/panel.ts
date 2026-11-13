@@ -1,7 +1,12 @@
 /**
+ * Orientation of the toggle effect: slide up and down, or left and right.
+ */
+export type ToggleOrientation = "vertical" | "horizontal";
+
+/**
  * The configuration for the {@link Panel} component.
  */
-export interface PanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface PanelCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether the panel is closable. */
     closable: boolean;
     /** Duration of the close effect in milliseconds. */
@@ -17,7 +22,7 @@ export interface PanelCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /** Whether the collapsed state is kept across views. */
     multiViewState: boolean;
     /** Orientation of the toggle effect. */
-    toggleOrientation: PrimeFacesTypes.component.Panel.ToggleOrientation;
+    toggleOrientation: ToggleOrientation;
     /** Duration of the toggle effect in milliseconds. */
     toggleSpeed: number;
 }
@@ -47,7 +52,7 @@ export class Panel<Cfg extends PanelCfg = PanelCfg> extends PrimeFaces.component
     /** The width of this panel before it was collapsed horizontally. */
     originalWidth?: number;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.header = this.jq.children('div.p-panel-titlebar');
         this.title = this.header.children('span.p-panel-title');
@@ -217,7 +222,7 @@ export class Panel<Cfg extends PanelCfg = PanelCfg> extends PrimeFaces.component
             this.callBehavior('toggle');
         }
         else if (this.cfg.multiViewState) {
-            const options: PrimeFacesTypes.ajax.Configuration = {
+            const options: PrimeFaces.ajax.Configuration = {
                 source: this.getId(),
                 partialSubmit: true,
                 partialSubmitFilter: PrimeFaces.escapeClientId(this.getId() + '_collapsed'),

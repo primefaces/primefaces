@@ -23,7 +23,7 @@ type ViewOptions = NonNullable<CalendarOptions["views"]>[string];
 /**
  * The configuration for the {@link Schedule} component.
  */
-export interface ScheduleCfg extends PrimeFacesTypes.component.DeferredComponentCfg {
+export interface ScheduleCfg extends PrimeFaces.component.DeferredComponentCfg {
     /** Format of the column header per view name, e.g. `{ dayGridMonth: "ddd" }`. */
     columnFormatOptions: Record<string, ViewOptions["dayHeaderFormat"]>;
     /** Whether the description of an event in the tooltip is HTML escaped, default is `true`. */
@@ -32,7 +32,7 @@ export interface ScheduleCfg extends PrimeFacesTypes.component.DeferredComponent
      * Name of JavaScript function to extend the options of the underlying FullCalendar plugin. Access the this schedule
      * component via the this context, and change the FullCalendar configuration stored in `this.cfg`.
      */
-    extender: PrimeFacesTypes.component.Schedule.ScheduleExtender;
+    extender: (this: Schedule) => void;
     /** Locale code of the locale for the FullCalendar, such as `de` or `en`. */
     locale: string;
     /**
@@ -65,7 +65,7 @@ export interface ScheduleCfg extends PrimeFacesTypes.component.DeferredComponent
  */
 export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.component.DeferredComponent<Cfg> {
     /** The configuration, the server always renders the FullCalendar `options`. */
-    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & Pick<ScheduleCfg, "options">;
+    declare cfg: PrimeFaces.component.PartialComponentCfg<Cfg> & Pick<ScheduleCfg, "options">;
 
     /**
      * The current full calendar instance. May be `undefined` when the component exists, but was not yet rendered, such
@@ -83,7 +83,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
     /** The DOM element for the hidden input storing the current view state. */
     viewNameState: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.options.themeSystem = 'standard';
         this.cfg.options.slotLabelFormat = this.cfg.options.slotLabelFormat || undefined;
@@ -125,7 +125,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
         this.setupTitlebarHandlers();
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.calendar) {
             this.calendar.destroy();
         }
@@ -358,7 +358,7 @@ export class Schedule<Cfg extends ScheduleCfg = ScheduleCfg> extends PrimeFaces.
         const events: EventSourceFunc = (fetchInfo, successCallback) => {
             // #13346 - schedule events must be called after the viewChange event is fired
             PrimeFaces.queueTask(() => {
-                const options: PrimeFacesTypes.ajax.Configuration = {
+                const options: PrimeFaces.ajax.Configuration = {
                     source: this.getId(),
                     process: this.getId(),
                     update: this.getId(),

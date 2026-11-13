@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
 
-import { PF as _PF, core, type Core } from "./src/core/core.js";
+import { PF as _PF, core, type Core as CoreImpl } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 import { globalEffectsSetup } from "./src/core/core.effects.js";
 import { globalJQueryExtensionsSetup } from "./src/jquery-extensions/jquery-extensions.js";
-// global PrimeFacesTypes declarations of the position options
+// global PrimeFaces declarations of the position options
 import "./src/core/core.position.js";
 // global declarations of the jQuery extensions $.fn.focus(delay) and $.fn.zIndex()
 import "./src/jquery-extensions/jquery.focus.js";
@@ -66,7 +66,7 @@ function exposeToGlobalScope() {
 
 // General types
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export type EntityMap = Record<string, string>;
 
         /**
@@ -366,7 +366,7 @@ declare global {
 
 // Features for the core
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         /**
          * Registry for hooks. Hooks are a way for external code to interact
          * with and adjust core functions. The core provides entry points
@@ -379,7 +379,7 @@ declare global {
         export interface HookRegistry { }
     }
 
-    namespace PrimeFacesTypes.hook {
+    namespace PrimeFaces.hook {
         /**
          * The confirm hook. Lets external scripts subscribe to emitted
          * confirmation messages. Implementations usually make use of this
@@ -450,7 +450,7 @@ declare global {
             /**
              * Renders the given messages into the given message, messages or growl component.
              */
-            renderMessageForComponent?: (component: BaseComponent, messages: PrimeFacesTypes.FacesMessage[]) => void;
+            renderMessageForComponent?: (component: BaseComponent, messages: PrimeFaces.FacesMessage[]) => void;
 
             /**
              * @deprecated Implement {@link clearMessagesForComponent} instead, this one is only called when that is missing.
@@ -460,7 +460,7 @@ declare global {
             /**
              * @deprecated Implement {@link renderMessageForComponent} instead, this one is only called when that is missing.
              */
-            renderMessageForWidget?: (component: BaseComponent, messages: PrimeFacesTypes.FacesMessage[]) => void;
+            renderMessageForWidget?: (component: BaseComponent, messages: PrimeFaces.FacesMessage[]) => void;
 
             /**
              * Renders all given messages in the given containers.
@@ -468,7 +468,7 @@ declare global {
              * @param containers The container for the messages. Note that this JQuery
              * instance may contain multiple elements -- you should iterate over them. 
              */
-            renderMessagesInContainers: (messages: Record<string, PrimeFacesTypes.FacesMessage[]>, containers: JQuery) => void;
+            renderMessagesInContainers: (messages: Record<string, PrimeFaces.FacesMessage[]>, containers: JQuery) => void;
         }
 
         /**
@@ -482,11 +482,11 @@ declare global {
              * @returns Whether the message was handled. If true, subsequent
              * registered implementations will not be called anymore.
              */
-            showMessage: (message: PrimeFacesTypes.hook.messageInDialog.DialogMessageData) => boolean;
+            showMessage: (message: PrimeFaces.hook.messageInDialog.DialogMessageData) => boolean;
         }
     }
 
-    namespace PrimeFacesTypes.hook.confirm {
+    namespace PrimeFaces.hook.confirm {
         /**
          * Interface for a confirmation message to show, such as in a confirm
          * popup or a confirm dialog. Used by the {@link ConfirmCoreFeature}.
@@ -571,7 +571,7 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.hook.dialog {
+    namespace PrimeFaces.hook.dialog {
         /**
          * Interface with the options shared by the open / close methods of the
          * `PrimeFaces.dialog.DialogHandler` and the configuration of the
@@ -762,7 +762,7 @@ declare global {
         }
     }
 
-    namespace PrimeFacesTypes.hook.messageInDialog {
+    namespace PrimeFaces.hook.messageInDialog {
         /**
          * Interface for a message received from the server that is to be shown
          * in a dialog, via the dialog framework.
@@ -806,7 +806,7 @@ declare global {
      * Namespace related to AJAX functionality, such as sending post-back requests
      * to the server and handling the response.
      */
-    namespace PrimeFacesTypes.ajax {
+    namespace PrimeFaces.ajax {
         /**
          * An entry on the {@link JQuery.jqXHR} request object with additional values added by PrimeFaces. For example, when
          * you call `PrimeFaces.current().ajax().addCallbackParam(...)` on the server in a bean method, the added parameters
@@ -1087,7 +1087,7 @@ declare global {
              * {@link PFSettings.earlyPostParamEvaluation | earlyPostParamEvaluation}
              * is enabled. 
              */
-            earlyPostParams?: PrimeFacesTypes.ajax.RequestParameter<string, string | Blob>[];
+            earlyPostParams?: PrimeFaces.ajax.RequestParameter<string, string | Blob>[];
             /**
              * The AJAX behavior event that triggered the AJAX request.
              */
@@ -1231,7 +1231,7 @@ declare global {
         /**
          * Mapping from articulate to shortname names for the options passed to AJAX calls made by PrimeFaces.
          */
-        export type ShorthandToArticulateConfigurationMap = PrimeFacesTypes.InvertRecord<ArticulateToShorthandConfigurationMap>;
+        export type ShorthandToArticulateConfigurationMap = PrimeFaces.InvertRecord<ArticulateToShorthandConfigurationMap>;
 
         /**
          * Options passed to AJAX calls made by PrimeFaces. This is the same as `Configuration`, but with shorter
@@ -1343,7 +1343,7 @@ declare global {
      * Namespace for functionality related to validation, such as client-side
      * validation logic.
      */
-    namespace PrimeFacesTypes.validation {
+    namespace PrimeFaces.validation {
         /**
          * Type of the value of an element that is about to be submitted, passed
          * e.g. to {@link Converter.convert}.
@@ -1511,19 +1511,29 @@ declare global {
 
 // Base component types
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         /**
          * Shortcut for the type of a specific component. For example, if you want to
          * write a function that takes a single parameter named `commandButton`
          * that must be a CommandButton instance:
          * 
          * ```ts
-         * function processCommandButton(component: PrimeFacesTypes.Component<"CommandButton">): void {
+         * function processCommandButton(component: PrimeFaces.Component<"CommandButton">): void {
          *   // do something with command button
          * }
          * ```
          */
-        export type Component<Name extends keyof ComponentRegistry> = InstanceType<PrimeFacesTypes.ComponentRegistry[Name]>;
+        export type Component<Name extends keyof ComponentRegistry> = InstanceType<PrimeFaces.ComponentRegistry[Name]>;
+
+        /**
+         * Shortcut for the configuration type of a specific component. For example, to get the type of a callback of
+         * the configuration:
+         * 
+         * ```ts
+         * const onAdd: PrimeFaces.ComponentCfg<"FileUpload">["onAdd"] = function(file, callback) { callback(file); };
+         * ```
+         */
+        export type ComponentCfg<Name extends keyof ComponentRegistry> = PrimeFaces.ComponentRegistry[Name] extends PrimeFaces.Newable<[], BaseComponent<infer Cfg>> ? Cfg : never;
 
         /**
          * A map of all instantiated components that are available on the current page.
@@ -1544,13 +1554,10 @@ declare global {
          * ```ts
          * import { YourComponent } from "./src/components/your-component.js";
          * declare global {
-         *   namespace PrimeFacesTypes {
+         *   namespace PrimeFaces {
          *     export interface ComponentRegistry {
          *       YourComponent: typeof YourComponent;
          *     }
-         *   }
-         *   namespace PrimeFacesTypes.component {
-         *     export type YourComponentCfg = import("./src/components/your-component.js").YourComponentCfg;
          *   }
          * }
          * ```
@@ -1558,17 +1565,7 @@ declare global {
         export interface ComponentRegistry { }
     }
 
-    namespace PrimeFacesTypes.component {
-        /**
-         * Gets the configuration of a component.
-         * 
-         * ```ts
-         * // PrimeFacesTypes.component.AjaxStatusCfg
-         * type Cfg = PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry["AjaxStatus"]>
-         * ```
-         */
-        export type ComponentCfg<Component extends PrimeFacesTypes.Newable<[], BaseComponent<any>>> = Component extends PrimeFacesTypes.Newable<[], BaseComponent<infer Cfg>> ? Cfg : never;
-
+    namespace PrimeFaces.component {
         /**
          * Interface of the context menu component configuration available to other
          * components that wish to provide custom context menu integration.
@@ -1715,7 +1712,7 @@ declare global {
             /**
              * @param componentCfg The configuration of the component that is about to be constructed.
              */
-            (this: null, componentCfg: PrimeFacesTypes.component.PartialComponentCfg<import("./src/core/core.component.js").BaseComponentCfg>) => void;
+            (this: null, componentCfg: PrimeFaces.component.PartialComponentCfg<import("./src/core/core.component.js").BaseComponentCfg>) => void;
 
         /**
          * An optional callback that is invoked before a component is about to be
@@ -1760,7 +1757,7 @@ declare global {
 
 // Locale types
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface LocaleAria {
             "cancelEdit"?: string;
             "close"?: string;
@@ -2020,143 +2017,9 @@ declare global {
     }
 }
 
-// AJAX status component
-declare global {
-    namespace PrimeFacesTypes.component.AjaxStatus {
-        /**
-         * Available
-         * types of AJAX related events to which you can listen.
-         */
-        export type AjaxStatusEventType = "start" | "success" | "error" | "complete" | "facesComplete";
-
-        /**
-         * Callback for when an AJAX request starts. Usually set via
-         * `<p:ajaxStatus onstart="..."/>`. This callback applies when `<p:ajax />` is used.
-         */
-        export type PfAjaxStartCallback = (this: Document, xhr: JQuery.TriggeredEvent, ...args: unknown[]) => void;
-
-        /**
-         * Callback for when an AJAX request succeeds. Usually set
-         * via `<p:ajaxStatus onsuccess="..."/>`. This callback applies when `<p:ajax />` is used.
-         */
-        export type PfAjaxSuccessCallback =
-            /**
-             * @param xhr The request that succeeded.
-             * @param settings The settings of the jQuery
-             * AJAX request.
-             */
-            (this: Document, xhr: JQuery.jqXHR, settings: JQuery.AjaxSettings) => void;
-
-        /**
-         * Callback for when an AJAX request fails. Usually set via
-         * `<p:ajaxStatus onerror="..."/>`. This callback applies when `<p:ajax />` is used.
-         */
-        export type PfAjaxErrorCallback =
-            /**
-             * @param xhr The request that failed.
-             * @param settings The settings of the jQuery
-             * AJAX request.
-             * @param errorThrown The error that cause the request to
-             * fail.
-             */
-            (this: Document, xhr: JQuery.jqXHR, settings: JQuery.AjaxSettings, errorThrown: string) => void;
-
-        /**
-         * Callback for when an AJAX request completes, either
-         * successfully or with an error. Usually set via `<p:ajaxStatus oncomplete="..."/>`. This callback applies when
-         * `<p:ajax />` is used.
-         */
-        export type PfAjaxCompleteCallback =
-            /**
-             * @param xhr The request that succeeded.
-             * @param settings The settings of the jQuery
-             * AJAX request.
-             */
-            (this: Document, xhr: JQuery.jqXHR, settings: JQuery.AjaxSettings, args: PrimeFacesTypes.ajax.PrimeFacesArgs) => void;
-
-        /**
-         * Maps between the
-         * {@link AjaxStatusEventType} and the corresponding event handlers. Used by the {@link AjaxStatus} component.
-         */
-        export interface EventToCallbackMap {
-            /**
-             * Callback for when an AJAX request completes, either successfully or with an error. Usually set via
-             * `<p:ajaxStatus oncomplete="..."/>`.
-             */
-            complete: PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
-            /**
-             * Callback
-             * for when an AJAX request fails. Usually set via `<p:ajaxStatus onerror="..."/>`.
-             */
-            error: PfAjaxErrorCallback | faces.ajax.OnErrorCallback;
-            /**
-             * Callback for when an AJAX request completes, either successfully or with an error. Usually set via
-             * `<p:ajaxStatus oncomplete="..."/>`.
-             */
-            facesComplete: PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback;
-            /**
-             * Callback
-             * for when an AJAX request starts. Usually set via `<p:ajaxStatus onstart="..."/>`.
-             */
-            start: PfAjaxStartCallback | faces.ajax.OnEventCallback;
-            /**
-             * Callback for when an AJAX request succeeds. Usually set via `<p:ajaxStatus onsuccess="..."/>`.
-             */
-            success: PfAjaxSuccessCallback | faces.ajax.OnEventCallback;
-        }
-    }
-}
-
-// AJAX exception handler component
-declare global {
-    namespace PrimeFacesTypes.component.AjaxExceptionHandler {
-        /**
-         * Callback invoked when an AJAX request fails.
-         */
-        export type OnExceptionCallback =
-            /**
-             * @param type Name of the AJAX error, e.g. the exception type or `httpError`.
-             * @param message Message with details regarding the AJAX error.
-             * @param timestamp Timestamp of the AJAX error, formatted as `yyyy-MM-dd HH:mm:ss`.
-             */
-            (this: AjaxExceptionHandler, type: string, message: string, timestamp: string) => void;
-    }
-}
-
-// Poll component
-declare global {
-    namespace PrimeFacesTypes.component.Poll {
-        /**
-         * Time unit for the polling interval.
-         */
-        export type IntervalType = "millisecond" | "second";
-        /**
-         * Optional callback invoked when polling starts. See {@link PollCfg.onActivated}.
-         */
-        export type OnActivatedCallback =
-            /**
-             * @returns `false` to cancel polling, any other value to proceed.
-             */
-            (this: Poll) => boolean | undefined | void;
-        /**
-         * Optional callback invoked when polling stops. See {@link PollCfg.onDeactivated}.
-         */
-        export type OnDeactivatedCallback =
-            /**
-             * @returns `false` to continue polling, any other value to stop.
-             */
-            (this: Poll) => boolean | undefined | void;
-        /**
-         * Callback that performs the polling action. See also
-         * {@link PollCfg.fn}.
-         */
-        export type PollingAction = () => void;
-    }
-}
-
 // Re-exports
 declare global {
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         /**
          * The class with functionality related to multiple window support in PrimeFaces applications.
          */
@@ -2191,7 +2054,7 @@ declare global {
         export type Validation = import("./src/validation/validation.common.js").Validation;
     }
 
-    namespace PrimeFacesTypes.ajax {
+    namespace PrimeFaces.ajax {
         /**
          * The class with functionality related to sending and receiving AJAX requests that are made by PrimeFaces. Each
          * request receives an XML response, which consists of one or multiple actions that are to be performed. This
@@ -2202,35 +2065,35 @@ declare global {
          * This class contains functionality related to queuing AJAX requests to ensure that they are (a) sent in the
          * proper order and (b) that each response is processed in the same order as the requests were sent.
          */
-        export type AjaxQueue = import("./src/core/core.ajax.js").AjaxQueue;
+        export type AjaxQueue = import("./src/core/core.ajax.queue.js").AjaxQueue;
         /**
          * The class containing low-level functionality related to sending AJAX requests.
          */
-        export type AjaxRequest = import("./src/core/core.ajax.js").AjaxRequest;
+        export type AjaxRequest = import("./src/core/core.ajax.request.js").AjaxRequest;
         /**
          * The class containing low-level functionality related to handling AJAX responses. Note that
          * the different types of AJAX actions are handled by the {@link AjaxResponseProcessor PrimeFaces.ajax.ResponseProcessor}.
          */
-        export type AjaxResponse = import("./src/core/core.ajax.js").AjaxResponse;
+        export type AjaxResponse = import("./src/core/core.ajax.response.js").AjaxResponse;
         /**
          * The class containing low-level functionality related to processing the different types
          * of actions from AJAX responses.
          */
-        export type AjaxResponseProcessor = import("./src/core/core.ajax.js").AjaxResponseProcessor;
+        export type AjaxResponseProcessor = import("./src/core/core.ajax.responseprocessor.js").AjaxResponseProcessor;
         /**
          * The class containing utility methods for AJAX requests, primarily used internally.
          */
-        export type AjaxUtils = import("./src/core/core.ajax.js").AjaxUtils;
+        export type AjaxUtils = import("./src/core/core.ajax.utils.js").AjaxUtils;
     }
 
-    namespace PrimeFacesTypes.expressions {
+    namespace PrimeFaces.expressions {
         /**
          * The class providing the entry point for functions related to search expressions. 
          */
         export type SearchExpressionFacade = import("./src/core/core.expressions.js").SearchExpressionFacade;
     }
 
-    namespace PrimeFacesTypes.validation {
+    namespace PrimeFaces.validation {
         /**
          * The class that contains functionality related to handling faces messages, especially validation errror messages.
          * Contains methods for clearing message of an element or adding messages to an element.
@@ -2251,21 +2114,21 @@ declare global {
 // Module augmentation
 declare global {
     // Extend PrimeFaces namespace with core methods and properties
-    namespace PrimeFacesTypes {
-        export interface PrimeFaces extends Core { }
+    namespace PrimeFaces {
+        export interface Core extends CoreImpl { }
     }
 
     // Extend Window global
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface WindowExtensions {
             Cookies: typeof Cookies;
-            PrimeFaces: PrimeFaces;
+            PrimeFaces: Core;
             PF: typeof _PF;
         }
     }
 
     // Extend component registry (available component types)
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             AjaxExceptionHandler: typeof AjaxExceptionHandler;
             AjaxStatus: typeof AjaxStatus;
@@ -2283,7 +2146,7 @@ declare global {
     }
 
     // Extend hook registry
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface HookRegistry {
             /**
              * The confirm feature that lets external scripts subscribe to emitted
@@ -2330,7 +2193,7 @@ declare global {
     }
 
     // Extend validators (common)
-    namespace PrimeFacesTypes.validation {
+    namespace PrimeFaces.validation {
         interface ValidatorInstanceMap {
             "jakarta.faces.Length"?: Validator;
             "jakarta.faces.LongRange"?: Validator;
@@ -2341,7 +2204,7 @@ declare global {
     }
 
     // Extend validators (bean validation)
-    namespace PrimeFacesTypes.validation {
+    namespace PrimeFaces.validation {
         interface ValidatorInstanceMap {
             "AssertFalse"?: Validator;
             "AssertTrue"?: Validator;
@@ -2369,15 +2232,13 @@ declare global {
     }
 
     // Extend component configurations
-    namespace PrimeFacesTypes.component {
-        export type AjaxStatusCfg = import("./src/ajaxstatus/ajaxstatus.js").AjaxStatusCfg;
+    namespace PrimeFaces.component {
         export type BaseComponentCfg = import("./src/core/core.component.js").BaseComponentCfg;
         export type DeferredComponentCfg = import("./src/core/core.component.js").DeferredComponentCfg;
         export type DynamicOverlayComponentCfg = import("./src/core/core.component.js").DynamicOverlayComponentCfg;
-        export type PollCfg = import("./src/poll/poll.js").PollCfg;
     }
 
     // Extend globals
-    let PrimeFaces: PrimeFacesTypes.PrimeFaces;
+    let PrimeFaces: PrimeFaces.Core;
     let PF: typeof _PF;
 }

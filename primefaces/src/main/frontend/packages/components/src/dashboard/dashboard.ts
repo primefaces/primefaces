@@ -1,9 +1,16 @@
 import type { KnownInteractionOptions } from "../dragdrop/dragdrop.js";
 
 /**
+ * The `ui` argument of {@link Dashboard.handleDrop}: the one of the sortable (legacy dashboard, with `item` and
+ * `sender`) or of the droppable (responsive dashboard, with `draggable`).
+ */
+export type DropUi = Partial<Pick<PrimeFaces.interactions.SortableUi, "item" | "sender">>
+    & Partial<Pick<PrimeFaces.interactions.DroppableUi, "draggable">>;
+
+/**
  * The configuration for the {@link Dashboard} component.
  */
-export interface DashboardCfg extends PrimeFacesTypes.component.BaseComponentCfg, KnownInteractionOptions<PrimeFacesTypes.interactions.SortableOptions> {
+export interface DashboardCfg extends PrimeFaces.component.BaseComponentCfg, KnownInteractionOptions<PrimeFaces.interactions.SortableOptions> {
     /** Whether the responsive dashboard (drag and drop of the panels) is used instead of the legacy columns. */
     responsive: boolean;
     /** Selector of the draggable panels of the responsive dashboard, set on init. */
@@ -29,7 +36,7 @@ export interface DashboardCfg extends PrimeFacesTypes.component.BaseComponentCfg
  */
 export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (this.cfg.responsive) {
@@ -80,7 +87,7 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
                 'p-droppable-active': 'p-dashboard-active',
                 'p-droppable-hover': 'p-dashboard-hover'
             },
-            drop: function(event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.DroppableUi) {
+            drop: function(event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.DroppableUi) {
                 $this.swapPanels($(this).get(0)!, $(ui.draggable).get(0)!);
                 if ($this.hasBehavior('reorder')) {
                     $this.handleDrop($this, event, ui);
@@ -120,7 +127,7 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
     private bindSortableEvents(): void {
         const $this = this;
         if (this.hasBehavior('reorder')) {
-            this.cfg.update = function(event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.SortableUi) {
+            this.cfg.update = function(event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.SortableUi) {
                 if (this === ui.item.parent()[0]) {
                     $this.handleDrop($this, event, ui);
                 }
@@ -134,9 +141,9 @@ export class Dashboard<Cfg extends DashboardCfg = DashboardCfg> extends PrimeFac
      * @param e Event that occurred.
      * @param ui the UI element that was dragged
      */
-    handleDrop(component: PrimeFacesTypes.Component<"BaseComponent">, e: JQuery.TriggeredEvent, ui: PrimeFacesTypes.component.Dashboard.DropUi): void {
+    handleDrop(component: PrimeFaces.Component<"BaseComponent">, e: JQuery.TriggeredEvent, ui: DropUi): void {
         const item = (ui.item || ui.draggable)!;
-        const ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender> & Required<Pick<PrimeFacesTypes.ajax.ConfigurationExtender, "params">> = {
+        const ext: Partial<PrimeFaces.ajax.ConfigurationExtender> & Required<Pick<PrimeFaces.ajax.ConfigurationExtender, "params">> = {
             params: [
                 { name: component.id + '_reordered', value: true },
                 { name: component.id + '_panelId', value: item.attr('id') }

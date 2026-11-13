@@ -9,14 +9,10 @@ declare global{
         Quill: typeof _Quill;
     }
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         export interface ComponentRegistry {
             TextEditor: typeof TextEditor;
         }
-    }
-
-    namespace PrimeFacesTypes.component {
-        export type TextEditorCfg = import("./src/texteditor.js").TextEditorCfg;
     }
 }
 

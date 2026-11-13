@@ -24,9 +24,9 @@ declare global {
     }
 }
 
-type HookMap = {[P in keyof PrimeFacesTypes.HookRegistry]: Set<PrimeFacesTypes.HookRegistry[P]>};
+type HookMap = {[P in keyof PrimeFaces.HookRegistry]: Set<PrimeFaces.HookRegistry[P]>};
 
-const LocaleEnUs: PrimeFacesTypes.Locale = {
+const LocaleEnUs: PrimeFaces.Locale = {
     "accept": "Yes",
     "addRule": "Add Rule",
     "am": "AM",
@@ -204,7 +204,7 @@ const LocaleEnUs: PrimeFacesTypes.Locale = {
     },
 };
 
-function toArticulateValidationConfiguration(cfg: PrimeFacesTypes.validation.ShorthandConfiguration): PrimeFacesTypes.validation.Configuration {
+function toArticulateValidationConfiguration(cfg: PrimeFaces.validation.ShorthandConfiguration): PrimeFaces.validation.Configuration {
     for (var option in cfg) {
         if (!cfg.hasOwnProperty(option)) {
             continue;
@@ -219,7 +219,7 @@ function toArticulateValidationConfiguration(cfg: PrimeFacesTypes.validation.Sho
         }
     }
 
-    return cfg as unknown as PrimeFacesTypes.validation.Configuration;
+    return cfg as unknown as PrimeFaces.validation.Configuration;
 }
 
 
@@ -274,7 +274,7 @@ export class Core {
     /**
      * A map between some HTML entities and their HTML-escaped equivalent.
      */
-    entityMap: PrimeFacesTypes.EntityMap = {
+    entityMap: PrimeFaces.EntityMap = {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
@@ -292,7 +292,7 @@ export class Core {
      * key is the name of the converter, e.g. `jakarta.faces.Length`, the value is
      * the converter implementation.
      */
-    converter: Record<string, PrimeFacesTypes.validation.Converter> = {};
+    converter: Record<string, PrimeFaces.validation.Converter> = {};
 
     /**
      * Registry with the client-side implementation of some faces validators.
@@ -300,7 +300,7 @@ export class Core {
      * key is the name of the validator, e.g. `jakarta.faces.LongRange`, the value
      * is the validator implementation.
      */
-    validator: PrimeFacesTypes.validation.ValidatorInstanceMap = {
+    validator: PrimeFaces.validation.ValidatorInstanceMap = {
         Highlighter: validationHighlighter,
     };
 
@@ -324,7 +324,7 @@ export class Core {
      * - {@link DynamicOverlayComponent | PrimeFaces.component.DynamicOverlayComponent}: When your component is an overlay with
      * dynamically loaded content, you can use this base class.
      */
-    component: PrimeFacesTypes.ComponentRegistry  = {
+    component: PrimeFaces.ComponentRegistry  = {
         AjaxExceptionHandler,
         AjaxStatus,
         BaseComponent,
@@ -340,17 +340,17 @@ export class Core {
      * A map of all instantiated components that are available on the current page.
      * The key is the name (ref) of the component, the value the instantiated component.
      */
-    components: PrimeFacesTypes.ComponentInstanceMap = {};
+    components: PrimeFaces.ComponentInstanceMap = {};
 
     /**
      * Alias of {@link component | PrimeFaces.component}, both names point to the same registry.
      * @deprecated Use {@link component | PrimeFaces.component} instead.
      */
-    get widget(): PrimeFacesTypes.ComponentRegistry {
+    get widget(): PrimeFaces.ComponentRegistry {
         return this.component;
     }
 
-    set widget(registry: PrimeFacesTypes.ComponentRegistry) {
+    set widget(registry: PrimeFaces.ComponentRegistry) {
         this.component = registry;
     }
 
@@ -358,11 +358,11 @@ export class Core {
      * Alias of {@link components | PrimeFaces.components}, both names point to the same map.
      * @deprecated Use {@link components | PrimeFaces.components} instead.
      */
-    get widgets(): PrimeFacesTypes.ComponentInstanceMap {
+    get widgets(): PrimeFaces.ComponentInstanceMap {
         return this.components;
     }
 
-    set widgets(instances: PrimeFacesTypes.ComponentInstanceMap) {
+    set widgets(instances: PrimeFaces.ComponentInstanceMap) {
         this.components = instances;
     }
 
@@ -393,13 +393,13 @@ export class Core {
      *
      * This is the list of renders for components that are currently waiting to become visible.
      */
-    deferredRenders: PrimeFacesTypes.DeferredRender[]= [];
+    deferredRenders: PrimeFaces.DeferredRender[]= [];
 
     /**
      * A map with language specific translations. This is a map between the language keys and another map with the i18n
      * keys mapped to the translation.
      */
-    locales: PrimeFacesTypes.Locales = {
+    locales: PrimeFaces.Locales = {
         en_US: LocaleEnUs,
         en: LocaleEnUs,
     };
@@ -408,14 +408,14 @@ export class Core {
      * Custom logger for logging messages. Defaults to logging to the console
      * when not given.
      */
-    logger: PrimeFacesTypes.Logger | undefined;
+    logger: PrimeFaces.Logger | undefined;
 
     /**
      * Settings provided by the server. Uses defaults when the core instance is
      * initialized, should have been changed to the settings from the server
      * before the document is ready.
      */
-    settings: PrimeFacesTypes.PFSettings = {
+    settings: PrimeFaces.PFSettings = {
         considerEmptyStringNull: false,
         contextPath: "/",
         cookiesSecure: false,
@@ -484,7 +484,7 @@ export class Core {
 
     private debounceTimer: number | undefined = undefined;
 
-    private localeSettings: PrimeFacesTypes.Locale | undefined;
+    private localeSettings: PrimeFaces.Locale | undefined;
 
     private scrollbarWidth: number | undefined;
 
@@ -569,18 +569,18 @@ export class Core {
      * the server and processes the response. You can use this method if you need more fine-grained control over which
      * components you want to update or process, or if you need to change some other AJAX options.
      * @param cfg Configuration for the AJAX request, with shorthand
-     * options. The individual options are documented in {@link PrimeFacesTypes.ajax.Configuration}.
+     * options. The individual options are documented in {@link PrimeFaces.ajax.Configuration}.
      * @param ext Optional extender with additional options that
      * overwrite the options given in `cfg`.
      * @return A promise that resolves once the AJAX requests is done. Use this
      * to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled. Otherwise, when the
      * AJAX request fails, the promise is rejected. If the promise is rejected, the rejection handler receives an object
-     * of type {@link PrimeFacesTypes.ajax.FailedRequestData}.
+     * of type {@link PrimeFaces.ajax.FailedRequestData}.
      */
     ab(
-        cfg: PrimeFacesTypes.ajax.ShorthandConfiguration,
-        ext?: PrimeFacesTypes.ajax.ConfigurationExtender
-    ): PromiseLike<PrimeFacesTypes.ajax.ResponseData> {
+        cfg: PrimeFaces.ajax.ShorthandConfiguration,
+        ext?: PrimeFaces.ajax.ConfigurationExtender
+    ): PromiseLike<PrimeFaces.ajax.ResponseData> {
         for (var option in cfg) {
             if (!cfg.hasOwnProperty(option)) {
                 continue;
@@ -617,7 +617,7 @@ export class Core {
      * @param cfg An configuration.
      * @return `true` if the request would not result in validation errors, or `false` otherwise.
      */
-    vb(cfg: PrimeFacesTypes.validation.ShorthandConfiguration): boolean {
+    vb(cfg: PrimeFaces.validation.ShorthandConfiguration): boolean {
         const config = toArticulateValidationConfiguration(cfg);
 
         const highlight = config.highlight || true;
@@ -687,9 +687,9 @@ export class Core {
      * @returns The validator with the given ID, or `undefined` if no such
      * validator exists.
      */
-    getValidatorById(id: string): PrimeFacesTypes.validation.Validator | undefined {
+    getValidatorById(id: string): PrimeFaces.validation.Validator | undefined {
         return id !== "Highlighter" 
-            ? this.validator[id as Exclude<keyof PrimeFacesTypes.validation.ValidatorInstanceMap, "Highlighter">] 
+            ? this.validator[id as Exclude<keyof PrimeFaces.validation.ValidatorInstanceMap, "Highlighter">] 
             : undefined;
     }
 
@@ -717,7 +717,7 @@ export class Core {
      * @return An array of components that are of the requested type. If no suitable components
      * are found on the current page, an empty array will be returned.
      */
-    getComponentsByType<Component extends PrimeFacesTypes.AnyNewable>(type: Component): InstanceType<Component>[] {
+    getComponentsByType<Component extends PrimeFaces.AnyNewable>(type: Component): InstanceType<Component>[] {
         return $.map(this.components, (component) => {
             return component instanceof type ? component as InstanceType<Component> : null;
         });
@@ -731,8 +731,8 @@ export class Core {
      * are found on the current page, an empty array will be returned.
      */
     getComponentsByTypeName<
-        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
-    >(type: TypeName): InstanceType<PrimeFacesTypes.ComponentRegistry[TypeName]>[] {
+        TypeName extends keyof PrimeFaces.ComponentRegistry,
+    >(type: TypeName): InstanceType<PrimeFaces.ComponentRegistry[TypeName]>[] {
         const componentType = this.getComponentTypeByName(type);
         return componentType !== undefined ? this.getComponentsByType(componentType) : [];
     }
@@ -746,8 +746,8 @@ export class Core {
      * are found on the current page, returns undefined.
      */
     getComponentTypeByName<
-        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
-    >(type: TypeName): PrimeFacesTypes.ComponentRegistry[TypeName] | undefined {
+        TypeName extends keyof PrimeFaces.ComponentRegistry,
+    >(type: TypeName): PrimeFaces.ComponentRegistry[TypeName] | undefined {
         return this.component[type];
     }
 
@@ -778,7 +778,7 @@ export class Core {
     /**
      * @deprecated Use {@link getComponentsByType} instead.
      */
-    getWidgetsByType<Component extends PrimeFacesTypes.AnyNewable>(type: Component): InstanceType<Component>[] {
+    getWidgetsByType<Component extends PrimeFaces.AnyNewable>(type: Component): InstanceType<Component>[] {
         return this.getComponentsByType(type);
     }
 
@@ -786,8 +786,8 @@ export class Core {
      * @deprecated Use {@link getComponentsByTypeName} instead.
      */
     getWidgetsByTypeName<
-        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
-    >(type: TypeName): InstanceType<PrimeFacesTypes.ComponentRegistry[TypeName]>[] {
+        TypeName extends keyof PrimeFaces.ComponentRegistry,
+    >(type: TypeName): InstanceType<PrimeFaces.ComponentRegistry[TypeName]>[] {
         return this.getComponentsByTypeName(type);
     }
 
@@ -795,8 +795,8 @@ export class Core {
      * @deprecated Use {@link getComponentTypeByName} instead.
      */
     getWidgetTypeByName<
-        TypeName extends keyof PrimeFacesTypes.ComponentRegistry,
-    >(type: TypeName): PrimeFacesTypes.ComponentRegistry[TypeName] | undefined {
+        TypeName extends keyof PrimeFaces.ComponentRegistry,
+    >(type: TypeName): PrimeFaces.ComponentRegistry[TypeName] | undefined {
         return this.getComponentTypeByName(type);
     }
 
@@ -1459,15 +1459,15 @@ export class Core {
 
     /**
      * A shortcut for {@link createComponent}.
-     * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
+     * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFaces.ComponentRegistry}
      * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
      * @param ref Name of the component (ref)
      * @param cfg Configuration for the component
      */
-    cw<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
+    cw<ComponentName extends keyof PrimeFaces.ComponentRegistry>(
         componentName: ComponentName,
         ref: string,
-        cfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
+        cfg: PrimeFaces.component.PartialCreateComponentCfg<PrimeFaces.ComponentCfg<ComponentName>>
     ): void {
         this.createComponent(componentName, ref, cfg);
     }
@@ -1488,19 +1488,19 @@ export class Core {
      * Creates a new component of the given type and with the given configuration. Registers that component in the components
      * registry {@link components}. If this method is called in response to an AJAX request and the component
      * exists already, it is refreshed.
-     * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFacesTypes.ComponentRegistry}
+     * @typeParam ComponentName Name of the component class, as registered in {@link PrimeFaces.ComponentRegistry}
      * @param componentName Name of the component class, as registered in {@link component | PrimeFaces.component}
      * @param ref Name of the component (ref)
      * @param cfg Configuration for the component, without the `ref` property.
      */
-    createComponent<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
+    createComponent<ComponentName extends keyof PrimeFaces.ComponentRegistry>(
         componentName: ComponentName,
         ref: string,
-        partialCfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
+        partialCfg: PrimeFaces.component.PartialCreateComponentCfg<PrimeFaces.ComponentCfg<ComponentName>>
     ): void {
         const cfg = Object.assign(partialCfg, { ref, widgetVar: ref });
 
-        const componentType = this.component[componentName] as PrimeFacesTypes.Newable<[], InstanceType<PrimeFacesTypes.ComponentRegistry[ComponentName]>> | undefined;
+        const componentType = this.component[componentName] as PrimeFaces.Newable<[], InstanceType<PrimeFaces.ComponentRegistry[ComponentName]>> | undefined;
         if(componentType) {
             const component = this.components[ref];
 
@@ -1540,10 +1540,10 @@ export class Core {
     /**
      * @deprecated Use {@link createComponent} instead.
      */
-    createWidget<ComponentName extends keyof PrimeFacesTypes.ComponentRegistry>(
+    createWidget<ComponentName extends keyof PrimeFaces.ComponentRegistry>(
         componentName: ComponentName,
         ref: string,
-        partialCfg: PrimeFacesTypes.component.PartialCreateComponentCfg<PrimeFacesTypes.component.ComponentCfg<PrimeFacesTypes.ComponentRegistry[ComponentName]>>
+        partialCfg: PrimeFaces.component.PartialCreateComponentCfg<PrimeFaces.ComponentCfg<ComponentName>>
     ): void {
         this.createComponent(componentName, ref, partialCfg);
     }
@@ -1828,8 +1828,8 @@ export class Core {
      * @param fns A list of callback functions. If any returns `false`, the other callbacks are not invoked.
      */
     bcnu(
-        ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender>, event: Event, 
-        fns: ((this: this, ext: Partial<PrimeFacesTypes.ajax.ConfigurationExtender>, event: Event) => boolean | undefined)[]
+        ext: Partial<PrimeFaces.ajax.ConfigurationExtender>, event: Event, 
+        fns: ((this: this, ext: Partial<PrimeFaces.ajax.ConfigurationExtender>, event: Event) => boolean | undefined)[]
     ): void {
         if (fns) {
             for (const fn of fns) {
@@ -1859,7 +1859,7 @@ export class Core {
      * Opens the dialog with the given configuration.
      * @param cfg Configuration of the dialog.
      */
-    openDialog(cfg: PrimeFacesTypes.hook.dialog.DialogConfiguration): void {
+    openDialog(cfg: PrimeFaces.hook.dialog.DialogConfiguration): void {
         for (const dialogHook of this.hooks.dialog ?? []) {
             const handled = dialogHook.openDialog(cfg);
             if (handled) {
@@ -1872,7 +1872,7 @@ export class Core {
      * Close the dialog with the given configuration.
      * @param cfg Configuration of the dialog.
      */
-    closeDialog(cfg: PrimeFacesTypes.hook.dialog.DialogConfiguration): void {
+    closeDialog(cfg: PrimeFaces.hook.dialog.DialogConfiguration): void {
         for (const dialogHook of this.hooks.dialog ?? []) {
             const handled = dialogHook.closeDialog(cfg);
             if (handled) {
@@ -1885,7 +1885,7 @@ export class Core {
      * Shows the given message inside a dialog.
      * @param msg Message to show in a dialog.
      */
-    showMessageInDialog(msg: PrimeFacesTypes.hook.messageInDialog.DialogMessageData): void {
+    showMessageInDialog(msg: PrimeFaces.hook.messageInDialog.DialogMessageData): void {
         for (const messageInDialogHook of this.hooks.messageInDialog ?? []) {
             const handled = messageInDialogHook.showMessage(msg);
             if (handled) {
@@ -1898,7 +1898,7 @@ export class Core {
      * Displays dialog or popup according to the type of confirm component.
      * @param msg Message to show with the confirm dialog or popup.
      */
-    confirm(msg: PrimeFacesTypes.hook.confirm.ExtendedConfirmMessage): void {
+    confirm(msg: PrimeFaces.hook.confirm.ExtendedConfirmMessage): void {
         for (const confirmHook of this.hooks.confirm ?? []) {
             const handled = confirmHook.handleMessage(msg);
             if (handled) {
@@ -1918,9 +1918,9 @@ export class Core {
      * @param name Name of the hook to register.
      * @param hook Hook implementation to register.
      */
-    registerHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(
+    registerHook<HookName extends keyof PrimeFaces.HookRegistry>(
         name: HookName,
-        hook: PrimeFacesTypes.HookRegistry[HookName],
+        hook: PrimeFaces.HookRegistry[HookName],
     ): void {
         this.hooks[name] ??= new Set() as HookMap[HookName];
         this.hooks[name].add(hook);
@@ -1934,9 +1934,9 @@ export class Core {
      * @param name Name of the hook to unregister.
      * @param hook Hook implementation to register.
      */
-    unregisterHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(
+    unregisterHook<HookName extends keyof PrimeFaces.HookRegistry>(
         name: HookName,
-        hook: PrimeFacesTypes.HookRegistry[HookName],
+        hook: PrimeFaces.HookRegistry[HookName],
     ): void {
         this.hooks[name]?.delete(hook);
     }
@@ -1947,7 +1947,7 @@ export class Core {
      * @typeParam HookName Type of the the hook name to register.
      * @param name Name of the hook to unregister.
      */
-    clearHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(name: HookName): void {
+    clearHook<HookName extends keyof PrimeFaces.HookRegistry>(name: HookName): void {
         this.hooks[name] = undefined;
     }
 
@@ -1959,9 +1959,9 @@ export class Core {
      * @typeParam HookName Type of the the hook name to register.
      * @param name Name of the hook to unregister.
      */
-    getHook<HookName extends keyof PrimeFacesTypes.HookRegistry>(
+    getHook<HookName extends keyof PrimeFaces.HookRegistry>(
         name: HookName,
-    ): PrimeFacesTypes.HookRegistry[HookName][] {
+    ): PrimeFaces.HookRegistry[HookName][] {
         return [...this.hooks[name] ?? []];
     }
 
@@ -2040,13 +2040,13 @@ export class Core {
 
     /**
      * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
-     * as specified by {@link PrimeFacesTypes.PFSettings.locale | PrimeFaces.settings.locale}. When no locale was found for
+     * as specified by {@link PrimeFaces.PFSettings.locale | PrimeFaces.settings.locale}. When no locale was found for
      * the given locale, falls back to the default English locale.
      * @param cfgLocale Optional configuration locale from the component
      * @return The current locale with the key-value pairs.
      */
-    getLocaleSettings(cfgLocale?: string): PrimeFacesTypes.Locale {
-        let locale: PrimeFacesTypes.Locale | undefined;
+    getLocaleSettings(cfgLocale?: string): PrimeFaces.Locale {
+        let locale: PrimeFaces.Locale | undefined;
 
         if(cfgLocale) {
             // component locale must not be cached since it can change per component
@@ -2092,7 +2092,7 @@ export class Core {
      * @param options - An object containing placeholder replacements in the format `{placeholderKey: replacementValue}`.
      * @returns string - The localized ARIA label, with placeholders replaced by their corresponding values from `options` if provided.
      */
-    getAriaLabel(key: keyof PrimeFacesTypes.LocaleAria, defaultValue?: string, options?: Record<string, string>): string {
+    getAriaLabel(key: keyof PrimeFaces.LocaleAria, defaultValue?: string, options?: Record<string, string>): string {
         var ariaLocaleSettings = this.getLocaleSettings()['aria'] || {};
         var label = ariaLocaleSettings[key] || this.locales['en_US']?.['aria']?.[key] || defaultValue || "???" + key + "???";
         if (options) {
@@ -2108,7 +2108,7 @@ export class Core {
      * @param {string} key The locale key
      * @return {string} The translation for the given key
      */
-    getLocaleLabel<K extends keyof PrimeFacesTypes.Locale>(key: K): PrimeFacesTypes.Locale[K] {
+    getLocaleLabel<K extends keyof PrimeFaces.Locale>(key: K): PrimeFaces.Locale[K] {
         const locale = this.getLocaleSettings();
         return (locale&&locale[key]) ? locale[key] : this.locales['en_US']?.[key];
     }
@@ -2281,7 +2281,7 @@ export const core: Core = new Core();
  * Note to TypeScript users: You might want to define a method that takes a ref and component constructor, and
  * check whether the component is of the given type. If so, you can return the component and cast it to the desired type:
  * ```ts
- * function getComponent<T extends BaseComponent>(ref: string, componentClass: PrimeFacesTypes.Newable<[], T>): T | undefined {
+ * function getComponent<T extends BaseComponent>(ref: string, componentClass: PrimeFaces.Newable<[], T>): T | undefined {
  *   const component = PrimeFaces.components[ref];
  *   return component instanceof componentClass ? component : undefined;
  * }

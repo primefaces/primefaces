@@ -35,7 +35,7 @@ declare global {
      */
     const download: typeof downloadJs;
 
-    namespace PrimeFacesTypes {
+    namespace PrimeFaces {
         interface WindowExtensions {
             /**
              * The download() function is used to trigger a file download from JavaScript.
@@ -56,7 +56,7 @@ declare global {
             download: typeof downloadJs;
         }
         
-        interface PrimeFaces {
+        interface Core {
             /**
              * Fetches the resource at the given URL and prompts the user to download that file, without leaving the current
              * page. This function is usually called by server-side code to download a data URI or a data from a remote URL.

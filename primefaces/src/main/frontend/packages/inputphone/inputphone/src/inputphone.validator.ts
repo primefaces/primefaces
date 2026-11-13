@@ -24,7 +24,7 @@ export function isAllowedCountry(country: string | undefined, onlyCountries: str
  * E.164 format that is valid for its country (libphonenumber-js), which must be one of the onlyCountries and none of
  * the excludeCountries. The renderer adds it with the lists to the hidden input with the value.
  */
-export class InputPhoneValidator implements PrimeFacesTypes.validation.Validator {
+export class InputPhoneValidator implements PrimeFaces.validation.Validator {
 
     validate(element: JQuery, value: unknown): void {
         const text = value == null ? '' : String(value);

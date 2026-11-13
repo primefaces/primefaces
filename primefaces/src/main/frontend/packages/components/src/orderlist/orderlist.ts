@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link OrderList} component.
  */
-export interface OrderListCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface OrderListCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Name of animation to display. */
     effect: string;
 }
@@ -21,7 +21,7 @@ export class OrderList<Cfg extends OrderListCfg = OrderListCfg> extends PrimeFac
     /** The DOM element for the source list, when used with a pick list. */
     sourceList?: JQuery;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.list = this.jq.find('.p-orderlist-list');
@@ -141,7 +141,7 @@ export class OrderList<Cfg extends OrderListCfg = OrderListCfg> extends PrimeFac
      * @param _event The event that triggered the drag or drop.
      * @param ui The details about the sorting.
      */
-    private onDragDrop(_event: JQuery.TriggeredEvent, ui: PrimeFacesTypes.interactions.SortableUi): void {
+    private onDragDrop(_event: JQuery.TriggeredEvent, ui: PrimeFaces.interactions.SortableUi): void {
         ui.item.removeClass('p-state-highlight');
         this.saveState();
         this.fireReorderEvent();

@@ -130,7 +130,7 @@ export interface DatePickerLocale {
 /**
  * The configuration for the {@link DatePicker} component.
  */
-export interface DatePickerCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface DatePickerCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Search expression of the element to which the panel is appended. */
     appendTo: string | null;
     /** Whether to switch to the touch UI below the responsive breakpoint. */
@@ -329,7 +329,7 @@ const DEFAULT_LOCALE: DatePickerLocale = {
  * Default values of the configuration, applied to {@link DatePicker.options} for every option that is `undefined` or
  * `null`.
  */
-const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFacesTypes.component.BaseComponentCfg, "disabled"> | "appendTo" | "locale"> = {
+const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFaces.component.BaseComponentCfg, "disabled"> | "appendTo" | "locale"> = {
     autoDetectDisplay: true,
     autoMonthFormat: true,
     buttonTabindex: '',
@@ -463,7 +463,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     /** The modal mask of the touch UI while the panel is shown, `null` otherwise. */
     private mask: JQuery | null = null;
     /** Handler of the CSS transition that shows and hides the overlay panel. */
-    private transition: PrimeFacesTypes.CssTransitionHandler | null = null;
+    private transition: PrimeFaces.CssTransitionHandler | null = null;
     /** Listener that hides the overlay on a click outside of the panel, only set while the overlay is shown. */
     private documentClickListener: ((event: JQuery.TriggeredEvent) => void) | null = null;
     /** The scrollable parents of the component, scrolling one of them hides the overlay. */
@@ -544,7 +544,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * reused when the component is refreshed.
      * @param cfg The component configuration from the server.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         // the options are a copy of the configuration with the defaults applied, they also hold the runtime state
@@ -600,7 +600,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      * component is initialized again, e.g. after an AJAX update.
      * @param cfg The new component configuration from the server.
      */
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.unbindOverlayListeners();
 
         if (this.panel.length && this.cfg.appendTo) {
@@ -807,7 +807,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
      */
     private fireViewChangeEvent(date: Date): void {
         const lazy = this.options.lazyModel;
-        const options: Partial<PrimeFacesTypes.ajax.Configuration> = {
+        const options: Partial<PrimeFaces.ajax.Configuration> = {
             params: [
                 { name: this.id + '_year', value: date.getFullYear() },
                 { name: this.id + '_month', value: date.getMonth() }

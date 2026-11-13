@@ -28,7 +28,7 @@ type InputComponent = { getValue(): number; setValue(value: number): void };
 /**
  * The configuration for the {@link Slider} component.
  */
-export interface SliderCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SliderCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether to animate the handle when the value is set by a click or programmatically. */
     animate: boolean;
     /** Whether the slider is disabled. */
@@ -100,7 +100,7 @@ export class Slider<Cfg extends SliderCfg = SliderCfg> extends PrimeFaces.compon
      * handles and binds the pointer, keyboard and input events.
      * @param cfg The configuration of the slider.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.min = Number(this.cfg.min) || 0;

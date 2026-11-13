@@ -1,15 +1,30 @@
 /**
+ * Possible values for the effect applied when the notification bar is shown or hidden.
+ */
+export type Effect = "slide" | "fade" | "none";
+
+/**
+ * Possible values for where the notification bar is shown.
+ */
+export type Position = "top" | "bottom";
+
+/**
+ * Possible values for speed of the effect when the notification bar is shown or hidden.
+ */
+export type EffectSpeed = "fast" | "normal" | "slow";
+
+/**
  * The configuration for the {@link NotificationBar} component.
  */
-export interface NotificationBarCfg extends PrimeFacesTypes.component.DynamicOverlayFeatureComponentCfg {
+export interface NotificationBarCfg extends PrimeFaces.component.DynamicOverlayFeatureComponentCfg {
     /** Whether the notification bar is shown by default on page load. */
     autoDisplay: boolean;
     /** Effect applied when the notification bar is shown or hidden. */
-    effect: PrimeFacesTypes.component.NotificationBar.Effect;
+    effect: Effect;
     /** Speed of the effect when the notification bar is shown or hidden. */
-    effectSpeed: PrimeFacesTypes.component.NotificationBar.EffectSpeed;
+    effectSpeed: EffectSpeed;
     /** Position of the bar, either top or bottom. */
-    position: PrimeFacesTypes.component.NotificationBar.Position;
+    position: Position;
 }
 
 /**
@@ -19,7 +34,7 @@ export interface NotificationBarCfg extends PrimeFacesTypes.component.DynamicOve
  */
 export class NotificationBar<Cfg extends NotificationBarCfg = NotificationBarCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         //relocate

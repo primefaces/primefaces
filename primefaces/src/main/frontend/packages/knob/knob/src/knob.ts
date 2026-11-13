@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Knob} component.
  */
-export interface KnobCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface KnobCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether only a cursor is drawn at the value instead of the filled arc. */
     cursor: boolean;
     /** Whether the knob is disabled. */
@@ -40,7 +40,7 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
  */
 export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
     /** The configuration, the server always renders `min`, `max` and `step`. */
-    declare cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg> & Pick<KnobCfg, "min" | "max" | "step">;
+    declare cfg: PrimeFaces.component.PartialComponentCfg<Cfg> & Pick<KnobCfg, "min" | "max" | "step">;
 
     /** The hidden input with the submitted value. */
     input: JQuery = $();
@@ -74,7 +74,7 @@ export class Knob<Cfg extends KnobCfg = KnobCfg> extends PrimeFaces.component.Ba
      * Initializes the knob: creates the SVG in the container rendered by the server and binds the events.
      * @param cfg The configuration of the knob.
      */
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.input = $(this.jqId + '_hidden');

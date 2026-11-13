@@ -182,7 +182,7 @@ export class Interactions {
 export const interactions: Interactions = new Interactions();
 
 declare global {
-    namespace PrimeFacesTypes.interactions {
+    namespace PrimeFaces.interactions {
         /** The name of an interaction, e.g. `draggable`. */
         export type Type = import("./core.interactions.js").InteractionType;
         /** The options of a draggable, see {@link Interactions.draggable}. */

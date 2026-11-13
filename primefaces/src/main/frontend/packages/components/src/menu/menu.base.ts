@@ -4,7 +4,7 @@
  * You can access this configuration via {@link Menu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
-export interface MenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface MenuCfg extends PrimeFaces.component.BaseComponentCfg {
     /**
      * Search expression for the element to which the menu overlay is appended.
      */
@@ -29,7 +29,7 @@ export interface MenuCfg extends PrimeFacesTypes.component.BaseComponentCfg {
     /**
      * Describes how to align this menu.
      */
-    pos: PrimeFacesTypes.utils.PositionOptions;
+    pos: PrimeFaces.utils.PositionOptions;
     /**
      * The tab index of the menu.
      */
@@ -55,7 +55,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.component.B
     /**
      * Unbind callback for the hide overlay handler.
      */
-    hideOverlayHandler?: PrimeFacesTypes.Unbindable;
+    hideOverlayHandler?: PrimeFaces.Unbindable;
 
     /**
      * `true` if a menu item was clicked and the mouse button is still pressed.
@@ -70,12 +70,12 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.component.B
     /**
      * Unbind callback for the resize handler.
      */
-    resizeHandler?: PrimeFacesTypes.Unbindable;
+    resizeHandler?: PrimeFaces.Unbindable;
 
     /**
      * Unbind callback for the scroll handler.
      */
-    scrollHandler?: PrimeFacesTypes.Unbindable;
+    scrollHandler?: PrimeFaces.Unbindable;
 
     /**
      * The tab index of the menu.
@@ -85,14 +85,14 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.component.B
     /**
      * Handler for CSS transitions used by this component.
      */
-    transition?: PrimeFacesTypes.CssTransitionHandler | null;
+    transition?: PrimeFaces.CssTransitionHandler | null;
 
     /**
      * DOM element which triggers this menu.
      */
     trigger: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         
         this.tabIndex = this.cfg.tabIndex || "0";
@@ -168,7 +168,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.component.B
             at: this.cfg.at,
             of: this.trigger,
             collision: this.cfg.collision || "flip",
-            using: function(pos: { top: number; left: number }, directions: PrimeFacesTypes.utils.PositionFeedback) {
+            using: function(pos: { top: number; left: number }, directions: PrimeFaces.utils.PositionFeedback) {
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         };

@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link SelectOneRadio} component.
  */
-export interface SelectOneRadioCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface SelectOneRadioCfg extends PrimeFaces.component.BaseComponentCfg {
     /** Whether a custom layout is used. */
     custom: boolean;
     /** Whether a click on the selected radio clears the selection. */
@@ -31,7 +31,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
     /** The labels of the radio buttons. */
     labels: JQuery = $();
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
         this.cfg.readonly = this.cfg.readonly === true;
 
@@ -101,7 +101,7 @@ export class SelectOneRadio<Cfg extends SelectOneRadioCfg = SelectOneRadioCfg> e
         input.closest('[role=radio]').attr('aria-checked', String(checked));
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         if (this.cfg.custom) {
             for (let i = 0; i < this.inputs.length; i++) {
                 const input = this.inputs.eq(i);

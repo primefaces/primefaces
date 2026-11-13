@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link Lifecycle} component.
  */
-export interface LifecycleCfg extends PrimeFacesTypes.component.BaseComponentCfg {
+export interface LifecycleCfg extends PrimeFaces.component.BaseComponentCfg {
 }
 
 /**
@@ -18,7 +18,7 @@ export class Lifecycle<Cfg extends LifecycleCfg = LifecycleCfg> extends PrimeFac
     /** Whether the lifecycle display is currently being updated. */
     updating: boolean = false;
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         if (!this.initialized) {
@@ -64,7 +64,7 @@ export class Lifecycle<Cfg extends LifecycleCfg = LifecycleCfg> extends PrimeFac
     private update(): void {
         this.updating = true;
 
-        const options: PrimeFacesTypes.ajax.Configuration = {
+        const options: PrimeFaces.ajax.Configuration = {
             source: this.getId(),
             process: this.getId(),
             update: this.getId(),
