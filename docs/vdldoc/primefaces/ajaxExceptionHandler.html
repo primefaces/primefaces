@@ -125,29 +125,35 @@
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Client-side callback to execute when an exception occurs.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="ref" class="altColor">
+                            <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
+                        </tr>
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="type" class="rowColor">
+                        <tr id="type" class="altColor">
                             <td class="colFirst"><a href="#type"><code>type</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Exception type to handle. If not specified, handles all exceptions.</td>
                         </tr>
-                        <tr id="update" class="altColor">
+                        <tr id="update" class="rowColor">
                             <td class="colFirst"><a href="#update"><code>update</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Component(s) to update after exception handling.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Name of the client side component.Default is generated ('widget_' + componentClientId).</td>
+                    </td><td class="colLast">Deprecated, use ref instead. Name of the client side component.</td>
                         </tr>
                     </tbody>
                 </table>

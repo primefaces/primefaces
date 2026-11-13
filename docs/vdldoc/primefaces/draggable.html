@@ -221,55 +221,61 @@
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, a proxy element is used for dragging instead of the element itself.Default is false.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="ref" class="altColor">
+                            <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
+                        </tr>
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="revert" class="rowColor">
+                        <tr id="revert" class="altColor">
                             <td class="colFirst"><a href="#revert"><code>revert</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If set to true, the element will be returned to its start position when dragging stops.Default is false.</td>
                         </tr>
-                        <tr id="scope" class="altColor">
+                        <tr id="scope" class="rowColor">
                             <td class="colFirst"><a href="#scope"><code>scope</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Used to group sets of draggable and droppable components.Default is default.</td>
                         </tr>
-                        <tr id="snap" class="rowColor">
+                        <tr id="snap" class="altColor">
                             <td class="colFirst"><a href="#snap"><code>snap</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">When enabled, the draggable will snap to the edges of the nearest elements.Default is false.</td>
                         </tr>
-                        <tr id="snapMode" class="altColor">
+                        <tr id="snapMode" class="rowColor">
                             <td class="colFirst"><a href="#snapMode"><code>snapMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines how snap elements are detected. Possible values: 'inner', 'outer', 'both'.Default is both.</td>
                         </tr>
-                        <tr id="snapTolerance" class="rowColor">
+                        <tr id="snapTolerance" class="altColor">
                             <td class="colFirst"><a href="#snapTolerance"><code>snapTolerance</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Distance in pixels from the snap element edges at which snapping should occur.Default is 20.</td>
                         </tr>
-                        <tr id="stack" class="altColor">
+                        <tr id="stack" class="rowColor">
                             <td class="colFirst"><a href="#stack"><code>stack</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Controls the z-index of the group of elements for which the stack option is set.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Name of the client side component.Default is generated ('widget_' + componentClientId).</td>
+                    </td><td class="colLast">Deprecated, use ref instead. Name of the client side component.</td>
                         </tr>
-                        <tr id="zindex" class="altColor">
+                        <tr id="zindex" class="rowColor">
                             <td class="colFirst"><a href="#zindex"><code>zindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)

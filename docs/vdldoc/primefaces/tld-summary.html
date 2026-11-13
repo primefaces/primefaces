@@ -651,37 +651,43 @@
                     </thead>
                     <tbody>
                         <tr class="rowColor">
-                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="closestWidgetVar.fn.html">closestWidgetVar</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the widgetVar of the closest parent widget of the given component.</td>
+                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="closestRef.fn.html">closestRef</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the name (ref) of the client side component of the closest parent component of the given component.</td>
                         </tr>
                         <tr class="altColor">
+                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="closestWidgetVar.fn.html">closestWidgetVar</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Deprecated, use p:closestRef instead.</td>
+                        </tr>
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="dir.fn.html">dir</a></b>()</code></td><td class="colLast">Gets the direction of the current request, ltr or rtl: the one chosen by the user (primefaces.THEME_CONFIGURATOR) or primefaces.DIR.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>java.lang.Object</code></td><td class="colOne"><code><b><a href="dynamicColumnValue.fn.html">dynamicColumnValue</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Gets the value of the current column. This is only required when p:columns and field is used with a nested expression like user.name.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="dynamicColumnValueAsString.fn.html">dynamicColumnValueAsString</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Gets the value of the current column converted to string. This is only required when p:columns and field is used with a nested expression like user.name.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="escapeJavaScriptVarName.fn.html">escapeJavaScriptVarName</a></b>(java.lang.String)</code></td><td class="colLast">Escapes a string for a JS var name (e.g. ':' in a clientId). This is useful if you need to use a clientId in the name of a p:remoteCommand.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="language.fn.html">language</a></b>()</code></td><td class="colLast">Gets the current ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveClientId.fn.html">resolveClientId</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the clientId of the resolved component for the given expression.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveClientIds.fn.html">resolveClientIds</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the clientIds of the resolved components for the given expression.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>jakarta.faces.component.UIComponent</code></td><td class="colOne"><code><b><a href="resolveComponent.fn.html">resolveComponent</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the resolved UIComponent for the given expression.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>jakarta.faces.component.UIComponent</code></td><td class="colOne"><code><b><a href="resolveFirstComponentWithId.fn.html">resolveFirstComponentWithId</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the first UIComponent with the same id (not clientId!) as the requested id. This method ignores any algorithm or NamingContainers.</td>
                         </tr>
+                        <tr class="altColor">
+                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveRef.fn.html">resolveRef</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the name (ref) of the client side component of the resolved component for the given expression.</td>
+                        </tr>
                         <tr class="rowColor">
-                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveWidgetVar.fn.html">resolveWidgetVar</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the widgetVar of the resolved component for the given expression.</td>
+                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveWidgetVar.fn.html">resolveWidgetVar</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Deprecated, use p:resolveRef instead.</td>
                         </tr>
                         <tr class="altColor">
                             <td class="colFirst"><code>boolean</code></td><td class="colOne"><code><b><a href="shouldRenderFacet.fn.html">shouldRenderFacet</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns true when facet and one of the first level children is rendered.</td>

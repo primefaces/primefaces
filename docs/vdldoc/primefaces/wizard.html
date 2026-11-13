@@ -173,53 +173,59 @@
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Javascript event handler to be invoked when flow goes forward.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="ref" class="altColor">
+                            <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
+                        </tr>
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="showNavBar" class="rowColor">
+                        <tr id="showNavBar" class="altColor">
                             <td class="colFirst"><a href="#showNavBar"><code>showNavBar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies visibility of default navigator arrows.Default is true.</td>
                         </tr>
-                        <tr id="showStepStatus" class="altColor">
+                        <tr id="showStepStatus" class="rowColor">
                             <td class="colFirst"><a href="#showStepStatus"><code>showStepStatus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Specifies visibility of default step title bar.Default is true.</td>
                         </tr>
-                        <tr id="step" class="rowColor">
+                        <tr id="step" class="altColor">
                             <td class="colFirst"><a href="#step"><code>step</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Id of the current step in flow.</td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style of the component.</td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the component.</td>
                         </tr>
-                        <tr id="updateModelOnPrev" class="altColor">
+                        <tr id="updateModelOnPrev" class="rowColor">
                             <td class="colFirst"><a href="#updateModelOnPrev"><code>updateModelOnPrev</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If yes, the model will be updated when the "Back" button is clicked.Default is false.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Name of the client side component.Default is generated ('widget_' + componentClientId).</td>
+                    </td><td class="colLast">Deprecated, use ref instead. Name of the client side component.</td>
                         </tr>
                     </tbody>
                 </table>
