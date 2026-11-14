@@ -594,6 +594,8 @@ public class CarBean {
 }
 ```
 For frozen columns, use `frozenHeader` , `frozenFooter` , `scrollableHeader` and `scrollableFooter` types.
+If they are not defined, a `header` or `footer` column group gets split between the frozen and the scrollable
+columns. A cell spanning both of them is displayed in the part where it starts.
 
 
 ## Row Grouping
