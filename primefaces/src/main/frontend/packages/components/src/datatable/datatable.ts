@@ -5100,11 +5100,19 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 
+                // #7444 the helper is appended to the body, outside of the table, so it needs the reflow class itself
+                // to be rendered (and measured by the sortable) the same way as the dragged row
+                if(this.cfg.reflow) {
+                    helper.addClass('p-datatable-reflow');
+                }
+
                 for(var i = 0; i < helperCells.length; i++) {
                     var helperCell = helperCells.eq(i);
                     helperCell.width(cells.eq(i).width()!);
-                    // #5584 reflow must remove column title span
-                    helperCell.children().remove('.p-column-title');
+                    // #5584 column titles are only shown by the reflow styles, so keep them only when reflow is enabled
+                    if(!this.cfg.reflow) {
+                        helperCell.children().remove('.p-column-title');
+                    }
                 }
 
                 helperRow.appendTo(helper.find('tbody'));

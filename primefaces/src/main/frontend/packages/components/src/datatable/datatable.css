@@ -935,6 +935,14 @@
                     display: block;
                     width: 100%;
                 }
+
+                /* #7444 the row reordering placeholder (draggableRows) must take the stacked shape of the dragged row */
+                &.p-datatable-rowordering > td {
+                    box-sizing: border-box;
+                    display: block;
+                    width: 100%;
+                    border: 0 none;
+                }
             }
         }
 
