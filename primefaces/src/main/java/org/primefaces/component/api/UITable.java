@@ -388,9 +388,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
      * @return the grouping {@link SortMeta} or <code>null</code> if rows are not grouped
      */
     default SortMeta getGroupByMeta() {
+        boolean headerRowEnabled = initHeaderRowSortMeta();
         Map<String, SortMeta> sortBy = getSortByAsMap();
-        HeaderRow headerRow = getHeaderRow();
-        boolean headerRowEnabled = headerRow != null && headerRow.isEnabled();
 
         for (SortMeta meta : sortBy.values()) {
             if (headerRowEnabled && meta.isHeaderRow() && meta.isActive()) {
@@ -428,14 +427,38 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
      * @return map with {@link SortMeta#getField()} as key and {@link SortMeta} as value
      */
     default Map<String, SortMeta> getActiveSortMeta() {
+        boolean headerRowEnabled = initHeaderRowSortMeta();
         return getSortByAsMap().values().stream()
                 .filter(SortMeta::isActive)
+                .filter(m -> headerRowEnabled || !m.isHeaderRow())
                 .sorted()
                 .collect(Collectors.toMap(SortMeta::getField, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
     }
 
     default boolean isSortingCurrentlyActive() {
-        return getSortByAsMap().values().stream().anyMatch(SortMeta::isActive);
+        return !getActiveSortMeta().isEmpty();
+    }
+
+    /**
+     * Lazily registers the {@link SortMeta} of a header row which was not rendered when the sort state got initialized,
+     * e.g. its <code>rendered</code> attribute was <code>false</code> at first and has been switched to <code>true</code> later.
+     *
+     * @return <code>true</code> if the header row is enabled and therefore takes part in sorting
+     */
+    default boolean initHeaderRowSortMeta() {
+        HeaderRow headerRow = getHeaderRow();
+        if (headerRow == null || !headerRow.isEnabled()) {
+            return false;
+        }
+
+        Map<String, SortMeta> sortBy = getSortByAsMap();
+        if (sortBy.values().stream().noneMatch(SortMeta::isHeaderRow)) {
+            SortMeta meta = SortMeta.of(FacesContext.getCurrentInstance(), getVar(), headerRow);
+            sortBy.put(meta.getColumnKey(), meta);
+            setSortByAsMap(sortBy);
+        }
+
+        return true;
     }
 
     default boolean isColumnSortable(FacesContext context, UIColumn column) {
