@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:p="primefaces">
+      xmlns:p="primefaces"
+      xmlns:ui="jakarta.faces.facelets">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -114,6 +115,139 @@
                         <p:column colspan="3" footerText="5 languages"/>
                     </p:row>
                 </p:columnGroup>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: frozen columns aligned right -->
+            <p:dataTable id="right" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" frozenColumnsAlignment="right"
+                         scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column rowspan="3" headerText="ID"/>
+                        <p:column colspan="3" headerText="Language"/>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" headerText="Info"/>
+                        <p:column rowspan="2" headerText="Type"/>
+                    </p:row>
+                    <p:row>
+                        <p:column headerText="Name"/>
+                        <p:column headerText="First appeared"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
+
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column footerText="Total"/>
+                        <p:column colspan="3" footerText="5 languages"/>
+                    </p:row>
+                </p:columnGroup>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: columns wrapped in ui:fragment and ui:repeat -->
+            <p:dataTable id="wrapped" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <ui:fragment>
+                            <p:column rowspan="3" headerText="ID"/>
+                        </ui:fragment>
+                        <p:column colspan="3" headerText="Language"/>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" headerText="Info"/>
+                        <p:column rowspan="2" headerText="Type"/>
+                    </p:row>
+                    <p:row>
+                        <ui:repeat value="#{dataTable063.infoColumns}" var="info">
+                            <p:column headerText="#{info}"/>
+                        </ui:repeat>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: p:columns in the column group -->
+            <p:dataTable id="dynamic" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column rowspan="3" headerText="ID"/>
+                        <p:column colspan="3" headerText="Language"/>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" headerText="Info"/>
+                        <p:column rowspan="2" headerText="Type"/>
+                    </p:row>
+                    <p:row>
+                        <p:columns value="#{dataTable063.infoColumns}" var="info" headerText="#{info}"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: a cell spanning both parts and two rows; its width is meant for both of its columns -->
+            <p:dataTable id="spanning" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="2" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="ID"/>
+                        <p:column colspan="2" rowspan="2" headerText="Language" width="300"/>
+                        <p:column rowspan="3" headerText="Type"/>
+                    </p:row>
+                    <p:row>
+                        <p:column headerText="#"/>
+                    </p:row>
+                    <p:row>
+                        <p:column headerText="Key"/>
+                        <p:column headerText="Name"/>
+                        <p:column headerText="First appeared"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: with one dedicated group the plain group is not split, the other part keeps its per column headers -->
+            <p:dataTable id="mixed" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="frozenHeader">
+                    <p:row>
+                        <p:column headerText="Key"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="ID"/>
+                        <p:column colspan="3" headerText="Language"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column headerText="ID"><h:outputText value="#{lang.id}"/></p:column>
+                <p:column headerText="Name"><h:outputText value="#{lang.name}"/></p:column>
+                <p:column headerText="First appeared"><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column headerText="Type"><h:outputText value="#{lang.type}"/></p:column>
             </p:dataTable>
 
         </h:form>

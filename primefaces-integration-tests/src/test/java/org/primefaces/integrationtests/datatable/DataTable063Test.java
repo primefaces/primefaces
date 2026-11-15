@@ -78,6 +78,7 @@ class DataTable063Test extends AbstractDataTableTest {
         assertEquals(2, getBodyColumnCount(page, "straddle", FROZEN));
         assertEquals(2, getBodyColumnCount(page, "straddle", SCROLLABLE));
         assertHeaderRowsAligned(page, "straddle");
+        assertUniqueCellIds(page, "straddle");
         assertNoJavascriptErrors();
     }
 
@@ -99,6 +100,77 @@ class DataTable063Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEquals(List.of("C#", "Java", "JavaScript", "Python", "TypeScript"), names);
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("DataTable: GitHub #9854 frozen columns aligned right split a plain header / footer column group")
+    void plainColumnGroupsFrozenRight(Page page) {
+        // the scrollable part comes first, the frozen part has the last column
+        assertEquals(List.of("ID:1x3|Language:2x1", "Info:2x1", "Name:1x1|First appeared:1x1"), getRows(page, "right", SCROLLABLE, "thead"));
+        assertEquals(List.of(":1x1", "Type:1x2", ""), getRows(page, "right", FROZEN, "thead"));
+        assertEquals(List.of("Total:1x1|5 languages:2x1"), getRows(page, "right", SCROLLABLE, "tfoot"));
+        assertEquals(List.of(":1x1"), getRows(page, "right", FROZEN, "tfoot"));
+        assertEquals(3, getBodyColumnCount(page, "right", SCROLLABLE));
+        assertEquals(1, getBodyColumnCount(page, "right", FROZEN));
+        assertHeaderRowsAligned(page, "right");
+        assertUniqueCellIds(page, "right");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("DataTable: GitHub #9854 frozen columns split a plain column group with columns wrapped in ui:fragment / ui:repeat")
+    void plainColumnGroupsWrappedColumns(Page page) {
+        assertHeaderSplitAtFirstColumn(page, "wrapped");
+        assertHeaderRowsAligned(page, "wrapped");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DataTable: GitHub #9854 frozen columns split a plain column group with p:columns")
+    void plainColumnGroupsDynamicColumns(Page page) {
+        assertHeaderSplitAtFirstColumn(page, "dynamic");
+        assertHeaderRowsAligned(page, "dynamic");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DataTable: GitHub #9854 frozen columns split a column group cell spanning both parts and two rows")
+    void plainColumnGroupsSpanningRowsAndParts(Page page) {
+        assertEquals(List.of("ID:1x1|Language:1x2", "#:1x1", "Key:1x1|Name:1x1"), getRows(page, "spanning", FROZEN, "thead"));
+        assertEquals(List.of(":1x2|Type:1x3", "", "First appeared:1x1"), getRows(page, "spanning", SCROLLABLE, "thead"));
+        assertHeaderRowsAligned(page, "spanning");
+        assertUniqueCellIds(page, "spanning");
+
+        // the width of the cut cell was meant for both of its columns
+        WebElement language = getSide(page, "spanning", FROZEN).findElements(By.cssSelector(".p-datatable-scrollable-header-box thead th")).stream()
+                .filter(th -> "Language".equals(th.getDomProperty("textContent").trim()))
+                .findFirst()
+                .orElseThrow();
+        String style = language.getAttribute("style");
+        assertTrue(style == null || !style.contains("300"), "the cut cell must not get the width of the whole cell: " + style);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("DataTable: GitHub #9854 frozen columns do not split a plain column group if one dedicated group is defined")
+    void plainColumnGroupWithOneDedicatedGroup(Page page) {
+        assertEquals(List.of("Key:1x1"), getRows(page, "mixed", FROZEN, "thead"));
+        assertEquals(List.of("Name:1x1|First appeared:1x1|Type:1x1"), getRows(page, "mixed", SCROLLABLE, "thead"));
+        assertNoJavascriptErrors();
+    }
+
+    private void assertUniqueCellIds(Page page, String table) {
+        List<String> ids = page.getWebDriver().findElement(By.id("form:" + table)).findElements(By.cssSelector("th, td")).stream()
+                .map(cell -> cell.getAttribute("id"))
+                .filter(id -> id != null && !id.isEmpty())
+                .collect(Collectors.toList());
+        assertTrue(ids.stream().noneMatch(id -> id.contains("undefined")), "cell ids: " + ids);
+        assertEquals(ids.size(), ids.stream().distinct().count(), "duplicate cell ids: " + ids);
     }
 
     private void assertHeaderSplitAtFirstColumn(Page page, String table) {

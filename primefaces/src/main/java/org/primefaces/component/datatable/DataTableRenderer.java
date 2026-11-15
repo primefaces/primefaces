@@ -440,13 +440,19 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.startElement("tr", null);
 
             //frozen columns
-            if ("right".equalsIgnoreCase(table.getFrozenColumnsAlignment())) {
-                encodeScrollableArea(context, table, 0, columnsCount - lastFrozenColumn, tableStyle, tableStyleClass, isVirtualScroll, clientId);
-                encodeFrozenArea(context, table, columnsCount - lastFrozenColumn, columnsCount, tableStyle, tableStyleClass, isVirtualScroll, clientId);
+            try {
+                if ("right".equalsIgnoreCase(table.getFrozenColumnsAlignment())) {
+                    encodeScrollableArea(context, table, 0, columnsCount - lastFrozenColumn, tableStyle, tableStyleClass, isVirtualScroll, clientId);
+                    encodeFrozenArea(context, table, columnsCount - lastFrozenColumn, columnsCount, tableStyle, tableStyleClass, isVirtualScroll, clientId);
+                }
+                else {
+                    encodeFrozenArea(context, table, 0, lastFrozenColumn, tableStyle, tableStyleClass, isVirtualScroll, clientId);
+                    encodeScrollableArea(context, table, lastFrozenColumn, columnsCount, tableStyle, tableStyleClass, isVirtualScroll, clientId);
+                }
             }
-            else {
-                encodeFrozenArea(context, table, 0, lastFrozenColumn, tableStyle, tableStyleClass, isVirtualScroll, clientId);
-                encodeScrollableArea(context, table, lastFrozenColumn, columnsCount, tableStyle, tableStyleClass, isVirtualScroll, clientId);
+            finally {
+                // counted for a split column group, see getRenderedColumnPositions
+                context.getAttributes().remove(getRenderedColumnPositionsKey(context, table));
             }
 
             writer.endElement("tr");
@@ -627,17 +633,20 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     public void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
-        encodeColumnHeader(context, table, column, column.getColspan());
-    }
-
-    /**
-     * Encodes the header cell of the given column with the given colspan instead of the column's own one, used when a
-     * column group cell gets split between the frozen and the scrollable part of the table.
-     */
-    protected void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column, int colspan) throws IOException {
         if (!column.isRendered()) {
             return;
         }
+
+        // #9854 a header column group split between the frozen and the scrollable part
+        int colspan = column.getColspan();
+        SplitColumnGroup split = SplitColumnGroup.current(context, table);
+        if (split != null) {
+            colspan = placeSplitColumnGroupCell(context, split, column);
+            if (colspan == 0) {
+                return;
+            }
+        }
+        boolean clipped = colspan < column.getColspan();
 
         // empty unless resizable/toggleable/reorderable columns are used; isEmpty() skips the getColumnKey() argument
         Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
@@ -681,7 +690,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             }
         }
 
-        String style = resolveColumnStyle(columnMeta, column);
+        // the width of a cell cut down to one part was meant for all of its columns
+        String style = clipped ? column.getStyle() : resolveColumnStyle(columnMeta, column);
         String ariaHeaderLabel = resolveColumnAriaHeaderText(context, column);
         UIComponent component = (column instanceof UIComponent uic) ? uic : null;
 
@@ -903,17 +913,20 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     public void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
-        encodeColumnFooter(context, table, column, column.getColspan());
-    }
-
-    /**
-     * Encodes the footer cell of the given column with the given colspan instead of the column's own one, used when a
-     * column group cell gets split between the frozen and the scrollable part of the table.
-     */
-    protected void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column, int colspan) throws IOException {
         if (!column.isRendered()) {
             return;
         }
+
+        // #9854 a footer column group split between the frozen and the scrollable part
+        int colspan = column.getColspan();
+        SplitColumnGroup split = SplitColumnGroup.current(context, table);
+        if (split != null) {
+            colspan = placeSplitColumnGroupCell(context, split, column);
+            if (colspan == 0) {
+                return;
+            }
+        }
+        boolean clipped = colspan < column.getColspan();
 
         // empty unless resizable/toggleable/reorderable columns are used; isEmpty() skips the getColumnKey() argument
         Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
@@ -922,7 +935,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         ResponseWriter writer = context.getResponseWriter();
 
         int responsivePriority = column.getResponsivePriority();
-        String style = resolveColumnStyle(columnMeta, column);
+        // the width of a cell cut down to one part was meant for all of its columns
+        String style = clipped ? column.getStyle() : resolveColumnStyle(columnMeta, column);
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
@@ -986,7 +1000,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("id", theadClientId, null);
 
         if (splitGroup != null) {
-            encodeSplitColumnGroup(context, table, splitGroup, columnStart, columnEnd, true);
+            encodeSplitColumnGroup(context, table, splitGroup, columnStart, columnEnd, true, theadClientId);
         }
         else if (group != null && group.isRendered()) {
             context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
@@ -1054,8 +1068,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     /**
      * A table with frozen columns encodes its frozen and scrollable part with the <code>frozen*</code> and
-     * <code>scrollable*</code> column groups. If they are missing, the plain column group (<code>header</code> or
-     * <code>footer</code>) gets split between both parts instead of being ignored, see GitHub #9854.
+     * <code>scrollable*</code> column groups. If neither of them is defined, the plain column group (<code>header</code>
+     * or <code>footer</code>) gets split between both parts instead of being ignored, see GitHub #9854.
      *
      * @param table the table
      * @param columnGroupType the column group type of the part being encoded
@@ -1064,7 +1078,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      */
     protected ColumnGroup resolveSplitColumnGroup(DataTable table, String columnGroupType, String plainType) {
         String type = LangUtils.capitalize(plainType);
-        if (!("frozen" + type).equals(columnGroupType) && !("scrollable" + type).equals(columnGroupType)) {
+        String frozenType = "frozen" + type;
+        String scrollableType = "scrollable" + type;
+        if (!frozenType.equals(columnGroupType) && !scrollableType.equals(columnGroupType)) {
+            return null;
+        }
+
+        // with one dedicated group, the other part keeps its per column cells, a slice of the plain group would not match
+        if (table.getColumnGroup(frozenType) != null || table.getColumnGroup(scrollableType) != null) {
             return null;
         }
 
@@ -1073,9 +1094,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     /**
-     * Encodes the rows of a plain column group, limited to the cells which fall into the given column range of the
-     * frozen or scrollable part. A cell spanning both parts is encoded in the part where it starts, its colspan cut down
-     * to that part, while the other part gets an empty cell for the remaining columns so the rows stay aligned.
+     * Encodes the rows of a plain column group for the frozen or the scrollable part. Every cell goes through
+     * {@link #encodeColumnHeader(FacesContext, DataTable, UIColumn)} or
+     * {@link #encodeColumnFooter(FacesContext, DataTable, UIColumn)}, also the ones of columns wrapped in other components
+     * (e.g. <code>ui:fragment</code> or <code>ui:repeat</code>), which place it with the {@link SplitColumnGroup} state.
      *
      * @param context the {@link FacesContext}
      * @param table the table
@@ -1083,124 +1105,113 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      * @param columnStart the first column (index into {@link DataTable#getColumns()}) of the part
      * @param columnEnd the column after the last column (index into {@link DataTable#getColumns()}) of the part
      * @param header <code>true</code> for a header, <code>false</code> for a footer column group
+     * @param partClientId the client id of the thead or tfoot of the part, used for the ids of the filler cells
      * @throws IOException if any error occurs writing the response
      */
-    protected void encodeSplitColumnGroup(FacesContext context, DataTable table, ColumnGroup group, int columnStart, int columnEnd, boolean header)
-            throws IOException {
+    protected void encodeSplitColumnGroup(FacesContext context, DataTable table, ColumnGroup group, int columnStart, int columnEnd, boolean header,
+            String partClientId) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        List<UIColumn> columns = table.getColumns();
-
         // column group cells span rendered columns only
-        int rangeStart = countRenderedColumns(columns, 0, columnStart);
-        int rangeEnd = rangeStart + countRenderedColumns(columns, columnStart, columnEnd);
-        int width = rangeEnd + countRenderedColumns(columns, columnEnd, columns.size());
-        // remaining rows each column is still covered by a cell with rowspan of a previous row
-        int[] coveredRows = new int[width];
+        int[] positions = getRenderedColumnPositions(context, table);
+        SplitColumnGroup split = new SplitColumnGroup(table, partClientId, header, positions[columnStart], positions[columnEnd],
+                positions[positions.length - 1]);
 
-        context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
-
-        for (UIComponent child : group.getChildren()) {
-            if (!child.isRendered()) {
-                continue;
-            }
-
-            if (child instanceof Row row) {
-                writer.startElement("tr", null);
-                if (row.getStyleClass() != null) {
-                    writer.writeAttribute("class", row.getStyleClass(), null);
-                }
-                if (row.getStyle() != null) {
-                    writer.writeAttribute("style", row.getStyle(), null);
+        Map<Object, Object> attributes = context.getAttributes();
+        attributes.put(Constants.HELPER_RENDERER, "columnGroup");
+        attributes.put(SplitColumnGroup.KEY, split);
+        try {
+            for (UIComponent child : group.getChildren()) {
+                if (!child.isRendered()) {
+                    continue;
                 }
 
-                int position = 0;
-                for (UIComponent rowChild : row.getChildren()) {
-                    if (rowChild instanceof Column column) {
-                        if (column.isRendered()) {
-                            position = encodeSplitColumnGroupCell(context, table, column, position, rangeStart, rangeEnd, coveredRows, header);
-                        }
+                if (child instanceof Row row) {
+                    writer.startElement("tr", null);
+                    if (row.getStyleClass() != null) {
+                        writer.writeAttribute("class", row.getStyleClass(), null);
                     }
-                    else if (rowChild instanceof Columns dynamicColumns) {
-                        for (DynamicColumn dynamicColumn : dynamicColumns.getDynamicColumns()) {
-                            dynamicColumn.applyModel();
-                            if (dynamicColumn.isRendered()) {
-                                position = encodeSplitColumnGroupCell(context, table, dynamicColumn, position, rangeStart, rangeEnd, coveredRows,
-                                        header);
+                    if (row.getStyle() != null) {
+                        writer.writeAttribute("style", row.getStyle(), null);
+                    }
+
+                    for (UIComponent rowChild : row.getChildren()) {
+                        if (rowChild instanceof Column column) {
+                            encodeSplitColumnGroupCell(context, table, column, header);
+                        }
+                        else if (rowChild instanceof Columns dynamicColumns) {
+                            for (DynamicColumn dynamicColumn : dynamicColumns.getDynamicColumns()) {
+                                dynamicColumn.applyModel();
+                                encodeSplitColumnGroupCell(context, table, dynamicColumn, header);
                             }
                         }
+                        else if (rowChild.isRendered()) {
+                            // columns wrapped in e.g. ui:fragment or ui:repeat get placed by encodeColumnHeader/Footer as well
+                            rowChild.encodeAll(context);
+                        }
                     }
-                    else if (rowChild.isRendered() && position >= rangeStart && position < rangeEnd) {
-                        // unknown span, encode it in the part where the row currently is
-                        rowChild.encodeAll(context);
-                    }
-                }
 
-                for (int i = 0; i < width; i++) {
-                    if (coveredRows[i] > 0) {
-                        coveredRows[i]--;
-                    }
+                    split.endRow();
+                    writer.endElement("tr");
                 }
-
-                writer.endElement("tr");
-            }
-            else if (rangeStart == 0) {
-                // no columns to split by, encode it only once
-                child.encodeAll(context);
+                else if (split.rangeStart == 0) {
+                    // no columns to split by, encode it only once
+                    child.encodeAll(context);
+                }
             }
         }
+        finally {
+            attributes.remove(SplitColumnGroup.KEY);
+            attributes.remove(Constants.HELPER_RENDERER);
+        }
+    }
 
-        context.getAttributes().remove(Constants.HELPER_RENDERER);
+    private void encodeSplitColumnGroupCell(FacesContext context, DataTable table, UIColumn column, boolean header) throws IOException {
+        if (header) {
+            encodeColumnHeader(context, table, column);
+        }
+        else {
+            encodeColumnFooter(context, table, column);
+        }
     }
 
     /**
-     * Encodes the part of a column group cell which falls into the given column range.
+     * Places a cell of a split column group: marks the columns it covers and encodes an empty filler cell in place of the
+     * part of it which falls into this part, but which is encoded in the other part where it starts.
      *
-     * @return the position after the cell
+     * @return the colspan to encode the cell with in this part, <code>0</code> if it is not encoded in this part
      */
-    protected int encodeSplitColumnGroupCell(FacesContext context, DataTable table, UIColumn column, int position, int rangeStart, int rangeEnd,
-            int[] coveredRows, boolean header) throws IOException {
-
-        int start = position;
-        while (start < coveredRows.length && coveredRows[start] > 0) {
-            start++;
-        }
-
+    protected int placeSplitColumnGroupCell(FacesContext context, SplitColumnGroup split, UIColumn column) throws IOException {
         int colspan = Math.max(1, column.getColspan());
         int rowspan = Math.max(1, column.getRowspan());
-        int end = start + colspan;
-        for (int i = start; i < Math.min(end, coveredRows.length); i++) {
-            coveredRows[i] = rowspan;
+        int start = split.place(colspan, rowspan);
+
+        int partStart = Math.max(start, split.rangeStart);
+        int partEnd = Math.min(start + colspan, split.rangeEnd);
+        if (partStart >= partEnd) {
+            return 0;
+        }
+        if (start >= split.rangeStart) {
+            return partEnd - partStart;
         }
 
-        int partStart = Math.max(start, rangeStart);
-        int partEnd = Math.min(end, rangeEnd);
-        if (partStart < partEnd) {
-            if (start >= rangeStart) {
-                if (header) {
-                    encodeColumnHeader(context, table, column, partEnd - partStart);
-                }
-                else {
-                    encodeColumnFooter(context, table, column, partEnd - partStart);
-                }
-            }
-            else {
-                encodeSplitColumnGroupFiller(context, header, partEnd - partStart, rowspan);
-            }
-        }
-
-        return end;
+        encodeSplitColumnGroupFiller(context, split, start, partEnd - partStart, rowspan);
+        return 0;
     }
 
     /**
      * Encodes an empty cell in place of the part of a column group cell which has been encoded in the other part of the table.
      */
-    protected void encodeSplitColumnGroupFiller(FacesContext context, boolean header, int colspan, int rowspan) throws IOException {
+    protected void encodeSplitColumnGroupFiller(FacesContext context, SplitColumnGroup split, int position, int colspan, int rowspan)
+            throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
-        String element = header ? "th" : "td";
+        String element = split.header ? "th" : "td";
 
         writer.startElement(element, null);
-        writer.writeAttribute("class", header ? DataTable.COLUMN_HEADER_CLASS : DataTable.COLUMN_FOOTER_CLASS, null);
+        // the header gets cloned by the client, which needs an id for each cell
+        writer.writeAttribute("id", split.partClientId + "_filler" + split.row + "_" + position, null);
+        writer.writeAttribute("class", split.header ? DataTable.COLUMN_HEADER_CLASS : DataTable.COLUMN_FOOTER_CLASS, null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (colspan != 1) {
             writer.writeAttribute("colspan", colspan, null);
@@ -1211,18 +1222,89 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.endElement(element);
     }
 
-    protected int countRenderedColumns(List<UIColumn> columns, int from, int to) {
-        int count = 0;
-        for (int i = from; i < to; i++) {
-            UIColumn column = columns.get(i);
-            if (column instanceof DynamicColumn dynamicColumn) {
-                dynamicColumn.applyModel();
+    /**
+     * Counts the rendered columns once per table render, for all split column group parts.
+     *
+     * @return the number of rendered columns before each column, with the total number of rendered columns as last element
+     */
+    protected int[] getRenderedColumnPositions(FacesContext context, DataTable table) {
+        return (int[]) context.getAttributes().computeIfAbsent(getRenderedColumnPositionsKey(context, table), k -> {
+            List<UIColumn> columns = table.getColumns();
+            int[] positions = new int[columns.size() + 1];
+            for (int i = 0; i < columns.size(); i++) {
+                UIColumn column = columns.get(i);
+                if (column instanceof DynamicColumn dynamicColumn) {
+                    dynamicColumn.applyModel();
+                }
+                positions[i + 1] = positions[i] + (column.isRendered() ? 1 : 0);
             }
-            if (column.isRendered()) {
-                count++;
-            }
+            return positions;
+        });
+    }
+
+    private String getRenderedColumnPositionsKey(FacesContext context, DataTable table) {
+        return DataTableRenderer.class.getName() + ".renderedColumnPositions." + table.getClientId(context);
+    }
+
+    /**
+     * State of a plain column group while it gets encoded for the frozen or the scrollable part, see GitHub #9854.
+     */
+    protected static class SplitColumnGroup {
+
+        static final String KEY = SplitColumnGroup.class.getName();
+
+        protected final DataTable table;
+        protected final String partClientId;
+        protected final boolean header;
+        /** the first rendered column of the part */
+        protected final int rangeStart;
+        /** the rendered column after the last one of the part */
+        protected final int rangeEnd;
+        protected int row;
+        /** the remaining rows each rendered column is still covered by a cell with rowspan of a previous row */
+        private final int[] coveredRows;
+        private int position;
+
+        SplitColumnGroup(DataTable table, String partClientId, boolean header, int rangeStart, int rangeEnd, int renderedColumns) {
+            this.table = table;
+            this.partClientId = partClientId;
+            this.header = header;
+            this.rangeStart = rangeStart;
+            this.rangeEnd = rangeEnd;
+            this.coveredRows = new int[renderedColumns];
         }
-        return count;
+
+        static SplitColumnGroup current(FacesContext context, DataTable table) {
+            Object split = context.getAttributes().get(KEY);
+            return (split instanceof SplitColumnGroup s && s.table == table) ? s : null;
+        }
+
+        /**
+         * Places a cell after the previous one of the row, skipping the columns covered by a rowspan.
+         *
+         * @return the first rendered column of the cell
+         */
+        int place(int colspan, int rowspan) {
+            int start = position;
+            while (start < coveredRows.length && coveredRows[start] > 0) {
+                start++;
+            }
+            for (int i = start; i < Math.min(start + colspan, coveredRows.length); i++) {
+                coveredRows[i] = rowspan;
+            }
+            position = start + colspan;
+            return start;
+        }
+
+        void endRow() {
+            for (int i = 0; i < coveredRows.length; i++) {
+                if (coveredRows[i] > 0) {
+                    coveredRows[i]--;
+                }
+            }
+            position = 0;
+            row++;
+        }
     }
 
     public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
@@ -1610,7 +1692,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("id", tfootClientId, null);
 
         if (splitGroup != null) {
-            encodeSplitColumnGroup(context, table, splitGroup, columnStart, columnEnd, false);
+            encodeSplitColumnGroup(context, table, splitGroup, columnStart, columnEnd, false, tfootClientId);
         }
         else if (group != null && group.isRendered()) {
             context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");

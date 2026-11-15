@@ -43,6 +43,8 @@ public class DataTable063 implements Serializable {
 
     private List<ProgrammingLanguage> progLanguages;
 
+    private List<String> infoColumns = List.of("Name", "First appeared");
+
     @Inject
     private ProgrammingLanguageService service;
 
