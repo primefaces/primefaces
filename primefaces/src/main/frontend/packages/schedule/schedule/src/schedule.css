@@ -42,6 +42,8 @@
         &.fc-footer-toolbar {
             margin: var(--p-schedule-toolbar-margin);
             gap: var(--p-schedule-toolbar-gap);
+            /* small screens: the button groups and the title go to the next row instead of past the edge */
+            flex-wrap: wrap;
         }
 
         .fc-button {

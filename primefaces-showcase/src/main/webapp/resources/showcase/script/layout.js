@@ -79,6 +79,7 @@ App = {
             if ($this.sidebar.hasClass('active') && !$.contains($this.sidebar.get(0), event.target) && !$this.isMenuButton(event.target)) {
                 $this.sidebar.removeClass('active');
                 $this.mask.removeClass('layout-mask-active');
+                $(document.body).removeClass('blocked-scroll');
             }
 
             if ($this.configurator.hasClass('layout-config-active') && !$.contains($this.configurator.get(0), event.target)) {
@@ -89,6 +90,7 @@ App = {
         this.menuButton.off('click').on('click', function() {
             $this.sidebar.addClass('active');
             $this.mask.addClass('layout-mask-active');
+            $(document.body).addClass('blocked-scroll');
         });
 
         this.configuratorButton.off('click').on('click', function() {

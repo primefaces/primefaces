@@ -69,9 +69,8 @@
         transform: translateX(-100%);
         position: fixed;
         width: var(--layout-sidebar-width);
-        /* floats above the content: overlay background and blur (translucent presets), not the content background */
+        /* floats above the content (p-backdrop-overlay): overlay background, blurred in Glass */
         background-color: var(--p-overlay-modal-background);
-        backdrop-filter: var(--p-navigation-backdrop-filter);
 
         &.active {
             transform: translateX(0);
@@ -182,20 +181,78 @@
         grid-template-columns: minmax(0, 1fr);
         column-gap: 0;
 
-        // No room for the right rail anymore, so flow the submenu
-        // (RESOURCES / ON THIS PAGE) inline within the content instead
-        // of keeping it sticky in the (now missing) second grid column.
-        // It goes after the demo, the demo stays at the top of the page.
+        // the source files: one row of tabs that scrolls (swipe) instead of wrapping into several rows
+        .documentation .p-tabs.p-tabs-top > .p-tabs-nav {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            > li.p-tabs-header {
+                flex: none;
+                white-space: nowrap;
+            }
+        }
+
+        // No room for the right rail anymore: the submenu flows below the introduction (its place in the DOM), compact
+        // so the demo stays near the top: the resources as one row of links, the examples as wrapping chips.
         .layout-submenu {
             grid-column: 1;
             grid-row: auto;
-            order: 1;
             position: static;
             top: auto;
             max-width: 100%;
             width: 100%;
-            padding: 1.5rem var(--layout-page-padding-x);
+            padding: 1rem var(--layout-page-padding-x) 0;
             border-inline-start: none;
+
+            .submenu-section-title {
+                display: none;
+            }
+
+            .submenu-group + .submenu-group {
+                margin-top: .75rem;
+            }
+
+            .submenu-resources {
+                display: flex;
+                flex-wrap: wrap;
+                gap: .25rem 1.25rem;
+
+                a {
+                    padding: .25rem 0;
+                    font-size: .875rem;
+                }
+            }
+
+            // all examples at a glance (DataTable has 25): wrapping, not a scrolling row that hides most of them
+            .submenu-usecases {
+                display: flex;
+                flex-wrap: wrap;
+                gap: .375rem;
+
+                a {
+                    white-space: nowrap;
+                    font-size: .8125rem;
+                    padding: .25rem .75rem;
+                    border: 1px solid var(--surface-d);
+                    border-radius: 999px;
+
+                    &:hover {
+                        border-color: var(--surface-d);
+                        background-color: var(--surface-c);
+                    }
+
+                    &.active {
+                        color: var(--p-highlight-color);
+                        background-color: var(--p-highlight-background);
+                        border-color: transparent;
+                    }
+                }
+            }
         }
     }
 }

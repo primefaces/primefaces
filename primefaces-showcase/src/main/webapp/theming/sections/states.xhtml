@@ -13,6 +13,9 @@
             gap: .75rem 1rem;
             align-items: center;
             overflow-x: auto;
+            /* containing block of the absolutely positioned (visually hidden) inputs: they scroll with it, not past
+               the window edge */
+            position: relative;
         }
 
         .states-table > * {

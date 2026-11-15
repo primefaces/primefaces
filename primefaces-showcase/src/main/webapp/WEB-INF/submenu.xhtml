@@ -3,7 +3,8 @@
                 xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:mycomposites="jakarta.faces.composite/composite"
-                xmlns:p="primefaces">
+                xmlns:p="primefaces"
+                xmlns:pt="jakarta.faces.passthrough">
 
     <ui:fragment rendered="#{not empty documentationLink or not empty componentLink or not empty primefacesClientApiLink or tagLibrary.isTagVdlAvailable(documentationLink) or not empty appSubMenu.subMenuItems}">
     <div class="layout-submenu">
@@ -18,7 +19,7 @@
         </ui:fragment>
 
         <ui:fragment rendered="#{not empty documentationLink}">
-            <p:sidebar ref="currentDocumentation" style="width: 1200px; overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+            <p:sidebar ref="currentDocumentation" style="width: min(1200px, 100vw); overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
                 <div id="md-output">Loading...</div>
                 <script>
                     async function renderRemoteMarkdown(url, targetId) {
@@ -38,6 +39,7 @@
 
         <!-- RESOURCES -->
         <ui:fragment rendered="#{not empty documentationLink or not empty componentLink or not empty primefacesClientApiLink or tagLibrary.isTagVdlAvailable(documentationLink)}">
+            <div class="submenu-group submenu-resources">
             <div class="submenu-section-title">RESOURCES</div>
 
             <ui:fragment rendered="#{not empty tagName}">
@@ -57,7 +59,7 @@
             <ui:fragment rendered="#{not empty documentationLink}">
                 <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
                     <i class="pi pi-external-link"></i>
-                    <span>Documentation</span>
+                    <span>Docs Website</span>
                 </a>
             </ui:fragment>
 
@@ -83,16 +85,20 @@
                 </a>
             </ui:fragment>
             -->
+            </div>
         </ui:fragment>
 
-        <!-- ON THIS PAGE -->
+        <!-- ON THIS PAGE: a list in the right rail, wrapping chips on small screens -->
         <ui:fragment rendered="#{not empty appSubMenu.subMenuItems}">
+            <nav class="submenu-group submenu-usecases" aria-label="Examples">
             <div class="submenu-section-title">ON THIS PAGE</div>
             <ui:repeat value="#{appSubMenu.subMenuItems}" var="sub">
-                <h:link outcome="#{sub.url}" styleClass="#{sub eq appSubMenu.currentMenuItem ? 'active' : ''}">
+                <h:link outcome="#{sub.url}" styleClass="#{sub eq appSubMenu.currentMenuItem ? 'active' : ''}"
+                        pt:aria-current="#{sub eq appSubMenu.currentMenuItem ? 'page' : null}">
                     #{sub.label}
                 </h:link>
             </ui:repeat>
+            </nav>
         </ui:fragment>
 
     </div>

@@ -293,8 +293,9 @@
 }
 
 @media (max-width: 640px) {
-    .products-table > .p-datatable-tablewrapper > table > thead > tr > th:nth-child(2),
-    .products-table > .p-datatable-tablewrapper > table > tbody > tr > td:nth-child(2) {
+    /* reflow: no title for the selection column (only the checkbox) */
+    .products-table > .p-datatable-tablewrapper > table > thead > tr > th:nth-child(1),
+    .products-table > .p-datatable-tablewrapper > table > tbody > tr > td:nth-child(1) {
         .p-column-title {
             display: none !important;
         }

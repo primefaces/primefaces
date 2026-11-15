@@ -225,6 +225,9 @@ The build (`yarn run build:bundle`, run by Maven through `frontend-maven-plugin`
     `packages/components/src/base/backdrop.css` with zero specificity. Dialog box and toolbar carry the filter on a `::before`
     behind them: on the element it would make the full viewport dialog container blur the whole page, and the toolbar the
     stacking context of its dropdowns (painted under the following content).
+  - The layout of an application uses the same backdrop with `.p-backdrop-navigation` (bars, the `::before` of the
+    toolbar) and `.p-backdrop-overlay` (floating panels, filter on the element); the backgrounds that go with them are
+    `--p-toolbar-background` and `--p-overlay-popover-background` / `--p-overlay-modal-background`.
   - No backdrop filter on content containers: it makes the element the containing block of its absolutely / fixed
     positioned descendants (overlays inside it would be positioned wrong). Not on the menubar either: an element with a
     backdrop filter is the backdrop root of its descendants, its submenus would only blur what lies inside the bar.
