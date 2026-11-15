@@ -5093,26 +5093,28 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             appendTo: document.body,
             start: (event, ui: PrimeFaces.interactions.SortableUi) => {
                 PrimeFaces.nextZindex(ui.helper!);
+
+                // #7444 the placeholder cells are created without classes, hidden columns must stay hidden
+                // (otherwise the stacked reflow placeholder gets a blank line for each of them)
+                var itemCells = ui.item.children();
+                ui.placeholder.children().each((i, placeholderCell) => {
+                    $(placeholderCell).toggleClass('p-hidden', itemCells.eq(i).hasClass('p-hidden'));
+                });
             },
             helper: (event, ui) => {
                 var cells = ui.children(),
-                helper = $('<div class="p-datatable p-component"><table><tbody class="p-datatable-data"></tbody></table></div>'),
+                helper = $('<div><table><tbody class="p-datatable-data"></tbody></table></div>'),
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 
-                // #7444 the helper is appended to the body, outside of the table, so it needs the reflow class itself
-                // to be rendered (and measured by the sortable) the same way as the dragged row
-                if(this.cfg.reflow) {
-                    helper.addClass('p-datatable-reflow');
-                }
+                // #7444 the helper is appended to the body, outside of the table, so it needs the classes of the table
+                // (reflow, size, gridlines, striped, styleClass) to be rendered the same way as the dragged row,
+                // and the width of the row, because the reflow styles override the widths of the cells
+                helper.addClass(this.jq.attr('class') || 'p-datatable p-component')
+                    .outerWidth(ui.outerWidth()!);
 
                 for(var i = 0; i < helperCells.length; i++) {
-                    var helperCell = helperCells.eq(i);
-                    helperCell.width(cells.eq(i).width()!);
-                    // #5584 column titles are only shown by the reflow styles, so keep them only when reflow is enabled
-                    if(!this.cfg.reflow) {
-                        helperCell.children().remove('.p-column-title');
-                    }
+                    helperCells.eq(i).width(cells.eq(i).width()!);
                 }
 
                 helperRow.appendTo(helper.find('tbody'));

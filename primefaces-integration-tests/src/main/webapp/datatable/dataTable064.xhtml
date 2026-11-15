@@ -12,7 +12,7 @@
 
         <h:form id="form">
             <p:dataTable id="datatable" value="#{dataTable050.progLanguages}" var="lang" rowKey="#{lang.id}"
-                         draggableRows="true" reflow="true">
+                         draggableRows="true" reflow="true" size="small" styleClass="my-table">
                 <p:ajax event="rowReorder" listener="#{dataTable050.onRowReorder}" update="@form"/>
 
                 <p:column headerText="Id">
@@ -20,6 +20,10 @@
                 </p:column>
 
                 <p:column headerText="Name">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column headerText="Hidden" visible="false">
                     <h:outputText value="#{lang.name}"/>
                 </p:column>
             </p:dataTable>
