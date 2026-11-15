@@ -23,11 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -43,7 +50,17 @@ public class DataTable062 implements Serializable {
 
     private List<ProgrammingLanguage> progLanguages;
 
-    private boolean grouped;
+    /**
+     * Which headerRow is rendered: <code>none</code>, <code>year</code> or <code>type</code>.
+     */
+    private String mode = "none";
+
+    private SortRecordingLazyDataModel lazyModel = new SortRecordingLazyDataModel();
+
+    /**
+     * The number of header row {@link SortMeta} in the last {@link SortEvent}.
+     */
+    private long sortEventHeaderRows = -1;
 
     @Inject
     private ProgrammingLanguageService service;
@@ -53,7 +70,32 @@ public class DataTable062 implements Serializable {
         progLanguages = service.getLangs();
     }
 
-    public void toggleGrouped() {
-        grouped = !grouped;
+    public void onSort(SortEvent event) {
+        sortEventHeaderRows = event.getSortBy().values().stream().filter(SortMeta::isHeaderRow).count();
+    }
+
+    public void clearTableState() {
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+        PrimeFaces.current().multiViewState().clearAll(viewId, true);
+    }
+
+    /**
+     * Records the sort fields of the last load, to check which {@link SortMeta} the table passes to a lazy model.
+     */
+    public static class SortRecordingLazyDataModel extends ProgrammingLanguageLazyDataModel {
+
+        @Serial private static final long serialVersionUID = 1L;
+
+        private String lastSortFields = "";
+
+        @Override
+        public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+            lastSortFields = String.join(",", sortBy.keySet());
+            return super.load(first, pageSize, sortBy, filterBy);
+        }
+
+        public String getLastSortFields() {
+            return lastSortFields;
+        }
     }
 }

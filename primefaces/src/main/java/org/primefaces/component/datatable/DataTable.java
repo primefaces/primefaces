@@ -387,7 +387,8 @@ public class DataTable extends DataTableBaseImpl {
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
             }
             else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.sort)) {
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
+                // #10481 without the header rows which are not rendered
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getApplicableSortMeta());
             }
             else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
                 deferredEvents.put(ClientBehaviorEventKeys.filter, behaviorEvent);
@@ -702,6 +703,11 @@ public class DataTable extends DataTableBaseImpl {
     @Override
     public HeaderRow getHeaderRow() {
         return ComponentTraversalUtils.firstChildRendered(HeaderRow.class, this);
+    }
+
+    @Override
+    public List<HeaderRow> getHeaderRows() {
+        return ComponentTraversalUtils.children(HeaderRow.class, this);
     }
 
     @Override

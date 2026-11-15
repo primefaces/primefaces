@@ -301,10 +301,18 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         Map<String, SortMeta> sortBy = new LinkedHashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
-        HeaderRow headerRow = getHeaderRow();
-        if (headerRow != null) {
-            SortMeta meta = SortMeta.of(context, getVar(), headerRow);
-            sortBy.put(meta.getColumnKey(), meta);
+        // #10481 every header row is registered, not only the one rendered right now, because the sortBy map is built
+        // only once and their rendered state can change later; see isSortMetaApplicable for which one is used
+        HeaderRow renderedHeaderRow = getHeaderRow();
+        for (HeaderRow headerRow : getHeaderRows()) {
+            if (headerRow == renderedHeaderRow
+                    || headerRow.getValueExpression(HeaderRow.PropertyKeys.groupBy.name()) != null
+                    || LangUtils.isNotBlank(headerRow.getField())) {
+                SortMeta meta = SortMeta.of(context, getVar(), headerRow);
+                sortBy.put(meta.getColumnKey(), meta);
+            }
+        }
+        if (renderedHeaderRow != null) {
             sorted.set(true);
         }
 
@@ -352,8 +360,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             sortBy = (Collection<SortMeta>) usrSortBy;
         }
 
+        // header rows which are not rendered must not be matched, as before #10481 registered them too
+        HeaderRow headerRow = getHeaderRow();
+        String headerRowKey = headerRow == null ? null : headerRow.getClientId(context);
+
         for (SortMeta userSM : sortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
+                    .filter(o -> !o.isHeaderRow() || Objects.equals(o.getColumnKey(), headerRowKey))
                     .filter(o -> Objects.equals(o.getField(), userSM.getField()) || Objects.equals(o.getColumnKey(), userSM.getColumnKey()))
                     .findAny()
                     .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField()
@@ -373,8 +386,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default SortMeta getHighestPriorityActiveSortMeta() {
+        String headerRowKey = getEnabledHeaderRowKey();
         return getSortByAsMap().values().stream()
-                .filter(SortMeta::isActive)
+                .filter(m -> m.isActive() && isSortMetaApplicable(m, headerRowKey))
                 .min(Comparator.comparingInt(SortMeta::getPriority))
                 .orElse(null);
     }
@@ -388,13 +402,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
      * @return the grouping {@link SortMeta} or <code>null</code> if rows are not grouped
      */
     default SortMeta getGroupByMeta() {
-        boolean headerRowEnabled = initHeaderRowSortMeta();
+        String headerRowKey = getEnabledHeaderRowKey();
         Map<String, SortMeta> sortBy = getSortByAsMap();
 
-        for (SortMeta meta : sortBy.values()) {
-            if (headerRowEnabled && meta.isHeaderRow() && meta.isActive()) {
-                return meta;
-            }
+        SortMeta headerRowMeta = headerRowKey == null ? null : sortBy.get(headerRowKey);
+        if (headerRowMeta != null && headerRowMeta.isActive()) {
+            return headerRowMeta;
         }
 
         AtomicReference<SortMeta> groupRowMeta = new AtomicReference<>();
@@ -416,49 +429,60 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         return sortBy.values().stream()
-                .filter(SortMeta::isActive)
-                .filter(m -> headerRowEnabled || !m.isHeaderRow())
+                .filter(m -> m.isActive() && isSortMetaApplicable(m, headerRowKey))
                 .min(Comparator.comparingInt(SortMeta::getPriority))
                 .orElse(null);
     }
 
     /**
      * Returns actives sort meta. See {@link SortMeta#compareTo(SortMeta)}
+     * The {@link SortMeta} of a header row is only included while that header row is the enabled one.
      * @return map with {@link SortMeta#getField()} as key and {@link SortMeta} as value
      */
     default Map<String, SortMeta> getActiveSortMeta() {
-        boolean headerRowEnabled = initHeaderRowSortMeta();
+        String headerRowKey = getEnabledHeaderRowKey();
         return getSortByAsMap().values().stream()
-                .filter(SortMeta::isActive)
-                .filter(m -> headerRowEnabled || !m.isHeaderRow())
+                .filter(m -> m.isActive() && isSortMetaApplicable(m, headerRowKey))
                 .sorted()
                 .collect(Collectors.toMap(SortMeta::getField, Function.identity(), (o1, o2) -> o1, LinkedHashMap::new));
     }
 
+    /**
+     * Returns the sortBy map without the {@link SortMeta} of the header rows which are not enabled, e.g. for a sort event.
+     * @return map with {@link SortMeta#getColumnKey()} as key and {@link SortMeta} as value
+     */
+    default Map<String, SortMeta> getApplicableSortMeta() {
+        String headerRowKey = getEnabledHeaderRowKey();
+        return getSortByAsMap().entrySet().stream()
+                .filter(e -> isSortMetaApplicable(e.getValue(), headerRowKey))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, LinkedHashMap::new));
+    }
+
     default boolean isSortingCurrentlyActive() {
-        return !getActiveSortMeta().isEmpty();
+        Map<String, SortMeta> sortBy = getSortByAsMap();
+        if (sortBy.values().stream().anyMatch(m -> m.isActive() && !m.isHeaderRow())) {
+            return true;
+        }
+
+        // only a header row can still sort, look up the rendered one only now
+        String headerRowKey = getEnabledHeaderRowKey();
+        SortMeta headerRowMeta = headerRowKey == null ? null : sortBy.get(headerRowKey);
+        return headerRowMeta != null && headerRowMeta.isActive();
     }
 
     /**
-     * Lazily registers the {@link SortMeta} of a header row which was not rendered when the sort state got initialized,
-     * e.g. its <code>rendered</code> attribute was <code>false</code> at first and has been switched to <code>true</code> later.
-     *
-     * @return <code>true</code> if the header row is enabled and therefore takes part in sorting
+     * @return the column key of the {@link SortMeta} of the enabled header row, or <code>null</code> if there is none
      */
-    default boolean initHeaderRowSortMeta() {
+    private String getEnabledHeaderRowKey() {
         HeaderRow headerRow = getHeaderRow();
-        if (headerRow == null || !headerRow.isEnabled()) {
-            return false;
-        }
+        return headerRow != null && headerRow.isEnabled() ? headerRow.getClientId(FacesContext.getCurrentInstance()) : null;
+    }
 
-        Map<String, SortMeta> sortBy = getSortByAsMap();
-        if (sortBy.values().stream().noneMatch(SortMeta::isHeaderRow)) {
-            SortMeta meta = SortMeta.of(FacesContext.getCurrentInstance(), getVar(), headerRow);
-            sortBy.put(meta.getColumnKey(), meta);
-            setSortByAsMap(sortBy);
-        }
-
-        return true;
+    /**
+     * A column {@link SortMeta} always takes part in sorting, the one of a header row only while that header row is enabled.
+     */
+    private static boolean isSortMetaApplicable(SortMeta meta, String enabledHeaderRowKey) {
+        return !meta.isHeaderRow() || Objects.equals(meta.getColumnKey(), enabledHeaderRowKey);
     }
 
     default boolean isColumnSortable(FacesContext context, UIColumn column) {
@@ -478,7 +502,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default String getSortMetaAsString() {
+        // a header row has no column header the client could map its sort order to
         return getActiveSortMeta().values().stream()
+                .filter(m -> !m.isHeaderRow())
                 .map(SortMeta::getColumnKey)
                 .collect(Collectors.joining("','", "['", "']"));
     }
@@ -489,6 +515,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default HeaderRow getHeaderRow() {
         return null;
+    }
+
+    /**
+     * @return all header rows, whether they are rendered or not
+     */
+    default List<HeaderRow> getHeaderRows() {
+        return Collections.emptyList();
     }
 
     Map<String, SortMeta> getSortByAsMap();
