@@ -303,17 +303,9 @@ public class SelectionFeature implements DataTableFeature {
             // For lazy tables, load all data at once using the lazy data model
             // Same sort/filter maps as DataTable#loadLazyScrollData: only active ones, keyed by field
             LazyDataModel<?> lazyModel = table.getLazyDataModel();
+            // Count with the current filters: the row count of the previous request may be out of date
             Map<String, FilterMeta> filterBy = table.getActiveFilterMeta();
-            int rowCount;
-            if (filterBy.isEmpty() || table.isSelectAllFilteredOnly()) {
-                // the model has already been counted with the active filters
-                rowCount = lazyModel.getRowCount();
-            }
-            else {
-                // selectAllFilteredOnly=false: select all rows, ignoring the active filters
-                filterBy = Collections.emptyMap();
-                rowCount = lazyModel.count(filterBy);
-            }
+            int rowCount = lazyModel.count(filterBy);
             List<?> allData = lazyModel.load(0, rowCount, table.getActiveSortMeta(), filterBy);
 
             if (allData == null) {

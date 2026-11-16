@@ -47,7 +47,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -97,40 +96,51 @@ class SelectionFeatureTest {
     }
 
     @Test
-    void selectAllFilteredOnlyLoadsWithActiveFiltersKeyedByField() {
+    void selectAllLoadsWithActiveFiltersKeyedByField() {
         filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
         filterByAsMap.put("tbl:otherCol", FilterMeta.builder().field("other").build()); // inactive
-        when(table.isSelectAllFilteredOnly()).thenReturn(true);
-        model.setRowCount(2); // counted with the active filter by loadLazyScrollData
+        model.setRowCount(2);
 
         List<Object> selection = selectAll("@all");
 
         assertEquals(Set.of("name"), model.loadedFilterBy.keySet());
         assertEquals(List.of("apple", "apricot"), selection);
-        assertEquals(0, model.countCalls, "row count of the model must be reused");
     }
 
     @Test
-    void selectAllIgnoresActiveFiltersWhenNotFilteredOnly() {
+    void selectAllKeepsActiveFiltersWithDefaultSelectAllFilteredOnly() {
+        // selectAllFilteredOnly defaults to false; lazy tables have always selected the filtered rows only
         filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
         when(table.isSelectAllFilteredOnly()).thenReturn(false);
         model.setRowCount(2);
 
         List<Object> selection = selectAll("@all");
 
-        assertTrue(model.loadedFilterBy.isEmpty());
-        assertTrue(model.countedFilterBy.isEmpty());
-        assertEquals(ROWS, selection);
+        assertEquals(Set.of("name"), model.loadedFilterBy.keySet());
+        assertEquals(List.of("apple", "apricot"), selection);
     }
 
     @Test
-    void selectAllLoadsWithActiveSortKeyedByField() {
+    void selectAllCountsWithCurrentFiltersInsteadOfStaleRowCount() {
+        // filter widened in the same request: the row count of the previous request is out of date
+        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("a").build());
+        model.setRowCount(2);
+
+        List<Object> selection = selectAll("@all");
+
+        assertEquals(Set.of("name"), model.countedFilterBy.keySet());
+        assertEquals(List.of("apple", "avocado", "apricot"), selection);
+    }
+
+    @Test
+    void selectAllLoadsWithActiveSortMeta() {
         sortByAsMap.put("tbl:nameCol", SortMeta.builder().field("name").order(SortOrder.DESCENDING).build());
         sortByAsMap.put("tbl:otherCol", SortMeta.builder().field("other").order(SortOrder.UNSORTED).build());
         model.setRowCount(ROWS.size());
 
         selectAll("@all");
 
+        assertEquals(table.getActiveSortMeta(), model.loadedSortBy);
         assertEquals(Set.of("name"), model.loadedSortBy.keySet());
     }
 
@@ -164,11 +174,9 @@ class SelectionFeatureTest {
         private Map<String, SortMeta> loadedSortBy;
         private Map<String, FilterMeta> loadedFilterBy;
         private Map<String, FilterMeta> countedFilterBy;
-        private int countCalls;
 
         @Override
         public int count(Map<String, FilterMeta> filterBy) {
-            countCalls++;
             countedFilterBy = filterBy;
             return filter(filterBy).size();
         }

@@ -27,10 +27,6 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.SelectBooleanButton;
-
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -45,8 +41,8 @@ class DataTable061Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: lazy select all with selectAllFilteredOnly=true selects the filtered rows, not the first unfiltered ones")
-    void selectAllFilteredOnly(Page page) {
+    @DisplayName("DataTable: lazy select all with the default selectAllFilteredOnly selects the filtered rows, not the first unfiltered ones")
+    void selectAllFiltered(Page page) {
         // Arrange - "Language 7" matches 7 and 70..75
         DataTable dataTable = page.dataTable;
         dataTable.filterAtOnce("Name", "Language 7");
@@ -62,11 +58,11 @@ class DataTable061Test extends AbstractDataTableTest {
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: lazy select all with selectAllFilteredOnly=false selects all rows, ignoring the filter")
-    void selectAllIgnoringFilter(Page page) {
+    @DisplayName("DataTable: lazy select all with an active sort selects the filtered rows")
+    void selectAllFilteredAndSorted(Page page) {
         // Arrange
-        page.toggleSelectAllFilteredOnly.click();
         DataTable dataTable = page.dataTable;
+        dataTable.sort("Name");
         dataTable.filterAtOnce("Name", "Language 7");
 
         // Act
@@ -74,7 +70,7 @@ class DataTable061Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelections(page.messages, IntStream.rangeClosed(1, 75).mapToObj(Integer::toString).collect(Collectors.joining(",")));
+        assertSelections(page.messages, "7,70,71,72,73,74,75");
         assertNoJavascriptErrors();
     }
 
@@ -88,9 +84,6 @@ class DataTable061Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:button")
         CommandButton submit;
-
-        @FindBy(id = "form:toggleSelectAllFilteredOnly")
-        SelectBooleanButton toggleSelectAllFilteredOnly;
 
         @Override
         public String getLocation() {

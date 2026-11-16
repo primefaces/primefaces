@@ -49,7 +49,6 @@ public class DataTable061 implements Serializable {
 
     private FieldKeyedLazyDataModel lazyDataModel = new FieldKeyedLazyDataModel();
     private List<ProgrammingLanguage> selectedProgLanguages;
-    private boolean selectAllFilteredOnly = true;
 
     public void submit() {
         if (selectedProgLanguages != null) {

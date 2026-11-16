@@ -18,22 +18,17 @@
 
             <p:dataTable id="datatable" value="#{dataTable061.lazyDataModel}" lazy="true" var="lang"
                          selection="#{dataTable061.selectedProgLanguages}" rowKey="#{lang.id}"
-                         paginator="true" rows="3" selectionPageOnly="false"
-                         selectAllFilteredOnly="#{dataTable061.selectAllFilteredOnly}">
+                         paginator="true" rows="3" selectionPageOnly="false">
                 <p:column selectionBox="true" style="width:16px;text-align:center"/>
 
                 <p:column headerText="ID" field="id"/>
 
-                <p:column headerText="Name" field="name" filterBy="#{lang.name}" filterMatchMode="contains"/>
+                <p:column headerText="Name" field="name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains"/>
 
                 <p:column headerText="First Appeared" field="firstAppeared"/>
             </p:dataTable>
 
             <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable061.submit}"/>
-            <p:selectBooleanButton id="toggleSelectAllFilteredOnly" value="#{dataTable061.selectAllFilteredOnly}"
-                                   onLabel="Filtered only" offLabel="All rows">
-                <p:ajax update="@form"/>
-            </p:selectBooleanButton>
         </h:form>
 
     </h:body>
