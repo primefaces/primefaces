@@ -310,7 +310,8 @@ public abstract class DataTableBase extends UIPageableData implements PrimeClien
     @Property(description = "If XML data exporter in use, this allows customization of the document tag in the XML.")
     public abstract String getExportTag();
 
-    @Property(defaultValue = "false", description = "When enabled, toggle select will only apply on filtered items.")
+    @Property(defaultValue = "false",
+            description = "When enabled, toggle select will only apply on filtered items. Lazy tables always apply it on filtered items only.")
     public abstract boolean isSelectAllFilteredOnly();
 
     @Property(defaultValue = "true", description = "Enables cell navigation with the keyboard for WCAG and screen reader compliance.")

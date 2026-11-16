@@ -306,6 +306,10 @@ public class SelectionFeature implements DataTableFeature {
             // Count with the current filters: the row count of the previous request may be out of date
             Map<String, FilterMeta> filterBy = table.getActiveFilterMeta();
             int rowCount = lazyModel.count(filterBy);
+            if (rowCount <= 0) {
+                // models may return 0 from count() and call setRowCount() in load(), see the lazy DataTable docs
+                rowCount = lazyModel.getRowCount();
+            }
             List<?> allData = lazyModel.load(0, rowCount, table.getActiveSortMeta(), filterBy);
 
             if (allData == null) {

@@ -99,20 +99,6 @@ class SelectionFeatureTest {
     void selectAllLoadsWithActiveFiltersKeyedByField() {
         filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
         filterByAsMap.put("tbl:otherCol", FilterMeta.builder().field("other").build()); // inactive
-        model.setRowCount(2);
-
-        List<Object> selection = selectAll("@all");
-
-        assertEquals(Set.of("name"), model.loadedFilterBy.keySet());
-        assertEquals(List.of("apple", "apricot"), selection);
-    }
-
-    @Test
-    void selectAllKeepsActiveFiltersWithDefaultSelectAllFilteredOnly() {
-        // selectAllFilteredOnly defaults to false; lazy tables have always selected the filtered rows only
-        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
-        when(table.isSelectAllFilteredOnly()).thenReturn(false);
-        model.setRowCount(2);
 
         List<Object> selection = selectAll("@all");
 
@@ -133,10 +119,21 @@ class SelectionFeatureTest {
     }
 
     @Test
+    void selectAllFallsBackToRowCountWhenCountIsNotImplemented() {
+        // documented pattern: count() returns 0 and load() calls setRowCount()
+        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
+        model.countNotImplemented = true;
+        model.setRowCount(2); // set by load() in the previous request
+
+        List<Object> selection = selectAll("@all");
+
+        assertEquals(List.of("apple", "apricot"), selection);
+    }
+
+    @Test
     void selectAllLoadsWithActiveSortMeta() {
         sortByAsMap.put("tbl:nameCol", SortMeta.builder().field("name").order(SortOrder.DESCENDING).build());
         sortByAsMap.put("tbl:otherCol", SortMeta.builder().field("other").order(SortOrder.UNSORTED).build());
-        model.setRowCount(ROWS.size());
 
         selectAll("@all");
 
@@ -146,8 +143,6 @@ class SelectionFeatureTest {
 
     @Test
     void selectAllExcludesDeselectedRows() {
-        model.setRowCount(ROWS.size());
-
         List<Object> selection = selectAll("@all", "!banana", "!cherry");
 
         assertEquals(List.of("apple", "avocado", "apricot"), selection);
@@ -174,11 +169,12 @@ class SelectionFeatureTest {
         private Map<String, SortMeta> loadedSortBy;
         private Map<String, FilterMeta> loadedFilterBy;
         private Map<String, FilterMeta> countedFilterBy;
+        private boolean countNotImplemented;
 
         @Override
         public int count(Map<String, FilterMeta> filterBy) {
             countedFilterBy = filterBy;
-            return filter(filterBy).size();
+            return countNotImplemented ? 0 : filter(filterBy).size();
         }
 
         @Override
