@@ -595,9 +595,10 @@ public class CarBean {
 ```
 For frozen columns, use `frozenHeader` , `frozenFooter` , `scrollableHeader` and `scrollableFooter` types.
 If neither the `frozen` nor the `scrollable` group of a header or footer is defined, a `header` or `footer` column group
-gets split between the frozen and the scrollable columns. A cell spanning both of them is displayed in the part where it
-starts, without its width (neither the `width` attribute nor a width set through `style`). Content of a row other than
-columns, e.g. a tooltip, is encoded in the first part only. Cells beyond the rendered columns of the table are left out.
+gets split between the frozen and the scrollable columns. This only works if the group consists of `p:row` children
+containing `p:column` / `p:columns` children; for anything else, e.g. rows or columns wrapped in `ui:repeat` or
+`ui:fragment`, use the `frozen*` and `scrollable*` groups. A cell spanning both parts is displayed in the part where it
+starts, without its `width` attribute. Content of a row other than columns is encoded in the first part only.
 
 
 ## Row Grouping

@@ -37,7 +37,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-frozencolumns")
@@ -121,21 +120,6 @@ class DataTable063Test extends AbstractDataTableTest {
 
     @Test
     @Order(6)
-    @DisplayName("DataTable: GitHub #9854 frozen columns split a plain column group with columns wrapped in ui:fragment / ui:repeat")
-    void plainColumnGroupsWrappedColumns(Page page) {
-        assertHeaderSplitAtFirstColumn(page, "wrapped");
-        assertHeaderRowsAligned(page, "wrapped");
-        assertUniqueCellIds(page, "wrapped");
-
-        // content of a row other than columns is encoded in one part only (the client clones the header into the body)
-        WebElement wrapped = page.getWebDriver().findElement(By.id("form:wrapped"));
-        assertEquals(1, wrapped.findElements(By.cssSelector(".p-datatable-scrollable-header-box [id='form:wrapped:note']")).size());
-        assertEquals(1, page.getWebDriver().findElements(By.id("form:wrapped:idTooltip")).size());
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(7)
     @DisplayName("DataTable: GitHub #9854 frozen columns split a plain column group with p:columns")
     void plainColumnGroupsDynamicColumns(Page page) {
         assertHeaderSplitAtFirstColumn(page, "dynamic");
@@ -144,7 +128,7 @@ class DataTable063Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     @DisplayName("DataTable: GitHub #9854 frozen columns split a column group cell spanning both parts and two rows")
     void plainColumnGroupsSpanningRowsAndParts(Page page) {
         assertEquals(List.of("ID:1x1|Language:1x2", "#:1x1", "Key:1x1|Name:1x1"), getRows(page, "spanning", FROZEN, "thead"));
@@ -157,70 +141,18 @@ class DataTable063Test extends AbstractDataTableTest {
                 .filter(th -> "Language".equals(th.getDomProperty("textContent").trim()))
                 .findFirst()
                 .orElseThrow();
-        // neither the width attribute nor the width of its style (width:300px)
+        // no width attribute (width="300")
         String style = language.getAttribute("style");
         assertTrue(style == null || !style.contains("300"), "the cut cell must not get the width of the whole cell: " + style);
         assertNoJavascriptErrors();
     }
 
     @Test
-    @Order(10)
-    @DisplayName("DataTable: GitHub #9854 a frozen table nested in a header cell keeps the outer column group split")
-    void plainColumnGroupWithNestedTable(Page page) {
-        // the cell after the one with the nested table is still placed in the scrollable part only
-        List<WebElement> languages = page.getWebDriver().findElement(By.id("form:nested")).findElements(By.tagName("th")).stream()
-                .filter(th -> "Language".equals(th.getDomProperty("textContent").trim()))
-                .collect(Collectors.toList());
-        assertFalse(languages.isEmpty());
-        for (WebElement language : languages) {
-            assertEquals("3", language.getAttribute("colspan"));
-            assertTrue(language.findElements(By.xpath("ancestor::*[contains(@class,'" + FROZEN + "')]")).isEmpty(),
-                    "Language must not be in the frozen part");
-        }
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(9)
+    @Order(8)
     @DisplayName("DataTable: GitHub #9854 frozen columns do not split a plain column group if one dedicated group is defined")
     void plainColumnGroupWithOneDedicatedGroup(Page page) {
         assertEquals(List.of("Key:1x1"), getRows(page, "mixed", FROZEN, "thead"));
         assertEquals(List.of("Name:1x1|First appeared:1x1|Type:1x1"), getRows(page, "mixed", SCROLLABLE, "thead"));
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(11)
-    @DisplayName("DataTable: GitHub #9854 a nested table with a header group keeps the wrapped columns of the outer split group")
-    void plainColumnGroupWithNestedPlainTable(Page page) {
-        // the wrapped column after the cell with the nested table is still encoded as a cell of the frozen part
-        List<WebElement> names = page.getWebDriver().findElement(By.id("form:nestedPlain")).findElements(By.tagName("th")).stream()
-                .filter(th -> "Name".equals(th.getDomProperty("textContent").trim()))
-                .filter(th -> !th.getAttribute("id").endsWith("_clone"))
-                .collect(Collectors.toList());
-        assertEquals(1, names.size());
-        assertFalse(names.get(0).findElements(By.xpath("ancestor::*[contains(@class,'" + FROZEN + "')]")).isEmpty(),
-                "Name must be in the frozen part");
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(12)
-    @DisplayName("DataTable: GitHub #9854 content of a row other than columns is encoded once if a part has no rendered columns")
-    void plainColumnGroupWithEmptyPart(Page page) {
-        WebElement table = page.getWebDriver().findElement(By.id("form:emptyPart"));
-        assertEquals(1, table.findElements(By.cssSelector(".p-datatable-scrollable-header-box [id='form:emptyPart:note']")).size());
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(13)
-    @DisplayName("DataTable: GitHub #9854 frozen columns split a plain column group with rows wrapped in ui:fragment / ui:repeat")
-    void plainColumnGroupWrappedRows(Page page) {
-        assertEquals(List.of("ID:1x2", ""), getRows(page, "wrappedRows", FROZEN, "thead"));
-        assertEquals(List.of("Language:3x1", "Info:2x1|Type:1x1"), getRows(page, "wrappedRows", SCROLLABLE, "thead"));
-        assertHeaderRowsAligned(page, "wrappedRows");
-        assertUniqueCellIds(page, "wrappedRows");
         assertNoJavascriptErrors();
     }
 
