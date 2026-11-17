@@ -72,17 +72,17 @@ export interface BaseComponentCfg {
 
     /**
      * An optional callback that is invoked
-     * before the component is created, at the start of the {@link BaseComponent.init | init} method. This is
+     * before the component is created, before its {@link BaseComponent.init | init} method. This is
      * usually specified via the `clientPreConstruct` attribute on the Faces component. Note that this is also called
-     * during a `refresh` (AJAX update).
+     * before a `refresh` (AJAX update).
      */
     preConstruct: PrimeFaces.component.PreConstructCallback;
 
     /**
      * An optional callback that is invoked
-     * after this component was created successfully, at the end of the {@link BaseComponent.init | init} method. This is
-     * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
-     * during a `refresh` (AJAX update).
+     * after this component was created successfully, after its {@link BaseComponent.init | init} method. This is
+     * usually specified via the `clientPostConstruct` attribute on the Faces component. It is not called on a
+     * `refresh` (AJAX update), see {@link postRefresh}.
      */
     postConstruct: PrimeFaces.component.PostConstructCallback;
 
@@ -1108,9 +1108,9 @@ declare global {
             (this: Component, component: Component) => void;
 
         /**
-         * A callback for a PrimeFaces component. An optional callback that is invoked before a component is created, at the
-         * beginning of the {@link BaseComponent.init | init} method. This is usually specified via the `clientPreConstruct`
-         * attribute on the Faces component.
+         * A callback for a PrimeFaces component. An optional callback that is invoked before a component is created or
+         * refreshed (AJAX update), before its {@link BaseComponent.init | init} method. This is usually specified via the
+         * `clientPreConstruct` attribute on the Faces component.
          * @param The component configuration.
          */
         export type PreConstructCallback =
@@ -1146,9 +1146,9 @@ declare global {
 
         /**
          * A callback for a PrimeFaces component. An optional callback that is
-         * invoked after a component was created successfully, at the end of the {@link BaseComponent.init | init} method. This is
-         * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
-         * during a `refresh` (AJAX update).
+         * invoked after a component was created successfully, after its {@link BaseComponent.init | init} method. This is
+         * usually specified via the `clientPostConstruct` attribute on the Faces component. It is not called on a
+         * `refresh` (AJAX update of an existing component), see {@link PostRefreshCallback}.
          */
         export type PostConstructCallback =
             /**

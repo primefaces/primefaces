@@ -46,8 +46,8 @@ Simply assign the correct `f:attribute` to add your script.
 
 | Event | Attribute | Parameters | Execution |
 | --- | --- | --- | --- |
-| PreConstruct | `clientPreConstruct` | cfg | Always called either on page load or Ajax update of component before the component is created.
-| PostConstruct | `clientPostConstruct` | component | Always called either on page load or Ajax update of component after the component is created.
+| PreConstruct | `clientPreConstruct` | cfg | Always called either on page load or Ajax update of component before the component is created or refreshed, so it can change the configuration (e.g. `cfg.labels`).
+| PostConstruct | `clientPostConstruct` | component | Called after the component is created: on page load, or on an Ajax update that renders it for the first time. An Ajax update of an existing component calls PostRefresh instead.
 | PostRefresh | `clientPostRefresh` | component | Only called after Ajax update of the component
 | PreDestroy | `clientPreDestroy` | component | Only called before the component is actually being destroyed
 

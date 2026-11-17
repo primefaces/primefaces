@@ -1504,6 +1504,17 @@ export class Core {
         if(componentType) {
             const component = this.components[ref];
 
+            // #15525 called on page init and on ajax update, as the ajax update refreshes the component with a new cfg
+            if (cfg.preConstruct) {
+                if (!cfg.labels) {
+                    cfg.labels = { aria: {} };
+                }
+                if (!cfg.labels.aria) {
+                    cfg.labels.aria = {};
+                }
+                cfg.preConstruct.call(null, cfg);
+            }
+
             //ajax update
             if(component && (component.constructor === this.component[componentName])) {
                 component.refresh(cfg);
@@ -1513,15 +1524,6 @@ export class Core {
             }
             //page init
             else {
-                if (cfg.preConstruct) {
-                    if (!cfg.labels) {
-                        cfg.labels = { aria: {} };
-                    }
-                    if (!cfg.labels.aria) {
-                        cfg.labels.aria = {};
-                    }
-                    cfg.preConstruct.call(null, cfg);
-                }
                 const newComponent = new componentType();
                 newComponent.init(cfg);
                 this.components[ref] = newComponent;
