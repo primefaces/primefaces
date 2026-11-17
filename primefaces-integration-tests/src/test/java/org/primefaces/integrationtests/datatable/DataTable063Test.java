@@ -37,6 +37,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-frozencolumns")
@@ -124,6 +125,12 @@ class DataTable063Test extends AbstractDataTableTest {
     void plainColumnGroupsWrappedColumns(Page page) {
         assertHeaderSplitAtFirstColumn(page, "wrapped");
         assertHeaderRowsAligned(page, "wrapped");
+        assertUniqueCellIds(page, "wrapped");
+
+        // content of a row other than columns is encoded in one part only (the client clones the header into the body)
+        WebElement wrapped = page.getWebDriver().findElement(By.id("form:wrapped"));
+        assertEquals(1, wrapped.findElements(By.cssSelector(".p-datatable-scrollable-header-box [id='form:wrapped:note']")).size());
+        assertEquals(1, page.getWebDriver().findElements(By.id("form:wrapped:idTooltip")).size());
         assertNoJavascriptErrors();
     }
 
@@ -150,8 +157,26 @@ class DataTable063Test extends AbstractDataTableTest {
                 .filter(th -> "Language".equals(th.getDomProperty("textContent").trim()))
                 .findFirst()
                 .orElseThrow();
+        // neither the width attribute nor the width of its style (width:300px)
         String style = language.getAttribute("style");
         assertTrue(style == null || !style.contains("300"), "the cut cell must not get the width of the whole cell: " + style);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: GitHub #9854 a frozen table nested in a header cell keeps the outer column group split")
+    void plainColumnGroupWithNestedTable(Page page) {
+        // the cell after the one with the nested table is still placed in the scrollable part only
+        List<WebElement> languages = page.getWebDriver().findElement(By.id("form:nested")).findElements(By.tagName("th")).stream()
+                .filter(th -> "Language".equals(th.getDomProperty("textContent").trim()))
+                .collect(Collectors.toList());
+        assertFalse(languages.isEmpty());
+        for (WebElement language : languages) {
+            assertEquals("3", language.getAttribute("colspan"));
+            assertTrue(language.findElements(By.xpath("ancestor::*[contains(@class,'" + FROZEN + "')]")).isEmpty(),
+                    "Language must not be in the frozen part");
+        }
         assertNoJavascriptErrors();
     }
 
@@ -171,6 +196,11 @@ class DataTable063Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertTrue(ids.stream().noneMatch(id -> id.contains("undefined")), "cell ids: " + ids);
         assertEquals(ids.size(), ids.stream().distinct().count(), "duplicate cell ids: " + ids);
+
+        // the column toggler skips static cells, it must not list the fillers
+        page.getWebDriver().findElement(By.id("form:" + table)).findElements(By.cssSelector("th[id*='_filler'], td[id*='_filler']"))
+                .forEach(filler -> assertTrue(filler.getAttribute("class").contains("p-static-column"),
+                        "filler not static: " + filler.getAttribute("id")));
     }
 
     private void assertHeaderSplitAtFirstColumn(Page page, String table) {

@@ -157,8 +157,10 @@
                 <p:columnGroup type="header">
                     <p:row>
                         <ui:fragment>
-                            <p:column rowspan="3" headerText="ID"/>
+                            <p:column id="idColumn" rowspan="3" headerText="ID"/>
+                            <p:tooltip id="idTooltip" for="idColumn" value="Identifier"/>
                         </ui:fragment>
+                        <h:inputHidden id="note" value="note"/>
                         <p:column colspan="3" headerText="Language"/>
                     </p:row>
                     <p:row>
@@ -209,7 +211,7 @@
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column headerText="ID"/>
-                        <p:column colspan="2" rowspan="2" headerText="Language" width="300"/>
+                        <p:column colspan="2" rowspan="2" headerText="Language" width="300" style="width:300px"/>
                         <p:column rowspan="3" headerText="Type"/>
                     </p:row>
                     <p:row>
@@ -248,6 +250,37 @@
                 <p:column headerText="Name"><h:outputText value="#{lang.name}"/></p:column>
                 <p:column headerText="First appeared"><h:outputText value="#{lang.firstAppeared}"/></p:column>
                 <p:column headerText="Type"><h:outputText value="#{lang.type}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: a frozen table nested in a header cell must not clear the split state of the outer table -->
+            <p:dataTable id="nested" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:dataTable id="inner" value="#{dataTable063.progLanguages}" var="innerLang" frozenColumns="1"
+                                             scrollable="true" scrollWidth="150">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column headerText="A"/>
+                                            <p:column headerText="B"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:column><h:outputText value="#{innerLang.id}"/></p:column>
+                                    <p:column><h:outputText value="#{innerLang.name}"/></p:column>
+                                </p:dataTable>
+                            </f:facet>
+                        </p:column>
+                        <p:column colspan="3" headerText="Language"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
             </p:dataTable>
 
         </h:form>
