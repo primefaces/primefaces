@@ -192,6 +192,7 @@ class DataTable051Test extends AbstractDataTableTest {
                 "load(first=0, size=3)", // after toggleSelectPageOnly re-render
                 "count()",
                 "load(first=0, size=3)", // after toggleSelectAllCheckBox
+                "count()", // select-all counts with the current filters
                 "load(first=0, size=98)", // select-all loads all rows to resolve selection
                 "count()",
                 "load(first=0, size=3)"); // after submit (full-form re-render)
