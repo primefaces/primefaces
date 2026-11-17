@@ -32,6 +32,10 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.faces.application.ProjectStage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
@@ -42,6 +46,8 @@ import javax.faces.event.PhaseId;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
+    private static final Logger LOGGER = Logger.getLogger(PrimePartialViewContext.class.getName());
+
     private PartialResponseWriter writer;
 
     public PrimePartialViewContext(PartialViewContext wrapped) {
@@ -51,10 +57,15 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     @Override
     public void processPartial(PhaseId phaseId) {
         if (phaseId == PhaseId.RENDER_RESPONSE) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (context.isProjectStage(ProjectStage.Development)) {
+                validateRenderers(context);
+            }
+
             // fixed in Faces 4.0+ https://github.com/jakartaee/faces/issues/1936
-            PrimeEnvironment environment = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment();
+            PrimeEnvironment environment = PrimeApplicationContext.getCurrentInstance(context).getEnvironment();
             if (!environment.isAtLeastJsf40()) {
-                resetValues(FacesContext.getCurrentInstance());
+                resetValues(context);
             }
         }
 
@@ -95,6 +106,25 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         return getWrapped().isPartialRequest()
                 || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
                         Constants.RequestParams.PARTIAL_PROCESS_PARAM);
+    }
+
+    private void validateRenderers(FacesContext context) {
+        if (isRenderAll()) {
+            return;
+        }
+
+        for (String renderId : getRenderIds()) {
+            if ("@all".equals(renderId) || "@none".equals(renderId)) {
+                continue;
+            }
+
+            context.getViewRoot().invokeOnComponent(context, renderId, (ctx, component) -> {
+                if (LangUtils.isBlank(component.getRendererType())) {
+                    LOGGER.log(Level.WARNING, "Can not update component \"{0}\" with id \"{1}\" without an attached renderer.",
+                            new Object[]{component.getClass().getName(), component.getClientId(ctx)});
+                }
+            });
+        }
     }
 
      /**
