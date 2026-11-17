@@ -37,10 +37,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-rowgroup")
@@ -150,6 +152,14 @@ class DataTable062Test extends AbstractDataTableTest {
         assertEquals(List.of("1990", "1995", "2000", "2012"), getHeaderRows(page.dataTable));
         assertRows(getDataRows(page.dataTable), sortByNoLimit(BY_YEAR.thenComparing(BY_NAME)));
 
+        // Act + Assert - the headerRows toggled within the same view
+        PrimeSelenium.guardAjax(page.none).click();
+        assertTrue(getHeaderRows(page.dataTable).isEmpty());
+        assertRows(page.dataTable, sortByNoLimit(BY_NAME));
+        PrimeSelenium.guardAjax(page.type).click();
+        assertEquals(List.of("COMPILED", "INTERPRETED"), getHeaderRows(page.dataTable));
+        assertRows(getDataRows(page.dataTable), sortByNoLimit(BY_TYPE.thenComparing(BY_NAME)));
+
         // Act - a new view without the headerRow
         PrimeSelenium.goTo("datatable/dataTable062MultiViewState.xhtml?mode=none");
 
@@ -166,6 +176,135 @@ class DataTable062Test extends AbstractDataTableTest {
 
         PrimeSelenium.guardAjax(page.clearTableState).click();
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("DataTable: RowGroup - headerRow with an EL field set by the action which renders it; see GitHub #10481")
+    void headerRowWithElField(Page page) {
+        // Arrange - the headerRow which is not rendered is not evaluated, otherwise the page would fail
+        assertTrue(getHeaderRows(page.elFieldDataTable).isEmpty());
+
+        // Act
+        PrimeSelenium.guardAjax(page.groupFieldType).click();
+
+        // Assert
+        assertEquals(List.of("COMPILED", "INTERPRETED"), getHeaderRows(page.elFieldDataTable));
+        assertRows(getDataRows(page.elFieldDataTable), sortByNoLimit(BY_TYPE));
+
+        // Act - another field for the same headerRow
+        PrimeSelenium.guardAjax(page.groupFieldYear).click();
+
+        // Assert
+        assertEquals(List.of("1990", "1995", "2000", "2012"), getHeaderRows(page.elFieldDataTable));
+        // the in-memory sort is stable on the list it sorted by type before
+        assertRows(getDataRows(page.elFieldDataTable), sortByNoLimit(BY_YEAR.thenComparing(BY_TYPE)));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DataTable: RowGroup - headerRow of a table in ui:repeat follows its rendered state per iteration; see GitHub #10481")
+    void headerRowInRepeat(Page page) {
+        // the headerRow is only rendered for the first iteration
+        assertEquals(List.of("1990", "1995", "2000", "2012"), getRepeatedHeaderRows(page, "0"));
+        assertTrue(getRepeatedHeaderRows(page, "1").isEmpty());
+
+        // the second iteration (with its own list) is not sorted by the headerRow of the first one
+        DataTable second = PrimeSelenium.createFragment(DataTable.class, By.id("form:repeat:1:repeatedDatatable"));
+        assertRows(second, languages);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DataTable: RowGroup - a user sortBy for the field of the headerRow is kept; see GitHub #10481")
+    void headerRowWithUserSortBy(Page page) {
+        // Arrange
+        assertEquals(List.of("2012", "2000", "1995", "1990"), getHeaderRows(page.userSortByDataTable));
+
+        // Act - decodes and encodes the table again
+        page.userSortByDataTable.sort("Name");
+
+        // Assert - still grouped by year descending, then sorted by name
+        assertEquals(List.of("2012", "2000", "1995", "1990"), getHeaderRows(page.userSortByDataTable));
+        assertRows(getDataRows(page.userSortByDataTable), sortByNoLimit(BY_YEAR.reversed().thenComparing(BY_NAME)));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("DataTable: RowGroup - a headerRow shown later gets the user sortBy for its field; see GitHub #10481")
+    void toggledHeaderRowWithUserSortBy(Page page) {
+        // Arrange - without the headerRow the user sortBy sorts the column
+        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
+        assertTrue(isFirstAppearedSorted(page), "the column is sorted by the user sortBy");
+
+        // Act
+        PrimeSelenium.guardAjax(page.year).click();
+
+        // Assert - grouped in the order of the user sortBy; the column keeps its sort
+        assertEquals(List.of("2012", "2000", "1995", "1990"), getHeaderRows(page.toggledUserSortByDataTable));
+        assertTrue(isFirstAppearedSorted(page), "the column keeps its sort");
+
+        // Act
+        PrimeSelenium.guardAjax(page.none).click();
+
+        // Assert
+        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
+        assertTrue(isFirstAppearedSorted(page), "the column keeps its sort");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: RowGroup - the user sortBy of a headerRow hidden later goes to its column; see GitHub #10481")
+    void hiddenHeaderRowWithUserSortBy(Page page) {
+        // Arrange - the headerRow has the user sortBy
+        PrimeSelenium.goTo("datatable/dataTable062.xhtml?mode=year");
+        assertEquals(List.of("2012", "2000", "1995", "1990"), getHeaderRows(page.toggledUserSortByDataTable));
+        assertFalse(isFirstAppearedSorted(page), "the headerRow has the user sortBy, not the column");
+
+        // Act
+        PrimeSelenium.guardAjax(page.none).click();
+
+        // Assert - the column has it now
+        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
+        assertTrue(isFirstAppearedSorted(page), "the column has the user sortBy");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: RowGroup - hiding a headerRow keeps a sort of the user; see GitHub #10481")
+    void hiddenHeaderRowKeepsUserSort(Page page) {
+        // Arrange
+        PrimeSelenium.goTo("datatable/dataTable062.xhtml?mode=year");
+        page.toggledUserSortByDataTable.sort("Name");
+
+        // Act
+        PrimeSelenium.guardAjax(page.none).click();
+
+        // Assert - sorted by name only, the user sortBy does not come back on top of it
+        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
+        assertFalse(isFirstAppearedSorted(page), "the column does not get the user sortBy over the sort of the user");
+        assertRows(page.toggledUserSortByDataTable, sortByNoLimit(BY_NAME));
+        assertNoJavascriptErrors();
+    }
+
+    private boolean isFirstAppearedSorted(Page page) {
+        WebElement header = page.toggledUserSortByDataTable.findElements(By.cssSelector("thead th")).stream()
+                .filter(th -> th.getText().contains("First appeared"))
+                .findFirst()
+                .orElseThrow();
+        return PrimeSelenium.hasCssClass(header, "p-state-active");
+    }
+
+    private List<String> getRepeatedHeaderRows(Page page, String iteration) {
+        return page.getWebDriver().findElement(By.id("form:repeat:" + iteration + ":repeatedDatatable"))
+                .findElements(By.cssSelector("tbody > tr.p-rowgroup-header")).stream()
+                .map(row -> row.getText().trim())
+                .collect(Collectors.toList());
     }
 
     private List<String> getHeaderRows(DataTable dataTable) {
@@ -207,6 +346,21 @@ class DataTable062Test extends AbstractDataTableTest {
         @FindBy(id = "form:type")
         CommandButton type;
 
+        @FindBy(id = "form:elFieldDatatable")
+        DataTable elFieldDataTable;
+
+        @FindBy(id = "form:userSortByDatatable")
+        DataTable userSortByDataTable;
+
+        @FindBy(id = "form:toggledUserSortByDatatable")
+        DataTable toggledUserSortByDataTable;
+
+        @FindBy(id = "form:groupFieldType")
+        CommandButton groupFieldType;
+
+        @FindBy(id = "form:groupFieldYear")
+        CommandButton groupFieldYear;
+
         @Override
         public String getLocation() {
             return "datatable/dataTable062.xhtml";
@@ -216,6 +370,12 @@ class DataTable062Test extends AbstractDataTableTest {
     public static class MultiViewStatePage extends AbstractPrimePage {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
+
+        @FindBy(id = "form:none")
+        CommandButton none;
+
+        @FindBy(id = "form:type")
+        CommandButton type;
 
         @FindBy(id = "form:clearTableState")
         CommandButton clearTableState;

@@ -27,6 +27,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -51,9 +52,27 @@ public class DataTable062 implements Serializable {
     private List<ProgrammingLanguage> progLanguages;
 
     /**
+     * Own lists, as the in-memory sort of each table reorders its list.
+     */
+    private List<ProgrammingLanguage> elFieldLanguages;
+
+    private List<ProgrammingLanguage> repeatedLanguages;
+
+    private List<ProgrammingLanguage> otherRepeatedLanguages;
+
+    private List<ProgrammingLanguage> userSortByLanguages;
+
+    private List<ProgrammingLanguage> toggledUserSortByLanguages;
+
+    /**
      * Which headerRow is rendered: <code>none</code>, <code>year</code> or <code>type</code>.
      */
     private String mode = "none";
+
+    /**
+     * The field of the headerRow which is only rendered once it is set.
+     */
+    private String groupField;
 
     private SortRecordingLazyDataModel lazyModel = new SortRecordingLazyDataModel();
 
@@ -68,10 +87,30 @@ public class DataTable062 implements Serializable {
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
+        elFieldLanguages = service.getLangs();
+        repeatedLanguages = service.getLangs();
+        otherRepeatedLanguages = service.getLangs();
+        userSortByLanguages = service.getLangs();
+        toggledUserSortByLanguages = service.getLangs();
     }
 
     public void onSort(SortEvent event) {
         sortEventHeaderRows = event.getSortBy().values().stream().filter(SortMeta::isHeaderRow).count();
+    }
+
+    /**
+     * The field of a headerRow which is never rendered, so it must never be evaluated.
+     */
+    public String getFailingField() {
+        throw new IllegalStateException("a headerRow which is not rendered must not be evaluated");
+    }
+
+    /**
+     * A user sortBy for the field of a headerRow.
+     */
+    public SortMeta getYearDescending() {
+        // with the priority of a headerRow, otherwise a column sort would take precedence over the grouping
+        return SortMeta.builder().field("firstAppeared").order(SortOrder.DESCENDING).priority(SortMeta.MAX_PRIORITY).build();
     }
 
     public void clearTableState() {

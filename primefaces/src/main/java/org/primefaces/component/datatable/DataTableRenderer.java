@@ -76,6 +76,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     @Override
     public void decode(FacesContext context, DataTable component) {
+        // #10481 the rendered header row may have changed since the sortBy map was built
+        component.updateHeaderRowSortMeta(context);
 
         for (DataTableFeature feature : DataTableFeatures.all()) {
             if (feature.shouldDecode(context, component)) {
@@ -88,6 +90,9 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     @Override
     public void encodeEnd(FacesContext context, DataTable component) throws IOException {
+        // #10481 the rendered header row may have changed since the decode, e.g. by an action
+        component.updateHeaderRowSortMeta(context);
+
         if (component.shouldEncodeFeature(context)) {
             for (DataTableFeature feature : DataTableFeatures.all()) {
                 if (feature.shouldEncode(context, component)) {

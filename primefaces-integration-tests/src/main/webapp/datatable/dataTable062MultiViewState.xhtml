@@ -36,6 +36,12 @@
                 <p:column field="type" headerText="Type"/>
             </p:dataTable>
 
+            <p:commandButton id="none" value="No grouping" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.mode}" value="none"/>
+            </p:commandButton>
+            <p:commandButton id="type" value="Group by type" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.mode}" value="type"/>
+            </p:commandButton>
             <p:commandButton id="clearTableState" value="Clear table state" action="#{dataTable062.clearTableState}" update="@form"/>
         </h:form>
 
