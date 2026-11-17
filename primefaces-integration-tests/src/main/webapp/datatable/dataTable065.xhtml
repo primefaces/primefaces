@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- the client gets the sort order of the columns only, not of the headerRow -->
+            <p:dataTable id="datatable" value="#{dataTable065.progLanguages}" var="lang" sortMode="multiple">
+                <p:headerRow field="firstAppeared">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang.firstAppeared}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <p:column field="id" headerText="ID"/>
+                <p:column id="name" field="name" headerText="Name"/>
+                <p:column id="firstAppeared" field="firstAppeared" headerText="First appeared"/>
+                <p:column field="type" headerText="Type"/>
+            </p:dataTable>
+
+            <p:commandButton id="refresh" value="Refresh" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
