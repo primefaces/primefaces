@@ -597,7 +597,7 @@ For frozen columns, use `frozenHeader` , `frozenFooter` , `scrollableHeader` and
 If neither the `frozen` nor the `scrollable` group of a header or footer is defined, a `header` or `footer` column group
 gets split between the frozen and the scrollable columns. A cell spanning both of them is displayed in the part where it
 starts, without its width (neither the `width` attribute nor a width set through `style`). Content of a row other than
-columns, e.g. a tooltip, is encoded in the first part only.
+columns, e.g. a tooltip, is encoded in the first part only. Cells beyond the rendered columns of the table are left out.
 
 
 ## Row Grouping

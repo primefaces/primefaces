@@ -189,6 +189,41 @@ class DataTable063Test extends AbstractDataTableTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: GitHub #9854 a nested table with a header group keeps the wrapped columns of the outer split group")
+    void plainColumnGroupWithNestedPlainTable(Page page) {
+        // the wrapped column after the cell with the nested table is still encoded as a cell of the frozen part
+        List<WebElement> names = page.getWebDriver().findElement(By.id("form:nestedPlain")).findElements(By.tagName("th")).stream()
+                .filter(th -> "Name".equals(th.getDomProperty("textContent").trim()))
+                .filter(th -> !th.getAttribute("id").endsWith("_clone"))
+                .collect(Collectors.toList());
+        assertEquals(1, names.size());
+        assertFalse(names.get(0).findElements(By.xpath("ancestor::*[contains(@class,'" + FROZEN + "')]")).isEmpty(),
+                "Name must be in the frozen part");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("DataTable: GitHub #9854 content of a row other than columns is encoded once if a part has no rendered columns")
+    void plainColumnGroupWithEmptyPart(Page page) {
+        WebElement table = page.getWebDriver().findElement(By.id("form:emptyPart"));
+        assertEquals(1, table.findElements(By.cssSelector(".p-datatable-scrollable-header-box [id='form:emptyPart:note']")).size());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("DataTable: GitHub #9854 frozen columns split a plain column group with rows wrapped in ui:fragment / ui:repeat")
+    void plainColumnGroupWrappedRows(Page page) {
+        assertEquals(List.of("ID:1x2", ""), getRows(page, "wrappedRows", FROZEN, "thead"));
+        assertEquals(List.of("Language:3x1", "Info:2x1|Type:1x1"), getRows(page, "wrappedRows", SCROLLABLE, "thead"));
+        assertHeaderRowsAligned(page, "wrappedRows");
+        assertUniqueCellIds(page, "wrappedRows");
+        assertNoJavascriptErrors();
+    }
+
     private void assertUniqueCellIds(Page page, String table) {
         List<String> ids = page.getWebDriver().findElement(By.id("form:" + table)).findElements(By.cssSelector("th, td")).stream()
                 .map(cell -> cell.getAttribute("id"))

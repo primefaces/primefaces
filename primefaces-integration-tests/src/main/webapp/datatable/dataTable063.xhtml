@@ -211,7 +211,7 @@
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column headerText="ID"/>
-                        <p:column colspan="2" rowspan="2" headerText="Language" width="300" style="width:300px"/>
+                        <p:column colspan="2" rowspan="2" headerText="Language" width="300" style="color:inherit; WIDTH: 300px !important"/>
                         <p:column rowspan="3" headerText="Type"/>
                     </p:row>
                     <p:row>
@@ -275,6 +275,80 @@
                         </p:column>
                         <p:column colspan="3" headerText="Language"/>
                     </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: a nested table with a (not split) header group must not clear the helper renderer of the outer
+                 table, the wrapped column after it is still a cell -->
+            <p:dataTable id="nestedPlain" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="2" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:dataTable id="innerPlain" value="#{dataTable063.progLanguages}" var="innerLang">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column headerText="A"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:column><h:outputText value="#{innerLang.id}"/></p:column>
+                                </p:dataTable>
+                            </f:facet>
+                        </p:column>
+                        <ui:fragment>
+                            <p:column headerText="Name"/>
+                        </ui:fragment>
+                        <p:column colspan="2" headerText="Language"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+                <p:column><h:outputText value="#{lang.firstAppeared}"/></p:column>
+                <p:column><h:outputText value="#{lang.type}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: frozen columns aligned right with a part without rendered columns; content of a row other
+                 than columns is still encoded in one part only -->
+            <p:dataTable id="emptyPart" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" frozenColumnsAlignment="right"
+                         scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <h:inputHidden id="note" value="note"/>
+                        <p:column headerText="Name"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column rendered="false"><h:outputText value="#{lang.id}"/></p:column>
+                <p:column><h:outputText value="#{lang.name}"/></p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <!-- GitHub #9854: rows wrapped in ui:fragment and ui:repeat -->
+            <p:dataTable id="wrappedRows" value="#{dataTable063.progLanguages}" var="lang" frozenColumns="1" scrollable="true" scrollWidth="400">
+                <p:columnGroup type="header">
+                    <ui:fragment>
+                        <p:row>
+                            <p:column rowspan="2" headerText="ID"/>
+                            <p:column colspan="3" headerText="Language"/>
+                        </p:row>
+                    </ui:fragment>
+                    <ui:repeat value="#{['Info']}" var="title">
+                        <p:row>
+                            <p:column colspan="2" headerText="#{title}"/>
+                            <p:column headerText="Type"/>
+                        </p:row>
+                    </ui:repeat>
                 </p:columnGroup>
 
                 <p:column><h:outputText value="#{lang.id}"/></p:column>
