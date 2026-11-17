@@ -27,6 +27,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
 import org.primefaces.util.LangUtils;
 
 import java.lang.reflect.Array;
@@ -93,6 +94,14 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     public void decodeSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
+        decodeSelection(context, table, rowKeys, false);
+    }
+
+    /**
+     * @param rowCountUpToDate {@code true} if the lazy model was loaded with the current filters in this request,
+     *        so select-all can use its row count instead of counting again
+     */
+    public void decodeSelection(FacesContext context, DataTable table, Set<String> rowKeys, boolean rowCountUpToDate) {
         table.setSelection(null);
         table.setSelectedRowKeys(rowKeys);
 
@@ -100,7 +109,7 @@ public class SelectionFeature implements DataTableFeature {
             decodeSingleSelection(context, table, rowKeys);
         }
         else {
-            decodeMultipleSelection(context, table, rowKeys);
+            decodeMultipleSelection(context, table, rowKeys, rowCountUpToDate);
         }
     }
 
@@ -109,7 +118,8 @@ public class SelectionFeature implements DataTableFeature {
 
         // If rowKeys are already set from decode phase (lazy table scenario), resolve them to objects
         if (table.isLazy() && rowKeys != null && !rowKeys.isEmpty()) {
-            decodeSelection(context, table, rowKeys);
+            // called after the lazy model has been loaded in this request
+            decodeSelection(context, table, rowKeys, true);
             return;
         }
 
@@ -153,6 +163,10 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     protected void decodeMultipleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
+        decodeMultipleSelection(context, table, rowKeys, false);
+    }
+
+    protected void decodeMultipleSelection(FacesContext context, DataTable table, Set<String> rowKeys, boolean rowCountUpToDate) {
         if (rowKeys.isEmpty()) {
             setSelection(context, table, true, new HashMap<>());
         }
@@ -169,7 +183,7 @@ public class SelectionFeature implements DataTableFeature {
                 ValueExpression selectionVE = table.getValueExpression(DataTable.PropertyKeys.selection.toString());
                 if (selectionVE != null) {
                     // Current behavior: load all data and populate selection
-                    selectAllRows(context, table, var, requestMap, rowKeyToObjectMap, deselectedRows);
+                    selectAllRows(context, table, var, requestMap, rowKeyToObjectMap, deselectedRows, rowCountUpToDate);
                     setSelection(context, table, true, rowKeyToObjectMap);
                 }
                 else {
@@ -292,10 +306,11 @@ public class SelectionFeature implements DataTableFeature {
      * @param requestMap the request map for storing the current row variable
      * @param rowKeyToObjectMap the map to populate with selected rows
      * @param deselectedRows set of rowKeys to exclude from selection (may be empty)
+     * @param rowCountUpToDate whether the row count of the lazy model is already the one of the current filters
      */
     private void selectAllRows(FacesContext context, DataTable table, String var,
                                Map<String, Object> requestMap, Map<String, Object> rowKeyToObjectMap,
-                               Set<String> deselectedRows) {
+                               Set<String> deselectedRows, boolean rowCountUpToDate) {
         // Clear existing selections for select all
         rowKeyToObjectMap.clear();
 
@@ -303,14 +318,25 @@ public class SelectionFeature implements DataTableFeature {
             // For lazy tables, load all data at once using the lazy data model
             // Same sort/filter maps as DataTable#loadLazyScrollData: only active ones, keyed by field
             LazyDataModel<?> lazyModel = table.getLazyDataModel();
-            // Count with the current filters: the row count of the previous request may be out of date
             Map<String, FilterMeta> filterBy = table.getActiveFilterMeta();
-            int rowCount = lazyModel.count(filterBy);
-            if (rowCount <= 0) {
-                // models may return 0 from count() and call setRowCount() in load(), see the lazy DataTable docs
-                rowCount = lazyModel.getRowCount();
+            Map<String, SortMeta> sortBy = table.getActiveSortMeta();
+            int rowCount = lazyModel.getRowCount();
+            if (!rowCountUpToDate) {
+                // the row count is still the one of the previous request, the filters may have changed since
+                int count = lazyModel.count(filterBy);
+                if (count > 0) {
+                    rowCount = count;
+                }
+                // else: models may return 0 from count() and call setRowCount() in load(), see the lazy DataTable docs
             }
-            List<?> allData = lazyModel.load(0, rowCount, table.getActiveSortMeta(), filterBy);
+            if (rowCount <= 0) {
+                return;
+            }
+            List<?> allData = lazyModel.load(0, rowCount, sortBy, filterBy);
+            if (allData != null && lazyModel.getRowCount() > rowCount) {
+                // load() has set a bigger row count: the previous one was out of date
+                allData = lazyModel.load(0, lazyModel.getRowCount(), sortBy, filterBy);
+            }
 
             if (allData == null) {
                 return;

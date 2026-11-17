@@ -47,6 +47,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -131,6 +132,42 @@ class SelectionFeatureTest {
     }
 
     @Test
+    void selectAllReloadsWhenLoadSetsBiggerRowCount() {
+        // count() not implemented and filter widened in the same request: load() reports the new row count
+        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("a").build());
+        model.countNotImplemented = true;
+        model.setRowCount(2); // set by load() in the previous request
+
+        List<Object> selection = selectAll("@all");
+
+        assertEquals(List.of("apple", "avocado", "apricot"), selection);
+    }
+
+    @Test
+    void selectAllAfterLoadUsesRowCountWithoutCounting() {
+        // decodeSelectionRowKeys runs after the model has been loaded with the current filters
+        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
+        model.setRowCount(2);
+        when(table.getSelectedRowKeys()).thenReturn(Set.of("@all"));
+
+        new SelectionFeature().decodeSelectionRowKeys(context, table);
+
+        assertNull(model.countedFilterBy);
+        assertEquals(List.of("apple", "apricot"), capturedSelection());
+    }
+
+    @Test
+    void selectAllAfterLoadSkipsLoadWhenNothingMatches() {
+        model.setRowCount(0);
+        when(table.getSelectedRowKeys()).thenReturn(Set.of("@all"));
+
+        new SelectionFeature().decodeSelectionRowKeys(context, table);
+
+        assertNull(model.countedFilterBy);
+        assertNull(model.loadedFilterBy);
+    }
+
+    @Test
     void selectAllLoadsWithActiveSortMeta() {
         sortByAsMap.put("tbl:nameCol", SortMeta.builder().field("name").order(SortOrder.DESCENDING).build());
         sortByAsMap.put("tbl:otherCol", SortMeta.builder().field("other").order(SortOrder.UNSORTED).build());
@@ -151,7 +188,11 @@ class SelectionFeatureTest {
     @SuppressWarnings("unchecked")
     private List<Object> selectAll(String... rowKeys) {
         new SelectionFeature().decodeSelection(context, table, Set.of(rowKeys));
+        return capturedSelection();
+    }
 
+    @SuppressWarnings("unchecked")
+    private List<Object> capturedSelection() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         verify(selectionVE).setValue(any(), captor.capture());
         List<Object> selection = new ArrayList<>((List<Object>) captor.getValue());
@@ -182,6 +223,9 @@ class SelectionFeatureTest {
             loadedSortBy = sortBy;
             loadedFilterBy = filterBy;
             List<String> rows = filter(filterBy);
+            if (countNotImplemented) {
+                setRowCount(rows.size());
+            }
             return rows.subList(first, Math.min(first + pageSize, rows.size()));
         }
 
