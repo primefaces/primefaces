@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        BlockUI blocks other components. It can be used with special ajax integration or manually with client side api.
+        BlockUI blocks the interaction with other components. With the Ajax integration the components defined with
+        <b>block</b> are blocked while an Ajax request of the <b>trigger</b> component is running, and custom content
+        such as a spinner can be placed inside the <b>p:blockUI</b>. Without a trigger it is controlled manually with
+        the client side API <b>show()</b> and <b>hide()</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/blockui"/>

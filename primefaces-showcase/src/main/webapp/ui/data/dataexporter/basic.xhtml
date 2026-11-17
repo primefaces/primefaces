@@ -11,8 +11,10 @@
     </ui:define>
 
     <ui:define name="description">
-        EXCEL, PDF, CSV and XML are the supported formats. The datatable columns content will be justified as left aligned, center aligned and right aligned based on the content type.
-        If a style or styleClass contains the word "right" the cell will be right aligned in the Excel/PDF output.
+        <b>p:dataExporter</b> is nested in a command component and exports the DataTable given as <b>target</b> to
+        Excel, PDF, CSV or XML; the TXT buttons use a custom exporter. <b>pageOnly="true"</b> exports only the current
+        page instead of the whole dataset. In Excel and PDF a cell is aligned if the <b>style</b> or <b>styleClass</b>
+        of its column contains "right" or "center".
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/dataexporter"/>

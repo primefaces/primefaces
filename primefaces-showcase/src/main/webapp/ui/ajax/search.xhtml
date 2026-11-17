@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        PrimeFaces extens the Faces Search Expressions by more keywords.
+        Search expressions reference components with keywords such as <b>@form</b> or <b>@parent</b> instead of ids.
+        PrimeFaces extends the Search Expressions of Jakarta Faces with more keywords, and several keywords can be
+        combined with a colon. This page uses <b>@previous</b> for a message and the composite expressions
+        <b>@parent:@parent</b> and <b>@form:@child(1):txt1</b> for <b>process</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/searchexpression"/>

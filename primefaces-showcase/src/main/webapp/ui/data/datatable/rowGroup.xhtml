@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Rows can be grouped using the headerRow and summaryRow components or with the groupRow attribute on a column.
+        Rows can be grouped with the <b>p:headerRow</b> and <b>p:summaryRow</b> components or with <b>groupRow="true"</b>
+        on a column, which spans the cell over the rows of a group. A header row is made toggleable with
+        <b>expandable="true"</b>, and a summary row without a header row defines the group itself with <b>field</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

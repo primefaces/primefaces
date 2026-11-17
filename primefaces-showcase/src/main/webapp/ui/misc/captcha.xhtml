@@ -10,7 +10,11 @@
     </ui:define>
 
     <ui:define name="description">
-        Captcha is based on <a href="https://www.google.com/recaptcha/about/" target="_blank" rel="noopener noreferrer">reCAPTCHA</a> API or <a href="https://www.hcaptcha.com/" target="_blank" rel="noopener noreferrer">hCaptcha</a> API.
+        Captcha is an input component with a built-in validator that is integrated with the
+        <a href="https://www.google.com/recaptcha/about/" target="_blank" rel="noopener noreferrer">reCAPTCHA</a> API or the
+        <a href="https://www.hcaptcha.com/" target="_blank" rel="noopener noreferrer">hCaptcha</a> API, selected with <b>type</b>.
+        The public and private key of the service are configured in <b>web.xml</b>. The showcase only has a valid key
+        for reCAPTCHA.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/captcha"/>

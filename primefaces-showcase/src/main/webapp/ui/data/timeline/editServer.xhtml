@@ -35,9 +35,11 @@
     </ui:define>
 
     <ui:define name="description">
-        If the attribute editable is true, the events can be created, edited (content), changed (start / end time) and deleted.
-        Events can be created by double click on empty space.
-        Events can only be editable when the attribute selectable is true (default). Editable timeline can fire AJAX events select, change, changed, edit, add, delete.
+        With <b>editable="true"</b> events can be created by a double click on empty space, edited, moved, resized and
+        deleted; they are only editable when <b>selectable</b> is true. Editable timelines fire the Ajax events
+        <b>select</b>, <b>change</b>, <b>changed</b>, <b>edit</b>, <b>add</b> and <b>delete</b>. The listeners open
+        dialogs to edit or delete a booking, and the bean updates the timeline with the server side
+        <b>TimelineUpdater</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/timeline"/>

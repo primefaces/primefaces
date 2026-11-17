@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Columns can be resized in two ways, with a helper or live. Double-click on resizer or press <code>ALT+W</code> to auto-adjust the column width to fit text like Excel.
+        With <b>resizableColumns="true"</b> columns are resized by dragging, either with a resize helper or live with
+        <b>liveResize="true"</b>; the <b>colResize</b> Ajax event passes the new size to a listener. Double-click on a
+        resizer or press <code>ALT+W</code> to auto-adjust the column width to fit the text like Excel. The last table
+        uses <b>resizeMode="expand"</b> together with grouped headers.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

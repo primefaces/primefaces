@@ -10,8 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        DataTable has two responsive modes. In priority mode, visibility of columns are toggled based on the screen size and their priority (1-6). On the other hand
-        in reflow mode, columns are displayed as stacked on smaller screens.
+        DataTable has two responsive modes. In priority mode, the visibility of a column depends on the screen size and
+        its <b>responsivePriority</b> (1-6, a lower value means a higher priority). In reflow mode, enabled with
+        <b>reflow="true"</b>, all columns stay visible but are displayed as stacked on smaller screens.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

@@ -14,7 +14,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Map can respond to various events such as click, zoom change and overlay select.
+        The map fires Ajax behavior events for user interactions such as a click, a zoom change or the selection of an
+        overlay. This example listens to <b>stateChange</b>, fired when the map is dragged or zoomed, which provides the
+        zoom level, center and bounds, and to <b>pointSelect</b>, fired by a click on the map, which provides the
+        coordinates of the point.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>

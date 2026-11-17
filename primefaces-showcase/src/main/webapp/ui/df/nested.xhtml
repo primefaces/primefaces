@@ -10,8 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Nested dialogs are supported to allow creating a dialog from another dialog. Demo here has 3 level of nested dialogs where last dialog returns data
-        back to the root.
+        A dialog can be opened from another dialog. The demo has 3 levels of nested dialogs; the last one returns data
+        to the root page, which receives it in the listener of the <b>dialogReturn</b> event. The first dialog is opened
+        by a button, a link and a menu item; the second button passes an object via the flash scope.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/dialogframework"/>

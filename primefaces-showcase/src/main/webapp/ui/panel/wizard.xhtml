@@ -10,9 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Wizard creates a workflow by creating multiple steps out of a single page form. Only current step is processed partially and
-        next step is displayed if current step passes validations. Wizard flow is sequential by default and this can be managed using the optional ajax flowListeners, simply outcome of a flowListener defines the next
-        step to display.
+        Wizard splits a form into steps, one <b>p:tab</b> per step. Only the current step is processed, and the next one
+        is displayed if it passes validation. The optional <b>flowListener</b> changes the sequential flow: it returns
+        the id of the tab to display next. The example uses it to jump to the confirmation when "Skip to last" is
+        checked.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/wizard"/>

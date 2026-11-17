@@ -10,9 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        DataTable has built-in support to deal with huge datasets. In order to enable lazy loading, a LazyDataModel needs to be implemented
-        to query the datasource when pagination, sorting, filtering or live scrolling happens. This example uses an in-memory list to mimic a real datasource like a database.
-        In a real application, loading should be executed with the query built using the information passed to the load method.
+        DataTable supports lazy loading to deal with large datasets. For this, a <b>LazyDataModel</b> is implemented that
+        queries the datasource when pagination, sorting, filtering or live scrolling happens. This example uses an
+        in-memory list to mimic a real datasource like a database; in a real application, the query is built from the
+        information passed to the <b>load</b> method.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

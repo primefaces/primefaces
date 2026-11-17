@@ -38,8 +38,11 @@
     </ui:define>
 
     <ui:define name="description">
-        PieChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model.
-        Using the <strong>extender</strong> functionality to add Data Labels to the pie chart with the Data Labels plugin.
+        A pie chart is created with raw JSON or using an
+        <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a>
+        model, as in this demo. The <b>extender</b> attribute names a JavaScript function that has access to the
+        Chart.js configuration; here it adds the Data Labels plugin, which is loaded as an extra script,
+        to display the values as labels on the pie chart.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/chart" />

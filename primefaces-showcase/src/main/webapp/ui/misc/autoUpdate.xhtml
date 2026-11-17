@@ -10,8 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        AutoUpdate is a utility tag, which registers the attached/parent component to be updated automatically on each ajax request. 
-        All ajaxified components (includes p:ajax) provides an attribute, to mark the current request to ignore all autoUpdates.
+        AutoUpdate is a utility tag that is nested inside a component and registers it to be updated automatically on
+        every Ajax request. All components that send Ajax requests, including <b>p:ajax</b>, can skip these updates for
+        their request with <b>ignoreAutoUpdate="true"</b>, as the second button shows.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/autoupdate"/>

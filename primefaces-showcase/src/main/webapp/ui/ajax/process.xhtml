@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Partial processing enables executing certain components while ignoring others during a request.
+        Partial processing executes only the components defined with <b>process</b> during a request and ignores the others.
+        The buttons submit the same form with <b>@all</b>, <b>@form</b>, <b>@this</b>, <b>@none</b>, <b>@parent</b> and
+        <b>@this,surname</b>. The required surname is only validated when it is part of the processed components.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/ajaxProcessing?id=partial-processing"/>

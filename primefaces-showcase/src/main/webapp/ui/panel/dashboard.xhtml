@@ -24,7 +24,11 @@ body .p-panel.chart-dashlet .p-panel-content .p-chart {
     </ui:define>
 
     <ui:define name="description">
-        Dashboard is a layout component featuring dragdrop based content reordering similar to portal environments. Responsive layout requires <a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> CSS.
+        Dashboard is a layout of panels that are reordered with drag and drop. With <b>responsive="true"</b> the panels
+        are grid cells of different sizes and swap positions when one is dropped on another; this mode requires
+        <a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a>, and the menu of each
+        panel changes its size. The legacy mode arranges them in columns. The <b>reorder</b> Ajax event reports each
+        change.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/dashboard" />

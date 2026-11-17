@@ -11,8 +11,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Global tooltip binds to clickable elements with title attributes. Ajax updates are supported as well, meaning
-        if target component is updated with ajax, tooltip can still bind.
+        A global tooltip is a single <b>p:tooltip</b> without a target. It binds to the elements with a <b>title</b>
+        attribute or, as in this example, with the pass-through attribute <b>data-tooltip</b>. Ajax updates are
+        supported as well: if a target component is updated with Ajax, the tooltip still binds to it, which the button
+        shows by updating its parent.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tooltip"/>

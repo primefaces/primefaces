@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        ContextMenu has special integration with Tree. Even different menus can be assigned to different node types by matching node types.
+        A <b>p:contextMenu</b> is attached to the Tree with <b>for</b>, selection must be enabled in the Tree for this.
+        The menu items work on the selected node: View displays it in a message and Delete removes it. Different menus
+        can be assigned to different nodes with <b>nodeType</b> of the context menu, which matches the type of the tree
+        node.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tree"/>

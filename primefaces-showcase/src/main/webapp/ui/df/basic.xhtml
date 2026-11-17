@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        An external page can be displayed in a dynamically generated dialog on runtime.
+        The Dialog Framework displays an external page in a dialog that is generated at runtime. An action of the bean
+        opens the page by its outcome with <b>PrimeFaces.current().dialog().openDynamic()</b> and can pass options. The
+        buttons open a plain dialog, a modal one with a defined width and height, a responsive one and one with content
+        larger than the viewport.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/dialogframework"/>

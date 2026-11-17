@@ -26,8 +26,10 @@
     </ui:define>
 
     <ui:define name="description">
-        PartialSubmit reduces network traffic by only adding the partially processed components to the ajax request post. For big pages with many input components,
-        partialSubmit is extremely useful as it leads to more lightweight requests. Compare the Post Data displayed by the logger for the difference.
+        By default an Ajax request posts the data of the whole form, even if only some components are processed. With
+        <b>partialSubmit="true"</b> only the data of the processed components is sent, which makes the requests of pages
+        with many inputs smaller. Both buttons process only the Name field; compare the post data displayed by the
+        logger.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/ajaxPartialsubmit?id=partial-submit"/>

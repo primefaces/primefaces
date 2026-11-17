@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        It is possible to set a specific device, like a USB camera or a different onboard camera, to retrieve images.
-        Note that, in mobile devices, usually "user" stands for the front camera and "environment" stands for the rear camera.
+        PhotoCam can use a specific device, like a USB camera or another onboard camera. The demo fills a select with
+        the devices returned by the client side <b>getAvailableDevices()</b> method, sets the chosen one as
+        <b>device</b> on the client and reloads the camera. On mobile devices "user" usually stands for the front camera
+        and "environment" for the rear camera.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/photocam"/>

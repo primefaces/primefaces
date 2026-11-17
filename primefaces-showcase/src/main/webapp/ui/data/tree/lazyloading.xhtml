@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        This example shows how to implement lazy loading of child nodes - which is essential for big models.
+        This example shows how to implement lazy loading of child nodes, which is essential for big models. The root is
+        a <b>LazyDefaultTreeNode</b>, which takes two functions: one to load the child data and one to decide whether
+        the data is a leaf. The demo uses it together with <b>dynamic="true"</b> to browse the files of the deployed web
+        application.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tree"/>

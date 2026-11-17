@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        ImageCropper can load the image dynamically using StreamedContent.
+        ImageCropper can load the image dynamically using StreamedContent instead of a path.
+        Here the bean generates an image of the Mandelbrot set, and the spinner changes its number of iterations
+        and updates the cropper. <b>cache="false"</b> turns off browser caching of the generated image.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/imagecropper"/>

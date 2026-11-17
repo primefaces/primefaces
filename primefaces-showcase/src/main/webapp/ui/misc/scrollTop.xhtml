@@ -35,7 +35,9 @@
     </ui:define>
 
     <ui:define name="description">
-        ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.
+        ScrollTop is displayed after a certain scroll position, defined with <b>threshold</b>, and navigates back to
+        the top when clicked. By default it listens to the scrolling of the window; with <b>target="parent"</b> it is
+        attached to its parent element, as in the second example, which also has a custom style.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/scrolltop"/>

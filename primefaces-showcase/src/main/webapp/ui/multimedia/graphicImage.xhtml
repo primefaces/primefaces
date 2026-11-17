@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        GraphicImage is capable of presenting images that are created programmatically at runtime or images stored in a database.
+        GraphicImage extends the standard <b>h:graphicImage</b> and can display images created at runtime or stored in a
+        database. The demo shows a static resource image, a StreamedContent loaded in a separate request, a byte array
+        rendered as a data URI with <b>stream="false"</b>, a StreamedContent written to the response without buffering,
+        and a text drawn as an image on the server.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/graphicimage"/>

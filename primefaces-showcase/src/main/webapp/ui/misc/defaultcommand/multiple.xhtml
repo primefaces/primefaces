@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        DefaultCommand controls which command to initiate form submit with when enter key is pressed. Multiple
-        defaultCommand in same form is supported with scope option. Within a Textarea the defaultCommand is not active.
+        DefaultCommand controls which command submits the form when Enter is pressed in an input. Multiple default
+        commands in one form are supported with <b>scope</b>, which refers to an ancestor of the inputs a command is
+        responsible for: Enter triggers Button1 in Panel 1 and Button2 in Panel 2. Within a textarea the default command
+        is not active.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/defaultcommand"/>

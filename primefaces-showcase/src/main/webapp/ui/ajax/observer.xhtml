@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        AutoUpdate allows you to use the <b>observer pattern</b> in which a component maintains a list of its dependents, called observers, and notifies them automatically of any state changes.
-        Instead of having to list every component you want to <b>update</b> on a CommandButton you can <b>subscribe</b> components to listen to that button's event using <b>@obs(event)</b>.
+        <b>p:autoUpdate</b> marks its parent component to be updated at every Ajax request. With the <b>on</b> attribute
+        it follows the <b>observer pattern</b>: the component is only updated when a command publishes the given event
+        with <b>update="@obs(event)"</b>, so the command does not have to list every component. The <b>p:ajax</b> of the
+        input skips all auto updates with <b>ignoreAutoUpdate="true"</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/ajaxRendering"/>

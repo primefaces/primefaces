@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Field property is a shorthand to define sort, filter and display properties of a column.
+        <b>field</b> is a shorthand to define a column: the given property of the row is displayed, and sorting and
+        filtering by it are enabled without separate <b>sortBy</b> and <b>filterBy</b> expressions. Both can be switched
+        off for a column with <b>sortable="false"</b> and <b>filterable="false"</b>, as the first column shows.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable" />

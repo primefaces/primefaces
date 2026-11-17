@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        DataView offers basic responsiveness. You can improve this for e.g. large screen via gridRowStyleClass-attribute.
-        Additional you can use <a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> instead of Grid CSS via flex-attribute or set primefaces.FLEX as context-param.
+        The grid layout of DataView offers basic responsiveness. It can be refined with <b>gridRowStyleClass</b>, which
+        adds style classes to each grid cell; this demo uses it to set the width of the cells on large screens. With
+        <b>flex="true"</b>, or with the context parameter <b>primefaces.FLEX</b> for the whole application, the grid uses
+        <a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> instead of Grid CSS.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/dataview"/>

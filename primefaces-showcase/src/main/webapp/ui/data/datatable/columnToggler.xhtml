@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        ColumnToggler is a helper component of datatable to toggle the visibility of columns.
+        <b>p:columnToggler</b> is a helper component of DataTable to toggle the visibility of its columns; it is opened
+        by the component given as <b>trigger</b>. A column with <b>visible="false"</b> is hidden by default and the
+        <b>toggle</b> Ajax event passes the toggled column to a listener. The export buttons use
+        <b>visibleOnly="true"</b> to export the visible columns only.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

@@ -11,6 +11,8 @@
 
     <ui:define name="description">
         PhotoCam is an input component to take photos with the webcam and send them to the backend model.
+        A photo is taken with the client side <b>capture()</b> method, and the <b>listener</b> receives the image data
+        in a <b>CaptureEvent</b>. Here the bean saves the photo as a file and the page displays it next to the camera.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/photocam"/>

@@ -10,7 +10,8 @@
     </ui:define>
 
     <ui:define name="description">
-        In inline mode, data is loaded on scroll event of the component itself.
+        By default DataScroller monitors the scrollbar of the page. With <b>mode="inline"</b> it listens to the scroll
+        event of its own container instead, whose height is defined with <b>scrollHeight</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datascroller"/>

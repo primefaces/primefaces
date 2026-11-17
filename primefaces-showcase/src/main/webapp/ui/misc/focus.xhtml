@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Focus manages element focus in forms. By default first visible and enabled input element(e.g. text, textarea, select) is chosen to receive focus automatically.
-        It is also possible to explicitly declare the component to receive focus via the for attribute. Focus is also aware of failed validations, first invalid input component receives a focus automatically.
+        Focus manages the element focus of a page. By default the first visible and enabled input receives the focus,
+        <b>for</b> declares the component explicitly and <b>context</b>, as used here, limits the search to a part of
+        the page. After a failed validation the first invalid input receives the focus, which requires that
+        <b>p:focus</b> is updated by the Ajax request.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/focus"/>

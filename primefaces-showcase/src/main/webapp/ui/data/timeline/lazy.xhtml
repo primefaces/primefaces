@@ -15,16 +15,13 @@
 
     <ui:define name="description">
         <p>
-            Timeline supports lazy loading of events during moving / zooming in the timeline.
-            This makes sense when event's loading is time-consuming. Events are loaded lazy
-            when <strong>p:ajax</strong> with <strong>event="lazyload"</strong> is attached to the
-            <strong>p:timeline</strong> tag.
-            The event class <strong>TimelineLazyLoadEvent</strong> contains one or two time ranges
-            the events should be loaded for (two times ranges occur when you zoom out the timeline).
+            Timeline can load events lazily while it is moved or zoomed, useful when loading them is slow. A
+            <b>p:ajax</b> with <b>event="lazyload"</b> enables it; the <b>TimelineLazyLoadEvent</b> contains one or two
+            time ranges to load (two when zooming out).
         </p>
         <p>
-            <strong>Note:</strong> The "lazyload" listener is not invoked again when the visible time range
-            (incl. some hidden ranges defined by <strong>preloadFactor</strong>) already has lazy loaded events.
+            <b>Note:</b> The listener is not invoked again when the visible range, including the hidden ranges of
+            <b>preloadFactor</b>, is already loaded.
         </p>
     </ui:define>
 

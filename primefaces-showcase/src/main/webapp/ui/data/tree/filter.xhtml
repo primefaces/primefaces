@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Filtering updates the node based on the constraints.
+        Filtering of the nodes is enabled with <b>filterBy</b> or <b>filterFunction</b>. <b>filterBy</b> defines the
+        value that is matched, <b>startsWith</b> is the default <b>filterMatchMode</b>, and <b>filterDelay</b> is the
+        delay in milliseconds before a filter request is sent. <b>filterFunction</b> refers to a method of the bean that
+        decides whether a node matches, here a case-insensitive contains.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tree"/>

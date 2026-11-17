@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Poll component makes remote calls periodically.
+        Poll sends Ajax requests periodically. Here it calls a <b>listener</b> every 2 seconds (<b>interval</b>) that
+        increments a number and updates its output. <b>onactivated</b> is a client side callback that is executed when
+        the poll is activated, here it writes to the browser console.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/poll"/>

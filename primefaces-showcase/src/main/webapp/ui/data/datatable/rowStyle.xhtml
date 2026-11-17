@@ -20,8 +20,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Certain rows can be styled with rowStyleClass and get a row-specific title with rowTitle, based on a condition.
-        Table below highlights products that are cheaper than $50 and shows their price as title.
+        <b>rowStyleClass</b> adds a style class and <b>rowTitle</b> a title to a row. Both are evaluated for each row, so
+        they can depend on the row data. The table below highlights the products that cost $50 or less and shows their
+        price as the title of the row.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

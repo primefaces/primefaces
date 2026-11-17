@@ -10,8 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Schedule assumes whole set of events are eagerly provided in ScheduleModel, if you have a huge data set of events, lazy loading features would help to improve performance.<br/>
-        In lazy loading mode, only the events that belong to the displayed time frame are fetched whereas in default eager more all events need to be loaded.
+        By default Schedule expects that all events are provided eagerly in the ScheduleModel. With a large number of
+        events, a LazyScheduleModel improves performance: its <b>loadEvents</b> method is called with the start and end of
+        the displayed time frame every time it changes, so only the events of that time frame are loaded.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/schedule"/>

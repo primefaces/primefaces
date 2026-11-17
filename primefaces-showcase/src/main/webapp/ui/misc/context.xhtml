@@ -31,7 +31,10 @@
     </ui:define>
 
     <ui:define name="description">
-        PrimeFaces.current() is a helper with various utilities.
+        <b>PrimeFaces.current()</b> is a Java utility for the current request, e.g. to execute a script in the browser,
+        to update components or to add parameters to Ajax callbacks. In this example the <b>save</b> action adds
+        callback parameters, which the <b>oncomplete</b> handler reads from <b>args</b> and writes to the <b>p:log</b>
+        console, and executes a script that logs a message.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/javaAPI?id=primefacescurrent"/>

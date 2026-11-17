@@ -41,8 +41,9 @@
     </ui:define>
 
     <ui:define name="description">
-        When moving one timeline, the other moves along. Use mouse scroll wheel for zoom-in and zoom-out. A click on an event in the first timeline
-        selects an event in the second timeline (Project A or Project B).
+        When moving one timeline, the other moves along: a client side callback of the <b>rangechange</b> event sets the
+        visible range of the other timeline. Use the mouse wheel to zoom. A click on an event in the first timeline
+        selects an event in the second one (Project A or Project B) with the server side API <b>TimelineUpdater</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/timeline"/>

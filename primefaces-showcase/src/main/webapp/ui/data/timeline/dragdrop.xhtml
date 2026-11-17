@@ -29,7 +29,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Drag events from the list on the left side and drop them onto the timeline.
+        Drag events from the list on the left side and drop them onto the timeline. The items of the list are made
+        draggable with <b>p:draggable</b>. The listener of the <b>drop</b> Ajax event adds the dropped event to the model
+        of the timeline and removes it from the list.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/timeline"/>

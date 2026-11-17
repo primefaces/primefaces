@@ -10,9 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        In older EL versions (&lt; 3.0), it's not possible to use constants or any other static fields/methods in an EL expression, 
-        as it is not really a good practice to create beans with getter/setter for each constants class, we provide an utils tag which allows to import constant fields in a page.
-        The constants can be accessed via the name of the class (default setting) or via a custom name (var attribute).
+        ImportConstants is a utility tag that imports the constant fields of a class into a page, so that they can be
+        used in EL expressions without a bean that offers a getter for each constant. The constants are accessed via
+        the name of the class (default) or via a custom name defined with <b>var</b>, as in this example.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/importconstants"/>

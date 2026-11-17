@@ -10,8 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        ConfirmDialog is integrated with confirm behavior to implement confirmations with ease.
-        ConfirmDialog has two modes; global and non-global. Non-Global mode is almost same as the dialog component used with a simple client side api,
+        ConfirmDialog asks the user to confirm an action and has two modes. A global confirmDialog is defined once and
+        used by all commands that have a <b>p:confirm</b> behavior, which defines the header, message, icon and buttons
+        of the confirmation. The non-global mode is almost the same as a dialog used with the client side API,
         <i>show()</i> and <i>hide()</i>.
     </ui:define>
 

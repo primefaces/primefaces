@@ -10,7 +10,11 @@
     </ui:define>
 
     <ui:define name="description">
-        DataExporter provides easy customization options for the exported document using pre and post processors or ExcelOptions and PDFOptions objects.
+        The exported document can be customized with processors, bean methods that receive the document:
+        <b>preProcessor</b> is called before and <b>postProcessor</b> after the data is exported, <b>onRowExport</b>
+        after each row. In this demo the Excel export colors every second row and the PDF export adds a logo.
+        Alternatively, <b>options</b> takes an <b>ExcelOptions</b> or <b>PDFOptions</b> object that defines fonts and
+        colors.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/dataexporter"/>

@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        In fullscreen mode content covers the whole page over a mask.
+        In fullscreen mode, enabled with <b>fullScreen="true"</b>, the content covers the whole page over a mask
+        and is displayed with the client side <b>show()</b> method. The examples open the gallery from a button,
+        with and without thumbnails, and from a custom grid of thumbnails that sets the <b>activeIndex</b>
+        with a <b>p:remoteCommand</b> before the clicked photo is shown.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/galleria"/>

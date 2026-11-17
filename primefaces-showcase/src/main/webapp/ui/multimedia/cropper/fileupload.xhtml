@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        ImageCropper can work tightly with FileUpload handling images on the fly.
+        ImageCropper can work together with FileUpload to crop images that the user uploads.
+        The uploaded file (GIF, JPEG or PNG, up to 100 KB) is kept in the bean and passed to the cropper as
+        StreamedContent. The Crop button submits the selection, and the cropped part is displayed next to the original.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/imagecropper"/>

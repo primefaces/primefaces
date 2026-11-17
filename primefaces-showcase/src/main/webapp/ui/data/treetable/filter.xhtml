@@ -22,7 +22,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Filtering updates the data based on the constraints.
+        Filtering hides the nodes that do not match. A node stays visible when it, one of its descendants or, by
+        default, one of its ancestors matches. A column is filtered with <b>filterBy</b> and <b>filterMatchMode</b>, the
+        <b>filter</b> facet replaces the default input with a custom component, here a <b>p:selectOneMenu</b>. The input
+        with the id <b>globalFilter</b> searches all filterable columns.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/treetable"/>

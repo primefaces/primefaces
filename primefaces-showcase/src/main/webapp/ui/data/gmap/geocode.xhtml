@@ -26,7 +26,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Geocoding support is provided with geocode and reverseGeocode ajax behavior events.
+        Geocoding is started with the client side API of the map: <b>geocode(address)</b> looks up the coordinates of an
+        address and <b>reverseGeocode(lat, lng)</b> the addresses of a coordinate. The results are passed to the bean with
+        the Ajax behavior events <b>geocode</b> and <b>reverseGeocode</b>. The listeners of this example center the map on
+        the result and add a marker for it.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>

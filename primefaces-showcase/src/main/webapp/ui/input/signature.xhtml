@@ -6,8 +6,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Signature is used to draw a signature as an input. Various options such as background color, foreground color, thickness are available
-        for customization. Signature also supports touch enabled devices as well as typeable text.
+        Signature is used to draw a signature as an input, also on touch enabled devices; instead of drawing, the
+        signature can be typed as text. The example shows a guideline and displays the submitted signature in a second,
+        readonly Signature with other colors. <b>base64Value</b> additionally passes the signature to the bean as a PNG
+        image.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/signature" />

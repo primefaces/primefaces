@@ -14,7 +14,9 @@
     </ui:define>
 
     <ui:define name="description">
-        When a draggable marker is dragged and dropped, a server side markerDragListener can be invoked passing a MarkerDragEvent that contains a reference to the dragged marker whose position is updated already.
+        Markers that are set draggable in the model can be moved on the map. When a marker is dropped, the
+        <b>markerDrag</b> Ajax behavior event calls a listener with a MarkerDragEvent, which contains the dragged marker
+        with its position already updated.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>

@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        IdleMonitor tracks user actions and invokes corresponding events when user goes idle after a specified time and becomes active again.
+        IdleMonitor watches the actions of the user on a page. It fires the <b>idle</b> event when there was no
+        activity for the time defined with <b>timeout</b> (here 5 seconds) and the <b>active</b> event when the user
+        becomes active again. Both events call an Ajax listener in this example.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/idlemonitor"/>

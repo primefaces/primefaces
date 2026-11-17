@@ -29,9 +29,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Connections can be created and edited on the fly using drag and drop. In this example, computers are sources whereas
-        servers are the targets. Once a connection is created, removed or changed using drag and drop, diagram makes an ajax request
-        to save changes in the backend model. Additionally, optional ajax events are provided as callbacks.
+        Connections can be created, changed and removed with drag and drop. In this example the computers are the
+        sources and the servers the targets. After each change the diagram sends an Ajax request to save it in the model
+        on the server. The optional Ajax behavior events <b>connect</b>, <b>disconnect</b> and <b>connectionChange</b>
+        call listeners, which show a message here.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/diagram"/>

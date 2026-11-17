@@ -56,7 +56,10 @@
     </ui:define>
 
     <ui:define name="description">
-        A custom client converter or a validator can be implemented easily. Both Jakarta Faces and Bean Validation APIs are supported.
+        Custom validators can be validated on the client side as well: the JavaScript implementation is registered in
+        <b>PrimeFaces.validator</b> with the id that the server side validator provides. Both Jakarta Faces and Bean
+        Validation APIs are supported. Email 1 uses a Jakarta Faces validator attached with <b>f:validator</b>, Email 2 a
+        custom <b>@Email</b> Bean Validation constraint on the bean property.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/csvJavascriptAPI"/>

@@ -44,8 +44,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Schedule will use your locale and use the built in localization for your locale.<br/>
-        However, that can be overridden and customized by providing a localization file.
+        Schedule uses the localization that is built into FullCalendar. By default the locale of the view is used, the
+        <b>locale</b> attribute overrides it and is set to <b>de</b> here. Texts such as the button labels and the
+        all-day text are taken from <b>PrimeFaces.locales</b> if the locale is defined there, the script of this example
+        defines them for <b>de</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/schedule"/>

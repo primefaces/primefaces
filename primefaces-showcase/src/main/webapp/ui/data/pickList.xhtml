@@ -10,7 +10,11 @@
     </ui:define>
 
     <ui:define name="description">
-        PickList is a dual list input component featuring Drag and Drop based reordering, transition effects, pojo support, theming filtering, captions, checkbox selection, client-server callbacks, responsive layout and more.
+        PickList transfers items between a source and a target list, held in a DualListModel. The basic example uses
+        strings, the second one transfers an item when its checkbox is clicked (<b>transferOnCheckboxClick</b>). The
+        advanced example uses objects with a converter and custom content in a <b>p:column</b>, and adds reorder
+        controls, filters, captions and the Ajax events <b>transfer</b>, <b>select</b>, <b>unselect</b> and
+        <b>reorder</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/picklist"/>

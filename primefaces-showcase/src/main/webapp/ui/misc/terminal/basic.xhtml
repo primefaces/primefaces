@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Terminal commands are handled by a server side listener. "greet {text}" and "date" are sample commands.
+        Terminal is an Ajax based terminal in the browser. Each command is sent to the server and handled by the
+        <b>commandHandler</b> method, which receives the command name and its arguments and returns the response.
+        "greet {text}" and "date" are sample commands.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/terminal"/>

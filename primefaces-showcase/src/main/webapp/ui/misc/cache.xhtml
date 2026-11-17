@@ -9,8 +9,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Cache component is used to reduce page load time by caching the content in a global cache after the initial rendering. Various
-        cache providers are supported like ehcache and hazelcast. Showcase use actually this component to render source examples for every PrimeFaces components because parsing an xhtml file takes time, and since the rendering won't change during the whole lifecycle of the application, it's better to cache the content.
+        Cache reduces the page load time: it stores the rendered output of its content in a region of a cache provider
+        (e.g. Ehcache) after the initial rendering and reuses it afterwards. The showcase uses it for the source code
+        tabs of every page, because parsing an XHTML file takes time and the output does not change while the
+        application runs.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/cache"/>

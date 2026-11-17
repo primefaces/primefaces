@@ -22,9 +22,10 @@
     </ui:define>
 
     <ui:define name="description">
-        MultiViewState (MVS) feature enables DataTable to maintain its state across pages by setting multiViewState attribute to true. In this demo,
-        manipulate DataTable with pagination, sorting, filtering and selection, then visit another page and then come back to this page. DataTable
-        state should remain as you've left it.
+        MultiViewState (MVS) keeps the state of a DataTable across pages when <b>multiViewState="true"</b> is set. In this
+        demo, use pagination, sorting, filtering and selection, visit another page and come back: the table is restored
+        as you left it. The second table shows the same with lazy loading, and the button in the paginator clears the
+        stored state.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable" />

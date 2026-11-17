@@ -10,8 +10,11 @@
     </ui:define>
 
     <ui:define name="description">
-        Barcode component offers the capability to create diverse barcode types with <b>Okapi</b> in both PNG and SVG formats. For browsers lacking SVG support, the component automatically defaults to PNG format.
-    
+        Barcode displays a value as a barcode that is generated with the <b>Okapi</b> library. <b>type</b> selects
+        the barcode format, such as Code128, EAN-13, DataMatrix or QR. The image is rendered as SVG by default or as PNG
+        with <b>format="png"</b>; for browsers without SVG support the component falls back to PNG automatically.
+        The demo also rotates a barcode with <b>orientation</b> and enlarges some with <b>magnification</b>.
+
         <pre class="language-xml"><code>
             &lt;dependency&gt;
                &lt;groupId>uk.org.okapibarcode&lt;/groupId&gt;

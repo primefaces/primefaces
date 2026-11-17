@@ -10,8 +10,11 @@
     </ui:define>
 
     <ui:define name="description">
-        Immediate client side validation - like used from modern JS-based-UI-Frameworks like React, Angular or Vue - on all input-components (triggered by keyup- respectively change-events depending on component)
-        and CommandButton only enabled after successful CSV of all input-components relevant due to process-attribute.
+        Immediate client side validation, as known from JavaScript UI frameworks: every input has a
+        <b>p:clientValidator</b> and is validated on <b>keyup</b> or <b>change</b>, depending on the component. A
+        CommandButton with <b>enabledByValidateClient="true"</b> is only enabled when all inputs of its <b>process</b>
+        attribute are valid. The inputs are styled by their validation state with the classes <b>p-state-csv-valid</b>
+        and <b>p-state-csv-invalid</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/csv"/>

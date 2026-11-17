@@ -11,12 +11,13 @@
 
     <ui:define name="description">
         <p>
-            RemoteCommand provides a simple way to execute backing bean methods with javascript.
+            RemoteCommand executes a backing bean method from JavaScript: <b>name</b> defines a JavaScript function that
+            sends the Ajax request. The examples call it without parameters, with parameters as an array or an object
+            and read a value returned by the bean in <b>oncomplete</b>.
         </p>
         <p>
-            Sometimes you need to add a dynamic callback for when the remote command completes. Each remote command, when
-            called, returns a promise-like object you can use for that purposes. Try opening a dev console and run the
-            function "runRemoteCommand". See below for the code.
+            Each call returns a promise-like object for callbacks: run <b>runRemoteCommand</b> in the browser console to
+            try it.
         </p>
     </ui:define>
 

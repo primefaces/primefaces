@@ -74,9 +74,10 @@
     </ui:define>
 
     <ui:define name="description">
-        This sample demonstrates how to extend PrimeFaces with javascript. Tree component displays the available columns which are draggable.
-        where as column headers have drop targets and dropping a treenode onto one of these adds the related property column to the datatable.
-        Column headers can also be moved back to the tree.
+        This sample extends PrimeFaces with JavaScript, here with the client side <b>PrimeFaces.interactions</b> API.
+        The Tree displays the available columns, which are draggable. Dropping a tree node onto the drop target of a
+        column header adds the related property column to the DataTable. Column headers can also be moved back to the
+        Tree; each drop calls the bean with a <b>p:remoteCommand</b>.
     </ui:define>
 
     <ui:param name="primefacesClientApiLink" value="modules/src_PrimeFaces.PrimeFaces.interactions.html" />

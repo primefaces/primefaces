@@ -10,11 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Fragment component is used to define automatically partially process and update sections whenever
-        ajax request is triggered by a descandant component. In this example, required input field outside the fragment is ignored and
-        only the contents of the fragment are processed-updated automatically on button click since
-        button is inside the fragment. Fragment makes it easy to define partial ajax process and update without explicitly
-        defining component identifiers.
+        Fragment defines a section that is partially processed whenever an Ajax request is triggered by one of its
+        descendants, without defining component identifiers. Here the button is inside the fragment, so only the content
+        of the fragment is processed and the required input outside of it is ignored. The nested <b>p:autoUpdate</b>
+        updates the fragment.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/fragment" />

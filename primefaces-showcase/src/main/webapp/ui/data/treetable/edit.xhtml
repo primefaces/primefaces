@@ -21,7 +21,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Data displayed on treetable can be edited at row or cell level.
+        The data of a TreeTable with <b>editable="true"</b> can be edited at row or cell level, each column defines its
+        display and its input in the <b>output</b> and <b>input</b> facets of a <b>p:cellEditor</b>. Row editing uses a
+        <b>p:rowEditor</b> and fires the Ajax events <b>rowEdit</b> and <b>rowEditCancel</b>, <b>editMode="cell"</b>
+        fires <b>cellEdit</b>. <b>editInitEvent</b> opens a cell with another event, here a double click.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/treetable"/>

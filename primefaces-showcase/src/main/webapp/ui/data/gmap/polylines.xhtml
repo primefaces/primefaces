@@ -14,7 +14,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Any number of polylines can be displayed on map. Polylines can also respond to selection by via overlaySelect behavior.
+        Any number of polylines can be displayed on a map. A polyline is added to the MapModel as a Polyline overlay that
+        connects a list of coordinates, the color, opacity and weight of the line are set on the overlay. A click on a
+        polyline fires the <b>overlaySelect</b> Ajax behavior event, whose listener shows a message in this example.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>

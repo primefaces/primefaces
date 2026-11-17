@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Input components keep their local values at state when validation fails. ResetInput is used to clear the cached
-        values from state so that components retrieve their values from the backing bean model instead.
+        Input components keep their local values in the state when validation fails. ResetInput clears these values, so
+        that the components retrieve their values from the bean again. After a failed submit the buttons compare the
+        ways to reset: changing only the model (which does not work), <b>p:resetInput</b> in an Ajax and a non-Ajax
+        request, <b>PrimeFaces.current().resetInputs()</b> and <b>resetValues="true"</b> of <b>p:ajax</b>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/resetinput"/>

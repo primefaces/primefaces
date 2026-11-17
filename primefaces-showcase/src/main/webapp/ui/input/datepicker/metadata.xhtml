@@ -18,8 +18,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Metadata for the dates in the date picker calendar. Allows you to lazily change attributes like
-        <code>disabled</code> and <code>styleClass</code> for dates when the calendar view changes.
+        The <b>model</b> attribute of the DatePicker provides metadata for the dates of the calendar, currently
+        <b>disabled</b> and <b>styleClass</b>. A lazy model loads the metadata each time the calendar view changes, and
+        the <b>viewChange</b> Ajax event reports the year and month of the new view.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datepicker"/>

@@ -10,8 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Tree has two modes, in client mode all nodes are available at client side whereas in ajax mode only expanded nodes are
-        available.
+        Tree displays hierarchical data and is populated with a <b>TreeNode</b> as <b>value</b>, the root of the tree.
+        In client mode all nodes are available at client side, whereas in Ajax mode (<b>dynamic="true"</b>) the children
+        of a node are loaded from the server when it is expanded. The <b>p-noborder</b> style class removes the border
+        and padding.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tree"/>

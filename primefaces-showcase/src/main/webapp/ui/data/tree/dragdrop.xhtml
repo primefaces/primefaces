@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Nodes can be reordered within the same tree or transferred between multiple trees using drag and drop.
+        Nodes can be reordered within the same tree or transferred between trees using drag and drop. Both trees here
+        are <b>draggable</b> and <b>droppable</b> and share the same <b>dragdropScope</b>, so nodes can be moved in both
+        directions. The listener of the <b>dragdrop</b> Ajax event reports the dragged node, the drop node and the drop
+        index in a message.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tree"/>

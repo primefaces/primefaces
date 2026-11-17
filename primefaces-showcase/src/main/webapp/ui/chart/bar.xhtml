@@ -9,7 +9,10 @@
     </ui:define>
 
     <ui:define name="description">
-        BarChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model. When a dataset data is clicked, information can be passed to a backing bean using itemSelect ajax behavior. 
+        <b>p:chart</b> renders Chart.js charts. A bar chart is created with raw JSON or using an
+        <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a>
+        model, as in this demo with a regular and a stacked bar chart. When a bar is clicked, the <b>itemSelect</b>
+        Ajax behavior passes its value, item index and dataset index to the backing bean, which shows them in a message.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/chart"/>

@@ -22,7 +22,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Both vertical and horizontal scrolling of the data is supported with optional frozen rows-columns and on-demand loading features. With the page, a sticky header stays in the viewport.
+        With <b>scrollable="true"</b> the header and footer of the table stay fixed while the body scrolls: vertically
+        with <b>scrollHeight</b>, horizontally with <b>scrollWidth</b> or both. Rows and columns are frozen with
+        <b>frozenRows</b> and <b>frozenColumns</b>, and data is loaded on demand while scrolling with <b>liveScroll</b>
+        or <b>virtualScroll</b>. <b>stickyHeader</b> keeps the header in the viewport while the page is scrolled.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

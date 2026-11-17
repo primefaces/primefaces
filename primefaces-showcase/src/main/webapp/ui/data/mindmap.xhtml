@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Mindmap is an interactive mindmapping tool featuring lazy loading, callbacks, animations and more.
+        Mindmap is an interactive tool to visualize mindmap data. The children of a node are loaded lazily: a click on a
+        node fires the <b>select</b> Ajax behavior event, and its listener adds the child nodes. A double click fires
+        <b>dblselect</b>, which is used here to show the data of the node in a dialog.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/mindmap"/>

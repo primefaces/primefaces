@@ -10,9 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        OverlayPanel is a generic container component that can overlay other components on page. Notable features are
-        custom positioning, configurable events and effects. Lazy content loading to reduce page load time is also supported via dynamic option, when enabled
-        overlayPanel will load the contents just before being shown.
+        OverlayPanel is a container displayed on top of other content, relative to the target defined with <b>for</b>.
+        The examples show a panel with <b>dismissable="false"</b> and a close icon, other events with <b>showEvent</b>
+        and <b>hideEvent</b>, and <b>dynamic="true"</b>, which loads the content just before the panel is shown. In the
+        last example one overlayPanel serves all rows of a table.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/overlaypanel"/>

@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Sorting is enabled with field or sortBy expressions. Both single and multiple column sorting are supported.
+        Sorting is enabled per column with <b>sortBy</b> or <b>field</b>. <b>sortMode</b> allows a single or multiple
+        sort columns; in multiple mode, a click on a header with the meta key pressed adds the column to the sort. A
+        default sort is defined with <b>sortOrder</b> and <b>sortPriority</b> on the columns or with <b>sortBy</b> on
+        the table, <b>allowUnsorting</b> allows unsorting a column.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

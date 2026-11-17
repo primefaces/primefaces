@@ -41,7 +41,10 @@
     </ui:define>
 
     <ui:define name="description">
-        ProgressBar is a process status indicator that can either work on client side or integrate with server side via ajax.
+        ProgressBar is a process status indicator that either works purely on the client side or, with
+        <b>ajax="true"</b>, retrieves its value from the server periodically. The page shows both modes, the Ajax events
+        <b>start</b>, <b>progress</b> and <b>complete</b>, the progress of a long running method, a static bar with
+        <b>displayOnly</b>, the indeterminate mode and the severities.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/progressbar"/>

@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Data displayed on datatable can be edited at row or cell level, new rows can be added and edited right away.
+        With <b>editable="true"</b> the table is edited in place; <b>p:cellEditor</b> defines the output and input of a
+        column. In row mode, <b>p:rowEditor</b> renders the controls to edit, save or cancel a row. With
+        <b>editMode="cell"</b> a cell is opened by a click, a double click (<b>editInitEvent</b>) or a context menu. The
+        last table appends a row with the client side <b>addRow()</b> method.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

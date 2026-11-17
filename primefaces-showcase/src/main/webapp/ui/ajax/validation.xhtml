@@ -10,7 +10,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Validations are executed on the server side and page is updated with the result.
+        With an Ajax request the validations are executed on the server side and the page is updated with the result.
+        The Save button validates the whole form and updates it. The Lastname field is also validated on each
+        <b>keyup</b> by a <b>p:ajax</b> that updates only its message.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/ajaxRendering"/>

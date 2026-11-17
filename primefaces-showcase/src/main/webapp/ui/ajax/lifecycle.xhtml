@@ -10,7 +10,10 @@
     </ui:define>
 
     <ui:define name="description">
-        Attach events to the component lifecycle so you can call client side Javascript during PostConstruct, PostRefresh, or PreDestroy of the component.
+        Client side JavaScript can be attached to the lifecycle of a component with an <b>f:attribute</b> named
+        <b>clientPreConstruct</b>, <b>clientPostConstruct</b>, <b>clientPostRefresh</b> or <b>clientPreDestroy</b>:
+        before and after it is created, after it is refreshed by an Ajax update and before it is destroyed. Here each
+        event of the input shows a message: Submit updates the form, Destroy destroys the client side component.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/components?id=component-lifecycle-events"/>

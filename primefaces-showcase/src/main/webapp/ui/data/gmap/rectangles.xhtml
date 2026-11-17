@@ -14,7 +14,9 @@
     </ui:define>
 
     <ui:define name="description">
-        Any number of rectangles can be displayed on map. Rectangles can also respond to selection by via overlaySelect behavior.
+        Any number of rectangles can be displayed on a map. A rectangle is added to the MapModel as a Rectangle overlay
+        that is defined by its bounds, the stroke and fill are set on the overlay. A click on a rectangle fires the
+        <b>overlaySelect</b> Ajax behavior event, whose listener shows a message in this example.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>

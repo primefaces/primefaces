@@ -42,7 +42,10 @@
     </ui:define>
 
     <ui:define name="description">
-        StateMachines can be created using state machine connectors.
+        State machines are created with the StateMachineConnector, which is set as the default connector of the model
+        here. The states are elements with blank endpoints, the transitions are connections with an ArrowOverlay for the
+        direction and a LabelOverlay for the name. A connection can also start and end at the same endpoint, like Talk,
+        Run and Walk in this example.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/diagram"/>
