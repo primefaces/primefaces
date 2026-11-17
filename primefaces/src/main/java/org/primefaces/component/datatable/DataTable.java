@@ -67,20 +67,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import jakarta.el.ELContext;
-import jakarta.el.Expression;
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
@@ -200,8 +197,6 @@ public class DataTable extends DataTableBaseImpl {
         selectAll,
         expandedRowKeys,
         columnMeta,
-        headerRowSortMetaSource,
-        sortedByEndUser,
         width;
     }
 
@@ -709,23 +704,11 @@ public class DataTable extends DataTableBaseImpl {
         return ComponentTraversalUtils.firstChildRendered(HeaderRow.class, this);
     }
 
-    @Override
-    public Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortBy = super.initSortBy(context);
-        // the header row SortMeta has been built from the header row rendered now, see updateHeaderRowSortMeta
-        HeaderRow headerRow = getHeaderRow();
-        storeHeaderRowSortMetaSource(headerRow == null ? null : getHeaderRowSortMetaSource(headerRow));
-        getStateHelper().remove(InternalPropertyKeys.sortedByEndUser);
-        return sortBy;
-    }
-
     /**
      * The sortBy map is built once, with the {@link SortMeta} of the header row rendered at that time. Brings it in line with the
-     * header row rendered now, see GitHub #10481: a header row shown later gets its {@link SortMeta}, one hidden later loses it,
-     * and a changed <code>field</code>, <code>groupBy</code>, <code>sortOrder</code> or <code>sortFunction</code> is picked up.
-     * A user sortBy for the header row applies to its rebuilt {@link SortMeta}; one of a header row hidden later goes to its column
-     * until the end user sorts the columns, the column {@link SortMeta} are not changed otherwise.
-     * Header rows which are not rendered are not evaluated.
+     * header row rendered now, see GitHub #10481: a header row shown later gets its {@link SortMeta}, one hidden later loses it.
+     * Like the <code>sortBy</code> attribute everywhere else, a rebuilt header row starts from its own attributes. Header rows
+     * which are not rendered are not evaluated.
      * <p>
      * Called by the renderer before the table decodes and encodes, so all other methods can rely on the sortBy map holding the
      * {@link SortMeta} of the rendered header row only.
@@ -734,123 +717,31 @@ public class DataTable extends DataTableBaseImpl {
      */
     public void updateHeaderRowSortMeta(FacesContext context) {
         Map<String, SortMeta> sortBy = getSortByAsMap();
-        if (context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_sorting")) {
-            getStateHelper().put(InternalPropertyKeys.sortedByEndUser, true);
-        }
-
-        HeaderRow headerRow = getHeaderRow();
         SortMeta current = sortBy.values().stream().filter(SortMeta::isHeaderRow).findFirst().orElse(null);
+        HeaderRow headerRow = getHeaderRow();
 
-        // compared with the attributes the header row SortMeta was built from, not with the SortMeta itself, which a user
-        // sortBy may have changed (e.g. its order)
-        String source = (headerRow == null) ? null : getHeaderRowSortMetaSource(headerRow);
-        if ((headerRow == null) == (current == null)
-                && Objects.equals(source, getStateHelper().get(InternalPropertyKeys.headerRowSortMetaSource))) {
+        if (isSameHeaderRow(current, headerRow)) {
             return;
         }
 
-        SortMeta updated = (headerRow == null) ? null : SortMeta.of(context, getVar(), headerRow);
-
-        // the header row comes first, as when the map is built
-        Map<String, SortMeta> rebuilt = new LinkedHashMap<>();
-        if (updated != null) {
-            rebuilt.put(updated.getColumnKey(), updated);
+        sortBy.values().removeIf(SortMeta::isHeaderRow);
+        if (headerRow != null) {
+            SortMeta meta = SortMeta.of(context, getVar(), headerRow);
+            sortBy.put(meta.getColumnKey(), meta);
         }
-        sortBy.forEach((key, meta) -> {
-            if (!meta.isHeaderRow()) {
-                rebuilt.put(key, meta);
-            }
-        });
-
-        Collection<SortMeta> userSortMetas = getUserSortMetas();
-        // a user SortMeta for the header row applies to its rebuilt SortMeta too
-        if (updated != null) {
-            for (SortMeta userSortMeta : userSortMetas) {
-                if (isUserSortMetaFor(userSortMeta, updated)) {
-                    applyUserSortMeta(context, userSortMeta, updated);
-                }
-            }
-        }
-
-        // a user SortMeta of the previous header row goes to its column instead, as when the map is built without that header
-        // row; only until the end user sorts the columns, never over their sort
-        if (current != null && !isSortedByEndUser()) {
-            for (SortMeta userSortMeta : userSortMetas) {
-                if (isUserSortMetaFor(userSortMeta, current) && (updated == null || !isUserSortMetaFor(userSortMeta, updated))) {
-                    rebuilt.values().stream()
-                            .filter(m -> !m.isHeaderRow() && !m.isActive() && isUserSortMetaFor(userSortMeta, m))
-                            .findFirst()
-                            .ifPresent(column -> applyUserSortMeta(context, userSortMeta, column));
-                }
-            }
-        }
-
-        sortBy.clear();
-        sortBy.putAll(rebuilt);
         setSortByAsMap(sortBy);
-        storeHeaderRowSortMetaSource(source);
     }
 
     /**
-     * @return the attributes of the header row its {@link SortMeta} is built from; the id, not the client id, which changes in
-     * e.g. a <code>ui:repeat</code>
+     * Compared by <code>field</code> and <code>groupBy</code>, not by client id, which changes in e.g. a <code>ui:repeat</code>.
      */
-    private String getHeaderRowSortMetaSource(HeaderRow headerRow) {
-        return String.join("|",
-                headerRow.getId(),
-                String.valueOf(headerRow.getField()),
-                String.valueOf(headerRow.getSortOrder()),
-                expressionString(headerRow.getValueExpression(HeaderRow.PropertyKeys.groupBy.name())),
-                expressionString(headerRow.getSortFunction()));
-    }
-
-    private void storeHeaderRowSortMetaSource(String source) {
-        if (source == null) {
-            getStateHelper().remove(InternalPropertyKeys.headerRowSortMetaSource);
+    private static boolean isSameHeaderRow(SortMeta current, HeaderRow headerRow) {
+        if (current == null || headerRow == null) {
+            return current == null && headerRow == null;
         }
-        else {
-            getStateHelper().put(InternalPropertyKeys.headerRowSortMetaSource, source);
-        }
-    }
-
-    private static String expressionString(Expression expression) {
-        return (expression == null) ? "" : expression.getExpressionString();
-    }
-
-    @SuppressWarnings("unchecked")
-    private Collection<SortMeta> getUserSortMetas() {
-        Object userSortBy = getSortBy();
-        if (userSortBy instanceof SortMeta meta) {
-            return Collections.singletonList(meta);
-        }
-        if (userSortBy instanceof Collection<?> collection) {
-            return (Collection<SortMeta>) collection;
-        }
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return <code>true</code> if the columns have been sorted by the end user since the sortBy map was built, by a sort
-     * request or restored from the multi view state
-     */
-    private boolean isSortedByEndUser() {
-        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.sortedByEndUser));
-    }
-
-    @Override
-    public void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
-        super.updateSortByWithMVS(tsSortBy);
-        // the multi view state only holds a sortBy after a sort request
-        getStateHelper().put(InternalPropertyKeys.sortedByEndUser, true);
-    }
-
-    private static boolean isUserSortMetaFor(SortMeta userSortMeta, SortMeta meta) {
-        return Objects.equals(userSortMeta.getField(), meta.getField()) || Objects.equals(userSortMeta.getColumnKey(), meta.getColumnKey());
-    }
-
-    private void applyUserSortMeta(FacesContext context, SortMeta userSortMeta, SortMeta meta) {
-        updateSortByWithUserSortBy(context, Collections.singletonMap(meta.getColumnKey(), meta), Collections.singletonList(userSortMeta),
-                new AtomicBoolean());
+        ValueExpression groupBy = headerRow.getValueExpression(HeaderRow.PropertyKeys.groupBy.name());
+        return Objects.equals(current.getField(), headerRow.getField())
+                && (groupBy == null || Objects.equals(groupBy.getExpressionString(), current.getSortBy().getExpressionString()));
     }
 
     @Override

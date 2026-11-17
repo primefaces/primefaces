@@ -62,8 +62,6 @@ public class DataTable062 implements Serializable {
 
     private List<ProgrammingLanguage> userSortByLanguages;
 
-    private List<ProgrammingLanguage> toggledUserSortByLanguages;
-
     /**
      * Which headerRow is rendered: <code>none</code>, <code>year</code> or <code>type</code>.
      */
@@ -91,7 +89,6 @@ public class DataTable062 implements Serializable {
         repeatedLanguages = service.getLangs();
         otherRepeatedLanguages = service.getLangs();
         userSortByLanguages = service.getLangs();
-        toggledUserSortByLanguages = service.getLangs();
     }
 
     public void onSort(SortEvent event) {

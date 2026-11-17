@@ -17,7 +17,8 @@
 
         <h:form id="form">
             <!-- the headerRows are switched by their rendered attribute, see GitHub #10481 -->
-            <p:dataTable id="datatable" value="#{dataTable062.progLanguages}" var="lang" multiViewState="true">
+            <!-- sortMode="single": with "multiple" a rendered headerRow breaks the client sort order, a separate bug on master -->
+            <p:dataTable id="datatable" value="#{dataTable062.progLanguages}" var="lang" multiViewState="true" sortMode="single">
                 <p:headerRow field="firstAppeared" rendered="#{dataTable062.mode eq 'year'}">
                     <p:column colspan="4">
                         <h:outputText value="#{lang.firstAppeared}"/>

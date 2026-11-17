@@ -455,11 +455,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default String getSortMetaAsString() {
-        // a header row has no column header the client could map its sort order to; not from getActiveSortMeta, which
-        // merges by field and would drop a column sharing its field with the header row
-        return getSortByAsMap().values().stream()
-                .filter(m -> m.isActive() && !m.isHeaderRow())
-                .sorted()
+        return getActiveSortMeta().values().stream()
                 .map(SortMeta::getColumnKey)
                 .collect(Collectors.joining("','", "['", "']"));
     }

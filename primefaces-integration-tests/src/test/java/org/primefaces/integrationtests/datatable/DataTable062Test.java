@@ -42,7 +42,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-rowgroup")
@@ -232,74 +231,6 @@ class DataTable062Test extends AbstractDataTableTest {
         assertNoJavascriptErrors();
     }
 
-    @Test
-    @Order(9)
-    @DisplayName("DataTable: RowGroup - a headerRow shown later gets the user sortBy for its field; see GitHub #10481")
-    void toggledHeaderRowWithUserSortBy(Page page) {
-        // Arrange - without the headerRow the user sortBy sorts the column
-        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
-        assertTrue(isFirstAppearedSorted(page), "the column is sorted by the user sortBy");
-
-        // Act
-        PrimeSelenium.guardAjax(page.year).click();
-
-        // Assert - grouped in the order of the user sortBy; the column keeps its sort
-        assertEquals(List.of("2012", "2000", "1995", "1990"), getHeaderRows(page.toggledUserSortByDataTable));
-        assertTrue(isFirstAppearedSorted(page), "the column keeps its sort");
-
-        // Act
-        PrimeSelenium.guardAjax(page.none).click();
-
-        // Assert
-        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
-        assertTrue(isFirstAppearedSorted(page), "the column keeps its sort");
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(10)
-    @DisplayName("DataTable: RowGroup - the user sortBy of a headerRow hidden later goes to its column; see GitHub #10481")
-    void hiddenHeaderRowWithUserSortBy(Page page) {
-        // Arrange - the headerRow has the user sortBy
-        PrimeSelenium.goTo("datatable/dataTable062.xhtml?mode=year");
-        assertEquals(List.of("2012", "2000", "1995", "1990"), getHeaderRows(page.toggledUserSortByDataTable));
-        assertFalse(isFirstAppearedSorted(page), "the headerRow has the user sortBy, not the column");
-
-        // Act
-        PrimeSelenium.guardAjax(page.none).click();
-
-        // Assert - the column has it now
-        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
-        assertTrue(isFirstAppearedSorted(page), "the column has the user sortBy");
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(11)
-    @DisplayName("DataTable: RowGroup - hiding a headerRow keeps a sort of the user; see GitHub #10481")
-    void hiddenHeaderRowKeepsUserSort(Page page) {
-        // Arrange
-        PrimeSelenium.goTo("datatable/dataTable062.xhtml?mode=year");
-        page.toggledUserSortByDataTable.sort("Name");
-
-        // Act
-        PrimeSelenium.guardAjax(page.none).click();
-
-        // Assert - sorted by name only, the user sortBy does not come back on top of it
-        assertTrue(getHeaderRows(page.toggledUserSortByDataTable).isEmpty());
-        assertFalse(isFirstAppearedSorted(page), "the column does not get the user sortBy over the sort of the user");
-        assertRows(page.toggledUserSortByDataTable, sortByNoLimit(BY_NAME));
-        assertNoJavascriptErrors();
-    }
-
-    private boolean isFirstAppearedSorted(Page page) {
-        WebElement header = page.toggledUserSortByDataTable.findElements(By.cssSelector("thead th")).stream()
-                .filter(th -> th.getText().contains("First appeared"))
-                .findFirst()
-                .orElseThrow();
-        return PrimeSelenium.hasCssClass(header, "p-state-active");
-    }
-
     private List<String> getRepeatedHeaderRows(Page page, String iteration) {
         return page.getWebDriver().findElement(By.id("form:repeat:" + iteration + ":repeatedDatatable"))
                 .findElements(By.cssSelector("tbody > tr.p-rowgroup-header")).stream()
@@ -351,9 +282,6 @@ class DataTable062Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:userSortByDatatable")
         DataTable userSortByDataTable;
-
-        @FindBy(id = "form:toggledUserSortByDatatable")
-        DataTable toggledUserSortByDataTable;
 
         @FindBy(id = "form:groupFieldType")
         CommandButton groupFieldType;
