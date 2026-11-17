@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
@@ -40,6 +41,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
@@ -59,24 +61,33 @@ class DataTable064Test extends AbstractPrimePageTest {
         DataTable dataTable = page.dataTable;
         WebElement targetElement = dataTable.getRow(2).getWebElement();
 
-        // Act - start dragging "TypeScript" (index 3) and keep holding it
-        WebElement helper = startDrag(page, 3);
+        try {
+            // Act - start dragging "TypeScript" (index 3) and keep holding it
+            WebElement helper = startDrag(page, 3);
 
-        // Assert - the helper lives in the body, outside of the table, so it must carry the classes of the table itself
-        for (String styleClass : List.of("p-datatable", "p-datatable-reflow", "p-datatable-sm", "my-table")) {
-            assertTrue(PrimeSelenium.hasCssClass(helper, styleClass), "helper must have the class " + styleClass);
+            // Assert - the helper lives in the body, outside of the table, so it must carry the look of the table itself
+            for (String styleClass : List.of("p-datatable", "p-component", "p-datatable-reflow", "p-datatable-sm")) {
+                assertTrue(PrimeSelenium.hasCssClass(helper, styleClass), "helper must have the class " + styleClass);
+            }
+            // but not what sizes or lays out the table container
+            for (String styleClass : List.of("my-table", "p-datatable-customers", "p-datatable-resizable")) {
+                assertFalse(PrimeSelenium.hasCssClass(helper, styleClass), "helper must not have the class " + styleClass);
+            }
+            assertEquals("12px", helper.getCssValue("font-size"), "helper must get the inline style of the table");
+            assertEquals("0px", helper.getCssValue("margin-bottom"), "helper must not get the margin of the table");
+            int helperHeight = helper.getSize().getHeight();
+            assertTrue(helperHeight < 200, "helper must not get the height of the table: " + helperHeight);
+            List<String> titles = helper.findElements(By.cssSelector("td:not(.p-hidden) .p-column-title")).stream()
+                    .map(e -> e.getAttribute("textContent"))
+                    .collect(Collectors.toList());
+            assertEquals(List.of("Id", "Name"), titles);
+
+            // Act - drop it on the row above
+            PrimeSelenium.guardAjax(dropAbove(page, targetElement)).perform();
         }
-        List<String> titles = helper.findElements(By.cssSelector("td:not(.p-hidden) .p-column-title")).stream()
-                .map(e -> e.getAttribute("textContent"))
-                .collect(Collectors.toList());
-        assertEquals(List.of("Id", "Name"), titles);
-
-        // Act - drop it on the row above
-        Actions drop = new Actions(page.getWebDriver())
-                .moveToElement(targetElement)
-                .moveByOffset(0, -(targetElement.getSize().getHeight() / 2) + 1)
-                .release();
-        PrimeSelenium.guardAjax(drop.build()).perform();
+        finally {
+            releaseDrag(page);
+        }
 
         // Assert - reordering still works and the rendered rows keep a single column title per cell
         assertEquals("3", page.fromIndex.getText());
@@ -97,6 +108,7 @@ class DataTable064Test extends AbstractPrimePageTest {
             window.setSize(new Dimension(560, size.getHeight()));
             Number viewport = PrimeSelenium.executeScript("return window.innerWidth;");
             Assumptions.assumeTrue(viewport.intValue() <= 640, "the window cannot be made narrow enough: " + viewport);
+            WebElement targetElement = page.dataTable.getRow(2).getWebElement();
             WebElement row = page.dataTable.getRow(3).getWebElement();
             int rowWidth = row.getSize().getWidth();
             int rowHeight = row.getSize().getHeight();
@@ -122,12 +134,36 @@ class DataTable064Test extends AbstractPrimePageTest {
             assertTrue(placeholderHeight <= rowHeight,
                     "placeholder (" + placeholderHeight + ") must not be taller than the row (" + rowHeight + ")");
 
-            new Actions(page.getWebDriver()).release().perform();
+            // Act - drop it on the row above, waiting for the reorder request
+            PrimeSelenium.guardAjax(dropAbove(page, targetElement)).perform();
+
+            // Assert
+            assertEquals("Java,C#,TypeScript,JavaScript,Python", page.order.getText());
         }
         finally {
+            // a failed assertion must not leave the drag active for the following tests
+            releaseDrag(page);
             window.setSize(size);
         }
         assertNoJavascriptErrors();
+    }
+
+    private static Action dropAbove(Page page, WebElement targetElement) {
+        return new Actions(page.getWebDriver())
+                .moveToElement(targetElement)
+                .moveByOffset(0, -(targetElement.getSize().getHeight() / 2) + 1)
+                .release()
+                .build();
+    }
+
+    /**
+     * Releases the mouse if a drag is still active, and waits for a reorder request it may start.
+     */
+    private static void releaseDrag(Page page) {
+        if (!page.getWebDriver().findElements(By.cssSelector("body > .p-sortable-helper")).isEmpty()) {
+            new Actions(page.getWebDriver()).release().perform();
+            PrimeSelenium.waitAjax().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        }
     }
 
     private static WebElement startDrag(Page page, int rowIndex) {

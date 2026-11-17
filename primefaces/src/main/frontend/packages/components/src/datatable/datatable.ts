@@ -5107,11 +5107,23 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 
-                // #7444 the helper is appended to the body, outside of the table, so it needs the classes of the table
-                // (reflow, size, gridlines, striped, styleClass) to be rendered the same way as the dragged row,
-                // and the width of the row, because the reflow styles override the widths of the cells
-                helper.addClass(this.jq.attr('class') || 'p-datatable p-component')
-                    .outerWidth(ui.outerWidth()!);
+                // #7444 the helper is appended to the body, outside of the table, so it needs the look of the table to be
+                // rendered the same way as the dragged row: its PrimeFaces classes (reflow, size, gridlines, striped, rtl), but
+                // not the ones for the layout of the table container (nor the styleClass, which may size the container),
+                // and its inline style without the size and margins of the container; plus the width of the row, because
+                // the reflow styles override the widths of the cells
+                const helperClasses = (this.jq.attr('class') || '').split(/\s+/)
+                    .filter(styleClass => /^p-(component|datatable(-(reflow|rtl|striped|gridlines|sm|lg))?)$/.test(styleClass));
+                helper.addClass(helperClasses.length ? helperClasses.join(' ') : 'p-datatable p-component')
+                    .attr('style', this.jq.attr('style') || '')
+                    .css({
+                        height: '', minHeight: '', maxHeight: '', blockSize: '', minBlockSize: '', maxBlockSize: '',
+                        minWidth: '', maxWidth: '', inlineSize: '', minInlineSize: '', maxInlineSize: '',
+                        margin: '', marginBlock: '', marginInline: '', padding: '', paddingBlock: '', paddingInline: '', border: '',
+                        overflow: '', cursor: '',
+                        // set while the helper is not attached yet, so it must not depend on the box model of the page
+                        boxSizing: 'border-box', width: ui.outerWidth() + 'px'
+                    });
 
                 for(var i = 0; i < helperCells.length; i++) {
                     helperCells.eq(i).width(cells.eq(i).width()!);

@@ -6,13 +6,18 @@
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
+        <style>
+            /* sizes the table container, must not size the drag helper */
+            .my-table { min-height: 700px !important; }
+        </style>
     </h:head>
 
     <h:body>
 
         <h:form id="form">
             <p:dataTable id="datatable" value="#{dataTable050.progLanguages}" var="lang" rowKey="#{lang.id}"
-                         draggableRows="true" reflow="true" size="small" styleClass="my-table">
+                         draggableRows="true" reflow="true" size="small" styleClass="my-table p-datatable-customers" resizableColumns="true"
+                         style="font-size: 12px; height: 600px; margin-bottom: 40px">
                 <p:ajax event="rowReorder" listener="#{dataTable050.onRowReorder}" update="@form"/>
 
                 <p:column headerText="Id">
