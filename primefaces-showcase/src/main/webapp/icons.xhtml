@@ -13,8 +13,20 @@
                 margin: 1rem 0 1.5rem 0;
             }
 
+            .icons-demo {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
             .icons-list {
                 text-align: center;
+            }
+
+            .icons-list > div {
+                padding: 1rem .5rem;
+                overflow-wrap: anywhere;
             }
 
             .icons-list i {
@@ -22,44 +34,43 @@
                 color: var(--p-text-muted-color);
                 margin-bottom: .5rem;
             }
-
-            .icons-list .md:col-2 {
-                padding-bottom: 2rem;
-            }
         </style>
 
         <script>
             //<![CDATA[
-                var icons = $('#icons-grid').children();
-    
                 function onFilter(e) {
-                    var value = e.target.value;
+                    var value = e.target.value.trim().toLowerCase();
+                    var matches = 0;
 
-                    if (value.trim().length === 0) {
-                        icons.show();
-                    } 
-                    else {
-                        icons.each(function(index, element) {
-                            var icon = $(element); 
-                            if (icon.data('name').indexOf(value.toLowerCase()) !== -1)
-                                icon.show();
-                            else
-                                icon.hide();
-                        });
-                    }
+                    $('#icons-grid').children().each(function(index, element) {
+                        var icon = $(element);
+                        var match = String(icon.data('name')).indexOf(value) !== -1;
+                        icon.toggle(match);
+                        if (match) {
+                            matches++;
+                        }
+                    });
+
+                    $('#icons-empty').toggle(matches === 0);
                 }
             //]]>
         </script>
     </ui:define>
 
     <ui:define name="content">
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>PrimeIcons</h1>
+                <p><a href="https://github.com/primefaces/primeicons" target="_blank" rel="noopener noreferrer">PrimeIcons</a> is the
+                    icon font of <a href="https://www.primetek.com.tr" target="_blank" rel="noopener noreferrer">PrimeTek</a>. It is part
+                    of the PrimeFaces JAR and available on every page, nothing has to be installed.</p>
+            </div>
+        </div>
+
         <div class="content-section documentation">
-            <h1>PrimeIcons</h1>
-            <p>PrimeFaces components internally use <a href="https://github.com/primefaces/primeicons">PrimeIcons</a> library, the official icons suite from <a href="https://www.primetek.com.tr">PrimeTek</a>.</p>
-        
-            <h5>Getting Started</h5>
+            <h2>Getting Started</h2>
             <p>PrimeIcons use the <strong>pi pi-&#123;icon&#125;</strong> syntax such as <strong>pi pi-check</strong>.
-            A standalone icon can be displayed using an element like <i>i</i> or <i>span</i></p>
+            A standalone icon can be displayed using an element like <code>i</code> or <code>span</code>.</p>
 
 <pre><code class="language-xml">
 &lt;i class="pi pi-check"&gt;&lt;/i&gt;
@@ -67,49 +78,65 @@
 
 </code></pre>
 
-<i class="pi pi-check" style="margin-right: .5rem"></i>
-<i class="pi pi-times"></i>
+            <div class="icons-demo">
+                <i class="pi pi-check"></i>
+                <i class="pi pi-times"></i>
+            </div>
 
-            <h5>Size</h5>
-            <p>Size of the icons can easily be changed using font-size property.</p>
+            <h2>Components</h2>
+            <p>Components with an icon take the same style classes in their <code>icon</code> attribute.</p>
 
 <pre><code class="language-xml">
-&lt;i class="pi pi-check"&gt;&lt;/i&gt;
+&lt;p:commandButton value="Save" icon="pi pi-check"/&gt;
 
 </code></pre>
 
-            <i class="pi pi-check"></i>
+            <div class="icons-demo">
+                <p:commandButton type="button" value="Save" icon="pi pi-check"/>
+            </div>
+
+            <h2>Size</h2>
+            <p>Size of the icons can easily be changed using the <code>font-size</code> property.</p>
 
 <pre><code class="language-xml">
+&lt;i class="pi pi-check"&gt;&lt;/i&gt;
 &lt;i class="pi pi-check" style="font-size: 2rem"&gt;&lt;/i&gt;
 
 </code></pre>
 
-            <i class="pi pi-check" style="font-size: 2rem"></i>
+            <div class="icons-demo">
+                <i class="pi pi-check"></i>
+                <i class="pi pi-check" style="font-size: 2rem"></i>
+            </div>
 
-            <h5>Spinning Animation</h5>
-            <p>Special pi-spin class applies continuous rotation to an icon.</p>
+            <h2>Spinning Animation</h2>
+            <p>The <code>pi-spin</code> class applies a continuous rotation to an icon.</p>
 
-            <pre><code class="language-xml">
+<pre><code class="language-xml">
 &lt;i class="pi pi-spin pi-spinner" style="font-size: 2rem"&gt;&lt;/i&gt;
 
 </code></pre>
 
-            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            <div class="icons-demo">
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            </div>
 
-            <h5>List of Icons</h5>
-            <p>Here is the current list of PrimeIcons, more icons are added periodically. You may also <a href="https://github.com/primefaces/primeicons/issues">request new icons</a> at the issue tracker.</p>
+            <h2>List of Icons</h2>
+            <p>Here is the current list of PrimeIcons, more icons are added periodically. You may also
+                <a href="https://github.com/primefaces/primeicons/issues" target="_blank" rel="noopener noreferrer">request new icons</a>
+                at the issue tracker.</p>
 
-            <p:inputText onkeyup="onFilter(event)" styleClass="icon-filter" placeholder="Search an icon" />
+            <p:inputText type="search" oninput="onFilter(event)" styleClass="icon-filter" placeholder="Search an icon" />
 
             <div id="icons-grid" class="grid icons-list">
                 <ui:repeat value="#{primeIconsView.icons}" var="icon">
-                    <div class="col-12 md:col-2" data-name="#{icon.name}" data-key="#{icon.key}">
+                    <div class="col-6 sm:col-4 md:col-3 xl:col-2" data-name="#{icon.name}" data-key="#{icon.key}">
                         <i class="pi pi-#{icon.name}"></i>
                         <div>pi-#{icon.name}</div>
                     </div>
                 </ui:repeat>
             </div>
+            <p id="icons-empty" style="display: none">No icons found.</p>
         </div>
     </ui:define>
 
