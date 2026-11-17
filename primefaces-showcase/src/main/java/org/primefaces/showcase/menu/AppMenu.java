@@ -88,7 +88,7 @@ public class AppMenu {
         coreMenuItems.add(new MenuItem("Client Side Validation", clientSideValidationMenuItems));
         coreMenuItems.add(new MenuItem("Dialog Framework", dialogFrameworkMenuItems));
         coreMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/16_0_0/#/core/contentsecuritypolicy"));
-        coreMenuItems.add(new MenuItem("Accessiblity", "/accessibility"));
+        coreMenuItems.add(new MenuItem("Accessibility", "/accessibility"));
         coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
         coreMenuItems.add(new MenuItem("PrimeIcons", "/icons"));
         coreMenuItems.add(new MenuItem("Theming", "/theming", "New"));
