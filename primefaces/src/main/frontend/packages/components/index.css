@@ -51,8 +51,6 @@
 @import url("./src/confirmpopup/confirmpopup.css") layer(primefaces.components);
 @import url("./src/menu/contextmenu.css") layer(primefaces.components);
 @import url("./src/dashboard/dashboard.css") layer(primefaces.components);
-@import url("./src/datagrid/datagrid.css") layer(primefaces.components);
-@import url("./src/datalist/datalist.css") layer(primefaces.components);
 @import url("./src/datascroller/datascroller.css") layer(primefaces.components);
 @import url("./src/datatable/datatable.css") layer(primefaces.components);
 @import url("./src/dataview/dataview.css") layer(primefaces.components);

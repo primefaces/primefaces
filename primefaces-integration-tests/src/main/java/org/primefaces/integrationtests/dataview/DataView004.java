@@ -21,32 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.datalist;
+package org.primefaces.integrationtests.dataview;
+
+import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
+import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
-public class DataListState implements Serializable {
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+import lombok.Data;
+
+@Named
+@ViewScoped
+@Data
+public class DataView004 implements Serializable {
 
     @Serial private static final long serialVersionUID = 1L;
 
-    private int first;
+    private List<ProgrammingLanguage> progLanguages;
+    private List<ProgrammingLanguage> noLanguages = Collections.emptyList();
 
-    private int rows;
+    @Inject
+    private ProgrammingLanguageService service;
 
-    public int getFirst() {
-        return first;
-    }
-
-    public void setFirst(int first) {
-        this.first = first;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
+    @PostConstruct
+    public void init() {
+        progLanguages = service.getLangs();
     }
 }

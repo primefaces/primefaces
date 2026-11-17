@@ -117,7 +117,7 @@ shortcuts to display simple texts.
 ```
 ## Pagination
 DataTable has a built-in ajax based paginator that is enabled by setting paginator option to true, see
-pagination section in dataGrid documentation for more information about customization options.
+pagination section in dataView documentation for more information about customization options.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" paginator="true" rows="10">

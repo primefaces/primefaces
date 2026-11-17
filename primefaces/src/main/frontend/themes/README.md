@@ -519,7 +519,7 @@ other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0
 - Loading states. Today: autoComplete (search spinner), ajax buttons and links (loading icon), dataScroller (load
   more), outputPanel (deferred), progressBar (indeterminate), skeleton, blockUI (spinner, light mask), ajaxStatus (top
   progress bar). Missing (core):
-  - dataTable / treeTable / dataView / dataGrid / dataList: loading overlay (mask + spinner) while paging, sorting,
+  - dataTable / treeTable / dataView: loading overlay (mask + spinner) while paging, sorting,
     filtering or lazy loading, optional skeleton rows instead of the spinner
   - tree / treeTable: per node loading indicator for dynamic (lazy) children
   - selectOneMenu / selectCheckboxMenu / cascadeSelect: loading state of the dropdown icon for lazy options

@@ -241,6 +241,9 @@ public class DataViewRenderer extends DataRenderer<DataView> {
 
         if (component.getRowCount() == 0) {
             ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataView.EMPTY_MESSAGE_CLASS, null);
+
             UIComponent emptyFacet = component.getEmptyMessageFacet();
             if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
@@ -248,6 +251,8 @@ public class DataViewRenderer extends DataRenderer<DataView> {
             else {
                 writer.writeText(component.getEmptyMessage(), "emptyMessage");
             }
+
+            writer.endElement("div");
         }
         else {
             if (layout.contains("grid")) {
@@ -301,14 +306,16 @@ public class DataViewRenderer extends DataRenderer<DataView> {
                     }
                     renderedCount++;
 
+                    component.setRowIndex(rowIndex);
+                    boolean rowAvailable = component.isRowAvailable();
+
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", columnClass, null);
+                    writer.writeAttribute("class", rowAvailable ? itemClass(context, component, columnClass) : columnClass, null);
                     if (!LangUtils.isEmpty(columnInlineStyle)) {
                         writer.writeAttribute("style", columnInlineStyle, null);
                     }
 
-                    component.setRowIndex(rowIndex);
-                    if (component.isRowAvailable()) {
+                    if (rowAvailable) {
                         renderChildren(context, grid);
                     }
                     rowIndex++;
@@ -344,12 +351,9 @@ public class DataViewRenderer extends DataRenderer<DataView> {
                 }
 
                 writer.startElement("li", null);
-                writer.writeAttribute("class", DataView.ROW_CLASS, null);
+                writer.writeAttribute("class", itemClass(context, component, DataView.ROW_CLASS), null);
 
-                component.setRowIndex(i);
-                if (component.isRowAvailable()) {
-                    renderChildren(context, list);
-                }
+                renderChildren(context, list);
 
                 writer.endElement("li");
             }
@@ -359,6 +363,10 @@ public class DataViewRenderer extends DataRenderer<DataView> {
             //cleanup
             component.setRowIndex(-1);
         }
+    }
+
+    protected String itemClass(FacesContext context, DataView component, String baseClass) {
+        return getStyleClassBuilder(context).add(baseClass, component.getItemStyleClass()).build();
     }
 
     protected void encodeScript(FacesContext context, DataView component) throws IOException {

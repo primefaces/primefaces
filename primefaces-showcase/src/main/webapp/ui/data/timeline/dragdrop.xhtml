@@ -7,17 +7,17 @@
 
     <ui:define name="head">
         <style>
-            .p-datalist-item .p-draggable:hover {
+            .p-dataview-row .p-draggable:hover {
                 background: var(--p-content-hover-background);
             }
             
-            .p-datalist-data {
+            .p-dataview-list-container {
                 margin: 0;
                 padding: 0;
                 list-style: none;
             }
 
-            .p-datalist-item {
+            .p-dataview-row {
                 margin-bottom: .5rem;
                 width: 100%;
             }
@@ -45,13 +45,15 @@
                 </p:growl>
 
                 <div style="float: left; width: 130px;">
-                    <p:dataList id="eventsList" value="#{dndTimelineView.events}" var="event" itemType="circle">
-                        <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-2">
-                            #{event.name}
-                        </p:outputPanel>
+                    <p:dataView id="eventsList" value="#{dndTimelineView.events}" var="event">
+                        <p:dataViewListItem>
+                            <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-2">
+                                #{event.name}
+                            </p:outputPanel>
 
-                        <p:draggable for="eventBox" revert="true" helper="clone" cursor="move"/>
-                    </p:dataList>
+                            <p:draggable for="eventBox" revert="true" helper="clone" cursor="move"/>
+                        </p:dataViewListItem>
+                    </p:dataView>
                 </div>
 
                 <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"

@@ -26,7 +26,7 @@ package org.primefaces.integrationtests.dragdrop;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataGrid;
+import org.primefaces.selenium.component.DataView;
 import org.primefaces.selenium.component.Draggable;
 import org.primefaces.selenium.component.Droppable;
 import org.primefaces.selenium.component.Messages;
@@ -48,7 +48,7 @@ class DragDrop002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("DragDrop: drop an item of a data grid, the drop event has the row data of the datasource")
+    @DisplayName("DragDrop: drop an item of a data view, the drop event has the row data of the datasource")
     void dropRowData(Page page) {
         // Arrange
         assertEquals(List.of("Java", "C#", "JavaScript", "TypeScript", "Python"), names(page.languages));
@@ -68,7 +68,7 @@ class DragDrop002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("DragDrop: drop items of a data grid after it was updated")
+    @DisplayName("DragDrop: drop items of a data view after it was updated")
     void dropAfterUpdate(Page page) {
         // Arrange
         page.droppable.drop(draggable(1));
@@ -87,8 +87,8 @@ class DragDrop002Test extends AbstractPrimePageTest {
         return PrimeSelenium.createFragment(Draggable.class, By.id("form:languages:" + rowIndex + ":drag"));
     }
 
-    private List<String> names(DataGrid dataGrid) {
-        return dataGrid.getRowsWebElement().stream()
+    private List<String> names(DataView dataView) {
+        return dataView.getRowsWebElement().stream()
                     .map(row -> row.findElement(By.className("p-panel-title")).getText())
                     .collect(Collectors.toList());
     }
@@ -111,7 +111,7 @@ class DragDrop002Test extends AbstractPrimePageTest {
         Droppable droppable;
 
         @FindBy(id = "form:languages")
-        DataGrid languages;
+        DataView languages;
 
         @Override
         public String getLocation() {

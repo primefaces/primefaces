@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head/>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataView id="list" value="#{dataView004.progLanguages}" var="lang" varStatus="status" paginator="true" rows="2"
+                        itemStyleClass="lang-#{lang.id}#{status.first ? ' first' : ''}#{status.last ? ' last' : ''}">
+                <p:dataViewListItem>
+                    #{status.index}: #{lang.name}
+                </p:dataViewListItem>
+            </p:dataView>
+
+            <p:dataView id="grid" value="#{dataView004.progLanguages}" var="lang" varStatus="status" layout="grid"
+                        itemStyleClass="#{status.even ? 'even' : 'odd'}">
+                <p:dataViewGridItem columns="2">
+                    #{status.index}: #{lang.name}
+                </p:dataViewGridItem>
+            </p:dataView>
+
+            <p:dataView id="empty" value="#{dataView004.noLanguages}" var="lang" emptyMessage="Nothing here">
+                <p:dataViewListItem>
+                    #{lang.name}
+                </p:dataViewListItem>
+            </p:dataView>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -175,21 +175,6 @@ public class AppMenu {
         dataExporterMenuItems.add(new MenuItem("TreeTable", "/ui/data/dataexporter/treetable"));
         dataMenuItems.add(new MenuItem("DataExporter", dataExporterMenuItems));
 
-        /*
-        //DataGrid Nested MenuItem
-        List<MenuItem> dataGridMenuItems = new ArrayList<>();
-        dataGridMenuItems.add(new MenuItem("Basic", "/ui/data/datagrid/basic"));
-        dataGridMenuItems.add(new MenuItem("MultiViewState", "/ui/data/datagrid/multiViewState"));
-        dataGridMenuItems.add(new MenuItem("Responsive", "/ui/data/datagrid/responsive"));
-        dataMenuItems.add(new MenuItem("DataGrid", dataGridMenuItems));
-
-        //DataList Nested MenuItem
-        List<MenuItem> dataListMenuItems = new ArrayList<>();
-        dataListMenuItems.add(new MenuItem("Basic", "/ui/data/datalist/basic"));
-        dataListMenuItems.add(new MenuItem("Paginator", "/ui/data/datalist/paginator"));
-        dataListMenuItems.add(new MenuItem("MultiViewState", "/ui/data/datalist/multiViewState"));
-        dataListMenuItems.add(new MenuItem("Lazy", "/ui/data/datalist/lazy"));
-        dataMenuItems.add(new MenuItem("DataList", dataListMenuItems));*/
         //DataScroller Nested MenuItem
         List<MenuItem> dataScrollerMenuItems = new ArrayList<>();
         dataScrollerMenuItems.add(new MenuItem("Basic", "/ui/data/datascroller/basic"));

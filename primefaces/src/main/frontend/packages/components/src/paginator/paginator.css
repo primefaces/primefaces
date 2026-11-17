@@ -1,5 +1,5 @@
 /*
- * Paginator (shared): the paginator of p:dataTable, p:treeTable, p:dataView, p:dataGrid, p:dataList, ...
+ * Paginator (shared): the paginator of p:dataTable, p:treeTable, p:dataView, ...
  *
  * Markup: .p-paginator > (left content | .p-paginator-center-content | right content), template elements in the center.
  * Page links are also .p-button.p-button-flat, so their rules are written to beat button.css by specificity.

@@ -103,8 +103,6 @@ Currently, only the following components are implemented (partially):
 - ConfirmDialog
 - ConfirmPopup
 - Dashboard
-- DataGrid
-- ~~DataList~~ (use DataView)
 - DataScroller
 - DataTable
 - DataView

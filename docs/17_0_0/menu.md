@@ -99,8 +99,6 @@
   - [ContextMenu](/components/contextmenu.md)
   - [Dashboard](/components/dashboard.md)
   - [DataExporter](/components/dataexporter.md)
-  - [DataGrid](/components/datagrid.md)
-  - [DataList](/components/datalist.md)
   - [DatePicker](/components/datepicker.md)
   - [DataScroller](/components/datascroller.md)
   - [DataTable](/components/datatable.md)

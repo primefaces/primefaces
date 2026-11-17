@@ -52,8 +52,6 @@ import { Carousel } from "./src/carousel/carousel.js";
 import { ConfirmPopup } from "./src/confirmpopup/confirmpopup.js";
 import { ColumnToggler } from "./src/columntoggler/columntoggler.js";
 import { Dashboard } from "./src/dashboard/dashboard.js";
-import { DataGrid } from "./src/datagrid/datagrid.js";
-import { DataList } from "./src/datalist/datalist.js";
 import { DataScroller } from "./src/datascroller/datascroller.js";
 
 import { DataTable } from "./src/datatable/datatable.js";
@@ -142,12 +140,6 @@ function exposeToGlobalScope() {
 
     // src/dashboard
     PrimeFaces.component.Dashboard = Dashboard;
-
-    // src/datagrid
-    PrimeFaces.component.DataGrid = DataGrid;
-
-    // src/datalist
-    PrimeFaces.component.DataList = DataList;
 
     // src/datatable
     PrimeFaces.component.DataTable = DataTable;
@@ -342,8 +334,6 @@ declare global {
             ColumnToggler: typeof ColumnToggler;
             ConfirmPopup: typeof ConfirmPopup;
             Dashboard: typeof Dashboard;
-            DataGrid: typeof DataGrid;
-            DataList: typeof DataList;
             DataTable: typeof DataTable;
             FrozenDataTable: typeof FrozenDataTable;
             DataView: typeof DataView;

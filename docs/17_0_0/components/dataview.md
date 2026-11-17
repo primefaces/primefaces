@@ -163,6 +163,17 @@ template.
 </p:dataView>
 ```
 
+## Iteration Status and Item Style
+`varStatus` exports the status of the iteration (`index`, `first`, `last`, `even`, `odd`, ...) and `itemStyleClass`
+adds a style class to each item, evaluated per item in both layouts.
+```xhtml
+<p:dataView var="car" value="#{bean.cars}" varStatus="status" itemStyleClass="#{status.odd ? 'odd' : null}">
+    <p:dataViewListItem>
+        #{status.index + 1}. #{car.brand}
+    </p:dataViewListItem>
+</p:dataView>
+```
+
 ## Client Side API
 Component: _PrimeFaces.component.DataView_
 
