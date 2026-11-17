@@ -54,34 +54,34 @@ public class AppMenu {
 
         //CORE CATEGORY START
         List<MenuItem> ajaxMenuItems = new ArrayList<>();
-        ajaxMenuItems.add(new MenuItem("Introduction", "/ui/ajax/basic"));
-        ajaxMenuItems.add(new MenuItem("Process", "/ui/ajax/process"));
-        ajaxMenuItems.add(new MenuItem("PartialSubmit", "/ui/ajax/partialSubmit"));
-        ajaxMenuItems.add(new MenuItem("Selector", "/ui/ajax/selector"));
-        ajaxMenuItems.add(new MenuItem("Search", "/ui/ajax/search"));
-        ajaxMenuItems.add(new MenuItem("Validation", "/ui/ajax/validation"));
-        ajaxMenuItems.add(new MenuItem("RemoteCommand", "/ui/ajax/remoteCommand"));
-        ajaxMenuItems.add(new MenuItem("Observer", "/ui/ajax/observer"));
-        ajaxMenuItems.add(new MenuItem("Callback", "/ui/ajax/callback", "New"));
-        ajaxMenuItems.add(new MenuItem("Poll", "/ui/ajax/poll"));
-        ajaxMenuItems.add(new MenuItem("Fragment", "/ui/ajax/fragment"));
-        ajaxMenuItems.add(new MenuItem("Status", "/ui/ajax/status"));
-        ajaxMenuItems.add(new MenuItem("Lifecycle", "/ui/ajax/lifecycle"));
-        ajaxMenuItems.add(new MenuItem("Dropdown", "/ui/ajax/dropdown"));
+        ajaxMenuItems.add(new MenuItem("Introduction", "/ajax/basic"));
+        ajaxMenuItems.add(new MenuItem("Process", "/ajax/process"));
+        ajaxMenuItems.add(new MenuItem("PartialSubmit", "/ajax/partialSubmit"));
+        ajaxMenuItems.add(new MenuItem("Selector", "/ajax/selector"));
+        ajaxMenuItems.add(new MenuItem("Search", "/ajax/search"));
+        ajaxMenuItems.add(new MenuItem("Validation", "/ajax/validation"));
+        ajaxMenuItems.add(new MenuItem("RemoteCommand", "/ajax/remoteCommand"));
+        ajaxMenuItems.add(new MenuItem("Observer", "/ajax/observer"));
+        ajaxMenuItems.add(new MenuItem("Callback", "/ajax/callback", "New"));
+        ajaxMenuItems.add(new MenuItem("Poll", "/ajax/poll"));
+        ajaxMenuItems.add(new MenuItem("Fragment", "/ajax/fragment"));
+        ajaxMenuItems.add(new MenuItem("Status", "/ajax/status"));
+        ajaxMenuItems.add(new MenuItem("Lifecycle", "/ajax/lifecycle"));
+        ajaxMenuItems.add(new MenuItem("Dropdown", "/ajax/dropdown"));
 
         List<MenuItem> clientSideValidationMenuItems = new ArrayList<>();
-        clientSideValidationMenuItems.add(new MenuItem("Basic", "/ui/csv/basic"));
-        clientSideValidationMenuItems.add(new MenuItem("Bean", "/ui/csv/bean"));
-        clientSideValidationMenuItems.add(new MenuItem("Custom", "/ui/csv/custom"));
-        clientSideValidationMenuItems.add(new MenuItem("Complex", "/ui/csv/complex"));
-        clientSideValidationMenuItems.add(new MenuItem("Event", "/ui/csv/event"));
-        clientSideValidationMenuItems.add(new MenuItem("Immediate", "/ui/csv/immediate"));
+        clientSideValidationMenuItems.add(new MenuItem("Basic", "/csv/basic"));
+        clientSideValidationMenuItems.add(new MenuItem("Bean", "/csv/bean"));
+        clientSideValidationMenuItems.add(new MenuItem("Custom", "/csv/custom"));
+        clientSideValidationMenuItems.add(new MenuItem("Complex", "/csv/complex"));
+        clientSideValidationMenuItems.add(new MenuItem("Event", "/csv/event"));
+        clientSideValidationMenuItems.add(new MenuItem("Immediate", "/csv/immediate"));
 
         List<MenuItem> dialogFrameworkMenuItems = new ArrayList<>();
-        dialogFrameworkMenuItems.add(new MenuItem("Basic", "/ui/df/basic"));
-        dialogFrameworkMenuItems.add(new MenuItem("Data", "/ui/df/data"));
-        dialogFrameworkMenuItems.add(new MenuItem("Message", "/ui/df/message"));
-        dialogFrameworkMenuItems.add(new MenuItem("Nested", "/ui/df/nested"));
+        dialogFrameworkMenuItems.add(new MenuItem("Basic", "/df/basic"));
+        dialogFrameworkMenuItems.add(new MenuItem("Data", "/df/data"));
+        dialogFrameworkMenuItems.add(new MenuItem("Message", "/df/message"));
+        dialogFrameworkMenuItems.add(new MenuItem("Nested", "/df/nested"));
 
         List<MenuItem> coreMenuItems = new ArrayList<>();
         coreMenuItems.add(new MenuItem("AJAX", ajaxMenuItems));
@@ -99,263 +99,263 @@ public class AppMenu {
 
         //FORM CATEGORY START
         List<MenuItem> formMenuItems = new ArrayList<>();
-        formMenuItems.add(new MenuItem("AutoComplete", "/ui/input/autoComplete"));
-        formMenuItems.add(new MenuItem("CascadeSelect", "/ui/input/cascadeSelect"));
-        formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
+        formMenuItems.add(new MenuItem("AutoComplete", "/input/autoComplete"));
+        formMenuItems.add(new MenuItem("CascadeSelect", "/input/cascadeSelect"));
+        formMenuItems.add(new MenuItem("Chips", "/input/chips"));
 
         List<MenuItem> colorPickerMenuItems = new ArrayList<>();
-        colorPickerMenuItems.add(new MenuItem("Popup", "/ui/input/colorpicker/colorPicker"));
-        colorPickerMenuItems.add(new MenuItem("Inline", "/ui/input/colorpicker/colorPickerInline"));
+        colorPickerMenuItems.add(new MenuItem("Popup", "/input/colorpicker/colorPicker"));
+        colorPickerMenuItems.add(new MenuItem("Inline", "/input/colorpicker/colorPickerInline"));
         formMenuItems.add(new MenuItem("ColorPicker", colorPickerMenuItems));
 
         //DatePicker Nested MenuItem
         List<MenuItem> datePickerMenuItems = new ArrayList<>();
-        datePickerMenuItems.add(new MenuItem("java.util.Date", "/ui/input/datepicker/datePicker"));
-        datePickerMenuItems.add(new MenuItem("Java 8+ Date APIs", "/ui/input/datepicker/datePickerJava8"));
-        datePickerMenuItems.add(new MenuItem("Metadata", "/ui/input/datepicker/metadata"));
+        datePickerMenuItems.add(new MenuItem("java.util.Date", "/input/datepicker/datePicker"));
+        datePickerMenuItems.add(new MenuItem("Java 8+ Date APIs", "/input/datepicker/datePickerJava8"));
+        datePickerMenuItems.add(new MenuItem("Metadata", "/input/datepicker/metadata"));
         formMenuItems.add(new MenuItem("DatePicker", datePickerMenuItems));
 
-        formMenuItems.add(new MenuItem("Inplace", "/ui/input/inplace"));
-        formMenuItems.add(new MenuItem("InputGroup", "/ui/input/inputGroup"));
-        formMenuItems.add(new MenuItem("InputMask", "/ui/input/inputMask"));
-        formMenuItems.add(new MenuItem("InputNumber", "/ui/input/inputNumber"));
-        formMenuItems.add(new MenuItem("InputOtp", "/ui/input/inputOtp", "New"));
-        formMenuItems.add(new MenuItem("InputPhone", "/ui/input/inputPhone", "New"));
-        formMenuItems.add(new MenuItem("InputText", "/ui/input/inputText"));
-        formMenuItems.add(new MenuItem("InputTextArea", "/ui/input/inputTextarea"));
-        formMenuItems.add(new MenuItem("KeyFilter", "/ui/input/keyFilter"));
-        formMenuItems.add(new MenuItem("Keyboard", "/ui/input/keyboard"));
-        formMenuItems.add(new MenuItem("Knob", "/ui/input/knob"));
-        formMenuItems.add(new MenuItem("MultiSelectListBox", "/ui/input/multiSelectListbox"));
-        formMenuItems.add(new MenuItem("Password", "/ui/input/password"));
-        formMenuItems.add(new MenuItem("Rating", "/ui/input/rating"));
-        formMenuItems.add(new MenuItem("SelectBooleanButton", "/ui/input/booleanButton"));
-        formMenuItems.add(new MenuItem("SelectBooleanCheckbox", "/ui/input/booleanCheckbox"));
-        formMenuItems.add(new MenuItem("SelectOneButton", "/ui/input/oneButton"));
-        formMenuItems.add(new MenuItem("SelectOneRadio", "/ui/input/oneRadio"));
-        formMenuItems.add(new MenuItem("SelectCheckboxMenu", "/ui/input/checkboxMenu"));
-        formMenuItems.add(new MenuItem("SelectOneMenu", "/ui/input/oneMenu"));
-        formMenuItems.add(new MenuItem("SelectOneListbox", "/ui/input/listbox"));
-        formMenuItems.add(new MenuItem("SelectManyButton", "/ui/input/manyButton"));
-        formMenuItems.add(new MenuItem("SelectManyMenu", "/ui/input/manyMenu"));
-        formMenuItems.add(new MenuItem("SelectManyCheckbox", "/ui/input/manyCheckbox"));
-        formMenuItems.add(new MenuItem("Signature", "/ui/input/signature"));
-        formMenuItems.add(new MenuItem("Slider", "/ui/input/slider"));
-        formMenuItems.add(new MenuItem("Spinner", "/ui/input/spinner"));
-        formMenuItems.add(new MenuItem("TextEditor", "/ui/input/textEditor"));
-        formMenuItems.add(new MenuItem("ToggleSwitch", "/ui/input/toggleSwitch"));
-        formMenuItems.add(new MenuItem("TriStateCheckbox", "/ui/input/triStateCheckbox"));
-        formMenuItems.add(new MenuItem("TriStateManyCheckbox", "/ui/input/triStateManyCheckbox", "New"));
+        formMenuItems.add(new MenuItem("Inplace", "/input/inplace"));
+        formMenuItems.add(new MenuItem("InputGroup", "/input/inputGroup"));
+        formMenuItems.add(new MenuItem("InputMask", "/input/inputMask"));
+        formMenuItems.add(new MenuItem("InputNumber", "/input/inputNumber"));
+        formMenuItems.add(new MenuItem("InputOtp", "/input/inputOtp", "New"));
+        formMenuItems.add(new MenuItem("InputPhone", "/input/inputPhone", "New"));
+        formMenuItems.add(new MenuItem("InputText", "/input/inputText"));
+        formMenuItems.add(new MenuItem("InputTextArea", "/input/inputTextarea"));
+        formMenuItems.add(new MenuItem("KeyFilter", "/input/keyFilter"));
+        formMenuItems.add(new MenuItem("Keyboard", "/input/keyboard"));
+        formMenuItems.add(new MenuItem("Knob", "/input/knob"));
+        formMenuItems.add(new MenuItem("MultiSelectListBox", "/input/multiSelectListbox"));
+        formMenuItems.add(new MenuItem("Password", "/input/password"));
+        formMenuItems.add(new MenuItem("Rating", "/input/rating"));
+        formMenuItems.add(new MenuItem("SelectBooleanButton", "/input/booleanButton"));
+        formMenuItems.add(new MenuItem("SelectBooleanCheckbox", "/input/booleanCheckbox"));
+        formMenuItems.add(new MenuItem("SelectOneButton", "/input/oneButton"));
+        formMenuItems.add(new MenuItem("SelectOneRadio", "/input/oneRadio"));
+        formMenuItems.add(new MenuItem("SelectCheckboxMenu", "/input/checkboxMenu"));
+        formMenuItems.add(new MenuItem("SelectOneMenu", "/input/oneMenu"));
+        formMenuItems.add(new MenuItem("SelectOneListbox", "/input/listbox"));
+        formMenuItems.add(new MenuItem("SelectManyButton", "/input/manyButton"));
+        formMenuItems.add(new MenuItem("SelectManyMenu", "/input/manyMenu"));
+        formMenuItems.add(new MenuItem("SelectManyCheckbox", "/input/manyCheckbox"));
+        formMenuItems.add(new MenuItem("Signature", "/input/signature"));
+        formMenuItems.add(new MenuItem("Slider", "/input/slider"));
+        formMenuItems.add(new MenuItem("Spinner", "/input/spinner"));
+        formMenuItems.add(new MenuItem("TextEditor", "/input/textEditor"));
+        formMenuItems.add(new MenuItem("ToggleSwitch", "/input/toggleSwitch"));
+        formMenuItems.add(new MenuItem("TriStateCheckbox", "/input/triStateCheckbox"));
+        formMenuItems.add(new MenuItem("TriStateManyCheckbox", "/input/triStateManyCheckbox", "New"));
         menuCategories.add(new MenuCategory("Form", formMenuItems));
         //FORM CATEGORY END
 
         //BUTTON CATEGORY START
         List<MenuItem> buttonMenuItems = new ArrayList<>();
-        buttonMenuItems.add(new MenuItem("Button", "/ui/button/button"));
-        buttonMenuItems.add(new MenuItem("CommandButton", "/ui/button/commandButton"));
-        buttonMenuItems.add(new MenuItem("CommandLink", "/ui/button/commandLink"));
-        buttonMenuItems.add(new MenuItem("Link", "/ui/button/link"));
-        buttonMenuItems.add(new MenuItem("LinkButton", "/ui/button/linkButton"));
-        buttonMenuItems.add(new MenuItem("SplitButton", "/ui/button/splitButton"));
-        buttonMenuItems.add(new MenuItem("Speed Dial", "/ui/button/speedDial"));
+        buttonMenuItems.add(new MenuItem("Button", "/button/button"));
+        buttonMenuItems.add(new MenuItem("CommandButton", "/button/commandButton"));
+        buttonMenuItems.add(new MenuItem("CommandLink", "/button/commandLink"));
+        buttonMenuItems.add(new MenuItem("Link", "/button/link"));
+        buttonMenuItems.add(new MenuItem("LinkButton", "/button/linkButton"));
+        buttonMenuItems.add(new MenuItem("SplitButton", "/button/splitButton"));
+        buttonMenuItems.add(new MenuItem("Speed Dial", "/button/speedDial"));
         menuCategories.add(new MenuCategory("Button", buttonMenuItems));
         //BUTTON CATEGORY END
 
         //DATA CATEGORY START
         List<MenuItem> dataMenuItems = new ArrayList<>();
-        dataMenuItems.add(new MenuItem("Carousel", "/ui/data/carousel"));
-        dataMenuItems.add(new MenuItem("Chronoline", "/ui/data/chronoline"));
+        dataMenuItems.add(new MenuItem("Carousel", "/data/carousel"));
+        dataMenuItems.add(new MenuItem("Chronoline", "/data/chronoline"));
 
         //DataExporter Nested MenuItem
         List<MenuItem> dataExporterMenuItems = new ArrayList<>();
-        dataExporterMenuItems.add(new MenuItem("Basic", "/ui/data/dataexporter/basic"));
-        dataExporterMenuItems.add(new MenuItem("Lazy", "/ui/data/dataexporter/lazy"));
-        dataExporterMenuItems.add(new MenuItem("Exclude", "/ui/data/dataexporter/excludeColumns"));
-        dataExporterMenuItems.add(new MenuItem("Customized", "/ui/data/dataexporter/customizedDocuments"));
-        dataExporterMenuItems.add(new MenuItem("TreeTable", "/ui/data/dataexporter/treetable"));
+        dataExporterMenuItems.add(new MenuItem("Basic", "/data/dataexporter/basic"));
+        dataExporterMenuItems.add(new MenuItem("Lazy", "/data/dataexporter/lazy"));
+        dataExporterMenuItems.add(new MenuItem("Exclude", "/data/dataexporter/excludeColumns"));
+        dataExporterMenuItems.add(new MenuItem("Customized", "/data/dataexporter/customizedDocuments"));
+        dataExporterMenuItems.add(new MenuItem("TreeTable", "/data/dataexporter/treetable"));
         dataMenuItems.add(new MenuItem("DataExporter", dataExporterMenuItems));
 
         //DataScroller Nested MenuItem
         List<MenuItem> dataScrollerMenuItems = new ArrayList<>();
-        dataScrollerMenuItems.add(new MenuItem("Basic", "/ui/data/datascroller/basic"));
-        dataScrollerMenuItems.add(new MenuItem("Inline", "/ui/data/datascroller/inline"));
-        dataScrollerMenuItems.add(new MenuItem("Loader", "/ui/data/datascroller/loader"));
-        dataScrollerMenuItems.add(new MenuItem("Loading", "/ui/data/datascroller/loading"));
+        dataScrollerMenuItems.add(new MenuItem("Basic", "/data/datascroller/basic"));
+        dataScrollerMenuItems.add(new MenuItem("Inline", "/data/datascroller/inline"));
+        dataScrollerMenuItems.add(new MenuItem("Loader", "/data/datascroller/loader"));
+        dataScrollerMenuItems.add(new MenuItem("Loading", "/data/datascroller/loading"));
         dataMenuItems.add(new MenuItem("DataScroller", dataScrollerMenuItems));
 
         //DataTable Nested MenuItem
         List<MenuItem> dataTableMenuItems = new ArrayList<>();
-        dataTableMenuItems.add(new MenuItem("Basic", "/ui/data/datatable/basic"));
-        dataTableMenuItems.add(new MenuItem("ColumnToggler", "/ui/data/datatable/columnToggler"));
-        dataTableMenuItems.add(new MenuItem("ContextMenu", "/ui/data/datatable/contextMenu"));
-        dataTableMenuItems.add(new MenuItem("Crud", "/ui/data/datatable/crud"));
-        dataTableMenuItems.add(new MenuItem("DisplayPriority", "/ui/data/datatable/displayPriority"));
-        dataTableMenuItems.add(new MenuItem("Dynamic Columns", "/ui/data/datatable/columns"));
-        dataTableMenuItems.add(new MenuItem("Edit", "/ui/data/datatable/edit"));
-        dataTableMenuItems.add(new MenuItem("Field", "/ui/data/datatable/field"));
-        dataTableMenuItems.add(new MenuItem("Filter", "/ui/data/datatable/filter"));
-        dataTableMenuItems.add(new MenuItem("Group", "/ui/data/datatable/group"));
-        dataTableMenuItems.add(new MenuItem("Lazy", "/ui/data/datatable/lazy"));
-        dataTableMenuItems.add(new MenuItem("MultiViewState", "/ui/data/datatable/multiViewState"));
-        dataTableMenuItems.add(new MenuItem("Paginator", "/ui/data/datatable/paginator"));
-        dataTableMenuItems.add(new MenuItem("Reorder", "/ui/data/datatable/reorder"));
-        dataTableMenuItems.add(new MenuItem("Resize", "/ui/data/datatable/columnResize"));
-        dataTableMenuItems.add(new MenuItem("Responsive", "/ui/data/datatable/responsive"));
-        dataTableMenuItems.add(new MenuItem("RowExpansion", "/ui/data/datatable/expansion"));
-        dataTableMenuItems.add(new MenuItem("RowGroup", "/ui/data/datatable/rowGroup"));
-        dataTableMenuItems.add(new MenuItem("RowHeader", "/ui/data/datatable/rowHeader"));
-        dataTableMenuItems.add(new MenuItem("RowStyle", "/ui/data/datatable/rowStyle"));
-        dataTableMenuItems.add(new MenuItem("Scroll", "/ui/data/datatable/scroll"));
-        dataTableMenuItems.add(new MenuItem("Selection", "/ui/data/datatable/selection"));
-        dataTableMenuItems.add(new MenuItem("Sort", "/ui/data/datatable/sort"));
-        dataTableMenuItems.add(new MenuItem("Style", "/ui/data/datatable/style"));
-        dataTableMenuItems.add(new MenuItem("SubTable", "/ui/data/datatable/subtable"));
-        //dataTableMenuItems.add(new MenuItem("SummaryRow", "/ui/data/datatable/summaryRow"));
+        dataTableMenuItems.add(new MenuItem("Basic", "/data/datatable/basic"));
+        dataTableMenuItems.add(new MenuItem("ColumnToggler", "/data/datatable/columnToggler"));
+        dataTableMenuItems.add(new MenuItem("ContextMenu", "/data/datatable/contextMenu"));
+        dataTableMenuItems.add(new MenuItem("Crud", "/data/datatable/crud"));
+        dataTableMenuItems.add(new MenuItem("DisplayPriority", "/data/datatable/displayPriority"));
+        dataTableMenuItems.add(new MenuItem("Dynamic Columns", "/data/datatable/columns"));
+        dataTableMenuItems.add(new MenuItem("Edit", "/data/datatable/edit"));
+        dataTableMenuItems.add(new MenuItem("Field", "/data/datatable/field"));
+        dataTableMenuItems.add(new MenuItem("Filter", "/data/datatable/filter"));
+        dataTableMenuItems.add(new MenuItem("Group", "/data/datatable/group"));
+        dataTableMenuItems.add(new MenuItem("Lazy", "/data/datatable/lazy"));
+        dataTableMenuItems.add(new MenuItem("MultiViewState", "/data/datatable/multiViewState"));
+        dataTableMenuItems.add(new MenuItem("Paginator", "/data/datatable/paginator"));
+        dataTableMenuItems.add(new MenuItem("Reorder", "/data/datatable/reorder"));
+        dataTableMenuItems.add(new MenuItem("Resize", "/data/datatable/columnResize"));
+        dataTableMenuItems.add(new MenuItem("Responsive", "/data/datatable/responsive"));
+        dataTableMenuItems.add(new MenuItem("RowExpansion", "/data/datatable/expansion"));
+        dataTableMenuItems.add(new MenuItem("RowGroup", "/data/datatable/rowGroup"));
+        dataTableMenuItems.add(new MenuItem("RowHeader", "/data/datatable/rowHeader"));
+        dataTableMenuItems.add(new MenuItem("RowStyle", "/data/datatable/rowStyle"));
+        dataTableMenuItems.add(new MenuItem("Scroll", "/data/datatable/scroll"));
+        dataTableMenuItems.add(new MenuItem("Selection", "/data/datatable/selection"));
+        dataTableMenuItems.add(new MenuItem("Sort", "/data/datatable/sort"));
+        dataTableMenuItems.add(new MenuItem("Style", "/data/datatable/style"));
+        dataTableMenuItems.add(new MenuItem("SubTable", "/data/datatable/subtable"));
+        //dataTableMenuItems.add(new MenuItem("SummaryRow", "/data/datatable/summaryRow"));
         dataMenuItems.add(new MenuItem("DataTable", dataTableMenuItems));
 
         //DataView Nested MenuItem
         List<MenuItem> dataViewMenuItems = new ArrayList<>();
-        dataViewMenuItems.add(new MenuItem("Basic", "/ui/data/dataview/basic"));
-        dataViewMenuItems.add(new MenuItem("MultiViewState", "/ui/data/dataview/multiViewState"));
-        dataViewMenuItems.add(new MenuItem("Lazy", "/ui/data/dataview/lazy"));
-        dataViewMenuItems.add(new MenuItem("Responsive", "/ui/data/dataview/responsive"));
+        dataViewMenuItems.add(new MenuItem("Basic", "/data/dataview/basic"));
+        dataViewMenuItems.add(new MenuItem("MultiViewState", "/data/dataview/multiViewState"));
+        dataViewMenuItems.add(new MenuItem("Lazy", "/data/dataview/lazy"));
+        dataViewMenuItems.add(new MenuItem("Responsive", "/data/dataview/responsive"));
         dataMenuItems.add(new MenuItem("DataView", dataViewMenuItems));
 
         //Diagram Nested MenuItem
         List<MenuItem> diagramMenuItems = new ArrayList<>();
-        diagramMenuItems.add(new MenuItem("Basic", "/ui/data/diagram/basic"));
-        diagramMenuItems.add(new MenuItem("Hierarchical", "/ui/data/diagram/hierarchical"));
-        diagramMenuItems.add(new MenuItem("FlowChart", "/ui/data/diagram/flowchart"));
-        diagramMenuItems.add(new MenuItem("StateMachine", "/ui/data/diagram/statemachine"));
-        diagramMenuItems.add(new MenuItem("Editable", "/ui/data/diagram/editable"));
+        diagramMenuItems.add(new MenuItem("Basic", "/data/diagram/basic"));
+        diagramMenuItems.add(new MenuItem("Hierarchical", "/data/diagram/hierarchical"));
+        diagramMenuItems.add(new MenuItem("FlowChart", "/data/diagram/flowchart"));
+        diagramMenuItems.add(new MenuItem("StateMachine", "/data/diagram/statemachine"));
+        diagramMenuItems.add(new MenuItem("Editable", "/data/diagram/editable"));
         dataMenuItems.add(new MenuItem("Diagram", diagramMenuItems));
 
         //Gmap Nested MenuItem
         List<MenuItem> gmapMenuItems = new ArrayList<>();
-        gmapMenuItems.add(new MenuItem("Basic", "/ui/data/gmap/basic"));
-        gmapMenuItems.add(new MenuItem("Event", "/ui/data/gmap/event"));
-        gmapMenuItems.add(new MenuItem("Markers", "/ui/data/gmap/markers"));
-        gmapMenuItems.add(new MenuItem("Selection", "/ui/data/gmap/markerSelection"));
-        gmapMenuItems.add(new MenuItem("Add Markers", "/ui/data/gmap/addMarkers"));
-        gmapMenuItems.add(new MenuItem("Draggable", "/ui/data/gmap/draggableMarkers"));
-        gmapMenuItems.add(new MenuItem("InfoWindow", "/ui/data/gmap/infoWindow"));
-        gmapMenuItems.add(new MenuItem("Polylines", "/ui/data/gmap/polylines"));
-        gmapMenuItems.add(new MenuItem("Polygons", "/ui/data/gmap/polygons"));
-        gmapMenuItems.add(new MenuItem("Circles", "/ui/data/gmap/circles"));
-        gmapMenuItems.add(new MenuItem("Rectangles", "/ui/data/gmap/rectangles"));
-        gmapMenuItems.add(new MenuItem("StreetView", "/ui/data/gmap/street"));
-        gmapMenuItems.add(new MenuItem("Controls", "/ui/data/gmap/controls"));
-        gmapMenuItems.add(new MenuItem("Geocode", "/ui/data/gmap/geocode"));
-        gmapMenuItems.add(new MenuItem("Dialog", "/ui/data/gmap/mapDialog"));
+        gmapMenuItems.add(new MenuItem("Basic", "/data/gmap/basic"));
+        gmapMenuItems.add(new MenuItem("Event", "/data/gmap/event"));
+        gmapMenuItems.add(new MenuItem("Markers", "/data/gmap/markers"));
+        gmapMenuItems.add(new MenuItem("Selection", "/data/gmap/markerSelection"));
+        gmapMenuItems.add(new MenuItem("Add Markers", "/data/gmap/addMarkers"));
+        gmapMenuItems.add(new MenuItem("Draggable", "/data/gmap/draggableMarkers"));
+        gmapMenuItems.add(new MenuItem("InfoWindow", "/data/gmap/infoWindow"));
+        gmapMenuItems.add(new MenuItem("Polylines", "/data/gmap/polylines"));
+        gmapMenuItems.add(new MenuItem("Polygons", "/data/gmap/polygons"));
+        gmapMenuItems.add(new MenuItem("Circles", "/data/gmap/circles"));
+        gmapMenuItems.add(new MenuItem("Rectangles", "/data/gmap/rectangles"));
+        gmapMenuItems.add(new MenuItem("StreetView", "/data/gmap/street"));
+        gmapMenuItems.add(new MenuItem("Controls", "/data/gmap/controls"));
+        gmapMenuItems.add(new MenuItem("Geocode", "/data/gmap/geocode"));
+        gmapMenuItems.add(new MenuItem("Dialog", "/data/gmap/mapDialog"));
         dataMenuItems.add(new MenuItem("Gmap", gmapMenuItems));
 
         //HorizontalTree Nested MenuItem
         List<MenuItem> horizontalTreeMenuItems = new ArrayList<>();
-        horizontalTreeMenuItems.add(new MenuItem("Basic", "/ui/data/htree/basic"));
-        horizontalTreeMenuItems.add(new MenuItem("Icon", "/ui/data/htree/icon"));
-        horizontalTreeMenuItems.add(new MenuItem("Selection", "/ui/data/htree/selection"));
-        horizontalTreeMenuItems.add(new MenuItem("Events", "/ui/data/htree/events"));
-        horizontalTreeMenuItems.add(new MenuItem("ContextMenu", "/ui/data/htree/contextMenu"));
+        horizontalTreeMenuItems.add(new MenuItem("Basic", "/data/htree/basic"));
+        horizontalTreeMenuItems.add(new MenuItem("Icon", "/data/htree/icon"));
+        horizontalTreeMenuItems.add(new MenuItem("Selection", "/data/htree/selection"));
+        horizontalTreeMenuItems.add(new MenuItem("Events", "/data/htree/events"));
+        horizontalTreeMenuItems.add(new MenuItem("ContextMenu", "/data/htree/contextMenu"));
         dataMenuItems.add(new MenuItem("HorizontalTree", horizontalTreeMenuItems));
 
-        dataMenuItems.add(new MenuItem("Mindmap", "/ui/data/mindmap"));
-        dataMenuItems.add(new MenuItem("OrderList", "/ui/data/orderList"));
-        dataMenuItems.add(new MenuItem("Organigram", "/ui/data/organigram"));
-        dataMenuItems.add(new MenuItem("PickList", "/ui/data/pickList"));
+        dataMenuItems.add(new MenuItem("Mindmap", "/data/mindmap"));
+        dataMenuItems.add(new MenuItem("OrderList", "/data/orderList"));
+        dataMenuItems.add(new MenuItem("Organigram", "/data/organigram"));
+        dataMenuItems.add(new MenuItem("PickList", "/data/pickList"));
 
         //Schedule Nested MenuItem
         List<MenuItem> scheduleMenuItems = new ArrayList<>();
-        scheduleMenuItems.add(new MenuItem("Basic", "/ui/data/schedule/basic"));
-        scheduleMenuItems.add(new MenuItem("Configuration", "/ui/data/schedule/configuration"));
-        scheduleMenuItems.add(new MenuItem("Lazy", "/ui/data/schedule/lazy"));
-        scheduleMenuItems.add(new MenuItem("Locale I18N", "/ui/data/schedule/localization"));
-        scheduleMenuItems.add(new MenuItem("Extender", "/ui/data/schedule/extender"));
+        scheduleMenuItems.add(new MenuItem("Basic", "/data/schedule/basic"));
+        scheduleMenuItems.add(new MenuItem("Configuration", "/data/schedule/configuration"));
+        scheduleMenuItems.add(new MenuItem("Lazy", "/data/schedule/lazy"));
+        scheduleMenuItems.add(new MenuItem("Locale I18N", "/data/schedule/localization"));
+        scheduleMenuItems.add(new MenuItem("Extender", "/data/schedule/extender"));
         dataMenuItems.add(new MenuItem("Schedule", scheduleMenuItems));
 
-        dataMenuItems.add(new MenuItem("TagCloud", "/ui/data/tagCloud"));
+        dataMenuItems.add(new MenuItem("TagCloud", "/data/tagCloud"));
 
         //Timeline Nested MenuItem
         List<MenuItem> timelineMenuItems = new ArrayList<>();
-        timelineMenuItems.add(new MenuItem("Basic", "/ui/data/timeline/basic"));
-        timelineMenuItems.add(new MenuItem("Limit Range", "/ui/data/timeline/limitRange"));
-        timelineMenuItems.add(new MenuItem("Custom", "/ui/data/timeline/custom"));
-        timelineMenuItems.add(new MenuItem("DragDrop", "/ui/data/timeline/dragdrop"));
-        timelineMenuItems.add(new MenuItem("Linked Timelines", "/ui/data/timeline/linked"));
-        timelineMenuItems.add(new MenuItem("All Events", "/ui/data/timeline/allEvents"));
-        timelineMenuItems.add(new MenuItem("Grouping", "/ui/data/timeline/grouping"));
-        timelineMenuItems.add(new MenuItem("Nested Grouping", "/ui/data/timeline/nestedGrouping"));
-        timelineMenuItems.add(new MenuItem("Editable Server-Side", "/ui/data/timeline/editServer"));
-        timelineMenuItems.add(new MenuItem("Lazy Loading", "/ui/data/timeline/lazy"));
+        timelineMenuItems.add(new MenuItem("Basic", "/data/timeline/basic"));
+        timelineMenuItems.add(new MenuItem("Limit Range", "/data/timeline/limitRange"));
+        timelineMenuItems.add(new MenuItem("Custom", "/data/timeline/custom"));
+        timelineMenuItems.add(new MenuItem("DragDrop", "/data/timeline/dragdrop"));
+        timelineMenuItems.add(new MenuItem("Linked Timelines", "/data/timeline/linked"));
+        timelineMenuItems.add(new MenuItem("All Events", "/data/timeline/allEvents"));
+        timelineMenuItems.add(new MenuItem("Grouping", "/data/timeline/grouping"));
+        timelineMenuItems.add(new MenuItem("Nested Grouping", "/data/timeline/nestedGrouping"));
+        timelineMenuItems.add(new MenuItem("Editable Server-Side", "/data/timeline/editServer"));
+        timelineMenuItems.add(new MenuItem("Lazy Loading", "/data/timeline/lazy"));
         dataMenuItems.add(new MenuItem("Timeline", timelineMenuItems));
 
         //Tree Nested MenuItem
         List<MenuItem> treeMenuItems = new ArrayList<>();
-        treeMenuItems.add(new MenuItem("Basic", "/ui/data/tree/basic"));
-        treeMenuItems.add(new MenuItem("Icon", "/ui/data/tree/icon"));
-        treeMenuItems.add(new MenuItem("Selection", "/ui/data/tree/selection"));
-        treeMenuItems.add(new MenuItem("Events", "/ui/data/tree/events"));
-        treeMenuItems.add(new MenuItem("DragDrop", "/ui/data/tree/dragdrop"));
-        treeMenuItems.add(new MenuItem("ContextMenu", "/ui/data/tree/contextMenu"));
-        treeMenuItems.add(new MenuItem("Animate", "/ui/data/tree/animate"));
-        treeMenuItems.add(new MenuItem("Filter", "/ui/data/tree/filter"));
-        treeMenuItems.add(new MenuItem("Lazy Loading", "/ui/data/tree/lazyloading"));
+        treeMenuItems.add(new MenuItem("Basic", "/data/tree/basic"));
+        treeMenuItems.add(new MenuItem("Icon", "/data/tree/icon"));
+        treeMenuItems.add(new MenuItem("Selection", "/data/tree/selection"));
+        treeMenuItems.add(new MenuItem("Events", "/data/tree/events"));
+        treeMenuItems.add(new MenuItem("DragDrop", "/data/tree/dragdrop"));
+        treeMenuItems.add(new MenuItem("ContextMenu", "/data/tree/contextMenu"));
+        treeMenuItems.add(new MenuItem("Animate", "/data/tree/animate"));
+        treeMenuItems.add(new MenuItem("Filter", "/data/tree/filter"));
+        treeMenuItems.add(new MenuItem("Lazy Loading", "/data/tree/lazyloading"));
         dataMenuItems.add(new MenuItem("Tree", treeMenuItems));
 
         //TreeTable Nested MenuItem
         List<MenuItem> treeTableMenuItems = new ArrayList<>();
-        treeTableMenuItems.add(new MenuItem("Basic", "/ui/data/treetable/basic"));
-        treeTableMenuItems.add(new MenuItem("Style", "/ui/data/treetable/style"));
-        treeTableMenuItems.add(new MenuItem("Selection", "/ui/data/treetable/selection"));
-        treeTableMenuItems.add(new MenuItem("Events", "/ui/data/treetable/events"));
-        treeTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));
-        treeTableMenuItems.add(new MenuItem("ContextMenu", "/ui/data/treetable/contextMenu"));
-        treeTableMenuItems.add(new MenuItem("Scroll", "/ui/data/treetable/scroll"));
-        treeTableMenuItems.add(new MenuItem("Resize", "/ui/data/treetable/resize"));
-        treeTableMenuItems.add(new MenuItem("Sort", "/ui/data/treetable/sort"));
-        treeTableMenuItems.add(new MenuItem("Filter", "/ui/data/treetable/filter"));
-        treeTableMenuItems.add(new MenuItem("Columns", "/ui/data/treetable/columns"));
-        treeTableMenuItems.add(new MenuItem("Responsive", "/ui/data/treetable/responsive"));
-        treeTableMenuItems.add(new MenuItem("Edit", "/ui/data/treetable/edit"));
-        treeTableMenuItems.add(new MenuItem("Paginator", "/ui/data/treetable/paginator"));
-        treeTableMenuItems.add(new MenuItem("MultiViewState", "/ui/data/treetable/multiViewState"));
-        treeTableMenuItems.add(new MenuItem("DisplayPriority", "/ui/data/treetable/displayPriority"));
+        treeTableMenuItems.add(new MenuItem("Basic", "/data/treetable/basic"));
+        treeTableMenuItems.add(new MenuItem("Style", "/data/treetable/style"));
+        treeTableMenuItems.add(new MenuItem("Selection", "/data/treetable/selection"));
+        treeTableMenuItems.add(new MenuItem("Events", "/data/treetable/events"));
+        treeTableMenuItems.add(new MenuItem("Field", "/data/treetable/field"));
+        treeTableMenuItems.add(new MenuItem("ContextMenu", "/data/treetable/contextMenu"));
+        treeTableMenuItems.add(new MenuItem("Scroll", "/data/treetable/scroll"));
+        treeTableMenuItems.add(new MenuItem("Resize", "/data/treetable/resize"));
+        treeTableMenuItems.add(new MenuItem("Sort", "/data/treetable/sort"));
+        treeTableMenuItems.add(new MenuItem("Filter", "/data/treetable/filter"));
+        treeTableMenuItems.add(new MenuItem("Columns", "/data/treetable/columns"));
+        treeTableMenuItems.add(new MenuItem("Responsive", "/data/treetable/responsive"));
+        treeTableMenuItems.add(new MenuItem("Edit", "/data/treetable/edit"));
+        treeTableMenuItems.add(new MenuItem("Paginator", "/data/treetable/paginator"));
+        treeTableMenuItems.add(new MenuItem("MultiViewState", "/data/treetable/multiViewState"));
+        treeTableMenuItems.add(new MenuItem("DisplayPriority", "/data/treetable/displayPriority"));
         dataMenuItems.add(new MenuItem("TreeTable", treeTableMenuItems));
         menuCategories.add(new MenuCategory("Data", dataMenuItems));
         //DATA CATEGORY END
 
         //PANEL CATEGORY START
         List<MenuItem> panelMenuItems = new ArrayList<>();
-        panelMenuItems.add(new MenuItem("Accordion", "/ui/panel/accordionPanel"));
-        panelMenuItems.add(new MenuItem("Card", "/ui/panel/card"));
-        panelMenuItems.add(new MenuItem("Dashboard", "/ui/panel/dashboard"));
-        panelMenuItems.add(new MenuItem("Divider", "/ui/panel/divider"));
-        panelMenuItems.add(new MenuItem("Fieldset", "/ui/panel/fieldset"));
-        //panelMenuItems.add(new MenuItem("Grid CSS", "/ui/panel/grid"));
-        panelMenuItems.add(new MenuItem("NotificationBar", "/ui/panel/notificationBar"));
-        panelMenuItems.add(new MenuItem("OutputPanel", "/ui/panel/outputPanel"));
-        //panelMenuItems.add(new MenuItem("FlexGrid", "/ui/panel/flexGrid"));
-        panelMenuItems.add(new MenuItem("Panel", "/ui/panel/panel"));
-        panelMenuItems.add(new MenuItem("PanelGrid", "/ui/panel/panelGrid"));
-        panelMenuItems.add(new MenuItem("Splitter", "/ui/panel/splitter"));
-        panelMenuItems.add(new MenuItem("ScrollPanel", "/ui/panel/scrollPanel"));
-        panelMenuItems.add(new MenuItem("TabView", "/ui/panel/tabView"));
-        panelMenuItems.add(new MenuItem("Toolbar", "/ui/panel/toolbar"));
-        panelMenuItems.add(new MenuItem("Wizard", "/ui/panel/wizard"));
+        panelMenuItems.add(new MenuItem("Accordion", "/panel/accordionPanel"));
+        panelMenuItems.add(new MenuItem("Card", "/panel/card"));
+        panelMenuItems.add(new MenuItem("Dashboard", "/panel/dashboard"));
+        panelMenuItems.add(new MenuItem("Divider", "/panel/divider"));
+        panelMenuItems.add(new MenuItem("Fieldset", "/panel/fieldset"));
+        //panelMenuItems.add(new MenuItem("Grid CSS", "/panel/grid"));
+        panelMenuItems.add(new MenuItem("NotificationBar", "/panel/notificationBar"));
+        panelMenuItems.add(new MenuItem("OutputPanel", "/panel/outputPanel"));
+        //panelMenuItems.add(new MenuItem("FlexGrid", "/panel/flexGrid"));
+        panelMenuItems.add(new MenuItem("Panel", "/panel/panel"));
+        panelMenuItems.add(new MenuItem("PanelGrid", "/panel/panelGrid"));
+        panelMenuItems.add(new MenuItem("Splitter", "/panel/splitter"));
+        panelMenuItems.add(new MenuItem("ScrollPanel", "/panel/scrollPanel"));
+        panelMenuItems.add(new MenuItem("TabView", "/panel/tabView"));
+        panelMenuItems.add(new MenuItem("Toolbar", "/panel/toolbar"));
+        panelMenuItems.add(new MenuItem("Wizard", "/panel/wizard"));
         menuCategories.add(new MenuCategory("Panel", panelMenuItems));
         //PANEL CATEGORY END
 
         //OVERLAY CATEGORY START
         List<MenuItem> overlayMenuItems = new ArrayList<>();
-        overlayMenuItems.add(new MenuItem("ConfirmDialog", "/ui/overlay/confirmDialog"));
-        overlayMenuItems.add(new MenuItem("ConfirmPopup", "/ui/overlay/confirmPopup"));
-        overlayMenuItems.add(new MenuItem("Dialog", "/ui/overlay/dialog"));
-        overlayMenuItems.add(new MenuItem("OverlayPanel", "/ui/overlay/overlayPanel"));
-        overlayMenuItems.add(new MenuItem("Sidebar", "/ui/overlay/sidebar"));
+        overlayMenuItems.add(new MenuItem("ConfirmDialog", "/overlay/confirmDialog"));
+        overlayMenuItems.add(new MenuItem("ConfirmPopup", "/overlay/confirmPopup"));
+        overlayMenuItems.add(new MenuItem("Dialog", "/overlay/dialog"));
+        overlayMenuItems.add(new MenuItem("OverlayPanel", "/overlay/overlayPanel"));
+        overlayMenuItems.add(new MenuItem("Sidebar", "/overlay/sidebar"));
 
         //Tooltip Nested MenuItem
         List<MenuItem> tooltipMenuItems = new ArrayList<>();
-        tooltipMenuItems.add(new MenuItem("Options", "/ui/overlay/tooltip/tooltipOptions"));
-        tooltipMenuItems.add(new MenuItem("Global", "/ui/overlay/tooltip/tooltipGlobal"));
+        tooltipMenuItems.add(new MenuItem("Options", "/overlay/tooltip/tooltipOptions"));
+        tooltipMenuItems.add(new MenuItem("Global", "/overlay/tooltip/tooltipGlobal"));
         overlayMenuItems.add(new MenuItem("Tooltip", tooltipMenuItems));
 
         menuCategories.add(new MenuCategory("Overlay", overlayMenuItems));
@@ -363,29 +363,29 @@ public class AppMenu {
 
         //MENU CATEGORY START
         List<MenuItem> menuMenuItems = new ArrayList<>();
-        menuMenuItems.add(new MenuItem("Breadcrumb", "/ui/menu/breadcrumb"));
+        menuMenuItems.add(new MenuItem("Breadcrumb", "/menu/breadcrumb"));
 
         //ContextMenu Nested MenuItem
         List<MenuItem> contextMenuItems = new ArrayList<>();
-        contextMenuItems.add(new MenuItem("Basic", "/ui/menu/contextmenu/basic"));
-        contextMenuItems.add(new MenuItem("Tiered", "/ui/menu/contextmenu/tiered"));
-        contextMenuItems.add(new MenuItem("Target", "/ui/menu/contextmenu/target"));
-        contextMenuItems.add(new MenuItem("DataTable", "/ui/data/datatable/contextMenu"));
-        contextMenuItems.add(new MenuItem("Tree", "/ui/data/tree/contextMenu"));
-        contextMenuItems.add(new MenuItem("TreeTable", "/ui/data/treetable/contextMenu"));
+        contextMenuItems.add(new MenuItem("Basic", "/menu/contextmenu/basic"));
+        contextMenuItems.add(new MenuItem("Tiered", "/menu/contextmenu/tiered"));
+        contextMenuItems.add(new MenuItem("Target", "/menu/contextmenu/target"));
+        contextMenuItems.add(new MenuItem("DataTable", "/data/datatable/contextMenu"));
+        contextMenuItems.add(new MenuItem("Tree", "/data/tree/contextMenu"));
+        contextMenuItems.add(new MenuItem("TreeTable", "/data/treetable/contextMenu"));
         menuMenuItems.add(new MenuItem("ContextMenu", contextMenuItems));
 
-        menuMenuItems.add(new MenuItem("Dock", "/ui/menu/dock"));
-        menuMenuItems.add(new MenuItem("MegaMenu", "/ui/menu/megaMenu"));
-        menuMenuItems.add(new MenuItem("Menu", "/ui/menu/menu"));
-        menuMenuItems.add(new MenuItem("Menubar", "/ui/menu/menubar"));
-        menuMenuItems.add(new MenuItem("MenuButton", "/ui/menu/menuButton"));
-        menuMenuItems.add(new MenuItem("PanelMenu", "/ui/menu/panelMenu"));
-        menuMenuItems.add(new MenuItem("SlideMenu", "/ui/menu/slideMenu"));
-        menuMenuItems.add(new MenuItem("Stack", "/ui/menu/stack"));
-        menuMenuItems.add(new MenuItem("Steps", "/ui/menu/steps"));
-        menuMenuItems.add(new MenuItem("TabMenu", "/ui/menu/tabMenu"));
-        menuMenuItems.add(new MenuItem("TieredMenu", "/ui/menu/tieredMenu"));
+        menuMenuItems.add(new MenuItem("Dock", "/menu/dock"));
+        menuMenuItems.add(new MenuItem("MegaMenu", "/menu/megaMenu"));
+        menuMenuItems.add(new MenuItem("Menu", "/menu/menu"));
+        menuMenuItems.add(new MenuItem("Menubar", "/menu/menubar"));
+        menuMenuItems.add(new MenuItem("MenuButton", "/menu/menuButton"));
+        menuMenuItems.add(new MenuItem("PanelMenu", "/menu/panelMenu"));
+        menuMenuItems.add(new MenuItem("SlideMenu", "/menu/slideMenu"));
+        menuMenuItems.add(new MenuItem("Stack", "/menu/stack"));
+        menuMenuItems.add(new MenuItem("Steps", "/menu/steps"));
+        menuMenuItems.add(new MenuItem("TabMenu", "/menu/tabMenu"));
+        menuMenuItems.add(new MenuItem("TieredMenu", "/menu/tieredMenu"));
         menuCategories.add(new MenuCategory("Menu", menuMenuItems));
         //MENU CATEGORY END
 
@@ -393,69 +393,69 @@ public class AppMenu {
         List<MenuItem> chartMenuItems = new ArrayList<>();
 
         //Bar Nested MenuItem
-        chartMenuItems.add(new MenuItem("Bar", "/ui/chart/bar"));
-        chartMenuItems.add(new MenuItem("Bubble", "/ui/chart/bubble"));
-        chartMenuItems.add(new MenuItem("Doughnut", "/ui/chart/doughnut"));
-        chartMenuItems.add(new MenuItem("Line", "/ui/chart/line"));
-        chartMenuItems.add(new MenuItem("Mixed", "/ui/chart/mixed"));
-        chartMenuItems.add(new MenuItem("Pie", "/ui/chart/pie"));
-        chartMenuItems.add(new MenuItem("Scatter", "/ui/chart/scatter"));
-        chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea"));
-        chartMenuItems.add(new MenuItem("Radar", "/ui/chart/radar"));
-        chartMenuItems.add(new MenuItem("Custom", "/ui/chart/custom"));
-        chartMenuItems.add(new MenuItem("Facet", "/ui/chart/facet"));
-        chartMenuItems.add(new MenuItem("Export", "/ui/chart/export"));
+        chartMenuItems.add(new MenuItem("Bar", "/chart/bar"));
+        chartMenuItems.add(new MenuItem("Bubble", "/chart/bubble"));
+        chartMenuItems.add(new MenuItem("Doughnut", "/chart/doughnut"));
+        chartMenuItems.add(new MenuItem("Line", "/chart/line"));
+        chartMenuItems.add(new MenuItem("Mixed", "/chart/mixed"));
+        chartMenuItems.add(new MenuItem("Pie", "/chart/pie"));
+        chartMenuItems.add(new MenuItem("Scatter", "/chart/scatter"));
+        chartMenuItems.add(new MenuItem("PolarArea", "/chart/polararea"));
+        chartMenuItems.add(new MenuItem("Radar", "/chart/radar"));
+        chartMenuItems.add(new MenuItem("Custom", "/chart/custom"));
+        chartMenuItems.add(new MenuItem("Facet", "/chart/facet"));
+        chartMenuItems.add(new MenuItem("Export", "/chart/export"));
         menuCategories.add(new MenuCategory("Chart", chartMenuItems));
         //CHARTS CATEGORY END
 
         //MESSAGES CATEGORY START
         List<MenuItem> messagesMenuItems = new ArrayList<>();
-        messagesMenuItems.add(new MenuItem("Growl", "/ui/message/growl"));
-        messagesMenuItems.add(new MenuItem("Messages", "/ui/message/messages"));
-        messagesMenuItems.add(new MenuItem("StaticMessage", "/ui/message/staticMessage"));
+        messagesMenuItems.add(new MenuItem("Growl", "/message/growl"));
+        messagesMenuItems.add(new MenuItem("Messages", "/message/messages"));
+        messagesMenuItems.add(new MenuItem("StaticMessage", "/message/staticMessage"));
         menuCategories.add(new MenuCategory("Messages", messagesMenuItems));
         //MESSAGES CATEGORY END
 
         //MULTIMEDIA CATEGORY START
         List<MenuItem> multimediaMenuItems = new ArrayList<>();
-        multimediaMenuItems.add(new MenuItem("Audio", "/ui/multimedia/audio"));
-        multimediaMenuItems.add(new MenuItem("Barcode", "/ui/multimedia/barcode", "Updated"));
-        multimediaMenuItems.add(new MenuItem("QRCode", "/ui/multimedia/qrcode", "Updated"));
-        multimediaMenuItems.add(new MenuItem("Image Compare", "/ui/multimedia/compare"));
+        multimediaMenuItems.add(new MenuItem("Audio", "/multimedia/audio"));
+        multimediaMenuItems.add(new MenuItem("Barcode", "/multimedia/barcode", "Updated"));
+        multimediaMenuItems.add(new MenuItem("QRCode", "/multimedia/qrcode", "Updated"));
+        multimediaMenuItems.add(new MenuItem("Image Compare", "/multimedia/compare"));
 
         //Cropper Nested MenuItem
         List<MenuItem> cropperMenuItems = new ArrayList<>();
-        cropperMenuItems.add(new MenuItem("Basic", "/ui/multimedia/cropper/cropper"));
-        cropperMenuItems.add(new MenuItem("Dynamic", "/ui/multimedia/cropper/dynamic"));
-        cropperMenuItems.add(new MenuItem("FileUpload", "/ui/multimedia/cropper/fileupload"));
+        cropperMenuItems.add(new MenuItem("Basic", "/multimedia/cropper/cropper"));
+        cropperMenuItems.add(new MenuItem("Dynamic", "/multimedia/cropper/dynamic"));
+        cropperMenuItems.add(new MenuItem("FileUpload", "/multimedia/cropper/fileupload"));
         multimediaMenuItems.add(new MenuItem("Image Cropper", cropperMenuItems));
 
-        multimediaMenuItems.add(new MenuItem("Graphic Image", "/ui/multimedia/graphicImage"));
+        multimediaMenuItems.add(new MenuItem("Graphic Image", "/multimedia/graphicImage"));
 
         //Galleria Nested MenuItem
         List<MenuItem> galleriaMenuItems = new ArrayList<>();
-        galleriaMenuItems.add(new MenuItem("Basic", "/ui/multimedia/galleria/basic"));
-        galleriaMenuItems.add(new MenuItem("Programmatic", "/ui/multimedia/galleria/programmatic"));
-        galleriaMenuItems.add(new MenuItem("Indicator", "/ui/multimedia/galleria/indicator"));
-        galleriaMenuItems.add(new MenuItem("Thumbnail", "/ui/multimedia/galleria/thumbnail"));
-        galleriaMenuItems.add(new MenuItem("Navigator", "/ui/multimedia/galleria/navigator"));
-        galleriaMenuItems.add(new MenuItem("Responsive", "/ui/multimedia/galleria/responsive"));
-        galleriaMenuItems.add(new MenuItem("FullScreen", "/ui/multimedia/galleria/fullscreen"));
-        galleriaMenuItems.add(new MenuItem("AutoPlay", "/ui/multimedia/galleria/autoplay"));
-        galleriaMenuItems.add(new MenuItem("Caption", "/ui/multimedia/galleria/caption"));
-        galleriaMenuItems.add(new MenuItem("Dynamic", "/ui/multimedia/galleria/dynamic"));
+        galleriaMenuItems.add(new MenuItem("Basic", "/multimedia/galleria/basic"));
+        galleriaMenuItems.add(new MenuItem("Programmatic", "/multimedia/galleria/programmatic"));
+        galleriaMenuItems.add(new MenuItem("Indicator", "/multimedia/galleria/indicator"));
+        galleriaMenuItems.add(new MenuItem("Thumbnail", "/multimedia/galleria/thumbnail"));
+        galleriaMenuItems.add(new MenuItem("Navigator", "/multimedia/galleria/navigator"));
+        galleriaMenuItems.add(new MenuItem("Responsive", "/multimedia/galleria/responsive"));
+        galleriaMenuItems.add(new MenuItem("FullScreen", "/multimedia/galleria/fullscreen"));
+        galleriaMenuItems.add(new MenuItem("AutoPlay", "/multimedia/galleria/autoplay"));
+        galleriaMenuItems.add(new MenuItem("Caption", "/multimedia/galleria/caption"));
+        galleriaMenuItems.add(new MenuItem("Dynamic", "/multimedia/galleria/dynamic"));
         multimediaMenuItems.add(new MenuItem("Galleria", galleriaMenuItems));
 
-        multimediaMenuItems.add(new MenuItem("Media", "/ui/multimedia/media"));
+        multimediaMenuItems.add(new MenuItem("Media", "/multimedia/media"));
 
         //PhotoCam Nested MenuItem
         List<MenuItem> photoCamMenuItems = new ArrayList<>();
-        photoCamMenuItems.add(new MenuItem("PhotoCam", "/ui/multimedia/photocam/photoCam.xhtml"));
-        photoCamMenuItems.add(new MenuItem("Device Selection", "/ui/multimedia/photocam/deviceSelection.xhtml"));
+        photoCamMenuItems.add(new MenuItem("PhotoCam", "/multimedia/photocam/photoCam.xhtml"));
+        photoCamMenuItems.add(new MenuItem("Device Selection", "/multimedia/photocam/deviceSelection.xhtml"));
         multimediaMenuItems.add(new MenuItem("PhotoCam", photoCamMenuItems));
 
-        multimediaMenuItems.add(new MenuItem("Switch", "/ui/multimedia/switch"));
-        multimediaMenuItems.add(new MenuItem("Video", "/ui/multimedia/video"));
+        multimediaMenuItems.add(new MenuItem("Switch", "/multimedia/switch"));
+        multimediaMenuItems.add(new MenuItem("Video", "/multimedia/video"));
         menuCategories.add(new MenuCategory("Multimedia", multimediaMenuItems));
         //MULTIMEDIA CATEGORY END
 
@@ -464,69 +464,69 @@ public class AppMenu {
 
         //Upload Nested MenuItem
         List<MenuItem> uploadMenuItems = new ArrayList<>();
-        uploadMenuItems.add(new MenuItem("Simple", "/ui/file/upload/simple"));
-        uploadMenuItems.add(new MenuItem("Advanced", "/ui/file/upload/advanced"));
+        uploadMenuItems.add(new MenuItem("Simple", "/file/upload/simple"));
+        uploadMenuItems.add(new MenuItem("Advanced", "/file/upload/advanced"));
         fileMenuItems.add(new MenuItem("FileUpload", uploadMenuItems));
 
-        fileMenuItems.add(new MenuItem("FileDownload", "/ui/file/download"));
+        fileMenuItems.add(new MenuItem("FileDownload", "/file/download"));
         menuCategories.add(new MenuCategory("File", fileMenuItems));
         //FILE CATEGORY END
 
         //MISC CATEGORY START
         List<MenuItem> miscMenuItems = new ArrayList<>();
-        miscMenuItems.add(new MenuItem("Avatar", "/ui/misc/avatar"));
-        miscMenuItems.add(new MenuItem("Badge", "/ui/misc/badge"));
-        miscMenuItems.add(new MenuItem("Chip", "/ui/misc/chip"));
-        miscMenuItems.add(new MenuItem("ScrollTop", "/ui/misc/scrollTop"));
-        miscMenuItems.add(new MenuItem("Skeleton", "/ui/misc/skeleton"));
-        miscMenuItems.add(new MenuItem("Tag", "/ui/misc/tag"));
-        //miscMenuItems.add(new MenuItem("Responsive", "/ui/misc/responsive"));
-        miscMenuItems.add(new MenuItem("AutoUpdate", "/ui/misc/autoUpdate"));
-        miscMenuItems.add(new MenuItem("OutputLabel", "/ui/misc/outputLabel"));
-        miscMenuItems.add(new MenuItem("FloatLabel", "/ui/misc/floatLabel"));
-        miscMenuItems.add(new MenuItem("BlockUI", "/ui/misc/blockUI"));
-        miscMenuItems.add(new MenuItem("Cache", "/ui/misc/cache"));
-        miscMenuItems.add(new MenuItem("Captcha", "/ui/misc/captcha"));
-        miscMenuItems.add(new MenuItem("Clock", "/ui/misc/clock"));
-        miscMenuItems.add(new MenuItem("Context", "/ui/misc/context"));
+        miscMenuItems.add(new MenuItem("Avatar", "/misc/avatar"));
+        miscMenuItems.add(new MenuItem("Badge", "/misc/badge"));
+        miscMenuItems.add(new MenuItem("Chip", "/misc/chip"));
+        miscMenuItems.add(new MenuItem("ScrollTop", "/misc/scrollTop"));
+        miscMenuItems.add(new MenuItem("Skeleton", "/misc/skeleton"));
+        miscMenuItems.add(new MenuItem("Tag", "/misc/tag"));
+        //miscMenuItems.add(new MenuItem("Responsive", "/misc/responsive"));
+        miscMenuItems.add(new MenuItem("AutoUpdate", "/misc/autoUpdate"));
+        miscMenuItems.add(new MenuItem("OutputLabel", "/misc/outputLabel"));
+        miscMenuItems.add(new MenuItem("FloatLabel", "/misc/floatLabel"));
+        miscMenuItems.add(new MenuItem("BlockUI", "/misc/blockUI"));
+        miscMenuItems.add(new MenuItem("Cache", "/misc/cache"));
+        miscMenuItems.add(new MenuItem("Captcha", "/misc/captcha"));
+        miscMenuItems.add(new MenuItem("Clock", "/misc/clock"));
+        miscMenuItems.add(new MenuItem("Context", "/misc/context"));
 
         //DefaultCommand Nested MenuItem
         List<MenuItem> defaultCommandMenuItems = new ArrayList<>();
-        defaultCommandMenuItems.add(new MenuItem("Basic", "/ui/misc/defaultcommand/basic"));
-        defaultCommandMenuItems.add(new MenuItem("Multiple", "/ui/misc/defaultcommand/multiple"));
+        defaultCommandMenuItems.add(new MenuItem("Basic", "/misc/defaultcommand/basic"));
+        defaultCommandMenuItems.add(new MenuItem("Multiple", "/misc/defaultcommand/multiple"));
         miscMenuItems.add(new MenuItem("DefaultCommand", defaultCommandMenuItems));
 
         List<MenuItem> dragDropMenuItems = new ArrayList<>();
-        dragDropMenuItems.add(new MenuItem("Draggable", "/ui/dnd/draggable"));
-        dragDropMenuItems.add(new MenuItem("DataView", "/ui/dnd/dataView"));
-        dragDropMenuItems.add(new MenuItem("DataTable", "/ui/dnd/dataTable"));
-        dragDropMenuItems.add(new MenuItem("Custom", "/ui/dnd/custom"));
+        dragDropMenuItems.add(new MenuItem("Draggable", "/dnd/draggable"));
+        dragDropMenuItems.add(new MenuItem("DataView", "/dnd/dataView"));
+        dragDropMenuItems.add(new MenuItem("DataTable", "/dnd/dataTable"));
+        dragDropMenuItems.add(new MenuItem("Custom", "/dnd/custom"));
         miscMenuItems.add(new MenuItem("DragDrop", dragDropMenuItems));
 
-        miscMenuItems.add(new MenuItem("Effect", "/ui/misc/effect"));
-        miscMenuItems.add(new MenuItem("ExceptionHandler", "/ui/misc/exceptionHandler"));
-        miscMenuItems.add(new MenuItem("FeedReader", "/ui/misc/feedReader", "Updated"));
-        miscMenuItems.add(new MenuItem("IdleMonitor", "/ui/misc/idleMonitor"));
-        miscMenuItems.add(new MenuItem("ImportConstants", "/ui/misc/importConstants"));
-        miscMenuItems.add(new MenuItem("ImportEnum", "/ui/misc/importEnum"));
-        //miscMenuItems.add(new MenuItem("CSP", "/ui/misc/csp"));
-        //miscMenuItems.add(new MenuItem("FontAwesome", "/ui/misc/fa"));
-        miscMenuItems.add(new MenuItem("Lifecycle", "/ui/misc/lifecycle"));
-        miscMenuItems.add(new MenuItem("Log", "/ui/misc/log"));
-        miscMenuItems.add(new MenuItem("Focus", "/ui/misc/focus"));
-        miscMenuItems.add(new MenuItem("Hotkey", "/ui/misc/hotkey"));
-        miscMenuItems.add(new MenuItem("Printer", "/ui/misc/printer"));
-        miscMenuItems.add(new MenuItem("ProgressBar", "/ui/misc/progressBar"));
-        miscMenuItems.add(new MenuItem("ResetInput", "/ui/misc/resetInput"));
-        miscMenuItems.add(new MenuItem("Resizable", "/ui/misc/resizable"));
-        miscMenuItems.add(new MenuItem("Spacer", "/ui/misc/spacer", "Deprecated"));
-        miscMenuItems.add(new MenuItem("Spotlight", "/ui/misc/spotlight"));
-        miscMenuItems.add(new MenuItem("Sticky", "/ui/misc/sticky"));
+        miscMenuItems.add(new MenuItem("Effect", "/misc/effect"));
+        miscMenuItems.add(new MenuItem("ExceptionHandler", "/misc/exceptionHandler"));
+        miscMenuItems.add(new MenuItem("FeedReader", "/misc/feedReader", "Updated"));
+        miscMenuItems.add(new MenuItem("IdleMonitor", "/misc/idleMonitor"));
+        miscMenuItems.add(new MenuItem("ImportConstants", "/misc/importConstants"));
+        miscMenuItems.add(new MenuItem("ImportEnum", "/misc/importEnum"));
+        //miscMenuItems.add(new MenuItem("CSP", "/misc/csp"));
+        //miscMenuItems.add(new MenuItem("FontAwesome", "/misc/fa"));
+        miscMenuItems.add(new MenuItem("Lifecycle", "/misc/lifecycle"));
+        miscMenuItems.add(new MenuItem("Log", "/misc/log"));
+        miscMenuItems.add(new MenuItem("Focus", "/misc/focus"));
+        miscMenuItems.add(new MenuItem("Hotkey", "/misc/hotkey"));
+        miscMenuItems.add(new MenuItem("Printer", "/misc/printer"));
+        miscMenuItems.add(new MenuItem("ProgressBar", "/misc/progressBar"));
+        miscMenuItems.add(new MenuItem("ResetInput", "/misc/resetInput"));
+        miscMenuItems.add(new MenuItem("Resizable", "/misc/resizable"));
+        miscMenuItems.add(new MenuItem("Spacer", "/misc/spacer", "Deprecated"));
+        miscMenuItems.add(new MenuItem("Spotlight", "/misc/spotlight"));
+        miscMenuItems.add(new MenuItem("Sticky", "/misc/sticky"));
 
         //Terminal Nested MenuItem
         List<MenuItem> terminalCommandMenuItems = new ArrayList<>();
-        terminalCommandMenuItems.add(new MenuItem("Basic", "/ui/misc/terminal/basic"));
-        terminalCommandMenuItems.add(new MenuItem("Autocomplete", "/ui/misc/terminal/autocomplete"));
+        terminalCommandMenuItems.add(new MenuItem("Basic", "/misc/terminal/basic"));
+        terminalCommandMenuItems.add(new MenuItem("Autocomplete", "/misc/terminal/autocomplete"));
         miscMenuItems.add(new MenuItem("Terminal", terminalCommandMenuItems));
 
         menuCategories.add(new MenuCategory("Misc", miscMenuItems));
