@@ -32,12 +32,15 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
@@ -113,18 +116,22 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             return;
         }
 
-        for (String renderId : getRenderIds()) {
-            if ("@all".equals(renderId) || "@none".equals(renderId)) {
-                continue;
-            }
-
-            context.getViewRoot().invokeOnComponent(context, renderId, (ctx, component) -> {
-                if (LangUtils.isBlank(component.getRendererType())) {
-                    LOGGER.log(Level.WARNING, "Can not update component \"{0}\" with id \"{1}\" without an attached renderer.",
-                            new Object[]{component.getClass().getName(), component.getClientId(ctx)});
-                }
-            });
+        List<String> renderIds = getRenderIds().stream()
+                .filter(id -> !"@all".equals(id) && !"@none".equals(id))
+                .collect(Collectors.toList());
+        if (renderIds.isEmpty()) {
+            return;
         }
+
+        // Match partial rendering so hidden subtrees are skipped and row context is preserved.
+        VisitContext visitContext = VisitContext.createVisitContext(context, renderIds, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+        context.getViewRoot().visitTree(visitContext, (ctx, component) -> {
+            if (LangUtils.isBlank(component.getRendererType())) {
+                LOGGER.log(Level.WARNING, "Can not update component \"{0}\" with id \"{1}\" without an attached renderer.",
+                        new Object[]{component.getClass().getName(), component.getClientId(ctx.getFacesContext())});
+            }
+            return VisitResult.REJECT;
+        });
     }
 
      /**

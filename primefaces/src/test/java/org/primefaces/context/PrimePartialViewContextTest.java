@@ -33,21 +33,28 @@ import org.primefaces.mock.FacesContextMock;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javax.el.ValueExpression;
+import javax.faces.FactoryFinder;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import javax.faces.event.PhaseId;
 
+import com.sun.faces.component.visit.VisitContextFactoryImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,6 +73,7 @@ class PrimePartialViewContextTest {
     private final Logger logger = Logger.getLogger(PrimePartialViewContext.class.getName());
     private FacesContext context;
     private MockedStatic<FacesContext> currentContext;
+    private MockedStatic<FactoryFinder> factories;
     private PartialViewContext wrapped;
     private PrimePartialViewContext partialContext;
     private List<String> renderIds;
@@ -78,6 +86,8 @@ class PrimePartialViewContextTest {
         context = spy(new FacesContextMock());
         currentContext = mockStatic(FacesContext.class);
         currentContext.when(FacesContext::getCurrentInstance).thenReturn(context);
+        factories = mockStatic(FactoryFinder.class);
+        factories.when(() -> FactoryFinder.getFactory(FactoryFinder.VISIT_CONTEXT_FACTORY)).thenReturn(new VisitContextFactoryImpl());
         PrimeApplicationContext applicationContext = mock(PrimeApplicationContext.class);
         PrimeEnvironment environment = mock(PrimeEnvironment.class);
         when(applicationContext.getEnvironment()).thenReturn(environment);
@@ -113,6 +123,7 @@ class PrimePartialViewContextTest {
     @AfterEach
     void cleanup() {
         logger.removeHandler(logHandler);
+        factories.close();
         currentContext.close();
     }
 
@@ -218,6 +229,55 @@ class PrimePartialViewContextTest {
 
         assertWarning("form:rows:1:tab");
         assertEquals(-1, table.getRowIndex());
+    }
+
+    @Test
+    void skipsHiddenRowsWithTheSameClientId() {
+        ExternalContext externalContext = spy(context.getExternalContext());
+        Map<String, Object> requestMap = new HashMap<>();
+        doReturn(requestMap).when(externalContext).getRequestMap();
+        doReturn(externalContext).when(context).getExternalContext();
+        UIPanel hiddenSearch = new UIPanel();
+        hiddenSearch.setId("hiddenSearch");
+        hiddenSearch.setRendered(false);
+        form.getChildren().add(hiddenSearch);
+        UIData hiddenTable = new UIData();
+        hiddenTable.setId("rows");
+        ValueExpression hiddenValue = mock(ValueExpression.class);
+        hiddenTable.setValueExpression("value", hiddenValue);
+        hiddenSearch.getChildren().add(hiddenTable);
+
+        UIData table = new UIData();
+        table.setId("rows");
+        table.setVar("row");
+        table.setValue(Arrays.asList("first", "second"));
+        form.getChildren().add(table);
+        UIColumn column = new UIColumn();
+        table.getChildren().add(column);
+        Tab rowTab = new Tab();
+        rowTab.setId("tab");
+        column.getChildren().add(rowTab);
+        renderIds.add("form:rows:1:tab");
+        table.setRowIndex(0);
+
+        partialContext.processPartial(PhaseId.RENDER_RESPONSE);
+
+        verify(hiddenValue, never()).getValue(any());
+        assertWarning("form:rows:1:tab");
+        assertEquals(0, table.getRowIndex());
+        assertEquals("first", requestMap.get("row"));
+        verify(wrapped).processPartial(PhaseId.RENDER_RESPONSE);
+    }
+
+    @Test
+    void doesNotWarnForChildrenRenderedByAnUpdatedParent() {
+        renderIds.add("form:tabs");
+        renderIds.add("form:tabs:second");
+
+        partialContext.processPartial(PhaseId.RENDER_RESPONSE);
+
+        verifyNoInteractions(logHandler);
+        verify(wrapped).processPartial(PhaseId.RENDER_RESPONSE);
     }
 
     private void assertWarning(String clientId) {
