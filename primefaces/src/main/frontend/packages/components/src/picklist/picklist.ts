@@ -493,6 +493,8 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
                             // #15525 keep navigating with the keys, from the first item left in the list or in the other list
                             const nextItem = list.children('.p-picklist-item:visible').not(transferredItem).first();
                             if (nextItem.length) {
+                                // selected, so pressing Enter again moves it as well; not announced, the transfer is
+                                this.selectItem(nextItem);
                                 this.focusedItem = nextItem.addClass('p-picklist-outline');
                             }
                             else {
@@ -1549,6 +1551,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
     /**
      * Checks whether the given list has items which are not hidden, e.g. by a filter. Unlike `:visible`, this does not
      * depend on the pick list itself being displayed, e.g. in a hidden dialog (#15525).
+     * This relies on the inline `display` style: an item which is fading out still counts until its animation is done.
+     * So this must only be called when no show or hide effect is running, e.g. from {@link fireTransferEvent} after
+     * the transfer animation completed.
      * @param list The source or target list.
      * @returns `true` if the list has items which are not hidden.
      */

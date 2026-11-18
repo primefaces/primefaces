@@ -45,10 +45,12 @@ public class PickList003 implements Serializable {
 
     private DualListModel<String> pageModel;
     private DualListModel<String> dialogModel;
+    private DualListModel<String> checkboxModel;
 
     @PostConstruct
     public void init() {
         pageModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
         dialogModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
+        checkboxModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
     }
 }

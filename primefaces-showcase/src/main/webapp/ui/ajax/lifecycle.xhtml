@@ -10,7 +10,8 @@
     </ui:define>
 
     <ui:define name="description">
-        Attach events to the component lifecycle so you can call client side Javascript during PostConstruct, PostRefresh, or PreDestroy of the component.
+        Attach events to the component lifecycle so you can call client side Javascript during PreConstruct, PostConstruct, PostRefresh, or PreDestroy of the component.
+        PreConstruct and PostConstruct are also called on an AJAX update, their <code>refresh</code> parameter tells which.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/components?id=component-lifecycle-events"/>
@@ -25,8 +26,8 @@
                     <div class="field col-12 md:col-6">
                         <p:outputLabel for="name" value="Name"/>
                         <p:inputText id="name" value="#{lifecycleView.text}" ref="name">
-                            <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Component Initialized'})"/>
-                            <f:attribute name="clientPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
+                            <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + (refresh ? ' Component Refreshing' : ' Component Initialized')})"/>
+                            <f:attribute name="clientPostConstruct" value="if (!refresh) PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
                             <f:attribute name="clientPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Refreshed'})"/>
                             <f:attribute name="clientPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Destroyed'})"/>
                         </p:inputText>

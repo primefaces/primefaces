@@ -42,6 +42,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -191,14 +192,21 @@ class PickList003Test extends AbstractPrimePageTest {
 
         // Act
         source.sendKeys(Keys.ENTER);
-        source.sendKeys(Keys.ARROW_DOWN);
 
-        // Assert
+        // Assert - the next item is selected right away, so Enter moves it as well
         assertEquals(List.of("Test 1"), page.dialogPickList.getTargetListLabels());
         WebElement next = source.findElements(By.tagName("li")).get(0);
         assertEquals("Test 2", next.getAttribute("data-item-label"));
         assertTrue(next.getAttribute("class").contains("p-state-highlight"), "next item must be selected");
         assertTrue(next.getAttribute("class").contains("p-picklist-outline"), "next item must have the focus indicator");
+        assertEquals(1, source.findElements(By.className("p-state-highlight")).size());
+        assertTrue(isActive(source), "source must keep the focus");
+
+        // Act - Enter again
+        source.sendKeys(Keys.ENTER);
+
+        // Assert
+        assertEquals(List.of("Test 1", "Test 2"), page.dialogPickList.getTargetListLabels());
         assertTrue(isActive(source), "source must keep the focus");
         assertNoJavascriptErrors();
     }
@@ -214,9 +222,9 @@ class PickList003Test extends AbstractPrimePageTest {
         assertTrue(isActive(source), "source must have the focus");
         PrimeSelenium.waitGui().until(d -> !source.findElements(By.className("p-picklist-outline")).isEmpty());
 
-        // Act
+        // Act - the first ArrowDown selects the focused item, after each transfer the next item is selected
+        source.sendKeys(Keys.ARROW_DOWN);
         for (int i = 0; i < 3; i++) {
-            source.sendKeys(Keys.ARROW_DOWN);
             source.sendKeys(Keys.ENTER);
         }
 
@@ -224,6 +232,65 @@ class PickList003Test extends AbstractPrimePageTest {
         assertEquals(List.of("Test 1", "Test 2", "Test 3"), page.dialogPickList.getTargetListLabels());
         assertTrue(isActive(target(page.dialogPickList)), "target list must have the focus");
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("PickList: GitHub #15525 clientPreConstruct and clientPostConstruct are called on page load and AJAX update with the refresh flag")
+    void lifecycleCallbacks(Page page) {
+        // Assert - page load
+        assertEquals(List.of("pre:false", "post:false:true"), lifecycle());
+
+        // Act - AJAX update of the dialog with the PickList
+        openDialog(page);
+
+        // Assert
+        assertEquals(List.of("pre:false", "post:false:true", "pre:true", "post:true:true", "refresh"), lifecycle());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("PickList: GitHub #15525 an animated transfer by checkbox click updates the checkboxes, the selection and the roles")
+    void animatedCheckboxTransfer(Page page) {
+        // Arrange
+        WebElement source = source(page.checkboxPickList);
+        WebElement target = target(page.checkboxPickList);
+
+        // Act
+        checkbox(source.findElements(By.tagName("li")).get(0)).click();
+        PrimeSelenium.waitGui().until(d -> page.checkboxPickList.getTargetListLabels().size() == 1);
+
+        // Assert
+        assertEquals(List.of("Test 2", "Test 3"), page.checkboxPickList.getSourceListLabels());
+        assertEquals(List.of("Test 1"), page.checkboxPickList.getTargetListLabels());
+        WebElement moved = target.findElements(By.tagName("li")).get(0);
+        PrimeSelenium.waitGui().until(d -> moved.isDisplayed() && "menu".equals(target.getAttribute("role")));
+        assertTrue(checkbox(moved).getAttribute("class").contains("p-state-active"), "checkbox must be checked");
+        assertFalse(moved.getAttribute("class").contains("p-state-highlight"), "moved item must not be selected");
+        assertEquals("menu", source.getAttribute("role"));
+
+        // Act - and back
+        checkbox(moved).click();
+        PrimeSelenium.waitGui().until(d -> page.checkboxPickList.getTargetListLabels().isEmpty());
+
+        // Assert
+        assertEquals(List.of("Test 2", "Test 3", "Test 1"), page.checkboxPickList.getSourceListLabels());
+        WebElement back = source.findElements(By.tagName("li")).get(2);
+        PrimeSelenium.waitGui().until(d -> back.isDisplayed() && target.getAttribute("role") == null);
+        assertFalse(checkbox(back).getAttribute("class").contains("p-state-active"), "checkbox must be unchecked");
+        assertFalse(back.getAttribute("class").contains("p-state-highlight"), "moved item must not be selected");
+        assertEquals("menu", source.getAttribute("role"));
+        assertNoJavascriptErrors();
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> lifecycle() {
+        return (List<String>) PrimeSelenium.executeScript("return window.lifecycle;");
+    }
+
+    private WebElement checkbox(WebElement item) {
+        return item.findElement(By.cssSelector("div.p-chkbox-box"));
     }
 
     private void openDialog(Page page) {
@@ -262,6 +329,9 @@ class PickList003Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:dialogPickList")
         PickList dialogPickList;
+
+        @FindBy(id = "form:checkboxPickList")
+        PickList checkboxPickList;
 
         @Override
         public String getLocation() {

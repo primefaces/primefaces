@@ -1503,8 +1503,10 @@ export class Core {
         const componentType = this.component[componentName] as PrimeFaces.Newable<[], InstanceType<PrimeFaces.ComponentRegistry[ComponentName]>> | undefined;
         if(componentType) {
             const component = this.components[ref];
+            // true on an ajax update of an existing component, false on page init
+            const refresh = !!component && component.constructor === this.component[componentName];
 
-            // #15525 called on page init and on ajax update, as the ajax update refreshes the component with a new cfg
+            // called on page init and on ajax update, so changes to the cfg (e.g. labels) are not lost on an update (#15525)
             if (cfg.preConstruct) {
                 if (!cfg.labels) {
                     cfg.labels = { aria: {} };
@@ -1512,24 +1514,28 @@ export class Core {
                 if (!cfg.labels.aria) {
                     cfg.labels.aria = {};
                 }
-                cfg.preConstruct.call(null, cfg);
+                cfg.preConstruct.call(null, cfg, refresh);
             }
 
+            let target: BaseComponent;
             //ajax update
-            if(component && (component.constructor === this.component[componentName])) {
-                component.refresh(cfg);
-                if (cfg.postRefresh) {
-                    cfg.postRefresh.call(component, component, component);
-                }
+            if (refresh && component) {
+                target = component;
+                target.refresh(cfg);
             }
             //page init
             else {
                 const newComponent = new componentType();
                 newComponent.init(cfg);
                 this.components[ref] = newComponent;
-                if (cfg.postConstruct) {
-                    cfg.postConstruct.call(newComponent, newComponent, newComponent);
-                }
+                target = newComponent;
+            }
+
+            if (cfg.postConstruct) {
+                cfg.postConstruct.call(target, target, target, refresh);
+            }
+            if (refresh && cfg.postRefresh) {
+                cfg.postRefresh.call(target, target, target);
             }
         }
         // component script not loaded

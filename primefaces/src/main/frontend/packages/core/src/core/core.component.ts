@@ -74,15 +74,15 @@ export interface BaseComponentCfg {
      * An optional callback that is invoked
      * before the component is created, before its {@link BaseComponent.init | init} method. This is
      * usually specified via the `clientPreConstruct` attribute on the Faces component. Note that this is also called
-     * before a `refresh` (AJAX update).
+     * before a `refresh` (AJAX update), the `refresh` parameter of the callback tells which.
      */
     preConstruct: PrimeFaces.component.PreConstructCallback;
 
     /**
      * An optional callback that is invoked
      * after this component was created successfully, after its {@link BaseComponent.init | init} method. This is
-     * usually specified via the `clientPostConstruct` attribute on the Faces component. It is not called on a
-     * `refresh` (AJAX update), see {@link postRefresh}.
+     * usually specified via the `clientPostConstruct` attribute on the Faces component. Note that this is also called
+     * after a `refresh` (AJAX update), the `refresh` parameter of the callback tells which.
      */
     postConstruct: PrimeFaces.component.PostConstructCallback;
 
@@ -1109,15 +1109,16 @@ declare global {
 
         /**
          * A callback for a PrimeFaces component. An optional callback that is invoked before a component is created or
-         * refreshed (AJAX update), before its {@link BaseComponent.init | init} method. This is usually specified via the
-         * `clientPreConstruct` attribute on the Faces component.
-         * @param The component configuration.
+         * refreshed (AJAX update), before its {@link BaseComponent.init | init} or {@link BaseComponent.refresh | refresh}
+         * method. This is usually specified via the `clientPreConstruct` attribute on the Faces component.
          */
         export type PreConstructCallback =
             /**
              * @param componentCfg The configuration of the component that is about to be constructed.
+             * @param refresh `true` if an existing component is about to be refreshed (AJAX update), `false` if it is
+             * about to be created.
              */
-            (this: null, componentCfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.BaseComponentCfg>) => void;
+            (this: null, componentCfg: PrimeFaces.component.PartialComponentCfg<PrimeFaces.component.BaseComponentCfg>, refresh: boolean) => void;
 
         /**
          * An optional callback that is invoked before a component is about to be
@@ -1146,16 +1147,17 @@ declare global {
 
         /**
          * A callback for a PrimeFaces component. An optional callback that is
-         * invoked after a component was created successfully, after its {@link BaseComponent.init | init} method. This is
-         * usually specified via the `clientPostConstruct` attribute on the Faces component. It is not called on a
-         * `refresh` (AJAX update of an existing component), see {@link PostRefreshCallback}.
+         * invoked after a component was created or refreshed (AJAX update) successfully, after its
+         * {@link BaseComponent.init | init} or {@link BaseComponent.refresh | refresh} method. This is usually specified
+         * via the `clientPostConstruct` attribute on the Faces component.
          */
         export type PostConstructCallback =
             /**
              * @param component The component that was constructed.
              * @param widget The same component, deprecated name of the parameter for existing scripts.
+             * @param refresh `true` if an existing component was refreshed (AJAX update), `false` if it was created.
              */
-            (this: BaseComponent, component: BaseComponent, widget: BaseComponent) => void;
+            (this: BaseComponent, component: BaseComponent, widget: BaseComponent, refresh: boolean) => void;
 
     }
 }

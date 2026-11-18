@@ -143,12 +143,12 @@ public class ComponentScriptBuilder {
 
         Object preConstruct = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_PRE_CONSTRUCT, "widgetPreConstruct");
         if (preConstruct != null) {
-            callback("preConstruct", "function(cfg)", preConstruct.toString());
+            callback("preConstruct", "function(cfg, refresh)", preConstruct.toString());
         }
 
         Object postConstruct = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_POST_CONSTRUCT, "widgetPostConstruct");
         if (postConstruct != null) {
-            callback("postConstruct", "function(component, widget)", postConstruct.toString());
+            callback("postConstruct", "function(component, widget, refresh)", postConstruct.toString());
         }
 
         Object postRefresh = getLifecycleCallback(attributes, PrimeClientComponent.CALLBACK_POST_REFRESH, "widgetPostRefresh");
