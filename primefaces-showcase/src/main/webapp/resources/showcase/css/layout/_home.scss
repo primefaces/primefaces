@@ -254,7 +254,6 @@
     padding: 6px 0;
     margin: -6px auto;
     mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
 .landing-logos-inner {
@@ -274,7 +273,6 @@
         opacity: .45;
         transition: opacity .2s;
         mask: var(--logo) center / contain no-repeat;
-        -webkit-mask: var(--logo) center / contain no-repeat;
 
         &:hover {
             opacity: .75;
@@ -380,6 +378,9 @@
 .lf-icon-amber  { background: rgba(245,158,11,.12);  i { color: #d97706; } }
 .lf-icon-blue   { background: rgba(59,130,246,.12);  i { color: #2563eb; } }
 .lf-icon-cyan   { background: rgba(6,182,212,.12);   i { color: #0891b2; } }
+.lf-icon-sky    { background: rgba(14,165,233,.12);  i { color: #0284c7; } }
+.lf-icon-lime   { background: rgba(132,204,22,.12);  i { color: #65a30d; } }
+.lf-icon-fuchsia { background: rgba(217,70,239,.12); i { color: #c026d3; } }
 
 /* ── Quick Start ───────────────────────────────────────────────────────── */
 .landing-quickstart {
@@ -625,6 +626,19 @@
     li::before { background: var(--primary-color); }
 }
 
+.landing-fit-note {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    text-align: center;
+    color: var(--text-color-secondary);
+    line-height: 1.6;
+
+    strong {
+        color: var(--text-color);
+        font-weight: 600;
+    }
+}
+
 .landing-fit-actions {
     display: flex;
     flex-wrap: wrap;
@@ -854,7 +868,6 @@
     overflow: hidden;
     padding: 0 clamp(.75rem, 2vw, 2rem) 0;
     mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
 }
 
 .landing-hero-deck {

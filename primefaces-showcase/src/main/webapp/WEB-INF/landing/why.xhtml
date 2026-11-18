@@ -21,7 +21,7 @@
                     <a href="#{request.contextPath}/data/datatable/basic" class="landing-feature-card">
                         <div class="lf-icon lf-icon-indigo"><i class="pi pi-table"></i></div>
                         <h3>#{tagLibProvider.componentCount} components</h3>
-                        <p>DataTable, Schedule, TreeTable, FileUpload, Charts and more, with lazy loading, filtering and export built in.</p>
+                        <p>DataTable, Schedule, TreeTable, FileUpload, Charts and more, with sorting, filtering, inline editing and export built in.</p>
                     </a>
 
                     <div class="landing-feature-card">
@@ -33,25 +33,48 @@
                     <div class="landing-feature-card">
                         <div class="lf-icon lf-icon-blue"><i class="pi pi-arrows-h"></i></div>
                         <h3>No API layer for your own UI</h3>
-                        <p>Components bind straight to CDI beans. No REST endpoints, JSON mapping or CORS rules just to talk to yourself.</p>
+                        <p>Components bind straight to CDI beans. No REST endpoints, DTOs, JSON mapping or CORS rules just to talk to yourself.</p>
+                    </div>
+
+                    <h:link outcome="/data/datatable/lazy" styleClass="landing-feature-card">
+                        <div class="lf-icon lf-icon-lime"><i class="pi pi-database"></i></div>
+                        <h3>Lazy data straight from JPA</h3>
+                        <p>JPALazyDataModel turns paging, sorting and filtering of the DataTable into JPA Criteria queries.
+                            Large tables without a single query written by hand.</p>
+                    </h:link>
+
+                    <h:link outcome="/csv/bean" styleClass="landing-feature-card">
+                        <div class="lf-icon lf-icon-green"><i class="pi pi-check-circle"></i></div>
+                        <h3>Validate once, check twice</h3>
+                        <p>Your Bean Validation annotations and Faces validators run instantly in the browser and again on the server.
+                            One set of rules, no JavaScript copy to keep in sync.</p>
+                    </h:link>
+
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-sky"><i class="pi pi-sync"></i></div>
+                        <h3>Your Java model shapes the UI</h3>
+                        <p>@NotNull marks the label as required, @Size sets the maxlength, @Min and @Max bound number inputs,
+                            @Past and @Future limit the DatePicker.</p>
                     </div>
 
                     <div class="landing-feature-card">
-                        <div class="lf-icon lf-icon-green"><i class="pi pi-shield"></i></div>
-                        <h3>Logic stays on the server</h3>
-                        <p>Validation and business rules run in the JVM, next to your data and security. The browser gets rendered HTML, not your domain model.</p>
+                        <div class="lf-icon lf-icon-rose"><i class="pi pi-shield"></i></div>
+                        <h3>Secure by design</h3>
+                        <p>Business logic and data stay on the server, the browser only gets rendered HTML. Add a strict nonce-based CSP
+                            with one context parameter, on top of the CSRF protection and output escaping of Faces.</p>
                     </div>
 
-                    <h:link outcome="/misc/csp" styleClass="landing-feature-card">
-                        <div class="lf-icon lf-icon-rose"><i class="pi pi-lock"></i></div>
-                        <h3>Security built in</h3>
-                        <p>Strict nonce-based CSP with one context parameter. Faces itself brings CSRF protection and output escaping.</p>
-                    </h:link>
+                    <div class="landing-feature-card">
+                        <div class="lf-icon lf-icon-fuchsia"><i class="pi pi-eye-slash"></i></div>
+                        <h3>Hidden means gone</h3>
+                        <p>A button that is not rendered never reaches the browser and its action cannot be called, disabled inputs
+                            are ignored and select values must be one of the offered options. Faces enforces it on the server.</p>
+                    </div>
 
                     <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-selenium" target="_blank" rel="noopener noreferrer" class="landing-feature-card">
                         <div class="lf-icon lf-icon-cyan"><i class="pi pi-check-square"></i></div>
                         <h3>Tests in Java, too</h3>
-                        <p>JUnit 5 and Selenium with ready-made page objects for PrimeFaces components. No second test stack in JavaScript.</p>
+                        <p>JUnit and Selenium with ready-made page objects for PrimeFaces components. No second test stack in JavaScript.</p>
                     </a>
 
                     <div class="landing-feature-card">
@@ -278,21 +301,21 @@ bootstrapApplication(CustomersComponent, {
         "build": "ng build"
     },
     "dependencies": {
-        "@angular/cdk": "^21.0.0",
-        "@angular/common": "^21.0.0",
-        "@angular/compiler": "^21.0.0",
-        "@angular/core": "^21.0.0",
-        "@angular/forms": "^21.0.0",
-        "@angular/material": "^21.0.0",
-        "@angular/platform-browser": "^21.0.0",
+        "@angular/cdk": "^22.0.0",
+        "@angular/common": "^22.0.0",
+        "@angular/compiler": "^22.0.0",
+        "@angular/core": "^22.0.0",
+        "@angular/forms": "^22.0.0",
+        "@angular/material": "^22.0.0",
+        "@angular/platform-browser": "^22.0.0",
         "rxjs": "~7.8.0",
         "tslib": "^2.8.0"
     },
     "devDependencies": {
-        "@angular/build": "^21.0.0",
-        "@angular/cli": "^21.0.0",
-        "@angular/compiler-cli": "^21.0.0",
-        "typescript": "~5.9.0"
+        "@angular/build": "^22.0.0",
+        "@angular/cli": "^22.0.0",
+        "@angular/compiler-cli": "^22.0.0",
+        "typescript": "~6.0.0"
     }
 }</code></pre>
                                 </div>
@@ -344,7 +367,7 @@ bootstrapApplication(CustomersComponent, {
                 <div class="landing-longterm-grid">
                     <a href="https://github.com/primefaces/primefaces/releases" target="_blank" rel="noopener noreferrer" class="landing-longterm-item">
                         <h3>Since 2009</h3>
-                        <p>Continuously developed for more than 15 years, with regular major and minor releases.</p>
+                        <p>Continuously developed since 2009, with regular major and minor releases.</p>
                     </a>
                     <a href="https://primefaces.github.io/primefaces/16_0_0/#/../migrationguide/migrationguide" target="_blank" rel="noopener noreferrer" class="landing-longterm-item">
                         <h3>Migration guides</h3>

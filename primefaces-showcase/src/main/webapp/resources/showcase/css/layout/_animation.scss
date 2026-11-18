@@ -1,30 +1,16 @@
-@-webkit-keyframes connected-overlay-in {
+@keyframes connected-overlay-in {
     from {
         opacity: 0;
-        -webkit-transform: scaleY(0.8);
         transform: scaleY(0.8);
     }
   
     to {
         opacity: 1;
-        -webkit-transform: none;
         transform: none;
     }
 }
   
-@keyframes connected-overlay-in {
-    from {
-        opacity: 0;
-        transform:  scaleY(0.8);
-    }
-  
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-  
-@-webkit-keyframes connected-overlay-out {
+@keyframes connected-overlay-out {
     from {
         opacity: 1;
     }
@@ -45,11 +31,9 @@
 }
   
 .connected-overlay-in {
-    -webkit-animation-name: connected-overlay-in;
     animation-name: connected-overlay-in;
 }
 
 .connected-overlay-out {
-    -webkit-animation-name: connected-overlay-out;
     animation-name: connected-overlay-out;
 }

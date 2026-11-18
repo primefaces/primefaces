@@ -14,6 +14,11 @@
             .highlight-drop {
                 background-color: var(--p-primary-color);
             }
+
+            .droppoint {
+                width: 10px;
+                height: 20px;
+            }
         </style>
         <script>
             function initDND() {
@@ -103,11 +108,11 @@
                 <p:dataTable id="products" var="product" value="#{columnManagerView.products}">
                     <p:columns value="#{columnManagerView.columns}" var="column">
                         <f:facet name="header">
-                            <h:outputText style="float:left;display:block;height:20px;width:10px;border:0 none;"
-                                          styleClass="droppoint dropleft"/>
-                            <h:outputText style="float:right;display:block;height:20px;width:10px;border:0 none;"
-                                          styleClass="droppoint dropright"/>
-                            <h:outputText value="#{column.header}"/>
+                            <div class="flex align-items-center gap-2">
+                                <h:outputText styleClass="droppoint dropleft"/>
+                                <span class="flex-1">#{column.header}</span>
+                                <h:outputText styleClass="droppoint dropright"/>
+                            </div>
                         </f:facet>
 
                         <h:outputText value="#{product[column.property]}"/>

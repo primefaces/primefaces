@@ -46,34 +46,36 @@
                     <p:autoUpdate />
                 </p:growl>
 
-                <div style="float: left; width: 130px;">
-                    <p:dataView id="eventsList" value="#{dndTimelineView.events}" var="event">
-                        <p:dataViewListItem>
-                            <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-2">
-                                #{event.name}
-                            </p:outputPanel>
+                <div class="flex gap-2">
+                    <div class="w-8rem flex-shrink-0">
+                        <p:dataView id="eventsList" value="#{dndTimelineView.events}" var="event">
+                            <p:dataViewListItem>
+                                <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-2">
+                                    #{event.name}
+                                </p:outputPanel>
 
-                            <p:draggable for="eventBox" revert="true" helper="clone" cursor="move"/>
-                        </p:dataViewListItem>
-                    </p:dataView>
-                </div>
-
-                <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"
-                    eventMarginAxis="0" minHeight="400" start="#{dndTimelineView.start}" end="#{dndTimelineView.end}"
-                    style="margin-left:135px;" dropActiveStyleClass="p-state-highlight"
-                    dropHoverStyleClass="p-state-hover">
-                    <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
-
-                    <div class="flex flex-column gap-1">
-                        <span>#{event.name}</span>
-                        <h:outputText value="#{event.start}">
-                            <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
-                        </h:outputText>
-                        <h:outputText value="#{event.end}">
-                            <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
-                        </h:outputText>
+                                <p:draggable for="eventBox" revert="true" helper="clone" cursor="move"/>
+                            </p:dataViewListItem>
+                        </p:dataView>
                     </div>
-                </p:timeline>
+
+                    <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"
+                        eventMarginAxis="0" minHeight="400" start="#{dndTimelineView.start}" end="#{dndTimelineView.end}"
+                        styleClass="flex-1 min-w-0" dropActiveStyleClass="p-state-highlight"
+                        dropHoverStyleClass="p-state-hover">
+                        <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
+
+                        <div class="flex flex-column gap-1">
+                            <span>#{event.name}</span>
+                            <h:outputText value="#{event.start}">
+                                <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
+                            </h:outputText>
+                            <h:outputText value="#{event.end}">
+                                <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
+                            </h:outputText>
+                        </div>
+                    </p:timeline>
+                </div>
             </h:form>
         </div>
 
