@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:sc="primefaces.showcase"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Cache
+    </ui:define>
+
+    <ui:define name="description">
+        Cache reduces the page load time: it stores the rendered output of its content in a region of a cache provider
+        (e.g. Ehcache) after the initial rendering and reuses it afterwards. The showcase uses it for the source code
+        tabs of every page, because parsing an XHTML file takes time and the output does not change while the
+        application runs.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/cache"/>
+    <ui:param name="tagName" value="cache"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <ul class="my-2 mx-3 p-0" style="line-height: 1.5">
+                <li>tabscode.xhtml demonstrate how to use cache component declaratively</li>
+                <li>ShowcaseUtil demonstrate how to use cache API programmatically</li>
+            </ul>
+        </div>
+    </ui:define>
+
+    <ui:define name="source">
+        <div class="card">
+            <sc:tabscode value="#{sc:getFilesContent('/WEB-INF/tags/tabscode.xhtml', false)}">
+                <p:tab title="/org/primefaces/showcase/util/ShowcaseUtil.java"/>
+            </sc:tabscode>
+        </div>
+    </ui:define>
+
+</ui:composition>

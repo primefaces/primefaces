@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tree <span class="subitem">Icon</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Each node type can have a different icon. A <b>p:treeNode</b> is bound to the nodes of the model by its
+        <b>type</b> and defines their <b>icon</b>. The folders of this demo use the <b>p:treeNode</b> without a type,
+        which defines the icons of its two states with <b>expandedIcon</b> and <b>collapsedIcon</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree"/>
+    <ui:param name="componentLink" value="VerticalTree-1"/>
+    <ui:param name="tagName" value="tree"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:tree value="#{treeIconView.root}" var="doc">
+                    <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="app" icon="pi pi-save">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="document" icon="pi pi-file">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="excel" icon="pi pi-file-excel">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="travel" icon="pi pi-file-pdf">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="picture" icon="pi pi-image">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="video" icon="pi pi-video">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                </p:tree>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

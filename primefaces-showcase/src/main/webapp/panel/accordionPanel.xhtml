@@ -1,0 +1,223 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        AccordionPanel
+    </ui:define>
+
+    <ui:define name="description">
+        AccordionPanel displays its tabs as vertically stacked panels; <b>multiple="true"</b> allows several active
+        tabs. The other examples show a menu and custom actions in the tab header with the <b>options</b> and
+        <b>actions</b> facets, on-demand loading with <b>dynamic</b> and <b>cache</b>, the <b>tabChange</b> and
+        <b>tabClose</b> Ajax events with validation, and tabs created from a collection with <b>value</b> and
+        <b>var</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/accordionpanel"/>
+    <ui:param name="componentLink" value="AccordionPanel"/>
+    <ui:param name="tagName" value="accordionPanel"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <div class="card">
+                <h5>Basic</h5>
+                <p:accordionPanel ref="basic" scrollIntoView="center">
+                    <p:tab title="Header I">
+                        <p class="m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+
+            <div class="card">
+                <h5>Multiple Selection</h5>
+                <p:accordionPanel multiple="true" ref="multiple" scrollIntoView="center">
+                    <p:tab title="Header I">
+                        <p class="m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+
+            <div class="card">
+                <h5>Options And Actions</h5>
+                <p:accordionPanel multiple="true" ref="options" scrollIntoView="center" toggleSpeed="0">
+                    <p:tab title="Header I">
+                        <p class="m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III" menuTitle="Options">
+                        <f:facet name="options">
+                            <p:menu>
+                                <p:submenu label="Options">
+                                    <p:menuitem value="Select all" url="#" icon="pi pi-clone" onclick="PF('options').selectAll()" />
+                                    <p:menuitem value="Unselect all" url="#" icon="pi pi-times" onclick="PF('options').unselectAll()" />
+                                </p:submenu>
+                            </p:menu>
+                        </f:facet>
+                        <p class="m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <f:facet name="actions">
+                            <p:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                                <i class="pi pi-question"></i>
+                            </p:commandLink>
+                            <p:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                                <i class="pi pi-star"></i>
+                            </p:commandLink>
+                        </f:facet>
+                        <p class="m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+
+            <div class="card">
+                <h5>On-Demand Loading</h5>
+                <p:accordionPanel dynamic="true" cache="true" multiple="true" ref="ondemand">
+                    <p:tab title="Header I">
+                        <p class="m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+
+            <div class="card">
+                <h5>Events and Validation</h5>
+                <p:accordionPanel>
+                    <p:ajax event="tabChange" listener="#{tabbedView.onTabChange}" update=":form:msgs"/>
+                    <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs"/>
+
+                    <p:tab title="Validation">
+                       <div class="formgrid grid p-fluid">
+                           <div class="field col-12 md:col-6">
+                               <p:outputLabel for="firstname" value="Firstname"/>
+                               <div class="flex align-items-center gap-2">
+                                   <p:inputText id="firstname" value="#{remoteValidationView.firstname}" required="true" label="Firstname">
+                                       <f:validateLength minimum="2"/>
+                                   </p:inputText>
+                                   <p:message for="firstname" display="icon"/>
+                               </div>
+                           </div>
+                           <div class="field col-12 md:col-6">
+                               <p:outputLabel for="lastname" value="Lastname"/>
+                               <div class="flex align-items-center gap-2">
+                                   <p:inputText id="lastname" value="#{remoteValidationView.lastname}" label="Lastname" required="true">
+                                       <f:validateLength minimum="2"/>
+                                       <p:ajax update="msgLastname" event="keyup"/>
+                                   </p:inputText>
+                                   <p:message for="lastname" id="msgLastname" display="icon"/>
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <p:commandButton value="Save" update="@form" action="#{remoteValidationView.save}" icon="pi pi-check"/>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+
+            <div class="card product">
+                <h5>DataModel</h5>
+                <p:accordionPanel value="#{tabbedView.products}" var="product">
+                    <p:tab title="#{product.name}">
+                        <div class="product-list-item">
+                            <p:graphicImage name="demo/images/product/#{product.image}"/>
+                            <div class="product-list-detail">
+                                <div class="product-name">#{product.name}</div>
+                                <div class="product-description">#{product.description}</div>
+                                <p:rating readonly="true" value="#{product.rating}"/>
+                                <i class="pi pi-tag product-category-icon"/><span
+                                    class="product-category">#{product.category}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{product.price}" styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                            </div>
+                        </div>
+                    </p:tab>
+                </p:accordionPanel>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -70,7 +70,7 @@ public class SpeedDialView {
 
         item = DefaultMenuItem.builder()
                 .icon("pi pi-upload")
-                .outcome("/ui/file/upload/simple")
+                .outcome("/file/upload/simple")
                 .build();
         model.getElements().add(item);
 

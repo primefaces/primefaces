@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        PanelMenu
+    </ui:define>
+
+    <ui:define name="description">
+        PanelMenu is a hybrid of the accordionPanel and tree components: the first level of submenus is rendered as
+        accordion panels, descendant submenus are rendered as tree nodes. The menuitems of the example run Ajax and
+        non-Ajax actions and navigate to other pages.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/panelmenu"/>
+    <ui:param name="componentLink" value="PanelMenu"/>
+    <ui:param name="tagName" value="panelMenu"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:panelMenu style="width:300px">
+                    <p:submenu label="Options" icon="pi pi-wrench">
+                        <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false"
+                                    icon="pi pi-save"/>
+                        <p:menuitem value="Update" action="#{menuView.update}" icon="pi pi-refresh"/>
+                        <p:menuitem value="Delete" action="#{menuView.delete}" icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:submenu label="Navigations">
+                        <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                        <p:menuitem value="Internal" outcome="/menu/menubar" icon="pi pi-upload"/>
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

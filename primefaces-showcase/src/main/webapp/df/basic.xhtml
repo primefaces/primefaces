@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Dialog Framework <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        The Dialog Framework displays an external page in a dialog that is generated at runtime. An action of the bean
+        opens the page by its outcome with <b>PrimeFaces.current().dialog().openDynamic()</b> and can pass options. The
+        buttons open a plain dialog, a modal one with a defined width and height, a responsive one and one with content
+        larger than the viewport.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/dialogframework"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:commandButton value="View" icon="pi pi-home" action="#{dfView.viewProducts}" styleClass="mr-2" />
+                <p:commandButton value="Options" icon="pi pi-cog" action="#{dfView.viewProductsCustomized}" styleClass="mr-2 p-button-outlined"/>
+                <p:commandButton value="Responsive" icon="pi pi-cog" action="#{dfView.viewResponsive}" styleClass="mr-2 p-button-outlined"/>
+                <p:commandButton value="larger than viewport" icon="pi pi-arrows-v" action="#{dfView.viewProductsLargerThanViewport()}" styleClass="p-button-outlined"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/df/viewProducts.xhtml">
+            <f:attribute name="flatten" value="true"/>
+        </p:tab>
+        <p:tab title="/df/viewResponsive.xhtml">
+            <f:attribute name="flatten" value="false"/>
+        </p:tab>
+        <p:tab title="/df/viewProductsLargerThanViewport.xhtml">
+            <f:attribute name="flatten" value="false"/>
+        </p:tab>
+    </ui:define>
+
+</ui:composition>

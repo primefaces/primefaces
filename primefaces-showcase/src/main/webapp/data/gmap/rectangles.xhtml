@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCvCDkYieuUBmMWon_mfLAfjuaeuosuqow&amp;sensor=false"></script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Rectangles</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Any number of rectangles can be displayed on a map. A rectangle is added to the MapModel as a Rectangle overlay
+        that is defined by its bounds, the stroke and fill are set on the overlay. A click on a rectangle fires the
+        <b>overlaySelect</b> Ajax behavior event, whose listener shows a message in this example.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="componentLink" value="GMap-1"/>
+    <ui:param name="tagName" value="gmap"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form prependId="false">
+                <p:growl id="growl" life="3000"/>
+
+                <p:gmap id="gmap" center="36.880257,30.687417" zoom="13" type="HYBRID" style="width:100%;height:400px"
+                        model="#{rectanglesView.rectangleModel}">
+                    <p:ajax event="overlaySelect" listener="#{rectanglesView.onRectangleSelect}" update="growl"/>
+                </p:gmap>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

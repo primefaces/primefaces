@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        AutoUpdate
+    </ui:define>
+
+    <ui:define name="description">
+        AutoUpdate is a utility tag that is nested inside a component and registers it to be updated automatically on
+        every Ajax request. All components that send Ajax requests, including <b>p:ajax</b>, can skip these updates for
+        their request with <b>ignoreAutoUpdate="true"</b>, as the second button shows.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/autoupdate"/>
+    <ui:param name="tagName" value="autoUpdate"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:outputPanel styleClass="mb-3">
+                    <p:autoUpdate/>
+
+                    Time: #{autoUpdateView.time}
+                </p:outputPanel>
+
+                <p:commandButton value="AJAX request" update="@none" process="@this" styleClass="mr-2" />
+                <p:commandButton value="Ignore AutoUpdate" update="@none" process="@this" ignoreAutoUpdate="true"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

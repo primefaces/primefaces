@@ -41,4 +41,26 @@ public class TextEditor extends TextEditorBaseImpl {
 
     public static final String EDITOR_CLASS = "p-texteditor";
 
+    /**
+     * The whole component, e.g. as the target of message tooltips; the value input is hidden.
+     */
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext());
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext()) + "_input";
+    }
+
+    /**
+     * The editing area is a contenteditable created by Quill, not a labelable element, so the label
+     * is linked via aria-labelledby only.
+     */
+    @Override
+    public String getLabelClientId() {
+        return null;
+    }
+
 }

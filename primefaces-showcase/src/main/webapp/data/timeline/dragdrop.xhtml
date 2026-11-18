@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .p-dataview-row .p-draggable:hover {
+                background: var(--p-content-hover-background);
+            }
+            
+            .p-dataview-list-container {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .p-dataview-row {
+                margin-bottom: .5rem;
+                width: 100%;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">DragDrop</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Drag events from the list on the left side and drop them onto the timeline. The items of the list are made
+        draggable with <b>p:draggable</b>. The listener of the <b>drop</b> Ajax event adds the dropped event to the model
+        of the timeline and removes it from the list.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="componentLink" value="Timeline-1"/>
+    <ui:param name="tagName" value="timeline"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showSummary="true" showDetail="false">
+                    <p:autoUpdate />
+                </p:growl>
+
+                <div class="flex gap-2">
+                    <div class="w-8rem flex-shrink-0">
+                        <p:dataView id="eventsList" value="#{dndTimelineView.events}" var="event">
+                            <p:dataViewListItem>
+                                <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-2">
+                                    #{event.name}
+                                </p:outputPanel>
+
+                                <p:draggable for="eventBox" revert="true" helper="clone" cursor="move"/>
+                            </p:dataViewListItem>
+                        </p:dataView>
+                    </div>
+
+                    <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"
+                        eventMarginAxis="0" minHeight="400" start="#{dndTimelineView.start}" end="#{dndTimelineView.end}"
+                        styleClass="flex-1 min-w-0" dropActiveStyleClass="p-state-highlight"
+                        dropHoverStyleClass="p-state-hover">
+                        <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
+
+                        <div class="flex flex-column gap-1">
+                            <span>#{event.name}</span>
+                            <h:outputText value="#{event.start}">
+                                <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
+                            </h:outputText>
+                            <h:outputText value="#{event.end}">
+                                <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
+                            </h:outputText>
+                        </div>
+                    </p:timeline>
+                </div>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

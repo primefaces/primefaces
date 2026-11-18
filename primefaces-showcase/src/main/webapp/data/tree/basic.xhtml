@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tree <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Tree displays hierarchical data and is populated with a <b>TreeNode</b> as <b>value</b>, the root of the tree.
+        In client mode all nodes are available at client side, whereas in Ajax mode (<b>dynamic="true"</b>) the children
+        of a node are loaded from the server when it is expanded. The <b>p-noborder</b> style class removes the border
+        and padding.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree"/>
+    <ui:param name="componentLink" value="VerticalTree-1"/>
+    <ui:param name="tagName" value="tree"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <div class="card">
+                <h5 style="margin-top:0">Client</h5>
+                <p:tree value="#{treeBasicView.root}" var="node">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+
+            <div class="card">
+                <h5>Ajax and No Border</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" dynamic="true" styleClass="p-noborder">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

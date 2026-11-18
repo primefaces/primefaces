@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="jakarta.faces.passthrough"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            p {
+                line-height: 1.5;
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Card
+    </ui:define>
+
+    <ui:define name="description">
+        Card is a flexible container with optional <b>header</b>, <b>title</b>, <b>subtitle</b> and <b>footer</b>
+        facets. A card can be used in many ways, so no role is enforced; a card that is only presentational may not need
+        one at all. If a landmark role like <b>region</b> is required, it is set with the pass-through attribute
+        <b>pt:role</b>, as in both examples.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/card"/>
+    <ui:param name="tagName" value="card"/>
+
+    <ui:define name="implementation">
+
+        <p:card style="width: 25rem; margin-bottom: 2em" pt:role="region">
+            <f:facet name="title">
+                Simple Card
+            </f:facet>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+                quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
+
+        </p:card>
+
+        <p:card style="width: 25em" pt:role="region">
+            <f:facet name="header">
+                <img alt="user header" src="../resources/demo/images/usercard.png"/>
+            </f:facet>
+            <f:facet name="title">
+                Advanced Card
+            </f:facet>
+            <f:facet name="subtitle">
+                Card subtitle
+            </f:facet>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+                quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
+
+            <f:facet name="footer">
+                <p:commandButton icon="pi pi-check" value="Save"/>
+                <p:commandButton icon="pi pi-times" value="Cancel" styleClass="p-button-secondary" style="margin-left: .5em"/>
+            </f:facet>
+        </p:card>
+
+    </ui:define>
+
+</ui:composition>

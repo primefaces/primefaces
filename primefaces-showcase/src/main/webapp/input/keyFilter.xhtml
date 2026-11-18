@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        KeyFilter
+    </ui:define>
+
+    <ui:define name="description">
+        KeyFilter filters the keyboard input of an input component. It is nested inside the input or attached to it
+        with <b>for</b>. The filter is a predefined <b>mask</b>, a regular expression for each key (<b>regEx</b>) or for
+        the complete input (<b>inputRegEx</b>), or a JavaScript <b>testFunction</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/keyfilter"/>
+    <ui:param name="componentLink" value="KeyFilter"/>
+    <ui:param name="tagName" value="keyFilter"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Number</h5>
+                <p:inputText>
+                    <p:keyFilter mask="num" />
+                </p:inputText>
+
+                <h5>Regex (indivdial key)</h5>
+                <p:inputText>
+                    <p:keyFilter regEx="/[ABC]/i"/>
+                </p:inputText>
+
+                <h5>Regex (complete input)</h5>
+                <p:inputText>
+                    <p:keyFilter inputRegEx="/^\d*\.?\d*$/"/>
+                </p:inputText>
+
+                <h5>AutoComplete with TestFunction</h5>
+                <p:autoComplete id="autoComplete1" value="#{autoCompleteView.txt1}"
+                                completeMethod="#{autoCompleteView.completeText}"/>
+
+                <p:keyFilter for="autoComplete1" testFunction="return c == 'z';"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

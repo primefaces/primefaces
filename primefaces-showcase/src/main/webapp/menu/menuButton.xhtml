@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        MenuButton
+    </ui:define>
+
+    <ui:define name="description">
+        MenuButton displays a group of menuitems in a popup menu that is opened with a button. The examples show Ajax,
+        non-Ajax and navigation menuitems, the style of the button with <b>buttonStyle</b> and <b>buttonStyleClass</b>,
+        an icon in place of the label with <b>buttonIcon</b> and the <b>size</b> of the button. The button is disabled
+        during the Ajax requests of its menuitems.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/menubutton"/>
+    <ui:param name="componentLink" value="MenuButton"/>
+    <ui:param name="tagName" value="menuButton"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5 class="mt-0">Basic</h5>
+                <p:menuButton value="Options">
+                    <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
+                    <p:divider/>
+                    <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                </p:menuButton>
+
+                <h5>Button style</h5>
+                <p:menuButton value="Options" buttonStyleClass="p-button-outlined" buttonStyle="border-radius: 0 1rem">
+                    <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
+                    <p:divider/>
+                    <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                </p:menuButton>
+
+                <h5>Ajax Disabling and Status Icon</h5>
+                <p:menuButton value="Options">
+                    <p:menuitem value="Save" action="#{menuView.sleepAndSave}" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
+                </p:menuButton>
+
+                <h5>Button Icon</h5>
+                <p:menuButton buttonIcon="pi pi-save" title="Options">
+                    <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
+                    <p:divider/>
+                    <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                </p:menuButton>
+                
+                <h5>Sizes</h5>
+                <p:menuButton value="Small" size="small" style="margin-right: 1em;">
+                    <p:menuitem value="Save" action="#{menuView.sleepAndSave}" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
+                </p:menuButton>
+                <p:menuButton value="Normal" style="margin-right: 1em;">
+                    <p:menuitem value="Save" action="#{menuView.sleepAndSave}" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
+                </p:menuButton>
+                <p:menuButton value="Large" size="large">
+                    <p:menuitem value="Save" action="#{menuView.sleepAndSave}" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
+                </p:menuButton>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

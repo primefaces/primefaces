@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TagCloud
+    </ui:define>
+
+    <ui:define name="description">
+        TagCloud displays a collection of tags with different strengths, from 1 to 5. A click on a tag of this example
+        fires the <b>select</b> Ajax behavior event, and the listener shows the label of the tag in a message.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tagcloud"/>
+    <ui:param name="componentLink" value="TagCloud"/>
+    <ui:param name="tagName" value="tagCloud"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+                <p:tagCloud model="#{tagCloudView.model}">
+                    <p:ajax event="select" update="msgs" listener="#{tagCloudView.onSelect}"/>
+                </p:tagCloud>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

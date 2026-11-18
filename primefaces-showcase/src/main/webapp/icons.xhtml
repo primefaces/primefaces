@@ -60,15 +60,17 @@
     <ui:define name="content">
         <div class="content-section introduction">
             <div class="feature-intro">
-                <h1>PrimeIcons</h1>
-                <p><a href="https://github.com/primefaces/primeicons" target="_blank" rel="noopener noreferrer">PrimeIcons</a> is the
-                    icon font of <a href="https://www.primetek.com.tr" target="_blank" rel="noopener noreferrer">PrimeTek</a>. It is part
-                    of the PrimeFaces JAR and available on every page, nothing has to be installed.</p>
+                <h1>Icons</h1>
+                <p>Every <code>icon</code> attribute takes plain style classes, so any icon font can be used.
+                    <a href="https://github.com/primefaces/primeicons" target="_blank" rel="noopener noreferrer">PrimeIcons</a>, the
+                    icon font of <a href="https://www.primetek.com.tr" target="_blank" rel="noopener noreferrer">PrimeTek</a>, is part
+                    of the PrimeFaces JAR and available on every page, nothing has to be installed.
+                    <a href="#fontawesome">FontAwesome</a> can be added with a single dependency.</p>
             </div>
         </div>
 
         <div class="content-section documentation">
-            <h2>Getting Started</h2>
+            <h2>PrimeIcons</h2>
             <p>PrimeIcons use the <strong>pi pi-&#123;icon&#125;</strong> syntax such as <strong>pi pi-check</strong>.
             A standalone icon can be displayed using an element like <code>i</code> or <code>span</code>.</p>
 
@@ -121,7 +123,36 @@
                 <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
             </div>
 
-            <h2>List of Icons</h2>
+            <h2 id="fontawesome">FontAwesome</h2>
+            <p>PrimeFaces supports <a href="https://fontawesome.com" target="_blank" rel="noopener noreferrer">FontAwesome</a> 4.x,
+                5.x and 6.x+. It is not bundled, add the WebJar to your <code>pom.xml</code>:</p>
+
+<pre><code class="language-xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.webjars&lt;/groupId&gt;
+    &lt;artifactId&gt;font-awesome&lt;/artifactId&gt;
+    &lt;version&gt;6.7.2&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+
+            <p>Then include the stylesheet. The <code>-jsf</code> variant resolves the font URLs through the Faces resource handler.</p>
+
+<pre><code class="language-xml">
+&lt;h:outputStylesheet library="webjars" name="font-awesome/6.7.2/css/all.min-jsf.css"/&gt;
+
+</code></pre>
+
+            <p>Icons are used just like PrimeIcons, in markup or in the <code>icon</code> attribute of a component.
+                Add <code>v4-shims.min-jsf.css</code> as well to keep using the old <code>fa fa-&#123;icon&#125;</code> syntax of 4.x.</p>
+
+<pre><code class="language-xml">
+&lt;i class="fa-solid fa-house"&gt;&lt;/i&gt;
+&lt;p:commandButton value="Save" icon="fa-solid fa-floppy-disk"/&gt;
+
+</code></pre>
+
+            <h2>List of PrimeIcons</h2>
             <p>Here is the current list of PrimeIcons, more icons are added periodically. You may also
                 <a href="https://github.com/primefaces/primeicons/issues" target="_blank" rel="noopener noreferrer">request new icons</a>
                 at the issue tracker.</p>
