@@ -25,8 +25,18 @@ package org.primefaces.context;
 
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspPartialResponseWriter;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitResult;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.PartialResponseWriter;
 import jakarta.faces.context.PartialViewContext;
@@ -34,6 +44,8 @@ import jakarta.faces.context.PartialViewContextWrapper;
 import jakarta.faces.event.PhaseId;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
+
+    private static final Logger LOGGER = Logger.getLogger(PrimePartialViewContext.class.getName());
 
     private PartialResponseWriter writer;
 
@@ -43,6 +55,13 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public void processPartial(PhaseId phaseId) {
+        if (phaseId == PhaseId.RENDER_RESPONSE) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (context.isProjectStage(ProjectStage.Development)) {
+                validateRenderers(context);
+            }
+        }
+
         getWrapped().processPartial(phaseId);
     }
 
@@ -80,5 +99,28 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         return getWrapped().isPartialRequest()
                 || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
                         Constants.RequestParams.PARTIAL_PROCESS_PARAM);
+    }
+
+    private void validateRenderers(FacesContext context) {
+        if (isRenderAll()) {
+            return;
+        }
+
+        List<String> renderIds = getRenderIds().stream()
+                .filter(id -> !"@all".equals(id) && !"@none".equals(id))
+                .collect(Collectors.toList());
+        if (renderIds.isEmpty()) {
+            return;
+        }
+
+        // Match partial rendering so hidden subtrees are skipped and row context is preserved.
+        VisitContext visitContext = VisitContext.createVisitContext(context, renderIds, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+        context.getViewRoot().visitTree(visitContext, (ctx, component) -> {
+            if (LangUtils.isBlank(component.getRendererType())) {
+                LOGGER.log(Level.WARNING, "Can not update component \"{0}\" with id \"{1}\" without an attached renderer.",
+                        new Object[]{component.getClass().getName(), component.getClientId(ctx.getFacesContext())});
+            }
+            return VisitResult.REJECT;
+        });
     }
 }
