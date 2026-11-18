@@ -200,7 +200,49 @@ const LocaleEnUs: PrimeFaces.Locale = {
         "messages.ERROR": "Error",
         "messages.FATAL": "Fatal",
         "messages.INFO": "Information",
-        "messages.WARN": "Warning"
+        "messages.WARN": "Warning",
+        "texteditor.EDITOR": "Rich Text Editor",
+        "texteditor.TOOLBAR": "Formatting",
+        "texteditor.FONT": "Font",
+        "texteditor.SANS_SERIF": "Sans Serif",
+        "texteditor.SERIF": "Serif",
+        "texteditor.MONOSPACE": "Monospace",
+        "texteditor.SIZE": "Size",
+        "texteditor.SMALL": "Small",
+        "texteditor.NORMAL": "Normal",
+        "texteditor.LARGE": "Large",
+        "texteditor.HUGE": "Huge",
+        "texteditor.HEADING": "Heading",
+        "texteditor.HEADING_LEVEL": "Heading {level}",
+        "texteditor.BOLD": "Bold",
+        "texteditor.ITALIC": "Italic",
+        "texteditor.UNDERLINE": "Underline",
+        "texteditor.STRIKE": "Strikethrough",
+        "texteditor.COLOR": "Text Color",
+        "texteditor.BACKGROUND": "Background Color",
+        "texteditor.DEFAULT": "Default",
+        "texteditor.SUBSCRIPT": "Subscript",
+        "texteditor.SUPERSCRIPT": "Superscript",
+        "texteditor.BLOCKQUOTE": "Blockquote",
+        "texteditor.CODE": "Code",
+        "texteditor.CODE_BLOCK": "Code Block",
+        "texteditor.ORDERED_LIST": "Numbered List",
+        "texteditor.BULLET_LIST": "Bulleted List",
+        "texteditor.CHECK_LIST": "Checklist",
+        "texteditor.OUTDENT": "Decrease Indent",
+        "texteditor.INDENT": "Increase Indent",
+        "texteditor.RTL": "Right to Left",
+        "texteditor.ALIGN": "Alignment",
+        "texteditor.ALIGN_LEFT": "Align Left",
+        "texteditor.ALIGN_CENTER": "Align Center",
+        "texteditor.ALIGN_RIGHT": "Align Right",
+        "texteditor.ALIGN_JUSTIFY": "Justify",
+        "texteditor.LINK": "Link",
+        "texteditor.IMAGE": "Image",
+        "texteditor.VIDEO": "Video",
+        "texteditor.FORMULA": "Formula",
+        "texteditor.CLEAN": "Clear Formatting",
+        "texteditor.URL": "URL"
     },
 };
 
@@ -3071,6 +3113,48 @@ declare global {
             "messages.FATAL"?: string;
             "messages.INFO"?: string;
             "messages.WARN"?: string;
+            "texteditor.EDITOR"?: string;
+            "texteditor.TOOLBAR"?: string;
+            "texteditor.FONT"?: string;
+            "texteditor.SANS_SERIF"?: string;
+            "texteditor.SERIF"?: string;
+            "texteditor.MONOSPACE"?: string;
+            "texteditor.SIZE"?: string;
+            "texteditor.SMALL"?: string;
+            "texteditor.NORMAL"?: string;
+            "texteditor.LARGE"?: string;
+            "texteditor.HUGE"?: string;
+            "texteditor.HEADING"?: string;
+            "texteditor.HEADING_LEVEL"?: string;
+            "texteditor.BOLD"?: string;
+            "texteditor.ITALIC"?: string;
+            "texteditor.UNDERLINE"?: string;
+            "texteditor.STRIKE"?: string;
+            "texteditor.COLOR"?: string;
+            "texteditor.BACKGROUND"?: string;
+            "texteditor.DEFAULT"?: string;
+            "texteditor.SUBSCRIPT"?: string;
+            "texteditor.SUPERSCRIPT"?: string;
+            "texteditor.BLOCKQUOTE"?: string;
+            "texteditor.CODE"?: string;
+            "texteditor.CODE_BLOCK"?: string;
+            "texteditor.ORDERED_LIST"?: string;
+            "texteditor.BULLET_LIST"?: string;
+            "texteditor.CHECK_LIST"?: string;
+            "texteditor.OUTDENT"?: string;
+            "texteditor.INDENT"?: string;
+            "texteditor.RTL"?: string;
+            "texteditor.ALIGN"?: string;
+            "texteditor.ALIGN_LEFT"?: string;
+            "texteditor.ALIGN_CENTER"?: string;
+            "texteditor.ALIGN_RIGHT"?: string;
+            "texteditor.ALIGN_JUSTIFY"?: string;
+            "texteditor.LINK"?: string;
+            "texteditor.IMAGE"?: string;
+            "texteditor.VIDEO"?: string;
+            "texteditor.FORMULA"?: string;
+            "texteditor.CLEAN"?: string;
+            "texteditor.URL"?: string;
         }
 
         /**

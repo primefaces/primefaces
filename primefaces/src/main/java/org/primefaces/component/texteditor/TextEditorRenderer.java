@@ -25,13 +25,13 @@ package org.primefaces.component.texteditor;
 
 import org.primefaces.cdk.api.FacesRendererInfo;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
 import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.LangUtils;
 
@@ -97,14 +97,12 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_TEXTBOX, null);
         writer.writeAttribute("class", styleClass, null);
         if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
-        renderARIARequired(context, component);
-        renderARIAInvalid(context, component);
+        // the textbox role and its ARIA state go to the contenteditable created by Quill, see encodeScript
 
         if (component.isToolbarVisible() && FacetUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", component);
@@ -139,7 +137,16 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
                 .attr("toolbarVisible", component.isToolbarVisible())
                 .attr("readOnly", component.isReadonly(), false)
                 .attr("disabled", component.isDisabled(), false)
-                .attr("placeholder", component.getPlaceholder(), null);
+                .attr("placeholder", component.getPlaceholder(), null)
+                .attr("ariaLabel", component.getAriaLabel(), null)
+                .attr("ariaLabelledBy", component.getAriaLabelledBy(), null)
+                .attr("ariaRequired", component.isRequired(), false)
+                .attr("ariaInvalid", !component.isValid(), false);
+
+        String describedBy = component.getAriaDescribedBy();
+        if (LangUtils.isNotBlank(describedBy)) {
+            wb.attr("ariaDescribedBy", SearchExpressionUtils.resolveClientIds(describedBy, component));
+        }
 
         List formats = component.getFormats();
         if (formats != null) {
