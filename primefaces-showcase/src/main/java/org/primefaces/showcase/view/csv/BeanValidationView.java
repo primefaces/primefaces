@@ -23,7 +23,9 @@
  */
 package org.primefaces.showcase.view.csv;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
@@ -67,16 +69,16 @@ public class BeanValidationView {
     private boolean checked;
 
     @Past
-    private Date pastDate;
+    private LocalDate pastDate;
 
     @PastOrPresent
-    private Date pastOrPresentDate;
+    private LocalTime pastOrPresentDate;
 
     @Future
-    private Date futureDate;
+    private LocalDate futureDate;
 
     @FutureOrPresent
-    private Date futureOrPresent;
+    private LocalDateTime futureOrPresent;
 
     @Negative
     private Integer negative;
@@ -145,19 +147,19 @@ public class BeanValidationView {
         this.checked = checked;
     }
 
-    public Date getPastDate() {
+    public LocalDate getPastDate() {
         return pastDate;
     }
 
-    public void setPastDate(Date pastDate) {
+    public void setPastDate(LocalDate pastDate) {
         this.pastDate = pastDate;
     }
 
-    public Date getFutureDate() {
+    public LocalDate getFutureDate() {
         return futureDate;
     }
 
-    public void setFutureDate(Date futureDate) {
+    public void setFutureDate(LocalDate futureDate) {
         this.futureDate = futureDate;
     }
 
@@ -201,19 +203,19 @@ public class BeanValidationView {
         this.email = email;
     }
 
-    public Date getPastOrPresentDate() {
+    public LocalTime getPastOrPresentDate() {
         return pastOrPresentDate;
     }
 
-    public void setPastOrPresentDate(Date pastOrPresentDate) {
+    public void setPastOrPresentDate(LocalTime pastOrPresentDate) {
         this.pastOrPresentDate = pastOrPresentDate;
     }
 
-    public Date getFutureOrPresent() {
+    public LocalDateTime getFutureOrPresent() {
         return futureOrPresent;
     }
 
-    public void setFutureOrPresent(Date futureOrPresent) {
+    public void setFutureOrPresent(LocalDateTime futureOrPresent) {
         this.futureOrPresent = futureOrPresent;
     }
 

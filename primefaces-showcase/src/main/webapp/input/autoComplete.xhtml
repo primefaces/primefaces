@@ -129,17 +129,11 @@
                                         var="country" itemLabel="#{country.name}" itemValue="#{country}"
                                         converter="#{countryConverter}" scrollHeight="250">
                             <f:facet name="itemtip">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <f:facet name="header">
-                                        <span class="flag flag-#{country.code}" style="width: 30px; height: 20px"/>
-                                    </f:facet>
-
-                                    <h:outputText value="Name"/>
-                                    <h:outputText value="#{country.name}"/>
-
-                                    <h:outputText value="Code"/>
-                                    <h:outputText value="#{country.code}"/>
-                                </h:panelGrid>
+                                <div class="flex flex-column gap-2 p-1">
+                                    <span class="flag flag-#{country.code}" style="width: 30px; height: 20px"/>
+                                    <div><strong>Name:</strong> #{country.name}</div>
+                                    <div><strong>Code:</strong> #{country.code}</div>
+                                </div>
                             </f:facet>
                         </p:autoComplete>
                     </div>

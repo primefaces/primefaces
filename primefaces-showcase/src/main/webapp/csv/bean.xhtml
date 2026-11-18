@@ -74,28 +74,28 @@
                     <div class="field col-12 md:col-6 xl:col-4">
                         <p:outputLabel for="@next" value="Date (@Past)"/>
                         <p:inputText value="#{beanValidationView.pastDate}">
-                            <f:convertDateTime pattern="MM/dd/yyyy"/>
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                         </p:inputText>
                         <p:message for="@previous"/>
                     </div>
                     <div class="field col-12 md:col-6 xl:col-4">
                         <p:outputLabel for="@next" value="Time (@PastOrPresent)"/>
                         <p:inputText value="#{beanValidationView.pastOrPresentDate}">
-                            <f:convertDateTime pattern="HH:mm:ss"/>
+                            <f:convertDateTime pattern="HH:mm:ss" type="localTime"/>
                         </p:inputText>
                         <p:message for="@previous"/>
                     </div>
                     <div class="field col-12 md:col-6 xl:col-4">
                         <p:outputLabel for="@next" value="Date (@Future)"/>
                         <p:inputText value="#{beanValidationView.futureDate}">
-                            <f:convertDateTime pattern="MM/dd/yyyy"/>
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                         </p:inputText>
                         <p:message for="@previous"/>
                     </div>
                     <div class="field col-12 md:col-6 xl:col-4">
                         <p:outputLabel for="@next" value="DateTime (@FutureOrPresent)"/>
                         <p:inputText value="#{beanValidationView.futureOrPresent}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss"/>
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" type="localDateTime"/>
                         </p:inputText>
                         <p:message for="@previous"/>
                     </div>

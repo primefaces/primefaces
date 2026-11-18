@@ -74,11 +74,11 @@
                          <h1>Loading please wait...</h1>
                     </f:facet>
 
-                    <h:panelGrid columns="1">
-                        <h:outputText value="Room: #{booking.roomNumber}"/>
-                        <h:outputText value="Category: #{booking.category.label}"/>
-                        <h:outputText value="Phone: #{booking.phone}"/>
-                    </h:panelGrid>
+                    <div class="flex flex-column gap-1">
+                        <span>Room: #{booking.roomNumber}</span>
+                        <span>Category: #{booking.category.label}</span>
+                        <span>Phone: #{booking.phone}</span>
+                    </div>
                 </p:timeline>
 
                 <p:commandButton value="Toggle TimeChangeable" process="@this" update="timeline" style="margin-top:15px"

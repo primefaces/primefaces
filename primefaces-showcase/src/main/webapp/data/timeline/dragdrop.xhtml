@@ -64,15 +64,15 @@
                     dropHoverStyleClass="p-state-hover">
                     <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
 
-                    <h:panelGrid columns="1">
-                        <h:outputText value="#{event.name}" />
+                    <div class="flex flex-column gap-1">
+                        <span>#{event.name}</span>
                         <h:outputText value="#{event.start}">
                             <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
                         </h:outputText>
                         <h:outputText value="#{event.end}">
                             <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
                         </h:outputText>
-                    </h:panelGrid>
+                    </div>
                 </p:timeline>
             </h:form>
         </div>

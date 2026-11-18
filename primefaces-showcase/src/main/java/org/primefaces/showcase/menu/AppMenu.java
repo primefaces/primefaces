@@ -90,7 +90,7 @@ public class AppMenu {
         coreMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/16_0_0/#/core/contentsecuritypolicy"));
         coreMenuItems.add(new MenuItem("Accessibility", "/accessibility"));
         coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
-        coreMenuItems.add(new MenuItem("PrimeIcons", "/icons"));
+        coreMenuItems.add(new MenuItem("Icons", "/icons"));
         coreMenuItems.add(new MenuItem("Theming", "/theming", "New"));
         coreMenuItems.add(new MenuItem("Theming Tokens", "/theming/tokens", "New"));
         coreMenuItems.add(new MenuItem("Theme Configurator", "/theming/configurator", "New"));
@@ -210,7 +210,6 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("Sort", "/data/datatable/sort"));
         dataTableMenuItems.add(new MenuItem("Style", "/data/datatable/style"));
         dataTableMenuItems.add(new MenuItem("SubTable", "/data/datatable/subtable"));
-        //dataTableMenuItems.add(new MenuItem("SummaryRow", "/data/datatable/summaryRow"));
         dataMenuItems.add(new MenuItem("DataTable", dataTableMenuItems));
 
         //DataView Nested MenuItem
@@ -330,10 +329,8 @@ public class AppMenu {
         panelMenuItems.add(new MenuItem("Dashboard", "/panel/dashboard"));
         panelMenuItems.add(new MenuItem("Divider", "/panel/divider"));
         panelMenuItems.add(new MenuItem("Fieldset", "/panel/fieldset"));
-        //panelMenuItems.add(new MenuItem("Grid CSS", "/panel/grid"));
         panelMenuItems.add(new MenuItem("NotificationBar", "/panel/notificationBar"));
         panelMenuItems.add(new MenuItem("OutputPanel", "/panel/outputPanel"));
-        //panelMenuItems.add(new MenuItem("FlexGrid", "/panel/flexGrid"));
         panelMenuItems.add(new MenuItem("Panel", "/panel/panel"));
         panelMenuItems.add(new MenuItem("PanelGrid", "/panel/panelGrid"));
         panelMenuItems.add(new MenuItem("Splitter", "/panel/splitter"));
@@ -450,8 +447,8 @@ public class AppMenu {
 
         //PhotoCam Nested MenuItem
         List<MenuItem> photoCamMenuItems = new ArrayList<>();
-        photoCamMenuItems.add(new MenuItem("PhotoCam", "/multimedia/photocam/photoCam.xhtml"));
-        photoCamMenuItems.add(new MenuItem("Device Selection", "/multimedia/photocam/deviceSelection.xhtml"));
+        photoCamMenuItems.add(new MenuItem("PhotoCam", "/multimedia/photocam/photoCam"));
+        photoCamMenuItems.add(new MenuItem("Device Selection", "/multimedia/photocam/deviceSelection"));
         multimediaMenuItems.add(new MenuItem("PhotoCam", photoCamMenuItems));
 
         multimediaMenuItems.add(new MenuItem("Switch", "/multimedia/switch"));
@@ -480,7 +477,6 @@ public class AppMenu {
         miscMenuItems.add(new MenuItem("ScrollTop", "/misc/scrollTop"));
         miscMenuItems.add(new MenuItem("Skeleton", "/misc/skeleton"));
         miscMenuItems.add(new MenuItem("Tag", "/misc/tag"));
-        //miscMenuItems.add(new MenuItem("Responsive", "/misc/responsive"));
         miscMenuItems.add(new MenuItem("AutoUpdate", "/misc/autoUpdate"));
         miscMenuItems.add(new MenuItem("OutputLabel", "/misc/outputLabel"));
         miscMenuItems.add(new MenuItem("FloatLabel", "/misc/floatLabel"));
@@ -509,8 +505,6 @@ public class AppMenu {
         miscMenuItems.add(new MenuItem("IdleMonitor", "/misc/idleMonitor"));
         miscMenuItems.add(new MenuItem("ImportConstants", "/misc/importConstants"));
         miscMenuItems.add(new MenuItem("ImportEnum", "/misc/importEnum"));
-        //miscMenuItems.add(new MenuItem("CSP", "/misc/csp"));
-        //miscMenuItems.add(new MenuItem("FontAwesome", "/misc/fa"));
         miscMenuItems.add(new MenuItem("Lifecycle", "/misc/lifecycle"));
         miscMenuItems.add(new MenuItem("Log", "/misc/log"));
         miscMenuItems.add(new MenuItem("Focus", "/misc/focus"));
