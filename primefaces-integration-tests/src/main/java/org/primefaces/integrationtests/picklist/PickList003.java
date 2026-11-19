@@ -29,6 +29,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -46,11 +48,17 @@ public class PickList003 implements Serializable {
     private DualListModel<String> pageModel;
     private DualListModel<String> dialogModel;
     private DualListModel<String> checkboxModel;
+    private DualListModel<String> noEffectModel;
+    private DualListModel<String> scrollModel;
 
     @PostConstruct
     public void init() {
         pageModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
         dialogModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
         checkboxModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
+        noEffectModel = new DualListModel<>(new ArrayList<>(List.of("Test 1", "Test 2", "Test 3")), new ArrayList<>());
+        scrollModel = new DualListModel<>(
+                    IntStream.rangeClosed(1, 20).mapToObj(i -> "Item " + i).collect(Collectors.toCollection(ArrayList::new)),
+                    new ArrayList<>());
     }
 }

@@ -395,28 +395,27 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         const listSelector = 'ul.p-picklist-source, ul.p-picklist-target';
 
         this.jq.off('focus.pickList blur.pickList keydown.pickList', listSelector).on('focus.pickList', listSelector, null, (e) => {
-            // #15525 not when the focus is moved here from a disabled button, the transfer or move is announced
-            const announceItem = !this.keepingFocus;
+            // #15525 when the focus is moved here from a disabled button, the transfer or move is announced instead of
+            // the item, and the list keeps its scroll position (e.g. after a click on "Move to Target" with the mouse)
+            const keepingFocus = this.keepingFocus;
             const list = $(e.currentTarget);
             // #15525 an item focused before (e.g. by a checkbox click) may have been moved to the other list since
             if (this.focusedItem && !this.focusedItem.parent().is(list)) {
                 this.focusedItem = null;
             }
-            const activeItem = this.focusedItem||list.children('.p-state-highlight:visible:first');
-            if(activeItem.length) {
-                this.focusedItem = activeItem;
-            }
-            else {
-                this.focusedItem = list.children('.p-picklist-item:visible:first');
-            }
+            this.focusedItem = this.focusedItem || this.findFocusableItem(list);
+            const focusedItem = this.focusedItem;
 
             list.children('.p-picklist-outline').removeClass('p-picklist-outline');
 
             PrimeFaces.queueTask(() => {
-                if (this.focusedItem) {
-                    PrimeFaces.scrollInView(list, this.focusedItem);
-                    this.focusedItem.addClass('p-picklist-outline');
-                    if (announceItem) {
+                // #15525 not when the focused item changed meanwhile, e.g. by a transfer which moved the focus here again
+                if (focusedItem && this.focusedItem === focusedItem) {
+                    if (!keepingFocus) {
+                        PrimeFaces.scrollInView(list, focusedItem);
+                    }
+                    focusedItem.addClass('p-picklist-outline');
+                    if (!keepingFocus) {
                         this.updateAriaRegion();
                     }
                 }
@@ -431,12 +430,15 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
             this.ariaRegion.text('');
         })
         .on('keydown.pickList', listSelector, null, (e) => {
+            const list = $(e.currentTarget);
 
+            // #15525 the list may have got the focus while its items were still hidden, e.g. during a transfer
+            if (!this.focusedItem || !this.focusedItem.parent().is(list)) {
+                this.focusedItem = this.findFocusableItem(list);
+            }
             if(!this.focusedItem) {
                 return;
             }
-
-            const list = $(e.currentTarget);
 
             switch((e as JQuery.TriggeredEvent & { code?: string }).code) {
                 case 'ArrowUp':
@@ -488,14 +490,20 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
                 case 'Space':
                     if(this.focusedItem && this.focusedItem.hasClass('p-state-highlight')) {
                         const transferredItem = this.focusedItem;
+                        // #15525 keep navigating with the keys from the neighbour of the moved item, looked up before
+                        // the move, as without an effect the item is moved to the other list right away
+                        const followingItem = transferredItem.nextAll('.p-picklist-item:visible:first');
+                        const nextItem = followingItem.length ? followingItem : transferredItem.prevAll('.p-picklist-item:visible:first');
                         transferredItem.trigger('dblclick.pickList');
                         if (this.cfg.transferOnDblclick) {
-                            // #15525 keep navigating with the keys, from the first item left in the list or in the other list
-                            const nextItem = list.children('.p-picklist-item:visible').not(transferredItem).first();
                             if (nextItem.length) {
-                                // selected, so pressing Enter again moves it as well; not announced, the transfer is
+                                // the only selected item, so pressing Enter again moves it alone; not announced, the
+                                // transfer is
+                                this.items.filter('.p-state-highlight').not(transferredItem).not(nextItem)
+                                    .each((_i, el) => this.unselectItem($(el)));
                                 this.selectItem(nextItem);
                                 this.focusedItem = nextItem.addClass('p-picklist-outline');
+                                PrimeFaces.scrollInView(list, nextItem);
                             }
                             else {
                                 this.focusedItem = null;
@@ -528,6 +536,19 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
                     }
             }
         });
+    }
+
+    /**
+     * Finds the item of the given list to start the keyboard navigation at: the first selected or the first shown item.
+     * @param list The source or target list.
+     * @returns The item, or `null` if the list has no shown items, e.g. while the items moved to it are still hidden.
+     */
+    private findFocusableItem(list: JQuery): JQuery | null {
+        let item = list.children('.p-picklist-item.p-state-highlight:visible:first');
+        if (!item.length) {
+            item = list.children('.p-picklist-item:visible:first');
+        }
+        return item.length ? item : null;
     }
 
     /**
@@ -1335,7 +1356,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      */
     private updateButtonsState(): void {
         // #15525 remember the focused button, it loses the focus if it gets disabled
-        const focusedButton = this.jq.find('button').filter((_i, el) => el === document.activeElement);
+        const focusedButton = this.jq.find('.p-picklist-buttons .p-button').filter((_i, el) => el === document.activeElement);
 
         this.updateButtons();
 
@@ -1372,7 +1393,8 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
             // the transfer or move is announced, not the item the list focuses
             this.keepingFocus = true;
             try {
-                list.trigger('focus');
+                // without scrolling, e.g. after a click on "Move to Target" with the mouse
+                list[0]!.focus({ preventScroll: true });
             }
             finally {
                 this.keepingFocus = false;

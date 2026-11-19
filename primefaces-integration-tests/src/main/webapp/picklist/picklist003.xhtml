@@ -17,7 +17,12 @@
             <p:pickList id="checkboxPickList" value="#{pickList003.checkboxModel}" var="item" itemValue="#{item}" itemLabel="#{item}"
                         effect="fade" showCheckbox="true" transferOnCheckboxClick="true"/>
 
-            <p:dialog id="dialog" widgetVar="dialog" modal="true" resizable="false" fitViewport="true" closeOnEscape="true" blockScroll="true"
+            <p:pickList id="noEffectPickList" value="#{pickList003.noEffectModel}" var="item" itemValue="#{item}" itemLabel="#{item}"
+                        effect="none" showCheckbox="true"/>
+
+            <p:pickList id="scrollPickList" value="#{pickList003.scrollModel}" var="item" itemValue="#{item}" itemLabel="#{item}"/>
+
+            <p:dialog id="dialog" ref="dialog" modal="true" resizable="false" fitViewport="true" closeOnEscape="true" blockScroll="true"
                       header="Dialog">
                 <p:pickList id="dialogPickList" value="#{pickList003.dialogModel}" var="item" itemValue="#{item}" itemLabel="#{item}"
                             responsive="true" style="width:800px">

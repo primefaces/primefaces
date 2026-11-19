@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.picklist;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Dialog;
@@ -35,10 +36,8 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,8 +53,8 @@ class PickList003Test extends AbstractPrimePageTest {
     @Order(1)
     @DisplayName("PickList: GitHub #15525 a PickList on the page gets the menu role and the labels of clientPreConstruct")
     void pickListOnPage(Page page) {
-        assertEquals("menu", source(page.pagePickList).getAttribute("role"));
-        assertEquals(CUSTOM_LABEL, addButton(page.pagePickList).getAttribute("title"));
+        assertEquals("menu", page.pagePickList.getSourceList().getAttribute("role"));
+        assertEquals(CUSTOM_LABEL, page.pagePickList.getAddButton().getAttribute("title"));
         assertNoJavascriptErrors();
     }
 
@@ -67,12 +66,13 @@ class PickList003Test extends AbstractPrimePageTest {
         openDialog(page);
 
         // Assert - the list role was removed because the items were not :visible while the dialog was hidden
-        assertEquals("menu", source(page.dialogPickList).getAttribute("role"));
-        assertNull(target(page.dialogPickList).getAttribute("role"));
+        PickList pickList = page.dialogPickList;
+        assertEquals("menu", pickList.getSourceList().getAttribute("role"));
+        assertNull(pickList.getTargetList().getAttribute("role"));
         // the ajax update refreshes the component, clientPreConstruct must be called for it as well
-        WebElement add = addButton(page.dialogPickList);
+        WebElement add = pickList.getAddButton();
         assertEquals(CUSTOM_LABEL, add.getAttribute("title"));
-        assertEquals(CUSTOM_LABEL, add.findElement(By.className("p-button-text")).getAttribute("textContent"));
+        assertEquals(CUSTOM_LABEL, add.getAttribute("textContent").trim());
         assertNoJavascriptErrors();
     }
 
@@ -82,29 +82,26 @@ class PickList003Test extends AbstractPrimePageTest {
     void moveAllKeepsFocus(Page page) {
         // Arrange
         openDialog(page);
-        WebElement addAll = page.dialogPickList.findElement(By.className("p-picklist-button-add-all"));
-        WebElement removeAll = page.dialogPickList.findElement(By.className("p-picklist-button-remove-all"));
-        PrimeSelenium.executeScript("arguments[0].focus();", addAll);
+        PickList pickList = page.dialogPickList;
 
         // Act
-        addAll.sendKeys(Keys.ENTER);
+        pickList.getAddAllButton().sendKeys(Keys.ENTER);
 
         // Assert - not lost to the document body, the emptied source list cannot take it, so the target list does
-        assertEquals(List.of("Test 1", "Test 2", "Test 3"), page.dialogPickList.getTargetListLabels());
-        assertTrue(addAll.getAttribute("class").contains("p-state-disabled"));
-        assertTrue(isActive(target(page.dialogPickList)), "target list must have the focus");
-        assertNull(source(page.dialogPickList).getAttribute("role"));
-        assertEquals("menu", target(page.dialogPickList).getAttribute("role"));
+        assertEquals(List.of("Test 1", "Test 2", "Test 3"), pickList.getTargetListLabels());
+        assertFalse(PrimeSelenium.isElementEnabled(pickList.getAddAllButton()));
+        assertFocused(pickList.getTargetList());
+        assertNull(pickList.getSourceList().getAttribute("role"));
+        assertEquals("menu", pickList.getTargetList().getAttribute("role"));
 
         // Act - and back
-        PrimeSelenium.executeScript("arguments[0].focus();", removeAll);
-        removeAll.sendKeys(Keys.ENTER);
+        pickList.getRemoveAllButton().sendKeys(Keys.ENTER);
 
         // Assert
-        assertEquals(List.of("Test 1", "Test 2", "Test 3"), page.dialogPickList.getSourceListLabels());
-        assertTrue(isActive(source(page.dialogPickList)), "source list must have the focus");
-        assertEquals("menu", source(page.dialogPickList).getAttribute("role"));
-        assertNull(target(page.dialogPickList).getAttribute("role"));
+        assertEquals(List.of("Test 1", "Test 2", "Test 3"), pickList.getSourceListLabels());
+        assertFocused(pickList.getSourceList());
+        assertEquals("menu", pickList.getSourceList().getAttribute("role"));
+        assertNull(pickList.getTargetList().getAttribute("role"));
         assertNoJavascriptErrors();
     }
 
@@ -114,17 +111,16 @@ class PickList003Test extends AbstractPrimePageTest {
     void moveSelectedKeepsFocus(Page page) {
         // Arrange
         openDialog(page);
-        WebElement add = addButton(page.dialogPickList);
-        PrimeSelenium.executeScript("arguments[0].click();", source(page.dialogPickList).findElements(By.tagName("li")).get(0));
-        PrimeSelenium.executeScript("arguments[0].focus();", add);
+        PickList pickList = page.dialogPickList;
+        pickList.select("Test 1");
 
         // Act
-        add.sendKeys(Keys.ENTER);
+        pickList.getAddButton().sendKeys(Keys.ENTER);
 
         // Assert - pressing Enter again must not hit e.g. "Move All to Target"
-        assertEquals(List.of("Test 1"), page.dialogPickList.getTargetListLabels());
-        assertTrue(isActive(source(page.dialogPickList)), "source list must have the focus");
-        assertEquals("menu", target(page.dialogPickList).getAttribute("role"));
+        assertEquals(List.of("Test 1"), pickList.getTargetListLabels());
+        assertFocused(pickList.getSourceList());
+        assertEquals("menu", pickList.getTargetList().getAttribute("role"));
         assertNoJavascriptErrors();
     }
 
@@ -134,23 +130,19 @@ class PickList003Test extends AbstractPrimePageTest {
     void keyboardNavigation(Page page) {
         // Arrange
         openDialog(page);
-        WebElement source = source(page.dialogPickList);
-        // the dialog focuses its close icon, the source list is next
-        new Actions(page.getWebDriver()).sendKeys(Keys.TAB).perform();
-        assertTrue(isActive(source), "source must have the focus");
-        PrimeSelenium.waitGui().until(d -> !source.findElements(By.className("p-picklist-outline")).isEmpty());
+        PickList pickList = page.dialogPickList;
+        WebElement source = tabToSourceList(page);
 
         // Act
         source.sendKeys(Keys.ARROW_DOWN);
         source.sendKeys(Keys.ARROW_DOWN);
 
         // Assert
-        List<WebElement> items = source.findElements(By.tagName("li"));
-        WebElement second = items.get(1);
-        assertTrue(second.getAttribute("class").contains("p-state-highlight"), "second item must be selected");
-        assertTrue(second.getAttribute("class").contains("p-picklist-outline"), "second item must have the focus indicator");
-        assertEquals(1, source.findElements(By.className("p-picklist-outline")).size());
-        assertTrue(isActive(source), "source must have the focus");
+        assertTrue(pickList.isSelected("Test 2"), "second item must be selected");
+        assertTrue(pickList.isFocused("Test 2"), "second item must have the focus indicator");
+        assertFalse(pickList.isFocused("Test 1"));
+        assertFalse(pickList.isFocused("Test 3"));
+        assertFocused(source);
         assertNoJavascriptErrors();
     }
 
@@ -160,21 +152,23 @@ class PickList003Test extends AbstractPrimePageTest {
     void moveAllSelectedKeepsFocus(Page page) {
         // Arrange
         openDialog(page);
-        List<WebElement> items = source(page.dialogPickList).findElements(By.tagName("li"));
-        new Actions(page.getWebDriver()).click(items.get(0)).keyDown(Keys.SHIFT).click(items.get(2)).keyUp(Keys.SHIFT).perform();
-        WebElement add = addButton(page.dialogPickList);
-        PrimeSelenium.executeScript("arguments[0].focus();", add);
+        PickList pickList = page.dialogPickList;
+        pickList.select("Test 1");
+        pickList.toggleSelection("Test 2");
+        pickList.toggleSelection("Test 3");
 
         // Act
-        add.sendKeys(Keys.ENTER);
+        pickList.getAddButton().sendKeys(Keys.ENTER);
 
         // Assert - the source list is empty after the transfer, not while it runs
-        assertEquals(List.of("Test 1", "Test 2", "Test 3"), page.dialogPickList.getTargetListLabels());
-        assertTrue(isActive(target(page.dialogPickList)), "target list must have the focus");
-        assertEquals("menu", target(page.dialogPickList).getAttribute("role"));
-        // the announcement of the transfer is not replaced by the item the target list focuses
-        PrimeSelenium.wait(300);
-        assertEquals("Moved to Target", page.dialogPickList.getAriaRegion().getAttribute("textContent"));
+        assertEquals(List.of("Test 1", "Test 2", "Test 3"), pickList.getTargetListLabels());
+        assertFocused(pickList.getTargetList());
+        assertEquals("menu", pickList.getTargetList().getAttribute("role"));
+        // the announcement of the transfer is not replaced by the item the target list focuses, both are done when the
+        // focused item has its indicator and the live region is filled
+        WebElement ariaRegion = pickList.getAriaRegion();
+        PrimeSelenium.waitGui().until(d -> pickList.isFocused("Test 1") && !ariaRegion.getAttribute("textContent").isEmpty());
+        assertEquals("Moved to Target", ariaRegion.getAttribute("textContent"));
         assertNoJavascriptErrors();
     }
 
@@ -184,30 +178,26 @@ class PickList003Test extends AbstractPrimePageTest {
     void keyboardNavigationAfterTransfer(Page page) {
         // Arrange
         openDialog(page);
-        WebElement source = source(page.dialogPickList);
-        new Actions(page.getWebDriver()).sendKeys(Keys.TAB).perform();
-        assertTrue(isActive(source), "source must have the focus");
-        PrimeSelenium.waitGui().until(d -> !source.findElements(By.className("p-picklist-outline")).isEmpty());
+        PickList pickList = page.dialogPickList;
+        WebElement source = tabToSourceList(page);
         source.sendKeys(Keys.ARROW_DOWN);
 
         // Act
         source.sendKeys(Keys.ENTER);
 
         // Assert - the next item is selected right away, so Enter moves it as well
-        assertEquals(List.of("Test 1"), page.dialogPickList.getTargetListLabels());
-        WebElement next = source.findElements(By.tagName("li")).get(0);
-        assertEquals("Test 2", next.getAttribute("data-item-label"));
-        assertTrue(next.getAttribute("class").contains("p-state-highlight"), "next item must be selected");
-        assertTrue(next.getAttribute("class").contains("p-picklist-outline"), "next item must have the focus indicator");
-        assertEquals(1, source.findElements(By.className("p-state-highlight")).size());
-        assertTrue(isActive(source), "source must keep the focus");
+        assertEquals(List.of("Test 1"), pickList.getTargetListLabels());
+        assertTrue(pickList.isSelected("Test 2"), "next item must be selected");
+        assertTrue(pickList.isFocused("Test 2"), "next item must have the focus indicator");
+        assertFalse(pickList.isSelected("Test 3"));
+        assertFocused(source);
 
         // Act - Enter again
         source.sendKeys(Keys.ENTER);
 
         // Assert
-        assertEquals(List.of("Test 1", "Test 2"), page.dialogPickList.getTargetListLabels());
-        assertTrue(isActive(source), "source must keep the focus");
+        assertEquals(List.of("Test 1", "Test 2"), pickList.getTargetListLabels());
+        assertFocused(source);
         assertNoJavascriptErrors();
     }
 
@@ -217,10 +207,8 @@ class PickList003Test extends AbstractPrimePageTest {
     void keyboardTransferOfLastItem(Page page) {
         // Arrange
         openDialog(page);
-        WebElement source = source(page.dialogPickList);
-        new Actions(page.getWebDriver()).sendKeys(Keys.TAB).perform();
-        assertTrue(isActive(source), "source must have the focus");
-        PrimeSelenium.waitGui().until(d -> !source.findElements(By.className("p-picklist-outline")).isEmpty());
+        PickList pickList = page.dialogPickList;
+        WebElement source = tabToSourceList(page);
 
         // Act - the first ArrowDown selects the focused item, after each transfer the next item is selected
         source.sendKeys(Keys.ARROW_DOWN);
@@ -229,8 +217,14 @@ class PickList003Test extends AbstractPrimePageTest {
         }
 
         // Assert - not left on the emptied source list, where the keys do nothing
-        assertEquals(List.of("Test 1", "Test 2", "Test 3"), page.dialogPickList.getTargetListLabels());
-        assertTrue(isActive(target(page.dialogPickList)), "target list must have the focus");
+        assertEquals(List.of("Test 1", "Test 2", "Test 3"), pickList.getTargetListLabels());
+        assertFocused(pickList.getTargetList());
+
+        // Act - the keys work in the target list
+        pickList.getTargetList().sendKeys(Keys.ARROW_DOWN);
+
+        // Assert
+        assertTrue(pickList.isSelected("Test 1"), "first item of the target list must be selected");
         assertNoJavascriptErrors();
     }
 
@@ -254,33 +248,95 @@ class PickList003Test extends AbstractPrimePageTest {
     @DisplayName("PickList: GitHub #15525 an animated transfer by checkbox click updates the checkboxes, the selection and the roles")
     void animatedCheckboxTransfer(Page page) {
         // Arrange
-        WebElement source = source(page.checkboxPickList);
-        WebElement target = target(page.checkboxPickList);
+        PickList pickList = page.checkboxPickList;
 
         // Act
-        checkbox(source.findElements(By.tagName("li")).get(0)).click();
-        PrimeSelenium.waitGui().until(d -> page.checkboxPickList.getTargetListLabels().size() == 1);
+        pickList.toggleCheckbox("Test 1");
 
         // Assert
-        assertEquals(List.of("Test 2", "Test 3"), page.checkboxPickList.getSourceListLabels());
-        assertEquals(List.of("Test 1"), page.checkboxPickList.getTargetListLabels());
-        WebElement moved = target.findElements(By.tagName("li")).get(0);
-        PrimeSelenium.waitGui().until(d -> moved.isDisplayed() && "menu".equals(target.getAttribute("role")));
-        assertTrue(checkbox(moved).getAttribute("class").contains("p-state-active"), "checkbox must be checked");
-        assertFalse(moved.getAttribute("class").contains("p-state-highlight"), "moved item must not be selected");
-        assertEquals("menu", source.getAttribute("role"));
+        assertEquals(List.of("Test 2", "Test 3"), pickList.getSourceListLabels());
+        assertEquals(List.of("Test 1"), pickList.getTargetListLabels());
+        PrimeSelenium.waitGui().until(d -> "menu".equals(pickList.getTargetList().getAttribute("role")));
+        assertTrue(pickList.isChecked("Test 1"), "checkbox must be checked");
+        assertFalse(pickList.isSelected("Test 1"), "moved item must not be selected");
+        assertEquals("menu", pickList.getSourceList().getAttribute("role"));
 
         // Act - and back
-        checkbox(moved).click();
-        PrimeSelenium.waitGui().until(d -> page.checkboxPickList.getTargetListLabels().isEmpty());
+        pickList.toggleCheckbox("Test 1");
 
         // Assert
-        assertEquals(List.of("Test 2", "Test 3", "Test 1"), page.checkboxPickList.getSourceListLabels());
-        WebElement back = source.findElements(By.tagName("li")).get(2);
-        PrimeSelenium.waitGui().until(d -> back.isDisplayed() && target.getAttribute("role") == null);
-        assertFalse(checkbox(back).getAttribute("class").contains("p-state-active"), "checkbox must be unchecked");
-        assertFalse(back.getAttribute("class").contains("p-state-highlight"), "moved item must not be selected");
-        assertEquals("menu", source.getAttribute("role"));
+        assertEquals(List.of("Test 2", "Test 3", "Test 1"), pickList.getSourceListLabels());
+        PrimeSelenium.waitGui().until(d -> pickList.getTargetList().getAttribute("role") == null);
+        assertFalse(pickList.isChecked("Test 1"), "checkbox must be unchecked");
+        assertFalse(pickList.isSelected("Test 1"), "moved item must not be selected");
+        assertEquals("menu", pickList.getSourceList().getAttribute("role"));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("PickList: GitHub #15525 moving an item with the Enter key selects only its neighbour")
+    void keyboardTransferSelectsNeighbour(Page page) {
+        // Arrange - "Test 2" is the focused item, "Test 1" is selected as well
+        openDialog(page);
+        PickList pickList = page.dialogPickList;
+        pickList.select("Test 1");
+        pickList.toggleSelection("Test 2");
+        WebElement source = pickList.getSourceList();
+        assertFocused(source);
+
+        // Act
+        source.sendKeys(Keys.ENTER);
+
+        // Assert - the item after the moved one, not the first item of the list, and not added to the selection
+        assertEquals(List.of("Test 2"), pickList.getTargetListLabels());
+        assertTrue(pickList.isSelected("Test 3"), "neighbour must be selected");
+        assertTrue(pickList.isFocused("Test 3"), "neighbour must have the focus indicator");
+        assertFalse(pickList.isSelected("Test 1"), "the former selection must be replaced");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("PickList: GitHub #15525 the keys work in a list which got the focus while the moved items were hidden")
+    void keyboardAfterTransferOfHiddenItems(Page page) {
+        // Arrange - without an effect, the checked items are moved while they are hidden
+        PickList pickList = page.noEffectPickList;
+        pickList.toggleCheckbox("Test 1");
+        pickList.toggleCheckbox("Test 2");
+        pickList.toggleCheckbox("Test 3");
+
+        // Act - the source list is empty, so the focus moves from the disabled button to the target list
+        pickList.getAddButton().sendKeys(Keys.ENTER);
+        assertEquals(List.of("Test 1", "Test 2", "Test 3"), pickList.getTargetListLabels());
+        WebElement target = pickList.getTargetList();
+        assertFocused(target);
+        target.sendKeys(Keys.ARROW_DOWN);
+
+        // Assert
+        assertTrue(pickList.isSelected("Test 1"), "first item must be selected");
+        assertTrue(pickList.isFocused("Test 1"), "first item must have the focus indicator");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("PickList: GitHub #15525 a mouse click on Move to Target keeps the scroll position of the source list")
+    void mouseTransferKeepsScrollPosition(Page page) {
+        // Arrange - the last item is selected at the bottom of the scrolled source list
+        PickList pickList = page.scrollPickList;
+        pickList.select("Item 20");
+        WebElement source = pickList.getSourceList();
+        assertTrue(scrollTop(source) > 0, "source list must be scrolled");
+
+        // Act
+        pickList.getAddButton().click();
+
+        // Assert - the source list takes the focus, but is not scrolled back to its first item
+        assertEquals(List.of("Item 20"), pickList.getTargetListLabels());
+        assertFocused(source);
+        PrimeSelenium.waitGui().until(d -> pickList.isFocused("Item 1"));
+        assertTrue(scrollTop(source) > 0, "source list must keep its scroll position");
         assertNoJavascriptErrors();
     }
 
@@ -289,31 +345,30 @@ class PickList003Test extends AbstractPrimePageTest {
         return (List<String>) PrimeSelenium.executeScript("return window.lifecycle;");
     }
 
-    private WebElement checkbox(WebElement item) {
-        return item.findElement(By.cssSelector("div.p-chkbox-box"));
+    private long scrollTop(WebElement element) {
+        return ((Number) PrimeSelenium.executeScript("return arguments[0].scrollTop;", element)).longValue();
     }
 
     private void openDialog(Page page) {
         page.open.click();
         PrimeSelenium.waitGui().until(d -> page.dialog.isVisible());
         // the dialog focuses its first focusable element when it is shown
-        PrimeSelenium.waitGui().until(d -> isActive(page.dialog.findElement(By.className("p-dialog-titlebar-close"))));
+        assertFocused(page.dialog.getCloseButton());
     }
 
-    private boolean isActive(WebElement element) {
-        return Boolean.TRUE.equals(PrimeSelenium.executeScript("return document.activeElement === arguments[0];", element));
+    /**
+     * Moves the focus from the close icon of the dialog to the source list with the Tab key, like a keyboard user.
+     */
+    private WebElement tabToSourceList(Page page) {
+        page.getWebDriver().switchTo().activeElement().sendKeys(Keys.TAB);
+        WebElement source = page.dialogPickList.getSourceList();
+        assertFocused(source);
+        PrimeSelenium.waitGui().until(d -> page.dialogPickList.isFocused("Test 1"));
+        return source;
     }
 
-    private WebElement source(PickList pickList) {
-        return pickList.findElement(By.cssSelector("ul.p-picklist-source"));
-    }
-
-    private WebElement target(PickList pickList) {
-        return pickList.findElement(By.cssSelector("ul.p-picklist-target"));
-    }
-
-    private WebElement addButton(PickList pickList) {
-        return pickList.findElement(By.className("p-picklist-button-add"));
+    private void assertFocused(WebElement element) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementFocused(element));
     }
 
     public static class Page extends AbstractPrimePage {
@@ -332,6 +387,12 @@ class PickList003Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:checkboxPickList")
         PickList checkboxPickList;
+
+        @FindBy(id = "form:noEffectPickList")
+        PickList noEffectPickList;
+
+        @FindBy(id = "form:scrollPickList")
+        PickList scrollPickList;
 
         @Override
         public String getLocation() {
