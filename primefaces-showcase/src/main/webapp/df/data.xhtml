@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Dialog Framework <span class="subitem">Data</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Dialog Framework provides APIs to pass and retrieve data between the source page and the dialog. Here the dialog
+        lists products; choosing one closes the dialog with <b>closeDynamic()</b> and returns the product to the source
+        page, where the button that opened the dialog receives it in the listener of its <b>dialogReturn</b> event.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/dialogframework"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:commandButton value="Select Product" icon="pi pi-home" action="#{dfView.chooseProduct}">
+                    <p:ajax event="dialogReturn" listener="#{dfView.onProductChosen}" update="growl"/>
+                </p:commandButton>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/df/selectProduct.xhtml">
+            <f:attribute name="flatten" value="true"/>
+        </p:tab>
+    </ui:define>
+
+</ui:composition>

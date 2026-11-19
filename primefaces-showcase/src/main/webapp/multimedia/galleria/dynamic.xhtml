@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">Dynamic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Galleria also supports dynamic content via StreamedContent. The item and its thumbnail are
+        a <b>p:graphicImage</b> with a StreamedContent as value, and an <b>f:param</b> passes the id of the photo
+        so that the bean knows which image to stream.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="componentLink" value="Galleria"/>
+    <ui:param name="tagName" value="galleria"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:galleria value="#{dynamicGalleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">
+                <p:graphicImage value="#{dynamicGalleriaView.photoAsStreamedContent}" alt="#{photo.alt}" style="width: 100%">
+                    <f:param name="photoId" value="#{photo.id}" />
+                </p:graphicImage>
+                <f:facet name="thumbnail">
+                    <p:graphicImage value="#{dynamicGalleriaView.photoAsStreamedContent}" alt="#{photo.alt}" style="width: 100%">
+                        <f:param name="photoId" value="#{photo.id}" />
+                    </p:graphicImage>
+                </f:facet>
+            </p:galleria>
+        </div>
+    </ui:define>
+
+</ui:composition>

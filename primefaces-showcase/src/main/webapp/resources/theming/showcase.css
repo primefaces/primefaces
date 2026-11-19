@@ -31,6 +31,16 @@ html[data-preset="glass"] body {
     background-color: var(--surface-ground);
 }
 
+/* phones: the configurator tab in the lower corner, at the middle of the window edge it covers the demos */
+@media screen and (max-width: 640px) {
+    .p-themeconfigurator-toggle.p-button {
+        top: auto;
+        bottom: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
 /* jump links to the sections, sticky below the topbar; the link of the section in view is marked (scroll spy) */
 .demo-sections {
     position: sticky;
@@ -43,8 +53,10 @@ html[data-preset="glass"] body {
     padding: .375rem;
     overflow-x: auto;
     scrollbar-width: none;
-    background: color-mix(in srgb, var(--p-content-background) 90%, transparent);
-    backdrop-filter: blur(12px);
+    /* a bar like the toolbar, filter on the element: p-backdrop-navigation puts it on a ::before, which would
+       scroll away in this horizontally scrolling bar (no dropdowns inside it, so no backdrop root issue) */
+    background: var(--p-toolbar-background);
+    backdrop-filter: var(--p-navigation-backdrop-filter);
     border: 1px solid var(--p-content-border-color);
     border-radius: var(--p-content-border-radius);
 }

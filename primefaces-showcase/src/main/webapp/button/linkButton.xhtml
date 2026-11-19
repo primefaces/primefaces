@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            body .p-button.p-linkbutton {
+                margin-right: 1rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Link Button
+    </ui:define>
+
+    <ui:define name="description">
+        LinkButton is a link element that is rendered as a button and used as a navigation component based on GET requests
+        targeting bookmarkable URLs. The examples navigate to an <b>outcome</b> with a request parameter passed by
+        <b>f:param</b> and show <b>target</b>, <b>icon</b>, the disabled state and the <b>size</b> attribute.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/linkbutton"/>
+    <ui:param name="componentLink" value="LinkButton"/>
+    <ui:param name="tagName" value="linkButton"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:linkButton outcome="productDetail" value="Bookmark">
+                <f:param name="productId" value="10"/>
+            </p:linkButton>
+
+            <p:linkButton outcome="productDetail" value="Bookmark new tab" target="_blank">
+                <f:param name="productId" value="10"/>
+            </p:linkButton>
+
+            <p:linkButton outcome="productDetail" value="With Icon" icon="pi pi-star">
+                <f:param name="productId" value="20"/>
+            </p:linkButton>
+
+            <p:linkButton outcome="productDetail" icon="pi pi-star" title="Icon Only">
+                <f:param name="productId" value="30"/>
+            </p:linkButton>
+
+            <p:linkButton outcome="productDetail" value="With Icon" disabled="true">
+                <f:param name="productId" value="40"/>
+            </p:linkButton>
+
+            <p:linkButton outcome="productDetail" value="Bookmark" icon="pi pi-star" disabled="true">
+                <f:param name="productId" value="50"/>
+            </p:linkButton>
+
+            <p:linkButton outcome="productDetail" icon="pi pi-star" disabled="true" title="Icon Only">
+                <f:param name="productId" value="60"/>
+            </p:linkButton>
+            
+            <h5 id="sizes">Sizes</h5>
+            <p:linkButton outcome="productDetail" value="Small" size="small"/>
+            <p:linkButton outcome="productDetail" value="Normal"/>
+            <p:linkButton outcome="productDetail" value="Large" size="large" />
+        </div>
+    </ui:define>
+
+</ui:composition>

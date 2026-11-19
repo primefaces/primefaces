@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Immediate</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Immediate client side validation, as known from JavaScript UI frameworks: every input has a
+        <b>p:clientValidator</b> and is validated on <b>keyup</b> or <b>change</b>, depending on the component. A
+        CommandButton with <b>enabledByValidateClient="true"</b> is only enabled when all inputs of its <b>process</b>
+        attribute are valid. The inputs are styled by their validation state with the classes <b>p-state-csv-valid</b>
+        and <b>p-state-csv-invalid</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csv"/>
+
+    <ui:define name="implementation">
+        <style type="text/css">
+            button.p-state-csv-valid, input.p-state-csv-valid, .p-inputfield.p-state-csv-valid, .p-selectonemenu.p-state-csv-valid {
+                border-left-color: green !important; /* !important to override border-color set by p-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+
+            button.p-state-csv-invalid, input.p-state-csv-invalid, .p-inputfield.p-state-csv-invalid, .p-selectonemenu.p-state-csv-invalid {
+                border-left-color: red !important; /* !important to override border-color set by p-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+        </style>
+
+        <div class="card">
+            <h:form>
+                <p:messages>
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <h:panelGroup id="gridName" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="name" value="Name (3-50 characters)"/>
+                        <p:inputText id="name" value="#{validationView.text}" required="true" label="Name">
+                            <f:validateLength minimum="3" maximum="50"/>
+                            <p:clientValidator event="keyup" />
+                        </p:inputText>
+                        <p:message for="name"/>
+                        <small>Value: <h:outputText value="#{validationView.text}"/></small>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup id="gridNumber" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="number" value="Number"/>
+                        <p:inputNumber id="number" value="#{validationView.integer}" label="Number"
+                                        validateMask="false" required="true">
+                            <f:validateLongRange minimum="100" maximum="9999" />
+                            <p:clientValidator event="keyup" />
+                        </p:inputNumber>
+                        <p:message for="number"/>
+                        <small>Value: <h:outputText value="#{validationView.integer}"/></small>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup id="gridEverythingElse" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="dd" value="Double (5.5 - 8.5)"/>
+                        <p:inputText id="dd" value="#{validationView.doubleNumber}"
+                                        converterMessage="Cannot convert to double." required="true">
+                            <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
+                            <p:clientValidator event="keyup" />
+                        </p:inputText>
+                        <p:message for="dd"/>
+                        <small>Value: <h:outputText value="#{validationView.doubleNumber}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="regex" value="Regex (^[a-zA-Z]+$)"/>
+                        <p:inputText id="regex" value="#{validationView.regexText}"
+                                        validatorMessage="Value does not match pattern." required="true">
+                            <f:validateRegex pattern="^[a-zA-Z]+$"/>
+                            <p:clientValidator event="keyup" />
+                        </p:inputText>
+                        <p:message for="regex"/>
+                        <small>Value: <h:outputText value="#{validationView.regexText}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="localDate" value="LocalDate (DatePicker)"/>
+                        <p:datePicker id="localDate" value="#{validationView.localDate}" pattern="MM/dd/yyyy"
+                                        label="LocalDate (DatePicker)" required="true">
+                            <p:clientValidator />
+                        </p:datePicker>
+                        <p:message for="localDate"/>
+                        <small>Value:
+                            <h:outputText value="#{validationView.localDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                            </h:outputText>
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Select UI-library" />
+                        <p:selectOneMenu id="selectOneMenu" value="#{validationView.uiLibrary}" required="true">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Faces" itemValue="Faces" />
+                            <f:selectItem itemLabel="Angular" itemValue="Angular" />
+                            <f:selectItem itemLabel="React" itemValue="React" />
+                            <f:selectItem itemLabel="Vue" itemValue="Vue" />
+                            <p:clientValidator />
+                        </p:selectOneMenu>
+                        <p:message for="selectOneMenu"/>
+                        <small>Value: <h:outputText value="#{validationView.uiLibrary}"/></small>
+                    </div>
+                </h:panelGroup>
+
+                <p:remoteCommand name="rc" update="gridName gridNumber" process="name number" validateClient="true"/>
+                <p:defaultCommand target="btnAjax"/>
+
+                <div class="pt-3">
+                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Ajax" id="btnAjax" update="@form" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Partial (name + number)" update="gridName gridNumber" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Disabled (without CSV)" ajax="false" styleClass="mr-2"/>
+                    <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
+                </div>
+
+                <div class="pt-3">
+                    Simulate server-side modifications:<br/>
+                    <p:commandButton value="Modify Name + Number" update="gridName gridNumber" process="@this" action="#{validationView.modifyValues()}" styleClass="mr-2" />
+                    <p:commandButton value="Modify Number" update="gridNumber" process="@this" action="#{validationView.modifyInteger()}" styleClass="mr-2" />
+                    <p:commandButton value="Clear Values" update="@form" process="@this" action="#{validationView.clearValues()}" />
+                </div>
+                
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

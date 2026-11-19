@@ -103,14 +103,15 @@ public abstract class Mindmap extends AbstractComponent {
      * @param label the label of the node
      */
     public void selectNode(String label) {
-        WebElement node = getVisibleNode(label);
+        // pointer action instead of WebElement#click: geckodriver cannot scroll SVG <text> into view for an element click
+        Action action = new Actions(getWebDriver()).click(getVisibleNode(label)).build();
         if (isSelectAjaxified()) {
             // the click is handled after a delay to detect double clicks, the guard waits for the request
-            PrimeSelenium.guardAjax(node).click();
+            PrimeSelenium.guardAjax(action).perform();
             waitUntilDrawn();
         }
         else {
-            node.click();
+            action.perform();
         }
     }
 

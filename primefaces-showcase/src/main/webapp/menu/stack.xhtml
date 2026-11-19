@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .p-stack {
+                z-index: 1000;
+            }
+        </style>
+    </ui:define>
+
+
+    <ui:define name="title">
+        Stack
+    </ui:define>
+
+    <ui:define name="description">
+        Stack is a navigation component that mimics the stacks of macOS: clicking its icon expands and collapses the
+        menuitems. Stack is a fixed positioned element whose location can be changed with CSS. It is collapsed
+        initially unless <b>expanded="true"</b> is set, as in this example.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/stack"/>
+    <ui:param name="componentLink" value="Stack"/>
+    <ui:param name="tagName" value="stack"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            Stack is displayed at bottom right corner of the page. Clicking the basket icon toggles the items.
+        </div>
+
+        <h:form>
+            <p:stack icon="/resources/demo/images/dock/stack.png" expanded="true">
+                <p:menuitem value="Home" icon="/resources/demo/images/dock/home.png"/>
+                <p:menuitem value="Music" icon="/resources/demo/images/dock/music.png"/>
+                <p:menuitem value="Video" icon="/resources/demo/images/dock/video.png"/>
+                <p:menuitem value="Email" icon="/resources/demo/images/dock/email.png"/>
+                <p:menuitem value="Portfolio" icon="/resources/demo/images/dock/portfolio.png"/>
+            </p:stack>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

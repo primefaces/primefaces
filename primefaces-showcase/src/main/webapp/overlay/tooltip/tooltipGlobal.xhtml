@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="jakarta.faces.passthrough"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tooltip <span class="subitem">Tooltip Global</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A global tooltip is a single <b>p:tooltip</b> without a target. It binds to the elements with a <b>title</b>
+        attribute or, as in this example, with the pass-through attribute <b>data-tooltip</b>. Ajax updates are
+        supported as well: if a target component is updated with Ajax, the tooltip still binds to it, which the button
+        shows by updating its parent.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tooltip"/>
+    <ui:param name="componentLink" value="Tooltip-1"/>
+    <ui:param name="tagName" value="tooltip"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:tooltip/>
+
+            <h:form>
+                <h:panelGroup layout="block" styleClass="formgrid grid">
+                    <div class="field col-12 md:col-4 p-fluid">
+                        <p:outputLabel for="@next" value="Input"/>
+                        <p:inputText pt:data-tooltip="Tooltip for an input"/>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <span class="block mb-2">Link</span>
+                        <h:outputLink value="#" pt:data-tooltip="Tooltip for a link">
+                            <h:outputText value="About"/>
+                        </h:outputLink>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <span class="block mb-2">Button</span>
+                        <p:commandButton value="Update" pt:data-tooltip="Update components" update="@parent"/>
+                    </div>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -47,7 +47,7 @@ public class OrganigramView implements Serializable {
     private OrganigramNode selection;
 
     private boolean zoom = false;
-    private String style = "width: 800px";
+    private String style = "max-width: 800px";
     private int leafNodeConnectorHeight = 0;
     private boolean autoScrollToSelection = false;
 

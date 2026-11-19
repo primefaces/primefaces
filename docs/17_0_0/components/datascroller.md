@@ -86,8 +86,8 @@ is the list of structural style classes;
 | --- | --- |
 | .p-datascroller | Main container element
 | .p-datascroller-inline | Main container element in inline mode
-| .p-datalist-header | Header element
-| .p-datalist-content | Content element
+| .p-datascroller-header | Header element
+| .p-datascroller-content | Content element
 | .p-datascroller-list | List element container
 | .p-datascroller-item | Container of each item in the list
 | .p-datascroller-loader | Container of custom loader element.

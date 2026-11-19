@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Bean</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Client Side Validation is integrated with Bean Validation: the constraints defined with annotations on the bean
+        properties are validated on the client side. The labels of the fields name the constraints, for example
+        <b>@Size</b>, <b>@NotBlank</b>, <b>@Min</b> or <b>@Past</b>. The second button submits the form without client side
+        validation for comparison.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csvBeanValidation"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages/>
+
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Given Name: (@Size(min=2,max=5))"/>
+                        <p:inputText value="#{beanValidationView.name}" label="Given Name"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.name}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Surname: (@NotBlank)"/>
+                        <p:inputText value="#{beanValidationView.notBlank}" label="Surname" />
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.notBlank}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Address: (@NotEmpty)"/>
+                        <p:inputText value="#{beanValidationView.notEmpty}" label="Address"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.notEmpty}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Age: (@Min(10) @Max(20))"/>
+                        <p:inputText value="#{beanValidationView.age}" label="Age"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.age}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Amount: (@DecimalMax('99.9'))"/>
+                        <p:inputText value="#{beanValidationView.amount}" label="Amount"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.amount}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Amount: (@Digits(integer=3,fraction=2))"/>
+                        <p:inputText value="#{beanValidationView.amount2}" label="Amount 2"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.amount2}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Pattern: (@Pattern(regexp='^[-+]?\\d+$'))"/>
+                        <p:inputText value="#{beanValidationView.pattern}" label="pattern"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.pattern}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Assert: (@AssertTrue)"/>
+                        <p:selectBooleanCheckbox value="#{beanValidationView.checked}"/>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Date (@Past)"/>
+                        <p:inputText value="#{beanValidationView.pastDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Time (@PastOrPresent)"/>
+                        <p:inputText value="#{beanValidationView.pastOrPresentDate}">
+                            <f:convertDateTime pattern="HH:mm:ss" type="localTime"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Date (@Future)"/>
+                        <p:inputText value="#{beanValidationView.futureDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="DateTime (@FutureOrPresent)"/>
+                        <p:inputText value="#{beanValidationView.futureOrPresent}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" type="localDateTime"/>
+                        </p:inputText>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Negative: (@Negative)"/>
+                        <p:inputText value="#{beanValidationView.negative}" label="Negative"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.negative}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Negative/Zero: (@NegativeOrZero)"/>
+                        <p:inputText value="#{beanValidationView.negativeOrZero}" label="Negative"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.negativeOrZero}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Positive: (@Positive)"/>
+                        <p:inputText value="#{beanValidationView.positive}" label="Positive"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.positive}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Positive/Zero: (@PositiveOrZero)"/>
+                        <p:inputText value="#{beanValidationView.positiveOrZero}" label="Positive"/>
+                        <p:message for="@previous"/>
+                        <small>Value: <h:outputText value="#{beanValidationView.positiveOrZero}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="@next" value="Radio Input"/>
+                        <p:selectOneRadio value="#{beanValidationView.bool}">
+                            <f:selectItem itemValue="#{true}" itemLabel="True"/>
+                            <f:selectItem itemValue="#{false}" itemLabel="False"/>
+                        </p:selectOneRadio>
+                        <p:message for="@previous"/>
+                    </div>
+                </div>
+
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mr-3" />
+                <p:commandButton value="Save with disabled CSV" ajax="false" icon="pi pi-check" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

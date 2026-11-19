@@ -39,8 +39,8 @@ _multiple_ or _checkbox_ : Multiple nodes can be selected, selection should be a
 As checkbox selection have a special hierarchy, use _CheckboxTreeNode_ in checkbox mode.
 
 ## Paginator
-Node hierarchy can be displayed as paged using paginator. Usage is similar to DataTable, DataList
-and DataGrid where paginator is enabled by setting paginator=”true” and defining a rows property
+Node hierarchy can be displayed as paged using paginator. Usage is similar to DataTable
+and DataView where paginator is enabled by setting paginator=”true” and defining a rows property
 to define the number of nodes to be displayed per page.
 
 ## Client Side API

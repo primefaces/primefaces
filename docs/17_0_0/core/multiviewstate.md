@@ -5,8 +5,6 @@ MultiViewState feature enables components to maintain their state across pages b
 Following components support MultiViewState:
 
 - [AccordionPanel](/components/accordionpanel.md)
-- [DataGrid](/components/datagrid.md)
-- [DataList](/components/datalist.md)
 - [DataTable](/components/datatable.md)
 - [DataView](/components/dataview.md)
 - [Panel](/components/panel.md)

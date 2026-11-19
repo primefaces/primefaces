@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml"
+                xmlns:sc="primefaces.showcase">
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Lazy loading of events</span>
+    </ui:define>
+
+    <ui:define name="description">
+        <p>
+            Timeline can load events lazily while it is moved or zoomed, useful when loading them is slow. A
+            <b>p:ajax</b> with <b>event="lazyload"</b> enables it; the <b>TimelineLazyLoadEvent</b> contains one or two
+            time ranges to load (two when zooming out).
+        </p>
+        <p>
+            <b>Note:</b> The listener is not invoked again when the visible range, including the hidden ranges of
+            <b>preloadFactor</b>, is already loaded.
+        </p>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="componentLink" value="Timeline-1"/>
+    <ui:param name="tagName" value="timeline"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showSummary="true" showDetail="false">
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <div id="loadingText" style="font-weight:bold; margin:-5px 0 5px 0; visibility:hidden;">Loading ...
+                </div>
+
+                <p:timeline id="timeline" value="#{lazyTimelineView.model}"
+                            preloadFactor="#{lazyTimelineView.preloadFactor}"
+                            zoomMax="#{lazyTimelineView.zoomMax}" minHeight="170">
+                    <p:ajax event="lazyload" update="@none" listener="#{lazyTimelineView.onLazyLoad}"
+                            onstart="$('#loadingText').css('visibility', 'visible')"
+                            oncomplete="$('#loadingText').css('visibility', 'hidden')"/>
+                </p:timeline>
+
+                <div class="flex flex-wrap align-items-center gap-2 mt-3">
+                    <p:spinner id="spinner" value="#{lazyTimelineView.preloadFactor}"
+                               min="0" max="1" stepFactor="0.05"/>
+                    <p:commandButton value="Update Preload Factor" process="@this spinner" update="timeline"
+                                     action="#{lazyTimelineView.clearTimeline}"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

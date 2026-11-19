@@ -74,4 +74,10 @@ public abstract class DataViewBase extends UIPageableData
 
     @Property(description = "Title for each row.")
     public abstract String getRowTitle();
+
+    @Property(description = "Name of the exported request scoped variable for the status of the iteration.")
+    public abstract String getVarStatus();
+
+    @Property(description = "Style class of each item, evaluated per item in both layouts.")
+    public abstract String getItemStyleClass();
 }

@@ -74,7 +74,7 @@ PrimeFaces to fully understand how component referencing works.
 http://docs.oracle.com/javaee/6/api/javax/faces/component/UIComponent.html
 
 Jakarta Faces h:form, datatable, composite components are naming containers, in addition tabView,
-accordionPanel, dataTable, dataGrid, dataList, carousel, galleria, ring, sheet and subTable are
+accordionPanel, dataTable, dataView, carousel, galleria, ring, sheet and subTable are
 PrimeFaces component that implement NamingContainer.
 
 **Multiple Components**

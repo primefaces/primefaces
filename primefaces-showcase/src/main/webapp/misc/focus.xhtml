@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Focus
+    </ui:define>
+
+    <ui:define name="description">
+        Focus manages the element focus of a page. By default the first visible and enabled input receives the focus,
+        <b>for</b> declares the component explicitly and <b>context</b>, as used here, limits the search to a part of
+        the page. After a failed validation the first invalid input receives the focus, which requires that
+        <b>p:focus</b> is updated by the Ajax request.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/focus"/>
+    <ui:param name="tagName" value="focus"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:focus context="panel"/>
+
+                <p:messages/>
+
+                <h:panelGroup id="panel" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="username" value="Username"/>
+                        <p:inputText id="username" value="#{focusView.username}" required="true" label="Firstname">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="username"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="email" value="Email"/>
+                        <p:inputText id="email" value="#{focusView.email}" required="true" label="Surname"/>
+                        <p:message for="email"/>
+                    </div>
+                </h:panelGroup>
+
+                <p:commandButton id="submitButton" value="Save" update="@parent" action="#{focusView.save}" styleClass="mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

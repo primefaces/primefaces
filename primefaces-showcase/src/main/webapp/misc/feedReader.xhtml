@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        FeedReader
+    </ui:define>
+
+    <ui:define name="description">
+        FeedReader retrieves an RSS, Atom or iTunes podcast feed from a URL and renders its content once for each feed
+        item, which is exposed as <b>var</b>. This page displays the title and description of the items of a news feed.
+        The <b>error</b> facet is shown when the feed cannot be read.
+    </ui:define>
+
+
+    <ui:param name="documentationLink" value="/components/feedreader"/>
+    <ui:param name="tagName" value="feedReader"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:feedReader value="https://www.nasa.gov/rss/dyn/breaking_news.rss" var="feed">
+                <div class="p-3">
+                    <h:outputText value="#{feed.title}" styleClass="font-bold block" />
+                    <h:outputText value="#{feed.description}" escape="false"/>
+                    <p:divider/>
+                </div>
+                
+                <f:facet name="error">
+                    <h:outputText value="Error reading RSS Feed!!!" style="color:red;"/>
+                </f:facet>
+            </p:feedReader>
+        </div>
+    </ui:define>
+
+</ui:composition>

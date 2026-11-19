@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataScroller <span class="subitem">Loader</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Instead of loading on scroll, the next chunk of data can be loaded with a click: the component placed in the
+        <b>loader</b> facet, a button in this demo, loads more data when it is clicked.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datascroller"/>
+    <ui:param name="componentLink" value="DataScroller-1" />
+    <ui:param name="tagName" value="dataScroller"/>
+
+    <ui:define name="implementation">
+        <div class="product card">
+            <h:form>
+                <p:dataScroller value="#{dataScrollerView.products}" var="product" chunkSize="10">
+                    <f:facet name="header">
+                        Scroll Down to Load More Products
+                    </f:facet>
+
+                    <f:facet name="loader">
+                        <div class="text-center">
+                            <p:commandButton type="button" value="More" icon="pi pi-refresh"/>
+                        </div>
+                    </f:facet>
+
+                    <div class="product">
+                        <div class="product-list-item p-5">
+                            <p:graphicImage name="demo/images/product/#{product.image}"/>
+                            <div class="product-list-detail">
+                                <div class="product-name">#{product.name}</div>
+                                <div class="product-description">#{product.description}</div>
+                                <p:rating readonly="true" value="#{product.rating}"/>
+                                <i class="pi pi-tag product-category-icon"/><span
+                                    class="product-category">#{product.category}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{product.price}" styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                 disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                </p:commandButton>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </p:dataScroller>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

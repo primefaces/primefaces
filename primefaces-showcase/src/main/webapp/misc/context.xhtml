@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+        <style>
+            .p-log {
+                left: 600px;
+                top: 100px;
+            }
+        </style>
+
+        <script>
+            function handleComplete(xhr, status, args) {
+                if (args.validationFailed) {
+                    PrimeFaces.debug("Validation Failed");
+                } else {
+                    PrimeFaces.debug("Save:" + args.saved);
+                    PrimeFaces.debug("FirstName: " + args.user.firstname + ", Lastname: " + args.user.lastname);
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        PrimeFaces Context
+    </ui:define>
+
+    <ui:define name="description">
+        <b>PrimeFaces.current()</b> is a Java utility for the current request, e.g. to execute a script in the browser,
+        to update components or to add parameters to Ajax callbacks. In this example the <b>save</b> action adds
+        callback parameters, which the <b>oncomplete</b> handler reads from <b>args</b> and writes to the <b>p:log</b>
+        console, and executes a script that logs a message.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/javaAPI?id=primefacescurrent"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:messages>
+                   <p:autoUpdate />
+                </p:messages>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="firstname" value="Firstname"/>
+                        <p:inputText id="firstname" value="#{requestContextView.user.firstname}" required="true"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="surname" value="Lastname"/>
+                        <p:inputText id="surname" value="#{requestContextView.user.lastname}" required="true"/>
+                    </div>
+                </div>
+
+                <p:commandButton value="Save" action="#{requestContextView.save}" styleClass="mt-2"
+                                 oncomplete="handleComplete(xhr, status, args)"/>
+
+                <p:log/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

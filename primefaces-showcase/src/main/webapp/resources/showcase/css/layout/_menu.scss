@@ -124,6 +124,13 @@
     }
 }
 
+// part of the page on wide screens: the backdrop (p-backdrop-overlay) only for the drawer of the small screens
+@media screen and (min-width: 1201px) {
+    .layout-sidebar {
+        backdrop-filter: none;
+    }
+}
+
 .layout-sidebar-filter-panel {
     &.p-autocomplete-panel {
         padding: 0.5rem 0;

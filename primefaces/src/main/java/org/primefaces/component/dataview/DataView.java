@@ -25,6 +25,7 @@ package org.primefaces.component.dataview;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.component.api.IterationStatus;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
@@ -68,6 +69,7 @@ public class DataView extends DataViewBaseImpl {
     public static final String ROW_CLASS = "p-dataview-row";
     public static final String GRID_LAYOUT_ROW_CLASS = "p-dataview-row";
     public static final String GRID_LAYOUT_COLUMN_CLASS = "p-dataview-column";
+    public static final String EMPTY_MESSAGE_CLASS = "p-dataview-empty-message";
 
     private DataViewGridItem gridItem;
     private DataViewListItem listItem;
@@ -106,6 +108,25 @@ public class DataView extends DataViewBaseImpl {
         }
         else {
             super.queueEvent(event);
+        }
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        super.setRowIndex(rowIndex);
+
+        String varStatus = getVarStatus();
+        if (varStatus != null) {
+            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+            if (rowIndex == -1) {
+                requestMap.remove(varStatus);
+            }
+            else {
+                int first = getFirst();
+                int rowCount = getRowCount();
+                int end = getRows() == 0 ? rowCount - 1 : Math.min(first + getRows(), rowCount) - 1;
+                requestMap.put(varStatus, new IterationStatus(rowIndex == 0, rowIndex == rowCount - 1, rowIndex, rowIndex, first, end, 1));
+            }
         }
     }
 

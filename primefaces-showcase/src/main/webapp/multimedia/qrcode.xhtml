@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Barcode
+    </ui:define>
+
+    <ui:define name="description">
+        A QR code (quick-response code) is a type of two-dimensional matrix barcode. It is displayed with <b>p:barcode</b>
+        and <b>type="qr"</b> and is generated using the <b>Okapi</b> library. The demo enlarges the code with
+        <b>magnification</b>.
+
+        <pre class="language-xml"><code>
+            &lt;dependency&gt;
+               &lt;groupId>uk.org.okapibarcode&lt;/groupId&gt;
+               &lt;artifactId>okapibarcode&lt;/artifactId&gt;
+               &lt;version>0.5.1&lt;/version&gt;
+            &lt;/dependency&gt;
+            </code></pre>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/barcode"/>
+    <ui:param name="tagName" value="barcode"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <div class="mb-2">QR</div>
+            <p:barcode value="0123456789" type="qr" magnification="5.0" styleClass="max-w-full"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -16,6 +16,16 @@ export interface TextEditorCfg extends PrimeFaces.component.DeferredComponentCfg
     disabled: boolean;
     /** Whether the editor toolbar should be displayed. */
     toolbarVisible: boolean;
+    /** ARIA label of the editing area. */
+    ariaLabel?: string;
+    /** ID of the label of the editing area. */
+    ariaLabelledBy?: string;
+    /** IDs of the elements describing the editing area. */
+    ariaDescribedBy?: string;
+    /** Whether a value is required. */
+    ariaRequired?: boolean;
+    /** Whether the value is invalid. */
+    ariaInvalid?: boolean;
 }
 
 /**
@@ -74,6 +84,50 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
                 '</span>' +
             '</div>';
 
+    /** ARIA locale keys of the toolbar controls, by `format` or `format:value`. */
+    static readonly ariaKeys: Record<string, keyof PrimeFaces.LocaleAria> = {
+        'font': 'texteditor.FONT',
+        'font:': 'texteditor.SANS_SERIF',
+        'font:serif': 'texteditor.SERIF',
+        'font:monospace': 'texteditor.MONOSPACE',
+        'size': 'texteditor.SIZE',
+        'size:': 'texteditor.NORMAL',
+        'size:small': 'texteditor.SMALL',
+        'size:large': 'texteditor.LARGE',
+        'size:huge': 'texteditor.HUGE',
+        'header': 'texteditor.HEADING',
+        'header:': 'texteditor.NORMAL',
+        'bold': 'texteditor.BOLD',
+        'italic': 'texteditor.ITALIC',
+        'underline': 'texteditor.UNDERLINE',
+        'strike': 'texteditor.STRIKE',
+        'color': 'texteditor.COLOR',
+        'color:': 'texteditor.DEFAULT',
+        'background': 'texteditor.BACKGROUND',
+        'background:': 'texteditor.DEFAULT',
+        'script:sub': 'texteditor.SUBSCRIPT',
+        'script:super': 'texteditor.SUPERSCRIPT',
+        'blockquote': 'texteditor.BLOCKQUOTE',
+        'code': 'texteditor.CODE',
+        'code-block': 'texteditor.CODE_BLOCK',
+        'list:ordered': 'texteditor.ORDERED_LIST',
+        'list:bullet': 'texteditor.BULLET_LIST',
+        'list:check': 'texteditor.CHECK_LIST',
+        'indent:-1': 'texteditor.OUTDENT',
+        'indent:+1': 'texteditor.INDENT',
+        'direction:rtl': 'texteditor.RTL',
+        'align': 'texteditor.ALIGN',
+        'align:': 'texteditor.ALIGN_LEFT',
+        'align:center': 'texteditor.ALIGN_CENTER',
+        'align:right': 'texteditor.ALIGN_RIGHT',
+        'align:justify': 'texteditor.ALIGN_JUSTIFY',
+        'link': 'texteditor.LINK',
+        'image': 'texteditor.IMAGE',
+        'video': 'texteditor.VIDEO',
+        'formula': 'texteditor.FORMULA',
+        'clean': 'texteditor.CLEAN'
+    };
+
     /** Whether this text editor is disabled. */
     disabled: boolean = false;
     /** The current Quill text editor instance. */
@@ -119,6 +173,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
 
         //initialize
         this.editor = new Quill(PrimeFaces.escapeClientId(this.getId()) + '_editor', this.cfg);
+        this.bindAria();
 
         const events = ["keyup", "keydown", "click", "dblclick", "keypress", "mousedown", "mousemove", "mouseout",
                         "mouseover", "mouseup"];
@@ -227,6 +282,97 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
         this.editor!.setText('');
     }
 
+    // makes the contenteditable of Quill a named textbox; the generic name is a fallback without any label
+    private bindAria(): void {
+        $(this.editor!.root).attr({
+            'role': 'textbox',
+            'aria-multiline': 'true',
+            'aria-label': this.cfg.ariaLabel || (this.cfg.ariaLabelledBy ? null : this.getAriaLabel('texteditor.EDITOR')),
+            'aria-labelledby': this.cfg.ariaLabelledBy || null,
+            'aria-describedby': this.cfg.ariaDescribedBy || null,
+            'aria-required': this.cfg.ariaRequired ? 'true' : null,
+            'aria-invalid': this.cfg.ariaInvalid ? 'true' : null,
+            // disabled also sets cfg.readOnly, see init
+            'aria-readonly': this.cfg.readOnly && !this.disabled ? 'true' : null,
+            'aria-disabled': this.disabled ? 'true' : null,
+            'aria-placeholder': this.cfg.placeholder || null
+        });
+
+        this.bindLabel();
+        this.nameToolbar();
+        this.name(this.jq.find('.ql-tooltip input[type="text"]'), this.getAriaLabel('texteditor.URL'));
+    }
+
+    // the label is not part of this component, so it can survive an update of this component
+    private bindLabel(): void {
+        if (!this.cfg.ariaLabelledBy) {
+            return;
+        }
+        const label = $(PrimeFaces.escapeClientId(this.cfg.ariaLabelledBy));
+        const labelClickEvent = 'click.texteditor.' + this.id;
+        label.off(labelClickEvent).on(labelClickEvent, () => {
+            if (!this.disabled) {
+                this.editor?.focus();
+            }
+        });
+        this.addDestroyListener(() => label.off(labelClickEvent));
+    }
+
+    // Quill leaves the controls of a toolbar given as HTML unnamed; existing aria-labels, e.g. of a facet, are kept
+    private nameToolbar(): void {
+        if (!this.cfg.toolbarVisible) {
+            return;
+        }
+        if (!this.toolbar.attr('role')) {
+            this.toolbar.attr('role', 'toolbar');
+        }
+        this.name(this.toolbar, this.getAriaLabel('texteditor.TOOLBAR'));
+
+        this.toolbar.find('button').each((i, btn) => {
+            const format = this.format(btn);
+            if (format) {
+                this.name($(btn), this.ariaText(format, btn.getAttribute('value')));
+            }
+        });
+
+        this.toolbar.find('.ql-picker').each((i, picker) => {
+            const format = this.format(picker);
+            if (!format) {
+                return;
+            }
+            const jq = $(picker);
+            this.name(jq.children('.ql-picker-label'), this.ariaText(format, null));
+            jq.find('.ql-picker-item').each((j, item) => {
+                const value = item.getAttribute('data-value') ?? '';
+                this.name($(item), this.ariaText(format, value, item.getAttribute('data-label') || value || format));
+            });
+        });
+    }
+
+    // value: null for the control itself, '' for the default picker item
+    private ariaText(format: string, value: string | null, fallback: string = format): string {
+        if (format === 'header' && value) {
+            return this.getAriaLabel('texteditor.HEADING_LEVEL').replace('{level}', value);
+        }
+        const key = TextEditor.ariaKeys[value === null ? format : format + ':' + value];
+        return key ? this.getAriaLabel(key) : fallback;
+    }
+
+    // Quill format from the first ql-* class, e.g. bold; pickers also get ql-picker, ql-color-picker, ...
+    private format(el: Element): string | undefined {
+        const cls = Array.from(el.classList).find(c => c.startsWith('ql-') && !/(^ql-|-)picker$/.test(c));
+        return cls?.substring(3);
+    }
+
+    // sets the aria-label unless one is present
+    private name(jq: JQuery, text: string): void {
+        jq.each((i, el) => {
+            if (!el.getAttribute('aria-label')) {
+                el.setAttribute('aria-label', text);
+            }
+        });
+    }
+
     /**
      * Registers an event with the Quill editor and invokes the appropriate behavior when that event is triggered.
      * @param event Name of the event to register.
@@ -244,6 +390,8 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
      */
     override enable(): void {
         this.editor!.enable();
+        this.editor!.root.removeAttribute('aria-disabled');
+        this.editor!.root.removeAttribute('aria-readonly');
         PrimeFaces.utils.enableInputComponent(this.jq, this.input);
         this.disabled = false;
     }
@@ -253,6 +401,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
      */
     override disable(): void {
         this.editor!.disable();
+        this.editor!.root.setAttribute('aria-disabled', 'true');
         PrimeFaces.utils.disableInputComponent(this.jq, this.input);
         this.disabled = true;
     }

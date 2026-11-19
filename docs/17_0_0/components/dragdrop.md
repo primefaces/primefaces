@@ -173,9 +173,9 @@ function handleDrop(event, ui) {
 }
 ```
 ### DataSource
-Droppable has special care for data elements that extend from UIData(e.g. datatable, datagrid), in
+Droppable has special care for data elements that extend from UIData(e.g. datatable, dataview), in
 order to connect a droppable to accept data from a data component define datasource option as the
-id of the data component. Example below show how to drag data from datagrid and drop onto a
+id of the data component. Example below show how to drag data from a dataview and drop onto a
 droppable to implement a dragdrop based selection. Dropped cars are displayed with a datatable.
 
 ```java
@@ -198,14 +198,14 @@ public class TableBean {
 ```xhtml
 <h:form id="carForm">
     <p:fieldset legend="AvailableCars">
-        <p:dataGrid id="availableCars" var="car" value="#{tableBean.availableCars}" columns="3">
-            <p:column>
+        <p:dataView id="availableCars" var="car" value="#{tableBean.availableCars}" layout="grid">
+            <p:dataViewGridItem columns="3">
                 <p:panel id="pnl" header="#{car.model}" style="text-align:center">
                     <p:graphicImage value="/images/cars/#{car.manufacturer}.jpg" />
                 </p:panel>
                 <p:draggable for="pnl" revert="true" handle=".p-panel-titlebar" stack=".p-panel"/>
-            </p:column>
-        </p:dataGrid>
+            </p:dataViewGridItem>
+        </p:dataView>
     </p:fieldset>
     <p:fieldset id="selectedCars" legend="Selected Cars" style="margin-top:20px">
         <p:outputPanel id="dropArea">

@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script>
+            //<![CDATA[
+            function handleForm(xhr, status, args) {
+                if (args.validationFailed)
+                    PF('spot').show();
+                else
+                    PF('spot').hide();
+            }
+
+            //]]>
+        </script>
+
+    </ui:define>
+
+
+    <ui:define name="title">
+        Spotlight
+    </ui:define>
+
+    <ui:define name="description">
+        Spotlight highlights a certain component on the page and is controlled with the client side API <b>show()</b>
+        and <b>hide()</b>. In this example the panel is highlighted when the validation fails and released again after
+        a valid submit.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/spotlight"/>
+    <ui:param name="componentLink" value="Spotlight"/>
+    <ui:param name="tagName" value="spotlight"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl"/>
+
+                <p:panel id="pnl" header="New User">
+                    <p:messages id="messages"/>
+                    <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="username" value="Username"/>
+                            <p:inputText id="username" value="#{spotlightView.username}" required="true">
+                                <f:validateLength minimum="2"/>
+                            </p:inputText>
+                            <p:message for="username"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:outputLabel for="email" value="Surname"/>
+                            <p:inputText id="email" value="#{spotlightView.email}" required="true"/>
+                            <p:message for="email"/>
+                        </div>
+                    </h:panelGroup>
+
+                    <p:commandButton value="Save" icon="pi pi-check" action="#{spotlightView.save}" update="growl grid"
+                                     oncomplete="handleForm(xhr, status, args)" styleClass="mt-3"/>
+                </p:panel>
+
+                <p:spotlight target="pnl" ref="spot"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

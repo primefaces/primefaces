@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .vis-item.available {
+                background-color: var(--p-green-500);
+                border-color: var(--p-green-700);
+                color: #fff;
+            }
+
+            .vis-item.unavailable {
+                background-color: var(--p-red-500);
+                border-color: var(--p-red-700);
+                color: #fff;
+            }
+
+            .vis-item.maybe {
+                background-color: var(--p-orange-500);
+                border-color: var(--p-orange-700);
+                color: #fff;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">All Events</span>
+    </ui:define>
+
+    <ui:define name="description">
+        This example demonstrates the Ajax behavior events of Timeline: <b>add</b>, <b>changed</b>, <b>edit</b>,
+        <b>delete</b>, <b>select</b>, <b>rangechanged</b>, <b>lazyload</b> and <b>drop</b>. Each listener reports its
+        event together with the affected dates in a message.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="componentLink" value="Timeline-1"/>
+    <ui:param name="tagName" value="timeline"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <p:growl id="growl" showSummary="true" showDetail="true"
+                keepAlive="true" life="3000">
+                <p:autoUpdate />
+            </p:growl>
+
+            <div class="card">
+                <p:timeline id="timeline" value="#{allEventsTimelineView.model}"
+                    editable="true" eventMargin="10" eventMarginAxis="0"
+                    start="#{allEventsTimelineView.start}"
+                    end="#{allEventsTimelineView.end}" 
+                    stackEvents="false">
+                    <p:ajax event="add" listener="#{allEventsTimelineView.onAdd}" />
+                    <p:ajax event="changed" listener="#{allEventsTimelineView.onChanged}" />
+                    <p:ajax event="edit" listener="#{allEventsTimelineView.onEdit}" />
+                    <p:ajax event="delete" listener="#{allEventsTimelineView.onDelete}" />
+                    <p:ajax event="select" listener="#{allEventsTimelineView.onSelect}" />
+                    <p:ajax event="rangechanged" listener="#{allEventsTimelineView.onRangeChanged}" />
+                    <p:ajax event="lazyload" listener="#{allEventsTimelineView.onLazyLoad}" />
+                    <p:ajax event="drop" listener="#{allEventsTimelineView.onDrop}" />
+                </p:timeline>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -1794,6 +1794,7 @@
         --p-growl-offset: 1.25rem;
         --p-growl-gap: 1rem;
         --p-growl-fatal-background: color-mix(in srgb, var(--p-toast-error-background), var(--p-toast-error-color) 15%);
+        --p-growl-fatal-glow: var(--p-toast-error-glow);
         --p-growl-fatal-border-color: var(--p-toast-error-color);
         --p-growl-fatal-color: var(--p-toast-error-color);
         --p-growl-fatal-detail-color: var(--p-toast-error-detail-color);
@@ -3508,6 +3509,7 @@
         --p-toast-close-button-focus-ring-offset: var(--p-focus-ring-offset);
         --p-toast-close-icon-size: 0.875rem;
         --p-toast-info-background: light-dark(var(--p-surface-800), var(--p-surface-200));
+        --p-toast-info-glow: transparent;
         --p-toast-info-border-color: transparent;
         --p-toast-info-color: light-dark(var(--p-blue-300), var(--p-blue-800));
         --p-toast-info-detail-color: light-dark(var(--p-surface-100), var(--p-surface-800));
@@ -3516,6 +3518,7 @@
         --p-toast-info-close-button-focus-ring-color: var(--p-toast-info-detail-color);
         --p-toast-info-close-button-focus-ring-shadow: none;
         --p-toast-success-background: light-dark(var(--p-surface-800), var(--p-surface-200));
+        --p-toast-success-glow: transparent;
         --p-toast-success-border-color: transparent;
         --p-toast-success-color: light-dark(var(--p-green-300), var(--p-green-800));
         --p-toast-success-detail-color: light-dark(var(--p-surface-100), var(--p-surface-800));
@@ -3524,6 +3527,7 @@
         --p-toast-success-close-button-focus-ring-color: var(--p-toast-success-detail-color);
         --p-toast-success-close-button-focus-ring-shadow: none;
         --p-toast-warn-background: light-dark(var(--p-surface-800), var(--p-surface-200));
+        --p-toast-warn-glow: transparent;
         --p-toast-warn-border-color: transparent;
         --p-toast-warn-color: light-dark(var(--p-amber-300), var(--p-amber-800));
         --p-toast-warn-detail-color: light-dark(var(--p-surface-100), var(--p-surface-800));
@@ -3532,6 +3536,7 @@
         --p-toast-warn-close-button-focus-ring-color: var(--p-toast-warn-detail-color);
         --p-toast-warn-close-button-focus-ring-shadow: none;
         --p-toast-error-background: light-dark(var(--p-surface-800), var(--p-surface-200));
+        --p-toast-error-glow: transparent;
         --p-toast-error-border-color: transparent;
         --p-toast-error-color: light-dark(var(--p-red-300), var(--p-red-800));
         --p-toast-error-detail-color: light-dark(var(--p-surface-100), var(--p-surface-800));
