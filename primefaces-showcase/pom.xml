@@ -25,6 +25,8 @@
         <hibernate-validator.version>9.1.6.Final</hibernate-validator.version>
         <jakarta.version>11.0.0</jakarta.version>
         <weld.version>6.0.4.Final</weld.version>
+        <!-- not published to Maven Central -->
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <repositories>
