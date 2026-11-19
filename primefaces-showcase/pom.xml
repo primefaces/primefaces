@@ -25,6 +25,8 @@
         <resteasy.version>5.0.4.Final</resteasy.version>
         <jetty.version>9.4.49.v20220914</jetty.version>
         <jsf.project.stage>Production</jsf.project.stage>
+        <!-- not published to Maven Central -->
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <dependencies>
