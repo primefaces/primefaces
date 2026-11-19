@@ -38,6 +38,8 @@
         <resteasy.version>5.0.9.Final</resteasy.version>
         <owb.version>2.0.27</owb.version>
         <jetty.version>9.4.56.v20240826</jetty.version>
+        <!-- not published to Maven Central -->
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <dependencies>
