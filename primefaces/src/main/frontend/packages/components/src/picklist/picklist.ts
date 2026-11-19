@@ -902,7 +902,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the top:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':first-child')) {
             this.announce(this.getAriaLabel('movedUp', undefined, { count: String(itemsCount) }));
 
             items.each((_i, el) => {
@@ -947,7 +949,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the top:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':first-child')) {
             this.announce(this.getAriaLabel('movedTop', undefined, { count: String(itemsCount) }));
 
             items.each((_i, el) => {
@@ -990,7 +994,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the bottom:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':last-child')) {
             this.announce(this.getAriaLabel('movedDown', undefined, { count: String(itemsCount) }));
 
             $(items.get().reverse()).each((_i, el) => {
@@ -1033,7 +1039,9 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the bottom:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':last-child')) {
             this.announce(this.getAriaLabel('movedBottom', undefined, { count: String(itemsCount) }));
 
             items.each((_i, el) => {
