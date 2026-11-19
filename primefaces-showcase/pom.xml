@@ -20,6 +20,8 @@
         <jetty.version>12.1.12</jetty.version>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
+        <!-- not published to Maven Central -->
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <repositories>
