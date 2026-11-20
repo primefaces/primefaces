@@ -83,12 +83,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatāla kļūda",
       "messages.INFO": "Informācija",
       "messages.WARN": "Brīdinājums",
-      movedBottom: "Pārvietots uz apakšu",
-      movedDown: "Pārvietots zemāk",
-      movedTop: "Pārvietots uz augšu",
-      movedToSource: "Pārvietots uz avotu",
-      movedToTarget: "Pārvietots uz mērķi",
-      movedUp: "Pārvietots augstāk",
+      movedBottom: "Pārvietots uz apakšu: {count}",
+      movedDown: "Pārvietots zemāk: {count}",
+      movedTop: "Pārvietots uz augšu: {count}",
+      movedToSource: "Pārvietots uz avotu: {count}",
+      movedToTarget: "Pārvietots uz mērķi: {count}",
+      movedUp: "Pārvietots augstāk: {count}",
     },
     messages: {
       //optional for Client Side Validation

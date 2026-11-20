@@ -949,8 +949,10 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
-            this.announce(this.getAriaLabel('movedUp'));
+        // #15515 like OrderList, move nothing if a selected item is already at the top:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':first-child')) {
+            this.announce(this.getAriaLabel('movedUp', undefined, { count: String(itemsCount) }));
 
             items.each((_i, el) => {
                 const item = $(el);
@@ -994,8 +996,10 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
-            this.announce(this.getAriaLabel('movedTop'));
+        // #15515 like OrderList, move nothing if a selected item is already at the top:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':first-child')) {
+            this.announce(this.getAriaLabel('movedTop', undefined, { count: String(itemsCount) }));
 
             items.each((_i, el) => {
                 const item = $(el);
@@ -1037,8 +1041,10 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
-            this.announce(this.getAriaLabel('movedDown'));
+        // #15515 like OrderList, move nothing if a selected item is already at the bottom:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':last-child')) {
+            this.announce(this.getAriaLabel('movedDown', undefined, { count: String(itemsCount) }));
 
             $(items.get().reverse()).each((_i, el) => {
                 const item = $(el);
@@ -1080,8 +1086,10 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
         itemsCount = items.length;
         let movedCount = 0;
 
-        if(itemsCount) {
-            this.announce(this.getAriaLabel('movedBottom'));
+        // #15515 like OrderList, move nothing if a selected item is already at the bottom:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':last-child')) {
+            this.announce(this.getAriaLabel('movedBottom', undefined, { count: String(itemsCount) }));
 
             items.each((_i, el) => {
                 const item = $(el);
@@ -1211,7 +1219,7 @@ export class PickList<Cfg extends PickListCfg = PickListCfg> extends PrimeFaces.
      */
     private fireTransferEvent(items: JQuery, from: JQuery, to: JQuery, type: TransferType): void {
         // #15492 announce the completed transfer to screen readers
-        this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource'));
+        this.announce(this.getAriaLabel(from.hasClass('p-picklist-source') ? 'movedToTarget' : 'movedToSource', undefined, { count: String(items.length) }));
         // #15525 all items are shown now, also after an animated or a drag and drop transfer
         this.updateListRole();
 

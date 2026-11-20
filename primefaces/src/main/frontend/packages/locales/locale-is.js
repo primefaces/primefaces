@@ -49,12 +49,12 @@ if (window.PrimeFaces) {
         "texteditor.FORMULA": "Formúla",
         "texteditor.CLEAN": "Hreinsa snið",
         "texteditor.URL": "Vefslóð",
-        movedBottom: "Fært neðst",
-        movedDown: "Fært niður",
-        movedTop: "Fært efst",
-        movedToSource: "Fært í uppruna",
-        movedToTarget: "Fært í markmið",
-        movedUp: "Fært upp",
+        movedBottom: "Fært neðst: {count}",
+        movedDown: "Fært niður: {count}",
+        movedTop: "Fært efst: {count}",
+        movedToSource: "Fært í uppruna: {count}",
+        movedToTarget: "Fært í markmið: {count}",
+        movedUp: "Fært upp: {count}",
       },
     });
 }

@@ -87,12 +87,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "致命的",
       "messages.INFO": "インフォメーション",
       "messages.WARN": "警告",
-      movedBottom: "一番下へ移動しました",
-      movedDown: "下へ移動しました",
-      movedTop: "トップへ移動しました",
-      movedToSource: "ソースへ移動しました",
-      movedToTarget: "ターゲットへ移動しました",
-      movedUp: "上へ移動しました",
+      movedBottom: "一番下へ移動しました: {count}",
+      movedDown: "下へ移動しました: {count}",
+      movedTop: "トップへ移動しました: {count}",
+      movedToSource: "ソースへ移動しました: {count}",
+      movedToTarget: "ターゲットへ移動しました: {count}",
+      movedUp: "上へ移動しました: {count}",
     },
     messages: {
       //optional for Client Side Validation

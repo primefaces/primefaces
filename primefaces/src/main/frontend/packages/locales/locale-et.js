@@ -49,12 +49,12 @@ if (window.PrimeFaces) {
         "texteditor.FORMULA": "Valem",
         "texteditor.CLEAN": "Eemalda vormindus",
         "texteditor.URL": "URL",
-        movedBottom: "Liigutatud lõppu",
-        movedDown: "Liigutatud alla",
-        movedTop: "Liigutatud algusesse",
-        movedToSource: "Liigutatud allikasse",
-        movedToTarget: "Liigutatud sihtkohta",
-        movedUp: "Liigutatud üles",
+        movedBottom: "Liigutatud lõppu: {count}",
+        movedDown: "Liigutatud alla: {count}",
+        movedTop: "Liigutatud algusesse: {count}",
+        movedToSource: "Liigutatud allikasse: {count}",
+        movedToTarget: "Liigutatud sihtkohta: {count}",
+        movedUp: "Liigutatud üles: {count}",
       },
     });
 }
