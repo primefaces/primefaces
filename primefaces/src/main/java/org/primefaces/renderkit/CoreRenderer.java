@@ -774,6 +774,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
      * @deprecated use {@link #getComponentScriptBuilder(FacesContext)} instead
      */
     @Deprecated(since = "17.0.0", forRemoval = true)
+    @SuppressWarnings("removal")
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
         return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
