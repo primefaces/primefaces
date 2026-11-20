@@ -238,8 +238,8 @@ class ComponentScriptBuilderTest {
         assertEquals(
                 "<script id=\"accoId_s\" type=\"text/javascript\">$(function(){"
                         + "PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\""
-                        + ",preConstruct:function(cfg){a()}"
-                        + ",postConstruct:function(component, widget){b()}"
+                        + ",preConstruct:function(cfg, refresh){a()}"
+                        + ",postConstruct:function(component, widget, refresh){b()}"
                         + ",postRefresh:function(component, widget){c()}"
                         + ",preDestroy:function(component, widget){d()}"
                         + "});});</script>",
