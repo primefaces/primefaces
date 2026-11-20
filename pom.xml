@@ -320,7 +320,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20260522</version>
+            <version>20260814</version>
             <optional>true</optional>
         </dependency>
 
