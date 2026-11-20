@@ -30,11 +30,13 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.FilterConstraints;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -47,6 +49,7 @@ import jakarta.el.ValueReference;
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.ConverterException;
 
 /**
  * Resolves the match modes an end user may pick for a column filter, as configured by the {@code filterMatchModeOptions}
@@ -78,6 +81,12 @@ final class FilterMatchModeOptions {
             MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS);
 
     static final List<MatchMode> DATE = NUMERIC;
+
+    /**
+     * Separator of the values of an {@code in} / {@code notIn} filter: not a comma, which is part of decimal numbers and date
+     * patterns in many locales.
+     */
+    static final String VALUE_SEPARATOR = ";";
 
     /**
      * Match modes that are not offered by the picker (yet): {@code global} is no column filter, and the multi-value modes
@@ -148,6 +157,54 @@ final class FilterMatchModeOptions {
             throw new FacesException("Match mode '" + (matchMode == null ? null : matchMode.operator()) + "' of the filterBy for column '"
                     + filterMeta.getColumnKey() + "' is not one of its filterMatchModeOptions " + operators(options));
         }
+    }
+
+    /**
+     * Converts the submitted filter value of a column with a match mode picker with the column's converter. The multi-value
+     * match modes get a {@link List}: {@code in} / {@code notIn} the tokens of {@code value} split by {@link #VALUE_SEPARATOR},
+     * {@code between} / {@code notBetween} the two values {@code value} and {@code valueTo}.
+     *
+     * @param context the {@link FacesContext}
+     * @param column the column
+     * @param matchMode the column's match mode
+     * @param value the submitted filter value
+     * @param valueTo the submitted second filter value, only used by {@code between} / {@code notBetween}
+     * @return the filter value, {@code null} if it is empty or does not convert (a multi-value filter is only active if all its
+     *         values convert)
+     */
+    static Object convertFilterValue(FacesContext context, UIColumn column, MatchMode matchMode, String value, String valueTo) {
+        try {
+            switch (matchMode) {
+                case IN:
+                case NOT_IN: {
+                    List<Object> values = new ArrayList<>();
+                    for (String token : LangUtils.isBlank(value) ? new String[0] : value.split(VALUE_SEPARATOR)) {
+                        if (LangUtils.isNotBlank(token)) {
+                            values.add(convert(context, column, token.trim()));
+                        }
+                    }
+                    return values.isEmpty() || values.contains(null) ? null : values;
+                }
+                case BETWEEN:
+                case NOT_BETWEEN: {
+                    if (LangUtils.isBlank(value) || LangUtils.isBlank(valueTo)) {
+                        return null;
+                    }
+                    Object from = convert(context, column, value.trim());
+                    Object to = convert(context, column, valueTo.trim());
+                    return from == null || to == null ? null : Arrays.asList(from, to);
+                }
+                default:
+                    return convert(context, column, value);
+            }
+        }
+        catch (ConverterException e) {
+            return null;
+        }
+    }
+
+    private static Object convert(FacesContext context, UIColumn column, String value) {
+        return ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), value);
     }
 
     /**
