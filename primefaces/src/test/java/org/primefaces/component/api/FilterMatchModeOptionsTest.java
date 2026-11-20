@@ -21,11 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.component.api;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.mock.FacesContextMock;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
 
 import java.util.Collections;
@@ -45,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-class MatchModeOptionsTest {
+class FilterMatchModeOptionsTest {
 
     private FacesContext context;
     private DataTable table;
@@ -69,52 +71,52 @@ class MatchModeOptionsTest {
 
     @Test
     void notSet() {
-        assertTrue(MatchModeOptions.resolve(context, table, column(null, null)).isEmpty());
+        assertTrue(FilterMatchModeOptions.resolve(context, table, column(null, null)).isEmpty());
     }
 
     @Test
     void presets() {
-        assertEquals(MatchModeOptions.TEXT, MatchModeOptions.resolve(context, table, column("text", null)));
-        assertEquals(MatchModeOptions.NUMERIC, MatchModeOptions.resolve(context, table, column("numeric", null)));
-        assertEquals(MatchModeOptions.DATE, MatchModeOptions.resolve(context, table, column("date", null)));
+        assertEquals(FilterMatchModeOptions.TEXT, FilterMatchModeOptions.resolve(context, table, column("text", null)));
+        assertEquals(FilterMatchModeOptions.NUMERIC, FilterMatchModeOptions.resolve(context, table, column("numeric", null)));
+        assertEquals(FilterMatchModeOptions.DATE, FilterMatchModeOptions.resolve(context, table, column("date", null)));
     }
 
     @Test
     void noBooleanOrEnumPreset() {
         for (String preset : List.of("boolean", "enum")) {
             Column column = column(preset, null);
-            assertThrows(FacesException.class, () -> MatchModeOptions.resolve(context, table, column), preset);
+            assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column), preset);
         }
     }
 
     @Test
     void tableDefault() {
         table.setFilterMatchModeOptions("numeric");
-        assertEquals(MatchModeOptions.NUMERIC, MatchModeOptions.resolve(context, table, column(null, null)));
-        assertEquals(MatchModeOptions.TEXT, MatchModeOptions.resolve(context, table, column("text", null)));
-        assertTrue(MatchModeOptions.resolve(context, table, column("none", null)).isEmpty());
+        assertEquals(FilterMatchModeOptions.NUMERIC, FilterMatchModeOptions.resolve(context, table, column(null, null)));
+        assertEquals(FilterMatchModeOptions.TEXT, FilterMatchModeOptions.resolve(context, table, column("text", null)));
+        assertTrue(FilterMatchModeOptions.resolve(context, table, column("none", null)).isEmpty());
     }
 
     @Test
     void operatorList() {
         assertEquals(List.of(MatchMode.CONTAINS, MatchMode.STARTS_WITH, MatchMode.EQUALS),
-                MatchModeOptions.resolve(context, table, column(" contains, startsWith ,equals,contains", null)));
+                FilterMatchModeOptions.resolve(context, table, column(" contains, startsWith ,equals,contains", null)));
     }
 
     @Test
     void collection() {
         assertEquals(List.of(MatchMode.GREATER_THAN, MatchMode.LESS_THAN),
-                MatchModeOptions.resolve(context, table, column(List.of(MatchMode.GREATER_THAN, MatchMode.LESS_THAN), null)));
-        assertTrue(MatchModeOptions.resolve(context, table, column(Collections.emptyList(), null)).isEmpty());
+                FilterMatchModeOptions.resolve(context, table, column(List.of(MatchMode.GREATER_THAN, MatchMode.LESS_THAN), null)));
+        assertTrue(FilterMatchModeOptions.resolve(context, table, column(Collections.emptyList(), null)).isEmpty());
 
         Column invalid = column(List.of("gt"), null);
-        assertThrows(FacesException.class, () -> MatchModeOptions.resolve(context, table, invalid));
+        assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, invalid));
     }
 
     @Test
     void unknownValue() {
         Column column = column("numerc", null);
-        FacesException e = assertThrows(FacesException.class, () -> MatchModeOptions.resolve(context, table, column));
+        FacesException e = assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column));
         assertTrue(e.getMessage().contains("'numerc'"), e.getMessage());
     }
 
@@ -122,7 +124,7 @@ class MatchModeOptionsTest {
     void unsupportedMatchModes() {
         for (String operator : List.of("in", "notIn", "between", "notBetween", "global")) {
             Column column = column("equals," + operator, null);
-            assertThrows(FacesException.class, () -> MatchModeOptions.resolve(context, table, column), operator);
+            assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column), operator);
         }
     }
 
@@ -132,11 +134,42 @@ class MatchModeOptionsTest {
 
         Column facet = column("text", null);
         facet.getFacets().put("filter", new HtmlOutputText());
-        assertTrue(MatchModeOptions.resolve(context, table, facet).isEmpty());
+        assertTrue(FilterMatchModeOptions.resolve(context, table, facet).isEmpty());
 
         Column function = column(null, null);
         function.setFilterFunction(mock(MethodExpression.class));
-        assertTrue(MatchModeOptions.resolve(context, table, function).isEmpty());
+        assertTrue(FilterMatchModeOptions.resolve(context, table, function).isEmpty());
+    }
+
+    @Test
+    void customFilterFacetNotRenderedHasPicker() {
+        HtmlOutputText filter = new HtmlOutputText();
+        filter.setRendered(false);
+        Column column = column("text", null);
+        column.getFacets().put("filter", filter);
+        // the renderer encodes the default filter input, so the column gets a picker
+        assertEquals(FilterMatchModeOptions.TEXT, FilterMatchModeOptions.resolve(context, table, column));
+
+        table.setRenderEmptyFacets(true);
+        assertTrue(FilterMatchModeOptions.resolve(context, table, column).isEmpty());
+    }
+
+    @Test
+    void filterByMatchMode() {
+        Column column = column("numeric", null);
+        FilterMeta filterMeta = FilterMeta.of(context, "row", column, false);
+        FilterMatchModeOptions.apply(context, table, column, filterMeta);
+
+        FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, MatchMode.GREATER_THAN);
+        for (MatchMode matchMode : List.of(MatchMode.CONTAINS, MatchMode.BETWEEN)) {
+            FacesException e = assertThrows(FacesException.class,
+                    () -> FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, matchMode));
+            assertTrue(e.getMessage().contains("'" + matchMode.operator() + "'"), e.getMessage());
+        }
+
+        // no picker, no restriction
+        FilterMeta noPicker = FilterMeta.of(context, "row", column(null, null), false);
+        FilterMatchModeOptions.validateFilterByMatchMode(noPicker, MatchMode.BETWEEN);
     }
 
     @Test
@@ -144,11 +177,11 @@ class MatchModeOptionsTest {
         List<MatchMode> options = List.of(MatchMode.CONTAINS, MatchMode.STARTS_WITH);
         // filterMatchMode if set, also the default startsWith
         assertEquals(MatchMode.GREATER_THAN_EQUALS,
-                MatchModeOptions.initialMatchMode(column("numeric", "gte"), MatchModeOptions.NUMERIC));
-        assertEquals(MatchMode.STARTS_WITH, MatchModeOptions.initialMatchMode(column(options, "startsWith"), options));
+                FilterMatchModeOptions.initialMatchMode(column("numeric", "gte"), FilterMatchModeOptions.NUMERIC));
+        assertEquals(MatchMode.STARTS_WITH, FilterMatchModeOptions.initialMatchMode(column(options, "startsWith"), options));
         // otherwise the first option, not the default startsWith
-        assertEquals(MatchMode.CONTAINS, MatchModeOptions.initialMatchMode(column(options, null), options));
-        assertEquals(MatchMode.EQUALS, MatchModeOptions.initialMatchMode(column("numeric", null), MatchModeOptions.NUMERIC));
+        assertEquals(MatchMode.CONTAINS, FilterMatchModeOptions.initialMatchMode(column(options, null), options));
+        assertEquals(MatchMode.EQUALS, FilterMatchModeOptions.initialMatchMode(column("numeric", null), FilterMatchModeOptions.NUMERIC));
     }
 
     @Test
@@ -156,7 +189,7 @@ class MatchModeOptionsTest {
         for (String filterMatchMode : List.of("contains", "startsWith")) {
             Column column = column("numeric", filterMatchMode);
             FacesException e = assertThrows(FacesException.class,
-                    () -> MatchModeOptions.initialMatchMode(column, MatchModeOptions.NUMERIC));
+                    () -> FilterMatchModeOptions.initialMatchMode(column, FilterMatchModeOptions.NUMERIC));
             assertTrue(e.getMessage().contains("'" + filterMatchMode + "'"), e.getMessage());
         }
     }
@@ -166,22 +199,15 @@ class MatchModeOptionsTest {
         Column column = column("numeric", "gte");
         FilterMeta filterMeta = FilterMeta.of(context, "row", column, false);
 
-        MatchModeOptions.apply(context, table, column, filterMeta);
+        FilterMatchModeOptions.apply(context, table, column, filterMeta);
 
-        assertEquals(MatchModeOptions.NUMERIC, filterMeta.getMatchModeOptions());
+        assertEquals(FilterMatchModeOptions.NUMERIC, filterMeta.getMatchModeOptions());
         assertEquals(MatchMode.GREATER_THAN_EQUALS, filterMeta.getMatchMode());
         assertInstanceOf(GreaterThanEqualsFilterConstraint.class, filterMeta.getConstraint());
 
         Column implicit = column("numeric", null);
         FilterMeta implicitMeta = FilterMeta.of(context, "row", implicit, false);
-        MatchModeOptions.apply(context, table, implicit, implicitMeta);
+        FilterMatchModeOptions.apply(context, table, implicit, implicitMeta);
         assertEquals(MatchMode.EQUALS, implicitMeta.getMatchMode());
-    }
-
-    @Test
-    void iconClass() {
-        assertEquals("p-filter-matchmode-starts-with-icon", MatchModeOptions.iconClass(MatchMode.STARTS_WITH));
-        assertEquals("p-filter-matchmode-not-equals-icon", MatchModeOptions.iconClass(MatchMode.NOT_EQUALS));
-        assertEquals("p-filter-matchmode-gte-icon", MatchModeOptions.iconClass(MatchMode.GREATER_THAN_EQUALS));
     }
 }

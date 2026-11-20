@@ -60,6 +60,14 @@
                 <p:column headerText="ID" field="id" converter="jakarta.faces.Integer" filterMatchMode="gte"/>
                 <p:column headerText="First name" field="firstName"/>
             </p:dataTable>
+
+            <p:dataTable id="datatableSticky" value="#{dataTable061.employees}" var="employee" stickyHeader="true"
+                         filteredValue="#{dataTable061.filteredEmployeesSticky}" filterMatchModeOptions="text">
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+                <p:columns value="#{dataTable061.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
+                    <h:outputText value="#{employee[column.property]}"/>
+                </p:columns>
+            </p:dataTable>
         </h:form>
 
     </h:body>

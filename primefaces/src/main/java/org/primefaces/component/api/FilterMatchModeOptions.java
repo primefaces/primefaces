@@ -21,19 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.component.api;
 
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.FilterConstraints;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +40,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import jakarta.el.ValueExpression;
@@ -52,33 +50,34 @@ import jakarta.faces.context.FacesContext;
 
 /**
  * Resolves the match modes an end user may pick for a column filter, as configured by the {@code filterMatchModeOptions}
- * attribute of the column or (as default for all columns) of the table.
+ * attribute of the column or (as default for all columns) of the table. Only used by {@link UITable}, for tables that
+ * support it ({@link UITable#isFilterMatchModeOptionsSupported()}).
  * <p>
  * Supported values: not set or {@code none} (no picker), {@code auto} (preset derived from the column's value type), a preset
  * ({@code text}, {@code numeric}, {@code date}), a comma-separated list of {@link MatchMode} operators (e.g.
- * {@code contains,startsWith,equals}), or a {@code Collection<MatchMode>}. DataTable only, TreeTable ignores it.
+ * {@code contains,startsWith,equals}), or a {@code Collection<MatchMode>}.
  * <p>
  * The picked match mode is submitted per column as request parameter {@code <column clientId>:filterMatchMode} with every
  * filter request and only accepted if it is one of the column's options. Picking another match mode always sends a filter
  * request, also with an empty filter value, so the server side {@link FilterMeta} (and with it AJAX updates and the multi view
  * state) always knows the picked match mode.
  */
-public final class MatchModeOptions {
+final class FilterMatchModeOptions {
 
-    public static final String ATTRIBUTE = "filterMatchModeOptions";
+    static final String ATTRIBUTE = "filterMatchModeOptions";
 
-    public static final String NONE = "none";
-    public static final String AUTO = "auto";
+    static final String NONE = "none";
+    static final String AUTO = "auto";
 
-    public static final List<MatchMode> TEXT = List.of(
+    static final List<MatchMode> TEXT = List.of(
             MatchMode.STARTS_WITH, MatchMode.NOT_STARTS_WITH, MatchMode.ENDS_WITH, MatchMode.NOT_ENDS_WITH,
             MatchMode.CONTAINS, MatchMode.NOT_CONTAINS, MatchMode.EXACT, MatchMode.NOT_EXACT);
 
-    public static final List<MatchMode> NUMERIC = List.of(
+    static final List<MatchMode> NUMERIC = List.of(
             MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN, MatchMode.LESS_THAN_EQUALS,
             MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS);
 
-    public static final List<MatchMode> DATE = NUMERIC;
+    static final List<MatchMode> DATE = NUMERIC;
 
     /**
      * Match modes that are not offered by the picker (yet): {@code global} is no column filter, and the multi-value modes
@@ -87,7 +86,7 @@ public final class MatchModeOptions {
     private static final Set<MatchMode> UNSUPPORTED = Set.of(
             MatchMode.GLOBAL, MatchMode.IN, MatchMode.NOT_IN, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN);
 
-    private MatchModeOptions() {
+    private FilterMatchModeOptions() {
         // NOOP
     }
 
@@ -101,7 +100,7 @@ public final class MatchModeOptions {
      * @param filterMeta the column's {@link FilterMeta}
      * @throws FacesException if {@code filterMatchMode} is set but not one of the options
      */
-    public static void apply(FacesContext context, UITable<?> table, UIColumn column, FilterMeta filterMeta) {
+    static void apply(FacesContext context, UITable<?> table, UIColumn column, FilterMeta filterMeta) {
         List<MatchMode> options = resolve(context, table, column);
         filterMeta.setMatchModeOptions(options);
         if (options.isEmpty()) {
@@ -122,7 +121,7 @@ public final class MatchModeOptions {
      * @return the initial match mode
      * @throws FacesException if {@code filterMatchMode} is set but not one of the options
      */
-    public static MatchMode initialMatchMode(UIColumn column, List<MatchMode> options) {
+    static MatchMode initialMatchMode(UIColumn column, List<MatchMode> options) {
         if (!isFilterMatchModeSet(column)) {
             return options.get(0);
         }
@@ -133,6 +132,22 @@ public final class MatchModeOptions {
                     + "' is not one of its filterMatchModeOptions " + operators(options));
         }
         return matchMode;
+    }
+
+    /**
+     * Checks the match mode of a {@link FilterMeta} passed with the {@code filterBy} attribute of the table: like
+     * {@code filterMatchMode}, it must be one of the column's options.
+     *
+     * @param filterMeta the column's {@link FilterMeta}
+     * @param matchMode the match mode of the {@code filterBy} {@link FilterMeta}
+     * @throws FacesException if the column has a match mode picker and the match mode is not one of its options
+     */
+    static void validateFilterByMatchMode(FilterMeta filterMeta, MatchMode matchMode) {
+        List<MatchMode> options = filterMeta.getMatchModeOptions();
+        if (!options.isEmpty() && !options.contains(matchMode)) {
+            throw new FacesException("Match mode '" + (matchMode == null ? null : matchMode.operator()) + "' of the filterBy for column '"
+                    + filterMeta.getColumnKey() + "' is not one of its filterMatchModeOptions " + operators(options));
+        }
     }
 
     /**
@@ -150,17 +165,6 @@ public final class MatchModeOptions {
     }
 
     /**
-     * The semantic icon class of a match mode, e.g. {@code p-filter-matchmode-starts-with-icon}. It is not table specific,
-     * the CSS maps it to an icon token.
-     *
-     * @param matchMode the match mode
-     * @return the icon class
-     */
-    public static String iconClass(MatchMode matchMode) {
-        return "p-filter-matchmode-" + matchMode.operator().replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase(Locale.ROOT) + "-icon";
-    }
-
-    /**
      * Resolves the match modes an end user may pick for a column filter.
      *
      * @param context the {@link FacesContext}
@@ -169,9 +173,9 @@ public final class MatchModeOptions {
      * @return the match modes in the order of the picker, empty if the column gets no picker
      * @throws FacesException if the configured value is invalid
      */
-    public static List<MatchMode> resolve(FacesContext context, UITable<?> table, UIColumn column) {
-        // a custom filter (facet or function) does not filter by match mode
-        if (column.getFacet("filter") != null || column.getFilterFunction() != null) {
+    static List<MatchMode> resolve(FacesContext context, UITable<?> table, UIColumn column) {
+        // a custom filter (facet or function) does not filter by match mode, same check as the renderer
+        if (FacetUtils.shouldRenderFacet(column.getFacet("filter"), table.isRenderEmptyFacets()) || column.getFilterFunction() != null) {
             return Collections.emptyList();
         }
 
@@ -278,8 +282,8 @@ public final class MatchModeOptions {
 
     /**
      * Resolves the type of the column's property without row data: the row type is the element type of the table's
-     * {@code value} property, the column's {@code field} (or the field resolved from {@code filterBy}) is then walked as bean
-     * property path on it.
+     * {@code value} property, the column's {@code field} (or the field resolved from {@code filterBy}) is then resolved as
+     * (nested) bean property on it.
      *
      * @return the type or {@code null} if it cannot be resolved
      */
@@ -295,8 +299,8 @@ public final class MatchModeOptions {
                 return null;
             }
 
-            Class<?> type = LangUtils.getTypeFromCollectionProperty(reference.getBase(), String.valueOf(reference.getProperty()));
-            if (type == null) {
+            Class<?> rowType = LangUtils.getTypeFromCollectionProperty(reference.getBase(), String.valueOf(reference.getProperty()));
+            if (rowType == null) {
                 return null;
             }
 
@@ -309,29 +313,9 @@ public final class MatchModeOptions {
                 return null;
             }
 
-            for (String property : field.split("\\.")) {
-                type = resolvePropertyType(type, property);
-                if (type == null) {
-                    return null;
-                }
-            }
-            return type;
+            return PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver().get(rowType, field).getPropertyType();
         }
         catch (RuntimeException e) {
-            return null;
-        }
-    }
-
-    private static Class<?> resolvePropertyType(Class<?> beanClass, String property) {
-        try {
-            for (PropertyDescriptor pd : Introspector.getBeanInfo(beanClass).getPropertyDescriptors()) {
-                if (pd.getName().equals(property) && pd.getReadMethod() != null) {
-                    return pd.getPropertyType();
-                }
-            }
-            return null;
-        }
-        catch (IntrospectionException e) {
             return null;
         }
     }

@@ -25,13 +25,11 @@ package org.primefaces.component.api;
 
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
-import org.primefaces.model.MatchModeOptions;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.util.ComponentUtils;
@@ -159,6 +157,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 intlFM.setFilterBy(filterByVE);
             }
 
+            // like filterMatchMode, the match mode must be one of the column's filterMatchModeOptions
+            FilterMatchModeOptions.validateFilterByMatchMode(intlFM, userFM.getMatchMode());
+
             intlFM.setFilterValue(userFM.getFilterValue());
             intlFM.setConstraint(userFM.getConstraint());
             intlFM.setMatchMode(userFM.getMatchMode());
@@ -277,13 +278,32 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     /**
-     * Resolves the match mode options of a column, see {@link MatchModeOptions#apply}.
+     * Resolves the match mode options of a column, see {@link FilterMatchModeOptions#apply}.
      */
     private void applyFilterMatchModeOptions(FacesContext context, UIColumn column, FilterMeta filterMeta) {
-        // DataTable only for now
-        if (this instanceof DataTable) {
-            MatchModeOptions.apply(context, this, column, filterMeta);
+        if (isFilterMatchModeOptionsSupported()) {
+            FilterMatchModeOptions.apply(context, this, column, filterMeta);
         }
+    }
+
+    /**
+     * Whether the columns of this table support {@code filterMatchModeOptions} (a match mode picker for the column filter).
+     *
+     * @return {@code false} by default, the tables that support it override it
+     */
+    default boolean isFilterMatchModeOptionsSupported() {
+        return false;
+    }
+
+    /**
+     * The initial match mode of a column filter with a match mode picker: the column's {@code filterMatchMode} if it is set,
+     * otherwise its first {@code filterMatchModeOptions}. The picker returns to it when the filters are cleared.
+     *
+     * @param column the column, its {@link FilterMeta} must have match mode options
+     * @return the initial match mode
+     */
+    default MatchMode getInitialFilterMatchMode(UIColumn column) {
+        return FilterMatchModeOptions.initialMatchMode(column, getFilterByAsMap().get(column.getColumnKey()).getMatchModeOptions());
     }
 
     default Object getFilterValue(UIColumn column) {
@@ -332,12 +352,21 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     boolean isFilterNormalize();
 
     /**
-     * The default {@code filterMatchModeOptions} for all columns, see {@link MatchModeOptions}.
+     * The default {@code filterMatchModeOptions} for all columns, see the column attribute.
      *
      * @return a String, a {@code Collection<MatchMode>} or {@code null}
      */
     default Object getFilterMatchModeOptions() {
         return null;
+    }
+
+    /**
+     * Whether facets are rendered even if all of their children are not rendered, see {@code FacetUtils#shouldRenderFacet}.
+     *
+     * @return {@code false} by default, tables with the attribute {@code renderEmptyFacets} return its value
+     */
+    default boolean isRenderEmptyFacets() {
+        return false;
     }
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {

@@ -224,7 +224,7 @@ public class FilterMeta implements Serializable {
     }
 
     /**
-     * The match modes an end user may pick for this filter, see {@link MatchModeOptions}.
+     * The match modes an end user may pick for this filter, see the column attribute {@code filterMatchModeOptions}.
      *
      * @return the match modes, empty if the match mode cannot be picked
      */

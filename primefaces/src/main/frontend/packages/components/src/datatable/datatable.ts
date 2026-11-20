@@ -274,6 +274,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     expansionHolder?: JQuery;
     /** List of row indices to expand. */
     expansionProcess?: number[];
+    /** The open match mode menu of a column filter and the function that hides it, `null` if none is open. */
+    filterMatchModeMenu?: { menu: JQuery, trigger: JQuery, hide: (focusTrigger: boolean) => void } | null;
     /** DOM element of the currently focused row. */
     focusedRow?: JQuery | null;
     /** Whether the focused row includes the checkbox for selecting the row. */
@@ -852,9 +854,13 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
         });
 
-        filterColumns.children('.p-datatable-filter-matchmode-trigger').each((_i, el) => {
+        var matchModeTriggers = filterColumns.children('.p-datatable-filter-matchmode-trigger');
+        matchModeTriggers.each((_i, el) => {
             this.bindFilterMatchModeMenu($(el));
         });
+        if (matchModeTriggers.length) {
+            this.bindFilterMatchModeMenuHideHandlers();
+        }
 
         // ARIA labels for filters, the match mode trigger has its own
         filterColumns.each((_i, el) => {
@@ -872,7 +878,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * Sets up the match mode picker of a column filter (`filterMatchModeOptions`). The menu opens on click (or ArrowDown /
      * ArrowUp) of the trigger, picking another match mode stores it in the hidden input `<column>:filterMatchMode` and always
      * filters, also with an empty filter value, so the server knows the picked match mode. The menu is moved to the body, so
-     * that the header of a scrollable table does not clip it, and removed on refresh and destroy of the component.
+     * that the header of a scrollable table does not clip it, and removed on refresh and destroy of the component. Only one
+     * menu is open at a time, see {@link bindFilterMatchModeMenuHideHandlers}.
      * @param trigger The trigger button of the picker.
      */
     private bindFilterMatchModeMenu(trigger: JQuery): void {
@@ -897,16 +904,23 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             }
             menu.addClass('p-hidden');
             trigger.attr('aria-expanded', 'false');
+            this.filterMatchModeMenu = null;
             if (focusTrigger) {
                 trigger.trigger('focus');
             }
         };
 
         var show = (focusLast: boolean) => {
+            // e.g. opened with the keyboard while the menu of another column is open
+            this.filterMatchModeMenu?.hide(false);
+            this.filterMatchModeMenu = { menu, trigger, hide };
+
+            // the trigger is at the end of the header cell
+            var end = this.isRTL ? 'left' : 'right';
             menu.css('z-index', PrimeFaces.nextZindex()).removeClass('p-hidden');
             PrimeFaces.utils.position(menu, {
-                my: 'left top',
-                at: 'left bottom',
+                my: end + ' top',
+                at: end + ' bottom',
                 of: trigger,
                 collision: 'flipfit'
             });
@@ -986,20 +1000,28 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
                 }
                 e.preventDefault();
             });
+    }
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown' + namespace + '_hide', menu,
-            () => trigger,
-            (_e, eventTarget) => {
-                if (!(menu.is(eventTarget) || menu.has(eventTarget[0] ?? "").length > 0)) {
-                    hide(false);
-                }
-            });
-        PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll' + namespace + '_hide', trigger, () => {
-            hide(false);
+    /**
+     * Hides the open match mode menu of a column filter on a click outside of it and its trigger, on scroll and on resize.
+     * One set of handlers for all columns, as only one menu is open at a time.
+     */
+    private bindFilterMatchModeMenuHideHandlers(): void {
+        var namespace = '.' + this.id + '_filtermatchmode_hide',
+            hide = () => {
+                this.filterMatchModeMenu?.hide(false);
+            };
+        this.filterMatchModeMenu = null;
+
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown' + namespace, this.jq, null, (_e, eventTarget) => {
+            var open = this.filterMatchModeMenu;
+            if (open && !(open.menu.is(eventTarget) || open.menu.has(eventTarget[0] ?? "").length > 0
+                    || open.trigger.is(eventTarget) || open.trigger.has(eventTarget[0] ?? "").length > 0)) {
+                hide();
+            }
         });
-        PrimeFaces.utils.registerResizeHandler(this, 'resize' + namespace + '_hide', menu, () => {
-            hide(false);
-        });
+        PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll' + namespace, this.thead, hide);
+        PrimeFaces.utils.registerResizeHandler(this, 'resize' + namespace, null, hide);
     }
 
     /**

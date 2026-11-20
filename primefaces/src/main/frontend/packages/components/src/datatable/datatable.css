@@ -196,9 +196,10 @@
     /* filter match mode picker (filterMatchModeOptions): the trigger shows the icon of the selected match mode */
     .p-datatable-filter-matchmode-trigger {
         display: inline-flex;
+        float: inline-end;
         align-items: center;
         justify-content: center;
-        vertical-align: middle;
+        height: 1lh;
         margin: 0;
         margin-inline-start: var(--p-datatable-header-cell-gap);
         padding: 0;

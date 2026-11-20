@@ -142,7 +142,7 @@ public class DataTable extends DataTableBaseImpl {
     public static final String FILTER_MATCH_MODE_INPUT_CLASS = "p-datatable-filter-matchmode-input";
     public static final String FILTER_MATCH_MODE_TRIGGER_CLASS = "p-datatable-filter-matchmode-trigger";
     public static final String FILTER_MATCH_MODE_ICON_CLASS = "p-datatable-filter-matchmode-icon";
-    public static final String FILTER_MATCH_MODE_MENU_CLASS = "p-datatable-filter-matchmode-menu p-hidden";
+    public static final String FILTER_MATCH_MODE_MENU_CLASS = "p-datatable-filter-matchmode-menu p-input-overlay p-hidden";
     public static final String FILTER_MATCH_MODE_OPTION_CLASS = "p-datatable-filter-matchmode-option";
     public static final String FILTER_MATCH_MODE_LABEL_CLASS = "p-datatable-filter-matchmode-label";
     public static final String RESIZABLE_COLUMN_CLASS = "p-resizable-column";
@@ -1105,6 +1105,11 @@ public class DataTable extends DataTableBaseImpl {
     @Override
     public boolean isFilterByAsMapDefined() {
         return getStateHelper().get(InternalPropertyKeys.filterByAsMap) != null;
+    }
+
+    @Override
+    public boolean isFilterMatchModeOptionsSupported() {
+        return true;
     }
 
     @Override

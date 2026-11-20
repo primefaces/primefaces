@@ -40,7 +40,6 @@ import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
-import org.primefaces.model.MatchModeOptions;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -815,10 +814,6 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
     }
 
-    /**
-     * Encodes the match mode picker of a column filter (see {@link MatchModeOptions}): a hidden input with the selected
-     * match mode, a trigger button showing its icon and the menu of the match modes, which the widget moves to the body.
-     */
     protected void encodeFilterMatchModePicker(FacesContext context, DataTable component, UIColumn column) throws IOException {
         FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
         if (component.isGlobalFilterOnly() || filterMeta == null || filterMeta.getMatchModeOptions().isEmpty()) {
@@ -841,7 +836,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", DataTable.FILTER_MATCH_MODE_INPUT_CLASS, null);
         writer.writeAttribute("value", selected.operator(), null);
         // the initial match mode, restored by clearFilters()
-        writer.writeAttribute("data-default", MatchModeOptions.initialMatchMode(column, options).operator(), null);
+        writer.writeAttribute("data-default", component.getInitialFilterMatchMode(column).operator(), null);
         writer.endElement("input");
 
         writer.startElement("button", null);
@@ -884,7 +879,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     protected void encodeMatchModeIcon(ResponseWriter writer, MatchMode matchMode) throws IOException {
         writer.startElement("span", null);
-        writer.writeAttribute("class", "p-icon " + MatchModeOptions.iconClass(matchMode) + " " + DataTable.FILTER_MATCH_MODE_ICON_CLASS, null);
+        writer.writeAttribute("class", "p-icon " + resolveFilterMatchModeIcon(matchMode) + " " + DataTable.FILTER_MATCH_MODE_ICON_CLASS, null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.endElement("span");
     }

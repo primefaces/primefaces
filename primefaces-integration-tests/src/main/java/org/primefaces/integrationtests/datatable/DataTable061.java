@@ -37,6 +37,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import lombok.Data;
+import lombok.Value;
 
 @Named
 @ViewScoped
@@ -50,6 +51,8 @@ public class DataTable061 implements Serializable {
     private List<Employee> filteredEmployees;
     private List<Employee> filteredEmployeesAuto;
     private List<Employee> filteredEmployeesPlain;
+    private List<Employee> filteredEmployeesSticky;
+    private List<ColumnModel> columns = List.of(new ColumnModel("First name", "firstName"), new ColumnModel("Last name", "lastName"));
 
     @Inject
     private EmployeeService service;
@@ -72,5 +75,12 @@ public class DataTable061 implements Serializable {
 
     public boolean filterNothing(Object value, Object filter, Locale locale) {
         return true;
+    }
+
+    @Value
+    public static class ColumnModel implements Serializable {
+        @Serial private static final long serialVersionUID = 1L;
+        private String header;
+        private String property;
     }
 }

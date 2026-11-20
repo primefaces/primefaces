@@ -311,6 +311,50 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(12)
+    @DisplayName("DataTable: GitHub #7427 match mode picker of p:columns")
+    void dynamicColumns(Page page) {
+        DataTable dataTable = page.datatableSticky;
+        HeaderCell lastName = cell(dataTable, "Last name");
+        assertEquals(TEXT, lastName.getFilterMatchModeOptions());
+        assertEquals("startsWith", lastName.getFilterMatchMode());
+
+        dataTable.filter("Last name", "Ma");
+
+        assertEquals(List.of("1", "6", "533"), ids(dataTable));
+
+        dataTable.filterMatchMode("Last name", "notStartsWith");
+
+        assertEquals("notStartsWith", cell(dataTable, "Last name").getFilterMatchMode());
+        assertEquals(List.of("2", "3", "4", "5", "11"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(13)
+    @Tag("DataTable-scrolling")
+    @DisplayName("DataTable: GitHub #7427 match mode picker with stickyHeader, the cloned header is not submitted")
+    void stickyHeader(Page page) {
+        DataTable dataTable = page.datatableSticky;
+        dataTable.filter("ID", "5");
+        assertEquals(List.of("5"), ids(dataTable));
+
+        dataTable.filterMatchMode("ID", "gt");
+
+        assertEquals(List.of("6", "11", "533"), ids(dataTable));
+
+        dataTable.filterMatchMode("ID", "lt");
+
+        assertEquals("lt", cell(dataTable, "ID").getFilterMatchMode());
+        assertEquals(List.of("1", "2", "3", "4"), ids(dataTable));
+        List<WebElement> clonedInputs = dataTable.findElements(
+                By.cssSelector(".p-datatable-tablewrapper > table > thead .p-datatable-filter-matchmode-input"));
+        assertEquals(3, clonedInputs.size());
+        clonedInputs.forEach(input -> assertFalse(input.isEnabled()));
+        assertNoJavascriptErrors();
+    }
+
     private static HeaderCell cell(DataTable dataTable, String headerText) {
         return dataTable.getHeader().getCell(headerText).orElseThrow();
     }
@@ -340,6 +384,9 @@ class DataTable061Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:datatablePlain")
         DataTable datatablePlain;
+
+        @FindBy(id = "form:datatableSticky")
+        DataTable datatableSticky;
 
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;
