@@ -52,8 +52,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DataTable061Test extends AbstractPrimePageTest {
 
     private static final List<String> TEXT = List.of("startsWith", "notStartsWith", "endsWith", "notEndsWith",
-            "contains", "notContains", "exact", "notExact");
-    private static final List<String> NUMERIC = List.of("equals", "notEquals", "lt", "lte", "gt", "gte");
+            "contains", "notContains", "exact", "notExact", "in", "notIn");
+    private static final List<String> NUMERIC = List.of("equals", "notEquals", "lt", "lte", "gt", "gte", "between", "notBetween",
+            "in", "notIn");
+    private static final List<String> DATE = List.of("equals", "notEquals", "lt", "lte", "gt", "gte", "between", "notBetween");
 
     @Test
     @Order(1)
@@ -78,7 +80,7 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertEquals(NUMERIC, cell(dataTable, "ID").getFilterMatchModeOptions());
         assertEquals(TEXT, cell(dataTable, "First name").getFilterMatchModeOptions());
         assertEquals(List.of("contains", "startsWith", "exact"), cell(dataTable, "Last name").getFilterMatchModeOptions());
-        assertEquals(NUMERIC, cell(dataTable, "Birth date").getFilterMatchModeOptions());
+        assertEquals(DATE, cell(dataTable, "Birth date").getFilterMatchModeOptions());
         assertEquals(List.of("equals", "notEquals"), cell(dataTable, "Role (EL)").getFilterMatchModeOptions());
         assertNoJavascriptErrors();
     }
@@ -186,11 +188,11 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertEquals("true", trigger.getDomAttribute("aria-expanded"));
         assertEquals("gte", focusedMatchMode());
 
-        // Act - wraps around to the first one
+        // Act
         activeElement().sendKeys(Keys.ARROW_DOWN);
 
         // Assert
-        assertEquals("equals", focusedMatchMode());
+        assertEquals("between", focusedMatchMode());
 
         // Act
         activeElement().sendKeys(Keys.ESCAPE);
@@ -353,6 +355,87 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertEquals(3, clonedInputs.size());
         clonedInputs.forEach(input -> assertFalse(input.isEnabled()));
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: GitHub #7427 between with a second input and in with separated values")
+    void betweenAndIn(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatable;
+        HeaderCell id = cell(dataTable, "ID");
+        WebElement filterTo = filterTo(id);
+        assertFalse(filterTo.isDisplayed());
+
+        // Act - without the end of the range the filter is inactive
+        dataTable.filter("ID", "3");
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert
+        assertTrue(filterTo.isDisplayed());
+        assertEquals("Filter ID To", filterTo.getDomAttribute("aria-label"));
+        assertEquals(8, dataTable.getRows().size());
+
+        // Act
+        setValueAndFilter(dataTable, filterTo, "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+
+        // Act
+        dataTable.filterMatchMode("ID", "notBetween");
+
+        // Assert
+        assertEquals(List.of("1", "2", "11", "533"), ids(dataTable));
+
+        // Act - kept across an AJAX update
+        page.buttonUpdate.click();
+
+        // Assert
+        id = cell(dataTable, "ID");
+        assertEquals("3", id.getColumnFilter().getDomProperty("value"));
+        assertEquals("6", filterTo(id).getDomProperty("value"));
+        assertEquals(List.of("1", "2", "11", "533"), ids(dataTable));
+
+        // Act - another match mode hides and clears the second input
+        dataTable.filterMatchMode("ID", "in");
+
+        // Assert
+        assertFalse(filterTo(id).isDisplayed());
+        assertEquals("", filterTo(id).getDomProperty("value"));
+        assertEquals(List.of("3"), ids(dataTable));
+
+        // Act
+        setValueAndFilter(dataTable, id.getColumnFilter(), " 1;5 ; 533;");
+
+        // Assert
+        assertEquals(List.of("1", "5", "533"), ids(dataTable));
+
+        // Act - a value which does not convert makes the filter inactive
+        setValueAndFilter(dataTable, id.getColumnFilter(), "1;x");
+
+        // Assert
+        assertEquals(8, dataTable.getRows().size());
+
+        // Act - rendered back with the separator
+        setValueAndFilter(dataTable, id.getColumnFilter(), "1;5");
+        page.buttonUpdate.click();
+
+        // Assert
+        id = cell(dataTable, "ID");
+        assertEquals("1; 5", id.getColumnFilter().getDomProperty("value"));
+        dataTable.filterMatchMode("ID", "notIn");
+        assertEquals(List.of("2", "3", "4", "6", "11", "533"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    private static WebElement filterTo(HeaderCell cell) {
+        return cell.getWebElement().findElement(By.className("p-datatable-filter-to"));
+    }
+
+    private static void setValueAndFilter(DataTable dataTable, WebElement input, String value) {
+        PrimeSelenium.executeScript("arguments[0].value = arguments[1];", input, value);
+        dataTable.applyFilters();
     }
 
     private static HeaderCell cell(DataTable dataTable, String headerText) {

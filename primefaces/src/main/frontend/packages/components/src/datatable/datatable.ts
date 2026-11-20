@@ -865,11 +865,14 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         // ARIA labels for filters, the match mode trigger has its own
         filterColumns.each((_i, el) => {
             var filterColumn = $(el);
-            var filter = filterColumn.find(':input').not('.p-datatable-filter-matchmode-trigger');
+            var filter = filterColumn.find(':input').not('.p-datatable-filter-matchmode-trigger, .p-datatable-filter-to');
             var title = filterColumn.find('.p-column-title')
 
             if (filter && title) {
                 filter.attr('aria-label', this.getLabel('filter') + " " + title.text());
+                // the end of a between range, its title is "To"
+                var filterTo = filterColumn.children('.p-datatable-filter-to');
+                filterTo.attr('aria-label', this.getLabel('filter') + " " + title.text() + " " + filterTo.attr('title'));
             }
         });
     }
@@ -1037,6 +1040,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             label = option.children('.p-datatable-filter-matchmode-label').text();
 
         trigger.siblings('.p-datatable-filter-matchmode-input').val(matchMode!);
+        this.updateFilterValueTo(trigger, matchMode);
         options.removeClass('p-state-active').attr('aria-checked', 'false');
         option.addClass('p-state-active').attr('aria-checked', 'true');
         // the semantic icon class of the match mode, as rendered for its option
@@ -1045,6 +1049,27 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             'title': label,
             'aria-label': menu.attr('aria-label') + ': ' + label
         });
+    }
+
+    /**
+     * Shows the second input of a column filter (end of the range) for `between` / `notBetween` and hides and clears it
+     * for the other match modes.
+     * @param trigger The trigger button of the picker.
+     * @param matchMode The operator of the match mode, e.g. `between`.
+     */
+    private updateFilterValueTo(trigger: JQuery, matchMode: string | undefined): void {
+        var filterTo = trigger.siblings('.p-datatable-filter-to');
+        if (!filterTo.length) {
+            return;
+        }
+
+        if (matchMode === 'between' || matchMode === 'notBetween') {
+            // as visible as the filter input, which toggleFilter() may have shown or hidden
+            filterTo.removeClass('p-hidden').css('display', trigger.siblings('.p-column-filter').not(filterTo).css('display'));
+        }
+        else {
+            filterTo.addClass('p-hidden').css('display', '').val('');
+        }
     }
 
     /**
@@ -6028,7 +6053,9 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter(speed: string | null, callback: (() => void) | null): void {
-        this.jq.find(".p-column-filter, .p-column-customfilter, .p-datatable-filter-matchmode-trigger").fadeToggle(speed || 0, callback!);
+        // not the second input of a filter with another match mode than between
+        this.jq.find(".p-column-filter:not(.p-datatable-filter-to.p-hidden), .p-column-customfilter, .p-datatable-filter-matchmode-trigger")
+            .fadeToggle(speed || 0, callback!);
     }
 
 }
