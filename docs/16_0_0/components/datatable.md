@@ -157,7 +157,7 @@ Here are more examples based on different templates;
 
 ## Paginator Position
 Paginator can be positioned using `paginatorPosition` attribute in three different locations, "top",
-"bottom" or "both" (default).
+"bottom" (default) or "both".
 
 ## Custom Content in Paginator
 Custom content can be placed inside a paginator using a facet name matching a token in the
